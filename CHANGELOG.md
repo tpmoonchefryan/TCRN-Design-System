@@ -14,13 +14,12 @@
   exposure were deferred to separate routes.
 - Record the post-release current state: the GitHub repository is public and
   GitHub Release `v1.0.0` exists for commit
-  `1f98fb4e787d8ea63d753843182daac897d61a9b`; npm package publication and
-  hosted documentation deployment remain unconfirmed/not performed.
-- Record the current Vercel public-state readback: the initial release-commit
-  deployment failed, the Vercel build command was repaired, and hosted
-  Storybook documentation is now live from
-  `5384f08cf08f60e5fde086e03a62300bd3ca2b82` at
-  `https://tcrn-design-system-storybook.vercel.app/`.
+  `57b1c417efe4c011daa538158b347075d122b72b`; npm package publication remains
+  unconfirmed/not performed.
+- Record the current hosted-docs readback: hosted Storybook documentation is
+  reachable at `https://tcrn-design-system-storybook.vercel.app/`, while GitHub
+  status checks, Actions runs, deployment records, and hosted-doc readiness
+  proof are not claimed for the selected public basis.
 - No AOS/TMS product adoption, product acceptance, release readiness, npm
   package publication, or final MVP acceptance is claimed.
 

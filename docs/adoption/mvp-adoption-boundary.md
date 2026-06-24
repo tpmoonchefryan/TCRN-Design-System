@@ -12,11 +12,14 @@ The first adoption path is token-first and copy-state-first.
   package baseline.
 - Current public GitHub repository and GitHub Release `v1.0.0` state may be
   referenced as public-surface state for this Design System repo only.
+- Hosted Storybook URL reachability may be referenced as current public docs
+  availability, without treating it as GitHub/Vercel deployment readiness
+  proof.
 
 ## Deferred
 
 - AOS or TMS dependency changes.
 - Product API, RBAC, backend DTO, route, persistence, evidence-truth, release,
   or deployment integration.
-- npm package publication, hosted documentation deployment, Vercel deployment
-  readiness, or private registry publication.
+- npm package publication, GitHub/Vercel deployment readiness proof, broader
+  hosted-doc expansion, or private registry publication.

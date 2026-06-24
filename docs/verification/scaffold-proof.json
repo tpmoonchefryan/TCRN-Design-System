@@ -19,33 +19,34 @@
       "exists": true,
       "isDraft": false,
       "isPrerelease": false,
-      "targetCommitish": "main",
+      "targetCommitish": "57b1c417efe4c011daa538158b347075d122b72b",
       "url": "https://github.com/tpmoonchefryan/TCRN-Design-System/releases/tag/v1.0.0",
-      "readbackSource": "gh release view v1.0.0 --repo tpmoonchefryan/TCRN-Design-System --json tagName,isDraft,isPrerelease,targetCommitish,url"
+      "readbackSource": "Selene selected public basis readback plus gh refs for heads/main and tags/v1.0.0"
     },
     "npmPackagePublication": {
       "observedPublished": false,
       "readback": "Sable npm registry readback returned E404/not found for @tcrn/ui-react, @tcrn/ui-tokens, and @tcrn/ui-copy-state"
     },
     "hostedDocsDeployment": {
-      "vercelDeploymentObserved": true,
-      "latestKnownDeploymentState": "success",
-      "hostedDocsDeploymentSucceeded": true,
-      "hostedDocsReadinessClaimed": true,
-      "commitStatusState": "not_applicable_cli_deploy_no_github_status",
-      "productionCommit": "clean-history-main-at-deployment-time; exact SHA is reported by terminal return",
+      "vercelDeploymentObserved": false,
+      "latestKnownDeploymentState": "not_claimed_no_github_deployment_for_selected_basis",
+      "hostedDocsDeploymentSucceeded": false,
+      "hostedDocsReadinessClaimed": false,
+      "commitStatusState": "pending_no_statuses_for_selected_basis",
+      "productionCommit": "57b1c417efe4c011daa538158b347075d122b72b",
       "productionDomain": "https://tcrn-design-system-storybook.vercel.app/",
-      "deploymentId": "latest-retained-production-deployment; exact ID is reported by terminal return",
-      "environment": "Production",
-      "targetUrl": "latest unique production deployment URL is reported by terminal return",
-      "retainedDeploymentCount": 1,
+      "deploymentId": null,
+      "environment": null,
+      "targetUrl": null,
+      "retainedDeploymentCount": 0,
       "legacyDeploymentRollbackSurfaceRemoved": true,
-      "observedAt": "terminal-return-final-readback",
-      "readbackSource": "vercel inspect/list/logs for the retained production deployment; curl production URL checks; public-output scan"
+      "observedAt": "Selene selected-basis readback plus route-local curl URL reachability check",
+      "readbackSource": "Selene selected public basis reported combined_status=pending, statuses=[], actions_runs=[], deployments=[]; curl production URL checks prove URL reachability only"
     },
     "publicOutput": {
       "disposition": "static_contract_docs_only_storybook_manager_not_published",
       "productionOutputDirectory": "apps/storybook/storybook-static",
+      "productionUrlReachable": true,
       "storybookManagerOutputPublished": false,
       "storybookIframeAvailableOnProductionDomain": false,
       "storybookIndexJsonAvailableOnProductionDomain": false,
@@ -76,12 +77,12 @@
     {
       "path": "README.md",
       "exists": true,
-      "sha256": "6fe885cacb6d0ee47d998bdbf1e2fc51bde1727b5ec45a4492f08db7f0a7a2ab"
+      "sha256": "c67f4bf36bd01d59fbc667b691cef6a4a3c985a082fad1214827061887f08586"
     },
     {
       "path": "CHANGELOG.md",
       "exists": true,
-      "sha256": "80cbb646dea60553b796b28f808fce2d02ba5bd169b1db425ef6c5fe8ed5d2c7"
+      "sha256": "bdbd56aa44ca88bf9025ad94c965b958391f83cdd9ae92620a49e6103dc2cb2b"
     },
     {
       "path": "LICENSE",
@@ -96,7 +97,7 @@
     {
       "path": "docs/release-prep-v1.0.0.md",
       "exists": true,
-      "sha256": "f694ca31184717058371f39904eb7ed2c501c831b4103d14c5bf010c73bf909c"
+      "sha256": "640b89a246386ca72abb2ae8a428a47a98490a83e9ed02aa6a28eba59d8b5632"
     },
     {
       "path": ".github/CODEOWNERS",
@@ -173,12 +174,12 @@
     }
   ],
   "lockfileExists": true,
-  "storybookHtmlExists": true,
+  "storybookHtmlExists": false,
   "routeLocalNoOverclaim": {
-    "githubPushPerformedByThisRoute": true,
-    "githubReleaseCreatedByThisRoute": true,
-    "publicRepoExposurePerformedByThisRoute": true,
-    "hostedDocsDeploymentPerformedByThisRoute": true,
+    "githubPushPerformedByThisRoute": false,
+    "githubReleaseCreatedByThisRoute": false,
+    "publicRepoExposurePerformedByThisRoute": false,
+    "hostedDocsDeploymentPerformedByThisRoute": false,
     "packagePublishedByThisRoute": false,
     "productAdoptionClaimed": false,
     "productAcceptanceClaimed": false,
@@ -188,10 +189,11 @@
   },
   "currentStateNoOverclaim": {
     "npmPackagePublished": false,
-    "hostedDocsDeploymentSucceeded": true,
-    "hostedDocsReadinessClaimed": true,
-    "vercelDeploymentSucceeded": true,
-    "vercelDeploymentReadinessClaimed": true,
+    "hostedDocsDeploymentSucceeded": false,
+    "hostedDocsUrlReachable": true,
+    "hostedDocsReadinessClaimed": false,
+    "vercelDeploymentSucceeded": false,
+    "vercelDeploymentReadinessClaimed": false,
     "aosVersionPublicationClaimed": false,
     "tmsVersionPublicationClaimed": false,
     "productAdoptionClaimed": false,

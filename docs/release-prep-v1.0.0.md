@@ -32,29 +32,26 @@ The root workspace and the three public package manifests declare
 - Release URL:
   `https://github.com/tpmoonchefryan/TCRN-Design-System/releases/tag/v1.0.0`.
 - Release target commit:
-  `1f98fb4e787d8ea63d753843182daac897d61a9b`.
+  `57b1c417efe4c011daa538158b347075d122b72b`.
 - Release state: non-draft and non-prerelease.
-- Initial Vercel status for release target: failure. The clean Vercel checkout
-  needed the workspace packages built before Storybook.
-- Hosted docs production commit:
-  `5384f08cf08f60e5fde086e03a62300bd3ca2b82`.
-- Hosted docs production status: success.
-- Hosted docs Vercel deployment id: `5177066746`.
-- Hosted docs Vercel environment: Production.
+- GitHub status/readiness for selected basis: not claimed. Selene's selected
+  public-basis readback reported combined status pending with no statuses,
+  Actions runs, or deployments for this exact commit.
 - Hosted docs public URL:
   `https://tcrn-design-system-storybook.vercel.app/`.
-- Hosted docs deployment URL:
-  `https://tcrn-design-system-storybook-lxf6e85g7-tcrn-platform.vercel.app`.
-- Hosted docs status/deployment timestamp: `2026-06-24T06:46:35Z`.
+- Hosted docs URL reachability: observed externally, but not treated as
+  GitHub/Vercel deployment proof or hosted-doc readiness proof for the selected
+  basis.
 
 The original local release-prep route did not itself perform the public repo
 exposure or create the GitHub Release. This post-release correction records the
 current state so public-facing docs and receipts no longer imply that the repo
 and release are still deferred.
 
-The Vercel record proves hosted Storybook documentation is available for the
-public Design System site. It does not publish npm packages, change the release
-tag target, or prove AOS/TMS product adoption.
+The public URL readback shows hosted Storybook documentation is reachable for
+the public Design System site. It does not publish npm packages, prove a
+GitHub/Vercel deployment record for the selected basis, change the release tag
+target, or prove AOS/TMS product adoption.
 
 ## Remaining Deferred Publication Plan
 
@@ -62,15 +59,16 @@ tag target, or prove AOS/TMS product adoption.
 - Prepared hosted-docs build command: `pnpm storybook:vercel-build`.
 - Prepared hosted-docs output directory:
   `apps/storybook/storybook-preview-static`.
-- Hosted documentation publication/readiness is confirmed for the Storybook
-  documentation site at `https://tcrn-design-system-storybook.vercel.app/`.
+- Hosted Storybook URL reachability is observed for
+  `https://tcrn-design-system-storybook.vercel.app/`; broader hosted-doc
+  readiness and GitHub/Vercel deployment proof remain unclaimed here.
 - npm/package registry publication remains unconfirmed in this route.
 
 ## Boundaries
 
-The public repository, GitHub Release `v1.0.0`, and hosted Storybook
-documentation site currently exist. This correction does not publish npm
-packages, modify the GitHub Release, change repository visibility, create
-AOS/TMS product adoption, approve product acceptance, claim broad release
+The public repository, GitHub Release `v1.0.0`, and hosted Storybook URL
+currently exist. This correction does not publish npm packages, prove hosted-doc
+deployment readiness, modify the GitHub Release, change repository visibility,
+create AOS/TMS product adoption, approve product acceptance, claim broad release
 readiness, or claim final MVP acceptance. Public package registry publication
 remains a separate route.

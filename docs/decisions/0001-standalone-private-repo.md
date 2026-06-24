@@ -19,9 +19,11 @@ synthetic examples, and proof surfaces before any product repo adopts it.
   release readiness, or final MVP acceptance.
 - Current public-state correction: the GitHub repository is now public and
   GitHub Release `v1.0.0` exists for commit
-  `1f98fb4e787d8ea63d753843182daac897d61a9b`.
-- npm package publication, hosted documentation deployment, Vercel deployment
-  readiness, AOS/TMS versioning, product adoption, product acceptance, release
-  readiness, and final MVP acceptance remain unclaimed here.
+  `57b1c417efe4c011daa538158b347075d122b72b`.
+- Hosted Storybook URL reachability is public-surface availability, not
+  GitHub/Vercel deployment readiness proof for the selected basis.
+- npm package publication, GitHub/Vercel deployment readiness proof, AOS/TMS
+  versioning, product adoption, product acceptance, release readiness, and final
+  MVP acceptance remain unclaimed here.
 - AOS and TMS remain separate product repositories and are not mutated by this
   route.

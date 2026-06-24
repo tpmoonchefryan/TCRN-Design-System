@@ -5,16 +5,16 @@ Workspace for the TCRN Design System / UI Kit.
 The accepted Design System public baseline is version `1.0.0` under Apache
 License 2.0. The repository is currently public on GitHub and GitHub Release
 `v1.0.0` exists for commit
-`1f98fb4e787d8ea63d753843182daac897d61a9b`. Those public-state changes were
+`57b1c417efe4c011daa538158b347075d122b72b`. Those public-state changes were
 not performed by the original local release-prep route; this README records the
-current state after that route.
+current state after Selene selected the exact public source-control basis.
 
 The prepared documentation surface is the Storybook static build from this
 repository. Hosted Storybook documentation is live on Vercel at
-`https://tcrn-design-system-storybook.vercel.app/`. The successful production
-deployment is based on the post-release build-fix commit
-`5384f08cf08f60e5fde086e03a62300bd3ca2b82`; the GitHub Release `v1.0.0`
-continues to identify the accepted package baseline commit.
+`https://tcrn-design-system-storybook.vercel.app/`. That URL reachability is a
+public hosted-docs readback only; GitHub status checks, Actions runs, deployment
+records, and hosted-doc readiness proof are not claimed for the selected
+`57b1c417efe4c011daa538158b347075d122b72b` basis.
 
 The root workspace remains private. The public package baseline is limited to
 `@tcrn/ui-tokens`, `@tcrn/ui-copy-state`, and `@tcrn/ui-react`.
@@ -50,9 +50,9 @@ pnpm verify
 - Public repository state: GitHub repo is public at
   `https://github.com/tpmoonchefryan/TCRN-Design-System`.
 - GitHub Release state: `v1.0.0` exists, non-draft/non-prerelease, targeting
-  `1f98fb4e787d8ea63d753843182daac897d61a9b`.
-- Hosted documentation state: Vercel Production deployment succeeded for
-  `5384f08cf08f60e5fde086e03a62300bd3ca2b82`.
+  `57b1c417efe4c011daa538158b347075d122b72b`.
+- Hosted documentation state: public Storybook URL reachable; GitHub/Vercel
+  deployment proof for the selected basis is not claimed.
 - Hosted documentation URL:
   `https://tcrn-design-system-storybook.vercel.app/`.
 - Package registry publication remains a separate route and is not claimed

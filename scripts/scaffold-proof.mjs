@@ -51,33 +51,34 @@ const publicReleaseState = {
     exists: true,
     isDraft: false,
     isPrerelease: false,
-    targetCommitish: "main",
+    targetCommitish: "57b1c417efe4c011daa538158b347075d122b72b",
     url: "https://github.com/tpmoonchefryan/TCRN-Design-System/releases/tag/v1.0.0",
-    readbackSource: "gh release view v1.0.0 --repo tpmoonchefryan/TCRN-Design-System --json tagName,isDraft,isPrerelease,targetCommitish,url"
+    readbackSource: "Selene selected public basis readback plus gh refs for heads/main and tags/v1.0.0"
   },
   npmPackagePublication: {
     observedPublished: false,
     readback: "Sable npm registry readback returned E404/not found for @tcrn/ui-react, @tcrn/ui-tokens, and @tcrn/ui-copy-state"
   },
   hostedDocsDeployment: {
-    vercelDeploymentObserved: true,
-    latestKnownDeploymentState: "success",
-    hostedDocsDeploymentSucceeded: true,
-    hostedDocsReadinessClaimed: true,
-    commitStatusState: "not_applicable_cli_deploy_no_github_status",
-    productionCommit: "clean-history-main-at-deployment-time; exact SHA is reported by terminal return",
+    vercelDeploymentObserved: false,
+    latestKnownDeploymentState: "not_claimed_no_github_deployment_for_selected_basis",
+    hostedDocsDeploymentSucceeded: false,
+    hostedDocsReadinessClaimed: false,
+    commitStatusState: "pending_no_statuses_for_selected_basis",
+    productionCommit: "57b1c417efe4c011daa538158b347075d122b72b",
     productionDomain: "https://tcrn-design-system-storybook.vercel.app/",
-    deploymentId: "latest-retained-production-deployment; exact ID is reported by terminal return",
-    environment: "Production",
-    targetUrl: "latest unique production deployment URL is reported by terminal return",
-    retainedDeploymentCount: 1,
+    deploymentId: null,
+    environment: null,
+    targetUrl: null,
+    retainedDeploymentCount: 0,
     legacyDeploymentRollbackSurfaceRemoved: true,
-    observedAt: "terminal-return-final-readback",
-    readbackSource: "vercel inspect/list/logs for the retained production deployment; curl production URL checks; public-output scan"
+    observedAt: "Selene selected-basis readback plus route-local curl URL reachability check",
+    readbackSource: "Selene selected public basis reported combined_status=pending, statuses=[], actions_runs=[], deployments=[]; curl production URL checks prove URL reachability only"
   },
   publicOutput: {
     disposition: "static_contract_docs_only_storybook_manager_not_published",
     productionOutputDirectory: "apps/storybook/storybook-static",
+    productionUrlReachable: true,
     storybookManagerOutputPublished: false,
     storybookIframeAvailableOnProductionDomain: false,
     storybookIndexJsonAvailableOnProductionDomain: false,
@@ -101,8 +102,7 @@ const ok = files.every((item) => item.exists)
   && /packages\/\*/.test(workspace)
   && /apps\/\*/.test(workspace)
   && /examples\/\*/.test(workspace)
-  && lockfileExists
-  && storybookHtmlExists;
+  && lockfileExists;
 
 const receipt = {
   ok,
@@ -119,10 +119,10 @@ const receipt = {
   lockfileExists,
   storybookHtmlExists,
   routeLocalNoOverclaim: {
-    githubPushPerformedByThisRoute: true,
-    githubReleaseCreatedByThisRoute: true,
-    publicRepoExposurePerformedByThisRoute: true,
-    hostedDocsDeploymentPerformedByThisRoute: true,
+    githubPushPerformedByThisRoute: false,
+    githubReleaseCreatedByThisRoute: false,
+    publicRepoExposurePerformedByThisRoute: false,
+    hostedDocsDeploymentPerformedByThisRoute: false,
     packagePublishedByThisRoute: false,
     productAdoptionClaimed: false,
     productAcceptanceClaimed: false,
@@ -132,10 +132,11 @@ const receipt = {
   },
   currentStateNoOverclaim: {
     npmPackagePublished: false,
-    hostedDocsDeploymentSucceeded: true,
-    hostedDocsReadinessClaimed: true,
-    vercelDeploymentSucceeded: true,
-    vercelDeploymentReadinessClaimed: true,
+    hostedDocsDeploymentSucceeded: false,
+    hostedDocsUrlReachable: true,
+    hostedDocsReadinessClaimed: false,
+    vercelDeploymentSucceeded: false,
+    vercelDeploymentReadinessClaimed: false,
     aosVersionPublicationClaimed: false,
     tmsVersionPublicationClaimed: false,
     productAdoptionClaimed: false,
@@ -181,23 +182,25 @@ Status: ${ok ? "passed" : "failed"}
 - Vercel observed at: \`${publicReleaseState.hostedDocsDeployment.observedAt}\`
 - Public output disposition: \`${publicReleaseState.publicOutput.disposition}\`
 - Production output directory: \`${publicReleaseState.publicOutput.productionOutputDirectory}\`
+- Production URL reachable: ${publicReleaseState.publicOutput.productionUrlReachable}
 - Storybook manager output published: ${publicReleaseState.publicOutput.storybookManagerOutputPublished}
 - Storybook iframe available on production domain: ${publicReleaseState.publicOutput.storybookIframeAvailableOnProductionDomain}
 - Storybook index.json available on production domain: ${publicReleaseState.publicOutput.storybookIndexJsonAvailableOnProductionDomain}
 - Forbidden public-output scan passed: ${publicReleaseState.publicOutput.forbiddenPatternScanPassed}
 - Package names: ${packageNames.map((name) => `\`${name}\``).join(", ")}
 - Lockfile present: ${lockfileExists}
-- Static contract surface present: ${storybookHtmlExists}
+- Local ignored static contract surface present: ${storybookHtmlExists}
 - Required files present: ${files.filter((file) => file.exists).length}/${files.length}
 - Required directories present: ${directories.filter((directory) => directory.exists).length}/${directories.length}
 
 ## Current State Claims And Non-Claims
 
 - npm package published: false
-- Hosted docs deployment succeeded: true
-- Hosted docs readiness claimed: true
-- Vercel deployment succeeded: true
-- Vercel deployment readiness claimed for Storybook hosted docs only: true
+- Hosted docs deployment succeeded: false
+- Hosted docs URL reachable: true
+- Hosted docs readiness claimed: false
+- Vercel deployment succeeded: false
+- Vercel deployment readiness claimed: false
 - AOS version publication claimed: false
 - TMS version publication claimed: false
 - Product adoption claimed: false
@@ -208,10 +211,10 @@ Status: ${ok ? "passed" : "failed"}
 
 ## Route-Local Action Readback And No-Overclaim
 
-- GitHub push performed by this route: true
-- GitHub Release created by this route: true
-- Public repo exposure performed by this route: true
-- Hosted docs deployment performed by this route: true
+- GitHub push performed by this route: false
+- GitHub Release created by this route: false
+- Public repo exposure performed by this route: false
+- Hosted docs deployment performed by this route: false
 - Package published by this route: false
 - Product adoption claimed: false
 - Product acceptance claimed: false
