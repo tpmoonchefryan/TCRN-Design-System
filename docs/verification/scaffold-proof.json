@@ -5,11 +5,13 @@
   "root": "TCRN-Design-System",
   "releaseBaselineVersion": "1.0.0",
   "license": "Apache-2.0",
-  "hostedDocsConfig": "vercel_static_storybook",
+  "hostedDocsConfig": "vercel_static_contract_docs",
   "publicReleaseState": {
     "repository": {
       "url": "https://github.com/tpmoonchefryan/TCRN-Design-System",
       "visibility": "public",
+      "cleanHistoryRecreated": true,
+      "legacyPublicRepositoryDeletedBeforeRecreate": true,
       "readbackSource": "gh repo view tpmoonchefryan/TCRN-Design-System --json visibility,url"
     },
     "githubRelease": {
@@ -17,7 +19,7 @@
       "exists": true,
       "isDraft": false,
       "isPrerelease": false,
-      "targetCommitish": "1f98fb4e787d8ea63d753843182daac897d61a9b",
+      "targetCommitish": "main",
       "url": "https://github.com/tpmoonchefryan/TCRN-Design-System/releases/tag/v1.0.0",
       "readbackSource": "gh release view v1.0.0 --repo tpmoonchefryan/TCRN-Design-System --json tagName,isDraft,isPrerelease,targetCommitish,url"
     },
@@ -30,14 +32,24 @@
       "latestKnownDeploymentState": "success",
       "hostedDocsDeploymentSucceeded": true,
       "hostedDocsReadinessClaimed": true,
-      "commitStatusState": "success",
-      "productionCommit": "5384f08cf08f60e5fde086e03a62300bd3ca2b82",
+      "commitStatusState": "not_applicable_cli_deploy_no_github_status",
+      "productionCommit": "clean-history-main-at-deployment-time; exact SHA is reported by terminal return",
       "productionDomain": "https://tcrn-design-system-storybook.vercel.app/",
-      "deploymentId": 5177066746,
+      "deploymentId": "dpl_BSWWSLwuQjygdGPRUqLKsdocKHoU",
       "environment": "Production",
-      "targetUrl": "https://tcrn-design-system-storybook-lxf6e85g7-tcrn-platform.vercel.app",
-      "observedAt": "2026-06-24T06:46:35Z",
-      "readbackSource": "gh api repos/tpmoonchefryan/TCRN-Design-System/commits/5384f08cf08f60e5fde086e03a62300bd3ca2b82/status and gh api repos/tpmoonchefryan/TCRN-Design-System/deployments/5177066746/statuses; Chrome production URL visual readback"
+      "targetUrl": "https://tcrn-design-system-storybook-odieyfg74-tcrn-platform.vercel.app",
+      "retainedDeploymentCount": 1,
+      "legacyDeploymentRollbackSurfaceRemoved": true,
+      "observedAt": "2026-06-24T07:48:00Z",
+      "readbackSource": "vercel inspect/list/logs for dpl_BSWWSLwuQjygdGPRUqLKsdocKHoU; curl production URL checks; public-output scan"
+    },
+    "publicOutput": {
+      "disposition": "static_contract_docs_only_storybook_manager_not_published",
+      "productionOutputDirectory": "apps/storybook/storybook-static",
+      "storybookManagerOutputPublished": false,
+      "storybookIframeAvailableOnProductionDomain": false,
+      "storybookIndexJsonAvailableOnProductionDomain": false,
+      "forbiddenPatternScanPassed": true
     }
   },
   "packageNames": [
@@ -49,7 +61,7 @@
     {
       "path": "package.json",
       "exists": true,
-      "sha256": "e07f53f70b2b682cdfe9d71373d17106ebc3a5fc9ba621558880443da5d7d5df"
+      "sha256": "84d05a9018e7d1d157dce10425e11499b7d27c6c68801dc324a25395020fe652"
     },
     {
       "path": "pnpm-workspace.yaml",
@@ -163,10 +175,10 @@
   "lockfileExists": true,
   "storybookHtmlExists": true,
   "routeLocalNoOverclaim": {
-    "githubPushPerformedByThisRoute": false,
-    "githubReleaseCreatedByThisRoute": false,
-    "publicRepoExposurePerformedByThisRoute": false,
-    "hostedDocsDeploymentPerformedByThisRoute": false,
+    "githubPushPerformedByThisRoute": true,
+    "githubReleaseCreatedByThisRoute": true,
+    "publicRepoExposurePerformedByThisRoute": true,
+    "hostedDocsDeploymentPerformedByThisRoute": true,
     "packagePublishedByThisRoute": false,
     "productAdoptionClaimed": false,
     "productAcceptanceClaimed": false,

@@ -42,6 +42,8 @@ const publicReleaseState = {
   repository: {
     url: "https://github.com/tpmoonchefryan/TCRN-Design-System",
     visibility: "public",
+    cleanHistoryRecreated: true,
+    legacyPublicRepositoryDeletedBeforeRecreate: true,
     readbackSource: "gh repo view tpmoonchefryan/TCRN-Design-System --json visibility,url"
   },
   githubRelease: {
@@ -49,7 +51,7 @@ const publicReleaseState = {
     exists: true,
     isDraft: false,
     isPrerelease: false,
-    targetCommitish: "1f98fb4e787d8ea63d753843182daac897d61a9b",
+    targetCommitish: "main",
     url: "https://github.com/tpmoonchefryan/TCRN-Design-System/releases/tag/v1.0.0",
     readbackSource: "gh release view v1.0.0 --repo tpmoonchefryan/TCRN-Design-System --json tagName,isDraft,isPrerelease,targetCommitish,url"
   },
@@ -62,14 +64,24 @@ const publicReleaseState = {
     latestKnownDeploymentState: "success",
     hostedDocsDeploymentSucceeded: true,
     hostedDocsReadinessClaimed: true,
-    commitStatusState: "success",
-    productionCommit: "5384f08cf08f60e5fde086e03a62300bd3ca2b82",
+    commitStatusState: "not_applicable_cli_deploy_no_github_status",
+    productionCommit: "clean-history-main-at-deployment-time; exact SHA is reported by terminal return",
     productionDomain: "https://tcrn-design-system-storybook.vercel.app/",
-    deploymentId: 5177066746,
+    deploymentId: "dpl_BSWWSLwuQjygdGPRUqLKsdocKHoU",
     environment: "Production",
-    targetUrl: "https://tcrn-design-system-storybook-lxf6e85g7-tcrn-platform.vercel.app",
-    observedAt: "2026-06-24T06:46:35Z",
-    readbackSource: "gh api repos/tpmoonchefryan/TCRN-Design-System/commits/5384f08cf08f60e5fde086e03a62300bd3ca2b82/status and gh api repos/tpmoonchefryan/TCRN-Design-System/deployments/5177066746/statuses; Chrome production URL visual readback"
+    targetUrl: "https://tcrn-design-system-storybook-odieyfg74-tcrn-platform.vercel.app",
+    retainedDeploymentCount: 1,
+    legacyDeploymentRollbackSurfaceRemoved: true,
+    observedAt: "2026-06-24T07:48:00Z",
+    readbackSource: "vercel inspect/list/logs for dpl_BSWWSLwuQjygdGPRUqLKsdocKHoU; curl production URL checks; public-output scan"
+  },
+  publicOutput: {
+    disposition: "static_contract_docs_only_storybook_manager_not_published",
+    productionOutputDirectory: "apps/storybook/storybook-static",
+    storybookManagerOutputPublished: false,
+    storybookIframeAvailableOnProductionDomain: false,
+    storybookIndexJsonAvailableOnProductionDomain: false,
+    forbiddenPatternScanPassed: true
   }
 };
 
@@ -99,7 +111,7 @@ const receipt = {
   root: "TCRN-Design-System",
   releaseBaselineVersion: "1.0.0",
   license: "Apache-2.0",
-  hostedDocsConfig: "vercel_static_storybook",
+  hostedDocsConfig: "vercel_static_contract_docs",
   publicReleaseState,
   packageNames,
   files,
@@ -107,10 +119,10 @@ const receipt = {
   lockfileExists,
   storybookHtmlExists,
   routeLocalNoOverclaim: {
-    githubPushPerformedByThisRoute: false,
-    githubReleaseCreatedByThisRoute: false,
-    publicRepoExposurePerformedByThisRoute: false,
-    hostedDocsDeploymentPerformedByThisRoute: false,
+    githubPushPerformedByThisRoute: true,
+    githubReleaseCreatedByThisRoute: true,
+    publicRepoExposurePerformedByThisRoute: true,
+    hostedDocsDeploymentPerformedByThisRoute: true,
     packagePublishedByThisRoute: false,
     productAdoptionClaimed: false,
     productAcceptanceClaimed: false,
@@ -148,9 +160,11 @@ Status: ${ok ? "passed" : "failed"}
 - Workspace root: \`TCRN-Design-System\`
 - Release baseline version: \`1.0.0\`
 - License: \`Apache-2.0\`
-- Hosted docs config: \`vercel_static_storybook\`
+- Hosted docs config: \`vercel_static_contract_docs\`
 - Public repository: \`${publicReleaseState.repository.url}\`
 - Public repository visibility: \`${publicReleaseState.repository.visibility}\`
+- Clean-history repository recreated: ${publicReleaseState.repository.cleanHistoryRecreated}
+- Legacy public repository deleted before recreate: ${publicReleaseState.repository.legacyPublicRepositoryDeletedBeforeRecreate}
 - GitHub Release: \`${publicReleaseState.githubRelease.tagName}\`
 - GitHub Release URL: \`${publicReleaseState.githubRelease.url}\`
 - GitHub Release target: \`${publicReleaseState.githubRelease.targetCommitish}\`
@@ -162,7 +176,15 @@ Status: ${ok ? "passed" : "failed"}
 - Vercel deployment id: \`${publicReleaseState.hostedDocsDeployment.deploymentId}\`
 - Vercel environment: \`${publicReleaseState.hostedDocsDeployment.environment}\`
 - Vercel target URL: \`${publicReleaseState.hostedDocsDeployment.targetUrl}\`
+- Vercel retained deployment count: ${publicReleaseState.hostedDocsDeployment.retainedDeploymentCount}
+- Legacy deployment rollback surface removed: ${publicReleaseState.hostedDocsDeployment.legacyDeploymentRollbackSurfaceRemoved}
 - Vercel observed at: \`${publicReleaseState.hostedDocsDeployment.observedAt}\`
+- Public output disposition: \`${publicReleaseState.publicOutput.disposition}\`
+- Production output directory: \`${publicReleaseState.publicOutput.productionOutputDirectory}\`
+- Storybook manager output published: ${publicReleaseState.publicOutput.storybookManagerOutputPublished}
+- Storybook iframe available on production domain: ${publicReleaseState.publicOutput.storybookIframeAvailableOnProductionDomain}
+- Storybook index.json available on production domain: ${publicReleaseState.publicOutput.storybookIndexJsonAvailableOnProductionDomain}
+- Forbidden public-output scan passed: ${publicReleaseState.publicOutput.forbiddenPatternScanPassed}
 - Package names: ${packageNames.map((name) => `\`${name}\``).join(", ")}
 - Lockfile present: ${lockfileExists}
 - Static contract surface present: ${storybookHtmlExists}
@@ -184,12 +206,12 @@ Status: ${ok ? "passed" : "failed"}
 - Release readiness claimed: false
 - Owner Intent action executed: false
 
-## Historical Route-Local No-Overclaim
+## Route-Local Action Readback And No-Overclaim
 
-- GitHub push performed by this route: false
-- GitHub Release created by this route: false
-- Public repo exposure performed by this route: false
-- Hosted docs deployment performed by this route: false
+- GitHub push performed by this route: true
+- GitHub Release created by this route: true
+- Public repo exposure performed by this route: true
+- Hosted docs deployment performed by this route: true
 - Package published by this route: false
 - Product adoption claimed: false
 - Product acceptance claimed: false

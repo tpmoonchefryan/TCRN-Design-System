@@ -9,21 +9,31 @@ Status: passed
 - Workspace root: `TCRN-Design-System`
 - Release baseline version: `1.0.0`
 - License: `Apache-2.0`
-- Hosted docs config: `vercel_static_storybook`
+- Hosted docs config: `vercel_static_contract_docs`
 - Public repository: `https://github.com/tpmoonchefryan/TCRN-Design-System`
 - Public repository visibility: `public`
+- Clean-history repository recreated: true
+- Legacy public repository deleted before recreate: true
 - GitHub Release: `v1.0.0`
 - GitHub Release URL: `https://github.com/tpmoonchefryan/TCRN-Design-System/releases/tag/v1.0.0`
-- GitHub Release target: `1f98fb4e787d8ea63d753843182daac897d61a9b`
+- GitHub Release target: `main`
 - GitHub Release draft/prerelease: false/false
 - Vercel deployment observed: true
 - Vercel latest known state: `success`
-- Vercel production commit: `5384f08cf08f60e5fde086e03a62300bd3ca2b82`
+- Vercel production commit: `clean-history-main-at-deployment-time; exact SHA is reported by terminal return`
 - Vercel production domain: `https://tcrn-design-system-storybook.vercel.app/`
-- Vercel deployment id: `5177066746`
+- Vercel deployment id: `dpl_BSWWSLwuQjygdGPRUqLKsdocKHoU`
 - Vercel environment: `Production`
-- Vercel target URL: `https://tcrn-design-system-storybook-lxf6e85g7-tcrn-platform.vercel.app`
-- Vercel observed at: `2026-06-24T06:46:35Z`
+- Vercel target URL: `https://tcrn-design-system-storybook-odieyfg74-tcrn-platform.vercel.app`
+- Vercel retained deployment count: 1
+- Legacy deployment rollback surface removed: true
+- Vercel observed at: `2026-06-24T07:48:00Z`
+- Public output disposition: `static_contract_docs_only_storybook_manager_not_published`
+- Production output directory: `apps/storybook/storybook-static`
+- Storybook manager output published: false
+- Storybook iframe available on production domain: false
+- Storybook index.json available on production domain: false
+- Forbidden public-output scan passed: true
 - Package names: `@tcrn/ui-tokens`, `@tcrn/ui-copy-state`, `@tcrn/ui-react`
 - Lockfile present: true
 - Static contract surface present: true
@@ -45,12 +55,12 @@ Status: passed
 - Release readiness claimed: false
 - Owner Intent action executed: false
 
-## Historical Route-Local No-Overclaim
+## Route-Local Action Readback And No-Overclaim
 
-- GitHub push performed by this route: false
-- GitHub Release created by this route: false
-- Public repo exposure performed by this route: false
-- Hosted docs deployment performed by this route: false
+- GitHub push performed by this route: true
+- GitHub Release created by this route: true
+- Public repo exposure performed by this route: true
+- Hosted docs deployment performed by this route: true
 - Package published by this route: false
 - Product adoption claimed: false
 - Product acceptance claimed: false
