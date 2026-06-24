@@ -1,0 +1,39 @@
+{
+  "name": "@tcrn/design-system-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "packageManager": "pnpm@10.12.1",
+  "scripts": {
+    "build": "pnpm --filter @tcrn/ui-tokens build && pnpm --filter @tcrn/ui-copy-state build && pnpm --filter @tcrn/ui-react build && pnpm --filter @tcrn/tms-react-pilot build && pnpm --filter @tcrn/aos-token-copy-state-pilot build && pnpm --filter @tcrn/design-system-storybook build",
+    "clean": "node scripts/clean.mjs",
+    "exports:check": "node scripts/check-exports.mjs",
+    "internal-alpha:aos-served-surface-proof": "node scripts/aos-served-surface-standard-proof.mjs",
+    "internal-alpha:browser-proof": "node scripts/internal-alpha-browser-proof.mjs",
+    "internal-alpha:contracts": "node scripts/package-contract-manifest.mjs",
+    "internal-alpha:proof": "pnpm internal-alpha:contracts && pnpm internal-alpha:browser-proof && pnpm internal-alpha:aos-served-surface-proof && node scripts/internal-alpha-hardening-proof.mjs",
+    "pack:smoke": "node scripts/pack-smoke.mjs",
+    "scaffold:proof": "node scripts/scaffold-proof.mjs",
+    "public-output:scan": "node scripts/public-output-scan.mjs",
+    "scan": "node scripts/no-private-input-scan.mjs",
+    "storybook:build": "pnpm --filter @tcrn/design-system-storybook build",
+    "storybook:manager-build": "pnpm --filter @tcrn/design-system-storybook manager:build",
+    "storybook:vercel-build": "pnpm public-docs:vercel-build",
+    "public-docs:vercel-build": "pnpm --filter @tcrn/ui-tokens build && pnpm --filter @tcrn/ui-copy-state build && pnpm --filter @tcrn/ui-react build && pnpm --filter @tcrn/design-system-storybook static-docs:build && pnpm public-output:scan",
+    "storybook:smoke": "node scripts/storybook-smoke.mjs",
+    "test": "pnpm --filter @tcrn/ui-tokens test && pnpm --filter @tcrn/ui-copy-state test && pnpm --filter @tcrn/ui-react test && pnpm --filter @tcrn/design-system-storybook test && pnpm --filter @tcrn/tms-react-pilot test && pnpm --filter @tcrn/aos-token-copy-state-pilot test",
+    "typecheck": "tsc -b --pretty false",
+    "verify": "pnpm typecheck && pnpm build && pnpm test && pnpm exports:check && pnpm pack:smoke && pnpm storybook:smoke && pnpm public-output:scan && pnpm scan && pnpm scaffold:proof && pnpm internal-alpha:proof"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.0",
+    "@types/node": "22.15.30",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
+    "axe-core": "4.12.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "typescript": "5.8.3"
+  }
+}

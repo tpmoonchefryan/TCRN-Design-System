@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "baseUrl": ".",
+    "paths": {
+      "@tcrn/ui-copy-state": ["packages/ui-copy-state/src/index.ts"],
+      "@tcrn/ui-react": ["packages/ui-react/src/index.tsx"],
+      "@tcrn/ui-tokens": ["packages/ui-tokens/src/index.ts"]
+    },
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}

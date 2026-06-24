@@ -1,0 +1,41 @@
+{
+  "ok": true,
+  "violationCount": 0,
+  "sections": [
+    {
+      "section": "Welcome",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Style Guide",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Foundations",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Patterns",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Proof",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Change Log",
+      "violationCount": 0,
+      "violations": []
+    }
+  ]
+}

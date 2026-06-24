@@ -1,0 +1,1181 @@
+{
+  "ok": true,
+  "route": "route_tcrn_design_system_internal_alpha_hardening_proof_implementation",
+  "componentStorybookParity": {
+    "route": "route_tcrn_design_system_component_library_storybook_parity_completion__elara",
+    "sourceOfTruthPackage": "@tcrn/ui-react",
+    "storybookRole": "package_backed_docs_evidence_consumer",
+    "publicComponentExportChecks": [
+      {
+        "name": "Button",
+        "exported": true
+      },
+      {
+        "name": "Icon",
+        "exported": true
+      },
+      {
+        "name": "IconButton",
+        "exported": true
+      },
+      {
+        "name": "LinkButton",
+        "exported": true
+      },
+      {
+        "name": "Field",
+        "exported": true
+      },
+      {
+        "name": "Input",
+        "exported": true
+      },
+      {
+        "name": "Textarea",
+        "exported": true
+      },
+      {
+        "name": "SearchInput",
+        "exported": true
+      },
+      {
+        "name": "Select",
+        "exported": true
+      },
+      {
+        "name": "Checkbox",
+        "exported": true
+      },
+      {
+        "name": "Badge",
+        "exported": true
+      },
+      {
+        "name": "StatusBadge",
+        "exported": true
+      },
+      {
+        "name": "StateView",
+        "exported": true
+      },
+      {
+        "name": "InlineAlert",
+        "exported": true
+      },
+      {
+        "name": "LiveRegion",
+        "exported": true
+      },
+      {
+        "name": "Skeleton",
+        "exported": true
+      },
+      {
+        "name": "EnvironmentBanner",
+        "exported": true
+      },
+      {
+        "name": "GateReadinessPanel",
+        "exported": true
+      },
+      {
+        "name": "EvidenceStrip",
+        "exported": true
+      },
+      {
+        "name": "ReadbackPanel",
+        "exported": true
+      },
+      {
+        "name": "Text",
+        "exported": true
+      },
+      {
+        "name": "Heading",
+        "exported": true
+      },
+      {
+        "name": "Surface",
+        "exported": true
+      },
+      {
+        "name": "Divider",
+        "exported": true
+      },
+      {
+        "name": "KeyValueList",
+        "exported": true
+      },
+      {
+        "name": "FilterBar",
+        "exported": true
+      },
+      {
+        "name": "TableShell",
+        "exported": true
+      },
+      {
+        "name": "WorkIndex",
+        "exported": true
+      },
+      {
+        "name": "DetailInspector",
+        "exported": true
+      },
+      {
+        "name": "Breadcrumb",
+        "exported": true
+      },
+      {
+        "name": "ModuleTabs",
+        "exported": true
+      },
+      {
+        "name": "SectionTabs",
+        "exported": true
+      },
+      {
+        "name": "SegmentedNav",
+        "exported": true
+      },
+      {
+        "name": "Pagination",
+        "exported": true
+      },
+      {
+        "name": "TopBar",
+        "exported": true
+      },
+      {
+        "name": "SideNav",
+        "exported": true
+      },
+      {
+        "name": "NavGroup",
+        "exported": true
+      },
+      {
+        "name": "NavItem",
+        "exported": true
+      },
+      {
+        "name": "ProductLauncher",
+        "exported": true
+      },
+      {
+        "name": "ProductSwitcher",
+        "exported": true
+      },
+      {
+        "name": "SkipLink",
+        "exported": true
+      },
+      {
+        "name": "DetailDrawer",
+        "exported": true
+      },
+      {
+        "name": "ActionDrawer",
+        "exported": true
+      },
+      {
+        "name": "Popover",
+        "exported": true
+      },
+      {
+        "name": "Dialog",
+        "exported": true
+      },
+      {
+        "name": "ConfirmActionDialog",
+        "exported": true
+      }
+    ],
+    "publicUtilityExportChecks": [
+      {
+        "name": "tcrnIconNames",
+        "exported": true
+      }
+    ],
+    "deferredPrototypeChecks": [
+      {
+        "name": "TcrnBrandMark",
+        "exported": false,
+        "packageBacked": false,
+        "disposition": "storybook_only_prototype"
+      },
+      {
+        "name": "ProductLockup",
+        "exported": false,
+        "packageBacked": false,
+        "disposition": "storybook_only_prototype"
+      },
+      {
+        "name": "ShellBrandLockup",
+        "exported": false,
+        "packageBacked": false,
+        "disposition": "storybook_only_prototype"
+      },
+      {
+        "name": "TmsDenseShellDemo",
+        "exported": false,
+        "packageBacked": false,
+        "disposition": "storybook_only_prototype"
+      },
+      {
+        "name": "KnowledgeBaseShellDemo",
+        "exported": false,
+        "packageBacked": false,
+        "disposition": "storybook_only_prototype"
+      },
+      {
+        "name": "CompactToolShellDemo",
+        "exported": false,
+        "packageBacked": false,
+        "disposition": "storybook_only_prototype"
+      }
+    ],
+    "componentParityMatrix": [
+      {
+        "storybookItem": "Button",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Icon",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "IconButton",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "LinkButton",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Field",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Input",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Textarea",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SearchInput",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Select",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Checkbox",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Badge",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "StatusBadge",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "StateView",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "InlineAlert",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "LiveRegion",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Skeleton",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "EnvironmentBanner",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "GateReadinessPanel",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "EvidenceStrip",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ReadbackPanel",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Text",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Heading",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Surface",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Divider",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KeyValueList",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "FilterBar",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "TableShell",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkIndex",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "DetailInspector",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Breadcrumb",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ModuleTabs",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SectionTabs",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SegmentedNav",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Pagination",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "TopBar",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SideNav",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "NavGroup",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "NavItem",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ProductLauncher",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ProductSwitcher",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SkipLink",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "DetailDrawer",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ActionDrawer",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Popover",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Dialog",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ConfirmActionDialog",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "tcrnIconNames",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "TcrnBrandMark",
+        "classification": "storybook_only_prototype",
+        "packageSourcePath": null,
+        "publicExportPath": null,
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "truthfully_deferred",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ProductLockup",
+        "classification": "storybook_only_prototype",
+        "packageSourcePath": null,
+        "publicExportPath": null,
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "truthfully_deferred",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ShellBrandLockup",
+        "classification": "storybook_only_prototype",
+        "packageSourcePath": null,
+        "publicExportPath": null,
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "truthfully_deferred",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "TmsDenseShellDemo",
+        "classification": "storybook_only_prototype",
+        "packageSourcePath": null,
+        "publicExportPath": null,
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "truthfully_deferred",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeBaseShellDemo",
+        "classification": "storybook_only_prototype",
+        "packageSourcePath": null,
+        "publicExportPath": null,
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "truthfully_deferred",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "CompactToolShellDemo",
+        "classification": "storybook_only_prototype",
+        "packageSourcePath": null,
+        "publicExportPath": null,
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "truthfully_deferred",
+        "requiredRepair": "none"
+      }
+    ],
+    "packageMetadataMatchesSource": true,
+    "storybookConsumption": {
+      "publicPackageImports": {
+        "uiReact": true,
+        "uiTokens": true,
+        "uiCopyState": true
+      },
+      "deepImportHits": [],
+      "storybookOnlyMarkers": [
+        {
+          "file": "apps/storybook/src/smoke.test.ts",
+          "markerCount": 5
+        },
+        {
+          "file": "apps/storybook/src/stories.tsx",
+          "markerCount": 13
+        }
+      ],
+      "packageBackedComponentParityMarkers": true,
+      "packageBackedNavigationProofVisible": true,
+      "noReusableInlineSourceClaim": true
+    },
+    "noProductAdoptionClaimed": true,
+    "noPackagePublicationClaimed": true
+  },
+  "iconLibraryContract": {
+    "sourcePackage": "lucide-react",
+    "sourcePackageLicense": "ISC",
+    "wrapperPackage": "@tcrn/ui-react",
+    "wrapperExport": "Icon",
+    "dependencyVersion": "1.21.0",
+    "dependencyExact": true,
+    "iconExported": true,
+    "iconNamesExported": true,
+    "iconNameCount": 20,
+    "storybookContractVisible": true,
+    "storybookDirectLucideImports": [],
+    "notBrandIdentity": true,
+    "noPackagePublicationClaimed": true
+  },
+  "packageContracts": [
+    {
+      "name": "@tcrn/ui-tokens",
+      "private": false,
+      "exportMapPresent": true,
+      "jsPath": "packages/ui-tokens/dist/index.js",
+      "typePath": "packages/ui-tokens/dist/index.d.ts",
+      "jsExists": true,
+      "typeExists": true,
+      "manifestSha256": "4c52bf28f8f182f707f1a1f17afa6a5dfc3d18431c2ff187cb0d8b9e1271bb62"
+    },
+    {
+      "name": "@tcrn/ui-copy-state",
+      "private": false,
+      "exportMapPresent": true,
+      "jsPath": "packages/ui-copy-state/dist/index.js",
+      "typePath": "packages/ui-copy-state/dist/index.d.ts",
+      "jsExists": true,
+      "typeExists": true,
+      "manifestSha256": "dd6a7926d3837c32df86137767512be095faa02b61fa293e5d5a05efa677847f"
+    },
+    {
+      "name": "@tcrn/ui-react",
+      "private": false,
+      "exportMapPresent": true,
+      "jsPath": "packages/ui-react/dist/index.js",
+      "typePath": "packages/ui-react/dist/index.d.ts",
+      "jsExists": true,
+      "typeExists": true,
+      "manifestSha256": "f3130624bdc9cdf6c0e75efa75dba109ba47792c761d550180b6f3aa9c7b3d7c"
+    }
+  ],
+  "exactDependencyChecks": [
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "@playwright/test",
+      "version": "1.61.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "version": "22.15.30",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "@types/react",
+      "version": "19.1.8",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "@types/react-dom",
+      "version": "19.1.6",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "axe-core",
+      "version": "4.12.1",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "react",
+      "version": "19.1.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "react-dom",
+      "version": "19.1.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "typescript",
+      "version": "5.8.3",
+      "exact": true
+    },
+    {
+      "manifestPath": "apps/storybook/package.json",
+      "section": "dependencies",
+      "name": "@tcrn/ui-copy-state",
+      "version": "workspace:*",
+      "exact": true
+    },
+    {
+      "manifestPath": "apps/storybook/package.json",
+      "section": "dependencies",
+      "name": "@tcrn/ui-react",
+      "version": "workspace:*",
+      "exact": true
+    },
+    {
+      "manifestPath": "apps/storybook/package.json",
+      "section": "dependencies",
+      "name": "@tcrn/ui-tokens",
+      "version": "workspace:*",
+      "exact": true
+    },
+    {
+      "manifestPath": "apps/storybook/package.json",
+      "section": "dependencies",
+      "name": "react",
+      "version": "19.1.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "apps/storybook/package.json",
+      "section": "dependencies",
+      "name": "react-dom",
+      "version": "19.1.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "apps/storybook/package.json",
+      "section": "devDependencies",
+      "name": "@storybook/react-vite",
+      "version": "10.4.6",
+      "exact": true
+    },
+    {
+      "manifestPath": "apps/storybook/package.json",
+      "section": "devDependencies",
+      "name": "storybook",
+      "version": "10.4.6",
+      "exact": true
+    },
+    {
+      "manifestPath": "apps/storybook/package.json",
+      "section": "devDependencies",
+      "name": "vite",
+      "version": "8.0.16",
+      "exact": true
+    },
+    {
+      "manifestPath": "packages/ui-react/package.json",
+      "section": "dependencies",
+      "name": "@tcrn/ui-copy-state",
+      "version": "workspace:*",
+      "exact": true
+    },
+    {
+      "manifestPath": "packages/ui-react/package.json",
+      "section": "dependencies",
+      "name": "@tcrn/ui-tokens",
+      "version": "workspace:*",
+      "exact": true
+    },
+    {
+      "manifestPath": "packages/ui-react/package.json",
+      "section": "dependencies",
+      "name": "lucide-react",
+      "version": "1.21.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "packages/ui-react/package.json",
+      "section": "devDependencies",
+      "name": "react",
+      "version": "19.1.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "packages/ui-react/package.json",
+      "section": "devDependencies",
+      "name": "react-dom",
+      "version": "19.1.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "packages/ui-react/package.json",
+      "section": "peerDependencies",
+      "name": "react",
+      "version": "^18.3.0 || ^19.0.0",
+      "exact": true
+    }
+  ],
+  "dependencyLicensePosture": {
+    "claim": "known_license_groups_requiring_sable_post_implementation_review",
+    "unknownLicenseGroups": [],
+    "licenseSummary": [
+      {
+        "license": "0BSD",
+        "packageCount": 1,
+        "packageNames": [
+          "tslib"
+        ]
+      },
+      {
+        "license": "Apache-2.0",
+        "packageCount": 8,
+        "packageNames": [
+          "@playwright/test",
+          "aria-query",
+          "baseline-browser-mapping",
+          "detect-libc",
+          "doctrine",
+          "playwright",
+          "playwright-core",
+          "typescript"
+        ]
+      },
+      {
+        "license": "BSD-2-Clause",
+        "packageCount": 2,
+        "packageNames": [
+          "esprima",
+          "esutils"
+        ]
+      },
+      {
+        "license": "BSD-3-Clause",
+        "packageCount": 2,
+        "packageNames": [
+          "source-map",
+          "source-map-js"
+        ]
+      },
+      {
+        "license": "BlueOak-1.0.0",
+        "packageCount": 5,
+        "packageNames": [
+          "glob",
+          "lru-cache",
+          "minimatch",
+          "minipass",
+          "path-scurry"
+        ]
+      },
+      {
+        "license": "CC-BY-4.0",
+        "packageCount": 1,
+        "packageNames": [
+          "caniuse-lite"
+        ]
+      },
+      {
+        "license": "ISC",
+        "packageCount": 6,
+        "packageNames": [
+          "electron-to-chromium",
+          "lru-cache",
+          "lucide-react",
+          "picocolors",
+          "semver",
+          "yallist"
+        ]
+      },
+      {
+        "license": "MIT",
+        "packageCount": 143,
+        "packageNames": [
+          "@adobe/css-tools",
+          "@babel/code-frame",
+          "@babel/compat-data",
+          "@babel/core",
+          "@babel/generator",
+          "@babel/helper-compilation-targets",
+          "@babel/helper-globals",
+          "@babel/helper-module-imports",
+          "@babel/helper-module-transforms",
+          "@babel/helper-string-parser",
+          "@babel/helper-validator-identifier",
+          "@babel/helper-validator-option",
+          "@babel/helpers",
+          "@babel/parser",
+          "@babel/runtime",
+          "@babel/template",
+          "@babel/traverse",
+          "@babel/types",
+          "@esbuild/darwin-arm64",
+          "@joshwooding/vite-plugin-react-docgen-typescript",
+          "@jridgewell/gen-mapping",
+          "@jridgewell/remapping",
+          "@jridgewell/resolve-uri",
+          "@jridgewell/sourcemap-codec",
+          "@jridgewell/trace-mapping",
+          "@oxc-parser/binding-darwin-arm64",
+          "@oxc-project/types",
+          "@oxc-resolver/binding-darwin-arm64",
+          "@rolldown/binding-darwin-arm64",
+          "@rolldown/pluginutils",
+          "@rollup/pluginutils",
+          "@storybook/builder-vite",
+          "@storybook/csf-plugin",
+          "@storybook/global",
+          "@storybook/icons",
+          "@storybook/react",
+          "@storybook/react-dom-shim",
+          "@storybook/react-vite",
+          "@testing-library/dom",
+          "@testing-library/jest-dom",
+          "@testing-library/user-event",
+          "@types/aria-query",
+          "@types/babel__core",
+          "@types/babel__generator",
+          "@types/babel__template",
+          "@types/babel__traverse",
+          "@types/chai",
+          "@types/deep-eql",
+          "@types/doctrine",
+          "@types/estree",
+          "@types/node",
+          "@types/react",
+          "@types/react-dom",
+          "@types/resolve",
+          "@vitest/expect",
+          "@vitest/pretty-format",
+          "@vitest/spy",
+          "@vitest/utils",
+          "@webcontainer/env",
+          "acorn",
+          "ansi-regex",
+          "ansi-styles",
+          "assertion-error",
+          "ast-types",
+          "balanced-match",
+          "brace-expansion",
+          "browserslist",
+          "bundle-name",
+          "chai",
+          "check-error",
+          "convert-source-map",
+          "css.escape",
+          "csstype",
+          "debug",
+          "deep-eql",
+          "default-browser",
+          "default-browser-id",
+          "define-lazy-prop",
+          "dequal",
+          "dom-accessibility-api",
+          "empathic",
+          "es-errors",
+          "esbuild",
+          "escalade",
+          "estree-walker",
+          "fdir",
+          "fsevents",
+          "function-bind",
+          "gensync",
+          "hasown",
+          "indent-string",
+          "is-core-module",
+          "is-docker",
+          "is-inside-container",
+          "is-wsl",
+          "js-tokens",
+          "jsesc",
+          "json5",
+          "loupe",
+          "lz-string",
+          "magic-string",
+          "min-indent",
+          "minimist",
+          "ms",
+          "nanoid",
+          "node-releases",
+          "open",
+          "oxc-parser",
+          "oxc-resolver",
+          "path-parse",
+          "pathval",
+          "picomatch",
+          "postcss",
+          "pretty-format",
+          "react",
+          "react-docgen",
+          "react-docgen-typescript",
+          "react-dom",
+          "react-is",
+          "recast",
+          "redent",
+          "resolve",
+          "rolldown",
+          "run-applescript",
+          "scheduler",
+          "storybook",
+          "strip-bom",
+          "strip-indent",
+          "supports-preserve-symlinks-flag",
+          "tiny-invariant",
+          "tinyglobby",
+          "tinyrainbow",
+          "tinyspy",
+          "ts-dedent",
+          "tsconfig-paths",
+          "undici-types",
+          "unplugin",
+          "update-browserslist-db",
+          "use-sync-external-store",
+          "vite",
+          "webpack-virtual-modules",
+          "ws",
+          "wsl-utils"
+        ]
+      },
+      {
+        "license": "MPL-2.0",
+        "packageCount": 3,
+        "packageNames": [
+          "axe-core",
+          "lightningcss",
+          "lightningcss-darwin-arm64"
+        ]
+      }
+    ]
+  },
+  "noOverclaim": {
+    "dependencyCleanClaimed": false,
+    "packagePublished": false,
+    "productAdoptionClaimed": false
+  }
+}

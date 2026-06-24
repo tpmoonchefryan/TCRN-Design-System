@@ -1,0 +1,24 @@
+{
+  "name": "@tcrn/design-system-storybook",
+  "version": "0.0.0-private",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@tcrn/ui-copy-state": "workspace:*",
+    "@tcrn/ui-react": "workspace:*",
+    "@tcrn/ui-tokens": "workspace:*",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node dist/build.js",
+    "manager:build": "tsc -p tsconfig.json && node dist/build.js && storybook build --config-dir .storybook --output-dir storybook-preview-static --quiet --disable-telemetry",
+    "static-docs:build": "pnpm build",
+    "test": "node --test dist/smoke.test.js"
+  },
+  "devDependencies": {
+    "@storybook/react-vite": "10.4.6",
+    "storybook": "10.4.6",
+    "vite": "8.0.16"
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "ok": true,
+  "route": "route_tcrn_design_system_release_baseline_verification",
+  "scaffoldStatus": "release_baseline_proof",
+  "root": "TCRN-Design-System",
+  "releaseBaselineVersion": "1.0.0",
+  "license": "Apache-2.0",
+  "hostedDocsConfig": "vercel_static_storybook",
+  "publicReleaseState": {
+    "repository": {
+      "url": "https://github.com/tpmoonchefryan/TCRN-Design-System",
+      "visibility": "public",
+      "readbackSource": "gh repo view tpmoonchefryan/TCRN-Design-System --json visibility,url"
+    },
+    "githubRelease": {
+      "tagName": "v1.0.0",
+      "exists": true,
+      "isDraft": false,
+      "isPrerelease": false,
+      "targetCommitish": "1f98fb4e787d8ea63d753843182daac897d61a9b",
+      "url": "https://github.com/tpmoonchefryan/TCRN-Design-System/releases/tag/v1.0.0",
+      "readbackSource": "gh release view v1.0.0 --repo tpmoonchefryan/TCRN-Design-System --json tagName,isDraft,isPrerelease,targetCommitish,url"
+    },
+    "npmPackagePublication": {
+      "observedPublished": false,
+      "readback": "Sable npm registry readback returned E404/not found for @tcrn/ui-react, @tcrn/ui-tokens, and @tcrn/ui-copy-state"
+    },
+    "hostedDocsDeployment": {
+      "vercelDeploymentObserved": true,
+      "latestKnownDeploymentState": "success",
+      "hostedDocsDeploymentSucceeded": true,
+      "hostedDocsReadinessClaimed": true,
+      "commitStatusState": "success",
+      "productionCommit": "5384f08cf08f60e5fde086e03a62300bd3ca2b82",
+      "productionDomain": "https://tcrn-design-system-storybook.vercel.app/",
+      "deploymentId": 5177066746,
+      "environment": "Production",
+      "targetUrl": "https://tcrn-design-system-storybook-lxf6e85g7-tcrn-platform.vercel.app",
+      "observedAt": "2026-06-24T06:46:35Z",
+      "readbackSource": "gh api repos/tpmoonchefryan/TCRN-Design-System/commits/5384f08cf08f60e5fde086e03a62300bd3ca2b82/status and gh api repos/tpmoonchefryan/TCRN-Design-System/deployments/5177066746/statuses; Chrome production URL visual readback"
+    }
+  },
+  "packageNames": [
+    "@tcrn/ui-tokens",
+    "@tcrn/ui-copy-state",
+    "@tcrn/ui-react"
+  ],
+  "files": [
+    {
+      "path": "package.json",
+      "exists": true,
+      "sha256": "e07f53f70b2b682cdfe9d71373d17106ebc3a5fc9ba621558880443da5d7d5df"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "exists": true,
+      "sha256": "8362581c46f1e8477e5b96f5ab8ac2de4b3b5afa29d0b7d52fc0c286d1d5dabe"
+    },
+    {
+      "path": "tsconfig.base.json",
+      "exists": true,
+      "sha256": "0ed39d4e954800b2d1e3f18259e67ddc63e70a1d294b7794546f157ae8ff477f"
+    },
+    {
+      "path": "README.md",
+      "exists": true,
+      "sha256": "6fe885cacb6d0ee47d998bdbf1e2fc51bde1727b5ec45a4492f08db7f0a7a2ab"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "exists": true,
+      "sha256": "80cbb646dea60553b796b28f808fce2d02ba5bd169b1db425ef6c5fe8ed5d2c7"
+    },
+    {
+      "path": "LICENSE",
+      "exists": true,
+      "sha256": "b5a4e30ec0f9dba35f9cb605b11590874a983dc7500d734ca2610d5aed245f19"
+    },
+    {
+      "path": "vercel.json",
+      "exists": true,
+      "sha256": "0253bf6c0addd8ce39b24684363b7fff0dbbe6e392023b9d93ac8b7a8b41e65d"
+    },
+    {
+      "path": "docs/release-prep-v1.0.0.md",
+      "exists": true,
+      "sha256": "f694ca31184717058371f39904eb7ed2c501c831b4103d14c5bf010c73bf909c"
+    },
+    {
+      "path": ".github/CODEOWNERS",
+      "exists": true,
+      "sha256": "9d84d36a5d9c948c6b1acf66eedc986711cd2da8f8e9e2843f4112d0681af903"
+    },
+    {
+      "path": "packages/ui-tokens/src/index.ts",
+      "exists": true,
+      "sha256": "54f31b48c36126f58117d102f0b82c312df5b4df2f56b32fab878c530934dfc3"
+    },
+    {
+      "path": "packages/ui-copy-state/src/index.ts",
+      "exists": true,
+      "sha256": "3a3e4517d135210b5920be26e26f3599caad7a30dd6916efb36950456d5f96c6"
+    },
+    {
+      "path": "packages/ui-react/src/index.tsx",
+      "exists": true,
+      "sha256": "dc24c3c266cc169241a88415130597895fd0c29a2ce8eaf3ebf5538eb47c9148"
+    },
+    {
+      "path": "apps/storybook/src/stories.tsx",
+      "exists": true,
+      "sha256": "8bd3b0128ffbfd547d49ec78b29e8c60ba4c21442b65ccdc8f4b35e4c6be547d"
+    },
+    {
+      "path": "examples/tms-react-pilot/src/index.tsx",
+      "exists": true,
+      "sha256": "c86802d5d60a494332b467f9a7076018c0ced4b51bb88e2a69b93546f9f2e5ca"
+    },
+    {
+      "path": "examples/aos-token-copy-state-pilot/src/index.ts",
+      "exists": true,
+      "sha256": "cfacafd49728c9febaf1e625c51cfd86fd96d197f5cd4e0b113cd547ad4ce114"
+    }
+  ],
+  "directories": [
+    {
+      "path": "docs/decisions",
+      "exists": true
+    },
+    {
+      "path": "docs/adoption",
+      "exists": true
+    },
+    {
+      "path": "docs/verification",
+      "exists": true
+    },
+    {
+      "path": "packages/ui-tokens/src",
+      "exists": true
+    },
+    {
+      "path": "packages/ui-copy-state/src",
+      "exists": true
+    },
+    {
+      "path": "packages/ui-react/src",
+      "exists": true
+    },
+    {
+      "path": "apps/storybook/src",
+      "exists": true
+    },
+    {
+      "path": "examples/tms-react-pilot",
+      "exists": true
+    },
+    {
+      "path": "examples/aos-token-copy-state-pilot",
+      "exists": true
+    }
+  ],
+  "lockfileExists": true,
+  "storybookHtmlExists": true,
+  "routeLocalNoOverclaim": {
+    "githubPushPerformedByThisRoute": false,
+    "githubReleaseCreatedByThisRoute": false,
+    "publicRepoExposurePerformedByThisRoute": false,
+    "hostedDocsDeploymentPerformedByThisRoute": false,
+    "packagePublishedByThisRoute": false,
+    "productAdoptionClaimed": false,
+    "productAcceptanceClaimed": false,
+    "finalMvpAcceptanceClaimed": false,
+    "releaseReadinessClaimed": false,
+    "ownerIntentActionExecuted": false
+  },
+  "currentStateNoOverclaim": {
+    "npmPackagePublished": false,
+    "hostedDocsDeploymentSucceeded": true,
+    "hostedDocsReadinessClaimed": true,
+    "vercelDeploymentSucceeded": true,
+    "vercelDeploymentReadinessClaimed": true,
+    "aosVersionPublicationClaimed": false,
+    "tmsVersionPublicationClaimed": false,
+    "productAdoptionClaimed": false,
+    "productAcceptanceClaimed": false,
+    "finalMvpAcceptanceClaimed": false,
+    "releaseReadinessClaimed": false,
+    "ownerIntentActionExecuted": false
+  },
+  "evidenceSelfReference": "release commit SHA is reported by terminal return, not embedded recursively"
+}

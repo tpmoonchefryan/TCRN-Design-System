@@ -1,0 +1,869 @@
+{
+  "ok": true,
+  "scannedFiles": 88,
+  "skippedFiles": [],
+  "binaryVisualReceiptExclusions": [
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-docs-readiness-standard.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-operations-cockpit-standard.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-product-design-target-set-standard.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-big-list-search-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-blocked-actions.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-brand-identity.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-button-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-color-palette.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-component-family-index.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-contribution-model.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-copy-creation-rules.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-copy-guidelines.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-dashboard-page-templates.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-datagrid-fields-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-dialog-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-field-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-forms-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-global-states.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-governance-boundaries.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-grid-system.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-i18n-theme-contract.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-icons-motion.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-local-changelog.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-maintainers-routing.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-modal-validation-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-shell-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-overlay-focus-open-dialog.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-overlay-focus.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-proof-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-readiness-notification-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-release-bug-policy.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-change-log.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-components.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-foundations.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-proof.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-style-guide.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-welcome.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-selection-list-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-table-work-index-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-text-styles.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-tokens-copy-state.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-workbench-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-docs-readiness-standard.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-operations-cockpit-standard.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-product-design-target-set-standard.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-big-list-search-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-blocked-actions.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-brand-identity.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-button-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-color-palette.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-component-family-index.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-contribution-model.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-copy-creation-rules.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-copy-guidelines.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-dashboard-page-templates.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-datagrid-fields-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-dialog-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-field-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-forms-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-global-states.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-governance-boundaries.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-grid-system.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-i18n-theme-contract.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-icons-motion.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-local-changelog.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-maintainers-routing.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-modal-validation-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-shell-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-overlay-focus.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-proof-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-readiness-notification-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-release-bug-policy.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-change-log.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-components.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-foundations.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-proof.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-style-guide.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-welcome.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-selection-list-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-table-work-index-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-text-styles.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-tokens-copy-state.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-welcome-governance.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-workbench-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-docs-readiness-standard.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-operations-cockpit-standard.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-product-design-target-set-standard.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-big-list-search-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-blocked-actions.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-brand-identity.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-button-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-color-palette.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-component-family-index.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-contribution-model.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-copy-creation-rules.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-copy-guidelines.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-dashboard-page-templates.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-datagrid-fields-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-dialog-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-field-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-forms-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-global-states.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-governance-boundaries.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-grid-system.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-i18n-theme-contract.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-icons-motion.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-local-changelog.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-maintainers-routing.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-modal-validation-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-shell-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-overlay-focus.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-proof-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-readiness-notification-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-release-bug-policy.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-change-log.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-components.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-foundations.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-proof.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-style-guide.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-welcome.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-selection-list-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-table-work-index-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-text-styles.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-tokens-copy-state.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-welcome-governance.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-workbench-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    }
+  ],
+  "generatedReceiptExclusions": [
+    {
+      "file": "docs/verification/internal-alpha/no-overclaim-scan.json",
+      "reason": "regenerated_by_current_scan"
+    }
+  ],
+  "negativeFixtureChecks": [
+    {
+      "id": "case_insensitive_env_assignment_detected",
+      "passed": true
+    },
+    {
+      "id": "camel_case_non_env_assignment_ignored",
+      "passed": true
+    },
+    {
+      "id": "verification_receipt_overclaim_not_blanket_exempt",
+      "passed": true
+    }
+  ],
+  "patterns": [
+    "private-key",
+    "aws-secret",
+    "env-assignment",
+    "npm-token",
+    "product-import",
+    "raw-local-path-dump",
+    "raw-scanner-output",
+    "positive-overclaim"
+  ],
+  "claim": "policy_and_negative_fixture_hits_are_classified_separately_from_real_payload_leakage",
+  "policyOrNegativeFixtureHits": [
+    {
+      "file": "apps/storybook/src/smoke.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "apps/storybook/src/smoke.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "e25242ced7a7fc4b0d1bf95fe81c3f88e7ff2c647b05c52b09d2b6f20c9eb023",
+      "matchLength": 18,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "apps/storybook/src/smoke.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "examples/tms-react-pilot/src/index.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "examples/tms-react-pilot/src/index.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "e25242ced7a7fc4b0d1bf95fe81c3f88e7ff2c647b05c52b09d2b6f20c9eb023",
+      "matchLength": 18,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "examples/tms-react-pilot/src/index.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "c3b5b2409da920d50e0b651b38c7711440be80a3425456f4b54519cc8cc1afb9",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "3266531f638d8ad1bae8dd4266eb87b25b8a6f577374e09992279e00bcaf4f46",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "3266531f638d8ad1bae8dd4266eb87b25b8a6f577374e09992279e00bcaf4f46",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.test.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "e25242ced7a7fc4b0d1bf95fe81c3f88e7ff2c647b05c52b09d2b6f20c9eb023",
+      "matchLength": 18,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "0f6e94c8a96a9bca916abf4b00019de2fbd920d6944cd915a968cf9ee5f4696e",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "68e0d612660d6beab9f84065de645ed6d8d62c23cf177d9c7bad10414ae1962b",
+      "matchLength": 12,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "6c4b3c5f74c697b5faab5af07ba2d15e2f49633be6723a7033c50b80d29ff1b3",
+      "matchLength": 14,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-copy-state/src/index.ts",
+      "rule": "positive-overclaim",
+      "matchSha256": "982e17d1ecdad7cabe0faf1752196d88ef99e7119bb62c73484dd160ee5cd097",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "e25242ced7a7fc4b0d1bf95fe81c3f88e7ff2c647b05c52b09d2b6f20c9eb023",
+      "matchLength": 18,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "c3b5b2409da920d50e0b651b38c7711440be80a3425456f4b54519cc8cc1afb9",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "c3b5b2409da920d50e0b651b38c7711440be80a3425456f4b54519cc8cc1afb9",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "3266531f638d8ad1bae8dd4266eb87b25b8a6f577374e09992279e00bcaf4f46",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "c3b5b2409da920d50e0b651b38c7711440be80a3425456f4b54519cc8cc1afb9",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/index.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/aos-served-surface-standard-proof.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/aos-served-surface-standard-proof.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "e25242ced7a7fc4b0d1bf95fe81c3f88e7ff2c647b05c52b09d2b6f20c9eb023",
+      "matchLength": 18,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/aos-served-surface-standard-proof.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/aos-served-surface-standard-proof.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "0f6e94c8a96a9bca916abf4b00019de2fbd920d6944cd915a968cf9ee5f4696e",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/aos-served-surface-standard-proof.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "68e0d612660d6beab9f84065de645ed6d8d62c23cf177d9c7bad10414ae1962b",
+      "matchLength": 12,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/aos-served-surface-standard-proof.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "6c4b3c5f74c697b5faab5af07ba2d15e2f49633be6723a7033c50b80d29ff1b3",
+      "matchLength": 14,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/aos-served-surface-standard-proof.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "982e17d1ecdad7cabe0faf1752196d88ef99e7119bb62c73484dd160ee5cd097",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/no-private-input-scan.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/no-private-input-scan.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "e25242ced7a7fc4b0d1bf95fe81c3f88e7ff2c647b05c52b09d2b6f20c9eb023",
+      "matchLength": 18,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/no-private-input-scan.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/no-private-input-scan.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "0f6e94c8a96a9bca916abf4b00019de2fbd920d6944cd915a968cf9ee5f4696e",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/no-private-input-scan.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "68e0d612660d6beab9f84065de645ed6d8d62c23cf177d9c7bad10414ae1962b",
+      "matchLength": 12,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/no-private-input-scan.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "6c4b3c5f74c697b5faab5af07ba2d15e2f49633be6723a7033c50b80d29ff1b3",
+      "matchLength": 14,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/no-private-input-scan.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "982e17d1ecdad7cabe0faf1752196d88ef99e7119bb62c73484dd160ee5cd097",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    }
+  ],
+  "hits": []
+}

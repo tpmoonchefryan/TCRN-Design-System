@@ -1,0 +1,1500 @@
+{
+  "ok": true,
+  "requiredStories": [
+    {
+      "id": "welcome-governance",
+      "group": "Welcome",
+      "storybookId": "tcrn-design-system-welcome--welcome-governance"
+    },
+    {
+      "id": "governance-boundaries",
+      "group": "Welcome",
+      "storybookId": "tcrn-design-system-welcome--governance-boundaries"
+    },
+    {
+      "id": "maintainers-routing",
+      "group": "Welcome",
+      "storybookId": "tcrn-design-system-welcome--maintainers-routing"
+    },
+    {
+      "id": "contribution-model",
+      "group": "Welcome",
+      "storybookId": "tcrn-design-system-welcome--contribution-model"
+    },
+    {
+      "id": "release-bug-policy",
+      "group": "Welcome",
+      "storybookId": "tcrn-design-system-welcome--release-bug-policy"
+    },
+    {
+      "id": "brand-identity",
+      "group": "Style Guide",
+      "storybookId": "tcrn-design-system-style-guide--brand-identity"
+    },
+    {
+      "id": "color-palette",
+      "group": "Style Guide",
+      "storybookId": "tcrn-design-system-style-guide--color-palette"
+    },
+    {
+      "id": "text-styles",
+      "group": "Style Guide",
+      "storybookId": "tcrn-design-system-style-guide--text-styles"
+    },
+    {
+      "id": "grid-system",
+      "group": "Style Guide",
+      "storybookId": "tcrn-design-system-style-guide--grid-system"
+    },
+    {
+      "id": "icons-motion",
+      "group": "Style Guide",
+      "storybookId": "tcrn-design-system-style-guide--icons-motion"
+    },
+    {
+      "id": "global-states",
+      "group": "Style Guide",
+      "storybookId": "tcrn-design-system-style-guide--global-states"
+    },
+    {
+      "id": "copy-creation-rules",
+      "group": "Style Guide",
+      "storybookId": "tcrn-design-system-style-guide--copy-creation-rules"
+    },
+    {
+      "id": "tokens-copy-state",
+      "group": "Foundations",
+      "storybookId": "tcrn-design-system-foundations--tokens-copy-state"
+    },
+    {
+      "id": "i18n-theme-contract",
+      "group": "Foundations",
+      "storybookId": "tcrn-design-system-foundations--i-18-n-theme-contract"
+    },
+    {
+      "id": "copy-guidelines",
+      "group": "Foundations",
+      "storybookId": "tcrn-design-system-foundations--copy-guidelines"
+    },
+    {
+      "id": "component-family-index",
+      "group": "Components",
+      "storybookId": "tcrn-design-system-components--component-family-index"
+    },
+    {
+      "id": "button-spec-usage",
+      "group": "Components",
+      "storybookId": "tcrn-design-system-components--button-spec-usage"
+    },
+    {
+      "id": "field-spec-usage",
+      "group": "Components",
+      "storybookId": "tcrn-design-system-components--field-spec-usage"
+    },
+    {
+      "id": "navigation-shell-spec",
+      "group": "Components",
+      "storybookId": "tcrn-design-system-components--navigation-shell-spec"
+    },
+    {
+      "id": "dialog-spec-usage",
+      "group": "Components",
+      "storybookId": "tcrn-design-system-components--dialog-spec-usage"
+    },
+    {
+      "id": "table-work-index-spec",
+      "group": "Components",
+      "storybookId": "tcrn-design-system-components--table-work-index-spec"
+    },
+    {
+      "id": "forms-patterns",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--forms-patterns"
+    },
+    {
+      "id": "workbench-patterns",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--workbench-patterns"
+    },
+    {
+      "id": "readiness-notification-patterns",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--readiness-notification-patterns"
+    },
+    {
+      "id": "selection-list-patterns",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--selection-list-patterns"
+    },
+    {
+      "id": "modal-validation-patterns",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--modal-validation-patterns"
+    },
+    {
+      "id": "datagrid-fields-patterns",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--datagrid-fields-patterns"
+    },
+    {
+      "id": "big-list-search-patterns",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--big-list-search-patterns"
+    },
+    {
+      "id": "dashboard-page-templates",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--dashboard-page-templates"
+    },
+    {
+      "id": "aos-operations-cockpit-standard",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--aos-operations-cockpit-standard"
+    },
+    {
+      "id": "aos-docs-readiness-standard",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--aos-docs-readiness-standard"
+    },
+    {
+      "id": "aos-product-design-target-set-standard",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--aos-product-design-target-set-standard"
+    },
+    {
+      "id": "proof-matrix",
+      "group": "Proof",
+      "storybookId": "tcrn-design-system-proof--proof-matrix"
+    },
+    {
+      "id": "blocked-actions",
+      "group": "Proof",
+      "storybookId": "tcrn-design-system-proof--blocked-actions"
+    },
+    {
+      "id": "overlay-focus",
+      "group": "Proof",
+      "storybookId": "tcrn-design-system-proof--overlay-focus"
+    },
+    {
+      "id": "local-changelog",
+      "group": "Change Log",
+      "storybookId": "tcrn-design-system-change-log--local-changelog"
+    }
+  ],
+  "sectionPages": [
+    {
+      "group": "Welcome",
+      "slug": "welcome",
+      "file": "index.html"
+    },
+    {
+      "group": "Style Guide",
+      "slug": "style-guide",
+      "file": "style-guide.html"
+    },
+    {
+      "group": "Foundations",
+      "slug": "foundations",
+      "file": "foundations.html"
+    },
+    {
+      "group": "Components",
+      "slug": "components",
+      "file": "components.html"
+    },
+    {
+      "group": "Patterns",
+      "slug": "patterns",
+      "file": "patterns.html"
+    },
+    {
+      "group": "Proof",
+      "slug": "proof",
+      "file": "proof.html"
+    },
+    {
+      "group": "Change Log",
+      "slug": "change-log",
+      "file": "change-log.html"
+    }
+  ],
+  "staticContractSurface": "apps/storybook/storybook-static/index.html",
+  "storybookIframeSurface": null,
+  "storybookRuntimeSurfaceDisposition": "replaced_by_static_contract_docs",
+  "componentStorybookParityReadback": {
+    "packageBackedComponentParityVisible": true,
+    "publicSourcesVisible": true,
+    "storybookOnlyDeferredMarkersVisible": true,
+    "packageBackedDisabledNavItemReasonReadback": {
+      "disabledNavItemCount": 3,
+      "invalidDisabledNavItems": [],
+      "validDisabledNavItemLabels": [
+        {
+          "viewport": "desktop-1440x900",
+          "section": "Components",
+          "label": "Blocked actions",
+          "reason": "Proof route is not in this component page"
+        },
+        {
+          "viewport": "tablet-1024x768",
+          "section": "Components",
+          "label": "Blocked actions",
+          "reason": "Proof route is not in this component page"
+        },
+        {
+          "viewport": "mobile-390x844",
+          "section": "Components",
+          "label": "Blocked actions",
+          "reason": "Proof route is not in this component page"
+        }
+      ],
+      "ok": true
+    },
+    "noPackagePublicationClaimed": true,
+    "noProductAdoptionClaimed": true
+  },
+  "storybookChecks": [
+    {
+      "id": "welcome-governance",
+      "storybookId": "tcrn-design-system-welcome--welcome-governance",
+      "visible": true
+    },
+    {
+      "id": "governance-boundaries",
+      "storybookId": "tcrn-design-system-welcome--governance-boundaries",
+      "visible": true
+    },
+    {
+      "id": "maintainers-routing",
+      "storybookId": "tcrn-design-system-welcome--maintainers-routing",
+      "visible": true
+    },
+    {
+      "id": "contribution-model",
+      "storybookId": "tcrn-design-system-welcome--contribution-model",
+      "visible": true
+    },
+    {
+      "id": "release-bug-policy",
+      "storybookId": "tcrn-design-system-welcome--release-bug-policy",
+      "visible": true
+    },
+    {
+      "id": "brand-identity",
+      "storybookId": "tcrn-design-system-style-guide--brand-identity",
+      "visible": true
+    },
+    {
+      "id": "color-palette",
+      "storybookId": "tcrn-design-system-style-guide--color-palette",
+      "visible": true
+    },
+    {
+      "id": "text-styles",
+      "storybookId": "tcrn-design-system-style-guide--text-styles",
+      "visible": true
+    },
+    {
+      "id": "grid-system",
+      "storybookId": "tcrn-design-system-style-guide--grid-system",
+      "visible": true
+    },
+    {
+      "id": "icons-motion",
+      "storybookId": "tcrn-design-system-style-guide--icons-motion",
+      "visible": true
+    },
+    {
+      "id": "global-states",
+      "storybookId": "tcrn-design-system-style-guide--global-states",
+      "visible": true
+    },
+    {
+      "id": "copy-creation-rules",
+      "storybookId": "tcrn-design-system-style-guide--copy-creation-rules",
+      "visible": true
+    },
+    {
+      "id": "tokens-copy-state",
+      "storybookId": "tcrn-design-system-foundations--tokens-copy-state",
+      "visible": true
+    },
+    {
+      "id": "i18n-theme-contract",
+      "storybookId": "tcrn-design-system-foundations--i-18-n-theme-contract",
+      "visible": true
+    },
+    {
+      "id": "copy-guidelines",
+      "storybookId": "tcrn-design-system-foundations--copy-guidelines",
+      "visible": true
+    },
+    {
+      "id": "component-family-index",
+      "storybookId": "tcrn-design-system-components--component-family-index",
+      "visible": true
+    },
+    {
+      "id": "button-spec-usage",
+      "storybookId": "tcrn-design-system-components--button-spec-usage",
+      "visible": true
+    },
+    {
+      "id": "field-spec-usage",
+      "storybookId": "tcrn-design-system-components--field-spec-usage",
+      "visible": true
+    },
+    {
+      "id": "navigation-shell-spec",
+      "storybookId": "tcrn-design-system-components--navigation-shell-spec",
+      "visible": true
+    },
+    {
+      "id": "dialog-spec-usage",
+      "storybookId": "tcrn-design-system-components--dialog-spec-usage",
+      "visible": true
+    },
+    {
+      "id": "table-work-index-spec",
+      "storybookId": "tcrn-design-system-components--table-work-index-spec",
+      "visible": true
+    },
+    {
+      "id": "forms-patterns",
+      "storybookId": "tcrn-design-system-patterns--forms-patterns",
+      "visible": true
+    },
+    {
+      "id": "workbench-patterns",
+      "storybookId": "tcrn-design-system-patterns--workbench-patterns",
+      "visible": true
+    },
+    {
+      "id": "readiness-notification-patterns",
+      "storybookId": "tcrn-design-system-patterns--readiness-notification-patterns",
+      "visible": true
+    },
+    {
+      "id": "selection-list-patterns",
+      "storybookId": "tcrn-design-system-patterns--selection-list-patterns",
+      "visible": true
+    },
+    {
+      "id": "modal-validation-patterns",
+      "storybookId": "tcrn-design-system-patterns--modal-validation-patterns",
+      "visible": true
+    },
+    {
+      "id": "datagrid-fields-patterns",
+      "storybookId": "tcrn-design-system-patterns--datagrid-fields-patterns",
+      "visible": true
+    },
+    {
+      "id": "big-list-search-patterns",
+      "storybookId": "tcrn-design-system-patterns--big-list-search-patterns",
+      "visible": true
+    },
+    {
+      "id": "dashboard-page-templates",
+      "storybookId": "tcrn-design-system-patterns--dashboard-page-templates",
+      "visible": true
+    },
+    {
+      "id": "aos-operations-cockpit-standard",
+      "storybookId": "tcrn-design-system-patterns--aos-operations-cockpit-standard",
+      "visible": true
+    },
+    {
+      "id": "aos-docs-readiness-standard",
+      "storybookId": "tcrn-design-system-patterns--aos-docs-readiness-standard",
+      "visible": true
+    },
+    {
+      "id": "aos-product-design-target-set-standard",
+      "storybookId": "tcrn-design-system-patterns--aos-product-design-target-set-standard",
+      "visible": true
+    },
+    {
+      "id": "proof-matrix",
+      "storybookId": "tcrn-design-system-proof--proof-matrix",
+      "visible": true
+    },
+    {
+      "id": "blocked-actions",
+      "storybookId": "tcrn-design-system-proof--blocked-actions",
+      "visible": true
+    },
+    {
+      "id": "overlay-focus",
+      "storybookId": "tcrn-design-system-proof--overlay-focus",
+      "visible": true
+    },
+    {
+      "id": "local-changelog",
+      "storybookId": "tcrn-design-system-change-log--local-changelog",
+      "visible": true
+    }
+  ],
+  "hashRouteCheck": {
+    "ok": true,
+    "source": "apps/storybook/storybook-static/index.html#components",
+    "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html"
+  },
+  "hashStoryRouteCheck": {
+    "ok": true,
+    "source": "apps/storybook/storybook-static/index.html#button-spec-usage",
+    "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html#button-spec-usage"
+  },
+  "anchorScrollCheck": {
+    "ok": true,
+    "source": "left secondary nav click -> table-work-index-spec",
+    "metrics": {
+      "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html?locale=zh-CN#table-work-index-spec",
+      "activeStoryId": "table-work-index-spec",
+      "targetTop": 96,
+      "previousBottom": 82,
+      "offset": 96,
+      "maxScrollY": 11938,
+      "scrollY": 11138
+    }
+  },
+  "scrollSpyCheck": {
+    "ok": true,
+    "source": "manual page scroll -> dashboard-page-templates active nav",
+    "metrics": {
+      "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
+      "activeStoryId": "dashboard-page-templates",
+      "activeAriaCurrent": "location",
+      "targetTop": 96,
+      "offset": 96,
+      "maxScrollY": 6532,
+      "scrollY": 1994,
+      "hash": "#readiness-notification-patterns",
+      "scrollSpyAvailable": true
+    }
+  },
+  "localeRouteCheck": {
+    "ok": true,
+    "source": "apps/storybook/storybook-static/index.html?locale=ja#button-spec-usage",
+    "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html?locale=ja#button-spec-usage",
+    "i18nContentChecks": [
+      {
+        "locale": "zh-CN",
+        "route": "apps/storybook/storybook-static/index.html?locale=zh-CN#welcome-governance",
+        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/index.html?locale=zh-CN#welcome-governance",
+        "ok": true,
+        "requiredText": [
+          "从这里开始",
+          "阅读路径",
+          "声明边界",
+          "边界地图",
+          "路由目录",
+          "准入",
+          "本地检查点"
+        ],
+        "forbiddenText": [
+          "Start here",
+          "Reader paths",
+          "Claim boundaries",
+          "Boundary map",
+          "Routing directory",
+          "Admission",
+          "Local checkpoint"
+        ],
+        "missingRequiredText": [],
+        "leakedForbiddenText": []
+      },
+      {
+        "locale": "ja",
+        "route": "apps/storybook/storybook-static/index.html?locale=ja#button-spec-usage",
+        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html?locale=ja#button-spec-usage",
+        "ok": true,
+        "requiredText": [
+          "ボタン仕様と使用法",
+          "主要操作",
+          "所有ルートの承認が必要"
+        ],
+        "forbiddenText": [
+          "Button spec and usage",
+          "Primary action",
+          "Requires owning route approval"
+        ],
+        "missingRequiredText": [],
+        "leakedForbiddenText": []
+      },
+      {
+        "locale": "zh-CN",
+        "route": "apps/storybook/storybook-static/style-guide.html?locale=zh-CN#color-palette",
+        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/style-guide.html?locale=zh-CN#color-palette",
+        "ok": true,
+        "requiredText": [
+          "品牌色系",
+          "主品牌色",
+          "副色系",
+          "色彩角色矩阵",
+          "主题一致性",
+          "字体与字号令牌",
+          "字体族契约",
+          "字体授权层级",
+          "页面标题 / 28px",
+          "文本层级与节奏",
+          "布局密度矩阵",
+          "动效样例",
+          "减弱动效兜底",
+          "加载与进度样例",
+          "骨架屏预览",
+          "进度反馈",
+          "交互可感知性矩阵",
+          "状态权威矩阵",
+          "文案流程",
+          "禁止的文案模式"
+        ],
+        "forbiddenText": [
+          "Brand palette",
+          "Primary brand",
+          "Secondary brand",
+          "Color role matrix",
+          "Theme parity",
+          "Type scale tokens",
+          "Font family contract",
+          "font licensing tiers",
+          "Page title / 28px",
+          "Type hierarchy and rhythm",
+          "Layout density matrix",
+          "Motion examples",
+          "Reduced motion fallback",
+          "Loading and progress examples",
+          "Skeleton preview",
+          "Progress feedback",
+          "Interaction affordance matrix",
+          "State authority matrix",
+          "Copy workflow",
+          "Forbidden copy patterns"
+        ],
+        "missingRequiredText": [],
+        "leakedForbiddenText": []
+      }
+    ],
+    "brandMarkLocaleChecks": [
+      {
+        "locale": "zh-CN",
+        "labels": [
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
+        ],
+        "sources": [
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg"
+        ],
+        "longLockupFlexDirection": "column",
+        "designSuffixBackground": "linear-gradient(105deg, rgb(101, 119, 243) 0%, rgb(48, 150, 244) 31%, rgb(67, 212, 207) 62%, rgb(184, 233, 120) 100%)",
+        "ok": true
+      },
+      {
+        "locale": "en",
+        "labels": [
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
+        ],
+        "sources": [
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg"
+        ],
+        "longLockupFlexDirection": "column",
+        "designSuffixBackground": "linear-gradient(105deg, rgb(101, 119, 243) 0%, rgb(48, 150, 244) 31%, rgb(67, 212, 207) 62%, rgb(184, 233, 120) 100%)",
+        "ok": true
+      },
+      {
+        "locale": "ja",
+        "labels": [
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
+        ],
+        "sources": [
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg"
+        ],
+        "longLockupFlexDirection": "column",
+        "designSuffixBackground": "linear-gradient(105deg, rgb(101, 119, 243) 0%, rgb(48, 150, 244) 31%, rgb(67, 212, 207) 62%, rgb(184, 233, 120) 100%)",
+        "ok": true
+      },
+      {
+        "locale": "ko",
+        "labels": [
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
+        ],
+        "sources": [
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg"
+        ],
+        "longLockupFlexDirection": "column",
+        "designSuffixBackground": "linear-gradient(105deg, rgb(101, 119, 243) 0%, rgb(48, 150, 244) 31%, rgb(67, 212, 207) 62%, rgb(184, 233, 120) 100%)",
+        "ok": true
+      },
+      {
+        "locale": "fr",
+        "labels": [
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
+        ],
+        "sources": [
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg",
+          "tcrn-brand-mark.svg"
+        ],
+        "longLockupFlexDirection": "column",
+        "designSuffixBackground": "linear-gradient(105deg, rgb(101, 119, 243) 0%, rgb(48, 150, 244) 31%, rgb(67, 212, 207) 62%, rgb(184, 233, 120) 100%)",
+        "ok": true
+      }
+    ]
+  },
+  "staticSectionChecks": [
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Welcome",
+      "url": "/apps/storybook/storybook-static/index.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Welcome",
+      "currentNav": "Welcome",
+      "currentStoryNav": "welcome-governance",
+      "expectedCurrentStoryNav": "welcome-governance",
+      "storySections": [
+        "Welcome"
+      ],
+      "visibleStoryIds": [
+        "welcome-governance",
+        "governance-boundaries",
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ],
+      "expectedStoryIds": [
+        "welcome-governance",
+        "governance-boundaries",
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "brand-identity",
+      "expectedCurrentStoryNav": "brand-identity",
+      "storySections": [
+        "Style Guide"
+      ],
+      "visibleStoryIds": [
+        "brand-identity",
+        "color-palette",
+        "text-styles",
+        "grid-system",
+        "icons-motion",
+        "global-states",
+        "copy-creation-rules"
+      ],
+      "expectedStoryIds": [
+        "brand-identity",
+        "color-palette",
+        "text-styles",
+        "grid-system",
+        "icons-motion",
+        "global-states",
+        "copy-creation-rules"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Foundations",
+      "url": "/apps/storybook/storybook-static/foundations.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Foundations",
+      "currentNav": "Foundations",
+      "currentStoryNav": "tokens-copy-state",
+      "expectedCurrentStoryNav": "tokens-copy-state",
+      "storySections": [
+        "Foundations"
+      ],
+      "visibleStoryIds": [
+        "tokens-copy-state",
+        "i18n-theme-contract",
+        "copy-guidelines"
+      ],
+      "expectedStoryIds": [
+        "tokens-copy-state",
+        "i18n-theme-contract",
+        "copy-guidelines"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "expectedCurrentStoryNav": "component-family-index",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "component-family-index",
+        "button-spec-usage",
+        "field-spec-usage",
+        "navigation-shell-spec",
+        "dialog-spec-usage",
+        "table-work-index-spec"
+      ],
+      "expectedStoryIds": [
+        "component-family-index",
+        "button-spec-usage",
+        "field-spec-usage",
+        "navigation-shell-spec",
+        "dialog-spec-usage",
+        "table-work-index-spec"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "forms-patterns",
+      "expectedCurrentStoryNav": "forms-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
+        "forms-patterns",
+        "workbench-patterns",
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates",
+        "aos-operations-cockpit-standard",
+        "aos-docs-readiness-standard",
+        "aos-product-design-target-set-standard"
+      ],
+      "expectedStoryIds": [
+        "forms-patterns",
+        "workbench-patterns",
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates",
+        "aos-operations-cockpit-standard",
+        "aos-docs-readiness-standard",
+        "aos-product-design-target-set-standard"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Proof",
+      "url": "/apps/storybook/storybook-static/proof.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Proof",
+      "currentNav": "Proof",
+      "currentStoryNav": "proof-matrix",
+      "expectedCurrentStoryNav": "proof-matrix",
+      "storySections": [
+        "Proof"
+      ],
+      "visibleStoryIds": [
+        "proof-matrix",
+        "blocked-actions",
+        "overlay-focus"
+      ],
+      "expectedStoryIds": [
+        "proof-matrix",
+        "blocked-actions",
+        "overlay-focus"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Change Log",
+      "url": "/apps/storybook/storybook-static/change-log.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Change Log",
+      "currentNav": "Change Log",
+      "currentStoryNav": "local-changelog",
+      "expectedCurrentStoryNav": "local-changelog",
+      "storySections": [
+        "Change Log"
+      ],
+      "visibleStoryIds": [
+        "local-changelog"
+      ],
+      "expectedStoryIds": [
+        "local-changelog"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Welcome",
+      "url": "/apps/storybook/storybook-static/index.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Welcome",
+      "currentNav": "Welcome",
+      "currentStoryNav": "welcome-governance",
+      "expectedCurrentStoryNav": "welcome-governance",
+      "storySections": [
+        "Welcome"
+      ],
+      "visibleStoryIds": [
+        "welcome-governance",
+        "governance-boundaries",
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ],
+      "expectedStoryIds": [
+        "welcome-governance",
+        "governance-boundaries",
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "brand-identity",
+      "expectedCurrentStoryNav": "brand-identity",
+      "storySections": [
+        "Style Guide"
+      ],
+      "visibleStoryIds": [
+        "brand-identity",
+        "color-palette",
+        "text-styles",
+        "grid-system",
+        "icons-motion",
+        "global-states",
+        "copy-creation-rules"
+      ],
+      "expectedStoryIds": [
+        "brand-identity",
+        "color-palette",
+        "text-styles",
+        "grid-system",
+        "icons-motion",
+        "global-states",
+        "copy-creation-rules"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Foundations",
+      "url": "/apps/storybook/storybook-static/foundations.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Foundations",
+      "currentNav": "Foundations",
+      "currentStoryNav": "tokens-copy-state",
+      "expectedCurrentStoryNav": "tokens-copy-state",
+      "storySections": [
+        "Foundations"
+      ],
+      "visibleStoryIds": [
+        "tokens-copy-state",
+        "i18n-theme-contract",
+        "copy-guidelines"
+      ],
+      "expectedStoryIds": [
+        "tokens-copy-state",
+        "i18n-theme-contract",
+        "copy-guidelines"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "expectedCurrentStoryNav": "component-family-index",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "component-family-index",
+        "button-spec-usage",
+        "field-spec-usage",
+        "navigation-shell-spec",
+        "dialog-spec-usage",
+        "table-work-index-spec"
+      ],
+      "expectedStoryIds": [
+        "component-family-index",
+        "button-spec-usage",
+        "field-spec-usage",
+        "navigation-shell-spec",
+        "dialog-spec-usage",
+        "table-work-index-spec"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "forms-patterns",
+      "expectedCurrentStoryNav": "forms-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
+        "forms-patterns",
+        "workbench-patterns",
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates",
+        "aos-operations-cockpit-standard",
+        "aos-docs-readiness-standard",
+        "aos-product-design-target-set-standard"
+      ],
+      "expectedStoryIds": [
+        "forms-patterns",
+        "workbench-patterns",
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates",
+        "aos-operations-cockpit-standard",
+        "aos-docs-readiness-standard",
+        "aos-product-design-target-set-standard"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Proof",
+      "url": "/apps/storybook/storybook-static/proof.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Proof",
+      "currentNav": "Proof",
+      "currentStoryNav": "proof-matrix",
+      "expectedCurrentStoryNav": "proof-matrix",
+      "storySections": [
+        "Proof"
+      ],
+      "visibleStoryIds": [
+        "proof-matrix",
+        "blocked-actions",
+        "overlay-focus"
+      ],
+      "expectedStoryIds": [
+        "proof-matrix",
+        "blocked-actions",
+        "overlay-focus"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Change Log",
+      "url": "/apps/storybook/storybook-static/change-log.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": -14,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Change Log",
+      "currentNav": "Change Log",
+      "currentStoryNav": "local-changelog",
+      "expectedCurrentStoryNav": "local-changelog",
+      "storySections": [
+        "Change Log"
+      ],
+      "visibleStoryIds": [
+        "local-changelog"
+      ],
+      "expectedStoryIds": [
+        "local-changelog"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Welcome",
+      "url": "/apps/storybook/storybook-static/index.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Welcome",
+      "currentNav": "Welcome",
+      "currentStoryNav": "welcome-governance",
+      "expectedCurrentStoryNav": "welcome-governance",
+      "storySections": [
+        "Welcome"
+      ],
+      "visibleStoryIds": [
+        "welcome-governance",
+        "governance-boundaries",
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ],
+      "expectedStoryIds": [
+        "welcome-governance",
+        "governance-boundaries",
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "brand-identity",
+      "expectedCurrentStoryNav": "brand-identity",
+      "storySections": [
+        "Style Guide"
+      ],
+      "visibleStoryIds": [
+        "brand-identity",
+        "color-palette",
+        "text-styles",
+        "grid-system",
+        "icons-motion",
+        "global-states",
+        "copy-creation-rules"
+      ],
+      "expectedStoryIds": [
+        "brand-identity",
+        "color-palette",
+        "text-styles",
+        "grid-system",
+        "icons-motion",
+        "global-states",
+        "copy-creation-rules"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Foundations",
+      "url": "/apps/storybook/storybook-static/foundations.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Foundations",
+      "currentNav": "Foundations",
+      "currentStoryNav": "tokens-copy-state",
+      "expectedCurrentStoryNav": "tokens-copy-state",
+      "storySections": [
+        "Foundations"
+      ],
+      "visibleStoryIds": [
+        "tokens-copy-state",
+        "i18n-theme-contract",
+        "copy-guidelines"
+      ],
+      "expectedStoryIds": [
+        "tokens-copy-state",
+        "i18n-theme-contract",
+        "copy-guidelines"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "expectedCurrentStoryNav": "component-family-index",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "component-family-index",
+        "button-spec-usage",
+        "field-spec-usage",
+        "navigation-shell-spec",
+        "dialog-spec-usage",
+        "table-work-index-spec"
+      ],
+      "expectedStoryIds": [
+        "component-family-index",
+        "button-spec-usage",
+        "field-spec-usage",
+        "navigation-shell-spec",
+        "dialog-spec-usage",
+        "table-work-index-spec"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "forms-patterns",
+      "expectedCurrentStoryNav": "forms-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
+        "forms-patterns",
+        "workbench-patterns",
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates",
+        "aos-operations-cockpit-standard",
+        "aos-docs-readiness-standard",
+        "aos-product-design-target-set-standard"
+      ],
+      "expectedStoryIds": [
+        "forms-patterns",
+        "workbench-patterns",
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates",
+        "aos-operations-cockpit-standard",
+        "aos-docs-readiness-standard",
+        "aos-product-design-target-set-standard"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Proof",
+      "url": "/apps/storybook/storybook-static/proof.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Proof",
+      "currentNav": "Proof",
+      "currentStoryNav": "proof-matrix",
+      "expectedCurrentStoryNav": "proof-matrix",
+      "storySections": [
+        "Proof"
+      ],
+      "visibleStoryIds": [
+        "proof-matrix",
+        "blocked-actions",
+        "overlay-focus"
+      ],
+      "expectedStoryIds": [
+        "proof-matrix",
+        "blocked-actions",
+        "overlay-focus"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Change Log",
+      "url": "/apps/storybook/storybook-static/change-log.html",
+      "ok": true,
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Change Log",
+      "currentNav": "Change Log",
+      "currentStoryNav": "local-changelog",
+      "expectedCurrentStoryNav": "local-changelog",
+      "storySections": [
+        "Change Log"
+      ],
+      "visibleStoryIds": [
+        "local-changelog"
+      ],
+      "expectedStoryIds": [
+        "local-changelog"
+      ]
+    }
+  ],
+  "coverageDisposition": "full_static_contract_docs_navigation_and_i18n_pages"
+}

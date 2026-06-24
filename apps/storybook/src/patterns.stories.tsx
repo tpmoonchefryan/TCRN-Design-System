@@ -1,0 +1,77 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { getContractStory, StoryFrame } from "./stories.js";
+
+const meta = {
+  title: "TCRN Design System/Patterns",
+  parameters: {
+    layout: "fullscreen"
+  }
+} satisfies Meta;
+
+export default meta;
+
+type Story = StoryObj;
+
+function renderContractStory(id: string) {
+  const story = getContractStory(id);
+  return (
+    <StoryFrame story={story}>
+      {story.render()}
+    </StoryFrame>
+  );
+}
+
+export const FormsPatterns: Story = {
+  name: "Forms pattern",
+  render: () => renderContractStory("forms-patterns")
+};
+
+export const WorkbenchPatterns: Story = {
+  name: "Workbench patterns",
+  render: () => renderContractStory("workbench-patterns")
+};
+
+export const ReadinessNotificationPatterns: Story = {
+  name: "Readiness and notification pattern",
+  render: () => renderContractStory("readiness-notification-patterns")
+};
+
+export const SelectionListPatterns: Story = {
+  name: "Selection and list patterns",
+  render: () => renderContractStory("selection-list-patterns")
+};
+
+export const ModalValidationPatterns: Story = {
+  name: "Modal validation patterns",
+  render: () => renderContractStory("modal-validation-patterns")
+};
+
+export const DatagridFieldsPatterns: Story = {
+  name: "Datagrid field patterns",
+  render: () => renderContractStory("datagrid-fields-patterns")
+};
+
+export const BigListSearchPatterns: Story = {
+  name: "Big list search patterns",
+  render: () => renderContractStory("big-list-search-patterns")
+};
+
+export const DashboardPageTemplates: Story = {
+  name: "Dashboard and page templates",
+  render: () => renderContractStory("dashboard-page-templates")
+};
+
+export const AosOperationsCockpitStandard: Story = {
+  name: "AOS Operations Cockpit standard",
+  render: () => renderContractStory("aos-operations-cockpit-standard")
+};
+
+export const AosDocsReadinessStandard: Story = {
+  name: "AOS Docs Readiness standard",
+  render: () => renderContractStory("aos-docs-readiness-standard")
+};
+
+export const AosProductDesignTargetSetStandard: Story = {
+  name: "AOS Product Design target-set standard",
+  render: () => renderContractStory("aos-product-design-target-set-standard")
+};

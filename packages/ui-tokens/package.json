@@ -1,0 +1,26 @@
+{
+  "name": "@tcrn/ui-tokens",
+  "version": "1.0.0",
+  "type": "module",
+  "private": false,
+  "license": "Apache-2.0",
+  "sideEffects": [
+    "src/tokens.css"
+  ],
+  "files": [
+    "dist",
+    "src/tokens.css",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./tokens.css": "./src/tokens.css"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test dist/index.test.js"
+  }
+}

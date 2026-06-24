@@ -1,0 +1,21 @@
+{
+  "name": "@tcrn/ui-copy-state",
+  "version": "1.0.0",
+  "type": "module",
+  "private": false,
+  "license": "Apache-2.0",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test dist/index.test.js"
+  }
+}

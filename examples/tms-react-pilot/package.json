@@ -1,0 +1,16 @@
+{
+  "name": "@tcrn/tms-react-pilot",
+  "version": "0.0.0-private",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@tcrn/ui-copy-state": "workspace:*",
+    "@tcrn/ui-react": "workspace:*",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test dist/index.test.js"
+  }
+}

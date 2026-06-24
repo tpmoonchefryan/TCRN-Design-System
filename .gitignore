@@ -1,0 +1,12 @@
+node_modules/
+dist/
+storybook-static/
+storybook-preview-static/
+.tarball-smoke/
+coverage/
+*.log
+*.tsbuildinfo
+.DS_Store
+
+# Generated visual proof artifacts; regenerate locally with pnpm internal-alpha:browser-proof.
+docs/verification/internal-alpha/screenshots/

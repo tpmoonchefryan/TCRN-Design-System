@@ -1,0 +1,14 @@
+{
+  "name": "@tcrn/aos-token-copy-state-pilot",
+  "version": "0.0.0-private",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@tcrn/ui-copy-state": "workspace:*",
+    "@tcrn/ui-tokens": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test dist/index.test.js"
+  }
+}

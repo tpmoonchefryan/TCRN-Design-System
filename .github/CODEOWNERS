@@ -1,0 +1,8 @@
+# Role-level placeholders only. Exact GitHub handles are deferred until a later
+# ownership-binding route.
+* @role/elara-frontend-studio-lead @role/ilya-full-stack-implementer
+/packages/ui-tokens/ @role/elara-frontend-studio-lead
+/packages/ui-copy-state/ @role/talia-product-strategist @role/mara-product-manager
+/packages/ui-react/ @role/elara-frontend-studio-lead @role/ilya-full-stack-implementer
+/apps/storybook/ @role/elara-frontend-studio-lead @role/rowan-qa-evidence-lead
+/docs/ @role/mara-product-manager @role/rowan-qa-evidence-lead

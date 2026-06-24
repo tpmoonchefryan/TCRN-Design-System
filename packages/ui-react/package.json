@@ -1,0 +1,33 @@
+{
+  "name": "@tcrn/ui-react",
+  "version": "1.0.0",
+  "type": "module",
+  "private": false,
+  "license": "Apache-2.0",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "@tcrn/ui-copy-state": "workspace:*",
+    "@tcrn/ui-tokens": "workspace:*",
+    "lucide-react": "1.21.0"
+  },
+  "devDependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test dist/index.test.js"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/ui-tokens" },
+    { "path": "packages/ui-copy-state" },
+    { "path": "packages/ui-react" },
+    { "path": "apps/storybook" },
+    { "path": "examples/tms-react-pilot" },
+    { "path": "examples/aos-token-copy-state-pilot" }
+  ]
+}

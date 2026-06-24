@@ -1,0 +1,263 @@
+{
+  "ok": true,
+  "route": "route_tcrn_design_system_aos_served_surface_visual_standard_component_registration_authoring_after_f728e9c",
+  "designSystemStandardAuthoringDisposition": "completed",
+  "designSystemVisualCertificationReadiness": "ready_for_elara_review",
+  "designSystemComponentRegistrationDisposition": "registered_or_exception_recorded",
+  "acceptedDsStandardIds": [
+    "ds-aos-operations-cockpit-v1",
+    "ds-aos-docs-readiness-v1",
+    "ds-aos-target-set-v1"
+  ],
+  "standardReadback": [
+    {
+      "standardId": "ds-aos-operations-cockpit-v1",
+      "storyId": "aos-operations-cockpit-standard",
+      "storybookId": "tcrn-design-system-patterns--aos-operations-cockpit-standard",
+      "surface": "operations-cockpit",
+      "storyRegistered": true,
+      "visualStandardMarkerPresent": true,
+      "servedSurfaceMarkerPresent": true,
+      "patternsExportPresent": true,
+      "browserProofRequired": true,
+      "localeMetadataPresent": true
+    },
+    {
+      "standardId": "ds-aos-docs-readiness-v1",
+      "storyId": "aos-docs-readiness-standard",
+      "storybookId": "tcrn-design-system-patterns--aos-docs-readiness-standard",
+      "surface": "docs-search-release-readiness",
+      "storyRegistered": true,
+      "visualStandardMarkerPresent": true,
+      "servedSurfaceMarkerPresent": true,
+      "patternsExportPresent": true,
+      "browserProofRequired": true,
+      "localeMetadataPresent": true
+    },
+    {
+      "standardId": "ds-aos-target-set-v1",
+      "storyId": "aos-product-design-target-set-standard",
+      "storybookId": "tcrn-design-system-patterns--aos-product-design-target-set-standard",
+      "surface": "aos-wide-product-design",
+      "storyRegistered": true,
+      "visualStandardMarkerPresent": true,
+      "servedSurfaceMarkerPresent": true,
+      "patternsExportPresent": true,
+      "browserProofRequired": true,
+      "localeMetadataPresent": true
+    }
+  ],
+  "componentCoverage": [
+    {
+      "component": "Surface",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "SideNav",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "NavGroup",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "NavItem",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "TopBar",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "Field",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "Input",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "Textarea",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "Select",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "Button",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "Badge",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "StatusBadge",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "GateReadinessPanel",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "EvidenceStrip",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "ReadbackPanel",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "Text",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "Heading",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "KeyValueList",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "WorkIndex",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "TableShell",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "SearchInput",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "FilterBar",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "StateView",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    },
+    {
+      "component": "DetailDrawer",
+      "publicMetadataPresent": true,
+      "storybookStandardReferences": true
+    }
+  ],
+  "disabledReasonStandard": {
+    "navItem": true,
+    "actionControls": true,
+    "formControls": true,
+    "srOnlyReasonText": true
+  },
+  "exceptionReadback": [
+    {
+      "id": "aos-brand-lockup-product-specific",
+      "disposition": "product_specific_exception",
+      "scope": "AOS product suffix and brand treatment only",
+      "broadVisualSystemException": false,
+      "recordedInStorySource": true,
+      "brandPrototypeBoundaryPresent": true
+    },
+    {
+      "id": "aos-data-semantics-product-owned",
+      "disposition": "product_specific_exception",
+      "scope": "AOS service/read-model data semantics only",
+      "broadVisualSystemException": false,
+      "recordedInStorySource": true,
+      "brandPrototypeBoundaryPresent": true
+    }
+  ],
+  "noOverclaim": {
+    "deepImportHits": [],
+    "productSourceImportHits": [],
+    "copiedSourceHits": [],
+    "untrackedStylesheetHits": [],
+    "broadExceptionHits": [],
+    "forbiddenClaimHits": [],
+    "packagePublicationClaimed": false,
+    "productAdoptionClaimed": false,
+    "productAcceptanceClaimed": false,
+    "finalMvpAcceptanceClaimed": false,
+    "releaseReadinessClaimed": false,
+    "ownerIntentActionExecuted": false,
+    "liveDispatchExecuted": false
+  },
+  "visualBaselineExpectation": {
+    "browserProofMustIncludeStandards": true,
+    "requiredStorybookIds": [
+      "tcrn-design-system-patterns--aos-operations-cockpit-standard",
+      "tcrn-design-system-patterns--aos-docs-readiness-standard",
+      "tcrn-design-system-patterns--aos-product-design-target-set-standard"
+    ],
+    "outputRoot": "docs/verification/internal-alpha"
+  },
+  "sourceReadback": [
+    {
+      "path": "packages/ui-react/src/index.tsx",
+      "sha256": "dc24c3c266cc169241a88415130597895fd0c29a2ce8eaf3ebf5538eb47c9148",
+      "bytes": 32149
+    },
+    {
+      "path": "packages/ui-react/src/index.test.tsx",
+      "sha256": "2468abc9055b1a56da976652e2e2db187f372f429677ddad6914413d8ddfd863",
+      "bytes": 17414
+    },
+    {
+      "path": "apps/storybook/src/stories.tsx",
+      "sha256": "8bd3b0128ffbfd547d49ec78b29e8c60ba4c21442b65ccdc8f4b35e4c6be547d",
+      "bytes": 131283
+    },
+    {
+      "path": "apps/storybook/src/patterns.stories.tsx",
+      "sha256": "68169945c4dcc25c892cfca769f5d1201309129a8fd9d1cc080eaa8d9f3aa0c7",
+      "bytes": 2170
+    },
+    {
+      "path": "apps/storybook/src/build.tsx",
+      "sha256": "90715fc7b8a058b305b4000a8f9dc29131567cc4b434d79a5430fe38a9676e6e",
+      "bytes": 376491
+    },
+    {
+      "path": "apps/storybook/src/smoke.test.ts",
+      "sha256": "a908170b17acbc9749d7d388acb264131eb94c3b8f1b1746306f1d1a77842df1",
+      "bytes": 25209
+    },
+    {
+      "path": "scripts/internal-alpha-browser-proof.mjs",
+      "sha256": "edff8ea63bb684a9038da97de4bbd2d9f00514454f8058963ba50171b90f2e0d",
+      "bytes": 49711
+    },
+    {
+      "path": "scripts/package-contract-manifest.mjs",
+      "sha256": "a1a7e678d22f803ae578aa56b6166d8913ff5ae8e899cb855552da9857c39d14",
+      "bytes": 13197
+    }
+  ],
+  "failures": []
+}
