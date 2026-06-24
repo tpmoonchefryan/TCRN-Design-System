@@ -22,12 +22,12 @@ Status: passed
 - Vercel latest known state: `success`
 - Vercel production commit: `clean-history-main-at-deployment-time; exact SHA is reported by terminal return`
 - Vercel production domain: `https://tcrn-design-system-storybook.vercel.app/`
-- Vercel deployment id: `dpl_BSWWSLwuQjygdGPRUqLKsdocKHoU`
+- Vercel deployment id: `latest-retained-production-deployment; exact ID is reported by terminal return`
 - Vercel environment: `Production`
-- Vercel target URL: `https://tcrn-design-system-storybook-odieyfg74-tcrn-platform.vercel.app`
+- Vercel target URL: `latest unique production deployment URL is reported by terminal return`
 - Vercel retained deployment count: 1
 - Legacy deployment rollback surface removed: true
-- Vercel observed at: `2026-06-24T07:48:00Z`
+- Vercel observed at: `terminal-return-final-readback`
 - Public output disposition: `static_contract_docs_only_storybook_manager_not_published`
 - Production output directory: `apps/storybook/storybook-static`
 - Storybook manager output published: false

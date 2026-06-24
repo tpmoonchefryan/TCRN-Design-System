@@ -67,13 +67,13 @@ const publicReleaseState = {
     commitStatusState: "not_applicable_cli_deploy_no_github_status",
     productionCommit: "clean-history-main-at-deployment-time; exact SHA is reported by terminal return",
     productionDomain: "https://tcrn-design-system-storybook.vercel.app/",
-    deploymentId: "dpl_BSWWSLwuQjygdGPRUqLKsdocKHoU",
+    deploymentId: "latest-retained-production-deployment; exact ID is reported by terminal return",
     environment: "Production",
-    targetUrl: "https://tcrn-design-system-storybook-odieyfg74-tcrn-platform.vercel.app",
+    targetUrl: "latest unique production deployment URL is reported by terminal return",
     retainedDeploymentCount: 1,
     legacyDeploymentRollbackSurfaceRemoved: true,
-    observedAt: "2026-06-24T07:48:00Z",
-    readbackSource: "vercel inspect/list/logs for dpl_BSWWSLwuQjygdGPRUqLKsdocKHoU; curl production URL checks; public-output scan"
+    observedAt: "terminal-return-final-readback",
+    readbackSource: "vercel inspect/list/logs for the retained production deployment; curl production URL checks; public-output scan"
   },
   publicOutput: {
     disposition: "static_contract_docs_only_storybook_manager_not_published",
