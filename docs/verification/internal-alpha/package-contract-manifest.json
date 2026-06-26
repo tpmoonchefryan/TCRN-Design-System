@@ -724,12 +724,16 @@
       "deepImportHits": [],
       "storybookOnlyMarkers": [
         {
-          "file": "apps/storybook/src/smoke.test.ts",
-          "markerCount": 5
+          "file": "apps/storybook/src/contract-stories/prototypes/brand-lockups.tsx",
+          "markerCount": 3
         },
         {
-          "file": "apps/storybook/src/stories.tsx",
-          "markerCount": 13
+          "file": "apps/storybook/src/contract-stories/prototypes/storybook-shell-demos.tsx",
+          "markerCount": 8
+        },
+        {
+          "file": "apps/storybook/src/smoke.test.ts",
+          "markerCount": 5
         }
       ],
       "packageBackedComponentParityMarkers": true,

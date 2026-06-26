@@ -1,6 +1,6 @@
 # AOS Served-Surface Standard Proof
 
-Route: `route_tcrn_design_system_aos_served_surface_visual_standard_component_registration_authoring_after_f728e9c`
+Route: `route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_verify_compat_repair_after_visual_proof_green_broad_verify_block`
 
 Status: passed
 

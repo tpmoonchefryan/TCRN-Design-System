@@ -1,0 +1,759 @@
+{
+  "ok": true,
+  "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
+  "sourceHead": "69a6171465cab16b6da43de21fa6c57416683aaf",
+  "sourceContentDigest": "fb819e9935f1a07a94a4c165dd4e6b2652ed3d7e6ce19c72da324bfd76dddfd0",
+  "mode": "update-baseline",
+  "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
+  "baselineUpdateReason": "DSCVH-S005-initial-local-baseline",
+  "packageName": "@tcrn/design-system-workspace",
+  "staticPageAllowlist": [
+    "index.html",
+    "style-guide.html",
+    "foundations.html",
+    "components.html",
+    "patterns.html",
+    "proof.html",
+    "change-log.html",
+    "tcrn-brand-mark.svg"
+  ],
+  "visualStateAllowlist": [
+    {
+      "id": "docs-shell-overview",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "description": "Static docs shell overview after hash scroll."
+    },
+    {
+      "id": "component-dialog-spec",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "description": "Dialog specification static closed state only."
+    },
+    {
+      "id": "pattern-aos-operations-standard",
+      "page": "patterns.html",
+      "hash": "aos-operations-cockpit-standard",
+      "storyId": "aos-operations-cockpit-standard",
+      "description": "AOS operations cockpit standard after hash scroll."
+    },
+    {
+      "id": "proof-no-overclaim",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "description": "Proof matrix no-overclaim surface after hash scroll."
+    }
+  ],
+  "viewportMatrix": [
+    {
+      "id": "desktop-1440x900",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "tablet-1024x768",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "id": "mobile-390x844",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "deterministicBrowserSettings": {
+    "browser": "chromium",
+    "headless": true,
+    "deviceScaleFactor": 1,
+    "colorScheme": "light",
+    "reducedMotion": "reduce",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "fixedDateNow": "2026-01-01T00:00:00.000Z",
+    "chromiumArgs": [
+      "--disable-font-subpixel-positioning",
+      "--disable-lcd-text",
+      "--font-render-hinting=none",
+      "--force-color-profile=srgb"
+    ],
+    "viewportScreenshotsOnly": true,
+    "animations": "disabled",
+    "screenshotStability": "two_consecutive_identical_png_hashes_before_write_or_compare",
+    "routeOwnedLoopbackServer": "127.0.0.1:<ephemeral>"
+  },
+  "staticPageReadbacks": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "ok": true,
+      "bytes": 475435,
+      "sha256": "68e39bd50442ab8b8348e6eb4f0feaebe2bcf859ad6532cab42c5c25d795aa15",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "file": "style-guide.html",
+      "status": 200,
+      "ok": true,
+      "bytes": 520130,
+      "sha256": "a13acb9662e4da8135280ab75d758ea13161d744c6c1f2dbd4991e894068d3c2",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "file": "foundations.html",
+      "status": 200,
+      "ok": true,
+      "bytes": 468818,
+      "sha256": "9070c6c232c09164522e49d388ae6543fe53043b2e361a55d9a314e6b20c6a5c",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "file": "components.html",
+      "status": 200,
+      "ok": true,
+      "bytes": 573358,
+      "sha256": "4726aa471aca9e7f36f0549009d6f65ac22045d77764621c93be696745d6aee4",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "file": "patterns.html",
+      "status": 200,
+      "ok": true,
+      "bytes": 510042,
+      "sha256": "c0ba22a6926cb787a9fbfe45184343948d8a54f75317a7f104219b1e3713d0c7",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "file": "proof.html",
+      "status": 200,
+      "ok": true,
+      "bytes": 468486,
+      "sha256": "5b0efc2e747e7468bd56cc9272c56efbad68481825c4e335211a7b225358b44e",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "file": "change-log.html",
+      "status": 200,
+      "ok": true,
+      "bytes": 462056,
+      "sha256": "bac3a2df8e4fb5c7ccfe6c19f22d44ab0fe4889c3d367f61335241cdc218de1b",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "file": "tcrn-brand-mark.svg",
+      "status": 200,
+      "ok": true,
+      "bytes": 64989,
+      "sha256": "5f28f17c599c63a05a51c81be03f9ef7845299af1940ebe6aef61f7af47fc25b",
+      "contentType": "image/svg+xml"
+    }
+  ],
+  "screenshotReadbacks": [
+    {
+      "stateId": "docs-shell-overview",
+      "viewport": "desktop-1440x900",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__desktop-1440x900.png",
+      "rawSha256": "1c5498e6336484a30470d899fc7e6403eaa85a7e070d44bdad471266dccf2360",
+      "width": 1440,
+      "height": 900,
+      "bytes": 299676,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "1c5498e6336484a30470d899fc7e6403eaa85a7e070d44bdad471266dccf2360",
+            "bytes": 299676
+          },
+          {
+            "attempt": 2,
+            "sha256": "1c5498e6336484a30470d899fc7e6403eaa85a7e070d44bdad471266dccf2360",
+            "bytes": 299676
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 325,
+        "y": 96,
+        "width": 1077,
+        "height": 714,
+        "top": 96,
+        "bottom": 810
+      },
+      "currentDocNavItem": "welcome-governance",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "component-dialog-spec",
+      "viewport": "desktop-1440x900",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__desktop-1440x900.png",
+      "rawSha256": "fe6fc4d8aca2442486877ea11ee112d974c4b9deb72e23a72c23ba04fab28c63",
+      "width": 1440,
+      "height": 900,
+      "bytes": 404928,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "fe6fc4d8aca2442486877ea11ee112d974c4b9deb72e23a72c23ba04fab28c63",
+            "bytes": 404928
+          },
+          {
+            "attempt": 2,
+            "sha256": "fe6fc4d8aca2442486877ea11ee112d974c4b9deb72e23a72c23ba04fab28c63",
+            "bytes": 404928
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 325,
+        "y": 96,
+        "width": 1077,
+        "height": 1091,
+        "top": 96,
+        "bottom": 1187
+      },
+      "currentDocNavItem": "dialog-spec-usage",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "pattern-aos-operations-standard",
+      "viewport": "desktop-1440x900",
+      "page": "patterns.html",
+      "hash": "aos-operations-cockpit-standard",
+      "storyId": "aos-operations-cockpit-standard",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__desktop-1440x900.png",
+      "rawSha256": "f98c4d1809eccac5f8679906aeba364c2ef7ccab8bbd7637037e6cd94a58df79",
+      "width": 1440,
+      "height": 900,
+      "bytes": 402788,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "f98c4d1809eccac5f8679906aeba364c2ef7ccab8bbd7637037e6cd94a58df79",
+            "bytes": 402788
+          },
+          {
+            "attempt": 2,
+            "sha256": "f98c4d1809eccac5f8679906aeba364c2ef7ccab8bbd7637037e6cd94a58df79",
+            "bytes": 402788
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 325,
+        "y": 96,
+        "width": 1077,
+        "height": 2362,
+        "top": 96,
+        "bottom": 2459
+      },
+      "currentDocNavItem": "aos-operations-cockpit-standard",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "proof-no-overclaim",
+      "viewport": "desktop-1440x900",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__desktop-1440x900.png",
+      "rawSha256": "62536dc3964ce25052a73e028962da39fbfe878c30d816666f720b2d60dc29a1",
+      "width": 1440,
+      "height": 900,
+      "bytes": 250941,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "62536dc3964ce25052a73e028962da39fbfe878c30d816666f720b2d60dc29a1",
+            "bytes": 250941
+          },
+          {
+            "attempt": 2,
+            "sha256": "62536dc3964ce25052a73e028962da39fbfe878c30d816666f720b2d60dc29a1",
+            "bytes": 250941
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 325,
+        "y": 96,
+        "width": 1077,
+        "height": 379,
+        "top": 96,
+        "bottom": 475
+      },
+      "currentDocNavItem": "proof-matrix",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "docs-shell-overview",
+      "viewport": "tablet-1024x768",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__tablet-1024x768.png",
+      "rawSha256": "0e5d2a8806246f52d05fc662097d98d8e1494bac4e923472591e0fcba9e1dc27",
+      "width": 1024,
+      "height": 768,
+      "bytes": 235046,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "0e5d2a8806246f52d05fc662097d98d8e1494bac4e923472591e0fcba9e1dc27",
+            "bytes": 235046
+          },
+          {
+            "attempt": 2,
+            "sha256": "0e5d2a8806246f52d05fc662097d98d8e1494bac4e923472591e0fcba9e1dc27",
+            "bytes": 235046
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 307,
+        "y": 96,
+        "width": 691,
+        "height": 834,
+        "top": 96,
+        "bottom": 929
+      },
+      "currentDocNavItem": "welcome-governance",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "component-dialog-spec",
+      "viewport": "tablet-1024x768",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__tablet-1024x768.png",
+      "rawSha256": "522d326b138984a53b22e897a4a9cf0427e0b411bed485b2944150a5aeaf720f",
+      "width": 1024,
+      "height": 768,
+      "bytes": 246563,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "522d326b138984a53b22e897a4a9cf0427e0b411bed485b2944150a5aeaf720f",
+            "bytes": 246563
+          },
+          {
+            "attempt": 2,
+            "sha256": "522d326b138984a53b22e897a4a9cf0427e0b411bed485b2944150a5aeaf720f",
+            "bytes": 246563
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 307,
+        "y": 96,
+        "width": 691,
+        "height": 1196,
+        "top": 96,
+        "bottom": 1292
+      },
+      "currentDocNavItem": "dialog-spec-usage",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "pattern-aos-operations-standard",
+      "viewport": "tablet-1024x768",
+      "page": "patterns.html",
+      "hash": "aos-operations-cockpit-standard",
+      "storyId": "aos-operations-cockpit-standard",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__tablet-1024x768.png",
+      "rawSha256": "b7d1f39117f6d833666f298ad9f77ed2d39368974c9ca852ff70d09fcb45ed17",
+      "width": 1024,
+      "height": 768,
+      "bytes": 272895,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "b7d1f39117f6d833666f298ad9f77ed2d39368974c9ca852ff70d09fcb45ed17",
+            "bytes": 272895
+          },
+          {
+            "attempt": 2,
+            "sha256": "b7d1f39117f6d833666f298ad9f77ed2d39368974c9ca852ff70d09fcb45ed17",
+            "bytes": 272895
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 307,
+        "y": 96,
+        "width": 691,
+        "height": 2772,
+        "top": 96,
+        "bottom": 2867
+      },
+      "currentDocNavItem": "aos-operations-cockpit-standard",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "proof-no-overclaim",
+      "viewport": "tablet-1024x768",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__tablet-1024x768.png",
+      "rawSha256": "5846c1a09919c4db45938efe982a817078d53eec461aa979da10cfaa93ecac45",
+      "width": 1024,
+      "height": 768,
+      "bytes": 204707,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "5846c1a09919c4db45938efe982a817078d53eec461aa979da10cfaa93ecac45",
+            "bytes": 204707
+          },
+          {
+            "attempt": 2,
+            "sha256": "5846c1a09919c4db45938efe982a817078d53eec461aa979da10cfaa93ecac45",
+            "bytes": 204707
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 307,
+        "y": 96,
+        "width": 691,
+        "height": 379,
+        "top": 96,
+        "bottom": 475
+      },
+      "currentDocNavItem": "proof-matrix",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "docs-shell-overview",
+      "viewport": "mobile-390x844",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__mobile-390x844.png",
+      "rawSha256": "f56d83617a90c8d690a7f60c0dc76b53791cb3cd2171ce61763463298c7a561f",
+      "width": 390,
+      "height": 844,
+      "bytes": 88166,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "f56d83617a90c8d690a7f60c0dc76b53791cb3cd2171ce61763463298c7a561f",
+            "bytes": 88166
+          },
+          {
+            "attempt": 2,
+            "sha256": "f56d83617a90c8d690a7f60c0dc76b53791cb3cd2171ce61763463298c7a561f",
+            "bytes": 88166
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 16,
+        "y": 16,
+        "width": 358,
+        "height": 1268,
+        "top": 16,
+        "bottom": 1284
+      },
+      "currentDocNavItem": "welcome-governance",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "component-dialog-spec",
+      "viewport": "mobile-390x844",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__mobile-390x844.png",
+      "rawSha256": "a60aba8bccf90840de3f09f30f5c4de8169851845e25a79f6033ef9f896fce95",
+      "width": 390,
+      "height": 844,
+      "bytes": 63852,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "a60aba8bccf90840de3f09f30f5c4de8169851845e25a79f6033ef9f896fce95",
+            "bytes": 63852
+          },
+          {
+            "attempt": 2,
+            "sha256": "a60aba8bccf90840de3f09f30f5c4de8169851845e25a79f6033ef9f896fce95",
+            "bytes": 63852
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 16,
+        "y": 16,
+        "width": 358,
+        "height": 1736,
+        "top": 16,
+        "bottom": 1752
+      },
+      "currentDocNavItem": "dialog-spec-usage",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "pattern-aos-operations-standard",
+      "viewport": "mobile-390x844",
+      "page": "patterns.html",
+      "hash": "aos-operations-cockpit-standard",
+      "storyId": "aos-operations-cockpit-standard",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__mobile-390x844.png",
+      "rawSha256": "46c877fba215bb73682892cbc5d8c96f637d4071cf11b0242a21fadf179496a9",
+      "width": 390,
+      "height": 844,
+      "bytes": 91821,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "46c877fba215bb73682892cbc5d8c96f637d4071cf11b0242a21fadf179496a9",
+            "bytes": 91821
+          },
+          {
+            "attempt": 2,
+            "sha256": "46c877fba215bb73682892cbc5d8c96f637d4071cf11b0242a21fadf179496a9",
+            "bytes": 91821
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 16,
+        "y": 16,
+        "width": 358,
+        "height": 4788,
+        "top": 16,
+        "bottom": 4804
+      },
+      "currentDocNavItem": "aos-operations-cockpit-standard",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    },
+    {
+      "stateId": "proof-no-overclaim",
+      "viewport": "mobile-390x844",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__mobile-390x844.png",
+      "rawSha256": "c8fc3118715a7eb7b5919d413f3f8d9a74953eec86552ec18781bf016ac141c2",
+      "width": 390,
+      "height": 844,
+      "bytes": 55251,
+      "screenshotStability": {
+        "ok": true,
+        "requiredConsecutiveIdenticalHashes": 2,
+        "stableAtAttempt": 2,
+        "attempts": [
+          {
+            "attempt": 1,
+            "sha256": "c8fc3118715a7eb7b5919d413f3f8d9a74953eec86552ec18781bf016ac141c2",
+            "bytes": 55251
+          },
+          {
+            "attempt": 2,
+            "sha256": "c8fc3118715a7eb7b5919d413f3f8d9a74953eec86552ec18781bf016ac141c2",
+            "bytes": 55251
+          }
+        ]
+      },
+      "targetRect": {
+        "x": 16,
+        "y": 16,
+        "width": 358,
+        "height": 578,
+        "top": 16,
+        "bottom": 595
+      },
+      "currentDocNavItem": "proof-matrix",
+      "events": {
+        "consoleMessages": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "nonOkResponses": [],
+        "nonLoopbackRequests": []
+      },
+      "failures": []
+    }
+  ],
+  "failureArrays": {
+    "staticPageFailures": [],
+    "screenshotFailures": [],
+    "compareFailures": []
+  },
+  "noOverclaimReadback": {
+    "localVisualProofDisposition": "local_static_contract_docs_only",
+    "hostedVisualSaasDisposition": "deferred_not_admitted",
+    "ciGateDisposition": "not_admitted",
+    "storybookDocsPublicationDisposition": "not_published",
+    "packagePublicationDisposition": "not_published",
+    "consumerAdoptionDisposition": "not_claimed",
+    "releaseReadinessDisposition": "not_claimed",
+    "acceptanceStateDisposition": "not_mutated",
+    "componentLocalStoryGateDisposition": "not_admitted",
+    "hostedVisualSaas": false,
+    "ciGateAdmission": false,
+    "publicHostedSnapshotPublication": false,
+    "packagePublication": false,
+    "storybookDocsPublication": false,
+    "aosAdoption": false,
+    "tmsAdoption": false,
+    "releaseReadiness": false,
+    "productAcceptance": false,
+    "finalMvpAcceptance": false
+  },
+  "deferredBoundaries": [
+    "hosted_visual_saas",
+    "ci_gate_admission",
+    "public_hosted_snapshots",
+    "package_publication",
+    "storybook_docs_publication",
+    "aos_or_tms_adoption",
+    "release_readiness",
+    "acceptance_state_movement",
+    "component_local_story_gate",
+    "internal_overlay_lab_visual_coverage",
+    "dialog_popover_drawer_search_interaction_visual_states",
+    "all_36_story_visual_matrix",
+    "cross_browser_visual_proof"
+  ],
+  "playwrightVersion": "1.61.0",
+  "chromiumVersion": "149.0.7827.55",
+  "routeOwnedEphemeralServer": {
+    "origin": "http://127.0.0.1:<ephemeral>",
+    "loopbackOnly": true,
+    "retained": false,
+    "stoppedBeforeReturn": true
+  },
+  "baselineManifestHash": "8770e7d7113731c2f86eceb11fbee08ff05c6dd152af9f1404371da80b5775b4",
+  "compareFailures": [],
+  "comparisonReadbacks": []
+}

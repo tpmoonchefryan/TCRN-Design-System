@@ -15,11 +15,15 @@ const ignoredDirectories = new Set([
 
 const maxScanBytes = 1_000_000;
 const outputReceiptPath = "docs/verification/internal-alpha/no-overclaim-scan.json";
-const visualReceiptRoot = "docs/verification/internal-alpha/screenshots";
+const visualReceiptRoots = [
+  "docs/verification/internal-alpha/screenshots",
+  "docs/verification/storybook-visual-proof/screenshots"
+];
 const visualReceiptExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 
 function isBinaryVisualReceipt(path) {
-  return path.startsWith(`${visualReceiptRoot}/`) && visualReceiptExtensions.has(extname(path).toLowerCase());
+  return visualReceiptRoots.some((root) => path.startsWith(`${root}/`))
+    && visualReceiptExtensions.has(extname(path).toLowerCase());
 }
 
 function walk(directory, context) {

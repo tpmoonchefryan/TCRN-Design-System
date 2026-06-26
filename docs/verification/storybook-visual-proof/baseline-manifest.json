@@ -1,0 +1,271 @@
+{
+  "ok": true,
+  "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
+  "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
+  "sourceHead": "69a6171465cab16b6da43de21fa6c57416683aaf",
+  "sourceContentDigest": "fb819e9935f1a07a94a4c165dd4e6b2652ed3d7e6ce19c72da324bfd76dddfd0",
+  "baselineUpdateReason": "DSCVH-S005-initial-local-baseline",
+  "packageName": "@tcrn/design-system-workspace",
+  "staticPageAllowlist": [
+    "index.html",
+    "style-guide.html",
+    "foundations.html",
+    "components.html",
+    "patterns.html",
+    "proof.html",
+    "change-log.html",
+    "tcrn-brand-mark.svg"
+  ],
+  "visualStateAllowlist": [
+    {
+      "id": "docs-shell-overview",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "description": "Static docs shell overview after hash scroll."
+    },
+    {
+      "id": "component-dialog-spec",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "description": "Dialog specification static closed state only."
+    },
+    {
+      "id": "pattern-aos-operations-standard",
+      "page": "patterns.html",
+      "hash": "aos-operations-cockpit-standard",
+      "storyId": "aos-operations-cockpit-standard",
+      "description": "AOS operations cockpit standard after hash scroll."
+    },
+    {
+      "id": "proof-no-overclaim",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "description": "Proof matrix no-overclaim surface after hash scroll."
+    }
+  ],
+  "viewportMatrix": [
+    {
+      "id": "desktop-1440x900",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "tablet-1024x768",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "id": "mobile-390x844",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "deterministicBrowserSettings": {
+    "browser": "chromium",
+    "headless": true,
+    "deviceScaleFactor": 1,
+    "colorScheme": "light",
+    "reducedMotion": "reduce",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "fixedDateNow": "2026-01-01T00:00:00.000Z",
+    "chromiumArgs": [
+      "--disable-font-subpixel-positioning",
+      "--disable-lcd-text",
+      "--font-render-hinting=none",
+      "--force-color-profile=srgb"
+    ],
+    "viewportScreenshotsOnly": true,
+    "animations": "disabled",
+    "screenshotStability": "two_consecutive_identical_png_hashes_before_write_or_compare",
+    "routeOwnedLoopbackServer": "127.0.0.1:<ephemeral>"
+  },
+  "playwrightVersion": "1.61.0",
+  "chromiumVersion": "149.0.7827.55",
+  "noOverclaimReadback": {
+    "localVisualProofDisposition": "local_static_contract_docs_only",
+    "hostedVisualSaasDisposition": "deferred_not_admitted",
+    "ciGateDisposition": "not_admitted",
+    "storybookDocsPublicationDisposition": "not_published",
+    "packagePublicationDisposition": "not_published",
+    "consumerAdoptionDisposition": "not_claimed",
+    "releaseReadinessDisposition": "not_claimed",
+    "acceptanceStateDisposition": "not_mutated",
+    "componentLocalStoryGateDisposition": "not_admitted",
+    "hostedVisualSaas": false,
+    "ciGateAdmission": false,
+    "publicHostedSnapshotPublication": false,
+    "packagePublication": false,
+    "storybookDocsPublication": false,
+    "aosAdoption": false,
+    "tmsAdoption": false,
+    "releaseReadiness": false,
+    "productAcceptance": false,
+    "finalMvpAcceptance": false
+  },
+  "deferredBoundaries": [
+    "hosted_visual_saas",
+    "ci_gate_admission",
+    "public_hosted_snapshots",
+    "package_publication",
+    "storybook_docs_publication",
+    "aos_or_tms_adoption",
+    "release_readiness",
+    "acceptance_state_movement",
+    "component_local_story_gate",
+    "internal_overlay_lab_visual_coverage",
+    "dialog_popover_drawer_search_interaction_visual_states",
+    "all_36_story_visual_matrix",
+    "cross_browser_visual_proof"
+  ],
+  "entries": [
+    {
+      "stateId": "docs-shell-overview",
+      "viewport": "desktop-1440x900",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__desktop-1440x900.png",
+      "rawSha256": "1c5498e6336484a30470d899fc7e6403eaa85a7e070d44bdad471266dccf2360",
+      "width": 1440,
+      "height": 900,
+      "bytes": 299676
+    },
+    {
+      "stateId": "component-dialog-spec",
+      "viewport": "desktop-1440x900",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__desktop-1440x900.png",
+      "rawSha256": "fe6fc4d8aca2442486877ea11ee112d974c4b9deb72e23a72c23ba04fab28c63",
+      "width": 1440,
+      "height": 900,
+      "bytes": 404928
+    },
+    {
+      "stateId": "pattern-aos-operations-standard",
+      "viewport": "desktop-1440x900",
+      "page": "patterns.html",
+      "hash": "aos-operations-cockpit-standard",
+      "storyId": "aos-operations-cockpit-standard",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__desktop-1440x900.png",
+      "rawSha256": "f98c4d1809eccac5f8679906aeba364c2ef7ccab8bbd7637037e6cd94a58df79",
+      "width": 1440,
+      "height": 900,
+      "bytes": 402788
+    },
+    {
+      "stateId": "proof-no-overclaim",
+      "viewport": "desktop-1440x900",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__desktop-1440x900.png",
+      "rawSha256": "62536dc3964ce25052a73e028962da39fbfe878c30d816666f720b2d60dc29a1",
+      "width": 1440,
+      "height": 900,
+      "bytes": 250941
+    },
+    {
+      "stateId": "docs-shell-overview",
+      "viewport": "tablet-1024x768",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__tablet-1024x768.png",
+      "rawSha256": "0e5d2a8806246f52d05fc662097d98d8e1494bac4e923472591e0fcba9e1dc27",
+      "width": 1024,
+      "height": 768,
+      "bytes": 235046
+    },
+    {
+      "stateId": "component-dialog-spec",
+      "viewport": "tablet-1024x768",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__tablet-1024x768.png",
+      "rawSha256": "522d326b138984a53b22e897a4a9cf0427e0b411bed485b2944150a5aeaf720f",
+      "width": 1024,
+      "height": 768,
+      "bytes": 246563
+    },
+    {
+      "stateId": "pattern-aos-operations-standard",
+      "viewport": "tablet-1024x768",
+      "page": "patterns.html",
+      "hash": "aos-operations-cockpit-standard",
+      "storyId": "aos-operations-cockpit-standard",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__tablet-1024x768.png",
+      "rawSha256": "b7d1f39117f6d833666f298ad9f77ed2d39368974c9ca852ff70d09fcb45ed17",
+      "width": 1024,
+      "height": 768,
+      "bytes": 272895
+    },
+    {
+      "stateId": "proof-no-overclaim",
+      "viewport": "tablet-1024x768",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__tablet-1024x768.png",
+      "rawSha256": "5846c1a09919c4db45938efe982a817078d53eec461aa979da10cfaa93ecac45",
+      "width": 1024,
+      "height": 768,
+      "bytes": 204707
+    },
+    {
+      "stateId": "docs-shell-overview",
+      "viewport": "mobile-390x844",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__mobile-390x844.png",
+      "rawSha256": "f56d83617a90c8d690a7f60c0dc76b53791cb3cd2171ce61763463298c7a561f",
+      "width": 390,
+      "height": 844,
+      "bytes": 88166
+    },
+    {
+      "stateId": "component-dialog-spec",
+      "viewport": "mobile-390x844",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__mobile-390x844.png",
+      "rawSha256": "a60aba8bccf90840de3f09f30f5c4de8169851845e25a79f6033ef9f896fce95",
+      "width": 390,
+      "height": 844,
+      "bytes": 63852
+    },
+    {
+      "stateId": "pattern-aos-operations-standard",
+      "viewport": "mobile-390x844",
+      "page": "patterns.html",
+      "hash": "aos-operations-cockpit-standard",
+      "storyId": "aos-operations-cockpit-standard",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__mobile-390x844.png",
+      "rawSha256": "46c877fba215bb73682892cbc5d8c96f637d4071cf11b0242a21fadf179496a9",
+      "width": 390,
+      "height": 844,
+      "bytes": 91821
+    },
+    {
+      "stateId": "proof-no-overclaim",
+      "viewport": "mobile-390x844",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__mobile-390x844.png",
+      "rawSha256": "c8fc3118715a7eb7b5919d413f3f8d9a74953eec86552ec18781bf016ac141c2",
+      "width": 390,
+      "height": 844,
+      "bytes": 55251
+    }
+  ],
+  "baselineManifestHash": "8770e7d7113731c2f86eceb11fbee08ff05c6dd152af9f1404371da80b5775b4"
+}

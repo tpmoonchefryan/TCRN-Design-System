@@ -1,24 +1,40 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const outputRoot = "docs/verification/internal-alpha";
 mkdirSync(outputRoot, { recursive: true });
 
-const route = "route_tcrn_design_system_aos_served_surface_visual_standard_component_registration_authoring_after_f728e9c";
+const route = "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_verify_compat_repair_after_visual_proof_green_broad_verify_block";
+
+function collectSourceFiles(root) {
+  if (!existsSync(root)) {
+    throw new Error(`missing_source_root:${root}`);
+  }
+
+  const entries = readdirSync(root).flatMap((entry) => {
+    const path = join(root, entry);
+    const stats = statSync(path);
+    if (stats.isDirectory()) {
+      return collectSourceFiles(path);
+    }
+    return /\.(?:mjs|ts|tsx)$/.test(path) ? [path] : [];
+  });
+
+  return entries.sort();
+}
+
 const sourcePaths = [
-  "packages/ui-react/src/index.tsx",
-  "packages/ui-react/src/index.test.tsx",
-  "packages/ui-react/src/components/Navigation/Navigation.tsx",
-  "packages/ui-react/src/components/Form/Form.tsx",
-  "packages/ui-react/src/components/Button/Button.tsx",
+  ...collectSourceFiles("packages/ui-react/src"),
   "apps/storybook/src/stories.tsx",
   "apps/storybook/src/patterns.stories.tsx",
   "apps/storybook/src/build.tsx",
+  ...collectSourceFiles("apps/storybook/src/build"),
+  ...collectSourceFiles("apps/storybook/src/contract-stories"),
   "apps/storybook/src/smoke.test.ts",
   "scripts/internal-alpha-browser-proof.mjs",
   "scripts/package-contract-manifest.mjs"
-];
+].filter((path, index, paths) => paths.indexOf(path) === index);
 
 const requiredStandards = [
   {
@@ -112,32 +128,58 @@ const sourceReadback = sourcePaths.map((path) => ({
   sha256: sha256(sources[path]),
   bytes: Buffer.byteLength(sources[path], "utf8")
 }));
-const storySource = sources["apps/storybook/src/stories.tsx"];
+const compatibilityBarrelSource = sources["apps/storybook/src/stories.tsx"];
+const contractStorySources = Object.entries(sources)
+  .filter(([path]) => path.startsWith("apps/storybook/src/contract-stories/"))
+  .map(([, body]) => body)
+  .join("\n");
+const storyIdentitySource = [
+  compatibilityBarrelSource,
+  sources["apps/storybook/src/contract-stories/kernel.ts"],
+  sources["apps/storybook/src/contract-stories/story-content.tsx"],
+  ...Object.entries(sources)
+    .filter(([path]) => path.startsWith("apps/storybook/src/contract-stories/groups/"))
+    .map(([, body]) => body)
+].join("\n");
+const storyRenderSource = [
+  sources["apps/storybook/src/contract-stories/story-content.tsx"],
+  ...Object.entries(sources)
+    .filter(([path]) =>
+      path.startsWith("apps/storybook/src/contract-stories/content/")
+      || path.startsWith("apps/storybook/src/contract-stories/prototypes/")
+      || path.startsWith("apps/storybook/src/contract-stories/fixtures/")
+    )
+    .map(([, body]) => body)
+].join("\n");
 const patternsSource = sources["apps/storybook/src/patterns.stories.tsx"];
 const browserProofSource = sources["scripts/internal-alpha-browser-proof.mjs"];
 const packageSource = Object.keys(sources).filter(p => p.startsWith("packages/ui-react/src")).map(p => sources[p]).join("\n");
 const packageContractSource = sources["scripts/package-contract-manifest.mjs"];
+const staticBuildSource = Object.entries(sources)
+  .filter(([path]) => path === "apps/storybook/src/build.tsx" || path.startsWith("apps/storybook/src/build/"))
+  .map(([, body]) => body)
+  .join("\n");
 
 const standardReadback = requiredStandards.map((standard) => ({
   ...standard,
-  storyRegistered: storySource.includes(`id: "${standard.storyId}"`),
-  visualStandardMarkerPresent: storySource.includes(`data-aos-visual-standard-id="${standard.standardId}"`),
-  servedSurfaceMarkerPresent: storySource.includes(`data-aos-served-surface-standard="${standard.surface}"`),
+  storyRegistered: storyIdentitySource.includes(`id: "${standard.storyId}"`) && storyIdentitySource.includes(`selectStory("${standard.storyId}")`),
+  visualStandardMarkerPresent: storyRenderSource.includes(`data-aos-visual-standard-id="${standard.standardId}"`),
+  servedSurfaceMarkerPresent: storyRenderSource.includes(`data-aos-served-surface-standard="${standard.surface}"`),
   patternsExportPresent: patternsSource.includes(`renderContractStory("${standard.storyId}")`),
   browserProofRequired: browserProofSource.includes(`id: "${standard.storyId}"`) && browserProofSource.includes(`storybookId: "${standard.storybookId}"`),
-  localeMetadataPresent: sources["apps/storybook/src/build.tsx"].includes(`story.${standard.storyId}.title`)
+  localeMetadataPresent: staticBuildSource.includes(`story.${standard.storyId}.title`)
 }));
 
 const componentCoverage = requiredPackageComponents.map((component) => ({
   component,
   publicMetadataPresent: packageSource.includes(`"${component}"`) && packageContractSource.includes(`"${component}"`),
-  storybookStandardReferences: storySource.includes(component)
+  storybookStandardReferences: storyRenderSource.includes(component)
 }));
 
 const disabledReasonStandard = {
-  navItem: storySource.includes("NavItem") && storySource.includes("data-disabled-reason") && packageSource.includes("NavItemProps") && packageSource.includes("disabledReason?: string"),
-  actionControls: storySource.includes("Button, IconButton, LinkButton") && packageSource.includes("ButtonProps") && packageSource.includes("IconButtonProps") && packageSource.includes("LinkButtonProps"),
-  formControls: storySource.includes("Input, Textarea, Select, SearchInput, Checkbox")
+  navItem: storyRenderSource.includes("NavItem") && storyRenderSource.includes("data-disabled-reason") && packageSource.includes("NavItemProps") && packageSource.includes("disabledReason?: string"),
+  actionControls: storyRenderSource.includes("Button, IconButton, LinkButton") && packageSource.includes("ButtonProps") && packageSource.includes("IconButtonProps") && packageSource.includes("LinkButtonProps"),
+  formControls: storyRenderSource.includes("Input, Textarea, Select, SearchInput, Checkbox")
     && packageSource.includes("export interface InputProps")
     && packageSource.includes("export interface TextareaProps")
     && packageSource.includes("export interface SelectProps")
@@ -147,9 +189,9 @@ const disabledReasonStandard = {
 
 const exceptionReadback = exceptionRecords.map((record) => ({
   ...record,
-  recordedInStorySource: storySource.includes(record.id),
+  recordedInStorySource: storyRenderSource.includes(record.id),
   brandPrototypeBoundaryPresent: record.id === "aos-brand-lockup-product-specific"
-    ? storySource.includes("TcrnBrandMark, ProductLockup, and ShellBrandLockup remain Storybook-only prototypes")
+    ? storyRenderSource.includes("TcrnBrandMark, ProductLockup, and ShellBrandLockup remain Storybook-only prototypes")
     : true
 }));
 
@@ -161,7 +203,7 @@ const deepImportHits = allBodies.flatMap(([path, body]) => [
 const productSourceImportHits = allBodies.flatMap(([path, body]) => collectMatches(path, body, /from\s+["'][^"']*(?:TCRN-AOS|TCRN-TMS|apps\/web)[^"']*["']/g));
 const copiedSourceHits = allBodies.flatMap(([path, body]) => collectMatches(path, body, /TCRN-AOS\/apps\/web|aos\.cockpit\.service_read_model\.v1|owner-visible-vm-preview/g));
 const untrackedStylesheetHits = allBodies.flatMap(([path, body]) => collectMatches(path, body, /packages\/ui-react\/src\/styles\.css|ui-react\/src\/styles\.css/g));
-const broadExceptionHits = collectMatches("apps/storybook/src/stories.tsx", storySource, /broad exception|whole AOS shell|whole AOS visual system/gi);
+const broadExceptionHits = collectMatches("apps/storybook/src/contract-stories/**", contractStorySources, /broad exception|whole AOS shell|whole AOS visual system/gi);
 const userVisibleBodies = allBodies.filter(([path]) => !path.endsWith(".test.ts") && !path.endsWith(".test.tsx"));
 const forbiddenClaimHits = userVisibleBodies.flatMap(([path, body]) => collectMatches(path, body, /\b(product accepted|final mvp accepted|release ready|deployment ready|public ready|legal complete|dependency clean|live dispatch enabled)\b/gi));
 

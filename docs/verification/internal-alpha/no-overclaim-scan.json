@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "scannedFiles": 116,
+  "scannedFiles": 155,
   "skippedFiles": [],
   "binaryVisualReceiptExclusions": [
     {
@@ -521,6 +521,54 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-workbench-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__desktop-1440x900.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__mobile-390x844.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__tablet-1024x768.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__desktop-1440x900.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__mobile-390x844.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__tablet-1024x768.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__desktop-1440x900.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__mobile-390x844.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__tablet-1024x768.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__desktop-1440x900.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__mobile-390x844.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__tablet-1024x768.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     }
   ],

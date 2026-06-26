@@ -45,6 +45,25 @@ test("scan command records binary visual receipts without failing text scan", ()
   assert.equal(receipt.binaryVisualReceiptExclusions.length, 1);
 });
 
+test("scan command records Storybook visual proof binary receipts without failing text scan", () => {
+  const root = mkdtempSync(join(tmpdir(), "tcrn-scan-storybook-visual-receipt-"));
+  const screenshotDir = join(root, "docs/verification/storybook-visual-proof/screenshots/baseline");
+  mkdirSync(screenshotDir, { recursive: true });
+  writeFileSync(join(screenshotDir, "docs-shell-overview__desktop-1440x900.png"), "x".repeat(1_000_001));
+
+  const result = spawnSync(process.execPath, [scanScript], {
+    cwd: root,
+    encoding: "utf8"
+  });
+
+  assert.equal(result.status, 0);
+  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.hits.length, 0);
+  assert.equal(receipt.skippedFiles.length, 0);
+  assert.equal(receipt.binaryVisualReceiptExclusions.length, 1);
+});
+
 test("receipt exit helper fails closed when negative fixture checks fail", () => {
   const receipt = {
     ok: false,
