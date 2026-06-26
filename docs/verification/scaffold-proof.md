@@ -37,7 +37,7 @@ Status: passed
 - Forbidden public-output scan passed: true
 - Package names: `@tcrn/ui-tokens`, `@tcrn/ui-copy-state`, `@tcrn/ui-react`
 - Lockfile present: true
-- Local ignored static contract surface present: false
+- Local ignored static contract surface present: true
 - Required files present: 15/15
 - Required directories present: 9/9
 

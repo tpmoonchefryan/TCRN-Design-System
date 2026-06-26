@@ -117,7 +117,7 @@
     {
       "path": "packages/ui-react/src/index.tsx",
       "exists": true,
-      "sha256": "dc24c3c266cc169241a88415130597895fd0c29a2ce8eaf3ebf5538eb47c9148"
+      "sha256": "99977f341bb77be45798e39d923d742b8a2ccf271711c9395575c827d5d9e04c"
     },
     {
       "path": "apps/storybook/src/stories.tsx",
@@ -174,7 +174,7 @@
     }
   ],
   "lockfileExists": true,
-  "storybookHtmlExists": false,
+  "storybookHtmlExists": true,
   "routeLocalNoOverclaim": {
     "githubPushPerformedByThisRoute": false,
     "githubReleaseCreatedByThisRoute": false,

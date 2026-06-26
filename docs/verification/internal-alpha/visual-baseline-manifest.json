@@ -918,7 +918,7 @@
       "storyId": "overlay-focus-open-dialog",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-overlay-focus-open-dialog.png",
-      "sha256": "ae6b1675b1bf01d59f2b1bf0204f0a16cca0a78a5fa033eee0a4f9936632b084",
+      "sha256": "bae5f81410a46a64aafdb17653ca8f3879bf16980bb7fcc0aa62fd79adf97b82",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     }
   ]

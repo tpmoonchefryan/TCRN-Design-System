@@ -9,6 +9,9 @@ const route = "route_tcrn_design_system_aos_served_surface_visual_standard_compo
 const sourcePaths = [
   "packages/ui-react/src/index.tsx",
   "packages/ui-react/src/index.test.tsx",
+  "packages/ui-react/src/components/Navigation/Navigation.tsx",
+  "packages/ui-react/src/components/Form/Form.tsx",
+  "packages/ui-react/src/components/Button/Button.tsx",
   "apps/storybook/src/stories.tsx",
   "apps/storybook/src/patterns.stories.tsx",
   "apps/storybook/src/build.tsx",
@@ -112,7 +115,7 @@ const sourceReadback = sourcePaths.map((path) => ({
 const storySource = sources["apps/storybook/src/stories.tsx"];
 const patternsSource = sources["apps/storybook/src/patterns.stories.tsx"];
 const browserProofSource = sources["scripts/internal-alpha-browser-proof.mjs"];
-const packageSource = sources["packages/ui-react/src/index.tsx"];
+const packageSource = Object.keys(sources).filter(p => p.startsWith("packages/ui-react/src")).map(p => sources[p]).join("\n");
 const packageContractSource = sources["scripts/package-contract-manifest.mjs"];
 
 const standardReadback = requiredStandards.map((standard) => ({

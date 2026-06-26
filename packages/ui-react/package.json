@@ -18,6 +18,8 @@
     "react": "^18.3.0 || ^19.0.0"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "1.1.17",
+    "@radix-ui/react-popover": "1.1.17",
     "@tcrn/ui-copy-state": "workspace:*",
     "@tcrn/ui-tokens": "workspace:*",
     "lucide-react": "1.21.0"
@@ -28,6 +30,6 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --test dist/index.test.js"
+    "test": "node --test \"dist/**/*.test.js\""
   }
 }
