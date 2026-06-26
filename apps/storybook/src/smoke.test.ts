@@ -4,6 +4,16 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
 import alphaMeta from "./alpha.stories.js";
+import {
+  i18nText,
+  localeText,
+  storybookContentText,
+  storybookLocaleText
+} from "./build/i18n.js";
+import {
+  storybookContentText as extractedStorybookContentText,
+  storybookLocaleText as extractedStorybookLocaleText
+} from "./build/locales/index.js";
 import changeLogMeta from "./change-log.stories.js";
 import componentsMeta from "./components.stories.js";
 import foundationsMeta from "./foundations.stories.js";
@@ -121,6 +131,14 @@ test("static contract story surface is retained and synthetic", () => {
   ]);
   assert.equal(contractStories.some((story) => story.id.includes("overlay-family-lab")), false);
   assert.equal(contractStoryGroups.some((group) => group.includes("Internal")), false);
+  assert.equal(storybookLocaleText, extractedStorybookLocaleText);
+  assert.equal(storybookContentText, extractedStorybookContentText);
+  assert.equal(localeText("shell.title"), "TCRN Design System Contract Stories");
+  assert.equal(localeText("shell.title", "zh-CN"), "TCRN 设计系统契约故事");
+  assert.equal(localeText("missing.storybook.copy.key"), "missing.storybook.copy.key");
+  assert.equal(storybookContentText["Design System"].en, "Design System");
+  assert.equal(storybookContentText["Design System"]["zh-CN"], "设计系统");
+  assert.match(i18nText("shell.title"), /data-i18n="shell.title"/);
   assert.doesNotMatch(combinedHtml, /data-internal-dev-surface="overlay-family-lab"/);
   assert.doesNotMatch(combinedHtml, /data-contract-docs="excluded"/);
   assert.doesNotMatch(combinedHtml, /Internal\/Overlay family lab/);
