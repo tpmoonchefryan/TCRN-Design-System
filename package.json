@@ -22,6 +22,7 @@
     "storybook:vercel-build": "pnpm public-docs:vercel-build",
     "public-docs:vercel-build": "pnpm --filter @tcrn/ui-tokens build && pnpm --filter @tcrn/ui-copy-state build && pnpm --filter @tcrn/ui-react build && pnpm --filter @tcrn/design-system-storybook static-docs:build && pnpm public-output:scan",
     "storybook:smoke": "node scripts/storybook-smoke.mjs",
+    "test:dom": "pnpm --filter @tcrn/ui-react test:dom",
     "test": "pnpm --filter @tcrn/ui-tokens test && pnpm --filter @tcrn/ui-copy-state test && pnpm --filter @tcrn/ui-react test && pnpm --filter @tcrn/design-system-storybook test && pnpm --filter @tcrn/tms-react-pilot test && pnpm --filter @tcrn/aos-token-copy-state-pilot test",
     "typecheck": "tsc -b --pretty false",
     "verify": "pnpm typecheck && pnpm build && pnpm test && pnpm exports:check && pnpm pack:smoke && pnpm storybook:smoke && pnpm public-output:scan && pnpm scan && pnpm scaffold:proof && pnpm internal-alpha:proof"

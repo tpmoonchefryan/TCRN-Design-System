@@ -25,11 +25,15 @@
     "lucide-react": "1.21.0"
   },
   "devDependencies": {
+    "@types/jsdom": "21.1.7",
+    "jsdom": "26.1.0",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --test \"dist/**/*.test.js\""
+    "test": "pnpm test:ssr",
+    "test:dom": "pnpm build && node --test \"dist/test/**/*.dom.spec.js\"",
+    "test:ssr": "node --test \"dist/**/*.test.js\""
   }
 }
