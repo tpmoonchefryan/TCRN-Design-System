@@ -270,8 +270,8 @@
     },
     {
       "path": "scripts/package-contract-manifest.mjs",
-      "sha256": "a1a7e678d22f803ae578aa56b6166d8913ff5ae8e899cb855552da9857c39d14",
-      "bytes": 13197
+      "sha256": "241f5d650e14de0fc3eb6f7c266a84f8ab5c605a2898e77344e083e76a217b0e",
+      "bytes": 13208
     }
   ],
   "failures": []

@@ -11,7 +11,7 @@
     },
     {
       "license": "Apache-2.0",
-      "packageCount": 8,
+      "packageCount": 9,
       "packageNames": [
         "@playwright/test",
         "aria-query",
@@ -20,23 +20,27 @@
         "doctrine",
         "playwright",
         "playwright-core",
-        "typescript"
+        "typescript",
+        "xml-name-validator"
       ]
     },
     {
       "license": "BSD-2-Clause",
-      "packageCount": 2,
+      "packageCount": 4,
       "packageNames": [
+        "entities",
         "esprima",
-        "esutils"
+        "esutils",
+        "webidl-conversions"
       ]
     },
     {
       "license": "BSD-3-Clause",
-      "packageCount": 2,
+      "packageCount": 3,
       "packageNames": [
         "source-map",
-        "source-map-js"
+        "source-map-js",
+        "tough-cookie"
       ]
     },
     {
@@ -59,21 +63,23 @@
     },
     {
       "license": "ISC",
-      "packageCount": 6,
+      "packageCount": 7,
       "packageNames": [
         "electron-to-chromium",
         "lru-cache",
         "lucide-react",
         "picocolors",
+        "saxes",
         "semver",
         "yallist"
       ]
     },
     {
       "license": "MIT",
-      "packageCount": 178,
+      "packageCount": 209,
       "packageNames": [
         "@adobe/css-tools",
+        "@asamuzakjp/css-color",
         "@babel/code-frame",
         "@babel/compat-data",
         "@babel/core",
@@ -91,6 +97,10 @@
         "@babel/template",
         "@babel/traverse",
         "@babel/types",
+        "@csstools/css-calc",
+        "@csstools/css-color-parser",
+        "@csstools/css-parser-algorithms",
+        "@csstools/css-tokenizer",
         "@esbuild/darwin-arm64",
         "@floating-ui/core",
         "@floating-ui/dom",
@@ -150,16 +160,19 @@
         "@types/deep-eql",
         "@types/doctrine",
         "@types/estree",
+        "@types/jsdom",
         "@types/node",
         "@types/react",
         "@types/react-dom",
         "@types/resolve",
+        "@types/tough-cookie",
         "@vitest/expect",
         "@vitest/pretty-format",
         "@vitest/spy",
         "@vitest/utils",
         "@webcontainer/env",
         "acorn",
+        "agent-base",
         "ansi-regex",
         "ansi-styles",
         "aria-hidden",
@@ -173,8 +186,11 @@
         "check-error",
         "convert-source-map",
         "css.escape",
+        "cssstyle",
         "csstype",
+        "data-urls",
         "debug",
+        "decimal.js",
         "deep-eql",
         "default-browser",
         "default-browser-id",
@@ -193,12 +209,18 @@
         "gensync",
         "get-nonce",
         "hasown",
+        "html-encoding-sniffer",
+        "http-proxy-agent",
+        "https-proxy-agent",
+        "iconv-lite",
         "indent-string",
         "is-core-module",
         "is-docker",
         "is-inside-container",
+        "is-potential-custom-element-name",
         "is-wsl",
         "js-tokens",
+        "jsdom",
         "jsesc",
         "json5",
         "loupe",
@@ -209,14 +231,17 @@
         "ms",
         "nanoid",
         "node-releases",
+        "nwsapi",
         "open",
         "oxc-parser",
         "oxc-resolver",
+        "parse5",
         "path-parse",
         "pathval",
         "picomatch",
         "postcss",
         "pretty-format",
+        "punycode",
         "react",
         "react-docgen",
         "react-docgen-typescript",
@@ -229,16 +254,22 @@
         "redent",
         "resolve",
         "rolldown",
+        "rrweb-cssom",
         "run-applescript",
+        "safer-buffer",
         "scheduler",
         "storybook",
         "strip-bom",
         "strip-indent",
         "supports-preserve-symlinks-flag",
+        "symbol-tree",
         "tiny-invariant",
         "tinyglobby",
         "tinyrainbow",
         "tinyspy",
+        "tldts",
+        "tldts-core",
+        "tr46",
         "ts-dedent",
         "tsconfig-paths",
         "undici-types",
@@ -248,9 +279,21 @@
         "use-sidecar",
         "use-sync-external-store",
         "vite",
+        "w3c-xmlserializer",
         "webpack-virtual-modules",
+        "whatwg-encoding",
+        "whatwg-mimetype",
+        "whatwg-url",
         "ws",
-        "wsl-utils"
+        "wsl-utils",
+        "xmlchars"
+      ]
+    },
+    {
+      "license": "MIT-0",
+      "packageCount": 1,
+      "packageNames": [
+        "@csstools/color-helpers"
       ]
     },
     {
