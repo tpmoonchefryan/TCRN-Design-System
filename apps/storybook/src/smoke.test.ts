@@ -1,10 +1,76 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
+import alphaMeta from "./alpha.stories.js";
+import changeLogMeta from "./change-log.stories.js";
+import componentsMeta from "./components.stories.js";
+import foundationsMeta from "./foundations.stories.js";
+import patternsMeta from "./patterns.stories.js";
+import proofMeta from "./proof.stories.js";
+import styleGuideMeta from "./style-guide.stories.js";
 import { contractStories, contractStoryGroups } from "./stories.js";
 import type { ContractStoryGroup } from "./stories.js";
+
+const expectedContractStoryGroups: readonly ContractStoryGroup[] = [
+  "Welcome",
+  "Style Guide",
+  "Foundations",
+  "Components",
+  "Patterns",
+  "Proof",
+  "Change Log"
+];
+
+const expectedContractStoryIds = [
+  "welcome-governance",
+  "governance-boundaries",
+  "maintainers-routing",
+  "contribution-model",
+  "release-bug-policy",
+  "brand-identity",
+  "color-palette",
+  "text-styles",
+  "grid-system",
+  "icons-motion",
+  "global-states",
+  "copy-creation-rules",
+  "tokens-copy-state",
+  "i18n-theme-contract",
+  "copy-guidelines",
+  "component-family-index",
+  "button-spec-usage",
+  "field-spec-usage",
+  "navigation-shell-spec",
+  "dialog-spec-usage",
+  "table-work-index-spec",
+  "forms-patterns",
+  "workbench-patterns",
+  "readiness-notification-patterns",
+  "selection-list-patterns",
+  "modal-validation-patterns",
+  "datagrid-fields-patterns",
+  "big-list-search-patterns",
+  "dashboard-page-templates",
+  "aos-operations-cockpit-standard",
+  "aos-docs-readiness-standard",
+  "aos-product-design-target-set-standard",
+  "proof-matrix",
+  "blocked-actions",
+  "overlay-focus",
+  "local-changelog"
+];
+
+const expectedRootAdapterTitles = [
+  "TCRN Design System/Welcome",
+  "TCRN Design System/Style Guide",
+  "TCRN Design System/Foundations",
+  "TCRN Design System/Components",
+  "TCRN Design System/Patterns",
+  "TCRN Design System/Proof",
+  "TCRN Design System/Change Log"
+];
 
 function groupSlug(group: ContractStoryGroup): string {
   return group.toLowerCase().replace(/\s+/g, "-");
@@ -26,9 +92,39 @@ function readNavGroupOrder(html: string): string[] {
   return Array.from(html.matchAll(/data-doc-nav-group="([^"]+)"/g), (match) => match[1]);
 }
 
+function readInternalLabSource(): string {
+  const internalLabDir = join(process.cwd(), "src", "internal-dev", "overlay-family-lab");
+  return readdirSync(internalLabDir)
+    .filter((fileName) => fileName.endsWith(".ts") || fileName.endsWith(".tsx"))
+    .map((fileName) => readFileSync(join(internalLabDir, fileName), "utf8"))
+    .join("\n");
+}
+
 test("static contract story surface is retained and synthetic", () => {
   const pages = contractStoryGroups.map((group) => ({ group, html: readGroupPage(group) }));
   const combinedHtml = pages.map((page) => page.html).join("\n");
+  assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
+  assert.equal(contractStories.length, 36);
+  assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
+  assert.deepEqual(
+    [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
+    expectedRootAdapterTitles
+  );
+  assert.deepEqual(pages.map((page) => groupFileName(page.group)), [
+    "index.html",
+    "style-guide.html",
+    "foundations.html",
+    "components.html",
+    "patterns.html",
+    "proof.html",
+    "change-log.html"
+  ]);
+  assert.equal(contractStories.some((story) => story.id.includes("overlay-family-lab")), false);
+  assert.equal(contractStoryGroups.some((group) => group.includes("Internal")), false);
+  assert.doesNotMatch(combinedHtml, /data-internal-dev-surface="overlay-family-lab"/);
+  assert.doesNotMatch(combinedHtml, /data-contract-docs="excluded"/);
+  assert.doesNotMatch(combinedHtml, /Internal\/Overlay family lab/);
+  assert.doesNotMatch(combinedHtml, /data-storybook-contract-truth="not-authoritative"/);
   assert.match(combinedHtml, /data-doc-shell="online-docs"/);
   assert.doesNotMatch(combinedHtml, /data-doc-global-nav="sections"/);
   assert.doesNotMatch(combinedHtml, /data-doc-global-nav-item="/);
@@ -218,6 +314,19 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-menu-density="command-center"/);
   assert.match(readGroupPage("Components"), /data-shell-width="edge-to-edge"/);
   assert.match(readGroupPage("Components"), /data-shell-topbar="edge-to-edge"/);
+  const internalLabSource = readInternalLabSource();
+  assert.match(internalLabSource, /title: "Internal\/Overlay family lab"/);
+  assert.match(internalLabSource, /data-internal-dev-surface/);
+  assert.match(internalLabSource, /data-contract-docs/);
+  assert.match(internalLabSource, /data-storybook-contract-truth/);
+  assert.match(internalLabSource, /data-package-publication/);
+  assert.match(internalLabSource, /data-storybook-docs-publication/);
+  assert.match(internalLabSource, /data-consumer-adoption/);
+  assert.match(internalLabSource, /data-release-readiness/);
+  assert.match(internalLabSource, /data-acceptance-state/);
+  assert.match(internalLabSource, /from "@tcrn\/ui-react"/);
+  assert.doesNotMatch(internalLabSource, /packages\/ui-react\/src/);
+  assert.doesNotMatch(internalLabSource, /@tcrn\/ui-react\//);
   assert.match(readGroupPage("Components"), /data-icon-only-menu="true"/);
   assert.match(readGroupPage("Components"), /data-primary-nav-capacity="10-plus"/);
   assert.match(readGroupPage("Components"), /data-primary-nav-count="12"/);
