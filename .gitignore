@@ -7,6 +7,7 @@ coverage/
 *.log
 *.tsbuildinfo
 .DS_Store
+gemini_chats
 
 # Generated visual proof artifacts; regenerate locally with pnpm internal-alpha:browser-proof.
 docs/verification/internal-alpha/screenshots/
