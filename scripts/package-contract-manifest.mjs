@@ -24,6 +24,7 @@ const publicUiReactComponentExports = [
   "Icon",
   "IconButton",
   "LinkButton",
+  "ClipboardCopyButton",
   "Field",
   "Input",
   "Textarea",

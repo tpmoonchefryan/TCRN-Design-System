@@ -17,6 +17,12 @@ names supporting public utilities, while `componentLibraryDeferredPrototypeNames
 names Storybook-only proof surfaces that must not be read as component-library
 exports, package publication, or product adoption claims.
 
+`ClipboardCopyButton` is a restricted package-backed button action. It requires
+explicit native button activation, writes only through `navigator.clipboard.writeText`,
+fails closed when the Clipboard API is unavailable, and reports only local copy
+state enums through callbacks. Copied text must remain product-approved input and
+is never returned by the component through callbacks or DOM attributes.
+
 ## Icon Library Boundary
 
 `Icon` is the package-backed icon primitive. It wraps the curated Lucide icon set

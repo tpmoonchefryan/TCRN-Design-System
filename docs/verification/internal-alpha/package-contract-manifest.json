@@ -23,6 +23,10 @@
         "exported": true
       },
       {
+        "name": "ClipboardCopyButton",
+        "exported": true
+      },
+      {
         "name": "Field",
         "exported": true
       },
@@ -293,6 +297,15 @@
       },
       {
         "storybookItem": "LinkButton",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ClipboardCopyButton",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",

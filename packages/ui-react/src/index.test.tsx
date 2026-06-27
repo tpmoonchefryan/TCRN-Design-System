@@ -12,6 +12,7 @@ test("component-library metadata names public components, utilities, and deferre
     "Icon",
     "IconButton",
     "LinkButton",
+    "ClipboardCopyButton",
     "Field",
     "Input",
     "Textarea",

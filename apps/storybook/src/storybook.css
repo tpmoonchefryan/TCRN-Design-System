@@ -5,6 +5,10 @@
   --tcrn-color-surface-canvas: #f6f7fb;
   --tcrn-color-surface-panel: #ffffff;
   --tcrn-color-surface-muted: #edf4f7;
+  --tcrn-color-neutral-calibration-canvas: #f5f5f5;
+  --tcrn-color-neutral-calibration-panel: #fcfcfc;
+  --tcrn-color-neutral-calibration-muted: #eeeeee;
+  --tcrn-color-neutral-calibration-border: #808080;
   --tcrn-color-border-subtle: #d7e0e8;
   --tcrn-color-border-strong: #b8c8d6;
   --tcrn-color-brand-teal: #2f8fa3;
@@ -17,12 +21,20 @@
   --tcrn-color-brand-neutral: #536579;
   --tcrn-color-brand-neutral-bg: #edf4f7;
   --tcrn-color-focus-ring: #5865d8;
+  --tcrn-color-focus-ring-calibrated: #0056a4;
+  --tcrn-color-progress-track-calibrated: #eeeeee;
+  --tcrn-color-progress-fill-start-calibrated: #2784d5;
+  --tcrn-color-progress-fill-end-calibrated: #6363c6;
   --tcrn-color-state-ready: #147a46;
   --tcrn-color-state-ready-bg: #dff7ea;
   --tcrn-color-state-blocked: #ad211c;
   --tcrn-color-state-blocked-bg: #ffe7e3;
   --tcrn-color-state-warning: #7a4e00;
   --tcrn-color-state-warning-bg: #fff1d6;
+  --tcrn-color-state-warning-calibrated: #604200;
+  --tcrn-color-state-warning-calibrated-bg: #fde1a7;
+  --tcrn-color-state-danger-calibrated: #742e2b;
+  --tcrn-color-state-danger-calibrated-bg: #ffd1ca;
   --tcrn-type-family-ui: Inter, Avenir Next, Helvetica Neue, Arial, sans-serif;
   --tcrn-type-family-latin: Inter, Avenir Next, Helvetica Neue, Arial, sans-serif;
   --tcrn-type-family-distributable-latin: Inter, sans-serif;
@@ -35,12 +47,14 @@
   --tcrn-type-family-ko: Apple SD Gothic Neo, Malgun Gothic, Noto Sans CJK KR, Source Han Sans KR, sans-serif;
   --tcrn-type-family-mono: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
   --tcrn-type-size-ui: 13px;
+  --tcrn-type-size-reading: 14px;
   --tcrn-type-size-caption: 11px;
   --tcrn-type-size-body: 13px;
   --tcrn-type-size-control: 13px;
   --tcrn-type-size-section: 18px;
   --tcrn-type-size-page: 28px;
   --tcrn-type-line-ui: 1.35;
+  --tcrn-type-line-reading: 1.45;
   --tcrn-type-line-caption: 1.35;
   --tcrn-type-line-body: 1.45;
   --tcrn-type-line-control: 1.2;
@@ -49,6 +63,8 @@
   --tcrn-type-weight-regular: 400;
   --tcrn-type-weight-medium: 600;
   --tcrn-type-weight-strong: 700;
+  --tcrn-text-body-dense: var(--tcrn-type-weight-regular) var(--tcrn-type-size-ui)/var(--tcrn-type-line-ui) var(--tcrn-type-family-ui);
+  --tcrn-text-body-reading: var(--tcrn-type-weight-regular) var(--tcrn-type-size-reading)/var(--tcrn-type-line-reading) var(--tcrn-type-family-ui);
   --tcrn-space-2: 8px;
   --tcrn-space-4: 16px;
   --tcrn-radius-control: 5px;
@@ -72,6 +88,10 @@
   --tcrn-color-surface-canvas: #121a2a;
   --tcrn-color-surface-panel: #182437;
   --tcrn-color-surface-muted: #223149;
+  --tcrn-color-neutral-calibration-canvas: #161616;
+  --tcrn-color-neutral-calibration-panel: #222222;
+  --tcrn-color-neutral-calibration-muted: #2f2f2f;
+  --tcrn-color-neutral-calibration-border: #808080;
   --tcrn-color-border-subtle: #344963;
   --tcrn-color-border-strong: #5f7894;
   --tcrn-color-brand-teal: #79d1da;
@@ -84,12 +104,20 @@
   --tcrn-color-brand-neutral: #b7c3ce;
   --tcrn-color-brand-neutral-bg: #223149;
   --tcrn-color-focus-ring: #b5baff;
+  --tcrn-color-focus-ring-calibrated: #5cb3ff;
+  --tcrn-color-progress-track-calibrated: #222222;
+  --tcrn-color-progress-fill-start-calibrated: #2784d5;
+  --tcrn-color-progress-fill-end-calibrated: #8d92f9;
   --tcrn-color-state-ready: #6dd69a;
   --tcrn-color-state-ready-bg: #123a2a;
   --tcrn-color-state-blocked: #ff8a7f;
   --tcrn-color-state-blocked-bg: #4a1d1b;
   --tcrn-color-state-warning: #ffd27a;
   --tcrn-color-state-warning-bg: #3f2f12;
+  --tcrn-color-state-warning-calibrated: #604200;
+  --tcrn-color-state-warning-calibrated-bg: #fde1a7;
+  --tcrn-color-state-danger-calibrated: #742e2b;
+  --tcrn-color-state-danger-calibrated-bg: #ffd1ca;
   --tcrn-elevation-focus: 0 0 0 3px rgba(181, 186, 255, 0.24);
 }
 
@@ -457,6 +485,8 @@ label {
 
 .tcrn-type-scale-demo__page,
 .tcrn-type-scale-demo__section,
+.tcrn-type-scale-demo__dense,
+.tcrn-type-scale-demo__reading,
 .tcrn-type-scale-demo__body,
 .tcrn-type-scale-demo__caption,
 .tcrn-type-scale-demo__code {
@@ -481,6 +511,16 @@ label {
   font-size: var(--tcrn-type-size-body);
   line-height: var(--tcrn-type-line-body);
   font-weight: var(--tcrn-type-weight-regular);
+}
+
+.tcrn-type-scale-demo__dense {
+  color: var(--tcrn-color-text-secondary);
+  font: var(--tcrn-text-body-dense);
+}
+
+.tcrn-type-scale-demo__reading {
+  color: var(--tcrn-color-text-primary);
+  font: var(--tcrn-text-body-reading);
 }
 
 .tcrn-type-scale-demo__caption {

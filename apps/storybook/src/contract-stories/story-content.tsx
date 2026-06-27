@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Breadcrumb,
+  ClipboardCopyButton,
   componentLibraryDeferredPrototypeNames,
   componentLibraryPublicComponentNames,
   componentLibraryPublicUtilityNames,
@@ -338,6 +339,31 @@ const legacyContractStories: ContractStory[] = [
             ]}
           />
         </ReadbackPanel>
+        <ReadbackPanel title="Neutral calibration candidates">
+          <Text>Owner review admitted a narrow neutral-gray calibration token set as package-backed evidence only. These tokens do not replace the current canvas, panel, state, progress, or focus defaults without a separate component adoption route.</Text>
+          <div className="tcrn-token-swatch-grid">
+            <TokenSwatch label="Neutral canvas" token="--tcrn-color-neutral-calibration-canvas" note="Measured neutral gray canvas candidate; no blue/purple surface tint." />
+            <TokenSwatch label="Neutral panel" token="--tcrn-color-neutral-calibration-panel" note="Measured neutral panel candidate for future proofed surfaces." />
+            <TokenSwatch label="Neutral muted" token="--tcrn-color-neutral-calibration-muted" note="Muted neutral fill and progress track candidate." />
+            <TokenSwatch label="Calibrated focus" token="--tcrn-color-focus-ring-calibrated" note="Solid focus-ring candidate; records contrast without suppressing focus." />
+            <TokenSwatch label="Warning calibrated" token="--tcrn-color-state-warning-calibrated-bg" note="Measured warning pair; always use with warning text and copy." />
+            <TokenSwatch label="Danger calibrated" token="--tcrn-color-state-danger-calibrated-bg" note="Measured danger pair; always use with danger text and copy." />
+          </div>
+          <TableShell
+            columns={[
+              { key: "role", label: "Role" },
+              { key: "token", label: "Token" },
+              { key: "guardrail", label: "Guardrail" }
+            ]}
+            rows={[
+              { role: "Neutral surfaces", token: "--tcrn-color-neutral-calibration-*", guardrail: "Keeps page/card/sidebar/header backgrounds gray; not an automatic theme replacement." },
+              { role: "Focus", token: "--tcrn-color-focus-ring-calibrated", guardrail: "Solid contrast candidate only; never hide focus or rely on glow alone." },
+              { role: "Progress", token: "--tcrn-color-progress-*-calibrated", guardrail: "Visual evidence token only; pair progress with accessible status copy." },
+              { role: "Warning", token: "--tcrn-color-state-warning-calibrated-*", guardrail: "Use only with warning semantics and readable text." },
+              { role: "Danger", token: "--tcrn-color-state-danger-calibrated-*", guardrail: "Use only with destructive or blocking semantics and readable text." }
+            ]}
+          />
+        </ReadbackPanel>
         <ReadbackPanel title="Theme parity">
           <Text>Light and dark themes must keep the same semantic token names. A dark override changes values only; it must not fork component behavior or readiness copy.</Text>
         </ReadbackPanel>
@@ -449,6 +475,8 @@ const legacyContractStories: ContractStory[] = [
             rows={[
               { token: "Page title", size: "28px / 1.3 / 700", usage: "One page title per route or documentation page." },
               { token: "Section title", size: "18px / 1.25 / 700", usage: "Story titles, major panels, and route sections." },
+              { token: "Dense UI body", size: "13px / 1.35 / 400", usage: "Tables, navigation, controls, and operational scanning remain dense." },
+              { token: "Reading body", size: "14px / 1.45 / 400", usage: "Proof-gated explanatory copy and prose only; not auto-applied to dense UI." },
               { token: "Body copy", size: "13px / 1.45 / 400", usage: "Rules, descriptions, table cells, and proof notes." },
               { token: "Control text", size: "13px / 1.2 / 600", usage: "Buttons, tabs, labels, and compact control text." },
               { token: "Caption", size: "11px / 1.35 / 600", usage: "Metadata, helper text, and evidence strip context." },
@@ -458,6 +486,8 @@ const legacyContractStories: ContractStory[] = [
           <div className="tcrn-type-scale-demo" aria-label="Type scale specimen">
             <p className="tcrn-type-scale-demo__page">Page title / 28px</p>
             <p className="tcrn-type-scale-demo__section">Section title / 18px</p>
+            <p className="tcrn-type-scale-demo__dense">Dense UI body / 13px remains the default for operational scanning.</p>
+            <p className="tcrn-type-scale-demo__reading">Reading body / 14px is reserved for proof-gated explanatory copy.</p>
             <p className="tcrn-type-scale-demo__body">Body copy / 13px keeps dense product surfaces readable without becoming tiny.</p>
             <p className="tcrn-type-scale-demo__caption">Caption / 11px is reserved for metadata and helper context.</p>
             <code className="tcrn-type-scale-demo__code">--tcrn-type-family-mono</code>
@@ -908,7 +938,7 @@ const legacyContractStories: ContractStory[] = [
       <section className="alpha-story-stack">
         <ReadbackPanel title="Owner-approved first batch">
           <Text>
-            This contract story documents only the first approved Gemini candidate batch: inline highlight text, loading skeletons, and presentation-only state surfaces. Interaction disclosure primitives are documented separately; clipboard, masking, animated counters, DataGrid, query builder, and command palette remain deferred or rejected.
+            This contract story documents only the first approved Gemini candidate batch: inline highlight text, loading skeletons, and presentation-only state surfaces. Interaction disclosure and clipboard primitives are documented separately; masking, animated counters, DataGrid, query builder, and command palette remain deferred or rejected.
           </Text>
           <EvidenceStrip items={["owner review completed", "package-backed primitives", "Storybook evidence only", "consumer adoption separate"]} />
         </ReadbackPanel>
@@ -963,7 +993,7 @@ const legacyContractStories: ContractStory[] = [
       <section className="alpha-story-stack">
         <ReadbackPanel title="Owner-approved second batch">
           <Text>
-            This contract story documents only the second approved Gemini candidate batch: supplemental, non-interactive Tooltip and controlled DisclosurePanel/CollapsibleRegion primitives. Clipboard, form shake validation, masking, animated counters, DataGrid, query builder, and command palette remain deferred or rejected.
+            This contract story documents only the second approved Gemini candidate batch: supplemental, non-interactive Tooltip and controlled DisclosurePanel/CollapsibleRegion primitives. Clipboard is documented in the button/action story; form shake validation, masking, animated counters, DataGrid, query builder, and command palette remain deferred or rejected.
           </Text>
           <EvidenceStrip items={["owner review completed", "a11y constrained", "package-backed primitives", "consumer adoption separate"]} />
         </ReadbackPanel>
@@ -1041,6 +1071,29 @@ const legacyContractStories: ContractStory[] = [
             <Button disabled disabledReason="Requires owning route approval">Apply</Button>
             <Button>Focus target</Button>
           </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="Clipboard copy action">
+          <Text>ClipboardCopyButton is a package-backed button action for explicitly copying product-approved values without exposing the copied payload through callbacks, DOM attributes, logs, or Storybook claims.</Text>
+          <div className="tcrn-action-row">
+            <ClipboardCopyButton text="synthetic-trace-id-042" ariaLabel="Copy trace ID" idleLabel="Copy trace ID" />
+            <ClipboardCopyButton
+              text="synthetic-secret-hidden-from-dom"
+              ariaLabel="Copy restricted value"
+              idleLabel="Copy restricted value"
+              disabledReason="Requires product-owned copy permission"
+            />
+          </div>
+          <TableShell
+            columns={[
+              { key: "rule", label: "Rule" },
+              { key: "blocked", label: "Blocked" }
+            ]}
+            rows={[
+              { rule: "Uses native button semantics and explicit click or keyboard activation", blocked: "Wrapper spans, hover, mount, timer, or implicit copying" },
+              { rule: "Writes with navigator.clipboard.writeText when available", blocked: "Clipboard reads or document.execCommand fallback" },
+              { rule: "Reports only idle/copying/copied/failed/unsupported states", blocked: "Callbacks, DOM attributes, or telemetry that include copied text" }
+            ]}
+          />
         </ReadbackPanel>
       </section>
     )

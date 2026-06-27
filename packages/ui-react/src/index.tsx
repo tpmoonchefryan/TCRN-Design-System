@@ -3,6 +3,7 @@ export const componentLibraryPublicComponentNames = [
   "Icon",
   "IconButton",
   "LinkButton",
+  "ClipboardCopyButton",
   "Field",
   "Input",
   "Textarea",
@@ -75,6 +76,7 @@ export type ComponentLibraryDeferredPrototypeName = (typeof componentLibraryDefe
 
 export * from "./components/Icon/index.js";
 export * from "./components/Button/index.js";
+export * from "./components/Clipboard/index.js";
 export * from "./components/Typography/index.js";
 export * from "./components/Form/index.js";
 export * from "./components/Feedback/index.js";

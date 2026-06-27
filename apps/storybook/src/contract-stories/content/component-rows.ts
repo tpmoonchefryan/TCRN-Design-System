@@ -1,7 +1,7 @@
 import type { WorkIndexRow } from "@tcrn/ui-react";
 
 export const componentStoryRows: WorkIndexRow[] = [
-  { id: "button", title: "Button", state: { state: "local_only" }, owner: "ui-react" },
+  { id: "button", title: "Button and clipboard action", state: { state: "local_only" }, owner: "ui-react" },
   { id: "display-primitives", title: "Display primitives", state: { state: "local_only" }, owner: "ui-react" },
   { id: "interaction-disclosure", title: "Interaction disclosure primitives", state: { state: "local_only" }, owner: "ui-react" },
   { id: "field", title: "Field", state: { state: "proof_required" }, owner: "ui-react" },
@@ -12,7 +12,7 @@ export const componentStoryRows: WorkIndexRow[] = [
 ];
 
 export const componentFamilyRows = [
-  { family: "Actions", components: "Button, IconButton, LinkButton", scope: "Commands and blocked owner actions", status: "Component library available" },
+  { family: "Actions", components: "Button, IconButton, LinkButton, ClipboardCopyButton", scope: "Commands, blocked owner actions, and explicit clipboard writes", status: "Component library available" },
   { family: "Iconography", components: "Icon, tcrnIconNames", scope: "Functional iconography routed through the TCRN wrapper", status: "Component library available; not brand marks" },
   { family: "Forms", components: "Field, Input, Textarea, SearchInput, Select, Checkbox", scope: "Persistent labels, hint/error wiring, disabled reasons, and localized input ergonomics", status: "Component library available" },
   { family: "Navigation", components: "TopBar, SideNav, NavGroup, NavItem, Breadcrumb, ModuleTabs, SectionTabs, SegmentedNav, ProductSwitcher, Pagination, SkipLink", scope: "Product orientation, side navigation, local section movement, and skip access", status: "Component library available; full shells remain prototypes" },

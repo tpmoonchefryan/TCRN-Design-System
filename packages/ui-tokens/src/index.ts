@@ -70,6 +70,34 @@ export const tcrnTokens = [
     description: "Subtle background for badges, disabled controls, and proof chips."
   },
   {
+    name: "color.neutralCalibration.canvas",
+    variable: "--tcrn-color-neutral-calibration-canvas",
+    value: "#f5f5f5",
+    group: "color",
+    description: "Owner-approved neutral gray calibration canvas for future measured surface work; not auto-applied."
+  },
+  {
+    name: "color.neutralCalibration.panel",
+    variable: "--tcrn-color-neutral-calibration-panel",
+    value: "#fcfcfc",
+    group: "color",
+    description: "Owner-approved neutral gray calibration panel for future measured surface work; not auto-applied."
+  },
+  {
+    name: "color.neutralCalibration.muted",
+    variable: "--tcrn-color-neutral-calibration-muted",
+    value: "#eeeeee",
+    group: "color",
+    description: "Owner-approved neutral gray calibration muted surface and progress track; not auto-applied."
+  },
+  {
+    name: "color.neutralCalibration.border",
+    variable: "--tcrn-color-neutral-calibration-border",
+    value: "#808080",
+    group: "color",
+    description: "Measured neutral calibration boundary for contrast-proofed small surfaces; not a default border replacement."
+  },
+  {
     name: "color.border.subtle",
     variable: "--tcrn-color-border-subtle",
     value: "#d7e0e8",
@@ -154,6 +182,34 @@ export const tcrnTokens = [
     description: "Visible focus outline for keyboard navigation."
   },
   {
+    name: "color.focus.ring.calibrated",
+    variable: "--tcrn-color-focus-ring-calibrated",
+    value: "#0056a4",
+    group: "color",
+    description: "Measured solid focus ring candidate for neutral calibration surfaces; preserves visible focus and is not auto-applied."
+  },
+  {
+    name: "color.progress.track.calibrated",
+    variable: "--tcrn-color-progress-track-calibrated",
+    value: "#eeeeee",
+    group: "color",
+    description: "Measured neutral progress track for local visual calibration evidence."
+  },
+  {
+    name: "color.progress.fill.start.calibrated",
+    variable: "--tcrn-color-progress-fill-start-calibrated",
+    value: "#2784d5",
+    group: "color",
+    description: "Measured progress fill start for local visual calibration evidence."
+  },
+  {
+    name: "color.progress.fill.end.calibrated",
+    variable: "--tcrn-color-progress-fill-end-calibrated",
+    value: "#6363c6",
+    group: "color",
+    description: "Measured progress fill end for local visual calibration evidence."
+  },
+  {
     name: "color.state.ready",
     variable: "--tcrn-color-state-ready",
     value: "#147a46",
@@ -194,6 +250,34 @@ export const tcrnTokens = [
     value: "#fff1d6",
     group: "color",
     description: "Evidence required or pending proof background."
+  },
+  {
+    name: "color.state.warning.calibrated",
+    variable: "--tcrn-color-state-warning-calibrated",
+    value: "#604200",
+    group: "color",
+    description: "Measured warning foreground candidate for calibrated state surfaces; not auto-applied."
+  },
+  {
+    name: "color.state.warning.calibrated.bg",
+    variable: "--tcrn-color-state-warning-calibrated-bg",
+    value: "#fde1a7",
+    group: "color",
+    description: "Measured warning background candidate for calibrated state surfaces; not auto-applied."
+  },
+  {
+    name: "color.state.danger.calibrated",
+    variable: "--tcrn-color-state-danger-calibrated",
+    value: "#742e2b",
+    group: "color",
+    description: "Measured danger foreground candidate for calibrated state surfaces; not auto-applied."
+  },
+  {
+    name: "color.state.danger.calibrated.bg",
+    variable: "--tcrn-color-state-danger-calibrated-bg",
+    value: "#ffd1ca",
+    group: "color",
+    description: "Measured danger background candidate for calibrated state surfaces; not auto-applied."
   },
   {
     name: "typography.family.ui",
@@ -280,6 +364,13 @@ export const tcrnTokens = [
     description: "Default dense UI text size."
   },
   {
+    name: "typography.size.reading",
+    variable: "--tcrn-type-size-reading",
+    value: "14px",
+    group: "typography",
+    description: "Readable prose text role size for proof-gated explanatory copy; not auto-applied to dense UI."
+  },
+  {
     name: "typography.size.caption",
     variable: "--tcrn-type-size-caption",
     value: "11px",
@@ -320,6 +411,13 @@ export const tcrnTokens = [
     value: "1.35",
     group: "typography",
     description: "Default UI line height."
+  },
+  {
+    name: "typography.line.reading",
+    variable: "--tcrn-type-line-reading",
+    value: "1.45",
+    group: "typography",
+    description: "Readable prose text role line height for proof-gated explanatory copy."
   },
   {
     name: "typography.line.caption",
@@ -376,6 +474,20 @@ export const tcrnTokens = [
     value: "700",
     group: "typography",
     description: "Section and page heading weight."
+  },
+  {
+    name: "typography.role.bodyDense",
+    variable: "--tcrn-text-body-dense",
+    value: "var(--tcrn-type-weight-regular) var(--tcrn-type-size-ui)/var(--tcrn-type-line-ui) var(--tcrn-type-family-ui)",
+    group: "typography",
+    description: "Composite dense UI body role; preserves 13px operational surfaces."
+  },
+  {
+    name: "typography.role.bodyReading",
+    variable: "--tcrn-text-body-reading",
+    value: "var(--tcrn-type-weight-regular) var(--tcrn-type-size-reading)/var(--tcrn-type-line-reading) var(--tcrn-type-family-ui)",
+    group: "typography",
+    description: "Composite readable prose role for proof-gated explanatory copy; not auto-applied."
   },
   {
     name: "space.2",
@@ -505,6 +617,10 @@ export const tcrnDarkThemeTokens = [
   { variable: "--tcrn-color-surface-canvas", value: "#121a2a", description: "Dark-mode deep navy canvas." },
   { variable: "--tcrn-color-surface-panel", value: "#182437", description: "Dark-mode blue-gray panel surface." },
   { variable: "--tcrn-color-surface-muted", value: "#223149", description: "Dark-mode cool muted surface." },
+  { variable: "--tcrn-color-neutral-calibration-canvas", value: "#161616", description: "Dark-mode neutral calibration canvas." },
+  { variable: "--tcrn-color-neutral-calibration-panel", value: "#222222", description: "Dark-mode neutral calibration panel." },
+  { variable: "--tcrn-color-neutral-calibration-muted", value: "#2f2f2f", description: "Dark-mode neutral calibration muted surface." },
+  { variable: "--tcrn-color-neutral-calibration-border", value: "#808080", description: "Dark-mode neutral calibration boundary." },
   { variable: "--tcrn-color-border-subtle", value: "#344963", description: "Dark-mode low-emphasis blue-gray boundary." },
   { variable: "--tcrn-color-border-strong", value: "#5f7894", description: "Dark-mode control boundary." },
   { variable: "--tcrn-color-brand-teal", value: "#79d1da", description: "Dark-mode legacy aqua support accent." },
@@ -517,12 +633,20 @@ export const tcrnDarkThemeTokens = [
   { variable: "--tcrn-color-brand-neutral", value: "#b7c3ce", description: "Dark-mode neutral support color." },
   { variable: "--tcrn-color-brand-neutral-bg", value: "#223149", description: "Dark-mode neutral support background." },
   { variable: "--tcrn-color-focus-ring", value: "#b5baff", description: "Dark-mode keyboard focus outline." },
+  { variable: "--tcrn-color-focus-ring-calibrated", value: "#5cb3ff", description: "Dark-mode measured solid focus ring candidate." },
+  { variable: "--tcrn-color-progress-track-calibrated", value: "#222222", description: "Dark-mode measured progress track." },
+  { variable: "--tcrn-color-progress-fill-start-calibrated", value: "#2784d5", description: "Dark-mode measured progress fill start." },
+  { variable: "--tcrn-color-progress-fill-end-calibrated", value: "#8d92f9", description: "Dark-mode measured progress fill end." },
   { variable: "--tcrn-color-state-ready", value: "#6dd69a", description: "Dark-mode ready foreground." },
   { variable: "--tcrn-color-state-ready-bg", value: "#123a2a", description: "Dark-mode ready background." },
   { variable: "--tcrn-color-state-blocked", value: "#ff8a7f", description: "Dark-mode blocked foreground." },
   { variable: "--tcrn-color-state-blocked-bg", value: "#4a1d1b", description: "Dark-mode blocked background." },
   { variable: "--tcrn-color-state-warning", value: "#ffd27a", description: "Dark-mode warning foreground." },
   { variable: "--tcrn-color-state-warning-bg", value: "#3f2f12", description: "Dark-mode warning background." },
+  { variable: "--tcrn-color-state-warning-calibrated", value: "#604200", description: "Dark-mode measured warning foreground candidate." },
+  { variable: "--tcrn-color-state-warning-calibrated-bg", value: "#fde1a7", description: "Dark-mode measured warning background candidate." },
+  { variable: "--tcrn-color-state-danger-calibrated", value: "#742e2b", description: "Dark-mode measured danger foreground candidate." },
+  { variable: "--tcrn-color-state-danger-calibrated-bg", value: "#ffd1ca", description: "Dark-mode measured danger background candidate." },
   { variable: "--tcrn-elevation-focus", value: "0 0 0 3px rgba(181, 186, 255, 0.24)", description: "Dark-mode accessible focus halo." }
 ] as const satisfies readonly ThemeTokenOverride[];
 

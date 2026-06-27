@@ -239,13 +239,13 @@
           "id": "color-palette",
           "visible": true,
           "width": 1077,
-          "height": 1480
+          "height": 2188
         },
         {
           "id": "text-styles",
           "visible": true,
           "width": 1077,
-          "height": 1711
+          "height": 1878
         },
         {
           "id": "grid-system",
@@ -471,7 +471,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 4567
+          "height": 4631
         },
         {
           "id": "display-primitives-spec",
@@ -483,13 +483,13 @@
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 1077,
-          "height": 941
+          "height": 958
         },
         {
           "id": "button-spec-usage",
           "visible": true,
           "width": 1077,
-          "height": 316
+          "height": 630
         },
         {
           "id": "field-spec-usage",
@@ -513,7 +513,7 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 1077,
-          "height": 1682
+          "height": 1692
         }
       ],
       "clipped": [],
@@ -923,13 +923,13 @@
           "id": "color-palette",
           "visible": true,
           "width": 691,
-          "height": 1753
+          "height": 2677
         },
         {
           "id": "text-styles",
           "visible": true,
           "width": 691,
-          "height": 2079
+          "height": 2282
         },
         {
           "id": "grid-system",
@@ -1155,7 +1155,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 5023
+          "height": 5087
         },
         {
           "id": "display-primitives-spec",
@@ -1173,7 +1173,7 @@
           "id": "button-spec-usage",
           "visible": true,
           "width": 691,
-          "height": 316
+          "height": 683
         },
         {
           "id": "field-spec-usage",
@@ -1197,7 +1197,7 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 691,
-          "height": 2033
+          "height": 2043
         }
       ],
       "clipped": [],
@@ -1607,13 +1607,13 @@
           "id": "color-palette",
           "visible": true,
           "width": 358,
-          "height": 3144
+          "height": 4828
         },
         {
           "id": "text-styles",
           "visible": true,
           "width": 358,
-          "height": 3554
+          "height": 3902
         },
         {
           "id": "grid-system",
@@ -1839,7 +1839,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 10946
+          "height": 11083
         },
         {
           "id": "display-primitives-spec",
@@ -1851,13 +1851,13 @@
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 358,
-          "height": 1525
+          "height": 1542
         },
         {
           "id": "button-spec-usage",
           "visible": true,
           "width": 358,
-          "height": 394
+          "height": 1003
         },
         {
           "id": "field-spec-usage",
