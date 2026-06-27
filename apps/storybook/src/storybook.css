@@ -149,6 +149,7 @@ select:focus-visible,
 .tcrn-gate-readiness-panel,
 .tcrn-state-view,
 .tcrn-state-surface,
+.tcrn-disclosure-panel,
 .tcrn-inline-alert,
 .tcrn-popover,
 .tcrn-dialog,
@@ -876,10 +877,151 @@ label {
   align-items: stretch;
 }
 
+.tcrn-interaction-primitive-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.tcrn-interaction-primitive-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: start;
+}
+
+.tcrn-inline-proof-token {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-color-surface-muted);
+  padding: 0 10px;
+  font-family: var(--tcrn-font-family-mono);
+  font-size: 12px;
+}
+
+.tcrn-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.tcrn-tooltip__content {
+  position: absolute;
+  z-index: var(--tcrn-z-popover);
+  pointer-events: none;
+  width: max-content;
+  max-width: min(260px, calc(100vw - 32px));
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-surface-panel);
+  padding: 6px 8px;
+  font-size: 12px;
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--tcrn-motion-standard), transform var(--tcrn-motion-standard);
+  box-shadow: 0 10px 24px rgba(12, 22, 34, 0.18);
+}
+
+.tcrn-tooltip:hover .tcrn-tooltip__content,
+.tcrn-tooltip:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tcrn-tooltip[data-placement="top"] .tcrn-tooltip__content {
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translate(-50%, 4px);
+}
+
+.tcrn-tooltip[data-placement="top"]:hover .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="top"]:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="top"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
+  transform: translate(-50%, 0);
+}
+
+.tcrn-tooltip[data-placement="bottom"] .tcrn-tooltip__content {
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translate(-50%, -4px);
+}
+
+.tcrn-tooltip[data-placement="bottom"]:hover .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="bottom"]:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="bottom"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
+  transform: translate(-50%, 0);
+}
+
+.tcrn-tooltip[data-placement="right"] .tcrn-tooltip__content {
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translate(-4px, -50%);
+}
+
+.tcrn-tooltip[data-placement="right"]:hover .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="right"]:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="right"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
+  transform: translate(0, -50%);
+}
+
+.tcrn-tooltip[data-placement="left"] .tcrn-tooltip__content {
+  top: 50%;
+  right: calc(100% + 8px);
+  transform: translate(4px, -50%);
+}
+
+.tcrn-tooltip[data-placement="left"]:hover .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="left"]:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="left"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
+  transform: translate(0, -50%);
+}
+
+.tcrn-collapsible-region {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0.4;
+  transition: grid-template-rows var(--tcrn-motion-emphasis), opacity var(--tcrn-motion-standard);
+}
+
+.tcrn-collapsible-region[data-expanded="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.tcrn-collapsible-region[aria-hidden="true"] {
+  visibility: hidden;
+}
+
+.tcrn-collapsible-region__inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.tcrn-disclosure-panel {
+  display: grid;
+  gap: 8px;
+}
+
+.tcrn-disclosure-panel__title {
+  margin: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tcrn-skeleton::after {
     animation: none;
     opacity: 0;
+  }
+
+  .tcrn-tooltip__content,
+  .tcrn-collapsible-region {
+    transition: none;
   }
 }
 

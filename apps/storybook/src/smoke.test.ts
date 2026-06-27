@@ -51,6 +51,7 @@ const expectedContractStoryIds = [
   "copy-guidelines",
   "component-family-index",
   "display-primitives-spec",
+  "interaction-disclosure-spec",
   "button-spec-usage",
   "field-spec-usage",
   "navigation-shell-spec",
@@ -112,7 +113,7 @@ test("static contract story surface is retained and synthetic", () => {
   const pages = contractStoryGroups.map((group) => ({ group, html: readGroupPage(group) }));
   const combinedHtml = pages.map((page) => page.html).join("\n");
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
-  assert.equal(contractStories.length, 34);
+  assert.equal(contractStories.length, 35);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
   assert.deepEqual(
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),

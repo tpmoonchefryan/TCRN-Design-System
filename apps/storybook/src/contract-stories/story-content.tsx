@@ -8,8 +8,10 @@ import {
   componentLibraryPublicUtilityNames,
   ConfirmActionDialog,
   ActionDrawer,
+  CollapsibleRegion,
   DetailDrawer,
   DetailInspector,
+  DisclosurePanel,
   Dialog,
   EnvironmentBanner,
   EvidenceStrip,
@@ -46,6 +48,7 @@ import {
   Textarea,
   TopBar,
   tcrnIconNames,
+  Tooltip,
   WorkIndex
 } from "@tcrn/ui-react";
 import {
@@ -905,7 +908,7 @@ const legacyContractStories: ContractStory[] = [
       <section className="alpha-story-stack">
         <ReadbackPanel title="Owner-approved first batch">
           <Text>
-            This contract story documents only the first approved Gemini candidate batch: inline highlight text, loading skeletons, and presentation-only state surfaces. Tooltip, clipboard, masking, animated counters, disclosure, DataGrid, query builder, and command palette remain deferred or rejected.
+            This contract story documents only the first approved Gemini candidate batch: inline highlight text, loading skeletons, and presentation-only state surfaces. Interaction disclosure primitives are documented separately; clipboard, masking, animated counters, DataGrid, query builder, and command palette remain deferred or rejected.
           </Text>
           <EvidenceStrip items={["owner review completed", "package-backed primitives", "Storybook evidence only", "consumer adoption separate"]} />
         </ReadbackPanel>
@@ -947,6 +950,72 @@ const legacyContractStories: ContractStory[] = [
         </ReadbackPanel>
         <InlineAlert tone="warning">
           These primitives do not implement React ErrorBoundary wrappers, telemetry, product error policy, publication, package release, or product adoption.
+        </InlineAlert>
+      </section>
+    )
+  },
+  {
+    id: "interaction-disclosure-spec",
+    title: "Interaction disclosure spec",
+    group: "Components",
+    description: "Owner-approved second-batch primitives for supplemental tooltips and controlled disclosure regions.",
+    render: () => (
+      <section className="alpha-story-stack">
+        <ReadbackPanel title="Owner-approved second batch">
+          <Text>
+            This contract story documents only the second approved Gemini candidate batch: supplemental, non-interactive Tooltip and controlled DisclosurePanel/CollapsibleRegion primitives. Clipboard, form shake validation, masking, animated counters, DataGrid, query builder, and command palette remain deferred or rejected.
+          </Text>
+          <EvidenceStrip items={["owner review completed", "a11y constrained", "package-backed primitives", "consumer adoption separate"]} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Tooltip">
+          <div className="tcrn-interaction-primitive-row">
+            <Tooltip content="Supplemental detail only; visible labels stay required." placement="right" data-storybook-static-tooltip="true">
+              <Button>Inspect route</Button>
+            </Tooltip>
+            <Tooltip content="Tooltip content is text-only and non-interactive." placement="top">
+              <span className="tcrn-inline-proof-token" tabIndex={0}>proof token</span>
+            </Tooltip>
+          </div>
+          <TableShell
+            columns={[
+              { key: "rule", label: "Rule" },
+              { key: "blocked", label: "Blocked" }
+            ]}
+            rows={[
+              { rule: "Adds supplemental aria-describedby copy", blocked: "Tooltip as the only label" },
+              { rule: "Text-only, non-interactive content", blocked: "Buttons, links, forms, or menus inside tooltip" },
+              { rule: "Hover and focus reveal only", blocked: "Mobile long-press or tap interaction claim" }
+            ]}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Disclosure">
+          <div className="tcrn-interaction-primitive-grid">
+            <DisclosurePanel expanded title="Expanded controlled region">
+              <Text>Products own the trigger and state. The package primitive owns the region animation and hidden-content semantics.</Text>
+              <Button>Focusable only while expanded</Button>
+            </DisclosurePanel>
+            <DisclosurePanel expanded={false} title="Collapsed controlled region">
+              <Text>Collapsed content is aria-hidden and inert; ordinary tab navigation must not enter it.</Text>
+              <Button>Hidden action</Button>
+            </DisclosurePanel>
+            <CollapsibleRegion expanded>
+              <Text>Low-level collapsible regions may be used when a visible title is owned by surrounding product copy.</Text>
+            </CollapsibleRegion>
+          </div>
+          <TableShell
+            columns={[
+              { key: "rule", label: "Rule" },
+              { key: "blocked", label: "Blocked" }
+            ]}
+            rows={[
+              { rule: "Controlled by expanded prop", blocked: "Package-owned route state" },
+              { rule: "Collapsed content records aria-hidden and inert", blocked: "Tabbable hidden controls" },
+              { rule: "Reduced motion snaps open or closed", blocked: "Motion as comprehension requirement" }
+            ]}
+          />
+        </ReadbackPanel>
+        <InlineAlert tone="warning">
+          These primitives do not implement Accordion semantics, drawers, clipboard, sensitive-data masking, product filtering, log viewing, publication, package release, or product adoption.
         </InlineAlert>
       </section>
     )

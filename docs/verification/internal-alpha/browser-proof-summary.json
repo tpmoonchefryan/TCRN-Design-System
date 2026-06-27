@@ -79,7 +79,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -172,7 +172,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -298,7 +298,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -354,6 +354,7 @@
       "expectedStoryIds": [
         "component-family-index",
         "display-primitives-spec",
+        "interaction-disclosure-spec",
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
@@ -368,7 +369,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -470,13 +471,19 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 4363
+          "height": 4567
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 1077,
           "height": 909
+        },
+        {
+          "id": "interaction-disclosure-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 941
         },
         {
           "id": "button-spec-usage",
@@ -506,7 +513,7 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 1077,
-          "height": 1626
+          "height": 1682
         }
       ],
       "clipped": [],
@@ -540,7 +547,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -636,7 +643,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -700,7 +707,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -756,7 +763,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -849,7 +856,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -975,7 +982,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1031,6 +1038,7 @@
       "expectedStoryIds": [
         "component-family-index",
         "display-primitives-spec",
+        "interaction-disclosure-spec",
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
@@ -1045,7 +1053,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1147,13 +1155,19 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 4784
+          "height": 5023
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 691,
-          "height": 1062
+          "height": 1079
+        },
+        {
+          "id": "interaction-disclosure-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1054
         },
         {
           "id": "button-spec-usage",
@@ -1183,7 +1197,7 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 691,
-          "height": 1977
+          "height": 2033
         }
       ],
       "clipped": [],
@@ -1217,7 +1231,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1313,7 +1327,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1377,7 +1391,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1433,7 +1447,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1526,7 +1540,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1652,7 +1666,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1708,6 +1722,7 @@
       "expectedStoryIds": [
         "component-family-index",
         "display-primitives-spec",
+        "interaction-disclosure-spec",
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
@@ -1722,7 +1737,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1824,13 +1839,19 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 10399
+          "height": 10946
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 358,
-          "height": 1762
+          "height": 1779
+        },
+        {
+          "id": "interaction-disclosure-spec",
+          "visible": true,
+          "width": 358,
+          "height": 1525
         },
         {
           "id": "button-spec-usage",
@@ -1860,7 +1881,7 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 358,
-          "height": 4044
+          "height": 4164
         }
       ],
       "clipped": [],
@@ -1894,7 +1915,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1990,7 +2011,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -2054,7 +2075,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 34,
+      "docNavItemCount": 35,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,

@@ -27,6 +27,8 @@ export const componentLibraryPublicComponentNames = [
   "Heading",
   "Surface",
   "Divider",
+  "CollapsibleRegion",
+  "DisclosurePanel",
   "KeyValueList",
   "FilterBar",
   "TableShell",
@@ -46,6 +48,7 @@ export const componentLibraryPublicComponentNames = [
   "SkipLink",
   "DetailDrawer",
   "ActionDrawer",
+  "Tooltip",
   "Popover",
   "Dialog",
   "ConfirmActionDialog"

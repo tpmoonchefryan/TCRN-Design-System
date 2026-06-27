@@ -119,6 +119,14 @@
         "exported": true
       },
       {
+        "name": "CollapsibleRegion",
+        "exported": true
+      },
+      {
+        "name": "DisclosurePanel",
+        "exported": true
+      },
+      {
         "name": "KeyValueList",
         "exported": true
       },
@@ -192,6 +200,10 @@
       },
       {
         "name": "ActionDrawer",
+        "exported": true
+      },
+      {
+        "name": "Tooltip",
         "exported": true
       },
       {
@@ -505,6 +517,24 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "CollapsibleRegion",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "DisclosurePanel",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "KeyValueList",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -668,6 +698,15 @@
       },
       {
         "storybookItem": "ActionDrawer",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Tooltip",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",

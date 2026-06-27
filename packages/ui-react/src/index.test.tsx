@@ -36,6 +36,8 @@ test("component-library metadata names public components, utilities, and deferre
     "Heading",
     "Surface",
     "Divider",
+    "CollapsibleRegion",
+    "DisclosurePanel",
     "KeyValueList",
     "FilterBar",
     "TableShell",
@@ -55,6 +57,7 @@ test("component-library metadata names public components, utilities, and deferre
     "SkipLink",
     "DetailDrawer",
     "ActionDrawer",
+    "Tooltip",
     "Popover",
     "Dialog",
     "ConfirmActionDialog"

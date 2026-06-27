@@ -1,8 +1,8 @@
-import type { ReactNode, RefObject } from "react";
-import { useEffect, useId, useRef } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode, RefObject } from "react";
+import { cloneElement, useEffect, useId, useRef } from "react";
 import { Heading, Text } from "../Typography/index.js";
 import { Button } from "../Button/index.js";
-import { cx } from "../../utils.js";
+import { childPropsOf, cx, mergeIds, requiredText } from "../../utils.js";
 
 export interface DrawerProps {
   title: string;
@@ -31,6 +31,37 @@ export function ActionDrawer({ title, open, children }: DrawerProps) {
 }
 
 export type PopoverPlacement = "bottom-start" | "bottom-end" | "top-start" | "top-end";
+export type TooltipPlacement = "top" | "right" | "bottom" | "left";
+
+export interface TooltipProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children" | "content"> {
+  content: string;
+  children: ReactElement<Record<string, unknown>>;
+  placement?: TooltipPlacement;
+}
+
+export function Tooltip({ content, children, placement = "top", className, ...props }: TooltipProps) {
+  const tooltipId = useId();
+  const childProps = childPropsOf(children);
+  const trigger = {
+    ...childProps,
+    "aria-describedby": mergeIds(childProps["aria-describedby"] as string | undefined, tooltipId)
+  };
+
+  return (
+    <span
+      {...props}
+      className={cx("tcrn-tooltip", className)}
+      data-tooltip-scope="supplemental"
+      data-tooltip-interactive-content="forbidden"
+      data-placement={placement}
+    >
+      {cloneElement(children, trigger)}
+      <span id={tooltipId} role="tooltip" className="tcrn-tooltip__content">
+        {requiredText(content, "Supplemental information unavailable")}
+      </span>
+    </span>
+  );
+}
 
 export interface PopoverProps {
   title: string;

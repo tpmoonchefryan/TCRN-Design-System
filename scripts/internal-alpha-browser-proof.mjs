@@ -29,6 +29,7 @@ const requiredStories = [
   { id: "copy-guidelines", group: "Foundations", storybookId: "tcrn-design-system-foundations--copy-guidelines" },
   { id: "component-family-index", group: "Components", storybookId: "tcrn-design-system-components--component-family-index" },
   { id: "display-primitives-spec", group: "Components", storybookId: "tcrn-design-system-components--display-primitives-spec" },
+  { id: "interaction-disclosure-spec", group: "Components", storybookId: "tcrn-design-system-components--interaction-disclosure-spec" },
   { id: "button-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--button-spec-usage" },
   { id: "field-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--field-spec-usage" },
   { id: "navigation-shell-spec", group: "Components", storybookId: "tcrn-design-system-components--navigation-shell-spec" },

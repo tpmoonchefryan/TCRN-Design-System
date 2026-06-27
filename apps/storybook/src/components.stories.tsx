@@ -31,6 +31,11 @@ export const DisplayPrimitivesSpec: Story = {
   render: () => renderContractStory("display-primitives-spec")
 };
 
+export const InteractionDisclosureSpec: Story = {
+  name: "Interaction disclosure spec",
+  render: () => renderContractStory("interaction-disclosure-spec")
+};
+
 export const ButtonSpecUsage: Story = {
   name: "Button spec and usage",
   render: () => renderContractStory("button-spec-usage")

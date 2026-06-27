@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DetailDrawer, Popover, Dialog, ConfirmActionDialog } from "./Overlay.js";
+import { DetailDrawer, Popover, Dialog, ConfirmActionDialog, Tooltip } from "./Overlay.js";
 
 test("overlay primitives separate structural drawers from scoped dialog capabilities", () => {
   const html = renderToStaticMarkup(
@@ -94,4 +94,33 @@ test("dialog capability metadata is gated on provided close and return support",
   assert.match(staticDialog, /data-escape-close="requires-on-open-change"/);
   assert.match(staticDialog, /data-focus-return="requires-trigger-ref"/);
   assert.doesNotMatch(staticDialog, /data-focus-trap="implemented"/);
+});
+
+test("tooltip is supplemental, described, and non-interactive", () => {
+  const html = renderToStaticMarkup(
+    <Tooltip content={"Explains the synthetic icon without replacing its label."} placement="right">
+      <button type="button" aria-label="Inspect route">
+        Inspect
+      </button>
+    </Tooltip>
+  );
+
+  assert.match(html, /class="tcrn-tooltip"/);
+  assert.match(html, /data-tooltip-scope="supplemental"/);
+  assert.match(html, /data-tooltip-interactive-content="forbidden"/);
+  assert.match(html, /data-placement="right"/);
+  assert.match(html, /role="tooltip"/);
+  assert.match(html, /aria-describedby="[^"]+"/);
+  assert.match(html, /Explains the synthetic icon without replacing its label\./);
+  assert.doesNotMatch(html, /dangerouslySetInnerHTML/);
+});
+
+test("tooltip preserves existing described-by ids", () => {
+  const html = renderToStaticMarkup(
+    <Tooltip content="Supplemental route detail">
+      <span aria-describedby="existing-id">Synthetic trigger</span>
+    </Tooltip>
+  );
+
+  assert.match(html, /aria-describedby="existing-id [^"]+"/);
 });

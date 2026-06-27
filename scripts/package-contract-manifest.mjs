@@ -48,6 +48,8 @@ const publicUiReactComponentExports = [
   "Highlight",
   "Surface",
   "Divider",
+  "CollapsibleRegion",
+  "DisclosurePanel",
   "KeyValueList",
   "FilterBar",
   "TableShell",
@@ -67,6 +69,7 @@ const publicUiReactComponentExports = [
   "SkipLink",
   "DetailDrawer",
   "ActionDrawer",
+  "Tooltip",
   "Popover",
   "Dialog",
   "ConfirmActionDialog"
