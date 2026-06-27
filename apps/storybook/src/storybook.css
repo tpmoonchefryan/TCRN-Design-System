@@ -1020,8 +1020,17 @@ label {
   }
 
   .tcrn-tooltip__content,
-  .tcrn-collapsible-region {
+  .tcrn-collapsible-region,
+  .tcrn-field {
     transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .tcrn-field:focus-within,
+  .tcrn-field--error {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }
 
@@ -1051,6 +1060,23 @@ label {
   display: grid;
   gap: 4px;
   margin-bottom: 10px;
+  border-radius: var(--tcrn-radius-control);
+  background-color: transparent;
+  outline: 1px solid transparent;
+  outline-offset: 2px;
+  transition:
+    background-color 150ms ease-out,
+    outline-color 150ms ease-out;
+}
+
+.tcrn-field:focus-within {
+  background-color: color-mix(in srgb, var(--tcrn-color-surface-muted) 56%, transparent);
+  outline-color: color-mix(in srgb, var(--tcrn-color-border-strong) 66%, transparent);
+}
+
+.tcrn-field--error {
+  background-color: color-mix(in srgb, var(--tcrn-color-state-blocked-bg) 62%, transparent);
+  outline-color: var(--tcrn-color-state-blocked);
 }
 
 .tcrn-field__label {

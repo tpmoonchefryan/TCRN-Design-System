@@ -1754,6 +1754,21 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   display: grid;
   gap: 4px;
   margin-bottom: 10px;
+  border-radius: var(--tcrn-radius-control);
+  background-color: transparent;
+  outline: 1px solid transparent;
+  outline-offset: 2px;
+  transition:
+    background-color 150ms ease-out,
+    outline-color 150ms ease-out;
+}
+.tcrn-field:focus-within {
+  background-color: color-mix(in srgb, var(--tcrn-color-surface-muted) 56%, transparent);
+  outline-color: color-mix(in srgb, var(--tcrn-color-border-strong) 66%, transparent);
+}
+.tcrn-field--error {
+  background-color: color-mix(in srgb, var(--tcrn-color-state-blocked-bg) 62%, transparent);
+  outline-color: var(--tcrn-color-state-blocked);
 }
 .tcrn-field__label {
   font-weight: 600;
@@ -3211,7 +3226,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
     opacity: 0;
   }
   .tcrn-tooltip__content,
-  .tcrn-collapsible-region {
+  .tcrn-collapsible-region,
+  .tcrn-field {
     transition: none;
   }
   .tcrn-loading-spinner,
@@ -3221,5 +3237,12 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   *, *::before, *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+}
+@media (forced-colors: active) {
+  .tcrn-field:focus-within,
+  .tcrn-field--error {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }`;

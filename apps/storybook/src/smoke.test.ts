@@ -392,6 +392,21 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /No shortcut label/);
   assert.match(readGroupPage("Components"), /Navigation or shell search/);
   assert.match(readGroupPage("Components"), /Shortcut allowed/);
+  assert.match(combinedHtml, /\.tcrn-field:focus-within[\s\S]*background-color/);
+  assert.match(combinedHtml, /\.tcrn-field--error[\s\S]*outline-color: var\(--tcrn-color-state-blocked\)/);
+  assert.match(combinedHtml, /\.tcrn-field \{[\s\S]*transition:[\s\S]*background-color 150ms ease-out,[\s\S]*outline-color 150ms ease-out/);
+  assert.match(combinedHtml, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.tcrn-field[\s\S]*transition: none/);
+  assert.match(combinedHtml, /@media \(forced-colors: active\)[\s\S]*\.tcrn-field:focus-within,[\s\S]*\.tcrn-field--error[\s\S]*outline: 2px solid Highlight/);
+  const fieldAttentionBlocks = Array.from(
+    combinedHtml.matchAll(/\.tcrn-field[^{]*\{[^}]*\}/g),
+    (match) => match[0]
+  ).join("\n");
+  assert.doesNotMatch(fieldAttentionBlocks, /transition:\s*all/);
+  assert.doesNotMatch(fieldAttentionBlocks, /animation:/);
+  assert.doesNotMatch(fieldAttentionBlocks, /transform:/);
+  assert.doesNotMatch(combinedHtml, /@keyframes[^{}]*field/i);
+  assert.doesNotMatch(combinedHtml, /highlightError/);
+  assert.doesNotMatch(combinedHtml, /\.is-invalid/);
   assert.match(readGroupPage("Components"), /tcrn-brand-mark.svg/);
   assert.match(readGroupPage("Components"), /tcrn-search-input__icon/);
   assert.match(readGroupPage("Components"), /data-dialog-proof="escape-focus-return"/);

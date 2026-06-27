@@ -49,8 +49,11 @@ test("field wires real aria description and error relationships into controls", 
     assert.match(html, new RegExp(`id="${id}"`));
   }
   assert.match(html, /aria-invalid="true"/);
+  assert.match(html, /class="tcrn-field tcrn-field--error"/);
   assert.match(html, /Use a synthetic fixture value/);
   assert.match(html, /Synthetic validation message/);
+  assert.doesNotMatch(html, /highlightError/);
+  assert.doesNotMatch(html, /is-invalid/);
 });
 
 test("search input exposes visual affordance without shortcut metadata by default", () => {
