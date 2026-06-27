@@ -1,4 +1,3 @@
-export * from "./aos-standard-rows.js";
 export * from "./component-rows.js";
 export * from "./navigation-rows.js";
 export * from "./pattern-rows.js";

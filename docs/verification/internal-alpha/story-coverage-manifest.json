@@ -147,21 +147,6 @@
       "storybookId": "tcrn-design-system-patterns--dashboard-page-templates"
     },
     {
-      "id": "aos-operations-cockpit-standard",
-      "group": "Patterns",
-      "storybookId": "tcrn-design-system-patterns--aos-operations-cockpit-standard"
-    },
-    {
-      "id": "aos-docs-readiness-standard",
-      "group": "Patterns",
-      "storybookId": "tcrn-design-system-patterns--aos-docs-readiness-standard"
-    },
-    {
-      "id": "aos-product-design-target-set-standard",
-      "group": "Patterns",
-      "storybookId": "tcrn-design-system-patterns--aos-product-design-target-set-standard"
-    },
-    {
       "id": "proof-matrix",
       "group": "Proof",
       "storybookId": "tcrn-design-system-proof--proof-matrix"
@@ -401,21 +386,6 @@
       "visible": true
     },
     {
-      "id": "aos-operations-cockpit-standard",
-      "storybookId": "tcrn-design-system-patterns--aos-operations-cockpit-standard",
-      "visible": true
-    },
-    {
-      "id": "aos-docs-readiness-standard",
-      "storybookId": "tcrn-design-system-patterns--aos-docs-readiness-standard",
-      "visible": true
-    },
-    {
-      "id": "aos-product-design-target-set-standard",
-      "storybookId": "tcrn-design-system-patterns--aos-product-design-target-set-standard",
-      "visible": true
-    },
-    {
       "id": "proof-matrix",
       "storybookId": "tcrn-design-system-proof--proof-matrix",
       "visible": true
@@ -466,10 +436,10 @@
       "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
-      "targetTop": 96,
+      "targetTop": 492,
       "offset": 96,
-      "maxScrollY": 6532,
-      "scrollY": 1994,
+      "maxScrollY": 1598,
+      "scrollY": 1598,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }
@@ -679,7 +649,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -718,7 +688,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -761,7 +731,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -796,7 +766,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -837,7 +807,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -860,10 +830,7 @@
         "modal-validation-patterns",
         "datagrid-fields-patterns",
         "big-list-search-patterns",
-        "dashboard-page-templates",
-        "aos-operations-cockpit-standard",
-        "aos-docs-readiness-standard",
-        "aos-product-design-target-set-standard"
+        "dashboard-page-templates"
       ],
       "expectedStoryIds": [
         "forms-patterns",
@@ -873,10 +840,7 @@
         "modal-validation-patterns",
         "datagrid-fields-patterns",
         "big-list-search-patterns",
-        "dashboard-page-templates",
-        "aos-operations-cockpit-standard",
-        "aos-docs-readiness-standard",
-        "aos-product-design-target-set-standard"
+        "dashboard-page-templates"
       ]
     },
     {
@@ -888,7 +852,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -923,7 +887,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -954,7 +918,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -993,7 +957,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1036,7 +1000,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1071,7 +1035,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1112,7 +1076,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1135,10 +1099,7 @@
         "modal-validation-patterns",
         "datagrid-fields-patterns",
         "big-list-search-patterns",
-        "dashboard-page-templates",
-        "aos-operations-cockpit-standard",
-        "aos-docs-readiness-standard",
-        "aos-product-design-target-set-standard"
+        "dashboard-page-templates"
       ],
       "expectedStoryIds": [
         "forms-patterns",
@@ -1148,10 +1109,7 @@
         "modal-validation-patterns",
         "datagrid-fields-patterns",
         "big-list-search-patterns",
-        "dashboard-page-templates",
-        "aos-operations-cockpit-standard",
-        "aos-docs-readiness-standard",
-        "aos-product-design-target-set-standard"
+        "dashboard-page-templates"
       ]
     },
     {
@@ -1163,7 +1121,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1198,7 +1156,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": -14,
@@ -1229,7 +1187,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1268,7 +1226,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1311,7 +1269,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1346,7 +1304,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1387,7 +1345,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1410,10 +1368,7 @@
         "modal-validation-patterns",
         "datagrid-fields-patterns",
         "big-list-search-patterns",
-        "dashboard-page-templates",
-        "aos-operations-cockpit-standard",
-        "aos-docs-readiness-standard",
-        "aos-product-design-target-set-standard"
+        "dashboard-page-templates"
       ],
       "expectedStoryIds": [
         "forms-patterns",
@@ -1423,10 +1378,7 @@
         "modal-validation-patterns",
         "datagrid-fields-patterns",
         "big-list-search-patterns",
-        "dashboard-page-templates",
-        "aos-operations-cockpit-standard",
-        "aos-docs-readiness-standard",
-        "aos-product-design-target-set-standard"
+        "dashboard-page-templates"
       ]
     },
     {
@@ -1438,7 +1390,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1473,7 +1425,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 36,
+      "docNavItemCount": 33,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,

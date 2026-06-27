@@ -2,7 +2,7 @@
   "ok": true,
   "mode": "update-baseline",
   "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
-  "reason": "DSCVH-S005-initial-local-baseline",
+  "reason": "remove-aos-outward-standards",
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
   "disposition": "DSCVH-S005-initial-local-static-baseline",
   "entries": [
@@ -25,22 +25,22 @@
       "hash": "dialog-spec-usage",
       "storyId": "dialog-spec-usage",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__desktop-1440x900.png",
-      "rawSha256": "fe6fc4d8aca2442486877ea11ee112d974c4b9deb72e23a72c23ba04fab28c63",
+      "rawSha256": "ab7de0e226d0846b8e39537e3cbb53aaa1a9d2d1f5163e3250efe3e962c34d08",
       "width": 1440,
       "height": 900,
-      "bytes": 404928
+      "bytes": 398600
     },
     {
-      "stateId": "pattern-aos-operations-standard",
+      "stateId": "pattern-dashboard-page-templates",
       "viewport": "desktop-1440x900",
       "page": "patterns.html",
-      "hash": "aos-operations-cockpit-standard",
-      "storyId": "aos-operations-cockpit-standard",
-      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__desktop-1440x900.png",
-      "rawSha256": "f98c4d1809eccac5f8679906aeba364c2ef7ccab8bbd7637037e6cd94a58df79",
+      "hash": "dashboard-page-templates",
+      "storyId": "dashboard-page-templates",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__desktop-1440x900.png",
+      "rawSha256": "17f77165a35251b39b38241a056c0fa91edf1b574a006faa7642f5f806e670f6",
       "width": 1440,
       "height": 900,
-      "bytes": 402788
+      "bytes": 294618
     },
     {
       "stateId": "proof-no-overclaim",
@@ -49,10 +49,10 @@
       "hash": "proof-matrix",
       "storyId": "proof-matrix",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__desktop-1440x900.png",
-      "rawSha256": "62536dc3964ce25052a73e028962da39fbfe878c30d816666f720b2d60dc29a1",
+      "rawSha256": "5e0e0c4ae750261090c65b4e4a67adec766edfbb1b129f33f296b4012c263281",
       "width": 1440,
       "height": 900,
-      "bytes": 250941
+      "bytes": 246928
     },
     {
       "stateId": "docs-shell-overview",
@@ -73,22 +73,22 @@
       "hash": "dialog-spec-usage",
       "storyId": "dialog-spec-usage",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__tablet-1024x768.png",
-      "rawSha256": "522d326b138984a53b22e897a4a9cf0427e0b411bed485b2944150a5aeaf720f",
+      "rawSha256": "3e65cd50b36492d56d1d75a6913acfa54a4928c9420f5468d9d2ffe0a581595a",
       "width": 1024,
       "height": 768,
-      "bytes": 246563
+      "bytes": 239215
     },
     {
-      "stateId": "pattern-aos-operations-standard",
+      "stateId": "pattern-dashboard-page-templates",
       "viewport": "tablet-1024x768",
       "page": "patterns.html",
-      "hash": "aos-operations-cockpit-standard",
-      "storyId": "aos-operations-cockpit-standard",
-      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__tablet-1024x768.png",
-      "rawSha256": "b7d1f39117f6d833666f298ad9f77ed2d39368974c9ca852ff70d09fcb45ed17",
+      "hash": "dashboard-page-templates",
+      "storyId": "dashboard-page-templates",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__tablet-1024x768.png",
+      "rawSha256": "25a76bd2286b4fdc14f8375bc79b77897546965dab18398b9116eebb0b841428",
       "width": 1024,
       "height": 768,
-      "bytes": 272895
+      "bytes": 227060
     },
     {
       "stateId": "proof-no-overclaim",
@@ -97,10 +97,10 @@
       "hash": "proof-matrix",
       "storyId": "proof-matrix",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__tablet-1024x768.png",
-      "rawSha256": "5846c1a09919c4db45938efe982a817078d53eec461aa979da10cfaa93ecac45",
+      "rawSha256": "58f4d16c01eeec6ec7212a7f6e234cc48f9779da75b84b7f4a8c2bbbb23cdd62",
       "width": 1024,
       "height": 768,
-      "bytes": 204707
+      "bytes": 201975
     },
     {
       "stateId": "docs-shell-overview",
@@ -109,10 +109,10 @@
       "hash": "welcome-governance",
       "storyId": "welcome-governance",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__mobile-390x844.png",
-      "rawSha256": "f56d83617a90c8d690a7f60c0dc76b53791cb3cd2171ce61763463298c7a561f",
+      "rawSha256": "8ca7eddfef333bea20dc9d9c81d53c940eace5ebaa8595394f41ba4433bcf7a8",
       "width": 390,
       "height": 844,
-      "bytes": 88166
+      "bytes": 88191
     },
     {
       "stateId": "component-dialog-spec",
@@ -121,22 +121,22 @@
       "hash": "dialog-spec-usage",
       "storyId": "dialog-spec-usage",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__mobile-390x844.png",
-      "rawSha256": "a60aba8bccf90840de3f09f30f5c4de8169851845e25a79f6033ef9f896fce95",
+      "rawSha256": "d75fa9c6b01faa3d399cd8b2c1e161813b072763f69e073a16e343f4558a0b79",
       "width": 390,
       "height": 844,
-      "bytes": 63852
+      "bytes": 63857
     },
     {
-      "stateId": "pattern-aos-operations-standard",
+      "stateId": "pattern-dashboard-page-templates",
       "viewport": "mobile-390x844",
       "page": "patterns.html",
-      "hash": "aos-operations-cockpit-standard",
-      "storyId": "aos-operations-cockpit-standard",
-      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__mobile-390x844.png",
-      "rawSha256": "46c877fba215bb73682892cbc5d8c96f637d4071cf11b0242a21fadf179496a9",
+      "hash": "dashboard-page-templates",
+      "storyId": "dashboard-page-templates",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__mobile-390x844.png",
+      "rawSha256": "f0b5373341d575943096912b14e7ed60e329d0ad59df3d5c75f5385004ff2f17",
       "width": 390,
       "height": 844,
-      "bytes": 91821
+      "bytes": 75507
     },
     {
       "stateId": "proof-no-overclaim",
@@ -145,10 +145,10 @@
       "hash": "proof-matrix",
       "storyId": "proof-matrix",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__mobile-390x844.png",
-      "rawSha256": "c8fc3118715a7eb7b5919d413f3f8d9a74953eec86552ec18781bf016ac141c2",
+      "rawSha256": "384655e12c9bb9e5108abeb359930013c5f0886179cb309e73a5396c7fde1535",
       "width": 390,
       "height": 844,
-      "bytes": 55251
+      "bytes": 55207
     }
   ]
 }

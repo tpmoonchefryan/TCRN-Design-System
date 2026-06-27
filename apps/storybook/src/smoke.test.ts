@@ -63,9 +63,6 @@ const expectedContractStoryIds = [
   "datagrid-fields-patterns",
   "big-list-search-patterns",
   "dashboard-page-templates",
-  "aos-operations-cockpit-standard",
-  "aos-docs-readiness-standard",
-  "aos-product-design-target-set-standard",
   "proof-matrix",
   "blocked-actions",
   "overlay-focus",
@@ -114,7 +111,7 @@ test("static contract story surface is retained and synthetic", () => {
   const pages = contractStoryGroups.map((group) => ({ group, html: readGroupPage(group) }));
   const combinedHtml = pages.map((page) => page.html).join("\n");
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
-  assert.equal(contractStories.length, 36);
+  assert.equal(contractStories.length, 33);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
   assert.deepEqual(
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
@@ -438,18 +435,14 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /Virtual scrolling/);
   assert.match(readGroupPage("Components"), /Column resize or frozen columns/);
   assert.match(readGroupPage("Components"), /Selected count, all\/none behavior, disabled reasons, and undo or confirmation/);
-  assert.match(readGroupPage("Patterns"), /data-story-id="aos-operations-cockpit-standard"/);
-  assert.match(readGroupPage("Patterns"), /data-story-id="aos-docs-readiness-standard"/);
-  assert.match(readGroupPage("Patterns"), /data-story-id="aos-product-design-target-set-standard"/);
-  assert.match(readGroupPage("Patterns"), /data-aos-served-surface-standard="operations-cockpit"/);
-  assert.match(readGroupPage("Patterns"), /data-aos-served-surface-standard="docs-search-release-readiness"/);
-  assert.match(readGroupPage("Patterns"), /data-aos-served-surface-standard="aos-wide-product-design"/);
-  assert.match(readGroupPage("Patterns"), /data-aos-component-registration="registered"/);
-  assert.match(readGroupPage("Patterns"), /data-aos-disabled-reason-standard="all-controls"/);
-  assert.match(readGroupPage("Patterns"), /data-aos-exception-record="brand-lockup-product-specific"/);
-  assert.match(readGroupPage("Patterns"), /AOS brand treatment exception/);
-  assert.match(readGroupPage("Patterns"), /Input, Textarea, Select, SearchInput, Checkbox/);
-  assert.match(readGroupPage("Patterns"), /TcrnBrandMark, ProductLockup, and ShellBrandLockup remain Storybook-only prototypes/);
+  assert.doesNotMatch(readGroupPage("Patterns"), /data-story-id="aos-operations-cockpit-standard"/);
+  assert.doesNotMatch(readGroupPage("Patterns"), /data-story-id="aos-docs-readiness-standard"/);
+  assert.doesNotMatch(readGroupPage("Patterns"), /data-story-id="aos-product-design-target-set-standard"/);
+  assert.doesNotMatch(readGroupPage("Patterns"), /data-aos-served-surface-standard=/);
+  assert.doesNotMatch(readGroupPage("Patterns"), /data-aos-component-registration="registered"/);
+  assert.doesNotMatch(readGroupPage("Patterns"), /data-aos-disabled-reason-standard="all-controls"/);
+  assert.doesNotMatch(readGroupPage("Patterns"), /data-aos-exception-record="brand-lockup-product-specific"/);
+  assert.doesNotMatch(readGroupPage("Patterns"), /AOS brand treatment exception/);
   assert.match(readGroupPage("Foundations"), /Copy guidelines/);
   assert.match(readGroupPage("Proof"), /Proof matrix/);
   assert.match(readGroupPage("Change Log"), /Local changelog/);

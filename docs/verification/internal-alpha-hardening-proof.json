@@ -10,8 +10,6 @@
     "docs/verification/internal-alpha/manual-keyboard-checklist.md",
     "docs/verification/internal-alpha/visual-baseline-manifest.json",
     "docs/verification/internal-alpha/intentional-diff-manifest.json",
-    "docs/verification/internal-alpha/aos-served-surface-standard-proof.json",
-    "docs/verification/internal-alpha/aos-served-surface-standard-proof.md",
     "docs/verification/internal-alpha/no-overclaim-scan.json",
     "docs/verification/internal-alpha/package-contract-manifest.json",
     "docs/verification/internal-alpha/dependency-license-summary.json"
@@ -33,16 +31,12 @@
       "height": 844
     }
   ],
-  "requiredStoryCount": 36,
-  "screenshotCount": 130,
-  "aosServedSurfaceStandardIds": [
-    "ds-aos-operations-cockpit-v1",
-    "ds-aos-docs-readiness-v1",
-    "ds-aos-target-set-v1"
-  ],
-  "designSystemStandardAuthoringDisposition": "completed",
-  "designSystemVisualCertificationReadiness": "ready_for_elara_review",
-  "designSystemComponentRegistrationDisposition": "registered_or_exception_recorded",
+  "requiredStoryCount": 33,
+  "screenshotCount": 121,
+  "removedAosServedSurfaceStandardDisposition": "removed_from_outward_storybook_contract",
+  "designSystemStandardAuthoringDisposition": "owner_review_required_for_future_visual_component_admission",
+  "designSystemVisualCertificationReadiness": "blocked_without_owner_review",
+  "designSystemComponentRegistrationDisposition": "automatic_registration_not_admitted",
   "axeViolationCount": 0,
   "dependencyLicensePosture": "known_license_groups_requiring_sable_post_implementation_review",
   "noOverclaim": {

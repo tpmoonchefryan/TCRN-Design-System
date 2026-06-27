@@ -18,7 +18,6 @@ const receipts = {
   a11y: readJson("a11y-axe-summary.json"),
   visualBaseline: readJson("visual-baseline-manifest.json"),
   intentionalDiff: readJson("intentional-diff-manifest.json"),
-  aosServedSurfaceStandard: readJson("aos-served-surface-standard-proof.json"),
   noOverclaimScan: readJson("no-overclaim-scan.json"),
   packageContracts: readJson("package-contract-manifest.json"),
   dependencyLicense: readJson("dependency-license-summary.json")
@@ -52,8 +51,6 @@ const proof = {
     "manual-keyboard-checklist.md",
     "visual-baseline-manifest.json",
     "intentional-diff-manifest.json",
-    "aos-served-surface-standard-proof.json",
-    "aos-served-surface-standard-proof.md",
     "no-overclaim-scan.json",
     "package-contract-manifest.json",
     "dependency-license-summary.json"
@@ -61,10 +58,10 @@ const proof = {
   browserViewports: receipts.browserProof.viewports,
   requiredStoryCount: receipts.storyCoverage.requiredStories.length,
   screenshotCount: receipts.visualBaseline.entries.length,
-  aosServedSurfaceStandardIds: receipts.aosServedSurfaceStandard.acceptedDsStandardIds,
-  designSystemStandardAuthoringDisposition: receipts.aosServedSurfaceStandard.designSystemStandardAuthoringDisposition,
-  designSystemVisualCertificationReadiness: receipts.aosServedSurfaceStandard.designSystemVisualCertificationReadiness,
-  designSystemComponentRegistrationDisposition: receipts.aosServedSurfaceStandard.designSystemComponentRegistrationDisposition,
+  removedAosServedSurfaceStandardDisposition: "removed_from_outward_storybook_contract",
+  designSystemStandardAuthoringDisposition: "owner_review_required_for_future_visual_component_admission",
+  designSystemVisualCertificationReadiness: "blocked_without_owner_review",
+  designSystemComponentRegistrationDisposition: "automatic_registration_not_admitted",
   axeViolationCount: receipts.a11y.violationCount,
   dependencyLicensePosture: receipts.dependencyLicense.claim,
   noOverclaim,
@@ -103,7 +100,7 @@ ${proof.receiptFiles.map((path) => `- \`${path}\``).join("\n")}
 ## Readback
 
 - Required story count: ${proof.requiredStoryCount}
-- AOS served-surface standard IDs: ${proof.aosServedSurfaceStandardIds.map((id) => `\`${id}\``).join(", ")}
+- Removed AOS served-surface standard disposition: ${proof.removedAosServedSurfaceStandardDisposition}
 - Design System standard authoring disposition: ${proof.designSystemStandardAuthoringDisposition}
 - Design System visual certification readiness: ${proof.designSystemVisualCertificationReadiness}
 - Component registration disposition: ${proof.designSystemComponentRegistrationDisposition}

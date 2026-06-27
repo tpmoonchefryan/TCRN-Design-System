@@ -1,20 +1,8 @@
 {
   "ok": true,
-  "scannedFiles": 155,
+  "scannedFiles": 156,
   "skippedFiles": [],
   "binaryVisualReceiptExclusions": [
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-docs-readiness-standard.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-operations-cockpit-standard.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-product-design-target-set-standard.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-big-list-search-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
@@ -180,18 +168,6 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-docs-readiness-standard.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-operations-cockpit-standard.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-product-design-target-set-standard.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-big-list-search-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -349,18 +325,6 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-workbench-patterns.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-docs-readiness-standard.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-operations-cockpit-standard.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-product-design-target-set-standard.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -548,15 +512,15 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__desktop-1440x900.png",
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__desktop-1440x900.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__mobile-390x844.png",
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__mobile-390x844.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-aos-operations-standard__tablet-1024x768.png",
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__tablet-1024x768.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -812,55 +776,6 @@
       "rule": "positive-overclaim",
       "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
       "matchLength": 13,
-      "matchDisposition": "redacted_positive_overclaim_phrase"
-    },
-    {
-      "file": "scripts/aos-served-surface-standard-proof.mjs",
-      "rule": "positive-overclaim",
-      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
-      "matchLength": 16,
-      "matchDisposition": "redacted_positive_overclaim_phrase"
-    },
-    {
-      "file": "scripts/aos-served-surface-standard-proof.mjs",
-      "rule": "positive-overclaim",
-      "matchSha256": "e25242ced7a7fc4b0d1bf95fe81c3f88e7ff2c647b05c52b09d2b6f20c9eb023",
-      "matchLength": 18,
-      "matchDisposition": "redacted_positive_overclaim_phrase"
-    },
-    {
-      "file": "scripts/aos-served-surface-standard-proof.mjs",
-      "rule": "positive-overclaim",
-      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
-      "matchLength": 13,
-      "matchDisposition": "redacted_positive_overclaim_phrase"
-    },
-    {
-      "file": "scripts/aos-served-surface-standard-proof.mjs",
-      "rule": "positive-overclaim",
-      "matchSha256": "0f6e94c8a96a9bca916abf4b00019de2fbd920d6944cd915a968cf9ee5f4696e",
-      "matchLength": 16,
-      "matchDisposition": "redacted_positive_overclaim_phrase"
-    },
-    {
-      "file": "scripts/aos-served-surface-standard-proof.mjs",
-      "rule": "positive-overclaim",
-      "matchSha256": "68e0d612660d6beab9f84065de645ed6d8d62c23cf177d9c7bad10414ae1962b",
-      "matchLength": 12,
-      "matchDisposition": "redacted_positive_overclaim_phrase"
-    },
-    {
-      "file": "scripts/aos-served-surface-standard-proof.mjs",
-      "rule": "positive-overclaim",
-      "matchSha256": "6c4b3c5f74c697b5faab5af07ba2d15e2f49633be6723a7033c50b80d29ff1b3",
-      "matchLength": 14,
-      "matchDisposition": "redacted_positive_overclaim_phrase"
-    },
-    {
-      "file": "scripts/aos-served-surface-standard-proof.mjs",
-      "rule": "positive-overclaim",
-      "matchSha256": "982e17d1ecdad7cabe0faf1752196d88ef99e7119bb62c73484dd160ee5cd097",
-      "matchLength": 16,
       "matchDisposition": "redacted_positive_overclaim_phrase"
     },
     {

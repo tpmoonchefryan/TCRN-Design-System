@@ -52,11 +52,11 @@ const visualStateAllowlist = [
     staticClosedDialogFixture: true
   },
   {
-    id: "pattern-aos-operations-standard",
+    id: "pattern-dashboard-page-templates",
     page: "patterns.html",
-    hash: "aos-operations-cockpit-standard",
-    storyId: "aos-operations-cockpit-standard",
-    description: "AOS operations cockpit standard after hash scroll."
+    hash: "dashboard-page-templates",
+    storyId: "dashboard-page-templates",
+    description: "Dashboard and page templates pattern after hash scroll."
   },
   {
     id: "proof-no-overclaim",

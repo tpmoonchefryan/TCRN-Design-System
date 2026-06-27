@@ -9,8 +9,5 @@ export const patternsStories: ContractStory[] = [
   selectStory("modal-validation-patterns"),
   selectStory("datagrid-fields-patterns"),
   selectStory("big-list-search-patterns"),
-  selectStory("dashboard-page-templates"),
-  selectStory("aos-operations-cockpit-standard"),
-  selectStory("aos-docs-readiness-standard"),
-  selectStory("aos-product-design-target-set-standard")
+  selectStory("dashboard-page-templates")
 ];

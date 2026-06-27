@@ -60,18 +60,3 @@ export const DashboardPageTemplates: Story = {
   name: "Dashboard and page templates",
   render: () => renderContractStory("dashboard-page-templates")
 };
-
-export const AosOperationsCockpitStandard: Story = {
-  name: "AOS Operations Cockpit standard",
-  render: () => renderContractStory("aos-operations-cockpit-standard")
-};
-
-export const AosDocsReadinessStandard: Story = {
-  name: "AOS Docs Readiness standard",
-  render: () => renderContractStory("aos-docs-readiness-standard")
-};
-
-export const AosProductDesignTargetSetStandard: Story = {
-  name: "AOS Product Design target-set standard",
-  render: () => renderContractStory("aos-product-design-target-set-standard")
-};

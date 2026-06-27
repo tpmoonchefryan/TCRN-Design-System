@@ -4,7 +4,7 @@ Route: `route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s
 Mode: `check`
 OK: `true`
 Comparison contract: `bounded_antialias_pixel_delta_v1`
-Source head: `69a6171465cab16b6da43de21fa6c57416683aaf`
+Source head: `936d992060edf5cf020fdb95751776e12c716583`
 Static pages: 8
 Screenshots: 12
 Compare failures: 0

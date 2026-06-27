@@ -39,9 +39,6 @@ const requiredStories = [
   { id: "datagrid-fields-patterns", group: "Patterns" },
   { id: "big-list-search-patterns", group: "Patterns" },
   { id: "dashboard-page-templates", group: "Patterns" },
-  { id: "aos-operations-cockpit-standard", group: "Patterns" },
-  { id: "aos-docs-readiness-standard", group: "Patterns" },
-  { id: "aos-product-design-target-set-standard", group: "Patterns" },
   { id: "proof-matrix", group: "Proof" },
   { id: "blocked-actions", group: "Proof" },
   { id: "overlay-focus", group: "Proof" },
@@ -76,13 +73,6 @@ const required = [
   "data-contract-story-id=\"brand-identity\"",
   "data-contract-story-id=\"color-palette\"",
   "data-contract-story-id=\"dashboard-page-templates\"",
-  "data-contract-story-id=\"aos-operations-cockpit-standard\"",
-  "data-contract-story-id=\"aos-docs-readiness-standard\"",
-  "data-contract-story-id=\"aos-product-design-target-set-standard\"",
-  "data-aos-served-surface-standard=\"operations-cockpit\"",
-  "data-aos-served-surface-standard=\"docs-search-release-readiness\"",
-  "data-aos-served-surface-standard=\"aos-wide-product-design\"",
-  "data-aos-exception-record=\"brand-lockup-product-specific\"",
   "aria-label=\"TCRN brand mark\"",
   "src=\"tcrn-brand-mark.svg\"",
   "tcrn-brand-lockup--long-name",
@@ -102,6 +92,17 @@ const required = [
   "Top bar, attached side navigation, content column, and chapter navigation stay one shell"
 ];
 const missing = required.filter((text) => !combinedHtml.includes(text));
+const forbidden = [
+  "data-contract-story-id=\"aos-operations-cockpit-standard\"",
+  "data-contract-story-id=\"aos-docs-readiness-standard\"",
+  "data-contract-story-id=\"aos-product-design-target-set-standard\"",
+  "data-aos-served-surface-standard=",
+  "data-aos-component-registration=\"registered\"",
+  "data-aos-exception-record=\"brand-lockup-product-specific\""
+].filter((text) => combinedHtml.includes(text));
+if (forbidden.length > 0) {
+  missing.push(...forbidden.map((text) => `forbidden:${text}`));
+}
 for (const [group, html] of Object.entries(pages)) {
   const defaultStory = requiredStories.find((story) => story.group === group);
   if (!html.includes(`data-active-story-section="${group}"`)) {
