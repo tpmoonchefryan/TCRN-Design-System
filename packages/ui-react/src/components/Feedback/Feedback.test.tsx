@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { StatusBadge, StateView, GateReadinessPanel } from "./Feedback.js";
+import { EmptyState, ErrorState, Skeleton, StateSurface, StatusBadge, StateView, GateReadinessPanel } from "./Feedback.js";
 import { presentCopyState } from "@tcrn/ui-copy-state";
 
 test("stateful components fail closed without product acceptance claims", () => {
@@ -50,4 +50,35 @@ test("state components reject raw enum label leakage", () => {
   const badge = renderToStaticMarkup(<StatusBadge state={{ state: "external_proof_needed", label: "external_proof_required" }} />);
   assert.match(badge, />External proof needed</);
   assert.doesNotMatch(badge, /external_proof_required/);
+});
+
+test("skeleton remains decorative and supports bounded variants", () => {
+  const text = renderToStaticMarkup(<Skeleton variant="text" className="fixture-skeleton" />);
+  assert.match(text, /aria-hidden="true"/);
+  assert.match(text, /data-skeleton-variant="text"/);
+  assert.match(text, /class="tcrn-skeleton tcrn-skeleton--text fixture-skeleton"/);
+
+  const lines = renderToStaticMarkup(<Skeleton variant="rectangular" lines={3} />);
+  assert.match(lines, /class="tcrn-skeleton-group"/);
+  assert.match(lines, /data-skeleton-lines="3"/);
+  assert.equal((lines.match(/class="tcrn-skeleton tcrn-skeleton--rectangular"/g) ?? []).length, 3);
+});
+
+test("state surface primitives stay presentation-only", () => {
+  const surface = renderToStaticMarkup(
+    <StateSurface title="No evidence yet" description="Connect a proof route before claiming readiness." tone="warning" />
+  );
+  assert.match(surface, /class="tcrn-state-surface tcrn-state-surface--warning"/);
+  assert.match(surface, /data-tone="warning"/);
+  assert.match(surface, /No evidence yet/);
+  assert.doesNotMatch(surface.toLowerCase(), /product accepted|release ready|final mvp accepted/);
+
+  const empty = renderToStaticMarkup(<EmptyState title="No rows" description="Clear filters or add a source." />);
+  assert.match(empty, /data-state-surface-kind="empty"/);
+  assert.match(empty, /data-tone="neutral"/);
+
+  const error = renderToStaticMarkup(<ErrorState title="Panel unavailable" description="Retry from the owning product route." />);
+  assert.match(error, /data-state-surface-kind="error"/);
+  assert.match(error, /data-tone="danger"/);
+  assert.doesNotMatch(error, /ErrorBoundary/);
 });

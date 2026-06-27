@@ -8,6 +8,7 @@ const ignoredDirectories = new Set([
   ".git",
   ".tarball-smoke",
   "dist",
+  "gemini_chats",
   "node_modules",
   "storybook-preview-static",
   "storybook-static"

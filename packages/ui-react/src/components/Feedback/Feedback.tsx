@@ -65,8 +65,37 @@ export function LiveRegion({ className, ...props }: HTMLAttributes<HTMLDivElemen
   return <div aria-live="polite" {...props} className={cx("tcrn-live-region", className)} />;
 }
 
-export function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div aria-hidden="true" {...props} className={cx("tcrn-skeleton", className)} />;
+export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
+  variant?: "text" | "rectangular" | "circular";
+  lines?: number;
+}
+
+export function Skeleton({ variant = "rectangular", lines = 1, className, ...props }: SkeletonProps) {
+  const lineCount = Math.max(1, Math.floor(lines));
+  if (lineCount === 1) {
+    return (
+      <div
+        {...props}
+        aria-hidden="true"
+        className={cx("tcrn-skeleton", `tcrn-skeleton--${variant}`, className)}
+        data-skeleton-variant={variant}
+      />
+    );
+  }
+
+  return (
+    <div
+      {...props}
+      aria-hidden="true"
+      className={cx("tcrn-skeleton-group", className)}
+      data-skeleton-lines={lineCount}
+      data-skeleton-variant={variant}
+    >
+      {Array.from({ length: lineCount }, (_, index) => (
+        <span key={index} className={cx("tcrn-skeleton", `tcrn-skeleton--${variant}`)} />
+      ))}
+    </div>
+  );
 }
 
 export interface EnvironmentBannerProps {
@@ -112,4 +141,53 @@ export function ReadbackPanel({ title, children }: { title: string; children: Re
       {children}
     </Surface>
   );
+}
+
+type StateSurfaceTone = Tone;
+
+export interface StateSurfaceProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+  title: ReactNode;
+  description?: ReactNode;
+  icon?: ReactNode;
+  action?: ReactNode;
+  tone?: StateSurfaceTone;
+  headingLevel?: 2 | 3 | 4;
+}
+
+export function StateSurface({
+  title,
+  description,
+  icon,
+  action,
+  tone = "neutral",
+  headingLevel = 3,
+  className,
+  children,
+  ...props
+}: StateSurfaceProps) {
+  return (
+    <section {...props} className={cx("tcrn-state-surface", `tcrn-state-surface--${tone}`, className)} data-tone={tone}>
+      {icon ? <div className="tcrn-state-surface__icon" aria-hidden="true">{icon}</div> : null}
+      <Heading level={headingLevel} className="tcrn-state-surface__title">{title}</Heading>
+      {description ? <Text className="tcrn-state-surface__description">{description}</Text> : null}
+      {children}
+      {action ? <div className="tcrn-state-surface__action">{action}</div> : null}
+    </section>
+  );
+}
+
+export type EmptyStateProps = Omit<StateSurfaceProps, "tone"> & {
+  tone?: "neutral" | "warning";
+};
+
+export function EmptyState({ tone = "neutral", ...props }: EmptyStateProps) {
+  return <StateSurface {...props} tone={tone} data-state-surface-kind="empty" />;
+}
+
+export type ErrorStateProps = Omit<StateSurfaceProps, "tone"> & {
+  tone?: "danger" | "warning";
+};
+
+export function ErrorState({ tone = "danger", ...props }: ErrorStateProps) {
+  return <StateSurface {...props} tone={tone} data-state-surface-kind="error" />;
 }

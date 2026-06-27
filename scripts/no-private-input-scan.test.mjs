@@ -64,6 +64,24 @@ test("scan command records Storybook visual proof binary receipts without failin
   assert.equal(receipt.binaryVisualReceiptExclusions.length, 1);
 });
 
+test("scan command ignores local Gemini candidate scratch space", () => {
+  const root = mkdtempSync(join(tmpdir(), "tcrn-scan-gemini-scratch-"));
+  const snippetDir = join(root, "gemini_chats/02-highlight-effect/snippets");
+  mkdirSync(snippetDir, { recursive: true });
+  writeFileSync(join(snippetDir, "Highlight.tsx"), "const API_TOKEN = 'local-candidate-placeholder';\n");
+
+  const result = spawnSync(process.execPath, [scanScript], {
+    cwd: root,
+    encoding: "utf8"
+  });
+
+  assert.equal(result.status, 0);
+  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.hits.length, 0);
+  assert.equal(receipt.skippedFiles.length, 0);
+});
+
 test("receipt exit helper fails closed when negative fixture checks fail", () => {
   const receipt = {
     ok: false,

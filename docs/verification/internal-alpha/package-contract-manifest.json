@@ -71,6 +71,18 @@
         "exported": true
       },
       {
+        "name": "StateSurface",
+        "exported": true
+      },
+      {
+        "name": "EmptyState",
+        "exported": true
+      },
+      {
+        "name": "ErrorState",
+        "exported": true
+      },
+      {
         "name": "EnvironmentBanner",
         "exported": true
       },
@@ -92,6 +104,10 @@
       },
       {
         "name": "Heading",
+        "exported": true
+      },
+      {
+        "name": "Highlight",
         "exported": true
       },
       {
@@ -381,6 +397,33 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "StateSurface",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "EmptyState",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ErrorState",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "EnvironmentBanner",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -427,6 +470,15 @@
       },
       {
         "storybookItem": "Heading",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Highlight",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",

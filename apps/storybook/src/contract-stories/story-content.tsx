@@ -17,6 +17,7 @@ import {
   FilterBar,
   GateReadinessPanel,
   Heading,
+  Highlight,
   Icon,
   InlineAlert,
   Input,
@@ -32,7 +33,11 @@ import {
   SegmentedNav,
   Select,
   SideNav,
+  Skeleton,
   SkipLink,
+  EmptyState,
+  ErrorState,
+  StateSurface,
   StateView,
   StatusBadge,
   Surface,
@@ -888,6 +893,61 @@ const legacyContractStories: ContractStory[] = [
           ]}
         />
         <InlineAlert tone="warning">Navigation shell components are first-class component contracts, not only page patterns.</InlineAlert>
+      </section>
+    )
+  },
+  {
+    id: "display-primitives-spec",
+    title: "Display primitives spec",
+    group: "Components",
+    description: "Owner-approved foundational display primitives for highlighting, loading skeletons, and state surfaces.",
+    render: () => (
+      <section className="alpha-story-stack">
+        <ReadbackPanel title="Owner-approved first batch">
+          <Text>
+            This contract story documents only the first approved Gemini candidate batch: inline highlight text, loading skeletons, and presentation-only state surfaces. Tooltip, clipboard, masking, animated counters, disclosure, DataGrid, query builder, and command palette remain deferred or rejected.
+          </Text>
+          <EvidenceStrip items={["owner review completed", "package-backed primitives", "Storybook evidence only", "consumer adoption separate"]} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Highlight">
+          <Text>
+            <Highlight text="Search proof highlights proof matches without changing the source text." query="proof" />
+          </Text>
+          <TableShell
+            columns={[
+              { key: "rule", label: "Rule" },
+              { key: "proof", label: "Proof" }
+            ]}
+            rows={[
+              { rule: "Renders inline semantic marks", proof: "Uses <mark> for matched substrings" },
+              { rule: "No HTML injection", proof: "Source text stays React-escaped text nodes" },
+              { rule: "No search engine claim", proof: "Product owns query state and result ranking" }
+            ]}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Skeleton">
+          <Text>Skeletons are decorative placeholders. Loading announcements stay with the owning product surface through aria-busy or LiveRegion.</Text>
+          <div className="tcrn-display-primitive-grid">
+            <Skeleton variant="text" />
+            <Skeleton variant="rectangular" />
+            <Skeleton variant="circular" />
+            <Skeleton variant="text" lines={3} />
+          </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="State surfaces">
+          <div className="tcrn-display-primitive-grid">
+            <StateSurface title="Proof route needed" description="The owner must route verification before downstream claims." tone="warning" />
+            <EmptyState title="No local rows" description="Clear filters or add a synthetic fixture." />
+            <ErrorState
+              title="Panel unavailable"
+              description="Products must sanitize error copy before passing it into this presentation primitive."
+              action={<Button>Retry locally</Button>}
+            />
+          </div>
+        </ReadbackPanel>
+        <InlineAlert tone="warning">
+          These primitives do not implement React ErrorBoundary wrappers, telemetry, product error policy, publication, package release, or product adoption.
+        </InlineAlert>
       </section>
     )
   },

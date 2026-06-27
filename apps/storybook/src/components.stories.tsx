@@ -26,6 +26,11 @@ export const ComponentFamilyIndex: Story = {
   render: () => renderContractStory("component-family-index")
 };
 
+export const DisplayPrimitivesSpec: Story = {
+  name: "Display primitives spec",
+  render: () => renderContractStory("display-primitives-spec")
+};
+
 export const ButtonSpecUsage: Story = {
   name: "Button spec and usage",
   render: () => renderContractStory("button-spec-usage")

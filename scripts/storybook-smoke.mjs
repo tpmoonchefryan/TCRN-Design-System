@@ -26,6 +26,7 @@ const requiredStories = [
   { id: "i18n-theme-contract", group: "Foundations" },
   { id: "copy-guidelines", group: "Foundations" },
   { id: "component-family-index", group: "Components" },
+  { id: "display-primitives-spec", group: "Components" },
   { id: "button-spec-usage", group: "Components" },
   { id: "field-spec-usage", group: "Components" },
   { id: "navigation-shell-spec", group: "Components" },

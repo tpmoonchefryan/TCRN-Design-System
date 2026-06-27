@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "scannedFiles": 156,
+  "scannedFiles": 152,
   "skippedFiles": [],
   "binaryVisualReceiptExclusions": [
     {
@@ -49,6 +49,10 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-dialog-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-display-primitives-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -216,6 +220,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-display-primitives-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-field-spec-usage.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -373,6 +381,10 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-dialog-spec-usage.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-display-primitives-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -776,6 +788,27 @@
       "rule": "positive-overclaim",
       "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
       "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/components/Feedback/Feedback.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "49c3716f427bdc5c97f11c5c20ea375ec7ec3c50f08c73b2f62386eed8009829",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/components/Feedback/Feedback.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/components/Feedback/Feedback.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "e25242ced7a7fc4b0d1bf95fe81c3f88e7ff2c647b05c52b09d2b6f20c9eb023",
+      "matchLength": 18,
       "matchDisposition": "redacted_positive_overclaim_phrase"
     },
     {
