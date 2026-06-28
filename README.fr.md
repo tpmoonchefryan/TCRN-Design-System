@@ -22,6 +22,7 @@ Ce dépôt est l'entrée source-control du Design System TCRN. Les implémenteur
 - Storybook français: [`?locale=fr`](https://tcrn-design-system-storybook.vercel.app/?locale=fr)
 - Enveloppe sombre: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
 - Contrat IA: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
+- AI first-read entry: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) et HTML head discovery; les readback fields doivent inclure contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries.
 
 ## Packages et limites
 

@@ -1,18 +1,48 @@
 {
   "ok": true,
-  "readmeDigest": "1888a311e20efb4d6654601f3fac17f0995137356b3b942bd78b937cf9042448",
+  "readmeDigest": "422df22b0bc248be674234f01f04c22a43111595a21f57a6b68df92e1635f01a",
   "localizedReadmeDigests": {
-    "en": "1888a311e20efb4d6654601f3fac17f0995137356b3b942bd78b937cf9042448",
-    "zh-CN": "4016e0bfd527edbf884ad47e74b42ebd5055273dfa6b22f93231b7541d90bd13",
-    "ja": "3aa543a548d455d1e32c8a2c8216410d6d47436c51e786047f2750eedd1e6ff3",
-    "ko": "cbda8a968c132dfedd0ae47e573f48420180160d4db22d9cdea005c3b560d238",
-    "fr": "acf46430f44697ca454291c31e00c0b6b1558d621958bb00020798e32922eccf"
+    "en": "422df22b0bc248be674234f01f04c22a43111595a21f57a6b68df92e1635f01a",
+    "zh-CN": "3c0e4fe6bba840aaaeca2e27cfb0827e4eeb60547a34ef32feffd83df64cb498",
+    "ja": "3afdb95d3f64d617f030fa6bda3530858185e13919c4d2773a0c28ffa96e1be0",
+    "ko": "ec6ec0b58bf682a7eb7f203aae0cf5c73c2409ce480376e66e7d8fde873d53a8",
+    "fr": "cd8429416abaa4ed0e6ef1a533486786962cbc0c1a59c8dcaee85973e3625cb0"
   },
   "headerPresent": true,
   "brandHeaderImagePresent": true,
   "githubRepositoryUrlPresent": true,
   "storybookUrlPresent": true,
   "aiContractArtifactLinked": true,
+  "aiContractLlmsTxtLinked": true,
+  "aiContractHtmlHeadDiscoveryMentioned": true,
+  "aiContractRequiredReadbackFieldsPresent": true,
+  "localizedAiDiscoveryReadback": {
+    "en": {
+      "llmsTxt": true,
+      "aiContractJson": true,
+      "requiredReadbackFields": true
+    },
+    "zh-CN": {
+      "llmsTxt": true,
+      "aiContractJson": true,
+      "requiredReadbackFields": true
+    },
+    "ja": {
+      "llmsTxt": true,
+      "aiContractJson": true,
+      "requiredReadbackFields": true
+    },
+    "ko": {
+      "llmsTxt": true,
+      "aiContractJson": true,
+      "requiredReadbackFields": true
+    },
+    "fr": {
+      "llmsTxt": true,
+      "aiContractJson": true,
+      "requiredReadbackFields": true
+    }
+  },
   "darkModeReaderPathPresent": true,
   "multilingualHeaderSupportReadback": {
     "supportedLocales": [

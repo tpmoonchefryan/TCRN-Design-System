@@ -22,6 +22,7 @@
 - 한국어 Storybook: [`?locale=ko`](https://tcrn-design-system-storybook.vercel.app/?locale=ko)
 - 어두운 셸: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
 - AI 계약: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
+- AI first-read entry: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) 및 HTML head discovery. readback fields는 contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries를 포함해야 합니다.
 
 ## 패키지와 경계
 

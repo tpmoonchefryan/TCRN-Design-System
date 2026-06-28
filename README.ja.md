@@ -22,6 +22,7 @@
 - 日本語 Storybook: [`?locale=ja`](https://tcrn-design-system-storybook.vercel.app/?locale=ja)
 - ダークシェル: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
 - AI 契約: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
+- AI first-read entry: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) と HTML head discovery。readback fields は contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries。
 
 ## パッケージと境界
 

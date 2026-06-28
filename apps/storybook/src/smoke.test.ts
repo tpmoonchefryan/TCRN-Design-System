@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
@@ -32,6 +33,21 @@ const expectedContractStoryGroups: readonly ContractStoryGroup[] = [
   "Proof",
   "Change Log"
 ];
+
+const expectedAiReadbackFields = [
+  "contractVersion",
+  "contractPayloadDigest",
+  "artifact",
+  "route",
+  "readAt",
+  "coveredRules",
+  "requiredProof",
+  "noOverclaimBoundaries"
+];
+
+function sha256(value: string): string {
+  return createHash("sha256").update(value).digest("hex");
+}
 
 const expectedContractStoryIds = [
   "welcome-governance",
@@ -557,13 +573,34 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(readGroupPage("Style Guide"), /data-story-id="tokens-copy-state"/);
   assert.doesNotMatch(combinedHtml, /from ['"]TCRN-AOS|from ['"]TCRN-TMS|product accepted|final mvp accepted|release ready/i);
   assert.doesNotMatch(combinedHtml, />external_proof_required</i);
+  for (const group of expectedContractStoryGroups) {
+    const html = readGroupPage(group);
+    assert.match(html, /<link rel="alternate" type="application\/json" href="ai-consumption-contract\.json" title="TCRN AI consumption contract" data-tcrn-ai-consumption-contract="true" \/>/);
+    assert.match(html, /<link rel="help" type="text\/plain" href="llms\.txt" data-tcrn-ai-consumption-contract-help="true" \/>/);
+    assert.match(html, /<meta name="tcrn-ai-consumption-contract" content="ai-consumption-contract\.json" \/>/);
+    assert.match(html, /<meta name="tcrn-ai-consumption-contract-route" content="proof\.html#ai-consumption-contract" \/>/);
+    assert.match(html, /<meta name="tcrn-ai-consumption-contract-required" content="must-read-first" \/>/);
+  }
 });
 
 test("storybook AI consumption contract is machine-readable and no-overclaim", () => {
-  const contract = JSON.parse(readFileSync(join(process.cwd(), "storybook-static", "ai-consumption-contract.json"), "utf8"));
+  const contractSource = readFileSync(join(process.cwd(), "storybook-static", "ai-consumption-contract.json"), "utf8");
+  const contract = JSON.parse(contractSource);
+  const { contractPayloadDigest, ...baseContract } = contract;
   assert.equal(contract.contractVersion, "ai_consumption_contract_v1");
   assert.equal(contract.storyId, "ai-consumption-contract");
   assert.equal(contract.route, "proof.html#ai-consumption-contract");
+  assert.equal(contract.artifact, "ai-consumption-contract.json");
+  assert.equal(contract.mustReadFirst, true);
+  assert.equal(contractPayloadDigest, sha256(`${JSON.stringify(baseContract, null, 2)}\n`));
+  assert.equal(contract.discovery.staticArtifact, "apps/storybook/storybook-static/ai-consumption-contract.json");
+  assert.equal(contract.discovery.hostedArtifact, "https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json");
+  assert.equal(contract.discovery.llmsTxt, "llms.txt");
+  assert.equal(contract.discovery.robotsTxt, "robots.txt");
+  assert.deepEqual(contract.firstReadRoutes, ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"]);
+  assert.deepEqual(contract.requiredReadbackFields, expectedAiReadbackFields);
+  assert.equal(contract.discovery.htmlHead.alternateJson.dataMarker, "data-tcrn-ai-consumption-contract=\"true\"");
+  assert.equal(contract.discovery.htmlHead.meta.required, "tcrn-ai-consumption-contract-required");
   assert.deepEqual(contract.requiredBeforeProductFrontendImplementation, [
     "read_ai_consumption_contract",
     "use_tcrn_i18n_and_copy_state",
@@ -600,6 +637,16 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.ok(contract.forbiddenClaims.includes("aos_tms_acceptance"));
   assert.ok(contract.noOverclaimBoundaries.includes("consumer_product_adoption_separate"));
   assert.ok(contract.noOverclaimBoundaries.includes("aos_tms_mutation_not_authorized"));
+  const llms = readFileSync(join(process.cwd(), "storybook-static", "llms.txt"), "utf8");
+  assert.match(llms, /Agents must read ai-consumption-contract\.json before implementation work\./);
+  assert.match(llms, new RegExp(contractPayloadDigest));
+  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries/);
+  assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
+  const robots = readFileSync(join(process.cwd(), "storybook-static", "robots.txt"), "utf8");
+  assert.match(robots, /User-agent: \*/);
+  assert.match(robots, /Allow: \//);
+  assert.match(robots, /AI-Consumption-Contract: ai-consumption-contract\.json/);
+  assert.match(robots, /AI-Consumption-Contract-Required: must-read-first/);
 });
 
 test("GitHub README exposes the Storybook AI contract without publication overclaim", () => {
@@ -608,6 +655,9 @@ test("GitHub README exposes the Storybook AI contract without publication overcl
   assert.match(readme, /AI Consumption Contract/);
   assert.match(readme, /apps\/storybook\/storybook-static\/ai-consumption-contract\.json/);
   assert.match(readme, /https:\/\/tcrn-design-system-storybook\.vercel\.app\/ai-consumption-contract\.json/);
+  assert.match(readme, /llms\.txt/);
+  assert.match(readme, /HTML head discovery/);
+  assert.match(readme, /contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries/);
   assert.match(readme, /Supported Locales/);
   assert.match(readme, /`zh-CN`/);
   assert.match(readme, /`ja`/);

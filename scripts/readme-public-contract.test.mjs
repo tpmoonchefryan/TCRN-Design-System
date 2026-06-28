@@ -83,6 +83,26 @@ function makeReceipt() {
     productAcceptance: false,
     finalMvpAcceptance: false
   };
+  const requiredAiReadbackFields = [
+    "contractVersion",
+    "contractPayloadDigest",
+    "artifact",
+    "route",
+    "readAt",
+    "coveredRules",
+    "requiredProof",
+    "noOverclaimBoundaries"
+  ];
+  const localizedAiDiscoveryReadback = Object.fromEntries(
+    Object.entries(readmes).map(([locale, readme]) => [
+      locale,
+      {
+        llmsTxt: /llms\.txt/.test(readme.content),
+        aiContractJson: /ai-consumption-contract\.json/.test(readme.content),
+        requiredReadbackFields: requiredAiReadbackFields.every((field) => readme.content.includes(field))
+      }
+    ])
+  );
 
   const receipt = {
     ok: true,
@@ -93,6 +113,10 @@ function makeReceipt() {
     githubRepositoryUrlPresent: /https:\/\/github\.com\/tpmoonchefryan\/TCRN-Design-System/.test(main),
     storybookUrlPresent: /https:\/\/tcrn-design-system-storybook\.vercel\.app\//.test(main),
     aiContractArtifactLinked: /ai-consumption-contract\.json/.test(main),
+    aiContractLlmsTxtLinked: /llms\.txt/.test(main),
+    aiContractHtmlHeadDiscoveryMentioned: /HTML head discovery/.test(main),
+    aiContractRequiredReadbackFieldsPresent: requiredAiReadbackFields.every((field) => main.includes(field)),
+    localizedAiDiscoveryReadback,
     darkModeReaderPathPresent: /\?theme=dark/.test(main),
     multilingualHeaderSupportReadback: {
       supportedLocales,
@@ -116,6 +140,10 @@ function makeReceipt() {
     && receipt.githubRepositoryUrlPresent
     && receipt.storybookUrlPresent
     && receipt.aiContractArtifactLinked
+    && receipt.aiContractLlmsTxtLinked
+    && receipt.aiContractHtmlHeadDiscoveryMentioned
+    && receipt.aiContractRequiredReadbackFieldsPresent
+    && Object.values(localizedAiDiscoveryReadback).every((readback) => readback.llmsTxt && readback.aiContractJson && readback.requiredReadbackFields)
     && receipt.darkModeReaderPathPresent
     && supportedLocales.every((locale) => receipt.multilingualHeaderSupportReadback.readmeFiles[locale]?.exists)
     && brokenAnchorHits.length === 0

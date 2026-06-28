@@ -2,6 +2,44 @@ export const aiConsumptionContract = {
   contractVersion: "ai_consumption_contract_v1",
   storyId: "ai-consumption-contract",
   route: "proof.html#ai-consumption-contract",
+  artifact: "ai-consumption-contract.json",
+  mustReadFirst: true,
+  discovery: {
+    staticArtifact: "apps/storybook/storybook-static/ai-consumption-contract.json",
+    hostedArtifact: "https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json",
+    llmsTxt: "llms.txt",
+    robotsTxt: "robots.txt",
+    htmlHead: {
+      alternateJson: {
+        rel: "alternate",
+        type: "application/json",
+        href: "ai-consumption-contract.json",
+        title: "TCRN AI consumption contract",
+        dataMarker: "data-tcrn-ai-consumption-contract=\"true\""
+      },
+      help: {
+        rel: "help",
+        type: "text/plain",
+        href: "llms.txt"
+      },
+      meta: {
+        contract: "tcrn-ai-consumption-contract",
+        route: "tcrn-ai-consumption-contract-route",
+        required: "tcrn-ai-consumption-contract-required"
+      }
+    }
+  },
+  firstReadRoutes: ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"],
+  requiredReadbackFields: [
+    "contractVersion",
+    "contractPayloadDigest",
+    "artifact",
+    "route",
+    "readAt",
+    "coveredRules",
+    "requiredProof",
+    "noOverclaimBoundaries"
+  ],
   requiredBeforeProductFrontendImplementation: [
     "read_ai_consumption_contract",
     "use_tcrn_i18n_and_copy_state",

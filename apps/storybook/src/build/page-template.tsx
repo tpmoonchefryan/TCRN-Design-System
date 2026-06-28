@@ -157,6 +157,11 @@ export function pageHtml(group: ContractStoryGroup): string {
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#f6f7fb" data-storybook-theme-color />
   <link rel="icon" href="tcrn-brand-mark.svg" type="image/svg+xml" />
+  <link rel="alternate" type="application/json" href="ai-consumption-contract.json" title="TCRN AI consumption contract" data-tcrn-ai-consumption-contract="true" />
+  <link rel="help" type="text/plain" href="llms.txt" data-tcrn-ai-consumption-contract-help="true" />
+  <meta name="tcrn-ai-consumption-contract" content="ai-consumption-contract.json" />
+  <meta name="tcrn-ai-consumption-contract-route" content="proof.html#ai-consumption-contract" />
+  <meta name="tcrn-ai-consumption-contract-required" content="must-read-first" />
   <title>${localeText(`group.${group}`)} - ${localeText("shell.title")}</title>
   <style>
 ${alphaStoryCss}

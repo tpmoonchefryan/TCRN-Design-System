@@ -22,6 +22,7 @@
 - 中文 Storybook: [zh-CN](https://tcrn-design-system-storybook.vercel.app/?locale=zh-CN)
 - 深色外壳: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
 - AI 契约: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
+- AI 首读入口: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) 与 HTML head discovery；回传字段必须包括 contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries。
 
 ## 包与边界
 

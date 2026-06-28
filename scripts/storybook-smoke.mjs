@@ -52,6 +52,9 @@ const pages = Object.fromEntries(Object.entries(pagesByGroup).map(([group, file]
   readFileSync(`apps/storybook/storybook-static/${file}`, "utf8")
 ]));
 const combinedHtml = Object.values(pages).join("\n");
+const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-consumption-contract.json", "utf8"));
+const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
+const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
 const required = [
   "data-doc-shell=\"online-docs\"",
   "data-doc-nav=\"sections\"",
@@ -105,6 +108,12 @@ const required = [
   "data-contract-story-id=\"ai-consumption-contract\"",
   "data-ai-consumption-contract-story=\"true\"",
   "ai-consumption-contract.json",
+  "rel=\"alternate\" type=\"application/json\" href=\"ai-consumption-contract.json\"",
+  "data-tcrn-ai-consumption-contract=\"true\"",
+  "rel=\"help\" type=\"text/plain\" href=\"llms.txt\"",
+  "name=\"tcrn-ai-consumption-contract\" content=\"ai-consumption-contract.json\"",
+  "name=\"tcrn-ai-consumption-contract-route\" content=\"proof.html#ai-consumption-contract\"",
+  "name=\"tcrn-ai-consumption-contract-required\" content=\"must-read-first\"",
   "Light and dark Storybook shell",
   "Docs shell control contract",
   "Use one circular icon-only button",
@@ -134,6 +143,28 @@ const required = [
   "Top bar, attached side navigation, content column, and chapter navigation stay one shell"
 ];
 const missing = required.filter((text) => !combinedHtml.includes(text));
+if (contract.mustReadFirst !== true) {
+  missing.push("contract.mustReadFirst:true");
+}
+for (const route of ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"]) {
+  if (!contract.firstReadRoutes?.includes(route)) {
+    missing.push(`contract.firstReadRoutes:${route}`);
+  }
+}
+for (const field of ["contractVersion", "contractPayloadDigest", "artifact", "route", "readAt", "coveredRules", "requiredProof", "noOverclaimBoundaries"]) {
+  if (!contract.requiredReadbackFields?.includes(field)) {
+    missing.push(`contract.requiredReadbackFields:${field}`);
+  }
+}
+if (!llmsTxt.includes("Agents must read ai-consumption-contract.json before implementation work.")) {
+  missing.push("llms-first-read-requirement");
+}
+if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries")) {
+  missing.push("llms-required-readback-fields");
+}
+if (!robotsTxt.includes("AI-Consumption-Contract: ai-consumption-contract.json")) {
+  missing.push("robots-ai-contract-pointer");
+}
 const forbidden = [
   "data-contract-story-id=\"aos-operations-cockpit-standard\"",
   "data-contract-story-id=\"aos-docs-readiness-standard\"",
