@@ -182,10 +182,15 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-storybook-theme-option="dark"/);
   assert.match(combinedHtml, /data-doc-shell-icon="theme-light"/);
   assert.match(combinedHtml, /data-doc-shell-icon="theme-dark"/);
+  assert.match(combinedHtml, /tcrn-doc-header-controls__row/);
+  assert.match(combinedHtml, /data-i18n-aria-label="shell\.themeLabel"/);
+  assert.match(combinedHtml, /data-i18n-aria-label="shell\.languageLabel"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="locale-select"/);
   assert.match(combinedHtml, /tcrnStorybookApplyTheme/);
   assert.match(combinedHtml, /data-ai-consumption-contract-link="true"/);
   assert.match(combinedHtml, /href="ai-consumption-contract\.json"/);
   assert.match(combinedHtml, /data-doc-shell-icon="ai-contract"/);
+  assert.doesNotMatch(combinedHtml, /tcrn-doc-ai-contract-link__hint/);
   assert.match(combinedHtml, /event\.key\.toLowerCase\(\) !== "k"/);
   assert.match(combinedHtml, /readItems\(\)\.filter/);
   assert.match(combinedHtml, /querySelector\("\.tcrn-doc-nav__section-label"\)/);
@@ -253,6 +258,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-storybook-theme-option="dark"/);
   assert.match(combinedHtml, /data-doc-shell-icon="theme-light"[\s\S]*data-icon-name="sun"/);
   assert.match(combinedHtml, /data-doc-shell-icon="theme-dark"[\s\S]*data-icon-name="moon"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="locale-select"[\s\S]*data-icon-name="chevron-down"/);
+  assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-aria-label\]"\)/);
+  assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-title\]"\)/);
   assert.match(combinedHtml, /tcrn-design-system-storybook-theme/);
   assert.match(combinedHtml, /document\.documentElement\.style\.colorScheme = resolvedTheme/);
   assert.match(combinedHtml, /next\.searchParams\.set\("theme", theme\)/);

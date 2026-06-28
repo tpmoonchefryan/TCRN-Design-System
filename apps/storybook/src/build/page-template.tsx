@@ -103,32 +103,39 @@ function docHeaderWorkspaceHtml(group: ContractStoryGroup): string {
 
 function docHeaderControlsHtml(): string {
   return `<div class="tcrn-doc-header-controls">
-          <div class="tcrn-doc-theme-control" role="group" aria-label="${escapeHtml(localeText("shell.themeLabel"))}">
-            <span class="tcrn-doc-theme-control__label">${i18nText("shell.themeLabel")}</span>
-            <span class="tcrn-doc-theme-control__buttons" data-storybook-theme-control>
-              <button class="tcrn-doc-theme-control__button" type="button" data-storybook-theme-option="light" data-theme-label-key="shell.themeLightLabel" aria-pressed="true" aria-label="${escapeHtml(localeText("shell.themeLightLabel"))}" title="${escapeHtml(localeText("shell.themeLightLabel"))}">
-                ${iconHtml("sun", "tcrn-doc-theme-control__icon", "theme-light")}
-                <span data-i18n="shell.themeLightShort">${i18nText("shell.themeLightShort")}</span>
-              </button>
-              <button class="tcrn-doc-theme-control__button" type="button" data-storybook-theme-option="dark" data-theme-label-key="shell.themeDarkLabel" aria-pressed="false" aria-label="${escapeHtml(localeText("shell.themeDarkLabel"))}" title="${escapeHtml(localeText("shell.themeDarkLabel"))}">
-                ${iconHtml("moon", "tcrn-doc-theme-control__icon", "theme-dark")}
-                <span data-i18n="shell.themeDarkShort">${i18nText("shell.themeDarkShort")}</span>
-              </button>
-            </span>
-            <span class="tcrn-doc-theme-control__hint">${i18nText("shell.themeHint")}</span>
-          </div>
-          <a class="tcrn-doc-ai-contract-link" href="ai-consumption-contract.json" data-ai-consumption-contract-link="true" aria-label="${escapeHtml(localeText("shell.aiContractLabel"))}" title="${escapeHtml(localeText("shell.aiContractLabel"))}">
-            ${iconHtml("external-link", "tcrn-doc-ai-contract-link__icon", "ai-contract")}
-            <span data-i18n="shell.aiContractShort">${i18nText("shell.aiContractShort")}</span>
-            <span class="tcrn-doc-ai-contract-link__hint" data-i18n="shell.aiContractHint">${i18nText("shell.aiContractHint")}</span>
-          </a>
-          <label class="tcrn-doc-locale-control" for="tcrn-doc-locale">
-            <span>${i18nText("shell.languageLabel")}</span>
-            <select id="tcrn-doc-locale" data-i18n-locale-select aria-label="Storybook language">
+          <div class="tcrn-doc-header-controls__row">
+            <div class="tcrn-doc-theme-control" role="group" aria-label="${escapeHtml(localeText("shell.themeLabel"))}" data-i18n-aria-label="shell.themeLabel">
+              <span class="tcrn-doc-theme-control__label" data-i18n="shell.themeLabel">${i18nText("shell.themeLabel")}</span>
+              <span class="tcrn-doc-theme-control__buttons" data-storybook-theme-control>
+                <button class="tcrn-doc-theme-control__button" type="button" data-storybook-theme-option="light" data-theme-label-key="shell.themeLightLabel" aria-pressed="true" aria-label="${escapeHtml(localeText("shell.themeLightLabel"))}" title="${escapeHtml(localeText("shell.themeLightLabel"))}">
+                  ${iconHtml("sun", "tcrn-doc-theme-control__icon", "theme-light")}
+                  <span class="tcrn-doc-theme-control__button-label" data-i18n="shell.themeLightShort">${i18nText("shell.themeLightShort")}</span>
+                </button>
+                <button class="tcrn-doc-theme-control__button" type="button" data-storybook-theme-option="dark" data-theme-label-key="shell.themeDarkLabel" aria-pressed="false" aria-label="${escapeHtml(localeText("shell.themeDarkLabel"))}" title="${escapeHtml(localeText("shell.themeDarkLabel"))}">
+                  ${iconHtml("moon", "tcrn-doc-theme-control__icon", "theme-dark")}
+                  <span class="tcrn-doc-theme-control__button-label" data-i18n="shell.themeDarkShort">${i18nText("shell.themeDarkShort")}</span>
+                </button>
+              </span>
+            </div>
+            <label class="tcrn-doc-locale-control" for="tcrn-doc-locale">
+              <span class="tcrn-doc-locale-control__label" data-i18n="shell.languageLabel">${i18nText("shell.languageLabel")}</span>
+              <span class="tcrn-doc-locale-control__select">
+                <select id="tcrn-doc-locale" data-i18n-locale-select data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}">
 ${tcrnLocaleMetadata.map((metadata) => `              <option value="${metadata.locale}">${metadata.nativeName} / ${metadata.englishName}</option>`).join("\n")}
-            </select>
-            <span class="tcrn-doc-locale-control__hint">${i18nText("shell.languageHint")}</span>
-          </label>
+                </select>
+                ${iconHtml("chevron-down", "tcrn-doc-locale-control__chevron", "locale-select")}
+              </span>
+            </label>
+            <a class="tcrn-doc-ai-contract-link" href="ai-consumption-contract.json" data-ai-consumption-contract-link="true" data-i18n-aria-label="shell.aiContractLabel" data-i18n-title="shell.aiContractLabel" aria-label="${escapeHtml(localeText("shell.aiContractLabel"))}" title="${escapeHtml(localeText("shell.aiContractLabel"))}">
+              ${iconHtml("external-link", "tcrn-doc-ai-contract-link__icon", "ai-contract")}
+              <span class="tcrn-sr-only" data-i18n="shell.aiContractShort">${i18nText("shell.aiContractShort")}</span>
+            </a>
+          </div>
+          <p class="tcrn-doc-header-controls__hint">
+            <span data-i18n="shell.themeHint">${i18nText("shell.themeHint")}</span>
+            <span aria-hidden="true"> / </span>
+            <span data-i18n="shell.languageHint">${i18nText("shell.languageHint")}</span>
+          </p>
         </div>`;
 }
 

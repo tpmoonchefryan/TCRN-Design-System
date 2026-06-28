@@ -225,6 +225,12 @@ export const storybookI18nScript = `<script>
     for (const node of document.querySelectorAll("[data-i18n]")) {
       node.textContent = textFor(resolvedLocale, node.getAttribute("data-i18n"));
     }
+    for (const node of document.querySelectorAll("[data-i18n-aria-label]")) {
+      node.setAttribute("aria-label", textFor(resolvedLocale, node.getAttribute("data-i18n-aria-label")));
+    }
+    for (const node of document.querySelectorAll("[data-i18n-title]")) {
+      node.setAttribute("title", textFor(resolvedLocale, node.getAttribute("data-i18n-title")));
+    }
     translateContentTree(resolvedLocale);
     applyClientShortcuts();
     for (const toggle of document.querySelectorAll("[data-doc-sidebar-toggle]")) {
