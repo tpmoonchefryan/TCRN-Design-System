@@ -23,10 +23,6 @@ function iconHtml(name: IconName, className: string, dataDocShellIcon: string): 
   );
 }
 
-function localeAbbreviation(locale: string): string {
-  return locale === "zh-CN" ? "ZH" : locale.toUpperCase();
-}
-
 function navHtml(activeGroup: ContractStoryGroup): string {
   return `<nav class="tcrn-doc-nav" aria-label="Documentation sections" data-doc-nav="sections">
   <ol class="tcrn-doc-nav__groups">
@@ -111,26 +107,26 @@ function docHeaderControlsHtml(): string {
             <div class="tcrn-doc-theme-control" data-storybook-theme-control>
               <button class="tcrn-doc-theme-toggle" type="button" data-storybook-theme-toggle data-storybook-theme-option="dark" data-theme-label-key="shell.themeDarkLabel" data-current-theme="light" aria-pressed="false" aria-label="${escapeHtml(localeText("shell.themeDarkLabel"))}" title="${escapeHtml(localeText("shell.themeDarkLabel"))}">
                 <span class="tcrn-doc-theme-toggle__icon" data-theme-icon="light" aria-hidden="true">${iconHtml("sun", "tcrn-doc-theme-control__icon", "theme-light")}</span>
-                <span class="tcrn-doc-theme-toggle__icon" data-theme-icon="dark" aria-hidden="true" hidden>${iconHtml("moon", "tcrn-doc-theme-control__icon", "theme-dark")}</span>
+                <span class="tcrn-doc-theme-toggle__icon" data-theme-icon="dark" aria-hidden="true">${iconHtml("moon", "tcrn-doc-theme-control__icon", "theme-dark")}</span>
                 <span class="tcrn-sr-only" data-i18n="shell.themeLabel">${i18nText("shell.themeLabel")}</span>
               </button>
             </div>
             <div class="tcrn-doc-locale-control" data-locale-menu-root>
               <button class="tcrn-doc-locale-toggle" type="button" data-locale-menu-toggle aria-haspopup="listbox" aria-expanded="false" aria-controls="tcrn-doc-locale-menu" data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}" title="${escapeHtml(localeText("shell.languageLabel"))}">
-                <span class="tcrn-doc-locale-toggle__code" data-locale-current-code>${localeAbbreviation(tcrnDefaultLocale)}</span>
+                ${iconHtml("globe-2", "tcrn-doc-locale-control__globe", "locale-globe")}
+                <span class="tcrn-doc-locale-toggle__name" data-locale-current-name>${tcrnLocaleMetadata.find((metadata) => metadata.locale === tcrnDefaultLocale)?.nativeName ?? tcrnDefaultLocale}</span>
                 ${iconHtml("chevron-down", "tcrn-doc-locale-control__chevron", "locale-select")}
               </button>
               <div id="tcrn-doc-locale-menu" class="tcrn-doc-locale-menu" role="listbox" data-locale-menu data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}" hidden>
 ${tcrnLocaleMetadata.map((metadata) => {
   const selected = metadata.locale === tcrnDefaultLocale ? "true" : "false";
-  return `                <button class="tcrn-doc-locale-menu__option" type="button" role="option" data-locale-menu-option data-locale="${metadata.locale}" data-locale-code="${localeAbbreviation(metadata.locale)}" aria-selected="${selected}">
-                  <span class="tcrn-doc-locale-menu__code">${localeAbbreviation(metadata.locale)}</span>
+  return `                <button class="tcrn-doc-locale-menu__option" type="button" role="option" data-locale-menu-option data-locale="${metadata.locale}" data-locale-name="${metadata.nativeName}" aria-selected="${selected}">
                   <span class="tcrn-doc-locale-menu__name">${metadata.nativeName}</span>
                 </button>`;
 }).join("\n")}
               </div>
               <select id="tcrn-doc-locale" data-i18n-locale-select data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}" tabindex="-1" aria-hidden="true" hidden>
-${tcrnLocaleMetadata.map((metadata) => `                <option value="${metadata.locale}">${metadata.nativeName} / ${metadata.englishName}</option>`).join("\n")}
+${tcrnLocaleMetadata.map((metadata) => `                <option value="${metadata.locale}">${metadata.nativeName}</option>`).join("\n")}
               </select>
             </div>
           </div>

@@ -188,10 +188,12 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-i18n="shell\.themeLabel"/);
   assert.match(combinedHtml, /data-i18n-aria-label="shell\.languageLabel"/);
   assert.match(combinedHtml, /data-locale-menu-toggle/);
-  assert.match(combinedHtml, /data-locale-current-code>EN</);
+  assert.match(combinedHtml, /data-doc-shell-icon="locale-globe"/);
+  assert.match(combinedHtml, /data-locale-current-name>English</);
   assert.match(combinedHtml, /data-locale-menu-option/);
-  assert.match(combinedHtml, /data-locale-code="ZH"/);
+  assert.match(combinedHtml, /data-locale-name="简体中文"/);
   assert.match(combinedHtml, /data-doc-shell-icon="locale-select"/);
+  assert.doesNotMatch(combinedHtml, /简体中文 \/ Simplified Chinese/);
   assert.match(combinedHtml, /tcrnStorybookApplyTheme/);
   assert.doesNotMatch(combinedHtml, /data-ai-consumption-contract-link="true"/);
   assert.doesNotMatch(combinedHtml, /data-doc-shell-icon="ai-contract"/);
@@ -265,9 +267,10 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-storybook-theme-option="dark"/);
   assert.match(combinedHtml, /data-doc-shell-icon="theme-light"[\s\S]*data-icon-name="sun"/);
   assert.match(combinedHtml, /data-doc-shell-icon="theme-dark"[\s\S]*data-icon-name="moon"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="locale-globe"[\s\S]*data-icon-name="globe-2"/);
   assert.match(combinedHtml, /data-doc-shell-icon="locale-select"[\s\S]*data-icon-name="chevron-down"/);
   assert.match(combinedHtml, /data-locale-menu/);
-  assert.match(combinedHtml, /data-locale-menu-option[\s\S]*data-locale="ja"[\s\S]*data-locale-code="JA"/);
+  assert.match(combinedHtml, /data-locale-menu-option[\s\S]*data-locale="ja"[\s\S]*data-locale-name="日本語"/);
   assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-aria-label\]"\)/);
   assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-title\]"\)/);
   assert.match(combinedHtml, /tcrn-design-system-storybook-theme/);

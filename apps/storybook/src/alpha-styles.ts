@@ -188,7 +188,7 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 .tcrn-doc-header__workspace {
   align-self: stretch;
   display: grid;
-  grid-template-columns: minmax(180px, 1fr) minmax(220px, 340px);
+  grid-template-columns: minmax(180px, 1fr) minmax(150px, 180px);
   align-items: center;
   gap: clamp(18px, 2.1vw, 34px);
   min-width: 0;
@@ -246,7 +246,7 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 .tcrn-doc-header-search {
   position: relative;
   justify-self: end;
-  width: min(340px, 100%);
+  width: min(180px, 100%);
   min-width: 0;
 }
 .tcrn-doc-header-search .tcrn-search-input__control {
@@ -332,7 +332,7 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 }
 .tcrn-doc-header-controls__row {
   display: inline-flex;
-  gap: 6px;
+  gap: 8px;
   align-items: center;
   min-width: 0;
 }
@@ -346,9 +346,7 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
   height: 36px;
-  min-width: 36px;
   border: 1px solid var(--tcrn-color-border-strong);
   border-radius: 999px;
   background: color-mix(in srgb, var(--tcrn-color-surface-panel) 88%, transparent);
@@ -365,6 +363,13 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
     box-shadow var(--tcrn-motion-standard),
     color var(--tcrn-motion-standard);
 }
+.tcrn-doc-theme-toggle {
+  position: relative;
+  width: 36px;
+  min-width: 36px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
 .tcrn-doc-theme-toggle:hover,
 .tcrn-doc-locale-toggle:hover,
 .tcrn-doc-locale-toggle[aria-expanded="true"] {
@@ -380,23 +385,54 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   outline-offset: 2px;
 }
 .tcrn-doc-theme-toggle__icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.58) rotate(-90deg);
+  transition:
+    opacity var(--tcrn-motion-emphasis),
+    transform var(--tcrn-motion-emphasis);
+}
+.tcrn-doc-theme-toggle[data-current-theme="light"] .tcrn-doc-theme-toggle__icon[data-theme-icon="light"],
+.tcrn-doc-theme-toggle[data-current-theme="dark"] .tcrn-doc-theme-toggle__icon[data-theme-icon="dark"] {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+}
+.tcrn-doc-theme-toggle[data-current-theme="light"] .tcrn-doc-theme-toggle__icon[data-theme-icon="dark"] {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.58) rotate(-90deg);
+}
+.tcrn-doc-theme-toggle[data-current-theme="dark"] .tcrn-doc-theme-toggle__icon[data-theme-icon="light"] {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.58) rotate(90deg);
 }
 .tcrn-doc-theme-control__icon {
   flex: 0 0 auto;
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
 }
 .tcrn-doc-locale-toggle {
-  width: 42px;
-  min-width: 42px;
-  gap: 1px;
+  width: auto;
+  min-width: 106px;
+  max-width: 132px;
+  gap: 6px;
+  padding: 0 10px;
 }
-.tcrn-doc-locale-toggle__code {
-  min-width: 18px;
-  text-align: center;
+.tcrn-doc-locale-toggle__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: start;
+}
+.tcrn-doc-locale-control__globe {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
 }
 .tcrn-doc-locale-control__chevron {
   flex: 0 0 auto;
@@ -413,7 +449,7 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   display: grid;
   gap: 3px;
   width: max-content;
-  min-width: 158px;
+  min-width: 126px;
   border: 1px solid var(--tcrn-color-border-strong);
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-surface-panel);
@@ -424,10 +460,8 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   display: none;
 }
 .tcrn-doc-locale-menu__option {
-  display: grid;
-  grid-template-columns: 34px 1fr;
+  display: flex;
   align-items: center;
-  gap: 8px;
   width: 100%;
   border: 0;
   border-radius: var(--tcrn-radius-control);
@@ -444,15 +478,17 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 .tcrn-doc-locale-menu__option[aria-selected="true"] {
   background: var(--tcrn-color-brand-primary-bg);
 }
-.tcrn-doc-locale-menu__code {
-  color: var(--tcrn-color-brand-primary);
-}
 .tcrn-doc-locale-menu__name {
   color: var(--tcrn-color-text-primary);
 }
 [data-tcrn-theme="dark"] .tcrn-doc-locale-control select,
 [data-tcrn-theme="dark"] .tcrn-doc-header-search input {
   color-scheme: dark;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-doc-theme-toggle__icon {
+    transition: none;
+  }
 }
 .tcrn-doc-claim {
   color: var(--tcrn-color-text-secondary);

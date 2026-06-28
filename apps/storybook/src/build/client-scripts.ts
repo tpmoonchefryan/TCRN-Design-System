@@ -81,7 +81,7 @@ export const storybookThemeScript = `<script>
       toggle.setAttribute("data-theme-label-key", labelKey);
       toggle.setAttribute("aria-pressed", resolvedTheme === "dark" ? "true" : "false");
       for (const icon of toggle.querySelectorAll("[data-theme-icon]")) {
-        icon.hidden = icon.getAttribute("data-theme-icon") !== resolvedTheme;
+        icon.hidden = false;
       }
       if (typeof window.tcrnStorybookTextFor === "function" && window.tcrnStorybookResolvedLocale) {
         const label = window.tcrnStorybookTextFor(window.tcrnStorybookResolvedLocale, labelKey);
@@ -243,9 +243,9 @@ export const storybookI18nScript = `<script>
   };
   const updateLocaleMenuState = (locale) => {
     const selected = document.querySelector("[data-locale-menu-option][data-locale='" + CSS.escape(locale) + "']");
-    const codeNode = document.querySelector("[data-locale-current-code]");
-    if (selected && codeNode) {
-      codeNode.textContent = selected.getAttribute("data-locale-code") ?? locale.toUpperCase();
+    const nameNode = document.querySelector("[data-locale-current-name]");
+    if (selected && nameNode) {
+      nameNode.textContent = selected.getAttribute("data-locale-name") ?? locale;
     }
     for (const option of document.querySelectorAll("[data-locale-menu-option]")) {
       option.setAttribute("aria-selected", option.getAttribute("data-locale") === locale ? "true" : "false");
