@@ -5,7 +5,9 @@ import {
   IconButton,
   ModuleTabs,
   SearchInput,
+  ShellBrandLockup,
   StatusBadge,
+  TcrnBrandMark,
   Text
 } from "@tcrn/ui-react";
 import {
@@ -18,7 +20,6 @@ import {
   tmsSecondaryDirectoryGroupCount,
   tmsTaskLanes
 } from "../content/index.js";
-import { ShellBrandLockup, TcrnBrandMark } from "./brand-lockups.js";
 
 // storybook_only: dense shell IA is retained as synthetic docs/proof content, not package component source.
 export function TmsDenseShellDemo() {

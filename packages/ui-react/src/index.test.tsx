@@ -56,6 +56,12 @@ test("component-library metadata names public components, utilities, and deferre
     "ProductLauncher",
     "ProductSwitcher",
     "SkipLink",
+    "TcrnBrandMark",
+    "ProductLockup",
+    "ShellBrandLockup",
+    "ShellThemeToggle",
+    "ShellLocaleMenu",
+    "SideNavCollapseButton",
     "DetailDrawer",
     "ActionDrawer",
     "Tooltip",
@@ -65,8 +71,12 @@ test("component-library metadata names public components, utilities, and deferre
   ];
 
   assert.deepEqual([...componentLibraryPublicComponentNames].sort(), [...expectedPublicComponents].sort());
-  assert.deepEqual([...componentLibraryPublicUtilityNames].sort(), ["tcrnIconNames"]);
+  assert.deepEqual([...componentLibraryPublicUtilityNames].sort(), ["tcrnComponentCss", "tcrnIconNames"]);
   assert.ok(componentLibraryDeferredPrototypeNames.includes("TmsDenseShellDemo"));
   assert.ok(componentLibraryDeferredPrototypeNames.includes("KnowledgeBaseShellDemo"));
   assert.ok(componentLibraryDeferredPrototypeNames.includes("CompactToolShellDemo"));
+  const deferredPrototypeNames = componentLibraryDeferredPrototypeNames as readonly string[];
+  assert.equal(deferredPrototypeNames.includes("TcrnBrandMark"), false);
+  assert.equal(deferredPrototypeNames.includes("ProductLockup"), false);
+  assert.equal(deferredPrototypeNames.includes("ShellBrandLockup"), false);
 });

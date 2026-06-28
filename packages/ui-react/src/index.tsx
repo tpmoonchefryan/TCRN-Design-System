@@ -47,6 +47,12 @@ export const componentLibraryPublicComponentNames = [
   "ProductLauncher",
   "ProductSwitcher",
   "SkipLink",
+  "TcrnBrandMark",
+  "ProductLockup",
+  "ShellBrandLockup",
+  "ShellThemeToggle",
+  "ShellLocaleMenu",
+  "SideNavCollapseButton",
   "DetailDrawer",
   "ActionDrawer",
   "Tooltip",
@@ -58,15 +64,13 @@ export const componentLibraryPublicComponentNames = [
 export type ComponentLibraryPublicComponentName = (typeof componentLibraryPublicComponentNames)[number];
 
 export const componentLibraryPublicUtilityNames = [
-  "tcrnIconNames"
+  "tcrnIconNames",
+  "tcrnComponentCss"
 ] as const;
 
 export type ComponentLibraryPublicUtilityName = (typeof componentLibraryPublicUtilityNames)[number];
 
 export const componentLibraryDeferredPrototypeNames = [
-  "TcrnBrandMark",
-  "ProductLockup",
-  "ShellBrandLockup",
   "TmsDenseShellDemo",
   "KnowledgeBaseShellDemo",
   "CompactToolShellDemo"

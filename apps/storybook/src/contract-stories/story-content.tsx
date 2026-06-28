@@ -29,6 +29,7 @@ import {
   NavItem,
   Pagination,
   Popover,
+  ProductLockup,
   ProductSwitcher,
   ReadbackPanel,
   SearchInput,
@@ -48,6 +49,7 @@ import {
   Text,
   Textarea,
   TopBar,
+  TcrnBrandMark,
   tcrnIconNames,
   Tooltip,
   WorkIndex
@@ -67,7 +69,6 @@ import {
   OverlayStaticModes,
   PopoverSpecFixture
 } from "./fixtures/overlay.js";
-import { ProductLockup, TcrnBrandMark } from "./prototypes/brand-lockups.js";
 import {
   CompactToolShellDemo,
   KnowledgeBaseShellDemo,

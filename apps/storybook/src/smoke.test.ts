@@ -397,8 +397,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /tcrn-segmented-nav/);
   assert.match(readGroupPage("Components"), /tcrn-product-switcher/);
   assert.match(readGroupPage("Components"), /tcrn-skip-link/);
-  assert.match(readGroupPage("Style Guide"), /data-storybook-only="brand-lockup-prototype"/);
-  assert.match(readGroupPage("Style Guide"), /data-component-library-status="deferred"/);
+  assert.match(readGroupPage("Style Guide"), /data-package-backed-brand-lockup="product"/);
+  assert.match(readGroupPage("Style Guide"), /data-brand-asset-registration="design-system"/);
   assert.match(readGroupPage("Components"), /Navigation and shell spec/);
   assert.match(readGroupPage("Components"), /Navigation shell components are first-class component contracts/);
   assert.match(readGroupPage("Components"), /Current location may scroll into view and highlight, but must not reorder sections/);
@@ -614,6 +614,8 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     "read_ai_consumption_contract",
     "use_tcrn_i18n_and_copy_state",
     "use_admitted_brand_asset_or_route_brand_component_admission",
+    "use_registered_brand_lockup_components_for_product_suffixes",
+    "reject_unregistered_or_deprecated_brand_assets",
     "import_package_backed_ds_primitives",
     "use_design_tokens_and_accessibility_rules",
     "verify_light_and_dark_storybook_theme_contract",
@@ -628,6 +630,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     "contract_story_readback",
     "i18n_copy_state_receipt",
     "brand_surface_receipt",
+    "forbidden_brand_asset_absence_receipt",
     "package_import_receipt",
     "theme_mode_receipt",
     "storybook_shell_control_receipt",
@@ -638,10 +641,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     "product_adoption_route_receipt"
   ]);
   assert.deepEqual(contract.supportedThemeModes, ["light", "dark"]);
-  assert.match(contract.brandSurfaceDisposition, /Storybook-only brand lockups are prototypes/);
+  assert.match(contract.brandSurfaceDisposition, /TcrnBrandMark, ProductLockup, and ShellBrandLockup are registered @tcrn\/ui-react exports/);
+  assert.match(contract.brandSurfaceDisposition, /Deprecated or unregistered AOS wordmark image assets are forbidden/);
   assert.match(contract.brandSurfaceDisposition, /Generic icons or text-only substitutes are not brand marks/);
   assert.match(contract.i18nDisposition, /approved locale and copy-state contract/);
-  assert.match(contract.componentConsumptionDisposition, /import package-backed Design System primitives/);
+  assert.match(contract.componentConsumptionDisposition, /ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, brand lockups/);
   assert.match(contract.componentConsumptionDisposition, /Product-owned behavior glue must be route-scoped and proven/);
   assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
   assert.match(contract.themeModeDisposition, /light and dark Storybook shell modes/);
@@ -655,10 +659,19 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.storybookShellControlContract.aiContractAccess, /not in the human top toolbar/);
   assert.match(contract.productShellHardeningRules.sideNavigation, /keyboard-accessible collapse and expand control/);
   assert.match(contract.productShellHardeningRules.sideNavigation, /prove both expanded and collapsed states/);
-  assert.match(contract.productShellHardeningRules.brandSurface, /generic icons and text-only substitutes are not accepted brand marks/);
+  assert.match(contract.productShellHardeningRules.brandSurface, /deprecated AOS wordmark images are not accepted brand marks/);
   assert.match(contract.productShellHardeningRules.registeredNavigation, /must not surface unregistered or planned modules/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /registered package-backed primitives from @tcrn\/ui-react/);
   assert.match(contract.productShellHardeningRules.browserProof, /rather than relying only on static marker checks/);
+  assert.deepEqual(contract.forbiddenBrandAssets, [
+    "tcrn-aos-wordmark-geometric-dark.png",
+    "tcrn-aos-wordmark-geometric-dark-preview.png",
+    "tcrn-aos-wordmark-geometric-spec.md",
+    "tcrn-aos-wordmark.png",
+    "tcrn-aos-wordmark.svg",
+    "aos-favicon.png",
+    "favicon.ico"
+  ]);
   assert.ok(contract.forbiddenClaims.includes("automatic_component_registration"));
   assert.ok(contract.forbiddenClaims.includes("automatic_product_adoption"));
   assert.ok(contract.forbiddenClaims.includes("aos_tms_acceptance"));

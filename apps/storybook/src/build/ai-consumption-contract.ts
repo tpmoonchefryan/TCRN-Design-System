@@ -44,6 +44,8 @@ export const aiConsumptionContract = {
     "read_ai_consumption_contract",
     "use_tcrn_i18n_and_copy_state",
     "use_admitted_brand_asset_or_route_brand_component_admission",
+    "use_registered_brand_lockup_components_for_product_suffixes",
+    "reject_unregistered_or_deprecated_brand_assets",
     "import_package_backed_ds_primitives",
     "use_design_tokens_and_accessibility_rules",
     "verify_light_and_dark_storybook_theme_contract",
@@ -58,6 +60,7 @@ export const aiConsumptionContract = {
     "contract_story_readback",
     "i18n_copy_state_receipt",
     "brand_surface_receipt",
+    "forbidden_brand_asset_absence_receipt",
     "package_import_receipt",
     "theme_mode_receipt",
     "storybook_shell_control_receipt",
@@ -68,12 +71,21 @@ export const aiConsumptionContract = {
     "product_adoption_route_receipt"
   ],
   supportedThemeModes: ["light", "dark"],
+  forbiddenBrandAssets: [
+    "tcrn-aos-wordmark-geometric-dark.png",
+    "tcrn-aos-wordmark-geometric-dark-preview.png",
+    "tcrn-aos-wordmark-geometric-spec.md",
+    "tcrn-aos-wordmark.png",
+    "tcrn-aos-wordmark.svg",
+    "aos-favicon.png",
+    "favicon.ico"
+  ],
   brandSurfaceDisposition:
-    "Product implementations may use admitted brand assets only. Generic icons or text-only substitutes are not brand marks. Storybook-only brand lockups are prototypes and are not package-backed product exports.",
+    "Product implementations may use admitted brand assets and package-backed brand primitives only. TcrnBrandMark, ProductLockup, and ShellBrandLockup are registered @tcrn/ui-react exports for TCRN mother-brand and product suffix lockups. Generic icons or text-only substitutes are not brand marks. Deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for TopBar, SideNav, NavGroup, NavItem, SearchInput, theme, locale, status, readback, table, and disclosure surfaces instead of rebuilding reusable local clones. Product-owned behavior glue must be route-scoped and proven.",
+    "Product implementations must import package-backed Design System primitives for TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, brand lockups, status, readback, table, and disclosure surfaces instead of rebuilding reusable local clones. Product-owned behavior glue must be route-scoped and proven.",
   tokenConsumptionDisposition:
     "Product implementations must use Design System tokens, reduced-motion rules, and accessibility states before custom CSS.",
   themeModeDisposition:
@@ -94,7 +106,7 @@ export const aiConsumptionContract = {
     sideNavigation:
       "Product and documentation shells that claim SideNav behavior must expose a keyboard-accessible collapse and expand control, persist or route-own collapsed state, preserve active location/accessibility, and prove both expanded and collapsed states.",
     brandSurface:
-      "Product shells must use admitted product brand assets or route brand admission before product use; generic icons and text-only substitutes are not accepted brand marks.",
+      "Product shells must use registered package-backed brand lockups or route brand admission before product use; generic icons, text-only substitutes, and deprecated AOS wordmark images are not accepted brand marks.",
     registeredNavigation:
       "Product shells must not surface unregistered or planned modules as primary navigation, registered module cards, or active product IA before an owning route admits them.",
     primitiveConsumption:
