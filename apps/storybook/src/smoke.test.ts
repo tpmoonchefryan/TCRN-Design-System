@@ -168,8 +168,15 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-i18n-locale-select/);
   assert.match(combinedHtml, /tcrn-doc-global-bar/);
   assert.match(combinedHtml, /tcrn-doc-global-brand/);
+  assert.match(combinedHtml, /<link rel="icon" href="tcrn-brand-mark\.svg" type="image\/svg\+xml" \/>/);
   assert.match(combinedHtml, /data-doc-shell-icon="header-search"/);
   assert.match(combinedHtml, /data-doc-search-input/);
+  assert.match(combinedHtml, /--tcrn-doc-motion-spring: 0\.5s cubic-bezier\(0\.175, 0\.885, 0\.32, 1\.275\)/);
+  assert.match(combinedHtml, /--tcrn-doc-motion-smooth: 0\.4s ease/);
+  assert.match(combinedHtml, /--tcrn-doc-header-search-resting-width: 180px/);
+  assert.match(combinedHtml, /--tcrn-doc-header-search-expanded-width: 320px/);
+  assert.match(combinedHtml, /\.tcrn-doc-header__workspace:focus-within,[\s\S]*\.tcrn-doc-header__workspace\[data-search-expanded="true"\] \{[\s\S]*grid-template-columns: minmax\(180px, 1fr\) var\(--tcrn-doc-header-search-expanded-width\)/);
+  assert.match(combinedHtml, /@media \(max-width: 760px\)[\s\S]*\.tcrn-doc-header__workspace:focus-within,[\s\S]*\.tcrn-doc-header__workspace\[data-search-expanded="true"\] \{[\s\S]*grid-template-columns: 1fr/);
   assert.match(combinedHtml, /role="combobox"/);
   assert.match(combinedHtml, /aria-controls="tcrn-doc-search-results"/);
   assert.match(combinedHtml, /aria-keyshortcuts="Control\+K Meta\+K"/);
@@ -207,6 +214,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /window\.location\.href = targetUrl\.href/);
   assert.match(combinedHtml, /preserveWindowScroll/);
   assert.match(combinedHtml, /focusSearchInput/);
+  assert.match(combinedHtml, /setSearchExpanded/);
+  assert.match(combinedHtml, /data-search-expanded/);
+  assert.match(combinedHtml, /document\.addEventListener\("pointerdown"/);
   assert.match(combinedHtml, /input\.focus\(\{ preventScroll: true \}\)/);
   assert.match(combinedHtml, /input\.addEventListener\("pointerdown"/);
   assert.match(combinedHtml, /shell\.searchNoResults/);
@@ -223,7 +233,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /@keyframes tcrn-doc-nav-stories-unfold/);
   assert.match(combinedHtml, /data-sidebar-motion/);
   assert.match(combinedHtml, /setCollapsed\(readStoredState\(\), false, false\)/);
-  assert.match(combinedHtml, /transition: --tcrn-doc-shell-side-width var\(--tcrn-motion-emphasis\)/);
+  assert.match(combinedHtml, /\.tcrn-doc-shell \{[\s\S]*--tcrn-doc-shell-side-width var\(--tcrn-motion-emphasis\)/);
   assert.match(combinedHtml, /\.tcrn-doc-global-bar[\s\S]*transition: grid-template-columns var\(--tcrn-motion-emphasis\)/);
   assert.match(combinedHtml, /\.tcrn-doc-layout[\s\S]*transition: grid-template-columns var\(--tcrn-motion-emphasis\)/);
   assert.match(combinedHtml, /\.tcrn-doc-nav__stories[\s\S]*max-height var\(--tcrn-motion-emphasis\)/);

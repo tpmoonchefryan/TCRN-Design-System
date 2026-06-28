@@ -156,6 +156,7 @@ export function pageHtml(group: ContractStoryGroup): string {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#f6f7fb" data-storybook-theme-color />
+  <link rel="icon" href="tcrn-brand-mark.svg" type="image/svg+xml" />
   <title>${localeText(`group.${group}`)} - ${localeText("shell.title")}</title>
   <style>
 ${alphaStoryCss}

@@ -406,9 +406,21 @@ export const storybookSearchScript = `<script>
   if (!(input instanceof HTMLInputElement)) {
     return;
   }
+  const searchRoot = input.closest(".tcrn-doc-header-search");
+  const searchWorkspace = input.closest(".tcrn-doc-header__workspace");
   const maxResults = 8;
   let results = [];
   let activeIndex = -1;
+  const setSearchExpanded = (expanded) => {
+    if (!(searchWorkspace instanceof HTMLElement)) {
+      return;
+    }
+    if (expanded) {
+      searchWorkspace.setAttribute("data-search-expanded", "true");
+      return;
+    }
+    searchWorkspace.removeAttribute("data-search-expanded");
+  };
   const normalize = (value) => String(value ?? "").trim().toLocaleLowerCase();
   const restoreWindowScroll = (scrollX, scrollY) => {
     if (document.activeElement !== input) {
@@ -561,9 +573,28 @@ export const storybookSearchScript = `<script>
     focusSearchInput();
   });
   input.addEventListener("input", () => preserveWindowScroll(updateResults));
-  input.addEventListener("focus", () => preserveWindowScroll(updateResults));
+  input.addEventListener("focus", () => {
+    setSearchExpanded(true);
+    preserveWindowScroll(updateResults);
+  });
   input.addEventListener("blur", () => {
-    window.setTimeout(() => setResultsVisible(false), 120);
+    window.setTimeout(() => {
+      if (document.activeElement !== input) {
+        setSearchExpanded(false);
+      }
+      setResultsVisible(false);
+    }, 120);
+  });
+  document.addEventListener("pointerdown", (event) => {
+    const target = event.target;
+    if (target instanceof Element && searchRoot?.contains(target)) {
+      return;
+    }
+    if (document.activeElement === input) {
+      input.blur();
+    }
+    setSearchExpanded(false);
+    setResultsVisible(false);
   });
   input.addEventListener("keydown", (event) => {
     if (event.isComposing) {
