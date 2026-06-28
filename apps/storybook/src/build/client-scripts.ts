@@ -28,7 +28,15 @@ export const storybookThemeScript = `<script>
     light: "#f6f7fb",
     dark: "#101827"
   };
+  const themeTransitionMs = 400;
   const isSupported = (theme) => supportedThemes.includes(theme);
+  const prefersReducedMotion = () => {
+    try {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch {
+      return false;
+    }
+  };
   const readStoredTheme = () => {
     try {
       return window.localStorage.getItem(storageKey);
@@ -61,7 +69,7 @@ export const storybookThemeScript = `<script>
       link.setAttribute("href", file + next.search + next.hash);
     }
   };
-  const applyTheme = (theme, updateUrl) => {
+  const commitTheme = (theme, updateUrl) => {
     const resolvedTheme = isSupported(theme) ? theme : defaultTheme;
     const shell = document.querySelector("[data-contract-surface]");
     const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
@@ -99,6 +107,45 @@ export const storybookThemeScript = `<script>
       nextUrl.searchParams.set("theme", resolvedTheme);
       window.history.replaceState(null, "", nextUrl.pathname + nextUrl.search + nextUrl.hash);
     }
+  };
+  const runFallbackThemeTransition = (resolvedTheme, update) => {
+    const overlay = document.createElement("div");
+    overlay.className = "tcrn-doc-theme-transition-wash";
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.style.background = themeColors[resolvedTheme] ?? themeColors.light;
+    document.body.append(overlay);
+    document.documentElement.setAttribute("data-theme-switching", "true");
+    window.requestAnimationFrame(() => {
+      overlay.setAttribute("data-active", "true");
+      window.setTimeout(() => {
+        update();
+        overlay.removeAttribute("data-active");
+        window.setTimeout(() => {
+          overlay.remove();
+          document.documentElement.removeAttribute("data-theme-switching");
+        }, themeTransitionMs);
+      }, themeTransitionMs);
+    });
+  };
+  const applyTheme = (theme, updateUrl) => {
+    const resolvedTheme = isSupported(theme) ? theme : defaultTheme;
+    const previousTheme = window.tcrnStorybookResolvedTheme;
+    const shouldAnimate = Boolean(updateUrl && previousTheme && previousTheme !== resolvedTheme && !prefersReducedMotion());
+    if (!shouldAnimate) {
+      commitTheme(resolvedTheme, updateUrl);
+      return;
+    }
+    const update = () => commitTheme(resolvedTheme, updateUrl);
+    const startViewTransition = document.startViewTransition?.bind(document);
+    if (startViewTransition) {
+      document.documentElement.setAttribute("data-theme-switching", "true");
+      const transition = startViewTransition(update);
+      Promise.resolve(transition.finished).finally(() => {
+        document.documentElement.removeAttribute("data-theme-switching");
+      });
+      return;
+    }
+    runFallbackThemeTransition(resolvedTheme, update);
   };
   const urlTheme = new URL(window.location.href).searchParams.get("theme");
   const storedTheme = readStoredTheme();

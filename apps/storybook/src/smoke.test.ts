@@ -173,6 +173,11 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-doc-search-input/);
   assert.match(combinedHtml, /--tcrn-doc-motion-spring: 0\.5s cubic-bezier\(0\.175, 0\.885, 0\.32, 1\.275\)/);
   assert.match(combinedHtml, /--tcrn-doc-motion-smooth: 0\.4s ease/);
+  assert.match(combinedHtml, /--tcrn-doc-theme-crossfade-duration: 0\.4s/);
+  assert.match(combinedHtml, /::view-transition-old\(root\)/);
+  assert.match(combinedHtml, /::view-transition-new\(root\)/);
+  assert.match(combinedHtml, /data-theme-switching/);
+  assert.match(combinedHtml, /tcrn-doc-theme-transition-wash/);
   assert.match(combinedHtml, /--tcrn-doc-header-search-resting-width: 180px/);
   assert.match(combinedHtml, /--tcrn-doc-header-search-expanded-width: 320px/);
   assert.match(combinedHtml, /\.tcrn-doc-header__workspace:focus-within,[\s\S]*\.tcrn-doc-header__workspace\[data-search-expanded="true"\] \{[\s\S]*grid-template-columns: minmax\(180px, 1fr\) var\(--tcrn-doc-header-search-expanded-width\)/);
@@ -202,6 +207,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-doc-shell-icon="locale-select"/);
   assert.doesNotMatch(combinedHtml, /简体中文 \/ Simplified Chinese/);
   assert.match(combinedHtml, /tcrnStorybookApplyTheme/);
+  assert.match(combinedHtml, /document\.startViewTransition/);
+  assert.match(combinedHtml, /runFallbackThemeTransition/);
   assert.doesNotMatch(combinedHtml, /data-ai-consumption-contract-link="true"/);
   assert.doesNotMatch(combinedHtml, /data-doc-shell-icon="ai-contract"/);
   assert.doesNotMatch(combinedHtml, /tcrn-doc-ai-contract-link/);

@@ -6,6 +6,8 @@ html {
   --tcrn-anchor-scroll-offset: 96px;
   --tcrn-doc-motion-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --tcrn-doc-motion-smooth: 0.4s ease;
+  --tcrn-doc-theme-crossfade-duration: 0.4s;
+  --tcrn-doc-theme-crossfade-easing: ease;
   --tcrn-doc-header-search-resting-width: 180px;
   --tcrn-doc-header-search-expanded-width: 320px;
   scroll-padding-top: var(--tcrn-anchor-scroll-offset);
@@ -19,6 +21,36 @@ html[data-tcrn-theme="dark"] {
   inherits: true;
   initial-value: 360px;
 }
+@keyframes tcrn-doc-theme-root-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes tcrn-doc-theme-root-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+::view-transition-group(root) {
+  animation-duration: var(--tcrn-doc-theme-crossfade-duration);
+  animation-timing-function: var(--tcrn-doc-theme-crossfade-easing);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--tcrn-doc-theme-crossfade-duration);
+  animation-timing-function: var(--tcrn-doc-theme-crossfade-easing);
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  animation-name: tcrn-doc-theme-root-fade-out;
+}
+::view-transition-new(root) {
+  animation-name: tcrn-doc-theme-root-fade-in;
+}
+html[data-theme-switching="true"] *,
+html[data-theme-switching="true"] *::before,
+html[data-theme-switching="true"] *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
 body {
   margin: 0;
   background: var(--tcrn-color-surface-canvas);
@@ -29,6 +61,18 @@ body {
   transition:
     background-color var(--tcrn-doc-motion-smooth),
     color var(--tcrn-doc-motion-smooth);
+}
+.tcrn-doc-theme-transition-wash {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+  background: var(--tcrn-color-surface-canvas);
+  opacity: 0;
+  transition: opacity var(--tcrn-doc-theme-crossfade-duration) var(--tcrn-doc-theme-crossfade-easing);
+}
+.tcrn-doc-theme-transition-wash[data-active="true"] {
+  opacity: 1;
 }
 .tcrn-doc-shell[data-storybook-locale="en"],
 .tcrn-doc-shell[data-storybook-locale="fr"] {
@@ -520,6 +564,14 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   color-scheme: dark;
 }
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.01ms;
+  }
+  .tcrn-doc-theme-transition-wash {
+    transition: none;
+  }
   .tcrn-doc-theme-toggle__icon {
     transition: none;
   }
