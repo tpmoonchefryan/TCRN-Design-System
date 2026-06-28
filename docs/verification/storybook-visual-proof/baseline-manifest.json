@@ -2,9 +2,9 @@
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
   "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
-  "sourceHead": "936d992060edf5cf020fdb95751776e12c716583",
-  "sourceContentDigest": "4a1ee5d66ac8de2c866ff4231996593bf7541230e06ed8817486d44f2602a9f0",
-  "baselineUpdateReason": "remove-aos-outward-standards",
+  "sourceHead": "230e01828bfb56e1caae8ee7d36a51af7d5b9a1d",
+  "sourceContentDigest": "66704fab3d6c37d2452332f838e6bb5039a7ea2a6dd10def0c19bb81e895bcef",
+  "baselineUpdateReason": "storybook-dark-shell-readme-ai-contract-support",
   "packageName": "@tcrn/design-system-workspace",
   "staticPageAllowlist": [
     "index.html",
@@ -14,7 +14,8 @@
     "patterns.html",
     "proof.html",
     "change-log.html",
-    "tcrn-brand-mark.svg"
+    "tcrn-brand-mark.svg",
+    "ai-consumption-contract.json"
   ],
   "visualStateAllowlist": [
     {
@@ -22,28 +23,64 @@
       "page": "index.html",
       "hash": "welcome-governance",
       "storyId": "welcome-governance",
-      "description": "Static docs shell overview after hash scroll."
+      "description": "Static docs shell overview after hash scroll.",
+      "themeMode": "light"
     },
     {
       "id": "component-dialog-spec",
       "page": "components.html",
       "hash": "dialog-spec-usage",
       "storyId": "dialog-spec-usage",
-      "description": "Dialog specification static closed state only."
+      "description": "Dialog specification static closed state only.",
+      "themeMode": "light"
     },
     {
       "id": "pattern-dashboard-page-templates",
       "page": "patterns.html",
       "hash": "dashboard-page-templates",
       "storyId": "dashboard-page-templates",
-      "description": "Dashboard and page templates pattern after hash scroll."
+      "description": "Dashboard and page templates pattern after hash scroll.",
+      "themeMode": "light"
     },
     {
       "id": "proof-no-overclaim",
       "page": "proof.html",
       "hash": "proof-matrix",
       "storyId": "proof-matrix",
-      "description": "Proof matrix no-overclaim surface after hash scroll."
+      "description": "Proof matrix no-overclaim surface after hash scroll.",
+      "themeMode": "light"
+    },
+    {
+      "id": "docs-shell-overview-dark",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "description": "Static docs shell overview in dark mode after hash scroll.",
+      "themeMode": "dark"
+    },
+    {
+      "id": "component-dialog-spec-dark",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "description": "Dialog specification static closed state in dark mode.",
+      "themeMode": "dark"
+    },
+    {
+      "id": "pattern-dashboard-page-templates-dark",
+      "page": "patterns.html",
+      "hash": "dashboard-page-templates",
+      "storyId": "dashboard-page-templates",
+      "description": "Dashboard and page templates pattern in dark mode after hash scroll.",
+      "themeMode": "dark"
+    },
+    {
+      "id": "proof-no-overclaim-dark",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "description": "Proof matrix no-overclaim surface in dark mode after hash scroll.",
+      "themeMode": "dark"
     }
   ],
   "viewportMatrix": [
@@ -67,15 +104,27 @@
     "browser": "chromium",
     "headless": true,
     "deviceScaleFactor": 1,
-    "colorScheme": "light",
+    "colorScheme": "per_visual_state_theme_mode",
+    "defaultThemeMode": "light",
+    "visualThemeModes": [
+      "light",
+      "dark"
+    ],
     "reducedMotion": "reduce",
     "locale": "en-US",
     "timezoneId": "UTC",
     "fixedDateNow": "2026-01-01T00:00:00.000Z",
     "chromiumArgs": [
+      "--deterministic-mode",
+      "--disable-accelerated-2d-canvas",
       "--disable-font-subpixel-positioning",
+      "--disable-gpu",
+      "--disable-gpu-rasterization",
       "--disable-lcd-text",
+      "--disable-threaded-animation",
+      "--disable-threaded-scrolling",
       "--font-render-hinting=none",
+      "--run-all-compositor-stages-before-draw",
       "--force-color-profile=srgb"
     ],
     "viewportScreenshotsOnly": true,
@@ -87,6 +136,7 @@
   "chromiumVersion": "149.0.7827.55",
   "noOverclaimReadback": {
     "localVisualProofDisposition": "local_static_contract_docs_only",
+    "themeModeVisualCoverageDisposition": "bounded_light_and_dark_static_docs_shell_only",
     "hostedVisualSaasDisposition": "deferred_not_admitted",
     "ciGateDisposition": "not_admitted",
     "storybookDocsPublicationDisposition": "not_published",
@@ -128,11 +178,12 @@
       "page": "index.html",
       "hash": "welcome-governance",
       "storyId": "welcome-governance",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__desktop-1440x900.png",
-      "rawSha256": "1c5498e6336484a30470d899fc7e6403eaa85a7e070d44bdad471266dccf2360",
+      "rawSha256": "900a970d201d370fa8c95fa8d46f425e772b2d483c1df3ab60db2e115f494da2",
       "width": 1440,
       "height": 900,
-      "bytes": 299676
+      "bytes": 352440
     },
     {
       "stateId": "component-dialog-spec",
@@ -140,11 +191,12 @@
       "page": "components.html",
       "hash": "dialog-spec-usage",
       "storyId": "dialog-spec-usage",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__desktop-1440x900.png",
-      "rawSha256": "ab7de0e226d0846b8e39537e3cbb53aaa1a9d2d1f5163e3250efe3e962c34d08",
+      "rawSha256": "431140271d3549a4199f3c440b7af54a57c729ddfda180d78fb325de5c4f224d",
       "width": 1440,
       "height": 900,
-      "bytes": 398600
+      "bytes": 364074
     },
     {
       "stateId": "pattern-dashboard-page-templates",
@@ -152,11 +204,12 @@
       "page": "patterns.html",
       "hash": "dashboard-page-templates",
       "storyId": "dashboard-page-templates",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__desktop-1440x900.png",
-      "rawSha256": "17f77165a35251b39b38241a056c0fa91edf1b574a006faa7642f5f806e670f6",
+      "rawSha256": "305d1c4403994b054ee2231fabd51e388e2f800a361736b2831d41e260a70060",
       "width": 1440,
       "height": 900,
-      "bytes": 294618
+      "bytes": 376670
     },
     {
       "stateId": "proof-no-overclaim",
@@ -164,11 +217,64 @@
       "page": "proof.html",
       "hash": "proof-matrix",
       "storyId": "proof-matrix",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__desktop-1440x900.png",
-      "rawSha256": "5e0e0c4ae750261090c65b4e4a67adec766edfbb1b129f33f296b4012c263281",
+      "rawSha256": "7851fb5ddd9a8721b22bceddee769bcb32a11d8901de12325bc79782f968ec73",
       "width": 1440,
       "height": 900,
-      "bytes": 246928
+      "bytes": 348406
+    },
+    {
+      "stateId": "docs-shell-overview-dark",
+      "viewport": "desktop-1440x900",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview-dark__desktop-1440x900.png",
+      "rawSha256": "5d6fe80b3d85464bff8ea6f91d8ee846e3c64ae88f6e45ae8cabc5c4592ec6e8",
+      "width": 1440,
+      "height": 900,
+      "bytes": 147549
+    },
+    {
+      "stateId": "component-dialog-spec-dark",
+      "viewport": "desktop-1440x900",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__desktop-1440x900.png",
+      "rawSha256": "2761166ce78c86b229acf4d55aea620dfc90d6780efec0a80779248ccf5eea74",
+      "width": 1440,
+      "height": 900,
+      "bytes": 207810
+    },
+    {
+      "stateId": "pattern-dashboard-page-templates-dark",
+      "viewport": "desktop-1440x900",
+      "page": "patterns.html",
+      "hash": "dashboard-page-templates",
+      "storyId": "dashboard-page-templates",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates-dark__desktop-1440x900.png",
+      "rawSha256": "0d6109b121f682f7331f4a35ff4254682966eaf96834704776d9d58b7dda3178",
+      "width": 1440,
+      "height": 900,
+      "bytes": 181785
+    },
+    {
+      "stateId": "proof-no-overclaim-dark",
+      "viewport": "desktop-1440x900",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim-dark__desktop-1440x900.png",
+      "rawSha256": "e679343c991d8bb9194d7c632cc54a2c993474fa25ca73b25f416fdcaa8f6a9d",
+      "width": 1440,
+      "height": 900,
+      "bytes": 142950
     },
     {
       "stateId": "docs-shell-overview",
@@ -176,11 +282,12 @@
       "page": "index.html",
       "hash": "welcome-governance",
       "storyId": "welcome-governance",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__tablet-1024x768.png",
-      "rawSha256": "0e5d2a8806246f52d05fc662097d98d8e1494bac4e923472591e0fcba9e1dc27",
+      "rawSha256": "d4b95272526a0ffb93ebb745bc87ded387bb275d00064a01d0a31452c8b556dd",
       "width": 1024,
       "height": 768,
-      "bytes": 235046
+      "bytes": 250618
     },
     {
       "stateId": "component-dialog-spec",
@@ -188,11 +295,12 @@
       "page": "components.html",
       "hash": "dialog-spec-usage",
       "storyId": "dialog-spec-usage",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__tablet-1024x768.png",
-      "rawSha256": "3e65cd50b36492d56d1d75a6913acfa54a4928c9420f5468d9d2ffe0a581595a",
+      "rawSha256": "79292ae45b03d961d5bc824aaa1e0bca06a3a61827ed65192d99c03e9fe89071",
       "width": 1024,
       "height": 768,
-      "bytes": 239215
+      "bytes": 265451
     },
     {
       "stateId": "pattern-dashboard-page-templates",
@@ -200,11 +308,12 @@
       "page": "patterns.html",
       "hash": "dashboard-page-templates",
       "storyId": "dashboard-page-templates",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__tablet-1024x768.png",
-      "rawSha256": "25a76bd2286b4fdc14f8375bc79b77897546965dab18398b9116eebb0b841428",
+      "rawSha256": "268d710ab8a8feb3b3e38227fa9f48bce525e501ee8406fb8d9bfe0d4928e531",
       "width": 1024,
       "height": 768,
-      "bytes": 227060
+      "bytes": 271168
     },
     {
       "stateId": "proof-no-overclaim",
@@ -212,11 +321,64 @@
       "page": "proof.html",
       "hash": "proof-matrix",
       "storyId": "proof-matrix",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__tablet-1024x768.png",
-      "rawSha256": "58f4d16c01eeec6ec7212a7f6e234cc48f9779da75b84b7f4a8c2bbbb23cdd62",
+      "rawSha256": "537a7b3d74035ad6b4da7c963d94a456ce931618ccb313bf0a9560cc501045ed",
       "width": 1024,
       "height": 768,
-      "bytes": 201975
+      "bytes": 249941
+    },
+    {
+      "stateId": "docs-shell-overview-dark",
+      "viewport": "tablet-1024x768",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview-dark__tablet-1024x768.png",
+      "rawSha256": "c08e4c65ce4d3c45590f172dce8b581f2c1354b6e9879f6f7c995c170f320686",
+      "width": 1024,
+      "height": 768,
+      "bytes": 114596
+    },
+    {
+      "stateId": "component-dialog-spec-dark",
+      "viewport": "tablet-1024x768",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__tablet-1024x768.png",
+      "rawSha256": "9bb3a594f07a3becc7cad20e9800561f341c24581c03afdd05e0c72771f2a08b",
+      "width": 1024,
+      "height": 768,
+      "bytes": 133866
+    },
+    {
+      "stateId": "pattern-dashboard-page-templates-dark",
+      "viewport": "tablet-1024x768",
+      "page": "patterns.html",
+      "hash": "dashboard-page-templates",
+      "storyId": "dashboard-page-templates",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates-dark__tablet-1024x768.png",
+      "rawSha256": "7c10d665adcf8f3ad5f2ad9e413c0597b488ea68f75c59a73e9fa643f67b31bc",
+      "width": 1024,
+      "height": 768,
+      "bytes": 140499
+    },
+    {
+      "stateId": "proof-no-overclaim-dark",
+      "viewport": "tablet-1024x768",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim-dark__tablet-1024x768.png",
+      "rawSha256": "e4f40d909c28352abf2f6490c99d31934ce73372cb58774f686272644941b2b9",
+      "width": 1024,
+      "height": 768,
+      "bytes": 114354
     },
     {
       "stateId": "docs-shell-overview",
@@ -224,11 +386,12 @@
       "page": "index.html",
       "hash": "welcome-governance",
       "storyId": "welcome-governance",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__mobile-390x844.png",
-      "rawSha256": "8ca7eddfef333bea20dc9d9c81d53c940eace5ebaa8595394f41ba4433bcf7a8",
+      "rawSha256": "13ccc32caf1e8c94e2259ba847abc18478c30f94fd2e1837743f099ac8477cb6",
       "width": 390,
       "height": 844,
-      "bytes": 88191
+      "bytes": 86754
     },
     {
       "stateId": "component-dialog-spec",
@@ -236,11 +399,12 @@
       "page": "components.html",
       "hash": "dialog-spec-usage",
       "storyId": "dialog-spec-usage",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__mobile-390x844.png",
-      "rawSha256": "d75fa9c6b01faa3d399cd8b2c1e161813b072763f69e073a16e343f4558a0b79",
+      "rawSha256": "635b024687993300e507c29cfe9938d2775cb9a99db47b86a58c5fe56a3e126c",
       "width": 390,
       "height": 844,
-      "bytes": 63857
+      "bytes": 62706
     },
     {
       "stateId": "pattern-dashboard-page-templates",
@@ -248,11 +412,12 @@
       "page": "patterns.html",
       "hash": "dashboard-page-templates",
       "storyId": "dashboard-page-templates",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__mobile-390x844.png",
-      "rawSha256": "f0b5373341d575943096912b14e7ed60e329d0ad59df3d5c75f5385004ff2f17",
+      "rawSha256": "6b96b60c8ab655ba5daa5886f23a3b1690d832b552a7afea5962d23d8a773e03",
       "width": 390,
       "height": 844,
-      "bytes": 75507
+      "bytes": 74887
     },
     {
       "stateId": "proof-no-overclaim",
@@ -260,12 +425,65 @@
       "page": "proof.html",
       "hash": "proof-matrix",
       "storyId": "proof-matrix",
+      "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim__mobile-390x844.png",
-      "rawSha256": "384655e12c9bb9e5108abeb359930013c5f0886179cb309e73a5396c7fde1535",
+      "rawSha256": "d9e35349b648bf9e64744ee0a869ae4c9cc59d56d58c44a77df476bb872c1921",
       "width": 390,
       "height": 844,
-      "bytes": 55207
+      "bytes": 61339
+    },
+    {
+      "stateId": "docs-shell-overview-dark",
+      "viewport": "mobile-390x844",
+      "page": "index.html",
+      "hash": "welcome-governance",
+      "storyId": "welcome-governance",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview-dark__mobile-390x844.png",
+      "rawSha256": "693b5f636750be9545b3acebb4170fcae461bce3737618c9d6b323779823b850",
+      "width": 390,
+      "height": 844,
+      "bytes": 87891
+    },
+    {
+      "stateId": "component-dialog-spec-dark",
+      "viewport": "mobile-390x844",
+      "page": "components.html",
+      "hash": "dialog-spec-usage",
+      "storyId": "dialog-spec-usage",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__mobile-390x844.png",
+      "rawSha256": "f46898ecde2ff82ad6424b9545d0c2504f2b0012094ccc16a7922a34f57dcbe7",
+      "width": 390,
+      "height": 844,
+      "bytes": 63574
+    },
+    {
+      "stateId": "pattern-dashboard-page-templates-dark",
+      "viewport": "mobile-390x844",
+      "page": "patterns.html",
+      "hash": "dashboard-page-templates",
+      "storyId": "dashboard-page-templates",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates-dark__mobile-390x844.png",
+      "rawSha256": "9b8868d36cd50e6a33be6cdeeb5d26a8e4210433110fe75294d4f20378121056",
+      "width": 390,
+      "height": 844,
+      "bytes": 75705
+    },
+    {
+      "stateId": "proof-no-overclaim-dark",
+      "viewport": "mobile-390x844",
+      "page": "proof.html",
+      "hash": "proof-matrix",
+      "storyId": "proof-matrix",
+      "themeMode": "dark",
+      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim-dark__mobile-390x844.png",
+      "rawSha256": "067922a042df2b091dfd21bbda282e94b9de6cd83aba0bbd9727e6debd563606",
+      "width": 390,
+      "height": 844,
+      "bytes": 62355
     }
   ],
-  "baselineManifestHash": "6cd9d12c9423f26a4ab330d404702015f387f8d8bc244a113a7b7d057179f344"
+  "baselineManifestHash": "49ce842b2583458154e13d7b874271dba8151c775e187b5a59139374066c0176"
 }

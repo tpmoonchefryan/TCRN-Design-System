@@ -176,6 +176,16 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-doc-search-results/);
   assert.match(combinedHtml, /role="listbox"/);
   assert.match(combinedHtml, /data-doc-search-result/);
+  assert.match(combinedHtml, /data-storybook-theme="light"/);
+  assert.match(combinedHtml, /data-storybook-supported-themes="light,dark"/);
+  assert.match(combinedHtml, /data-storybook-theme-option="light"/);
+  assert.match(combinedHtml, /data-storybook-theme-option="dark"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="theme-light"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="theme-dark"/);
+  assert.match(combinedHtml, /tcrnStorybookApplyTheme/);
+  assert.match(combinedHtml, /data-ai-consumption-contract-link="true"/);
+  assert.match(combinedHtml, /href="ai-consumption-contract\.json"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="ai-contract"/);
   assert.match(combinedHtml, /event\.key\.toLowerCase\(\) !== "k"/);
   assert.match(combinedHtml, /readItems\(\)\.filter/);
   assert.match(combinedHtml, /querySelector\("\.tcrn-doc-nav__section-label"\)/);
@@ -235,8 +245,23 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /<main class="tcrn-doc-shell"/);
   assert.match(combinedHtml, /data-storybook-locale="en"/);
   assert.match(combinedHtml, new RegExp(`data-storybook-supported-locales="${tcrnSupportedLocales.join(",")}"`));
+  assert.match(combinedHtml, /data-tcrn-theme="light"/);
+  assert.match(combinedHtml, /data-storybook-theme="light"/);
+  assert.match(combinedHtml, /data-storybook-supported-themes="light,dark"/);
+  assert.match(combinedHtml, /data-storybook-theme-control/);
+  assert.match(combinedHtml, /data-storybook-theme-option="light"/);
+  assert.match(combinedHtml, /data-storybook-theme-option="dark"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="theme-light"[\s\S]*data-icon-name="sun"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="theme-dark"[\s\S]*data-icon-name="moon"/);
+  assert.match(combinedHtml, /tcrn-design-system-storybook-theme/);
+  assert.match(combinedHtml, /document\.documentElement\.style\.colorScheme = resolvedTheme/);
+  assert.match(combinedHtml, /next\.searchParams\.set\("theme", theme\)/);
+  assert.match(combinedHtml, /next\.searchParams\.set\("theme", currentTheme\)/);
   for (const locale of tcrnSupportedLocales) {
     assert.match(combinedHtml, new RegExp(`option value="${escapeRegExp(locale)}"`));
+    for (const key of ["shell.themeLabel", "shell.themeHint", "shell.themeLightLabel", "shell.themeDarkLabel", "shell.themeLightShort", "shell.themeDarkShort"]) {
+      assert.notEqual(localeText(key, locale), key, `missing Storybook theme locale text for ${locale}:${key}`);
+    }
   }
   assert.match(combinedHtml, /data-i18n="story\.welcome-governance\.title"/);
   assert.match(combinedHtml, /TCRN デザインシステム契約ストーリー/);
@@ -474,6 +499,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Proof"), /AI consumption contract/);
   assert.match(readGroupPage("Proof"), /data-ai-consumption-contract-story="true"/);
   assert.match(readGroupPage("Proof"), /ai-consumption-contract\.json/);
+  assert.match(readGroupPage("Proof"), /Light and dark Storybook shell/);
+  assert.match(readGroupPage("Proof"), /Check both light and dark Storybook shell modes before product frontend work/);
+  assert.match(readGroupPage("Proof"), /Theme modes/);
   assert.match(readGroupPage("Proof"), /Import package-backed Design System primitives from @tcrn\/ui-react; do not rebuild local clones/);
   assert.match(readGroupPage("Proof"), /Requires a downstream product adoption route/);
   assert.match(readGroupPage("Proof"), /Proof matrix/);
@@ -496,6 +524,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     "use_admitted_brand_asset_or_route_brand_component_admission",
     "import_package_backed_ds_primitives",
     "use_design_tokens_and_accessibility_rules",
+    "verify_light_and_dark_storybook_theme_contract",
     "prove_product_adoption_before_ds_compliance_claim"
   ]);
   assert.deepEqual(contract.requiredProof, [
@@ -503,15 +532,40 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     "i18n_copy_state_receipt",
     "brand_surface_receipt",
     "package_import_receipt",
+    "theme_mode_receipt",
     "product_adoption_route_receipt"
   ]);
+  assert.deepEqual(contract.supportedThemeModes, ["light", "dark"]);
   assert.match(contract.brandSurfaceDisposition, /Storybook-only brand lockups are prototypes/);
   assert.match(contract.i18nDisposition, /approved locale and copy-state contract/);
   assert.match(contract.componentConsumptionDisposition, /import package-backed Design System primitives/);
   assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
+  assert.match(contract.themeModeDisposition, /light and dark Storybook shell modes/);
   assert.ok(contract.forbiddenClaims.includes("automatic_component_registration"));
   assert.ok(contract.forbiddenClaims.includes("automatic_product_adoption"));
   assert.ok(contract.forbiddenClaims.includes("aos_tms_acceptance"));
   assert.ok(contract.noOverclaimBoundaries.includes("consumer_product_adoption_separate"));
   assert.ok(contract.noOverclaimBoundaries.includes("aos_tms_mutation_not_authorized"));
+});
+
+test("GitHub README exposes the Storybook AI contract without publication overclaim", () => {
+  const readme = readFileSync(join(process.cwd(), "..", "..", "README.md"), "utf8");
+  assert.match(readme, /Storybook Contract Docs/);
+  assert.match(readme, /AI Consumption Contract/);
+  assert.match(readme, /apps\/storybook\/storybook-static\/ai-consumption-contract\.json/);
+  assert.match(readme, /https:\/\/tcrn-design-system-storybook\.vercel\.app\/ai-consumption-contract\.json/);
+  assert.match(readme, /Supported Locales/);
+  assert.match(readme, /`zh-CN`/);
+  assert.match(readme, /`ja`/);
+  assert.match(readme, /README\.zh-CN\.md/);
+  assert.match(readme, /Chinese reader path/);
+  assert.match(readme, /\?locale=zh-CN/);
+  assert.match(readme, /Theme And Dark Mode/);
+  assert.match(readme, /Brand And Logo Boundary/);
+  assert.match(readme, /No-Overclaim Boundaries/);
+  assert.match(readme, /No npm\/package publication is claimed/);
+  assert.doesNotMatch(readme, /package registry publication is complete/i);
+  assert.doesNotMatch(readme, /Storybook\/docs publication is complete/i);
+  assert.doesNotMatch(readme, /release readiness is claimed/i);
+  assert.doesNotMatch(readme, /product adoption is claimed/i);
 });

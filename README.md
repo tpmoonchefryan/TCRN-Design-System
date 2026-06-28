@@ -1,68 +1,90 @@
-# TCRN Design System
+<p align="center">
+  <img src="apps/storybook/assets/tcrn-brand-mark.svg" alt="" width="88" />
+</p>
 
-Workspace for the TCRN Design System / UI Kit.
+<h1 align="center">TCRN Design System</h1>
 
-The accepted Design System public baseline is version `1.0.0` under Apache
-License 2.0. The repository is currently public on GitHub and GitHub Release
-`v1.0.0` exists for commit
-`57b1c417efe4c011daa538158b347075d122b72b`. Those public-state changes were
-not performed by the original local release-prep route; this README records the
-current state after Selene selected the exact public source-control basis.
+<p align="center">
+  Package-backed UI primitives, tokens, copy-state vocabulary, and Storybook contract docs for TCRN product frontends.
+</p>
 
-The prepared documentation surface is the Storybook static build from this
-repository. Hosted Storybook documentation is live on Vercel at
-`https://tcrn-design-system-storybook.vercel.app/`. That URL reachability is a
-public hosted-docs readback only; GitHub status checks, Actions runs, deployment
-records, and hosted-doc readiness proof are not claimed for the selected
-`57b1c417efe4c011daa538158b347075d122b72b` basis.
+<p align="center">
+  <a href="README.md">English</a>
+  · <a href="README.zh-CN.md">简体中文</a>
+  · <a href="README.ja.md">日本語</a>
+  · <a href="README.ko.md">한국어</a>
+  · <a href="README.fr.md">Français</a>
+</p>
 
-The root workspace remains private. The public package baseline is limited to
-`@tcrn/ui-tokens`, `@tcrn/ui-copy-state`, and `@tcrn/ui-react`.
+<p align="center">
+  <a href="https://github.com/tpmoonchefryan/TCRN-Design-System"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-TCRN--Design--System-24292f" /></a>
+  <a href="https://tcrn-design-system-storybook.vercel.app/"><img alt="Storybook contract docs" src="https://img.shields.io/badge/Storybook-contract%20docs-5b6ee1" /></a>
+  <img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-5865d8" />
+</p>
 
-## MVP Packages
+## What This Repo Is
 
-- `@tcrn/ui-tokens`: semantic token metadata and CSS variable exports.
-- `@tcrn/ui-copy-state`: fail-closed display-state and no-overclaim helpers.
-- `@tcrn/ui-react`: React primitives and synthetic workbench patterns.
+This repository is the TCRN Design System source-control home. It contains the package-backed UI baseline plus the static Storybook contract surface that AI agents, product frontend implementers, and reviewers must read before claiming Design System compliance.
 
-## Proof Surface
+The hosted Storybook is available at [tcrn-design-system-storybook.vercel.app](https://tcrn-design-system-storybook.vercel.app/). That URL is a hosted readback for the static docs surface; package publication, hosted-doc readiness, product adoption, release readiness, and product acceptance remain separate routes.
 
-- `apps/storybook` builds the static contract and documentation surface from
-  synthetic stories. It does not prove AOS/TMS product adoption.
-- `examples/tms-react-pilot` and `examples/aos-token-copy-state-pilot` are
-  synthetic fixtures only.
+## Packages
 
-## Commands
+- `@tcrn/ui-tokens`: semantic token metadata, CSS variables, and light/dark theme token overrides.
+- `@tcrn/ui-copy-state`: supported locales, copy-state vocabulary, and no-overclaim display helpers.
+- `@tcrn/ui-react`: package-backed React primitives for shared UI presentation and accessibility.
+- `apps/storybook`: static contract docs, synthetic stories, proof fixtures, and the machine-readable AI contract.
+
+## Storybook Contract Docs
+
+- Default docs: [Storybook home](https://tcrn-design-system-storybook.vercel.app/)
+- Chinese reader path: [Storybook zh-CN](https://tcrn-design-system-storybook.vercel.app/?locale=zh-CN)
+- Dark shell proof path: [Storybook dark mode](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
+- AI contract story: [Proof / AI consumption contract](https://tcrn-design-system-storybook.vercel.app/proof.html#ai-consumption-contract)
+
+The Storybook surface is static and synthetic. It is the shared contract map for tokens, copy, components, patterns, no-overclaim language, and local proof expectations. It does not prove AOS or TMS product adoption by itself.
+
+## AI Consumption Contract
+
+AI and product frontend agents must read the Storybook AI contract before implementation:
+
+- Static artifact: `apps/storybook/storybook-static/ai-consumption-contract.json`
+- Hosted artifact: [ai-consumption-contract.json](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
+- Story route: `proof.html#ai-consumption-contract`
+
+The contract requires package-backed Design System imports, approved locale/copy-state handling, admitted brand assets or a brand admission route, token/accessibility usage, and explicit light/dark shell proof before downstream compliance claims.
+
+## Supported Locales
+
+The package-backed locale contract supports `zh-CN`, `en`, `ja`, `ko`, and `fr`; the fallback locale is `en`.
+
+GitHub reader summaries are provided in this README set, and the Storybook shell can switch locale at runtime with `?locale=zh-CN`, `?locale=en`, `?locale=ja`, `?locale=ko`, or `?locale=fr`.
+
+## Theme And Dark Mode
+
+The Storybook docs shell supports `light` and `dark` modes through semantic tokens. Use the shell control or `?theme=dark` to inspect dark mode. Theme changes must not fork component behavior, locale copy, readiness copy, or brand assets.
+
+## Brand And Logo Boundary
+
+The TCRN brand mark and lockups in Storybook are visual-review guidance. Product implementations may use admitted brand assets only, or route a brand component admission before product use. The brand examples in Storybook are not package-backed brand component exports and do not claim final brand acceptance.
+
+## Verification Commands
 
 ```bash
-pnpm install
 pnpm install --frozen-lockfile
+pnpm build
+pnpm test
+pnpm storybook:smoke
+node --test scripts/readme-public-contract.test.mjs
+pnpm storybook:visual-proof -- --check
+pnpm public-output:scan
+pnpm scan
 pnpm verify
 ```
 
-## Release Preparation
+## No-Overclaim Boundaries
 
-- Version: `1.0.0`
-- License: Apache-2.0
-- Release-prep notes: `docs/release-prep-v1.0.0.md`
-- Static docs build target: `apps/storybook`.
-- Prepared hosted-docs config: `vercel.json`.
-- Public repository state: GitHub repo is public at
-  `https://github.com/tpmoonchefryan/TCRN-Design-System`.
-- GitHub Release state: `v1.0.0` exists, non-draft/non-prerelease, targeting
-  `57b1c417efe4c011daa538158b347075d122b72b`.
-- Hosted documentation state: public Storybook URL reachable; GitHub/Vercel
-  deployment proof for the selected basis is not claimed.
-- Hosted documentation URL:
-  `https://tcrn-design-system-storybook.vercel.app/`.
-- Package registry publication remains a separate route and is not claimed
-  here.
-
-## Boundaries
-
-- No product source, product data, product APIs, RBAC/auth packages, secrets,
-  raw evidence, local path dumps, target-host payloads, private screenshots, or
-  unredacted logs are allowed in this scaffold.
-- Product repositories own backend truth, route authorization, tenant scoping,
-  evidence truth, persistence, product release readiness, product acceptance,
-  and final MVP acceptance.
+- No npm/package publication is claimed by this README.
+- No Storybook/docs publication readiness is claimed by this README.
+- No hosted-doc readiness, product adoption, release readiness, product acceptance, final MVP acceptance, or AOS/TMS adoption is claimed here.
+- GitHub releases in this repo are source-control checkpoints unless a separate package publication route proves otherwise.

@@ -20,12 +20,13 @@
     "storybook:manager-build": "pnpm --filter @tcrn/design-system-storybook manager:build",
     "storybook:vercel-build": "pnpm public-docs:vercel-build",
     "public-docs:vercel-build": "pnpm --filter @tcrn/ui-tokens build && pnpm --filter @tcrn/ui-copy-state build && pnpm --filter @tcrn/ui-react build && pnpm --filter @tcrn/design-system-storybook static-docs:build && pnpm public-output:scan",
+    "readme:proof": "node --test scripts/readme-public-contract.test.mjs",
     "storybook:smoke": "node scripts/storybook-smoke.mjs",
     "storybook:visual-proof": "node scripts/storybook-visual-proof.mjs",
     "test:dom": "pnpm --filter @tcrn/ui-react test:dom",
     "test": "pnpm --filter @tcrn/ui-tokens test && pnpm --filter @tcrn/ui-copy-state test && pnpm --filter @tcrn/ui-react test && pnpm --filter @tcrn/design-system-storybook test && pnpm --filter @tcrn/tms-react-pilot test && pnpm --filter @tcrn/aos-token-copy-state-pilot test",
     "typecheck": "tsc -b --pretty false",
-    "verify": "pnpm typecheck && pnpm build && pnpm test && pnpm exports:check && pnpm pack:smoke && pnpm storybook:smoke && pnpm public-output:scan && pnpm scan && pnpm scaffold:proof && pnpm internal-alpha:proof"
+    "verify": "pnpm typecheck && pnpm build && pnpm test && pnpm exports:check && pnpm pack:smoke && pnpm storybook:smoke && pnpm readme:proof && pnpm public-output:scan && pnpm scan && pnpm scaffold:proof && pnpm internal-alpha:proof"
   },
   "devDependencies": {
     "@playwright/test": "1.61.0",

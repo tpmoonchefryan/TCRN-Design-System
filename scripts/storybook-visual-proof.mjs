@@ -32,7 +32,8 @@ const staticPageAllowlist = [
   "patterns.html",
   "proof.html",
   "change-log.html",
-  "tcrn-brand-mark.svg"
+  "tcrn-brand-mark.svg",
+  "ai-consumption-contract.json"
 ];
 
 const visualStateAllowlist = [
@@ -64,6 +65,39 @@ const visualStateAllowlist = [
     hash: "proof-matrix",
     storyId: "proof-matrix",
     description: "Proof matrix no-overclaim surface after hash scroll."
+  },
+  {
+    id: "docs-shell-overview-dark",
+    page: "index.html",
+    hash: "welcome-governance",
+    storyId: "welcome-governance",
+    description: "Static docs shell overview in dark mode after hash scroll.",
+    themeMode: "dark"
+  },
+  {
+    id: "component-dialog-spec-dark",
+    page: "components.html",
+    hash: "dialog-spec-usage",
+    storyId: "dialog-spec-usage",
+    description: "Dialog specification static closed state in dark mode.",
+    staticClosedDialogFixture: true,
+    themeMode: "dark"
+  },
+  {
+    id: "pattern-dashboard-page-templates-dark",
+    page: "patterns.html",
+    hash: "dashboard-page-templates",
+    storyId: "dashboard-page-templates",
+    description: "Dashboard and page templates pattern in dark mode after hash scroll.",
+    themeMode: "dark"
+  },
+  {
+    id: "proof-no-overclaim-dark",
+    page: "proof.html",
+    hash: "proof-matrix",
+    storyId: "proof-matrix",
+    description: "Proof matrix no-overclaim surface in dark mode after hash scroll.",
+    themeMode: "dark"
   }
 ];
 
@@ -77,15 +111,24 @@ const deterministicBrowserSettings = {
   browser: "chromium",
   headless: true,
   deviceScaleFactor: 1,
-  colorScheme: "light",
+  colorScheme: "per_visual_state_theme_mode",
+  defaultThemeMode: "light",
+  visualThemeModes: ["light", "dark"],
   reducedMotion: "reduce",
   locale: "en-US",
   timezoneId: "UTC",
   fixedDateNow: "2026-01-01T00:00:00.000Z",
   chromiumArgs: [
+    "--deterministic-mode",
+    "--disable-accelerated-2d-canvas",
     "--disable-font-subpixel-positioning",
+    "--disable-gpu",
+    "--disable-gpu-rasterization",
     "--disable-lcd-text",
+    "--disable-threaded-animation",
+    "--disable-threaded-scrolling",
     "--font-render-hinting=none",
+    "--run-all-compositor-stages-before-draw",
     "--force-color-profile=srgb"
   ],
   viewportScreenshotsOnly: true,
@@ -96,6 +139,7 @@ const deterministicBrowserSettings = {
 
 const noOverclaimReadback = {
   localVisualProofDisposition: "local_static_contract_docs_only",
+  themeModeVisualCoverageDisposition: "bounded_light_and_dark_static_docs_shell_only",
   hostedVisualSaasDisposition: "deferred_not_admitted",
   ciGateDisposition: "not_admitted",
   storybookDocsPublicationDisposition: "not_published",
@@ -618,9 +662,16 @@ async function disableMotion(page) {
         animation-delay: 0s !important;
         animation-duration: 0s !important;
         caret-color: transparent !important;
+        -webkit-font-smoothing: antialiased !important;
+        font-kerning: none !important;
+        font-variant-ligatures: none !important;
         scroll-behavior: auto !important;
+        text-rendering: geometricPrecision !important;
         transition-delay: 0s !important;
         transition-duration: 0s !important;
+      }
+      svg, svg * {
+        shape-rendering: geometricPrecision !important;
       }
     `
   });
@@ -662,6 +713,9 @@ async function collectPageHealth(page, state) {
       url: window.location.href.replace(/http:\/\/127\.0\.0\.1:\d+/g, "http://127.0.0.1:<ephemeral>"),
       rootVisible: Boolean(root),
       activeSection: root?.getAttribute("data-active-story-section") ?? null,
+      htmlTheme: document.documentElement.getAttribute("data-tcrn-theme"),
+      rootTheme: root?.getAttribute("data-storybook-theme") ?? null,
+      colorScheme: getComputedStyle(document.documentElement).colorScheme,
       storyId: input.storyId,
       targetVisible,
       targetInViewport,
@@ -698,6 +752,9 @@ function assertCapture(entry, health, events, png, stability) {
   if (!health.targetInViewport) failures.push("target_not_in_viewport_after_hash_scroll");
   if (health.bodyOverflowX) failures.push("body_horizontal_overflow");
   if (health.currentDocNavItem !== entry.storyId) failures.push(`active_doc_nav_mismatch:${health.currentDocNavItem}`);
+  const expectedTheme = entry.themeMode ?? deterministicBrowserSettings.defaultThemeMode;
+  if (health.htmlTheme !== expectedTheme) failures.push(`html_theme_mismatch:${health.htmlTheme}`);
+  if (health.rootTheme !== expectedTheme) failures.push(`root_theme_mismatch:${health.rootTheme}`);
   if (health.forbiddenHits.length > 0) failures.push(`forbidden_static_doc_hits:${health.forbiddenHits.join(",")}`);
   if (health.staticClosedDialogFixture && !health.staticClosedDialogFixture.panelHidden) failures.push("dialog_fixture_not_static_closed");
   if (health.staticClosedDialogFixture && health.staticClosedDialogFixture.triggerExpanded !== "false") failures.push("dialog_trigger_not_static_closed");
@@ -715,20 +772,21 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
   rmSync(outputDir, { recursive: true, force: true });
   mkdirSync(outputDir, { recursive: true });
   const entries = [];
-    for (const viewport of viewportMatrix) {
+  for (const viewport of viewportMatrix) {
+    for (const state of visualStateAllowlist) {
+      const themeMode = state.themeMode ?? deterministicBrowserSettings.defaultThemeMode;
       const context = await browser.newContext({
-      viewport: { width: viewport.width, height: viewport.height },
-      deviceScaleFactor: 1,
-      colorScheme: "light",
-      reducedMotion: "reduce",
-      locale: "en-US",
+        viewport: { width: viewport.width, height: viewport.height },
+        deviceScaleFactor: 1,
+        colorScheme: themeMode,
+        reducedMotion: "reduce",
+        locale: "en-US",
         timezoneId: "UTC"
       });
       await context.addInitScript((fixedNow) => {
         const fixedTime = new Date(fixedNow).getTime();
         Date.now = () => fixedTime;
       }, deterministicBrowserSettings.fixedDateNow);
-      for (const state of visualStateAllowlist) {
       const page = await context.newPage();
       const events = {
         consoleMessages: [],
@@ -764,7 +822,7 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
         }
       });
 
-      const targetUrl = `${server.origin}/${state.page}#${state.hash}`;
+      const targetUrl = `${server.origin}/${state.page}?theme=${themeMode}#${state.hash}`;
       await page.goto(targetUrl, { waitUntil: "networkidle" });
       await disableMotion(page);
       await page.waitForSelector("[data-contract-surface='tcrn-design-system-storybook']", { state: "visible" });
@@ -784,6 +842,7 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
         page: state.page,
         hash: state.hash,
         storyId: state.storyId,
+        themeMode,
         viewport: viewport.id,
         width: viewport.width,
         height: viewport.height,
@@ -797,8 +856,8 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
         failures
       });
       await page.close();
+      await context.close();
     }
-    await context.close();
   }
   return entries;
 }
@@ -826,7 +885,7 @@ function makeBaseReceipt({ mode, reason, sourceHead, sourceContentDigest, static
     baselineUpdateReason: reason,
     packageName,
     staticPageAllowlist,
-    visualStateAllowlist: visualStateAllowlist.map(({ id, page, hash, storyId, description }) => ({ id, page, hash, storyId, description })),
+    visualStateAllowlist: visualStateAllowlist.map(({ id, page, hash, storyId, description, themeMode }) => ({ id, page, hash, storyId, description, themeMode: themeMode ?? deterministicBrowserSettings.defaultThemeMode })),
     viewportMatrix,
     deterministicBrowserSettings,
     staticPageReadbacks,
@@ -846,6 +905,7 @@ function makeBaseReceipt({ mode, reason, sourceHead, sourceContentDigest, static
       page: entry.page,
       hash: entry.hash,
       storyId: entry.storyId,
+      themeMode: entry.themeMode,
       path: entry.path.replaceAll("\\", "/"),
       rawSha256: entry.rawSha256,
       width: entry.width,
@@ -885,6 +945,7 @@ function writeMarkdownReceipt(receipt) {
     "## No-Overclaim",
     "",
     `- localVisualProofDisposition: ${noOverclaimReadback.localVisualProofDisposition}`,
+    `- themeModeVisualCoverageDisposition: ${noOverclaimReadback.themeModeVisualCoverageDisposition}`,
     `- hostedVisualSaasDisposition: ${noOverclaimReadback.hostedVisualSaasDisposition}`,
     `- ciGateDisposition: ${noOverclaimReadback.ciGateDisposition}`,
     `- storybookDocsPublicationDisposition: ${noOverclaimReadback.storybookDocsPublicationDisposition}`,
@@ -896,8 +957,7 @@ function writeMarkdownReceipt(receipt) {
     "",
     "## Deferred",
     "",
-    ...deferredBoundaries.map((boundary) => `- ${boundary}`),
-    ""
+    ...deferredBoundaries.map((boundary) => `- ${boundary}`)
   ];
   writeFileSync(markdownReceiptPath, `${lines.join("\n")}\n`);
 }
@@ -925,6 +985,7 @@ function writeBaselineArtifacts({ reason, receipt, entries }) {
       page: entry.page,
       hash: entry.hash,
       storyId: entry.storyId,
+      themeMode: entry.themeMode,
       path: entry.path.replaceAll("\\", "/"),
       rawSha256: entry.rawSha256,
       width: entry.width,
@@ -1036,17 +1097,17 @@ function compareToBaseline(entries, manifest, context) {
     if (!jsonEqual(manifest.staticPageAllowlist, staticPageAllowlist)) {
       preconditionFailures.push({ reason: "static_page_allowlist_mismatch_for_non_exact_png" });
     }
-    if (!jsonEqual(manifest.visualStateAllowlist, visualStateAllowlist.map(({ id, page, hash, storyId, description }) => ({ id, page, hash, storyId, description })))) {
+    if (!jsonEqual(manifest.visualStateAllowlist, visualStateAllowlist.map(({ id, page, hash, storyId, description, themeMode }) => ({ id, page, hash, storyId, description, themeMode: themeMode ?? deterministicBrowserSettings.defaultThemeMode })))) {
       preconditionFailures.push({ reason: "visual_state_allowlist_mismatch_for_non_exact_png" });
     }
     if (!jsonEqual(manifest.viewportMatrix, viewportMatrix)) {
       preconditionFailures.push({ reason: "viewport_matrix_mismatch_for_non_exact_png" });
     }
-    if (entry.page !== baseline.page || entry.hash !== baseline.hash || entry.storyId !== baseline.storyId) {
+    if (entry.page !== baseline.page || entry.hash !== baseline.hash || entry.storyId !== baseline.storyId || entry.themeMode !== baseline.themeMode) {
       preconditionFailures.push({
         reason: "state_identity_mismatch_for_non_exact_png",
-        expected: { page: baseline.page, hash: baseline.hash, storyId: baseline.storyId },
-        actual: { page: entry.page, hash: entry.hash, storyId: entry.storyId }
+        expected: { page: baseline.page, hash: baseline.hash, storyId: baseline.storyId, themeMode: baseline.themeMode },
+        actual: { page: entry.page, hash: entry.hash, storyId: entry.storyId, themeMode: entry.themeMode }
       });
     }
     if (preconditionFailures.length > 0) {

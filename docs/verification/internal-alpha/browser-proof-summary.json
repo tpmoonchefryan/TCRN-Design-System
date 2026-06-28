@@ -82,7 +82,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -175,7 +175,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -301,7 +301,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -372,7 +372,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -550,7 +550,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -647,7 +647,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -675,7 +675,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 1044
+          "height": 1126
         },
         {
           "id": "blocked-actions",
@@ -717,7 +717,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -773,7 +773,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -866,7 +866,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -948,7 +948,7 @@
           "id": "icons-motion",
           "visible": true,
           "width": 691,
-          "height": 2388
+          "height": 2436
         },
         {
           "id": "global-states",
@@ -992,7 +992,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1063,7 +1063,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1241,7 +1241,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1338,7 +1338,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1366,7 +1366,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 1128
+          "height": 1245
         },
         {
           "id": "blocked-actions",
@@ -1408,7 +1408,7 @@
       "docNavItemCount": 36,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": -14,
+      "shellHeaderLayoutGap": -132,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1639,7 +1639,7 @@
           "id": "icons-motion",
           "visible": true,
           "width": 358,
-          "height": 4523
+          "height": 4619
         },
         {
           "id": "global-states",
@@ -2057,7 +2057,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 1706
+          "height": 1926
         },
         {
           "id": "blocked-actions",

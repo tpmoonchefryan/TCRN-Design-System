@@ -8,6 +8,7 @@ export const aiConsumptionContract = {
     "use_admitted_brand_asset_or_route_brand_component_admission",
     "import_package_backed_ds_primitives",
     "use_design_tokens_and_accessibility_rules",
+    "verify_light_and_dark_storybook_theme_contract",
     "prove_product_adoption_before_ds_compliance_claim"
   ],
   requiredProof: [
@@ -15,8 +16,10 @@ export const aiConsumptionContract = {
     "i18n_copy_state_receipt",
     "brand_surface_receipt",
     "package_import_receipt",
+    "theme_mode_receipt",
     "product_adoption_route_receipt"
   ],
+  supportedThemeModes: ["light", "dark"],
   brandSurfaceDisposition:
     "Product implementations may use admitted brand assets only. Storybook-only brand lockups are prototypes and are not package-backed product exports.",
   i18nDisposition:
@@ -25,6 +28,8 @@ export const aiConsumptionContract = {
     "Product implementations must import package-backed Design System primitives instead of rebuilding local clones.",
   tokenConsumptionDisposition:
     "Product implementations must use Design System tokens, reduced-motion rules, and accessibility states before custom CSS.",
+  themeModeDisposition:
+    "Product implementations must preserve semantic token behavior across light and dark Storybook shell modes and prove both modes before claiming Design System compliance.",
   forbiddenClaims: [
     "storybook_docs_publication",
     "hosted_doc_readiness",

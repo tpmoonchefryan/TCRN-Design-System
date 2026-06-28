@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "scannedFiles": 158,
+  "scannedFiles": 164,
   "skippedFiles": [],
   "binaryVisualReceiptExclusions": [
     {
@@ -524,6 +524,18 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__desktop-1440x900.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__mobile-390x844.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__tablet-1024x768.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__desktop-1440x900.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -533,6 +545,18 @@
     },
     {
       "file": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__tablet-1024x768.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview-dark__desktop-1440x900.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview-dark__mobile-390x844.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview-dark__tablet-1024x768.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -548,6 +572,18 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates-dark__desktop-1440x900.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates-dark__mobile-390x844.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates-dark__tablet-1024x768.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__desktop-1440x900.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -557,6 +593,18 @@
     },
     {
       "file": "docs/verification/storybook-visual-proof/screenshots/baseline/pattern-dashboard-page-templates__tablet-1024x768.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim-dark__desktop-1440x900.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim-dark__mobile-390x844.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-no-overclaim-dark__tablet-1024x768.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {

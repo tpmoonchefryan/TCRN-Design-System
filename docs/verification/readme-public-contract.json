@@ -1,0 +1,68 @@
+{
+  "ok": true,
+  "readmeDigest": "1888a311e20efb4d6654601f3fac17f0995137356b3b942bd78b937cf9042448",
+  "localizedReadmeDigests": {
+    "en": "1888a311e20efb4d6654601f3fac17f0995137356b3b942bd78b937cf9042448",
+    "zh-CN": "4016e0bfd527edbf884ad47e74b42ebd5055273dfa6b22f93231b7541d90bd13",
+    "ja": "3aa543a548d455d1e32c8a2c8216410d6d47436c51e786047f2750eedd1e6ff3",
+    "ko": "cbda8a968c132dfedd0ae47e573f48420180160d4db22d9cdea005c3b560d238",
+    "fr": "acf46430f44697ca454291c31e00c0b6b1558d621958bb00020798e32922eccf"
+  },
+  "headerPresent": true,
+  "brandHeaderImagePresent": true,
+  "githubRepositoryUrlPresent": true,
+  "storybookUrlPresent": true,
+  "aiContractArtifactLinked": true,
+  "darkModeReaderPathPresent": true,
+  "multilingualHeaderSupportReadback": {
+    "supportedLocales": [
+      "zh-CN",
+      "en",
+      "ja",
+      "ko",
+      "fr"
+    ],
+    "readmeFiles": {
+      "en": {
+        "file": "README.md",
+        "exists": true
+      },
+      "zh-CN": {
+        "file": "README.zh-CN.md",
+        "exists": true
+      },
+      "ja": {
+        "file": "README.ja.md",
+        "exists": true
+      },
+      "ko": {
+        "file": "README.ko.md",
+        "exists": true
+      },
+      "fr": {
+        "file": "README.fr.md",
+        "exists": true
+      }
+    }
+  },
+  "brokenAnchorHits": [],
+  "forbiddenOverclaimHits": [],
+  "noOverclaimFlags": {
+    "packagePublication": false,
+    "storybookDocsPublication": false,
+    "hostedDocReadiness": false,
+    "consumerProductAdoption": false,
+    "releaseReadiness": false,
+    "productAcceptance": false,
+    "finalMvpAcceptance": false
+  },
+  "dispositions": {
+    "packagePublicationDisposition": "not_claimed",
+    "storybookDocsPublicationDisposition": "not_claimed",
+    "hostedDocReadinessDisposition": "not_claimed",
+    "consumerProductAdoptionDisposition": "not_claimed",
+    "releaseReadinessDisposition": "not_claimed",
+    "productAcceptanceDisposition": "not_claimed",
+    "finalMvpAcceptanceDisposition": "not_claimed"
+  }
+}

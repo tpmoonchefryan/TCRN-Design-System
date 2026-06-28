@@ -19,6 +19,83 @@ export const hashRouteScript = `<script>
 })();
 </script>`;
 
+export const storybookThemeScript = `<script>
+(() => {
+  const supportedThemes = ["light", "dark"];
+  const defaultTheme = "light";
+  const storageKey = "tcrn-design-system-storybook-theme";
+  const themeColors = {
+    light: "#f6f7fb",
+    dark: "#101827"
+  };
+  const isSupported = (theme) => supportedThemes.includes(theme);
+  const readStoredTheme = () => {
+    try {
+      return window.localStorage.getItem(storageKey);
+    } catch {
+      return null;
+    }
+  };
+  const writeStoredTheme = (theme) => {
+    try {
+      window.localStorage.setItem(storageKey, theme);
+    } catch {
+      // Local persistence is helpful, not required for the static proof surface.
+    }
+  };
+  const themedLinks = () => document.querySelectorAll("[data-story-nav], [data-doc-nav-item], .tcrn-doc-brand, .tcrn-doc-chapter-pager__link");
+  const updateThemeLinks = (theme) => {
+    const shell = document.querySelector("[data-contract-surface]");
+    const currentLocale = shell?.getAttribute("data-storybook-locale");
+    for (const link of themedLinks()) {
+      const href = link.getAttribute("href");
+      if (!href) {
+        continue;
+      }
+      const next = new URL(href, window.location.href);
+      next.searchParams.set("theme", theme);
+      if (currentLocale) {
+        next.searchParams.set("locale", currentLocale);
+      }
+      const file = next.pathname.split("/").pop() || "index.html";
+      link.setAttribute("href", file + next.search + next.hash);
+    }
+  };
+  const applyTheme = (theme, updateUrl) => {
+    const resolvedTheme = isSupported(theme) ? theme : defaultTheme;
+    const shell = document.querySelector("[data-contract-surface]");
+    window.tcrnStorybookResolvedTheme = resolvedTheme;
+    document.documentElement.setAttribute("data-tcrn-theme", resolvedTheme);
+    document.documentElement.style.colorScheme = resolvedTheme;
+    shell?.setAttribute("data-storybook-theme", resolvedTheme);
+    shell?.setAttribute("data-tcrn-theme", resolvedTheme);
+    for (const option of document.querySelectorAll("[data-storybook-theme-option]")) {
+      option.setAttribute("aria-pressed", option.getAttribute("data-storybook-theme-option") === resolvedTheme ? "true" : "false");
+    }
+    const themeColor = document.querySelector("[data-storybook-theme-color]");
+    themeColor?.setAttribute("content", themeColors[resolvedTheme] ?? themeColors.light);
+    updateThemeLinks(resolvedTheme);
+    writeStoredTheme(resolvedTheme);
+    window.dispatchEvent(new CustomEvent("tcrn-storybook-theme-applied"));
+    if (updateUrl) {
+      const nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.set("theme", resolvedTheme);
+      window.history.replaceState(null, "", nextUrl.pathname + nextUrl.search + nextUrl.hash);
+    }
+  };
+  const urlTheme = new URL(window.location.href).searchParams.get("theme");
+  const storedTheme = readStoredTheme();
+  const initialTheme = isSupported(urlTheme) ? urlTheme : isSupported(storedTheme) ? storedTheme : defaultTheme;
+  for (const option of document.querySelectorAll("[data-storybook-theme-option]")) {
+    option.addEventListener("click", () => applyTheme(option.getAttribute("data-storybook-theme-option"), true));
+  }
+  window.tcrnStorybookApplyTheme = applyTheme;
+  window.tcrnStorybookUpdateThemeLinks = () => updateThemeLinks(window.tcrnStorybookResolvedTheme ?? defaultTheme);
+  window.addEventListener("tcrn-storybook-locale-applied", window.tcrnStorybookUpdateThemeLinks);
+  applyTheme(initialTheme, false);
+})();
+</script>`;
+
 export const storybookI18nScript = `<script>
 (() => {
   const supportedLocales = ${JSON.stringify(tcrnSupportedLocales)};
@@ -63,10 +140,7 @@ export const storybookI18nScript = `<script>
     }
     return contentTranslations[source]?.[locale] ?? contentTranslations[source]?.[fallbackLocale] ?? value;
   };
-  const searchShortcutLabel = () => {
-    const platform = String(navigator.userAgentData?.platform ?? navigator.platform ?? "");
-    return /mac|iphone|ipad|ipod/i.test(platform) ? "⌘ K" : "Ctrl K";
-  };
+  const searchShortcutLabel = () => "Ctrl K";
   const applyClientShortcuts = () => {
     for (const node of document.querySelectorAll("[data-shortcut-auto='search']")) {
       node.textContent = searchShortcutLabel();
@@ -117,15 +191,27 @@ export const storybookI18nScript = `<script>
     visit(root);
   };
   const updateLocalizedLinks = (locale) => {
-    for (const link of document.querySelectorAll("[data-story-nav], [data-doc-nav-item], .tcrn-doc-brand")) {
+    const shell = document.querySelector("[data-contract-surface]");
+    const currentTheme = shell?.getAttribute("data-storybook-theme");
+    for (const link of document.querySelectorAll("[data-story-nav], [data-doc-nav-item], .tcrn-doc-brand, .tcrn-doc-chapter-pager__link")) {
       const href = link.getAttribute("href");
       if (!href) {
         continue;
       }
       const next = new URL(href, window.location.href);
       next.searchParams.set("locale", locale);
+      if (currentTheme) {
+        next.searchParams.set("theme", currentTheme);
+      }
       const file = next.pathname.split("/").pop() || "index.html";
       link.setAttribute("href", file + next.search + next.hash);
+    }
+  };
+  const updateThemeButtonLabels = (locale) => {
+    for (const option of document.querySelectorAll("[data-storybook-theme-option][data-theme-label-key]")) {
+      const label = textFor(locale, option.getAttribute("data-theme-label-key"));
+      option.setAttribute("aria-label", label);
+      option.setAttribute("title", label);
     }
   };
   const applyLocale = (locale, updateUrl) => {
@@ -145,12 +231,14 @@ export const storybookI18nScript = `<script>
       toggle.setAttribute("data-expanded-label", textFor(resolvedLocale, "shell.collapseNavigationLabel"));
       toggle.setAttribute("data-collapsed-label", textFor(resolvedLocale, "shell.expandNavigationLabel"));
     }
+    updateThemeButtonLabels(resolvedLocale);
     const selector = document.querySelector("[data-i18n-locale-select]");
     if (selector) {
       selector.value = resolvedLocale;
     }
     document.title = textFor(resolvedLocale, "group." + activeSection) + " - " + textFor(resolvedLocale, "shell.title");
     updateLocalizedLinks(resolvedLocale);
+    window.tcrnStorybookUpdateThemeLinks?.();
     writeStoredLocale(resolvedLocale);
     window.tcrnUpdateCurrentStoryContext?.();
     window.dispatchEvent(new CustomEvent("tcrn-storybook-locale-applied"));
@@ -358,6 +446,15 @@ export const storybookSearchScript = `<script>
       return false;
     }
     const targetUrl = new URL(result.href, window.location.href);
+    const shell = document.querySelector("[data-contract-surface]");
+    const currentLocale = shell?.getAttribute("data-storybook-locale");
+    const currentTheme = shell?.getAttribute("data-storybook-theme");
+    if (currentLocale) {
+      targetUrl.searchParams.set("locale", currentLocale);
+    }
+    if (currentTheme) {
+      targetUrl.searchParams.set("theme", currentTheme);
+    }
     setResultsVisible(false);
     if (targetUrl.origin === window.location.origin && targetUrl.pathname === window.location.pathname) {
       if (window.location.hash === targetUrl.hash) {
@@ -663,4 +760,3 @@ export const activeStoryNavScript = `<script>
   syncFromHash();
 })();
 </script>`;
-

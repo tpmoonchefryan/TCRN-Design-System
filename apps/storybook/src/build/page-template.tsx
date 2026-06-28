@@ -11,6 +11,7 @@ import {
   hashRouteScript,
   sidebarToggleScript,
   storybookI18nScript,
+  storybookThemeScript,
   storybookSearchScript
 } from "./client-scripts.js";
 import { escapeHtml, i18nText, localeText } from "./i18n.js";
@@ -100,6 +101,37 @@ function docHeaderWorkspaceHtml(group: ContractStoryGroup): string {
         </div>`;
 }
 
+function docHeaderControlsHtml(): string {
+  return `<div class="tcrn-doc-header-controls">
+          <div class="tcrn-doc-theme-control" role="group" aria-label="${escapeHtml(localeText("shell.themeLabel"))}">
+            <span class="tcrn-doc-theme-control__label">${i18nText("shell.themeLabel")}</span>
+            <span class="tcrn-doc-theme-control__buttons" data-storybook-theme-control>
+              <button class="tcrn-doc-theme-control__button" type="button" data-storybook-theme-option="light" data-theme-label-key="shell.themeLightLabel" aria-pressed="true" aria-label="${escapeHtml(localeText("shell.themeLightLabel"))}" title="${escapeHtml(localeText("shell.themeLightLabel"))}">
+                ${iconHtml("sun", "tcrn-doc-theme-control__icon", "theme-light")}
+                <span data-i18n="shell.themeLightShort">${i18nText("shell.themeLightShort")}</span>
+              </button>
+              <button class="tcrn-doc-theme-control__button" type="button" data-storybook-theme-option="dark" data-theme-label-key="shell.themeDarkLabel" aria-pressed="false" aria-label="${escapeHtml(localeText("shell.themeDarkLabel"))}" title="${escapeHtml(localeText("shell.themeDarkLabel"))}">
+                ${iconHtml("moon", "tcrn-doc-theme-control__icon", "theme-dark")}
+                <span data-i18n="shell.themeDarkShort">${i18nText("shell.themeDarkShort")}</span>
+              </button>
+            </span>
+            <span class="tcrn-doc-theme-control__hint">${i18nText("shell.themeHint")}</span>
+          </div>
+          <a class="tcrn-doc-ai-contract-link" href="ai-consumption-contract.json" data-ai-consumption-contract-link="true" aria-label="${escapeHtml(localeText("shell.aiContractLabel"))}" title="${escapeHtml(localeText("shell.aiContractLabel"))}">
+            ${iconHtml("external-link", "tcrn-doc-ai-contract-link__icon", "ai-contract")}
+            <span data-i18n="shell.aiContractShort">${i18nText("shell.aiContractShort")}</span>
+            <span class="tcrn-doc-ai-contract-link__hint" data-i18n="shell.aiContractHint">${i18nText("shell.aiContractHint")}</span>
+          </a>
+          <label class="tcrn-doc-locale-control" for="tcrn-doc-locale">
+            <span>${i18nText("shell.languageLabel")}</span>
+            <select id="tcrn-doc-locale" data-i18n-locale-select aria-label="Storybook language">
+${tcrnLocaleMetadata.map((metadata) => `              <option value="${metadata.locale}">${metadata.nativeName} / ${metadata.englishName}</option>`).join("\n")}
+            </select>
+            <span class="tcrn-doc-locale-control__hint">${i18nText("shell.languageHint")}</span>
+          </label>
+        </div>`;
+}
+
 function storyHtml(group: ContractStoryGroup): string {
   const stories = contractStoriesByGroup(group);
   return `<section class="tcrn-static-section" id="${groupSlug(group)}" data-story-section="${group}">
@@ -117,10 +149,12 @@ ${stories.map((story) => {
 
 export function pageHtml(group: ContractStoryGroup): string {
   return `<!doctype html>
-<html lang="${tcrnDefaultLocale}">
+<html lang="${tcrnDefaultLocale}" data-tcrn-theme="light">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f6f7fb" data-storybook-theme-color />
   <title>${localeText(`group.${group}`)} - ${localeText("shell.title")}</title>
   <style>
 ${alphaStoryCss}
@@ -128,7 +162,7 @@ ${alphaStoryCss}
 </head>
 <body>
   <a class="tcrn-doc-skip" href="#content" aria-label="${escapeHtml(localeText("shell.skip"))}">${i18nText("shell.skip")}</a>
-  <div class="tcrn-doc-shell" data-doc-shell="online-docs" data-contract-surface="tcrn-design-system-storybook" data-anchor-scroll-controlled="true" data-active-story-section="${group}" data-storybook-locale="${tcrnDefaultLocale}" data-storybook-supported-locales="${tcrnSupportedLocales.join(",")}">
+  <div class="tcrn-doc-shell" data-doc-shell="online-docs" data-contract-surface="tcrn-design-system-storybook" data-anchor-scroll-controlled="true" data-active-story-section="${group}" data-storybook-locale="${tcrnDefaultLocale}" data-storybook-supported-locales="${tcrnSupportedLocales.join(",")}" data-storybook-theme="light" data-storybook-supported-themes="light,dark" data-tcrn-theme="light">
     <header class="tcrn-doc-header">
       <div class="tcrn-doc-global-bar">
         <div class="tcrn-doc-global-brand">
@@ -150,13 +184,7 @@ ${alphaStoryCss}
           </button>
         </div>
         ${docHeaderWorkspaceHtml(group)}
-        <label class="tcrn-doc-locale-control" for="tcrn-doc-locale">
-          <span>${i18nText("shell.languageLabel")}</span>
-          <select id="tcrn-doc-locale" data-i18n-locale-select aria-label="Storybook language">
-${tcrnLocaleMetadata.map((metadata) => `            <option value="${metadata.locale}">${metadata.nativeName} / ${metadata.englishName}</option>`).join("\n")}
-          </select>
-          <span class="tcrn-doc-locale-control__hint">${i18nText("shell.languageHint")}</span>
-        </label>
+        ${docHeaderControlsHtml()}
       </div>
     </header>
     <div class="tcrn-doc-layout">
@@ -173,6 +201,7 @@ ${chapterPagerHtml(group)}
   </div>
 ${hashRouteScript}
 ${activeStoryNavScript}
+${storybookThemeScript}
 ${storybookI18nScript}
 ${sidebarToggleScript}
 ${storybookSearchScript}
@@ -182,4 +211,3 @@ ${anchorScrollScript}
 </html>
 `;
 }
-

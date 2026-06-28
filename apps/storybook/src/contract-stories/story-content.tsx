@@ -1535,6 +1535,7 @@ const legacyContractStories: ContractStory[] = [
               { rule: "Brand and logo", evidence: "Use admitted brand assets or route brand component admission before product use." },
               { rule: "Component imports", evidence: "Import package-backed Design System primitives from @tcrn/ui-react; do not rebuild local clones." },
               { rule: "Token usage", evidence: "Use Design System tokens, reduced-motion rules, and accessibility states before custom CSS." },
+              { rule: "Light and dark Storybook shell", evidence: "Check both light and dark Storybook shell modes before product frontend work; do not fork behavior, locale copy, readiness copy, or brand assets by theme." },
               { rule: "Product proof", evidence: "Run product-owned adoption proof before claiming AOS or TMS Design System compliance." }
             ]}
           />
@@ -1544,7 +1545,8 @@ const legacyContractStories: ContractStory[] = [
             items={[
               { key: "artifact", label: "Artifact", value: "storybook-static/ai-consumption-contract.json" },
               { key: "version", label: "Contract version", value: aiConsumptionContract.contractVersion },
-              { key: "route", label: "Story route", value: aiConsumptionContract.route }
+              { key: "route", label: "Story route", value: aiConsumptionContract.route },
+              { key: "themes", label: "Theme modes", value: aiConsumptionContract.supportedThemeModes.join(",") }
             ]}
           />
           <Text>The static JSON artifact is the fetchable contract for AI and product implementation agents.</Text>

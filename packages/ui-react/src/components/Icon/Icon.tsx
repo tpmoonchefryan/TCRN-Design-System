@@ -15,11 +15,13 @@ import {
   Info,
   LoaderCircle,
   Menu,
+  Moon,
   Package,
   PanelLeftClose,
   PanelLeftOpen,
   Search,
   Settings,
+  Sun,
   X
 } from "lucide-react";
 import { cx } from "../../utils.js";
@@ -39,11 +41,13 @@ export const tcrnIconNames = [
   "info",
   "loader-circle",
   "menu",
+  "moon",
   "package",
   "panel-left-close",
   "panel-left-open",
   "search",
   "settings",
+  "sun",
   "x"
 ] as const;
 
@@ -65,11 +69,13 @@ const tcrnIconRegistry: Record<IconName, LucideIcon> = {
   info: Info,
   "loader-circle": LoaderCircle,
   menu: Menu,
+  moon: Moon,
   package: Package,
   "panel-left-close": PanelLeftClose,
   "panel-left-open": PanelLeftOpen,
   search: Search,
   settings: Settings,
+  sun: Sun,
   x: X
 };
 

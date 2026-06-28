@@ -7,6 +7,8 @@ test("icon primitive wraps the approved icon library through package exports", (
   assert.ok(tcrnIconNames.includes("search"));
   assert.ok(tcrnIconNames.includes("menu"));
   assert.ok(tcrnIconNames.includes("panel-left-close"));
+  assert.ok(tcrnIconNames.includes("sun"));
+  assert.ok(tcrnIconNames.includes("moon"));
 
   const decorative = renderToStaticMarkup(<Icon name="search" />);
   assert.match(decorative, /class="[^"]*tcrn-icon/);

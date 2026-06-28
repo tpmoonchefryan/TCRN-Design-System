@@ -4,14 +4,15 @@ Route: `route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s
 Mode: `check`
 OK: `true`
 Comparison contract: `bounded_antialias_pixel_delta_v1`
-Source head: `936d992060edf5cf020fdb95751776e12c716583`
-Static pages: 8
-Screenshots: 12
+Source head: `230e01828bfb56e1caae8ee7d36a51af7d5b9a1d`
+Static pages: 9
+Screenshots: 24
 Compare failures: 0
 
 ## No-Overclaim
 
 - localVisualProofDisposition: local_static_contract_docs_only
+- themeModeVisualCoverageDisposition: bounded_light_and_dark_static_docs_shell_only
 - hostedVisualSaasDisposition: deferred_not_admitted
 - ciGateDisposition: not_admitted
 - storybookDocsPublicationDisposition: not_published
