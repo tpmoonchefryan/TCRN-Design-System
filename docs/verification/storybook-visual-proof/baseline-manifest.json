@@ -2,8 +2,8 @@
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
   "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
-  "sourceHead": "6beac86c0af49e57454bc7c9e1f5166a59f59c0e",
-  "sourceContentDigest": "5b72d376dddce144b5dd96e1ac3584d19043c189634e1c76f4f3d786e6706405",
+  "sourceHead": "7b34b2dcf4d55af53bb01d10bd905da8748c50df",
+  "sourceContentDigest": "a48ce9f43012cb9f088276960db20e4779b9b54b25565109546142b88c65f314",
   "baselineUpdateReason": "storybook-shell-controls-circular-theme-native-language-search-refinement",
   "packageName": "@tcrn/design-system-workspace",
   "staticPageAllowlist": [
@@ -485,5 +485,5 @@
       "bytes": 62608
     }
   ],
-  "baselineManifestHash": "bf41e791c1451edc0d3c61cf0a46d32a49ddf99b2e36dcb9b931396c606f821e"
+  "baselineManifestHash": "1e436abb7e9dbddb3169d1bff6a8d7088d4899baf8b0250248494e930502d456"
 }

@@ -1,8 +1,8 @@
 {
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
-  "sourceHead": "6beac86c0af49e57454bc7c9e1f5166a59f59c0e",
-  "sourceContentDigest": "5b72d376dddce144b5dd96e1ac3584d19043c189634e1c76f4f3d786e6706405",
+  "sourceHead": "7b34b2dcf4d55af53bb01d10bd905da8748c50df",
+  "sourceContentDigest": "a48ce9f43012cb9f088276960db20e4779b9b54b25565109546142b88c65f314",
   "mode": "update-baseline",
   "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
   "baselineUpdateReason": "storybook-shell-controls-circular-theme-native-language-search-refinement",
@@ -138,56 +138,56 @@
       "file": "index.html",
       "status": 200,
       "ok": true,
-      "bytes": 557427,
-      "sha256": "47f79c45901dc4901038daa88b0063fce22632a7a77f3e1d01109a0431c3c7e9",
+      "bytes": 557695,
+      "sha256": "55dbd2208773a965a1d042204d7b659016a22006a05c20c51563f5c4d4ef245d",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "style-guide.html",
       "status": 200,
       "ok": true,
-      "bytes": 609562,
-      "sha256": "2084784df099f8bee1224f2d4edf031f320454791c2893a92f31495739d00395",
+      "bytes": 609830,
+      "sha256": "b074853b04b96b5d22db6651e8aa2b435bc9f20a2664e9ef3d1a6568fafa7463",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "foundations.html",
       "status": 200,
       "ok": true,
-      "bytes": 550810,
-      "sha256": "dad271f3fb60cafc00c9d3a2d25d28d141448e528da78d8f16c5c6bf6f26345d",
+      "bytes": 551078,
+      "sha256": "f73bfba900810f9f3738290b7e1fa4a344fdb47904ffde6c6d290996a21df7d5",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "components.html",
       "status": 200,
       "ok": true,
-      "bytes": 674890,
-      "sha256": "2e4d212376cd17ce7cbd084523c2daf01cd7d5bab9159793ef136fd84c2650b6",
+      "bytes": 675158,
+      "sha256": "d68d8b1dc8068be0ee4a26c5f97bcf084369c3c7d4987fcd8c6b1e925b3b3a2b",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "patterns.html",
       "status": 200,
       "ok": true,
-      "bytes": 555864,
-      "sha256": "c9864a555d0161be2f70db6ae2c7784565bc6e29b5b04aab0fbedbb014142864",
+      "bytes": 556132,
+      "sha256": "bbb363b3d950511310b3278605c2d2d79b13df3804b83f5e3fcc16d29feaf8d7",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "proof.html",
       "status": 200,
       "ok": true,
-      "bytes": 556297,
-      "sha256": "95bbb0b96f35aa9173d2d50b54622c304c1e859fbcae9a2269868036cf85eec2",
+      "bytes": 556565,
+      "sha256": "1fd73545b0558d6d47b551c038dcedc92872d0ff95db19098be0a1c191b19122",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "change-log.html",
       "status": 200,
       "ok": true,
-      "bytes": 544048,
-      "sha256": "12d8d8c1f4a375a8aef5cbadc78e29bbff061492729856d1ae942ef1cd71fe9d",
+      "bytes": 544316,
+      "sha256": "2d38f5918e242cacd6be65e55305464e0ef7297155fa53ac5909ee4fe95925db",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -1387,7 +1387,7 @@
     "retained": false,
     "stoppedBeforeReturn": true
   },
-  "baselineManifestHash": "bf41e791c1451edc0d3c61cf0a46d32a49ddf99b2e36dcb9b931396c606f821e",
+  "baselineManifestHash": "1e436abb7e9dbddb3169d1bff6a8d7088d4899baf8b0250248494e930502d456",
   "compareFailures": [],
   "comparisonReadbacks": []
 }
