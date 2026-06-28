@@ -248,6 +248,11 @@ export const storybookI18nScript = `<script>
       nameNode.textContent = selected.getAttribute("data-locale-name") ?? locale;
     }
     for (const option of document.querySelectorAll("[data-locale-menu-option]")) {
+      const nativeName = option.getAttribute("data-locale-name") ?? option.getAttribute("data-locale") ?? "";
+      const visibleName = option.querySelector(".tcrn-doc-locale-menu__name");
+      if (visibleName) {
+        visibleName.textContent = nativeName;
+      }
       option.setAttribute("aria-selected", option.getAttribute("data-locale") === locale ? "true" : "false");
     }
   };

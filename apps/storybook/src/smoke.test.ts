@@ -271,6 +271,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-doc-shell-icon="locale-select"[\s\S]*data-icon-name="chevron-down"/);
   assert.match(combinedHtml, /data-locale-menu/);
   assert.match(combinedHtml, /data-locale-menu-option[\s\S]*data-locale="ja"[\s\S]*data-locale-name="日本語"/);
+  assert.match(combinedHtml, /querySelector\("\.tcrn-doc-locale-menu__name"\)/);
   assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-aria-label\]"\)/);
   assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-title\]"\)/);
   assert.match(combinedHtml, /tcrn-design-system-storybook-theme/);
