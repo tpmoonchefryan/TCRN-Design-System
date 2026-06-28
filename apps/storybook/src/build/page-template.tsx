@@ -23,6 +23,10 @@ function iconHtml(name: IconName, className: string, dataDocShellIcon: string): 
   );
 }
 
+function localeAbbreviation(locale: string): string {
+  return locale === "zh-CN" ? "ZH" : locale.toUpperCase();
+}
+
 function navHtml(activeGroup: ContractStoryGroup): string {
   return `<nav class="tcrn-doc-nav" aria-label="Documentation sections" data-doc-nav="sections">
   <ol class="tcrn-doc-nav__groups">
@@ -104,38 +108,32 @@ function docHeaderWorkspaceHtml(group: ContractStoryGroup): string {
 function docHeaderControlsHtml(): string {
   return `<div class="tcrn-doc-header-controls">
           <div class="tcrn-doc-header-controls__row">
-            <div class="tcrn-doc-theme-control" role="group" aria-label="${escapeHtml(localeText("shell.themeLabel"))}" data-i18n-aria-label="shell.themeLabel">
-              <span class="tcrn-doc-theme-control__label" data-i18n="shell.themeLabel">${i18nText("shell.themeLabel")}</span>
-              <span class="tcrn-doc-theme-control__buttons" data-storybook-theme-control>
-                <button class="tcrn-doc-theme-control__button" type="button" data-storybook-theme-option="light" data-theme-label-key="shell.themeLightLabel" aria-pressed="true" aria-label="${escapeHtml(localeText("shell.themeLightLabel"))}" title="${escapeHtml(localeText("shell.themeLightLabel"))}">
-                  ${iconHtml("sun", "tcrn-doc-theme-control__icon", "theme-light")}
-                  <span class="tcrn-doc-theme-control__button-label" data-i18n="shell.themeLightShort">${i18nText("shell.themeLightShort")}</span>
-                </button>
-                <button class="tcrn-doc-theme-control__button" type="button" data-storybook-theme-option="dark" data-theme-label-key="shell.themeDarkLabel" aria-pressed="false" aria-label="${escapeHtml(localeText("shell.themeDarkLabel"))}" title="${escapeHtml(localeText("shell.themeDarkLabel"))}">
-                  ${iconHtml("moon", "tcrn-doc-theme-control__icon", "theme-dark")}
-                  <span class="tcrn-doc-theme-control__button-label" data-i18n="shell.themeDarkShort">${i18nText("shell.themeDarkShort")}</span>
-                </button>
-              </span>
+            <div class="tcrn-doc-theme-control" data-storybook-theme-control>
+              <button class="tcrn-doc-theme-toggle" type="button" data-storybook-theme-toggle data-storybook-theme-option="dark" data-theme-label-key="shell.themeDarkLabel" data-current-theme="light" aria-pressed="false" aria-label="${escapeHtml(localeText("shell.themeDarkLabel"))}" title="${escapeHtml(localeText("shell.themeDarkLabel"))}">
+                <span class="tcrn-doc-theme-toggle__icon" data-theme-icon="light" aria-hidden="true">${iconHtml("sun", "tcrn-doc-theme-control__icon", "theme-light")}</span>
+                <span class="tcrn-doc-theme-toggle__icon" data-theme-icon="dark" aria-hidden="true" hidden>${iconHtml("moon", "tcrn-doc-theme-control__icon", "theme-dark")}</span>
+                <span class="tcrn-sr-only" data-i18n="shell.themeLabel">${i18nText("shell.themeLabel")}</span>
+              </button>
             </div>
-            <label class="tcrn-doc-locale-control" for="tcrn-doc-locale">
-              <span class="tcrn-doc-locale-control__label" data-i18n="shell.languageLabel">${i18nText("shell.languageLabel")}</span>
-              <span class="tcrn-doc-locale-control__select">
-                <select id="tcrn-doc-locale" data-i18n-locale-select data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}">
-${tcrnLocaleMetadata.map((metadata) => `              <option value="${metadata.locale}">${metadata.nativeName} / ${metadata.englishName}</option>`).join("\n")}
-                </select>
+            <div class="tcrn-doc-locale-control" data-locale-menu-root>
+              <button class="tcrn-doc-locale-toggle" type="button" data-locale-menu-toggle aria-haspopup="listbox" aria-expanded="false" aria-controls="tcrn-doc-locale-menu" data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}" title="${escapeHtml(localeText("shell.languageLabel"))}">
+                <span class="tcrn-doc-locale-toggle__code" data-locale-current-code>${localeAbbreviation(tcrnDefaultLocale)}</span>
                 ${iconHtml("chevron-down", "tcrn-doc-locale-control__chevron", "locale-select")}
-              </span>
-            </label>
-            <a class="tcrn-doc-ai-contract-link" href="ai-consumption-contract.json" data-ai-consumption-contract-link="true" data-i18n-aria-label="shell.aiContractLabel" data-i18n-title="shell.aiContractLabel" aria-label="${escapeHtml(localeText("shell.aiContractLabel"))}" title="${escapeHtml(localeText("shell.aiContractLabel"))}">
-              ${iconHtml("external-link", "tcrn-doc-ai-contract-link__icon", "ai-contract")}
-              <span class="tcrn-sr-only" data-i18n="shell.aiContractShort">${i18nText("shell.aiContractShort")}</span>
-            </a>
+              </button>
+              <div id="tcrn-doc-locale-menu" class="tcrn-doc-locale-menu" role="listbox" data-locale-menu data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}" hidden>
+${tcrnLocaleMetadata.map((metadata) => {
+  const selected = metadata.locale === tcrnDefaultLocale ? "true" : "false";
+  return `                <button class="tcrn-doc-locale-menu__option" type="button" role="option" data-locale-menu-option data-locale="${metadata.locale}" data-locale-code="${localeAbbreviation(metadata.locale)}" aria-selected="${selected}">
+                  <span class="tcrn-doc-locale-menu__code">${localeAbbreviation(metadata.locale)}</span>
+                  <span class="tcrn-doc-locale-menu__name">${metadata.nativeName}</span>
+                </button>`;
+}).join("\n")}
+              </div>
+              <select id="tcrn-doc-locale" data-i18n-locale-select data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}" tabindex="-1" aria-hidden="true" hidden>
+${tcrnLocaleMetadata.map((metadata) => `                <option value="${metadata.locale}">${metadata.nativeName} / ${metadata.englishName}</option>`).join("\n")}
+              </select>
+            </div>
           </div>
-          <p class="tcrn-doc-header-controls__hint">
-            <span data-i18n="shell.themeHint">${i18nText("shell.themeHint")}</span>
-            <span aria-hidden="true"> / </span>
-            <span data-i18n="shell.languageHint">${i18nText("shell.languageHint")}</span>
-          </p>
         </div>`;
 }
 

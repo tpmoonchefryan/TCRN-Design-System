@@ -64,6 +64,7 @@ export const storybookThemeScript = `<script>
   const applyTheme = (theme, updateUrl) => {
     const resolvedTheme = isSupported(theme) ? theme : defaultTheme;
     const shell = document.querySelector("[data-contract-surface]");
+    const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
     window.tcrnStorybookResolvedTheme = resolvedTheme;
     document.documentElement.setAttribute("data-tcrn-theme", resolvedTheme);
     document.documentElement.style.colorScheme = resolvedTheme;
@@ -71,6 +72,22 @@ export const storybookThemeScript = `<script>
     shell?.setAttribute("data-tcrn-theme", resolvedTheme);
     for (const option of document.querySelectorAll("[data-storybook-theme-option]")) {
       option.setAttribute("aria-pressed", option.getAttribute("data-storybook-theme-option") === resolvedTheme ? "true" : "false");
+    }
+    const toggle = document.querySelector("[data-storybook-theme-toggle]");
+    if (toggle) {
+      const labelKey = nextTheme === "dark" ? "shell.themeDarkLabel" : "shell.themeLightLabel";
+      toggle.setAttribute("data-current-theme", resolvedTheme);
+      toggle.setAttribute("data-storybook-theme-option", nextTheme);
+      toggle.setAttribute("data-theme-label-key", labelKey);
+      toggle.setAttribute("aria-pressed", resolvedTheme === "dark" ? "true" : "false");
+      for (const icon of toggle.querySelectorAll("[data-theme-icon]")) {
+        icon.hidden = icon.getAttribute("data-theme-icon") !== resolvedTheme;
+      }
+      if (typeof window.tcrnStorybookTextFor === "function" && window.tcrnStorybookResolvedLocale) {
+        const label = window.tcrnStorybookTextFor(window.tcrnStorybookResolvedLocale, labelKey);
+        toggle.setAttribute("aria-label", label);
+        toggle.setAttribute("title", label);
+      }
     }
     const themeColor = document.querySelector("[data-storybook-theme-color]");
     themeColor?.setAttribute("content", themeColors[resolvedTheme] ?? themeColors.light);
@@ -207,6 +224,33 @@ export const storybookI18nScript = `<script>
       link.setAttribute("href", file + next.search + next.hash);
     }
   };
+  const closeLocaleMenu = () => {
+    const toggle = document.querySelector("[data-locale-menu-toggle]");
+    const menu = document.querySelector("[data-locale-menu]");
+    toggle?.setAttribute("aria-expanded", "false");
+    if (menu) {
+      menu.hidden = true;
+    }
+  };
+  const openLocaleMenu = () => {
+    const toggle = document.querySelector("[data-locale-menu-toggle]");
+    const menu = document.querySelector("[data-locale-menu]");
+    toggle?.setAttribute("aria-expanded", "true");
+    if (menu) {
+      menu.hidden = false;
+      menu.querySelector("[aria-selected='true']")?.focus();
+    }
+  };
+  const updateLocaleMenuState = (locale) => {
+    const selected = document.querySelector("[data-locale-menu-option][data-locale='" + CSS.escape(locale) + "']");
+    const codeNode = document.querySelector("[data-locale-current-code]");
+    if (selected && codeNode) {
+      codeNode.textContent = selected.getAttribute("data-locale-code") ?? locale.toUpperCase();
+    }
+    for (const option of document.querySelectorAll("[data-locale-menu-option]")) {
+      option.setAttribute("aria-selected", option.getAttribute("data-locale") === locale ? "true" : "false");
+    }
+  };
   const updateThemeButtonLabels = (locale) => {
     for (const option of document.querySelectorAll("[data-storybook-theme-option][data-theme-label-key]")) {
       const label = textFor(locale, option.getAttribute("data-theme-label-key"));
@@ -242,6 +286,7 @@ export const storybookI18nScript = `<script>
     if (selector) {
       selector.value = resolvedLocale;
     }
+    updateLocaleMenuState(resolvedLocale);
     document.title = textFor(resolvedLocale, "group." + activeSection) + " - " + textFor(resolvedLocale, "shell.title");
     updateLocalizedLinks(resolvedLocale);
     window.tcrnStorybookUpdateThemeLinks?.();
@@ -259,6 +304,31 @@ export const storybookI18nScript = `<script>
   const initialLocale = isSupported(urlLocale) ? urlLocale : isSupported(storedLocale) ? storedLocale : defaultLocale;
   const selector = document.querySelector("[data-i18n-locale-select]");
   selector?.addEventListener("change", (event) => applyLocale(event.target.value, true));
+  document.querySelector("[data-locale-menu-toggle]")?.addEventListener("click", () => {
+    const menu = document.querySelector("[data-locale-menu]");
+    if (menu?.hidden) {
+      openLocaleMenu();
+    } else {
+      closeLocaleMenu();
+    }
+  });
+  for (const option of document.querySelectorAll("[data-locale-menu-option]")) {
+    option.addEventListener("click", () => {
+      applyLocale(option.getAttribute("data-locale"), true);
+      closeLocaleMenu();
+      document.querySelector("[data-locale-menu-toggle]")?.focus();
+    });
+  }
+  document.addEventListener("mousedown", (event) => {
+    if (!event.target.closest?.("[data-locale-menu-root]")) {
+      closeLocaleMenu();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeLocaleMenu();
+    }
+  });
   applyLocale(initialLocale, false);
 })();
 </script>`;
