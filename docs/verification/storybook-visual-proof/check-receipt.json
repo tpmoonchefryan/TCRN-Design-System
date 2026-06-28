@@ -1,8 +1,8 @@
 {
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
-  "sourceHead": "669a7d4bc6e39f7d31534cc5828bdb7f76b53e18",
-  "sourceContentDigest": "179d1d7e2f4ec94668f191ed59075e1a69dbdfba6ce3cc76df43f0f0c0889a54",
+  "sourceHead": "c62f63339ba9d6ad1047d92580b394103c7d602d",
+  "sourceContentDigest": "991674e74cc746c2f24c7d9b5c71cf48a5878984314fe13c31c0607e221f531d",
   "mode": "check",
   "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
   "baselineUpdateReason": null,
@@ -154,8 +154,8 @@
       "file": "foundations.html",
       "status": 200,
       "ok": true,
-      "bytes": 557041,
-      "sha256": "52f6dde5f29f92fb29ecaf4a89491e71ccb1a1c4add0ee2d3396ee77d0cd2522",
+      "bytes": 560058,
+      "sha256": "36bd75b34441e9354e26ed59bbd69e342559fa58b5f2b3d677a8196580c9f43e",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -178,8 +178,8 @@
       "file": "proof.html",
       "status": 200,
       "ok": true,
-      "bytes": 562528,
-      "sha256": "74a2007c877056ff3bb32609c52001f2b7961636b97a289a817205ee6ee44f13",
+      "bytes": 562960,
+      "sha256": "8989c0fb66a78c734c6d692118c367b4868e132436710a275a0de6a7620480aa",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -202,8 +202,8 @@
       "file": "ai-consumption-contract.json",
       "status": 200,
       "ok": true,
-      "bytes": 2122,
-      "sha256": "1e7749852f236e11df26ece0a48f4e097a0ad83f1fc0af38549c7a1e1224b9f0",
+      "bytes": 3179,
+      "sha256": "775f01a9a7daf0c7e2fbe065b283e58cadeb05ccf6e877706f86906b3ffee551",
       "contentType": "application/json; charset=utf-8"
     }
   ],

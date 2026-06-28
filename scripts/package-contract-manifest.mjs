@@ -217,6 +217,8 @@ const packageMetadataMatchesSource = Array.isArray(uiReactModule.componentLibrar
 
 const storybookSources = walkTextSources("apps/storybook/src");
 const storybookBodies = storybookSources.map((path) => ({ path, body: readFileSync(path, "utf8") }));
+const storybookRuntimeBodies = storybookBodies.filter((source) => !source.path.endsWith(".test.ts") && !source.path.endsWith(".test.tsx"));
+const uiReactReadme = readFileSync("packages/ui-react/README.md", "utf8");
 const publicPackageImports = {
   uiReact: storybookBodies.some((source) => /from\s+["']@tcrn\/ui-react["']/.test(source.body)),
   uiTokens: storybookBodies.some((source) => /from\s+["']@tcrn\/ui-tokens["']/.test(source.body)),
@@ -237,6 +239,25 @@ const storybookConsumption = {
   packageBackedComponentParityMarkers: storybookBodies.some((source) => /data-component-library-parity="package-backed"/.test(source.body)),
   packageBackedNavigationProofVisible: storybookBodies.some((source) => /data-package-backed-navigation-proof="true"/.test(source.body)),
   noReusableInlineSourceClaim: storybookOnlyMarkers.length > 0 && deepImportHits.length === 0
+};
+const storybookShellControlContract = {
+  uiReactReadmeBoundaryVisible: uiReactReadme.includes("Storybook Shell Control Boundary")
+    && /not new\s+component-library exports/.test(uiReactReadme)
+    && /does not export a package-backed\s+`ThemeToggle`, locale menu, or Storybook shell component/.test(uiReactReadme),
+  themeToggleRuleVisible: uiReactReadme.includes("single icon-only circular button")
+    && storybookBodies.some((source) => /data-storybook-theme-toggle/.test(source.body)),
+  wholePageTransitionRuleVisible: uiReactReadme.includes("whole-page shell transition")
+    && storybookBodies.some((source) => /document\.startViewTransition/.test(source.body))
+    && storybookBodies.some((source) => /tcrn-doc-theme-transition-wash/.test(source.body)),
+  localeSelectorRuleVisible: /globe trigger plus the current locale name in that\s+locale/.test(uiReactReadme)
+    && /must not use long bilingual\s+labels/.test(uiReactReadme)
+    && storybookBodies.some((source) => /data-locale-menu-toggle/.test(source.body)),
+  focusSearchRuleVisible: uiReactReadme.includes("compact at rest and expand on focus")
+    && /collapse on\s+blur/.test(uiReactReadme)
+    && storybookBodies.some((source) => /--tcrn-doc-header-search-expanded-width/.test(source.body)),
+  aiContractToolbarBoundaryVisible: /not a primary top-bar control for human\s+readers/.test(uiReactReadme)
+    && storybookBodies.some((source) => /data-ai-consumption-contract-story/.test(source.body))
+    && !storybookRuntimeBodies.some((source) => /data-ai-consumption-contract-link/.test(source.body))
 };
 const iconLibraryContract = {
   sourcePackage: "lucide-react",
@@ -300,6 +321,7 @@ const packageContractManifest = {
     && storybookConsumption.packageBackedComponentParityMarkers
     && storybookConsumption.packageBackedNavigationProofVisible
     && storybookConsumption.noReusableInlineSourceClaim
+    && Object.values(storybookShellControlContract).every(Boolean)
     && iconLibraryContract.dependencyExact
     && iconLibraryContract.iconExported
     && iconLibraryContract.iconNamesExported
@@ -317,6 +339,7 @@ const packageContractManifest = {
     componentParityMatrix,
     packageMetadataMatchesSource,
     storybookConsumption,
+    storybookShellControlContract,
     noProductAdoptionClaimed: true,
     noPackagePublicationClaimed: true
   },

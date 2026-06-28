@@ -329,7 +329,7 @@
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 1077,
-          "height": 581
+          "height": 1069
         },
         {
           "id": "copy-guidelines",
@@ -675,7 +675,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 1126
+          "height": 1199
         },
         {
           "id": "blocked-actions",
@@ -1020,7 +1020,7 @@
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 691,
-          "height": 716
+          "height": 1343
         },
         {
           "id": "copy-guidelines",
@@ -1366,7 +1366,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 1245
+          "height": 1354
         },
         {
           "id": "blocked-actions",
@@ -1711,7 +1711,7 @@
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 358,
-          "height": 1188
+          "height": 2298
         },
         {
           "id": "copy-guidelines",
@@ -2057,7 +2057,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 1926
+          "height": 2117
         },
         {
           "id": "blocked-actions",

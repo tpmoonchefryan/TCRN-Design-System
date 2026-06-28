@@ -844,6 +844,14 @@
       "packageBackedNavigationProofVisible": true,
       "noReusableInlineSourceClaim": true
     },
+    "storybookShellControlContract": {
+      "uiReactReadmeBoundaryVisible": true,
+      "themeToggleRuleVisible": true,
+      "wholePageTransitionRuleVisible": true,
+      "localeSelectorRuleVisible": true,
+      "focusSearchRuleVisible": true,
+      "aiContractToolbarBoundaryVisible": true
+    },
     "noProductAdoptionClaimed": true,
     "noPackagePublicationClaimed": true
   },

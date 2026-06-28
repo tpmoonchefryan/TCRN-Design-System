@@ -815,6 +815,45 @@ const legacyContractStories: ContractStory[] = [
             <Button disabled disabledReason="Requires product adoption route">Publish theme</Button>
           </div>
         </section>
+        <ReadbackPanel title="Docs shell control contract">
+          <Text>
+            The Storybook documentation shell keeps global controls compact so they do not crowd search, current-location readback, or navigation.
+          </Text>
+          <TableShell
+            columns={[
+              { key: "control", label: "Control" },
+              { key: "rule", label: "Rule" },
+              { key: "blocked", label: "Blocked" }
+            ]}
+            rows={[
+              {
+                control: "Theme toggle",
+                rule: "Use one circular icon-only button that reflects the current light or dark mode and toggles only on explicit activation.",
+                blocked: "Two-option segmented theme controls or large theme panels in the global bar."
+              },
+              {
+                control: "Theme transition",
+                rule: "Theme changes use one whole-page transition: root View Transition when available, or one full-page fallback wash.",
+                blocked: "Per-section darkening where sidebar, header, and content animate independently."
+              },
+              {
+                control: "Language selector",
+                rule: "Use a globe trigger plus the current locale name in that locale; menu options use native names only.",
+                blocked: "Long bilingual labels such as Simplified Chinese / English in the compact control."
+              },
+              {
+                control: "Search",
+                rule: "Keep search compact at rest, expand smoothly on focus, and collapse on blur while preserving the shortcut label only for shell search.",
+                blocked: "Fixed long search fields that permanently crowd the theme and language controls."
+              },
+              {
+                control: "AI contract",
+                rule: "Expose the AI contract through the Proof story and static JSON artifact, not as a top-bar human navigation item.",
+                blocked: "Putting machine-contract JSON links in the primary human toolbar."
+              }
+            ]}
+          />
+        </ReadbackPanel>
       </section>
     )
   },
@@ -1536,6 +1575,7 @@ const legacyContractStories: ContractStory[] = [
               { rule: "Component imports", evidence: "Import package-backed Design System primitives from @tcrn/ui-react; do not rebuild local clones." },
               { rule: "Token usage", evidence: "Use Design System tokens, reduced-motion rules, and accessibility states before custom CSS." },
               { rule: "Light and dark Storybook shell", evidence: "Check both light and dark Storybook shell modes before product frontend work; do not fork behavior, locale copy, readiness copy, or brand assets by theme." },
+              { rule: "Storybook shell controls", evidence: "Preserve compact theme, locale, and search controls: single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition." },
               { rule: "Product proof", evidence: "Run product-owned adoption proof before claiming AOS or TMS Design System compliance." }
             ]}
           />

@@ -35,3 +35,25 @@ Lucide is recorded as the local icon source with an ISC license readback. This
 does not turn general-purpose icons into TCRN brand marks: product logos,
 mother-brand marks, and product lockups remain brand assets, not icon-library
 substitutions.
+
+## Storybook Shell Control Boundary
+
+The static Storybook documentation shell may compose package-backed primitives,
+icons, tokens, and copy-state vocabulary, but its global controls are not new
+component-library exports.
+
+- Theme switching stays a single icon-only circular button. It reflects the
+  current light/dark mode and toggles only on explicit activation.
+- Theme changes use a whole-page shell transition. Sidebar, header, and content
+  must not darken as separate independent regions.
+- Language selection uses a globe trigger plus the current locale name in that
+  locale. Compact controls must not use long bilingual labels.
+- Shell search may be compact at rest and expand on focus, then collapse on
+  blur. Shortcut labels belong only to shell search with real focus/result
+  behavior.
+- The AI consumption contract remains in the Proof story and static JSON
+  artifact. It is not a primary top-bar control for human readers.
+
+Consumers that need similar controls should compose admitted primitives and
+prove the product route separately; this README does not export a package-backed
+`ThemeToggle`, locale menu, or Storybook shell component.
