@@ -42,6 +42,7 @@ const requiredStories = [
   { id: "big-list-search-patterns", group: "Patterns" },
   { id: "dashboard-page-templates", group: "Patterns" },
   { id: "proof-matrix", group: "Proof" },
+  { id: "ai-consumption-contract", group: "Proof" },
   { id: "blocked-actions", group: "Proof" },
   { id: "overlay-focus", group: "Proof" },
   { id: "local-changelog", group: "Change Log" }
@@ -75,6 +76,9 @@ const required = [
   "data-contract-story-id=\"brand-identity\"",
   "data-contract-story-id=\"color-palette\"",
   "data-contract-story-id=\"dashboard-page-templates\"",
+  "data-contract-story-id=\"ai-consumption-contract\"",
+  "data-ai-consumption-contract-story=\"true\"",
+  "ai-consumption-contract.json",
   "aria-label=\"TCRN brand mark\"",
   "src=\"tcrn-brand-mark.svg\"",
   "tcrn-brand-lockup--long-name",

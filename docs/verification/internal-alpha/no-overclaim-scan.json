@@ -1,8 +1,12 @@
 {
   "ok": true,
-  "scannedFiles": 157,
+  "scannedFiles": 158,
   "skippedFiles": [],
   "binaryVisualReceiptExclusions": [
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-ai-consumption-contract.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-big-list-search-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
@@ -176,6 +180,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-ai-consumption-contract.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-big-list-search-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -341,6 +349,10 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-workbench-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-ai-consumption-contract.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {

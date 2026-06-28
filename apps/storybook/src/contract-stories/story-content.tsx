@@ -86,6 +86,7 @@ import {
   tableShellRuleRows,
   tmsMenuDensityRows
 } from "./content/index.js";
+import { aiConsumptionContract } from "../build/ai-consumption-contract.js";
 
 function TokenSwatch({ label, token, note }: { label: string; token: string; note: string }) {
   return (
@@ -1506,6 +1507,62 @@ const legacyContractStories: ContractStory[] = [
         />
         <ReadbackPanel title="Template boundary">
           <Text>Templates describe layout and interaction rules only; product data truth remains owned by consumer routes.</Text>
+        </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "ai-consumption-contract",
+    title: "AI consumption contract",
+    group: "Proof",
+    description: "Machine-readable Storybook rules for product frontend agents before implementation.",
+    render: () => (
+      <section className="alpha-story-stack" data-ai-consumption-contract-story="true">
+        <ReadbackPanel title="AI consumption gate">
+          <Text>
+            AI and product frontend agents must read this story or ai-consumption-contract.json before coding. Storybook evidence alone does not prove product adoption.
+          </Text>
+          <EvidenceStrip items={["machine-readable contract", "owner review completed", "product adoption separate", "no local rebuild"]} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Pre-implementation rules">
+          <TableShell
+            columns={[
+              { key: "rule", label: "Rule" },
+              { key: "evidence", label: "Required evidence" }
+            ]}
+            rows={[
+              { rule: "Locale and copy-state", evidence: "All visible product copy uses approved i18n and copy-state contracts." },
+              { rule: "Brand and logo", evidence: "Use admitted brand assets or route brand component admission before product use." },
+              { rule: "Component imports", evidence: "Import package-backed Design System primitives from @tcrn/ui-react; do not rebuild local clones." },
+              { rule: "Token usage", evidence: "Use Design System tokens, reduced-motion rules, and accessibility states before custom CSS." },
+              { rule: "Product proof", evidence: "Run product-owned adoption proof before claiming AOS or TMS Design System compliance." }
+            ]}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Machine-readable artifact">
+          <KeyValueList
+            items={[
+              { key: "artifact", label: "Artifact", value: "storybook-static/ai-consumption-contract.json" },
+              { key: "version", label: "Contract version", value: aiConsumptionContract.contractVersion },
+              { key: "route", label: "Story route", value: aiConsumptionContract.route }
+            ]}
+          />
+          <Text>The static JSON artifact is the fetchable contract for AI and product implementation agents.</Text>
+        </ReadbackPanel>
+        <ReadbackPanel title="Blocked claims">
+          <TableShell
+            columns={[
+              { key: "claim", label: "Claim" },
+              { key: "disposition", label: "Disposition" }
+            ]}
+            rows={[
+              { claim: "Storybook docs publication", disposition: "Not claimed by this contract." },
+              { claim: "Package publication", disposition: "Not claimed by this contract." },
+              { claim: "Product adoption", disposition: "Requires a downstream product adoption route." },
+              { claim: "AOS or TMS acceptance", disposition: "Requires product-owned implementation and proof." },
+              { claim: "Automatic registration", disposition: "Blocked without Owner Review." }
+            ]}
+          />
         </ReadbackPanel>
       </section>
     )

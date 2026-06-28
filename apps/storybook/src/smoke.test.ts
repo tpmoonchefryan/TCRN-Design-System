@@ -66,6 +66,7 @@ const expectedContractStoryIds = [
   "big-list-search-patterns",
   "dashboard-page-templates",
   "proof-matrix",
+  "ai-consumption-contract",
   "blocked-actions",
   "overlay-focus",
   "local-changelog"
@@ -113,7 +114,7 @@ test("static contract story surface is retained and synthetic", () => {
   const pages = contractStoryGroups.map((group) => ({ group, html: readGroupPage(group) }));
   const combinedHtml = pages.map((page) => page.html).join("\n");
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
-  assert.equal(contractStories.length, 35);
+  assert.equal(contractStories.length, 36);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
   assert.deepEqual(
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
@@ -138,9 +139,18 @@ test("static contract story surface is retained and synthetic", () => {
   assert.equal(storybookContentText["Design System"].en, "Design System");
   assert.equal(storybookContentText["Design System"]["zh-CN"], "设计系统");
   assert.match(i18nText("shell.title"), /data-i18n="shell.title"/);
+  for (const story of contractStories) {
+    for (const suffix of ["title", "description"] as const) {
+      const key = `story.${story.id}.${suffix}`;
+      for (const locale of tcrnSupportedLocales) {
+        assert.notEqual(localeText(key, locale), key, `missing Storybook locale text for ${locale}:${key}`);
+      }
+    }
+  }
   assert.doesNotMatch(combinedHtml, /data-internal-dev-surface="overlay-family-lab"/);
   assert.doesNotMatch(combinedHtml, /data-contract-docs="excluded"/);
   assert.doesNotMatch(combinedHtml, /Internal\/Overlay family lab/);
+  assert.doesNotMatch(combinedHtml, />story\.[^<]+</);
   assert.doesNotMatch(combinedHtml, /data-storybook-contract-truth="not-authoritative"/);
   assert.match(combinedHtml, /data-doc-shell="online-docs"/);
   assert.doesNotMatch(combinedHtml, /data-doc-global-nav="sections"/);
@@ -461,6 +471,11 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(readGroupPage("Patterns"), /data-aos-exception-record="brand-lockup-product-specific"/);
   assert.doesNotMatch(readGroupPage("Patterns"), /AOS brand treatment exception/);
   assert.match(readGroupPage("Foundations"), /Copy guidelines/);
+  assert.match(readGroupPage("Proof"), /AI consumption contract/);
+  assert.match(readGroupPage("Proof"), /data-ai-consumption-contract-story="true"/);
+  assert.match(readGroupPage("Proof"), /ai-consumption-contract\.json/);
+  assert.match(readGroupPage("Proof"), /Import package-backed Design System primitives from @tcrn\/ui-react; do not rebuild local clones/);
+  assert.match(readGroupPage("Proof"), /Requires a downstream product adoption route/);
   assert.match(readGroupPage("Proof"), /Proof matrix/);
   assert.match(readGroupPage("Change Log"), /Local changelog/);
   assert.doesNotMatch(readGroupPage("Welcome"), /data-story-id="component-family-index"/);
@@ -468,4 +483,35 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(readGroupPage("Style Guide"), /data-story-id="tokens-copy-state"/);
   assert.doesNotMatch(combinedHtml, /from ['"]TCRN-AOS|from ['"]TCRN-TMS|product accepted|final mvp accepted|release ready/i);
   assert.doesNotMatch(combinedHtml, />external_proof_required</i);
+});
+
+test("storybook AI consumption contract is machine-readable and no-overclaim", () => {
+  const contract = JSON.parse(readFileSync(join(process.cwd(), "storybook-static", "ai-consumption-contract.json"), "utf8"));
+  assert.equal(contract.contractVersion, "ai_consumption_contract_v1");
+  assert.equal(contract.storyId, "ai-consumption-contract");
+  assert.equal(contract.route, "proof.html#ai-consumption-contract");
+  assert.deepEqual(contract.requiredBeforeProductFrontendImplementation, [
+    "read_ai_consumption_contract",
+    "use_tcrn_i18n_and_copy_state",
+    "use_admitted_brand_asset_or_route_brand_component_admission",
+    "import_package_backed_ds_primitives",
+    "use_design_tokens_and_accessibility_rules",
+    "prove_product_adoption_before_ds_compliance_claim"
+  ]);
+  assert.deepEqual(contract.requiredProof, [
+    "contract_story_readback",
+    "i18n_copy_state_receipt",
+    "brand_surface_receipt",
+    "package_import_receipt",
+    "product_adoption_route_receipt"
+  ]);
+  assert.match(contract.brandSurfaceDisposition, /Storybook-only brand lockups are prototypes/);
+  assert.match(contract.i18nDisposition, /approved locale and copy-state contract/);
+  assert.match(contract.componentConsumptionDisposition, /import package-backed Design System primitives/);
+  assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
+  assert.ok(contract.forbiddenClaims.includes("automatic_component_registration"));
+  assert.ok(contract.forbiddenClaims.includes("automatic_product_adoption"));
+  assert.ok(contract.forbiddenClaims.includes("aos_tms_acceptance"));
+  assert.ok(contract.noOverclaimBoundaries.includes("consumer_product_adoption_separate"));
+  assert.ok(contract.noOverclaimBoundaries.includes("aos_tms_mutation_not_authorized"));
 });

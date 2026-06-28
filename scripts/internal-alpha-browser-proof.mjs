@@ -44,6 +44,7 @@ const requiredStories = [
   { id: "big-list-search-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--big-list-search-patterns" },
   { id: "dashboard-page-templates", group: "Patterns", storybookId: "tcrn-design-system-patterns--dashboard-page-templates" },
   { id: "proof-matrix", group: "Proof", storybookId: "tcrn-design-system-proof--proof-matrix" },
+  { id: "ai-consumption-contract", group: "Proof", storybookId: "tcrn-design-system-proof--ai-consumption-contract" },
   { id: "blocked-actions", group: "Proof", storybookId: "tcrn-design-system-proof--blocked-actions" },
   { id: "overlay-focus", group: "Proof", storybookId: "tcrn-design-system-proof--overlay-focus" },
   { id: "local-changelog", group: "Change Log", storybookId: "tcrn-design-system-change-log--local-changelog" }

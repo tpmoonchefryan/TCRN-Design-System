@@ -26,6 +26,11 @@ export const ProofMatrix: Story = {
   render: () => renderContractStory("proof-matrix")
 };
 
+export const AiConsumptionContract: Story = {
+  name: "AI consumption contract",
+  render: () => renderContractStory("ai-consumption-contract")
+};
+
 export const BlockedActions: Story = {
   name: "Blocked actions",
   render: () => renderContractStory("blocked-actions")
