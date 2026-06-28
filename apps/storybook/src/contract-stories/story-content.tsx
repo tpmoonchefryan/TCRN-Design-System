@@ -838,8 +838,8 @@ const legacyContractStories: ContractStory[] = [
               },
               {
                 control: "Language selector",
-                rule: "Use a globe trigger plus the current locale name in that locale; menu options use native names only.",
-                blocked: "Long bilingual labels such as Simplified Chinese / English in the compact control."
+                rule: "Use a globe trigger plus the current locale name in that locale; menu options use native names only. Close the popup on selection, outside pointer down or click, and Escape; keep aria-expanded accurate and return focus to the trigger after keyboard or selection dismissal.",
+                blocked: "Long bilingual labels, stale open locale menus, or menus that cannot collapse reliably."
               },
               {
                 control: "Search",
@@ -850,6 +850,16 @@ const legacyContractStories: ContractStory[] = [
                 control: "AI contract",
                 rule: "Expose the AI contract through the Proof story and static JSON artifact, not as a top-bar human navigation item.",
                 blocked: "Putting machine-contract JSON links in the primary human toolbar."
+              },
+              {
+                control: "Product SideNav collapse",
+                rule: "Any product or documentation shell that claims SideNav behavior exposes a keyboard-accessible collapse and expand control, persists or route-owns the collapsed state, and proves active location in both states.",
+                blocked: "Static left rails without collapse proof or inaccessible collapsed navigation."
+              },
+              {
+                control: "Product IA and brand",
+                rule: "Product shells use admitted brand assets and show only route-admitted modules as primary navigation or registered module cards.",
+                blocked: "Generic icon/text-only brand substitutes or planned modules presented as registered product IA."
               }
             ]}
           />
@@ -1576,6 +1586,10 @@ const legacyContractStories: ContractStory[] = [
               { rule: "Token usage", evidence: "Use Design System tokens, reduced-motion rules, and accessibility states before custom CSS." },
               { rule: "Light and dark Storybook shell", evidence: "Check both light and dark Storybook shell modes before product frontend work; do not fork behavior, locale copy, readiness copy, or brand assets by theme." },
               { rule: "Storybook shell controls", evidence: "Preserve compact theme, locale, and search controls: single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition." },
+              { rule: "Locale menu behavior", evidence: "Prove close on selection, outside pointer down/click, and Escape; aria-expanded must mirror state and keyboard/selection dismissal must return focus to the trigger." },
+              { rule: "Side navigation collapse", evidence: "Prove keyboard-accessible collapse/expand control, persisted or route-owned collapsed state, active location preservation, and accessible expanded/collapsed states." },
+              { rule: "Registered product IA", evidence: "Do not surface unregistered or planned modules as primary navigation or registered module cards before a route admits them." },
+              { rule: "Browser interaction proof", evidence: "Product adoption proof must click and verify rendered controls; marker-only proof is insufficient." },
               { rule: "Product proof", evidence: "Run product-owned adoption proof before claiming AOS or TMS Design System compliance." }
             ]}
           />

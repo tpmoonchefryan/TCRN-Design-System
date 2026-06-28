@@ -2,7 +2,7 @@ import type { IconName } from "@tcrn/ui-react";
 
 export const navigationComponentRows = [
   { primitive: "TopBar", rule: "Names the product surface and active module without replacing page headings.", boundary: "No tenant, RBAC, or readiness truth." },
-  { primitive: "SideNav", rule: "Owns primary product navigation, grouped sections, stable source order, scroll-aware document navigation, and collapsed navigation state.", boundary: "Current location may scroll into view and highlight, but must not reorder sections." },
+  { primitive: "SideNav", rule: "Owns primary product navigation, grouped sections, stable source order, scroll-aware document navigation, keyboard-accessible collapse and expand control, and persisted or route-owned collapsed navigation state.", boundary: "Current location may scroll into view and highlight, but must not reorder sections, hide active location from assistive tech, or ship without expanded and collapsed proof." },
   { primitive: "NavGroup and NavItem", rule: "Support section hierarchy with selected, focus, hover, disabled, and child item states.", boundary: "Selected styling must scale beyond two levels." },
   { primitive: "SearchInput", rule: "Provides search affordance for fields, filters, documentation shells, and product navigation.", boundary: "Control/Command+K shortcut labels belong only to navigation or shell search with a real focus target and result behavior." },
   { primitive: "Breadcrumb", rule: "Shows location inside a product route or documentation trail.", boundary: "Not a substitute for primary navigation." },

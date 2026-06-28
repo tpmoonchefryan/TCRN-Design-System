@@ -554,6 +554,10 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Foundations"), /Use one circular icon-only button/);
   assert.match(readGroupPage("Foundations"), /one whole-page transition/);
   assert.match(readGroupPage("Foundations"), /current locale name in that locale/);
+  assert.match(readGroupPage("Foundations"), /outside pointer down or click, and Escape/);
+  assert.match(readGroupPage("Foundations"), /return focus to the trigger/);
+  assert.match(readGroupPage("Foundations"), /keyboard-accessible collapse and expand control/);
+  assert.match(readGroupPage("Foundations"), /planned modules presented as registered product IA/);
   assert.match(readGroupPage("Foundations"), /Keep search compact at rest, expand smoothly on focus, and collapse on blur/);
   assert.match(readGroupPage("Foundations"), /not as a top-bar human navigation item/);
   assert.match(readGroupPage("Proof"), /AI consumption contract/);
@@ -563,6 +567,11 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Proof"), /Check both light and dark Storybook shell modes before product frontend work/);
   assert.match(readGroupPage("Proof"), /Storybook shell controls/);
   assert.match(readGroupPage("Proof"), /single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition/);
+  assert.match(readGroupPage("Proof"), /Locale menu behavior/);
+  assert.match(readGroupPage("Proof"), /Side navigation collapse/);
+  assert.match(readGroupPage("Proof"), /Registered product IA/);
+  assert.match(readGroupPage("Proof"), /Browser interaction proof/);
+  assert.match(readGroupPage("Proof"), /marker-only proof is insufficient/);
   assert.match(readGroupPage("Proof"), /Theme modes/);
   assert.match(readGroupPage("Proof"), /Import package-backed Design System primitives from @tcrn\/ui-react; do not rebuild local clones/);
   assert.match(readGroupPage("Proof"), /Requires a downstream product adoption route/);
@@ -609,6 +618,10 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     "use_design_tokens_and_accessibility_rules",
     "verify_light_and_dark_storybook_theme_contract",
     "preserve_compact_storybook_shell_controls",
+    "prove_locale_popup_dismissal_and_focus_return",
+    "prove_side_navigation_collapse_state",
+    "block_unregistered_modules_from_primary_navigation",
+    "prove_browser_interactions_not_static_markers",
     "prove_product_adoption_before_ds_compliance_claim"
   ]);
   assert.deepEqual(contract.requiredProof, [
@@ -618,20 +631,34 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     "package_import_receipt",
     "theme_mode_receipt",
     "storybook_shell_control_receipt",
+    "locale_popup_dismissal_receipt",
+    "side_navigation_collapse_receipt",
+    "registered_navigation_receipt",
+    "browser_interaction_receipt",
     "product_adoption_route_receipt"
   ]);
   assert.deepEqual(contract.supportedThemeModes, ["light", "dark"]);
   assert.match(contract.brandSurfaceDisposition, /Storybook-only brand lockups are prototypes/);
+  assert.match(contract.brandSurfaceDisposition, /Generic icons or text-only substitutes are not brand marks/);
   assert.match(contract.i18nDisposition, /approved locale and copy-state contract/);
   assert.match(contract.componentConsumptionDisposition, /import package-backed Design System primitives/);
+  assert.match(contract.componentConsumptionDisposition, /Product-owned behavior glue must be route-scoped and proven/);
   assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
   assert.match(contract.themeModeDisposition, /light and dark Storybook shell modes/);
   assert.match(contract.storybookShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
   assert.match(contract.storybookShellControlContract.themeTransition, /one whole-page transition/);
   assert.match(contract.storybookShellControlContract.themeTransition, /must not darken as independent sections/);
   assert.match(contract.storybookShellControlContract.localeSelector, /native names only/);
+  assert.match(contract.storybookShellControlContract.localeSelector, /outside pointer down or click, and Escape/);
+  assert.match(contract.storybookShellControlContract.localeSelector, /focus returns to the trigger/);
   assert.match(contract.storybookShellControlContract.search, /compact at rest/);
   assert.match(contract.storybookShellControlContract.aiContractAccess, /not in the human top toolbar/);
+  assert.match(contract.productShellHardeningRules.sideNavigation, /keyboard-accessible collapse and expand control/);
+  assert.match(contract.productShellHardeningRules.sideNavigation, /prove both expanded and collapsed states/);
+  assert.match(contract.productShellHardeningRules.brandSurface, /generic icons and text-only substitutes are not accepted brand marks/);
+  assert.match(contract.productShellHardeningRules.registeredNavigation, /must not surface unregistered or planned modules/);
+  assert.match(contract.productShellHardeningRules.primitiveConsumption, /registered package-backed primitives from @tcrn\/ui-react/);
+  assert.match(contract.productShellHardeningRules.browserProof, /rather than relying only on static marker checks/);
   assert.ok(contract.forbiddenClaims.includes("automatic_component_registration"));
   assert.ok(contract.forbiddenClaims.includes("automatic_product_adoption"));
   assert.ok(contract.forbiddenClaims.includes("aos_tms_acceptance"));
