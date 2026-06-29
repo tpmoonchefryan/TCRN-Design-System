@@ -53,9 +53,11 @@ AI and product frontend agents must read the Storybook AI contract before implem
 - AI-first plain-text entry: [llms.txt](https://tcrn-design-system-storybook.vercel.app/llms.txt)
 - Story route: `proof.html#ai-consumption-contract`
 - HTML head discovery: every static Storybook page points to the JSON contract and `llms.txt`.
-- Required AI readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries.
+- Required AI readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, coveredStorybookSections, requiredProof, noOverclaimBoundaries.
 
-The contract requires package-backed Design System imports, approved locale/copy-state handling, admitted brand assets or a brand admission route, token/accessibility usage, and explicit light/dark shell proof before downstream compliance claims.
+The contract requires package-backed Design System imports, approved locale/copy-state handling, admitted brand assets or a brand admission route, token/accessibility usage, and explicit light/dark shell proof before downstream compliance claims. AI consumption must cover every Storybook section: Welcome, Style Guide, Foundations, Components, Patterns, Proof, and Change Log.
+
+Design System compliance means the product uses the same Storybook visual instance, not only the same package or a boundary marker. Product proof must compare package version, exported component, variant/props/slots, computed visual metrics, motion/effect behavior, reduced-motion fallback, theme/locale state, mobile reflow, and information hierarchy against the relevant Storybook chapters.
 
 ## Supported Locales
 

@@ -22,7 +22,8 @@
 - 中文 Storybook: [zh-CN](https://tcrn-design-system-storybook.vercel.app/?locale=zh-CN)
 - 深色外壳: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
 - AI 契约: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
-- AI 首读入口: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) 与 HTML head discovery；回传字段必须包括 contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries。
+- AI 首读入口: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) 与 HTML head discovery；回传字段必须包括 contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, coveredStorybookSections, requiredProof, noOverclaimBoundaries。
+- AI 消费必须覆盖所有 Storybook 章节: Welcome, Style Guide, Foundations, Components, Patterns, Proof, Change Log。符合 Design System 不只是同包或 boundary marker；必须证明同一 Storybook 视觉实例，包括包版本、导出组件、variant/props/slots、实际渲染指标、动效、降级动效、主题/语言、移动重排和信息层级。
 
 ## 包与边界
 

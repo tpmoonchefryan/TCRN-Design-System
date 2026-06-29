@@ -41,6 +41,7 @@ const expectedAiReadbackFields = [
   "route",
   "readAt",
   "coveredRules",
+  "coveredStorybookSections",
   "requiredProof",
   "noOverclaimBoundaries"
 ];
@@ -86,6 +87,45 @@ const expectedContractStoryIds = [
   "blocked-actions",
   "overlay-focus",
   "local-changelog"
+];
+
+const expectedAiRequiredBeforeProductFrontendImplementation = [
+  "read_ai_consumption_contract",
+  "read_every_required_storybook_section",
+  "prove_same_storybook_visual_instance_not_only_package_import",
+  "use_tcrn_i18n_and_copy_state",
+  "use_admitted_brand_asset_or_route_brand_component_admission",
+  "use_registered_brand_lockup_components_for_product_suffixes",
+  "reject_unregistered_or_deprecated_brand_assets",
+  "import_package_backed_ds_primitives",
+  "use_design_tokens_and_accessibility_rules",
+  "verify_light_and_dark_storybook_theme_contract",
+  "verify_motion_effect_parity_and_reduced_motion",
+  "preserve_compact_storybook_shell_controls",
+  "use_product_shell_semantic_control_api",
+  "prove_locale_popup_dismissal_and_focus_return",
+  "prove_side_navigation_collapse_state",
+  "block_unregistered_modules_from_primary_navigation",
+  "prove_browser_interactions_not_static_markers",
+  "prove_product_adoption_before_ds_compliance_claim"
+];
+
+const expectedAiRequiredProof = [
+  "contract_story_readback",
+  "i18n_copy_state_receipt",
+  "brand_surface_receipt",
+  "forbidden_brand_asset_absence_receipt",
+  "package_import_receipt",
+  "theme_mode_receipt",
+  "storybook_shell_control_receipt",
+  "locale_popup_dismissal_receipt",
+  "side_navigation_collapse_receipt",
+  "registered_navigation_receipt",
+  "browser_interaction_receipt",
+  "storybook_section_coverage_receipt",
+  "visual_equivalence_receipt",
+  "motion_effect_receipt",
+  "product_adoption_route_receipt"
 ];
 
 const expectedRootAdapterTitles = [
@@ -614,6 +654,12 @@ test("static contract story surface is retained and synthetic", () => {
 test("storybook AI consumption contract is machine-readable and no-overclaim", () => {
   const contractSource = readFileSync(join(process.cwd(), "storybook-static", "ai-consumption-contract.json"), "utf8");
   const contract = JSON.parse(contractSource);
+  const requiredStorybookSectionChecklist = contract.requiredStorybookSectionChecklist as Array<{
+    section: string;
+    route: string;
+    requiredStories: string[];
+    consumerChecks: string[];
+  }>;
   const { contractPayloadDigest, ...baseContract } = contract;
   assert.equal(contract.contractVersion, "ai_consumption_contract_v1");
   assert.equal(contract.storyId, "ai-consumption-contract");
@@ -629,37 +675,23 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.deepEqual(contract.requiredReadbackFields, expectedAiReadbackFields);
   assert.equal(contract.discovery.htmlHead.alternateJson.dataMarker, "data-tcrn-ai-consumption-contract=\"true\"");
   assert.equal(contract.discovery.htmlHead.meta.required, "tcrn-ai-consumption-contract-required");
-  assert.deepEqual(contract.requiredBeforeProductFrontendImplementation, [
-    "read_ai_consumption_contract",
-    "use_tcrn_i18n_and_copy_state",
-    "use_admitted_brand_asset_or_route_brand_component_admission",
-    "use_registered_brand_lockup_components_for_product_suffixes",
-    "reject_unregistered_or_deprecated_brand_assets",
-    "import_package_backed_ds_primitives",
-    "use_design_tokens_and_accessibility_rules",
-    "verify_light_and_dark_storybook_theme_contract",
-    "preserve_compact_storybook_shell_controls",
-    "use_product_shell_semantic_control_api",
-    "prove_locale_popup_dismissal_and_focus_return",
-    "prove_side_navigation_collapse_state",
-    "block_unregistered_modules_from_primary_navigation",
-    "prove_browser_interactions_not_static_markers",
-    "prove_product_adoption_before_ds_compliance_claim"
+  assert.deepEqual(contract.requiredBeforeProductFrontendImplementation, expectedAiRequiredBeforeProductFrontendImplementation);
+  assert.deepEqual(contract.requiredProof, expectedAiRequiredProof);
+  assert.deepEqual(requiredStorybookSectionChecklist.map((section) => section.section), expectedContractStoryGroups);
+  assert.deepEqual(requiredStorybookSectionChecklist.flatMap((section) => section.requiredStories), expectedContractStoryIds);
+  assert.deepEqual(contract.visualEquivalenceLevels, [
+    "same_package_version",
+    "same_exported_component",
+    "same_variant_props_slots",
+    "same_storybook_visual_instance"
   ]);
-  assert.deepEqual(contract.requiredProof, [
-    "contract_story_readback",
-    "i18n_copy_state_receipt",
-    "brand_surface_receipt",
-    "forbidden_brand_asset_absence_receipt",
-    "package_import_receipt",
-    "theme_mode_receipt",
-    "storybook_shell_control_receipt",
-    "locale_popup_dismissal_receipt",
-    "side_navigation_collapse_receipt",
-    "registered_navigation_receipt",
-    "browser_interaction_receipt",
-    "product_adoption_route_receipt"
-  ]);
+  assert.match(contract.storybookVisualParityProof, /same Storybook visual instance/);
+  assert.match(contract.storybookVisualParityProof, /computed size, radius, padding, border, background, typography/);
+  assert.match(contract.storybookVisualParityProof, /motion duration\/easing\/opacity\/transform/);
+  assert.match(contract.storybookVisualParityProof, /mobile reflow, and information hierarchy/);
+  assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Style Guide")?.consumerChecks.join(" ") ?? "", /motion\/effect parity/);
+  assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Components")?.consumerChecks.join(" ") ?? "", /same Storybook visual instance/);
+  assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Patterns")?.consumerChecks.join(" ") ?? "", /information hierarchy, density, mobile reflow/);
   assert.deepEqual(contract.supportedThemeModes, ["light", "dark"]);
   assert.match(contract.brandSurfaceDisposition, /TcrnBrandMark, ProductLockup, and ShellBrandLockup are registered @tcrn\/ui-react exports/);
   assert.match(contract.brandSurfaceDisposition, /Deprecated or unregistered AOS wordmark image assets are forbidden/);
@@ -712,7 +744,12 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   const llms = readFileSync(join(process.cwd(), "storybook-static", "llms.txt"), "utf8");
   assert.match(llms, /Agents must read ai-consumption-contract\.json before implementation work\./);
   assert.match(llms, new RegExp(contractPayloadDigest));
-  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries/);
+  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
+  assert.match(llms, /Required Storybook sections:/);
+  assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
+  assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, button-spec-usage, field-spec-usage, navigation-shell-spec, dialog-spec-usage, table-work-index-spec/);
+  assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
   const robots = readFileSync(join(process.cwd(), "storybook-static", "robots.txt"), "utf8");
   assert.match(robots, /User-agent: \*/);
@@ -729,7 +766,9 @@ test("GitHub README exposes the Storybook AI contract without publication overcl
   assert.match(readme, /https:\/\/tcrn-design-system-storybook\.vercel\.app\/ai-consumption-contract\.json/);
   assert.match(readme, /llms\.txt/);
   assert.match(readme, /HTML head discovery/);
-  assert.match(readme, /contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries/);
+  assert.match(readme, /contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, coveredStorybookSections, requiredProof, noOverclaimBoundaries/);
+  assert.match(readme, /must cover every Storybook section/);
+  assert.match(readme, /same Storybook visual instance/);
   assert.match(readme, /Supported Locales/);
   assert.match(readme, /`zh-CN`/);
   assert.match(readme, /`ja`/);

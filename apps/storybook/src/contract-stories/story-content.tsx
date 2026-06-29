@@ -1634,7 +1634,10 @@ const legacyContractStories: ContractStory[] = [
               { rule: "Locale and copy-state", evidence: "All visible product copy uses approved i18n and copy-state contracts." },
               { rule: "Brand and logo", evidence: "Use admitted brand assets or route brand component admission before product use." },
               { rule: "Component imports", evidence: "Import package-backed Design System primitives from @tcrn/ui-react; do not rebuild local clones." },
+              { rule: "Storybook section coverage", evidence: "Read every required Storybook section in the AI contract before implementation; do not treat one component page as the whole Design System." },
+              { rule: "Visual equivalence", evidence: "Prove same package, same export, same variant/props/slots, and same Storybook visual instance; package import or boundary markers alone are insufficient." },
               { rule: "Token usage", evidence: "Use Design System tokens, reduced-motion rules, and accessibility states before custom CSS." },
+              { rule: "Motion and effects", evidence: "Compare duration, easing, opacity, transform, focus treatment, whole-page theme transition, drawer/menu/search motion, and reduced-motion fallback." },
               { rule: "Light and dark Storybook shell", evidence: "Check both light and dark Storybook shell modes before product frontend work; do not fork behavior, locale copy, readiness copy, or brand assets by theme." },
               { rule: "Storybook shell controls", evidence: "Preserve compact theme, locale, and search controls: single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition." },
               { rule: "Locale menu behavior", evidence: "Prove close on selection, outside pointer down/click, and Escape; aria-expanded must mirror state and keyboard/selection dismissal must return focus to the trigger." },
@@ -1644,6 +1647,37 @@ const legacyContractStories: ContractStory[] = [
               { rule: "Product proof", evidence: "Run product-owned adoption proof before claiming AOS or TMS Design System compliance." }
             ]}
           />
+        </ReadbackPanel>
+        <ReadbackPanel title="Required Storybook chapters">
+          <TableShell
+            columns={[
+              { key: "section", label: "Section" },
+              { key: "route", label: "Route" },
+              { key: "stories", label: "Stories" },
+              { key: "checks", label: "Checks" }
+            ]}
+            rows={aiConsumptionContract.requiredStorybookSectionChecklist.map((section) => ({
+              section: section.section,
+              route: section.route,
+              stories: section.requiredStories.join(", "),
+              checks: section.consumerChecks.join("; ")
+            }))}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="AOS failure prevention">
+          <TableShell
+            columns={[
+              { key: "layer", label: "Layer" },
+              { key: "proof", label: "Required proof" }
+            ]}
+            rows={[
+              { layer: "Package", proof: "Same @tcrn package/version basis as the consumed Storybook contract." },
+              { layer: "Export", proof: "Same registered exported component, not a local clone or generic substitute." },
+              { layer: "Variant / props / slots", proof: "Same registered size, density, icon/text shape, callbacks, state ownership, and slot composition." },
+              { layer: "Storybook visual instance", proof: "Same rendered dimensions, radius, padding, border, background, typography, state styling, motion, theme, locale, mobile reflow, and information hierarchy." }
+            ]}
+          />
+          <Text>{aiConsumptionContract.storybookVisualParityProof}</Text>
         </ReadbackPanel>
         <ReadbackPanel title="Machine-readable artifact">
           <KeyValueList

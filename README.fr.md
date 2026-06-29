@@ -22,7 +22,8 @@ Ce dépôt est l'entrée source-control du Design System TCRN. Les implémenteur
 - Storybook français: [`?locale=fr`](https://tcrn-design-system-storybook.vercel.app/?locale=fr)
 - Enveloppe sombre: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
 - Contrat IA: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
-- AI first-read entry: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) et HTML head discovery; les readback fields doivent inclure contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries.
+- AI first-read entry: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) et HTML head discovery; les readback fields doivent inclure contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, coveredStorybookSections, requiredProof, noOverclaimBoundaries.
+- AI consumption must cover every Storybook section: Welcome, Style Guide, Foundations, Components, Patterns, Proof, and Change Log. Design System compliance means the same Storybook visual instance, not only the same package or a boundary marker; proof must cover package version, exported component, variant/props/slots, rendered metrics, motion/effects, reduced motion, theme/locale, mobile reflow, and information hierarchy.
 
 ## Packages et limites
 

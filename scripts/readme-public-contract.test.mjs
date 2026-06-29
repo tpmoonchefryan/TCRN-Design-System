@@ -90,6 +90,7 @@ function makeReceipt() {
     "route",
     "readAt",
     "coveredRules",
+    "coveredStorybookSections",
     "requiredProof",
     "noOverclaimBoundaries"
   ];

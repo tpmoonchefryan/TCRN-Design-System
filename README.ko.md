@@ -22,7 +22,8 @@
 - 한국어 Storybook: [`?locale=ko`](https://tcrn-design-system-storybook.vercel.app/?locale=ko)
 - 어두운 셸: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
 - AI 계약: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
-- AI first-read entry: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) 및 HTML head discovery. readback fields는 contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries를 포함해야 합니다.
+- AI first-read entry: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) 및 HTML head discovery. readback fields는 contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, coveredStorybookSections, requiredProof, noOverclaimBoundaries를 포함해야 합니다.
+- AI consumption must cover every Storybook section: Welcome, Style Guide, Foundations, Components, Patterns, Proof, and Change Log. Design System compliance means the same Storybook visual instance, not only the same package or a boundary marker; proof must cover package version, exported component, variant/props/slots, rendered metrics, motion/effects, reduced motion, theme/locale, mobile reflow, and information hierarchy.
 
 ## 패키지와 경계
 

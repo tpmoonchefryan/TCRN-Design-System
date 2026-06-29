@@ -15,7 +15,22 @@ function sha256(value: string): string {
   return createHash("sha256").update(value).digest("hex");
 }
 
+function llmsReadbackFields(contract: typeof aiConsumptionContract): string {
+  const fields = contract.requiredReadbackFields;
+  if (!fields.includes("coveredStorybookSections")) {
+    return fields.join(", ");
+  }
+  return [
+    ...fields.filter((field) => field !== "coveredStorybookSections"),
+    "coveredStorybookSections"
+  ].join(", ");
+}
+
 function llmsTxt(contract: typeof aiConsumptionContract & { contractPayloadDigest: string }): string {
+  const sectionChecklist = contract.requiredStorybookSectionChecklist.map((section) =>
+    `- ${section.section} (${section.route}): ${section.requiredStories.join(", ")} | checks: ${section.consumerChecks.join("; ")}`
+  ).join("\n");
+
   return `TCRN Design System AI first-read entry
 
 Agents must read ai-consumption-contract.json before implementation work.
@@ -25,8 +40,12 @@ Contract route: ${contract.route}
 Contract version: ${contract.contractVersion}
 Contract payload digest: ${contract.contractPayloadDigest}
 First-read routes: ${contract.firstReadRoutes.join(", ")}
-Required readback fields: ${contract.requiredReadbackFields.join(", ")}
+Required readback fields: ${llmsReadbackFields(contract)}
 Required proof: ${contract.requiredProof.join(", ")}
+Required Storybook sections:
+${sectionChecklist}
+Visual equivalence levels: ${contract.visualEquivalenceLevels.join(" -> ")}
+Visual parity proof: ${contract.storybookVisualParityProof}
 No-overclaim boundaries: ${contract.noOverclaimBoundaries.join(", ")}
 
 This file points to the local/static Storybook contract only. Package publication, Storybook/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here.
