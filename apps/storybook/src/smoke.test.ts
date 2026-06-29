@@ -72,6 +72,7 @@ const expectedContractStoryIds = [
   "button-spec-usage",
   "field-spec-usage",
   "navigation-shell-spec",
+  "aos-frontend-shell-slice",
   "dialog-spec-usage",
   "table-work-index-spec",
   "forms-patterns",
@@ -170,7 +171,7 @@ test("static contract story surface is retained and synthetic", () => {
   const pages = contractStoryGroups.map((group) => ({ group, html: readGroupPage(group) }));
   const combinedHtml = pages.map((page) => page.html).join("\n");
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
-  assert.equal(contractStories.length, 36);
+  assert.equal(contractStories.length, 37);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
   assert.deepEqual(
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
@@ -690,6 +691,18 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.storybookVisualParityProof, /computed size, radius, padding, border, background, typography/);
   assert.match(contract.storybookVisualParityProof, /motion duration\/easing\/opacity\/transform/);
   assert.match(contract.storybookVisualParityProof, /mobile reflow, and information hierarchy/);
+  assert.equal(contract.visualInstanceOracles?.[0]?.id, "aos-frontend-shell-slice");
+  assert.equal(contract.visualInstanceOracles?.[0]?.route, "components.html#aos-frontend-shell-slice");
+  assert.deepEqual(contract.visualInstanceOracles?.[0]?.primaryIa, ["Cockpit", "Work"]);
+  assert.deepEqual(contract.visualInstanceOracles?.[0]?.requiredVariants, [
+    "desktop-light-expanded-cockpit-search-results",
+    "desktop-dark-expanded-cockpit",
+    "desktop-light-collapsed-work",
+    "mobile-dark-work-stacked",
+    "reduced-motion"
+  ]);
+  assert.match(contract.visualInstanceOracles?.[0]?.packageMapping?.join(" ") ?? "", /ProductShell ProductShellSearch useProductShellController/);
+  assert.match(contract.visualInstanceOracles?.[0]?.negativeCriteria?.join(" ") ?? "", /no raw API\/debug payload as primary UX/);
   assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Style Guide")?.consumerChecks.join(" ") ?? "", /motion\/effect parity/);
   assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Components")?.consumerChecks.join(" ") ?? "", /same Storybook visual instance/);
   assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Patterns")?.consumerChecks.join(" ") ?? "", /information hierarchy, density, mobile reflow/);
@@ -749,7 +762,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Required Storybook sections:/);
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, button-spec-usage, field-spec-usage, navigation-shell-spec, dialog-spec-usage, table-work-index-spec/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, button-spec-usage, field-spec-usage, navigation-shell-spec, aos-frontend-shell-slice, dialog-spec-usage, table-work-index-spec/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
   const robots = readFileSync(join(process.cwd(), "storybook-static", "robots.txt"), "utf8");

@@ -33,6 +33,7 @@ const requiredStories = [
   { id: "button-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--button-spec-usage" },
   { id: "field-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--field-spec-usage" },
   { id: "navigation-shell-spec", group: "Components", storybookId: "tcrn-design-system-components--navigation-shell-spec" },
+  { id: "aos-frontend-shell-slice", group: "Components", storybookId: "tcrn-design-system-components--aos-frontend-shell-slice" },
   { id: "dialog-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--dialog-spec-usage" },
   { id: "table-work-index-spec", group: "Components", storybookId: "tcrn-design-system-components--table-work-index-spec" },
   { id: "forms-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--forms-patterns" },

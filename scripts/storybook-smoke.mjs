@@ -34,6 +34,7 @@ const requiredStories = [
   { id: "button-spec-usage", group: "Components" },
   { id: "field-spec-usage", group: "Components" },
   { id: "navigation-shell-spec", group: "Components" },
+  { id: "aos-frontend-shell-slice", group: "Components" },
   { id: "dialog-spec-usage", group: "Components" },
   { id: "table-work-index-spec", group: "Components" },
   { id: "forms-patterns", group: "Patterns" },
@@ -61,6 +62,7 @@ const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "ut
 const staticRoot = "apps/storybook/storybook-static";
 const productShellComparatorContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
+  storyId: "navigation-shell-spec",
   page: "components.html#navigation-shell-spec",
   scopedSelector: ".tcrn-product-shell-contract-proof .tcrn-product-shell",
   componentSelectors: {
@@ -97,6 +99,64 @@ const productShellComparatorContract = {
     themeWashPseudo: "tcrn-product-shell-theme-wash",
     reducedMotionFallback: "transition-none"
   }
+};
+const aosFrontendShellVisualInstanceContract = {
+  styleSource: "@tcrn/ui-react/tcrnComponentCss",
+  storyId: "aos-frontend-shell-slice",
+  page: "components.html#aos-frontend-shell-slice",
+  scopedSelector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"]",
+  componentSelectors: productShellComparatorContract.componentSelectors,
+  expectedControlMetrics: productShellComparatorContract.expectedControlMetrics,
+  motionProof: productShellComparatorContract.motionProof,
+  visualInstanceName: "AosFrontendShellSliceVisualInstance",
+  packageMapping: [
+    "ProductShell",
+    "ProductShellSearch",
+    "useProductShellController",
+    "EnvironmentBanner",
+    "InlineAlert",
+    "ReadbackPanel",
+    "KeyValueList",
+    "EvidenceStrip",
+    "TableShell",
+    "StatusBadge",
+    "DisclosurePanel"
+  ],
+  variants: [
+    "desktop-light-expanded-cockpit-search-results",
+    "desktop-dark-expanded-cockpit",
+    "desktop-light-collapsed-work",
+    "mobile-dark-work-stacked",
+    "reduced-motion"
+  ],
+  slots: ["brand lockup", "attached side navigation", "topbar", "search", "content", "secondary disclosure"],
+  requiredContentSelectors: {
+    dummyCockpit: "[data-aos-dummy-cockpit=\"true\"]",
+    workEntry: "[data-aos-work-module-entry=\"jira-like\"]",
+    rawSecondaryDisclosure: "[data-raw-json-disclosure=\"secondary\"]",
+    registeredBoundary: "[data-aos-registered-module-boundary=\"cockpit-work-only\"]",
+    notAccepted: "[data-product-acceptance=\"not-claimed\"]",
+    notReleaseReady: "[data-release-readiness=\"not-claimed\"]",
+    noLiveDispatch: "[data-live-dispatch=\"not-enabled\"]"
+  },
+  forbiddenText: [
+    "Conference",
+    "Dependency",
+    "Resource",
+    "Settings / Admin",
+    "Product accepted",
+    "Release ready",
+    "Live dispatch enabled",
+    "tcrn-aos-wordmark"
+  ],
+  negativeCriteria: [
+    "no Storybook-only prototype classes",
+    "no product-local visible CSS/effect system",
+    "no deprecated AOS wordmark assets",
+    "no unregistered primary IA",
+    "no raw API/debug payload as primary UX",
+    "no owner/product/release/live-dispatch readiness claim"
+  ]
 };
 const required = [
   "data-doc-shell=\"online-docs\"",
@@ -148,6 +208,12 @@ const required = [
   "data-contract-story-id=\"brand-identity\"",
   "data-contract-story-id=\"color-palette\"",
   "data-contract-story-id=\"dashboard-page-templates\"",
+  "data-contract-story-id=\"aos-frontend-shell-slice\"",
+  "data-storybook-visual-instance=\"aos-frontend-shell-slice\"",
+  "data-visual-instance-name=\"AosFrontendShellSliceVisualInstance\"",
+  "data-visual-instance-disposition=\"storybook_visual_instance_oracle_admitted_for_aos\"",
+  "data-visual-instance-primary-ia=\"cockpit-work-only\"",
+  "data-aos-visual-instance-oracle=\"true\"",
   "data-contract-story-id=\"ai-consumption-contract\"",
   "data-ai-consumption-contract-story=\"true\"",
   "ai-consumption-contract.json",
@@ -213,6 +279,21 @@ for (const text of [
 const missing = required.filter((text) => !combinedHtml.includes(text));
 if (contract.mustReadFirst !== true) {
   missing.push("contract.mustReadFirst:true");
+}
+const aosVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "aos-frontend-shell-slice");
+if (!aosVisualInstanceOracle) {
+  missing.push("contract.visualInstanceOracles:aos-frontend-shell-slice");
+} else {
+  for (const requiredField of ["route", "packageMapping", "primaryIa", "requiredVariants", "negativeCriteria"]) {
+    if (aosVisualInstanceOracle[requiredField] === undefined) {
+      missing.push(`contract.visualInstanceOracles.aos.${requiredField}`);
+    }
+  }
+  for (const packageName of aosFrontendShellVisualInstanceContract.packageMapping) {
+    if (!aosVisualInstanceOracle.packageMapping?.includes(packageName)) {
+      missing.push(`contract.visualInstanceOracles.aos.packageMapping:${packageName}`);
+    }
+  }
 }
 for (const route of ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"]) {
   if (!contract.firstReadRoutes?.includes(route)) {
@@ -431,7 +512,7 @@ function transitionIncludes(metric, property) {
   return properties.includes(property) || properties.includes("all");
 }
 
-async function collectProductShellMetrics(origin, viewport, reducedMotion) {
+async function collectProductShellMetrics(origin, viewport, reducedMotion, contract = productShellComparatorContract) {
   const browser = await chromium.launch({
     headless: true,
     args: [
@@ -456,7 +537,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion) {
       consoleMessages.push(`${message.type()}:${message.text()}`);
     }
   });
-  await page.goto(`${origin}/components.html#navigation-shell-spec`, { waitUntil: "networkidle" });
+  await page.goto(`${origin}/${contract.page}`, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts?.ready);
   const metrics = await page.evaluate(({ contract }) => {
     const shell = document.querySelector(contract.scopedSelector);
@@ -492,17 +573,23 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion) {
         animationName: style.animationName
       };
     };
-    for (const [name, selector] of Object.entries(contract.componentSelectors)) {
-      measure(name, selector);
-    }
-    const shellRect = shell.getBoundingClientRect();
+	    for (const [name, selector] of Object.entries(contract.componentSelectors)) {
+	      measure(name, selector);
+	    }
+	    const requiredContent = {};
+	    for (const [name, selector] of Object.entries(contract.requiredContentSelectors ?? {})) {
+	      requiredContent[name] = shell.matches(selector) || Boolean(shell.querySelector(selector));
+	    }
+	    const shellText = shell.textContent ?? "";
+	    const forbiddenTextHits = (contract.forbiddenText ?? []).filter((text) => shellText.includes(text));
+	    const shellRect = shell.getBoundingClientRect();
     const shellStyle = getComputedStyle(shell);
     shell.setAttribute("data-theme-switching", "true");
     const themeWashStyle = getComputedStyle(shell, "::after");
     const documentElement = document.documentElement;
     return {
       missingShell: false,
-      shell: {
+	      shell: {
         width: shellRect.width,
         height: shellRect.height,
         gridTemplateColumns: shellStyle.gridTemplateColumns,
@@ -513,22 +600,24 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion) {
         themeWashAnimationName: themeWashStyle.animationName,
         themeWashAnimationDuration: themeWashStyle.animationDuration,
         sourceMarker: document.querySelector("style[data-tcrn-component-style-source=\"@tcrn/ui-react\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
-      },
-      measured,
-      viewport: { width: window.innerWidth, height: window.innerHeight, scrollWidth: documentElement.scrollWidth }
-    };
-  }, { contract: productShellComparatorContract });
+	      },
+	      measured,
+	      requiredContent,
+	      forbiddenTextHits,
+	      viewport: { width: window.innerWidth, height: window.innerHeight, scrollWidth: documentElement.scrollWidth }
+	    };
+	  }, { contract });
   await browser.close();
   return { ...metrics, pageErrors, consoleMessages, reducedMotion, viewport };
 }
 
-async function runProductShellComparatorProof() {
+async function runProductShellComparatorProof(contract = productShellComparatorContract) {
   const failures = [];
   const { server, origin } = await startStaticServer(staticRoot);
   try {
-    const desktop = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "no-preference");
-    const reduced = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "reduce");
-    const mobile = await collectProductShellMetrics(origin, { width: 390, height: 844 }, "no-preference");
+	    const desktop = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "no-preference", contract);
+	    const reduced = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "reduce", contract);
+	    const mobile = await collectProductShellMetrics(origin, { width: 390, height: 844 }, "no-preference", contract);
     for (const [mode, proof] of Object.entries({ desktop, reduced, mobile })) {
       if (proof.missingShell) failures.push(`${mode}:missing-product-shell-comparator`);
       for (const error of proof.pageErrors ?? []) failures.push(`${mode}:pageerror:${error}`);
@@ -538,7 +627,7 @@ async function runProductShellComparatorProof() {
       if (desktop.shell.sourceMarker !== "package-backed") {
         failures.push("desktop:missing-package-backed-style-marker");
       }
-      for (const [name, expected] of Object.entries(productShellComparatorContract.expectedControlMetrics)) {
+	      for (const [name, expected] of Object.entries(contract.expectedControlMetrics)) {
         const metric = desktop.measured[name];
         if (!metric || metric.missing) {
           failures.push(`${name}:missing`);
@@ -546,19 +635,25 @@ async function runProductShellComparatorProof() {
           validateMetric({ failures, name, metric, expected });
         }
       }
-      if (!transitionIncludes(desktop.shell, productShellComparatorContract.motionProof.productShellTransition)) {
-        failures.push(`product-shell-transition:${desktop.shell.transitionProperty}`);
-      }
-      if (!transitionIncludes(desktop.measured.searchWrapper, productShellComparatorContract.motionProof.searchTransition)) {
-        failures.push(`search-transition:${desktop.measured.searchWrapper.transitionProperty}`);
-      }
-      if (desktop.shell.themeWashAnimationName !== productShellComparatorContract.motionProof.themeWashPseudo) {
-        failures.push(`theme-wash-animation:${desktop.shell.themeWashAnimationName}`);
-      }
-      if (desktop.measured.searchResults?.display === "none") {
-        failures.push("search-results-not-visible-for-expanded-proof");
-      }
-    }
+	      if (!transitionIncludes(desktop.shell, contract.motionProof.productShellTransition)) {
+	        failures.push(`product-shell-transition:${desktop.shell.transitionProperty}`);
+	      }
+	      if (!transitionIncludes(desktop.measured.searchWrapper, contract.motionProof.searchTransition)) {
+	        failures.push(`search-transition:${desktop.measured.searchWrapper.transitionProperty}`);
+	      }
+	      if (desktop.shell.themeWashAnimationName !== contract.motionProof.themeWashPseudo) {
+	        failures.push(`theme-wash-animation:${desktop.shell.themeWashAnimationName}`);
+	      }
+	      if (desktop.measured.searchResults?.display === "none") {
+	        failures.push("search-results-not-visible-for-expanded-proof");
+	      }
+	      for (const [name, present] of Object.entries(desktop.requiredContent ?? {})) {
+	        if (!present) failures.push(`visual-instance-content:${name}`);
+	      }
+	      for (const hit of desktop.forbiddenTextHits ?? []) {
+	        failures.push(`visual-instance-forbidden-text:${hit}`);
+	      }
+	    }
     if (!reduced.missingShell) {
       if (reduced.shell.transitionProperty !== "none") {
         failures.push(`reduced-motion-product-shell-transition:${reduced.shell.transitionProperty}`);
@@ -581,11 +676,11 @@ async function runProductShellComparatorProof() {
         failures.push(`mobile-content-width:${mobile.measured.contentRegion.width}`);
       }
     }
-    return {
-      ok: failures.length === 0,
-      failures,
-      contract: productShellComparatorContract,
-      readbacks: {
+	    return {
+	      ok: failures.length === 0,
+	      failures,
+	      contract,
+	      readbacks: {
         desktop,
         reducedMotion: reduced,
         mobile
@@ -603,18 +698,25 @@ async function main() {
     failures: [`product-shell-comparator-proof-error:${error instanceof Error ? error.message : String(error)}`],
     contract: productShellComparatorContract
   }));
+  const designSystemVisualInstanceParityReadback = await runProductShellComparatorProof(aosFrontendShellVisualInstanceContract).catch((error) => ({
+    ok: false,
+    failures: [`aos-frontend-shell-visual-instance-proof-error:${error instanceof Error ? error.message : String(error)}`],
+    contract: aosFrontendShellVisualInstanceContract
+  }));
   const ok = missing.length === 0
     && forbiddenPositiveHits.length === 0
     && storybookPreviewExists
-    && productShellComparatorProof.ok;
+    && productShellComparatorProof.ok
+    && designSystemVisualInstanceParityReadback.ok;
   console.log(JSON.stringify({
     ok,
     missing,
     forbiddenPositiveHits,
     storybookPreviewExists,
     pages: pagesByGroup,
-    productShellComparatorProof
-  }, null, 2));
+	    productShellComparatorProof,
+	    designSystemVisualInstanceParityReadback
+	  }, null, 2));
   if (!ok) {
     process.exit(1);
   }

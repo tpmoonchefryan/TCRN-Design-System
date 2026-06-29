@@ -1,10 +1,14 @@
 {
   "ok": true,
-  "scannedFiles": 163,
+  "scannedFiles": 164,
   "skippedFiles": [],
   "binaryVisualReceiptExclusions": [
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-ai-consumption-contract.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-frontend-shell-slice.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -184,6 +188,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-frontend-shell-slice.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-big-list-search-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -353,6 +361,10 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-ai-consumption-contract.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-frontend-shell-slice.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -930,6 +942,20 @@
       "rule": "positive-overclaim",
       "matchSha256": "982e17d1ecdad7cabe0faf1752196d88ef99e7119bb62c73484dd160ee5cd097",
       "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/storybook-smoke.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "3266531f638d8ad1bae8dd4266eb87b25b8a6f577374e09992279e00bcaf4f46",
+      "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "scripts/storybook-smoke.mjs",
+      "rule": "positive-overclaim",
+      "matchSha256": "c3b5b2409da920d50e0b651b38c7711440be80a3425456f4b54519cc8cc1afb9",
+      "matchLength": 13,
       "matchDisposition": "redacted_positive_overclaim_phrase"
     }
   ],

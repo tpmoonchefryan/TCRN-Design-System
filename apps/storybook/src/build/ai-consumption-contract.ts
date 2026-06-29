@@ -100,6 +100,7 @@ export const aiConsumptionContract = {
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
+        "aos-frontend-shell-slice",
         "dialog-spec-usage",
         "table-work-index-spec"
       ],
@@ -164,6 +165,42 @@ export const aiConsumptionContract = {
   ],
   storybookVisualParityProof:
     "Design System compliance requires the same Storybook visual instance, not merely package import or boundary markers. Product proof must compare DOM/component identity where available plus computed size, radius, padding, border, background, typography, spacing, hover/focus/active/disabled states, menu/search/drawer position, motion duration/easing/opacity/transform, theme transition, reduced-motion fallback, locale behavior, mobile reflow, and information hierarchy against the relevant Storybook section.",
+  visualInstanceOracles: [
+    {
+      id: "aos-frontend-shell-slice",
+      name: "AosFrontendShellSliceVisualInstance",
+      route: "components.html#aos-frontend-shell-slice",
+      packageMapping: [
+        "ProductShell",
+        "ProductShellSearch",
+        "useProductShellController",
+        "EnvironmentBanner",
+        "InlineAlert",
+        "ReadbackPanel",
+        "KeyValueList",
+        "EvidenceStrip",
+        "TableShell",
+        "StatusBadge",
+        "DisclosurePanel"
+      ],
+      primaryIa: ["Cockpit", "Work"],
+      requiredVariants: [
+        "desktop-light-expanded-cockpit-search-results",
+        "desktop-dark-expanded-cockpit",
+        "desktop-light-collapsed-work",
+        "mobile-dark-work-stacked",
+        "reduced-motion"
+      ],
+      negativeCriteria: [
+        "no Storybook-only prototype classes",
+        "no product-local visible CSS/effect system",
+        "no deprecated AOS wordmark assets",
+        "no unregistered primary IA",
+        "no raw API/debug payload as primary UX",
+        "no owner/product/release/live-dispatch readiness claim"
+      ]
+    }
+  ],
   requiredBeforeProductFrontendImplementation: [
     "read_ai_consumption_contract",
     "read_every_required_storybook_section",

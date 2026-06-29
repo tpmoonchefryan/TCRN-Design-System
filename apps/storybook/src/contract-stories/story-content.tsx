@@ -77,6 +77,10 @@ import {
   TmsDenseShellDemo
 } from "./prototypes/storybook-shell-demos.js";
 import {
+  AosFrontendShellSliceVisualInstance,
+  aosFrontendShellSliceVisualInstanceReadback
+} from "./visual-instances/aos-frontend-shell-slice.js";
+import {
   componentFamilyRows,
   componentStoryRows,
   dataGridEscalationRows,
@@ -1359,6 +1363,52 @@ const legacyContractStories: ContractStory[] = [
         <ReadbackPanel title="Pagination and skip-link boundary">
           <Text>Pagination and skip links belong to shared navigation primitives because they preserve orientation, keyboard access, and proof context across long surfaces.</Text>
           <Pagination label="Synthetic component pages" />
+        </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "aos-frontend-shell-slice",
+    title: "AOS frontend shell slice visual instance",
+    group: "Components",
+    description: "Package-backed first-viewport oracle for the AOS frontend shell slice.",
+    render: () => (
+      <section className="alpha-story-stack" data-design-system-visual-instance-parity="aos-frontend-shell-slice">
+        <ReadbackPanel title="Visual instance oracle">
+          <Text>
+            This named Storybook visual instance is the DS-owned oracle for the AOS frontend shell first viewport. Product
+            implementation must compare against this instance by story id, package mapping, slots, props, state matrix, and
+            rendered browser evidence before claiming Design System parity.
+          </Text>
+          <TableShell
+            label="AOS shell visual instance readback"
+            columns={[
+              { key: "field", label: "Field" },
+              { key: "readback", label: "Readback" }
+            ]}
+            rows={[
+              { field: "Storybook page", readback: aosFrontendShellSliceVisualInstanceReadback.page },
+              { field: "Package mapping", readback: Object.values(aosFrontendShellSliceVisualInstanceReadback.packageMapping).flat().join(", ") },
+              { field: "Slots", readback: aosFrontendShellSliceVisualInstanceReadback.slots.join(", ") },
+              { field: "Variants", readback: aosFrontendShellSliceVisualInstanceReadback.variants.join(", ") },
+              { field: "States", readback: aosFrontendShellSliceVisualInstanceReadback.supportedStates.join(", ") }
+            ]}
+          />
+          <EvidenceStrip items={["named Storybook visual instance", "package-backed composition", "screenshots mapped by story id", "product adoption separate"]} />
+        </ReadbackPanel>
+        <AosFrontendShellSliceVisualInstance />
+        <ReadbackPanel title="Negative acceptance criteria">
+          <TableShell
+            label="AOS shell negative criteria"
+            columns={[
+              { key: "criterion", label: "Criterion" },
+              { key: "requiredResult", label: "Required result" }
+            ]}
+            rows={aosFrontendShellSliceVisualInstanceReadback.negativeCriteria.map((criterion) => ({
+              criterion,
+              requiredResult: "fail closed if present"
+            }))}
+          />
         </ReadbackPanel>
       </section>
     )
