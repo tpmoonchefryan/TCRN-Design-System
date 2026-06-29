@@ -191,6 +191,79 @@ export const aiConsumptionContract = {
         "mobile-dark-work-stacked",
         "reduced-motion"
       ],
+      requiredVariantFixtures: [
+        {
+          id: "desktop-light-expanded-cockpit-search-results",
+          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: false,
+            selectedRoute: "cockpit",
+            search: "results",
+            viewport: "desktop",
+            reducedMotion: false
+          }
+        },
+        {
+          id: "desktop-dark-expanded-cockpit",
+          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"]",
+          expectedState: {
+            theme: "dark",
+            locale: "en",
+            collapsed: false,
+            selectedRoute: "cockpit",
+            search: "rest",
+            viewport: "desktop",
+            reducedMotion: false
+          }
+        },
+        {
+          id: "desktop-light-collapsed-work",
+          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-collapsed-work\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: true,
+            selectedRoute: "work",
+            search: "rest",
+            viewport: "desktop",
+            reducedMotion: false
+          }
+        },
+        {
+          id: "mobile-dark-work-stacked",
+          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"mobile-dark-work-stacked\"]",
+          expectedState: {
+            theme: "dark",
+            locale: "zh-CN",
+            collapsed: false,
+            selectedRoute: "work",
+            search: "rest",
+            viewport: "mobile",
+            reducedMotion: false
+          }
+        },
+        {
+          id: "reduced-motion",
+          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"reduced-motion\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: false,
+            selectedRoute: "cockpit",
+            search: "rest",
+            viewport: "desktop",
+            reducedMotion: true
+          }
+        }
+      ],
+      delegatedInteractionProofs: [
+        "Locale menu dismissal and focus return are delegated to ShellLocaleMenu/ProductShell interaction sub-oracles.",
+        "Search blur/outside-pointer/tab/Escape dismissal is delegated to ProductShellSearch and field/search sub-oracles.",
+        "This oracle proves rendered visual states and remains blocked from owner visual admission until review completes."
+      ],
+      ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
       negativeCriteria: [
         "no Storybook-only prototype classes",
         "no product-local visible CSS/effect system",

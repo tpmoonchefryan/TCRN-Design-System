@@ -106,7 +106,23 @@ const aosFrontendShellVisualInstanceContract = {
   page: "components.html#aos-frontend-shell-slice",
   scopedSelector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
-  expectedControlMetrics: productShellComparatorContract.expectedControlMetrics,
+  expectedControlMetrics: {
+    themeToggle: productShellComparatorContract.expectedControlMetrics.themeToggle,
+    sideNavToggle: productShellComparatorContract.expectedControlMetrics.sideNavToggle,
+    localeTrigger: productShellComparatorContract.expectedControlMetrics.localeTrigger,
+    searchInput: productShellComparatorContract.expectedControlMetrics.searchInput,
+    topBar: {
+      minHeight: 68,
+      borderRadius: "0px",
+      borderStyle: "none none solid",
+      borderWidth: "0px 0px 1px",
+      display: "grid",
+      gap: "16px",
+      paddingLeft: "20px",
+      paddingRight: "20px",
+      gridColumnCount: 3
+    }
+  },
   motionProof: productShellComparatorContract.motionProof,
   visualInstanceName: "AosFrontendShellSliceVisualInstance",
   packageMapping: [
@@ -129,6 +145,104 @@ const aosFrontendShellVisualInstanceContract = {
     "mobile-dark-work-stacked",
     "reduced-motion"
   ],
+  variantFixtures: [
+    {
+      id: "desktop-light-expanded-cockpit-search-results",
+      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "false",
+        route: "cockpit",
+        search: "results",
+        searchExpanded: "true",
+        searchResultsVisible: "true",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "cockpit"
+      }
+    },
+    {
+      id: "desktop-dark-expanded-cockpit",
+      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "dark",
+        locale: "en",
+        collapsed: "false",
+        route: "cockpit",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "cockpit"
+      }
+    },
+    {
+      id: "desktop-light-collapsed-work",
+      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-collapsed-work\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "true",
+        route: "work",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "work"
+      }
+    },
+    {
+      id: "mobile-dark-work-stacked",
+      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"mobile-dark-work-stacked\"]",
+      viewport: { width: 390, height: 844 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "dark",
+        locale: "zh-CN",
+        collapsed: "false",
+        route: "work",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "mobile",
+        reducedMotion: "false",
+        content: "work"
+      }
+    },
+    {
+      id: "reduced-motion",
+      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"reduced-motion\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "reduce",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "false",
+        route: "cockpit",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "true",
+        content: "cockpit"
+      }
+    }
+  ],
+  delegatedInteractionProofs: [
+    "Locale menu dismissal and focus return are delegated to ShellLocaleMenu/ProductShell interaction sub-oracles.",
+    "Search blur/outside-pointer/tab/Escape dismissal is delegated to ProductShellSearch and field/search sub-oracles.",
+    "This oracle proves rendered visual states and remains blocked from owner visual admission until review completes."
+  ],
+  ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
   slots: ["brand lockup", "attached side navigation", "topbar", "search", "content", "secondary disclosure"],
   requiredContentSelectors: {
     dummyCockpit: "[data-aos-dummy-cockpit=\"true\"]",
@@ -211,8 +325,17 @@ const required = [
   "data-contract-story-id=\"aos-frontend-shell-slice\"",
   "data-storybook-visual-instance=\"aos-frontend-shell-slice\"",
   "data-visual-instance-name=\"AosFrontendShellSliceVisualInstance\"",
-  "data-visual-instance-disposition=\"storybook_visual_instance_oracle_admitted_for_aos\"",
+  "data-visual-instance-disposition=\"ds_oracle_review_required_before_owner_admission\"",
   "data-visual-instance-primary-ia=\"cockpit-work-only\"",
+  "data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"",
+  "data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"",
+  "data-visual-instance-variant=\"desktop-light-collapsed-work\"",
+  "data-visual-instance-variant=\"mobile-dark-work-stacked\"",
+  "data-visual-instance-variant=\"reduced-motion\"",
+  "data-visual-instance-locale=\"zh-CN\"",
+  "data-visual-instance-search=\"rest\"",
+  "data-visual-instance-search=\"results\"",
+  "data-visual-instance-reduced-motion=\"true\"",
   "data-aos-visual-instance-oracle=\"true\"",
   "data-contract-story-id=\"ai-consumption-contract\"",
   "data-ai-consumption-contract-story=\"true\"",
@@ -284,9 +407,23 @@ const aosVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) =
 if (!aosVisualInstanceOracle) {
   missing.push("contract.visualInstanceOracles:aos-frontend-shell-slice");
 } else {
-  for (const requiredField of ["route", "packageMapping", "primaryIa", "requiredVariants", "negativeCriteria"]) {
+  for (const requiredField of [
+    "route",
+    "packageMapping",
+    "primaryIa",
+    "requiredVariants",
+    "requiredVariantFixtures",
+    "delegatedInteractionProofs",
+    "ownerVisualAdmissionBoundary",
+    "negativeCriteria"
+  ]) {
     if (aosVisualInstanceOracle[requiredField] === undefined) {
       missing.push(`contract.visualInstanceOracles.aos.${requiredField}`);
+    }
+  }
+  for (const variant of aosFrontendShellVisualInstanceContract.variants) {
+    if (!aosVisualInstanceOracle.requiredVariantFixtures?.some?.((fixture) => fixture.id === variant)) {
+      missing.push(`contract.visualInstanceOracles.aos.requiredVariantFixtures:${variant}`);
     }
   }
   for (const packageName of aosFrontendShellVisualInstanceContract.packageMapping) {
@@ -512,7 +649,7 @@ function transitionIncludes(metric, property) {
   return properties.includes(property) || properties.includes("all");
 }
 
-async function collectProductShellMetrics(origin, viewport, reducedMotion, contract = productShellComparatorContract) {
+async function collectProductShellMetrics(origin, viewport, reducedMotion, contract = productShellComparatorContract, fixture = undefined) {
   const browser = await chromium.launch({
     headless: true,
     args: [
@@ -539,8 +676,9 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
   });
   await page.goto(`${origin}/${contract.page}`, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts?.ready);
-  const metrics = await page.evaluate(({ contract }) => {
-    const shell = document.querySelector(contract.scopedSelector);
+  const metrics = await page.evaluate(({ contract, fixture }) => {
+    const selector = fixture?.selector ?? contract.scopedSelector;
+    const shell = document.querySelector(selector);
     if (!shell) {
       return { missingShell: true };
     }
@@ -580,6 +718,27 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	    for (const [name, selector] of Object.entries(contract.requiredContentSelectors ?? {})) {
 	      requiredContent[name] = shell.matches(selector) || Boolean(shell.querySelector(selector));
 	    }
+	    const selectedNavItem = shell.querySelector(".tcrn-nav-item[aria-current=\"page\"]");
+	    const searchWrapper = shell.querySelector(contract.componentSelectors.searchWrapper);
+	    const state = {
+	      variant: shell.getAttribute("data-visual-instance-variant"),
+	      theme: shell.getAttribute("data-visual-instance-theme"),
+	      productShellTheme: shell.getAttribute("data-product-shell-theme"),
+	      tcrnTheme: shell.getAttribute("data-tcrn-theme"),
+	      locale: shell.getAttribute("data-visual-instance-locale"),
+	      collapsed: shell.getAttribute("data-visual-instance-collapsed"),
+	      productShellCollapsed: shell.getAttribute("data-product-shell-collapsed"),
+	      sideNavCollapsed: shell.getAttribute("data-side-nav-collapsed"),
+	      route: shell.getAttribute("data-visual-instance-route"),
+	      selectedRoute: selectedNavItem?.getAttribute("data-product-shell-route") ?? null,
+	      search: shell.getAttribute("data-visual-instance-search"),
+	      searchExpanded: searchWrapper?.getAttribute("data-search-expanded") ?? null,
+	      searchResultsVisible: searchWrapper?.getAttribute("data-search-results-visible") ?? null,
+	      viewport: shell.getAttribute("data-visual-instance-viewport"),
+	      reducedMotion: shell.getAttribute("data-visual-instance-reduced-motion"),
+	      content: shell.getAttribute("data-visual-instance-content"),
+	      ownerVisualAdmissionBoundary: shell.getAttribute("data-visual-instance-disposition")
+	    };
 	    const shellText = shell.textContent ?? "";
 	    const forbiddenTextHits = (contract.forbiddenText ?? []).filter((text) => shellText.includes(text));
 	    const shellRect = shell.getBoundingClientRect();
@@ -603,79 +762,157 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	      },
 	      measured,
 	      requiredContent,
+	      state,
 	      forbiddenTextHits,
 	      viewport: { width: window.innerWidth, height: window.innerHeight, scrollWidth: documentElement.scrollWidth }
 	    };
-	  }, { contract });
+	  }, { contract, fixture });
   await browser.close();
   return { ...metrics, pageErrors, consoleMessages, reducedMotion, viewport };
+}
+
+function validateProductShellReadback({
+  failures,
+  proof,
+  contract,
+  label,
+  expectSearchResults = true,
+  expectedState = undefined,
+  validateMetrics = true
+}) {
+  if (proof.missingShell) {
+    failures.push(`${label}:missing-product-shell-comparator`);
+    return;
+  }
+  for (const error of proof.pageErrors ?? []) failures.push(`${label}:pageerror:${error}`);
+  for (const message of proof.consoleMessages ?? []) failures.push(`${label}:console:${message}`);
+  if (proof.shell.sourceMarker !== "package-backed") {
+    failures.push(`${label}:missing-package-backed-style-marker`);
+  }
+  if (validateMetrics) {
+    for (const [name, expected] of Object.entries(contract.expectedControlMetrics)) {
+      const metric = proof.measured[name];
+      if (!metric || metric.missing) {
+        failures.push(`${label}:${name}:missing`);
+      } else {
+        validateMetric({ failures, name: `${label}:${name}`, metric, expected });
+      }
+    }
+  }
+  if (expectedState) {
+    for (const [name, expected] of Object.entries(expectedState)) {
+      if (["searchExpanded", "searchResultsVisible"].includes(name)) continue;
+      if (proof.state?.[name] !== expected) {
+        failures.push(`${label}:state:${name}:${proof.state?.[name] ?? "missing"}`);
+      }
+    }
+    if (proof.state?.productShellTheme !== expectedState.theme) {
+      failures.push(`${label}:product-shell-theme:${proof.state?.productShellTheme ?? "missing"}`);
+    }
+    if (proof.state?.tcrnTheme !== expectedState.theme) {
+      failures.push(`${label}:tcrn-theme:${proof.state?.tcrnTheme ?? "missing"}`);
+    }
+    if (proof.state?.productShellCollapsed !== expectedState.collapsed) {
+      failures.push(`${label}:product-shell-collapsed:${proof.state?.productShellCollapsed ?? "missing"}`);
+    }
+    if (proof.state?.sideNavCollapsed !== expectedState.collapsed) {
+      failures.push(`${label}:side-nav-collapsed:${proof.state?.sideNavCollapsed ?? "missing"}`);
+    }
+    if (proof.state?.selectedRoute !== expectedState.route) {
+      failures.push(`${label}:selected-route:${proof.state?.selectedRoute ?? "missing"}`);
+    }
+    if (proof.state?.searchExpanded !== expectedState.searchExpanded) {
+      failures.push(`${label}:search-expanded:${proof.state?.searchExpanded ?? "missing"}`);
+    }
+    if (proof.state?.searchResultsVisible !== expectedState.searchResultsVisible) {
+      failures.push(`${label}:search-results-visible:${proof.state?.searchResultsVisible ?? "missing"}`);
+    }
+    if (proof.state?.ownerVisualAdmissionBoundary !== "ds_oracle_review_required_before_owner_admission") {
+      failures.push(`${label}:owner-admission-boundary:${proof.state?.ownerVisualAdmissionBoundary ?? "missing"}`);
+    }
+  }
+  const reduced = proof.reducedMotion === "reduce";
+  if (reduced) {
+    if (proof.shell.transitionProperty !== "none") {
+      failures.push(`${label}:reduced-motion-product-shell-transition:${proof.shell.transitionProperty}`);
+    }
+    if (proof.measured.searchWrapper?.transitionProperty !== "none") {
+      failures.push(`${label}:reduced-motion-search-transition:${proof.measured.searchWrapper?.transitionProperty}`);
+    }
+    if (proof.shell.themeWashAnimationName !== "none") {
+      failures.push(`${label}:reduced-motion-theme-wash:${proof.shell.themeWashAnimationName}`);
+    }
+  } else {
+    if (!transitionIncludes(proof.shell, contract.motionProof.productShellTransition)) {
+      failures.push(`${label}:product-shell-transition:${proof.shell.transitionProperty}`);
+    }
+    if (!transitionIncludes(proof.measured.searchWrapper, contract.motionProof.searchTransition)) {
+      failures.push(`${label}:search-transition:${proof.measured.searchWrapper?.transitionProperty}`);
+    }
+    if (proof.shell.themeWashAnimationName !== contract.motionProof.themeWashPseudo) {
+      failures.push(`${label}:theme-wash-animation:${proof.shell.themeWashAnimationName}`);
+    }
+  }
+  if (expectSearchResults && proof.measured.searchResults?.display === "none") {
+    failures.push(`${label}:search-results-not-visible-for-expanded-proof`);
+  }
+  if (!expectSearchResults && proof.measured.searchResults?.display !== "none") {
+    failures.push(`${label}:search-results-visible-for-rest-proof`);
+  }
+  for (const [name, present] of Object.entries(proof.requiredContent ?? {})) {
+    if (!present) failures.push(`${label}:visual-instance-content:${name}`);
+  }
+  for (const hit of proof.forbiddenTextHits ?? []) {
+    failures.push(`${label}:visual-instance-forbidden-text:${hit}`);
+  }
+  if (proof.viewport.width <= 390) {
+    if (proof.viewport.scrollWidth > proof.viewport.width + 1) {
+      failures.push(`${label}:horizontal-overflow:${proof.viewport.scrollWidth}>${proof.viewport.width}`);
+    }
+    if (proof.measured.sideNavToggle?.width > 44 || proof.measured.themeToggle?.width > 44) {
+      failures.push(`${label}:mobile-control-size-exceeds-package-shell-boundary`);
+    }
+    if (proof.measured.contentRegion?.width > proof.viewport.width + 1) {
+      failures.push(`${label}:mobile-content-width:${proof.measured.contentRegion.width}`);
+    }
+  }
 }
 
 async function runProductShellComparatorProof(contract = productShellComparatorContract) {
   const failures = [];
   const { server, origin } = await startStaticServer(staticRoot);
   try {
+    if (contract.variantFixtures) {
+      const variantReadbacks = {};
+      for (const fixture of contract.variantFixtures) {
+        const proof = await collectProductShellMetrics(origin, fixture.viewport, fixture.reducedMotion, contract, fixture);
+        variantReadbacks[fixture.id] = proof;
+        validateProductShellReadback({
+          failures,
+          proof,
+          contract,
+          label: fixture.id,
+          expectSearchResults: fixture.expectedState.searchResultsVisible === "true",
+          expectedState: fixture.expectedState,
+          validateMetrics: fixture.expectedState.viewport !== "mobile"
+        });
+      }
+      return {
+        ok: failures.length === 0,
+        failures,
+        contract,
+        readbacks: {
+          variants: variantReadbacks
+        },
+        routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+      };
+    }
 	    const desktop = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "no-preference", contract);
 	    const reduced = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "reduce", contract);
 	    const mobile = await collectProductShellMetrics(origin, { width: 390, height: 844 }, "no-preference", contract);
-    for (const [mode, proof] of Object.entries({ desktop, reduced, mobile })) {
-      if (proof.missingShell) failures.push(`${mode}:missing-product-shell-comparator`);
-      for (const error of proof.pageErrors ?? []) failures.push(`${mode}:pageerror:${error}`);
-      for (const message of proof.consoleMessages ?? []) failures.push(`${mode}:console:${message}`);
-    }
-    if (!desktop.missingShell) {
-      if (desktop.shell.sourceMarker !== "package-backed") {
-        failures.push("desktop:missing-package-backed-style-marker");
-      }
-	      for (const [name, expected] of Object.entries(contract.expectedControlMetrics)) {
-        const metric = desktop.measured[name];
-        if (!metric || metric.missing) {
-          failures.push(`${name}:missing`);
-        } else {
-          validateMetric({ failures, name, metric, expected });
-        }
-      }
-	      if (!transitionIncludes(desktop.shell, contract.motionProof.productShellTransition)) {
-	        failures.push(`product-shell-transition:${desktop.shell.transitionProperty}`);
-	      }
-	      if (!transitionIncludes(desktop.measured.searchWrapper, contract.motionProof.searchTransition)) {
-	        failures.push(`search-transition:${desktop.measured.searchWrapper.transitionProperty}`);
-	      }
-	      if (desktop.shell.themeWashAnimationName !== contract.motionProof.themeWashPseudo) {
-	        failures.push(`theme-wash-animation:${desktop.shell.themeWashAnimationName}`);
-	      }
-	      if (desktop.measured.searchResults?.display === "none") {
-	        failures.push("search-results-not-visible-for-expanded-proof");
-	      }
-	      for (const [name, present] of Object.entries(desktop.requiredContent ?? {})) {
-	        if (!present) failures.push(`visual-instance-content:${name}`);
-	      }
-	      for (const hit of desktop.forbiddenTextHits ?? []) {
-	        failures.push(`visual-instance-forbidden-text:${hit}`);
-	      }
-	    }
-    if (!reduced.missingShell) {
-      if (reduced.shell.transitionProperty !== "none") {
-        failures.push(`reduced-motion-product-shell-transition:${reduced.shell.transitionProperty}`);
-      }
-      if (reduced.measured.searchWrapper?.transitionProperty !== "none") {
-        failures.push(`reduced-motion-search-transition:${reduced.measured.searchWrapper?.transitionProperty}`);
-      }
-      if (reduced.shell.themeWashAnimationName !== "none") {
-        failures.push(`reduced-motion-theme-wash:${reduced.shell.themeWashAnimationName}`);
-      }
-    }
-    if (!mobile.missingShell) {
-      if (mobile.viewport.scrollWidth > mobile.viewport.width + 1) {
-        failures.push(`mobile-horizontal-overflow:${mobile.viewport.scrollWidth}>${mobile.viewport.width}`);
-      }
-      if (mobile.measured.sideNavToggle?.width > 44 || mobile.measured.themeToggle?.width > 44) {
-        failures.push("mobile-control-size-exceeds-package-shell-boundary");
-      }
-      if (mobile.measured.contentRegion?.width > mobile.viewport.width + 1) {
-        failures.push(`mobile-content-width:${mobile.measured.contentRegion.width}`);
-      }
-    }
+    validateProductShellReadback({ failures, proof: desktop, contract, label: "desktop", expectSearchResults: true });
+    validateProductShellReadback({ failures, proof: reduced, contract, label: "reduced", expectSearchResults: true, validateMetrics: false });
+    validateProductShellReadback({ failures, proof: mobile, contract, label: "mobile", expectSearchResults: true, validateMetrics: false });
 	    return {
 	      ok: failures.length === 0,
 	      failures,

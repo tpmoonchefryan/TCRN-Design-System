@@ -1391,7 +1391,10 @@ const legacyContractStories: ContractStory[] = [
               { field: "Package mapping", readback: Object.values(aosFrontendShellSliceVisualInstanceReadback.packageMapping).flat().join(", ") },
               { field: "Slots", readback: aosFrontendShellSliceVisualInstanceReadback.slots.join(", ") },
               { field: "Variants", readback: aosFrontendShellSliceVisualInstanceReadback.variants.join(", ") },
-              { field: "States", readback: aosFrontendShellSliceVisualInstanceReadback.supportedStates.join(", ") }
+              { field: "States", readback: aosFrontendShellSliceVisualInstanceReadback.supportedStates.join(", ") },
+              { field: "Rendered fixture selectors", readback: aosFrontendShellSliceVisualInstanceReadback.variantFixtures.map((fixture) => fixture.selector).join(", ") },
+              { field: "Delegated interactions", readback: aosFrontendShellSliceVisualInstanceReadback.delegatedInteractionProofs.join(" ") },
+              { field: "Owner visual admission", readback: aosFrontendShellSliceVisualInstanceReadback.ownerVisualAdmissionBoundary }
             ]}
           />
           <EvidenceStrip items={["named Storybook visual instance", "package-backed composition", "screenshots mapped by story id", "product adoption separate"]} />

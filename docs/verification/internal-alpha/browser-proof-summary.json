@@ -432,7 +432,7 @@
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 1077,
-          "height": 3036
+          "height": 11615
         },
         {
           "id": "dialog-spec-usage",
@@ -1054,7 +1054,7 @@
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 3535
+          "height": 13528
         },
         {
           "id": "dialog-spec-usage",
@@ -1676,7 +1676,7 @@
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 5144
+          "height": 21313
         },
         {
           "id": "dialog-spec-usage",
