@@ -186,6 +186,7 @@ export const aiConsumptionContract = {
       primaryIa: ["Cockpit", "Work"],
       requiredVariants: [
         "desktop-light-expanded-cockpit-search-results",
+        "desktop-light-expanded-cockpit-search-rest",
         "desktop-dark-expanded-cockpit",
         "desktop-light-collapsed-work",
         "mobile-dark-work-stacked",
@@ -201,8 +202,27 @@ export const aiConsumptionContract = {
             collapsed: false,
             selectedRoute: "cockpit",
             search: "results",
+            searchExpanded: true,
+            searchResultsVisible: true,
             viewport: "desktop",
-            reducedMotion: false
+            reducedMotion: false,
+            content: "cockpit"
+          }
+        },
+        {
+          id: "desktop-light-expanded-cockpit-search-rest",
+          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-rest\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: false,
+            selectedRoute: "cockpit",
+            search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
+            viewport: "desktop",
+            reducedMotion: false,
+            content: "cockpit"
           }
         },
         {
@@ -214,8 +234,11 @@ export const aiConsumptionContract = {
             collapsed: false,
             selectedRoute: "cockpit",
             search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
             viewport: "desktop",
-            reducedMotion: false
+            reducedMotion: false,
+            content: "cockpit"
           }
         },
         {
@@ -227,8 +250,11 @@ export const aiConsumptionContract = {
             collapsed: true,
             selectedRoute: "work",
             search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
             viewport: "desktop",
-            reducedMotion: false
+            reducedMotion: false,
+            content: "work"
           }
         },
         {
@@ -240,8 +266,11 @@ export const aiConsumptionContract = {
             collapsed: false,
             selectedRoute: "work",
             search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
             viewport: "mobile",
-            reducedMotion: false
+            reducedMotion: false,
+            content: "work"
           }
         },
         {
@@ -253,8 +282,11 @@ export const aiConsumptionContract = {
             collapsed: false,
             selectedRoute: "cockpit",
             search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
             viewport: "desktop",
-            reducedMotion: true
+            reducedMotion: true,
+            content: "cockpit"
           }
         }
       ],
@@ -264,6 +296,25 @@ export const aiConsumptionContract = {
         "This oracle proves rendered visual states and remains blocked from owner visual admission until review completes."
       ],
       ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
+      persistedCockpitRestPolicy: {
+        defaultCockpitRestVariant: "desktop-light-expanded-cockpit-search-rest",
+        ownerReviewRoutesMustBeDeterministic: true,
+        coveredOwnerReachableRoutes: [
+          "/",
+          "/cockpit",
+          "/cockpit?locale=en&theme=light",
+          "post-search-dismissal:/cockpit?locale=en&theme=light&collapsed=false&search=shell"
+        ],
+        routePersistenceBoundary:
+          "Owner-review routes must not inherit localStorage into unadmitted visual states; product persistence may remain DS-defined outside reviewed parity routes.",
+        notAutomaticallyAdmitted: [
+          "zh-CN Cockpit rest",
+          "collapsed Cockpit rest",
+          "dark zh-CN Cockpit rest",
+          "mobile Cockpit rest"
+        ],
+        outsideMatrixMarkerForbiddenForOwnerReview: "aos-route-state-outside-accepted-oracle-matrix"
+      },
       negativeCriteria: [
         "no Storybook-only prototype classes",
         "no product-local visible CSS/effect system",

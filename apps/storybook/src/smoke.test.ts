@@ -696,23 +696,43 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.deepEqual(contract.visualInstanceOracles?.[0]?.primaryIa, ["Cockpit", "Work"]);
   assert.deepEqual(contract.visualInstanceOracles?.[0]?.requiredVariants, [
     "desktop-light-expanded-cockpit-search-results",
+    "desktop-light-expanded-cockpit-search-rest",
     "desktop-dark-expanded-cockpit",
     "desktop-light-collapsed-work",
     "mobile-dark-work-stacked",
     "reduced-motion"
   ]);
-  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.length, 5);
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.length, 6);
   assert.equal(
     contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[0]?.selector,
     "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"]"
   );
-  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[2]?.expectedState?.collapsed, true);
-  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[3]?.expectedState?.locale, "zh-CN");
-  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[4]?.expectedState?.reducedMotion, true);
+  assert.equal(
+    contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.selector,
+    "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-rest\"]"
+  );
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.expectedState?.search, "rest");
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.expectedState?.searchExpanded, false);
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.expectedState?.searchResultsVisible, false);
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[3]?.expectedState?.collapsed, true);
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[4]?.expectedState?.locale, "zh-CN");
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[5]?.expectedState?.reducedMotion, true);
   assert.match(contract.visualInstanceOracles?.[0]?.delegatedInteractionProofs?.join(" ") ?? "", /Locale menu dismissal/);
   assert.equal(
     contract.visualInstanceOracles?.[0]?.ownerVisualAdmissionBoundary,
     "internal_ds_oracle_review_required_before_owner_visual_admission"
+  );
+  assert.equal(
+    contract.visualInstanceOracles?.[0]?.persistedCockpitRestPolicy?.defaultCockpitRestVariant,
+    "desktop-light-expanded-cockpit-search-rest"
+  );
+  assert.match(
+    contract.visualInstanceOracles?.[0]?.persistedCockpitRestPolicy?.coveredOwnerReachableRoutes?.join(" ") ?? "",
+    /post-search-dismissal:\/cockpit\?locale=en&theme=light&collapsed=false&search=shell/
+  );
+  assert.equal(
+    contract.visualInstanceOracles?.[0]?.persistedCockpitRestPolicy?.outsideMatrixMarkerForbiddenForOwnerReview,
+    "aos-route-state-outside-accepted-oracle-matrix"
   );
   assert.match(contract.visualInstanceOracles?.[0]?.packageMapping?.join(" ") ?? "", /ProductShell ProductShellSearch useProductShellController/);
   assert.match(contract.visualInstanceOracles?.[0]?.negativeCriteria?.join(" ") ?? "", /no raw API\/debug payload as primary UX/);

@@ -140,6 +140,7 @@ const aosFrontendShellVisualInstanceContract = {
   ],
   variants: [
     "desktop-light-expanded-cockpit-search-results",
+    "desktop-light-expanded-cockpit-search-rest",
     "desktop-dark-expanded-cockpit",
     "desktop-light-collapsed-work",
     "mobile-dark-work-stacked",
@@ -159,6 +160,24 @@ const aosFrontendShellVisualInstanceContract = {
         search: "results",
         searchExpanded: "true",
         searchResultsVisible: "true",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "cockpit"
+      }
+    },
+    {
+      id: "desktop-light-expanded-cockpit-search-rest",
+      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-rest\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "false",
+        route: "cockpit",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
         viewport: "desktop",
         reducedMotion: "false",
         content: "cockpit"
@@ -242,6 +261,25 @@ const aosFrontendShellVisualInstanceContract = {
     "Search blur/outside-pointer/tab/Escape dismissal is delegated to ProductShellSearch and field/search sub-oracles.",
     "This oracle proves rendered visual states and remains blocked from owner visual admission until review completes."
   ],
+  persistedCockpitRestPolicy: {
+    defaultCockpitRestVariant: "desktop-light-expanded-cockpit-search-rest",
+    ownerReviewRoutesMustBeDeterministic: true,
+    coveredOwnerReachableRoutes: [
+      "/",
+      "/cockpit",
+      "/cockpit?locale=en&theme=light",
+      "post-search-dismissal:/cockpit?locale=en&theme=light&collapsed=false&search=shell"
+    ],
+    routePersistenceBoundary:
+      "Owner-review routes must not inherit localStorage into unadmitted visual states; product persistence may remain DS-defined outside reviewed parity routes.",
+    notAutomaticallyAdmitted: [
+      "zh-CN Cockpit rest",
+      "collapsed Cockpit rest",
+      "dark zh-CN Cockpit rest",
+      "mobile Cockpit rest"
+    ],
+    outsideMatrixMarkerForbiddenForOwnerReview: "aos-route-state-outside-accepted-oracle-matrix"
+  },
   ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
   slots: ["brand lockup", "attached side navigation", "topbar", "search", "content", "secondary disclosure"],
   requiredContentSelectors: {
@@ -415,6 +453,7 @@ if (!aosVisualInstanceOracle) {
     "requiredVariantFixtures",
     "delegatedInteractionProofs",
     "ownerVisualAdmissionBoundary",
+    "persistedCockpitRestPolicy",
     "negativeCriteria"
   ]) {
     if (aosVisualInstanceOracle[requiredField] === undefined) {
@@ -430,6 +469,15 @@ if (!aosVisualInstanceOracle) {
     if (!aosVisualInstanceOracle.packageMapping?.includes(packageName)) {
       missing.push(`contract.visualInstanceOracles.aos.packageMapping:${packageName}`);
     }
+  }
+  if (aosVisualInstanceOracle.persistedCockpitRestPolicy?.defaultCockpitRestVariant !== aosFrontendShellVisualInstanceContract.persistedCockpitRestPolicy.defaultCockpitRestVariant) {
+    missing.push("contract.visualInstanceOracles.aos.persistedCockpitRestPolicy.defaultCockpitRestVariant");
+  }
+  if (!aosVisualInstanceOracle.persistedCockpitRestPolicy?.coveredOwnerReachableRoutes?.includes("post-search-dismissal:/cockpit?locale=en&theme=light&collapsed=false&search=shell")) {
+    missing.push("contract.visualInstanceOracles.aos.persistedCockpitRestPolicy.searchDismissalRoute");
+  }
+  if (aosVisualInstanceOracle.persistedCockpitRestPolicy?.outsideMatrixMarkerForbiddenForOwnerReview !== "aos-route-state-outside-accepted-oracle-matrix") {
+    missing.push("contract.visualInstanceOracles.aos.persistedCockpitRestPolicy.outsideMatrixMarker");
   }
 }
 for (const route of ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"]) {

@@ -48,6 +48,18 @@ const variants: readonly AosVisualInstanceVariant[] = [
     contentMode: "cockpit"
   },
   {
+    id: "desktop-light-expanded-cockpit-search-rest",
+    label: "Desktop light, expanded Cockpit at search rest",
+    theme: "light",
+    locale: aosDefaultLocale,
+    collapsed: false,
+    route: "cockpit",
+    searchMode: "rest",
+    viewport: "desktop",
+    reducedMotion: false,
+    contentMode: "cockpit"
+  },
+  {
     id: "desktop-dark-expanded-cockpit",
     label: "Desktop dark, expanded Cockpit at search rest",
     theme: "dark",
@@ -96,6 +108,26 @@ const variants: readonly AosVisualInstanceVariant[] = [
     contentMode: "cockpit"
   }
 ] as const;
+
+const persistedCockpitRestPolicy = {
+  defaultCockpitRestVariant: "desktop-light-expanded-cockpit-search-rest",
+  ownerReviewRoutesMustBeDeterministic: true,
+  coveredOwnerReachableRoutes: [
+    "/",
+    "/cockpit",
+    "/cockpit?locale=en&theme=light",
+    "post-search-dismissal:/cockpit?locale=en&theme=light&collapsed=false&search=shell"
+  ],
+  routePersistenceBoundary:
+    "Owner-review routes must not inherit localStorage into unadmitted visual states; product persistence may remain DS-defined outside reviewed parity routes.",
+  notAutomaticallyAdmitted: [
+    "zh-CN Cockpit rest",
+    "collapsed Cockpit rest",
+    "dark zh-CN Cockpit rest",
+    "mobile Cockpit rest"
+  ],
+  outsideMatrixMarkerForbiddenForOwnerReview: "aos-route-state-outside-accepted-oracle-matrix"
+} as const;
 
 export const aosFrontendShellSliceVisualInstanceReadback = {
   storyId: "aos-frontend-shell-slice",
@@ -167,6 +199,7 @@ export const aosFrontendShellSliceVisualInstanceReadback = {
     "Search blur/outside-pointer/tab/Escape dismissal remains delegated to ProductShellSearch and field/search sub-oracles.",
     "This visual instance proves rendered state fixtures and must not be used as final owner admission."
   ],
+  persistedCockpitRestPolicy,
   negativeCriteria: [
     "no Storybook-only prototype classes",
     "no product-local visible CSS system",

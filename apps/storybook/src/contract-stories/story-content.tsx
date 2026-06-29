@@ -1393,6 +1393,7 @@ const legacyContractStories: ContractStory[] = [
               { field: "Variants", readback: aosFrontendShellSliceVisualInstanceReadback.variants.join(", ") },
               { field: "States", readback: aosFrontendShellSliceVisualInstanceReadback.supportedStates.join(", ") },
               { field: "Rendered fixture selectors", readback: aosFrontendShellSliceVisualInstanceReadback.variantFixtures.map((fixture) => fixture.selector).join(", ") },
+              { field: "Persisted Cockpit rest policy", readback: `${aosFrontendShellSliceVisualInstanceReadback.persistedCockpitRestPolicy.defaultCockpitRestVariant}; owner-review routes deterministic; outside-matrix marker forbidden` },
               { field: "Delegated interactions", readback: aosFrontendShellSliceVisualInstanceReadback.delegatedInteractionProofs.join(" ") },
               { field: "Owner visual admission", readback: aosFrontendShellSliceVisualInstanceReadback.ownerVisualAdmissionBoundary }
             ]}
