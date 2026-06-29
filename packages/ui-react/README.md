@@ -64,3 +64,12 @@ layout, focus treatment, reduced-motion behavior, and light/dark token posture
 remain owned by the package boundary. Product consumers may provide IA/data,
 route labels, locale labels, search records, content slots, and callbacks only
 through that boundary and must still prove product-specific routes separately.
+
+Consumers should pass the returned `productShellControlProps`,
+`productShellSearchProps`, `shellLocaleMenuProps`, `shellThemeToggleProps`, and
+`sideNavCollapseButtonProps` bundles, or use the equivalent ProductShell
+semantic callbacks directly: `onCollapsedChange`, `onThemeChange`,
+`onLocaleMenuOpenChange`, `onLocaleChange`, `onSearchQueryChange`,
+`onSearchExpandedChange`, `onSearchDismiss`, and `onSearchResultActivate`.
+Wrapper-level event delegation around rendered shell controls is not a
+package-backed substitute for those APIs.

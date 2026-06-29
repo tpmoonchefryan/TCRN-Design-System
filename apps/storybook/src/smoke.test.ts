@@ -398,11 +398,17 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-product-shell-pattern="attached-side-nav"/);
   assert.match(readGroupPage("Components"), /data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"/);
   assert.match(readGroupPage("Components"), /data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"/);
+  assert.match(readGroupPage("Components"), /data-product-shell-semantic-api="collapse-theme-locale-search"/);
+  assert.match(readGroupPage("Components"), /data-side-nav-semantic-api="onCollapsedChange"/);
   assert.match(readGroupPage("Components"), /data-shell-control="product-shell-search"/);
   assert.match(readGroupPage("Components"), /data-search-dismissal-contract="blur-outside-pointer-tab-escape"/);
+  assert.match(readGroupPage("Components"), /data-search-semantic-api="onQueryChange-onExpandedChange-onDismiss-onResultActivate"/);
   assert.match(readGroupPage("Components"), /data-locale-dismissal-contract="selection-outside-pointer-escape-focus-return"/);
+  assert.match(readGroupPage("Components"), /data-locale-semantic-api="onOpenChange-onLocaleChange"/);
+  assert.match(readGroupPage("Components"), /data-theme-transition-contract="whole-page-view-transition-or-token-wash"/);
   assert.match(readGroupPage("Components"), /Package-backed AOS shell boundary/);
-  assert.match(readGroupPage("Components"), /Product consumers supply only route IA, labels, locale data, search records, callbacks, and page content/);
+  assert.match(readGroupPage("Components"), /Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks/);
+  assert.match(readGroupPage("Components"), /useProductShellController prop bundles instead of wrapper event delegation/);
   assert.match(readGroupPage("Components"), /tcrn-side-nav/);
   assert.match(readGroupPage("Components"), /data-navigation-primitive="side-nav"/);
   assert.match(readGroupPage("Components"), /data-navigation-primitive="nav-group"/);
@@ -633,6 +639,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     "use_design_tokens_and_accessibility_rules",
     "verify_light_and_dark_storybook_theme_contract",
     "preserve_compact_storybook_shell_controls",
+    "use_product_shell_semantic_control_api",
     "prove_locale_popup_dismissal_and_focus_return",
     "prove_side_navigation_collapse_state",
     "block_unregistered_modules_from_primary_navigation",
@@ -661,7 +668,9 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.componentConsumptionDisposition, /ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, brand lockups/);
   assert.match(contract.componentConsumptionDisposition, /ProductShell, ProductShellSearch/);
   assert.match(contract.componentConsumptionDisposition, /useProductShellController/);
-  assert.match(contract.componentConsumptionDisposition, /Product shell state\/effect behavior must use the package-backed controlled props/);
+  assert.match(contract.componentConsumptionDisposition, /ProductShell semantic callbacks/);
+  assert.match(contract.componentConsumptionDisposition, /productShellControlProps/);
+  assert.match(contract.componentConsumptionDisposition, /onSearchResultActivate/);
   assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
   assert.match(contract.themeModeDisposition, /light and dark Storybook shell modes/);
   assert.match(contract.storybookShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
@@ -678,9 +687,13 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.productShellHardeningRules.registeredNavigation, /must not surface unregistered or planned modules/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /registered package-backed primitives from @tcrn\/ui-react/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShell\/ProductShellSearch\/useProductShellController/);
+  assert.match(contract.productShellHardeningRules.primitiveConsumption, /semantic control callbacks/);
   assert.match(contract.productShellHardeningRules.shellEffectBoundary, /attached side-nav shell layout/);
   assert.match(contract.productShellHardeningRules.shellEffectBoundary, /collapsed rail styling/);
   assert.match(contract.productShellHardeningRules.shellEffectBoundary, /must not fork those effects/);
+  assert.match(contract.productShellHardeningRules.semanticControlApi, /onCollapsedChange/);
+  assert.match(contract.productShellHardeningRules.semanticControlApi, /onSearchDismiss/);
+  assert.match(contract.productShellHardeningRules.semanticControlApi, /Wrapper-level event delegation/);
   assert.match(contract.productShellHardeningRules.browserProof, /rather than relying only on static marker checks/);
   assert.deepEqual(contract.forbiddenBrandAssets, [
     "tcrn-aos-wordmark-geometric-dark.png",

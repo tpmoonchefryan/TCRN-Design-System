@@ -65,6 +65,13 @@ export function createDomInteractionHarness(): DomInteractionHarness {
   setGlobal(globals, "cancelAnimationFrame", window.cancelAnimationFrame.bind(window));
   setGlobal(globals, "IS_REACT_ACT_ENVIRONMENT", true);
 
+  const htmlElementPrototype = window.HTMLElement.prototype as typeof window.HTMLElement.prototype & {
+    attachEvent?: () => void;
+    detachEvent?: () => void;
+  };
+  htmlElementPrototype.attachEvent ??= () => undefined;
+  htmlElementPrototype.detachEvent ??= () => undefined;
+
   const container = document.createElement("div");
   document.body.append(container);
 

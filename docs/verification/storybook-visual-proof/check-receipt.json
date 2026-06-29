@@ -1,8 +1,17 @@
 {
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
-  "sourceHead": "84b773a93dfedd7816291282eddeaaa1aa48fd45",
-  "sourceContentDigest": "1aa91a7ba0744e9bf44863f387289f5bdb7bcc496600cecf3d3e66fcc22b4e2b",
+  "sourceHead": "19d6968cda4669572db28b8f88fa4bea580d4b84",
+  "sourceGitStatus": "## main...origin/main [ahead 4]\n M apps/storybook/src/build/ai-consumption-contract.ts\n M apps/storybook/src/contract-stories/content/component-rows.ts\n M apps/storybook/src/contract-stories/story-content.tsx\n M apps/storybook/src/smoke.test.ts\n M docs/verification/storybook-visual-proof/README.md\n M docs/verification/storybook-visual-proof/baseline-manifest.json\n D docs/verification/storybook-visual-proof/check-receipt.json\n M docs/verification/storybook-visual-proof/intentional-diff-manifest.json\n M docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__mobile-390x844.png\n M docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__mobile-390x844.png\n M docs/verification/storybook-visual-proof/update-receipt.json\n M packages/ui-react/README.md\n M packages/ui-react/src/components/Navigation/Navigation.test.tsx\n M packages/ui-react/src/components/Navigation/Navigation.tsx\n M packages/ui-react/src/test/dom-harness.tsx\n M scripts/package-contract-manifest.mjs\n M scripts/storybook-visual-proof.mjs",
+  "sourceHeadEquivalenceReadback": {
+    "disposition": "source_equivalent_dirty_tree_receipt_generated_before_commit",
+    "sourceHead": "19d6968cda4669572db28b8f88fa4bea580d4b84",
+    "sourceDirtyFileCount": 17,
+    "sourceContentDigest": "dc67543eeb4849bfe422fef618e1df4f066eaf99f0187f6a199e44c14a6dc8d0",
+    "sourceContentDigestDisposition": "digest covers the built static contract-doc outputs, package metadata, visual proof script, and private-output scan script used by this receipt",
+    "commitEquivalenceRequirement": "when generated before commit, reviewers should compare this digest and status readback with the committed source/artifact diff rather than treating sourceHead alone as proof freshness"
+  },
+  "sourceContentDigest": "dc67543eeb4849bfe422fef618e1df4f066eaf99f0187f6a199e44c14a6dc8d0",
   "mode": "check",
   "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
   "baselineUpdateReason": null,
@@ -164,8 +173,8 @@
       "file": "components.html",
       "status": 200,
       "ok": true,
-      "bytes": 697578,
-      "sha256": "019c8d6edd2137d3813c2475aa44f9fa6b5315632c21e7c8de740662c70dd820",
+      "bytes": 698029,
+      "sha256": "ab852154258cc7144cbcde673b2f9609a48727786f08d7d9365b08fdd6884823",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -204,8 +213,8 @@
       "file": "ai-consumption-contract.json",
       "status": 200,
       "ok": true,
-      "bytes": 8001,
-      "sha256": "8ae6fd98890761c734a7b0a79773a5f6dfc46b8fa84aa0d99b7f03452f9cd4f4",
+      "bytes": 8896,
+      "sha256": "335568a78a6d8755a0011091778570ded219b040c6170dd26bf42e0e1ae2bebe",
       "contentType": "application/json; charset=utf-8"
     },
     {
@@ -213,7 +222,7 @@
       "status": 200,
       "ok": true,
       "bytes": 1368,
-      "sha256": "b8f3c66e0b97c60f1e694e126f0d1ee3db81a4d1a243a58ff0642a54fb040c17",
+      "sha256": "bc0d964fb27505d29c33899ef25efa5e3ff078cd56215be5715fe05d8502101d",
       "contentType": "application/octet-stream"
     },
     {
@@ -221,7 +230,7 @@
       "status": 200,
       "ok": true,
       "bytes": 518,
-      "sha256": "3b3195372ca7d68194f75f9eb2778b905815fcafdd33811d2c372eb48dccf0f6",
+      "sha256": "e154ead9b26a543f6fc39d6a12fa3261bae02eb85985091a003637bbb2286419",
       "contentType": "application/octet-stream"
     }
   ],
@@ -1146,8 +1155,8 @@
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "3ff34b058fe9822634cabcbd641fa6948a94c0d380e9bfa69faaf6ac3d208861",
-        "currentRawSha256": "3ff34b058fe9822634cabcbd641fa6948a94c0d380e9bfa69faaf6ac3d208861",
+        "baselineRawSha256": "8d36397f2ae1f4fd81b61e3c6305a554f9811d06001b6481e3e30975a6b929ed",
+        "currentRawSha256": "8d36397f2ae1f4fd81b61e3c6305a554f9811d06001b6481e3e30975a6b929ed",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -1159,10 +1168,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/.current-check/component-dialog-spec__mobile-390x844.png",
-      "rawSha256": "3ff34b058fe9822634cabcbd641fa6948a94c0d380e9bfa69faaf6ac3d208861",
+      "rawSha256": "8d36397f2ae1f4fd81b61e3c6305a554f9811d06001b6481e3e30975a6b929ed",
       "width": 390,
       "height": 844,
-      "bytes": 62677,
+      "bytes": 62675,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -1170,13 +1179,13 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "3ff34b058fe9822634cabcbd641fa6948a94c0d380e9bfa69faaf6ac3d208861",
-            "bytes": 62677
+            "sha256": "8d36397f2ae1f4fd81b61e3c6305a554f9811d06001b6481e3e30975a6b929ed",
+            "bytes": 62675
           },
           {
             "attempt": 2,
-            "sha256": "3ff34b058fe9822634cabcbd641fa6948a94c0d380e9bfa69faaf6ac3d208861",
-            "bytes": 62677
+            "sha256": "8d36397f2ae1f4fd81b61e3c6305a554f9811d06001b6481e3e30975a6b929ed",
+            "bytes": 62675
           }
         ]
       },
@@ -1362,8 +1371,8 @@
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "5ef954399ad254a825e3f3111d0294ac60efca1054276ea4166b5e9353e304ba",
-        "currentRawSha256": "5ef954399ad254a825e3f3111d0294ac60efca1054276ea4166b5e9353e304ba",
+        "baselineRawSha256": "3594fbf02eb00a44e75ab74eb000677388bd40dbe84099c465672f1cdde14530",
+        "currentRawSha256": "3594fbf02eb00a44e75ab74eb000677388bd40dbe84099c465672f1cdde14530",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -1375,10 +1384,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/.current-check/component-dialog-spec-dark__mobile-390x844.png",
-      "rawSha256": "5ef954399ad254a825e3f3111d0294ac60efca1054276ea4166b5e9353e304ba",
+      "rawSha256": "3594fbf02eb00a44e75ab74eb000677388bd40dbe84099c465672f1cdde14530",
       "width": 390,
       "height": 844,
-      "bytes": 63583,
+      "bytes": 63572,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -1386,13 +1395,13 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "5ef954399ad254a825e3f3111d0294ac60efca1054276ea4166b5e9353e304ba",
-            "bytes": 63583
+            "sha256": "3594fbf02eb00a44e75ab74eb000677388bd40dbe84099c465672f1cdde14530",
+            "bytes": 63572
           },
           {
             "attempt": 2,
-            "sha256": "5ef954399ad254a825e3f3111d0294ac60efca1054276ea4166b5e9353e304ba",
-            "bytes": 63583
+            "sha256": "3594fbf02eb00a44e75ab74eb000677388bd40dbe84099c465672f1cdde14530",
+            "bytes": 63572
           }
         ]
       },
@@ -1573,7 +1582,7 @@
     "retained": false,
     "stoppedBeforeReturn": true
   },
-  "baselineManifestHash": "aa262e3c09cb0c6f248d847da3f40130371cb7d4144b641157351c17e1df23db",
+  "baselineManifestHash": "ab1ed71c9645d5bbe08209e012a32faf935375a39231fee309047ef48c3b8acc",
   "compareFailures": [],
   "comparisonReadbacks": [
     {
@@ -1767,8 +1776,8 @@
       "stateId": "component-dialog-spec",
       "viewport": "mobile-390x844",
       "rawIntegrity": {
-        "baselineRawSha256": "3ff34b058fe9822634cabcbd641fa6948a94c0d380e9bfa69faaf6ac3d208861",
-        "currentRawSha256": "3ff34b058fe9822634cabcbd641fa6948a94c0d380e9bfa69faaf6ac3d208861",
+        "baselineRawSha256": "8d36397f2ae1f4fd81b61e3c6305a554f9811d06001b6481e3e30975a6b929ed",
+        "currentRawSha256": "8d36397f2ae1f4fd81b61e3c6305a554f9811d06001b6481e3e30975a6b929ed",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -1811,8 +1820,8 @@
       "stateId": "component-dialog-spec-dark",
       "viewport": "mobile-390x844",
       "rawIntegrity": {
-        "baselineRawSha256": "5ef954399ad254a825e3f3111d0294ac60efca1054276ea4166b5e9353e304ba",
-        "currentRawSha256": "5ef954399ad254a825e3f3111d0294ac60efca1054276ea4166b5e9353e304ba",
+        "baselineRawSha256": "3594fbf02eb00a44e75ab74eb000677388bd40dbe84099c465672f1cdde14530",
+        "currentRawSha256": "3594fbf02eb00a44e75ab74eb000677388bd40dbe84099c465672f1cdde14530",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",

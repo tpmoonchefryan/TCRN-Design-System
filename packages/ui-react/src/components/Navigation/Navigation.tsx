@@ -1,5 +1,14 @@
-import type { AnchorHTMLAttributes, HTMLAttributes, ImgHTMLAttributes, ReactNode } from "react";
-import { useCallback, useId, useMemo, useState } from "react";
+import type {
+  AnchorHTMLAttributes,
+  FocusEvent,
+  FormEvent,
+  HTMLAttributes,
+  ImgHTMLAttributes,
+  KeyboardEvent as ReactKeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+  ReactNode
+} from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { IconButton, type IconButtonProps } from "../Button/index.js";
 import { SearchInput, type SearchInputProps } from "../Form/index.js";
 import { Icon, type IconName } from "../Icon/index.js";
@@ -103,24 +112,39 @@ export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSr
 }
 
 export type ShellThemeMode = "light" | "dark";
+export type ProductShellLocaleMenuChangeReason = "trigger" | "selection" | "outside-pointer" | "escape" | "controller";
+export type ProductShellSearchDismissReason = "blur" | "outside-pointer" | "tab" | "escape" | "result-activate" | "controller";
+export type ProductShellSearchExpandedChangeReason = "focus" | "input" | ProductShellSearchDismissReason;
 
 export interface ShellThemeToggleProps extends Omit<IconButtonProps, "ariaLabel" | "icon" | "iconName" | "children"> {
   currentTheme: ShellThemeMode;
   lightLabel?: string;
   darkLabel?: string;
+  onThemeChange?: (nextTheme: ShellThemeMode) => void;
 }
 
 export function ShellThemeToggle({
   currentTheme,
   lightLabel = "Switch to light mode",
   darkLabel = "Switch to dark mode",
+  onThemeChange,
   className,
+  onClick,
   ...props
 }: ShellThemeToggleProps) {
   const normalizedTheme = currentTheme === "dark" ? "dark" : "light";
+  const nextTheme: ShellThemeMode = normalizedTheme === "dark" ? "light" : "dark";
+  const handleClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (!event.defaultPrevented) {
+      onThemeChange?.(nextTheme);
+    }
+  };
+
   return (
     <IconButton
       {...props}
+      onClick={handleClick}
       ariaLabel={normalizedTheme === "dark" ? lightLabel : darkLabel}
       title={normalizedTheme === "dark" ? lightLabel : darkLabel}
       className={cx("tcrn-shell-theme-toggle", className)}
@@ -128,6 +152,8 @@ export function ShellThemeToggle({
       data-package-backed-shell-control="theme-toggle"
       data-theme-toggle="true"
       data-current-theme={normalizedTheme}
+      data-theme-next={nextTheme}
+      data-theme-transition-contract="whole-page-view-transition-or-token-wash"
       icon={
         <>
           <span className="tcrn-shell-theme-toggle__icon" data-theme-icon="light">
@@ -154,27 +180,85 @@ export interface ShellLocaleMenuProps extends HTMLAttributes<HTMLDivElement> {
   open?: boolean;
   menuId?: string;
   triggerId?: string;
+  onOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
+  onLocaleChange?: (locale: string) => void;
 }
 
-export function ShellLocaleMenu({ locales, currentLocale, label = "Language", open = false, menuId, triggerId, className, ...props }: ShellLocaleMenuProps) {
+export function ShellLocaleMenu({
+  locales,
+  currentLocale,
+  label = "Language",
+  open = false,
+  menuId,
+  triggerId,
+  onOpenChange,
+  onLocaleChange,
+  className,
+  ...props
+}: ShellLocaleMenuProps) {
   const current = locales.find((entry) => entry.locale === currentLocale) ?? locales[0];
   const currentName = requiredText(current?.nativeName, currentLocale);
   const generatedMenuId = useId();
   const resolvedMenuId = menuId ?? generatedMenuId;
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const requestOpenChange = useCallback((nextOpen: boolean, reason: ProductShellLocaleMenuChangeReason, focusTrigger = false) => {
+    onOpenChange?.(nextOpen, reason);
+    if (!nextOpen && focusTrigger) {
+      triggerRef.current?.focus();
+    }
+  }, [onOpenChange]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const ownerDocument = rootRef.current?.ownerDocument ?? document;
+    const handleMouseDown = (event: MouseEvent) => {
+      const target = event.target instanceof Node ? event.target : null;
+      if (target && !rootRef.current?.contains(target)) {
+        requestOpenChange(false, "outside-pointer");
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        requestOpenChange(false, "escape", true);
+      }
+    };
+    ownerDocument.addEventListener("mousedown", handleMouseDown);
+    ownerDocument.addEventListener("keydown", handleKeyDown);
+    return () => {
+      ownerDocument.removeEventListener("mousedown", handleMouseDown);
+      ownerDocument.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, requestOpenChange]);
+
+  const handleTriggerClick = () => {
+    requestOpenChange(!open, "trigger");
+  };
+
+  const handleLocaleSelect = (locale: string) => {
+    onLocaleChange?.(locale);
+    requestOpenChange(false, "selection", true);
+  };
+
   return (
     <div
       {...props}
+      ref={rootRef}
       className={cx("tcrn-shell-locale-menu", className)}
       data-shell-control="locale-menu"
       data-package-backed-shell-control="locale-menu"
       data-locale-control="native-name-menu"
       data-locale-menu-open={open ? "true" : "false"}
       data-locale-dismissal-contract="selection-outside-pointer-escape-focus-return"
+      data-locale-semantic-api="onOpenChange-onLocaleChange"
     >
       <button
+        ref={triggerRef}
         id={triggerId}
         className="tcrn-shell-locale-menu__trigger"
         type="button"
+        onClick={handleTriggerClick}
         data-locale-menu-toggle
         aria-haspopup="menu"
         aria-expanded={open ? "true" : "false"}
@@ -191,6 +275,7 @@ export function ShellLocaleMenu({ locales, currentLocale, label = "Language", op
             className="tcrn-shell-locale-menu__option"
             type="button"
             role="menuitem"
+            onClick={() => handleLocaleSelect(entry.locale)}
             data-locale-option={entry.locale}
             data-locale-menu-option
             aria-current={entry.locale === currentLocale ? "true" : undefined}
@@ -209,6 +294,7 @@ export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, "ariaL
   expandedLabel?: string;
   collapsedLabel?: string;
   persistedKey?: string;
+  onCollapsedChange?: (collapsed: boolean) => void;
 }
 
 export function SideNavCollapseButton({
@@ -217,12 +303,22 @@ export function SideNavCollapseButton({
   expandedLabel = "Collapse side navigation",
   collapsedLabel = "Expand side navigation",
   persistedKey,
+  onCollapsedChange,
   className,
+  onClick,
   ...props
 }: SideNavCollapseButtonProps) {
+  const handleClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (!event.defaultPrevented) {
+      onCollapsedChange?.(!collapsed);
+    }
+  };
+
   return (
     <IconButton
       {...props}
+      onClick={handleClick}
       ariaLabel={collapsed ? collapsedLabel : expandedLabel}
       title={collapsed ? collapsedLabel : expandedLabel}
       aria-controls={controls}
@@ -233,6 +329,7 @@ export function SideNavCollapseButton({
       data-side-nav-toggle="true"
       data-side-nav-collapsed={String(collapsed)}
       data-side-nav-persisted-key={persistedKey}
+      data-side-nav-semantic-api="onCollapsedChange"
       icon={
         <>
           <span className="tcrn-shell-side-nav-toggle__icon" data-side-nav-icon="collapse">
@@ -417,7 +514,11 @@ export interface ProductShellSearchProps extends Omit<HTMLAttributes<HTMLDivElem
   results?: readonly ProductShellSearchResult[];
   resultsLabel?: string;
   emptyLabel?: string;
-  inputProps?: Omit<SearchInputProps, "type" | "placeholder" | "shortcut">;
+  onQueryChange?: (query: string) => void;
+  onExpandedChange?: (expanded: boolean, reason: ProductShellSearchExpandedChangeReason) => void;
+  onDismiss?: (reason: ProductShellSearchDismissReason) => void;
+  onResultActivate?: (result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void;
+  inputProps?: Omit<SearchInputProps, "type" | "placeholder" | "shortcut" | "value" | "defaultValue" | "onChange" | "onInput" | "onFocus" | "onBlur" | "onKeyDown">;
 }
 
 export function ProductShellSearch({
@@ -429,35 +530,105 @@ export function ProductShellSearch({
   results = [],
   resultsLabel = "Search results",
   emptyLabel = "No results",
+  onQueryChange,
+  onExpandedChange,
+  onDismiss,
+  onResultActivate,
   inputProps,
   className,
   ...props
 }: ProductShellSearchProps) {
   const resultsId = useId();
-  const normalizedQuery = query.trim();
-  const isExpanded = expanded || normalizedQuery.length > 0;
+  const rootRef = useRef<HTMLDivElement>(null);
+  const isExpanded = expanded;
   const hasResults = results.length > 0;
+
+  const requestExpandedChange = useCallback((nextExpanded: boolean, reason: ProductShellSearchExpandedChangeReason) => {
+    onExpandedChange?.(nextExpanded, reason);
+  }, [onExpandedChange]);
+
+  const dismissSearch = useCallback((reason: ProductShellSearchDismissReason) => {
+    requestExpandedChange(false, reason);
+    onDismiss?.(reason);
+  }, [onDismiss, requestExpandedChange]);
+
+  useEffect(() => {
+    if (!isExpanded) return undefined;
+    const ownerDocument = rootRef.current?.ownerDocument ?? document;
+    const handleMouseDown = (event: MouseEvent) => {
+      const target = event.target instanceof Node ? event.target : null;
+      if (target && !rootRef.current?.contains(target)) {
+        dismissSearch("outside-pointer");
+      }
+    };
+    ownerDocument.addEventListener("mousedown", handleMouseDown);
+    return () => {
+      ownerDocument.removeEventListener("mousedown", handleMouseDown);
+    };
+  }, [dismissSearch, isExpanded]);
+
+  const handleFocus = () => {
+    requestExpandedChange(true, "focus");
+  };
+
+  const handleInput = (event: FormEvent<HTMLInputElement>) => {
+    onQueryChange?.(event.currentTarget.value);
+    requestExpandedChange(true, "input");
+  };
+
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    const nextTarget = event.relatedTarget instanceof Node ? event.relatedTarget : null;
+    if (!nextTarget || !rootRef.current?.contains(nextTarget)) {
+      dismissSearch("blur");
+    }
+  };
+
+  const handleKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      dismissSearch("escape");
+      event.currentTarget.blur();
+    }
+    if (event.key === "Tab") {
+      dismissSearch("tab");
+    }
+  };
+
+  const handleResultActivate = (result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => {
+    onResultActivate?.(result, event);
+    if (!event.defaultPrevented) {
+      dismissSearch("result-activate");
+    }
+  };
+
   return (
     <div
       {...props}
+      ref={rootRef}
       className={cx("tcrn-product-shell-search", className)}
       data-shell-control="product-shell-search"
       data-package-backed-shell-control="product-shell-search"
       data-search-expanded={isExpanded ? "true" : "false"}
       data-search-results-visible={isExpanded && hasResults ? "true" : "false"}
       data-search-dismissal-contract="blur-outside-pointer-tab-escape"
+      data-search-semantic-api="onQueryChange-onExpandedChange-onDismiss-onResultActivate"
     >
       <SearchInput
         {...inputProps}
         role="combobox"
         aria-label={label}
         aria-controls={resultsId}
-        aria-expanded={isExpanded && hasResults ? "true" : "false"}
+        aria-expanded={isExpanded ? "true" : "false"}
         aria-haspopup="listbox"
         aria-autocomplete="list"
         placeholder={placeholder}
         shortcut={shortcut}
-        defaultValue={query}
+        value={query}
+        readOnly={inputProps?.readOnly ?? !onQueryChange}
+        onFocus={handleFocus}
+        onInput={handleInput}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
       />
       <div
         id={resultsId}
@@ -472,6 +643,7 @@ export function ProductShellSearch({
             className="tcrn-product-shell-search__result"
             href={result.href}
             role="option"
+            onClick={(event) => handleResultActivate(result, event)}
             aria-selected={result.selected ? "true" : undefined}
             data-search-result
             data-selected={result.selected ? "true" : undefined}
@@ -522,6 +694,14 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   currentTheme?: ShellThemeMode;
   localeMenuOpen?: boolean;
   search?: ProductShellSearchProps;
+  onCollapsedChange?: (collapsed: boolean) => void;
+  onThemeChange?: (theme: ShellThemeMode) => void;
+  onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
+  onLocaleChange?: (locale: string) => void;
+  onSearchQueryChange?: (query: string) => void;
+  onSearchExpandedChange?: (expanded: boolean, reason: ProductShellSearchExpandedChangeReason) => void;
+  onSearchDismiss?: (reason: ProductShellSearchDismissReason) => void;
+  onSearchResultActivate?: (result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void;
   contentId?: string;
   contentRole?: "main" | "region";
   contentLabel?: string;
@@ -547,6 +727,14 @@ export function ProductShell({
   currentTheme = "light",
   localeMenuOpen = false,
   search,
+  onCollapsedChange,
+  onThemeChange,
+  onLocaleMenuOpenChange,
+  onLocaleChange,
+  onSearchQueryChange,
+  onSearchExpandedChange,
+  onSearchDismiss,
+  onSearchResultActivate,
   contentId = "product-shell-content",
   contentRole = "region",
   contentLabel = "Product shell workspace",
@@ -556,6 +744,25 @@ export function ProductShell({
   ...props
 }: ProductShellProps) {
   const ContentElement = contentRole === "main" ? "main" : "section";
+  const mergedSearch: ProductShellSearchProps = {
+    ...search,
+    onQueryChange: (nextQuery) => {
+      search?.onQueryChange?.(nextQuery);
+      onSearchQueryChange?.(nextQuery);
+    },
+    onExpandedChange: (nextExpanded, reason) => {
+      search?.onExpandedChange?.(nextExpanded, reason);
+      onSearchExpandedChange?.(nextExpanded, reason);
+    },
+    onDismiss: (reason) => {
+      search?.onDismiss?.(reason);
+      onSearchDismiss?.(reason);
+    },
+    onResultActivate: (result, event) => {
+      search?.onResultActivate?.(result, event);
+      onSearchResultActivate?.(result, event);
+    }
+  };
 
   return (
     <div
@@ -569,6 +776,7 @@ export function ProductShell({
       data-product-shell-responsive="desktop-attached-mobile-stacked"
       data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"
       data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"
+      data-product-shell-semantic-api="collapse-theme-locale-search"
     >
       <SkipLink href={`#${contentId}`}>{skipLinkLabel}</SkipLink>
       <aside className="tcrn-product-shell__sidebar" data-product-shell-region="side-navigation">
@@ -582,7 +790,7 @@ export function ProductShell({
               data-visible-registered-brand-lockup="true"
             />
           </a>
-          <SideNavCollapseButton collapsed={collapsed} controls={navId} persistedKey={collapsedStorageKey} />
+          <SideNavCollapseButton collapsed={collapsed} controls={navId} persistedKey={collapsedStorageKey} onCollapsedChange={onCollapsedChange} />
         </div>
         <SideNav id={navId} label={navLabel} className="tcrn-product-shell__nav" data-registered-navigation-only="true">
           {navGroups.map((group) => (
@@ -613,9 +821,15 @@ export function ProductShell({
                 <span>Current location</span>
                 <strong>{currentRouteLabel}</strong>
               </div>
-              <ProductShellSearch {...search} />
-              <ShellLocaleMenu locales={locales} currentLocale={currentLocale} open={localeMenuOpen} />
-              <ShellThemeToggle currentTheme={currentTheme} />
+              <ProductShellSearch {...mergedSearch} />
+              <ShellLocaleMenu
+                locales={locales}
+                currentLocale={currentLocale}
+                open={localeMenuOpen}
+                onOpenChange={onLocaleMenuOpenChange}
+                onLocaleChange={onLocaleChange}
+              />
+              <ShellThemeToggle currentTheme={currentTheme} onThemeChange={onThemeChange} />
             </div>
           }
         />
@@ -636,40 +850,60 @@ export interface ProductShellControllerConfig {
   initialCollapsed?: boolean;
   initialTheme?: ShellThemeMode;
   initialLocale?: string;
+  navId?: string;
   collapsedStorageKey?: string;
   themeStorageKey?: string;
   localeStorageKey?: string;
   searchRecords?: readonly ProductShellSearchResult[];
   searchLimit?: number;
+  onCollapsedChange?: (collapsed: boolean) => void;
+  onThemeChange?: (theme: ShellThemeMode) => void;
+  onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
+  onLocaleChange?: (locale: string) => void;
+  onSearchQueryChange?: (query: string) => void;
+  onSearchExpandedChange?: (expanded: boolean, reason: ProductShellSearchExpandedChangeReason) => void;
+  onSearchDismiss?: (reason: ProductShellSearchDismissReason) => void;
+  onSearchResultActivate?: (result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void;
 }
 
 export function useProductShellController({
   initialCollapsed = false,
   initialTheme = "light",
   initialLocale = "en",
+  navId = "tcrn-product-shell-side-nav",
   collapsedStorageKey,
   themeStorageKey,
   localeStorageKey,
   searchRecords = [],
-  searchLimit = 8
+  searchLimit = 8,
+  onCollapsedChange,
+  onThemeChange,
+  onLocaleMenuOpenChange,
+  onLocaleChange,
+  onSearchQueryChange,
+  onSearchExpandedChange,
+  onSearchDismiss,
+  onSearchResultActivate
 }: ProductShellControllerConfig = {}) {
   const [collapsed, setCollapsedState] = useState(() => readStoredBoolean(collapsedStorageKey, initialCollapsed));
   const [theme, setThemeState] = useState<ShellThemeMode>(() => readStoredTheme(themeStorageKey, initialTheme));
   const [locale, setLocaleState] = useState(() => readStoredString(localeStorageKey, initialLocale));
-  const [localeMenuOpen, setLocaleMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchExpanded, setSearchExpanded] = useState(false);
+  const [localeMenuOpen, setLocaleMenuOpenState] = useState(false);
+  const [searchQuery, setSearchQueryState] = useState("");
+  const [searchExpanded, setSearchExpandedState] = useState(false);
 
   const setCollapsed = useCallback((nextCollapsed: boolean) => {
     setCollapsedState(nextCollapsed);
     writeStoredBoolean(collapsedStorageKey, nextCollapsed);
-  }, [collapsedStorageKey]);
+    onCollapsedChange?.(nextCollapsed);
+  }, [collapsedStorageKey, onCollapsedChange]);
 
   const setTheme = useCallback((nextTheme: ShellThemeMode) => {
     const resolvedTheme = nextTheme === "dark" ? "dark" : "light";
     const update = () => {
       setThemeState(resolvedTheme);
       writeStoredString(themeStorageKey, resolvedTheme);
+      onThemeChange?.(resolvedTheme);
     };
     const viewTransitionDocument = typeof document === "undefined"
       ? undefined
@@ -679,12 +913,33 @@ export function useProductShellController({
       return;
     }
     update();
-  }, [themeStorageKey]);
+  }, [onThemeChange, themeStorageKey]);
 
   const setLocale = useCallback((nextLocale: string) => {
     setLocaleState(nextLocale);
     writeStoredString(localeStorageKey, nextLocale);
-  }, [localeStorageKey]);
+    onLocaleChange?.(nextLocale);
+  }, [localeStorageKey, onLocaleChange]);
+
+  const setLocaleMenuOpen = useCallback((nextOpen: boolean, reason: ProductShellLocaleMenuChangeReason = "controller") => {
+    setLocaleMenuOpenState(nextOpen);
+    onLocaleMenuOpenChange?.(nextOpen, reason);
+  }, [onLocaleMenuOpenChange]);
+
+  const setSearchQuery = useCallback((nextQuery: string) => {
+    setSearchQueryState(nextQuery);
+    onSearchQueryChange?.(nextQuery);
+  }, [onSearchQueryChange]);
+
+  const setSearchExpanded = useCallback((nextExpanded: boolean, reason: ProductShellSearchExpandedChangeReason = "controller") => {
+    setSearchExpandedState(nextExpanded);
+    onSearchExpandedChange?.(nextExpanded, reason);
+  }, [onSearchExpandedChange]);
+
+  const collapseSearch = useCallback((reason: ProductShellSearchDismissReason = "controller") => {
+    setSearchExpanded(false, reason);
+    onSearchDismiss?.(reason);
+  }, [onSearchDismiss, setSearchExpanded]);
 
   const searchResults = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -694,24 +949,97 @@ export function useProductShellController({
       .slice(0, searchLimit);
   }, [searchLimit, searchQuery, searchRecords]);
 
+  const toggleCollapsed = useCallback(() => {
+    setCollapsed(!collapsed);
+  }, [collapsed, setCollapsed]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  }, [setTheme, theme]);
+
+  const openLocaleMenu = useCallback(() => {
+    setLocaleMenuOpen(true, "controller");
+  }, [setLocaleMenuOpen]);
+
+  const closeLocaleMenu = useCallback(() => {
+    setLocaleMenuOpen(false, "controller");
+  }, [setLocaleMenuOpen]);
+
+  const handleSearchResultActivate = useCallback((result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => {
+    onSearchResultActivate?.(result, event);
+  }, [onSearchResultActivate]);
+
+  const productShellSearchProps: ProductShellSearchProps = {
+    query: searchQuery,
+    expanded: searchExpanded,
+    results: searchResults,
+    onQueryChange: setSearchQuery,
+    onExpandedChange: setSearchExpanded,
+    onDismiss: collapseSearch,
+    onResultActivate: handleSearchResultActivate
+  };
+
+  const shellLocaleMenuProps = {
+    currentLocale: locale,
+    open: localeMenuOpen,
+    onOpenChange: setLocaleMenuOpen,
+    onLocaleChange: setLocale
+  };
+
+  const shellThemeToggleProps = {
+    currentTheme: theme,
+    onThemeChange: setTheme
+  };
+
+  const sideNavCollapseButtonProps = {
+    collapsed,
+    controls: navId,
+    persistedKey: collapsedStorageKey,
+    onCollapsedChange: setCollapsed
+  };
+
+  const productShellControlProps = {
+    collapsed,
+    collapsedStorageKey,
+    currentTheme: theme,
+    currentLocale: locale,
+    localeMenuOpen,
+    navId,
+    onCollapsedChange: setCollapsed,
+    onThemeChange: setTheme,
+    onLocaleMenuOpenChange: setLocaleMenuOpen,
+    onLocaleChange: setLocale,
+    onSearchQueryChange: setSearchQuery,
+    onSearchExpandedChange: setSearchExpanded,
+    onSearchDismiss: collapseSearch,
+    onSearchResultActivate: handleSearchResultActivate,
+    search: productShellSearchProps
+  };
+
   return {
     collapsed,
     setCollapsed,
-    toggleCollapsed: () => setCollapsed(!collapsed),
+    toggleCollapsed,
     theme,
     setTheme,
-    toggleTheme: () => setTheme(theme === "dark" ? "light" : "dark"),
+    toggleTheme,
     locale,
     setLocale,
     localeMenuOpen,
-    openLocaleMenu: () => setLocaleMenuOpen(true),
-    closeLocaleMenu: () => setLocaleMenuOpen(false),
+    setLocaleMenuOpen,
+    openLocaleMenu,
+    closeLocaleMenu,
     searchQuery,
     setSearchQuery,
     searchExpanded,
     setSearchExpanded,
-    collapseSearch: () => setSearchExpanded(false),
+    collapseSearch,
     searchResults,
+    sideNavCollapseButtonProps,
+    shellThemeToggleProps,
+    shellLocaleMenuProps,
+    productShellSearchProps,
+    productShellControlProps,
     productShellStateProps: {
       collapsed,
       currentTheme: theme,

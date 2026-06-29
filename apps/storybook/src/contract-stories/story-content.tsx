@@ -1349,9 +1349,9 @@ const legacyContractStories: ContractStory[] = [
             >
               <ReadbackPanel title="Package-backed AOS shell boundary">
                 <Text>
-                  Product consumers supply only route IA, labels, locale data, search records, callbacks, and page content; the attached shell grid, collapsed rail, compact search, locale popup state markers, theme toggle, responsive posture, focus, and reduced-motion styling are package-backed.
+                  Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks. Collapse, theme, locale popup, and search behavior must flow through ProductShell semantic props or the useProductShellController prop bundles instead of wrapper event delegation.
                 </Text>
-                <EvidenceStrip items={["package-backed shell boundary", "AOS-style side nav", "effects owned by DS", "product adoption separate"]} />
+                <EvidenceStrip items={["package-backed shell boundary", "semantic control APIs", "controller prop bundles", "product adoption separate"]} />
               </ReadbackPanel>
             </ProductShell>
           </div>

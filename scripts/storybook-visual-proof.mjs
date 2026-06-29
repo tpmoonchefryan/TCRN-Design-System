@@ -864,7 +864,20 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
   return entries;
 }
 
-function makeBaseReceipt({ mode, reason, sourceHead, sourceContentDigest, staticPageReadbacks, browserVersion, routeOwnedEphemeralServer, compareFailures = [], comparisonReadbacks = [], entries }) {
+function makeBaseReceipt({
+  mode,
+  reason,
+  sourceHead,
+  sourceGitStatus,
+  sourceHeadEquivalenceReadback,
+  sourceContentDigest,
+  staticPageReadbacks,
+  browserVersion,
+  routeOwnedEphemeralServer,
+  compareFailures = [],
+  comparisonReadbacks = [],
+  entries
+}) {
   const comparisonByKey = new Map(comparisonReadbacks.map((item) => [`${item.stateId}::${item.viewport}`, item]));
   const failureArrays = {
     staticPageFailures: staticPageReadbacks.filter((page) => !page.ok),
@@ -881,6 +894,8 @@ function makeBaseReceipt({ mode, reason, sourceHead, sourceContentDigest, static
       && failureArrays.compareFailures.length === 0,
     route,
     sourceHead,
+    sourceGitStatus,
+    sourceHeadEquivalenceReadback,
     sourceContentDigest,
     mode,
     comparisonContractVersion,
@@ -940,6 +955,7 @@ function writeMarkdownReceipt(receipt) {
     `OK: \`${receipt.ok}\``,
     `Comparison contract: \`${comparisonContractVersion}\``,
     `Source head: \`${receipt.sourceHead}\``,
+    `Source equivalence: \`${receipt.sourceHeadEquivalenceReadback.disposition}\``,
     `Static pages: ${receipt.staticPageReadbacks.length}`,
     `Screenshots: ${receipt.screenshotReadbacks.length}`,
     `Compare failures: ${receipt.compareFailures.length}`,
@@ -970,6 +986,8 @@ function writeBaselineArtifacts({ reason, receipt, entries }) {
     route,
     comparisonContractVersion,
     sourceHead: receipt.sourceHead,
+    sourceGitStatus: receipt.sourceGitStatus,
+    sourceHeadEquivalenceReadback: receipt.sourceHeadEquivalenceReadback,
     sourceContentDigest: receipt.sourceContentDigest,
     baselineUpdateReason: reason,
     packageName,
@@ -1140,12 +1158,26 @@ async function run() {
   }
   mkdirSync(receiptRoot, { recursive: true });
   const sourceHead = git(["rev-parse", "HEAD"]);
+  const sourceGitStatus = git(["status", "--short", "--branch"]);
+  const sourceDirtyFileCount = sourceGitStatus.split("\n").filter((line) => line && !line.startsWith("##")).length;
   const sourceContentDigest = digestFiles([
     "package.json",
     "scripts/storybook-visual-proof.mjs",
     "scripts/no-private-input-scan.mjs",
     ...staticPageAllowlist.map((file) => join(staticRoot, file))
   ]);
+  const sourceHeadEquivalenceReadback = {
+    disposition: sourceDirtyFileCount > 0
+      ? "source_equivalent_dirty_tree_receipt_generated_before_commit"
+      : "clean_head_receipt_generated_from_committed_source",
+    sourceHead,
+    sourceDirtyFileCount,
+    sourceContentDigest,
+    sourceContentDigestDisposition:
+      "digest covers the built static contract-doc outputs, package metadata, visual proof script, and private-output scan script used by this receipt",
+    commitEquivalenceRequirement:
+      "when generated before commit, reviewers should compare this digest and status readback with the committed source/artifact diff rather than treating sourceHead alone as proof freshness"
+  };
   const captureDir = mode === "update-baseline" ? baselineDir : currentCaptureDir;
   const server = await startStaticServer(staticRoot);
   let browser;
@@ -1174,6 +1206,8 @@ async function run() {
         mode,
         reason,
         sourceHead,
+        sourceGitStatus,
+        sourceHeadEquivalenceReadback,
         sourceContentDigest,
         staticPageReadbacks,
         browserVersion,
@@ -1187,6 +1221,7 @@ async function run() {
 	        comparisonContractVersion,
 	        baselineUpdateReason: reason,
         sourceHead,
+        sourceHeadEquivalenceReadback,
         sourceContentDigest,
         screenshotCount: entries.length,
         baselineManifestPath,
@@ -1202,6 +1237,8 @@ async function run() {
       mode,
       reason: null,
       sourceHead,
+      sourceGitStatus,
+      sourceHeadEquivalenceReadback,
       sourceContentDigest,
       staticPageReadbacks,
       browserVersion,
@@ -1220,6 +1257,7 @@ async function run() {
       ok: receipt.ok,
       mode,
       sourceHead,
+      sourceHeadEquivalenceReadback,
       sourceContentDigest,
       comparisonContractVersion,
       screenshotCount: entries.length,

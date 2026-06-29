@@ -251,7 +251,9 @@ const storybookShellControlContract = {
   uiReactReadmeBoundaryVisible: uiReactReadme.includes("Storybook Shell Control Boundary")
     && uiReactReadme.includes("registered package-backed product shell/effect boundary")
     && uiReactReadme.includes("`ProductShell`, `ProductShellSearch`, `ShellThemeToggle`, `ShellLocaleMenu`")
-    && uiReactReadme.includes("`useProductShellController` is the public utility"),
+    && uiReactReadme.includes("`useProductShellController` is the public utility")
+    && uiReactReadme.includes("`productShellControlProps`")
+    && uiReactReadme.includes("`onSearchResultActivate`"),
   themeToggleRuleVisible: uiReactReadme.includes("single icon-only circular button")
     && storybookBodies.some((source) => /data-storybook-theme-toggle/.test(source.body)),
   wholePageTransitionRuleVisible: uiReactReadme.includes("whole-page shell transition")

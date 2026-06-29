@@ -1625,7 +1625,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 12152
+          "height": 12204
         },
         {
           "id": "display-primitives-spec",
@@ -1655,7 +1655,7 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 358,
-          "height": 11599
+          "height": 11631
         },
         {
           "id": "dialog-spec-usage",

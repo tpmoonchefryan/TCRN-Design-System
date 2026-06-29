@@ -2,7 +2,7 @@
   "ok": true,
   "mode": "update-baseline",
   "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
-  "reason": "DS-shell-effect-boundary-package-backed-update",
+  "reason": "DS-product-shell-semantic-api-repair",
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
   "disposition": "DSCVH-S005-initial-local-static-baseline",
   "entries": [
@@ -235,10 +235,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__mobile-390x844.png",
-      "rawSha256": "3ff34b058fe9822634cabcbd641fa6948a94c0d380e9bfa69faaf6ac3d208861",
+      "rawSha256": "8d36397f2ae1f4fd81b61e3c6305a554f9811d06001b6481e3e30975a6b929ed",
       "width": 390,
       "height": 844,
-      "bytes": 62677
+      "bytes": 62675
     },
     {
       "stateId": "pattern-dashboard-page-templates",
@@ -287,10 +287,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__mobile-390x844.png",
-      "rawSha256": "5ef954399ad254a825e3f3111d0294ac60efca1054276ea4166b5e9353e304ba",
+      "rawSha256": "3594fbf02eb00a44e75ab74eb000677388bd40dbe84099c465672f1cdde14530",
       "width": 390,
       "height": 844,
-      "bytes": 63583
+      "bytes": 63572
     },
     {
       "stateId": "pattern-dashboard-page-templates-dark",
