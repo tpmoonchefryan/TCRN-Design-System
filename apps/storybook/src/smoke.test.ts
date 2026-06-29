@@ -401,7 +401,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Style Guide"), /data-icon-brand-boundary="not-brand-identity"/);
   assert.match(readGroupPage("Style Guide"), /class="tcrn-icon-sample-grid"/);
   assert.match(readGroupPage("Style Guide"), /class="tcrn-icon-sample"/);
-  assert.doesNotMatch(readGroupPage("Style Guide"), /--tcrn-space-3/);
+  const iconSampleGridCss = readGroupPage("Style Guide").match(/\.tcrn-icon-sample-grid \{[\s\S]*?\}/)?.[0] ?? "";
+  assert.doesNotMatch(iconSampleGridCss, /--tcrn-space-3/);
   assert.match(readGroupPage("Style Guide"), /\.tcrn-icon-sample-grid[\s\S]*margin: var\(--tcrn-space-4\) 0 0/);
   assert.match(readGroupPage("Style Guide"), /data-icon-name="search"/);
   assert.match(readGroupPage("Style Guide"), /No red, pink, coral, or orange connector points/);

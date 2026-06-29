@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { tcrnDefaultLocale, tcrnLocaleMetadata, tcrnSupportedLocales } from "@tcrn/ui-copy-state";
-import { Icon, type IconName } from "@tcrn/ui-react";
+import { Icon, tcrnComponentCss, type IconName } from "@tcrn/ui-react";
 import { DialogSpecFixture, contractStoriesByGroup, contractStoryGroups } from "../stories.js";
 import type { ContractStoryGroup } from "../stories.js";
 import { alphaStoryCss } from "../alpha-styles.js";
@@ -22,6 +22,100 @@ function iconHtml(name: IconName, className: string, dataDocShellIcon: string): 
     <Icon name={name} className={className} data-doc-shell-icon={dataDocShellIcon} />
   );
 }
+
+function scopeComponentSelector(selector: string, scope: string): string {
+  const trimmed = selector.trim();
+  if (!trimmed) return trimmed;
+  if (trimmed === ":root") return scope;
+  if (trimmed.startsWith("html[data-tcrn-theme")) {
+    return trimmed.replace(/^(html\[[^\]]+\])\s*/, `$1 ${scope} `);
+  }
+  if (trimmed.startsWith("[data-tcrn-theme")) {
+    const pageThemeSelector = trimmed.replace(/^(\[[^\]]+\])\s*/, `$1 ${scope} `);
+    return `${pageThemeSelector},\n${scope} ${trimmed}`;
+  }
+  return `${scope} ${trimmed}`;
+}
+
+function scopeComponentCss(css: string, scope: string): string {
+  const lines = css.split("\n");
+  const output: string[] = [];
+  const selectorBuffer: string[] = [];
+  const blockStack: Array<"rule" | "media" | "keyframes" | "property"> = [];
+  const insideRule = () => blockStack[blockStack.length - 1] === "rule";
+  const insideKeyframes = () => blockStack.includes("keyframes");
+  const popBlock = () => {
+    blockStack.pop();
+  };
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      output.push(line);
+      continue;
+    }
+
+    if (selectorBuffer.length > 0 && !trimmed.includes("{")) {
+      selectorBuffer.push(line);
+      continue;
+    }
+
+    if (insideKeyframes()) {
+      output.push(line);
+      if (trimmed === "}") popBlock();
+      continue;
+    }
+
+    if (trimmed.startsWith("@keyframes")) {
+      output.push(line);
+      blockStack.push("keyframes");
+      continue;
+    }
+
+    if (trimmed.startsWith("@property")) {
+      output.push(line);
+      blockStack.push("property");
+      continue;
+    }
+
+    if (trimmed.startsWith("@media") || trimmed.startsWith("@supports")) {
+      output.push(line);
+      blockStack.push("media");
+      continue;
+    }
+
+    if (insideRule() || blockStack[blockStack.length - 1] === "property") {
+      output.push(line);
+      if (trimmed === "}") popBlock();
+      continue;
+    }
+
+    if (trimmed.endsWith(",") && !trimmed.includes("{")) {
+      selectorBuffer.push(line);
+      continue;
+    }
+
+    if (trimmed.includes("{")) {
+      const braceIndex = line.indexOf("{");
+      const selectorText = [...selectorBuffer, line.slice(0, braceIndex)].join("\n");
+      selectorBuffer.length = 0;
+      const scopedSelector = selectorText
+        .split(",")
+        .map((selector) => scopeComponentSelector(selector, scope))
+        .join(",\n");
+      output.push(`${scopedSelector}${line.slice(braceIndex)}`);
+      blockStack.push("rule");
+      continue;
+    }
+
+    output.push(line);
+    if (trimmed === "}") popBlock();
+  }
+
+  return output.join("\n");
+}
+
+const staticStoryComponentCss = scopeComponentCss(tcrnComponentCss, ".story-body");
 
 function navHtml(activeGroup: ContractStoryGroup): string {
   return `<nav class="tcrn-doc-nav" aria-label="Documentation sections" data-doc-nav="sections">
@@ -163,8 +257,11 @@ export function pageHtml(group: ContractStoryGroup): string {
   <meta name="tcrn-ai-consumption-contract-route" content="proof.html#ai-consumption-contract" />
   <meta name="tcrn-ai-consumption-contract-required" content="must-read-first" />
   <title>${localeText(`group.${group}`)} - ${localeText("shell.title")}</title>
-  <style>
+  <style data-tcrn-static-doc-style-source="storybook">
 ${alphaStoryCss}
+  </style>
+  <style data-tcrn-component-style-source="@tcrn/ui-react" data-tcrn-product-shell-comparator-style="package-backed" data-tcrn-component-style-scope=".story-body">
+${staticStoryComponentCss}
   </style>
 </head>
 <body>

@@ -110,31 +110,31 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 1077,
-          "height": 714
+          "height": 878
         },
         {
           "id": "governance-boundaries",
           "visible": true,
           "width": 1077,
-          "height": 502
+          "height": 673
         },
         {
           "id": "maintainers-routing",
           "visible": true,
           "width": 1077,
-          "height": 472
+          "height": 634
         },
         {
           "id": "contribution-model",
           "visible": true,
           "width": 1077,
-          "height": 271
+          "height": 339
         },
         {
           "id": "release-bug-policy",
           "visible": true,
           "width": 1077,
-          "height": 361
+          "height": 483
         }
       ],
       "clipped": [],
@@ -192,43 +192,43 @@
           "id": "brand-identity",
           "visible": true,
           "width": 1077,
-          "height": 1001
+          "height": 1038
         },
         {
           "id": "color-palette",
           "visible": true,
           "width": 1077,
-          "height": 2188
+          "height": 2736
         },
         {
           "id": "text-styles",
           "visible": true,
           "width": 1077,
-          "height": 1878
+          "height": 2744
         },
         {
           "id": "grid-system",
           "visible": true,
           "width": 1077,
-          "height": 570
+          "height": 751
         },
         {
           "id": "icons-motion",
           "visible": true,
           "width": 1077,
-          "height": 1843
+          "height": 2344
         },
         {
           "id": "global-states",
           "visible": true,
           "width": 1077,
-          "height": 606
+          "height": 779
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
           "width": 1077,
-          "height": 532
+          "height": 710
         }
       ],
       "clipped": [],
@@ -282,19 +282,19 @@
           "id": "tokens-copy-state",
           "visible": true,
           "width": 1077,
-          "height": 401
+          "height": 429
         },
         {
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 1077,
-          "height": 1304
+          "height": 1552
         },
         {
           "id": "copy-guidelines",
           "visible": true,
           "width": 1077,
-          "height": 403
+          "height": 513
         }
       ],
       "clipped": [],
@@ -395,49 +395,49 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 5051
+          "height": 7304
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 1077,
-          "height": 909
+          "height": 1038
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 1077,
-          "height": 958
+          "height": 1188
         },
         {
           "id": "button-spec-usage",
           "visible": true,
           "width": 1077,
-          "height": 630
+          "height": 755
         },
         {
           "id": "field-spec-usage",
           "visible": true,
           "width": 1077,
-          "height": 1132
+          "height": 1300
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 1077,
-          "height": 5312
+          "height": 6497
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
           "width": 1077,
-          "height": 1091
+          "height": 1277
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
           "width": 1077,
-          "height": 1692
+          "height": 2314
         }
       ],
       "clipped": [],
@@ -494,666 +494,51 @@
       "storyRegions": [
         {
           "id": "forms-patterns",
-          "visible": true,
-          "width": 1077,
-          "height": 233
-        },
-        {
-          "id": "workbench-patterns",
-          "visible": true,
-          "width": 1077,
-          "height": 416
-        },
-        {
-          "id": "readiness-notification-patterns",
           "visible": true,
           "width": 1077,
           "height": 241
         },
         {
-          "id": "selection-list-patterns",
-          "visible": true,
-          "width": 1077,
-          "height": 231
-        },
-        {
-          "id": "modal-validation-patterns",
-          "visible": true,
-          "width": 1077,
-          "height": 261
-        },
-        {
-          "id": "datagrid-fields-patterns",
-          "visible": true,
-          "width": 1077,
-          "height": 213
-        },
-        {
-          "id": "big-list-search-patterns",
-          "visible": true,
-          "width": 1077,
-          "height": 259
-        },
-        {
-          "id": "dashboard-page-templates",
-          "visible": true,
-          "width": 1077,
-          "height": 261
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "desktop-1440x900",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/proof.html",
-      "expectedSection": "Proof",
-      "expectedStoryIds": [
-        "proof-matrix",
-        "ai-consumption-contract",
-        "blocked-actions",
-        "overlay-focus"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Proof - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Proof",
-      "storySections": [
-        "Proof"
-      ],
-      "currentNav": "Proof",
-      "currentStoryNav": "proof-matrix",
-      "bodyScrollWidth": 1440,
-      "viewportWidth": 1440,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "proof-matrix",
-          "visible": true,
-          "width": 1077,
-          "height": 379
-        },
-        {
-          "id": "ai-consumption-contract",
-          "visible": true,
-          "width": 1077,
-          "height": 3385
-        },
-        {
-          "id": "blocked-actions",
-          "visible": true,
-          "width": 1077,
-          "height": 507
-        },
-        {
-          "id": "overlay-focus",
-          "visible": true,
-          "width": 1077,
-          "height": 212
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "desktop-1440x900",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/change-log.html",
-      "expectedSection": "Change Log",
-      "expectedStoryIds": [
-        "local-changelog"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Change Log - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Change Log",
-      "storySections": [
-        "Change Log"
-      ],
-      "currentNav": "Change Log",
-      "currentStoryNav": "local-changelog",
-      "bodyScrollWidth": 1440,
-      "viewportWidth": 1440,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "local-changelog",
-          "visible": true,
-          "width": 1077,
-          "height": 259
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "tablet-1024x768",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/index.html",
-      "expectedSection": "Welcome",
-      "expectedStoryIds": [
-        "welcome-governance",
-        "governance-boundaries",
-        "maintainers-routing",
-        "contribution-model",
-        "release-bug-policy"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Welcome - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [
-        {
-          "marker": "entry-shell-visual",
-          "status": null,
-          "visible": true
-        }
-      ],
-      "activeSection": "Welcome",
-      "storySections": [
-        "Welcome"
-      ],
-      "currentNav": "Welcome",
-      "currentStoryNav": "welcome-governance",
-      "bodyScrollWidth": 1024,
-      "viewportWidth": 1024,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "welcome-governance",
-          "visible": true,
-          "width": 691,
-          "height": 834
-        },
-        {
-          "id": "governance-boundaries",
-          "visible": true,
-          "width": 691,
-          "height": 625
-        },
-        {
-          "id": "maintainers-routing",
-          "visible": true,
-          "width": 691,
-          "height": 559
-        },
-        {
-          "id": "contribution-model",
-          "visible": true,
-          "width": 691,
-          "height": 289
-        },
-        {
-          "id": "release-bug-policy",
-          "visible": true,
-          "width": 691,
-          "height": 413
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "tablet-1024x768",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/style-guide.html",
-      "expectedSection": "Style Guide",
-      "expectedStoryIds": [
-        "brand-identity",
-        "color-palette",
-        "text-styles",
-        "grid-system",
-        "icons-motion",
-        "global-states",
-        "copy-creation-rules"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Style Guide - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Style Guide",
-      "storySections": [
-        "Style Guide"
-      ],
-      "currentNav": "Style Guide",
-      "currentStoryNav": "brand-identity",
-      "bodyScrollWidth": 1024,
-      "viewportWidth": 1024,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "brand-identity",
-          "visible": true,
-          "width": 691,
-          "height": 1187
-        },
-        {
-          "id": "color-palette",
-          "visible": true,
-          "width": 691,
-          "height": 2677
-        },
-        {
-          "id": "text-styles",
-          "visible": true,
-          "width": 691,
-          "height": 2282
-        },
-        {
-          "id": "grid-system",
-          "visible": true,
-          "width": 691,
-          "height": 742
-        },
-        {
-          "id": "icons-motion",
-          "visible": true,
-          "width": 691,
-          "height": 2436
-        },
-        {
-          "id": "global-states",
-          "visible": true,
-          "width": 691,
-          "height": 726
-        },
-        {
-          "id": "copy-creation-rules",
-          "visible": true,
-          "width": 691,
-          "height": 620
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "tablet-1024x768",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/foundations.html",
-      "expectedSection": "Foundations",
-      "expectedStoryIds": [
-        "tokens-copy-state",
-        "i18n-theme-contract",
-        "copy-guidelines"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Foundations - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Foundations",
-      "storySections": [
-        "Foundations"
-      ],
-      "currentNav": "Foundations",
-      "currentStoryNav": "tokens-copy-state",
-      "bodyScrollWidth": 1024,
-      "viewportWidth": 1024,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "tokens-copy-state",
-          "visible": true,
-          "width": 691,
-          "height": 434
-        },
-        {
-          "id": "i18n-theme-contract",
-          "visible": true,
-          "width": 691,
-          "height": 1683
-        },
-        {
-          "id": "copy-guidelines",
-          "visible": true,
-          "width": 691,
-          "height": 420
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "tablet-1024x768",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/components.html",
-      "expectedSection": "Components",
-      "expectedStoryIds": [
-        "component-family-index",
-        "display-primitives-spec",
-        "interaction-disclosure-spec",
-        "button-spec-usage",
-        "field-spec-usage",
-        "navigation-shell-spec",
-        "dialog-spec-usage",
-        "table-work-index-spec"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Components - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [
-        {
-          "componentSource": "@tcrn/ui-react",
-          "tokenSource": "@tcrn/ui-tokens",
-          "copyStateSource": "@tcrn/ui-copy-state",
-          "visible": true
-        }
-      ],
-      "packageBackedDisabledNavItems": [
-        {
-          "label": "Blocked actions",
-          "href": null,
-          "tabIndex": "-1",
-          "title": "Proof route is not in this component page",
-          "dataDisabledReason": "Proof route is not in this component page",
-          "ariaDescribedBy": [
-            "«R5ail»"
-          ],
-          "visibleReason": "Proof route is not in this component page",
-          "visibleReasonRendered": true,
-          "ok": true
-        }
-      ],
-      "storybookOnlyPrototypeNodes": [
-        {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "knowledge-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "compact-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        }
-      ],
-      "activeSection": "Components",
-      "storySections": [
-        "Components"
-      ],
-      "currentNav": "Components",
-      "currentStoryNav": "component-family-index",
-      "bodyScrollWidth": 1024,
-      "viewportWidth": 1024,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "component-family-index",
-          "visible": true,
-          "width": 691,
-          "height": 5490
-        },
-        {
-          "id": "display-primitives-spec",
-          "visible": true,
-          "width": 691,
-          "height": 1079
-        },
-        {
-          "id": "interaction-disclosure-spec",
-          "visible": true,
-          "width": 691,
-          "height": 1054
-        },
-        {
-          "id": "button-spec-usage",
-          "visible": true,
-          "width": 691,
-          "height": 683
-        },
-        {
-          "id": "field-spec-usage",
-          "visible": true,
-          "width": 691,
-          "height": 1220
-        },
-        {
-          "id": "navigation-shell-spec",
-          "visible": true,
-          "width": 691,
-          "height": 6126
-        },
-        {
-          "id": "dialog-spec-usage",
-          "visible": true,
-          "width": 691,
-          "height": 1196
-        },
-        {
-          "id": "table-work-index-spec",
-          "visible": true,
-          "width": 691,
-          "height": 2043
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "tablet-1024x768",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/patterns.html",
-      "expectedSection": "Patterns",
-      "expectedStoryIds": [
-        "forms-patterns",
-        "workbench-patterns",
-        "readiness-notification-patterns",
-        "selection-list-patterns",
-        "modal-validation-patterns",
-        "datagrid-fields-patterns",
-        "big-list-search-patterns",
-        "dashboard-page-templates"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Patterns - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Patterns",
-      "storySections": [
-        "Patterns"
-      ],
-      "currentNav": "Patterns",
-      "currentStoryNav": "forms-patterns",
-      "bodyScrollWidth": 1024,
-      "viewportWidth": 1024,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "forms-patterns",
-          "visible": true,
-          "width": 691,
-          "height": 251
-        },
-        {
           "id": "workbench-patterns",
           "visible": true,
-          "width": 691,
-          "height": 416
+          "width": 1077,
+          "height": 498
         },
         {
           "id": "readiness-notification-patterns",
           "visible": true,
-          "width": 691,
-          "height": 343
+          "width": 1077,
+          "height": 249
         },
         {
           "id": "selection-list-patterns",
           "visible": true,
-          "width": 691,
-          "height": 231
+          "width": 1077,
+          "height": 277
         },
         {
           "id": "modal-validation-patterns",
           "visible": true,
-          "width": 691,
-          "height": 296
+          "width": 1077,
+          "height": 316
         },
         {
           "id": "datagrid-fields-patterns",
           "visible": true,
-          "width": 691,
-          "height": 230
+          "width": 1077,
+          "height": 271
         },
         {
           "id": "big-list-search-patterns",
           "visible": true,
-          "width": 691,
-          "height": 294
+          "width": 1077,
+          "height": 316
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
-          "width": 691,
-          "height": 296
+          "width": 1077,
+          "height": 316
         }
       ],
       "clipped": [],
@@ -1164,7 +549,7 @@
       "rootVisible": true
     },
     {
-      "viewport": "tablet-1024x768",
+      "viewport": "desktop-1440x900",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
       "url": "/apps/storybook/storybook-static/proof.html",
@@ -1200,575 +585,33 @@
       ],
       "currentNav": "Proof",
       "currentStoryNav": "proof-matrix",
-      "bodyScrollWidth": 1024,
-      "viewportWidth": 1024,
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [
         {
           "id": "proof-matrix",
           "visible": true,
-          "width": 691,
-          "height": 379
+          "width": 1077,
+          "height": 503
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
-          "width": 691,
-          "height": 4627
+          "width": 1077,
+          "height": 4484
         },
         {
           "id": "blocked-actions",
           "visible": true,
-          "width": 691,
-          "height": 507
-        },
-        {
-          "id": "overlay-focus",
-          "visible": true,
-          "width": 691,
-          "height": 229
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "tablet-1024x768",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/change-log.html",
-      "expectedSection": "Change Log",
-      "expectedStoryIds": [
-        "local-changelog"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Change Log - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Change Log",
-      "storySections": [
-        "Change Log"
-      ],
-      "currentNav": "Change Log",
-      "currentStoryNav": "local-changelog",
-      "bodyScrollWidth": 1024,
-      "viewportWidth": 1024,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "local-changelog",
-          "visible": true,
-          "width": 691,
-          "height": 276
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "mobile-390x844",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/index.html",
-      "expectedSection": "Welcome",
-      "expectedStoryIds": [
-        "welcome-governance",
-        "governance-boundaries",
-        "maintainers-routing",
-        "contribution-model",
-        "release-bug-policy"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Welcome - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [
-        {
-          "marker": "entry-shell-visual",
-          "status": null,
-          "visible": true
-        }
-      ],
-      "activeSection": "Welcome",
-      "storySections": [
-        "Welcome"
-      ],
-      "currentNav": "Welcome",
-      "currentStoryNav": "welcome-governance",
-      "bodyScrollWidth": 390,
-      "viewportWidth": 390,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "welcome-governance",
-          "visible": true,
-          "width": 358,
-          "height": 1268
-        },
-        {
-          "id": "governance-boundaries",
-          "visible": true,
-          "width": 358,
-          "height": 947
-        },
-        {
-          "id": "maintainers-routing",
-          "visible": true,
-          "width": 358,
-          "height": 1042
-        },
-        {
-          "id": "contribution-model",
-          "visible": true,
-          "width": 358,
-          "height": 519
-        },
-        {
-          "id": "release-bug-policy",
-          "visible": true,
-          "width": 358,
-          "height": 683
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "mobile-390x844",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/style-guide.html",
-      "expectedSection": "Style Guide",
-      "expectedStoryIds": [
-        "brand-identity",
-        "color-palette",
-        "text-styles",
-        "grid-system",
-        "icons-motion",
-        "global-states",
-        "copy-creation-rules"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Style Guide - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Style Guide",
-      "storySections": [
-        "Style Guide"
-      ],
-      "currentNav": "Style Guide",
-      "currentStoryNav": "brand-identity",
-      "bodyScrollWidth": 390,
-      "viewportWidth": 390,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "brand-identity",
-          "visible": true,
-          "width": 358,
-          "height": 1939
-        },
-        {
-          "id": "color-palette",
-          "visible": true,
-          "width": 358,
-          "height": 4828
-        },
-        {
-          "id": "text-styles",
-          "visible": true,
-          "width": 358,
-          "height": 3902
-        },
-        {
-          "id": "grid-system",
-          "visible": true,
-          "width": 358,
-          "height": 1130
-        },
-        {
-          "id": "icons-motion",
-          "visible": true,
-          "width": 358,
-          "height": 4667
-        },
-        {
-          "id": "global-states",
-          "visible": true,
-          "width": 358,
-          "height": 1324
-        },
-        {
-          "id": "copy-creation-rules",
-          "visible": true,
-          "width": 358,
-          "height": 938
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "mobile-390x844",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/foundations.html",
-      "expectedSection": "Foundations",
-      "expectedStoryIds": [
-        "tokens-copy-state",
-        "i18n-theme-contract",
-        "copy-guidelines"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Foundations - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Foundations",
-      "storySections": [
-        "Foundations"
-      ],
-      "currentNav": "Foundations",
-      "currentStoryNav": "tokens-copy-state",
-      "bodyScrollWidth": 390,
-      "viewportWidth": 390,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "tokens-copy-state",
-          "visible": true,
-          "width": 358,
-          "height": 554
-        },
-        {
-          "id": "i18n-theme-contract",
-          "visible": true,
-          "width": 358,
-          "height": 2889
-        },
-        {
-          "id": "copy-guidelines",
-          "visible": true,
-          "width": 358,
-          "height": 663
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "mobile-390x844",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/components.html",
-      "expectedSection": "Components",
-      "expectedStoryIds": [
-        "component-family-index",
-        "display-primitives-spec",
-        "interaction-disclosure-spec",
-        "button-spec-usage",
-        "field-spec-usage",
-        "navigation-shell-spec",
-        "dialog-spec-usage",
-        "table-work-index-spec"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Components - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [
-        {
-          "componentSource": "@tcrn/ui-react",
-          "tokenSource": "@tcrn/ui-tokens",
-          "copyStateSource": "@tcrn/ui-copy-state",
-          "visible": true
-        }
-      ],
-      "packageBackedDisabledNavItems": [
-        {
-          "label": "Blocked actions",
-          "href": null,
-          "tabIndex": "-1",
-          "title": "Proof route is not in this component page",
-          "dataDisabledReason": "Proof route is not in this component page",
-          "ariaDescribedBy": [
-            "«R5ail»"
-          ],
-          "visibleReason": "Proof route is not in this component page",
-          "visibleReasonRendered": true,
-          "ok": true
-        }
-      ],
-      "storybookOnlyPrototypeNodes": [
-        {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "knowledge-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "compact-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        }
-      ],
-      "activeSection": "Components",
-      "storySections": [
-        "Components"
-      ],
-      "currentNav": "Components",
-      "currentStoryNav": "component-family-index",
-      "bodyScrollWidth": 390,
-      "viewportWidth": 390,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "component-family-index",
-          "visible": true,
-          "width": 358,
-          "height": 12204
-        },
-        {
-          "id": "display-primitives-spec",
-          "visible": true,
-          "width": 358,
-          "height": 1797
-        },
-        {
-          "id": "interaction-disclosure-spec",
-          "visible": true,
-          "width": 358,
-          "height": 1551
-        },
-        {
-          "id": "button-spec-usage",
-          "visible": true,
-          "width": 358,
-          "height": 1003
-        },
-        {
-          "id": "field-spec-usage",
-          "visible": true,
-          "width": 358,
-          "height": 1469
-        },
-        {
-          "id": "navigation-shell-spec",
-          "visible": true,
-          "width": 358,
-          "height": 11631
-        },
-        {
-          "id": "dialog-spec-usage",
-          "visible": true,
-          "width": 358,
-          "height": 1736
-        },
-        {
-          "id": "table-work-index-spec",
-          "visible": true,
-          "width": 358,
-          "height": 4164
-        }
-      ],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "mobile-390x844",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/patterns.html",
-      "expectedSection": "Patterns",
-      "expectedStoryIds": [
-        "forms-patterns",
-        "workbench-patterns",
-        "readiness-notification-patterns",
-        "selection-list-patterns",
-        "modal-validation-patterns",
-        "datagrid-fields-patterns",
-        "big-list-search-patterns",
-        "dashboard-page-templates"
-      ],
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Patterns - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
-      "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
-      "docNavItemCount": 36,
-      "docNavCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Patterns",
-      "storySections": [
-        "Patterns"
-      ],
-      "currentNav": "Patterns",
-      "currentStoryNav": "forms-patterns",
-      "bodyScrollWidth": 390,
-      "viewportWidth": 390,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "forms-patterns",
-          "visible": true,
-          "width": 358,
-          "height": 372
-        },
-        {
-          "id": "workbench-patterns",
-          "visible": true,
-          "width": 358,
+          "width": 1077,
           "height": 580
         },
         {
-          "id": "readiness-notification-patterns",
+          "id": "overlay-focus",
           "visible": true,
-          "width": 358,
-          "height": 462
-        },
-        {
-          "id": "selection-list-patterns",
-          "visible": true,
-          "width": 358,
-          "height": 282
-        },
-        {
-          "id": "modal-validation-patterns",
-          "visible": true,
-          "width": 358,
-          "height": 348
-        },
-        {
-          "id": "datagrid-fields-patterns",
-          "visible": true,
-          "width": 358,
-          "height": 313
-        },
-        {
-          "id": "big-list-search-patterns",
-          "visible": true,
-          "width": 358,
-          "height": 412
-        },
-        {
-          "id": "dashboard-page-templates",
-          "visible": true,
-          "width": 358,
-          "height": 348
+          "width": 1077,
+          "height": 225
         }
       ],
       "clipped": [],
@@ -1779,7 +622,549 @@
       "rootVisible": true
     },
     {
-      "viewport": "mobile-390x844",
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/change-log.html",
+      "expectedSection": "Change Log",
+      "expectedStoryIds": [
+        "local-changelog"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Change Log - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Change Log",
+      "storySections": [
+        "Change Log"
+      ],
+      "currentNav": "Change Log",
+      "currentStoryNav": "local-changelog",
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "local-changelog",
+          "visible": true,
+          "width": 1077,
+          "height": 304
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/index.html",
+      "expectedSection": "Welcome",
+      "expectedStoryIds": [
+        "welcome-governance",
+        "governance-boundaries",
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Welcome - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [
+        {
+          "marker": "entry-shell-visual",
+          "status": null,
+          "visible": true
+        }
+      ],
+      "activeSection": "Welcome",
+      "storySections": [
+        "Welcome"
+      ],
+      "currentNav": "Welcome",
+      "currentStoryNav": "welcome-governance",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "welcome-governance",
+          "visible": true,
+          "width": 691,
+          "height": 1006
+        },
+        {
+          "id": "governance-boundaries",
+          "visible": true,
+          "width": 691,
+          "height": 771
+        },
+        {
+          "id": "maintainers-routing",
+          "visible": true,
+          "width": 691,
+          "height": 721
+        },
+        {
+          "id": "contribution-model",
+          "visible": true,
+          "width": 691,
+          "height": 444
+        },
+        {
+          "id": "release-bug-policy",
+          "visible": true,
+          "width": 691,
+          "height": 536
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/style-guide.html",
+      "expectedSection": "Style Guide",
+      "expectedStoryIds": [
+        "brand-identity",
+        "color-palette",
+        "text-styles",
+        "grid-system",
+        "icons-motion",
+        "global-states",
+        "copy-creation-rules"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Style Guide - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Style Guide",
+      "storySections": [
+        "Style Guide"
+      ],
+      "currentNav": "Style Guide",
+      "currentStoryNav": "brand-identity",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "brand-identity",
+          "visible": true,
+          "width": 691,
+          "height": 1264
+        },
+        {
+          "id": "color-palette",
+          "visible": true,
+          "width": 691,
+          "height": 3213
+        },
+        {
+          "id": "text-styles",
+          "visible": true,
+          "width": 691,
+          "height": 2990
+        },
+        {
+          "id": "grid-system",
+          "visible": true,
+          "width": 691,
+          "height": 897
+        },
+        {
+          "id": "icons-motion",
+          "visible": true,
+          "width": 691,
+          "height": 2822
+        },
+        {
+          "id": "global-states",
+          "visible": true,
+          "width": 691,
+          "height": 890
+        },
+        {
+          "id": "copy-creation-rules",
+          "visible": true,
+          "width": 691,
+          "height": 763
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/foundations.html",
+      "expectedSection": "Foundations",
+      "expectedStoryIds": [
+        "tokens-copy-state",
+        "i18n-theme-contract",
+        "copy-guidelines"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Foundations - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Foundations",
+      "storySections": [
+        "Foundations"
+      ],
+      "currentNav": "Foundations",
+      "currentStoryNav": "tokens-copy-state",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "tokens-copy-state",
+          "visible": true,
+          "width": 691,
+          "height": 461
+        },
+        {
+          "id": "i18n-theme-contract",
+          "visible": true,
+          "width": 691,
+          "height": 1912
+        },
+        {
+          "id": "copy-guidelines",
+          "visible": true,
+          "width": 691,
+          "height": 513
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/components.html",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "component-family-index",
+        "display-primitives-spec",
+        "interaction-disclosure-spec",
+        "button-spec-usage",
+        "field-spec-usage",
+        "navigation-shell-spec",
+        "dialog-spec-usage",
+        "table-work-index-spec"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [
+        {
+          "componentSource": "@tcrn/ui-react",
+          "tokenSource": "@tcrn/ui-tokens",
+          "copyStateSource": "@tcrn/ui-copy-state",
+          "visible": true
+        }
+      ],
+      "packageBackedDisabledNavItems": [
+        {
+          "label": "Blocked actions",
+          "href": null,
+          "tabIndex": "-1",
+          "title": "Proof route is not in this component page",
+          "dataDisabledReason": "Proof route is not in this component page",
+          "ariaDescribedBy": [
+            "«R5ail»"
+          ],
+          "visibleReason": "Proof route is not in this component page",
+          "visibleReasonRendered": true,
+          "ok": true
+        }
+      ],
+      "storybookOnlyPrototypeNodes": [
+        {
+          "marker": "dense-shell-prototype",
+          "status": "deferred",
+          "visible": true
+        },
+        {
+          "marker": "dense-shell-prototype",
+          "status": "deferred",
+          "visible": true
+        },
+        {
+          "marker": "knowledge-shell-prototype",
+          "status": "deferred",
+          "visible": true
+        },
+        {
+          "marker": "compact-shell-prototype",
+          "status": "deferred",
+          "visible": true
+        }
+      ],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "component-family-index",
+          "visible": true,
+          "width": 691,
+          "height": 7741
+        },
+        {
+          "id": "display-primitives-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1202
+        },
+        {
+          "id": "interaction-disclosure-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1293
+        },
+        {
+          "id": "button-spec-usage",
+          "visible": true,
+          "width": 691,
+          "height": 808
+        },
+        {
+          "id": "field-spec-usage",
+          "visible": true,
+          "width": 691,
+          "height": 1388
+        },
+        {
+          "id": "navigation-shell-spec",
+          "visible": true,
+          "width": 691,
+          "height": 7010
+        },
+        {
+          "id": "dialog-spec-usage",
+          "visible": true,
+          "width": 691,
+          "height": 1382
+        },
+        {
+          "id": "table-work-index-spec",
+          "visible": true,
+          "width": 691,
+          "height": 2588
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/patterns.html",
+      "expectedSection": "Patterns",
+      "expectedStoryIds": [
+        "forms-patterns",
+        "workbench-patterns",
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Patterns - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "currentNav": "Patterns",
+      "currentStoryNav": "forms-patterns",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "forms-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 258
+        },
+        {
+          "id": "workbench-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 516
+        },
+        {
+          "id": "readiness-notification-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 359
+        },
+        {
+          "id": "selection-list-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 277
+        },
+        {
+          "id": "modal-validation-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 351
+        },
+        {
+          "id": "datagrid-fields-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 288
+        },
+        {
+          "id": "big-list-search-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 351
+        },
+        {
+          "id": "dashboard-page-templates",
+          "visible": true,
+          "width": 691,
+          "height": 351
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
       "url": "/apps/storybook/storybook-static/proof.html",
@@ -1815,33 +1200,648 @@
       ],
       "currentNav": "Proof",
       "currentStoryNav": "proof-matrix",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "proof-matrix",
+          "visible": true,
+          "width": 691,
+          "height": 503
+        },
+        {
+          "id": "ai-consumption-contract",
+          "visible": true,
+          "width": 691,
+          "height": 5516
+        },
+        {
+          "id": "blocked-actions",
+          "visible": true,
+          "width": 691,
+          "height": 580
+        },
+        {
+          "id": "overlay-focus",
+          "visible": true,
+          "width": 691,
+          "height": 243
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/change-log.html",
+      "expectedSection": "Change Log",
+      "expectedStoryIds": [
+        "local-changelog"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Change Log - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Change Log",
+      "storySections": [
+        "Change Log"
+      ],
+      "currentNav": "Change Log",
+      "currentStoryNav": "local-changelog",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "local-changelog",
+          "visible": true,
+          "width": 691,
+          "height": 374
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/index.html",
+      "expectedSection": "Welcome",
+      "expectedStoryIds": [
+        "welcome-governance",
+        "governance-boundaries",
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Welcome - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [
+        {
+          "marker": "entry-shell-visual",
+          "status": null,
+          "visible": true
+        }
+      ],
+      "activeSection": "Welcome",
+      "storySections": [
+        "Welcome"
+      ],
+      "currentNav": "Welcome",
+      "currentStoryNav": "welcome-governance",
       "bodyScrollWidth": 390,
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "proof-matrix",
+          "id": "welcome-governance",
+          "visible": true,
+          "width": 358,
+          "height": 1353
+        },
+        {
+          "id": "governance-boundaries",
+          "visible": true,
+          "width": 358,
+          "height": 1051
+        },
+        {
+          "id": "maintainers-routing",
+          "visible": true,
+          "width": 358,
+          "height": 899
+        },
+        {
+          "id": "contribution-model",
+          "visible": true,
+          "width": 358,
+          "height": 607
+        },
+        {
+          "id": "release-bug-policy",
+          "visible": true,
+          "width": 358,
+          "height": 728
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/style-guide.html",
+      "expectedSection": "Style Guide",
+      "expectedStoryIds": [
+        "brand-identity",
+        "color-palette",
+        "text-styles",
+        "grid-system",
+        "icons-motion",
+        "global-states",
+        "copy-creation-rules"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Style Guide - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Style Guide",
+      "storySections": [
+        "Style Guide"
+      ],
+      "currentNav": "Style Guide",
+      "currentStoryNav": "brand-identity",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "brand-identity",
+          "visible": true,
+          "width": 358,
+          "height": 1773
+        },
+        {
+          "id": "color-palette",
+          "visible": true,
+          "width": 358,
+          "height": 5120
+        },
+        {
+          "id": "text-styles",
+          "visible": true,
+          "width": 358,
+          "height": 4047
+        },
+        {
+          "id": "grid-system",
+          "visible": true,
+          "width": 358,
+          "height": 1181
+        },
+        {
+          "id": "icons-motion",
+          "visible": true,
+          "width": 358,
+          "height": 4023
+        },
+        {
+          "id": "global-states",
+          "visible": true,
+          "width": 358,
+          "height": 1219
+        },
+        {
+          "id": "copy-creation-rules",
+          "visible": true,
+          "width": 358,
+          "height": 1022
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/foundations.html",
+      "expectedSection": "Foundations",
+      "expectedStoryIds": [
+        "tokens-copy-state",
+        "i18n-theme-contract",
+        "copy-guidelines"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Foundations - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Foundations",
+      "storySections": [
+        "Foundations"
+      ],
+      "currentNav": "Foundations",
+      "currentStoryNav": "tokens-copy-state",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "tokens-copy-state",
           "visible": true,
           "width": 358,
           "height": 578
         },
         {
+          "id": "i18n-theme-contract",
+          "visible": true,
+          "width": 358,
+          "height": 3052
+        },
+        {
+          "id": "copy-guidelines",
+          "visible": true,
+          "width": 358,
+          "height": 677
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/components.html",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "component-family-index",
+        "display-primitives-spec",
+        "interaction-disclosure-spec",
+        "button-spec-usage",
+        "field-spec-usage",
+        "navigation-shell-spec",
+        "dialog-spec-usage",
+        "table-work-index-spec"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [
+        {
+          "componentSource": "@tcrn/ui-react",
+          "tokenSource": "@tcrn/ui-tokens",
+          "copyStateSource": "@tcrn/ui-copy-state",
+          "visible": true
+        }
+      ],
+      "packageBackedDisabledNavItems": [
+        {
+          "label": "Blocked actions",
+          "href": null,
+          "tabIndex": "-1",
+          "title": "Proof route is not in this component page",
+          "dataDisabledReason": "Proof route is not in this component page",
+          "ariaDescribedBy": [
+            "«R5ail»"
+          ],
+          "visibleReason": "Proof route is not in this component page",
+          "visibleReasonRendered": true,
+          "ok": true
+        }
+      ],
+      "storybookOnlyPrototypeNodes": [
+        {
+          "marker": "dense-shell-prototype",
+          "status": "deferred",
+          "visible": true
+        },
+        {
+          "marker": "dense-shell-prototype",
+          "status": "deferred",
+          "visible": true
+        },
+        {
+          "marker": "knowledge-shell-prototype",
+          "status": "deferred",
+          "visible": true
+        },
+        {
+          "marker": "compact-shell-prototype",
+          "status": "deferred",
+          "visible": true
+        }
+      ],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "component-family-index",
+          "visible": true,
+          "width": 358,
+          "height": 10693
+        },
+        {
+          "id": "display-primitives-spec",
+          "visible": true,
+          "width": 358,
+          "height": 1865
+        },
+        {
+          "id": "interaction-disclosure-spec",
+          "visible": true,
+          "width": 358,
+          "height": 1697
+        },
+        {
+          "id": "button-spec-usage",
+          "visible": true,
+          "width": 358,
+          "height": 989
+        },
+        {
+          "id": "field-spec-usage",
+          "visible": true,
+          "width": 358,
+          "height": 1632
+        },
+        {
+          "id": "navigation-shell-spec",
+          "visible": true,
+          "width": 358,
+          "height": 13284
+        },
+        {
+          "id": "dialog-spec-usage",
+          "visible": true,
+          "width": 358,
+          "height": 1798
+        },
+        {
+          "id": "table-work-index-spec",
+          "visible": true,
+          "width": 358,
+          "height": 4737
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/patterns.html",
+      "expectedSection": "Patterns",
+      "expectedStoryIds": [
+        "forms-patterns",
+        "workbench-patterns",
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Patterns - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "currentNav": "Patterns",
+      "currentStoryNav": "forms-patterns",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "forms-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 404
+        },
+        {
+          "id": "workbench-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 651
+        },
+        {
+          "id": "readiness-notification-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 481
+        },
+        {
+          "id": "selection-list-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 344
+        },
+        {
+          "id": "modal-validation-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 407
+        },
+        {
+          "id": "datagrid-fields-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 359
+        },
+        {
+          "id": "big-list-search-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 483
+        },
+        {
+          "id": "dashboard-page-templates",
+          "visible": true,
+          "width": 358,
+          "height": 407
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/proof.html",
+      "expectedSection": "Proof",
+      "expectedStoryIds": [
+        "proof-matrix",
+        "ai-consumption-contract",
+        "blocked-actions",
+        "overlay-focus"
+      ],
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Proof - TCRN Design System Contract Stories",
+      "docShellMode": "online-docs",
+      "docSidebarVisible": true,
+      "docGlobalNavCount": 0,
+      "docNavGroupCount": 7,
+      "docNavItemCount": 36,
+      "docNavCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Proof",
+      "storySections": [
+        "Proof"
+      ],
+      "currentNav": "Proof",
+      "currentStoryNav": "proof-matrix",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "proof-matrix",
+          "visible": true,
+          "width": 358,
+          "height": 558
+        },
+        {
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 6764
+          "height": 10450
         },
         {
           "id": "blocked-actions",
           "visible": true,
           "width": 358,
-          "height": 539
+          "height": 650
         },
         {
           "id": "overlay-focus",
           "visible": true,
           "width": 358,
-          "height": 302
+          "height": 314
         }
       ],
       "clipped": [],
@@ -1893,7 +1893,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 358,
-          "height": 390
+          "height": 509
         }
       ],
       "clipped": [],

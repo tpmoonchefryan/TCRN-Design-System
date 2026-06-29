@@ -15,6 +15,7 @@ import {
   SideNav,
   NavGroup,
   NavItem,
+  tcrnComponentCss,
   useProductShellController,
   type ShellThemeMode
 } from "./Navigation.js";
@@ -155,6 +156,27 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-package-backed-shell-control="theme-toggle"/);
   assert.match(html, /data-theme-transition-contract="whole-page-view-transition-or-token-wash"/);
   assert.match(html, /Fixture-safe cockpit content/);
+});
+
+test("product shell component css keeps motion shorthands valid", () => {
+  assert.match(tcrnComponentCss, /--tcrn-motion-product-shell: var\(--tcrn-motion-emphasis\)/);
+  assert.match(tcrnComponentCss, /transition: grid-template-columns var\(--tcrn-motion-product-shell\);/);
+  assert.match(tcrnComponentCss, /animation: tcrn-product-shell-theme-wash var\(--tcrn-motion-product-shell\) both;/);
+  assert.match(tcrnComponentCss, /transition: width var\(--tcrn-motion-product-shell\);/);
+  assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-motion-emphasis\) ease/);
+});
+
+test("product shell component css keeps package controls contrast-safe", () => {
+  assert.match(tcrnComponentCss, /--tcrn-color-brand-secondary-readable: #246f80/);
+  assert.match(tcrnComponentCss, /--tcrn-color-brand-secondary-readable: #a6e8ef/);
+  assert.match(tcrnComponentCss, /\.tcrn-brand-wordmark__suffix \{[\s\S]*color: var\(--tcrn-color-brand-secondary-readable\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*color: var\(--tcrn-color-text-secondary\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__icon \{[\s\S]*grid-column: 1;/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__control \{[\s\S]*appearance: none;[\s\S]*box-sizing: border-box;[\s\S]*grid-column: 2;[\s\S]*width: 100%;[\s\S]*min-width: 0;[\s\S]*padding: 0;/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*grid-column: 3;/);
+  assert.match(tcrnComponentCss, /\[data-tcrn-theme="dark"\] \.tcrn-button--primary \{[\s\S]*color: var\(--tcrn-color-surface-canvas\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-readback-panel \{[\s\S]*display: grid;[\s\S]*gap: var\(--tcrn-space-2\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-readback-panel > \.tcrn-heading \+ \* \{[\s\S]*margin-top: 0;/);
 });
 
 test("product shell search stays hidden when compact at rest", () => {

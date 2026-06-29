@@ -1,4 +1,7 @@
 import { readFileSync } from "node:fs";
+import { createServer } from "node:http";
+import { extname, join } from "node:path";
+import { chromium } from "@playwright/test";
 
 const pagesByGroup = {
   Welcome: "index.html",
@@ -55,6 +58,34 @@ const combinedHtml = Object.values(pages).join("\n");
 const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-consumption-contract.json", "utf8"));
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
+const staticRoot = "apps/storybook/storybook-static";
+const productShellComparatorContract = {
+  styleSource: "@tcrn/ui-react/tcrnComponentCss",
+  page: "components.html#navigation-shell-spec",
+  scopedSelector: ".tcrn-product-shell-contract-proof .tcrn-product-shell",
+  componentSelectors: {
+    themeToggle: ".tcrn-shell-theme-toggle",
+    localeTrigger: ".tcrn-shell-locale-menu__trigger",
+    sideNavToggle: ".tcrn-shell-side-nav-toggle",
+    searchWrapper: ".tcrn-product-shell-search",
+    searchInput: ".tcrn-search-input",
+    searchResults: ".tcrn-product-shell-search__results",
+    topBar: ".tcrn-top-bar",
+    contentRegion: "[data-product-shell-region=\"content\"]"
+  },
+  expectedControlMetrics: {
+    themeToggle: { width: 38, height: 38, radius: 5 },
+    sideNavToggle: { width: 38, height: 38, radius: 5 },
+    localeTrigger: { minHeight: 38, radius: 5 },
+    searchInput: { minHeight: 38, radius: 5, minWidth: 220 }
+  },
+  motionProof: {
+    productShellTransition: "grid-template-columns",
+    searchTransition: "width",
+    themeWashPseudo: "tcrn-product-shell-theme-wash",
+    reducedMotionFallback: "transition-none"
+  }
+};
 const required = [
   "data-doc-shell=\"online-docs\"",
   "data-doc-nav=\"sections\"",
@@ -142,6 +173,31 @@ const required = [
   "tcrn-knowledge-shell__pager",
   "Top bar, attached side navigation, content column, and chapter navigation stay one shell"
 ];
+const componentPage = pages.Components;
+const staticDocStyleIndex = componentPage.indexOf("data-tcrn-static-doc-style-source=\"storybook\"");
+const componentStyleIndex = componentPage.indexOf("data-tcrn-component-style-source=\"@tcrn/ui-react\"");
+if (staticDocStyleIndex < 0) {
+  required.push("data-tcrn-static-doc-style-source=\"storybook\"");
+}
+if (componentStyleIndex < 0) {
+  required.push("data-tcrn-component-style-source=\"@tcrn/ui-react\"");
+}
+if (componentStyleIndex >= 0 && staticDocStyleIndex >= 0 && componentStyleIndex < staticDocStyleIndex) {
+  required.push("component-style-after-static-doc-style");
+}
+for (const text of [
+  "data-tcrn-product-shell-comparator-style=\"package-backed\"",
+  ".tcrn-product-shell",
+  ".tcrn-shell-theme-toggle",
+  ".tcrn-shell-locale-menu__trigger",
+  ".tcrn-shell-side-nav-toggle",
+  ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
+  ".tcrn-product-shell[data-theme-switching=\"true\"]::after",
+  "tcrn-product-shell-theme-wash",
+  "@media (prefers-reduced-motion: reduce)"
+]) {
+  required.push(text);
+}
 const missing = required.filter((text) => !combinedHtml.includes(text));
 if (contract.mustReadFirst !== true) {
   missing.push("contract.mustReadFirst:true");
@@ -249,8 +305,279 @@ const forbiddenPositiveHits = [
   /\bpublic ready\b/i
 ].filter((pattern) => pattern.test(combinedHtml)).map((pattern) => String(pattern));
 const storybookPreviewExists = combinedHtml.includes("data-contract-surface=\"tcrn-design-system-storybook\"");
-const ok = missing.length === 0 && forbiddenPositiveHits.length === 0 && storybookPreviewExists;
-console.log(JSON.stringify({ ok, missing, forbiddenPositiveHits, storybookPreviewExists, pages: pagesByGroup }, null, 2));
-if (!ok) {
-  process.exit(1);
+const contentTypes = {
+  ".html": "text/html; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".txt": "text/plain; charset=utf-8",
+  ".svg": "image/svg+xml; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8"
+};
+
+function startStaticServer(rootDirectory) {
+  return new Promise((resolve, reject) => {
+    const server = createServer((request, response) => {
+      const requestUrl = new URL(request.url ?? "/", "http://127.0.0.1");
+      const pathname = decodeURIComponent(requestUrl.pathname);
+      const fileName = pathname === "/" ? "index.html" : pathname.replace(/^\//, "");
+      if (fileName.includes("..")) {
+        response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
+        response.end("invalid path");
+        return;
+      }
+      try {
+        const filePath = join(rootDirectory, fileName);
+        const body = readFileSync(filePath);
+        response.writeHead(200, { "content-type": contentTypes[extname(filePath)] ?? "application/octet-stream" });
+        response.end(body);
+      } catch {
+        response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+        response.end("not found");
+      }
+    });
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
+      const address = server.address();
+      if (!address || typeof address === "string") {
+        server.close();
+        reject(new Error("storybook_smoke_server_address_unavailable"));
+        return;
+      }
+      resolve({ server, origin: `http://127.0.0.1:${address.port}` });
+    });
+  });
 }
+
+function parsePixels(value) {
+  const parsed = Number.parseFloat(String(value).replace("px", ""));
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function normalizeTransitionProperty(value) {
+  return String(value).split(",").map((part) => part.trim()).filter(Boolean);
+}
+
+function validateMetric({ failures, name, metric, expected }) {
+  const width = Number(metric.width.toFixed(2));
+  const height = Number(metric.height.toFixed(2));
+  const radius = parsePixels(metric.borderRadius);
+  const minWidth = expected.minWidth ?? expected.width;
+  const minHeight = expected.minHeight ?? expected.height;
+  if (expected.width !== undefined && Math.abs(width - expected.width) > 1) {
+    failures.push(`${name}:width:${width}`);
+  }
+  if (expected.height !== undefined && Math.abs(height - expected.height) > 1) {
+    failures.push(`${name}:height:${height}`);
+  }
+  if (minWidth !== undefined && width + 1 < minWidth) {
+    failures.push(`${name}:min-width:${width}`);
+  }
+  if (minHeight !== undefined && height + 1 < minHeight) {
+    failures.push(`${name}:min-height:${height}`);
+  }
+  if (Math.abs(radius - expected.radius) > 1) {
+    failures.push(`${name}:radius:${metric.borderRadius}`);
+  }
+  if (metric.borderStyle === "outset") {
+    failures.push(`${name}:default-browser-border-style`);
+  }
+  if (metric.backgroundColor === "rgba(0, 0, 0, 0)" || metric.backgroundColor === "transparent") {
+    failures.push(`${name}:transparent-background`);
+  }
+}
+
+function transitionIncludes(metric, property) {
+  const properties = normalizeTransitionProperty(metric.transitionProperty);
+  return properties.includes(property) || properties.includes("all");
+}
+
+async function collectProductShellMetrics(origin, viewport, reducedMotion) {
+  const browser = await chromium.launch({
+    headless: true,
+    args: [
+      "--disable-gpu",
+      "--font-render-hinting=none",
+      "--force-color-profile=srgb"
+    ]
+  });
+  const page = await browser.newPage({
+    viewport,
+    deviceScaleFactor: 1,
+    colorScheme: "light",
+    reducedMotion,
+    locale: "en-US",
+    timezoneId: "UTC"
+  });
+  const pageErrors = [];
+  const consoleMessages = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  page.on("console", (message) => {
+    if (["error", "warning"].includes(message.type())) {
+      consoleMessages.push(`${message.type()}:${message.text()}`);
+    }
+  });
+  await page.goto(`${origin}/components.html#navigation-shell-spec`, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.fonts?.ready);
+  const metrics = await page.evaluate(({ contract }) => {
+    const shell = document.querySelector(contract.scopedSelector);
+    if (!shell) {
+      return { missingShell: true };
+    }
+    const measured = {};
+    const measure = (name, selector) => {
+      const element = shell.querySelector(selector);
+      if (!element) {
+        measured[name] = { missing: true };
+        return;
+      }
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      measured[name] = {
+        width: rect.width,
+        height: rect.height,
+        left: rect.left,
+        top: rect.top,
+        display: style.display,
+        position: style.position,
+        gridTemplateColumns: style.gridTemplateColumns,
+        gap: style.gap,
+        paddingLeft: style.paddingLeft,
+        paddingRight: style.paddingRight,
+        borderRadius: style.borderRadius,
+        borderStyle: style.borderStyle,
+        borderWidth: style.borderWidth,
+        backgroundColor: style.backgroundColor,
+        transitionProperty: style.transitionProperty,
+        transitionDuration: style.transitionDuration,
+        animationName: style.animationName
+      };
+    };
+    for (const [name, selector] of Object.entries(contract.componentSelectors)) {
+      measure(name, selector);
+    }
+    const shellRect = shell.getBoundingClientRect();
+    const shellStyle = getComputedStyle(shell);
+    shell.setAttribute("data-theme-switching", "true");
+    const themeWashStyle = getComputedStyle(shell, "::after");
+    const documentElement = document.documentElement;
+    return {
+      missingShell: false,
+      shell: {
+        width: shellRect.width,
+        height: shellRect.height,
+        gridTemplateColumns: shellStyle.gridTemplateColumns,
+        transitionProperty: shellStyle.transitionProperty,
+        transitionDuration: shellStyle.transitionDuration,
+        backgroundColor: shellStyle.backgroundColor,
+        color: shellStyle.color,
+        themeWashAnimationName: themeWashStyle.animationName,
+        themeWashAnimationDuration: themeWashStyle.animationDuration,
+        sourceMarker: document.querySelector("style[data-tcrn-component-style-source=\"@tcrn/ui-react\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
+      },
+      measured,
+      viewport: { width: window.innerWidth, height: window.innerHeight, scrollWidth: documentElement.scrollWidth }
+    };
+  }, { contract: productShellComparatorContract });
+  await browser.close();
+  return { ...metrics, pageErrors, consoleMessages, reducedMotion, viewport };
+}
+
+async function runProductShellComparatorProof() {
+  const failures = [];
+  const { server, origin } = await startStaticServer(staticRoot);
+  try {
+    const desktop = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "no-preference");
+    const reduced = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "reduce");
+    const mobile = await collectProductShellMetrics(origin, { width: 390, height: 844 }, "no-preference");
+    for (const [mode, proof] of Object.entries({ desktop, reduced, mobile })) {
+      if (proof.missingShell) failures.push(`${mode}:missing-product-shell-comparator`);
+      for (const error of proof.pageErrors ?? []) failures.push(`${mode}:pageerror:${error}`);
+      for (const message of proof.consoleMessages ?? []) failures.push(`${mode}:console:${message}`);
+    }
+    if (!desktop.missingShell) {
+      if (desktop.shell.sourceMarker !== "package-backed") {
+        failures.push("desktop:missing-package-backed-style-marker");
+      }
+      for (const [name, expected] of Object.entries(productShellComparatorContract.expectedControlMetrics)) {
+        const metric = desktop.measured[name];
+        if (!metric || metric.missing) {
+          failures.push(`${name}:missing`);
+        } else {
+          validateMetric({ failures, name, metric, expected });
+        }
+      }
+      if (!transitionIncludes(desktop.shell, productShellComparatorContract.motionProof.productShellTransition)) {
+        failures.push(`product-shell-transition:${desktop.shell.transitionProperty}`);
+      }
+      if (!transitionIncludes(desktop.measured.searchWrapper, productShellComparatorContract.motionProof.searchTransition)) {
+        failures.push(`search-transition:${desktop.measured.searchWrapper.transitionProperty}`);
+      }
+      if (desktop.shell.themeWashAnimationName !== productShellComparatorContract.motionProof.themeWashPseudo) {
+        failures.push(`theme-wash-animation:${desktop.shell.themeWashAnimationName}`);
+      }
+      if (desktop.measured.searchResults?.display === "none") {
+        failures.push("search-results-not-visible-for-expanded-proof");
+      }
+    }
+    if (!reduced.missingShell) {
+      if (reduced.shell.transitionProperty !== "none") {
+        failures.push(`reduced-motion-product-shell-transition:${reduced.shell.transitionProperty}`);
+      }
+      if (reduced.measured.searchWrapper?.transitionProperty !== "none") {
+        failures.push(`reduced-motion-search-transition:${reduced.measured.searchWrapper?.transitionProperty}`);
+      }
+      if (reduced.shell.themeWashAnimationName !== "none") {
+        failures.push(`reduced-motion-theme-wash:${reduced.shell.themeWashAnimationName}`);
+      }
+    }
+    if (!mobile.missingShell) {
+      if (mobile.viewport.scrollWidth > mobile.viewport.width + 1) {
+        failures.push(`mobile-horizontal-overflow:${mobile.viewport.scrollWidth}>${mobile.viewport.width}`);
+      }
+      if (mobile.measured.sideNavToggle?.width > 44 || mobile.measured.themeToggle?.width > 44) {
+        failures.push("mobile-control-size-exceeds-package-shell-boundary");
+      }
+      if (mobile.measured.contentRegion?.width > mobile.viewport.width + 1) {
+        failures.push(`mobile-content-width:${mobile.measured.contentRegion.width}`);
+      }
+    }
+    return {
+      ok: failures.length === 0,
+      failures,
+      contract: productShellComparatorContract,
+      readbacks: {
+        desktop,
+        reducedMotion: reduced,
+        mobile
+      },
+      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+    };
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+}
+
+async function main() {
+  const productShellComparatorProof = await runProductShellComparatorProof().catch((error) => ({
+    ok: false,
+    failures: [`product-shell-comparator-proof-error:${error instanceof Error ? error.message : String(error)}`],
+    contract: productShellComparatorContract
+  }));
+  const ok = missing.length === 0
+    && forbiddenPositiveHits.length === 0
+    && storybookPreviewExists
+    && productShellComparatorProof.ok;
+  console.log(JSON.stringify({
+    ok,
+    missing,
+    forbiddenPositiveHits,
+    storybookPreviewExists,
+    pages: pagesByGroup,
+    productShellComparatorProof
+  }, null, 2));
+  if (!ok) {
+    process.exit(1);
+  }
+}
+
+await main();
