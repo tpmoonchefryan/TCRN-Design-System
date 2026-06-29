@@ -1290,7 +1290,17 @@ export const tcrnComponentCss = `
   position: sticky;
   top: 0;
   z-index: 20;
+  display: grid;
   grid-template-columns: max-content max-content minmax(0, 1fr);
+  align-items: center;
+  gap: var(--tcrn-space-4);
+  min-height: 68px;
+  padding: var(--tcrn-space-3) var(--tcrn-space-5);
+  border: 0;
+  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
+  backdrop-filter: blur(16px);
 }
 .tcrn-product-shell__utility-row {
   display: grid;

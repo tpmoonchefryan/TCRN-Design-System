@@ -166,6 +166,12 @@ test("product shell component css keeps motion shorthands valid", () => {
   assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-motion-emphasis\) ease/);
 });
 
+test("product shell component css isolates topbar from docs chrome", () => {
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*border: 0;[\s\S]*border-bottom: 1px solid var\(--tcrn-color-border-subtle\);[\s\S]*border-radius: 0;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: max-content max-content minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*background: color-mix\(in srgb, var\(--tcrn-color-surface-panel\), transparent 5%\);/);
+});
+
 test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /--tcrn-color-brand-secondary-readable: #246f80/);
   assert.match(tcrnComponentCss, /--tcrn-color-brand-secondary-readable: #a6e8ef/);

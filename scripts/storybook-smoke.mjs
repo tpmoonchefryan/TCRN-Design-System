@@ -77,7 +77,19 @@ const productShellComparatorContract = {
     themeToggle: { width: 38, height: 38, radius: 5 },
     sideNavToggle: { width: 38, height: 38, radius: 5 },
     localeTrigger: { minHeight: 38, radius: 5 },
-    searchInput: { minHeight: 38, radius: 5, minWidth: 220 }
+    searchInput: { minHeight: 38, radius: 5, minWidth: 220 },
+    topBar: {
+      minHeight: 68,
+      borderRadius: "0px",
+      borderStyle: "none none solid",
+      borderWidth: "0px 0px 1px",
+      backgroundColor: "color(srgb 1 1 1 / 0.95)",
+      display: "grid",
+      gap: "16px",
+      paddingLeft: "20px",
+      paddingRight: "20px",
+      gridColumnCount: 3
+    }
   },
   motionProof: {
     productShellTransition: "grid-template-columns",
@@ -363,6 +375,7 @@ function validateMetric({ failures, name, metric, expected }) {
   const radius = parsePixels(metric.borderRadius);
   const minWidth = expected.minWidth ?? expected.width;
   const minHeight = expected.minHeight ?? expected.height;
+  const gridColumnCount = String(metric.gridTemplateColumns).split(/\s+/).filter(Boolean).length;
   if (expected.width !== undefined && Math.abs(width - expected.width) > 1) {
     failures.push(`${name}:width:${width}`);
   }
@@ -375,8 +388,35 @@ function validateMetric({ failures, name, metric, expected }) {
   if (minHeight !== undefined && height + 1 < minHeight) {
     failures.push(`${name}:min-height:${height}`);
   }
-  if (Math.abs(radius - expected.radius) > 1) {
+  if (expected.radius !== undefined && Math.abs(radius - expected.radius) > 1) {
     failures.push(`${name}:radius:${metric.borderRadius}`);
+  }
+  if (expected.borderRadius !== undefined && metric.borderRadius !== expected.borderRadius) {
+    failures.push(`${name}:border-radius:${metric.borderRadius}`);
+  }
+  if (expected.borderStyle !== undefined && metric.borderStyle !== expected.borderStyle) {
+    failures.push(`${name}:border-style:${metric.borderStyle}`);
+  }
+  if (expected.borderWidth !== undefined && metric.borderWidth !== expected.borderWidth) {
+    failures.push(`${name}:border-width:${metric.borderWidth}`);
+  }
+  if (expected.backgroundColor !== undefined && metric.backgroundColor !== expected.backgroundColor) {
+    failures.push(`${name}:background:${metric.backgroundColor}`);
+  }
+  if (expected.display !== undefined && metric.display !== expected.display) {
+    failures.push(`${name}:display:${metric.display}`);
+  }
+  if (expected.gap !== undefined && metric.gap !== expected.gap) {
+    failures.push(`${name}:gap:${metric.gap}`);
+  }
+  if (expected.paddingLeft !== undefined && metric.paddingLeft !== expected.paddingLeft) {
+    failures.push(`${name}:padding-left:${metric.paddingLeft}`);
+  }
+  if (expected.paddingRight !== undefined && metric.paddingRight !== expected.paddingRight) {
+    failures.push(`${name}:padding-right:${metric.paddingRight}`);
+  }
+  if (expected.gridColumnCount !== undefined && gridColumnCount !== expected.gridColumnCount) {
+    failures.push(`${name}:grid-column-count:${metric.gridTemplateColumns}`);
   }
   if (metric.borderStyle === "outset") {
     failures.push(`${name}:default-browser-border-style`);
