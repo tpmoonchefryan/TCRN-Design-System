@@ -53,6 +53,8 @@ export const componentLibraryPublicComponentNames = [
   "ShellThemeToggle",
   "ShellLocaleMenu",
   "SideNavCollapseButton",
+  "ProductShell",
+  "ProductShellSearch",
   "DetailDrawer",
   "ActionDrawer",
   "Tooltip",
@@ -65,7 +67,8 @@ export type ComponentLibraryPublicComponentName = (typeof componentLibraryPublic
 
 export const componentLibraryPublicUtilityNames = [
   "tcrnIconNames",
-  "tcrnComponentCss"
+  "tcrnComponentCss",
+  "useProductShellController"
 ] as const;
 
 export type ComponentLibraryPublicUtilityName = (typeof componentLibraryPublicUtilityNames)[number];

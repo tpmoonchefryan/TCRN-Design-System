@@ -2,9 +2,9 @@
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
   "comparisonContractVersion": "bounded_antialias_pixel_delta_v1",
-  "sourceHead": "2b128a188aa11f194338102b41b8011a154a6e69",
-  "sourceContentDigest": "b857f2a7e4c830fffdd38358765bf8217356d0d3c38c52e9ff624e9525f92371",
-  "baselineUpdateReason": "shell-control-motion-refinement",
+  "sourceHead": "84b773a93dfedd7816291282eddeaaa1aa48fd45",
+  "sourceContentDigest": "933256e946c2563ce5307513f455cd76b445e824208041be940c1fa1d0489f27",
+  "baselineUpdateReason": "DS-shell-effect-boundary-package-backed-update",
   "packageName": "@tcrn/design-system-workspace",
   "staticPageAllowlist": [
     "index.html",
@@ -15,7 +15,9 @@
     "proof.html",
     "change-log.html",
     "tcrn-brand-mark.svg",
-    "ai-consumption-contract.json"
+    "ai-consumption-contract.json",
+    "llms.txt",
+    "robots.txt"
   ],
   "visualStateAllowlist": [
     {
@@ -193,10 +195,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__desktop-1440x900.png",
-      "rawSha256": "2750bd5f1a264a9eaaa77e94f1a284e7fe8460fb22c0862a8fb54f8382b1dca0",
+      "rawSha256": "a3e6e26bd1f9307aa2d796094996dd41735e6eeac0e7c34d6c4f235980540d74",
       "width": 1440,
       "height": 900,
-      "bytes": 277253
+      "bytes": 277484
     },
     {
       "stateId": "pattern-dashboard-page-templates",
@@ -245,10 +247,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__desktop-1440x900.png",
-      "rawSha256": "2cd67b79bedbbce19051c5be8e9958122f6044052dae23fb9103ee414b3e67c0",
+      "rawSha256": "c262c6efeac98646f54da7d108b7090c88757e9f69609d39f97a0de3d5dfcaa2",
       "width": 1440,
       "height": 900,
-      "bytes": 217490
+      "bytes": 217391
     },
     {
       "stateId": "pattern-dashboard-page-templates-dark",
@@ -297,10 +299,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__tablet-1024x768.png",
-      "rawSha256": "2078b2b6047ef7402fb468b55756b9ca691efb7508bb8b6ab6078e922e46f6e6",
+      "rawSha256": "b54edf2fa2f41f30cc79588c43d56e943ebe11a3ce0376790d2635fb84222dd7",
       "width": 1024,
       "height": 768,
-      "bytes": 224569
+      "bytes": 224650
     },
     {
       "stateId": "pattern-dashboard-page-templates",
@@ -349,10 +351,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__tablet-1024x768.png",
-      "rawSha256": "f7a65dcb828d1ecc5050be2264fa3a30bc61d912294d40d3c3bc08aece61a81d",
+      "rawSha256": "b22c547ce97623211f95d7462d37ca606888cc5850336dddcaccd4767f1d5bd1",
       "width": 1024,
       "height": 768,
-      "bytes": 145061
+      "bytes": 145101
     },
     {
       "stateId": "pattern-dashboard-page-templates-dark",
@@ -401,10 +403,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec__mobile-390x844.png",
-      "rawSha256": "bea17f93dbc85ebc3f32ac12ee7c4577241f6e236521f1be9020a0681c7810ce",
+      "rawSha256": "3ff34b058fe9822634cabcbd641fa6948a94c0d380e9bfa69faaf6ac3d208861",
       "width": 390,
       "height": 844,
-      "bytes": 62679
+      "bytes": 62677
     },
     {
       "stateId": "pattern-dashboard-page-templates",
@@ -453,10 +455,10 @@
       "storyId": "dialog-spec-usage",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/component-dialog-spec-dark__mobile-390x844.png",
-      "rawSha256": "433cf4b7cca9a023df6d082d9cb4aee7c62c5864afebfa6fe71c4f540dedb4a9",
+      "rawSha256": "5ef954399ad254a825e3f3111d0294ac60efca1054276ea4166b5e9353e304ba",
       "width": 390,
       "height": 844,
-      "bytes": 63569
+      "bytes": 63583
     },
     {
       "stateId": "pattern-dashboard-page-templates-dark",
@@ -485,5 +487,5 @@
       "bytes": 62389
     }
   ],
-  "baselineManifestHash": "704ad415c3f9e02e7e15175f4028ab399868d132ffd44537736b22e4f51b6a4c"
+  "baselineManifestHash": "aa262e3c09cb0c6f248d847da3f40130371cb7d4144b641157351c17e1df23db"
 }

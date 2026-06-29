@@ -117,7 +117,7 @@
     {
       "path": "packages/ui-react/src/index.tsx",
       "exists": true,
-      "sha256": "d2b5ec6997fff131c7e4a8bc5f39fcede5632f38628a445ed23125d6a862b597"
+      "sha256": "908826313e5ccda7f36fe6079796242449b7943578722890242e8dac75e41785"
     },
     {
       "path": "apps/storybook/src/stories.tsx",

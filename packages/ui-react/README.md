@@ -38,9 +38,12 @@ substitutions.
 
 ## Storybook Shell Control Boundary
 
-The static Storybook documentation shell may compose package-backed primitives,
-icons, tokens, and copy-state vocabulary, but its global controls are not new
-component-library exports.
+The static Storybook documentation shell and downstream product shells share a
+registered package-backed product shell/effect boundary. Consumers should import
+`ProductShell`, `ProductShellSearch`, `ShellThemeToggle`, `ShellLocaleMenu`,
+`SideNavCollapseButton`, `ShellBrandLockup`, `ProductLockup`, and
+`TcrnBrandMark` from `@tcrn/ui-react` instead of recreating reusable shell
+controls, brand marks, layout effects, or navigation behavior locally.
 
 - Theme switching stays a single icon-only circular button. It reflects the
   current light/dark mode and toggles only on explicit activation.
@@ -54,6 +57,10 @@ component-library exports.
 - The AI consumption contract remains in the Proof story and static JSON
   artifact. It is not a primary top-bar control for human readers.
 
-Consumers that need similar controls should compose admitted primitives and
-prove the product route separately; this README does not export a package-backed
-`ThemeToggle`, locale menu, or Storybook shell component.
+`useProductShellController` is the public utility for bounded state/effect glue:
+collapsed navigation state, theme, locale menu open state, and compact/focused
+search state may be route-owned through DS-defined props and callbacks, while
+layout, focus treatment, reduced-motion behavior, and light/dark token posture
+remain owned by the package boundary. Product consumers may provide IA/data,
+route labels, locale labels, search records, content slots, and callbacks only
+through that boundary and must still prove product-specific routes separately.

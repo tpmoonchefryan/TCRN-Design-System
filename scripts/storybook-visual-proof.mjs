@@ -33,7 +33,9 @@ const staticPageAllowlist = [
   "proof.html",
   "change-log.html",
   "tcrn-brand-mark.svg",
-  "ai-consumption-contract.json"
+  "ai-consumption-contract.json",
+  "llms.txt",
+  "robots.txt"
 ];
 
 const visualStateAllowlist = [

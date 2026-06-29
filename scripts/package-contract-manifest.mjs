@@ -68,6 +68,14 @@ const publicUiReactComponentExports = [
   "ProductLauncher",
   "ProductSwitcher",
   "SkipLink",
+  "TcrnBrandMark",
+  "ProductLockup",
+  "ShellBrandLockup",
+  "ShellThemeToggle",
+  "ShellLocaleMenu",
+  "SideNavCollapseButton",
+  "ProductShell",
+  "ProductShellSearch",
   "DetailDrawer",
   "ActionDrawer",
   "Tooltip",
@@ -77,13 +85,12 @@ const publicUiReactComponentExports = [
 ];
 
 const publicUiReactUtilityExports = [
-  "tcrnIconNames"
+  "tcrnIconNames",
+  "tcrnComponentCss",
+  "useProductShellController"
 ];
 
 const deferredStorybookPrototypeNames = [
-  "TcrnBrandMark",
-  "ProductLockup",
-  "ShellBrandLockup",
   "TmsDenseShellDemo",
   "KnowledgeBaseShellDemo",
   "CompactToolShellDemo"
@@ -242,8 +249,9 @@ const storybookConsumption = {
 };
 const storybookShellControlContract = {
   uiReactReadmeBoundaryVisible: uiReactReadme.includes("Storybook Shell Control Boundary")
-    && /not new\s+component-library exports/.test(uiReactReadme)
-    && /does not export a package-backed\s+`ThemeToggle`, locale menu, or Storybook shell component/.test(uiReactReadme),
+    && uiReactReadme.includes("registered package-backed product shell/effect boundary")
+    && uiReactReadme.includes("`ProductShell`, `ProductShellSearch`, `ShellThemeToggle`, `ShellLocaleMenu`")
+    && uiReactReadme.includes("`useProductShellController` is the public utility"),
   themeToggleRuleVisible: uiReactReadme.includes("single icon-only circular button")
     && storybookBodies.some((source) => /data-storybook-theme-toggle/.test(source.body)),
   wholePageTransitionRuleVisible: uiReactReadme.includes("whole-page shell transition")

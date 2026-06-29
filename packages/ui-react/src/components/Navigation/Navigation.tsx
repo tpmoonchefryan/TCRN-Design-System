@@ -1,6 +1,7 @@
 import type { AnchorHTMLAttributes, HTMLAttributes, ImgHTMLAttributes, ReactNode } from "react";
-import { useId } from "react";
+import { useCallback, useId, useMemo, useState } from "react";
 import { IconButton, type IconButtonProps } from "../Button/index.js";
+import { SearchInput, type SearchInputProps } from "../Form/index.js";
 import { Icon, type IconName } from "../Icon/index.js";
 import { cx, mergeIds, requiredText } from "../../utils.js";
 
@@ -150,11 +151,16 @@ export interface ShellLocaleMenuProps extends HTMLAttributes<HTMLDivElement> {
   locales: readonly ShellLocaleOption[];
   currentLocale: string;
   label?: string;
+  open?: boolean;
+  menuId?: string;
+  triggerId?: string;
 }
 
-export function ShellLocaleMenu({ locales, currentLocale, label = "Language", className, ...props }: ShellLocaleMenuProps) {
+export function ShellLocaleMenu({ locales, currentLocale, label = "Language", open = false, menuId, triggerId, className, ...props }: ShellLocaleMenuProps) {
   const current = locales.find((entry) => entry.locale === currentLocale) ?? locales[0];
   const currentName = requiredText(current?.nativeName, currentLocale);
+  const generatedMenuId = useId();
+  const resolvedMenuId = menuId ?? generatedMenuId;
   return (
     <div
       {...props}
@@ -162,20 +168,24 @@ export function ShellLocaleMenu({ locales, currentLocale, label = "Language", cl
       data-shell-control="locale-menu"
       data-package-backed-shell-control="locale-menu"
       data-locale-control="native-name-menu"
+      data-locale-menu-open={open ? "true" : "false"}
+      data-locale-dismissal-contract="selection-outside-pointer-escape-focus-return"
     >
       <button
+        id={triggerId}
         className="tcrn-shell-locale-menu__trigger"
         type="button"
         data-locale-menu-toggle
         aria-haspopup="menu"
-        aria-expanded="false"
+        aria-expanded={open ? "true" : "false"}
+        aria-controls={resolvedMenuId}
         aria-label={label}
       >
         <Icon name="globe-2" />
         <span className="tcrn-shell-locale-menu__current" data-locale-current>{currentName}</span>
         <Icon name="chevron-down" className="tcrn-shell-locale-menu__chevron" />
       </button>
-      <div className="tcrn-shell-locale-menu__panel" role="menu" data-locale-menu hidden>
+      <div id={resolvedMenuId} className="tcrn-shell-locale-menu__panel" role="menu" data-locale-menu hidden={!open}>
         {locales.map((entry) => (
           <button key={entry.locale}
             className="tcrn-shell-locale-menu__option"
@@ -390,6 +400,352 @@ export function SkipLink({ href = "#content", className, children, ...props }: S
   );
 }
 
+export interface ProductShellSearchResult {
+  id: string;
+  title: string;
+  meta?: string;
+  href: string;
+  selected?: boolean;
+}
+
+export interface ProductShellSearchProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "results"> {
+  label?: string;
+  placeholder?: string;
+  shortcut?: SearchInputProps["shortcut"];
+  query?: string;
+  expanded?: boolean;
+  results?: readonly ProductShellSearchResult[];
+  resultsLabel?: string;
+  emptyLabel?: string;
+  inputProps?: Omit<SearchInputProps, "type" | "placeholder" | "shortcut">;
+}
+
+export function ProductShellSearch({
+  label = "Search product shell",
+  placeholder = "Search",
+  shortcut = "auto",
+  query = "",
+  expanded = false,
+  results = [],
+  resultsLabel = "Search results",
+  emptyLabel = "No results",
+  inputProps,
+  className,
+  ...props
+}: ProductShellSearchProps) {
+  const resultsId = useId();
+  const normalizedQuery = query.trim();
+  const isExpanded = expanded || normalizedQuery.length > 0;
+  const hasResults = results.length > 0;
+  return (
+    <div
+      {...props}
+      className={cx("tcrn-product-shell-search", className)}
+      data-shell-control="product-shell-search"
+      data-package-backed-shell-control="product-shell-search"
+      data-search-expanded={isExpanded ? "true" : "false"}
+      data-search-results-visible={isExpanded && hasResults ? "true" : "false"}
+      data-search-dismissal-contract="blur-outside-pointer-tab-escape"
+    >
+      <SearchInput
+        {...inputProps}
+        role="combobox"
+        aria-label={label}
+        aria-controls={resultsId}
+        aria-expanded={isExpanded && hasResults ? "true" : "false"}
+        aria-haspopup="listbox"
+        aria-autocomplete="list"
+        placeholder={placeholder}
+        shortcut={shortcut}
+        defaultValue={query}
+      />
+      <div
+        id={resultsId}
+        className="tcrn-product-shell-search__results"
+        role="listbox"
+        aria-label={resultsLabel}
+        data-product-shell-search-results
+        hidden={!isExpanded || !hasResults}
+      >
+        {hasResults ? results.map((result) => (
+          <a key={result.id}
+            className="tcrn-product-shell-search__result"
+            href={result.href}
+            role="option"
+            aria-selected={result.selected ? "true" : undefined}
+            data-search-result
+            data-selected={result.selected ? "true" : undefined}
+          >
+            <strong>{result.title}</strong>
+            {result.meta ? <span>{result.meta}</span> : null}
+          </a>
+        )) : (
+          <span className="tcrn-product-shell-search__empty">{emptyLabel}</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export interface ProductShellNavItem {
+  id: string;
+  label: string;
+  href: string;
+  iconName?: IconName;
+  selected?: boolean;
+  disabled?: boolean;
+  disabledReason?: string;
+}
+
+export interface ProductShellNavGroup {
+  id: string;
+  label: string;
+  selected?: boolean;
+  items: readonly ProductShellNavItem[];
+}
+
+export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
+  productName: string;
+  moduleName: string;
+  brandSuffix: string;
+  brandCaption: string;
+  brandMarkSrc?: string;
+  brandMarkAlt?: string;
+  currentRouteLabel: string;
+  navLabel: string;
+  navGroups: readonly ProductShellNavGroup[];
+  locales: readonly ShellLocaleOption[];
+  currentLocale: string;
+  children: ReactNode;
+  collapsed?: boolean;
+  collapsedStorageKey?: string;
+  currentTheme?: ShellThemeMode;
+  localeMenuOpen?: boolean;
+  search?: ProductShellSearchProps;
+  contentId?: string;
+  contentRole?: "main" | "region";
+  contentLabel?: string;
+  navId?: string;
+  skipLinkLabel?: string;
+}
+
+export function ProductShell({
+  productName,
+  moduleName,
+  brandSuffix,
+  brandCaption,
+  brandMarkSrc,
+  brandMarkAlt,
+  currentRouteLabel,
+  navLabel,
+  navGroups,
+  locales,
+  currentLocale,
+  children,
+  collapsed = false,
+  collapsedStorageKey,
+  currentTheme = "light",
+  localeMenuOpen = false,
+  search,
+  contentId = "product-shell-content",
+  contentRole = "region",
+  contentLabel = "Product shell workspace",
+  navId = "tcrn-product-shell-side-nav",
+  skipLinkLabel = "Skip to shell content",
+  className,
+  ...props
+}: ProductShellProps) {
+  const ContentElement = contentRole === "main" ? "main" : "section";
+
+  return (
+    <div
+      {...props}
+      className={cx("tcrn-product-shell", className)}
+      data-package-backed-product-shell-boundary="side-nav-shell-v1"
+      data-product-shell-pattern="attached-side-nav"
+      data-product-shell-collapsed={collapsed ? "true" : "false"}
+      data-side-nav-collapsed={collapsed ? "true" : "false"}
+      data-product-shell-theme={currentTheme}
+      data-product-shell-responsive="desktop-attached-mobile-stacked"
+      data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"
+      data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"
+    >
+      <SkipLink href={`#${contentId}`}>{skipLinkLabel}</SkipLink>
+      <aside className="tcrn-product-shell__sidebar" data-product-shell-region="side-navigation">
+        <div className="tcrn-product-shell__sidebar-header">
+          <a className="tcrn-product-shell__brand" href="/" aria-label={`${productName} home`} data-registered-brand-lockup="@tcrn/ui-react/ShellBrandLockup">
+            <ShellBrandLockup
+              suffix={brandSuffix}
+              caption={brandCaption}
+              brandMarkSrc={brandMarkSrc}
+              brandMarkAlt={brandMarkAlt}
+              data-visible-registered-brand-lockup="true"
+            />
+          </a>
+          <SideNavCollapseButton collapsed={collapsed} controls={navId} persistedKey={collapsedStorageKey} />
+        </div>
+        <SideNav id={navId} label={navLabel} className="tcrn-product-shell__nav" data-registered-navigation-only="true">
+          {navGroups.map((group) => (
+            <NavGroup key={group.id} label={group.label} selected={group.selected}>
+              {group.items.map((item) => (
+                <NavItem key={item.id}
+                  href={item.href}
+                  iconName={item.iconName}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  disabledReason={item.disabledReason}
+                  data-product-shell-route={item.id}
+                >
+                  {item.label}
+                </NavItem>
+              ))}
+            </NavGroup>
+          ))}
+        </SideNav>
+      </aside>
+      <div className="tcrn-product-shell__workspace">
+        <TopBar
+          productName={productName}
+          moduleName={moduleName}
+          actions={
+            <div className="tcrn-product-shell__utility-row" data-product-shell-region="utility-row">
+              <div className="tcrn-product-shell__current-location">
+                <span>Current location</span>
+                <strong>{currentRouteLabel}</strong>
+              </div>
+              <ProductShellSearch {...search} />
+              <ShellLocaleMenu locales={locales} currentLocale={currentLocale} open={localeMenuOpen} />
+              <ShellThemeToggle currentTheme={currentTheme} />
+            </div>
+          }
+        />
+        <ContentElement
+          id={contentId}
+          className="tcrn-product-shell__main"
+          data-product-shell-region="content"
+          aria-label={contentLabel}
+        >
+          {children}
+        </ContentElement>
+      </div>
+    </div>
+  );
+}
+
+export interface ProductShellControllerConfig {
+  initialCollapsed?: boolean;
+  initialTheme?: ShellThemeMode;
+  initialLocale?: string;
+  collapsedStorageKey?: string;
+  themeStorageKey?: string;
+  localeStorageKey?: string;
+  searchRecords?: readonly ProductShellSearchResult[];
+  searchLimit?: number;
+}
+
+export function useProductShellController({
+  initialCollapsed = false,
+  initialTheme = "light",
+  initialLocale = "en",
+  collapsedStorageKey,
+  themeStorageKey,
+  localeStorageKey,
+  searchRecords = [],
+  searchLimit = 8
+}: ProductShellControllerConfig = {}) {
+  const [collapsed, setCollapsedState] = useState(() => readStoredBoolean(collapsedStorageKey, initialCollapsed));
+  const [theme, setThemeState] = useState<ShellThemeMode>(() => readStoredTheme(themeStorageKey, initialTheme));
+  const [locale, setLocaleState] = useState(() => readStoredString(localeStorageKey, initialLocale));
+  const [localeMenuOpen, setLocaleMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchExpanded, setSearchExpanded] = useState(false);
+
+  const setCollapsed = useCallback((nextCollapsed: boolean) => {
+    setCollapsedState(nextCollapsed);
+    writeStoredBoolean(collapsedStorageKey, nextCollapsed);
+  }, [collapsedStorageKey]);
+
+  const setTheme = useCallback((nextTheme: ShellThemeMode) => {
+    const resolvedTheme = nextTheme === "dark" ? "dark" : "light";
+    const update = () => {
+      setThemeState(resolvedTheme);
+      writeStoredString(themeStorageKey, resolvedTheme);
+    };
+    const viewTransitionDocument = typeof document === "undefined"
+      ? undefined
+      : document as Document & { startViewTransition?: (callback: () => void) => { finished?: Promise<unknown> } };
+    if (viewTransitionDocument?.startViewTransition) {
+      viewTransitionDocument.startViewTransition(update);
+      return;
+    }
+    update();
+  }, [themeStorageKey]);
+
+  const setLocale = useCallback((nextLocale: string) => {
+    setLocaleState(nextLocale);
+    writeStoredString(localeStorageKey, nextLocale);
+  }, [localeStorageKey]);
+
+  const searchResults = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+    if (!normalizedQuery) return [];
+    return searchRecords
+      .filter((record) => `${record.title} ${record.meta ?? ""}`.toLowerCase().includes(normalizedQuery))
+      .slice(0, searchLimit);
+  }, [searchLimit, searchQuery, searchRecords]);
+
+  return {
+    collapsed,
+    setCollapsed,
+    toggleCollapsed: () => setCollapsed(!collapsed),
+    theme,
+    setTheme,
+    toggleTheme: () => setTheme(theme === "dark" ? "light" : "dark"),
+    locale,
+    setLocale,
+    localeMenuOpen,
+    openLocaleMenu: () => setLocaleMenuOpen(true),
+    closeLocaleMenu: () => setLocaleMenuOpen(false),
+    searchQuery,
+    setSearchQuery,
+    searchExpanded,
+    setSearchExpanded,
+    collapseSearch: () => setSearchExpanded(false),
+    searchResults,
+    productShellStateProps: {
+      collapsed,
+      currentTheme: theme,
+      currentLocale: locale,
+      localeMenuOpen
+    }
+  };
+}
+
+function readStoredBoolean(key: string | undefined, fallback: boolean): boolean {
+  if (!key || typeof window === "undefined") return fallback;
+  const value = window.localStorage.getItem(key);
+  return value === null ? fallback : value === "true";
+}
+
+function readStoredTheme(key: string | undefined, fallback: ShellThemeMode): ShellThemeMode {
+  const value = readStoredString(key, fallback);
+  return value === "dark" ? "dark" : "light";
+}
+
+function readStoredString(key: string | undefined, fallback: string): string {
+  if (!key || typeof window === "undefined") return fallback;
+  return window.localStorage.getItem(key) ?? fallback;
+}
+
+function writeStoredBoolean(key: string | undefined, value: boolean) {
+  writeStoredString(key, String(value));
+}
+
+function writeStoredString(key: string | undefined, value: string) {
+  if (!key || typeof window === "undefined") return;
+  window.localStorage.setItem(key, value);
+}
+
 export function Pagination({ label }: { label: string }) {
   return <nav className="tcrn-pagination" aria-label={label} />;
 }
@@ -504,6 +860,170 @@ export const tcrnComponentCss = `
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.tcrn-product-shell {
+  --tcrn-product-shell-sidebar-width: 280px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--tcrn-product-shell-sidebar-width) minmax(0, 1fr);
+  background: var(--tcrn-color-surface-canvas);
+  color: var(--tcrn-color-text-primary);
+  transition: grid-template-columns var(--tcrn-motion-duration-md) ease;
+}
+.tcrn-product-shell[data-product-shell-collapsed="true"] {
+  --tcrn-product-shell-sidebar-width: 92px;
+}
+.tcrn-product-shell[data-theme-switching="true"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--tcrn-color-brand-primary-bg), transparent 20%);
+  animation: tcrn-product-shell-theme-wash var(--tcrn-motion-duration-md) ease both;
+}
+@keyframes tcrn-product-shell-theme-wash {
+  from { opacity: 0.22; }
+  to { opacity: 0; }
+}
+.tcrn-product-shell :focus-visible {
+  outline: 3px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+.tcrn-product-shell__sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-5);
+  min-width: 0;
+  padding: var(--tcrn-space-4);
+  border-right: 1px solid var(--tcrn-color-border-subtle);
+  background: var(--tcrn-color-surface-panel);
+}
+.tcrn-product-shell__sidebar-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 38px;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+}
+.tcrn-product-shell__brand {
+  display: flex;
+  min-width: 0;
+  min-height: 46px;
+  align-items: center;
+  overflow: hidden;
+  text-decoration: none;
+}
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-shell__sidebar-header {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-shell__brand {
+  inline-size: 42px;
+  min-height: 42px;
+}
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-shell-brand-lockup__copy,
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-group__label,
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item__label,
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item__disabled-reason {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-side-nav {
+  align-items: center;
+}
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-group {
+  width: 48px;
+}
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item {
+  grid-template-columns: 20px;
+  justify-content: center;
+  inline-size: 44px;
+  min-height: 42px;
+  padding: var(--tcrn-space-2);
+}
+.tcrn-product-shell__workspace {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.tcrn-product-shell__workspace > .tcrn-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+}
+.tcrn-product-shell__utility-row {
+  display: grid;
+  grid-template-columns: max-content minmax(220px, 360px) max-content max-content;
+  justify-content: end;
+  align-items: center;
+  gap: var(--tcrn-space-3);
+}
+.tcrn-product-shell__current-location {
+  display: grid;
+  gap: 1px;
+  min-width: 116px;
+  color: var(--tcrn-color-text-secondary);
+  font-size: 12px;
+}
+.tcrn-product-shell__current-location strong {
+  color: var(--tcrn-color-text-primary);
+  font-size: 13px;
+}
+.tcrn-product-shell-search {
+  position: relative;
+  justify-self: end;
+  width: min(100%, 260px);
+  transition: width var(--tcrn-motion-duration-md) ease;
+}
+.tcrn-product-shell-search[data-search-expanded="true"] {
+  width: min(100%, 420px);
+}
+.tcrn-product-shell-search__results {
+  position: absolute;
+  inset-block-start: calc(100% + var(--tcrn-space-2));
+  inset-inline-end: 0;
+  z-index: 40;
+  display: grid;
+  gap: var(--tcrn-space-1);
+  width: min(420px, calc(100vw - 32px));
+  padding: var(--tcrn-space-2);
+  border: 1px solid var(--tcrn-color-border-strong);
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-surface-panel);
+  box-shadow: var(--tcrn-elevation-floating);
+}
+.tcrn-product-shell-search__results[hidden] {
+  display: none;
+}
+.tcrn-product-shell-search__result,
+.tcrn-product-shell-search__empty {
+  display: grid;
+  gap: 2px;
+  padding: var(--tcrn-space-2);
+  border-radius: var(--tcrn-radius-control);
+  color: var(--tcrn-color-text-primary);
+  text-decoration: none;
+}
+.tcrn-product-shell-search__result:hover,
+.tcrn-product-shell-search__result[data-selected="true"] {
+  background: var(--tcrn-color-surface-muted);
+}
+.tcrn-product-shell-search__result span,
+.tcrn-product-shell-search__empty {
+  color: var(--tcrn-color-text-secondary);
+  font-size: 12px;
+}
+.tcrn-product-shell__main {
+  min-width: 0;
+  padding: var(--tcrn-space-5);
 }
 .tcrn-top-bar {
   display: grid;
@@ -789,6 +1309,29 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   transform: translateY(0);
 }
 @media (max-width: 760px) {
+  .tcrn-product-shell {
+    --tcrn-product-shell-sidebar-width: 1fr;
+    grid-template-columns: 1fr;
+  }
+  .tcrn-product-shell__sidebar {
+    position: relative;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  }
+  .tcrn-product-shell__workspace > .tcrn-top-bar,
+  .tcrn-product-shell__utility-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .tcrn-product-shell-search,
+  .tcrn-product-shell-search[data-search-expanded="true"] {
+    justify-self: stretch;
+    width: 100%;
+  }
+  .tcrn-product-shell__main {
+    padding: var(--tcrn-space-4);
+  }
   .tcrn-shell-brand-lockup__caption {
     white-space: normal;
   }
@@ -801,6 +1344,13 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .tcrn-product-shell,
+  .tcrn-product-shell-search {
+    transition: none;
+  }
+  .tcrn-product-shell[data-theme-switching="true"]::after {
+    animation: none;
+  }
   .tcrn-button,
   .tcrn-nav-item,
   .tcrn-search-input,

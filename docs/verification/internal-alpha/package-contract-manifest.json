@@ -199,6 +199,38 @@
         "exported": true
       },
       {
+        "name": "TcrnBrandMark",
+        "exported": true
+      },
+      {
+        "name": "ProductLockup",
+        "exported": true
+      },
+      {
+        "name": "ShellBrandLockup",
+        "exported": true
+      },
+      {
+        "name": "ShellThemeToggle",
+        "exported": true
+      },
+      {
+        "name": "ShellLocaleMenu",
+        "exported": true
+      },
+      {
+        "name": "SideNavCollapseButton",
+        "exported": true
+      },
+      {
+        "name": "ProductShell",
+        "exported": true
+      },
+      {
+        "name": "ProductShellSearch",
+        "exported": true
+      },
+      {
         "name": "DetailDrawer",
         "exported": true
       },
@@ -227,27 +259,17 @@
       {
         "name": "tcrnIconNames",
         "exported": true
+      },
+      {
+        "name": "tcrnComponentCss",
+        "exported": true
+      },
+      {
+        "name": "useProductShellController",
+        "exported": true
       }
     ],
     "deferredPrototypeChecks": [
-      {
-        "name": "TcrnBrandMark",
-        "exported": false,
-        "packageBacked": false,
-        "disposition": "storybook_only_prototype"
-      },
-      {
-        "name": "ProductLockup",
-        "exported": false,
-        "packageBacked": false,
-        "disposition": "storybook_only_prototype"
-      },
-      {
-        "name": "ShellBrandLockup",
-        "exported": false,
-        "packageBacked": false,
-        "disposition": "storybook_only_prototype"
-      },
       {
         "name": "TmsDenseShellDemo",
         "exported": false,
@@ -701,6 +723,78 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "TcrnBrandMark",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ProductLockup",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ShellBrandLockup",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ShellThemeToggle",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ShellLocaleMenu",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SideNavCollapseButton",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ProductShell",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ProductShellSearch",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "DetailDrawer",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -764,30 +858,21 @@
         "requiredRepair": "none"
       },
       {
-        "storybookItem": "TcrnBrandMark",
-        "classification": "storybook_only_prototype",
-        "packageSourcePath": null,
-        "publicExportPath": null,
+        "storybookItem": "tcrnComponentCss",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
         "storybookPath": "apps/storybook/src/stories.tsx",
-        "status": "truthfully_deferred",
+        "status": "package_backed_storybook_consumed",
         "requiredRepair": "none"
       },
       {
-        "storybookItem": "ProductLockup",
-        "classification": "storybook_only_prototype",
-        "packageSourcePath": null,
-        "publicExportPath": null,
+        "storybookItem": "useProductShellController",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
         "storybookPath": "apps/storybook/src/stories.tsx",
-        "status": "truthfully_deferred",
-        "requiredRepair": "none"
-      },
-      {
-        "storybookItem": "ShellBrandLockup",
-        "classification": "storybook_only_prototype",
-        "packageSourcePath": null,
-        "publicExportPath": null,
-        "storybookPath": "apps/storybook/src/stories.tsx",
-        "status": "truthfully_deferred",
+        "status": "package_backed_storybook_consumed",
         "requiredRepair": "none"
       },
       {
@@ -828,16 +913,12 @@
       "deepImportHits": [],
       "storybookOnlyMarkers": [
         {
-          "file": "apps/storybook/src/contract-stories/prototypes/brand-lockups.tsx",
-          "markerCount": 3
-        },
-        {
           "file": "apps/storybook/src/contract-stories/prototypes/storybook-shell-demos.tsx",
           "markerCount": 8
         },
         {
           "file": "apps/storybook/src/smoke.test.ts",
-          "markerCount": 5
+          "markerCount": 4
         }
       ],
       "packageBackedComponentParityMarkers": true,

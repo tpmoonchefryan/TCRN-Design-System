@@ -85,7 +85,7 @@ export const aiConsumptionContract = {
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, brand lockups, status, readback, table, and disclosure surfaces instead of rebuilding reusable local clones. Product-owned behavior glue must be route-scoped and proven.",
+    "Product implementations must import package-backed Design System primitives for ProductShell, ProductShellSearch, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, brand lockups, status, readback, table, and disclosure surfaces instead of rebuilding reusable local clones. Product shell state/effect behavior must use the package-backed controlled props or useProductShellController boundary; product consumers may supply only IA/data, route labels, locale data, search records, content slots, and callbacks through DS-defined APIs.",
   tokenConsumptionDisposition:
     "Product implementations must use Design System tokens, reduced-motion rules, and accessibility states before custom CSS.",
   themeModeDisposition:
@@ -110,7 +110,9 @@ export const aiConsumptionContract = {
     registeredNavigation:
       "Product shells must not surface unregistered or planned modules as primary navigation, registered module cards, or active product IA before an owning route admits them.",
     primitiveConsumption:
-      "Product frontends must consume registered package-backed primitives from @tcrn/ui-react and must not create reusable local clones for shell, navigation, search, theme, locale, status, readback, table, or disclosure behaviors without a DS admission route.",
+      "Product frontends must consume registered package-backed primitives from @tcrn/ui-react, including ProductShell/ProductShellSearch/useProductShellController for side-nav shell effects, and must not create reusable local clones for shell, navigation, search, theme, locale, status, readback, table, or disclosure behaviors without a DS admission route.",
+    shellEffectBoundary:
+      "The package-backed ProductShell boundary owns attached side-nav shell layout, collapsed rail styling, responsive desktop/mobile posture, compact/rest/focused search result surfaces, locale menu open-state markers, theme-toggle markers, one whole-page transition/fallback wash styling, focus treatment, reduced-motion behavior, and light/dark token behavior. Product routes may pass IA/data/content/callbacks but must not fork those effects.",
     browserProof:
       "Product adoption proof must exercise rendered browser interactions, including menu dismissal and side navigation collapse, rather than relying only on static marker checks."
   },

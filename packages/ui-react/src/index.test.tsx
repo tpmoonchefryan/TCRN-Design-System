@@ -62,6 +62,8 @@ test("component-library metadata names public components, utilities, and deferre
     "ShellThemeToggle",
     "ShellLocaleMenu",
     "SideNavCollapseButton",
+    "ProductShell",
+    "ProductShellSearch",
     "DetailDrawer",
     "ActionDrawer",
     "Tooltip",
@@ -71,7 +73,7 @@ test("component-library metadata names public components, utilities, and deferre
   ];
 
   assert.deepEqual([...componentLibraryPublicComponentNames].sort(), [...expectedPublicComponents].sort());
-  assert.deepEqual([...componentLibraryPublicUtilityNames].sort(), ["tcrnComponentCss", "tcrnIconNames"]);
+  assert.deepEqual([...componentLibraryPublicUtilityNames].sort(), ["tcrnComponentCss", "tcrnIconNames", "useProductShellController"]);
   assert.ok(componentLibraryDeferredPrototypeNames.includes("TmsDenseShellDemo"));
   assert.ok(componentLibraryDeferredPrototypeNames.includes("KnowledgeBaseShellDemo"));
   assert.ok(componentLibraryDeferredPrototypeNames.includes("CompactToolShellDemo"));

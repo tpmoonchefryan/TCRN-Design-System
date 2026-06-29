@@ -371,6 +371,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /Recommended component families/);
   assert.match(readGroupPage("Components"), /Package-backed component API/);
   assert.match(readGroupPage("Components"), /Package utility exports/);
+  assert.match(readGroupPage("Components"), /ProductShell/);
+  assert.match(readGroupPage("Components"), /ProductShellSearch/);
+  assert.match(readGroupPage("Components"), /useProductShellController/);
   assert.match(readGroupPage("Components"), /Component library available/);
   assert.match(readGroupPage("Components"), /data-component-library-parity="package-backed"/);
   assert.match(readGroupPage("Components"), /data-component-source="@tcrn\/ui-react"/);
@@ -390,6 +393,16 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-storybook-only="knowledge-shell-prototype"/);
   assert.match(readGroupPage("Components"), /data-storybook-only="compact-shell-prototype"/);
   assert.match(readGroupPage("Components"), /data-package-backed-navigation-proof="true"/);
+  assert.match(readGroupPage("Components"), /data-package-backed-product-shell-proof="true"/);
+  assert.match(readGroupPage("Components"), /data-package-backed-product-shell-boundary="side-nav-shell-v1"/);
+  assert.match(readGroupPage("Components"), /data-product-shell-pattern="attached-side-nav"/);
+  assert.match(readGroupPage("Components"), /data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"/);
+  assert.match(readGroupPage("Components"), /data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"/);
+  assert.match(readGroupPage("Components"), /data-shell-control="product-shell-search"/);
+  assert.match(readGroupPage("Components"), /data-search-dismissal-contract="blur-outside-pointer-tab-escape"/);
+  assert.match(readGroupPage("Components"), /data-locale-dismissal-contract="selection-outside-pointer-escape-focus-return"/);
+  assert.match(readGroupPage("Components"), /Package-backed AOS shell boundary/);
+  assert.match(readGroupPage("Components"), /Product consumers supply only route IA, labels, locale data, search records, callbacks, and page content/);
   assert.match(readGroupPage("Components"), /tcrn-side-nav/);
   assert.match(readGroupPage("Components"), /data-navigation-primitive="side-nav"/);
   assert.match(readGroupPage("Components"), /data-navigation-primitive="nav-group"/);
@@ -646,7 +659,9 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.brandSurfaceDisposition, /Generic icons or text-only substitutes are not brand marks/);
   assert.match(contract.i18nDisposition, /approved locale and copy-state contract/);
   assert.match(contract.componentConsumptionDisposition, /ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, brand lockups/);
-  assert.match(contract.componentConsumptionDisposition, /Product-owned behavior glue must be route-scoped and proven/);
+  assert.match(contract.componentConsumptionDisposition, /ProductShell, ProductShellSearch/);
+  assert.match(contract.componentConsumptionDisposition, /useProductShellController/);
+  assert.match(contract.componentConsumptionDisposition, /Product shell state\/effect behavior must use the package-backed controlled props/);
   assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
   assert.match(contract.themeModeDisposition, /light and dark Storybook shell modes/);
   assert.match(contract.storybookShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
@@ -662,6 +677,10 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.productShellHardeningRules.brandSurface, /deprecated AOS wordmark images are not accepted brand marks/);
   assert.match(contract.productShellHardeningRules.registeredNavigation, /must not surface unregistered or planned modules/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /registered package-backed primitives from @tcrn\/ui-react/);
+  assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShell\/ProductShellSearch\/useProductShellController/);
+  assert.match(contract.productShellHardeningRules.shellEffectBoundary, /attached side-nav shell layout/);
+  assert.match(contract.productShellHardeningRules.shellEffectBoundary, /collapsed rail styling/);
+  assert.match(contract.productShellHardeningRules.shellEffectBoundary, /must not fork those effects/);
   assert.match(contract.productShellHardeningRules.browserProof, /rather than relying only on static marker checks/);
   assert.deepEqual(contract.forbiddenBrandAssets, [
     "tcrn-aos-wordmark-geometric-dark.png",

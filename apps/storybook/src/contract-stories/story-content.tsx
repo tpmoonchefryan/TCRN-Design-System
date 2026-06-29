@@ -30,6 +30,7 @@ import {
   Pagination,
   Popover,
   ProductLockup,
+  ProductShell,
   ProductSwitcher,
   ReadbackPanel,
   SearchInput,
@@ -1305,6 +1306,55 @@ const legacyContractStories: ContractStory[] = [
             ]}
             rows={navigationComponentRows}
           />
+          <div
+            className="tcrn-product-shell-contract-proof"
+            data-package-backed-product-shell-proof="true"
+            data-aos-shell-effect-boundary="package-backed"
+          >
+            <ProductShell
+              productName="AOS Rebuild Workspace"
+              moduleName="Frontend shell slice"
+              brandSuffix="AOS"
+              brandCaption="Rebuild workspace"
+              brandMarkSrc="tcrn-brand-mark.svg"
+              brandMarkAlt="TCRN registered brand mark"
+              currentRouteLabel="Cockpit"
+              navLabel="Registered AOS modules"
+              collapsed={false}
+              collapsedStorageKey="tcrn-aos-side-nav-collapsed"
+              currentTheme="light"
+              locales={tcrnLocaleMetadata}
+              currentLocale={tcrnDefaultLocale}
+              search={{
+                label: "Search AOS shell",
+                placeholder: "Search modules, work items, or proof",
+                query: "cockpit",
+                expanded: true,
+                results: [
+                  { id: "cockpit", title: "Cockpit", meta: "Registered shell entry", href: "/cockpit", selected: true },
+                  { id: "work", title: "Work", meta: "Jira-like module entry", href: "/work" }
+                ]
+              }}
+              navGroups={[
+                {
+                  id: "registered-aos-shell-entries",
+                  label: "Registered shell entries",
+                  selected: true,
+                  items: [
+                    { id: "cockpit", label: "Cockpit", href: "/cockpit", iconName: "home", selected: true },
+                    { id: "work", label: "Work", href: "/work", iconName: "database" }
+                  ]
+                }
+              ]}
+            >
+              <ReadbackPanel title="Package-backed AOS shell boundary">
+                <Text>
+                  Product consumers supply only route IA, labels, locale data, search records, callbacks, and page content; the attached shell grid, collapsed rail, compact search, locale popup state markers, theme toggle, responsive posture, focus, and reduced-motion styling are package-backed.
+                </Text>
+                <EvidenceStrip items={["package-backed shell boundary", "AOS-style side nav", "effects owned by DS", "product adoption separate"]} />
+              </ReadbackPanel>
+            </ProductShell>
+          </div>
         </ReadbackPanel>
         <ReadbackPanel title="Pagination and skip-link boundary">
           <Text>Pagination and skip links belong to shared navigation primitives because they preserve orientation, keyboard access, and proof context across long surfaces.</Text>
