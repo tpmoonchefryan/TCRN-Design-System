@@ -395,6 +395,18 @@ export function Pagination({ label }: { label: string }) {
 }
 
 export const tcrnComponentCss = `
+:root {
+  --tcrn-space-1: 4px;
+  --tcrn-space-3: 12px;
+  --tcrn-space-5: 20px;
+  --tcrn-radius-panel: var(--tcrn-radius-surface);
+  --tcrn-motion-duration-md: var(--tcrn-motion-emphasis);
+  --tcrn-color-text-inverse: #ffffff;
+  --tcrn-elevation-floating: 0 18px 42px rgba(23, 32, 51, 0.16);
+}
+[data-tcrn-theme="dark"] {
+  --tcrn-elevation-floating: 0 18px 42px rgba(0, 0, 0, 0.34);
+}
 .tcrn-button,
 .tcrn-shell-locale-menu__trigger,
 .tcrn-shell-locale-menu__option {
