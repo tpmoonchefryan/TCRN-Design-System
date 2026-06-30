@@ -155,6 +155,14 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-locale-semantic-api="onOpenChange-onLocaleChange"/);
   assert.match(html, /data-package-backed-shell-control="theme-toggle"/);
   assert.match(html, /data-theme-transition-contract="whole-page-view-transition-or-token-wash"/);
+  const searchIndex = html.indexOf('data-shell-control="product-shell-search"');
+  const themeIndex = html.indexOf('data-theme-toggle="true"');
+  const localeIndex = html.indexOf("data-locale-menu-toggle");
+  assert.ok(searchIndex > -1);
+  assert.ok(themeIndex > -1);
+  assert.ok(localeIndex > -1);
+  assert.ok(searchIndex < themeIndex);
+  assert.ok(themeIndex < localeIndex);
   assert.match(html, /Fixture-safe cockpit content/);
 });
 
@@ -168,8 +176,11 @@ test("product shell component css keeps motion shorthands valid", () => {
 
 test("product shell component css isolates topbar from docs chrome", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*border: 0;[\s\S]*border-bottom: 1px solid var\(--tcrn-color-border-subtle\);[\s\S]*border-radius: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: max-content max-content minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: max-content max-content minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);[\s\S]*justify-content: stretch;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*background: color-mix\(in srgb, var\(--tcrn-color-surface-panel\), transparent 5%\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell \{[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell :focus-visible \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*box-shadow: none;/);
+  assert.match(tcrnComponentCss, /\.tcrn-nav-item\[data-selected="true"\],[\s\S]*\.tcrn-nav-item\[aria-current="page"\] \{[\s\S]*box-shadow: none;/);
 });
 
 test("product shell utility row wraps controls within owner-quality story frames", () => {
@@ -188,8 +199,8 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-brand-wordmark__suffix \{[\s\S]*color: var\(--tcrn-color-brand-secondary-readable\);/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-theme-toggle \{[\s\S]*inline-size: 36px;[\s\S]*min-height: 36px;[\s\S]*border-radius: 999px;/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 32px;[\s\S]*min-height: 32px;/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger \{[\s\S]*min-height: 36px;[\s\S]*border-radius: 999px;/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*color: var\(--tcrn-color-text-secondary\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger \{[\s\S]*min-height: 36px;[\s\S]*border-radius: 999px;[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*position: static;[\s\S]*color: var\(--tcrn-color-text-secondary\);[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-weight: var\(--tcrn-type-weight-strong\);/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input__icon \{[\s\S]*grid-column: 1;/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input__control \{[\s\S]*appearance: none;[\s\S]*box-sizing: border-box;[\s\S]*grid-column: 2;[\s\S]*width: 100%;[\s\S]*min-width: 0;[\s\S]*padding: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*grid-column: 3;/);

@@ -12,6 +12,7 @@ const pagesByGroup = {
   Proof: "proof.html",
   "Change Log": "change-log.html"
 };
+const expectedContractStoryGroups = Object.keys(pagesByGroup);
 const requiredStories = [
   { id: "welcome-governance", group: "Welcome" },
   { id: "governance-boundaries", group: "Welcome" },
@@ -72,15 +73,77 @@ const productShellComparatorContract = {
     sideNavToggle: ".tcrn-shell-side-nav-toggle",
     searchWrapper: ".tcrn-product-shell-search",
     searchInput: ".tcrn-search-input",
+    searchControl: ".tcrn-search-input__control",
+    searchShortcut: ".tcrn-search-input__shortcut",
     searchResults: ".tcrn-product-shell-search__results",
+    utilityRow: ".tcrn-product-shell__utility-row",
+    currentLocation: ".tcrn-product-shell__current-location",
+    selectedNavItem: ".tcrn-nav-item[data-selected=\"true\"], .tcrn-nav-item[aria-current=\"page\"]",
+    localeChevron: ".tcrn-shell-locale-menu__chevron",
     topBar: ".tcrn-top-bar",
     contentRegion: "[data-product-shell-region=\"content\"]"
   },
+  expectedControlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
   expectedControlMetrics: {
-    themeToggle: { width: 36, height: 36, radius: 999 },
-    sideNavToggle: { width: 32, height: 32, radius: 5 },
-    localeTrigger: { minHeight: 36, radius: 999 },
-    searchInput: { minHeight: 38, radius: 5, minWidth: 220 },
+    themeToggle: {
+      width: 36,
+      height: 36,
+      radius: 999,
+      backgroundRequired: true,
+      fontSize: "13px",
+      fontWeight: "700",
+      lineHeight: "17.55px",
+      transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
+      transitionDurationIncludes: "0.16s",
+      transitionTimingFunctionIncludes: "ease",
+      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
+    },
+    sideNavToggle: {
+      width: 32,
+      height: 32,
+      radius: 5,
+      backgroundRequired: true,
+      fontSize: "13px",
+      fontWeight: "700",
+      lineHeight: "17.55px",
+      transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
+      transitionDurationIncludes: "0.16s",
+      transitionTimingFunctionIncludes: "ease",
+      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
+    },
+    localeTrigger: {
+      minHeight: 36,
+      radius: 999,
+      backgroundRequired: true,
+      fontSize: "13px",
+      fontWeight: "700",
+      lineHeight: "17.55px",
+      letterSpacing: "normal",
+      transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
+      transitionDurationIncludes: "0.16s",
+      transitionTimingFunctionIncludes: "ease",
+      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
+    },
+    searchInput: { minHeight: 38, radius: 5, minWidth: 220, backgroundRequired: true, fontSize: "13px", lineHeight: "17.55px", gap: "8px" },
+    searchControl: {
+      fontSize: "13px",
+      fontWeight: "400",
+      lineHeight: "17.55px",
+      letterSpacing: "normal",
+      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
+    },
+    searchShortcut: {
+      position: "static",
+      fontFamilyIncludes: "Inter",
+      fontSize: "11px",
+      fontWeight: "700",
+      lineHeight: "14.85px",
+      letterSpacing: "normal",
+      paddingLeft: "6px",
+      paddingRight: "6px"
+    },
+    currentLocation: { fontSize: "11px", lineHeight: "14.85px", letterSpacing: "normal" },
+    selectedNavItem: { backgroundRequired: true, fontSize: "13px", lineHeight: "17.55px", boxShadow: "none" },
     topBar: {
       minHeight: 68,
       borderRadius: "0px",
@@ -91,13 +154,22 @@ const productShellComparatorContract = {
       gap: "16px",
       paddingLeft: "20px",
       paddingRight: "20px",
+      justifyContent: "stretch",
       gridColumnCount: 3
     }
   },
   motionProof: {
     productShellTransition: "grid-template-columns",
+    productShellTransitionDuration: "0.22s",
+    productShellTransitionTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
     searchTransition: "width",
+    searchTransitionDuration: "0.22s",
+    searchTransitionTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
+    localeChevronTransition: "transform",
+    localeChevronTransitionDuration: "0.22s",
     themeWashPseudo: "tcrn-product-shell-theme-wash",
+    themeWashAnimationDuration: "0.22s",
+    themeWashAnimationTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
     reducedMotionFallback: "transition-none"
   }
 };
@@ -107,11 +179,16 @@ const aosFrontendShellVisualInstanceContract = {
   page: "components.html#aos-frontend-shell-slice",
   scopedSelector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
+  expectedControlOrder: productShellComparatorContract.expectedControlOrder,
   expectedControlMetrics: {
     themeToggle: productShellComparatorContract.expectedControlMetrics.themeToggle,
     sideNavToggle: productShellComparatorContract.expectedControlMetrics.sideNavToggle,
     localeTrigger: productShellComparatorContract.expectedControlMetrics.localeTrigger,
     searchInput: productShellComparatorContract.expectedControlMetrics.searchInput,
+    searchControl: productShellComparatorContract.expectedControlMetrics.searchControl,
+    searchShortcut: productShellComparatorContract.expectedControlMetrics.searchShortcut,
+    currentLocation: productShellComparatorContract.expectedControlMetrics.currentLocation,
+    selectedNavItem: productShellComparatorContract.expectedControlMetrics.selectedNavItem,
     topBar: {
       minHeight: 68,
       borderRadius: "0px",
@@ -121,6 +198,7 @@ const aosFrontendShellVisualInstanceContract = {
       gap: "16px",
       paddingLeft: "20px",
       paddingRight: "20px",
+      justifyContent: "stretch",
       gridColumnCount: 3
     }
   },
@@ -317,11 +395,16 @@ const aosOwnerQualityProductShellContract = {
   page: "components.html#aos-owner-quality-product-shell",
   scopedSelector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
+  expectedControlOrder: productShellComparatorContract.expectedControlOrder,
   expectedControlMetrics: {
     themeToggle: productShellComparatorContract.expectedControlMetrics.themeToggle,
     sideNavToggle: productShellComparatorContract.expectedControlMetrics.sideNavToggle,
     localeTrigger: productShellComparatorContract.expectedControlMetrics.localeTrigger,
     searchInput: productShellComparatorContract.expectedControlMetrics.searchInput,
+    searchControl: productShellComparatorContract.expectedControlMetrics.searchControl,
+    searchShortcut: productShellComparatorContract.expectedControlMetrics.searchShortcut,
+    currentLocation: productShellComparatorContract.expectedControlMetrics.currentLocation,
+    selectedNavItem: productShellComparatorContract.expectedControlMetrics.selectedNavItem,
     topBar: aosFrontendShellVisualInstanceContract.expectedControlMetrics.topBar
   },
   motionProof: productShellComparatorContract.motionProof,
@@ -666,6 +749,33 @@ const missing = required.filter((text) => !combinedHtml.includes(text));
 if (contract.mustReadFirst !== true) {
   missing.push("contract.mustReadFirst:true");
 }
+const shellControlVisualParityProof = contract.shellControlVisualParityProof;
+if (shellControlVisualParityProof?.disposition !== "executable_required_for_product_shell_consumption") {
+  missing.push("contract.shellControlVisualParityProof.disposition");
+}
+for (const field of ["themeToggle", "sideNavToggle", "localeTrigger", "searchInput", "searchControl", "searchShortcut", "currentLocation", "selectedNavItem", "topBar"]) {
+  if (!shellControlVisualParityProof?.measuredControls?.includes(field)) {
+    missing.push(`contract.shellControlVisualParityProof.measuredControls:${field}`);
+  }
+}
+for (const field of ["fontFamily", "fontSize", "fontWeight", "lineHeight", "letterSpacing", "backgroundColor", "borderRadius", "boxShadow"]) {
+  if (!shellControlVisualParityProof?.computedStyleFields?.includes(field)) {
+    missing.push(`contract.shellControlVisualParityProof.computedStyleFields:${field}`);
+  }
+}
+for (const field of ["outlineWidth", "outlineStyle", "outlineColor", "outlineOffset", "boxShadow"]) {
+  if (!shellControlVisualParityProof?.focusFields?.includes(field)) {
+    missing.push(`contract.shellControlVisualParityProof.focusFields:${field}`);
+  }
+}
+for (const field of ["transitionProperty", "transitionDuration", "transitionTimingFunction", "animationDuration", "animationTimingFunction"]) {
+  if (!shellControlVisualParityProof?.motionFields?.includes(field)) {
+    missing.push(`contract.shellControlVisualParityProof.motionFields:${field}`);
+  }
+}
+if (shellControlVisualParityProof?.controlOrder?.join(">") !== productShellComparatorContract.expectedControlOrder.join(">")) {
+  missing.push("contract.shellControlVisualParityProof.controlOrder");
+}
 const aosVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "aos-frontend-shell-slice");
 if (!aosVisualInstanceOracle) {
   missing.push("contract.visualInstanceOracles:aos-frontend-shell-slice");
@@ -756,16 +866,54 @@ for (const route of ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-
     missing.push(`contract.firstReadRoutes:${route}`);
   }
 }
-for (const field of ["contractVersion", "contractPayloadDigest", "artifact", "route", "readAt", "coveredRules", "requiredProof", "noOverclaimBoundaries"]) {
+for (const field of [
+  "contractVersion",
+  "contractPayloadDigest",
+  "artifact",
+  "route",
+  "readAt",
+  "coveredRules",
+  "coveredStorybookSections",
+  "requiredProof",
+  "noOverclaimBoundaries"
+]) {
   if (!contract.requiredReadbackFields?.includes(field)) {
     missing.push(`contract.requiredReadbackFields:${field}`);
+  }
+}
+const contractSectionChecklist = contract.requiredStorybookSectionChecklist;
+if (!Array.isArray(contractSectionChecklist)) {
+  missing.push("contract.requiredStorybookSectionChecklist");
+} else {
+  const sections = contractSectionChecklist.map((section) => section.section);
+  const sectionStories = contractSectionChecklist.flatMap((section) => section.requiredStories ?? []);
+  for (const section of expectedContractStoryGroups) {
+    if (!sections.includes(section)) {
+      missing.push(`contract.coveredStorybookSections:${section}`);
+    }
+  }
+  for (const story of requiredStories) {
+    if (!sectionStories.includes(story.id)) {
+      missing.push(`contract.coveredStorybookSections.story:${story.id}`);
+    }
   }
 }
 if (!llmsTxt.includes("Agents must read ai-consumption-contract.json before implementation work.")) {
   missing.push("llms-first-read-requirement");
 }
-if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries")) {
+if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
   missing.push("llms-required-readback-fields");
+}
+if (!llmsTxt.includes("Required Storybook sections:")) {
+  missing.push("llms-required-storybook-sections");
+}
+if (!llmsTxt.includes("Shell control visual parity proof:")) {
+  missing.push("llms-shell-control-visual-parity-proof");
+}
+for (const section of expectedContractStoryGroups) {
+  if (!llmsTxt.includes(`- ${section} (${pagesByGroup[section]}):`)) {
+    missing.push(`llms-covered-storybook-section:${section}`);
+  }
 }
 if (!robotsTxt.includes("AI-Consumption-Contract: ai-consumption-contract.json")) {
   missing.push("robots-ai-contract-pointer");
@@ -943,8 +1091,14 @@ function validateMetric({ failures, name, metric, expected }) {
   if (expected.display !== undefined && metric.display !== expected.display) {
     failures.push(`${name}:display:${metric.display}`);
   }
+  if (expected.position !== undefined && metric.position !== expected.position) {
+    failures.push(`${name}:position:${metric.position}`);
+  }
   if (expected.gap !== undefined && metric.gap !== expected.gap) {
     failures.push(`${name}:gap:${metric.gap}`);
+  }
+  if (expected.justifyContent !== undefined && metric.justifyContent !== expected.justifyContent) {
+    failures.push(`${name}:justify-content:${metric.justifyContent}`);
   }
   if (expected.paddingLeft !== undefined && metric.paddingLeft !== expected.paddingLeft) {
     failures.push(`${name}:padding-left:${metric.paddingLeft}`);
@@ -955,10 +1109,36 @@ function validateMetric({ failures, name, metric, expected }) {
   if (expected.gridColumnCount !== undefined && gridColumnCount !== expected.gridColumnCount) {
     failures.push(`${name}:grid-column-count:${metric.gridTemplateColumns}`);
   }
+  if (expected.fontFamilyIncludes !== undefined && !String(metric.fontFamily).includes(expected.fontFamilyIncludes)) {
+    failures.push(`${name}:font-family:${metric.fontFamily}`);
+  }
+  for (const property of ["fontSize", "fontWeight", "lineHeight", "letterSpacing", "boxShadow"]) {
+    if (expected[property] !== undefined && metric[property] !== expected[property]) {
+      failures.push(`${name}:${property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}:${metric[property]}`);
+    }
+  }
+  for (const property of expected.transitionPropertyIncludes ?? []) {
+    if (!transitionIncludes(metric, property)) {
+      failures.push(`${name}:transition-missing:${property}:${metric.transitionProperty}`);
+    }
+  }
+  if (expected.transitionDurationIncludes !== undefined && !String(metric.transitionDuration).includes(expected.transitionDurationIncludes)) {
+    failures.push(`${name}:transition-duration:${metric.transitionDuration}`);
+  }
+  if (expected.transitionTimingFunctionIncludes !== undefined && !String(metric.transitionTimingFunction).includes(expected.transitionTimingFunctionIncludes)) {
+    failures.push(`${name}:transition-timing-function:${metric.transitionTimingFunction}`);
+  }
+  if (expected.focus !== undefined) {
+    for (const [property, expectedValue] of Object.entries(expected.focus)) {
+      if (metric.focus?.[property] !== expectedValue) {
+        failures.push(`${name}:focus-${property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}:${metric.focus?.[property] ?? "missing"}`);
+      }
+    }
+  }
   if (metric.borderStyle === "outset") {
     failures.push(`${name}:default-browser-border-style`);
   }
-  if (metric.backgroundColor === "rgba(0, 0, 0, 0)" || metric.backgroundColor === "transparent") {
+  if (expected.backgroundRequired === true && (metric.backgroundColor === "rgba(0, 0, 0, 0)" || metric.backgroundColor === "transparent")) {
     failures.push(`${name}:transparent-background`);
   }
 }
@@ -1039,47 +1219,87 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
   });
   await page.goto(`${origin}/${contract.page}`, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts?.ready);
-  const metrics = await page.evaluate(({ contract, fixture }) => {
+  const metrics = await page.evaluate(async ({ contract, fixture }) => {
     const selector = fixture?.selector ?? contract.scopedSelector;
     const shell = document.querySelector(selector);
     if (!shell) {
       return { missingShell: true };
     }
-    const measured = {};
-    const measure = (name, selector) => {
-      const element = shell.querySelector(selector);
-      if (!element) {
-        measured[name] = { missing: true };
-        return;
-      }
-      const rect = element.getBoundingClientRect();
-      const style = getComputedStyle(element);
-      measured[name] = {
-        width: rect.width,
-        height: rect.height,
-        left: rect.left,
-        right: rect.right,
+	    const measured = {};
+	    const waitForFocusTransition = () => new Promise((resolve) => window.setTimeout(resolve, 190));
+	    const measure = async (name, selector) => {
+	      const element = shell.querySelector(selector);
+	      if (!element) {
+	        measured[name] = { missing: true };
+	        return;
+	      }
+	      const rect = element.getBoundingClientRect();
+	      const style = getComputedStyle(element);
+	      const focusTarget = element.matches("button, input, a, select, textarea, [tabindex]")
+	        ? element
+	        : element.querySelector("button, input, a, select, textarea, [tabindex]");
+	      const previousActive = document.activeElement;
+	      let focus = null;
+	      if (focusTarget instanceof HTMLElement) {
+	        focusTarget.focus({ preventScroll: true });
+	        await waitForFocusTransition();
+	        const focusStyle = getComputedStyle(focusTarget);
+	        focus = {
+	          outlineWidth: focusStyle.outlineWidth,
+	          outlineStyle: focusStyle.outlineStyle,
+	          outlineColor: focusStyle.outlineColor,
+	          outlineOffset: focusStyle.outlineOffset,
+	          boxShadow: focusStyle.boxShadow
+	        };
+	        focusTarget.blur();
+	        if (previousActive instanceof HTMLElement && previousActive !== focusTarget) {
+	          previousActive.focus({ preventScroll: true });
+	        }
+	      }
+	      measured[name] = {
+	        width: rect.width,
+	        height: rect.height,
+	        left: rect.left,
+	        right: rect.right,
         top: rect.top,
         bottom: rect.bottom,
         scrollWidth: element.scrollWidth,
         clientWidth: element.clientWidth,
-        display: style.display,
-        position: style.position,
-        gridTemplateColumns: style.gridTemplateColumns,
-        gap: style.gap,
-        paddingLeft: style.paddingLeft,
-        paddingRight: style.paddingRight,
-        borderRadius: style.borderRadius,
-        borderStyle: style.borderStyle,
-        borderWidth: style.borderWidth,
-        backgroundColor: style.backgroundColor,
-        transitionProperty: style.transitionProperty,
-        transitionDuration: style.transitionDuration,
-        animationName: style.animationName
-      };
-    };
+	        display: style.display,
+	        position: style.position,
+	        gridTemplateColumns: style.gridTemplateColumns,
+	        gap: style.gap,
+	        columnGap: style.columnGap,
+	        rowGap: style.rowGap,
+	        justifyContent: style.justifyContent,
+	        paddingLeft: style.paddingLeft,
+	        paddingRight: style.paddingRight,
+	        borderRadius: style.borderRadius,
+	        borderStyle: style.borderStyle,
+	        borderWidth: style.borderWidth,
+	        backgroundColor: style.backgroundColor,
+	        color: style.color,
+	        fontFamily: style.fontFamily,
+	        fontSize: style.fontSize,
+	        fontWeight: style.fontWeight,
+	        lineHeight: style.lineHeight,
+	        letterSpacing: style.letterSpacing,
+	        boxShadow: style.boxShadow,
+	        outlineWidth: style.outlineWidth,
+	        outlineStyle: style.outlineStyle,
+	        outlineColor: style.outlineColor,
+	        outlineOffset: style.outlineOffset,
+	        transitionProperty: style.transitionProperty,
+	        transitionDuration: style.transitionDuration,
+	        transitionTimingFunction: style.transitionTimingFunction,
+	        animationName: style.animationName,
+	        animationDuration: style.animationDuration,
+	        animationTimingFunction: style.animationTimingFunction,
+	        focus
+	      };
+	    };
 	    for (const [name, selector] of Object.entries(contract.componentSelectors)) {
-	      measure(name, selector);
+	      await measure(name, selector);
 	    }
 	    const requiredContent = {};
 	    for (const [name, selector] of Object.entries(contract.requiredContentSelectors ?? {})) {
@@ -1087,6 +1307,16 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	    }
 	    const selectedNavItem = shell.querySelector(".tcrn-nav-item[aria-current=\"page\"]");
 	    const searchWrapper = shell.querySelector(contract.componentSelectors.searchWrapper);
+	    const utilityRow = shell.querySelector(contract.componentSelectors.utilityRow);
+	    const controlOrder = utilityRow
+	      ? Array.from(utilityRow.children).map((child) => {
+	          if (child.matches(".tcrn-product-shell__current-location")) return "currentLocation";
+	          if (child.matches(".tcrn-product-shell-search")) return "searchWrapper";
+	          if (child.matches(".tcrn-shell-theme-toggle")) return "themeToggle";
+	          if (child.matches(".tcrn-shell-locale-menu")) return "localeTrigger";
+	          return child.className || child.tagName.toLowerCase();
+	        })
+	      : [];
 	    const primaryHeadings = Array.from(shell.querySelectorAll("h1"));
 	    const state = {
 	      variant: shell.getAttribute("data-visual-instance-variant"),
@@ -1131,14 +1361,17 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
         gridTemplateColumns: shellStyle.gridTemplateColumns,
         transitionProperty: shellStyle.transitionProperty,
         transitionDuration: shellStyle.transitionDuration,
+        transitionTimingFunction: shellStyle.transitionTimingFunction,
         backgroundColor: shellStyle.backgroundColor,
         color: shellStyle.color,
         themeWashAnimationName: themeWashStyle.animationName,
         themeWashAnimationDuration: themeWashStyle.animationDuration,
+        themeWashAnimationTimingFunction: themeWashStyle.animationTimingFunction,
         sourceMarker: document.querySelector("style[data-tcrn-product-shell-comparator-style=\"package-backed\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
 	      },
 	      measured,
 	      requiredContent,
+	      controlOrder,
 	      state,
 	      forbiddenTextHits,
 	      fixtureForbiddenTextHits,
@@ -1170,13 +1403,17 @@ function validateProductShellReadback({
   if (proof.shell.sourceMarker !== "package-backed") {
     failures.push(`${label}:missing-package-backed-style-marker`);
   }
+  const reduced = proof.reducedMotion === "reduce";
   if (validateMetrics) {
     for (const [name, expected] of Object.entries(contract.expectedControlMetrics)) {
       const metric = proof.measured[name];
       if (!metric || metric.missing) {
         failures.push(`${label}:${name}:missing`);
       } else {
-        validateMetric({ failures, name: `${label}:${name}`, metric, expected });
+        const expectedForMotion = reduced
+          ? Object.fromEntries(Object.entries(expected).filter(([key]) => !key.startsWith("transition")))
+          : expected;
+        validateMetric({ failures, name: `${label}:${name}`, metric, expected: expectedForMotion });
       }
     }
   }
@@ -1189,6 +1426,13 @@ function validateProductShellReadback({
   }
   if (contract.controlBoundsProof) {
     validateControlBounds({ failures, label, proof, contract });
+  }
+  if (contract.expectedControlOrder) {
+    const expectedOrder = contract.expectedControlOrder.join(">");
+    const actualOrder = (proof.controlOrder ?? []).join(">");
+    if (actualOrder !== expectedOrder) {
+      failures.push(`${label}:control-order:${actualOrder || "missing"}:expected:${expectedOrder}`);
+    }
   }
   if (expectedState) {
     for (const [name, expected] of Object.entries(expectedState)) {
@@ -1222,10 +1466,14 @@ function validateProductShellReadback({
       failures.push(`${label}:owner-admission-boundary:${proof.state?.ownerVisualAdmissionBoundary ?? "missing"}`);
     }
   }
-  const reduced = proof.reducedMotion === "reduce";
   if (reduced) {
     if (proof.shell.transitionProperty !== "none") {
       failures.push(`${label}:reduced-motion-product-shell-transition:${proof.shell.transitionProperty}`);
+    }
+    for (const controlName of ["themeToggle", "sideNavToggle", "localeTrigger", "localeChevron"]) {
+      if (proof.measured[controlName]?.transitionProperty !== "none") {
+        failures.push(`${label}:reduced-motion-${controlName}-transition:${proof.measured[controlName]?.transitionProperty}`);
+      }
     }
     if (proof.measured.searchWrapper?.transitionProperty !== "none") {
       failures.push(`${label}:reduced-motion-search-transition:${proof.measured.searchWrapper?.transitionProperty}`);
@@ -1237,11 +1485,35 @@ function validateProductShellReadback({
     if (!transitionIncludes(proof.shell, contract.motionProof.productShellTransition)) {
       failures.push(`${label}:product-shell-transition:${proof.shell.transitionProperty}`);
     }
+    if (proof.shell.transitionDuration !== contract.motionProof.productShellTransitionDuration) {
+      failures.push(`${label}:product-shell-transition-duration:${proof.shell.transitionDuration}`);
+    }
+    if (!String(proof.shell.transitionTimingFunction).includes(contract.motionProof.productShellTransitionTimingFunctionIncludes)) {
+      failures.push(`${label}:product-shell-transition-timing:${proof.shell.transitionTimingFunction}`);
+    }
     if (!transitionIncludes(proof.measured.searchWrapper, contract.motionProof.searchTransition)) {
       failures.push(`${label}:search-transition:${proof.measured.searchWrapper?.transitionProperty}`);
     }
+    if (proof.measured.searchWrapper?.transitionDuration !== contract.motionProof.searchTransitionDuration) {
+      failures.push(`${label}:search-transition-duration:${proof.measured.searchWrapper?.transitionDuration}`);
+    }
+    if (!String(proof.measured.searchWrapper?.transitionTimingFunction).includes(contract.motionProof.searchTransitionTimingFunctionIncludes)) {
+      failures.push(`${label}:search-transition-timing:${proof.measured.searchWrapper?.transitionTimingFunction}`);
+    }
+    if (!transitionIncludes(proof.measured.localeChevron, contract.motionProof.localeChevronTransition)) {
+      failures.push(`${label}:locale-chevron-transition:${proof.measured.localeChevron?.transitionProperty}`);
+    }
+    if (proof.measured.localeChevron?.transitionDuration !== contract.motionProof.localeChevronTransitionDuration) {
+      failures.push(`${label}:locale-chevron-transition-duration:${proof.measured.localeChevron?.transitionDuration}`);
+    }
     if (proof.shell.themeWashAnimationName !== contract.motionProof.themeWashPseudo) {
       failures.push(`${label}:theme-wash-animation:${proof.shell.themeWashAnimationName}`);
+    }
+    if (proof.shell.themeWashAnimationDuration !== contract.motionProof.themeWashAnimationDuration) {
+      failures.push(`${label}:theme-wash-animation-duration:${proof.shell.themeWashAnimationDuration}`);
+    }
+    if (!String(proof.shell.themeWashAnimationTimingFunction).includes(contract.motionProof.themeWashAnimationTimingFunctionIncludes)) {
+      failures.push(`${label}:theme-wash-animation-timing:${proof.shell.themeWashAnimationTimingFunction}`);
     }
   }
   if (expectSearchResults && proof.measured.searchResults?.display === "none") {

@@ -828,6 +828,7 @@ export function ProductShell({
                 <strong>{currentRouteLabel}</strong>
               </div>
               <ProductShellSearch {...mergedSearch} />
+              <ShellThemeToggle currentTheme={currentTheme} onThemeChange={onThemeChange} />
               <ShellLocaleMenu
                 locales={locales}
                 currentLocale={currentLocale}
@@ -835,7 +836,6 @@ export function ProductShell({
                 onOpenChange={onLocaleMenuOpenChange}
                 onLocaleChange={onLocaleChange}
               />
-              <ShellThemeToggle currentTheme={currentTheme} onThemeChange={onThemeChange} />
             </div>
           }
         />
@@ -1155,6 +1155,18 @@ export const tcrnComponentCss = `
   overflow: hidden;
   border-radius: 999px;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  transition:
+    background-color var(--tcrn-motion-standard),
+    border-color var(--tcrn-motion-standard),
+    color var(--tcrn-motion-standard),
+    box-shadow var(--tcrn-motion-standard);
+}
+.tcrn-shell-side-nav-toggle {
+  transition:
+    background-color var(--tcrn-motion-standard),
+    border-color var(--tcrn-motion-standard),
+    color var(--tcrn-motion-standard),
+    box-shadow var(--tcrn-motion-standard);
 }
 .tcrn-shell-theme-toggle:hover,
 .tcrn-shell-locale-menu__trigger:hover,
@@ -1163,6 +1175,13 @@ export const tcrnComponentCss = `
   background: color-mix(in srgb, var(--tcrn-color-surface-muted) 72%, var(--tcrn-color-surface-panel));
   color: var(--tcrn-color-text-primary);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+.tcrn-product-shell .tcrn-shell-theme-toggle:focus-visible,
+.tcrn-product-shell .tcrn-shell-side-nav-toggle:focus-visible,
+.tcrn-product-shell .tcrn-shell-locale-menu__trigger:focus-visible,
+.tcrn-product-shell .tcrn-search-input:focus-within,
+.tcrn-product-shell .tcrn-search-input__control:focus-visible {
+  box-shadow: none;
 }
 .tcrn-shell-theme-toggle__icon {
   position: absolute;
@@ -1260,6 +1279,10 @@ export const tcrnComponentCss = `
   grid-template-columns: var(--tcrn-product-shell-sidebar-width) minmax(0, 1fr);
   background: var(--tcrn-color-surface-canvas);
   color: var(--tcrn-color-text-primary);
+  font-family: var(--tcrn-type-family-ui);
+  font-size: var(--tcrn-type-size-ui);
+  line-height: var(--tcrn-type-line-ui);
+  letter-spacing: 0;
   transition: grid-template-columns var(--tcrn-motion-product-shell);
 }
 .tcrn-product-shell[data-product-shell-collapsed="true"] {
@@ -1281,6 +1304,7 @@ export const tcrnComponentCss = `
 .tcrn-product-shell :focus-visible {
   outline: 3px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
+  box-shadow: none;
 }
 .tcrn-product-shell__sidebar {
   position: sticky;
@@ -1358,6 +1382,7 @@ export const tcrnComponentCss = `
   border: 0;
   border-bottom: 1px solid var(--tcrn-color-border-subtle);
   border-radius: 0;
+  justify-content: stretch;
   background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
   backdrop-filter: blur(16px);
 }
@@ -1379,11 +1404,15 @@ export const tcrnComponentCss = `
   min-width: 0;
   max-width: 240px;
   color: var(--tcrn-color-text-secondary);
-  font-size: 12px;
+  font-size: var(--tcrn-type-size-caption);
+  line-height: var(--tcrn-type-line-caption);
+  letter-spacing: 0;
 }
 .tcrn-product-shell__current-location strong {
   color: var(--tcrn-color-text-primary);
-  font-size: 13px;
+  font-size: var(--tcrn-type-size-ui);
+  font-weight: var(--tcrn-type-weight-strong);
+  line-height: var(--tcrn-type-line-ui);
 }
 .tcrn-product-shell__current-location span,
 .tcrn-product-shell__current-location strong {
@@ -1502,6 +1531,7 @@ export const tcrnComponentCss = `
   color: var(--tcrn-color-text-primary);
   background: var(--tcrn-color-brand-primary-bg);
   border-color: color-mix(in srgb, var(--tcrn-color-brand-primary), transparent 64%);
+  box-shadow: none;
 }
 .tcrn-nav-item:hover {
   background: var(--tcrn-color-surface-muted);
@@ -1538,12 +1568,24 @@ export const tcrnComponentCss = `
   font: inherit;
 }
 .tcrn-search-input__shortcut {
+  position: static;
+  z-index: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
   grid-column: 3;
   color: var(--tcrn-color-text-secondary);
   border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: 5px;
-  padding: 1px 5px;
-  font-size: 11px;
+  border-radius: 6px;
+  background: var(--tcrn-color-surface-muted);
+  padding: 2px 6px;
+  font-family: var(--tcrn-type-family-ui);
+  font-size: var(--tcrn-type-size-caption);
+  font-weight: var(--tcrn-type-weight-strong);
+  line-height: var(--tcrn-type-line-caption);
+  letter-spacing: 0;
+  pointer-events: none;
 }
 .tcrn-shell-locale-menu {
   position: relative;
@@ -1559,7 +1601,15 @@ export const tcrnComponentCss = `
   border-radius: 999px;
   background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
+  font-size: var(--tcrn-type-size-ui);
   font-weight: var(--tcrn-type-weight-strong);
+  line-height: var(--tcrn-type-line-ui);
+  letter-spacing: 0;
+  transition:
+    background-color var(--tcrn-motion-standard),
+    border-color var(--tcrn-motion-standard),
+    color var(--tcrn-motion-standard),
+    box-shadow var(--tcrn-motion-standard);
 }
 .tcrn-shell-locale-menu__current {
   overflow: hidden;
@@ -1812,7 +1862,9 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   .tcrn-button,
   .tcrn-nav-item,
   .tcrn-search-input,
-  .tcrn-shell-locale-menu__trigger {
+  .tcrn-shell-theme-toggle__icon,
+  .tcrn-shell-locale-menu__trigger,
+  .tcrn-shell-locale-menu__chevron {
     transition: none;
   }
 }

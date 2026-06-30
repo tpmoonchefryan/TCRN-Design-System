@@ -166,6 +166,74 @@ export const aiConsumptionContract = {
   ],
   storybookVisualParityProof:
     "Design System compliance requires the same Storybook visual instance, not merely package import or boundary markers. Product proof must compare DOM/component identity where available plus computed size, radius, padding, border, background, typography, spacing, hover/focus/active/disabled states, menu/search/drawer position, motion duration/easing/opacity/transform, theme transition, reduced-motion fallback, locale behavior, mobile reflow, and information hierarchy against the relevant Storybook section.",
+  shellControlVisualParityProof: {
+    disposition: "executable_required_for_product_shell_consumption",
+    packageBackedAuthority: "@tcrn/ui-react/tcrnComponentCss",
+    storybookStandard: "components.html#aos-owner-quality-product-shell",
+    comparatorStandard: "components.html#navigation-shell-spec",
+    controlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
+    measuredControls: [
+      "themeToggle",
+      "sideNavToggle",
+      "localeTrigger",
+      "searchInput",
+      "searchControl",
+      "searchShortcut",
+      "currentLocation",
+      "selectedNavItem",
+      "topBar"
+    ],
+    computedStyleFields: [
+      "fontFamily",
+      "fontSize",
+      "fontWeight",
+      "lineHeight",
+      "letterSpacing",
+      "color",
+      "backgroundColor",
+      "borderRadius",
+      "borderStyle",
+      "borderWidth",
+      "boxShadow",
+      "padding",
+      "gap",
+      "gridTemplateColumns"
+    ],
+    focusFields: [
+      "outlineWidth",
+      "outlineStyle",
+      "outlineColor",
+      "outlineOffset",
+      "boxShadow"
+    ],
+    motionFields: [
+      "transitionProperty",
+      "transitionDuration",
+      "transitionTimingFunction",
+      "animationName",
+      "animationDuration",
+      "animationTimingFunction"
+    ],
+    stateCoverage: [
+      "rest",
+      "focus",
+      "search-expanded",
+      "search-results",
+      "locale-closed",
+      "locale-open",
+      "theme-light",
+      "theme-dark",
+      "mobile-zh-CN-dark",
+      "reduced-motion"
+    ],
+    reducedMotionExpectation:
+      "Reduced-motion proof must show shell/search/theme/menu/control transitions and animations disabled or reduced to the DS-approved zero-duration fallback.",
+    rejectCriteria: [
+      "docs-shell or Storybook global CSS changes package-backed ProductShell typography, selected nav styling, focus shadow, shortcut badge layout, control order, or motion",
+      "AOS proof omits typography, spacing, focus, order, duration, easing, or reduced-motion comparisons against Storybook",
+      "product-local shell/search/sidebar/effect CSS is used to chase Storybook instead of package-backed DS controls"
+    ]
+  },
   visualInstanceOracles: [
     {
       id: "aos-frontend-shell-slice",

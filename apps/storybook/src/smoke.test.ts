@@ -703,6 +703,13 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.storybookVisualParityProof, /computed size, radius, padding, border, background, typography/);
   assert.match(contract.storybookVisualParityProof, /motion duration\/easing\/opacity\/transform/);
   assert.match(contract.storybookVisualParityProof, /mobile reflow, and information hierarchy/);
+  assert.equal(contract.shellControlVisualParityProof?.disposition, "executable_required_for_product_shell_consumption");
+  assert.deepEqual(contract.shellControlVisualParityProof?.controlOrder, ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"]);
+  assert.match(contract.shellControlVisualParityProof?.computedStyleFields?.join(" ") ?? "", /fontFamily fontSize fontWeight lineHeight letterSpacing/);
+  assert.match(contract.shellControlVisualParityProof?.computedStyleFields?.join(" ") ?? "", /backgroundColor borderRadius borderStyle borderWidth boxShadow/);
+  assert.match(contract.shellControlVisualParityProof?.focusFields?.join(" ") ?? "", /outlineWidth outlineStyle outlineColor outlineOffset boxShadow/);
+  assert.match(contract.shellControlVisualParityProof?.motionFields?.join(" ") ?? "", /transitionProperty transitionDuration transitionTimingFunction/);
+  assert.match(contract.shellControlVisualParityProof?.reducedMotionExpectation ?? "", /transitions and animations disabled/);
   assert.equal(contract.visualInstanceOracles?.[0]?.id, "aos-frontend-shell-slice");
   assert.equal(contract.visualInstanceOracles?.[0]?.route, "components.html#aos-frontend-shell-slice");
   assert.deepEqual(contract.visualInstanceOracles?.[0]?.primaryIa, ["Cockpit", "Work"]);

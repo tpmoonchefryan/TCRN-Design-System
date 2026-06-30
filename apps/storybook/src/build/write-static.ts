@@ -46,6 +46,7 @@ Required Storybook sections:
 ${sectionChecklist}
 Visual equivalence levels: ${contract.visualEquivalenceLevels.join(" -> ")}
 Visual parity proof: ${contract.storybookVisualParityProof}
+Shell control visual parity proof: ${Array.from(contract.shellControlVisualParityProof.measuredControls).join(", ")} controls; ${Array.from(contract.shellControlVisualParityProof.computedStyleFields).join(", ")} computed style fields; ${Array.from(contract.shellControlVisualParityProof.motionFields).join(", ")} motion fields; reduced motion: ${contract.shellControlVisualParityProof.reducedMotionExpectation}
 No-overclaim boundaries: ${contract.noOverclaimBoundaries.join(", ")}
 
 This file points to the local/static Storybook contract only. Package publication, Storybook/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here.
