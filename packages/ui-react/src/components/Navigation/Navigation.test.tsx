@@ -460,6 +460,14 @@ test("product shell semantic callbacks own collapse theme locale and search beha
 
     const collapseButton = harness.document.querySelector("[data-side-nav-toggle='true']");
     assert.ok(collapseButton instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchKeydown(collapseButton, "Enter");
+    assert.ok(events.includes("collapsed:true"));
+    assert.equal(shell.getAttribute("data-product-shell-collapsed"), "true");
+
+    await harness.dispatchKeydown(collapseButton, " ");
+    assert.ok(events.includes("collapsed:false"));
+    assert.equal(shell.getAttribute("data-product-shell-collapsed"), "false");
+
     await harness.dispatchClick(collapseButton);
     assert.ok(events.includes("collapsed:true"));
     assert.equal(shell.getAttribute("data-product-shell-collapsed"), "true");
@@ -529,6 +537,14 @@ test("product shell controller returns ready prop bundles for registered shell c
 
     const collapseButton = harness.document.querySelector("[data-side-nav-toggle='true']");
     assert.ok(collapseButton instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchKeydown(collapseButton, "Enter");
+    assert.ok(events.includes("controller-collapsed:true"));
+    assert.equal(collapseButton.getAttribute("data-side-nav-collapsed"), "true");
+
+    await harness.dispatchKeydown(collapseButton, " ");
+    assert.ok(events.includes("controller-collapsed:false"));
+    assert.equal(collapseButton.getAttribute("data-side-nav-collapsed"), "false");
+
     await harness.dispatchClick(collapseButton);
     assert.ok(events.includes("controller-collapsed:true"));
     assert.equal(collapseButton.getAttribute("data-side-nav-collapsed"), "true");

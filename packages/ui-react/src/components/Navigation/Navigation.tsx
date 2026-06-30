@@ -402,6 +402,7 @@ export function SideNavCollapseButton({
   onCollapsedChange,
   className,
   onClick,
+  onKeyDown,
   ...props
 }: SideNavCollapseButtonProps) {
   const disabled = props.disabled ?? Boolean(disabledReason);
@@ -412,11 +413,22 @@ export function SideNavCollapseButton({
       onCollapsedChange?.(!collapsed);
     }
   };
+  const handleKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+    onKeyDown?.(event);
+    if (disabled || event.defaultPrevented) {
+      return;
+    }
+    if (event.key === "Enter" || event.key === " " || event.key === "Spacebar") {
+      event.preventDefault();
+      onCollapsedChange?.(!collapsed);
+    }
+  };
 
   return (
     <IconButton
       {...props}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
       disabled={disabled}
       disabledReason={disabledReason}
       aria-disabled={disabled ? true : undefined}
@@ -430,6 +442,7 @@ export function SideNavCollapseButton({
       data-side-nav-toggle="true"
       data-side-nav-collapsed={String(collapsed)}
       data-side-nav-action={disabled ? "disabled" : "toggle"}
+      data-side-nav-keyboard-activation="enter-space"
       data-side-nav-disabled-reason={disabledReason}
       data-side-nav-persisted-key={persistedKey}
       data-side-nav-semantic-api="onCollapsedChange"

@@ -1427,6 +1427,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	        ariaDisabled: element.getAttribute("aria-disabled"),
 	        ariaExpanded: element.getAttribute("aria-expanded"),
 	        sideNavAction: element.getAttribute("data-side-nav-action"),
+	        sideNavKeyboardActivation: element.getAttribute("data-side-nav-keyboard-activation"),
 	        sideNavDisabledReason: element.getAttribute("data-side-nav-disabled-reason"),
 	        iconCenterDelta,
 	        left: rect.left,
@@ -1634,6 +1635,9 @@ function validateProductShellReadback({
       }
       if (sideNavToggle?.sideNavAction !== contract.ownerQualitySideNavPolicy.expectedAction) {
         failures.push(`${label}:side-nav-action:${sideNavToggle?.sideNavAction ?? "missing"}`);
+      }
+      if (sideNavToggle?.sideNavKeyboardActivation !== "enter-space") {
+        failures.push(`${label}:side-nav-keyboard-activation:${sideNavToggle?.sideNavKeyboardActivation ?? "missing"}`);
       }
       const expectedExpanded = expectedState?.collapsed === "true" ? "false" : "true";
       if (sideNavToggle?.ariaExpanded !== expectedExpanded) {
