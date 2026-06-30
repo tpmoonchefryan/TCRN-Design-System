@@ -101,10 +101,11 @@ export function Skeleton({ variant = "rectangular", lines = 1, className, ...pro
 export interface EnvironmentBannerProps {
   label: string;
   state?: CopyStateInput;
+  locale?: TcrnLocale | string;
 }
 
-export function EnvironmentBanner({ label, state = { state: "local_only" } }: EnvironmentBannerProps) {
-  const presentation = presentCopyState(state);
+export function EnvironmentBanner({ label, state = { state: "local_only" }, locale }: EnvironmentBannerProps) {
+  const presentation = presentCopyState(state, locale);
   return (
     <div className="tcrn-environment-banner" data-state={presentation.state}>
       <strong>{label}</strong>

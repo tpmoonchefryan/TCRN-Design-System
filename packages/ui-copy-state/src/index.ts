@@ -4,6 +4,7 @@ export type ReadinessState =
   | "fixture_only"
   | "external_proof_needed"
   | "proof_required"
+  | "review_required"
   | "blocked"
   | "unavailable"
   | "not_claimed"
@@ -92,6 +93,10 @@ const presentations: Record<ReadinessState, CopyStateContract> = {
     tone: "warning",
     ...nonClaimFlags
   },
+  review_required: {
+    tone: "warning",
+    ...nonClaimFlags
+  },
   blocked: {
     tone: "danger",
     ...nonClaimFlags
@@ -121,6 +126,7 @@ const localizedCopy: Record<TcrnLocale, Record<ReadinessState, CopyText>> = {
     fixture_only: { label: "仅示例数据", description: "示例内容为合成数据，不能视为产品证据。" },
     external_proof_needed: { label: "需要外部证明", description: "必须由此包之外的路线提供外部证明后才能依赖。" },
     proof_required: { label: "需要证明", description: "仍需要外部、产品或发布证据。" },
+    review_required: { label: "需要评审", description: "必须由归属评审路线确认后才能进入下一步。" },
     blocked: { label: "已阻止", description: "操作会保持阻止，直到归属评审或路线解除。" },
     unavailable: { label: "不可用", description: "此路线中不可使用该操作或证据路径。" },
     not_claimed: { label: "未声明", description: "此证明界面有意不声明任何下游验收。" },
@@ -133,6 +139,7 @@ const localizedCopy: Record<TcrnLocale, Record<ReadinessState, CopyText>> = {
     fixture_only: { label: "Fixture only", description: "Example content is synthetic and cannot be treated as product evidence." },
     external_proof_needed: { label: "External proof needed", description: "A route outside this package must provide external proof before reliance." },
     proof_required: { label: "Proof required", description: "External, product, or release evidence is still required." },
+    review_required: { label: "Review required", description: "An owning review route must confirm this before the next step." },
     blocked: { label: "Blocked", description: "Action is held until the owning review or route clears it." },
     unavailable: { label: "Unavailable", description: "The action or evidence path is unavailable in this route." },
     not_claimed: { label: "Not claimed", description: "This proof surface intentionally makes no downstream acceptance claim." },
@@ -145,6 +152,7 @@ const localizedCopy: Record<TcrnLocale, Record<ReadinessState, CopyText>> = {
     fixture_only: { label: "フィクスチャのみ", description: "サンプル内容は合成データであり、製品証拠として扱えません。" },
     external_proof_needed: { label: "外部証明が必要", description: "依存する前に、このパッケージ外のルートが外部証明を提供する必要があります。" },
     proof_required: { label: "証明が必要", description: "外部、製品、またはリリース証拠がまだ必要です。" },
+    review_required: { label: "レビューが必要", description: "次の手順に進む前に、所有するレビュールートの確認が必要です。" },
     blocked: { label: "ブロック中", description: "所有するレビューまたはルートが解除するまで操作は保留されます。" },
     unavailable: { label: "利用不可", description: "このルートでは操作または証拠パスを利用できません。" },
     not_claimed: { label: "未主張", description: "この証明サーフェスは下流の受け入れを意図的に主張しません。" },
@@ -157,6 +165,7 @@ const localizedCopy: Record<TcrnLocale, Record<ReadinessState, CopyText>> = {
     fixture_only: { label: "픽스처 전용", description: "예시 콘텐츠는 합성 데이터이며 제품 증거로 취급할 수 없습니다." },
     external_proof_needed: { label: "외부 증명 필요", description: "의존하기 전에 이 패키지 외부 경로가 외부 증명을 제공해야 합니다." },
     proof_required: { label: "증명 필요", description: "외부, 제품 또는 릴리스 증거가 아직 필요합니다." },
+    review_required: { label: "리뷰 필요", description: "다음 단계로 진행하기 전에 담당 리뷰 경로의 확인이 필요합니다." },
     blocked: { label: "차단됨", description: "담당 리뷰나 경로가 해제할 때까지 작업은 보류됩니다." },
     unavailable: { label: "사용할 수 없음", description: "이 경로에서는 작업 또는 증거 경로를 사용할 수 없습니다." },
     not_claimed: { label: "주장하지 않음", description: "이 증명 화면은 하위 수락 상태를 의도적으로 주장하지 않습니다." },
@@ -169,6 +178,7 @@ const localizedCopy: Record<TcrnLocale, Record<ReadinessState, CopyText>> = {
     fixture_only: { label: "Fixture seulement", description: "Le contenu d'exemple est synthétique et ne peut pas servir de preuve produit." },
     external_proof_needed: { label: "Preuve externe requise", description: "Une route hors de ce package doit fournir une preuve externe avant toute dépendance." },
     proof_required: { label: "Preuve requise", description: "Une preuve externe, produit ou de publication reste nécessaire." },
+    review_required: { label: "Revue requise", description: "La route de revue propriétaire doit confirmer cet élément avant l'étape suivante." },
     blocked: { label: "Bloqué", description: "L'action reste bloquée jusqu'à validation par la revue ou la route propriétaire." },
     unavailable: { label: "Indisponible", description: "L'action ou le chemin de preuve est indisponible dans cette route." },
     not_claimed: { label: "Non revendiqué", description: "Cette surface de preuve ne revendique volontairement aucune acceptation aval." },
@@ -211,6 +221,7 @@ export function normalizeState(state: string | undefined): ReadinessState {
     case "fixture_only":
     case "external_proof_needed":
     case "proof_required":
+    case "review_required":
     case "blocked":
     case "unavailable":
     case "not_claimed":

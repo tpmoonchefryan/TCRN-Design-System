@@ -227,12 +227,19 @@ export const storybookI18nScript = `<script>
       return;
     }
     const skipTags = new Set(["SCRIPT", "STYLE"]);
+    const visualInstanceSelector = "[data-storybook-visual-instance]";
     const visit = (node) => {
       if (node.nodeType === Node.TEXT_NODE) {
+        if (node.parentElement?.closest(visualInstanceSelector)) {
+          return;
+        }
         translateTextNode(node, locale);
         return;
       }
       if (!(node instanceof Element) || skipTags.has(node.tagName)) {
+        return;
+      }
+      if (node.matches(visualInstanceSelector)) {
         return;
       }
       for (const attributeName of ["title", "aria-label", "data-label", "data-disabled-reason", "data-expanded-label", "data-collapsed-label", "placeholder"]) {

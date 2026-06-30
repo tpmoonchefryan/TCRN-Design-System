@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { EmptyState, ErrorState, Skeleton, StateSurface, StatusBadge, StateView, GateReadinessPanel } from "./Feedback.js";
+import { EmptyState, EnvironmentBanner, ErrorState, Skeleton, StateSurface, StatusBadge, StateView, GateReadinessPanel } from "./Feedback.js";
 import { presentCopyState } from "@tcrn/ui-copy-state";
 
 test("stateful components fail closed without product acceptance claims", () => {
@@ -44,6 +44,10 @@ test("state components can render localized copy-state labels", () => {
   const stateView = renderToStaticMarkup(<StateView state={{ state: "blocked" }} locale="ja" />);
   assert.match(stateView, /ブロック中/);
   assert.doesNotMatch(stateView, />blocked</);
+
+  const banner = renderToStaticMarkup(<EnvironmentBanner label="只读预览" state={{ state: "local_only" }} locale="zh-CN" />);
+  assert.match(banner, /仅本地证明/);
+  assert.doesNotMatch(banner, /Local proof only/);
 });
 
 test("state components reject raw enum label leakage", () => {

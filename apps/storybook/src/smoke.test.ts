@@ -761,11 +761,16 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[4]?.expectedState?.search, "results");
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[4]?.expectedState?.searchExpanded, true);
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[3]?.expectedState?.locale, "zh-CN");
+  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[3]?.requiredText?.join(" ") ?? "", /工作项/);
+  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[3]?.requiredText?.join(" ") ?? "", /需要评审/);
+  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[3]?.forbiddenText?.join(" ") ?? "", /Unknown/);
+  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[3]?.forbiddenText?.join(" ") ?? "", /Local proof only/);
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[5]?.expectedState?.reducedMotion, true);
   assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /ProductShell ProductShellSearch useProductShellController/);
   assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /Surface WorkIndex TableShell KeyValueList/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /AOS Operations Cockpit/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /exactly one primary H1/);
+  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /zh-CN owner-quality fixtures localize/);
   assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /Dummy Cockpit/);
   assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /implementation\/proof\/debug terminology/);
   assert.match(ownerQualityOracle?.delegatedSubOracles?.join(" ") ?? "", /ProductShell owns side-nav collapse/);

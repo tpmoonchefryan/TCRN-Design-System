@@ -35,6 +35,8 @@ test("i18n contract fixes supported locale order and fallback", () => {
 
 test("copy-state presentation is localized for required locales", () => {
   assert.equal(presentCopyState({ state: "not_claimed" }, "zh-CN").label, "未声明");
+  assert.equal(presentCopyState({ state: "review_required" }, "zh-CN").label, "需要评审");
+  assert.equal(presentCopyState({ state: "review_required" }, "en").label, "Review required");
   assert.equal(presentCopyState({ state: "not_claimed" }, "en").label, "Not claimed");
   assert.equal(presentCopyState({ state: "not_claimed" }, "ja").label, "未主張");
   assert.equal(presentCopyState({ state: "not_claimed" }, "ko").label, "주장하지 않음");

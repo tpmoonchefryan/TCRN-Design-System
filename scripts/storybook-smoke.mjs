@@ -421,7 +421,9 @@ const aosOwnerQualityProductShellContract = {
         viewport: "mobile",
         reducedMotion: "false",
         content: "work"
-      }
+      },
+      requiredText: ["工作项", "状态", "负责人", "需要评审", "已阻止", "未配置", "仅本地证明"],
+      forbiddenText: ["Work item", "State", "Unknown", "Blocked", "Not configured", "Local proof only"]
     },
     {
       id: "desktop-light-operations-search-results",
@@ -1041,6 +1043,8 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	    };
 	    const shellText = shell.textContent ?? "";
 	    const forbiddenTextHits = (contract.forbiddenText ?? []).filter((text) => shellText.includes(text));
+	    const fixtureForbiddenTextHits = (fixture?.forbiddenText ?? []).filter((text) => shellText.includes(text));
+	    const missingRequiredText = (fixture?.requiredText ?? []).filter((text) => !shellText.includes(text));
 	    const firstPrimaryHeading = primaryHeadings[0]?.textContent?.trim() ?? null;
 	    const shellRect = shell.getBoundingClientRect();
     const shellStyle = getComputedStyle(shell);
@@ -1065,6 +1069,8 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	      requiredContent,
 	      state,
 	      forbiddenTextHits,
+	      fixtureForbiddenTextHits,
+	      missingRequiredText,
 	      primaryHeadingCount: primaryHeadings.length,
 	      firstPrimaryHeading,
 	      viewport: { width: window.innerWidth, height: window.innerHeight, scrollWidth: documentElement.scrollWidth }
@@ -1176,6 +1182,12 @@ function validateProductShellReadback({
   }
   for (const hit of proof.forbiddenTextHits ?? []) {
     failures.push(`${label}:visual-instance-forbidden-text:${hit}`);
+  }
+  for (const hit of proof.fixtureForbiddenTextHits ?? []) {
+    failures.push(`${label}:visual-instance-fixture-forbidden-text:${hit}`);
+  }
+  for (const missing of proof.missingRequiredText ?? []) {
+    failures.push(`${label}:visual-instance-fixture-missing-required-text:${missing}`);
   }
   if (proof.viewport.width <= 390) {
     if (proof.viewport.scrollWidth > proof.viewport.width + 1) {

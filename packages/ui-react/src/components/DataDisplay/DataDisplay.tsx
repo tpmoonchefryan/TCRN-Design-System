@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { type CopyStateInput } from "@tcrn/ui-copy-state";
+import { resolveTcrnLocale, type CopyStateInput, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { StatusBadge, StateView } from "../Feedback/index.js";
 import { Heading } from "../Typography/index.js";
 import { Surface } from "../Layout/index.js";
@@ -82,21 +82,74 @@ export interface WorkIndexRow {
   owner: string;
 }
 
-export function WorkIndex({ rows, label = "Work index" }: { rows: WorkIndexRow[]; label?: string }) {
+export interface WorkIndexLabels {
+  title: string;
+  state: string;
+  owner: string;
+  emptyState: string;
+}
+
+export interface WorkIndexProps {
+  rows: WorkIndexRow[];
+  label?: string;
+  locale?: TcrnLocale | string;
+  labels?: Partial<WorkIndexLabels>;
+}
+
+const workIndexLabels: Record<TcrnLocale, WorkIndexLabels> = {
+  "zh-CN": {
+    title: "工作项",
+    state: "状态",
+    owner: "负责人",
+    emptyState: "暂无工作项"
+  },
+  en: {
+    title: "Work item",
+    state: "State",
+    owner: "Owner",
+    emptyState: "No work items"
+  },
+  ja: {
+    title: "作業項目",
+    state: "状態",
+    owner: "担当者",
+    emptyState: "作業項目はありません"
+  },
+  ko: {
+    title: "작업 항목",
+    state: "상태",
+    owner: "담당자",
+    emptyState: "작업 항목 없음"
+  },
+  fr: {
+    title: "Élément de travail",
+    state: "État",
+    owner: "Responsable",
+    emptyState: "Aucun élément de travail"
+  }
+};
+
+function resolveWorkIndexLabels(locale: TcrnLocale | string | undefined, labels: Partial<WorkIndexLabels> | undefined): WorkIndexLabels {
+  const resolvedLocale = resolveTcrnLocale(locale);
+  return { ...workIndexLabels[resolvedLocale], ...labels };
+}
+
+export function WorkIndex({ rows, label = "Work index", locale, labels }: WorkIndexProps) {
+  const copy = resolveWorkIndexLabels(locale, labels);
   return (
     <TableShell
       label={label}
       columns={[
-        { key: "title", label: "Work item" },
-        { key: "state", label: "State" },
-        { key: "owner", label: "Owner" }
+        { key: "title", label: copy.title },
+        { key: "state", label: copy.state },
+        { key: "owner", label: copy.owner }
       ]}
       rows={rows.map((row) => ({
         title: row.title,
-        state: <StatusBadge state={row.state} />,
+        state: <StatusBadge state={row.state} locale={locale} />,
         owner: row.owner
       }))}
-      emptyState={<StateView state={{ state: "not_configured" }} title="No work items" />}
+      emptyState={<StateView state={{ state: "not_configured" }} title={copy.emptyState} locale={locale} />}
     />
   );
 }

@@ -19,6 +19,21 @@ test("composed shell and workbench patterns render synthetic rows", () => {
   assert.doesNotMatch(html, /TCRN-AOS|TCRN-TMS/);
 });
 
+test("work index localizes headers and copy-state labels", () => {
+  const html = renderToStaticMarkup(
+    <WorkIndex
+      locale="zh-CN"
+      label="工作队列"
+      rows={[{ id: "review-1", title: "确认视觉基准", state: { state: "review_required" }, owner: "Elara" }]}
+    />
+  );
+  assert.match(html, /工作项/);
+  assert.match(html, /状态/);
+  assert.match(html, /负责人/);
+  assert.match(html, /需要评审/);
+  assert.doesNotMatch(html, /Work item|State|Review required|Unknown/);
+});
+
 test("table shell records arbitrary column counts for responsive layout", () => {
   const oneColumn = renderToStaticMarkup(
     <TableShell label="Single column fixture" columns={[{ key: "item", label: "Item" }]} rows={[]} emptyState="No rows" />

@@ -175,6 +175,7 @@ export const aosOwnerQualityProductShellReadback = {
     "first viewport reads as AOS Operations Cockpit or AOS Rebuild Workspace",
     "exactly one primary H1 per rendered fixture",
     "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
+    "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
     "read-only and no-live-dispatch boundaries are visible but low-prominence",
     "developer proof/API/readback details are secondary disclosure",
     "Cockpit and Work are meaningful product modules rather than placeholder labels"
@@ -383,7 +384,7 @@ function serviceItems(locale: OwnerQualityVariant["locale"]) {
     { key: "api", label: isZh ? "API" : "API", value: isZh ? "本地只读摘要" : "Read-only local summary" },
     { key: "queue", label: isZh ? "外部队列" : "External queue", value: isZh ? "无" : "None" },
     { key: "dispatch", label: isZh ? "实时派发" : "Live dispatch", value: isZh ? "未启用" : "Not enabled" },
-    { key: "nextGate", label: isZh ? "下一门禁" : "Next gate", value: isZh ? "Elara DS review" : "Elara DS review" }
+    { key: "nextGate", label: isZh ? "下一门禁" : "Next gate", value: isZh ? "Elara DS 评审" : "Elara DS review" }
   ];
 }
 
@@ -406,7 +407,7 @@ function OperationsContent({ variant }: { variant: OwnerQualityVariant }) {
       </Surface>
       <Surface data-owner-quality-work-queue="true" aria-label={`${copy.workTitle}: ${variant.id}`}>
         <Heading level={2}>{copy.workTitle}</Heading>
-        <WorkIndex rows={queueRows(variant.locale)} label={copy.workTitle} />
+        <WorkIndex rows={queueRows(variant.locale)} label={copy.workTitle} locale={variant.locale} />
       </Surface>
       <Surface data-owner-quality-gates="true" aria-label={`${copy.gateTitle}: ${variant.id}`}>
         <Heading level={2}>{copy.gateTitle}</Heading>
@@ -444,7 +445,7 @@ function OperationsContent({ variant }: { variant: OwnerQualityVariant }) {
           ? "最近活动聚焦于 DS 基准、AOS 实现、QA 证据和 PM readiness。"
           : "Recent activity focuses on the DS baseline, AOS implementation, QA evidence, and PM readiness."}</Text>
       </Surface>
-      <EnvironmentBanner label={copy.boundary} state={{ state: "local_only" }} />
+      <EnvironmentBanner label={copy.boundary} state={{ state: "local_only" }} locale={variant.locale} />
       <DisclosurePanel expanded={false} title={copy.disclosureTitle} data-owner-quality-secondary-disclosure="true">
         <Text>{variant.locale === "zh-CN"
           ? "技术收据、API 摘要和调试载荷必须留在二级披露中，不能成为 owner 首屏故事。"

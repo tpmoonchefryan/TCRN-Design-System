@@ -420,7 +420,9 @@ export const aiConsumptionContract = {
             viewport: "mobile",
             reducedMotion: false,
             content: "work"
-          }
+          },
+          requiredText: ["工作项", "状态", "负责人", "需要评审", "已阻止", "未配置", "仅本地证明"],
+          forbiddenText: ["Work item", "State", "Unknown", "Blocked", "Not configured", "Local proof only"]
         },
         {
           id: "desktop-light-operations-search-results",
@@ -468,6 +470,7 @@ export const aiConsumptionContract = {
         "first viewport reads as AOS Operations Cockpit or AOS Rebuild Workspace",
         "exactly one primary H1 per rendered fixture",
         "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
+        "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
         "read-only and no-live-dispatch boundaries are visible but low-prominence",
         "developer proof/API/readback details are secondary disclosure",
         "Cockpit and Work are meaningful product modules rather than placeholder labels"
