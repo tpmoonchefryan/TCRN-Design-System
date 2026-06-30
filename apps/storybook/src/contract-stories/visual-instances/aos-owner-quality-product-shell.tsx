@@ -210,6 +210,7 @@ export const aosOwnerQualityProductShellReadback = {
     "mobile zh-CN Work queue",
     "search rest visual state",
     "search results visual state",
+    "search expand/collapse sampled 320ms motion timeline",
     "reduced-motion shell/search fallback",
     "desktop owner-quality side navigation collapse and expand visual states",
     "mobile owner-quality side navigation collapse affordance hidden by DS policy"
@@ -220,6 +221,7 @@ export const aosOwnerQualityProductShellReadback = {
     "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
     "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
     "ProductShell topbar controls stay within the fixture root and viewport without horizontal clipping",
+    "ProductShellSearch expand/collapse motion samples intermediate widths over the DS 320ms search timeline",
     "read-only and no-live-dispatch boundaries are visible but low-prominence",
     "developer proof/API/readback details are secondary disclosure",
     "Cockpit and Work are meaningful product modules rather than placeholder labels"
@@ -236,7 +238,7 @@ export const aosOwnerQualityProductShellReadback = {
   delegatedSubOracles: [
     "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and actionable desktop side-nav collapse/expand behavior for this owner-quality oracle.",
     "Mobile owner-quality side navigation uses a DS-approved hidden collapse affordance policy; mobile collapsed owner-quality variants remain out of scope until a later DS decision admits them.",
-    "ProductShellSearch owns search rest/results/dismissal behavior.",
+    "ProductShellSearch owns search rest/results/dismissal behavior and the 320ms sampled expand/collapse width timeline.",
     "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
   ],
   negativeCriteria: [

@@ -178,6 +178,16 @@ export const aiConsumptionContract = {
       mobileMaxPx: 320,
       rule: "ProductShellSearch stays compact at rest on desktop, may stretch within the mobile shell, and may widen only for focus/results states."
     },
+    searchMotionTimeline: {
+      transitionProperties: ["flex-basis", "width", "max-width"],
+      transitionDuration: "0.32s",
+      transitionTimingFunction: "cubic-bezier(0.2, 0, 0.2, 1)",
+      sampleTimesMs: [0, 80, 160, 240, 320, 400],
+      minIntermediateSamples: 2,
+      finalFrameEarliestMs: 240,
+      rule:
+        "ProductShellSearch expand/collapse must expose sampled intermediate widths and must not jump directly between rest and expanded endpoints."
+    },
     ownerQualitySideNavCollapsePolicy:
       "The aos-owner-quality-product-shell oracle admits desktop expanded and collapsed owner-quality variants. Desktop side-nav collapse must be actionable by click/keyboard and preserve active route/nav state; mobile uses an explicit DS-approved hidden collapse affordance policy until mobile collapsed variants are admitted.",
     measuredControls: [
@@ -219,6 +229,7 @@ export const aiConsumptionContract = {
       "transitionProperty",
       "transitionDuration",
       "transitionTimingFunction",
+      "sampledWidthTimeline",
       "animationName",
       "animationDuration",
       "animationTimingFunction"

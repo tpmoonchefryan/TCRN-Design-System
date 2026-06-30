@@ -179,8 +179,15 @@ const productShellComparatorContract = {
     productShellTransitionDuration: "0.22s",
     productShellTransitionTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
     searchTransition: "width",
-    searchTransitionDuration: "0.22s",
+    searchTransitionProperties: ["flex-basis", "width", "max-width"],
+    searchTransitionDuration: "0.32s",
     searchTransitionTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
+    searchMotionTimeline: {
+      sampleTimesMs: [0, 80, 160, 240, 320, 400],
+      minIntermediateSamples: 2,
+      finalFrameEarliestMs: 240,
+      endpointTolerancePx: 2
+    },
     localeChevronTransition: "transform",
     localeChevronTransitionDuration: "0.22s",
     themeWashPseudo: "tcrn-product-shell-theme-wash",
@@ -842,7 +849,9 @@ for (const text of [
   ".tcrn-shell-locale-menu__trigger",
   ".tcrn-shell-side-nav-toggle",
   "data-side-nav-action=\"toggle\"",
-  "flex: 0 1 260px",
+  "--tcrn-motion-product-shell-search: 320ms cubic-bezier(0.2, 0, 0.2, 1)",
+  "flex-basis: 260px",
+  "flex-basis: 420px",
   ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
   ".tcrn-product-shell[data-theme-switching=\"true\"]::after",
   "tcrn-product-shell-theme-wash",
@@ -891,7 +900,7 @@ for (const field of ["outlineWidth", "outlineStyle", "outlineColor", "outlineOff
     missing.push(`contract.shellControlVisualParityProof.focusFields:${field}`);
   }
 }
-for (const field of ["transitionProperty", "transitionDuration", "transitionTimingFunction", "animationDuration", "animationTimingFunction"]) {
+for (const field of ["transitionProperty", "transitionDuration", "transitionTimingFunction", "sampledWidthTimeline", "animationDuration", "animationTimingFunction"]) {
   if (!shellControlVisualParityProof?.motionFields?.includes(field)) {
     missing.push(`contract.shellControlVisualParityProof.motionFields:${field}`);
   }
@@ -901,6 +910,12 @@ if (shellControlVisualParityProof?.controlOrder?.join(">") !== productShellCompa
 }
 if (shellControlVisualParityProof?.searchRestWidth?.maxPx !== 260 || shellControlVisualParityProof?.searchRestWidth?.expandedMaxPx !== 420) {
   missing.push("contract.shellControlVisualParityProof.searchRestWidth");
+}
+if (shellControlVisualParityProof?.searchMotionTimeline?.transitionDuration !== productShellComparatorContract.motionProof.searchTransitionDuration) {
+  missing.push("contract.shellControlVisualParityProof.searchMotionTimeline.transitionDuration");
+}
+if (shellControlVisualParityProof?.searchMotionTimeline?.transitionProperties?.join(">") !== productShellComparatorContract.motionProof.searchTransitionProperties.join(">")) {
+  missing.push("contract.shellControlVisualParityProof.searchMotionTimeline.transitionProperties");
 }
 if (!String(shellControlVisualParityProof?.ownerQualitySideNavCollapsePolicy ?? "").includes("actionable")) {
   missing.push("contract.shellControlVisualParityProof.ownerQualitySideNavCollapsePolicy");
@@ -1298,6 +1313,67 @@ function transitionIncludes(metric, property) {
   return properties.includes(property) || properties.includes("all");
 }
 
+function maxCssDurationMs(value) {
+  return Math.max(0, ...String(value).split(",").map((part) => {
+    const trimmed = part.trim();
+    if (trimmed.endsWith("ms")) return Number(trimmed.slice(0, -2));
+    if (trimmed.endsWith("s")) return Number(trimmed.slice(0, -1)) * 1000;
+    return Number(trimmed) || 0;
+  }));
+}
+
+function validateSearchMotionTimeline({ failures, label, proof, contract }) {
+  const expected = contract.motionProof.searchMotionTimeline;
+  const timeline = proof.searchMotionTimeline;
+  if (!timeline || timeline.missing) {
+    failures.push(`${label}:search-motion-timeline-missing`);
+    return;
+  }
+  for (const property of contract.motionProof.searchTransitionProperties ?? [contract.motionProof.searchTransition]) {
+    if (!transitionIncludes(timeline.expand.motion, property) || !transitionIncludes(timeline.collapse.motion, property)) {
+      failures.push(`${label}:search-motion-transition-property:${property}:${timeline.expand.motion.transitionProperty}/${timeline.collapse.motion.transitionProperty}`);
+    }
+  }
+  const expectedDurationMs = maxCssDurationMs(contract.motionProof.searchTransitionDuration);
+  for (const phase of ["expand", "collapse"]) {
+    const phaseTimeline = timeline[phase];
+    const durationMs = maxCssDurationMs(phaseTimeline.motion.transitionDuration);
+    if (Math.abs(durationMs - expectedDurationMs) > 1) {
+      failures.push(`${label}:search-motion-${phase}-duration:${phaseTimeline.motion.transitionDuration}`);
+    }
+    if (!String(phaseTimeline.motion.transitionTimingFunction).includes(contract.motionProof.searchTransitionTimingFunctionIncludes)) {
+      failures.push(`${label}:search-motion-${phase}-timing:${phaseTimeline.motion.transitionTimingFunction}`);
+    }
+    const samples = phaseTimeline.samples ?? [];
+    const start = samples[0]?.width;
+    const end = samples[samples.length - 1]?.width;
+    if (!Number.isFinite(start) || !Number.isFinite(end) || Math.abs(end - start) < 8) {
+      failures.push(`${label}:search-motion-${phase}-insufficient-width-delta:${start}->${end}`);
+      continue;
+    }
+    const direction = end > start ? 1 : -1;
+    const low = Math.min(start, end) + expected.endpointTolerancePx;
+    const high = Math.max(start, end) - expected.endpointTolerancePx;
+    const intermediateCount = samples.filter((sample) => sample.width > low && sample.width < high).length;
+    if (intermediateCount < expected.minIntermediateSamples) {
+      failures.push(`${label}:search-motion-${phase}-intermediate-frames:${intermediateCount}`);
+    }
+    const monotonic = samples.every((sample, index) => {
+      if (index === 0) return true;
+      const previous = samples[index - 1].width;
+      return direction > 0 ? sample.width + 1 >= previous : sample.width - 1 <= previous;
+    });
+    if (!monotonic) {
+      failures.push(`${label}:search-motion-${phase}-non-monotonic`);
+    }
+    const finalWidth = end;
+    const reachedFinal = samples.find((sample) => Math.abs(sample.width - finalWidth) <= expected.endpointTolerancePx);
+    if (reachedFinal && reachedFinal.t < expected.finalFrameEarliestMs) {
+      failures.push(`${label}:search-motion-${phase}-jumped-to-final:${reachedFinal.t}ms`);
+    }
+  }
+}
+
 function validateNoHorizontalOverflow({ failures, label, name, metric }) {
   if (!metric || metric.missing || metric.scrollWidth === undefined || metric.clientWidth === undefined) return;
   if (metric.scrollWidth > metric.clientWidth + 1) {
@@ -1508,6 +1584,82 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	      content: shell.getAttribute("data-visual-instance-content"),
 	      ownerVisualAdmissionBoundary: shell.getAttribute("data-visual-instance-disposition")
 	    };
+	    const sampleSearchMotionTimeline = async () => {
+	      if (!searchWrapper) return { missing: true };
+	      const originalExpanded = searchWrapper.getAttribute("data-search-expanded");
+	      const originalResultsVisible = searchWrapper.getAttribute("data-search-results-visible");
+	      const readWidth = () => Number(searchWrapper.getBoundingClientRect().width.toFixed(3));
+	      const readMotion = () => {
+	        const style = getComputedStyle(searchWrapper);
+	        return {
+	          transitionProperty: style.transitionProperty,
+	          transitionDuration: style.transitionDuration,
+	          transitionTimingFunction: style.transitionTimingFunction
+	        };
+	      };
+	      const settle = () => new Promise((resolve) => window.setTimeout(resolve, 440));
+	      const capture = async (name, action) => {
+	        const samples = [];
+	        const start = performance.now();
+	        const read = () => {
+	          samples.push({
+	            t: Number((performance.now() - start).toFixed(1)),
+	            width: readWidth(),
+	            expanded: searchWrapper.getAttribute("data-search-expanded")
+	          });
+	        };
+	        read();
+	        action();
+	        await new Promise((resolve) => {
+	          const tick = () => {
+	            read();
+	            if (performance.now() - start >= 430) {
+	              resolve();
+              } else {
+	              requestAnimationFrame(tick);
+	            }
+	          };
+	          requestAnimationFrame(tick);
+	        });
+	        return { name, motion: readMotion(), samples };
+	      };
+	      searchWrapper.setAttribute("data-search-expanded", "false");
+	      searchWrapper.setAttribute("data-search-results-visible", "false");
+	      await settle();
+	      const restWidth = readWidth();
+	      const expand = await capture("expand", () => {
+	        searchWrapper.setAttribute("data-search-expanded", "true");
+	        searchWrapper.setAttribute("data-search-results-visible", "false");
+	      });
+	      await settle();
+	      const expandedWidth = readWidth();
+	      const collapse = await capture("collapse", () => {
+	        searchWrapper.setAttribute("data-search-expanded", "false");
+	        searchWrapper.setAttribute("data-search-results-visible", "false");
+	      });
+	      await settle();
+	      if (originalExpanded === null) {
+	        searchWrapper.removeAttribute("data-search-expanded");
+	      } else {
+	        searchWrapper.setAttribute("data-search-expanded", originalExpanded);
+	      }
+	      if (originalResultsVisible === null) {
+	        searchWrapper.removeAttribute("data-search-results-visible");
+	      } else {
+	        searchWrapper.setAttribute("data-search-results-visible", originalResultsVisible);
+	      }
+	      return {
+	        restWidth,
+	        expandedWidth,
+	        expand,
+	        collapse,
+	        restored: {
+	          expanded: searchWrapper.getAttribute("data-search-expanded"),
+	          resultsVisible: searchWrapper.getAttribute("data-search-results-visible")
+	        }
+	      };
+	    };
+	    const searchMotionTimeline = await sampleSearchMotionTimeline();
 	    const shellText = shell.textContent ?? "";
 	    const forbiddenTextHits = (contract.forbiddenText ?? []).filter((text) => shellText.includes(text));
 	    const fixtureForbiddenTextHits = (fixture?.forbiddenText ?? []).filter((text) => shellText.includes(text));
@@ -1541,6 +1693,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
         sourceMarker: document.querySelector("style[data-tcrn-product-shell-comparator-style=\"package-backed\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
 	      },
 	      measured,
+	      searchMotionTimeline,
 	      requiredContent,
 	      controlOrder,
 	      state,
@@ -1713,14 +1866,19 @@ function validateProductShellReadback({
     if (!String(proof.shell.transitionTimingFunction).includes(contract.motionProof.productShellTransitionTimingFunctionIncludes)) {
       failures.push(`${label}:product-shell-transition-timing:${proof.shell.transitionTimingFunction}`);
     }
-    if (!transitionIncludes(proof.measured.searchWrapper, contract.motionProof.searchTransition)) {
-      failures.push(`${label}:search-transition:${proof.measured.searchWrapper?.transitionProperty}`);
+    for (const property of contract.motionProof.searchTransitionProperties ?? [contract.motionProof.searchTransition]) {
+      if (!transitionIncludes(proof.measured.searchWrapper, property)) {
+        failures.push(`${label}:search-transition:${property}:${proof.measured.searchWrapper?.transitionProperty}`);
+      }
     }
-    if (proof.measured.searchWrapper?.transitionDuration !== contract.motionProof.searchTransitionDuration) {
+    if (Math.abs(maxCssDurationMs(proof.measured.searchWrapper?.transitionDuration) - maxCssDurationMs(contract.motionProof.searchTransitionDuration)) > 1) {
       failures.push(`${label}:search-transition-duration:${proof.measured.searchWrapper?.transitionDuration}`);
     }
     if (!String(proof.measured.searchWrapper?.transitionTimingFunction).includes(contract.motionProof.searchTransitionTimingFunctionIncludes)) {
       failures.push(`${label}:search-transition-timing:${proof.measured.searchWrapper?.transitionTimingFunction}`);
+    }
+    if (validateMetrics) {
+      validateSearchMotionTimeline({ failures, label, proof, contract });
     }
     if (!transitionIncludes(proof.measured.localeChevron, contract.motionProof.localeChevronTransition)) {
       failures.push(`${label}:locale-chevron-transition:${proof.measured.localeChevron?.transitionProperty}`);
