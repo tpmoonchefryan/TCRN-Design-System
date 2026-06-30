@@ -1771,7 +1771,7 @@ label {
   text-decoration: none;
 }
 
-.tcrn-doc-brand__mark {
+.tcrn-doc-brand .tcrn-brand-mark {
   display: block;
   width: 52px;
   height: 52px;
@@ -1779,18 +1779,13 @@ label {
   filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
 }
 
-.tcrn-doc-brand__copy {
+.tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
   display: grid;
   gap: 2px;
   min-width: 0;
 }
 
-.tcrn-doc-brand__name {
-  color: var(--tcrn-color-text-primary);
-  font-weight: 800;
-}
-
-.tcrn-doc-brand__caption {
+.tcrn-doc-brand .tcrn-shell-brand-lockup__caption {
   color: var(--tcrn-color-brand-primary);
   font-size: var(--tcrn-type-size-caption);
   font-weight: 700;

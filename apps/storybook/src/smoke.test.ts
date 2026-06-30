@@ -118,6 +118,7 @@ const expectedAiRequiredProof = [
   "brand_surface_receipt",
   "forbidden_brand_asset_absence_receipt",
   "package_import_receipt",
+  "storybook_doc_shell_package_boundary_receipt",
   "theme_mode_receipt",
   "storybook_shell_control_receipt",
   "locale_popup_dismissal_receipt",
@@ -227,7 +228,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /tcrn-doc-global-bar/);
   assert.match(combinedHtml, /tcrn-doc-global-brand/);
   assert.match(combinedHtml, /<link rel="icon" href="tcrn-brand-mark\.svg" type="image\/svg\+xml" \/>/);
-  assert.match(combinedHtml, /data-doc-shell-icon="header-search"/);
+  assert.match(combinedHtml, /data-tcrn-doc-shell-component-style="package-backed"/);
+  assert.match(combinedHtml, /class="[^"]*tcrn-search-input__control[^"]*tcrn-search-input--compact/);
   assert.match(combinedHtml, /data-doc-search-input/);
   assert.match(combinedHtml, /--tcrn-doc-motion-spring: 0\.5s cubic-bezier\(0\.175, 0\.885, 0\.32, 1\.275\)/);
   assert.match(combinedHtml, /--tcrn-doc-motion-smooth: 0\.4s ease/);
@@ -251,18 +253,19 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-storybook-theme-toggle/);
   assert.match(combinedHtml, /data-current-theme="light"/);
   assert.match(combinedHtml, /data-storybook-theme-option="dark"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="theme-light"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="theme-dark"/);
+  assert.match(combinedHtml, /data-package-backed-shell-control="theme-toggle"/);
+  assert.match(combinedHtml, /data-theme-icon="light"[\s\S]*data-icon-name="sun"/);
+  assert.match(combinedHtml, /data-theme-icon="dark"[\s\S]*data-icon-name="moon"/);
   assert.match(combinedHtml, /tcrn-doc-header-controls__row/);
   assert.match(combinedHtml, /data-theme-label-key="shell\.themeDarkLabel"/);
-  assert.match(combinedHtml, /data-i18n="shell\.themeLabel"/);
   assert.match(combinedHtml, /data-i18n-aria-label="shell\.languageLabel"/);
   assert.match(combinedHtml, /data-locale-menu-toggle/);
-  assert.match(combinedHtml, /data-doc-shell-icon="locale-globe"/);
-  assert.match(combinedHtml, /data-locale-current-name>English</);
+  assert.match(combinedHtml, /data-package-backed-shell-control="locale-menu"/);
+  assert.match(combinedHtml, /data-icon-name="globe-2"/);
+  assert.match(combinedHtml, /data-locale-current-name(?:="true")?>English</);
   assert.match(combinedHtml, /data-locale-menu-option/);
   assert.match(combinedHtml, /data-locale-name="简体中文"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="locale-select"/);
+  assert.match(combinedHtml, /data-icon-name="chevron-down"/);
   assert.doesNotMatch(combinedHtml, /简体中文 \/ Simplified Chinese/);
   assert.match(combinedHtml, /tcrnStorybookApplyTheme/);
   assert.match(combinedHtml, /document\.startViewTransition/);
@@ -286,8 +289,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /input\.addEventListener\("pointerdown"/);
   assert.match(combinedHtml, /shell\.searchNoResults/);
   assert.match(combinedHtml, /data-doc-shell-icon="current-location-separator"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="sidebar-collapse"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="sidebar-expand"/);
+  assert.match(combinedHtml, /data-package-backed-shell-control="side-nav-collapse"/);
+  assert.match(combinedHtml, /data-side-nav-icon="collapse"[\s\S]*data-icon-name="chevron-left"/);
+  assert.match(combinedHtml, /data-side-nav-icon="expand"[\s\S]*data-icon-name="chevron-right"/);
   assert.match(combinedHtml, /data-doc-shell-icon="previous-chapter"/);
   assert.match(combinedHtml, /data-doc-shell-icon="next-chapter"/);
   assert.match(combinedHtml, /@property --tcrn-doc-shell-side-width/);
@@ -302,7 +306,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /\.tcrn-doc-global-bar[\s\S]*transition: grid-template-columns var\(--tcrn-motion-emphasis\)/);
   assert.match(combinedHtml, /\.tcrn-doc-layout[\s\S]*transition: grid-template-columns var\(--tcrn-motion-emphasis\)/);
   assert.match(combinedHtml, /\.tcrn-doc-nav__stories[\s\S]*max-height var\(--tcrn-motion-emphasis\)/);
-  assert.match(combinedHtml, /\.tcrn-doc-brand__copy,[\s\S]*white-space: nowrap/);
+  assert.match(combinedHtml, /\.tcrn-doc-brand \.tcrn-shell-brand-lockup__copy,[\s\S]*white-space: nowrap/);
   assert.match(combinedHtml, /\.tcrn-doc-nav__section,[\s\S]*white-space: nowrap/);
   assert.match(combinedHtml, /tcrn-doc-nav__section-label/);
   assert.match(combinedHtml, /tcrn-doc-nav__section-abbr/);
@@ -318,8 +322,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /font-size var\(--tcrn-motion-emphasis\)/);
   assert.doesNotMatch(combinedHtml, /max-width var\(--tcrn-motion-emphasis\)/);
   assert.doesNotMatch(combinedHtml, /data-sidebar-collapsed="true"\] \.tcrn-doc-nav__stories \{[^}]*display: none/);
-  assert.match(combinedHtml, /data-doc-shell-icon="sidebar-collapse"[^>]*data-icon-name="chevron-left"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="sidebar-expand"[^>]*data-icon-name="chevron-right"/);
+  assert.match(combinedHtml, /data-side-nav-icon="collapse"[\s\S]*data-icon-name="chevron-left"/);
+  assert.match(combinedHtml, /data-side-nav-icon="expand"[\s\S]*data-icon-name="chevron-right"/);
   assert.match(combinedHtml, /data-icon-name="chevron-right"/);
   assert.doesNotMatch(combinedHtml, /viewBox="0 0 20 20" focusable="false" aria-hidden="true"/);
   assert.doesNotMatch(combinedHtml, /tcrn-doc-sidebar-toggle__icon::before/);
@@ -340,13 +344,14 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-storybook-theme-toggle/);
   assert.match(combinedHtml, /data-current-theme="light"/);
   assert.match(combinedHtml, /data-storybook-theme-option="dark"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="theme-light"[\s\S]*data-icon-name="sun"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="theme-dark"[\s\S]*data-icon-name="moon"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="locale-globe"[\s\S]*data-icon-name="globe-2"/);
-  assert.match(combinedHtml, /data-doc-shell-icon="locale-select"[\s\S]*data-icon-name="chevron-down"/);
+  assert.doesNotMatch(combinedHtml, /tcrn-doc-theme-toggle/);
+  assert.doesNotMatch(combinedHtml, /tcrn-doc-locale-toggle/);
+  assert.doesNotMatch(combinedHtml, /tcrn-doc-locale-menu__/);
+  assert.doesNotMatch(combinedHtml, /tcrn-doc-sidebar-toggle__/);
+  assert.doesNotMatch(combinedHtml, /class="[^"]*tcrn-doc-search-result/);
   assert.match(combinedHtml, /data-locale-menu/);
   assert.match(combinedHtml, /data-locale-menu-option[\s\S]*data-locale="ja"[\s\S]*data-locale-name="日本語"/);
-  assert.match(combinedHtml, /querySelector\("\.tcrn-doc-locale-menu__name"\)/);
+  assert.match(combinedHtml, /querySelector\("\.tcrn-shell-locale-menu__name, \[data-locale-option-name\]"\)/);
   assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-aria-label\]"\)/);
   assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-title\]"\)/);
   assert.match(combinedHtml, /tcrn-design-system-storybook-theme/);
@@ -614,6 +619,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Foundations"), /Copy guidelines/);
   assert.match(readGroupPage("Foundations"), /Docs shell control contract/);
   assert.match(readGroupPage("Foundations"), /Use one circular icon-only button/);
+  assert.match(readGroupPage("Foundations"), /Keep Storybook-specific page skeleton/);
+  assert.match(readGroupPage("Foundations"), /consume reusable controls from @tcrn\/ui-react/);
+  assert.match(readGroupPage("Foundations"), /Private documentation-shell clones of theme toggle, locale menu, search results, side-nav collapse, or brand lockup components/);
   assert.match(readGroupPage("Foundations"), /one whole-page transition/);
   assert.match(readGroupPage("Foundations"), /current locale name in that locale/);
   assert.match(readGroupPage("Foundations"), /outside pointer down or click, and Escape/);
@@ -629,6 +637,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Proof"), /Check both light and dark Storybook shell modes before product frontend work/);
   assert.match(readGroupPage("Proof"), /Storybook shell controls/);
   assert.match(readGroupPage("Proof"), /single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition/);
+  assert.match(readGroupPage("Proof"), /Storybook doc shell boundary/);
+  assert.match(readGroupPage("Proof"), /Storybook page skeleton may keep \.tcrn-doc-\* layout slots/);
+  assert.match(readGroupPage("Proof"), /SearchInput, ShellBrandLockup, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductShell comparator CSS/);
   assert.match(readGroupPage("Proof"), /Locale menu behavior/);
   assert.match(readGroupPage("Proof"), /Side navigation collapse/);
   assert.match(readGroupPage("Proof"), /Registered product IA/);
@@ -792,8 +803,16 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.componentConsumptionDisposition, /ProductShell semantic callbacks/);
   assert.match(contract.componentConsumptionDisposition, /productShellControlProps/);
   assert.match(contract.componentConsumptionDisposition, /onSearchResultActivate/);
+  assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
+  assert.match(contract.storybookDocShellCompositionDisposition, /may retain page skeleton, routing, section navigation/);
+  assert.match(contract.storybookDocShellCompositionDisposition, /Reusable controls, component visuals, icons, brand lockups, shell search, theme toggle, locale menu, side-navigation collapse/);
+  assert.match(contract.storybookDocShellCompositionDisposition, /must come from registered @tcrn\/ui-react exports and package CSS/);
+  assert.match(contract.storybookDocShellCompositionDisposition, /must not keep private component clones/);
   assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
   assert.match(contract.themeModeDisposition, /light and dark Storybook shell modes/);
+  assert.match(contract.storybookShellControlContract.implementationBoundary, /consumer of @tcrn\/ui-react/);
+  assert.match(contract.storybookShellControlContract.implementationBoundary, /SearchInput, ShellBrandLockup, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton/);
+  assert.match(contract.storybookShellControlContract.implementationBoundary, /\.tcrn-doc-\* selectors may style only documentation skeleton/);
   assert.match(contract.storybookShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
   assert.match(contract.storybookShellControlContract.themeTransition, /one whole-page transition/);
   assert.match(contract.storybookShellControlContract.themeTransition, /must not darken as independent sections/);

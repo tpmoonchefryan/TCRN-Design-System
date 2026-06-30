@@ -288,7 +288,7 @@
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 1077,
-          "height": 1552
+          "height": 1669
         },
         {
           "id": "copy-guidelines",
@@ -427,19 +427,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 1077,
-          "height": 6497
+          "height": 6307
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 1077,
-          "height": 13962
+          "height": 13950
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 1077,
-          "height": 14325
+          "height": 14313
         },
         {
           "id": "dialog-spec-usage",
@@ -613,7 +613,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 4484
+          "height": 4600
         },
         {
           "id": "blocked-actions",
@@ -917,7 +917,7 @@
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 691,
-          "height": 1912
+          "height": 2063
         },
         {
           "id": "copy-guidelines",
@@ -1056,19 +1056,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 691,
-          "height": 7010
+          "height": 6853
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 16836
+          "height": 16814
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 691,
-          "height": 16095
+          "height": 16071
         },
         {
           "id": "dialog-spec-usage",
@@ -1242,7 +1242,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 5516
+          "height": 5667
         },
         {
           "id": "blocked-actions",
@@ -1546,7 +1546,7 @@
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 358,
-          "height": 3052
+          "height": 3295
         },
         {
           "id": "copy-guidelines",
@@ -1685,19 +1685,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 358,
-          "height": 13283
+          "height": 12734
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 25312
+          "height": 25282
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 22724
+          "height": 22700
         },
         {
           "id": "dialog-spec-usage",
@@ -1871,7 +1871,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 10450
+          "height": 10641
         },
         {
           "id": "blocked-actions",

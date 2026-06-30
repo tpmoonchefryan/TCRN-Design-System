@@ -837,6 +837,11 @@ const legacyContractStories: ContractStory[] = [
             ]}
             rows={[
               {
+                control: "Implementation boundary",
+                rule: "Keep Storybook-specific page skeleton, routes, anchors, section navigation, and layout slots in the documentation shell; consume reusable controls from @tcrn/ui-react.",
+                blocked: "Private documentation-shell clones of theme toggle, locale menu, search results, side-nav collapse, or brand lockup components."
+              },
+              {
                 control: "Theme toggle",
                 rule: "Use one circular icon-only button that reflects the current light or dark mode and toggles only on explicit activation.",
                 blocked: "Two-option segmented theme controls or large theme panels in the global bar."
@@ -1743,6 +1748,7 @@ const legacyContractStories: ContractStory[] = [
               { rule: "Locale and copy-state", evidence: "All visible product copy uses approved i18n and copy-state contracts." },
               { rule: "Brand and logo", evidence: "Use admitted brand assets or route brand component admission before product use." },
               { rule: "Component imports", evidence: "Import package-backed Design System primitives from @tcrn/ui-react; do not rebuild local clones." },
+              { rule: "Storybook doc shell boundary", evidence: "Storybook page skeleton may keep .tcrn-doc-* layout slots, but SearchInput, ShellBrandLockup, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductShell comparator CSS, and reusable component behavior must be package-backed." },
               { rule: "Storybook section coverage", evidence: "Read every required Storybook section in the AI contract before implementation; do not treat one component page as the whole Design System." },
               { rule: "Visual equivalence", evidence: "Prove same package, same export, same variant/props/slots, and same Storybook visual instance; package import or boundary markers alone are insufficient." },
               { rule: "Token usage", evidence: "Use Design System tokens, reduced-motion rules, and accessibility states before custom CSS." },

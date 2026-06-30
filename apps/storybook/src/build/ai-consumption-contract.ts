@@ -527,6 +527,7 @@ export const aiConsumptionContract = {
     "brand_surface_receipt",
     "forbidden_brand_asset_absence_receipt",
     "package_import_receipt",
+    "storybook_doc_shell_package_boundary_receipt",
     "theme_mode_receipt",
     "storybook_shell_control_receipt",
     "locale_popup_dismissal_receipt",
@@ -554,11 +555,15 @@ export const aiConsumptionContract = {
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
     "Product implementations must import package-backed Design System primitives for ProductShell, ProductShellSearch, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, brand lockups, status, readback, table, and disclosure surfaces instead of rebuilding reusable local clones. Product shell state/effect behavior must use ProductShell semantic callbacks, ProductShellSearch controlled props, or useProductShellController prop bundles including productShellControlProps, productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
+  storybookDocShellCompositionDisposition:
+    "The Storybook documentation frontend may retain page skeleton, routing, section navigation, anchor behavior, static proof pages, search indexing, and documentation-specific layout slots. Reusable controls, component visuals, icons, brand lockups, shell search, theme toggle, locale menu, side-navigation collapse, and ProductShell comparator behavior must come from registered @tcrn/ui-react exports and package CSS; Storybook doc-shell code must not keep private component clones such as tcrn-doc-theme-toggle, tcrn-doc-locale-toggle, tcrn-doc-locale-menu__, tcrn-doc-sidebar-toggle__, tcrn-doc-search-result, or tcrn-doc-brand__* implementations.",
   tokenConsumptionDisposition:
     "Product implementations must use Design System tokens, reduced-motion rules, and accessibility states before custom CSS.",
   themeModeDisposition:
     "Product implementations must preserve semantic token behavior across light and dark Storybook shell modes and prove both modes before claiming Design System compliance.",
   storybookShellControlContract: {
+    implementationBoundary:
+      "The Storybook docs shell is a consumer of @tcrn/ui-react for reusable controls: SearchInput, ShellBrandLockup, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, and ProductShell comparator CSS are package-backed; .tcrn-doc-* selectors may style only documentation skeleton, layout, and slots.",
     themeToggle:
       "The Storybook docs shell uses one compact circular icon-only theme toggle that reflects the current mode and toggles only on explicit activation.",
     themeTransition:

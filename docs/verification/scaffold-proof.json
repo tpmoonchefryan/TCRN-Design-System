@@ -62,12 +62,12 @@
     {
       "path": "package.json",
       "exists": true,
-      "sha256": "b114a24456e5bcc5414c4d6b4664bb33f91576b3d9981f224e09c81cb76e738e"
+      "sha256": "11a8f9500c3829a0e1c7ea3c3aa02f7fab04b47c7f3dbce53101c57c499706bc"
     },
     {
       "path": "pnpm-workspace.yaml",
       "exists": true,
-      "sha256": "8362581c46f1e8477e5b96f5ab8ac2de4b3b5afa29d0b7d52fc0c286d1d5dabe"
+      "sha256": "51b97d03ea20ae6b9acc389f8862af989f43120dcb77f8337ef209ebe4201860"
     },
     {
       "path": "tsconfig.base.json",

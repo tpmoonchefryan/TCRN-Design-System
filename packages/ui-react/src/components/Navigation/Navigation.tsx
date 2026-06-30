@@ -260,25 +260,29 @@ export function ShellLocaleMenu({
         type="button"
         onClick={handleTriggerClick}
         data-locale-menu-toggle
-        aria-haspopup="menu"
+        aria-haspopup="listbox"
         aria-expanded={open ? "true" : "false"}
         aria-controls={resolvedMenuId}
         aria-label={label}
+        title={label}
       >
         <Icon name="globe-2" />
-        <span className="tcrn-shell-locale-menu__current" data-locale-current>{currentName}</span>
+        <span className="tcrn-shell-locale-menu__current" data-locale-current data-locale-current-name>{currentName}</span>
         <Icon name="chevron-down" className="tcrn-shell-locale-menu__chevron" />
       </button>
-      <div id={resolvedMenuId} className="tcrn-shell-locale-menu__panel" role="menu" data-locale-menu hidden={!open}>
+      <div id={resolvedMenuId} className="tcrn-shell-locale-menu__panel" role="listbox" data-locale-menu hidden={!open}>
         {locales.map((entry) => (
           <button key={entry.locale}
             className="tcrn-shell-locale-menu__option"
             type="button"
-            role="menuitem"
+            role="option"
             onClick={() => handleLocaleSelect(entry.locale)}
+            data-locale={entry.locale}
+            data-locale-name={entry.nativeName}
             data-locale-option={entry.locale}
             data-locale-menu-option
             aria-current={entry.locale === currentLocale ? "true" : undefined}
+            aria-selected={entry.locale === currentLocale ? "true" : "false"}
           >
             <span className="tcrn-shell-locale-menu__name">{entry.nativeName}</span>
           </button>
@@ -333,10 +337,10 @@ export function SideNavCollapseButton({
       icon={
         <>
           <span className="tcrn-shell-side-nav-toggle__icon" data-side-nav-icon="collapse">
-            <Icon name="panel-left-close" />
+            <Icon name="chevron-left" />
           </span>
           <span className="tcrn-shell-side-nav-toggle__icon" data-side-nav-icon="expand">
-            <Icon name="panel-left-open" />
+            <Icon name="chevron-right" />
           </span>
         </>
       }
@@ -1135,12 +1139,65 @@ export const tcrnComponentCss = `
   cursor: not-allowed;
   opacity: 0.64;
 }
-.tcrn-icon-button,
-.tcrn-shell-theme-toggle,
-.tcrn-shell-side-nav-toggle {
+.tcrn-icon-button {
   inline-size: 38px;
   block-size: 38px;
   padding: 0;
+}
+.tcrn-shell-theme-toggle {
+  position: relative;
+  inline-size: 36px;
+  block-size: 36px;
+  min-inline-size: 36px;
+  min-block-size: 36px;
+  min-height: 36px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+.tcrn-shell-theme-toggle:hover,
+.tcrn-shell-locale-menu__trigger:hover,
+.tcrn-shell-locale-menu__trigger[aria-expanded="true"] {
+  border-color: var(--tcrn-color-border-strong);
+  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 72%, var(--tcrn-color-surface-panel));
+  color: var(--tcrn-color-text-primary);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+.tcrn-shell-theme-toggle__icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.58) rotate(-90deg);
+  transition:
+    opacity var(--tcrn-motion-emphasis),
+    transform var(--tcrn-motion-emphasis);
+}
+.tcrn-shell-theme-toggle[data-current-theme="light"] .tcrn-shell-theme-toggle__icon[data-theme-icon="light"],
+.tcrn-shell-theme-toggle[data-current-theme="dark"] .tcrn-shell-theme-toggle__icon[data-theme-icon="dark"] {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+}
+.tcrn-shell-theme-toggle[data-current-theme="light"] .tcrn-shell-theme-toggle__icon[data-theme-icon="dark"] {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.58) rotate(-90deg);
+}
+.tcrn-shell-theme-toggle[data-current-theme="dark"] .tcrn-shell-theme-toggle__icon[data-theme-icon="light"] {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.58) rotate(90deg);
+}
+.tcrn-shell-side-nav-toggle {
+  inline-size: 32px;
+  block-size: 32px;
+  min-inline-size: 32px;
+  min-block-size: 32px;
+  min-height: 32px;
+  padding: 0;
+  color: var(--tcrn-color-brand-primary);
 }
 .tcrn-icon-button__label,
 .tcrn-sr-only {
@@ -1317,10 +1374,10 @@ export const tcrnComponentCss = `
 }
 .tcrn-product-shell__current-location {
   display: grid;
-  flex: 0 1 116px;
+  flex: 1 1 116px;
   gap: 1px;
   min-width: 0;
-  max-width: 160px;
+  max-width: 240px;
   color: var(--tcrn-color-text-secondary);
   font-size: 12px;
 }
@@ -1495,11 +1552,11 @@ export const tcrnComponentCss = `
   display: inline-flex;
   align-items: center;
   gap: var(--tcrn-space-2);
-  max-width: 150px;
-  min-height: 38px;
-  padding: 0 var(--tcrn-space-3);
+  max-width: 132px;
+  min-height: 36px;
+  padding: 0 10px;
   border: 1px solid var(--tcrn-color-border-strong);
-  border-radius: var(--tcrn-radius-control);
+  border-radius: 999px;
   background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
   font-weight: var(--tcrn-type-weight-strong);
@@ -1522,6 +1579,18 @@ export const tcrnComponentCss = `
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-surface-panel);
   box-shadow: var(--tcrn-elevation-floating);
+}
+.tcrn-shell-locale-menu__chevron {
+  flex: 0 0 auto;
+  width: 11px;
+  height: 11px;
+  color: var(--tcrn-color-text-tertiary);
+  pointer-events: none;
+  transition: transform var(--tcrn-motion-emphasis);
+}
+.tcrn-shell-locale-menu[data-locale-menu-open="true"] .tcrn-shell-locale-menu__chevron,
+.tcrn-shell-locale-menu__trigger[aria-expanded="true"] .tcrn-shell-locale-menu__chevron {
+  transform: rotate(180deg);
 }
 .tcrn-shell-locale-menu__panel[hidden] {
   display: none;

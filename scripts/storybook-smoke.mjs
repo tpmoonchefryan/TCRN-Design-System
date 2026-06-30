@@ -77,9 +77,9 @@ const productShellComparatorContract = {
     contentRegion: "[data-product-shell-region=\"content\"]"
   },
   expectedControlMetrics: {
-    themeToggle: { width: 38, height: 38, radius: 5 },
-    sideNavToggle: { width: 38, height: 38, radius: 5 },
-    localeTrigger: { minHeight: 38, radius: 5 },
+    themeToggle: { width: 36, height: 36, radius: 999 },
+    sideNavToggle: { width: 32, height: 32, radius: 5 },
+    localeTrigger: { minHeight: 36, radius: 999 },
     searchInput: { minHeight: 38, radius: 5, minWidth: 220 },
     topBar: {
       minHeight: 68,
@@ -531,8 +531,11 @@ const required = [
   "data-current-theme=\"light\"",
   "data-storybook-theme-option=\"dark\"",
   "tcrn-design-system-storybook-theme",
-  "data-doc-shell-icon=\"theme-light\"",
-  "data-doc-shell-icon=\"theme-dark\"",
+  "data-package-backed-shell-control=\"theme-toggle\"",
+  "data-theme-icon=\"light\"",
+  "data-theme-icon=\"dark\"",
+  "data-icon-name=\"sun\"",
+  "data-icon-name=\"moon\"",
   "--tcrn-doc-motion-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
   "--tcrn-doc-motion-smooth: 0.4s ease",
   "--tcrn-doc-theme-crossfade-duration: 0.4s",
@@ -545,9 +548,11 @@ const required = [
   "--tcrn-doc-header-search-resting-width: 180px",
   "--tcrn-doc-header-search-expanded-width: 320px",
   "data-locale-menu-toggle",
-  "data-doc-shell-icon=\"locale-globe\"",
+  "data-package-backed-shell-control=\"locale-menu\"",
+  "data-icon-name=\"globe-2\"",
   "data-locale-current-name",
   "data-locale-menu-option",
+  "tcrn-shell-locale-menu__name",
   "data-locale-name=\"简体中文\"",
   "option value=\"zh-CN\"",
   "option value=\"en\"",
@@ -627,14 +632,22 @@ const required = [
 const componentPage = pages.Components;
 const staticDocStyleIndex = componentPage.indexOf("data-tcrn-static-doc-style-source=\"storybook\"");
 const componentStyleIndex = componentPage.indexOf("data-tcrn-component-style-source=\"@tcrn/ui-react\"");
+const docShellComponentStyleIndex = componentPage.indexOf("data-tcrn-doc-shell-component-style=\"package-backed\"");
+const comparatorComponentStyleIndex = componentPage.indexOf("data-tcrn-product-shell-comparator-style=\"package-backed\"");
 if (staticDocStyleIndex < 0) {
   required.push("data-tcrn-static-doc-style-source=\"storybook\"");
 }
 if (componentStyleIndex < 0) {
   required.push("data-tcrn-component-style-source=\"@tcrn/ui-react\"");
 }
-if (componentStyleIndex >= 0 && staticDocStyleIndex >= 0 && componentStyleIndex < staticDocStyleIndex) {
-  required.push("component-style-after-static-doc-style");
+if (docShellComponentStyleIndex < 0) {
+  required.push("data-tcrn-doc-shell-component-style=\"package-backed\"");
+}
+if (comparatorComponentStyleIndex < 0) {
+  required.push("data-tcrn-product-shell-comparator-style=\"package-backed\"");
+}
+if (comparatorComponentStyleIndex >= 0 && staticDocStyleIndex >= 0 && comparatorComponentStyleIndex < staticDocStyleIndex) {
+  required.push("product-shell-component-style-after-static-doc-style");
 }
 for (const text of [
   "data-tcrn-product-shell-comparator-style=\"package-backed\"",
@@ -1122,7 +1135,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
         color: shellStyle.color,
         themeWashAnimationName: themeWashStyle.animationName,
         themeWashAnimationDuration: themeWashStyle.animationDuration,
-        sourceMarker: document.querySelector("style[data-tcrn-component-style-source=\"@tcrn/ui-react\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
+        sourceMarker: document.querySelector("style[data-tcrn-product-shell-comparator-style=\"package-backed\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
 	      },
 	      measured,
 	      requiredContent,

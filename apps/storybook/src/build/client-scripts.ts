@@ -292,22 +292,24 @@ export const storybookI18nScript = `<script>
     toggle?.setAttribute("aria-expanded", "true");
     if (menu) {
       menu.hidden = false;
-      menu.querySelector("[aria-selected='true']")?.focus();
+      menu.querySelector("[aria-selected='true'], [aria-current='true']")?.focus();
     }
   };
   const updateLocaleMenuState = (locale) => {
     const selected = document.querySelector("[data-locale-menu-option][data-locale='" + CSS.escape(locale) + "']");
-    const nameNode = document.querySelector("[data-locale-current-name]");
+    const nameNode = document.querySelector("[data-locale-current-name], [data-locale-current]");
     if (selected && nameNode) {
       nameNode.textContent = selected.getAttribute("data-locale-name") ?? locale;
     }
     for (const option of document.querySelectorAll("[data-locale-menu-option]")) {
       const nativeName = option.getAttribute("data-locale-name") ?? option.getAttribute("data-locale") ?? "";
-      const visibleName = option.querySelector(".tcrn-doc-locale-menu__name");
+      const visibleName = option.querySelector(".tcrn-shell-locale-menu__name, [data-locale-option-name]");
       if (visibleName) {
         visibleName.textContent = nativeName;
       }
-      option.setAttribute("aria-selected", option.getAttribute("data-locale") === locale ? "true" : "false");
+      const isSelected = option.getAttribute("data-locale") === locale;
+      option.setAttribute("aria-selected", isSelected ? "true" : "false");
+      option.setAttribute("aria-current", isSelected ? "true" : "false");
     }
   };
   const updateThemeButtonLabels = (locale) => {
@@ -549,7 +551,7 @@ export const storybookSearchScript = `<script>
     }
     if (!results.length) {
       const empty = document.createElement("div");
-      empty.className = "tcrn-doc-search-results__empty";
+      empty.className = "tcrn-product-shell-search__empty";
       empty.textContent = textFor("shell.searchNoResults");
       resultsBox.append(empty);
       setResultsVisible(true);
@@ -558,15 +560,15 @@ export const storybookSearchScript = `<script>
     }
     results.forEach((result, index) => {
       const option = document.createElement("a");
-      option.className = "tcrn-doc-search-result";
+      option.className = "tcrn-product-shell-search__result";
       option.id = "tcrn-doc-search-result-" + index;
       option.href = result.href;
       option.setAttribute("role", "option");
       option.setAttribute("aria-selected", index === activeIndex ? "true" : "false");
       option.setAttribute("data-doc-search-result", String(index));
-      option.innerHTML = "<span class=\\"tcrn-doc-search-result__title\\"></span><span class=\\"tcrn-doc-search-result__meta\\"></span>";
-      option.querySelector(".tcrn-doc-search-result__title").textContent = result.label;
-      const meta = option.querySelector(".tcrn-doc-search-result__meta");
+      option.innerHTML = "<strong></strong><span></span>";
+      option.querySelector("strong").textContent = result.label;
+      const meta = option.querySelector("span");
       const metaLabel = result.groupLabel && result.groupLabel !== result.label ? result.groupLabel : "";
       meta.textContent = metaLabel;
       meta.hidden = !metaLabel;
