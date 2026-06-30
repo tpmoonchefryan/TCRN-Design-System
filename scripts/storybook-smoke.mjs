@@ -85,7 +85,9 @@ const productShellComparatorContract = {
     localeChevron: ".tcrn-shell-locale-menu__chevron",
     topBar: ".tcrn-top-bar",
     sideNavRegion: ".tcrn-product-shell__sidebar",
-    contentRegion: "[data-product-shell-region=\"content\"]"
+    contentRegion: "[data-product-shell-region=\"content\"]",
+    contentStack: ".tcrn-product-shell-content-stack",
+    sectionGrid: ".tcrn-product-shell-section-grid"
   },
   expectedControlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
   expectedControlMetrics: {
@@ -1779,6 +1781,17 @@ function validateProductShellReadback({
     }
     if (proof.measured.contentRegion?.width > proof.viewport.width + 1) {
       failures.push(`${label}:mobile-content-width:${proof.measured.contentRegion.width}`);
+    }
+    for (const [containerName, metric] of Object.entries({
+      contentStack: proof.measured.contentStack,
+      sectionGrid: proof.measured.sectionGrid
+    })) {
+      if (metric && !metric.missing && metric.scrollWidth > metric.clientWidth + 1) {
+        failures.push(`${label}:mobile-${containerName}-overflow:${metric.scrollWidth}>${metric.clientWidth}`);
+      }
+      if (metric && !metric.missing && metric.right > proof.viewport.width + 1) {
+        failures.push(`${label}:mobile-${containerName}-right:${metric.right}>${proof.viewport.width}`);
+      }
     }
   }
 }

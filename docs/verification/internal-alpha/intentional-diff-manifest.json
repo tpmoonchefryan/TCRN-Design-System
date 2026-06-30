@@ -108,13 +108,13 @@
       "storyId": "copy-guidelines",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-copy-guidelines.png",
-      "sha256": "9554eea8a1859da899a12143b13c609c93601a8184b024e9ce1c3eb086c2fcab"
+      "sha256": "cd8e01d20476040c4fe6976538704973b7236c6a24a098bd8699eac8682586a0"
     },
     {
       "storyId": "section-components",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-components.png",
-      "sha256": "487fe7cf74551ae5f6d1fadb191eba2bfa6240adad33387eeaf02071716386cc"
+      "sha256": "3c4cc2bda94432f4707000bdddc37de0712fad32a44179689f08524a94cdefb1"
     },
     {
       "storyId": "component-family-index",
@@ -180,7 +180,7 @@
       "storyId": "section-patterns",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-patterns.png",
-      "sha256": "e9720e6ce427ba2ec49335b654cf429b12c5f9a7241d8f7e7bb8cd81446dac7a"
+      "sha256": "6e08a920a276c8c6f574c968fe0652d2d166dfb490a098f53b44255525e98f35"
     },
     {
       "storyId": "forms-patterns",
@@ -228,7 +228,7 @@
       "storyId": "dashboard-page-templates",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-dashboard-page-templates.png",
-      "sha256": "8674246bb0e12f975f95bfa5907024508c362fb124d2370db13d3a2c5172d9eb"
+      "sha256": "7c5dbd7c88a38bcc5f36105350d3670bc771bbf01a95a7267bd1a18e95159512"
     },
     {
       "storyId": "section-proof",
@@ -384,7 +384,7 @@
       "storyId": "section-components",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-components.png",
-      "sha256": "9d42db307ab32aaf470dd3a04f5d119f208ac74b20fab563325ca0eca62e8d81"
+      "sha256": "d5cadd7aff25ac982b657e1a957bf5c0a973983d313630cf1ac8922b4efa367e"
     },
     {
       "storyId": "component-family-index",

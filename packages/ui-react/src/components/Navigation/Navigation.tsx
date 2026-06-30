@@ -1620,8 +1620,15 @@ export const tcrnComponentCss = `
 }
 .tcrn-product-shell-content-stack {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--tcrn-space-5);
+  min-width: 0;
   max-width: 1180px;
+}
+.tcrn-product-shell-content-stack > *,
+.tcrn-product-shell-section-grid > * {
+  min-width: 0;
+  max-width: 100%;
 }
 .tcrn-product-shell-section-grid {
   display: grid;
