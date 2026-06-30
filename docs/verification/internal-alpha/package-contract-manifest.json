@@ -207,6 +207,10 @@
         "exported": true
       },
       {
+        "name": "ProductLogo",
+        "exported": true
+      },
+      {
         "name": "ShellBrandLockup",
         "exported": true
       },
@@ -266,6 +270,14 @@
       },
       {
         "name": "useProductShellController",
+        "exported": true
+      },
+      {
+        "name": "tcrnProductLogoRegistry",
+        "exported": true
+      },
+      {
+        "name": "getTcrnProductLogoAsset",
         "exported": true
       }
     ],
@@ -741,6 +753,15 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "ProductLogo",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "ShellBrandLockup",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -868,6 +889,24 @@
       },
       {
         "storybookItem": "useProductShellController",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "tcrnProductLogoRegistry",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "getTcrnProductLogoAsset",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",

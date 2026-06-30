@@ -48,6 +48,7 @@ export const componentLibraryPublicComponentNames = [
   "ProductSwitcher",
   "SkipLink",
   "TcrnBrandMark",
+  "ProductLogo",
   "ProductLockup",
   "ShellBrandLockup",
   "ShellThemeToggle",
@@ -68,6 +69,8 @@ export type ComponentLibraryPublicComponentName = (typeof componentLibraryPublic
 export const componentLibraryPublicUtilityNames = [
   "tcrnIconNames",
   "tcrnComponentCss",
+  "tcrnProductLogoRegistry",
+  "getTcrnProductLogoAsset",
   "useProductShellController"
 ] as const;
 

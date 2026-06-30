@@ -646,26 +646,67 @@ async function collectBrandMarkLocaleCheck(page, locale) {
   await page.waitForSelector("[data-story-id='brand-identity']");
   const details = await page.evaluate(() => {
     const marks = Array.from(document.querySelectorAll("[data-story-id='brand-identity'] .tcrn-brand-mark"));
-    const longLockup = document.querySelector(".tcrn-brand-lockup--long-name .tcrn-brand-wordmark");
-    const designSuffix = document.querySelector(".tcrn-brand-wordmark__suffix--design-system");
-    const longLockupStyle = longLockup ? window.getComputedStyle(longLockup) : null;
-    const designSuffixStyle = designSuffix ? window.getComputedStyle(designSuffix) : null;
+    const productLogos = Array.from(document.querySelectorAll("[data-story-id='brand-identity'] .tcrn-product-logo"));
 
     return {
       labels: marks.map((node) => node.getAttribute("aria-label")),
       sources: marks.map((node) => node.getAttribute("src")),
-      longLockupFlexDirection: longLockupStyle?.flexDirection ?? null,
-      designSuffixBackground: designSuffixStyle?.backgroundImage ?? null
+      productLogos: productLogos.map((node) => ({
+        productId: node.getAttribute("data-product-id"),
+        assetId: node.getAttribute("data-product-logo-asset-id"),
+        lineOne: node.querySelector(".tcrn-product-logo__line-one")?.textContent?.trim() ?? null,
+        lineTwo: node.querySelector(".tcrn-product-logo__line-two")?.textContent?.trim() ?? null
+      }))
+    };
+  });
+  const expectedDesignSystemLineOneByLocale = {
+    "zh-CN": "TCRN 设计系统",
+    en: "TCRN Design System",
+    ja: "TCRN デザインシステム",
+    ko: "TCRN 디자인 시스템",
+    fr: "Design System TCRN"
+  };
+  const expectedProductLogos = [
+    {
+      productId: "design-system",
+      assetId: "tcrn-design-system-two-line",
+      lineOne: expectedDesignSystemLineOneByLocale[locale] ?? "TCRN Design System",
+      lineTwo: "Component Library"
+    },
+    {
+      productId: "aos",
+      assetId: "tcrn-aos-two-line",
+      lineOne: "TCRN AOS",
+      lineTwo: "AI Operation System"
+    },
+    {
+      productId: "tms",
+      assetId: "tcrn-tms-two-line",
+      lineOne: "TCRN TMS",
+      lineTwo: "Talent Management System"
+    }
+  ];
+  const registeredLogoChecks = expectedProductLogos.map((expected) => {
+    const actual = details.productLogos.find((logo) => logo.productId === expected.productId);
+    return {
+      ...expected,
+      actual,
+      ok: actual?.assetId === expected.assetId
+        && actual?.lineOne === expected.lineOne
+        && actual?.lineTwo === expected.lineTwo
     };
   });
   return {
     locale,
     ...details,
+    registeredLogoChecks,
     ok: details.labels.length === 4
-      && details.labels.every((label) => label === "TCRN brand mark")
+      && details.labels.some((label) => label === "TCRN brand mark")
+      && details.labels.some((label) => label === `${expectedDesignSystemLineOneByLocale[locale] ?? "TCRN Design System"}`)
+      && details.labels.some((label) => label === "TCRN AOS AI Operation System")
+      && details.labels.some((label) => label === "TCRN TMS Talent Management System")
       && details.sources.every((source) => source?.endsWith("tcrn-brand-mark.svg"))
-      && details.longLockupFlexDirection === "column"
-      && details.designSuffixBackground?.includes("gradient")
+      && registeredLogoChecks.every((check) => check.ok)
   };
 }
 const brandMarkLocaleChecks = [];

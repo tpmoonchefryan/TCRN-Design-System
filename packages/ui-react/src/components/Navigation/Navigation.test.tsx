@@ -15,7 +15,9 @@ import {
   SideNav,
   NavGroup,
   NavItem,
+  ProductLogo,
   tcrnComponentCss,
+  tcrnProductLogoRegistry,
   useProductShellController,
   type ShellThemeMode
 } from "./Navigation.js";
@@ -82,13 +84,41 @@ test("side navigation primitives render package-backed hierarchy and disabled re
   assert.doesNotMatch(html, /role="tab"/);
 });
 
+test("registered product logos expose exact DS AOS and TMS lockups", () => {
+  assert.equal(tcrnProductLogoRegistry["design-system"].assetId, "tcrn-design-system-two-line");
+  assert.equal(tcrnProductLogoRegistry.aos.lineOne, "TCRN AOS");
+  assert.equal(tcrnProductLogoRegistry.aos.lineTwo, "AI Operation System");
+  assert.equal(tcrnProductLogoRegistry.tms.lineOne, "TCRN TMS");
+  assert.equal(tcrnProductLogoRegistry.tms.lineTwo, "Talent Management System");
+
+  const html = renderToStaticMarkup(
+    <>
+      <ProductLogo productId="design-system" />
+      <ProductLogo productId="aos" />
+      <ProductLogo productId="tms" />
+    </>
+  );
+
+  assert.match(html, /data-registered-product-logo="@tcrn\/ui-react\/ProductLogo"/);
+  assert.match(html, /data-product-id="design-system"/);
+  assert.match(html, /data-product-logo-asset-id="tcrn-design-system-two-line"/);
+  assert.match(html, /data-product-id="aos"/);
+  assert.match(html, /data-product-logo-asset-id="tcrn-aos-two-line"/);
+  assert.match(html, />TCRN AOS</);
+  assert.match(html, />AI Operation System</);
+  assert.match(html, /data-product-id="tms"/);
+  assert.match(html, /data-product-logo-asset-id="tcrn-tms-two-line"/);
+  assert.match(html, />TCRN TMS</);
+  assert.match(html, />Talent Management System</);
+  assert.doesNotMatch(html, /Rebuild workspace/);
+});
+
 test("product shell renders package-backed side-nav shell and effect boundary", () => {
   const html = renderToStaticMarkup(
     <ProductShell
       productName="AOS Rebuild Workspace"
       moduleName="Frontend shell slice"
-      brandSuffix="AOS"
-      brandCaption="Rebuild workspace"
+      brandProductId="aos"
       brandMarkSrc="/assets/tcrn-brand-mark.svg"
       brandMarkAlt="TCRN registered brand mark"
       currentRouteLabel="Cockpit"
@@ -136,7 +166,13 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"/);
   assert.match(html, /data-product-shell-semantic-api="collapse-theme-locale-search"/);
   assert.match(html, /data-registered-brand-lockup="@tcrn\/ui-react\/ShellBrandLockup"/);
+  assert.match(html, /data-registered-product-logo="@tcrn\/ui-react\/ProductLogo"/);
   assert.match(html, /data-visible-registered-brand-lockup="true"/);
+  assert.match(html, /data-product-id="aos"/);
+  assert.match(html, /data-product-logo-asset-id="tcrn-aos-two-line"/);
+  assert.match(html, />TCRN AOS</);
+  assert.match(html, />AI Operation System</);
+  assert.doesNotMatch(html, /Rebuild workspace/);
   assert.match(html, /src="\/assets\/tcrn-brand-mark\.svg"/);
   assert.match(html, /aria-expanded="false"/);
   assert.match(html, /data-side-nav-persisted-key="tcrn-aos-side-nav-collapsed"/);
@@ -179,7 +215,9 @@ test("product shell component css isolates topbar from docs chrome", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: max-content max-content minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);[\s\S]*justify-content: stretch;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*background: color-mix\(in srgb, var\(--tcrn-color-surface-panel\), transparent 5%\);/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell \{[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell :focus-visible \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*box-shadow: none;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell :focus-visible:not\(\.tcrn-search-input__control\) \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*box-shadow: none;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input:focus-within \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*outline-offset: 2px;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input__control:focus,[\s\S]*\.tcrn-product-shell \.tcrn-search-input__control:focus-visible \{[\s\S]*outline-style: none;[\s\S]*outline-width: 0;[\s\S]*outline-offset: 0;[\s\S]*box-shadow: none;/);
   assert.match(tcrnComponentCss, /\.tcrn-nav-item\[data-selected="true"\],[\s\S]*\.tcrn-nav-item\[aria-current="page"\] \{[\s\S]*box-shadow: none;/);
 });
 
@@ -199,8 +237,7 @@ test("product shell can disable side-nav collapse with a truthful package-backed
     <ProductShell
       productName="AOS Rebuild Workspace"
       moduleName="Operations Cockpit"
-      brandSuffix="AOS"
-      brandCaption="Rebuild workspace"
+      brandProductId="aos"
       currentRouteLabel="Operations Cockpit"
       navLabel="AOS operations navigation"
       currentLocale="en"
@@ -233,8 +270,11 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /--tcrn-color-brand-secondary-readable: #246f80/);
   assert.match(tcrnComponentCss, /--tcrn-color-brand-secondary-readable: #a6e8ef/);
   assert.match(tcrnComponentCss, /\.tcrn-brand-wordmark__suffix \{[\s\S]*color: var\(--tcrn-color-brand-secondary-readable\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-one \{[\s\S]*font-weight: 800;[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-two \{[\s\S]*font-size: 12px;[\s\S]*line-height: var\(--tcrn-type-line-caption\);/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-theme-toggle \{[\s\S]*inline-size: 36px;[\s\S]*min-height: 36px;[\s\S]*border-radius: 999px;/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 32px;[\s\S]*min-height: 32px;/);
+  assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 38px;[\s\S]*min-height: 38px;[\s\S]*place-items: center;/);
+  assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle__icon \{[\s\S]*inline-size: 20px;[\s\S]*place-items: center;/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger \{[\s\S]*min-height: 36px;[\s\S]*border-radius: 999px;[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*position: static;[\s\S]*color: var\(--tcrn-color-text-secondary\);[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-weight: var\(--tcrn-type-weight-strong\);/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input__icon \{[\s\S]*grid-column: 1;/);
@@ -243,6 +283,8 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\[data-tcrn-theme="dark"\] \.tcrn-button--primary \{[\s\S]*color: var\(--tcrn-color-surface-canvas\);/);
   assert.match(tcrnComponentCss, /\.tcrn-readback-panel \{[\s\S]*display: grid;[\s\S]*gap: var\(--tcrn-space-2\);/);
   assert.match(tcrnComponentCss, /\.tcrn-readback-panel > \.tcrn-heading \+ \* \{[\s\S]*margin-top: 0;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell-content-stack \{[\s\S]*display: grid;[\s\S]*gap: var\(--tcrn-space-5\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell-section-grid \{[\s\S]*grid-template-columns: minmax\(0, 1\.45fr\) minmax\(280px, 0\.75fr\);/);
 });
 
 test("product shell search stays hidden when compact at rest", () => {
@@ -277,8 +319,7 @@ function ProductShellSemanticFixture({ events }: ProductShellSemanticFixtureProp
     <ProductShell
       productName="AOS Rebuild Workspace"
       moduleName="Frontend shell slice"
-      brandSuffix="AOS"
-      brandCaption="Rebuild workspace"
+      brandProductId="aos"
       brandMarkSrc="/assets/tcrn-brand-mark.svg"
       brandMarkAlt="TCRN registered brand mark"
       currentRouteLabel="Cockpit"

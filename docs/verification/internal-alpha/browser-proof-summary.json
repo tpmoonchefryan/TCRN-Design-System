@@ -192,7 +192,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 1077,
-          "height": 1038
+          "height": 1304
         },
         {
           "id": "color-palette",
@@ -397,7 +397,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 7304
+          "height": 7514
         },
         {
           "id": "display-primitives-spec",
@@ -427,19 +427,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 1077,
-          "height": 6307
+          "height": 6293
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 1077,
-          "height": 13995
+          "height": 13952
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 1077,
-          "height": 14428
+          "height": 18850
         },
         {
           "id": "dialog-spec-usage",
@@ -821,7 +821,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 691,
-          "height": 1264
+          "height": 1808
         },
         {
           "id": "color-palette",
@@ -1026,7 +1026,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 7741
+          "height": 7951
         },
         {
           "id": "display-primitives-spec",
@@ -1056,19 +1056,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 691,
-          "height": 6853
+          "height": 6838
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 16806
+          "height": 16841
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 691,
-          "height": 16168
+          "height": 21243
         },
         {
           "id": "dialog-spec-usage",
@@ -1450,7 +1450,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 358,
-          "height": 1773
+          "height": 2532
         },
         {
           "id": "color-palette",
@@ -1655,7 +1655,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 10693
+          "height": 10948
         },
         {
           "id": "display-primitives-spec",
@@ -1685,19 +1685,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 358,
-          "height": 12733
+          "height": 12723
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 25274
+          "height": 25251
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 22849
+          "height": 34737
         },
         {
           "id": "dialog-spec-usage",

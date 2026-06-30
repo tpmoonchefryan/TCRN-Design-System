@@ -61,6 +61,8 @@ const combinedHtml = Object.values(pages).join("\n");
 const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-consumption-contract.json", "utf8"));
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
+const storybookAlphaStylesSource = readFileSync("apps/storybook/src/alpha-styles.ts", "utf8");
+const storybookStaticCssSource = readFileSync("apps/storybook/src/storybook.css", "utf8");
 const staticRoot = "apps/storybook/storybook-static";
 const productShellComparatorContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
@@ -68,6 +70,7 @@ const productShellComparatorContract = {
   page: "components.html#navigation-shell-spec",
   scopedSelector: ".tcrn-product-shell-contract-proof .tcrn-product-shell",
   componentSelectors: {
+    productLogo: ".tcrn-product-logo",
     themeToggle: ".tcrn-shell-theme-toggle",
     localeTrigger: ".tcrn-shell-locale-menu__trigger",
     sideNavToggle: ".tcrn-shell-side-nav-toggle",
@@ -81,6 +84,7 @@ const productShellComparatorContract = {
     selectedNavItem: ".tcrn-nav-item[data-selected=\"true\"], .tcrn-nav-item[aria-current=\"page\"]",
     localeChevron: ".tcrn-shell-locale-menu__chevron",
     topBar: ".tcrn-top-bar",
+    sideNavRegion: ".tcrn-product-shell__sidebar",
     contentRegion: "[data-product-shell-region=\"content\"]"
   },
   expectedControlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
@@ -99,13 +103,14 @@ const productShellComparatorContract = {
       focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
     },
     sideNavToggle: {
-      width: 32,
-      height: 32,
+      width: 38,
+      height: 38,
       radius: 5,
       backgroundRequired: true,
       fontSize: "13px",
       fontWeight: "700",
       lineHeight: "17.55px",
+      iconCenterDeltaMax: 1,
       transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
       transitionDurationIncludes: "0.16s",
       transitionTimingFunctionIncludes: "ease",
@@ -124,13 +129,22 @@ const productShellComparatorContract = {
       transitionTimingFunctionIncludes: "ease",
       focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
     },
-    searchInput: { minHeight: 38, radius: 5, minWidth: 220, backgroundRequired: true, fontSize: "13px", lineHeight: "17.55px", gap: "8px" },
+    searchInput: {
+      minHeight: 38,
+      radius: 5,
+      minWidth: 220,
+      backgroundRequired: true,
+      fontSize: "13px",
+      lineHeight: "17.55px",
+      gap: "8px",
+      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
+    },
     searchControl: {
       fontSize: "13px",
       fontWeight: "400",
       lineHeight: "17.55px",
       letterSpacing: "normal",
-      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
+      focus: { outlineWidth: "0px", outlineStyle: "none", outlineOffset: "0px", boxShadow: "none" }
     },
     searchShortcut: {
       position: "static",
@@ -414,14 +428,17 @@ const aosOwnerQualityProductShellContract = {
     mobileMaxPx: 320
   },
   ownerQualitySideNavPolicy: {
-    expandedOnly: true,
-    collapseAffordance: "disabled_with_package_backed_reason",
-    expectedAction: "disabled",
-    expectedDisabledReason: "Side navigation stays expanded for owner-review routes",
-    expectedDisabledReasons: [
-      "Side navigation stays expanded for owner-review routes",
-      "owner 评审路线保持展开导航"
-    ]
+    expandedOnly: false,
+    collapseAffordance: "actionable_toggle",
+    expectedAction: "toggle",
+    admittedCollapsedVariants: [
+      "desktop-light-operations-cockpit-collapsed",
+      "desktop-dark-operations-cockpit-collapsed",
+      "desktop-light-work-queue-collapsed"
+    ],
+    mobilePolicy: "hidden_affordance_until_mobile_collapsed_owner_quality_variant_admission",
+    iconCenterDeltaMaxPx: 1,
+    railWidthPx: 92
   },
   noOverflowProof: true,
   controlBoundsProof: {
@@ -433,6 +450,8 @@ const aosOwnerQualityProductShellContract = {
     "ProductShell",
     "ProductShellSearch",
     "useProductShellController",
+    "ProductLogo",
+    "tcrnProductLogoRegistry",
     "Surface",
     "WorkIndex",
     "TableShell",
@@ -447,8 +466,11 @@ const aosOwnerQualityProductShellContract = {
   ],
   variants: [
     "desktop-light-operations-cockpit",
+    "desktop-light-operations-cockpit-collapsed",
     "desktop-dark-operations-cockpit",
+    "desktop-dark-operations-cockpit-collapsed",
     "desktop-light-work-queue",
+    "desktop-light-work-queue-collapsed",
     "mobile-dark-zh-cn-work-queue",
     "desktop-light-operations-search-results",
     "reduced-motion"
@@ -463,6 +485,24 @@ const aosOwnerQualityProductShellContract = {
         theme: "light",
         locale: "en",
         collapsed: "false",
+        route: "cockpit",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "cockpit"
+      }
+    },
+    {
+      id: "desktop-light-operations-cockpit-collapsed",
+      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "true",
         route: "cockpit",
         search: "rest",
         searchExpanded: "false",
@@ -491,6 +531,24 @@ const aosOwnerQualityProductShellContract = {
       }
     },
     {
+      id: "desktop-dark-operations-cockpit-collapsed",
+      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "dark",
+        locale: "en",
+        collapsed: "true",
+        route: "cockpit",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "cockpit"
+      }
+    },
+    {
       id: "desktop-light-work-queue",
       selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue\"]",
       viewport: { width: 1440, height: 900 },
@@ -499,6 +557,24 @@ const aosOwnerQualityProductShellContract = {
         theme: "light",
         locale: "en",
         collapsed: "false",
+        route: "work",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "work"
+      }
+    },
+    {
+      id: "desktop-light-work-queue-collapsed",
+      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "true",
         route: "work",
         search: "rest",
         searchExpanded: "false",
@@ -667,6 +743,15 @@ const required = [
   "data-contract-story-id=\"dashboard-page-templates\"",
   "data-contract-story-id=\"aos-frontend-shell-slice\"",
   "data-contract-story-id=\"aos-owner-quality-product-shell\"",
+  "data-registered-product-logo=\"@tcrn/ui-react/ProductLogo\"",
+  "data-product-id=\"design-system\"",
+  "data-product-logo-asset-id=\"tcrn-design-system-two-line\"",
+  "data-product-id=\"aos\"",
+  "data-product-logo-asset-id=\"tcrn-aos-two-line\"",
+  "AI Operation System",
+  "data-product-id=\"tms\"",
+  "data-product-logo-asset-id=\"tcrn-tms-two-line\"",
+  "Talent Management System",
   "data-storybook-visual-instance=\"aos-frontend-shell-slice\"",
   "data-visual-instance-name=\"AosFrontendShellSliceVisualInstance\"",
   "data-visual-instance-disposition=\"ds_oracle_review_required_before_owner_admission\"",
@@ -686,8 +771,11 @@ const required = [
   "data-visual-instance-owner-quality=\"product-first\"",
   "data-owner-quality-product-shell-oracle=\"true\"",
   "data-visual-instance-variant=\"desktop-light-operations-cockpit\"",
+  "data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"",
   "data-visual-instance-variant=\"desktop-dark-operations-cockpit\"",
+  "data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"",
   "data-visual-instance-variant=\"desktop-light-work-queue\"",
+  "data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"",
   "data-visual-instance-variant=\"mobile-dark-zh-cn-work-queue\"",
   "data-visual-instance-variant=\"desktop-light-operations-search-results\"",
   "data-contract-story-id=\"ai-consumption-contract\"",
@@ -711,8 +799,6 @@ const required = [
   "Theme modes",
   "aria-label=\"TCRN brand mark\"",
   "src=\"tcrn-brand-mark.svg\"",
-  "tcrn-brand-lockup--long-name",
-  "tcrn-brand-wordmark__suffix--design-system",
   "Four large rounded diamond tiles use iris blue, violet-blue, aqua, and slate with tight even gaps.",
   "Each point uses a white ring with a same-family inner color that differs from the tile fill.",
   "No red, pink, coral, or orange connector points.",
@@ -753,8 +839,7 @@ for (const text of [
   ".tcrn-shell-theme-toggle",
   ".tcrn-shell-locale-menu__trigger",
   ".tcrn-shell-side-nav-toggle",
-  "data-side-nav-action=\"disabled\"",
-  "data-side-nav-disabled-reason=\"Side navigation stays expanded for owner-review routes\"",
+  "data-side-nav-action=\"toggle\"",
   "flex: 0 1 260px",
   ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
   ".tcrn-product-shell[data-theme-switching=\"true\"]::after",
@@ -764,6 +849,24 @@ for (const text of [
   required.push(text);
 }
 const missing = required.filter((text) => !combinedHtml.includes(text));
+for (const [sourceName, source] of [
+  ["alpha-styles.ts", storybookAlphaStylesSource],
+  ["storybook.css", storybookStaticCssSource]
+]) {
+  for (const [ruleName, pattern] of [
+    ["broad-focus-visible", /(^|\n)\s*button:focus-visible\s*,/],
+    ["raw-search-input", /(^|\n)\s*\.tcrn-search-input\s*\{/],
+    ["raw-search-control", /(^|\n)\s*\.tcrn-search-input__control\s*\{/],
+    ["raw-top-bar", /(^|\n)\s*\.tcrn-top-bar\s*\{/],
+    ["raw-top-bar-actions", /(^|\n)\s*\.tcrn-top-bar__actions\s*\{/],
+    ["raw-nav-item", /(^|\n)\s*\.tcrn-nav-item\s*\{/],
+    ["raw-nav-item-selected", /(^|\n)\s*\.tcrn-nav-item\[data-selected="true"\]\s*\{/]
+  ]) {
+    if (pattern.test(source)) {
+      missing.push(`storybook-doc-css-contamination:${sourceName}:${ruleName}`);
+    }
+  }
+}
 if (contract.mustReadFirst !== true) {
   missing.push("contract.mustReadFirst:true");
 }
@@ -771,7 +874,7 @@ const shellControlVisualParityProof = contract.shellControlVisualParityProof;
 if (shellControlVisualParityProof?.disposition !== "executable_required_for_product_shell_consumption") {
   missing.push("contract.shellControlVisualParityProof.disposition");
 }
-for (const field of ["themeToggle", "sideNavToggle", "localeTrigger", "searchInput", "searchControl", "searchShortcut", "currentLocation", "selectedNavItem", "topBar"]) {
+for (const field of ["productLogo", "themeToggle", "sideNavToggle", "localeTrigger", "searchInput", "searchControl", "searchShortcut", "currentLocation", "selectedNavItem", "topBar"]) {
   if (!shellControlVisualParityProof?.measuredControls?.includes(field)) {
     missing.push(`contract.shellControlVisualParityProof.measuredControls:${field}`);
   }
@@ -797,8 +900,14 @@ if (shellControlVisualParityProof?.controlOrder?.join(">") !== productShellCompa
 if (shellControlVisualParityProof?.searchRestWidth?.maxPx !== 260 || shellControlVisualParityProof?.searchRestWidth?.expandedMaxPx !== 420) {
   missing.push("contract.shellControlVisualParityProof.searchRestWidth");
 }
-if (!String(shellControlVisualParityProof?.ownerQualitySideNavCollapsePolicy ?? "").includes("disabled")) {
+if (!String(shellControlVisualParityProof?.ownerQualitySideNavCollapsePolicy ?? "").includes("actionable")) {
   missing.push("contract.shellControlVisualParityProof.ownerQualitySideNavCollapsePolicy");
+}
+if (!contract.productLogoRegistry?.some?.((logo) => logo.productId === "aos" && logo.assetId === "tcrn-aos-two-line" && logo.lineTwo === "AI Operation System")) {
+  missing.push("contract.productLogoRegistry:aos");
+}
+if (!contract.productLogoRegistry?.some?.((logo) => logo.productId === "tms" && logo.assetId === "tcrn-tms-two-line" && logo.lineTwo === "Talent Management System")) {
+  missing.push("contract.productLogoRegistry:tms");
 }
 const aosVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "aos-frontend-shell-slice");
 if (!aosVisualInstanceOracle) {
@@ -885,11 +994,16 @@ if (!ownerQualityVisualInstanceOracle) {
   if (ownerQualityVisualInstanceOracle.ownerVisualAdmissionBoundary !== aosOwnerQualityProductShellContract.ownerVisualAdmissionBoundary) {
     missing.push("contract.visualInstanceOracles.ownerQuality.ownerVisualAdmissionBoundary");
   }
-  if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.collapseAffordance !== "disabled_with_package_backed_reason") {
+  if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.collapseAffordance !== "actionable_toggle") {
     missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.collapseAffordance");
   }
-  if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.expandedOnly !== true) {
+  if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.expandedOnly !== false) {
     missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.expandedOnly");
+  }
+  for (const variant of aosOwnerQualityProductShellContract.ownerQualitySideNavPolicy.admittedCollapsedVariants) {
+    if (!ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.admittedCollapsedVariants?.includes?.(variant)) {
+      missing.push(`contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.admittedCollapsedVariants:${variant}`);
+    }
   }
 }
 for (const route of ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"]) {
@@ -1140,6 +1254,9 @@ function validateMetric({ failures, name, metric, expected }) {
   if (expected.gridColumnCount !== undefined && gridColumnCount !== expected.gridColumnCount) {
     failures.push(`${name}:grid-column-count:${metric.gridTemplateColumns}`);
   }
+  if (expected.iconCenterDeltaMax !== undefined && typeof metric.iconCenterDelta === "number" && metric.iconCenterDelta > expected.iconCenterDeltaMax) {
+    failures.push(`${name}:icon-center-delta:${metric.iconCenterDelta}`);
+  }
   if (expected.fontFamilyIncludes !== undefined && !String(metric.fontFamily).includes(expected.fontFamilyIncludes)) {
     failures.push(`${name}:font-family:${metric.fontFamily}`);
   }
@@ -1274,7 +1391,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	      if (focusTarget instanceof HTMLElement) {
 	        focusTarget.focus({ preventScroll: true });
 	        await waitForFocusTransition();
-	        const focusStyle = getComputedStyle(focusTarget);
+	        const focusStyle = getComputedStyle(name === "searchInput" ? element : focusTarget);
 	        focus = {
 	          outlineWidth: focusStyle.outlineWidth,
 	          outlineStyle: focusStyle.outlineStyle,
@@ -1287,14 +1404,29 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	          previousActive.focus({ preventScroll: true });
 	        }
 	      }
+	      const visibleIcon = Array.from(element.querySelectorAll(".tcrn-shell-side-nav-toggle__icon, [data-side-nav-icon]"))
+	        .find((icon) => {
+	          const iconStyle = getComputedStyle(icon);
+	          const iconRect = icon.getBoundingClientRect();
+	          return iconStyle.display !== "none" && iconRect.width > 0 && iconRect.height > 0;
+	        });
+	      const iconRect = visibleIcon?.getBoundingClientRect();
+	      const iconCenterDelta = iconRect
+	        ? Math.max(
+	            Math.abs((iconRect.left + iconRect.width / 2) - (rect.left + rect.width / 2)),
+	            Math.abs((iconRect.top + iconRect.height / 2) - (rect.top + rect.height / 2))
+	          )
+	        : null;
 	      measured[name] = {
 	        width: rect.width,
 	        height: rect.height,
 	        disabled: element instanceof HTMLButtonElement ? element.disabled : element.getAttribute("disabled") !== null,
 	        title: element.getAttribute("title"),
 	        ariaDisabled: element.getAttribute("aria-disabled"),
+	        ariaExpanded: element.getAttribute("aria-expanded"),
 	        sideNavAction: element.getAttribute("data-side-nav-action"),
 	        sideNavDisabledReason: element.getAttribute("data-side-nav-disabled-reason"),
+	        iconCenterDelta,
 	        left: rect.left,
 	        right: rect.right,
         top: rect.top,
@@ -1485,23 +1617,37 @@ function validateProductShellReadback({
       failures.push(`${label}:search-input-width:${searchInputWidth ?? "missing"}:max:${maxWidth}`);
     }
   }
-  if (contract.ownerQualitySideNavPolicy?.collapseAffordance === "disabled_with_package_backed_reason") {
+  if (contract.ownerQualitySideNavPolicy?.collapseAffordance === "actionable_toggle") {
     const sideNavToggle = proof.measured.sideNavToggle;
-    const expectedReasons = contract.ownerQualitySideNavPolicy.expectedDisabledReasons ?? [contract.ownerQualitySideNavPolicy.expectedDisabledReason];
-    if (!sideNavToggle?.disabled) {
-      failures.push(`${label}:side-nav-collapse-control-enabled`);
-    }
-    if (sideNavToggle?.ariaDisabled !== "true") {
-      failures.push(`${label}:side-nav-collapse-aria-disabled:${sideNavToggle?.ariaDisabled ?? "missing"}`);
-    }
-    if (sideNavToggle?.sideNavAction !== contract.ownerQualitySideNavPolicy.expectedAction) {
-      failures.push(`${label}:side-nav-action:${sideNavToggle?.sideNavAction ?? "missing"}`);
-    }
-    if (!expectedReasons.some((reason) => String(sideNavToggle?.sideNavDisabledReason ?? "").includes(reason))) {
-      failures.push(`${label}:side-nav-disabled-reason:${sideNavToggle?.sideNavDisabledReason ?? "missing"}`);
-    }
-    if (!expectedReasons.some((reason) => String(sideNavToggle?.title ?? "").includes(reason))) {
-      failures.push(`${label}:side-nav-disabled-title:${sideNavToggle?.title ?? "missing"}`);
+    if (proof.viewport.width <= 760 && contract.ownerQualitySideNavPolicy.mobilePolicy?.includes("hidden")) {
+      if (sideNavToggle && !sideNavToggle.missing && sideNavToggle.display !== "none" && sideNavToggle.width > 1) {
+        failures.push(`${label}:mobile-side-nav-collapse-affordance-visible:${sideNavToggle.width}`);
+      }
+    } else {
+      if (sideNavToggle?.disabled) {
+        failures.push(`${label}:side-nav-collapse-control-disabled`);
+      }
+      if (sideNavToggle?.ariaDisabled === "true") {
+        failures.push(`${label}:side-nav-collapse-aria-disabled:${sideNavToggle?.ariaDisabled}`);
+      }
+      if (sideNavToggle?.sideNavAction !== contract.ownerQualitySideNavPolicy.expectedAction) {
+        failures.push(`${label}:side-nav-action:${sideNavToggle?.sideNavAction ?? "missing"}`);
+      }
+      const expectedExpanded = expectedState?.collapsed === "true" ? "false" : "true";
+      if (sideNavToggle?.ariaExpanded !== expectedExpanded) {
+        failures.push(`${label}:side-nav-aria-expanded:${sideNavToggle?.ariaExpanded ?? "missing"}:expected:${expectedExpanded}`);
+      }
+      const maxDelta = contract.ownerQualitySideNavPolicy.iconCenterDeltaMaxPx ?? 1;
+      if (typeof sideNavToggle?.iconCenterDelta !== "number" || sideNavToggle.iconCenterDelta > maxDelta) {
+        failures.push(`${label}:side-nav-icon-center-delta:${sideNavToggle?.iconCenterDelta ?? "missing"}:max:${maxDelta}`);
+      }
+      if (expectedState?.collapsed === "true") {
+        const expectedRailWidth = contract.ownerQualitySideNavPolicy.railWidthPx ?? 92;
+        const railWidth = proof.measured.sideNavRegion?.width;
+        if (typeof railWidth !== "number" || Math.abs(railWidth - expectedRailWidth) > 1) {
+          failures.push(`${label}:side-nav-collapsed-rail-width:${railWidth ?? "missing"}:expected:${expectedRailWidth}`);
+        }
+      }
     }
   }
   if (expectedState) {

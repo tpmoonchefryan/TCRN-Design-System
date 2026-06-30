@@ -179,8 +179,9 @@ export const aiConsumptionContract = {
       rule: "ProductShellSearch stays compact at rest on desktop, may stretch within the mobile shell, and may widen only for focus/results states."
     },
     ownerQualitySideNavCollapsePolicy:
-      "The aos-owner-quality-product-shell oracle is expanded-only until DS admits collapsed owner-quality variants; its side-nav collapse control must render disabled with a package-backed reason instead of acting as a clickable no-op.",
+      "The aos-owner-quality-product-shell oracle admits desktop expanded and collapsed owner-quality variants. Desktop side-nav collapse must be actionable by click/keyboard and preserve active route/nav state; mobile uses an explicit DS-approved hidden collapse affordance policy until mobile collapsed variants are admitted.",
     measuredControls: [
+      "productLogo",
       "themeToggle",
       "sideNavToggle",
       "localeTrigger",
@@ -231,7 +232,10 @@ export const aiConsumptionContract = {
       "locale-open",
       "theme-light",
       "theme-dark",
+      "side-nav-expanded",
+      "side-nav-collapsed",
       "mobile-zh-CN-dark",
+      "mobile-collapse-affordance-hidden",
       "reduced-motion"
     ],
     reducedMotionExpectation:
@@ -412,6 +416,8 @@ export const aiConsumptionContract = {
         "ProductShell",
         "ProductShellSearch",
         "useProductShellController",
+        "ProductLogo",
+        "tcrnProductLogoRegistry",
         "Surface",
         "WorkIndex",
         "TableShell",
@@ -427,8 +433,11 @@ export const aiConsumptionContract = {
       primaryIa: ["Operations Cockpit", "Work queue"],
       requiredVariants: [
         "desktop-light-operations-cockpit",
+        "desktop-light-operations-cockpit-collapsed",
         "desktop-dark-operations-cockpit",
+        "desktop-dark-operations-cockpit-collapsed",
         "desktop-light-work-queue",
+        "desktop-light-work-queue-collapsed",
         "mobile-dark-zh-cn-work-queue",
         "desktop-light-operations-search-results",
         "reduced-motion"
@@ -441,6 +450,22 @@ export const aiConsumptionContract = {
             theme: "light",
             locale: "en",
             collapsed: false,
+            selectedRoute: "cockpit",
+            search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
+            viewport: "desktop",
+            reducedMotion: false,
+            content: "cockpit"
+          }
+        },
+        {
+          id: "desktop-light-operations-cockpit-collapsed",
+          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: true,
             selectedRoute: "cockpit",
             search: "rest",
             searchExpanded: false,
@@ -467,12 +492,44 @@ export const aiConsumptionContract = {
           }
         },
         {
+          id: "desktop-dark-operations-cockpit-collapsed",
+          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"]",
+          expectedState: {
+            theme: "dark",
+            locale: "en",
+            collapsed: true,
+            selectedRoute: "cockpit",
+            search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
+            viewport: "desktop",
+            reducedMotion: false,
+            content: "cockpit"
+          }
+        },
+        {
           id: "desktop-light-work-queue",
           selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue\"]",
           expectedState: {
             theme: "light",
             locale: "en",
             collapsed: false,
+            selectedRoute: "work",
+            search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
+            viewport: "desktop",
+            reducedMotion: false,
+            content: "work"
+          }
+        },
+        {
+          id: "desktop-light-work-queue-collapsed",
+          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: true,
             selectedRoute: "work",
             search: "rest",
             searchExpanded: false,
@@ -534,7 +591,7 @@ export const aiConsumptionContract = {
         }
       ],
       slots: [
-        "registered AOS brand lockup",
+        "registered AOS product logo lockup",
         "attached ProductShell side navigation",
         "compact topbar controls",
         "ProductShellSearch rest/results surface",
@@ -548,7 +605,8 @@ export const aiConsumptionContract = {
         "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
         "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
         "ProductShell topbar controls stay within the fixture root and viewport without horizontal clipping",
-        "owner-quality expanded-only routes render a disabled side-navigation collapse affordance with an explicit package-backed reason",
+        "desktop owner-quality routes render actionable expanded and collapsed side-navigation states",
+        "mobile owner-quality routes hide the collapse affordance by DS policy instead of exposing a clickable no-op",
         "read-only and no-live-dispatch boundaries are visible but low-prominence",
         "developer proof/API/readback details are secondary disclosure",
         "Cockpit and Work are meaningful product modules rather than placeholder labels"
@@ -559,24 +617,26 @@ export const aiConsumptionContract = {
         "no-overclaim copy becomes the primary product story",
         "Runtime/Stories/Gates/Audit events verification metrics lead the hierarchy",
         "ProductShell topbar, search, locale, or theme controls are cropped or create root/topbar horizontal overflow",
-        "side-navigation collapse appears enabled but leaves owner-quality routes expanded because collapsed variants are not admitted",
+        "side-navigation collapse appears enabled but leaves owner-quality routes expanded or outside the admitted variant matrix",
         "visible local product CSS/effects or Storybook-only prototype classes appear",
         "owner/product/release/live-dispatch/final-Cockpit readiness is claimed"
       ],
       ownerQualitySideNavPolicy: {
-        admittedCollapsedVariants: [],
-        expandedOnly: true,
-        collapseAffordance: "disabled_with_package_backed_reason",
-        disabledReason:
-          "Side navigation stays expanded for owner-review routes until DS admits collapsed owner-quality variants.",
-        localizedDisabledReasons: {
-          en: "Side navigation stays expanded for owner-review routes",
-          "zh-CN": "owner 评审路线保持展开导航"
-        }
+        admittedCollapsedVariants: [
+          "desktop-light-operations-cockpit-collapsed",
+          "desktop-dark-operations-cockpit-collapsed",
+          "desktop-light-work-queue-collapsed"
+        ],
+        expandedOnly: false,
+        collapseAffordance: "actionable_toggle",
+        desktopPolicy: "click-and-keyboard-toggle-preserves-active-route-nav-and-collapsed-rail",
+        mobilePolicy: "hidden_affordance_until_mobile_collapsed_owner_quality_variant_admission",
+        iconCenterDeltaMaxPx: 1,
+        railWidthPx: 92
       },
       delegatedSubOracles: [
-        "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and a disabled expanded-only side-nav collapse affordance for this owner-quality oracle.",
-        "Collapsed owner-quality side-navigation states require a later DS oracle admission before product parity can claim them.",
+        "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and actionable desktop side-nav collapse/expand behavior for this owner-quality oracle.",
+        "Mobile owner-quality side navigation uses a DS-approved hidden collapse affordance policy; mobile collapsed owner-quality variants require a later DS admission before product parity can claim them.",
         "ProductShellSearch owns search rest/results/dismissal behavior.",
         "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
       ],
@@ -596,8 +656,8 @@ export const aiConsumptionContract = {
     "read_every_required_storybook_section",
     "prove_same_storybook_visual_instance_not_only_package_import",
     "use_tcrn_i18n_and_copy_state",
-    "use_admitted_brand_asset_or_route_brand_component_admission",
-    "use_registered_brand_lockup_components_for_product_suffixes",
+    "use_registered_product_logo_asset_or_route_logo_admission",
+    "use_registered_product_logo_components_for_product_identity",
     "reject_unregistered_or_deprecated_brand_assets",
     "import_package_backed_ds_primitives",
     "use_design_tokens_and_accessibility_rules",
@@ -639,21 +699,44 @@ export const aiConsumptionContract = {
     "aos-favicon.png",
     "favicon.ico"
   ],
+  productLogoRegistry: [
+    {
+      productId: "design-system",
+      assetId: "tcrn-design-system-two-line",
+      lineOne: "TCRN Design System",
+      lineTwo: "Component Library",
+      packageExport: "ProductLogo"
+    },
+    {
+      productId: "aos",
+      assetId: "tcrn-aos-two-line",
+      lineOne: "TCRN AOS",
+      lineTwo: "AI Operation System",
+      packageExport: "ProductLogo"
+    },
+    {
+      productId: "tms",
+      assetId: "tcrn-tms-two-line",
+      lineOne: "TCRN TMS",
+      lineTwo: "Talent Management System",
+      packageExport: "ProductLogo"
+    }
+  ],
   brandSurfaceDisposition:
-    "Product implementations may use admitted brand assets and package-backed brand primitives only. TcrnBrandMark, ProductLockup, and ShellBrandLockup are registered @tcrn/ui-react exports for TCRN mother-brand and product suffix lockups. Generic icons or text-only substitutes are not brand marks. Deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
+    "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity; ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for ProductShell, ProductShellSearch, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, brand lockups, status, readback, table, and disclosure surfaces instead of rebuilding reusable local clones. Product shell state/effect behavior must use ProductShell semantic callbacks, ProductShellSearch controlled props, or useProductShellController prop bundles including productShellControlProps, productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
+    "Product implementations must import package-backed Design System primitives for ProductShell, ProductShellSearch, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, and disclosure surfaces instead of rebuilding reusable local clones. Product shell state/effect behavior must use ProductShell semantic callbacks, ProductShellSearch controlled props, or useProductShellController prop bundles including productShellControlProps, productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
   storybookDocShellCompositionDisposition:
-    "The Storybook documentation frontend may retain page skeleton, routing, section navigation, anchor behavior, static proof pages, search indexing, and documentation-specific layout slots. Reusable controls, component visuals, icons, brand lockups, shell search, theme toggle, locale menu, side-navigation collapse, and ProductShell comparator behavior must come from registered @tcrn/ui-react exports and package CSS; Storybook doc-shell code must not keep private component clones such as tcrn-doc-theme-toggle, tcrn-doc-locale-toggle, tcrn-doc-locale-menu__, tcrn-doc-sidebar-toggle__, tcrn-doc-search-result, or tcrn-doc-brand__* implementations.",
+    "The Storybook documentation frontend may retain page skeleton, routing, section navigation, anchor behavior, static proof pages, search indexing, and documentation-specific layout slots. Reusable controls, component visuals, icons, product logos, shell search, theme toggle, locale menu, side-navigation collapse, and ProductShell comparator behavior must come from registered @tcrn/ui-react exports and package CSS; Storybook doc-shell code must not keep private component clones, and Storybook doc-shell CSS must not use global package-looking selectors such as raw .tcrn-search-input, .tcrn-nav-item, .tcrn-top-bar, or broad button/input focus rules that can contaminate package-backed ProductShell visual-instance fixtures.",
   tokenConsumptionDisposition:
     "Product implementations must use Design System tokens, reduced-motion rules, and accessibility states before custom CSS.",
   themeModeDisposition:
     "Product implementations must preserve semantic token behavior across light and dark Storybook shell modes and prove both modes before claiming Design System compliance.",
   storybookShellControlContract: {
     implementationBoundary:
-      "The Storybook docs shell is a consumer of @tcrn/ui-react for reusable controls: SearchInput, ShellBrandLockup, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, and ProductShell comparator CSS are package-backed; .tcrn-doc-* selectors may style only documentation skeleton, layout, and slots.",
+      "The Storybook docs shell is a consumer of @tcrn/ui-react for reusable controls: SearchInput, ProductLogo/ShellBrandLockup, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, and ProductShell comparator CSS are package-backed; .tcrn-doc-* selectors may style only documentation skeleton, layout, and slots.",
     themeToggle:
       "The Storybook docs shell uses one compact circular icon-only theme toggle that reflects the current mode and toggles only on explicit activation.",
     themeTransition:
@@ -667,9 +750,9 @@ export const aiConsumptionContract = {
   },
   productShellHardeningRules: {
     sideNavigation:
-      "Product and documentation shells that claim SideNav behavior must expose a keyboard-accessible collapse and expand control, persist or route-own collapsed state, preserve active location/accessibility, and prove both expanded and collapsed states unless a named visual-instance oracle explicitly declares expanded-only behavior with a disabled package-backed collapse affordance.",
+      "Product and documentation shells that claim SideNav behavior must expose a keyboard-accessible collapse and expand control, persist or route-own collapsed state, preserve active location/accessibility, center the collapse icon within the package-owned button geometry, and prove both expanded and collapsed states. Mobile may hide the affordance only when a named visual-instance oracle declares that policy.",
     brandSurface:
-      "Product shells must use registered package-backed brand lockups or route brand admission before product use; generic icons, text-only substitutes, and deprecated AOS wordmark images are not accepted brand marks.",
+      "Product shells must use registered package-backed ProductLogo assets or route logo admission before product use; generic icons, free-form suffix/caption identity, text-only substitutes, and deprecated AOS wordmark images are not accepted brand marks.",
     registeredNavigation:
       "Product shells must not surface unregistered or planned modules as primary navigation, registered module cards, or active product IA before an owning route admits them.",
     primitiveConsumption:

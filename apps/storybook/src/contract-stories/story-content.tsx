@@ -28,8 +28,8 @@ import {
   NavGroup,
   NavItem,
   Pagination,
+  ProductLogo,
   Popover,
-  ProductLockup,
   ProductShell,
   ProductSwitcher,
   ReadbackPanel,
@@ -51,6 +51,7 @@ import {
   Textarea,
   TopBar,
   TcrnBrandMark,
+  tcrnProductLogoRegistry,
   tcrnIconNames,
   Tooltip,
   WorkIndex
@@ -252,7 +253,7 @@ const legacyContractStories: ContractStory[] = [
     id: "brand-identity",
     title: "Brand identity",
     group: "Style Guide",
-    description: "TCRN mother-brand mark, product suffix lockups, and local draft boundaries.",
+    description: "TCRN mother-brand mark, registered product logos, and local draft boundaries.",
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="TCRN mother brand">
@@ -283,13 +284,29 @@ const legacyContractStories: ContractStory[] = [
             ]}
           />
         </ReadbackPanel>
-        <ReadbackPanel title="Product lockups">
-          <div className="tcrn-brand-lockups" aria-label="TCRN product lockup examples">
-            <ProductLockup suffix="AOS" suffixClassName="tcrn-brand-wordmark__suffix--aos" />
-            <ProductLockup suffix="TMS" suffixClassName="tcrn-brand-wordmark__suffix--tms" />
-            <ProductLockup suffix="Design System" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
+        <ReadbackPanel title="Registered product logos">
+          <div className="tcrn-brand-lockups" aria-label="TCRN registered product logo examples">
+            <ProductLogo productId="design-system" />
+            <ProductLogo productId="aos" />
+            <ProductLogo productId="tms" />
           </div>
-          <Text>Product suffix typography follows the mother-brand wordmark rhythm. Long product suffixes stack below TCRN; suffix color is product-owned and must not change the TCRN symbol colors.</Text>
+          <Text>Accepted product surfaces consume registered product-logo assets instead of composing product identity from free-form suffix and caption props.</Text>
+          <TableShell
+            columns={[
+              { key: "productId", label: "Product id" },
+              { key: "assetId", label: "Asset id" },
+              { key: "lineOne", label: "Line 1" },
+              { key: "lineTwo", label: "Line 2" },
+              { key: "export", label: "Package export" }
+            ]}
+            rows={Object.values(tcrnProductLogoRegistry).map((asset) => ({
+              productId: asset.productId,
+              assetId: asset.assetId,
+              lineOne: asset.lineOne,
+              lineTwo: asset.lineTwo,
+              export: "ProductLogo / tcrnProductLogoRegistry"
+            }))}
+          />
         </ReadbackPanel>
       </section>
     )
@@ -1327,8 +1344,7 @@ const legacyContractStories: ContractStory[] = [
             <ProductShell
               productName="AOS Rebuild Workspace"
               moduleName="Frontend shell slice"
-              brandSuffix="AOS"
-              brandCaption="Rebuild workspace"
+              brandProductId="aos"
               brandMarkSrc="tcrn-brand-mark.svg"
               brandMarkAlt="TCRN registered brand mark"
               currentRouteLabel="Cockpit"

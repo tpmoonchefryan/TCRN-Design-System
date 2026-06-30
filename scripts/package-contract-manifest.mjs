@@ -70,6 +70,7 @@ const publicUiReactComponentExports = [
   "SkipLink",
   "TcrnBrandMark",
   "ProductLockup",
+  "ProductLogo",
   "ShellBrandLockup",
   "ShellThemeToggle",
   "ShellLocaleMenu",
@@ -87,7 +88,9 @@ const publicUiReactComponentExports = [
 const publicUiReactUtilityExports = [
   "tcrnIconNames",
   "tcrnComponentCss",
-  "useProductShellController"
+  "useProductShellController",
+  "tcrnProductLogoRegistry",
+  "getTcrnProductLogoAsset"
 ];
 
 const deferredStorybookPrototypeNames = [

@@ -139,9 +139,7 @@ function docBrandHtml(): string {
   return renderToStaticMarkup(
     <a className="tcrn-doc-brand" href="index.html" data-doc-brand-link="true">
       <ShellBrandLockup
-        suffix={localeText("shell.brandSuffix")}
-        suffixClassName="tcrn-brand-wordmark__suffix--design-system"
-        caption={localeText("shell.eyebrow")}
+        productId="design-system"
         brandMarkSrc="tcrn-brand-mark.svg"
         brandMarkAlt={localeText("shell.brand")}
       />

@@ -929,7 +929,10 @@ button, input, select {
 h1, h2, h3, p, span, button, label {
   overflow-wrap: anywhere;
 }
-button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+.tcrn-doc-header :focus-visible,
+.tcrn-doc-sidebar :focus-visible,
+.tcrn-doc-chapter-pager :focus-visible,
+.tcrn-doc-sidebar-toggle-slot :focus-visible {
   outline: 2px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
   box-shadow: var(--tcrn-elevation-focus);
@@ -1067,7 +1070,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   margin-bottom: 0;
 }
 .tcrn-action-row,
-.tcrn-top-bar__actions {
+.tcrn-storybook-component-example .tcrn-top-bar__actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -1820,41 +1823,41 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .tcrn-input--short {
   width: min(18ch, 100%);
 }
-.tcrn-search-input {
+.tcrn-doc-header-search .tcrn-search-input {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
   max-width: 100%;
 }
-.tcrn-search-input__control {
+.tcrn-doc-header-search .tcrn-search-input__control {
   width: 100%;
   padding-left: 34px;
   padding-right: 68px;
 }
-.tcrn-search-input:not([data-shortcut-visible="true"]) .tcrn-search-input__control {
+.tcrn-doc-header-search .tcrn-search-input:not([data-shortcut-visible="true"]) .tcrn-search-input__control {
   padding-right: 10px;
 }
-.tcrn-search-input__icon,
-.tcrn-search-input__shortcut {
+.tcrn-doc-header-search .tcrn-search-input__icon,
+.tcrn-doc-header-search .tcrn-search-input__shortcut {
   position: absolute;
   z-index: 1;
   color: var(--tcrn-color-text-secondary);
   pointer-events: none;
 }
-.tcrn-search-input__icon {
+.tcrn-doc-header-search .tcrn-search-input__icon {
   left: 11px;
   display: inline-flex;
   width: 16px;
   height: 16px;
 }
-.tcrn-search-input__icon svg {
+.tcrn-doc-header-search .tcrn-search-input__icon svg {
   width: 16px;
   height: 16px;
   fill: none;
   stroke: currentColor;
 }
-.tcrn-search-input__shortcut {
+.tcrn-doc-header-search .tcrn-search-input__shortcut {
   right: 9px;
   border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: 6px;
@@ -1868,7 +1871,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .tcrn-checkbox {
   accent-color: var(--tcrn-color-brand-primary);
 }
-.tcrn-top-bar {
+.tcrn-storybook-component-example .tcrn-top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1879,15 +1882,15 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   padding: 10px 12px;
   min-width: 0;
 }
-.tcrn-top-bar__brand {
+.tcrn-storybook-component-example .tcrn-top-bar__brand {
   font-weight: 700;
   letter-spacing: 0;
 }
-.tcrn-top-bar__module {
+.tcrn-storybook-component-example .tcrn-top-bar__module {
   color: var(--tcrn-color-text-secondary);
 }
-.tcrn-top-bar__brand,
-.tcrn-top-bar__module {
+.tcrn-storybook-component-example .tcrn-top-bar__brand,
+.tcrn-storybook-component-example .tcrn-top-bar__module {
   min-width: 0;
 }
 .tcrn-entry-shell-strip {
@@ -2082,7 +2085,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   gap: 4px;
   min-width: 0;
 }
-.tcrn-nav-item {
+.tcrn-storybook-component-example .tcrn-nav-item,
+.tcrn-doc-sidebar .tcrn-nav-item {
   display: grid;
   grid-template-columns: 18px minmax(0, 1fr);
   gap: 8px;
@@ -2096,39 +2100,47 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   text-decoration: none;
   width: 100%;
 }
-.tcrn-nav-item:hover {
+.tcrn-storybook-component-example .tcrn-nav-item:hover,
+.tcrn-doc-sidebar .tcrn-nav-item:hover {
   border-color: color-mix(in srgb, var(--tcrn-color-border-subtle) 86%, var(--tcrn-color-brand-primary-bg));
   background: color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 42%, transparent);
   color: var(--tcrn-color-text-primary);
 }
-.tcrn-nav-item[data-selected="true"] {
+.tcrn-storybook-component-example .tcrn-nav-item[data-selected="true"],
+.tcrn-doc-sidebar .tcrn-nav-item[data-selected="true"] {
   border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 26%, var(--tcrn-color-border-subtle));
   background:
     linear-gradient(90deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 84%, var(--tcrn-color-surface-panel)) 0%, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 34%, var(--tcrn-color-surface-panel)) 100%);
   color: var(--tcrn-color-text-primary);
   box-shadow: inset 4px 0 0 color-mix(in srgb, var(--tcrn-color-brand-primary) 74%, var(--tcrn-color-brand-secondary));
 }
-.tcrn-nav-item[aria-disabled="true"] {
+.tcrn-storybook-component-example .tcrn-nav-item[aria-disabled="true"],
+.tcrn-doc-sidebar .tcrn-nav-item[aria-disabled="true"] {
   cursor: not-allowed;
   color: var(--tcrn-color-text-muted);
   opacity: 0.74;
 }
-.tcrn-nav-item__content {
+.tcrn-storybook-component-example .tcrn-nav-item__content,
+.tcrn-doc-sidebar .tcrn-nav-item__content {
   display: grid;
   gap: 2px;
   min-width: 0;
 }
-.tcrn-nav-item__label,
-.tcrn-nav-item__disabled-reason {
+.tcrn-storybook-component-example .tcrn-nav-item__label,
+.tcrn-storybook-component-example .tcrn-nav-item__disabled-reason,
+.tcrn-doc-sidebar .tcrn-nav-item__label,
+.tcrn-doc-sidebar .tcrn-nav-item__disabled-reason {
   min-width: 0;
   overflow-wrap: anywhere;
 }
-.tcrn-nav-item__disabled-reason {
+.tcrn-storybook-component-example .tcrn-nav-item__disabled-reason,
+.tcrn-doc-sidebar .tcrn-nav-item__disabled-reason {
   color: var(--tcrn-color-text-muted);
   font-size: 12px;
   line-height: 1.25;
 }
-.tcrn-nav-item .tcrn-icon {
+.tcrn-storybook-component-example .tcrn-nav-item .tcrn-icon,
+.tcrn-doc-sidebar .tcrn-nav-item .tcrn-icon {
   width: 16px;
   height: 16px;
   color: var(--tcrn-color-brand-primary);
@@ -3230,7 +3242,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   }
 }
 @media (max-width: 520px) {
-  .tcrn-top-bar {
+  .tcrn-storybook-component-example .tcrn-top-bar {
     align-items: flex-start;
     flex-direction: column;
   }

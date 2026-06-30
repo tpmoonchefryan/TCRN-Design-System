@@ -48,6 +48,18 @@ const variants: readonly OwnerQualityVariant[] = [
     contentMode: "cockpit"
   },
   {
+    id: "desktop-light-operations-cockpit-collapsed",
+    label: "Desktop light Operations Cockpit collapsed",
+    theme: "light",
+    locale: "en",
+    collapsed: true,
+    route: "cockpit",
+    searchMode: "rest",
+    viewport: "desktop",
+    reducedMotion: false,
+    contentMode: "cockpit"
+  },
+  {
     id: "desktop-dark-operations-cockpit",
     label: "Desktop dark Operations Cockpit",
     theme: "dark",
@@ -60,11 +72,35 @@ const variants: readonly OwnerQualityVariant[] = [
     contentMode: "cockpit"
   },
   {
+    id: "desktop-dark-operations-cockpit-collapsed",
+    label: "Desktop dark Operations Cockpit collapsed",
+    theme: "dark",
+    locale: "en",
+    collapsed: true,
+    route: "cockpit",
+    searchMode: "rest",
+    viewport: "desktop",
+    reducedMotion: false,
+    contentMode: "cockpit"
+  },
+  {
     id: "desktop-light-work-queue",
     label: "Desktop light Work queue",
     theme: "light",
     locale: "en",
     collapsed: false,
+    route: "work",
+    searchMode: "rest",
+    viewport: "desktop",
+    reducedMotion: false,
+    contentMode: "work"
+  },
+  {
+    id: "desktop-light-work-queue-collapsed",
+    label: "Desktop light Work queue collapsed",
+    theme: "light",
+    locale: "en",
+    collapsed: true,
     route: "work",
     searchMode: "rest",
     viewport: "desktop",
@@ -120,7 +156,8 @@ export const aosOwnerQualityProductShellReadback = {
     shell: "ProductShell",
     controllerContract: "useProductShellController",
     search: "ProductShellSearch",
-    brand: "ShellBrandLockup through ProductShell",
+    brand: "ProductLogo through ShellBrandLockup/ProductShell",
+    productLogoRegistry: "tcrnProductLogoRegistry",
     content: [
       "Surface",
       "WorkIndex",
@@ -133,7 +170,7 @@ export const aosOwnerQualityProductShellReadback = {
     ]
   },
   slots: [
-    "registered AOS brand lockup",
+    "registered AOS product logo lockup",
     "attached ProductShell side navigation",
     "compact topbar controls",
     "ProductShellSearch rest/results surface",
@@ -144,7 +181,8 @@ export const aosOwnerQualityProductShellReadback = {
   props: {
     productName: "AOS Rebuild Workspace",
     moduleName: "Operations Cockpit",
-    brandSuffix: "AOS",
+    brandProductId: "aos",
+    productLogoAssetId: "tcrn-aos-two-line",
     navLabel: "AOS operations navigation",
     primaryIa: ["Operations Cockpit", "Work queue"],
     contentRole: "region"
@@ -164,13 +202,17 @@ export const aosOwnerQualityProductShellReadback = {
   })),
   supportedStates: [
     "desktop light Operations Cockpit",
+    "desktop light Operations Cockpit collapsed",
     "desktop dark Operations Cockpit",
+    "desktop dark Operations Cockpit collapsed",
     "desktop Work queue",
+    "desktop Work queue collapsed",
     "mobile zh-CN Work queue",
     "search rest visual state",
     "search results visual state",
     "reduced-motion shell/search fallback",
-    "expanded-only owner-review side navigation with disabled collapse affordance"
+    "desktop owner-quality side navigation collapse and expand visual states",
+    "mobile owner-quality side navigation collapse affordance hidden by DS policy"
   ],
   ownerQualityAcceptanceCriteria: [
     "first viewport reads as AOS Operations Cockpit or AOS Rebuild Workspace",
@@ -192,8 +234,8 @@ export const aosOwnerQualityProductShellReadback = {
     "owner/product/release/live-dispatch/final-Cockpit readiness is claimed"
   ],
   delegatedSubOracles: [
-    "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and a disabled expanded-only side-nav collapse affordance for this owner-quality oracle.",
-    "Collapsed owner-quality side-navigation states require a later DS oracle admission before product parity can claim them.",
+    "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and actionable desktop side-nav collapse/expand behavior for this owner-quality oracle.",
+    "Mobile owner-quality side navigation uses a DS-approved hidden collapse affordance policy; mobile collapsed owner-quality variants remain out of scope until a later DS decision admits them.",
     "ProductShellSearch owns search rest/results/dismissal behavior.",
     "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
   ],
@@ -212,7 +254,6 @@ function labels(locale: OwnerQualityVariant["locale"]) {
     return {
       productName: "AOS 重建工作区",
       moduleName: "运营驾驶舱",
-      brandCaption: "重建工作区",
       navLabel: "AOS 运营导航",
       cockpit: "运营驾驶舱",
       work: "工作队列",
@@ -232,14 +273,12 @@ function labels(locale: OwnerQualityVariant["locale"]) {
       activityTitle: "活动",
       disclosureTitle: "开发者细节",
       boundary: "只读预览",
-      noDispatch: "无实时派发",
-      sideNavFixed: "owner 评审路线保持展开导航"
+      noDispatch: "无实时派发"
     };
   }
   return {
     productName: "AOS Rebuild Workspace",
     moduleName: "Operations Cockpit",
-    brandCaption: "Rebuild workspace",
     navLabel: "AOS operations navigation",
     cockpit: "Operations Cockpit",
     work: "Work queue",
@@ -259,8 +298,7 @@ function labels(locale: OwnerQualityVariant["locale"]) {
     activityTitle: "Activity",
     disclosureTitle: "Developer details",
     boundary: "Read-only preview",
-    noDispatch: "No live dispatch",
-    sideNavFixed: "Side navigation stays expanded for owner-review routes"
+    noDispatch: "No live dispatch"
   };
 }
 
@@ -398,7 +436,7 @@ function OperationsContent({ variant }: { variant: OwnerQualityVariant }) {
   const copy = labels(variant.locale);
   const isWorkFirst = variant.contentMode === "work";
   return (
-    <>
+    <div className="tcrn-product-shell-content-stack" data-package-owned-spacing-rhythm="product-shell-content-stack">
       <Surface
         data-owner-quality-primary-heading="true"
         data-owner-quality-first-viewport="product-led"
@@ -411,24 +449,26 @@ function OperationsContent({ variant }: { variant: OwnerQualityVariant }) {
         </Text>
         <EvidenceStrip items={[copy.boundary, copy.noDispatch]} />
       </Surface>
-      <Surface data-owner-quality-work-queue="true" aria-label={`${copy.workTitle}: ${variant.id}`}>
-        <Heading level={2}>{copy.workTitle}</Heading>
-        <WorkIndex rows={queueRows(variant.locale)} label={copy.workTitle} locale={variant.locale} />
-      </Surface>
-      <Surface data-owner-quality-gates="true" aria-label={`${copy.gateTitle}: ${variant.id}`}>
-        <Heading level={2}>{copy.gateTitle}</Heading>
-        <TableShell
-          label={copy.gateTitle}
-          columns={[
-            { key: "gate", label: variant.locale === "zh-CN" ? "门禁" : "Gate" },
-            { key: "evidence", label: variant.locale === "zh-CN" ? "证据" : "Evidence" },
-            { key: "decision", label: variant.locale === "zh-CN" ? "决策" : "Decision" },
-            { key: "owner", label: "Owner" },
-            { key: "state", label: variant.locale === "zh-CN" ? "状态" : "State" }
-          ]}
-          rows={gateRows(variant.locale)}
-        />
-      </Surface>
+      <div className="tcrn-product-shell-section-grid" data-package-owned-section-rhythm="work-gates">
+        <Surface data-owner-quality-work-queue="true" aria-label={`${copy.workTitle}: ${variant.id}`}>
+          <Heading level={2}>{copy.workTitle}</Heading>
+          <WorkIndex rows={queueRows(variant.locale)} label={copy.workTitle} locale={variant.locale} />
+        </Surface>
+        <Surface data-owner-quality-gates="true" aria-label={`${copy.gateTitle}: ${variant.id}`}>
+          <Heading level={2}>{copy.gateTitle}</Heading>
+          <TableShell
+            label={copy.gateTitle}
+            columns={[
+              { key: "gate", label: variant.locale === "zh-CN" ? "门禁" : "Gate" },
+              { key: "evidence", label: variant.locale === "zh-CN" ? "证据" : "Evidence" },
+              { key: "decision", label: variant.locale === "zh-CN" ? "决策" : "Decision" },
+              { key: "owner", label: "Owner" },
+              { key: "state", label: variant.locale === "zh-CN" ? "状态" : "State" }
+            ]}
+            rows={gateRows(variant.locale)}
+          />
+        </Surface>
+      </div>
       <Surface data-owner-quality-actions="true" aria-label={`${copy.actionTitle}: ${variant.id}`}>
         <Heading level={2}>{copy.actionTitle}</Heading>
         <TableShell
@@ -457,7 +497,7 @@ function OperationsContent({ variant }: { variant: OwnerQualityVariant }) {
           ? "技术收据、API 摘要和调试载荷必须留在二级披露中，不能成为 owner 首屏故事。"
           : "Technical receipts, API summaries, and debug payloads stay in secondary disclosure and must not become the owner first-viewport story."}</Text>
       </DisclosurePanel>
-    </>
+    </div>
   );
 }
 
@@ -470,8 +510,7 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
     <ProductShell
       productName={copy.productName}
       moduleName={copy.moduleName}
-      brandSuffix="AOS"
-      brandCaption={copy.brandCaption}
+      brandProductId="aos"
       brandMarkSrc="tcrn-brand-mark.svg"
       brandMarkAlt="TCRN registered brand mark"
       currentRouteLabel={currentRouteLabel}
@@ -480,7 +519,6 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
       navGroups={navGroups(variant)}
       collapsed={variant.collapsed}
       collapsedStorageKey={`tcrn-aos-owner-quality-collapsed-${variant.id}`}
-      sideNavCollapseDisabledReason={copy.sideNavFixed}
       currentTheme={variant.theme}
       locales={tcrnLocaleMetadata}
       currentLocale={variant.locale}
@@ -507,6 +545,8 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
       data-visual-instance-slots="brand side-nav topbar search operations-cockpit work-queue gates-evidence owner-actions service-health secondary-disclosure"
       data-visual-instance-primary-ia="operations-cockpit-work-queue"
       data-visual-instance-negative-criteria="no-proof-scaffold-hero no-dummy-cockpit no-raw-primary no-owner-readiness"
+      data-visual-instance-product-logo="tcrn-aos-two-line"
+      data-visual-instance-mobile-collapse-policy="hidden-affordance"
       data-visual-instance-variant={variant.id}
       data-visual-instance-theme={variant.theme}
       data-tcrn-theme={variant.theme}
@@ -539,6 +579,7 @@ export function AosOwnerQualityProductShell() {
               items={[
                 { key: "theme", label: "Theme", value: variant.theme },
                 { key: "locale", label: "Locale", value: variant.locale },
+                { key: "collapsed", label: "Collapsed", value: variant.collapsed ? "true" : "false" },
                 { key: "route", label: "Route", value: variant.route },
                 { key: "search", label: "Search", value: variant.searchMode },
                 { key: "viewport", label: "Viewport proof", value: variant.viewport },

@@ -57,6 +57,7 @@ test("component-library metadata names public components, utilities, and deferre
     "ProductSwitcher",
     "SkipLink",
     "TcrnBrandMark",
+    "ProductLogo",
     "ProductLockup",
     "ShellBrandLockup",
     "ShellThemeToggle",
@@ -73,7 +74,13 @@ test("component-library metadata names public components, utilities, and deferre
   ];
 
   assert.deepEqual([...componentLibraryPublicComponentNames].sort(), [...expectedPublicComponents].sort());
-  assert.deepEqual([...componentLibraryPublicUtilityNames].sort(), ["tcrnComponentCss", "tcrnIconNames", "useProductShellController"]);
+  assert.deepEqual([...componentLibraryPublicUtilityNames].sort(), [
+    "getTcrnProductLogoAsset",
+    "tcrnComponentCss",
+    "tcrnIconNames",
+    "tcrnProductLogoRegistry",
+    "useProductShellController"
+  ]);
   assert.ok(componentLibraryDeferredPrototypeNames.includes("TmsDenseShellDemo"));
   assert.ok(componentLibraryDeferredPrototypeNames.includes("KnowledgeBaseShellDemo"));
   assert.ok(componentLibraryDeferredPrototypeNames.includes("CompactToolShellDemo"));

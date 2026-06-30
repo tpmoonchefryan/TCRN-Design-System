@@ -139,7 +139,8 @@ export const aosFrontendShellSliceVisualInstanceReadback = {
     shell: "ProductShell",
     controllerContract: "useProductShellController",
     search: "ProductShellSearch",
-    brand: "ShellBrandLockup through ProductShell",
+    brand: "ProductLogo through ShellBrandLockup/ProductShell",
+    productLogoRegistry: "tcrnProductLogoRegistry",
     content: [
       "EnvironmentBanner",
       "InlineAlert",
@@ -162,7 +163,8 @@ export const aosFrontendShellSliceVisualInstanceReadback = {
   props: {
     productName: "AOS Rebuild Workspace",
     moduleName: "Frontend shell slice",
-    brandSuffix: "AOS",
+    brandProductId: "aos",
+    productLogoAssetId: "tcrn-aos-two-line",
     navLabel: "AOS visual instance modules",
     primaryIa: ["Cockpit", "Work"],
     contentRole: "region"
@@ -215,7 +217,6 @@ function routeLabels(locale: "en" | "zh-CN") {
     return {
       productName: "AOS 重建工作区",
       moduleName: "前端壳切片",
-      brandCaption: "重建工作区",
       navLabel: "AOS 视觉实例模块",
       cockpit: "驾驶舱",
       work: "工作",
@@ -231,7 +232,6 @@ function routeLabels(locale: "en" | "zh-CN") {
   return {
     productName: "AOS Rebuild Workspace",
     moduleName: "Frontend shell slice",
-    brandCaption: "Rebuild workspace",
     navLabel: "AOS visual instance modules",
     cockpit: "Cockpit",
     work: "Work",
@@ -455,8 +455,7 @@ function AosFrontendShellVariantFixture({ variant }: { variant: AosVisualInstanc
     <ProductShell
       productName={labels.productName}
       moduleName={labels.moduleName}
-      brandSuffix="AOS"
-      brandCaption={labels.brandCaption}
+      brandProductId="aos"
       brandMarkSrc="tcrn-brand-mark.svg"
       brandMarkAlt="TCRN registered brand mark"
       currentRouteLabel={currentRouteLabel}

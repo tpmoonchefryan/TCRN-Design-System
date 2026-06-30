@@ -58,14 +58,92 @@ export function TcrnBrandMark({ src = "tcrn-brand-mark.svg", alt = "TCRN brand m
   );
 }
 
-export interface ProductLockupProps extends HTMLAttributes<HTMLDivElement> {
-  suffix: string;
-  suffixClassName?: string;
+export const tcrnProductLogoRegistry = {
+  "design-system": {
+    productId: "design-system",
+    assetId: "tcrn-design-system-two-line",
+    lineOne: "TCRN Design System",
+    lineTwo: "Component Library",
+    alt: "TCRN Design System"
+  },
+  aos: {
+    productId: "aos",
+    assetId: "tcrn-aos-two-line",
+    lineOne: "TCRN AOS",
+    lineTwo: "AI Operation System",
+    alt: "TCRN AOS AI Operation System"
+  },
+  tms: {
+    productId: "tms",
+    assetId: "tcrn-tms-two-line",
+    lineOne: "TCRN TMS",
+    lineTwo: "Talent Management System",
+    alt: "TCRN TMS Talent Management System"
+  }
+} as const;
+
+export type TcrnProductLogoId = keyof typeof tcrnProductLogoRegistry;
+export type TcrnProductLogoAssetId = (typeof tcrnProductLogoRegistry)[TcrnProductLogoId]["assetId"];
+
+export function getTcrnProductLogoAsset(productId: TcrnProductLogoId) {
+  return tcrnProductLogoRegistry[productId];
+}
+
+export interface ProductLogoProps extends HTMLAttributes<HTMLDivElement> {
+  productId: TcrnProductLogoId;
   brandMarkSrc?: string;
   brandMarkAlt?: string;
 }
 
-export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMarkAlt, className, ...props }: ProductLockupProps) {
+export function ProductLogo({
+  productId,
+  brandMarkSrc = "tcrn-brand-mark.svg",
+  brandMarkAlt,
+  className,
+  ...props
+}: ProductLogoProps) {
+  const asset = getTcrnProductLogoAsset(productId);
+
+  return (
+    <div
+      {...props}
+      className={cx("tcrn-product-logo", className)}
+      aria-label={asset.alt}
+      data-component-source="@tcrn/ui-react"
+      data-registered-product-logo="@tcrn/ui-react/ProductLogo"
+      data-product-id={asset.productId}
+      data-product-logo-asset-id={asset.assetId}
+    >
+      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt ?? asset.alt} />
+      <span className="tcrn-product-logo__copy" aria-hidden="true">
+        <span className="tcrn-product-logo__line-one">{asset.lineOne}</span>
+        <span className="tcrn-product-logo__line-two">{asset.lineTwo}</span>
+      </span>
+    </div>
+  );
+}
+
+export interface ProductLockupProps extends HTMLAttributes<HTMLDivElement> {
+  suffix?: string;
+  suffixClassName?: string;
+  brandMarkSrc?: string;
+  brandMarkAlt?: string;
+  productId?: TcrnProductLogoId;
+}
+
+export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, className, ...props }: ProductLockupProps) {
+  if (productId) {
+    return (
+      <ProductLogo
+        {...props}
+        productId={productId}
+        brandMarkSrc={brandMarkSrc}
+        brandMarkAlt={brandMarkAlt}
+        className={cx("tcrn-brand-lockup", className)}
+      />
+    );
+  }
+
   const productSuffix = requiredText(suffix, "Product");
   const isLongSuffix = productSuffix.length > 8;
 
@@ -87,10 +165,22 @@ export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMark
 }
 
 export interface ShellBrandLockupProps extends ProductLockupProps {
-  caption: string;
+  caption?: string;
 }
 
-export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSrc, brandMarkAlt, className, ...props }: ShellBrandLockupProps) {
+export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, className, ...props }: ShellBrandLockupProps) {
+  if (productId) {
+    return (
+      <ProductLogo
+        {...props}
+        productId={productId}
+        brandMarkSrc={brandMarkSrc}
+        brandMarkAlt={brandMarkAlt}
+        className={cx("tcrn-shell-brand-lockup", className)}
+      />
+    );
+  }
+
   return (
     <div
       {...props}
@@ -692,8 +782,9 @@ export interface ProductShellNavGroup {
 export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   productName: string;
   moduleName: string;
-  brandSuffix: string;
-  brandCaption: string;
+  brandProductId?: TcrnProductLogoId;
+  brandSuffix?: string;
+  brandCaption?: string;
   brandMarkSrc?: string;
   brandMarkAlt?: string;
   currentRouteLabel: string;
@@ -727,6 +818,7 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
 export function ProductShell({
   productName,
   moduleName,
+  brandProductId,
   brandSuffix,
   brandCaption,
   brandMarkSrc,
@@ -798,8 +890,15 @@ export function ProductShell({
       <SkipLink href={`#${contentId}`}>{skipLinkLabel}</SkipLink>
       <aside className="tcrn-product-shell__sidebar" data-product-shell-region="side-navigation">
         <div className="tcrn-product-shell__sidebar-header">
-          <a className="tcrn-product-shell__brand" href="/" aria-label={`${productName} home`} data-registered-brand-lockup="@tcrn/ui-react/ShellBrandLockup">
+          <a
+            className="tcrn-product-shell__brand"
+            href="/"
+            aria-label={`${productName} home`}
+            data-registered-brand-lockup="@tcrn/ui-react/ShellBrandLockup"
+            data-registered-product-logo="@tcrn/ui-react/ProductLogo"
+          >
             <ShellBrandLockup
+              productId={brandProductId}
               suffix={brandSuffix}
               caption={brandCaption}
               brandMarkSrc={brandMarkSrc}
@@ -1196,8 +1295,18 @@ export const tcrnComponentCss = `
 .tcrn-product-shell .tcrn-shell-theme-toggle:focus-visible,
 .tcrn-product-shell .tcrn-shell-side-nav-toggle:focus-visible,
 .tcrn-product-shell .tcrn-shell-locale-menu__trigger:focus-visible,
-.tcrn-product-shell .tcrn-search-input:focus-within,
+.tcrn-product-shell .tcrn-search-input:focus-within {
+  box-shadow: none;
+}
+.tcrn-product-shell .tcrn-search-input:focus-within {
+  outline: 3px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+.tcrn-product-shell .tcrn-search-input__control:focus,
 .tcrn-product-shell .tcrn-search-input__control:focus-visible {
+  outline-style: none;
+  outline-width: 0;
+  outline-offset: 0;
   box-shadow: none;
 }
 .tcrn-shell-theme-toggle__icon {
@@ -1227,13 +1336,21 @@ export const tcrnComponentCss = `
   transform: translate(-50%, -50%) scale(0.58) rotate(90deg);
 }
 .tcrn-shell-side-nav-toggle {
-  inline-size: 32px;
-  block-size: 32px;
-  min-inline-size: 32px;
-  min-block-size: 32px;
-  min-height: 32px;
+  inline-size: 38px;
+  block-size: 38px;
+  min-inline-size: 38px;
+  min-block-size: 38px;
+  min-height: 38px;
+  display: inline-grid;
+  place-items: center;
   padding: 0;
   color: var(--tcrn-color-brand-primary);
+}
+.tcrn-shell-side-nav-toggle__icon {
+  display: inline-grid;
+  inline-size: 20px;
+  block-size: 20px;
+  place-items: center;
 }
 .tcrn-icon-button__label,
 .tcrn-sr-only {
@@ -1245,7 +1362,8 @@ export const tcrnComponentCss = `
   white-space: nowrap;
 }
 .tcrn-brand-lockup,
-.tcrn-shell-brand-lockup {
+.tcrn-shell-brand-lockup,
+.tcrn-product-logo {
   display: inline-flex;
   align-items: center;
   min-width: 0;
@@ -1276,15 +1394,25 @@ export const tcrnComponentCss = `
   display: grid;
   gap: 2px;
 }
-.tcrn-shell-brand-lockup__copy {
+.tcrn-shell-brand-lockup__copy,
+.tcrn-product-logo__copy {
   display: grid;
   min-width: 0;
   gap: 2px;
 }
-.tcrn-shell-brand-lockup__caption {
+.tcrn-product-logo__line-one {
+  color: var(--tcrn-color-text-primary);
+  font-size: var(--tcrn-type-size-ui);
+  font-weight: 800;
+  line-height: var(--tcrn-type-line-ui);
+  white-space: nowrap;
+}
+.tcrn-shell-brand-lockup__caption,
+.tcrn-product-logo__line-two {
   color: var(--tcrn-color-text-secondary);
   font-size: 12px;
   font-weight: var(--tcrn-type-weight-strong);
+  line-height: var(--tcrn-type-line-caption);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1318,7 +1446,7 @@ export const tcrnComponentCss = `
   from { opacity: 0.22; }
   to { opacity: 0; }
 }
-.tcrn-product-shell :focus-visible {
+.tcrn-product-shell :focus-visible:not(.tcrn-search-input__control) {
   outline: 3px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
   box-shadow: none;
@@ -1358,6 +1486,7 @@ export const tcrnComponentCss = `
   min-height: 42px;
 }
 .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-shell-brand-lockup__copy,
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-logo__copy,
 .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-group__label,
 .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item__label,
 .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item__disabled-reason {
@@ -1488,6 +1617,17 @@ export const tcrnComponentCss = `
 .tcrn-product-shell__main {
   min-width: 0;
   padding: var(--tcrn-space-5);
+}
+.tcrn-product-shell-content-stack {
+  display: grid;
+  gap: var(--tcrn-space-5);
+  max-width: 1180px;
+}
+.tcrn-product-shell-section-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.75fr);
+  gap: var(--tcrn-space-4);
+  align-items: start;
 }
 .tcrn-top-bar {
   display: grid;
@@ -1853,6 +1993,9 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
     width: min(100%, 320px);
     max-width: 320px;
   }
+  .tcrn-product-shell__sidebar-header .tcrn-shell-side-nav-toggle {
+    display: none;
+  }
   .tcrn-shell-locale-menu__trigger {
     width: 100%;
     max-width: none;
@@ -1861,8 +2004,12 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   .tcrn-product-shell__main {
     padding: var(--tcrn-space-4);
   }
-  .tcrn-shell-brand-lockup__caption {
+  .tcrn-shell-brand-lockup__caption,
+  .tcrn-product-logo__line-two {
     white-space: normal;
+  }
+  .tcrn-product-shell-section-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
   .tcrn-key-value-list {
     grid-template-columns: 1fr;
