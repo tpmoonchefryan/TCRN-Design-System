@@ -1424,6 +1424,65 @@ function validateControlBounds({ failures, label, proof, contract }) {
   }
 }
 
+function validateTopbarUtilityAlignment({ failures, label, proof }) {
+  const snapshot = proof.topbarAlignmentReadback;
+  const measured = proof.measured ?? {};
+  const topBar = snapshot?.topBar
+    ? { ...snapshot.topBar, paddingLeft: snapshot.paddingLeft, paddingRight: snapshot.paddingRight }
+    : measured.topBar;
+  const currentLocation = snapshot?.currentLocation ?? measured.currentLocation;
+  const search = snapshot?.search ?? measured.searchWrapper;
+  const theme = snapshot?.theme ?? measured.themeToggle;
+  const locale = snapshot?.locale ?? measured.localeTrigger;
+  const required = { topBar, currentLocation, search, theme, locale };
+  for (const [name, metric] of Object.entries(required)) {
+    if (!metric || metric.missing) {
+      failures.push(`${label}:topbar-utility-alignment-missing-${name}`);
+      return;
+    }
+  }
+
+  const leadingTolerance = 4;
+  const trailingTolerance = 4;
+  const orderTolerance = 1;
+  const paddingLeft = parsePixels(topBar.paddingLeft);
+  const paddingRight = parsePixels(topBar.paddingRight);
+  const currentLocationLeadingGap = currentLocation.left - topBar.left - paddingLeft;
+  const utilityTrailingGap = topBar.right - locale.right - paddingRight;
+  const searchTrailingGap = topBar.right - search.right - paddingRight;
+  const themeTrailingGap = topBar.right - theme.right - paddingRight;
+  const searchSharesThemeRow = controlsShareVerticalRow(search, theme);
+  const currentLocationSharesSearchRow = controlsShareVerticalRow(currentLocation, search);
+  const themeSharesLocaleRow = controlsShareVerticalRow(theme, locale);
+
+  if (Math.abs(currentLocationLeadingGap) > leadingTolerance) {
+    failures.push(`${label}:topbar-current-location-leading-gap:${currentLocationLeadingGap.toFixed(2)}:max:${leadingTolerance}`);
+  }
+  if (Math.abs(utilityTrailingGap) > trailingTolerance) {
+    failures.push(`${label}:topbar-utility-trailing-gap:${utilityTrailingGap.toFixed(2)}:max:${trailingTolerance}`);
+  }
+  if (!searchSharesThemeRow && Math.abs(searchTrailingGap) > trailingTolerance) {
+    failures.push(`${label}:topbar-wrapped-search-trailing-gap:${searchTrailingGap.toFixed(2)}:max:${trailingTolerance}`);
+  }
+  if (!themeSharesLocaleRow && Math.abs(themeTrailingGap) > trailingTolerance) {
+    failures.push(`${label}:topbar-wrapped-theme-trailing-gap:${themeTrailingGap.toFixed(2)}:max:${trailingTolerance}`);
+  }
+  if (currentLocationSharesSearchRow && currentLocation.right > search.left + orderTolerance) {
+    failures.push(`${label}:topbar-current-location-overlaps-search:${currentLocation.right.toFixed(2)}>${search.left.toFixed(2)}`);
+  }
+  if (searchSharesThemeRow && search.right > theme.left + orderTolerance) {
+    failures.push(`${label}:topbar-search-overlaps-theme:${search.right.toFixed(2)}>${theme.left.toFixed(2)}`);
+  }
+  if (themeSharesLocaleRow && theme.right > locale.left + orderTolerance) {
+    failures.push(`${label}:topbar-theme-overlaps-locale:${theme.right.toFixed(2)}>${locale.left.toFixed(2)}`);
+  }
+}
+
+function controlsShareVerticalRow(a, b) {
+  const overlap = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+  return overlap > 1;
+}
+
 async function collectProductShellMetrics(origin, viewport, reducedMotion, contract = productShellComparatorContract, fixture = undefined) {
   const browser = await chromium.launch({
     headless: true,
@@ -1457,148 +1516,178 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
     if (!shell) {
       return { missingShell: true };
     }
-	    const measured = {};
-	    const waitForFocusTransition = () => new Promise((resolve) => window.setTimeout(resolve, 190));
-	    const measure = async (name, selector) => {
-	      const element = shell.querySelector(selector);
-	      if (!element) {
-	        measured[name] = { missing: true };
-	        return;
-	      }
-	      const rect = element.getBoundingClientRect();
-	      const style = getComputedStyle(element);
-	      const focusTarget = element.matches("button, input, a, select, textarea, [tabindex]")
-	        ? element
-	        : element.querySelector("button, input, a, select, textarea, [tabindex]");
-	      const previousActive = document.activeElement;
-	      let focus = null;
-	      if (focusTarget instanceof HTMLElement) {
-	        focusTarget.focus({ preventScroll: true });
-	        await waitForFocusTransition();
-	        const focusStyle = getComputedStyle(name === "searchInput" ? element : focusTarget);
-	        focus = {
-	          outlineWidth: focusStyle.outlineWidth,
-	          outlineStyle: focusStyle.outlineStyle,
-	          outlineColor: focusStyle.outlineColor,
-	          outlineOffset: focusStyle.outlineOffset,
-	          boxShadow: focusStyle.boxShadow
-	        };
-	        focusTarget.blur();
-	        if (previousActive instanceof HTMLElement && previousActive !== focusTarget) {
-	          previousActive.focus({ preventScroll: true });
-	        }
-	      }
-	      const visibleIcon = Array.from(element.querySelectorAll(".tcrn-shell-side-nav-toggle__icon, [data-side-nav-icon]"))
-	        .find((icon) => {
-	          const iconStyle = getComputedStyle(icon);
-	          const iconRect = icon.getBoundingClientRect();
-	          return iconStyle.display !== "none" && iconRect.width > 0 && iconRect.height > 0;
-	        });
-	      const iconRect = visibleIcon?.getBoundingClientRect();
-	      const iconCenterDelta = iconRect
-	        ? Math.max(
-	            Math.abs((iconRect.left + iconRect.width / 2) - (rect.left + rect.width / 2)),
-	            Math.abs((iconRect.top + iconRect.height / 2) - (rect.top + rect.height / 2))
-	          )
-	        : null;
-	      measured[name] = {
-	        width: rect.width,
-	        height: rect.height,
-	        disabled: element instanceof HTMLButtonElement ? element.disabled : element.getAttribute("disabled") !== null,
-	        title: element.getAttribute("title"),
-	        ariaDisabled: element.getAttribute("aria-disabled"),
-	        ariaExpanded: element.getAttribute("aria-expanded"),
-	        sideNavAction: element.getAttribute("data-side-nav-action"),
-	        sideNavKeyboardActivation: element.getAttribute("data-side-nav-keyboard-activation"),
-	        sideNavDisabledReason: element.getAttribute("data-side-nav-disabled-reason"),
-	        iconCenterDelta,
-	        left: rect.left,
-	        right: rect.right,
+    const measured = {};
+    const readRect = (element) => {
+      const rect = element?.getBoundingClientRect();
+      if (!rect) return null;
+      return {
+        left: rect.left,
+        right: rect.right,
+        top: rect.top,
+        bottom: rect.bottom,
+        width: rect.width,
+        height: rect.height
+      };
+    };
+    const readTopbarAlignment = () => {
+      const topBar = shell.querySelector(".tcrn-top-bar");
+      const currentLocation = topBar?.querySelector(".tcrn-product-shell__current-location");
+      const search = topBar?.querySelector(".tcrn-product-shell-search");
+      const theme = topBar?.querySelector(".tcrn-shell-theme-toggle");
+      const locale = topBar?.querySelector(".tcrn-shell-locale-menu__trigger");
+      const topBarStyle = topBar ? getComputedStyle(topBar) : null;
+      return {
+        topBar: readRect(topBar),
+        currentLocation: readRect(currentLocation),
+        search: readRect(search),
+        theme: readRect(theme),
+        locale: readRect(locale),
+        paddingLeft: topBarStyle?.paddingLeft ?? "0px",
+        paddingRight: topBarStyle?.paddingRight ?? "0px"
+      };
+    };
+    const topbarAlignmentReadback = readTopbarAlignment();
+    const waitForFocusTransition = () => new Promise((resolve) => window.setTimeout(resolve, 190));
+    const measure = async (name, selector) => {
+      const element = shell.querySelector(selector);
+      if (!element) {
+        measured[name] = { missing: true };
+        return;
+      }
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      const focusTarget = element.matches("button, input, a, select, textarea, [tabindex]")
+        ? element
+        : element.querySelector("button, input, a, select, textarea, [tabindex]");
+      const previousActive = document.activeElement;
+      let focus = null;
+      if (focusTarget instanceof HTMLElement) {
+        focusTarget.focus({ preventScroll: true });
+        await waitForFocusTransition();
+        const focusStyle = getComputedStyle(name === "searchInput" ? element : focusTarget);
+        focus = {
+          outlineWidth: focusStyle.outlineWidth,
+          outlineStyle: focusStyle.outlineStyle,
+          outlineColor: focusStyle.outlineColor,
+          outlineOffset: focusStyle.outlineOffset,
+          boxShadow: focusStyle.boxShadow
+        };
+        focusTarget.blur();
+        if (previousActive instanceof HTMLElement && previousActive !== focusTarget) {
+          previousActive.focus({ preventScroll: true });
+        }
+      }
+      const visibleIcon = Array.from(element.querySelectorAll(".tcrn-shell-side-nav-toggle__icon, [data-side-nav-icon]"))
+        .find((icon) => {
+          const iconStyle = getComputedStyle(icon);
+          const iconRect = icon.getBoundingClientRect();
+          return iconStyle.display !== "none" && iconRect.width > 0 && iconRect.height > 0;
+        });
+      const iconRect = visibleIcon?.getBoundingClientRect();
+      const iconCenterDelta = iconRect
+        ? Math.max(
+            Math.abs((iconRect.left + iconRect.width / 2) - (rect.left + rect.width / 2)),
+            Math.abs((iconRect.top + iconRect.height / 2) - (rect.top + rect.height / 2))
+          )
+        : null;
+      measured[name] = {
+        width: rect.width,
+        height: rect.height,
+        disabled: element instanceof HTMLButtonElement ? element.disabled : element.getAttribute("disabled") !== null,
+        title: element.getAttribute("title"),
+        ariaDisabled: element.getAttribute("aria-disabled"),
+        ariaExpanded: element.getAttribute("aria-expanded"),
+        sideNavAction: element.getAttribute("data-side-nav-action"),
+        sideNavKeyboardActivation: element.getAttribute("data-side-nav-keyboard-activation"),
+        sideNavDisabledReason: element.getAttribute("data-side-nav-disabled-reason"),
+        iconCenterDelta,
+        left: rect.left,
+        right: rect.right,
         top: rect.top,
         bottom: rect.bottom,
         scrollWidth: element.scrollWidth,
         clientWidth: element.clientWidth,
-	        display: style.display,
-	        position: style.position,
-	        gridTemplateColumns: style.gridTemplateColumns,
-	        gap: style.gap,
-	        columnGap: style.columnGap,
-	        rowGap: style.rowGap,
-	        justifyContent: style.justifyContent,
-	        paddingLeft: style.paddingLeft,
-	        paddingRight: style.paddingRight,
-	        borderRadius: style.borderRadius,
-	        borderStyle: style.borderStyle,
-	        borderWidth: style.borderWidth,
-	        backgroundColor: style.backgroundColor,
-	        color: style.color,
-	        fontFamily: style.fontFamily,
-	        fontSize: style.fontSize,
-	        fontWeight: style.fontWeight,
-	        lineHeight: style.lineHeight,
-	        letterSpacing: style.letterSpacing,
-	        boxShadow: style.boxShadow,
-	        outlineWidth: style.outlineWidth,
-	        outlineStyle: style.outlineStyle,
-	        outlineColor: style.outlineColor,
-	        outlineOffset: style.outlineOffset,
-	        transitionProperty: style.transitionProperty,
-	        transitionDuration: style.transitionDuration,
-	        transitionTimingFunction: style.transitionTimingFunction,
-	        animationName: style.animationName,
-	        animationDuration: style.animationDuration,
-	        animationTimingFunction: style.animationTimingFunction,
-	        focus
-	      };
-	    };
-	    for (const [name, selector] of Object.entries(contract.componentSelectors)) {
-	      await measure(name, selector);
-	    }
-	    const requiredContent = {};
-	    for (const [name, selector] of Object.entries(contract.requiredContentSelectors ?? {})) {
-	      requiredContent[name] = shell.matches(selector) || Boolean(shell.querySelector(selector));
-	    }
-	    const topBar = shell.querySelector(".tcrn-top-bar");
-	    const selectedNavItem = shell.querySelector(".tcrn-nav-item[aria-current=\"page\"]");
-	    const searchWrapper = shell.querySelector(contract.componentSelectors.searchWrapper);
-	    const utilityRow = shell.querySelector(contract.componentSelectors.utilityRow);
-	    const controlOrder = utilityRow
-	      ? Array.from(utilityRow.children).map((child) => {
-	          if (child.matches(".tcrn-product-shell__current-location")) return "currentLocation";
-	          if (child.matches(".tcrn-product-shell-search")) return "searchWrapper";
-	          if (child.matches(".tcrn-shell-theme-toggle")) return "themeToggle";
-	          if (child.matches(".tcrn-shell-locale-menu")) return "localeTrigger";
-	          return child.className || child.tagName.toLowerCase();
-	        })
-	      : [];
-	    const primaryHeadings = Array.from(shell.querySelectorAll("h1"));
-	    const state = {
-	      variant: shell.getAttribute("data-visual-instance-variant"),
-	      theme: shell.getAttribute("data-visual-instance-theme"),
-	      productShellTheme: shell.getAttribute("data-product-shell-theme"),
-	      tcrnTheme: shell.getAttribute("data-tcrn-theme"),
-	      locale: shell.getAttribute("data-visual-instance-locale"),
-	      collapsed: shell.getAttribute("data-visual-instance-collapsed"),
-	      productShellCollapsed: shell.getAttribute("data-product-shell-collapsed"),
-	      sideNavCollapsed: shell.getAttribute("data-side-nav-collapsed"),
-	      route: shell.getAttribute("data-visual-instance-route"),
-	      selectedRoute: selectedNavItem?.getAttribute("data-product-shell-route") ?? null,
-	      search: shell.getAttribute("data-visual-instance-search"),
-	      searchExpanded: searchWrapper?.getAttribute("data-search-expanded") ?? null,
-	      searchResultsVisible: searchWrapper?.getAttribute("data-search-results-visible") ?? null,
-	      viewport: shell.getAttribute("data-visual-instance-viewport"),
-	      reducedMotion: shell.getAttribute("data-visual-instance-reduced-motion"),
-	      content: shell.getAttribute("data-visual-instance-content"),
-	      ownerVisualAdmissionBoundary: shell.getAttribute("data-visual-instance-disposition")
-	    };
-	    const topbarReadback = {
-	      text: topBar?.textContent?.replace(/\s+/g, " ").trim() ?? "",
-	      staleWorkspaceTitlePresent: Boolean(topBar?.textContent?.includes("AOS Rebuild Workspace")),
-	      brandCellPresent: Boolean(topBar?.querySelector(".tcrn-top-bar__brand")),
-	      moduleCellPresent: Boolean(topBar?.querySelector(".tcrn-top-bar__module"))
-	    };
-	    const sampleSearchMotionTimeline = async () => {
-	      if (!searchWrapper) return { missing: true };
+        display: style.display,
+        position: style.position,
+        gridTemplateColumns: style.gridTemplateColumns,
+        gap: style.gap,
+        columnGap: style.columnGap,
+        rowGap: style.rowGap,
+        justifyContent: style.justifyContent,
+        paddingLeft: style.paddingLeft,
+        paddingRight: style.paddingRight,
+        borderRadius: style.borderRadius,
+        borderStyle: style.borderStyle,
+        borderWidth: style.borderWidth,
+        backgroundColor: style.backgroundColor,
+        color: style.color,
+        fontFamily: style.fontFamily,
+        fontSize: style.fontSize,
+        fontWeight: style.fontWeight,
+        lineHeight: style.lineHeight,
+        letterSpacing: style.letterSpacing,
+        boxShadow: style.boxShadow,
+        outlineWidth: style.outlineWidth,
+        outlineStyle: style.outlineStyle,
+        outlineColor: style.outlineColor,
+        outlineOffset: style.outlineOffset,
+        transitionProperty: style.transitionProperty,
+        transitionDuration: style.transitionDuration,
+        transitionTimingFunction: style.transitionTimingFunction,
+        animationName: style.animationName,
+        animationDuration: style.animationDuration,
+        animationTimingFunction: style.animationTimingFunction,
+        focus
+      };
+    };
+    for (const [name, selector] of Object.entries(contract.componentSelectors)) {
+      await measure(name, selector);
+    }
+    const requiredContent = {};
+    for (const [name, selector] of Object.entries(contract.requiredContentSelectors ?? {})) {
+      requiredContent[name] = shell.matches(selector) || Boolean(shell.querySelector(selector));
+    }
+    const topBar = shell.querySelector(".tcrn-top-bar");
+    const selectedNavItem = shell.querySelector(".tcrn-nav-item[aria-current=\"page\"]");
+    const searchWrapper = shell.querySelector(contract.componentSelectors.searchWrapper);
+    const utilityRow = shell.querySelector(contract.componentSelectors.utilityRow);
+    const controlOrder = utilityRow
+      ? Array.from(utilityRow.children).map((child) => {
+          if (child.matches(".tcrn-product-shell__current-location")) return "currentLocation";
+          if (child.matches(".tcrn-product-shell-search")) return "searchWrapper";
+          if (child.matches(".tcrn-shell-theme-toggle")) return "themeToggle";
+          if (child.matches(".tcrn-shell-locale-menu")) return "localeTrigger";
+          return child.className || child.tagName.toLowerCase();
+        })
+      : [];
+    const primaryHeadings = Array.from(shell.querySelectorAll("h1"));
+    const state = {
+      variant: shell.getAttribute("data-visual-instance-variant"),
+      theme: shell.getAttribute("data-visual-instance-theme"),
+      productShellTheme: shell.getAttribute("data-product-shell-theme"),
+      tcrnTheme: shell.getAttribute("data-tcrn-theme"),
+      locale: shell.getAttribute("data-visual-instance-locale"),
+      collapsed: shell.getAttribute("data-visual-instance-collapsed"),
+      productShellCollapsed: shell.getAttribute("data-product-shell-collapsed"),
+      sideNavCollapsed: shell.getAttribute("data-side-nav-collapsed"),
+      route: shell.getAttribute("data-visual-instance-route"),
+      selectedRoute: selectedNavItem?.getAttribute("data-product-shell-route") ?? null,
+      search: shell.getAttribute("data-visual-instance-search"),
+      searchExpanded: searchWrapper?.getAttribute("data-search-expanded") ?? null,
+      searchResultsVisible: searchWrapper?.getAttribute("data-search-results-visible") ?? null,
+      viewport: shell.getAttribute("data-visual-instance-viewport"),
+      reducedMotion: shell.getAttribute("data-visual-instance-reduced-motion"),
+      content: shell.getAttribute("data-visual-instance-content"),
+      ownerVisualAdmissionBoundary: shell.getAttribute("data-visual-instance-disposition")
+    };
+    const topbarReadback = {
+      text: topBar?.textContent?.replace(/\s+/g, " ").trim() ?? "",
+      staleWorkspaceTitlePresent: Boolean(topBar?.textContent?.includes("AOS Rebuild Workspace")),
+      brandCellPresent: Boolean(topBar?.querySelector(".tcrn-top-bar__brand")),
+      moduleCellPresent: Boolean(topBar?.querySelector(".tcrn-top-bar__module"))
+    };
+    const sampleSearchMotionTimeline = async () => {
+      if (!searchWrapper) return { missing: true };
 	      const originalExpanded = searchWrapper.getAttribute("data-search-expanded");
 	      const originalResultsVisible = searchWrapper.getAttribute("data-search-results-visible");
 	      const readWidth = () => Number(searchWrapper.getBoundingClientRect().width.toFixed(3));
@@ -1629,7 +1718,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	            if (performance.now() - start >= 430) {
 	              resolve();
               } else {
-	              requestAnimationFrame(tick);
+                requestAnimationFrame(tick);
 	            }
 	          };
 	          requestAnimationFrame(tick);
@@ -1708,9 +1797,10 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	      measured,
 	      searchMotionTimeline,
 	      requiredContent,
-	      controlOrder,
-	      topbarReadback,
-	      state,
+      controlOrder,
+      topbarReadback,
+      topbarAlignmentReadback,
+      state,
 	      forbiddenTextHits,
 	      fixtureForbiddenTextHits,
 	      missingRequiredText,
@@ -1777,6 +1867,9 @@ function validateProductShellReadback({
   }
   if (proof.topbarReadback?.brandCellPresent || proof.topbarReadback?.moduleCellPresent) {
     failures.push(`${label}:topbar-visible-product-title-cells`);
+  }
+  if (proof.viewport?.width > 760) {
+    validateTopbarUtilityAlignment({ failures, label, proof });
   }
   if (contract.searchRestWidth) {
     const searchWidth = proof.measured.searchWrapper?.width;

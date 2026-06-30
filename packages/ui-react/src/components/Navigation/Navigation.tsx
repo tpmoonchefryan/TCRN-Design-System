@@ -1545,7 +1545,7 @@ export const tcrnComponentCss = `
 .tcrn-product-shell__utility-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   gap: var(--tcrn-space-3);
   min-width: 0;
@@ -1555,7 +1555,7 @@ export const tcrnComponentCss = `
 }
 .tcrn-product-shell__current-location {
   display: grid;
-  flex: 1 1 116px;
+  flex: 0 1 240px;
   gap: 1px;
   min-width: 0;
   max-width: 240px;
@@ -1581,6 +1581,7 @@ export const tcrnComponentCss = `
   flex-grow: 0;
   flex-shrink: 1;
   flex-basis: 260px;
+  margin-left: auto;
   justify-self: end;
   width: 260px;
   max-width: min(100%, 260px);
@@ -2005,12 +2006,14 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   .tcrn-product-shell__current-location,
   .tcrn-shell-locale-menu {
     flex: 1 1 100%;
+    margin-right: 0;
     max-width: none;
     width: 100%;
   }
   .tcrn-product-shell-search,
   .tcrn-product-shell-search[data-search-expanded="true"] {
     flex-basis: min(100%, 320px);
+    margin-left: 0;
     justify-self: start;
     width: 320px;
     max-width: 320px;
