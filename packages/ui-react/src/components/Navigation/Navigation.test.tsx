@@ -189,7 +189,8 @@ test("product shell utility row wraps controls within owner-quality story frames
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__current-location \{[\s\S]*flex: 1 1 116px;[\s\S]*max-width: 240px;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-search \{[\s\S]*flex: 0 1 260px;[\s\S]*width: min\(100%, 260px\);[\s\S]*max-width: 260px;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-search\[data-search-expanded="true"\] \{[\s\S]*flex: 1 1 320px;[\s\S]*max-width: 420px;/);
-  assert.match(tcrnComponentCss, /@media \(max-width: 760px\) \{[\s\S]*\.tcrn-product-shell__utility-row \{[\s\S]*justify-content: stretch;[\s\S]*align-items: stretch;[\s\S]*\.tcrn-shell-locale-menu__trigger \{[\s\S]*width: 100%;[\s\S]*max-width: none;/);
+  assert.match(tcrnComponentCss, /@media \(max-width: 760px\) \{[\s\S]*\.tcrn-product-shell__utility-row \{[\s\S]*justify-content: stretch;[\s\S]*align-items: stretch;[\s\S]*\.tcrn-product-shell-search,\n  \.tcrn-product-shell-search\[data-search-expanded="true"\] \{[\s\S]*flex: 0 1 min\(100%, 320px\);[\s\S]*width: min\(100%, 320px\);[\s\S]*max-width: 320px;/);
+  assert.match(tcrnComponentCss, /@media \(max-width: 760px\) \{[\s\S]*\.tcrn-shell-locale-menu__trigger \{[\s\S]*width: 100%;[\s\S]*max-width: none;/);
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell__utility-row \{[\s\S]*grid-template-columns: max-content minmax\(220px, 360px\) max-content max-content;/);
 });
 

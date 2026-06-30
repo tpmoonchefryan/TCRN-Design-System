@@ -1472,6 +1472,7 @@ function validateProductShellReadback({
   }
   if (contract.searchRestWidth) {
     const searchWidth = proof.measured.searchWrapper?.width;
+    const searchInputWidth = proof.measured.searchInput?.width;
     const maxWidth = expectSearchResults
       ? contract.searchRestWidth.expandedMaxPx
       : proof.viewport.width <= 760
@@ -1479,6 +1480,9 @@ function validateProductShellReadback({
         : contract.searchRestWidth.maxPx;
     if (typeof searchWidth !== "number" || searchWidth > maxWidth + 1) {
       failures.push(`${label}:search-width:${searchWidth ?? "missing"}:max:${maxWidth}`);
+    }
+    if (typeof searchInputWidth !== "number" || searchInputWidth > maxWidth + 1) {
+      failures.push(`${label}:search-input-width:${searchInputWidth ?? "missing"}:max:${maxWidth}`);
     }
   }
   if (contract.ownerQualitySideNavPolicy?.collapseAffordance === "disabled_with_package_backed_reason") {
@@ -1612,6 +1616,17 @@ function validateProductShellReadback({
   if (proof.viewport.width <= 390) {
     if (proof.viewport.scrollWidth > proof.viewport.width + 1) {
       failures.push(`${label}:horizontal-overflow:${proof.viewport.scrollWidth}>${proof.viewport.width}`);
+    }
+    const mobileSearchMax = contract.searchRestWidth?.mobileMaxPx;
+    if (typeof mobileSearchMax === "number") {
+      for (const [controlName, metric] of Object.entries({
+        searchWrapper: proof.measured.searchWrapper,
+        searchInput: proof.measured.searchInput
+      })) {
+        if (typeof metric?.width !== "number" || metric.width > mobileSearchMax + 1) {
+          failures.push(`${label}:mobile-${controlName}-width:${metric?.width ?? "missing"}:max:${mobileSearchMax}`);
+        }
+      }
     }
     if (proof.measured.sideNavToggle?.width > 44 || proof.measured.themeToggle?.width > 44) {
       failures.push(`${label}:mobile-control-size-exceeds-package-shell-boundary`);

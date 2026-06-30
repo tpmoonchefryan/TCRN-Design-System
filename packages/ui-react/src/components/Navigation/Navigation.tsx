@@ -1841,8 +1841,6 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
     align-items: stretch;
   }
   .tcrn-product-shell__current-location,
-  .tcrn-product-shell-search,
-  .tcrn-product-shell-search[data-search-expanded="true"],
   .tcrn-shell-locale-menu {
     flex: 1 1 100%;
     max-width: none;
@@ -1850,8 +1848,10 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   }
   .tcrn-product-shell-search,
   .tcrn-product-shell-search[data-search-expanded="true"] {
-    justify-self: stretch;
-    width: 100%;
+    flex: 0 1 min(100%, 320px);
+    justify-self: start;
+    width: min(100%, 320px);
+    max-width: 320px;
   }
   .tcrn-shell-locale-menu__trigger {
     width: 100%;
