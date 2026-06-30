@@ -174,12 +174,23 @@ async function collectPageHealth(page) {
         height: Math.round(rect.height)
       };
     });
-    const clipped = Array.from(document.querySelectorAll("button, input, select, .tcrn-badge, .tcrn-heading, h1, h2, h3"))
+    const visibleText = (node) => Array.from(node.childNodes)
+      .map((child) => {
+        if (child.nodeType === Node.TEXT_NODE) return child.textContent ?? "";
+        if (child.nodeType !== Node.ELEMENT_NODE) return "";
+        const element = child;
+        if (element.classList.contains("tcrn-sr-only")) return "";
+        return visibleText(element);
+      })
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .trim();
+    const clipped = Array.from(document.querySelectorAll("button, select, .tcrn-badge, .tcrn-heading, h1, h2, h3"))
       .filter((node) => !node.classList.contains("tcrn-sr-only"))
       .map((node) => ({
         tag: node.tagName.toLowerCase(),
-        text: (node.textContent || node.getAttribute("aria-label") || "").trim().slice(0, 80),
-        clipped: node.scrollWidth > node.clientWidth + 1 || node.scrollHeight > node.clientHeight + 1
+        text: visibleText(node).slice(0, 80),
+        clipped: visibleText(node).length > 0 && (node.scrollWidth > node.clientWidth + 1 || node.scrollHeight > node.clientHeight + 1)
       }))
       .filter((item) => item.clipped);
     const readbackStateViewGapViolations = Array.from(document.querySelectorAll(".tcrn-readback-panel"))

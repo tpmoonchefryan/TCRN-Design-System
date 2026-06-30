@@ -1305,16 +1305,22 @@ export const tcrnComponentCss = `
   backdrop-filter: blur(16px);
 }
 .tcrn-product-shell__utility-row {
-  display: grid;
-  grid-template-columns: max-content minmax(220px, 360px) max-content max-content;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: end;
   align-items: center;
   gap: var(--tcrn-space-3);
+  min-width: 0;
+}
+.tcrn-product-shell__utility-row > * {
+  min-width: 0;
 }
 .tcrn-product-shell__current-location {
   display: grid;
+  flex: 0 1 116px;
   gap: 1px;
-  min-width: 116px;
+  min-width: 0;
+  max-width: 160px;
   color: var(--tcrn-color-text-secondary);
   font-size: 12px;
 }
@@ -1322,14 +1328,24 @@ export const tcrnComponentCss = `
   color: var(--tcrn-color-text-primary);
   font-size: 13px;
 }
+.tcrn-product-shell__current-location span,
+.tcrn-product-shell__current-location strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .tcrn-product-shell-search {
   position: relative;
+  flex: 1 1 220px;
   justify-self: end;
   width: min(100%, 260px);
+  max-width: 360px;
   transition: width var(--tcrn-motion-product-shell);
 }
 .tcrn-product-shell-search[data-search-expanded="true"] {
+  flex-basis: 260px;
   width: min(100%, 420px);
+  max-width: 420px;
 }
 .tcrn-product-shell-search__results {
   position: absolute;
@@ -1680,24 +1696,37 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
     border-bottom: 1px solid var(--tcrn-color-border-subtle);
   }
   .tcrn-product-shell__workspace > .tcrn-top-bar,
-  .tcrn-product-shell__utility-row {
+  .tcrn-top-bar {
     grid-template-columns: 1fr;
     align-items: stretch;
+  }
+  .tcrn-product-shell__utility-row {
+    justify-content: stretch;
+    align-items: stretch;
+  }
+  .tcrn-product-shell__current-location,
+  .tcrn-product-shell-search,
+  .tcrn-product-shell-search[data-search-expanded="true"],
+  .tcrn-shell-locale-menu {
+    flex: 1 1 100%;
+    max-width: none;
+    width: 100%;
   }
   .tcrn-product-shell-search,
   .tcrn-product-shell-search[data-search-expanded="true"] {
     justify-self: stretch;
     width: 100%;
   }
+  .tcrn-shell-locale-menu__trigger {
+    width: 100%;
+    max-width: none;
+    justify-content: space-between;
+  }
   .tcrn-product-shell__main {
     padding: var(--tcrn-space-4);
   }
   .tcrn-shell-brand-lockup__caption {
     white-space: normal;
-  }
-  .tcrn-top-bar {
-    grid-template-columns: 1fr;
-    align-items: stretch;
   }
   .tcrn-key-value-list {
     grid-template-columns: 1fr;

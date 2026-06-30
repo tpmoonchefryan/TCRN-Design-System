@@ -471,6 +471,7 @@ export const aiConsumptionContract = {
         "exactly one primary H1 per rendered fixture",
         "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
         "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
+        "ProductShell topbar controls stay within the fixture root and viewport without horizontal clipping",
         "read-only and no-live-dispatch boundaries are visible but low-prominence",
         "developer proof/API/readback details are secondary disclosure",
         "Cockpit and Work are meaningful product modules rather than placeholder labels"
@@ -480,6 +481,7 @@ export const aiConsumptionContract = {
         "implementation/proof/debug terminology dominates the first viewport",
         "no-overclaim copy becomes the primary product story",
         "Runtime/Stories/Gates/Audit events verification metrics lead the hierarchy",
+        "ProductShell topbar, search, locale, or theme controls are cropped or create root/topbar horizontal overflow",
         "visible local product CSS/effects or Storybook-only prototype classes appear",
         "owner/product/release/live-dispatch/final-Cockpit readiness is claimed"
       ],

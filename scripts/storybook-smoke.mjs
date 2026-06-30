@@ -325,6 +325,11 @@ const aosOwnerQualityProductShellContract = {
     topBar: aosFrontendShellVisualInstanceContract.expectedControlMetrics.topBar
   },
   motionProof: productShellComparatorContract.motionProof,
+  noOverflowProof: true,
+  controlBoundsProof: {
+    controls: ["searchWrapper", "searchInput", "localeTrigger", "themeToggle"],
+    containers: ["topBar", "shell", "viewport"]
+  },
   visualInstanceName: "AosOwnerQualityProductShell",
   packageMapping: [
     "ProductShell",
@@ -950,6 +955,50 @@ function transitionIncludes(metric, property) {
   return properties.includes(property) || properties.includes("all");
 }
 
+function validateNoHorizontalOverflow({ failures, label, name, metric }) {
+  if (!metric || metric.missing || metric.scrollWidth === undefined || metric.clientWidth === undefined) return;
+  if (metric.scrollWidth > metric.clientWidth + 1) {
+    failures.push(`${label}:${name}-overflow:${metric.scrollWidth}>${metric.clientWidth}`);
+  }
+}
+
+function validateControlBounds({ failures, label, proof, contract }) {
+  const controls = contract.controlBoundsProof?.controls ?? [];
+  const containers = contract.controlBoundsProof?.containers ?? [];
+  const containerMetrics = {
+    shell: proof.shell,
+    topBar: proof.measured?.topBar,
+    viewport: {
+      left: 0,
+      right: proof.viewport?.width,
+      top: 0,
+      bottom: proof.viewport?.height,
+      width: proof.viewport?.width,
+      height: proof.viewport?.height
+    }
+  };
+
+  for (const controlName of controls) {
+    const control = proof.measured?.[controlName];
+    if (!control || control.missing) {
+      failures.push(`${label}:${controlName}:missing-for-bounds-proof`);
+      continue;
+    }
+    for (const containerName of containers) {
+      const container = containerMetrics[containerName];
+      if (!container || container.missing) {
+        failures.push(`${label}:${controlName}:missing-${containerName}-bounds-container`);
+        continue;
+      }
+      if (control.left < container.left - 1 || control.right > container.right + 1) {
+        failures.push(
+          `${label}:${controlName}-outside-${containerName}:${control.left.toFixed(2)}-${control.right.toFixed(2)}:${container.left.toFixed(2)}-${container.right.toFixed(2)}`
+        );
+      }
+    }
+  }
+}
+
 async function collectProductShellMetrics(origin, viewport, reducedMotion, contract = productShellComparatorContract, fixture = undefined) {
   const browser = await chromium.launch({
     headless: true,
@@ -996,7 +1045,11 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
         width: rect.width,
         height: rect.height,
         left: rect.left,
+        right: rect.right,
         top: rect.top,
+        bottom: rect.bottom,
+        scrollWidth: element.scrollWidth,
+        clientWidth: element.clientWidth,
         display: style.display,
         position: style.position,
         gridTemplateColumns: style.gridTemplateColumns,
@@ -1053,9 +1106,15 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
     const documentElement = document.documentElement;
     return {
       missingShell: false,
-	      shell: {
+      shell: {
         width: shellRect.width,
         height: shellRect.height,
+        left: shellRect.left,
+        right: shellRect.right,
+        top: shellRect.top,
+        bottom: shellRect.bottom,
+        scrollWidth: shell.scrollWidth,
+        clientWidth: shell.clientWidth,
         gridTemplateColumns: shellStyle.gridTemplateColumns,
         transitionProperty: shellStyle.transitionProperty,
         transitionDuration: shellStyle.transitionDuration,
@@ -1107,6 +1166,16 @@ function validateProductShellReadback({
         validateMetric({ failures, name: `${label}:${name}`, metric, expected });
       }
     }
+  }
+  if (contract.noOverflowProof) {
+    validateNoHorizontalOverflow({ failures, label, name: "root", metric: proof.shell });
+    validateNoHorizontalOverflow({ failures, label, name: "topbar", metric: proof.measured.topBar });
+    if (proof.viewport.scrollWidth > proof.viewport.width + 1) {
+      failures.push(`${label}:viewport-horizontal-overflow:${proof.viewport.scrollWidth}>${proof.viewport.width}`);
+    }
+  }
+  if (contract.controlBoundsProof) {
+    validateControlBounds({ failures, label, proof, contract });
   }
   if (expectedState) {
     for (const [name, expected] of Object.entries(expectedState)) {
