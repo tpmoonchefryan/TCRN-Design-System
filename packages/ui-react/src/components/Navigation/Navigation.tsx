@@ -947,27 +947,23 @@ export function ProductShell({
         </SideNav>
       </aside>
       <div className="tcrn-product-shell__workspace">
-        <TopBar
-          productName={productName}
-          moduleName={moduleName}
-          actions={
-            <div className="tcrn-product-shell__utility-row" data-product-shell-region="utility-row">
-              <div className="tcrn-product-shell__current-location">
-                <span>{currentLocationLabel}</span>
-                <strong>{currentRouteLabel}</strong>
-              </div>
-              <ProductShellSearch {...mergedSearch} />
-              <ShellThemeToggle currentTheme={currentTheme} onThemeChange={onThemeChange} />
-              <ShellLocaleMenu
-                locales={locales}
-                currentLocale={currentLocale}
-                open={localeMenuOpen}
-                onOpenChange={onLocaleMenuOpenChange}
-                onLocaleChange={onLocaleChange}
-              />
+        <header className="tcrn-top-bar" aria-label={`${moduleName} shell controls`} data-product-shell-region="topbar">
+          <div className="tcrn-product-shell__utility-row" data-product-shell-region="utility-row">
+            <div className="tcrn-product-shell__current-location">
+              <span>{currentLocationLabel}</span>
+              <strong>{currentRouteLabel}</strong>
             </div>
-          }
-        />
+            <ProductShellSearch {...mergedSearch} />
+            <ShellThemeToggle currentTheme={currentTheme} onThemeChange={onThemeChange} />
+            <ShellLocaleMenu
+              locales={locales}
+              currentLocale={currentLocale}
+              open={localeMenuOpen}
+              onOpenChange={onLocaleMenuOpenChange}
+              onLocaleChange={onLocaleChange}
+            />
+          </div>
+        </header>
         <ContentElement
           id={contentId}
           className="tcrn-product-shell__main"
@@ -1534,7 +1530,7 @@ export const tcrnComponentCss = `
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: max-content max-content minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: var(--tcrn-space-4);
   min-height: 68px;
@@ -1549,7 +1545,7 @@ export const tcrnComponentCss = `
 .tcrn-product-shell__utility-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: end;
+  justify-content: flex-start;
   align-items: center;
   gap: var(--tcrn-space-3);
   min-width: 0;

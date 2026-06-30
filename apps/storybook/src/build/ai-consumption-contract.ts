@@ -611,7 +611,7 @@ export const aiConsumptionContract = {
         "secondary developer detail disclosure"
       ],
       ownerQualityAcceptanceCriteria: [
-        "first viewport reads as AOS Operations Cockpit or AOS Rebuild Workspace",
+        "first viewport reads as AOS Operations Cockpit with registered TCRN AOS product identity in the side brand lockup",
         "exactly one primary H1 per rendered fixture",
         "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
         "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",

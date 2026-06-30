@@ -171,7 +171,7 @@ const productShellComparatorContract = {
       paddingLeft: "20px",
       paddingRight: "20px",
       justifyContent: "stretch",
-      gridColumnCount: 3
+      gridColumnCount: 1
     }
   },
   motionProof: {
@@ -222,7 +222,7 @@ const aosFrontendShellVisualInstanceContract = {
       paddingLeft: "20px",
       paddingRight: "20px",
       justifyContent: "stretch",
-      gridColumnCount: 3
+      gridColumnCount: 1
     }
   },
   motionProof: productShellComparatorContract.motionProof,
@@ -1005,6 +1005,12 @@ if (!ownerQualityVisualInstanceOracle) {
   if (!ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("AOS Operations Cockpit")) {
     missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualityAcceptanceCriteria");
   }
+  if (!ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("registered TCRN AOS product identity")) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.registeredTcrnAosIdentityCriteria");
+  }
+  if (ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("AOS Rebuild Workspace")) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.staleAosRebuildWorkspaceCriteria");
+  }
   if (!ownerQualityVisualInstanceOracle.rejectCriteria?.join(" ")?.includes("Dummy Cockpit")) {
     missing.push("contract.visualInstanceOracles.ownerQuality.rejectCriteria");
   }
@@ -1552,6 +1558,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	    for (const [name, selector] of Object.entries(contract.requiredContentSelectors ?? {})) {
 	      requiredContent[name] = shell.matches(selector) || Boolean(shell.querySelector(selector));
 	    }
+	    const topBar = shell.querySelector(".tcrn-top-bar");
 	    const selectedNavItem = shell.querySelector(".tcrn-nav-item[aria-current=\"page\"]");
 	    const searchWrapper = shell.querySelector(contract.componentSelectors.searchWrapper);
 	    const utilityRow = shell.querySelector(contract.componentSelectors.utilityRow);
@@ -1583,6 +1590,12 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	      reducedMotion: shell.getAttribute("data-visual-instance-reduced-motion"),
 	      content: shell.getAttribute("data-visual-instance-content"),
 	      ownerVisualAdmissionBoundary: shell.getAttribute("data-visual-instance-disposition")
+	    };
+	    const topbarReadback = {
+	      text: topBar?.textContent?.replace(/\s+/g, " ").trim() ?? "",
+	      staleWorkspaceTitlePresent: Boolean(topBar?.textContent?.includes("AOS Rebuild Workspace")),
+	      brandCellPresent: Boolean(topBar?.querySelector(".tcrn-top-bar__brand")),
+	      moduleCellPresent: Boolean(topBar?.querySelector(".tcrn-top-bar__module"))
 	    };
 	    const sampleSearchMotionTimeline = async () => {
 	      if (!searchWrapper) return { missing: true };
@@ -1666,36 +1679,37 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	    const missingRequiredText = (fixture?.requiredText ?? []).filter((text) => !shellText.includes(text));
 	    const firstPrimaryHeading = primaryHeadings[0]?.textContent?.trim() ?? null;
 	    const shellRect = shell.getBoundingClientRect();
-    const shellStyle = getComputedStyle(shell);
-    shell.setAttribute("data-theme-switching", "true");
-    const themeWashStyle = getComputedStyle(shell, "::after");
-    const documentElement = document.documentElement;
-    return {
-      missingShell: false,
-      shell: {
-        width: shellRect.width,
-        height: shellRect.height,
-        left: shellRect.left,
-        right: shellRect.right,
-        top: shellRect.top,
-        bottom: shellRect.bottom,
-        scrollWidth: shell.scrollWidth,
-        clientWidth: shell.clientWidth,
-        gridTemplateColumns: shellStyle.gridTemplateColumns,
-        transitionProperty: shellStyle.transitionProperty,
-        transitionDuration: shellStyle.transitionDuration,
-        transitionTimingFunction: shellStyle.transitionTimingFunction,
-        backgroundColor: shellStyle.backgroundColor,
-        color: shellStyle.color,
-        themeWashAnimationName: themeWashStyle.animationName,
-        themeWashAnimationDuration: themeWashStyle.animationDuration,
-        themeWashAnimationTimingFunction: themeWashStyle.animationTimingFunction,
-        sourceMarker: document.querySelector("style[data-tcrn-product-shell-comparator-style=\"package-backed\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
+	    const shellStyle = getComputedStyle(shell);
+	    shell.setAttribute("data-theme-switching", "true");
+	    const themeWashStyle = getComputedStyle(shell, "::after");
+	    const documentElement = document.documentElement;
+	    return {
+	      missingShell: false,
+	      shell: {
+	        width: shellRect.width,
+	        height: shellRect.height,
+	        left: shellRect.left,
+	        right: shellRect.right,
+	        top: shellRect.top,
+	        bottom: shellRect.bottom,
+	        scrollWidth: shell.scrollWidth,
+	        clientWidth: shell.clientWidth,
+	        gridTemplateColumns: shellStyle.gridTemplateColumns,
+	        transitionProperty: shellStyle.transitionProperty,
+	        transitionDuration: shellStyle.transitionDuration,
+	        transitionTimingFunction: shellStyle.transitionTimingFunction,
+	        backgroundColor: shellStyle.backgroundColor,
+	        color: shellStyle.color,
+	        themeWashAnimationName: themeWashStyle.animationName,
+	        themeWashAnimationDuration: themeWashStyle.animationDuration,
+	        themeWashAnimationTimingFunction: themeWashStyle.animationTimingFunction,
+	        sourceMarker: document.querySelector("style[data-tcrn-product-shell-comparator-style=\"package-backed\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
 	      },
 	      measured,
 	      searchMotionTimeline,
 	      requiredContent,
 	      controlOrder,
+	      topbarReadback,
 	      state,
 	      forbiddenTextHits,
 	      fixtureForbiddenTextHits,
@@ -1757,6 +1771,12 @@ function validateProductShellReadback({
     if (actualOrder !== expectedOrder) {
       failures.push(`${label}:control-order:${actualOrder || "missing"}:expected:${expectedOrder}`);
     }
+  }
+  if (proof.topbarReadback?.staleWorkspaceTitlePresent) {
+    failures.push(`${label}:topbar-stale-aos-rebuild-workspace-title`);
+  }
+  if (proof.topbarReadback?.brandCellPresent || proof.topbarReadback?.moduleCellPresent) {
+    failures.push(`${label}:topbar-visible-product-title-cells`);
   }
   if (contract.searchRestWidth) {
     const searchWidth = proof.measured.searchWrapper?.width;

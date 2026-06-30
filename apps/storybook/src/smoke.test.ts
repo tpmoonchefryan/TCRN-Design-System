@@ -805,6 +805,8 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /ProductLogo tcrnProductLogoRegistry/);
   assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /Surface WorkIndex TableShell KeyValueList/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /AOS Operations Cockpit/);
+  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /registered TCRN AOS product identity/);
+  assert.doesNotMatch(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /AOS Rebuild Workspace/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /exactly one primary H1/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /zh-CN owner-quality fixtures localize/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /topbar controls stay within/);

@@ -433,13 +433,13 @@
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 1077,
-          "height": 13952
+          "height": 13692
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 1077,
-          "height": 18921
+          "height": 18617
         },
         {
           "id": "dialog-spec-usage",
@@ -1062,13 +1062,13 @@
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 16841
+          "height": 16556
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 691,
-          "height": 21313
+          "height": 20906
         },
         {
           "id": "dialog-spec-usage",
@@ -1685,19 +1685,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 358,
-          "height": 12723
+          "height": 12656
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 25251
+          "height": 24849
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 34860
+          "height": 34292
         },
         {
           "id": "dialog-spec-usage",

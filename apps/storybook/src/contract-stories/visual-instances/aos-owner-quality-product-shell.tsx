@@ -179,7 +179,7 @@ export const aosOwnerQualityProductShellReadback = {
     "secondary developer detail disclosure"
   ],
   props: {
-    productName: "AOS Rebuild Workspace",
+    productName: "TCRN AOS",
     moduleName: "Operations Cockpit",
     brandProductId: "aos",
     productLogoAssetId: "tcrn-aos-two-line",
@@ -216,7 +216,7 @@ export const aosOwnerQualityProductShellReadback = {
     "mobile owner-quality side navigation collapse affordance hidden by DS policy"
   ],
   ownerQualityAcceptanceCriteria: [
-    "first viewport reads as AOS Operations Cockpit or AOS Rebuild Workspace",
+    "first viewport reads as AOS Operations Cockpit with registered TCRN AOS product identity in the side brand lockup",
     "exactly one primary H1 per rendered fixture",
     "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
     "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
@@ -254,7 +254,7 @@ export const aosOwnerQualityProductShellReadback = {
 function labels(locale: OwnerQualityVariant["locale"]) {
   if (locale === "zh-CN") {
     return {
-      productName: "AOS 重建工作区",
+      productName: "TCRN AOS",
       moduleName: "运营驾驶舱",
       navLabel: "AOS 运营导航",
       cockpit: "运营驾驶舱",
@@ -279,7 +279,7 @@ function labels(locale: OwnerQualityVariant["locale"]) {
     };
   }
   return {
-    productName: "AOS Rebuild Workspace",
+    productName: "TCRN AOS",
     moduleName: "Operations Cockpit",
     navLabel: "AOS operations navigation",
     cockpit: "Operations Cockpit",

@@ -116,7 +116,7 @@ test("registered product logos expose exact DS AOS and TMS lockups", () => {
 test("product shell renders package-backed side-nav shell and effect boundary", () => {
   const html = renderToStaticMarkup(
     <ProductShell
-      productName="AOS Rebuild Workspace"
+      productName="TCRN AOS"
       moduleName="Frontend shell slice"
       brandProductId="aos"
       brandMarkSrc="/assets/tcrn-brand-mark.svg"
@@ -172,7 +172,9 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-product-logo-asset-id="tcrn-aos-two-line"/);
   assert.match(html, />TCRN AOS</);
   assert.match(html, />AI Operation System</);
-  assert.doesNotMatch(html, /Rebuild workspace/);
+  assert.doesNotMatch(html, /AOS Rebuild Workspace|Rebuild workspace/);
+  assert.doesNotMatch(html, /tcrn-top-bar__brand/);
+  assert.doesNotMatch(html, /tcrn-top-bar__module/);
   assert.match(html, /src="\/assets\/tcrn-brand-mark\.svg"/);
   assert.match(html, /aria-expanded="false"/);
   assert.match(html, /data-side-nav-persisted-key="tcrn-aos-side-nav-collapsed"/);
@@ -191,12 +193,15 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-locale-semantic-api="onOpenChange-onLocaleChange"/);
   assert.match(html, /data-package-backed-shell-control="theme-toggle"/);
   assert.match(html, /data-theme-transition-contract="whole-page-view-transition-or-token-wash"/);
+  const currentLocationIndex = html.indexOf('class="tcrn-product-shell__current-location"');
   const searchIndex = html.indexOf('data-shell-control="product-shell-search"');
   const themeIndex = html.indexOf('data-theme-toggle="true"');
   const localeIndex = html.indexOf("data-locale-menu-toggle");
+  assert.ok(currentLocationIndex > -1);
   assert.ok(searchIndex > -1);
   assert.ok(themeIndex > -1);
   assert.ok(localeIndex > -1);
+  assert.ok(currentLocationIndex < searchIndex);
   assert.ok(searchIndex < themeIndex);
   assert.ok(themeIndex < localeIndex);
   assert.match(html, /Fixture-safe cockpit content/);
@@ -213,7 +218,7 @@ test("product shell component css keeps motion shorthands valid", () => {
 
 test("product shell component css isolates topbar from docs chrome", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*border: 0;[\s\S]*border-bottom: 1px solid var\(--tcrn-color-border-subtle\);[\s\S]*border-radius: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: max-content max-content minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);[\s\S]*justify-content: stretch;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);[\s\S]*justify-content: stretch;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*background: color-mix\(in srgb, var\(--tcrn-color-surface-panel\), transparent 5%\);/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell \{[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell :focus-visible:not\(\.tcrn-search-input__control\) \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*box-shadow: none;/);
@@ -223,7 +228,7 @@ test("product shell component css isolates topbar from docs chrome", () => {
 });
 
 test("product shell utility row wraps controls within owner-quality story frames", () => {
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__utility-row \{[\s\S]*display: flex;[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: end;[\s\S]*min-width: 0;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell__utility-row \{[\s\S]*display: flex;[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: flex-start;[\s\S]*min-width: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__utility-row > \* \{[\s\S]*min-width: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__current-location \{[\s\S]*flex: 1 1 116px;[\s\S]*max-width: 240px;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-search \{[\s\S]*flex-basis: 260px;[\s\S]*width: 260px;[\s\S]*max-width: min\(100%, 260px\);/);
@@ -236,7 +241,7 @@ test("product shell utility row wraps controls within owner-quality story frames
 test("product shell can disable side-nav collapse with a truthful package-backed reason", () => {
   const html = renderToStaticMarkup(
     <ProductShell
-      productName="AOS Rebuild Workspace"
+      productName="TCRN AOS"
       moduleName="Operations Cockpit"
       brandProductId="aos"
       currentRouteLabel="Operations Cockpit"
@@ -319,7 +324,7 @@ function ProductShellSemanticFixture({ events }: ProductShellSemanticFixtureProp
 
   return (
     <ProductShell
-      productName="AOS Rebuild Workspace"
+      productName="TCRN AOS"
       moduleName="Frontend shell slice"
       brandProductId="aos"
       brandMarkSrc="/assets/tcrn-brand-mark.svg"
