@@ -169,7 +169,8 @@ export const aosOwnerQualityProductShellReadback = {
     "mobile zh-CN Work queue",
     "search rest visual state",
     "search results visual state",
-    "reduced-motion shell/search fallback"
+    "reduced-motion shell/search fallback",
+    "expanded-only owner-review side navigation with disabled collapse affordance"
   ],
   ownerQualityAcceptanceCriteria: [
     "first viewport reads as AOS Operations Cockpit or AOS Rebuild Workspace",
@@ -191,7 +192,8 @@ export const aosOwnerQualityProductShellReadback = {
     "owner/product/release/live-dispatch/final-Cockpit readiness is claimed"
   ],
   delegatedSubOracles: [
-    "ProductShell owns side-nav collapse, responsive posture, theme, locale, focus, and reduced-motion behavior.",
+    "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and a disabled expanded-only side-nav collapse affordance for this owner-quality oracle.",
+    "Collapsed owner-quality side-navigation states require a later DS oracle admission before product parity can claim them.",
     "ProductShellSearch owns search rest/results/dismissal behavior.",
     "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
   ],
@@ -230,7 +232,8 @@ function labels(locale: OwnerQualityVariant["locale"]) {
       activityTitle: "活动",
       disclosureTitle: "开发者细节",
       boundary: "只读预览",
-      noDispatch: "无实时派发"
+      noDispatch: "无实时派发",
+      sideNavFixed: "owner 评审路线保持展开导航"
     };
   }
   return {
@@ -242,7 +245,7 @@ function labels(locale: OwnerQualityVariant["locale"]) {
     work: "Work queue",
     currentLocation: "Current location",
     searchLabel: "Search AOS operations",
-    searchPlaceholder: "Search work, gates, evidence, or owner actions",
+    searchPlaceholder: "Search operations",
     searchResultsLabel: "AOS operations search results",
     emptyLabel: "No matching operations records",
     skipLink: "Skip to operations content",
@@ -256,7 +259,8 @@ function labels(locale: OwnerQualityVariant["locale"]) {
     activityTitle: "Activity",
     disclosureTitle: "Developer details",
     boundary: "Read-only preview",
-    noDispatch: "No live dispatch"
+    noDispatch: "No live dispatch",
+    sideNavFixed: "Side navigation stays expanded for owner-review routes"
   };
 }
 
@@ -476,6 +480,7 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
       navGroups={navGroups(variant)}
       collapsed={variant.collapsed}
       collapsedStorageKey={`tcrn-aos-owner-quality-collapsed-${variant.id}`}
+      sideNavCollapseDisabledReason={copy.sideNavFixed}
       currentTheme={variant.theme}
       locales={tcrnLocaleMetadata}
       currentLocale={variant.locale}

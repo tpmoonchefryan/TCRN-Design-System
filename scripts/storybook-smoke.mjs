@@ -408,6 +408,21 @@ const aosOwnerQualityProductShellContract = {
     topBar: aosFrontendShellVisualInstanceContract.expectedControlMetrics.topBar
   },
   motionProof: productShellComparatorContract.motionProof,
+  searchRestWidth: {
+    maxPx: 260,
+    expandedMaxPx: 420,
+    mobileMaxPx: 320
+  },
+  ownerQualitySideNavPolicy: {
+    expandedOnly: true,
+    collapseAffordance: "disabled_with_package_backed_reason",
+    expectedAction: "disabled",
+    expectedDisabledReason: "Side navigation stays expanded for owner-review routes",
+    expectedDisabledReasons: [
+      "Side navigation stays expanded for owner-review routes",
+      "owner 评审路线保持展开导航"
+    ]
+  },
   noOverflowProof: true,
   controlBoundsProof: {
     controls: ["searchWrapper", "searchInput", "localeTrigger", "themeToggle"],
@@ -738,6 +753,9 @@ for (const text of [
   ".tcrn-shell-theme-toggle",
   ".tcrn-shell-locale-menu__trigger",
   ".tcrn-shell-side-nav-toggle",
+  "data-side-nav-action=\"disabled\"",
+  "data-side-nav-disabled-reason=\"Side navigation stays expanded for owner-review routes\"",
+  "flex: 0 1 260px",
   ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
   ".tcrn-product-shell[data-theme-switching=\"true\"]::after",
   "tcrn-product-shell-theme-wash",
@@ -775,6 +793,12 @@ for (const field of ["transitionProperty", "transitionDuration", "transitionTimi
 }
 if (shellControlVisualParityProof?.controlOrder?.join(">") !== productShellComparatorContract.expectedControlOrder.join(">")) {
   missing.push("contract.shellControlVisualParityProof.controlOrder");
+}
+if (shellControlVisualParityProof?.searchRestWidth?.maxPx !== 260 || shellControlVisualParityProof?.searchRestWidth?.expandedMaxPx !== 420) {
+  missing.push("contract.shellControlVisualParityProof.searchRestWidth");
+}
+if (!String(shellControlVisualParityProof?.ownerQualitySideNavCollapsePolicy ?? "").includes("disabled")) {
+  missing.push("contract.shellControlVisualParityProof.ownerQualitySideNavCollapsePolicy");
 }
 const aosVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "aos-frontend-shell-slice");
 if (!aosVisualInstanceOracle) {
@@ -830,6 +854,7 @@ if (!ownerQualityVisualInstanceOracle) {
     "slots",
     "ownerQualityAcceptanceCriteria",
     "rejectCriteria",
+    "ownerQualitySideNavPolicy",
     "delegatedSubOracles",
     "ownerVisualAdmissionBoundary",
     "negativeCriteria"
@@ -859,6 +884,12 @@ if (!ownerQualityVisualInstanceOracle) {
   }
   if (ownerQualityVisualInstanceOracle.ownerVisualAdmissionBoundary !== aosOwnerQualityProductShellContract.ownerVisualAdmissionBoundary) {
     missing.push("contract.visualInstanceOracles.ownerQuality.ownerVisualAdmissionBoundary");
+  }
+  if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.collapseAffordance !== "disabled_with_package_backed_reason") {
+    missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.collapseAffordance");
+  }
+  if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.expandedOnly !== true) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.expandedOnly");
   }
 }
 for (const route of ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"]) {
@@ -1128,7 +1159,7 @@ function validateMetric({ failures, name, metric, expected }) {
   if (expected.transitionTimingFunctionIncludes !== undefined && !String(metric.transitionTimingFunction).includes(expected.transitionTimingFunctionIncludes)) {
     failures.push(`${name}:transition-timing-function:${metric.transitionTimingFunction}`);
   }
-  if (expected.focus !== undefined) {
+  if (expected.focus !== undefined && metric.disabled !== true) {
     for (const [property, expectedValue] of Object.entries(expected.focus)) {
       if (metric.focus?.[property] !== expectedValue) {
         failures.push(`${name}:focus-${property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}:${metric.focus?.[property] ?? "missing"}`);
@@ -1259,6 +1290,11 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	      measured[name] = {
 	        width: rect.width,
 	        height: rect.height,
+	        disabled: element instanceof HTMLButtonElement ? element.disabled : element.getAttribute("disabled") !== null,
+	        title: element.getAttribute("title"),
+	        ariaDisabled: element.getAttribute("aria-disabled"),
+	        sideNavAction: element.getAttribute("data-side-nav-action"),
+	        sideNavDisabledReason: element.getAttribute("data-side-nav-disabled-reason"),
 	        left: rect.left,
 	        right: rect.right,
         top: rect.top,
@@ -1432,6 +1468,36 @@ function validateProductShellReadback({
     const actualOrder = (proof.controlOrder ?? []).join(">");
     if (actualOrder !== expectedOrder) {
       failures.push(`${label}:control-order:${actualOrder || "missing"}:expected:${expectedOrder}`);
+    }
+  }
+  if (contract.searchRestWidth) {
+    const searchWidth = proof.measured.searchWrapper?.width;
+    const maxWidth = expectSearchResults
+      ? contract.searchRestWidth.expandedMaxPx
+      : proof.viewport.width <= 760
+        ? (contract.searchRestWidth.mobileMaxPx ?? contract.searchRestWidth.maxPx)
+        : contract.searchRestWidth.maxPx;
+    if (typeof searchWidth !== "number" || searchWidth > maxWidth + 1) {
+      failures.push(`${label}:search-width:${searchWidth ?? "missing"}:max:${maxWidth}`);
+    }
+  }
+  if (contract.ownerQualitySideNavPolicy?.collapseAffordance === "disabled_with_package_backed_reason") {
+    const sideNavToggle = proof.measured.sideNavToggle;
+    const expectedReasons = contract.ownerQualitySideNavPolicy.expectedDisabledReasons ?? [contract.ownerQualitySideNavPolicy.expectedDisabledReason];
+    if (!sideNavToggle?.disabled) {
+      failures.push(`${label}:side-nav-collapse-control-enabled`);
+    }
+    if (sideNavToggle?.ariaDisabled !== "true") {
+      failures.push(`${label}:side-nav-collapse-aria-disabled:${sideNavToggle?.ariaDisabled ?? "missing"}`);
+    }
+    if (sideNavToggle?.sideNavAction !== contract.ownerQualitySideNavPolicy.expectedAction) {
+      failures.push(`${label}:side-nav-action:${sideNavToggle?.sideNavAction ?? "missing"}`);
+    }
+    if (!expectedReasons.some((reason) => String(sideNavToggle?.sideNavDisabledReason ?? "").includes(reason))) {
+      failures.push(`${label}:side-nav-disabled-reason:${sideNavToggle?.sideNavDisabledReason ?? "missing"}`);
+    }
+    if (!expectedReasons.some((reason) => String(sideNavToggle?.title ?? "").includes(reason))) {
+      failures.push(`${label}:side-nav-disabled-title:${sideNavToggle?.title ?? "missing"}`);
     }
   }
   if (expectedState) {

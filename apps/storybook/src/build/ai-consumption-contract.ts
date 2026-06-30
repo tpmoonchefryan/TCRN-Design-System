@@ -172,6 +172,14 @@ export const aiConsumptionContract = {
     storybookStandard: "components.html#aos-owner-quality-product-shell",
     comparatorStandard: "components.html#navigation-shell-spec",
     controlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
+    searchRestWidth: {
+      maxPx: 260,
+      expandedMaxPx: 420,
+      mobileMaxPx: 320,
+      rule: "ProductShellSearch stays compact at rest on desktop, may stretch within the mobile shell, and may widen only for focus/results states."
+    },
+    ownerQualitySideNavCollapsePolicy:
+      "The aos-owner-quality-product-shell oracle is expanded-only until DS admits collapsed owner-quality variants; its side-nav collapse control must render disabled with a package-backed reason instead of acting as a clickable no-op.",
     measuredControls: [
       "themeToggle",
       "sideNavToggle",
@@ -540,6 +548,7 @@ export const aiConsumptionContract = {
         "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
         "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
         "ProductShell topbar controls stay within the fixture root and viewport without horizontal clipping",
+        "owner-quality expanded-only routes render a disabled side-navigation collapse affordance with an explicit package-backed reason",
         "read-only and no-live-dispatch boundaries are visible but low-prominence",
         "developer proof/API/readback details are secondary disclosure",
         "Cockpit and Work are meaningful product modules rather than placeholder labels"
@@ -550,11 +559,24 @@ export const aiConsumptionContract = {
         "no-overclaim copy becomes the primary product story",
         "Runtime/Stories/Gates/Audit events verification metrics lead the hierarchy",
         "ProductShell topbar, search, locale, or theme controls are cropped or create root/topbar horizontal overflow",
+        "side-navigation collapse appears enabled but leaves owner-quality routes expanded because collapsed variants are not admitted",
         "visible local product CSS/effects or Storybook-only prototype classes appear",
         "owner/product/release/live-dispatch/final-Cockpit readiness is claimed"
       ],
+      ownerQualitySideNavPolicy: {
+        admittedCollapsedVariants: [],
+        expandedOnly: true,
+        collapseAffordance: "disabled_with_package_backed_reason",
+        disabledReason:
+          "Side navigation stays expanded for owner-review routes until DS admits collapsed owner-quality variants.",
+        localizedDisabledReasons: {
+          en: "Side navigation stays expanded for owner-review routes",
+          "zh-CN": "owner 评审路线保持展开导航"
+        }
+      },
       delegatedSubOracles: [
-        "ProductShell owns side-nav collapse, responsive posture, theme, locale, focus, and reduced-motion behavior.",
+        "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and a disabled expanded-only side-nav collapse affordance for this owner-quality oracle.",
+        "Collapsed owner-quality side-navigation states require a later DS oracle admission before product parity can claim them.",
         "ProductShellSearch owns search rest/results/dismissal behavior.",
         "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
       ],
@@ -645,7 +667,7 @@ export const aiConsumptionContract = {
   },
   productShellHardeningRules: {
     sideNavigation:
-      "Product and documentation shells that claim SideNav behavior must expose a keyboard-accessible collapse and expand control, persist or route-own collapsed state, preserve active location/accessibility, and prove both expanded and collapsed states.",
+      "Product and documentation shells that claim SideNav behavior must expose a keyboard-accessible collapse and expand control, persist or route-own collapsed state, preserve active location/accessibility, and prove both expanded and collapsed states unless a named visual-instance oracle explicitly declares expanded-only behavior with a disabled package-backed collapse affordance.",
     brandSurface:
       "Product shells must use registered package-backed brand lockups or route brand admission before product use; generic icons, text-only substitutes, and deprecated AOS wordmark images are not accepted brand marks.",
     registeredNavigation:

@@ -297,6 +297,7 @@ export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, "ariaL
   controls: string;
   expandedLabel?: string;
   collapsedLabel?: string;
+  disabledReason?: string;
   persistedKey?: string;
   onCollapsedChange?: (collapsed: boolean) => void;
 }
@@ -306,15 +307,18 @@ export function SideNavCollapseButton({
   controls,
   expandedLabel = "Collapse side navigation",
   collapsedLabel = "Expand side navigation",
+  disabledReason,
   persistedKey,
   onCollapsedChange,
   className,
   onClick,
   ...props
 }: SideNavCollapseButtonProps) {
+  const disabled = props.disabled ?? Boolean(disabledReason);
+  const label = disabledReason ?? (collapsed ? collapsedLabel : expandedLabel);
   const handleClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
     onClick?.(event);
-    if (!event.defaultPrevented) {
+    if (!disabled && !event.defaultPrevented) {
       onCollapsedChange?.(!collapsed);
     }
   };
@@ -323,8 +327,11 @@ export function SideNavCollapseButton({
     <IconButton
       {...props}
       onClick={handleClick}
-      ariaLabel={collapsed ? collapsedLabel : expandedLabel}
-      title={collapsed ? collapsedLabel : expandedLabel}
+      disabled={disabled}
+      disabledReason={disabledReason}
+      aria-disabled={disabled ? true : undefined}
+      ariaLabel={label}
+      title={label}
       aria-controls={controls}
       aria-expanded={collapsed ? "false" : "true"}
       className={cx("tcrn-shell-side-nav-toggle", className)}
@@ -332,6 +339,8 @@ export function SideNavCollapseButton({
       data-package-backed-shell-control="side-nav-collapse"
       data-side-nav-toggle="true"
       data-side-nav-collapsed={String(collapsed)}
+      data-side-nav-action={disabled ? "disabled" : "toggle"}
+      data-side-nav-disabled-reason={disabledReason}
       data-side-nav-persisted-key={persistedKey}
       data-side-nav-semantic-api="onCollapsedChange"
       icon={
@@ -699,6 +708,7 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   currentTheme?: ShellThemeMode;
   localeMenuOpen?: boolean;
   search?: ProductShellSearchProps;
+  sideNavCollapseDisabledReason?: string;
   onCollapsedChange?: (collapsed: boolean) => void;
   onThemeChange?: (theme: ShellThemeMode) => void;
   onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
@@ -733,6 +743,7 @@ export function ProductShell({
   currentTheme = "light",
   localeMenuOpen = false,
   search,
+  sideNavCollapseDisabledReason,
   onCollapsedChange,
   onThemeChange,
   onLocaleMenuOpenChange,
@@ -796,7 +807,13 @@ export function ProductShell({
               data-visible-registered-brand-lockup="true"
             />
           </a>
-          <SideNavCollapseButton collapsed={collapsed} controls={navId} persistedKey={collapsedStorageKey} onCollapsedChange={onCollapsedChange} />
+          <SideNavCollapseButton
+            collapsed={collapsed}
+            controls={navId}
+            disabledReason={sideNavCollapseDisabledReason}
+            persistedKey={collapsedStorageKey}
+            onCollapsedChange={onCollapsedChange}
+          />
         </div>
         <SideNav id={navId} label={navLabel} className="tcrn-product-shell__nav" data-registered-navigation-only="true">
           {navGroups.map((group) => (
@@ -1422,14 +1439,14 @@ export const tcrnComponentCss = `
 }
 .tcrn-product-shell-search {
   position: relative;
-  flex: 1 1 220px;
+  flex: 0 1 260px;
   justify-self: end;
   width: min(100%, 260px);
-  max-width: 360px;
+  max-width: 260px;
   transition: width var(--tcrn-motion-product-shell);
 }
 .tcrn-product-shell-search[data-search-expanded="true"] {
-  flex-basis: 260px;
+  flex: 1 1 320px;
   width: min(100%, 420px);
   max-width: 420px;
 }

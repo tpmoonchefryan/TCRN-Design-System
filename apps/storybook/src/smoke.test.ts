@@ -290,6 +290,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /shell\.searchNoResults/);
   assert.match(combinedHtml, /data-doc-shell-icon="current-location-separator"/);
   assert.match(combinedHtml, /data-package-backed-shell-control="side-nav-collapse"/);
+  assert.match(combinedHtml, /data-side-nav-action="disabled"/);
+  assert.match(combinedHtml, /data-side-nav-disabled-reason="Side navigation stays expanded for owner-review routes"/);
   assert.match(combinedHtml, /data-side-nav-icon="collapse"[\s\S]*data-icon-name="chevron-left"/);
   assert.match(combinedHtml, /data-side-nav-icon="expand"[\s\S]*data-icon-name="chevron-right"/);
   assert.match(combinedHtml, /data-doc-shell-icon="previous-chapter"/);
@@ -448,6 +450,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"/);
   assert.match(readGroupPage("Components"), /data-product-shell-semantic-api="collapse-theme-locale-search"/);
   assert.match(readGroupPage("Components"), /data-side-nav-semantic-api="onCollapsedChange"/);
+  assert.match(readGroupPage("Components"), /data-side-nav-action="disabled"/);
   assert.match(readGroupPage("Components"), /data-shell-control="product-shell-search"/);
   assert.match(readGroupPage("Components"), /data-search-dismissal-contract="blur-outside-pointer-tab-escape"/);
   assert.match(readGroupPage("Components"), /data-search-semantic-api="onQueryChange-onExpandedChange-onDismiss-onResultActivate"/);
@@ -793,7 +796,9 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /Dummy Cockpit/);
   assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /implementation\/proof\/debug terminology/);
   assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /root\/topbar horizontal overflow/);
-  assert.match(ownerQualityOracle?.delegatedSubOracles?.join(" ") ?? "", /ProductShell owns side-nav collapse/);
+  assert.match(ownerQualityOracle?.delegatedSubOracles?.join(" ") ?? "", /disabled expanded-only side-nav collapse affordance/);
+  assert.equal(ownerQualityOracle?.ownerQualitySideNavPolicy?.expandedOnly, true);
+  assert.equal(ownerQualityOracle?.ownerQualitySideNavPolicy?.collapseAffordance, "disabled_with_package_backed_reason");
   assert.equal(ownerQualityOracle?.ownerVisualAdmissionBoundary, "internal_ds_oracle_review_required_before_owner_visual_admission");
   assert.match(ownerQualityOracle?.negativeCriteria?.join(" ") ?? "", /no proof-scaffold headline as Level 1 content/);
   assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Style Guide")?.consumerChecks.join(" ") ?? "", /motion\/effect parity/);

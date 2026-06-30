@@ -187,10 +187,45 @@ test("product shell utility row wraps controls within owner-quality story frames
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__utility-row \{[\s\S]*display: flex;[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: end;[\s\S]*min-width: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__utility-row > \* \{[\s\S]*min-width: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__current-location \{[\s\S]*flex: 1 1 116px;[\s\S]*max-width: 240px;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell-search \{[\s\S]*flex: 1 1 220px;[\s\S]*max-width: 360px;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell-search\[data-search-expanded="true"\] \{[\s\S]*flex-basis: 260px;[\s\S]*max-width: 420px;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell-search \{[\s\S]*flex: 0 1 260px;[\s\S]*width: min\(100%, 260px\);[\s\S]*max-width: 260px;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell-search\[data-search-expanded="true"\] \{[\s\S]*flex: 1 1 320px;[\s\S]*max-width: 420px;/);
   assert.match(tcrnComponentCss, /@media \(max-width: 760px\) \{[\s\S]*\.tcrn-product-shell__utility-row \{[\s\S]*justify-content: stretch;[\s\S]*align-items: stretch;[\s\S]*\.tcrn-shell-locale-menu__trigger \{[\s\S]*width: 100%;[\s\S]*max-width: none;/);
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell__utility-row \{[\s\S]*grid-template-columns: max-content minmax\(220px, 360px\) max-content max-content;/);
+});
+
+test("product shell can disable side-nav collapse with a truthful package-backed reason", () => {
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="AOS Rebuild Workspace"
+      moduleName="Operations Cockpit"
+      brandSuffix="AOS"
+      brandCaption="Rebuild workspace"
+      currentRouteLabel="Operations Cockpit"
+      navLabel="AOS operations navigation"
+      currentLocale="en"
+      sideNavCollapseDisabledReason="Side navigation stays expanded for owner-review routes"
+      locales={[{ locale: "en", nativeName: "English" }]}
+      navGroups={[
+        {
+          id: "registered",
+          label: "Registered shell entries",
+          selected: true,
+          items: [{ id: "cockpit", label: "Cockpit", href: "/cockpit", iconName: "home", selected: true }]
+        }
+      ]}
+    >
+      <section>Owner-quality content</section>
+    </ProductShell>
+  );
+
+  assert.match(html, /data-package-backed-shell-control="side-nav-collapse"/);
+  assert.match(html, /data-side-nav-action="disabled"/);
+  assert.match(html, /data-side-nav-disabled-reason="Side navigation stays expanded for owner-review routes"/);
+  assert.match(html, /aria-label="Side navigation stays expanded for owner-review routes"/);
+  assert.match(html, /title="Side navigation stays expanded for owner-review routes"/);
+  assert.match(html, /aria-disabled="true"/);
+  assert.match(html, /disabled=""/);
+  assert.match(html, /aria-expanded="true"/);
 });
 
 test("product shell component css keeps package controls contrast-safe", () => {
