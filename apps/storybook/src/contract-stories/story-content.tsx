@@ -81,6 +81,10 @@ import {
   aosFrontendShellSliceVisualInstanceReadback
 } from "./visual-instances/aos-frontend-shell-slice.js";
 import {
+  AosOwnerQualityProductShell,
+  aosOwnerQualityProductShellReadback
+} from "./visual-instances/aos-owner-quality-product-shell.js";
+import {
   componentFamilyRows,
   componentStoryRows,
   dataGridEscalationRows,
@@ -1409,6 +1413,57 @@ const legacyContractStories: ContractStory[] = [
               { key: "requiredResult", label: "Required result" }
             ]}
             rows={aosFrontendShellSliceVisualInstanceReadback.negativeCriteria.map((criterion) => ({
+              criterion,
+              requiredResult: "fail closed if present"
+            }))}
+          />
+        </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "aos-owner-quality-product-shell",
+    title: "AOS owner-quality product shell oracle",
+    group: "Components",
+    description: "Package-backed product-first AOS Operations Cockpit oracle for downstream owner-quality remediation.",
+    render: () => (
+      <section className="alpha-story-stack" data-design-system-visual-instance-parity="aos-owner-quality-product-shell">
+        <AosOwnerQualityProductShell />
+        <ReadbackPanel title="Owner-quality visual oracle candidate">
+          <Text>
+            This named Storybook visual instance reframes AOS as an Operations Cockpit owner-inspection surface. It keeps
+            ProductShell behavior package-backed while making current work, gates, evidence, decisions, owner actions, service
+            health, and activity the first-viewport story. The earlier AOS frontend shell slice remains an internal proof scaffold.
+          </Text>
+          <TableShell
+            label="AOS owner-quality product shell readback"
+            columns={[
+              { key: "field", label: "Field" },
+              { key: "readback", label: "Readback" }
+            ]}
+            rows={[
+              { field: "Storybook page", readback: aosOwnerQualityProductShellReadback.page },
+              { field: "Package mapping", readback: Object.values(aosOwnerQualityProductShellReadback.packageMapping).flat().join(", ") },
+              { field: "Slots", readback: aosOwnerQualityProductShellReadback.slots.join(", ") },
+              { field: "Variants", readback: aosOwnerQualityProductShellReadback.variants.join(", ") },
+              { field: "States", readback: aosOwnerQualityProductShellReadback.supportedStates.join(", ") },
+              { field: "Rendered fixture selectors", readback: aosOwnerQualityProductShellReadback.variantFixtures.map((fixture) => fixture.selector).join(", ") },
+              { field: "Owner-quality criteria", readback: aosOwnerQualityProductShellReadback.ownerQualityAcceptanceCriteria.join("; ") },
+              { field: "Reject criteria", readback: aosOwnerQualityProductShellReadback.rejectCriteria.join("; ") },
+              { field: "Delegated sub-oracles", readback: aosOwnerQualityProductShellReadback.delegatedSubOracles.join(" ") },
+              { field: "Owner visual admission", readback: aosOwnerQualityProductShellReadback.ownerVisualAdmissionBoundary }
+            ]}
+          />
+          <EvidenceStrip items={["product-first owner-quality target", "package-backed ProductShell", "proof scaffold demoted", "product adoption separate"]} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Negative acceptance criteria">
+          <TableShell
+            label="AOS owner-quality reject criteria"
+            columns={[
+              { key: "criterion", label: "Criterion" },
+              { key: "requiredResult", label: "Required result" }
+            ]}
+            rows={aosOwnerQualityProductShellReadback.negativeCriteria.map((criterion) => ({
               criterion,
               requiredResult: "fail closed if present"
             }))}

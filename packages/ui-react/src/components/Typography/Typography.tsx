@@ -7,11 +7,12 @@ export function Text({ className, ...props }: HTMLAttributes<HTMLParagraphElemen
 
 export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   level?: 1 | 2 | 3 | 4;
+  visualLevel?: 1 | 2 | 3 | 4;
 }
 
-export function Heading({ level = 2, className, ...props }: HeadingProps) {
+export function Heading({ level = 2, visualLevel = level, className, ...props }: HeadingProps) {
   const Tag = `h${level}` as const;
-  return <Tag {...props} className={cx("tcrn-heading", `tcrn-heading--${level}`, className)} />;
+  return <Tag {...props} className={cx("tcrn-heading", `tcrn-heading--${visualLevel}`, className)} />;
 }
 
 export interface HighlightProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {

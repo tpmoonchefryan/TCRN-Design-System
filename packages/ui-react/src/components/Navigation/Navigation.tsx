@@ -684,6 +684,7 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   brandMarkSrc?: string;
   brandMarkAlt?: string;
   currentRouteLabel: string;
+  currentLocationLabel?: string;
   navLabel: string;
   navGroups: readonly ProductShellNavGroup[];
   locales: readonly ShellLocaleOption[];
@@ -717,6 +718,7 @@ export function ProductShell({
   brandMarkSrc,
   brandMarkAlt,
   currentRouteLabel,
+  currentLocationLabel = "Current location",
   navLabel,
   navGroups,
   locales,
@@ -818,7 +820,7 @@ export function ProductShell({
           actions={
             <div className="tcrn-product-shell__utility-row" data-product-shell-region="utility-row">
               <div className="tcrn-product-shell__current-location">
-                <span>Current location</span>
+                <span>{currentLocationLabel}</span>
                 <strong>{currentRouteLabel}</strong>
               </div>
               <ProductShellSearch {...mergedSearch} />

@@ -35,6 +35,7 @@ const requiredStories = [
   { id: "field-spec-usage", group: "Components" },
   { id: "navigation-shell-spec", group: "Components" },
   { id: "aos-frontend-shell-slice", group: "Components" },
+  { id: "aos-owner-quality-product-shell", group: "Components" },
   { id: "dialog-spec-usage", group: "Components" },
   { id: "table-work-index-spec", group: "Components" },
   { id: "forms-patterns", group: "Patterns" },
@@ -310,6 +311,200 @@ const aosFrontendShellVisualInstanceContract = {
     "no owner/product/release/live-dispatch readiness claim"
   ]
 };
+const aosOwnerQualityProductShellContract = {
+  styleSource: "@tcrn/ui-react/tcrnComponentCss",
+  storyId: "aos-owner-quality-product-shell",
+  page: "components.html#aos-owner-quality-product-shell",
+  scopedSelector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"]",
+  componentSelectors: productShellComparatorContract.componentSelectors,
+  expectedControlMetrics: {
+    themeToggle: productShellComparatorContract.expectedControlMetrics.themeToggle,
+    sideNavToggle: productShellComparatorContract.expectedControlMetrics.sideNavToggle,
+    localeTrigger: productShellComparatorContract.expectedControlMetrics.localeTrigger,
+    searchInput: productShellComparatorContract.expectedControlMetrics.searchInput,
+    topBar: aosFrontendShellVisualInstanceContract.expectedControlMetrics.topBar
+  },
+  motionProof: productShellComparatorContract.motionProof,
+  visualInstanceName: "AosOwnerQualityProductShell",
+  packageMapping: [
+    "ProductShell",
+    "ProductShellSearch",
+    "useProductShellController",
+    "Surface",
+    "WorkIndex",
+    "TableShell",
+    "KeyValueList",
+    "StatusBadge",
+    "Badge",
+    "EvidenceStrip",
+    "EnvironmentBanner",
+    "DisclosurePanel",
+    "Heading",
+    "Text"
+  ],
+  variants: [
+    "desktop-light-operations-cockpit",
+    "desktop-dark-operations-cockpit",
+    "desktop-light-work-queue",
+    "mobile-dark-zh-cn-work-queue",
+    "desktop-light-operations-search-results",
+    "reduced-motion"
+  ],
+  variantFixtures: [
+    {
+      id: "desktop-light-operations-cockpit",
+      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "false",
+        route: "cockpit",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "cockpit"
+      }
+    },
+    {
+      id: "desktop-dark-operations-cockpit",
+      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "dark",
+        locale: "en",
+        collapsed: "false",
+        route: "cockpit",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "cockpit"
+      }
+    },
+    {
+      id: "desktop-light-work-queue",
+      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "false",
+        route: "work",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "work"
+      }
+    },
+    {
+      id: "mobile-dark-zh-cn-work-queue",
+      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"mobile-dark-zh-cn-work-queue\"]",
+      viewport: { width: 390, height: 844 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "dark",
+        locale: "zh-CN",
+        collapsed: "false",
+        route: "work",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "mobile",
+        reducedMotion: "false",
+        content: "work"
+      }
+    },
+    {
+      id: "desktop-light-operations-search-results",
+      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-search-results\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "no-preference",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "false",
+        route: "cockpit",
+        search: "results",
+        searchExpanded: "true",
+        searchResultsVisible: "true",
+        viewport: "desktop",
+        reducedMotion: "false",
+        content: "cockpit"
+      }
+    },
+    {
+      id: "reduced-motion",
+      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"reduced-motion\"]",
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "reduce",
+      expectedState: {
+        theme: "light",
+        locale: "en",
+        collapsed: "false",
+        route: "cockpit",
+        search: "rest",
+        searchExpanded: "false",
+        searchResultsVisible: "false",
+        viewport: "desktop",
+        reducedMotion: "true",
+        content: "cockpit"
+      }
+    }
+  ],
+  ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
+  requiredContentSelectors: {
+    primaryHeading: "[data-owner-quality-primary-heading=\"true\"][data-owner-quality-first-viewport=\"product-led\"]",
+    workQueue: "[data-owner-quality-work-queue=\"true\"]",
+    gatesEvidence: "[data-owner-quality-gates=\"true\"]",
+    ownerActions: "[data-owner-quality-actions=\"true\"]",
+    serviceHealth: "[data-owner-quality-service-health=\"true\"]",
+    secondaryDisclosure: "[data-owner-quality-secondary-disclosure=\"true\"]",
+    notAccepted: "[data-product-acceptance=\"not-claimed\"]",
+    notReleaseReady: "[data-release-readiness=\"not-claimed\"]",
+    noLiveDispatch: "[data-live-dispatch=\"not-enabled\"]"
+  },
+  expectedPrimaryHeadingCount: 1,
+  productFirstRequired: true,
+  forbiddenText: [
+    "AOS frontend shell",
+    "Frontend shell slice",
+    "Local structural slice only",
+    "Dummy Cockpit",
+    "structural placeholder",
+    "Backend readback",
+    "Registered slice boundary",
+    "Storybook parity proof",
+    "proof required",
+    "runtime readbacks",
+    "API receipts",
+    "Product accepted",
+    "Release ready",
+    "Live dispatch enabled",
+    "tcrn-aos-wordmark"
+  ],
+  delegatedSubOracles: [
+    "ProductShell owns side-nav collapse, responsive posture, theme, locale, focus, and reduced-motion behavior.",
+    "ProductShellSearch owns search rest/results/dismissal behavior.",
+    "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
+  ],
+  negativeCriteria: [
+    "no proof-scaffold headline as Level 1 content",
+    "no Dummy Cockpit or structural-placeholder first viewport",
+    "no primary raw API/debug/readback payload",
+    "no deprecated AOS wordmark assets",
+    "no unregistered primary IA",
+    "no owner/product/release/live-dispatch readiness claim"
+  ]
+};
 const required = [
   "data-doc-shell=\"online-docs\"",
   "data-doc-nav=\"sections\"",
@@ -361,6 +556,7 @@ const required = [
   "data-contract-story-id=\"color-palette\"",
   "data-contract-story-id=\"dashboard-page-templates\"",
   "data-contract-story-id=\"aos-frontend-shell-slice\"",
+  "data-contract-story-id=\"aos-owner-quality-product-shell\"",
   "data-storybook-visual-instance=\"aos-frontend-shell-slice\"",
   "data-visual-instance-name=\"AosFrontendShellSliceVisualInstance\"",
   "data-visual-instance-disposition=\"ds_oracle_review_required_before_owner_admission\"",
@@ -375,6 +571,15 @@ const required = [
   "data-visual-instance-search=\"results\"",
   "data-visual-instance-reduced-motion=\"true\"",
   "data-aos-visual-instance-oracle=\"true\"",
+  "data-storybook-visual-instance=\"aos-owner-quality-product-shell\"",
+  "data-visual-instance-name=\"AosOwnerQualityProductShell\"",
+  "data-visual-instance-owner-quality=\"product-first\"",
+  "data-owner-quality-product-shell-oracle=\"true\"",
+  "data-visual-instance-variant=\"desktop-light-operations-cockpit\"",
+  "data-visual-instance-variant=\"desktop-dark-operations-cockpit\"",
+  "data-visual-instance-variant=\"desktop-light-work-queue\"",
+  "data-visual-instance-variant=\"mobile-dark-zh-cn-work-queue\"",
+  "data-visual-instance-variant=\"desktop-light-operations-search-results\"",
   "data-contract-story-id=\"ai-consumption-contract\"",
   "data-ai-consumption-contract-story=\"true\"",
   "ai-consumption-contract.json",
@@ -478,6 +683,52 @@ if (!aosVisualInstanceOracle) {
   }
   if (aosVisualInstanceOracle.persistedCockpitRestPolicy?.outsideMatrixMarkerForbiddenForOwnerReview !== "aos-route-state-outside-accepted-oracle-matrix") {
     missing.push("contract.visualInstanceOracles.aos.persistedCockpitRestPolicy.outsideMatrixMarker");
+  }
+}
+const ownerQualityVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "aos-owner-quality-product-shell");
+if (!ownerQualityVisualInstanceOracle) {
+  missing.push("contract.visualInstanceOracles:aos-owner-quality-product-shell");
+} else {
+  for (const requiredField of [
+    "route",
+    "disposition",
+    "replacesOwnerQualityTarget",
+    "packageMapping",
+    "primaryIa",
+    "requiredVariants",
+    "requiredVariantFixtures",
+    "slots",
+    "ownerQualityAcceptanceCriteria",
+    "rejectCriteria",
+    "delegatedSubOracles",
+    "ownerVisualAdmissionBoundary",
+    "negativeCriteria"
+  ]) {
+    if (ownerQualityVisualInstanceOracle[requiredField] === undefined) {
+      missing.push(`contract.visualInstanceOracles.ownerQuality.${requiredField}`);
+    }
+  }
+  if (ownerQualityVisualInstanceOracle.replacesOwnerQualityTarget !== "aos-frontend-shell-slice") {
+    missing.push("contract.visualInstanceOracles.ownerQuality.replacesOwnerQualityTarget");
+  }
+  for (const variant of aosOwnerQualityProductShellContract.variants) {
+    if (!ownerQualityVisualInstanceOracle.requiredVariantFixtures?.some?.((fixture) => fixture.id === variant)) {
+      missing.push(`contract.visualInstanceOracles.ownerQuality.requiredVariantFixtures:${variant}`);
+    }
+  }
+  for (const packageName of aosOwnerQualityProductShellContract.packageMapping) {
+    if (!ownerQualityVisualInstanceOracle.packageMapping?.includes(packageName)) {
+      missing.push(`contract.visualInstanceOracles.ownerQuality.packageMapping:${packageName}`);
+    }
+  }
+  if (!ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("AOS Operations Cockpit")) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualityAcceptanceCriteria");
+  }
+  if (!ownerQualityVisualInstanceOracle.rejectCriteria?.join(" ")?.includes("Dummy Cockpit")) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.rejectCriteria");
+  }
+  if (ownerQualityVisualInstanceOracle.ownerVisualAdmissionBoundary !== aosOwnerQualityProductShellContract.ownerVisualAdmissionBoundary) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.ownerVisualAdmissionBoundary");
   }
 }
 for (const route of ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"]) {
@@ -768,6 +1019,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	    }
 	    const selectedNavItem = shell.querySelector(".tcrn-nav-item[aria-current=\"page\"]");
 	    const searchWrapper = shell.querySelector(contract.componentSelectors.searchWrapper);
+	    const primaryHeadings = Array.from(shell.querySelectorAll("h1"));
 	    const state = {
 	      variant: shell.getAttribute("data-visual-instance-variant"),
 	      theme: shell.getAttribute("data-visual-instance-theme"),
@@ -789,6 +1041,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	    };
 	    const shellText = shell.textContent ?? "";
 	    const forbiddenTextHits = (contract.forbiddenText ?? []).filter((text) => shellText.includes(text));
+	    const firstPrimaryHeading = primaryHeadings[0]?.textContent?.trim() ?? null;
 	    const shellRect = shell.getBoundingClientRect();
     const shellStyle = getComputedStyle(shell);
     shell.setAttribute("data-theme-switching", "true");
@@ -812,6 +1065,8 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	      requiredContent,
 	      state,
 	      forbiddenTextHits,
+	      primaryHeadingCount: primaryHeadings.length,
+	      firstPrimaryHeading,
 	      viewport: { width: window.innerWidth, height: window.innerHeight, scrollWidth: documentElement.scrollWidth }
 	    };
 	  }, { contract, fixture });
@@ -910,6 +1165,15 @@ function validateProductShellReadback({
   for (const [name, present] of Object.entries(proof.requiredContent ?? {})) {
     if (!present) failures.push(`${label}:visual-instance-content:${name}`);
   }
+  if (contract.expectedPrimaryHeadingCount !== undefined && proof.primaryHeadingCount !== contract.expectedPrimaryHeadingCount) {
+    failures.push(`${label}:primary-heading-count:${proof.primaryHeadingCount}`);
+  }
+  if (contract.productFirstRequired && !proof.requiredContent?.primaryHeading) {
+    failures.push(`${label}:missing-product-first-primary-heading`);
+  }
+  if (contract.productFirstRequired && /AOS frontend shell|Frontend shell slice|Local structural slice only|Dummy Cockpit/i.test(proof.firstPrimaryHeading ?? "")) {
+    failures.push(`${label}:proof-scaffold-primary-heading:${proof.firstPrimaryHeading}`);
+  }
   for (const hit of proof.forbiddenTextHits ?? []) {
     failures.push(`${label}:visual-instance-forbidden-text:${hit}`);
   }
@@ -988,11 +1252,17 @@ async function main() {
     failures: [`aos-frontend-shell-visual-instance-proof-error:${error instanceof Error ? error.message : String(error)}`],
     contract: aosFrontendShellVisualInstanceContract
   }));
+  const ownerQualityProductShellProof = await runProductShellComparatorProof(aosOwnerQualityProductShellContract).catch((error) => ({
+    ok: false,
+    failures: [`aos-owner-quality-product-shell-proof-error:${error instanceof Error ? error.message : String(error)}`],
+    contract: aosOwnerQualityProductShellContract
+  }));
   const ok = missing.length === 0
     && forbiddenPositiveHits.length === 0
     && storybookPreviewExists
     && productShellComparatorProof.ok
-    && designSystemVisualInstanceParityReadback.ok;
+    && designSystemVisualInstanceParityReadback.ok
+    && ownerQualityProductShellProof.ok;
   console.log(JSON.stringify({
     ok,
     missing,
@@ -1000,7 +1270,8 @@ async function main() {
     storybookPreviewExists,
     pages: pagesByGroup,
 	    productShellComparatorProof,
-	    designSystemVisualInstanceParityReadback
+	    designSystemVisualInstanceParityReadback,
+	    ownerQualityProductShellProof
 	  }, null, 2));
   if (!ok) {
     process.exit(1);

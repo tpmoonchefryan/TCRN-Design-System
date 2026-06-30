@@ -73,6 +73,7 @@ const expectedContractStoryIds = [
   "field-spec-usage",
   "navigation-shell-spec",
   "aos-frontend-shell-slice",
+  "aos-owner-quality-product-shell",
   "dialog-spec-usage",
   "table-work-index-spec",
   "forms-patterns",
@@ -171,7 +172,7 @@ test("static contract story surface is retained and synthetic", () => {
   const pages = contractStoryGroups.map((group) => ({ group, html: readGroupPage(group) }));
   const combinedHtml = pages.map((page) => page.html).join("\n");
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
-  assert.equal(contractStories.length, 37);
+  assert.equal(contractStories.length, 38);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
   assert.deepEqual(
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
@@ -736,6 +737,40 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   );
   assert.match(contract.visualInstanceOracles?.[0]?.packageMapping?.join(" ") ?? "", /ProductShell ProductShellSearch useProductShellController/);
   assert.match(contract.visualInstanceOracles?.[0]?.negativeCriteria?.join(" ") ?? "", /no raw API\/debug payload as primary UX/);
+  const ownerQualityOracle = contract.visualInstanceOracles?.find((oracle: { id?: string }) => oracle.id === "aos-owner-quality-product-shell");
+  assert.equal(ownerQualityOracle?.name, "AosOwnerQualityProductShell");
+  assert.equal(ownerQualityOracle?.route, "components.html#aos-owner-quality-product-shell");
+  assert.equal(ownerQualityOracle?.disposition, "owner_quality_candidate_requires_ds_review_before_product_use");
+  assert.equal(ownerQualityOracle?.replacesOwnerQualityTarget, "aos-frontend-shell-slice");
+  assert.deepEqual(ownerQualityOracle?.primaryIa, ["Operations Cockpit", "Work queue"]);
+  assert.deepEqual(ownerQualityOracle?.requiredVariants, [
+    "desktop-light-operations-cockpit",
+    "desktop-dark-operations-cockpit",
+    "desktop-light-work-queue",
+    "mobile-dark-zh-cn-work-queue",
+    "desktop-light-operations-search-results",
+    "reduced-motion"
+  ]);
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.length, 6);
+  assert.equal(
+    ownerQualityOracle?.requiredVariantFixtures?.[0]?.selector,
+    "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]"
+  );
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[0]?.expectedState?.search, "rest");
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[0]?.expectedState?.searchExpanded, false);
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[4]?.expectedState?.search, "results");
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[4]?.expectedState?.searchExpanded, true);
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[3]?.expectedState?.locale, "zh-CN");
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[5]?.expectedState?.reducedMotion, true);
+  assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /ProductShell ProductShellSearch useProductShellController/);
+  assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /Surface WorkIndex TableShell KeyValueList/);
+  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /AOS Operations Cockpit/);
+  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /exactly one primary H1/);
+  assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /Dummy Cockpit/);
+  assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /implementation\/proof\/debug terminology/);
+  assert.match(ownerQualityOracle?.delegatedSubOracles?.join(" ") ?? "", /ProductShell owns side-nav collapse/);
+  assert.equal(ownerQualityOracle?.ownerVisualAdmissionBoundary, "internal_ds_oracle_review_required_before_owner_visual_admission");
+  assert.match(ownerQualityOracle?.negativeCriteria?.join(" ") ?? "", /no proof-scaffold headline as Level 1 content/);
   assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Style Guide")?.consumerChecks.join(" ") ?? "", /motion\/effect parity/);
   assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Components")?.consumerChecks.join(" ") ?? "", /same Storybook visual instance/);
   assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Patterns")?.consumerChecks.join(" ") ?? "", /information hierarchy, density, mobile reflow/);
@@ -795,7 +830,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Required Storybook sections:/);
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, button-spec-usage, field-spec-usage, navigation-shell-spec, aos-frontend-shell-slice, dialog-spec-usage, table-work-index-spec/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, button-spec-usage, field-spec-usage, navigation-shell-spec, aos-frontend-shell-slice, aos-owner-quality-product-shell, dialog-spec-usage, table-work-index-spec/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
   const robots = readFileSync(join(process.cwd(), "storybook-static", "robots.txt"), "utf8");

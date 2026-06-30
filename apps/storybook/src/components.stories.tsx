@@ -56,6 +56,11 @@ export const AosFrontendShellSliceVisualInstance: Story = {
   render: () => renderContractStory("aos-frontend-shell-slice")
 };
 
+export const AosOwnerQualityProductShell: Story = {
+  name: "AOS owner-quality product shell oracle",
+  render: () => renderContractStory("aos-owner-quality-product-shell")
+};
+
 export const DialogSpecUsage: Story = {
   name: "Dialog spec and usage",
   render: () => renderContractStory("dialog-spec-usage")

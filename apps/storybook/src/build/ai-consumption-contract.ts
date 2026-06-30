@@ -101,6 +101,7 @@ export const aiConsumptionContract = {
         "field-spec-usage",
         "navigation-shell-spec",
         "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec"
       ],
@@ -170,6 +171,7 @@ export const aiConsumptionContract = {
       id: "aos-frontend-shell-slice",
       name: "AosFrontendShellSliceVisualInstance",
       route: "components.html#aos-frontend-shell-slice",
+      disposition: "internal_registered_shell_proof_scaffold_not_owner_quality_target",
       packageMapping: [
         "ProductShell",
         "ProductShellSearch",
@@ -321,6 +323,175 @@ export const aiConsumptionContract = {
         "no deprecated AOS wordmark assets",
         "no unregistered primary IA",
         "no raw API/debug payload as primary UX",
+        "no owner/product/release/live-dispatch readiness claim"
+      ]
+    },
+    {
+      id: "aos-owner-quality-product-shell",
+      name: "AosOwnerQualityProductShell",
+      route: "components.html#aos-owner-quality-product-shell",
+      disposition: "owner_quality_candidate_requires_ds_review_before_product_use",
+      replacesOwnerQualityTarget: "aos-frontend-shell-slice",
+      packageMapping: [
+        "ProductShell",
+        "ProductShellSearch",
+        "useProductShellController",
+        "Surface",
+        "WorkIndex",
+        "TableShell",
+        "KeyValueList",
+        "StatusBadge",
+        "Badge",
+        "EvidenceStrip",
+        "EnvironmentBanner",
+        "DisclosurePanel",
+        "Heading",
+        "Text"
+      ],
+      primaryIa: ["Operations Cockpit", "Work queue"],
+      requiredVariants: [
+        "desktop-light-operations-cockpit",
+        "desktop-dark-operations-cockpit",
+        "desktop-light-work-queue",
+        "mobile-dark-zh-cn-work-queue",
+        "desktop-light-operations-search-results",
+        "reduced-motion"
+      ],
+      requiredVariantFixtures: [
+        {
+          id: "desktop-light-operations-cockpit",
+          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: false,
+            selectedRoute: "cockpit",
+            search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
+            viewport: "desktop",
+            reducedMotion: false,
+            content: "cockpit"
+          }
+        },
+        {
+          id: "desktop-dark-operations-cockpit",
+          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit\"]",
+          expectedState: {
+            theme: "dark",
+            locale: "en",
+            collapsed: false,
+            selectedRoute: "cockpit",
+            search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
+            viewport: "desktop",
+            reducedMotion: false,
+            content: "cockpit"
+          }
+        },
+        {
+          id: "desktop-light-work-queue",
+          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: false,
+            selectedRoute: "work",
+            search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
+            viewport: "desktop",
+            reducedMotion: false,
+            content: "work"
+          }
+        },
+        {
+          id: "mobile-dark-zh-cn-work-queue",
+          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"mobile-dark-zh-cn-work-queue\"]",
+          expectedState: {
+            theme: "dark",
+            locale: "zh-CN",
+            collapsed: false,
+            selectedRoute: "work",
+            search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
+            viewport: "mobile",
+            reducedMotion: false,
+            content: "work"
+          }
+        },
+        {
+          id: "desktop-light-operations-search-results",
+          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-search-results\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: false,
+            selectedRoute: "cockpit",
+            search: "results",
+            searchExpanded: true,
+            searchResultsVisible: true,
+            viewport: "desktop",
+            reducedMotion: false,
+            content: "cockpit"
+          }
+        },
+        {
+          id: "reduced-motion",
+          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"reduced-motion\"]",
+          expectedState: {
+            theme: "light",
+            locale: "en",
+            collapsed: false,
+            selectedRoute: "cockpit",
+            search: "rest",
+            searchExpanded: false,
+            searchResultsVisible: false,
+            viewport: "desktop",
+            reducedMotion: true,
+            content: "cockpit"
+          }
+        }
+      ],
+      slots: [
+        "registered AOS brand lockup",
+        "attached ProductShell side navigation",
+        "compact topbar controls",
+        "ProductShellSearch rest/results surface",
+        "product-first operations cockpit",
+        "work queue and gate evidence",
+        "secondary developer detail disclosure"
+      ],
+      ownerQualityAcceptanceCriteria: [
+        "first viewport reads as AOS Operations Cockpit or AOS Rebuild Workspace",
+        "exactly one primary H1 per rendered fixture",
+        "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
+        "read-only and no-live-dispatch boundaries are visible but low-prominence",
+        "developer proof/API/readback details are secondary disclosure",
+        "Cockpit and Work are meaningful product modules rather than placeholder labels"
+      ],
+      rejectCriteria: [
+        "first viewport headline is AOS frontend shell, Frontend shell slice, Local structural slice only, or Dummy Cockpit",
+        "implementation/proof/debug terminology dominates the first viewport",
+        "no-overclaim copy becomes the primary product story",
+        "Runtime/Stories/Gates/Audit events verification metrics lead the hierarchy",
+        "visible local product CSS/effects or Storybook-only prototype classes appear",
+        "owner/product/release/live-dispatch/final-Cockpit readiness is claimed"
+      ],
+      delegatedSubOracles: [
+        "ProductShell owns side-nav collapse, responsive posture, theme, locale, focus, and reduced-motion behavior.",
+        "ProductShellSearch owns search rest/results/dismissal behavior.",
+        "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
+      ],
+      ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
+      negativeCriteria: [
+        "no proof-scaffold headline as Level 1 content",
+        "no Dummy Cockpit or structural-placeholder first viewport",
+        "no primary raw API/debug/readback payload",
+        "no deprecated AOS wordmark assets",
+        "no unregistered primary IA",
         "no owner/product/release/live-dispatch readiness claim"
       ]
     }
