@@ -710,6 +710,14 @@ const i18nContentChecks = [
     storyId: "color-palette",
     requiredText: ["品牌色系", "主品牌色", "副色系", "色彩角色矩阵", "主题一致性", "字体与字号令牌", "字体族契约", "字体授权层级", "页面标题 / 28px", "文本层级与节奏", "布局密度矩阵", "动效样例", "减弱动效兜底", "加载与进度样例", "骨架屏预览", "进度反馈", "交互可感知性矩阵", "状态权威矩阵", "文案流程", "禁止的文案模式"],
     forbiddenText: ["Brand palette", "Primary brand", "Secondary brand", "Color role matrix", "Theme parity", "Type scale tokens", "Font family contract", "font licensing tiers", "Page title / 28px", "Type hierarchy and rhythm", "Layout density matrix", "Motion examples", "Reduced motion fallback", "Loading and progress examples", "Skeleton preview", "Progress feedback", "Interaction affordance matrix", "State authority matrix", "Copy workflow", "Forbidden copy patterns"]
+  }),
+  await collectLocalizedTextCheck(storybookPage, {
+    locale: "zh-CN",
+    route: `apps/storybook/storybook-static/change-log.html?theme=light&locale=zh-CN#local-changelog`,
+    section: "Change Log",
+    storyId: "local-changelog",
+    requiredText: ["本地变更日志", "治理变更记录", "Storybook 治理检查点", "源路线", "故事覆盖", "AI 契约摘要", "证明工件", "无过度声明边界", "耐久源记录", "不发布", "本页内容", "治理记录"],
+    forbiddenText: ["Governance changelog records", "Date", "Source route", "Story ids", "AI contract digest readback", "Proof artifacts and boundaries", "Proof artifacts", "No-overclaim boundaries", "durable source record", "AI contract digest verified by smoke", "proof receipts required", "no publication", "Current location", "On this page", "Documentation sections", "Governance entry", "Routing and contribution", "Identity and brand", "Type and layout", "Work Management", "Proof governance", "Governance records"]
   })
 ];
 async function collectBrandMarkLocaleCheck(page, locale) {

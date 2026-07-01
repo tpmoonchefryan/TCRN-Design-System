@@ -625,6 +625,52 @@
         ],
         "missingRequiredText": [],
         "leakedForbiddenText": []
+      },
+      {
+        "locale": "zh-CN",
+        "route": "apps/storybook/storybook-static/change-log.html?theme=light&locale=zh-CN#local-changelog",
+        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/change-log.html?theme=light&locale=zh-CN#local-changelog",
+        "ok": true,
+        "requiredText": [
+          "本地变更日志",
+          "治理变更记录",
+          "Storybook 治理检查点",
+          "源路线",
+          "故事覆盖",
+          "AI 契约摘要",
+          "证明工件",
+          "无过度声明边界",
+          "耐久源记录",
+          "不发布",
+          "本页内容",
+          "治理记录"
+        ],
+        "forbiddenText": [
+          "Governance changelog records",
+          "Date",
+          "Source route",
+          "Story ids",
+          "AI contract digest readback",
+          "Proof artifacts and boundaries",
+          "Proof artifacts",
+          "No-overclaim boundaries",
+          "durable source record",
+          "AI contract digest verified by smoke",
+          "proof receipts required",
+          "no publication",
+          "Current location",
+          "On this page",
+          "Documentation sections",
+          "Governance entry",
+          "Routing and contribution",
+          "Identity and brand",
+          "Type and layout",
+          "Work Management",
+          "Proof governance",
+          "Governance records"
+        ],
+        "missingRequiredText": [],
+        "leakedForbiddenText": []
       }
     ],
     "brandMarkLocaleChecks": [

@@ -131,6 +131,53 @@ function TokenSwatch({ label, token, note }: { label: string; token: string; not
   );
 }
 
+function compactRouteId(routeId: string): string {
+  const segments = routeId.split("_").filter(Boolean);
+  const tail = segments.slice(-2).join("_");
+  return `... ${tail}`;
+}
+
+function compactDigest(value: string): string {
+  const digest = value.match(/[a-f0-9]{64}/i)?.[0];
+  if (!digest) {
+    return "Verified digest readback";
+  }
+  return `${digest.slice(0, 12)}...${digest.slice(-8)}`;
+}
+
+function compactProofArtifact(path: string): string {
+  const segments = path.split("/").filter(Boolean);
+  return segments.slice(-2).join("/");
+}
+
+function compactBoundary(boundary: string): string {
+  const boundaryLabels: Record<string, string> = {
+    "local Storybook governance contract only": "Local Storybook governance only",
+    "no package publication": "Package publication not claimed",
+    "no Storybook/docs publication": "Storybook/docs publication not claimed",
+    "no AOS/TMS product adoption": "AOS/TMS adoption not claimed",
+    "no owner/product/release acceptance": "Owner/product/release acceptance downstream",
+    "no live dispatch or external action": "No live dispatch or external action",
+    "no initiative completion claim": "Initiative completion not claimed"
+  };
+  return boundaryLabels[boundary] ?? boundary;
+}
+
+function ChangelogToken({ label, value, compactValue, kind }: { label: string; value: string; compactValue: string; kind: string }) {
+  return (
+    <span
+      className="tcrn-changelog-token"
+      data-changelog-token-kind={kind}
+      data-changelog-full-token={value}
+      title={value}
+      aria-label={`${label}: ${value}`}
+    >
+      <span className="tcrn-changelog-token__label">{label}</span>
+      <code className="tcrn-changelog-token__value">{compactValue}</code>
+    </span>
+  );
+}
+
 const workManagementSubnavItems = [
   { id: "queue", label: "Queue", href: "#work-management-components-spec", current: true, count: 6 },
   { id: "board", label: "Board", href: "#work-management-components-spec", count: 3 },
@@ -2193,37 +2240,104 @@ const legacyContractStories: LegacyContractStory[] = [
     group: "Change Log",
     description: "Human-readable local checkpoint history without package publication or release claims.",
     render: () => (
-      <section className="alpha-story-stack">
+      <section className="alpha-story-stack" data-changelog-localized-readback="true">
         <ReadbackPanel title="Governance changelog records">
-          <TableShell
-            label="Storybook governance changelog"
-            columns={[
-              { key: "date", label: "Date" },
-              { key: "route", label: "Source route" },
-              { key: "stories", label: "Story ids" },
-              { key: "digest", label: "AI contract digest readback" }
-            ]}
-            rows={storybookGovernanceChangelogRecords.map((record) => ({
-              date: record.date,
-              route: <MachineToken token={record.routeId} label="route" kind="route" />,
-              stories: `${record.affectedStoryIds.length} stories across governed sections`,
-              digest: record.aiContractDigestReadback
-            }))}
-          />
+          <div className="tcrn-changelog-records" data-changelog-records="governance">
+            {storybookGovernanceChangelogRecords.map((record) => (
+              <article key={record.routeId}
+                className="tcrn-changelog-record"
+                data-changelog-route-id={record.routeId}
+                data-changelog-planned-commit={record.plannedCommit}
+                data-changelog-ai-digest-readback={record.aiContractDigestReadback}
+                data-changelog-proof-artifacts={record.proofArtifacts.join("|")}
+                data-changelog-no-overclaim-boundaries={record.noOverclaimBoundaries.join("|")}
+              >
+                <div className="tcrn-changelog-record__header">
+                  <Badge>{record.date}</Badge>
+                  <div>
+                    <Heading level={3}>Storybook governance checkpoint</Heading>
+                    <Text>Durable source record with full traceability preserved in metadata.</Text>
+                  </div>
+                </div>
+                <KeyValueList
+                  items={[
+                    {
+                      key: "route",
+                      label: "Source route",
+                      value: (
+                        <ChangelogToken
+                          label="Governance route"
+                          value={record.routeId}
+                          compactValue={compactRouteId(record.routeId)}
+                          kind="route"
+                        />
+                      )
+                    },
+                    {
+                      key: "stories",
+                      label: "Story coverage",
+                      value: (
+                        <>
+                          {record.affectedStoryIds.length} <span>governed stories</span>
+                        </>
+                      )
+                    },
+                    {
+                      key: "digest",
+                      label: "AI contract digest",
+                      value: (
+                        <ChangelogToken
+                          label="AI contract digest"
+                          value={record.aiContractDigestReadback}
+                          compactValue={compactDigest(record.aiContractDigestReadback)}
+                          kind="digest"
+                        />
+                      )
+                    }
+                  ]}
+                />
+                <div className="tcrn-changelog-record__evidence-grid">
+                  <section className="tcrn-changelog-record__evidence-list" aria-label="Proof artifacts">
+                    <Heading level={4}>Proof artifacts</Heading>
+                    <ul>
+                      {record.proofArtifacts.map((artifact) => (
+                        <li key={artifact}>
+                          <span
+                            className="tcrn-changelog-record__artifact"
+                            data-changelog-proof-artifact={artifact}
+                            title={artifact}
+                            aria-label={`Proof artifact: ${artifact}`}
+                          >
+                            {compactProofArtifact(artifact)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section className="tcrn-changelog-record__evidence-list" aria-label="No-overclaim boundaries">
+                    <Heading level={4}>No-overclaim boundaries</Heading>
+                    <ul>
+                      {record.noOverclaimBoundaries.map((boundary) => (
+                        <li key={boundary}>
+                          <span
+                            className="tcrn-changelog-record__boundary"
+                            data-changelog-no-overclaim-boundary={boundary}
+                            title={boundary}
+                            aria-label={`No-overclaim boundary: ${boundary}`}
+                          >
+                            {compactBoundary(boundary)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                </div>
+              </article>
+            ))}
+          </div>
         </ReadbackPanel>
         <ReadbackPanel title="Proof artifacts and boundaries">
-          <TableShell
-            columns={[
-              { key: "route", label: "Route" },
-              { key: "artifacts", label: "Proof artifacts" },
-              { key: "boundaries", label: "No-overclaim boundaries" }
-            ]}
-            rows={storybookGovernanceChangelogRecords.map((record) => ({
-              route: <MachineToken token={record.routeId} label="route" kind="route" />,
-              artifacts: record.proofArtifacts.join(", "),
-              boundaries: record.noOverclaimBoundaries.join(", ")
-            }))}
-          />
+          <Text>Full source route, proof artifact paths, no-overclaim boundaries, and AI contract digest readback remain available in metadata, title text, and accessible labels while the visible table stays compact.</Text>
         </ReadbackPanel>
         <EvidenceStrip items={["durable source record", "AI contract digest verified by smoke", "proof receipts required", "no publication"]} />
       </section>

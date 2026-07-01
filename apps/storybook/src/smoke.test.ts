@@ -712,9 +712,17 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Proof"), /Proof matrix/);
   assert.match(readGroupPage("Change Log"), /Local changelog/);
   assert.match(readGroupPage("Change Log"), /Governance changelog records/);
+  assert.match(readGroupPage("Change Log"), /data-changelog-localized-readback="true"/);
+  assert.match(readGroupPage("Change Log"), /data-changelog-records="governance"/);
   assert.match(readGroupPage("Change Log"), /route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541/);
-  assert.match(readGroupPage("Change Log"), /AI contract digest readback/);
+  assert.match(readGroupPage("Change Log"), /data-changelog-route-id="route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541"/);
+  assert.match(readGroupPage("Change Log"), /data-changelog-proof-artifact="docs\/verification\/internal-alpha\/browser-proof-summary\.json"/);
+  assert.match(readGroupPage("Change Log"), /data-changelog-no-overclaim-boundary="no package publication"/);
+  assert.match(readGroupPage("Change Log"), /Storybook governance checkpoint/);
+  assert.match(readGroupPage("Change Log"), /AI contract digest/);
   assert.match(readGroupPage("Change Log"), /No-overclaim boundaries/);
+  assert.doesNotMatch(readGroupPage("Change Log"), /aria-label="Storybook governance changelog"/);
+  assert.doesNotMatch(readGroupPage("Change Log"), /role="columnheader"[^>]*>Story ids</);
   assert.doesNotMatch(readGroupPage("Welcome"), /data-story-id="component-family-index"/);
   assert.doesNotMatch(readGroupPage("Welcome"), /data-story-id="color-palette"/);
   assert.doesNotMatch(readGroupPage("Style Guide"), /data-story-id="tokens-copy-state"/);

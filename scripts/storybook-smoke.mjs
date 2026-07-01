@@ -2220,6 +2220,151 @@ async function runProductShellComparatorProof(contract = productShellComparatorC
   }
 }
 
+async function runChangelogI18nReadabilityProof() {
+  const { server, origin } = await startStaticServer(staticRoot);
+  const failures = [];
+  const route = "change-log.html?theme=light&locale=zh-CN#local-changelog";
+  const requiredText = [
+    "治理变更记录",
+    "Storybook 治理检查点",
+    "源路线",
+    "故事覆盖",
+    "AI 契约摘要",
+    "证明工件",
+    "无过度声明边界",
+    "耐久源记录",
+    "不发布",
+    "本页内容",
+    "治理记录"
+  ];
+  const forbiddenText = [
+    "Governance changelog records",
+    "Date",
+    "Source route",
+    "Story ids",
+    "AI contract digest readback",
+    "Proof artifacts and boundaries",
+    "Proof artifacts",
+    "No-overclaim boundaries",
+    "durable source record",
+    "AI contract digest verified by smoke",
+    "proof receipts required",
+    "no publication",
+    "Current location",
+    "On this page",
+    "Documentation sections",
+    "Governance entry",
+    "Routing and contribution",
+    "Identity and brand",
+    "Type and layout",
+    "Work Management",
+    "Proof governance",
+    "Governance records"
+  ];
+
+  async function collect(viewport) {
+    const browser = await chromium.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    });
+    try {
+      const context = await browser.newContext({ viewport });
+      const page = await context.newPage();
+      await page.goto(`${origin}/${route}`);
+      await page.waitForSelector("[data-storybook-locale='zh-CN']");
+      await page.waitForSelector("[data-contract-story-id='local-changelog']");
+      await page.waitForSelector("[data-doc-nav-item='local-changelog'][aria-current='location'][data-doc-nav-item-active='true']");
+      await page.waitForTimeout(150);
+      const metrics = await page.evaluate(({ requiredText, forbiddenText }) => {
+        const bodyText = document.body.innerText;
+        const html = document.documentElement;
+        const body = document.body;
+        const compactNodes = Array.from(document.querySelectorAll(
+          ".tcrn-changelog-token__value, .tcrn-changelog-record__artifact, .tcrn-changelog-record__boundary"
+        ));
+        const compactNodeReadbacks = compactNodes.map((node) => {
+          const rect = node.getBoundingClientRect();
+          const style = window.getComputedStyle(node);
+          const traceabilityNode = node.closest("[data-changelog-full-token], [data-changelog-proof-artifact], [data-changelog-no-overclaim-boundary]") ?? node;
+          return {
+            text: node.textContent?.trim() ?? "",
+            width: Number(rect.width.toFixed(2)),
+            right: Number(rect.right.toFixed(2)),
+            maxWidth: style.maxWidth,
+            overflow: style.overflow,
+            textOverflow: style.textOverflow,
+            whiteSpace: style.whiteSpace,
+            hasTraceabilityMetadata: Boolean(traceabilityNode.getAttribute("title")
+              || traceabilityNode.getAttribute("data-changelog-full-token")
+              || traceabilityNode.getAttribute("data-changelog-proof-artifact")
+              || traceabilityNode.getAttribute("data-changelog-no-overclaim-boundary"))
+          };
+        });
+        const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
+        return {
+          locale: document.querySelector("[data-storybook-locale]")?.getAttribute("data-storybook-locale") ?? document.documentElement.getAttribute("data-storybook-locale"),
+          bodyClientWidth: body.clientWidth,
+          bodyScrollWidth: body.scrollWidth,
+          htmlClientWidth: html.clientWidth,
+          htmlScrollWidth: html.scrollWidth,
+          pageOverflow,
+          missingRequiredText: requiredText.filter((text) => !bodyText.includes(text)),
+          leakedForbiddenText: forbiddenText.filter((text) => bodyText.includes(text)),
+          visibleRawRouteLeak: bodyText.includes("route_tcrn_ds_storybook_governance_"),
+          recordCount: document.querySelectorAll("[data-changelog-route-id]").length,
+          metadataRoutePreserved: Boolean(document.querySelector("[data-changelog-route-id='route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541']")),
+          proofArtifactMetadataCount: document.querySelectorAll("[data-changelog-proof-artifact]").length,
+          boundaryMetadataCount: document.querySelectorAll("[data-changelog-no-overclaim-boundary]").length,
+          compactNodeReadbacks,
+          compactNodeFailures: compactNodeReadbacks.filter((item) => item.overflow === "visible"
+            || item.textOverflow !== "ellipsis"
+            || item.whiteSpace !== "nowrap"
+            || !item.hasTraceabilityMetadata)
+        };
+      }, { requiredText, forbiddenText });
+      await context.close();
+      return {
+        viewport,
+        route,
+        url: page.url(),
+        ...metrics,
+        ok: metrics.locale === "zh-CN"
+          && metrics.missingRequiredText.length === 0
+          && metrics.leakedForbiddenText.length === 0
+          && !metrics.visibleRawRouteLeak
+          && !metrics.pageOverflow
+          && metrics.recordCount > 0
+          && metrics.metadataRoutePreserved
+          && metrics.proofArtifactMetadataCount > 0
+          && metrics.boundaryMetadataCount > 0
+          && metrics.compactNodeFailures.length === 0
+      };
+    } finally {
+      await browser.close();
+    }
+  }
+
+  try {
+    const desktop = await collect({ width: 1440, height: 900 });
+    const mobile = await collect({ width: 390, height: 844 });
+    if (!desktop.ok) {
+      failures.push({ viewport: "desktop", desktop });
+    }
+    if (!mobile.ok) {
+      failures.push({ viewport: "mobile", mobile });
+    }
+    return {
+      ok: failures.length === 0,
+      route,
+      failures,
+      readbacks: { desktop, mobile },
+      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+    };
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+}
+
 async function main() {
   const productShellComparatorProof = await runProductShellComparatorProof().catch((error) => ({
     ok: false,
@@ -2236,12 +2381,17 @@ async function main() {
     failures: [`aos-owner-quality-product-shell-proof-error:${error instanceof Error ? error.message : String(error)}`],
     contract: aosOwnerQualityProductShellContract
   }));
+  const changelogI18nReadabilityProof = await runChangelogI18nReadabilityProof().catch((error) => ({
+    ok: false,
+    failures: [`changelog-i18n-readability-proof-error:${error instanceof Error ? error.message : String(error)}`]
+  }));
   const ok = missing.length === 0
     && forbiddenPositiveHits.length === 0
     && storybookPreviewExists
     && productShellComparatorProof.ok
     && designSystemVisualInstanceParityReadback.ok
-    && ownerQualityProductShellProof.ok;
+    && ownerQualityProductShellProof.ok
+    && changelogI18nReadabilityProof.ok;
   console.log(JSON.stringify({
     ok,
     missing,
@@ -2250,7 +2400,8 @@ async function main() {
     pages: pagesByGroup,
 	    productShellComparatorProof,
 	    designSystemVisualInstanceParityReadback,
-	    ownerQualityProductShellProof
+	    ownerQualityProductShellProof,
+	    changelogI18nReadabilityProof
 	  }, null, 2));
   if (!ok) {
     process.exit(1);

@@ -162,7 +162,7 @@ function sidebarToggleHtml(): string {
 }
 
 function navHtml(activeGroup: ContractStoryGroup): string {
-  return `<nav class="tcrn-doc-nav" aria-label="Documentation sections" data-doc-nav="sections">
+  return `<nav class="tcrn-doc-nav" aria-label="${escapeHtml(localeText("shell.topNavLabel"))}" data-doc-nav="sections">
   <ol class="tcrn-doc-nav__groups">
 ${contractStoryGroups.map((group) => {
   const current = group === activeGroup ? " aria-current=\"page\"" : "";
@@ -177,16 +177,16 @@ ${contractStoryGroups.map((group) => {
         <span class="tcrn-doc-nav__section-label">${groupLabel}</span>
         <span class="tcrn-doc-nav__section-abbr" aria-hidden="true">${groupAbbr}</span>
       </a>
-      <ol class="tcrn-doc-nav__categories" aria-label="${escapeHtml(`${group} categories`)}">
+      <ol class="tcrn-doc-nav__categories" aria-label="${escapeHtml(`${localeText(`group.${group}`)} ${localeText("shell.categoriesLabel")}`)}">
 ${categories.map((category) => {
   const open = group === activeGroup && category.id === activeCategoryId;
   const listId = categoryDomId(group, category.id);
   return `        <li class="tcrn-doc-nav__category" data-doc-nav-category="${escapeHtml(category.id)}" data-doc-nav-category-open="${open ? "true" : "false"}">
           <button class="tcrn-doc-nav__category-toggle" type="button" aria-expanded="${open ? "true" : "false"}" aria-controls="${listId}" data-doc-nav-category-toggle="${escapeHtml(category.id)}">
             <span class="tcrn-doc-nav__category-label">${escapeHtml(category.label)}</span>
-            <span class="tcrn-doc-nav__category-count" aria-label="${category.stories.length} stories">${category.stories.length}</span>
+            <span class="tcrn-doc-nav__category-count" aria-label="${category.stories.length} ${escapeHtml(localeText("shell.storiesCountLabel"))}">${category.stories.length}</span>
           </button>
-          <ol class="tcrn-doc-nav__stories" id="${listId}" aria-label="${escapeHtml(`${category.label} stories`)}"${open ? "" : " hidden"}>
+          <ol class="tcrn-doc-nav__stories" id="${listId}" aria-label="${escapeHtml(`${category.label} ${localeText("shell.storiesCountLabel")}`)}"${open ? "" : " hidden"}>
 ${category.stories.map((story, index) => {
   const href = `${groupFileName(story.group)}#${story.id}`;
   const currentStory = group === activeGroup && category.id === activeCategoryId && index === 0 ? " aria-current=\"location\" data-doc-nav-item-active=\"true\"" : "";
@@ -316,20 +316,20 @@ function pageHeadHtml(group: ContractStoryGroup): string {
   const categories = storyCategoriesForGroup(group, stories);
   return `<section class="tcrn-doc-page-head" aria-labelledby="tcrn-doc-visible-page-title" data-doc-page-head="governed-section" data-mandatory-boundary-block="visible" data-no-overclaim-boundary="visible">
   <div class="tcrn-doc-page-head__intro">
-    <span class="tcrn-doc-page-head__eyebrow">Governed Storybook section</span>
+    <span class="tcrn-doc-page-head__eyebrow">${i18nText("shell.governedSectionLabel")}</span>
     <h2 id="tcrn-doc-visible-page-title">${i18nText(`group.${group}`)}</h2>
-    <p>${escapeHtml("Stable top-level taxonomy is preserved; nested category depth organizes dense stories without adding new top-level sections.")}</p>
+    <p>${i18nText("shell.governedSectionDescription")}</p>
   </div>
-  <nav class="tcrn-doc-on-this-page" aria-label="On this page" data-doc-on-this-page="true">
-    <strong>On this page</strong>
+  <nav class="tcrn-doc-on-this-page" aria-label="${escapeHtml(localeText("shell.onThisPageLabel"))}" data-doc-on-this-page="true">
+    <strong>${i18nText("shell.onThisPageLabel")}</strong>
     <ol>
 ${categories.map((category) => `      <li><a href="#${category.stories[0]?.id ?? groupSlug(group)}">${escapeHtml(category.label)}</a><span>${category.stories.length}</span></li>`).join("\n")}
     </ol>
   </nav>
   <div class="tcrn-doc-boundary-strip" data-governance-boundary-strip="visible">
-    <span>No package publication claimed</span>
-    <span>No AOS/TMS adoption claimed</span>
-    <span>Owner/product/release acceptance remains downstream</span>
+    <span>${i18nText("shell.noPackagePublicationClaim")}</span>
+    <span>${i18nText("shell.noProductAdoptionClaim")}</span>
+    <span>${i18nText("shell.acceptanceDownstreamClaim")}</span>
   </div>
 </section>`;
 }
