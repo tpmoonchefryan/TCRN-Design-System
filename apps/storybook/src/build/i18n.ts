@@ -20,10 +20,13 @@ export function escapeHtml(value: string): string {
 }
 
 export function localeText(key: string, locale: TcrnLocale = tcrnDefaultLocale): string {
-  return storybookLocaleText[locale]?.[key] ?? storybookLocaleText[tcrnFallbackLocale][key] ?? key;
+  return storybookLocaleText[locale]?.[key]
+    ?? storybookContentText[key]?.[locale]
+    ?? storybookLocaleText[tcrnFallbackLocale][key]
+    ?? storybookContentText[key]?.[tcrnFallbackLocale]
+    ?? key;
 }
 
 export function i18nText(key: string): string {
   return `<span data-i18n="${escapeHtml(key)}">${escapeHtml(localeText(key))}</span>`;
 }
-

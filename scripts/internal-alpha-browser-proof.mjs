@@ -686,6 +686,75 @@ async function collectLocalizedTextCheck(page, check) {
   };
 }
 
+async function collectLocalizedShellChromeCheck(page, check) {
+  await page.goto(`${staticServer.origin}/${check.route}`);
+  await page.waitForSelector(`[data-storybook-locale='${check.locale}']`);
+  await page.waitForSelector(`[data-active-story-section='${check.section}']`);
+  await page.waitForSelector(`[data-doc-nav-item='${check.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
+  await page.waitForSelector("[data-doc-nav-category-toggle]");
+  await page.waitForTimeout(150);
+  const metrics = await page.evaluate(({ requiredText, forbiddenText, expectedCategoryCount }) => {
+    const bodyText = document.body.innerText;
+    const html = document.documentElement;
+    const body = document.body;
+    const accessibilityAttributeNames = ["aria-label", "title", "placeholder", "alt"];
+    const accessibilityAttributeLeaks = Array.from(document.querySelectorAll("[aria-label], [title], [placeholder], [alt]"))
+      .flatMap((node) => accessibilityAttributeNames
+        .map((name) => ({ name, value: node.getAttribute(name) }))
+        .filter((item) => item.value)
+        .flatMap((item) => forbiddenText
+          .filter((term) => item.value.includes(term))
+          .map((term) => ({
+            term,
+            tag: node.tagName,
+            attribute: item.name,
+            value: item.value
+          }))));
+    const categoryLabels = Array.from(document.querySelectorAll(".tcrn-doc-nav__category-label"))
+      .map((node) => node.textContent?.trim() ?? "")
+      .filter(Boolean);
+    const categoryDescriptions = Array.from(document.querySelectorAll("[id^='tcrn-doc-nav-category-'][id$='-description']"))
+      .map((node) => node.textContent?.trim() ?? "")
+      .filter(Boolean);
+    const currentLocation = document.querySelector(".tcrn-doc-header__workspace");
+    const onThisPage = document.querySelector(".tcrn-doc-on-this-page");
+    return {
+      locale: document.querySelector("[data-storybook-locale]")?.getAttribute("data-storybook-locale") ?? document.documentElement.getAttribute("data-storybook-locale"),
+      route: window.location.pathname + window.location.search + window.location.hash,
+      missingRequiredText: requiredText.filter((text) => !bodyText.includes(text)),
+      leakedForbiddenText: forbiddenText.filter((text) => bodyText.includes(text)),
+      accessibilityAttributeLeaks,
+      categoryLabels,
+      categoryLabelCount: categoryLabels.length,
+      categoryDescriptions,
+      categoryDescriptionCount: categoryDescriptions.length,
+      categoryDescriptionEnglishLeaks: categoryDescriptions.filter((text) => forbiddenText.some((term) => text.includes(term))),
+      currentLocationAriaLabel: currentLocation?.getAttribute("aria-label") ?? null,
+      onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null,
+      expectedCategoryCount,
+      bodyScrollWidth: body.scrollWidth,
+      viewportWidth: window.innerWidth,
+      pageOverflow: Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1
+    };
+  }, check);
+  return {
+    locale: check.locale,
+    route: check.route,
+    url: page.url(),
+    ...metrics,
+    ok: metrics.locale === check.locale
+      && metrics.missingRequiredText.length === 0
+      && metrics.leakedForbiddenText.length === 0
+      && metrics.accessibilityAttributeLeaks.length === 0
+      && metrics.categoryLabelCount === check.expectedCategoryCount
+      && metrics.categoryDescriptionCount === check.expectedCategoryCount
+      && metrics.categoryDescriptionEnglishLeaks.length === 0
+      && metrics.currentLocationAriaLabel === check.expectedCurrentLocationAriaLabel
+      && metrics.onThisPageAriaLabel === check.expectedOnThisPageAriaLabel
+      && !metrics.pageOverflow
+  };
+}
+
 const i18nContentChecks = [
   await collectLocalizedTextCheck(storybookPage, {
     locale: "zh-CN",
@@ -720,6 +789,58 @@ const i18nContentChecks = [
     forbiddenText: ["Governance changelog records", "Date", "Source route", "Story ids", "AI contract digest readback", "Proof artifacts and boundaries", "Proof artifacts", "No-overclaim boundaries", "durable source record", "AI contract digest verified by smoke", "proof receipts required", "no publication", "Current location", "On this page", "Documentation sections", "Governance entry", "Routing and contribution", "Identity and brand", "Type and layout", "Work Management", "Proof governance", "Governance records"]
   })
 ];
+const globalZhCnIaShellCheck = await collectLocalizedShellChromeCheck(storybookPage, {
+  locale: "zh-CN",
+  route: `${staticSurfacePath}?theme=light&locale=zh-CN#welcome-governance`,
+  section: "Welcome",
+  storyId: "welcome-governance",
+  expectedCategoryCount,
+  expectedCurrentLocationAriaLabel: "当前位置",
+  expectedOnThisPageAriaLabel: "本页内容",
+  requiredText: [
+    "当前位置",
+    "受治理的 Storybook 栏目",
+    "本页内容",
+    "治理入口",
+    "路由与贡献",
+    "标识与品牌",
+    "文字与布局",
+    "交互与文案",
+    "令牌与 i18n",
+    "文案治理",
+    "组件清单",
+    "控件与数据",
+    "导航与壳层",
+    "工作管理",
+    "表单与工作台",
+    "反馈与选择",
+    "数据与页面",
+    "证明治理",
+    "治理记录"
+  ],
+  forbiddenText: [
+    "Current location",
+    "Governed Storybook section",
+    "On this page",
+    "Documentation sections",
+    "Governance entry",
+    "Routing and contribution",
+    "Identity and brand",
+    "Type and layout",
+    "Interaction and copy",
+    "Tokens and i18n",
+    "Copy governance",
+    "Component inventory",
+    "Controls and data",
+    "Navigation and shells",
+    "Work Management",
+    "Forms and workbench",
+    "Feedback and selection",
+    "Data and pages",
+    "Proof governance",
+    "Governance records"
+  ]
+});
 async function collectBrandMarkLocaleCheck(page, locale) {
   await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/style-guide.html?locale=${locale}#brand-identity`);
   await page.waitForSelector(`[data-storybook-locale='${locale}']`);
@@ -807,10 +928,12 @@ const localeRouteCheck = {
     && await storybookPage.evaluate(() => Array.from(document.querySelectorAll("[data-i18n='group.Components']"))
       .some((node) => node.textContent?.trim() === "コンポーネント"))
     && i18nContentChecks.every((check) => check.ok)
+    && globalZhCnIaShellCheck.ok
     && brandMarkLocaleChecks.every((check) => check.ok),
   source: `${staticSurfacePath}?locale=ja#button-spec-usage`,
   url: storybookPage.url(),
   i18nContentChecks,
+  globalZhCnIaShellCheck,
   brandMarkLocaleChecks
 };
 const storybookChecks = [];

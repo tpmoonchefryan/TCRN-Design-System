@@ -191,7 +191,11 @@ export const storybookI18nScript = `<script>
     }
   };
   const textFor = (locale, key) => {
-    return translations[locale]?.[key] ?? translations[fallbackLocale]?.[key] ?? key;
+    return translations[locale]?.[key]
+      ?? contentTranslations[key]?.[locale]
+      ?? translations[fallbackLocale]?.[key]
+      ?? contentTranslations[key]?.[fallbackLocale]
+      ?? key;
   };
   const contentTextFor = (locale, value) => {
     const trimmed = String(value ?? "").trim();

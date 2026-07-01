@@ -2365,6 +2365,156 @@ async function runChangelogI18nReadabilityProof() {
   }
 }
 
+async function runGlobalStorybookZhCnIaProof() {
+  const { server, origin } = await startStaticServer(staticRoot);
+  const failures = [];
+  const route = "index.html?theme=light&locale=zh-CN#welcome-governance";
+  const requiredText = [
+    "当前位置",
+    "受治理的 Storybook 栏目",
+    "本页内容",
+    "治理入口",
+    "路由与贡献",
+    "标识与品牌",
+    "文字与布局",
+    "交互与文案",
+    "令牌与 i18n",
+    "文案治理",
+    "组件清单",
+    "控件与数据",
+    "导航与壳层",
+    "工作管理",
+    "表单与工作台",
+    "反馈与选择",
+    "数据与页面",
+    "证明治理",
+    "治理记录"
+  ];
+  const forbiddenText = [
+    "Current location",
+    "Governed Storybook section",
+    "On this page",
+    "Documentation sections",
+    "Governance entry",
+    "Routing and contribution",
+    "Identity and brand",
+    "Type and layout",
+    "Interaction and copy",
+    "Tokens and i18n",
+    "Copy governance",
+    "Component inventory",
+    "Controls and data",
+    "Navigation and shells",
+    "Work Management",
+    "Forms and workbench",
+    "Feedback and selection",
+    "Data and pages",
+    "Proof governance",
+    "Governance records"
+  ];
+
+  async function collect(viewport) {
+    const browser = await chromium.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    });
+    try {
+      const context = await browser.newContext({ viewport });
+      const page = await context.newPage();
+      await page.goto(`${origin}/${route}`);
+      await page.waitForSelector("[data-storybook-locale='zh-CN']");
+      await page.waitForSelector("[data-contract-story-id='welcome-governance']");
+      await page.waitForSelector("[data-doc-nav-item='welcome-governance'][aria-current='location'][data-doc-nav-item-active='true']");
+      await page.waitForSelector("[data-doc-nav-category-toggle='governance-entry']");
+      await page.waitForTimeout(150);
+      const metrics = await page.evaluate(({ requiredText, forbiddenText }) => {
+        const bodyText = document.body.innerText;
+        const html = document.documentElement;
+        const body = document.body;
+        const accessibilityAttributeNames = ["aria-label", "title", "placeholder", "alt"];
+        const accessibilityAttributeLeaks = Array.from(document.querySelectorAll("[aria-label], [title], [placeholder], [alt]"))
+          .flatMap((node) => accessibilityAttributeNames
+            .map((name) => ({ name, value: node.getAttribute(name) }))
+            .filter((item) => item.value)
+            .flatMap((item) => forbiddenText
+              .filter((term) => item.value.includes(term))
+              .map((term) => ({
+                term,
+                tag: node.tagName,
+                attribute: item.name,
+                value: item.value
+              }))));
+        const categoryLabels = Array.from(document.querySelectorAll(".tcrn-doc-nav__category-label"))
+          .map((node) => node.textContent?.trim() ?? "")
+          .filter(Boolean);
+        const categoryDescriptions = Array.from(document.querySelectorAll("[id^='tcrn-doc-nav-category-'][id$='-description']"))
+          .map((node) => node.textContent?.trim() ?? "")
+          .filter(Boolean);
+        const currentLocation = document.querySelector(".tcrn-doc-header__workspace");
+        const onThisPage = document.querySelector(".tcrn-doc-on-this-page");
+        const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
+        return {
+          locale: document.querySelector("[data-storybook-locale]")?.getAttribute("data-storybook-locale") ?? document.documentElement.getAttribute("data-storybook-locale"),
+          bodyClientWidth: body.clientWidth,
+          bodyScrollWidth: body.scrollWidth,
+          htmlClientWidth: html.clientWidth,
+          htmlScrollWidth: html.scrollWidth,
+          pageOverflow,
+          missingRequiredText: requiredText.filter((text) => !bodyText.includes(text)),
+          leakedForbiddenText: forbiddenText.filter((text) => bodyText.includes(text)),
+          accessibilityAttributeLeaks,
+          categoryLabelCount: categoryLabels.length,
+          categoryLabels,
+          categoryDescriptions,
+          categoryDescriptionCount: categoryDescriptions.length,
+          categoryDescriptionEnglishLeaks: categoryDescriptions.filter((text) => forbiddenText.some((term) => text.includes(term))),
+          currentLocationAriaLabel: currentLocation?.getAttribute("aria-label") ?? null,
+          onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null
+        };
+      }, { requiredText, forbiddenText });
+      await context.close();
+      return {
+        viewport,
+        route,
+        url: page.url(),
+        ...metrics,
+        ok: metrics.locale === "zh-CN"
+          && metrics.missingRequiredText.length === 0
+          && metrics.leakedForbiddenText.length === 0
+          && metrics.accessibilityAttributeLeaks.length === 0
+          && !metrics.pageOverflow
+          && metrics.categoryLabelCount === expectedStoryCategoryCount
+          && metrics.categoryDescriptionCount === expectedStoryCategoryCount
+          && metrics.categoryDescriptionEnglishLeaks.length === 0
+          && metrics.currentLocationAriaLabel === "当前位置"
+          && metrics.onThisPageAriaLabel === "本页内容"
+      };
+    } finally {
+      await browser.close();
+    }
+  }
+
+  try {
+    const desktop = await collect({ width: 1440, height: 900 });
+    const mobile = await collect({ width: 390, height: 844 });
+    if (!desktop.ok) {
+      failures.push({ viewport: "desktop", desktop });
+    }
+    if (!mobile.ok) {
+      failures.push({ viewport: "mobile", mobile });
+    }
+    return {
+      ok: failures.length === 0,
+      route,
+      failures,
+      readbacks: { desktop, mobile },
+      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+    };
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+}
+
 async function main() {
   const productShellComparatorProof = await runProductShellComparatorProof().catch((error) => ({
     ok: false,
@@ -2385,13 +2535,18 @@ async function main() {
     ok: false,
     failures: [`changelog-i18n-readability-proof-error:${error instanceof Error ? error.message : String(error)}`]
   }));
+  const globalStorybookZhCnIaProof = await runGlobalStorybookZhCnIaProof().catch((error) => ({
+    ok: false,
+    failures: [`global-storybook-zh-cn-ia-proof-error:${error instanceof Error ? error.message : String(error)}`]
+  }));
   const ok = missing.length === 0
     && forbiddenPositiveHits.length === 0
     && storybookPreviewExists
     && productShellComparatorProof.ok
     && designSystemVisualInstanceParityReadback.ok
     && ownerQualityProductShellProof.ok
-    && changelogI18nReadabilityProof.ok;
+    && changelogI18nReadabilityProof.ok
+    && globalStorybookZhCnIaProof.ok;
   console.log(JSON.stringify({
     ok,
     missing,
@@ -2401,7 +2556,8 @@ async function main() {
 	    productShellComparatorProof,
 	    designSystemVisualInstanceParityReadback,
 	    ownerQualityProductShellProof,
-	    changelogI18nReadabilityProof
+	    changelogI18nReadabilityProof,
+	    globalStorybookZhCnIaProof
 	  }, null, 2));
   if (!ok) {
     process.exit(1);

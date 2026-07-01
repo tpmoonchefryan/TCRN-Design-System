@@ -181,12 +181,15 @@ ${contractStoryGroups.map((group) => {
 ${categories.map((category) => {
   const open = group === activeGroup && category.id === activeCategoryId;
   const listId = categoryDomId(group, category.id);
+  const categoryLabel = localeText(category.label);
+  const categoryDescriptionId = `${listId}-description`;
   return `        <li class="tcrn-doc-nav__category" data-doc-nav-category="${escapeHtml(category.id)}" data-doc-nav-category-open="${open ? "true" : "false"}">
-          <button class="tcrn-doc-nav__category-toggle" type="button" aria-expanded="${open ? "true" : "false"}" aria-controls="${listId}" data-doc-nav-category-toggle="${escapeHtml(category.id)}">
-            <span class="tcrn-doc-nav__category-label">${escapeHtml(category.label)}</span>
+          <button class="tcrn-doc-nav__category-toggle" type="button" aria-expanded="${open ? "true" : "false"}" aria-controls="${listId}" aria-describedby="${categoryDescriptionId}" data-doc-nav-category-toggle="${escapeHtml(category.id)}">
+            <span class="tcrn-doc-nav__category-label" data-i18n="${escapeHtml(category.label)}">${escapeHtml(categoryLabel)}</span>
             <span class="tcrn-doc-nav__category-count" aria-label="${category.stories.length} ${escapeHtml(localeText("shell.storiesCountLabel"))}">${category.stories.length}</span>
           </button>
-          <ol class="tcrn-doc-nav__stories" id="${listId}" aria-label="${escapeHtml(`${category.label} ${localeText("shell.storiesCountLabel")}`)}"${open ? "" : " hidden"}>
+          <span class="tcrn-sr-only" id="${categoryDescriptionId}" data-i18n="${escapeHtml(category.description)}">${escapeHtml(localeText(category.description))}</span>
+          <ol class="tcrn-doc-nav__stories" id="${listId}" aria-label="${escapeHtml(categoryLabel)}" data-i18n-aria-label="${escapeHtml(category.label)}"${open ? "" : " hidden"}>
 ${category.stories.map((story, index) => {
   const href = `${groupFileName(story.group)}#${story.id}`;
   const currentStory = group === activeGroup && category.id === activeCategoryId && index === 0 ? " aria-current=\"location\" data-doc-nav-item-active=\"true\"" : "";
@@ -231,7 +234,7 @@ function docHeaderWorkspaceHtml(group: ContractStoryGroup): string {
   if (!firstStory) {
     throw new Error(`missing_story_for_group:${group}`);
   }
-  return `<div class="tcrn-doc-header__workspace" aria-label="${escapeHtml(localeText("shell.currentLocationLabel"))}">
+  return `<div class="tcrn-doc-header__workspace" aria-label="${escapeHtml(localeText("shell.currentLocationLabel"))}" data-i18n-aria-label="shell.currentLocationLabel">
           <div class="tcrn-doc-current-location">
             <span class="tcrn-doc-current-location__label">${i18nText("shell.currentLocationLabel")}</span>
             <span class="tcrn-doc-current-location__path">
@@ -323,7 +326,7 @@ function pageHeadHtml(group: ContractStoryGroup): string {
   <nav class="tcrn-doc-on-this-page" aria-label="${escapeHtml(localeText("shell.onThisPageLabel"))}" data-doc-on-this-page="true">
     <strong>${i18nText("shell.onThisPageLabel")}</strong>
     <ol>
-${categories.map((category) => `      <li><a href="#${category.stories[0]?.id ?? groupSlug(group)}">${escapeHtml(category.label)}</a><span>${category.stories.length}</span></li>`).join("\n")}
+${categories.map((category) => `      <li><a href="#${category.stories[0]?.id ?? groupSlug(group)}">${i18nText(category.label)}</a><span>${category.stories.length}</span></li>`).join("\n")}
     </ol>
   </nav>
   <div class="tcrn-doc-boundary-strip" data-governance-boundary-strip="visible">
