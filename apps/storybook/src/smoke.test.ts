@@ -835,10 +835,13 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.brandSurfaceDisposition, /Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs/);
   assert.match(contract.i18nDisposition, /approved locale and copy-state contract/);
   assert.match(contract.componentConsumptionDisposition, /ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo/);
-  assert.match(contract.componentConsumptionDisposition, /ProductShell, ProductShellSearch/);
+  assert.match(contract.componentConsumptionDisposition, /ProductShell, TopBar, SideNav/);
+  assert.match(contract.componentConsumptionDisposition, /ProductShellSearch is required only when the product exposes a real topbar\/global search surface/);
+  assert.match(contract.componentConsumptionDisposition, /must be omitted rather than rendered as an inert placeholder/);
   assert.match(contract.componentConsumptionDisposition, /useProductShellController/);
   assert.match(contract.componentConsumptionDisposition, /ProductShell semantic callbacks/);
   assert.match(contract.componentConsumptionDisposition, /productShellControlProps/);
+  assert.match(contract.componentConsumptionDisposition, /when search is present, onSearchQueryChange/);
   assert.match(contract.componentConsumptionDisposition, /onSearchResultActivate/);
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
   assert.match(contract.storybookDocShellCompositionDisposition, /may retain page skeleton, routing, section navigation/);
@@ -864,7 +867,8 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.productShellHardeningRules.brandSurface, /registered package-backed ProductLogo assets/);
   assert.match(contract.productShellHardeningRules.registeredNavigation, /must not surface unregistered or planned modules/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /registered package-backed primitives from @tcrn\/ui-react/);
-  assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShell\/ProductShellSearch\/useProductShellController/);
+  assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShell\/useProductShellController/);
+  assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShellSearch only when a real product topbar\/global search capability is present/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /semantic control callbacks/);
   assert.match(contract.productShellHardeningRules.shellEffectBoundary, /attached side-nav shell layout/);
   assert.match(contract.productShellHardeningRules.shellEffectBoundary, /collapsed rail styling/);

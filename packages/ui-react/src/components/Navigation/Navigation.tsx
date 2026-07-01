@@ -866,25 +866,27 @@ export function ProductShell({
   ...props
 }: ProductShellProps) {
   const ContentElement = contentRole === "main" ? "main" : "section";
-  const mergedSearch: ProductShellSearchProps = {
-    ...search,
-    onQueryChange: (nextQuery) => {
-      search?.onQueryChange?.(nextQuery);
-      onSearchQueryChange?.(nextQuery);
-    },
-    onExpandedChange: (nextExpanded, reason) => {
-      search?.onExpandedChange?.(nextExpanded, reason);
-      onSearchExpandedChange?.(nextExpanded, reason);
-    },
-    onDismiss: (reason) => {
-      search?.onDismiss?.(reason);
-      onSearchDismiss?.(reason);
-    },
-    onResultActivate: (result, event) => {
-      search?.onResultActivate?.(result, event);
-      onSearchResultActivate?.(result, event);
-    }
-  };
+  const mergedSearch: ProductShellSearchProps | undefined = search
+    ? {
+        ...search,
+        onQueryChange: (nextQuery) => {
+          search.onQueryChange?.(nextQuery);
+          onSearchQueryChange?.(nextQuery);
+        },
+        onExpandedChange: (nextExpanded, reason) => {
+          search.onExpandedChange?.(nextExpanded, reason);
+          onSearchExpandedChange?.(nextExpanded, reason);
+        },
+        onDismiss: (reason) => {
+          search.onDismiss?.(reason);
+          onSearchDismiss?.(reason);
+        },
+        onResultActivate: (result, event) => {
+          search.onResultActivate?.(result, event);
+          onSearchResultActivate?.(result, event);
+        }
+      }
+    : undefined;
 
   return (
     <div
@@ -898,7 +900,7 @@ export function ProductShell({
       data-product-shell-responsive="desktop-attached-mobile-stacked"
       data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"
       data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"
-      data-product-shell-semantic-api="collapse-theme-locale-search"
+      data-product-shell-semantic-api={mergedSearch ? "collapse-theme-locale-search" : "collapse-theme-locale"}
     >
       <SkipLink href={`#${contentId}`}>{skipLinkLabel}</SkipLink>
       <aside className="tcrn-product-shell__sidebar" data-product-shell-region="side-navigation">
@@ -953,7 +955,7 @@ export function ProductShell({
               <span>{currentLocationLabel}</span>
               <strong>{currentRouteLabel}</strong>
             </div>
-            <ProductShellSearch {...mergedSearch} />
+            {mergedSearch ? <ProductShellSearch {...mergedSearch} /> : null}
             <ShellThemeToggle currentTheme={currentTheme} onThemeChange={onThemeChange} />
             <ShellLocaleMenu
               locales={locales}
@@ -1557,6 +1559,7 @@ export const tcrnComponentCss = `
   display: grid;
   flex: 0 1 240px;
   gap: 1px;
+  margin-right: auto;
   min-width: 0;
   max-width: 240px;
   color: var(--tcrn-color-text-secondary);

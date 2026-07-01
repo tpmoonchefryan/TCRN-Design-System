@@ -230,12 +230,43 @@ test("product shell component css isolates topbar from docs chrome", () => {
 test("product shell utility row wraps controls within owner-quality story frames", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__utility-row \{[\s\S]*display: flex;[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: flex-end;[\s\S]*min-width: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__utility-row > \* \{[\s\S]*min-width: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__current-location \{[\s\S]*flex: 0 1 240px;[\s\S]*max-width: 240px;/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell__current-location \{[\s\S]*flex: 0 1 240px;[\s\S]*margin-right: auto;[\s\S]*max-width: 240px;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-search \{[\s\S]*flex-basis: 260px;[\s\S]*margin-left: auto;[\s\S]*width: 260px;[\s\S]*max-width: min\(100%, 260px\);/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-search\[data-search-expanded="true"\] \{[\s\S]*flex-basis: 420px;[\s\S]*width: 420px;[\s\S]*max-width: min\(100%, 420px\);/);
   assert.match(tcrnComponentCss, /@media \(max-width: 760px\) \{[\s\S]*\.tcrn-product-shell__utility-row \{[\s\S]*justify-content: stretch;[\s\S]*align-items: stretch;[\s\S]*\.tcrn-product-shell-search,\n  \.tcrn-product-shell-search\[data-search-expanded="true"\] \{[\s\S]*flex-basis: min\(100%, 320px\);[\s\S]*margin-left: 0;[\s\S]*width: 320px;[\s\S]*max-width: 320px;/);
   assert.match(tcrnComponentCss, /@media \(max-width: 760px\) \{[\s\S]*\.tcrn-shell-locale-menu__trigger \{[\s\S]*width: 100%;[\s\S]*max-width: none;/);
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell__utility-row \{[\s\S]*grid-template-columns: max-content minmax\(220px, 360px\) max-content max-content;/);
+});
+
+test("product shell lets consumers omit shell search when the product has no global search", () => {
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN AOS"
+      moduleName="Operations Cockpit"
+      brandProductId="aos"
+      currentRouteLabel="Operations Cockpit"
+      navLabel="AOS operations navigation"
+      currentLocale="en"
+      locales={[{ locale: "en", nativeName: "English" }]}
+      navGroups={[
+        {
+          id: "registered",
+          label: "Registered shell entries",
+          selected: true,
+          items: [{ id: "cockpit", label: "Cockpit", href: "/cockpit", iconName: "home", selected: true }]
+        }
+      ]}
+    >
+      <section>Owner-quality content without global search</section>
+    </ProductShell>
+  );
+
+  assert.doesNotMatch(html, /data-shell-control="product-shell-search"/);
+  assert.match(html, /data-product-shell-semantic-api="collapse-theme-locale"/);
+  assert.doesNotMatch(html, /data-product-shell-semantic-api="collapse-theme-locale-search"/);
+  assert.match(html, /data-shell-control="theme-toggle"/);
+  assert.match(html, /data-locale-menu-toggle/);
+  assert.match(html, /Owner-quality content without global search/);
 });
 
 test("product shell can disable side-nav collapse with a truthful package-backed reason", () => {
