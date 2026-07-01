@@ -5,7 +5,7 @@
 - 2026-07-01: Add Storybook governance/readability/traceability updates from
   route
   `route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541`.
-  Planned commit: current implementation route commit.
+  Implementation commit: `c24f6e5d779c60486214ea1e07fc737e60796e00`.
   Affected stories: all 40 local contract stories across `Welcome`,
   `Style Guide`, `Foundations`, `Components`, `Patterns`, `Proof`, and
   `Change Log`.

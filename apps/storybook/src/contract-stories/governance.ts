@@ -157,7 +157,7 @@ export const storybookGovernanceChangelogRecords: readonly StorybookGovernanceCh
   {
     date: "2026-07-01",
     routeId: "route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541",
-    plannedCommit: "current implementation route commit",
+    plannedCommit: "c24f6e5d779c60486214ea1e07fc737e60796e00",
     affectedStoryIds: [
       "welcome-governance",
       "governance-boundaries",
