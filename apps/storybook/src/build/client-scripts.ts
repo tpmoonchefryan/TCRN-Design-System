@@ -781,6 +781,17 @@ export const anchorScrollScript = `<script>
       return hash.replace(/^#/, "");
     }
   };
+  const isFirstStoryTarget = (target) => {
+    if (!(target instanceof HTMLElement)) {
+      return false;
+    }
+    if (!target.matches("[data-contract-story-id]")) {
+      return false;
+    }
+    const section = target.closest("[data-story-section]");
+    const firstStory = section?.querySelector("[data-contract-story-id]");
+    return firstStory === target;
+  };
   const scrollToHashTarget = () => {
     const targetId = readHashId();
     if (!targetId) {
@@ -790,7 +801,9 @@ export const anchorScrollScript = `<script>
     if (!target) {
       return false;
     }
-    const nextTop = Math.max(0, target.getBoundingClientRect().top + window.scrollY - readOffset());
+    const nextTop = isFirstStoryTarget(target)
+      ? 0
+      : Math.max(0, target.getBoundingClientRect().top + window.scrollY - readOffset());
     window.scrollTo({ top: nextTop, left: 0, behavior: "auto" });
     return true;
   };

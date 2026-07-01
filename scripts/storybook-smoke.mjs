@@ -2515,6 +2515,201 @@ async function runGlobalStorybookZhCnIaProof() {
   }
 }
 
+async function runCrossSectionShellParityProof() {
+  const { server, origin } = await startStaticServer(staticRoot);
+  const failures = [];
+  const firstStoryByGroup = Object.fromEntries(expectedContractStoryGroups.map((group) => [
+    group,
+    requiredStories.find((story) => story.group === group)?.id ?? null
+  ]));
+  const targetGroups = ["Welcome", "Style Guide", "Foundations", "Components", "Patterns", "Proof", "Change Log"];
+  const routes = targetGroups.map((group) => ({
+    group,
+    file: pagesByGroup[group],
+    storyId: firstStoryByGroup[group]
+  }));
+
+  async function collect(viewport) {
+    const browser = await chromium.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    });
+    try {
+      const context = await browser.newContext({ viewport });
+      const page = await context.newPage();
+      const readbacks = [];
+      const isDesktopViewport = viewport.width >= 1024;
+      for (const route of routes) {
+        if (!route.storyId) {
+          readbacks.push({ ...route, ok: false, failures: ["missing-first-story"] });
+          continue;
+        }
+        await page.goto(`${origin}/${route.file}?theme=light&locale=zh-CN#${route.storyId}`);
+        await page.waitForSelector("[data-storybook-locale='zh-CN']");
+        await page.waitForSelector(`[data-active-story-section='${route.group}']`);
+        await page.waitForSelector(`[data-doc-nav-item='${route.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
+        await page.waitForTimeout(180);
+        const metrics = await page.evaluate(({ group, storyId }) => {
+          const rectFor = (selector) => {
+            const node = document.querySelector(selector);
+            if (!node) {
+              return null;
+            }
+            const rect = node.getBoundingClientRect();
+            return {
+              top: Number(rect.top.toFixed(2)),
+              left: Number(rect.left.toFixed(2)),
+              right: Number(rect.right.toFixed(2)),
+              bottom: Number(rect.bottom.toFixed(2)),
+              width: Number(rect.width.toFixed(2)),
+              height: Number(rect.height.toFixed(2))
+            };
+          };
+          const styleFor = (selector, properties) => {
+            const node = document.querySelector(selector);
+            if (!node) {
+              return null;
+            }
+            const style = window.getComputedStyle(node);
+            return Object.fromEntries(properties.map((property) => [property, style.getPropertyValue(property)]));
+          };
+          const html = document.documentElement;
+          const body = document.body;
+          const header = rectFor(".tcrn-doc-header");
+          const globalBar = rectFor(".tcrn-doc-global-bar");
+          const workspace = rectFor(".tcrn-doc-header__workspace");
+          const currentLocation = rectFor(".tcrn-doc-current-location");
+          const search = rectFor(".tcrn-doc-header-search");
+          const controls = rectFor(".tcrn-doc-header-controls");
+          const locale = rectFor(".tcrn-doc-locale-control-slot");
+          const pageHead = rectFor("[data-doc-page-head='governed-section']");
+          const shell = document.querySelector("[data-doc-shell]");
+          const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
+          const activeStory = document.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']");
+          const categoryLabels = Array.from(document.querySelectorAll(".tcrn-doc-nav__category-label"))
+            .map((node) => node.textContent?.trim() ?? "")
+            .filter(Boolean);
+          const headerBottom = header?.bottom ?? 0;
+          const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
+          return {
+            group,
+            storyId,
+            url: window.location.pathname + window.location.search + window.location.hash,
+            locale: shell?.getAttribute("data-storybook-locale") ?? null,
+            activeSection: shell?.getAttribute("data-active-story-section") ?? null,
+            activeStoryId: activeStory?.getAttribute("data-doc-nav-item") ?? null,
+            scrollY: Number(window.scrollY.toFixed(2)),
+            pageOverflow,
+            docShellMode: shell?.getAttribute("data-doc-shell") ?? null,
+            docPageHeadCount: document.querySelectorAll("[data-doc-page-head='governed-section']").length,
+            onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
+            mandatoryBoundaryCount: document.querySelectorAll("[data-mandatory-boundary-block='visible']").length,
+            noOverclaimBoundaryCount: document.querySelectorAll("[data-no-overclaim-boundary='visible']").length,
+            legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
+            navGroupCount: document.querySelectorAll("[data-doc-nav-group]").length,
+            categoryLabelCount: categoryLabels.length,
+            categoryLabels,
+            firstStoryTop: firstStory ? Number(firstStory.getBoundingClientRect().top.toFixed(2)) : null,
+            pageHead,
+            header,
+            globalBar,
+            workspace,
+            currentLocation,
+            search,
+            controls,
+            localeControl: locale,
+            headerStyles: styleFor(".tcrn-doc-global-bar", ["display", "grid-template-columns", "min-height"]),
+            workspaceStyles: styleFor(".tcrn-doc-header__workspace", ["display", "grid-template-columns", "gap", "padding-left", "padding-right"]),
+            pageHeadStyles: styleFor("[data-doc-page-head='governed-section']", ["display", "grid-template-columns", "gap", "border-bottom-style"]),
+            layoutStyles: styleFor(".tcrn-doc-layout", ["display", "grid-template-columns"]),
+            currentLocationBeforeSearch: Boolean(currentLocation && search && currentLocation.right <= search.left + 1),
+            searchBeforeControls: Boolean(search && controls && search.right <= controls.left + 1),
+            utilityTrailingGap: locale ? Number((window.innerWidth - locale.right).toFixed(2)) : null,
+            pageHeadStartsBelowHeader: Boolean(pageHead && pageHead.top >= headerBottom - 1),
+            firstStoryDoesNotReplacePageHead: Boolean(pageHead && firstStory && pageHead.top < firstStory.getBoundingClientRect().top)
+          };
+        }, { group: route.group, storyId: route.storyId });
+        const routeFailures = [];
+        if (metrics.locale !== "zh-CN") routeFailures.push(`locale:${metrics.locale}`);
+        if (metrics.activeSection !== route.group) routeFailures.push(`active-section:${metrics.activeSection}`);
+        if (metrics.activeStoryId !== route.storyId) routeFailures.push(`active-story:${metrics.activeStoryId}`);
+        if (metrics.scrollY > 2) routeFailures.push(`first-story-hash-scrollY:${metrics.scrollY}`);
+        if (metrics.docShellMode !== "online-docs") routeFailures.push(`doc-shell:${metrics.docShellMode}`);
+        if (metrics.docPageHeadCount !== 1) routeFailures.push(`page-head-count:${metrics.docPageHeadCount}`);
+        if (metrics.onThisPageCount !== 1) routeFailures.push(`on-this-page-count:${metrics.onThisPageCount}`);
+        if (metrics.mandatoryBoundaryCount !== 1 || metrics.noOverclaimBoundaryCount !== 1) routeFailures.push("mandatory-boundary-missing");
+        if (metrics.legacyGlobalNavCount !== 0) routeFailures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
+        if (metrics.navGroupCount !== expectedContractStoryGroups.length) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
+        if (metrics.categoryLabelCount !== expectedStoryCategoryCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
+        if (metrics.pageOverflow) routeFailures.push("page-overflow");
+        if (isDesktopViewport) {
+          if (!metrics.currentLocationBeforeSearch) routeFailures.push("current-location-not-before-search");
+          if (!metrics.searchBeforeControls) routeFailures.push("search-not-before-controls");
+          if (typeof metrics.utilityTrailingGap !== "number" || metrics.utilityTrailingGap < 16 || metrics.utilityTrailingGap > 32) {
+            routeFailures.push(`utility-trailing-gap:${metrics.utilityTrailingGap}`);
+          }
+        }
+        if (!metrics.pageHeadStartsBelowHeader) routeFailures.push("page-head-not-below-header");
+        if (!metrics.firstStoryDoesNotReplacePageHead) routeFailures.push("first-story-replaces-page-head");
+        readbacks.push({ ...metrics, ok: routeFailures.length === 0, failures: routeFailures });
+      }
+      await context.close();
+      const desktopReadbacks = readbacks.filter((item) => viewport.width >= 1024);
+      const signatures = {
+        headerStyles: new Set(desktopReadbacks.map((item) => JSON.stringify(item.headerStyles))).size,
+        workspaceStyles: new Set(desktopReadbacks.map((item) => JSON.stringify(item.workspaceStyles))).size,
+        pageHeadStyles: new Set(desktopReadbacks.map((item) => JSON.stringify(item.pageHeadStyles))).size,
+        layoutStyles: new Set(desktopReadbacks.map((item) => JSON.stringify(item.layoutStyles))).size,
+        pageHeadTopDelta: desktopReadbacks.length
+          ? Number((Math.max(...desktopReadbacks.map((item) => item.pageHead?.top ?? 0)) - Math.min(...desktopReadbacks.map((item) => item.pageHead?.top ?? 0))).toFixed(2))
+          : 0,
+        utilityTrailingGapDelta: desktopReadbacks.length
+          ? Number((Math.max(...desktopReadbacks.map((item) => item.utilityTrailingGap ?? 0)) - Math.min(...desktopReadbacks.map((item) => item.utilityTrailingGap ?? 0))).toFixed(2))
+          : 0
+      };
+      const parityFailures = [];
+      if (viewport.width >= 1024) {
+        for (const [name, count] of Object.entries(signatures)) {
+          if (name.endsWith("Delta")) {
+            if (count > 2) parityFailures.push(`${name}:${count}`);
+          } else if (count !== 1) {
+            parityFailures.push(`${name}:${count}`);
+          }
+        }
+      }
+      return {
+        viewport,
+        routes: readbacks,
+        signatures,
+        parityFailures,
+        ok: readbacks.every((item) => item.ok) && parityFailures.length === 0
+      };
+    } finally {
+      await browser.close();
+    }
+  }
+
+  try {
+    const desktop = await collect({ width: 1440, height: 900 });
+    const mobile = await collect({ width: 390, height: 844 });
+    if (!desktop.ok) {
+      failures.push({ viewport: "desktop", desktop });
+    }
+    if (!mobile.ok) {
+      failures.push({ viewport: "mobile", mobile });
+    }
+    return {
+      ok: failures.length === 0,
+      routes: routes.map((route) => `${route.file}?theme=light&locale=zh-CN#${route.storyId}`),
+      failures,
+      readbacks: { desktop, mobile },
+      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+    };
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+}
+
 async function main() {
   const productShellComparatorProof = await runProductShellComparatorProof().catch((error) => ({
     ok: false,
@@ -2539,6 +2734,10 @@ async function main() {
     ok: false,
     failures: [`global-storybook-zh-cn-ia-proof-error:${error instanceof Error ? error.message : String(error)}`]
   }));
+  const crossSectionShellParityProof = await runCrossSectionShellParityProof().catch((error) => ({
+    ok: false,
+    failures: [`cross-section-shell-parity-proof-error:${error instanceof Error ? error.message : String(error)}`]
+  }));
   const ok = missing.length === 0
     && forbiddenPositiveHits.length === 0
     && storybookPreviewExists
@@ -2546,7 +2745,8 @@ async function main() {
     && designSystemVisualInstanceParityReadback.ok
     && ownerQualityProductShellProof.ok
     && changelogI18nReadabilityProof.ok
-    && globalStorybookZhCnIaProof.ok;
+    && globalStorybookZhCnIaProof.ok
+    && crossSectionShellParityProof.ok;
   console.log(JSON.stringify({
     ok,
     missing,
@@ -2557,7 +2757,8 @@ async function main() {
 	    designSystemVisualInstanceParityReadback,
 	    ownerQualityProductShellProof,
 	    changelogI18nReadabilityProof,
-	    globalStorybookZhCnIaProof
+	    globalStorybookZhCnIaProof,
+	    crossSectionShellParityProof
 	  }, null, 2));
   if (!ok) {
     process.exit(1);

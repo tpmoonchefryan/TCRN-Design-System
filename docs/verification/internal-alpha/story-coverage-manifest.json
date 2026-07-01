@@ -497,6 +497,477 @@
     "source": "apps/storybook/storybook-static/index.html#button-spec-usage",
     "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html#button-spec-usage"
   },
+  "firstStoryHashShellParityCheck": {
+    "ok": true,
+    "routes": [
+      "index.html?theme=light&locale=zh-CN#welcome-governance",
+      "style-guide.html?theme=light&locale=zh-CN#brand-identity",
+      "foundations.html?theme=light&locale=zh-CN#tokens-copy-state",
+      "components.html?theme=light&locale=zh-CN#component-family-index",
+      "patterns.html?theme=light&locale=zh-CN#forms-patterns",
+      "proof.html?theme=light&locale=zh-CN#proof-matrix",
+      "change-log.html?theme=light&locale=zh-CN#local-changelog"
+    ],
+    "signature": {
+      "headerStyles": 1,
+      "workspaceStyles": 1,
+      "pageHeadStyles": 1,
+      "layoutStyles": 1,
+      "pageHeadTopDelta": 0,
+      "utilityTrailingGapDelta": 0
+    },
+    "signatureFailures": [],
+    "readbacks": [
+      {
+        "group": "Welcome",
+        "storyId": "welcome-governance",
+        "route": "/apps/storybook/storybook-static/index.html?theme=light&locale=zh-CN#welcome-governance",
+        "locale": "zh-CN",
+        "activeSection": "Welcome",
+        "activeStoryId": "welcome-governance",
+        "scrollY": 0,
+        "pageOverflow": false,
+        "docShellMode": "online-docs",
+        "docPageHeadCount": 1,
+        "onThisPageCount": 1,
+        "mandatoryBoundaryCount": 1,
+        "noOverclaimBoundaryCount": 1,
+        "legacyGlobalNavCount": 0,
+        "navGroupCount": 7,
+        "categoryLabelCount": 18,
+        "expectedCategoryCount": 18,
+        "expectedGroupCount": 7,
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1440,
+          "bottom": 96,
+          "width": 1440,
+          "height": 96
+        },
+        "pageHead": {
+          "top": 133.44,
+          "left": 325.44,
+          "right": 1402.56,
+          "bottom": 271.05,
+          "width": 1077.13,
+          "height": 137.61
+        },
+        "firstStoryTop": 329.36,
+        "headerStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 963.094px 188.906px",
+          "min-height": "96px"
+        },
+        "workspaceStyles": {
+          "display": "grid",
+          "grid-template-columns": "705.75px 180px",
+          "gap": "23.04px"
+        },
+        "pageHeadStyles": {
+          "display": "grid",
+          "grid-template-columns": "743.125px 320px",
+          "gap": "14px",
+          "border-bottom-style": "solid"
+        },
+        "layoutStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 1152px"
+        },
+        "currentLocationBeforeSearch": true,
+        "searchBeforeControls": true,
+        "utilityTrailingGap": 25.91,
+        "pageHeadStartsBelowHeader": true,
+        "firstStoryDoesNotReplacePageHead": true,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "group": "Style Guide",
+        "storyId": "brand-identity",
+        "route": "/apps/storybook/storybook-static/style-guide.html?theme=light&locale=zh-CN#brand-identity",
+        "locale": "zh-CN",
+        "activeSection": "Style Guide",
+        "activeStoryId": "brand-identity",
+        "scrollY": 0,
+        "pageOverflow": false,
+        "docShellMode": "online-docs",
+        "docPageHeadCount": 1,
+        "onThisPageCount": 1,
+        "mandatoryBoundaryCount": 1,
+        "noOverclaimBoundaryCount": 1,
+        "legacyGlobalNavCount": 0,
+        "navGroupCount": 7,
+        "categoryLabelCount": 18,
+        "expectedCategoryCount": 18,
+        "expectedGroupCount": 7,
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1440,
+          "bottom": 96,
+          "width": 1440,
+          "height": 96
+        },
+        "pageHead": {
+          "top": 133.44,
+          "left": 325.44,
+          "right": 1402.56,
+          "bottom": 274.48,
+          "width": 1077.13,
+          "height": 141.05
+        },
+        "firstStoryTop": 332.8,
+        "headerStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 963.094px 188.906px",
+          "min-height": "96px"
+        },
+        "workspaceStyles": {
+          "display": "grid",
+          "grid-template-columns": "705.75px 180px",
+          "gap": "23.04px"
+        },
+        "pageHeadStyles": {
+          "display": "grid",
+          "grid-template-columns": "743.125px 320px",
+          "gap": "14px",
+          "border-bottom-style": "solid"
+        },
+        "layoutStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 1152px"
+        },
+        "currentLocationBeforeSearch": true,
+        "searchBeforeControls": true,
+        "utilityTrailingGap": 25.91,
+        "pageHeadStartsBelowHeader": true,
+        "firstStoryDoesNotReplacePageHead": true,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "group": "Foundations",
+        "storyId": "tokens-copy-state",
+        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#tokens-copy-state",
+        "locale": "zh-CN",
+        "activeSection": "Foundations",
+        "activeStoryId": "tokens-copy-state",
+        "scrollY": 0,
+        "pageOverflow": false,
+        "docShellMode": "online-docs",
+        "docPageHeadCount": 1,
+        "onThisPageCount": 1,
+        "mandatoryBoundaryCount": 1,
+        "noOverclaimBoundaryCount": 1,
+        "legacyGlobalNavCount": 0,
+        "navGroupCount": 7,
+        "categoryLabelCount": 18,
+        "expectedCategoryCount": 18,
+        "expectedGroupCount": 7,
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1440,
+          "bottom": 96,
+          "width": 1440,
+          "height": 96
+        },
+        "pageHead": {
+          "top": 133.44,
+          "left": 325.44,
+          "right": 1402.56,
+          "bottom": 271.05,
+          "width": 1077.13,
+          "height": 137.61
+        },
+        "firstStoryTop": 329.36,
+        "headerStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 963.094px 188.906px",
+          "min-height": "96px"
+        },
+        "workspaceStyles": {
+          "display": "grid",
+          "grid-template-columns": "705.75px 180px",
+          "gap": "23.04px"
+        },
+        "pageHeadStyles": {
+          "display": "grid",
+          "grid-template-columns": "743.125px 320px",
+          "gap": "14px",
+          "border-bottom-style": "solid"
+        },
+        "layoutStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 1152px"
+        },
+        "currentLocationBeforeSearch": true,
+        "searchBeforeControls": true,
+        "utilityTrailingGap": 25.91,
+        "pageHeadStartsBelowHeader": true,
+        "firstStoryDoesNotReplacePageHead": true,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "group": "Components",
+        "storyId": "component-family-index",
+        "route": "/apps/storybook/storybook-static/components.html?theme=light&locale=zh-CN#component-family-index",
+        "locale": "zh-CN",
+        "activeSection": "Components",
+        "activeStoryId": "component-family-index",
+        "scrollY": 0,
+        "pageOverflow": false,
+        "docShellMode": "online-docs",
+        "docPageHeadCount": 1,
+        "onThisPageCount": 1,
+        "mandatoryBoundaryCount": 1,
+        "noOverclaimBoundaryCount": 1,
+        "legacyGlobalNavCount": 0,
+        "navGroupCount": 7,
+        "categoryLabelCount": 18,
+        "expectedCategoryCount": 18,
+        "expectedGroupCount": 7,
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1440,
+          "bottom": 96,
+          "width": 1440,
+          "height": 96
+        },
+        "pageHead": {
+          "top": 133.44,
+          "left": 325.44,
+          "right": 1402.56,
+          "bottom": 322.86,
+          "width": 1077.13,
+          "height": 189.42
+        },
+        "firstStoryTop": 381.17,
+        "headerStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 963.094px 188.906px",
+          "min-height": "96px"
+        },
+        "workspaceStyles": {
+          "display": "grid",
+          "grid-template-columns": "705.75px 180px",
+          "gap": "23.04px"
+        },
+        "pageHeadStyles": {
+          "display": "grid",
+          "grid-template-columns": "743.125px 320px",
+          "gap": "14px",
+          "border-bottom-style": "solid"
+        },
+        "layoutStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 1152px"
+        },
+        "currentLocationBeforeSearch": true,
+        "searchBeforeControls": true,
+        "utilityTrailingGap": 25.91,
+        "pageHeadStartsBelowHeader": true,
+        "firstStoryDoesNotReplacePageHead": true,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "group": "Patterns",
+        "storyId": "forms-patterns",
+        "route": "/apps/storybook/storybook-static/patterns.html?theme=light&locale=zh-CN#forms-patterns",
+        "locale": "zh-CN",
+        "activeSection": "Patterns",
+        "activeStoryId": "forms-patterns",
+        "scrollY": 0,
+        "pageOverflow": false,
+        "docShellMode": "online-docs",
+        "docPageHeadCount": 1,
+        "onThisPageCount": 1,
+        "mandatoryBoundaryCount": 1,
+        "noOverclaimBoundaryCount": 1,
+        "legacyGlobalNavCount": 0,
+        "navGroupCount": 7,
+        "categoryLabelCount": 18,
+        "expectedCategoryCount": 18,
+        "expectedGroupCount": 7,
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1440,
+          "bottom": 96,
+          "width": 1440,
+          "height": 96
+        },
+        "pageHead": {
+          "top": 133.44,
+          "left": 325.44,
+          "right": 1402.56,
+          "bottom": 298.67,
+          "width": 1077.13,
+          "height": 165.23
+        },
+        "firstStoryTop": 356.98,
+        "headerStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 963.094px 188.906px",
+          "min-height": "96px"
+        },
+        "workspaceStyles": {
+          "display": "grid",
+          "grid-template-columns": "705.75px 180px",
+          "gap": "23.04px"
+        },
+        "pageHeadStyles": {
+          "display": "grid",
+          "grid-template-columns": "743.125px 320px",
+          "gap": "14px",
+          "border-bottom-style": "solid"
+        },
+        "layoutStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 1152px"
+        },
+        "currentLocationBeforeSearch": true,
+        "searchBeforeControls": true,
+        "utilityTrailingGap": 25.91,
+        "pageHeadStartsBelowHeader": true,
+        "firstStoryDoesNotReplacePageHead": true,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "group": "Proof",
+        "storyId": "proof-matrix",
+        "route": "/apps/storybook/storybook-static/proof.html?theme=light&locale=zh-CN#proof-matrix",
+        "locale": "zh-CN",
+        "activeSection": "Proof",
+        "activeStoryId": "proof-matrix",
+        "scrollY": 0,
+        "pageOverflow": false,
+        "docShellMode": "online-docs",
+        "docPageHeadCount": 1,
+        "onThisPageCount": 1,
+        "mandatoryBoundaryCount": 1,
+        "noOverclaimBoundaryCount": 1,
+        "legacyGlobalNavCount": 0,
+        "navGroupCount": 7,
+        "categoryLabelCount": 18,
+        "expectedCategoryCount": 18,
+        "expectedGroupCount": 7,
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1440,
+          "bottom": 96,
+          "width": 1440,
+          "height": 96
+        },
+        "pageHead": {
+          "top": 133.44,
+          "left": 325.44,
+          "right": 1402.56,
+          "bottom": 271.05,
+          "width": 1077.13,
+          "height": 137.61
+        },
+        "firstStoryTop": 329.36,
+        "headerStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 963.094px 188.906px",
+          "min-height": "96px"
+        },
+        "workspaceStyles": {
+          "display": "grid",
+          "grid-template-columns": "705.75px 180px",
+          "gap": "23.04px"
+        },
+        "pageHeadStyles": {
+          "display": "grid",
+          "grid-template-columns": "743.125px 320px",
+          "gap": "14px",
+          "border-bottom-style": "solid"
+        },
+        "layoutStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 1152px"
+        },
+        "currentLocationBeforeSearch": true,
+        "searchBeforeControls": true,
+        "utilityTrailingGap": 25.91,
+        "pageHeadStartsBelowHeader": true,
+        "firstStoryDoesNotReplacePageHead": true,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "group": "Change Log",
+        "storyId": "local-changelog",
+        "route": "/apps/storybook/storybook-static/change-log.html?theme=light&locale=zh-CN#local-changelog",
+        "locale": "zh-CN",
+        "activeSection": "Change Log",
+        "activeStoryId": "local-changelog",
+        "scrollY": 0,
+        "pageOverflow": false,
+        "docShellMode": "online-docs",
+        "docPageHeadCount": 1,
+        "onThisPageCount": 1,
+        "mandatoryBoundaryCount": 1,
+        "noOverclaimBoundaryCount": 1,
+        "legacyGlobalNavCount": 0,
+        "navGroupCount": 7,
+        "categoryLabelCount": 18,
+        "expectedCategoryCount": 18,
+        "expectedGroupCount": 7,
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1440,
+          "bottom": 96,
+          "width": 1440,
+          "height": 96
+        },
+        "pageHead": {
+          "top": 133.44,
+          "left": 325.44,
+          "right": 1402.56,
+          "bottom": 271.05,
+          "width": 1077.13,
+          "height": 137.61
+        },
+        "firstStoryTop": 329.36,
+        "headerStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 963.094px 188.906px",
+          "min-height": "96px"
+        },
+        "workspaceStyles": {
+          "display": "grid",
+          "grid-template-columns": "705.75px 180px",
+          "gap": "23.04px"
+        },
+        "pageHeadStyles": {
+          "display": "grid",
+          "grid-template-columns": "743.125px 320px",
+          "gap": "14px",
+          "border-bottom-style": "solid"
+        },
+        "layoutStyles": {
+          "display": "grid",
+          "grid-template-columns": "288px 1152px"
+        },
+        "currentLocationBeforeSearch": true,
+        "searchBeforeControls": true,
+        "utilityTrailingGap": 25.91,
+        "pageHeadStartsBelowHeader": true,
+        "firstStoryDoesNotReplacePageHead": true,
+        "ok": true,
+        "failures": []
+      }
+    ]
+  },
   "anchorScrollCheck": {
     "ok": true,
     "source": "left secondary nav click -> table-work-index-spec",
