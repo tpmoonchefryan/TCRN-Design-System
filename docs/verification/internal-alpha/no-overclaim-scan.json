@@ -184,6 +184,14 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-components-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-workbench-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -364,6 +372,14 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-components-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-workbench-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -541,6 +557,14 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-welcome-governance.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-components-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -807,6 +831,13 @@
       "rule": "positive-overclaim",
       "matchSha256": "982e17d1ecdad7cabe0faf1752196d88ef99e7119bb62c73484dd160ee5cd097",
       "matchLength": 16,
+      "matchDisposition": "redacted_positive_overclaim_phrase"
+    },
+    {
+      "file": "packages/ui-react/src/components/DataDisplay/DataDisplay.test.tsx",
+      "rule": "positive-overclaim",
+      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
+      "matchLength": 13,
       "matchDisposition": "redacted_positive_overclaim_phrase"
     },
     {

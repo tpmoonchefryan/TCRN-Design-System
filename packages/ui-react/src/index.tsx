@@ -35,6 +35,15 @@ export const componentLibraryPublicComponentNames = [
   "TableShell",
   "WorkIndex",
   "DetailInspector",
+  "RelationshipChip",
+  "MachineToken",
+  "WorkManagementSubnav",
+  "WorkBoard",
+  "WorkHierarchy",
+  "GatePipeline",
+  "EvidenceAttachmentList",
+  "WorkItemInspector",
+  "SavedViewToolbar",
   "Breadcrumb",
   "ModuleTabs",
   "SectionTabs",
@@ -71,6 +80,8 @@ export const componentLibraryPublicUtilityNames = [
   "tcrnComponentCss",
   "tcrnProductLogoRegistry",
   "getTcrnProductLogoAsset",
+  "workManagementPatternRegistry",
+  "workRelationshipTypes",
   "useProductShellController"
 ] as const;
 

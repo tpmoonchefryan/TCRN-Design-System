@@ -76,8 +76,10 @@ const expectedContractStoryIds = [
   "aos-owner-quality-product-shell",
   "dialog-spec-usage",
   "table-work-index-spec",
+  "work-management-components-spec",
   "forms-patterns",
   "workbench-patterns",
+  "work-management-patterns",
   "readiness-notification-patterns",
   "selection-list-patterns",
   "modal-validation-patterns",
@@ -107,6 +109,7 @@ const expectedAiRequiredBeforeProductFrontendImplementation = [
   "use_product_shell_semantic_control_api",
   "prove_locale_popup_dismissal_and_focus_return",
   "prove_side_navigation_collapse_state",
+  "use_work_management_patterns_for_static_work_surfaces",
   "block_unregistered_modules_from_primary_navigation",
   "prove_browser_interactions_not_static_markers",
   "prove_product_adoption_before_ds_compliance_claim"
@@ -123,6 +126,7 @@ const expectedAiRequiredProof = [
   "storybook_shell_control_receipt",
   "locale_popup_dismissal_receipt",
   "side_navigation_collapse_receipt",
+  "work_management_static_pattern_receipt",
   "registered_navigation_receipt",
   "browser_interaction_receipt",
   "storybook_section_coverage_receipt",
@@ -173,7 +177,7 @@ test("static contract story surface is retained and synthetic", () => {
   const pages = contractStoryGroups.map((group) => ({ group, html: readGroupPage(group) }));
   const combinedHtml = pages.map((page) => page.html).join("\n");
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
-  assert.equal(contractStories.length, 38);
+  assert.equal(contractStories.length, 40);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
   assert.deepEqual(
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
@@ -617,6 +621,27 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /Virtual scrolling/);
   assert.match(readGroupPage("Components"), /Column resize or frozen columns/);
   assert.match(readGroupPage("Components"), /Selected count, all\/none behavior, disabled reasons, and undo or confirmation/);
+  assert.match(readGroupPage("Components"), /Work Management component specs/);
+  assert.match(readGroupPage("Components"), /data-work-management-contract="package-backed-static"/);
+  assert.match(readGroupPage("Components"), /RelationshipChip/);
+  assert.match(readGroupPage("Components"), /MachineToken/);
+  assert.match(readGroupPage("Components"), /WorkManagementSubnav/);
+  assert.match(readGroupPage("Components"), /WorkBoard/);
+  assert.match(readGroupPage("Components"), /WorkHierarchy/);
+  assert.match(readGroupPage("Components"), /GatePipeline/);
+  assert.match(readGroupPage("Components"), /EvidenceAttachmentList/);
+  assert.match(readGroupPage("Components"), /WorkItemInspector/);
+  assert.match(readGroupPage("Components"), /SavedViewToolbar/);
+  for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "duplicates", "supersedes", "split_from", "caused_by", "implements", "verifies", "reviews", "refreshes"]) {
+    assert.match(readGroupPage("Components"), new RegExp(`data-work-relationship="${relation}"`));
+  }
+  assert.match(readGroupPage("Components"), /route_tcrn_ds_work_management_patterns_ilya_ds_package_storybook_implementation_after_minerva_initiative_c4865675/);
+  assert.match(readGroupPage("Components"), /Codex Activity is execution and evidence context attached to this Work Item; it is not a replacement for Story or Task \/ Work Item/);
+  assert.match(readGroupPage("Patterns"), /Work Management patterns/);
+  assert.match(readGroupPage("Patterns"), /data-work-management-patterns="static-no-live"/);
+  assert.match(readGroupPage("Patterns"), /Smallest acceptable human\/business\/workflow result/);
+  assert.match(readGroupPage("Patterns"), /Smallest executable ticket\/task unit/);
+  assert.match(readGroupPage("Patterns"), /no API integration, backend persistence, live Codex dispatch, external queue, product adoption, owner acceptance, package publication, or release readiness is claimed/i);
   assert.doesNotMatch(readGroupPage("Patterns"), /data-story-id="aos-operations-cockpit-standard"/);
   assert.doesNotMatch(readGroupPage("Patterns"), /data-story-id="aos-docs-readiness-standard"/);
   assert.doesNotMatch(readGroupPage("Patterns"), /data-story-id="aos-product-design-target-set-standard"/);
@@ -838,12 +863,17 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.componentConsumptionDisposition, /ProductShell, TopBar, SideNav/);
   assert.match(contract.componentConsumptionDisposition, /ProductShellSearch is required only when the product exposes a real topbar\/global search surface/);
   assert.match(contract.componentConsumptionDisposition, /must be omitted rather than rendered as an inert placeholder/);
+  assert.match(contract.componentConsumptionDisposition, /RelationshipChip, MachineToken, WorkManagementSubnav, WorkBoard, WorkHierarchy, GatePipeline, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar/);
   assert.match(contract.componentConsumptionDisposition, /useProductShellController/);
   assert.match(contract.componentConsumptionDisposition, /ProductShell semantic callbacks/);
   assert.match(contract.componentConsumptionDisposition, /productShellControlProps/);
   assert.match(contract.componentConsumptionDisposition, /when search is present, onSearchQueryChange/);
   assert.match(contract.componentConsumptionDisposition, /onSearchResultActivate/);
+  assert.match(contract.workManagementPatternDisposition, /static Initiative\/Epic\/Story\/Task or Work Item\/Subtask or Evidence Task presentation/);
+  assert.match(contract.workManagementPatternDisposition, /relationship vocabulary, board lanes, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment/);
+  assert.match(contract.workManagementPatternDisposition, /API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS\/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed/);
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
+  assert.ok(contract.requiredProof.includes("work_management_static_pattern_receipt"));
   assert.match(contract.storybookDocShellCompositionDisposition, /may retain page skeleton, routing, section navigation/);
   assert.match(contract.storybookDocShellCompositionDisposition, /Reusable controls, component visuals, icons, product logos, shell search, theme toggle, locale menu, side-navigation collapse/);
   assert.match(contract.storybookDocShellCompositionDisposition, /must come from registered @tcrn\/ui-react exports and package CSS/);
@@ -898,7 +928,8 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Required Storybook sections:/);
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, button-spec-usage, field-spec-usage, navigation-shell-spec, aos-frontend-shell-slice, aos-owner-quality-product-shell, dialog-spec-usage, table-work-index-spec/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, button-spec-usage, field-spec-usage, navigation-shell-spec, aos-frontend-shell-slice, aos-owner-quality-product-shell, dialog-spec-usage, table-work-index-spec, work-management-components-spec/);
+  assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, work-management-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
   const robots = readFileSync(join(process.cwd(), "storybook-static", "robots.txt"), "utf8");

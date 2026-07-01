@@ -39,8 +39,10 @@ const requiredStories = [
   { id: "aos-owner-quality-product-shell", group: "Components" },
   { id: "dialog-spec-usage", group: "Components" },
   { id: "table-work-index-spec", group: "Components" },
+  { id: "work-management-components-spec", group: "Components" },
   { id: "forms-patterns", group: "Patterns" },
   { id: "workbench-patterns", group: "Patterns" },
+  { id: "work-management-patterns", group: "Patterns" },
   { id: "readiness-notification-patterns", group: "Patterns" },
   { id: "selection-list-patterns", group: "Patterns" },
   { id: "modal-validation-patterns", group: "Patterns" },
@@ -859,7 +861,29 @@ for (const text of [
 ]) {
   required.push(text);
 }
-const missing = required.filter((text) => !combinedHtml.includes(text));
+for (const text of [
+  "data-work-management-contract=\"package-backed-static\"",
+  "data-work-management-patterns=\"static-no-live\"",
+  "RelationshipChip",
+  "MachineToken",
+  "WorkManagementSubnav",
+  "WorkBoard",
+  "WorkHierarchy",
+  "GatePipeline",
+  "EvidenceAttachmentList",
+  "WorkItemInspector",
+  "SavedViewToolbar",
+  "work_management_static_pattern_receipt",
+  "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation",
+  "API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed"
+]) {
+  required.push(text);
+}
+for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "duplicates", "supersedes", "split_from", "caused_by", "implements", "verifies", "reviews", "refreshes"]) {
+  required.push(`data-work-relationship="${relation}"`);
+}
+const combinedContractText = `${combinedHtml}\n${JSON.stringify(contract)}\n${llmsTxt}`;
+const missing = required.filter((text) => !combinedContractText.includes(text));
 for (const [sourceName, source] of [
   ["alpha-styles.ts", storybookAlphaStylesSource],
   ["storybook.css", storybookStaticCssSource]

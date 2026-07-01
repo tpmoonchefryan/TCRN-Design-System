@@ -44,6 +44,15 @@ test("component-library metadata names public components, utilities, and deferre
     "TableShell",
     "WorkIndex",
     "DetailInspector",
+    "RelationshipChip",
+    "MachineToken",
+    "WorkManagementSubnav",
+    "WorkBoard",
+    "WorkHierarchy",
+    "GatePipeline",
+    "EvidenceAttachmentList",
+    "WorkItemInspector",
+    "SavedViewToolbar",
     "Breadcrumb",
     "ModuleTabs",
     "SectionTabs",
@@ -79,7 +88,9 @@ test("component-library metadata names public components, utilities, and deferre
     "tcrnComponentCss",
     "tcrnIconNames",
     "tcrnProductLogoRegistry",
-    "useProductShellController"
+    "useProductShellController",
+    "workManagementPatternRegistry",
+    "workRelationshipTypes"
   ]);
   assert.ok(componentLibraryDeferredPrototypeNames.includes("TmsDenseShellDemo"));
   assert.ok(componentLibraryDeferredPrototypeNames.includes("KnowledgeBaseShellDemo"));

@@ -54,7 +54,18 @@ import {
   tcrnProductLogoRegistry,
   tcrnIconNames,
   Tooltip,
-  WorkIndex
+  EvidenceAttachmentList,
+  GatePipeline,
+  MachineToken,
+  RelationshipChip,
+  SavedViewToolbar,
+  WorkBoard,
+  WorkHierarchy,
+  WorkIndex,
+  WorkItemInspector,
+  WorkManagementSubnav,
+  workManagementPatternRegistry,
+  workRelationshipTypes
 } from "@tcrn/ui-react";
 import {
   presentCopyState,
@@ -64,6 +75,13 @@ import {
   tcrnLocaleMetadata
 } from "@tcrn/ui-copy-state";
 import type { ContractStory, ContractStoryGroup } from "./types.js";
+import type {
+  EvidenceAttachment,
+  GatePipelineGate,
+  WorkBoardLane,
+  WorkHierarchyEdge,
+  WorkHierarchyNode
+} from "@tcrn/ui-react";
 import {
   DialogSpecFixture,
   OverlayFocusFixture,
@@ -109,6 +127,114 @@ function TokenSwatch({ label, token, note }: { label: string; token: string; not
     </div>
   );
 }
+
+const workManagementSubnavItems = [
+  { id: "queue", label: "Queue", href: "#work-management-components-spec", current: true, count: 6 },
+  { id: "board", label: "Board", href: "#work-management-components-spec", count: 3 },
+  { id: "gates", label: "Gates", href: "#work-management-components-spec", count: 7 },
+  { id: "evidence", label: "Evidence", href: "#work-management-components-spec", count: 5 }
+];
+
+const workManagementSavedViews = [
+  { id: "owner-feedback", label: "Owner feedback", current: true, count: 4 },
+  { id: "blocked", label: "Blocked", count: 2 },
+  { id: "qa-retry", label: "QA retry", count: 3 }
+];
+
+const workManagementFilters = [
+  { id: "hierarchy", label: "Hierarchy", value: "Story -> Work Item" },
+  { id: "gate", label: "Gate", value: "Rowan QA" },
+  { id: "state", label: "State", value: "Proof required" }
+];
+
+const workBoardLanes: WorkBoardLane[] = [
+  {
+    id: "ready-for-review",
+    title: "Ready for review",
+    state: { state: "review_required" },
+    cards: [
+      {
+        id: "AOS-128",
+        title: "Work Management static mockup content contract",
+        state: { state: "review_required" },
+        owner: "Elara",
+        meta: "Story: smallest acceptable workflow result",
+        relationships: [
+          { relation: "implements", target: "STORY-WM-03" },
+          { relation: "verifies", target: "QA-178" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "blocked",
+    title: "Blocked",
+    state: { state: "blocked" },
+    cards: [
+      {
+        id: "DS-26",
+        title: "Machine-token readability pattern",
+        state: { state: "blocked" },
+        owner: "Design System",
+        meta: "Waits for component admission",
+        relationships: [
+          { relation: "blocked_by", target: "DS Review" },
+          { relation: "relates_to", target: "AOS-128" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "evidence",
+    title: "Evidence",
+    state: { state: "local_only" },
+    cards: [
+      {
+        id: "EV-221",
+        title: "Rowan QA artifact summary",
+        state: { state: "local_only" },
+        owner: "Rowan",
+        meta: "Execution record attached to Work Item",
+        relationships: [
+          { relation: "reviews", target: "AOS-128" },
+          { relation: "refreshes", target: "Atlas preview" }
+        ]
+      }
+    ]
+  }
+];
+
+const workHierarchyNodes: WorkHierarchyNode[] = [
+  { id: "INIT-WM", level: "Initiative", title: "Work Management MVP", state: { state: "proof_required" }, owner: "Mara" },
+  { id: "EPIC-CAPABILITY", level: "Epic", title: "Capability Epic: Work structure", parentId: "INIT-WM", owner: "Product" },
+  { id: "EPIC-WORKSTREAM", level: "Epic", title: "Workstream Epic: QA recovery loop", parentId: "INIT-WM", owner: "Workflow" },
+  { id: "STORY-WM-03", level: "Story", title: "Smallest acceptable workflow result", parentId: "EPIC-CAPABILITY", owner: "Mara" },
+  { id: "AOS-128", level: "Task / Work Item", title: "Smallest executable ticket/task unit", parentId: "STORY-WM-03", owner: "Ilya" },
+  { id: "EV-221", level: "Subtask / Evidence Task", title: "Rendered proof and QA summary", parentId: "AOS-128", owner: "Rowan" }
+];
+
+const workHierarchyEdges: WorkHierarchyEdge[] = [
+  { from: "AOS-128", relation: "implements", to: "STORY-WM-03" },
+  { from: "EV-221", relation: "verifies", to: "AOS-128" },
+  { from: "DS-26", relation: "relates_to", to: "AOS-128" },
+  { from: "AOS-128", relation: "depends_on", to: "DS Review" },
+  { from: "route_tcrn_aos_work_management_static_mockups", relation: "caused_by", to: "owner PRD review" }
+];
+
+const workGatePipeline: GatePipelineGate[] = [
+  { id: "ds", label: "DS Review", state: { state: "proof_required" }, owner: "Elara", evidence: ["Storybook examples", "package exports"], nextAction: "Rendered DS review" },
+  { id: "implementation", label: "Implementation Proof", state: { state: "local_only" }, owner: "Ilya", evidence: ["unit tests", "smoke proof"], nextAction: "Commit and return" },
+  { id: "atlas", label: "Atlas Refresh", state: { state: "blocked" }, owner: "Atlas", evidence: ["preview URL"], nextAction: "Downstream only" },
+  { id: "rowan", label: "Rowan QA", state: { state: "proof_required" }, owner: "Rowan", evidence: ["browser matrix"], nextAction: "Wait for refresh" },
+  { id: "mara", label: "Mara PM Readiness", state: { state: "not_claimed" }, owner: "Mara", evidence: ["PM checklist"], nextAction: "No readiness claim here" }
+];
+
+const workEvidenceItems: EvidenceAttachment[] = [
+  { id: "commit", type: "commit", label: "Implementation commit", reference: "c4865675", state: { state: "local_only" } },
+  { id: "artifact", type: "artifact_dir", label: "QA artifact directory", reference: "/tmp/rowan-work-management-patterns", state: { state: "proof_required" } },
+  { id: "route", type: "policy", label: "Codex route record", reference: "route_tcrn_ds_work_management_patterns_ilya_ds_package_storybook_implementation_after_minerva_initiative_c4865675" },
+  { id: "api", type: "api_readback", label: "API readback", reference: "No Work API integration in this Storybook fixture", state: { state: "not_claimed" } }
+];
 
 const legacyContractStories: ContractStory[] = [
   {
@@ -1577,6 +1703,110 @@ const legacyContractStories: ContractStory[] = [
     )
   },
   {
+    id: "work-management-components-spec",
+    title: "Work Management component specs",
+    group: "Components",
+    description: "Package-backed Work Management components for Initiative, Epic, Story, Work Item, gate, evidence, and execution-record surfaces.",
+    render: () => (
+      <section className="alpha-story-stack" data-work-management-contract="package-backed-static">
+        <ReadbackPanel title="Admitted candidates 18-26">
+          <Text>
+            These Work Management surfaces are package-backed static presentation patterns. They do not integrate APIs, backend persistence, live Codex dispatch, external queues, product acceptance, release readiness, or product adoption.
+          </Text>
+          <TableShell
+            label="Work Management pattern registry"
+            columns={[
+              { key: "candidateId", label: "Candidate" },
+              { key: "componentName", label: "Package export" },
+              { key: "level", label: "DS level" },
+              { key: "purpose", label: "Purpose" }
+            ]}
+            rows={workManagementPatternRegistry.map((item) => ({
+              candidateId: item.candidateId,
+              componentName: item.componentName,
+              level: item.level,
+              purpose: item.purpose
+            }))}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Relationship vocabulary">
+          <div className="tcrn-work-board__relations" aria-label="Work relationship vocabulary examples">
+            {workRelationshipTypes.map((relation) => (
+              <RelationshipChip key={relation} relation={relation} source="AOS-128" target={`example-${relation}`} />
+            ))}
+          </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="Machine token containment">
+          <Text>MachineToken preserves the full identifier in title, aria-label, and data-full-token while constraining the visible value so it cannot overlap adjacent table cells.</Text>
+          <TableShell
+            label="Machine token examples"
+            columns={[
+              { key: "kind", label: "Kind" },
+              { key: "token", label: "Token" },
+              { key: "boundary", label: "Boundary" }
+            ]}
+            rows={[
+              {
+                kind: "Route",
+                token: (
+                  <MachineToken token="route_tcrn_ds_work_management_patterns_ilya_ds_package_storybook_implementation_after_minerva_initiative_c4865675"
+                    label="route"
+                    kind="route"
+                    copyable
+                  />
+                ),
+                boundary: "Readable long-token display with full metadata preserved."
+              },
+              {
+                kind: "Thread",
+                token: <MachineToken token="019eb66e-00d1-7190-81d9-693895b32033" label="Arturo" kind="thread" />,
+                boundary: "Human label plus full thread identifier."
+              }
+            ]}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Subnav and saved views">
+          <SavedViewToolbar views={workManagementSavedViews} filters={workManagementFilters} />
+          <WorkManagementSubnav items={workManagementSubnavItems} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Board, hierarchy, and gates">
+          <WorkBoard lanes={workBoardLanes} />
+          <WorkHierarchy nodes={workHierarchyNodes} edges={workHierarchyEdges} />
+          <GatePipeline gates={workGatePipeline} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Evidence and inspector">
+          <EvidenceAttachmentList items={workEvidenceItems} />
+          <WorkItemInspector
+            title="AOS-128 Work Item"
+            summary="Codex Activity is execution and evidence context attached to this Work Item; it is not a replacement for Story or Task / Work Item."
+            hierarchy={[
+              { key: "initiative", label: "Initiative", value: "Complete objective and why" },
+              { key: "epic", label: "Epic", value: "Larger deliverable work package" },
+              { key: "story", label: "Story", value: "Smallest acceptable human/business/workflow result" },
+              { key: "task", label: "Task / Work Item", value: "Smallest executable ticket/task unit" }
+            ]}
+            details={[
+              { key: "state", label: "State", value: <StatusBadge state={{ state: "proof_required" }} /> },
+              { key: "owner", label: "Owner", value: "Ilya" },
+              { key: "blocked", label: "Owner inspection", value: "Blocked until gates complete; no readiness claimed." }
+            ]}
+            relationships={[
+              { relation: "implements", target: "STORY-WM-03" },
+              { relation: "verifies", target: "EV-221" },
+              { relation: "duplicates", target: "legacy-proof-card" }
+            ]}
+            subtasks={[
+              { id: "EV-221", title: "Attach screenshot evidence", state: { state: "local_only" }, owner: "Rowan" },
+              { id: "SUB-19", title: "Record table overflow proof", state: { state: "proof_required" }, owner: "QA" }
+            ]}
+            evidence={workEvidenceItems.slice(0, 2)}
+            actions={[{ id: "dispatch", label: "Dispatch Codex route", disabledReason: "Live Codex dispatch is not available in this static Storybook fixture" }]}
+          />
+        </ReadbackPanel>
+      </section>
+    )
+  },
+  {
     id: "forms-patterns",
     title: "Forms pattern",
     group: "Patterns",
@@ -1620,6 +1850,45 @@ const legacyContractStories: ContractStory[] = [
           ]}
         />
         <EvidenceStrip items={["local proof", "synthetic examples", "no raw evidence"]} />
+      </section>
+    )
+  },
+  {
+    id: "work-management-patterns",
+    title: "Work Management patterns",
+    group: "Patterns",
+    description: "Composition guidance for Work Management queues, boards, hierarchy, gate pipelines, evidence, and saved views.",
+    render: () => (
+      <section className="alpha-story-stack" data-work-management-patterns="static-no-live">
+        <ReadbackPanel title="Hierarchy semantics">
+          <TableShell
+            label="Work Management hierarchy"
+            columns={[
+              { key: "level", label: "Level" },
+              { key: "meaning", label: "Meaning" },
+              { key: "blocked", label: "Blocked misuse" }
+            ]}
+            rows={[
+              { level: "Initiative", meaning: "Complete objective and why.", blocked: "Replacing with an execution route." },
+              { level: "Epic", meaning: "Larger deliverable work package; may be capability or workstream.", blocked: "Using as a single task ticket." },
+              { level: "Story", meaning: "Smallest acceptable human/business/workflow result.", blocked: "Replacing with Codex Activity." },
+              { level: "Task / Work Item", meaning: "Smallest executable ticket/task unit.", blocked: "Treating proof evidence as the task." },
+              { level: "Subtask / Evidence Task", meaning: "Execution or proof detail.", blocked: "Claiming product readiness from local evidence." }
+            ]}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Recommended static composition">
+          <SavedViewToolbar views={workManagementSavedViews} filters={workManagementFilters} />
+          <WorkBoard lanes={workBoardLanes} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Dependency and evidence flow">
+          <WorkHierarchy nodes={workHierarchyNodes} edges={workHierarchyEdges} />
+          <GatePipeline gates={workGatePipeline} />
+          <EvidenceAttachmentList items={workEvidenceItems} />
+        </ReadbackPanel>
+        <InlineAlert tone="warning">
+          Work Management patterns remain static and product-neutral here: no API integration, backend persistence, live Codex dispatch, external queue, product adoption, owner acceptance, package publication, or release readiness is claimed.
+        </InlineAlert>
       </section>
     )
   },

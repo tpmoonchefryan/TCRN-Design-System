@@ -55,6 +55,15 @@ const publicUiReactComponentExports = [
   "FilterBar",
   "TableShell",
   "WorkIndex",
+  "RelationshipChip",
+  "MachineToken",
+  "WorkManagementSubnav",
+  "WorkBoard",
+  "WorkHierarchy",
+  "GatePipeline",
+  "EvidenceAttachmentList",
+  "WorkItemInspector",
+  "SavedViewToolbar",
   "DetailInspector",
   "Breadcrumb",
   "ModuleTabs",
@@ -90,7 +99,9 @@ const publicUiReactUtilityExports = [
   "tcrnComponentCss",
   "useProductShellController",
   "tcrnProductLogoRegistry",
-  "getTcrnProductLogoAsset"
+  "getTcrnProductLogoAsset",
+  "workManagementPatternRegistry",
+  "workRelationshipTypes"
 ];
 
 const deferredStorybookPrototypeNames = [

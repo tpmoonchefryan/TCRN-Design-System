@@ -103,7 +103,8 @@ export const aiConsumptionContract = {
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ],
       consumerChecks: [
         "identify every registered primitive, export, variant, prop, slot, and state required by the product surface",
@@ -117,6 +118,7 @@ export const aiConsumptionContract = {
       requiredStories: [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -126,6 +128,7 @@ export const aiConsumptionContract = {
       ],
       consumerChecks: [
         "consume page, dashboard, workbench, list, form, notification, validation, data-grid, and search composition rules before arranging product screens",
+        "consume Work Management hierarchy, board, gate, evidence, relationship, saved-view, and machine-token patterns before building Initiative/Epic/Story/Work Item surfaces",
         "prove information hierarchy, density, mobile reflow, empty/loading/error states, and route-level IA match the relevant Storybook pattern",
         "block proof/status panels from replacing product-first page composition unless the Storybook pattern explicitly requires them"
       ]
@@ -680,6 +683,7 @@ export const aiConsumptionContract = {
     "use_product_shell_semantic_control_api",
     "prove_locale_popup_dismissal_and_focus_return",
     "prove_side_navigation_collapse_state",
+    "use_work_management_patterns_for_static_work_surfaces",
     "block_unregistered_modules_from_primary_navigation",
     "prove_browser_interactions_not_static_markers",
     "prove_product_adoption_before_ds_compliance_claim"
@@ -695,6 +699,7 @@ export const aiConsumptionContract = {
     "storybook_shell_control_receipt",
     "locale_popup_dismissal_receipt",
     "side_navigation_collapse_receipt",
+    "work_management_static_pattern_receipt",
     "registered_navigation_receipt",
     "browser_interaction_receipt",
     "storybook_section_coverage_receipt",
@@ -740,7 +745,9 @@ export const aiConsumptionContract = {
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, and disclosure surfaces instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
+    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Work Management surfaces including RelationshipChip, MachineToken, WorkManagementSubnav, WorkBoard, WorkHierarchy, GatePipeline, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
+  workManagementPatternDisposition:
+    "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation, relationship vocabulary, board lanes, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
   storybookDocShellCompositionDisposition:
     "The Storybook documentation frontend may retain page skeleton, routing, section navigation, anchor behavior, static proof pages, search indexing, and documentation-specific layout slots. Reusable controls, component visuals, icons, product logos, shell search, theme toggle, locale menu, side-navigation collapse, and ProductShell comparator behavior must come from registered @tcrn/ui-react exports and package CSS; Storybook doc-shell code must not keep private component clones, and Storybook doc-shell CSS must not use global package-looking selectors such as raw .tcrn-search-input, .tcrn-nav-item, .tcrn-top-bar, or broad button/input focus rules that can contaminate package-backed ProductShell visual-instance fixtures.",
   tokenConsumptionDisposition:

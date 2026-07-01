@@ -79,7 +79,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -167,7 +167,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -257,7 +257,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -320,7 +320,8 @@
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ],
       "consoleMessages": [],
       "pageErrors": [],
@@ -330,7 +331,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -397,7 +398,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 7514
+          "height": 8523
         },
         {
           "id": "display-primitives-spec",
@@ -451,7 +452,13 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 1077,
-          "height": 2314
+          "height": 2384
+        },
+        {
+          "id": "work-management-components-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 5156
         }
       ],
       "clipped": [],
@@ -470,6 +477,7 @@
       "expectedStoryIds": [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -485,7 +493,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -517,6 +525,12 @@
           "visible": true,
           "width": 1077,
           "height": 498
+        },
+        {
+          "id": "work-management-patterns",
+          "visible": true,
+          "width": 1077,
+          "height": 3039
         },
         {
           "id": "readiness-notification-patterns",
@@ -552,7 +566,7 @@
           "id": "dashboard-page-templates",
           "visible": true,
           "width": 1077,
-          "height": 316
+          "height": 449
         }
       ],
       "clipped": [],
@@ -582,7 +596,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -613,7 +627,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 4600
+          "height": 4687
         },
         {
           "id": "blocked-actions",
@@ -652,7 +666,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -708,7 +722,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -796,7 +810,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -886,7 +900,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -949,7 +963,8 @@
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ],
       "consoleMessages": [],
       "pageErrors": [],
@@ -959,7 +974,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1026,7 +1041,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 7951
+          "height": 8995
         },
         {
           "id": "display-primitives-spec",
@@ -1080,7 +1095,13 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 691,
-          "height": 2588
+          "height": 2658
+        },
+        {
+          "id": "work-management-components-spec",
+          "visible": true,
+          "width": 691,
+          "height": 6524
         }
       ],
       "clipped": [],
@@ -1099,6 +1120,7 @@
       "expectedStoryIds": [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -1114,7 +1136,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1146,6 +1168,12 @@
           "visible": true,
           "width": 691,
           "height": 516
+        },
+        {
+          "id": "work-management-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 3819
         },
         {
           "id": "readiness-notification-patterns",
@@ -1181,7 +1209,7 @@
           "id": "dashboard-page-templates",
           "visible": true,
           "width": 691,
-          "height": 351
+          "height": 537
         }
       ],
       "clipped": [],
@@ -1211,7 +1239,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1242,7 +1270,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 5667
+          "height": 5807
         },
         {
           "id": "blocked-actions",
@@ -1281,7 +1309,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1337,7 +1365,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1368,19 +1396,19 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 358,
-          "height": 1353
+          "height": 1676
         },
         {
           "id": "governance-boundaries",
           "visible": true,
           "width": 358,
-          "height": 1051
+          "height": 1321
         },
         {
           "id": "maintainers-routing",
           "visible": true,
           "width": 358,
-          "height": 899
+          "height": 1428
         },
         {
           "id": "contribution-model",
@@ -1392,7 +1420,7 @@
           "id": "release-bug-policy",
           "visible": true,
           "width": 358,
-          "height": 728
+          "height": 1015
         }
       ],
       "clipped": [],
@@ -1425,7 +1453,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1450,43 +1478,43 @@
           "id": "brand-identity",
           "visible": true,
           "width": 358,
-          "height": 2532
+          "height": 3033
         },
         {
           "id": "color-palette",
           "visible": true,
           "width": 358,
-          "height": 5120
+          "height": 6391
         },
         {
           "id": "text-styles",
           "visible": true,
           "width": 358,
-          "height": 4047
+          "height": 6080
         },
         {
           "id": "grid-system",
           "visible": true,
           "width": 358,
-          "height": 1181
+          "height": 1557
         },
         {
           "id": "icons-motion",
           "visible": true,
           "width": 358,
-          "height": 4023
+          "height": 6216
         },
         {
           "id": "global-states",
           "visible": true,
           "width": 358,
-          "height": 1219
+          "height": 1748
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
           "width": 358,
-          "height": 1022
+          "height": 1411
         }
       ],
       "clipped": [],
@@ -1515,7 +1543,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1546,13 +1574,13 @@
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 358,
-          "height": 3295
+          "height": 4075
         },
         {
           "id": "copy-guidelines",
           "visible": true,
           "width": 358,
-          "height": 677
+          "height": 933
         }
       ],
       "clipped": [],
@@ -1578,7 +1606,8 @@
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ],
       "consoleMessages": [],
       "pageErrors": [],
@@ -1588,7 +1617,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1655,61 +1684,67 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 10948
+          "height": 23575
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 358,
-          "height": 1865
+          "height": 1989
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 358,
-          "height": 1697
+          "height": 2015
         },
         {
           "id": "button-spec-usage",
           "visible": true,
           "width": 358,
-          "height": 989
+          "height": 1217
         },
         {
           "id": "field-spec-usage",
           "visible": true,
           "width": 358,
-          "height": 1632
+          "height": 1855
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 358,
-          "height": 12656
+          "height": 13959
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 24849
+          "height": 28238
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 34292
+          "height": 41629
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
           "width": 358,
-          "height": 1798
+          "height": 2129
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
           "width": 358,
-          "height": 4737
+          "height": 6472
+        },
+        {
+          "id": "work-management-components-spec",
+          "visible": true,
+          "width": 358,
+          "height": 12330
         }
       ],
       "clipped": [],
@@ -1728,6 +1763,7 @@
       "expectedStoryIds": [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -1743,7 +1779,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1774,7 +1810,13 @@
           "id": "workbench-patterns",
           "visible": true,
           "width": 358,
-          "height": 651
+          "height": 778
+        },
+        {
+          "id": "work-management-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 7358
         },
         {
           "id": "readiness-notification-patterns",
@@ -1786,31 +1828,31 @@
           "id": "selection-list-patterns",
           "visible": true,
           "width": 358,
-          "height": 344
+          "height": 364
         },
         {
           "id": "modal-validation-patterns",
           "visible": true,
           "width": 358,
-          "height": 407
+          "height": 444
         },
         {
           "id": "datagrid-fields-patterns",
           "visible": true,
           "width": 358,
-          "height": 359
+          "height": 396
         },
         {
           "id": "big-list-search-patterns",
           "visible": true,
           "width": 358,
-          "height": 483
+          "height": 502
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
           "width": 358,
-          "height": 407
+          "height": 824
         }
       ],
       "clipped": [],
@@ -1840,7 +1882,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1865,19 +1907,19 @@
           "id": "proof-matrix",
           "visible": true,
           "width": 358,
-          "height": 558
+          "height": 894
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 10641
+          "height": 10274
         },
         {
           "id": "blocked-actions",
           "visible": true,
           "width": 358,
-          "height": 650
+          "height": 588
         },
         {
           "id": "overlay-focus",
@@ -1910,7 +1952,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,

@@ -127,6 +127,11 @@
       "storybookId": "tcrn-design-system-components--table-work-index-spec"
     },
     {
+      "id": "work-management-components-spec",
+      "group": "Components",
+      "storybookId": "tcrn-design-system-components--work-management-components-spec"
+    },
+    {
       "id": "forms-patterns",
       "group": "Patterns",
       "storybookId": "tcrn-design-system-patterns--forms-patterns"
@@ -135,6 +140,11 @@
       "id": "workbench-patterns",
       "group": "Patterns",
       "storybookId": "tcrn-design-system-patterns--workbench-patterns"
+    },
+    {
+      "id": "work-management-patterns",
+      "group": "Patterns",
+      "storybookId": "tcrn-design-system-patterns--work-management-patterns"
     },
     {
       "id": "readiness-notification-patterns",
@@ -391,6 +401,11 @@
       "visible": true
     },
     {
+      "id": "work-management-components-spec",
+      "storybookId": "tcrn-design-system-components--work-management-components-spec",
+      "visible": true
+    },
+    {
       "id": "forms-patterns",
       "storybookId": "tcrn-design-system-patterns--forms-patterns",
       "visible": true
@@ -398,6 +413,11 @@
     {
       "id": "workbench-patterns",
       "storybookId": "tcrn-design-system-patterns--workbench-patterns",
+      "visible": true
+    },
+    {
+      "id": "work-management-patterns",
+      "storybookId": "tcrn-design-system-patterns--work-management-patterns",
       "visible": true
     },
     {
@@ -475,8 +495,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 52972,
-      "scrollY": 51474
+      "maxScrollY": 59218,
+      "scrollY": 52483
     }
   },
   "scrollSpyCheck": {
@@ -486,10 +506,10 @@
       "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
-      "targetTop": 438,
+      "targetTop": 304,
       "offset": 96,
-      "maxScrollY": 1965,
-      "scrollY": 1965,
+      "maxScrollY": 5151,
+      "scrollY": 5151,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }
@@ -994,7 +1014,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1033,7 +1053,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1076,7 +1096,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1111,7 +1131,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1136,7 +1156,8 @@
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ],
       "expectedStoryIds": [
         "component-family-index",
@@ -1148,7 +1169,8 @@
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ]
     },
     {
@@ -1160,7 +1182,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1178,6 +1200,7 @@
       "visibleStoryIds": [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -1188,6 +1211,7 @@
       "expectedStoryIds": [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -1205,7 +1229,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1242,7 +1266,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1273,7 +1297,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1312,7 +1336,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1355,7 +1379,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1390,7 +1414,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1415,7 +1439,8 @@
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ],
       "expectedStoryIds": [
         "component-family-index",
@@ -1427,7 +1452,8 @@
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ]
     },
     {
@@ -1439,7 +1465,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1457,6 +1483,7 @@
       "visibleStoryIds": [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -1467,6 +1494,7 @@
       "expectedStoryIds": [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -1484,7 +1512,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1521,7 +1549,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1552,7 +1580,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1591,7 +1619,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1634,7 +1662,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1669,7 +1697,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1694,7 +1722,8 @@
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ],
       "expectedStoryIds": [
         "component-family-index",
@@ -1706,7 +1735,8 @@
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
-        "table-work-index-spec"
+        "table-work-index-spec",
+        "work-management-components-spec"
       ]
     },
     {
@@ -1718,7 +1748,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1736,6 +1766,7 @@
       "visibleStoryIds": [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -1746,6 +1777,7 @@
       "expectedStoryIds": [
         "forms-patterns",
         "workbench-patterns",
+        "work-management-patterns",
         "readiness-notification-patterns",
         "selection-list-patterns",
         "modal-validation-patterns",
@@ -1763,7 +1795,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
@@ -1800,7 +1832,7 @@
       "docSidebarVisible": true,
       "docGlobalNavCount": 0,
       "docNavGroupCount": 7,
-      "docNavItemCount": 38,
+      "docNavItemCount": 40,
       "docNavCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "shellHeaderLayoutGap": 0,
