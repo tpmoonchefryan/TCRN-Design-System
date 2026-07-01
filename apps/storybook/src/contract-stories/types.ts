@@ -6,6 +6,12 @@ export interface ContractStory {
   id: string;
   title: string;
   group: ContractStoryGroup;
+  category: string;
+  categoryId: string;
   description: string;
+  sourcePath: string;
+  packageAuthority: string;
+  readiness: string;
+  proofPosture: string;
   render: () => ReactNode;
 }

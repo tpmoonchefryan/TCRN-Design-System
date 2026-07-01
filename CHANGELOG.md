@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased
+
+- 2026-07-01: Add Storybook governance/readability/traceability updates from
+  route
+  `route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541`.
+  Planned commit: current implementation route commit.
+  Affected stories: all 40 local contract stories across `Welcome`,
+  `Style Guide`, `Foundations`, `Components`, `Patterns`, `Proof`, and
+  `Change Log`.
+  AI contract digest/readback: `storybook-static/ai-consumption-contract.json`
+  includes `contractPayloadDigest`; Storybook smoke verifies it equals the
+  stable JSON digest.
+  Proof artifacts: `apps/storybook/storybook-static/ai-consumption-contract.json`,
+  `apps/storybook/storybook-static/llms.txt`,
+  `docs/verification/internal-alpha/browser-proof-summary.json`,
+  `docs/verification/internal-alpha/a11y-axe-summary.json`, and
+  `docs/verification/internal-alpha/no-overclaim-scan.json`.
+  Boundaries: local Storybook governance contract only; no package publication,
+  Storybook/docs publication, AOS/TMS product adoption, owner/product/release
+  acceptance, live dispatch, external action, or initiative completion claim.
+
 ## 1.0.0
 
 - Prepare the accepted public Design System baseline under Apache License 2.0.

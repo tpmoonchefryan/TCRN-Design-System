@@ -1,3 +1,5 @@
+import { storybookGovernanceChangelogRecords, storybookTopLevelSections } from "../contract-stories/governance.js";
+
 export const aiConsumptionContract = {
   contractVersion: "ai_consumption_contract_v1",
   storyId: "ai-consumption-contract",
@@ -161,6 +163,109 @@ export const aiConsumptionContract = {
       ]
     }
   ],
+  coveredStorybookSections: [
+    {
+      section: "Welcome",
+      route: "index.html",
+      categories: [
+        { id: "governance-entry", label: "Governance entry", storyIds: ["welcome-governance", "governance-boundaries"] },
+        { id: "routing-contribution", label: "Routing and contribution", storyIds: ["maintainers-routing", "contribution-model", "release-bug-policy"] }
+      ],
+      sourcePaths: ["apps/storybook/src/contract-stories/groups/welcome.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
+      authority: "static_contract_storybook_governance"
+    },
+    {
+      section: "Style Guide",
+      route: "style-guide.html",
+      categories: [
+        { id: "identity-brand", label: "Identity and brand", storyIds: ["brand-identity", "color-palette"] },
+        { id: "type-layout", label: "Type and layout", storyIds: ["text-styles", "grid-system"] },
+        { id: "interaction-copy", label: "Interaction and copy", storyIds: ["icons-motion", "global-states", "copy-creation-rules"] }
+      ],
+      sourcePaths: ["apps/storybook/src/contract-stories/groups/style-guide.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
+      authority: "static_contract_storybook_governance"
+    },
+    {
+      section: "Foundations",
+      route: "foundations.html",
+      categories: [
+        { id: "tokens-i18n", label: "Tokens and i18n", storyIds: ["tokens-copy-state", "i18n-theme-contract"] },
+        { id: "copy-governance", label: "Copy governance", storyIds: ["copy-guidelines"] }
+      ],
+      sourcePaths: ["apps/storybook/src/contract-stories/groups/foundations.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
+      authority: "static_contract_storybook_governance"
+    },
+    {
+      section: "Components",
+      route: "components.html",
+      categories: [
+        { id: "component-inventory", label: "Component inventory", storyIds: ["component-family-index", "display-primitives-spec", "interaction-disclosure-spec"] },
+        { id: "controls-data", label: "Controls and data", storyIds: ["button-spec-usage", "field-spec-usage", "table-work-index-spec"] },
+        { id: "navigation-shells", label: "Navigation and shells", storyIds: ["navigation-shell-spec", "aos-frontend-shell-slice", "aos-owner-quality-product-shell"] },
+        { id: "overlays", label: "Overlays", storyIds: ["dialog-spec-usage"] },
+        { id: "work-management", label: "Work Management", storyIds: ["work-management-components-spec"] }
+      ],
+      sourcePaths: ["apps/storybook/src/contract-stories/groups/components.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
+      authority: "package_backed_components_plus_static_contract_storybook_governance"
+    },
+    {
+      section: "Patterns",
+      route: "patterns.html",
+      categories: [
+        { id: "forms-workbench", label: "Forms and workbench", storyIds: ["forms-patterns", "workbench-patterns"] },
+        { id: "work-management", label: "Work Management", storyIds: ["work-management-patterns"] },
+        { id: "feedback-selection", label: "Feedback and selection", storyIds: ["readiness-notification-patterns", "selection-list-patterns", "modal-validation-patterns"] },
+        { id: "data-pages", label: "Data and pages", storyIds: ["datagrid-fields-patterns", "big-list-search-patterns", "dashboard-page-templates"] }
+      ],
+      sourcePaths: ["apps/storybook/src/contract-stories/groups/patterns.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
+      authority: "package_backed_patterns_plus_static_contract_storybook_governance"
+    },
+    {
+      section: "Proof",
+      route: "proof.html",
+      categories: [
+        { id: "proof-governance", label: "Proof governance", storyIds: ["proof-matrix", "ai-consumption-contract", "blocked-actions", "overlay-focus"] }
+      ],
+      sourcePaths: ["apps/storybook/src/contract-stories/groups/proof.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
+      authority: "static_proof_contract"
+    },
+    {
+      section: "Change Log",
+      route: "change-log.html",
+      categories: [
+        { id: "governance-records", label: "Governance records", storyIds: ["local-changelog"] }
+      ],
+      sourcePaths: ["apps/storybook/src/contract-stories/groups/change-log.ts", "apps/storybook/src/contract-stories/story-content.tsx", "CHANGELOG.md"],
+      authority: "durable_changelog_governance_record"
+    }
+  ],
+  storybookGovernanceTraceability: {
+    topLevelSections: storybookTopLevelSections,
+    hierarchy: "section -> category -> story",
+    requiredStoryFields: ["section", "category", "storyId", "sourcePath", "packageAuthority", "readiness", "proofPosture"],
+    currentItemAutoOpenProof: "internal-alpha browser proof asserts active category expansion and aria-current location state",
+    hiddenFocusSafetyProof: "nested story lists use hidden when collapsed; proof asserts no active story remains hidden and category buttons are keyboard reachable",
+    mandatoryBoundaryVisibility:
+      "page-head boundary strip, proof/no-overclaim blocks, blocked-state notices, and owner-review warnings stay outside optional disclosure"
+  },
+  changelogGovernance: {
+    records: storybookGovernanceChangelogRecords,
+    rootChangelog: "CHANGELOG.md",
+    storybookStory: "change-log.html#local-changelog",
+    digestAlignmentProof: "storybook smoke verifies contractPayloadDigest and changelog record/readback fields",
+    requiredFields: ["date", "routeId", "plannedCommit", "affectedStoryIds", "aiContractDigestReadback", "proofArtifacts", "noOverclaimBoundaries"]
+  },
+  workManagementStaticAuthority: {
+    disposition: "static_contract_authority_explicit_and_smoke_proven",
+    componentStory: "components.html#work-management-components-spec",
+    patternStory: "patterns.html#work-management-patterns",
+    managerRuntimeCoverageDisposition:
+      "CSF adapters expose the Components and Patterns top-level Storybook pages while static contract story ids are the authoritative Work Management story coverage for this local checkpoint.",
+    smokeCoverage:
+      "storybook smoke and internal-alpha browser proof fail if Work Management story ids, package-backed markers, relationship vocabulary, or no-live boundaries disappear.",
+    noOverclaimBoundary:
+      "Work Management Storybook examples do not claim API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, package publication, or initiative completion."
+  },
   visualEquivalenceLevels: [
     "same_package_version",
     "same_exported_component",

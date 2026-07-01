@@ -116,6 +116,9 @@ import {
   tmsMenuDensityRows
 } from "./content/index.js";
 import { aiConsumptionContract } from "../build/ai-consumption-contract.js";
+import { storybookGovernanceChangelogRecords, storyCategoryFor, storyGovernanceFor } from "./governance.js";
+
+type LegacyContractStory = Omit<ContractStory, "category" | "categoryId" | "sourcePath" | "packageAuthority" | "readiness" | "proofPosture">;
 
 function TokenSwatch({ label, token, note }: { label: string; token: string; note: string }) {
   return (
@@ -236,7 +239,7 @@ const workEvidenceItems: EvidenceAttachment[] = [
   { id: "api", type: "api_readback", label: "API readback", reference: "No Work API integration in this Storybook fixture", state: { state: "not_claimed" } }
 ];
 
-const legacyContractStories: ContractStory[] = [
+const legacyContractStories: LegacyContractStory[] = [
   {
     id: "welcome-governance",
     title: "Welcome and governance",
@@ -2064,6 +2067,30 @@ const legacyContractStories: ContractStory[] = [
             }))}
           />
         </ReadbackPanel>
+        <ReadbackPanel title="Covered section hierarchy">
+          <TableShell
+            columns={[
+              { key: "section", label: "Section" },
+              { key: "categories", label: "Categories" },
+              { key: "authority", label: "Authority" }
+            ]}
+            rows={aiConsumptionContract.coveredStorybookSections.map((section) => ({
+              section: section.section,
+              categories: section.categories.map((category) => `${category.label}: ${category.storyIds.join(", ")}`).join("; "),
+              authority: section.authority
+            }))}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Changelog and static-authority readback">
+          <KeyValueList
+            items={[
+              { key: "changelog", label: "Changelog story", value: aiConsumptionContract.changelogGovernance.storybookStory },
+              { key: "root", label: "Root record", value: aiConsumptionContract.changelogGovernance.rootChangelog },
+              { key: "work-management", label: "Work Management authority", value: aiConsumptionContract.workManagementStaticAuthority.disposition },
+              { key: "proof", label: "Proof boundary", value: aiConsumptionContract.workManagementStaticAuthority.smokeCoverage }
+            ]}
+          />
+        </ReadbackPanel>
         <ReadbackPanel title="AOS failure prevention">
           <TableShell
             columns={[
@@ -2167,16 +2194,38 @@ const legacyContractStories: ContractStory[] = [
     description: "Human-readable local checkpoint history without package publication or release claims.",
     render: () => (
       <section className="alpha-story-stack">
-        <ReadbackPanel title="Current checkpoint">
-          <KeyValueList
-            items={[
-              { key: "checkpoint", label: "Checkpoint", value: "Storybook IA and governance surface upgrade" },
-              { key: "basis", label: "Basis", value: "Owner-approved local implementation route" },
-              { key: "boundary", label: "Boundary", value: "No package publication, no product adoption, no downstream acceptance claim" }
+        <ReadbackPanel title="Governance changelog records">
+          <TableShell
+            label="Storybook governance changelog"
+            columns={[
+              { key: "date", label: "Date" },
+              { key: "route", label: "Source route" },
+              { key: "stories", label: "Story ids" },
+              { key: "digest", label: "AI contract digest readback" }
             ]}
+            rows={storybookGovernanceChangelogRecords.map((record) => ({
+              date: record.date,
+              route: <MachineToken token={record.routeId} label="route" kind="route" />,
+              stories: `${record.affectedStoryIds.length} stories across governed sections`,
+              digest: record.aiContractDigestReadback
+            }))}
           />
         </ReadbackPanel>
-        <EvidenceStrip items={["local source change", "synthetic stories", "proof rerun required", "no remote"]} />
+        <ReadbackPanel title="Proof artifacts and boundaries">
+          <TableShell
+            columns={[
+              { key: "route", label: "Route" },
+              { key: "artifacts", label: "Proof artifacts" },
+              { key: "boundaries", label: "No-overclaim boundaries" }
+            ]}
+            rows={storybookGovernanceChangelogRecords.map((record) => ({
+              route: <MachineToken token={record.routeId} label="route" kind="route" />,
+              artifacts: record.proofArtifacts.join(", "),
+              boundaries: record.noOverclaimBoundaries.join(", ")
+            }))}
+          />
+        </ReadbackPanel>
+        <EvidenceStrip items={["durable source record", "AI contract digest verified by smoke", "proof receipts required", "no publication"]} />
       </section>
     )
   }
@@ -2187,5 +2236,11 @@ export function selectStory(id: string): ContractStory {
   if (!story) {
     throw new Error(`missing_contract_story:${id}`);
   }
-  return story;
+  const governance = storyGovernanceFor(story.id, story.group);
+  const category = storyCategoryFor(story.group, governance.categoryId);
+  return {
+    ...story,
+    ...governance,
+    category: category.label
+  };
 }

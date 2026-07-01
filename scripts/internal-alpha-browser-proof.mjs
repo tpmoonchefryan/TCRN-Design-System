@@ -10,6 +10,8 @@ const axePath = require.resolve("axe-core/axe.min.js");
 const outputRoot = "docs/verification/internal-alpha";
 const screenshotDir = join(outputRoot, "screenshots");
 const staticSurfacePath = "apps/storybook/storybook-static/index.html";
+const aiContractPath = "apps/storybook/storybook-static/ai-consumption-contract.json";
+const llmsPath = "apps/storybook/storybook-static/llms.txt";
 
 const requiredStories = [
   { id: "welcome-governance", group: "Welcome", storybookId: "tcrn-design-system-welcome--welcome-governance" },
@@ -91,6 +93,10 @@ const forbiddenCopyPatterns = [
 
 function hashFile(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
+}
+
+function hashText(value) {
+  return createHash("sha256").update(value).digest("hex");
 }
 
 function relativeScreenshotPath(fileName) {
@@ -300,8 +306,27 @@ async function collectPageHealth(page) {
       visible: node.getBoundingClientRect().width > 0 && node.getBoundingClientRect().height > 0
     }));
     const currentNav = document.querySelector("[data-story-nav][aria-current='page']")?.getAttribute("data-story-nav") ?? null;
-    const currentStoryNav = document.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']")
-      ?.getAttribute("data-doc-nav-item") ?? null;
+    const currentStoryLink = document.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']");
+    const currentStoryNav = currentStoryLink?.getAttribute("data-doc-nav-item") ?? null;
+    const activeStoryList = currentStoryLink?.closest(".tcrn-doc-nav__stories");
+    const categoryToggles = Array.from(document.querySelectorAll("[data-doc-nav-category-toggle]"));
+    const categoryAriaFailures = categoryToggles
+      .filter((node) => !node.getAttribute("aria-controls") || !node.hasAttribute("aria-expanded"))
+      .map((node) => node.textContent?.replace(/\s+/g, " ").trim() ?? "");
+    const isVisibleElement = (node) => {
+      if (!node) return false;
+      const rect = node.getBoundingClientRect();
+      const style = window.getComputedStyle(node);
+      return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
+    };
+    const governanceStoryMetadataMissing = Array.from(document.querySelectorAll("article[data-contract-story-id]"))
+      .filter((node) => !node.hasAttribute("data-story-category")
+        || !node.hasAttribute("data-story-category-id")
+        || !node.hasAttribute("data-story-source-path")
+        || !node.hasAttribute("data-story-package-authority")
+        || !node.hasAttribute("data-story-readiness")
+        || !node.hasAttribute("data-story-proof-posture"))
+      .map((node) => node.getAttribute("data-contract-story-id"));
     const sidebar = document.querySelector(".tcrn-doc-sidebar");
     const sidebarRect = sidebar?.getBoundingClientRect();
     const headerRect = document.querySelector(".tcrn-doc-header")?.getBoundingClientRect();
@@ -312,9 +337,18 @@ async function collectPageHealth(page) {
       docSidebarVisible: Boolean(sidebarRect && sidebarRect.width > 0 && sidebarRect.height > 0),
       docGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
       docNavGroupCount: document.querySelectorAll("[data-doc-nav-group]").length,
+      docNavCategoryCount: categoryToggles.length,
+      docNavOpenCategoryCount: document.querySelectorAll("[data-doc-nav-category-toggle][aria-expanded='true']").length,
+      activeStoryHiddenByCategory: activeStoryList ? activeStoryList.hasAttribute("hidden") : true,
+      categoryAriaFailures,
       docNavItemCount: document.querySelectorAll("[data-doc-nav-item]").length,
       docNavCurrentStoryCount: document.querySelectorAll("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']").length,
       docChapterPagerCount: document.querySelectorAll("[data-doc-chapter-pager='true']").length,
+      onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
+      mandatoryBoundaryVisible: isVisibleElement(document.querySelector("[data-mandatory-boundary-block='visible']")),
+      noOverclaimBoundaryVisible: isVisibleElement(document.querySelector("[data-no-overclaim-boundary='visible']")),
+      governanceBoundaryStripVisible: isVisibleElement(document.querySelector("[data-governance-boundary-strip='visible']")),
+      governanceStoryMetadataMissing,
       shellHeaderLayoutGap: headerRect && layoutRect ? Math.round(layoutRect.top - headerRect.bottom) : null,
       sidebarLeft: sidebarRect ? Math.round(sidebarRect.left) : null,
       storybookLocale: document.querySelector("[data-contract-surface]")?.getAttribute("data-storybook-locale") ?? null,
@@ -404,9 +438,42 @@ async function setTransientScreenshotChromeHidden(page, hidden) {
 rmSync(screenshotDir, { recursive: true, force: true });
 mkdirSync(screenshotDir, { recursive: true });
 assertBuiltSurface(staticSurfacePath);
+assertBuiltSurface(aiContractPath);
+assertBuiltSurface(llmsPath);
 for (const section of sectionPages) {
   assertBuiltSurface(`apps/storybook/storybook-static/${section.file}`);
 }
+
+const expectedCategoryCount = 18;
+const aiContractSource = readFileSync(aiContractPath, "utf8");
+const aiContract = JSON.parse(aiContractSource);
+const { contractPayloadDigest, ...aiContractWithoutDigest } = aiContract;
+const aiContractDigestCheck = contractPayloadDigest === hashText(`${JSON.stringify(aiContractWithoutDigest, null, 2)}\n`);
+const llmsText = readFileSync(llmsPath, "utf8");
+const aiContractTraceabilityCheck = {
+  ok: aiContractDigestCheck
+    && aiContract.contractVersion === "ai_consumption_contract_v1"
+    && aiContract.storybookGovernanceTraceability?.hierarchy === "section -> category -> story"
+    && aiContract.coveredStorybookSections?.length === sectionPages.length
+    && aiContract.coveredStorybookSections?.reduce((total, section) => total + section.categories.length, 0) === expectedCategoryCount
+    && aiContract.changelogGovernance?.records?.length > 0
+    && aiContract.changelogGovernance?.requiredFields?.includes("proofArtifacts")
+    && aiContract.workManagementStaticAuthority?.disposition === "static_contract_authority_explicit_and_smoke_proven"
+    && llmsText.includes("Covered Storybook section/category/story hierarchy:")
+    && llmsText.includes("Changelog governance:")
+    && llmsText.includes("Work Management authority:")
+    && llmsText.includes(contractPayloadDigest),
+  contractVersion: aiContract.contractVersion,
+  contractPayloadDigest,
+  digestVerified: aiContractDigestCheck,
+  coveredSectionCount: aiContract.coveredStorybookSections?.length ?? 0,
+  coveredCategoryCount: aiContract.coveredStorybookSections?.reduce((total, section) => total + section.categories.length, 0) ?? 0,
+  changelogRecordCount: aiContract.changelogGovernance?.records?.length ?? 0,
+  workManagementStaticAuthorityDisposition: aiContract.workManagementStaticAuthority?.disposition ?? null,
+  llmsTraceabilitySectionsPresent: llmsText.includes("Covered Storybook section/category/story hierarchy:")
+    && llmsText.includes("Changelog governance:")
+    && llmsText.includes("Work Management authority:")
+};
 
 const staticServer = await startStaticServer(".");
 const stableProofOrigin = "http://127.0.0.1:<ephemeral>";
@@ -526,6 +593,9 @@ const hashStoryRouteCheck = {
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=zh-CN#component-family-index`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
+await storybookPage.locator("[data-doc-nav-category-toggle='controls-data']").click();
+await storybookPage.waitForSelector("[data-doc-nav-category-toggle='controls-data'][aria-expanded='true']");
+await storybookPage.locator("[data-doc-nav-item='table-work-index-spec']").waitFor({ state: "visible" });
 await storybookPage.locator("[data-doc-nav-item='table-work-index-spec']").click();
 await storybookPage.waitForSelector("[data-doc-nav-item='table-work-index-spec'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
@@ -830,9 +900,18 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     && summary.docSidebarVisible
     && summary.docGlobalNavCount === 0
     && summary.docNavGroupCount === sectionPages.length
+    && summary.docNavCategoryCount === expectedCategoryCount
+    && summary.docNavOpenCategoryCount === 1
+    && !summary.activeStoryHiddenByCategory
+    && summary.categoryAriaFailures.length === 0
     && summary.docNavItemCount === requiredStories.length
     && summary.docNavCurrentStoryCount === 1
     && summary.docChapterPagerCount === 1
+    && summary.onThisPageCount === 1
+    && summary.mandatoryBoundaryVisible
+    && summary.noOverclaimBoundaryVisible
+    && summary.governanceBoundaryStripVisible
+    && summary.governanceStoryMetadataMissing.length === 0
     && summary.shellHeaderLayoutGap !== null
     && summary.shellHeaderLayoutGap <= 1
     && summary.sidebarLeft !== null
@@ -854,9 +933,18 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     docSidebarVisible: summary.docSidebarVisible,
     docGlobalNavCount: summary.docGlobalNavCount,
     docNavGroupCount: summary.docNavGroupCount,
+    docNavCategoryCount: summary.docNavCategoryCount,
+    docNavOpenCategoryCount: summary.docNavOpenCategoryCount,
+    activeStoryHiddenByCategory: summary.activeStoryHiddenByCategory,
+    categoryAriaFailures: summary.categoryAriaFailures,
     docNavItemCount: summary.docNavItemCount,
     docNavCurrentStoryCount: summary.docNavCurrentStoryCount,
     docChapterPagerCount: summary.docChapterPagerCount,
+    onThisPageCount: summary.onThisPageCount,
+    mandatoryBoundaryVisible: summary.mandatoryBoundaryVisible,
+    noOverclaimBoundaryVisible: summary.noOverclaimBoundaryVisible,
+    governanceBoundaryStripVisible: summary.governanceBoundaryStripVisible,
+    governanceStoryMetadataMissing: summary.governanceStoryMetadataMissing,
     shellHeaderLayoutGap: summary.shellHeaderLayoutGap,
     sidebarLeft: summary.sidebarLeft,
     storybookLocale: summary.storybookLocale,
@@ -905,6 +993,7 @@ const storyCoverageManifest = {
   staticContractSurface: staticSurfacePath,
   storybookIframeSurface: null,
   storybookRuntimeSurfaceDisposition: "replaced_by_static_contract_docs",
+  aiContractTraceabilityCheck,
   componentStorybookParityReadback,
   storybookChecks,
   hashRouteCheck,
@@ -927,6 +1016,7 @@ const browserProofSummary = {
       && summary.pageErrors.length === 0
       && summary.failedRequests.length === 0)
     && storyCoverageManifest.ok
+    && aiContractTraceabilityCheck.ok
     && axeSummary.ok
     && componentStorybookParityReadback.packageBackedComponentParityVisible
     && componentStorybookParityReadback.publicSourcesVisible
@@ -941,6 +1031,7 @@ const browserProofSummary = {
     stoppedBeforeReturn: true
   },
   viewports,
+  aiContractTraceabilityCheck,
   componentStorybookParityReadback,
   summaries: browserSummaries
 };
@@ -993,7 +1084,10 @@ console.log(JSON.stringify({
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
   keyboardOk: keyboardChecklist.ok,
-  capabilityMetadataOk
+  capabilityMetadataOk,
+  aiContractTraceabilityOk: aiContractTraceabilityCheck.ok,
+  coveredStorybookSections: aiContractTraceabilityCheck.coveredSectionCount,
+  coveredStorybookCategories: aiContractTraceabilityCheck.coveredCategoryCount
 }, null, 2));
 
 if (!ok) {

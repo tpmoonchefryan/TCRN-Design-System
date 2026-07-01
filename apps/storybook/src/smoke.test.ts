@@ -21,6 +21,7 @@ import foundationsMeta from "./foundations.stories.js";
 import patternsMeta from "./patterns.stories.js";
 import proofMeta from "./proof.stories.js";
 import styleGuideMeta from "./style-guide.stories.js";
+import { storybookGovernanceChangelogRecords, storyCategoryDefinitions } from "./contract-stories/governance.js";
 import { contractStories, contractStoryGroups } from "./stories.js";
 import type { ContractStoryGroup } from "./stories.js";
 
@@ -145,6 +146,8 @@ const expectedRootAdapterTitles = [
   "TCRN Design System/Change Log"
 ];
 
+const expectedStoryCategoryCount = Object.values(storyCategoryDefinitions).reduce((count, categories) => count + categories.length, 0);
+
 function groupSlug(group: ContractStoryGroup): string {
   return group.toLowerCase().replace(/\s+/g, "-");
 }
@@ -179,6 +182,14 @@ test("static contract story surface is retained and synthetic", () => {
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
   assert.equal(contractStories.length, 40);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
+  for (const story of contractStories) {
+    assert.ok(story.category.length > 0, `missing category label for ${story.id}`);
+    assert.ok(story.categoryId.length > 0, `missing category id for ${story.id}`);
+    assert.equal(story.sourcePath, "apps/storybook/src/contract-stories/story-content.tsx");
+    assert.match(story.packageAuthority, /Storybook static|@tcrn\/ui-react|Durable Storybook/);
+    assert.equal(story.readiness, "local_storybook_contract_review_required");
+    assert.equal(story.proofPosture, "visible_boundary_no_product_adoption_or_publication_claim");
+  }
   assert.deepEqual(
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
     expectedRootAdapterTitles
@@ -220,6 +231,12 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /data-doc-global-nav-item="/);
   assert.doesNotMatch(combinedHtml, /data-i18n="shell\.topNavLabel"/);
   assert.match(combinedHtml, /data-doc-nav="sections"/);
+  assert.match(combinedHtml, /data-doc-nav-category-toggle/);
+  assert.match(combinedHtml, /data-doc-nav-category-open="true"/);
+  assert.match(combinedHtml, /data-doc-on-this-page="true"/);
+  assert.match(combinedHtml, /data-mandatory-boundary-block="visible"/);
+  assert.match(combinedHtml, /data-no-overclaim-boundary="visible"/);
+  assert.match(combinedHtml, /data-governance-boundary-strip="visible"/);
   assert.match(combinedHtml, /data-doc-chapter-pager="true"/);
   assert.match(combinedHtml, /data-contract-surface="tcrn-design-system-storybook"/);
   assert.match(combinedHtml, /data-anchor-scroll-controlled="true"/);
@@ -227,6 +244,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /tcrnStorybookScrollToHash/);
   assert.match(combinedHtml, /tcrnStorybookScrollSpy/);
   assert.match(combinedHtml, /keepActiveLinkVisible/);
+  assert.match(combinedHtml, /setCategoryOpen/);
+  assert.match(combinedHtml, /openCategoryForLink/);
   assert.match(combinedHtml, /addEventListener\("scroll", scheduleScrollSpy/);
   assert.match(combinedHtml, /data-i18n-locale-select/);
   assert.match(combinedHtml, /tcrn-doc-global-bar/);
@@ -390,14 +409,20 @@ test("static contract story surface is retained and synthetic", () => {
     assert.match(html, new RegExp(`data-story-section="${escapeRegExp(group)}"`));
     assert.match(html, new RegExp(`data-story-nav="${escapeRegExp(group)}" aria-current="page"`));
     assert.ok(defaultStory);
-    assert.match(html, new RegExp(`data-doc-nav-item="${escapeRegExp(defaultStory.id)}" aria-current="location" data-doc-nav-item-active="true"`));
+    assert.match(html, new RegExp(`data-doc-nav-item="${escapeRegExp(defaultStory.id)}"[^>]*aria-current="location"[^>]*data-doc-nav-item-active="true"`));
     assert.deepEqual(readNavGroupOrder(html), contractStoryGroups);
     assert.equal(html.match(/data-doc-nav-group="/g)?.length, contractStoryGroups.length);
+    assert.equal(html.match(/data-doc-nav-category-toggle="/g)?.length, expectedStoryCategoryCount);
+    assert.equal(html.match(/data-doc-nav-category-open="true"/g)?.length, 1);
     assert.equal(html.match(/data-doc-nav-item="/g)?.length, contractStories.length);
     assert.equal(html.match(/data-doc-chapter-pager="true"/g)?.length, 1);
     assert.equal(html.match(/<a [^>]*data-doc-nav-item-active="true"/g)?.length, 1);
     assert.equal(html.match(/<a [^>]*aria-current="location"/g)?.length, 1);
     assert.equal(html.match(/data-story-section="/g)?.length, 1);
+    for (const story of contractStories.filter((item) => item.group === group)) {
+      assert.match(html, new RegExp(`data-story-id="${escapeRegExp(story.id)}"[^>]*data-story-category="${escapeRegExp(story.category)}"`));
+      assert.match(html, new RegExp(`data-story-id="${escapeRegExp(story.id)}"[^>]*data-story-source-path="${escapeRegExp(story.sourcePath)}"`));
+    }
   }
   assert.match(readGroupPage("Welcome"), /Welcome and governance/);
   assert.match(readGroupPage("Welcome"), /Maintainers and routing/);
@@ -666,6 +691,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Foundations"), /not as a top-bar human navigation item/);
   assert.match(readGroupPage("Proof"), /AI consumption contract/);
   assert.match(readGroupPage("Proof"), /data-ai-consumption-contract-story="true"/);
+  assert.match(readGroupPage("Proof"), /Covered section hierarchy/);
+  assert.match(readGroupPage("Proof"), /Changelog and static-authority readback/);
   assert.match(readGroupPage("Proof"), /ai-consumption-contract\.json/);
   assert.match(readGroupPage("Proof"), /Light and dark Storybook shell/);
   assert.match(readGroupPage("Proof"), /Check both light and dark Storybook shell modes before product frontend work/);
@@ -684,6 +711,10 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Proof"), /Requires a downstream product adoption route/);
   assert.match(readGroupPage("Proof"), /Proof matrix/);
   assert.match(readGroupPage("Change Log"), /Local changelog/);
+  assert.match(readGroupPage("Change Log"), /Governance changelog records/);
+  assert.match(readGroupPage("Change Log"), /route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541/);
+  assert.match(readGroupPage("Change Log"), /AI contract digest readback/);
+  assert.match(readGroupPage("Change Log"), /No-overclaim boundaries/);
   assert.doesNotMatch(readGroupPage("Welcome"), /data-story-id="component-family-index"/);
   assert.doesNotMatch(readGroupPage("Welcome"), /data-story-id="color-palette"/);
   assert.doesNotMatch(readGroupPage("Style Guide"), /data-story-id="tokens-copy-state"/);
@@ -727,6 +758,25 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.deepEqual(contract.requiredProof, expectedAiRequiredProof);
   assert.deepEqual(requiredStorybookSectionChecklist.map((section) => section.section), expectedContractStoryGroups);
   assert.deepEqual(requiredStorybookSectionChecklist.flatMap((section) => section.requiredStories), expectedContractStoryIds);
+  assert.deepEqual(contract.coveredStorybookSections.map((section: { section: string }) => section.section), expectedContractStoryGroups);
+  assert.equal(
+    contract.coveredStorybookSections.reduce((count: number, section: { categories: unknown[] }) => count + section.categories.length, 0),
+    expectedStoryCategoryCount
+  );
+  assert.equal(contract.storybookGovernanceTraceability?.hierarchy, "section -> category -> story");
+  assert.deepEqual(contract.storybookGovernanceTraceability?.topLevelSections, expectedContractStoryGroups);
+  assert.match(contract.storybookGovernanceTraceability?.currentItemAutoOpenProof ?? "", /active category expansion/);
+  assert.match(contract.storybookGovernanceTraceability?.hiddenFocusSafetyProof ?? "", /no active story remains hidden/);
+  assert.match(contract.storybookGovernanceTraceability?.mandatoryBoundaryVisibility ?? "", /outside optional disclosure/);
+  assert.equal(contract.changelogGovernance?.records?.length, storybookGovernanceChangelogRecords.length);
+  assert.match(contract.changelogGovernance?.storybookStory ?? "", /change-log\.html#local-changelog/);
+  assert.ok(contract.changelogGovernance?.requiredFields?.includes("proofArtifacts"));
+  assert.match(contract.changelogGovernance?.digestAlignmentProof ?? "", /contractPayloadDigest/);
+  assert.equal(contract.workManagementStaticAuthority?.disposition, "static_contract_authority_explicit_and_smoke_proven");
+  assert.match(contract.workManagementStaticAuthority?.componentStory ?? "", /work-management-components-spec/);
+  assert.match(contract.workManagementStaticAuthority?.patternStory ?? "", /work-management-patterns/);
+  assert.match(contract.workManagementStaticAuthority?.managerRuntimeCoverageDisposition ?? "", /static contract story ids are the authoritative/);
+  assert.match(contract.workManagementStaticAuthority?.noOverclaimBoundary ?? "", /initiative completion/);
   assert.deepEqual(contract.visualEquivalenceLevels, [
     "same_package_version",
     "same_exported_component",
@@ -926,6 +976,9 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, new RegExp(contractPayloadDigest));
   assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
   assert.match(llms, /Required Storybook sections:/);
+  assert.match(llms, /Covered Storybook section\/category\/story hierarchy:/);
+  assert.match(llms, /Changelog governance: change-log\.html#local-changelog/);
+  assert.match(llms, /Work Management authority: static_contract_authority_explicit_and_smoke_proven/);
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, button-spec-usage, field-spec-usage, navigation-shell-spec, aos-frontend-shell-slice, aos-owner-quality-product-shell, dialog-spec-usage, table-work-index-spec, work-management-components-spec/);

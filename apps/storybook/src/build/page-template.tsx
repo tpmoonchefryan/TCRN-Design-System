@@ -25,7 +25,7 @@ import {
   storybookSearchScript
 } from "./client-scripts.js";
 import { escapeHtml, i18nText, localeText } from "./i18n.js";
-import { groupFileName, groupSlug, navAbbreviations } from "./navigation.js";
+import { categoryDomId, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
 
 function iconHtml(name: IconName, className: string, dataDocShellIcon: string): string {
   return renderToStaticMarkup(
@@ -167,6 +167,9 @@ function navHtml(activeGroup: ContractStoryGroup): string {
 ${contractStoryGroups.map((group) => {
   const current = group === activeGroup ? " aria-current=\"page\"" : "";
   const stories = contractStoriesByGroup(group);
+  const categories = storyCategoriesForGroup(group, stories);
+  const activeStory = group === activeGroup ? stories[0] : null;
+  const activeCategoryId = activeStory?.categoryId ?? categories[0]?.id ?? "";
   const groupLabel = i18nText(`group.${group}`);
   const groupAbbr = escapeHtml(navAbbreviations[group]);
   return `    <li class="tcrn-doc-nav__group" data-doc-nav-group="${group}">
@@ -174,11 +177,23 @@ ${contractStoryGroups.map((group) => {
         <span class="tcrn-doc-nav__section-label">${groupLabel}</span>
         <span class="tcrn-doc-nav__section-abbr" aria-hidden="true">${groupAbbr}</span>
       </a>
-      <ol class="tcrn-doc-nav__stories" aria-label="${group} stories">
-${stories.map((story, index) => {
+      <ol class="tcrn-doc-nav__categories" aria-label="${escapeHtml(`${group} categories`)}">
+${categories.map((category) => {
+  const open = group === activeGroup && category.id === activeCategoryId;
+  const listId = categoryDomId(group, category.id);
+  return `        <li class="tcrn-doc-nav__category" data-doc-nav-category="${escapeHtml(category.id)}" data-doc-nav-category-open="${open ? "true" : "false"}">
+          <button class="tcrn-doc-nav__category-toggle" type="button" aria-expanded="${open ? "true" : "false"}" aria-controls="${listId}" data-doc-nav-category-toggle="${escapeHtml(category.id)}">
+            <span class="tcrn-doc-nav__category-label">${escapeHtml(category.label)}</span>
+            <span class="tcrn-doc-nav__category-count" aria-label="${category.stories.length} stories">${category.stories.length}</span>
+          </button>
+          <ol class="tcrn-doc-nav__stories" id="${listId}" aria-label="${escapeHtml(`${category.label} stories`)}"${open ? "" : " hidden"}>
+${category.stories.map((story, index) => {
   const href = `${groupFileName(story.group)}#${story.id}`;
-  const currentStory = group === activeGroup && index === 0 ? " aria-current=\"location\" data-doc-nav-item-active=\"true\"" : "";
-  return `        <li><a href="${href}" data-doc-nav-item="${story.id}"${currentStory}>${i18nText(`story.${story.id}.title`)}</a></li>`;
+  const currentStory = group === activeGroup && category.id === activeCategoryId && index === 0 ? " aria-current=\"location\" data-doc-nav-item-active=\"true\"" : "";
+  return `            <li><a href="${href}" data-doc-nav-item="${story.id}" data-doc-nav-category-item="${escapeHtml(story.categoryId)}"${currentStory}>${i18nText(`story.${story.id}.title`)}</a></li>`;
+}).join("\n")}
+          </ol>
+        </li>`;
 }).join("\n")}
       </ol>
     </li>`;
@@ -287,12 +302,35 @@ function storyHtml(group: ContractStoryGroup): string {
   <h2>${i18nText(`group.${group}`)}</h2>
 ${stories.map((story) => {
   const body = renderToStaticMarkup(story.id === "overlay-focus" ? <DialogSpecFixture /> : story.render());
-  return `  <article id="${story.id}" data-contract-story-id="${story.id}" data-story-id="${story.id}" data-story-group="${story.group}">
+  return `  <article id="${story.id}" data-contract-story-id="${story.id}" data-story-id="${story.id}" data-story-group="${story.group}" data-story-category="${escapeHtml(story.category)}" data-story-category-id="${escapeHtml(story.categoryId)}" data-story-source-path="${escapeHtml(story.sourcePath)}" data-story-package-authority="${escapeHtml(story.packageAuthority)}" data-story-readiness="${escapeHtml(story.readiness)}" data-story-proof-posture="${escapeHtml(story.proofPosture)}">
   <h2>${i18nText(`story.${story.id}.title`)}</h2>
   <p>${i18nText(`story.${story.id}.description`)}</p>
   <div class="story-body">${body}</div>
 </article>`;
 }).join("\n")}
+</section>`;
+}
+
+function pageHeadHtml(group: ContractStoryGroup): string {
+  const stories = contractStoriesByGroup(group);
+  const categories = storyCategoriesForGroup(group, stories);
+  return `<section class="tcrn-doc-page-head" aria-labelledby="tcrn-doc-visible-page-title" data-doc-page-head="governed-section" data-mandatory-boundary-block="visible" data-no-overclaim-boundary="visible">
+  <div class="tcrn-doc-page-head__intro">
+    <span class="tcrn-doc-page-head__eyebrow">Governed Storybook section</span>
+    <h2 id="tcrn-doc-visible-page-title">${i18nText(`group.${group}`)}</h2>
+    <p>${escapeHtml("Stable top-level taxonomy is preserved; nested category depth organizes dense stories without adding new top-level sections.")}</p>
+  </div>
+  <nav class="tcrn-doc-on-this-page" aria-label="On this page" data-doc-on-this-page="true">
+    <strong>On this page</strong>
+    <ol>
+${categories.map((category) => `      <li><a href="#${category.stories[0]?.id ?? groupSlug(group)}">${escapeHtml(category.label)}</a><span>${category.stories.length}</span></li>`).join("\n")}
+    </ol>
+  </nav>
+  <div class="tcrn-doc-boundary-strip" data-governance-boundary-strip="visible">
+    <span>No package publication claimed</span>
+    <span>No AOS/TMS adoption claimed</span>
+    <span>Owner/product/release acceptance remains downstream</span>
+  </div>
 </section>`;
 }
 
@@ -341,6 +379,7 @@ ${navHtml(group)}
       </aside>
       <main class="tcrn-doc-content" id="content">
         <h1 class="tcrn-sr-only" id="tcrn-doc-page-title">${i18nText("shell.title")}</h1>
+${pageHeadHtml(group)}
 ${storyHtml(group)}
 ${chapterPagerHtml(group)}
       </main>

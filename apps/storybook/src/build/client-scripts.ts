@@ -822,11 +822,35 @@ export const activeStoryNavScript = `<script>
 (() => {
   const storyNodes = Array.from(document.querySelectorAll("[data-story-id]"));
   const storyLinks = Array.from(document.querySelectorAll("[data-doc-nav-item]"));
+  const categoryToggles = Array.from(document.querySelectorAll("[data-doc-nav-category-toggle]"));
   const storyIds = storyNodes.map((node) => node.getAttribute("data-story-id")).filter(Boolean);
   let hashPinnedStoryId = null;
   let suppressScrollSpyUntil = 0;
   let scrollSpyFrame = 0;
   let currentStoryId = storyIds[0] ?? null;
+  const setCategoryOpen = (toggle, open) => {
+    const controls = toggle.getAttribute("aria-controls");
+    const list = controls ? document.getElementById(controls) : null;
+    const category = toggle.closest("[data-doc-nav-category]");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    category?.setAttribute("data-doc-nav-category-open", open ? "true" : "false");
+    if (list) {
+      list.hidden = !open;
+    }
+  };
+  const openCategoryForLink = (link) => {
+    const category = link?.closest("[data-doc-nav-category]");
+    const toggle = category?.querySelector("[data-doc-nav-category-toggle]");
+    if (toggle) {
+      setCategoryOpen(toggle, true);
+    }
+  };
+  for (const toggle of categoryToggles) {
+    setCategoryOpen(toggle, toggle.getAttribute("aria-expanded") === "true");
+    toggle.addEventListener("click", () => {
+      setCategoryOpen(toggle, toggle.getAttribute("aria-expanded") !== "true");
+    });
+  }
   const readOffset = () => {
     const raw = window.getComputedStyle(document.documentElement).getPropertyValue("--tcrn-anchor-scroll-offset");
     const value = Number.parseFloat(raw);
@@ -855,6 +879,7 @@ export const activeStoryNavScript = `<script>
     }
     const activeLink = storyLinks.find((link) => link.getAttribute("data-doc-nav-item") === storyId);
     if (activeLink) {
+      openCategoryForLink(activeLink);
       activeLink.setAttribute("aria-current", "location");
       activeLink.setAttribute("data-doc-nav-item-active", "true");
       keepActiveLinkVisible(activeLink);

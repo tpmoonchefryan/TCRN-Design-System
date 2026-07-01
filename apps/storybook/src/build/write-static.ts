@@ -30,6 +30,9 @@ function llmsTxt(contract: typeof aiConsumptionContract & { contractPayloadDiges
   const sectionChecklist = contract.requiredStorybookSectionChecklist.map((section) =>
     `- ${section.section} (${section.route}): ${section.requiredStories.join(", ")} | checks: ${section.consumerChecks.join("; ")}`
   ).join("\n");
+  const sectionCoverage = contract.coveredStorybookSections.map((section) =>
+    `- ${section.section}: ${section.categories.map((category) => `${category.label} [${category.storyIds.join(", ")}]`).join("; ")}`
+  ).join("\n");
 
   return `TCRN Design System AI first-read entry
 
@@ -44,6 +47,10 @@ Required readback fields: ${llmsReadbackFields(contract)}
 Required proof: ${contract.requiredProof.join(", ")}
 Required Storybook sections:
 ${sectionChecklist}
+Covered Storybook section/category/story hierarchy:
+${sectionCoverage}
+Changelog governance: ${contract.changelogGovernance.storybookStory}; records require ${contract.changelogGovernance.requiredFields.join(", ")}; digest proof: ${contract.changelogGovernance.digestAlignmentProof}
+Work Management authority: ${contract.workManagementStaticAuthority.disposition}; stories: ${contract.workManagementStaticAuthority.componentStory}, ${contract.workManagementStaticAuthority.patternStory}; boundary: ${contract.workManagementStaticAuthority.noOverclaimBoundary}
 Visual equivalence levels: ${contract.visualEquivalenceLevels.join(" -> ")}
 Visual parity proof: ${contract.storybookVisualParityProof}
 Shell control visual parity proof: ${Array.from(contract.shellControlVisualParityProof.measuredControls).join(", ")} controls; ${Array.from(contract.shellControlVisualParityProof.computedStyleFields).join(", ")} computed style fields; ${Array.from(contract.shellControlVisualParityProof.motionFields).join(", ")} motion fields; reduced motion: ${contract.shellControlVisualParityProof.reducedMotionExpectation}

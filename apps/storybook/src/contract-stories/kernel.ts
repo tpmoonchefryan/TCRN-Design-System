@@ -1,4 +1,5 @@
 import type { ContractStory, ContractStoryGroup } from "./types.js";
+import { storybookTopLevelSections } from "./governance.js";
 import { welcomeStories } from "./groups/welcome.js";
 import { styleGuideStories } from "./groups/style-guide.js";
 import { foundationsStories } from "./groups/foundations.js";
@@ -9,15 +10,7 @@ import { changeLogStories } from "./groups/change-log.js";
 
 export type { ContractStory, ContractStoryGroup } from "./types.js";
 
-export const contractStoryGroups: readonly ContractStoryGroup[] = [
-  "Welcome",
-  "Style Guide",
-  "Foundations",
-  "Components",
-  "Patterns",
-  "Proof",
-  "Change Log"
-] as const;
+export const contractStoryGroups: readonly ContractStoryGroup[] = storybookTopLevelSections;
 
 export const contractStories: ContractStory[] = [
   ...welcomeStories,

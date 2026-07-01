@@ -63,6 +63,7 @@ const combinedHtml = Object.values(pages).join("\n");
 const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-consumption-contract.json", "utf8"));
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
+const expectedStoryCategoryCount = 18;
 const storybookAlphaStylesSource = readFileSync("apps/storybook/src/alpha-styles.ts", "utf8");
 const storybookStaticCssSource = readFileSync("apps/storybook/src/storybook.css", "utf8");
 const staticRoot = "apps/storybook/storybook-static";
@@ -1090,6 +1091,48 @@ if (!Array.isArray(contractSectionChecklist)) {
     }
   }
 }
+const coveredStorybookSections = contract.coveredStorybookSections;
+if (!Array.isArray(coveredStorybookSections)) {
+  missing.push("contract.coveredStorybookSections");
+} else {
+  const sections = coveredStorybookSections.map((section) => section.section);
+  const categoryCount = coveredStorybookSections.reduce((total, section) => total + (section.categories?.length ?? 0), 0);
+  const coveredStoryIds = coveredStorybookSections.flatMap((section) => section.categories?.flatMap((category) => category.storyIds ?? []) ?? []);
+  for (const section of expectedContractStoryGroups) {
+    if (!sections.includes(section)) {
+      missing.push(`contract.coveredStorybookSections.section:${section}`);
+    }
+  }
+  if (categoryCount !== expectedStoryCategoryCount) {
+    missing.push(`contract.coveredStorybookSections.categoryCount:${categoryCount}`);
+  }
+  for (const story of requiredStories) {
+    if (!coveredStoryIds.includes(story.id)) {
+      missing.push(`contract.coveredStorybookSections.story:${story.id}`);
+    }
+  }
+}
+if (contract.storybookGovernanceTraceability?.hierarchy !== "section -> category -> story") {
+  missing.push("contract.storybookGovernanceTraceability.hierarchy");
+}
+if (!contract.storybookGovernanceTraceability?.requiredStoryFields?.includes?.("sourcePath")) {
+  missing.push("contract.storybookGovernanceTraceability.requiredStoryFields.sourcePath");
+}
+if (!String(contract.storybookGovernanceTraceability?.mandatoryBoundaryVisibility ?? "").includes("outside optional disclosure")) {
+  missing.push("contract.storybookGovernanceTraceability.mandatoryBoundaryVisibility");
+}
+if (!contract.changelogGovernance?.records?.length) {
+  missing.push("contract.changelogGovernance.records");
+}
+if (!contract.changelogGovernance?.requiredFields?.includes?.("proofArtifacts")) {
+  missing.push("contract.changelogGovernance.requiredFields.proofArtifacts");
+}
+if (contract.workManagementStaticAuthority?.disposition !== "static_contract_authority_explicit_and_smoke_proven") {
+  missing.push("contract.workManagementStaticAuthority.disposition");
+}
+if (!String(contract.workManagementStaticAuthority?.managerRuntimeCoverageDisposition ?? "").includes("static contract story ids are the authoritative")) {
+  missing.push("contract.workManagementStaticAuthority.managerRuntimeCoverageDisposition");
+}
 if (!llmsTxt.includes("Agents must read ai-consumption-contract.json before implementation work.")) {
   missing.push("llms-first-read-requirement");
 }
@@ -1098,6 +1141,15 @@ if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloa
 }
 if (!llmsTxt.includes("Required Storybook sections:")) {
   missing.push("llms-required-storybook-sections");
+}
+if (!llmsTxt.includes("Covered Storybook section/category/story hierarchy:")) {
+  missing.push("llms-covered-storybook-hierarchy");
+}
+if (!llmsTxt.includes("Changelog governance:")) {
+  missing.push("llms-changelog-governance");
+}
+if (!llmsTxt.includes("Work Management authority: static_contract_authority_explicit_and_smoke_proven")) {
+  missing.push("llms-work-management-static-authority");
 }
 if (!llmsTxt.includes("Shell control visual parity proof:")) {
   missing.push("llms-shell-control-visual-parity-proof");
@@ -1132,12 +1184,30 @@ for (const [group, html] of Object.entries(pages)) {
   if (!html.includes(`data-story-nav="${group}" aria-current="page"`)) {
     missing.push(`data-story-nav="${group}" aria-current="page"`);
   }
-  if (!defaultStory || !html.includes(`data-doc-nav-item="${defaultStory.id}" aria-current="location" data-doc-nav-item-active="true"`)) {
+  if (!defaultStory || !new RegExp(`data-doc-nav-item="${defaultStory.id}"[^>]*aria-current="location"[^>]*data-doc-nav-item-active="true"`).test(html)) {
     missing.push(`current-doc-nav-item:${group}:${defaultStory?.id ?? "missing"}`);
   }
   const groupNavCount = html.match(/data-doc-nav-group="/g)?.length ?? 0;
   if (groupNavCount !== Object.keys(pagesByGroup).length) {
     missing.push(`doc-nav-group-count:${group}:${groupNavCount}`);
+  }
+  const categoryNavCount = html.match(/data-doc-nav-category-toggle="/g)?.length ?? 0;
+  if (categoryNavCount !== expectedStoryCategoryCount) {
+    missing.push(`doc-nav-category-count:${group}:${categoryNavCount}`);
+  }
+  const openCategoryNavCount = html.match(/data-doc-nav-category-open="true"/g)?.length ?? 0;
+  if (openCategoryNavCount !== 1) {
+    missing.push(`doc-nav-open-category-count:${group}:${openCategoryNavCount}`);
+  }
+  for (const marker of [
+    "data-doc-on-this-page=\"true\"",
+    "data-mandatory-boundary-block=\"visible\"",
+    "data-no-overclaim-boundary=\"visible\"",
+    "data-governance-boundary-strip=\"visible\""
+  ]) {
+    if (!html.includes(marker)) {
+      missing.push(`${group}:${marker}`);
+    }
   }
   const storyNavCount = html.match(/data-doc-nav-item="/g)?.length ?? 0;
   if (storyNavCount !== requiredStories.length) {
@@ -1159,6 +1229,10 @@ for (const [group, html] of Object.entries(pages)) {
 for (const story of requiredStories) {
   if (!pages[story.group].includes(`data-story-id="${story.id}"`)) {
     missing.push(`owning-page-story:${story.group}:${story.id}`);
+  }
+  const owningPageStory = new RegExp(`data-story-id="${story.id}"[^>]*data-story-category="[^"]+"[^>]*data-story-source-path="apps/storybook/src/contract-stories/story-content\\.tsx"`);
+  if (!owningPageStory.test(pages[story.group])) {
+    missing.push(`owning-page-story-governance-metadata:${story.group}:${story.id}`);
   }
   for (const html of Object.values(pages)) {
     if (!html.includes(`data-doc-nav-item="${story.id}"`)) {
