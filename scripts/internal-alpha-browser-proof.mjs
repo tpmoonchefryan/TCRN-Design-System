@@ -910,6 +910,72 @@ const collectMobileHashAnchorMetrics = async (label) => {
         height: Number(rect.height.toFixed(2))
       };
     };
+    const alphaFromColor = (color) => {
+      const normalized = String(color || "").trim();
+      if (!normalized || normalized === "transparent") return 0;
+      const rgbaMatch = normalized.match(/^rgba?\((.+)\)$/i);
+      if (rgbaMatch) {
+        const parts = rgbaMatch[1].split(",").map((part) => part.trim());
+        return parts.length >= 4 ? Number.parseFloat(parts[3]) : 1;
+      }
+      const colorFunctionAlpha = normalized.match(/\/\s*([0-9.]+%?)\s*\)$/i);
+      if (colorFunctionAlpha) {
+        const rawAlpha = colorFunctionAlpha[1];
+        return rawAlpha.endsWith("%") ? Number.parseFloat(rawAlpha) / 100 : Number.parseFloat(rawAlpha);
+      }
+      return 1;
+    };
+    const styleFor = (selector) => {
+      const node = document.querySelector(selector);
+      if (!node) {
+        return null;
+      }
+      const rect = node.getBoundingClientRect();
+      const style = getComputedStyle(node);
+      const backgroundAlpha = alphaFromColor(style.backgroundColor);
+      return {
+        selector,
+        backgroundColor: style.backgroundColor,
+        backgroundImage: style.backgroundImage,
+        backgroundAlpha: Number.isFinite(backgroundAlpha) ? Number(backgroundAlpha.toFixed(2)) : 0,
+        opacity: Number.parseFloat(style.opacity || "1"),
+        position: style.position,
+        zIndex: style.zIndex,
+        top: Number(rect.top.toFixed(2)),
+        right: Number(rect.right.toFixed(2)),
+        bottom: Number(rect.bottom.toFixed(2)),
+        left: Number(rect.left.toFixed(2)),
+        width: Number(rect.width.toFixed(2)),
+        height: Number(rect.height.toFixed(2))
+      };
+    };
+    const hitStackFor = (x, y) => document.elementsFromPoint(x, y).slice(0, 10).map((node) => ({
+      tag: node.tagName.toLowerCase(),
+      id: node.id || "",
+      className: typeof node.className === "string" ? node.className : "",
+      role: node.getAttribute("role"),
+      productShellRegion: node.getAttribute("data-product-shell-region"),
+      shellControl: node.getAttribute("data-shell-control"),
+      text: (node.textContent || "").trim().replace(/\s+/g, " ").slice(0, 80)
+    }));
+    const pointReadbacks = [
+      { label: "topbar-y20", x: 195, y: 20 },
+      { label: "current-location-y60", x: 195, y: 60 },
+      { label: "search-y125", x: 195, y: 125 },
+      { label: "controls-y178", x: 195, y: 178 }
+    ].map((point) => {
+      const stack = hitStackFor(point.x, point.y);
+      const shellIndex = stack.findIndex((entry) => entry.productShellRegion === "topbar" || entry.productShellRegion === "utility-row" || entry.shellControl || entry.className.includes("tcrn-shell") || entry.className.includes("tcrn-product-shell"));
+      const storyContentIndex = stack.findIndex((entry) => entry.className.includes("tcrn-table-shell") || entry.className.includes("tcrn-readback-panel") || entry.className.includes("alpha-story-stack") || entry.className.includes("story-body"));
+      return {
+        ...point,
+        shellIndex,
+        storyContentIndex,
+        shellPaintsAboveStoryContent: shellIndex >= 0 && (storyContentIndex === -1 || shellIndex < storyContentIndex),
+        storyContentBehindShell: storyContentIndex >= 0,
+        stack
+      };
+    });
     const html = document.documentElement;
     const body = document.body;
     const topbar = rectFor(".tcrn-top-bar");
@@ -930,6 +996,16 @@ const collectMobileHashAnchorMetrics = async (label) => {
       topbar,
       article,
       title,
+      mobileTopbarLayering: {
+        topbar: styleFor(".tcrn-top-bar"),
+        utilityRow: styleFor(".tcrn-product-shell__utility-row"),
+        currentLocation: styleFor(".tcrn-product-shell__current-location"),
+        searchWrapper: styleFor(".tcrn-product-shell-search"),
+        searchInput: styleFor(".tcrn-search-input"),
+        themeToggle: styleFor(".tcrn-shell-theme-toggle"),
+        localeTrigger: styleFor(".tcrn-shell-locale-menu__trigger"),
+        pointReadbacks
+      },
       articleClearancePx: article ? Number((article.top - topbarBottom).toFixed(2)) : null,
       titleClearancePx: title ? Number((title.top - topbarBottom).toFixed(2)) : null,
       articleReadableBelowTopbar: Boolean(article && article.top >= topbarBottom + minimumClearancePx),
@@ -949,6 +1025,22 @@ const collectMobileHashAnchorMetrics = async (label) => {
   }
   if (!metrics.articleReadableBelowTopbar) failures.push(`article-clearance:${metrics.articleClearancePx}`);
   if (!metrics.titleReadableBelowTopbar) failures.push(`title-clearance:${metrics.titleClearancePx}`);
+  for (const [name, layer] of Object.entries(metrics.mobileTopbarLayering ?? {})) {
+    if (name === "pointReadbacks") continue;
+    if (!layer) {
+      failures.push(`mobile-layer-missing:${name}`);
+      continue;
+    }
+    if (layer.backgroundAlpha < 0.98 && layer.backgroundImage === "none") {
+      failures.push(`mobile-layer-transparent:${name}:${layer.backgroundColor}`);
+    }
+    if (layer.opacity < 0.98) failures.push(`mobile-layer-opacity:${name}:${layer.opacity}`);
+  }
+  for (const point of metrics.mobileTopbarLayering?.pointReadbacks ?? []) {
+    if (!point.shellPaintsAboveStoryContent) {
+      failures.push(`mobile-layer-stack:${point.label}:shell:${point.shellIndex}:story:${point.storyContentIndex}`);
+    }
+  }
   if (metrics.privateDocShellCloneCount !== 0) failures.push(`private-doc-shell-clones:${metrics.privateDocShellCloneCount}`);
   if (metrics.pageOverflow) failures.push("page-overflow");
   return { ...metrics, ok: failures.length === 0, failures };

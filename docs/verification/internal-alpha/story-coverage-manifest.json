@@ -1248,33 +1248,546 @@
         "anchorOffsetReadback": {
           "targetId": "foundation-visual-standards",
           "baseOffset": 16,
-          "appliedOffset": 219,
-          "mobileTopbarOffset": 219,
+          "appliedOffset": 220,
+          "mobileTopbarOffset": 220,
           "viewportWidth": 390
         },
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 206.98,
+          "bottom": 207.98,
           "left": 0,
           "width": 390,
-          "height": 206.98
+          "height": 207.98
         },
         "article": {
-          "top": 218.88,
+          "top": 219.88,
           "right": 374,
-          "bottom": 9059.95,
+          "bottom": 9060.95,
           "left": 16,
           "width": 358,
           "height": 8841.08
         },
         "title": {
-          "top": 235.88,
+          "top": 236.88,
           "right": 357,
-          "bottom": 262.19,
+          "bottom": 263.19,
           "left": 33,
           "width": 324,
           "height": 26.31
+        },
+        "mobileTopbarLayering": {
+          "topbar": {
+            "selector": ".tcrn-top-bar",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "sticky",
+            "zIndex": "20",
+            "top": 0,
+            "right": 390,
+            "bottom": 207.98,
+            "left": 0,
+            "width": 390,
+            "height": 207.98
+          },
+          "utilityRow": {
+            "selector": ".tcrn-product-shell__utility-row",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 16,
+            "right": 374,
+            "bottom": 190.98,
+            "left": 16,
+            "width": 358,
+            "height": 174.98
+          },
+          "currentLocation": {
+            "selector": ".tcrn-product-shell__current-location",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 16,
+            "right": 374,
+            "bottom": 52.98,
+            "left": 16,
+            "width": 358,
+            "height": 36.98
+          },
+          "searchWrapper": {
+            "selector": ".tcrn-product-shell-search",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 62.98,
+            "right": 336,
+            "bottom": 98.98,
+            "left": 16,
+            "width": 320,
+            "height": 36
+          },
+          "searchInput": {
+            "selector": ".tcrn-search-input",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 62.98,
+            "right": 336,
+            "bottom": 98.98,
+            "left": 16,
+            "width": 320,
+            "height": 36
+          },
+          "themeToggle": {
+            "selector": ".tcrn-shell-theme-toggle",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 108.98,
+            "right": 52,
+            "bottom": 144.98,
+            "left": 16,
+            "width": 36,
+            "height": 36
+          },
+          "localeTrigger": {
+            "selector": ".tcrn-shell-locale-menu__trigger",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 154.98,
+            "right": 374,
+            "bottom": 190.98,
+            "left": 16,
+            "width": 358,
+            "height": 36
+          },
+          "pointReadbacks": [
+            {
+              "label": "topbar-y20",
+              "x": 195,
+              "y": 20,
+              "shellIndex": 1,
+              "storyContentIndex": 4,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "当前位置"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__current-location",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product shells use admitted brand assets and show only route-admitted modules as"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                }
+              ]
+            },
+            {
+              "label": "current-location-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 0,
+              "storyContentIndex": 2,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Generic icon/text-only brand substitutes or planned modules presented as registe"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            },
+            {
+              "label": "search-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 0,
+              "storyContentIndex": 2,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Generic icon/text-only brand substitutes or planned modules presented as registe"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            },
+            {
+              "label": "controls-y178",
+              "x": 195,
+              "y": 178,
+              "shellIndex": 0,
+              "storyContentIndex": 5,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu__current",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "简体中文"
+                },
+                {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu__trigger",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "简体中文"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": "locale-menu",
+                  "text": "简体中文简体中文English日本語한국어Français"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            }
+          ]
         },
         "articleClearancePx": 11.9,
         "titleClearancePx": 28.9,
@@ -1300,33 +1813,546 @@
         "anchorOffsetReadback": {
           "targetId": "foundation-visual-standards",
           "baseOffset": 16,
-          "appliedOffset": 219,
-          "mobileTopbarOffset": 219,
+          "appliedOffset": 220,
+          "mobileTopbarOffset": 220,
           "viewportWidth": 390
         },
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 206.98,
+          "bottom": 207.98,
           "left": 0,
           "width": 390,
-          "height": 206.98
+          "height": 207.98
         },
         "article": {
-          "top": 218.88,
+          "top": 219.88,
           "right": 374,
-          "bottom": 9059.95,
+          "bottom": 9060.95,
           "left": 16,
           "width": 358,
           "height": 8841.08
         },
         "title": {
-          "top": 235.88,
+          "top": 236.88,
           "right": 357,
-          "bottom": 262.19,
+          "bottom": 263.19,
           "left": 33,
           "width": 324,
           "height": 26.31
+        },
+        "mobileTopbarLayering": {
+          "topbar": {
+            "selector": ".tcrn-top-bar",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "sticky",
+            "zIndex": "20",
+            "top": 0,
+            "right": 390,
+            "bottom": 207.98,
+            "left": 0,
+            "width": 390,
+            "height": 207.98
+          },
+          "utilityRow": {
+            "selector": ".tcrn-product-shell__utility-row",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 16,
+            "right": 374,
+            "bottom": 190.98,
+            "left": 16,
+            "width": 358,
+            "height": 174.98
+          },
+          "currentLocation": {
+            "selector": ".tcrn-product-shell__current-location",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 16,
+            "right": 374,
+            "bottom": 52.98,
+            "left": 16,
+            "width": 358,
+            "height": 36.98
+          },
+          "searchWrapper": {
+            "selector": ".tcrn-product-shell-search",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 62.98,
+            "right": 336,
+            "bottom": 98.98,
+            "left": 16,
+            "width": 320,
+            "height": 36
+          },
+          "searchInput": {
+            "selector": ".tcrn-search-input",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 62.98,
+            "right": 336,
+            "bottom": 98.98,
+            "left": 16,
+            "width": 320,
+            "height": 36
+          },
+          "themeToggle": {
+            "selector": ".tcrn-shell-theme-toggle",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 108.98,
+            "right": 52,
+            "bottom": 144.98,
+            "left": 16,
+            "width": 36,
+            "height": 36
+          },
+          "localeTrigger": {
+            "selector": ".tcrn-shell-locale-menu__trigger",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 154.98,
+            "right": 374,
+            "bottom": 190.98,
+            "left": 16,
+            "width": 358,
+            "height": 36
+          },
+          "pointReadbacks": [
+            {
+              "label": "topbar-y20",
+              "x": 195,
+              "y": 20,
+              "shellIndex": 1,
+              "storyContentIndex": 4,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "当前位置"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__current-location",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product shells use admitted brand assets and show only route-admitted modules as"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                }
+              ]
+            },
+            {
+              "label": "current-location-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 0,
+              "storyContentIndex": 2,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Generic icon/text-only brand substitutes or planned modules presented as registe"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            },
+            {
+              "label": "search-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 0,
+              "storyContentIndex": 2,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Generic icon/text-only brand substitutes or planned modules presented as registe"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            },
+            {
+              "label": "controls-y178",
+              "x": 195,
+              "y": 178,
+              "shellIndex": 0,
+              "storyContentIndex": 5,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu__current",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "简体中文"
+                },
+                {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu__trigger",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "简体中文"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": "locale-menu",
+                  "text": "简体中文简体中文English日本語한국어Français"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            }
+          ]
         },
         "articleClearancePx": 11.9,
         "titleClearancePx": 28.9,
@@ -1352,33 +2378,546 @@
         "anchorOffsetReadback": {
           "targetId": "foundation-visual-standards",
           "baseOffset": 16,
-          "appliedOffset": 219,
-          "mobileTopbarOffset": 219,
+          "appliedOffset": 220,
+          "mobileTopbarOffset": 220,
           "viewportWidth": 390
         },
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 206.98,
+          "bottom": 207.98,
           "left": 0,
           "width": 390,
-          "height": 206.98
+          "height": 207.98
         },
         "article": {
-          "top": 218.88,
+          "top": 219.88,
           "right": 374,
-          "bottom": 9059.95,
+          "bottom": 9060.95,
           "left": 16,
           "width": 358,
           "height": 8841.08
         },
         "title": {
-          "top": 235.88,
+          "top": 236.88,
           "right": 357,
-          "bottom": 262.19,
+          "bottom": 263.19,
           "left": 33,
           "width": 324,
           "height": 26.31
+        },
+        "mobileTopbarLayering": {
+          "topbar": {
+            "selector": ".tcrn-top-bar",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "sticky",
+            "zIndex": "20",
+            "top": 0,
+            "right": 390,
+            "bottom": 207.98,
+            "left": 0,
+            "width": 390,
+            "height": 207.98
+          },
+          "utilityRow": {
+            "selector": ".tcrn-product-shell__utility-row",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 16,
+            "right": 374,
+            "bottom": 190.98,
+            "left": 16,
+            "width": 358,
+            "height": 174.98
+          },
+          "currentLocation": {
+            "selector": ".tcrn-product-shell__current-location",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 16,
+            "right": 374,
+            "bottom": 52.98,
+            "left": 16,
+            "width": 358,
+            "height": 36.98
+          },
+          "searchWrapper": {
+            "selector": ".tcrn-product-shell-search",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 62.98,
+            "right": 336,
+            "bottom": 98.98,
+            "left": 16,
+            "width": 320,
+            "height": 36
+          },
+          "searchInput": {
+            "selector": ".tcrn-search-input",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 62.98,
+            "right": 336,
+            "bottom": 98.98,
+            "left": 16,
+            "width": 320,
+            "height": 36
+          },
+          "themeToggle": {
+            "selector": ".tcrn-shell-theme-toggle",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 108.98,
+            "right": 52,
+            "bottom": 144.98,
+            "left": 16,
+            "width": 36,
+            "height": 36
+          },
+          "localeTrigger": {
+            "selector": ".tcrn-shell-locale-menu__trigger",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 154.98,
+            "right": 374,
+            "bottom": 190.98,
+            "left": 16,
+            "width": 358,
+            "height": 36
+          },
+          "pointReadbacks": [
+            {
+              "label": "topbar-y20",
+              "x": 195,
+              "y": 20,
+              "shellIndex": 1,
+              "storyContentIndex": 4,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "当前位置"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__current-location",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product shells use admitted brand assets and show only route-admitted modules as"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                }
+              ]
+            },
+            {
+              "label": "current-location-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 0,
+              "storyContentIndex": 2,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Generic icon/text-only brand substitutes or planned modules presented as registe"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            },
+            {
+              "label": "search-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 0,
+              "storyContentIndex": 2,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Generic icon/text-only brand substitutes or planned modules presented as registe"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            },
+            {
+              "label": "controls-y178",
+              "x": 195,
+              "y": 178,
+              "shellIndex": 0,
+              "storyContentIndex": 5,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu__current",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "简体中文"
+                },
+                {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu__trigger",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "简体中文"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": "locale-menu",
+                  "text": "简体中文简体中文English日本語한국어Français"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            }
+          ]
         },
         "articleClearancePx": 11.9,
         "titleClearancePx": 28.9,
@@ -1404,33 +2943,546 @@
         "anchorOffsetReadback": {
           "targetId": "foundation-visual-standards",
           "baseOffset": 16,
-          "appliedOffset": 219,
-          "mobileTopbarOffset": 219,
+          "appliedOffset": 220,
+          "mobileTopbarOffset": 220,
           "viewportWidth": 390
         },
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 206.98,
+          "bottom": 207.98,
           "left": 0,
           "width": 390,
-          "height": 206.98
+          "height": 207.98
         },
         "article": {
-          "top": 218.88,
+          "top": 219.88,
           "right": 374,
-          "bottom": 9059.95,
+          "bottom": 9060.95,
           "left": 16,
           "width": 358,
           "height": 8841.08
         },
         "title": {
-          "top": 235.88,
+          "top": 236.88,
           "right": 357,
-          "bottom": 262.19,
+          "bottom": 263.19,
           "left": 33,
           "width": 324,
           "height": 26.31
+        },
+        "mobileTopbarLayering": {
+          "topbar": {
+            "selector": ".tcrn-top-bar",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "sticky",
+            "zIndex": "20",
+            "top": 0,
+            "right": 390,
+            "bottom": 207.98,
+            "left": 0,
+            "width": 390,
+            "height": 207.98
+          },
+          "utilityRow": {
+            "selector": ".tcrn-product-shell__utility-row",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 16,
+            "right": 374,
+            "bottom": 190.98,
+            "left": 16,
+            "width": 358,
+            "height": 174.98
+          },
+          "currentLocation": {
+            "selector": ".tcrn-product-shell__current-location",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 16,
+            "right": 374,
+            "bottom": 52.98,
+            "left": 16,
+            "width": 358,
+            "height": 36.98
+          },
+          "searchWrapper": {
+            "selector": ".tcrn-product-shell-search",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 62.98,
+            "right": 336,
+            "bottom": 98.98,
+            "left": 16,
+            "width": 320,
+            "height": 36
+          },
+          "searchInput": {
+            "selector": ".tcrn-search-input",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 62.98,
+            "right": 336,
+            "bottom": 98.98,
+            "left": 16,
+            "width": 320,
+            "height": 36
+          },
+          "themeToggle": {
+            "selector": ".tcrn-shell-theme-toggle",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 108.98,
+            "right": 52,
+            "bottom": 144.98,
+            "left": 16,
+            "width": 36,
+            "height": 36
+          },
+          "localeTrigger": {
+            "selector": ".tcrn-shell-locale-menu__trigger",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 154.98,
+            "right": 374,
+            "bottom": 190.98,
+            "left": 16,
+            "width": 358,
+            "height": 36
+          },
+          "pointReadbacks": [
+            {
+              "label": "topbar-y20",
+              "x": 195,
+              "y": 20,
+              "shellIndex": 1,
+              "storyContentIndex": 4,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "当前位置"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__current-location",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product shells use admitted brand assets and show only route-admitted modules as"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                }
+              ]
+            },
+            {
+              "label": "current-location-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 0,
+              "storyContentIndex": 2,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Generic icon/text-only brand substitutes or planned modules presented as registe"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            },
+            {
+              "label": "search-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 0,
+              "storyContentIndex": 2,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Generic icon/text-only brand substitutes or planned modules presented as registe"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "Control规则已阻止Implementation boundary使用 @tcrn/ui-react ProductShell 作为文档壳层权威；Story"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            },
+            {
+              "label": "controls-y178",
+              "x": 195,
+              "y": 178,
+              "shellIndex": 0,
+              "storyContentIndex": 5,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu__current",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "简体中文"
+                },
+                {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu__trigger",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "简体中文"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-shell-locale-menu",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": "locale-menu",
+                  "text": "简体中文简体中文English日本語한국어Français"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-shell__utility-row",
+                  "role": null,
+                  "productShellRegion": "utility-row",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-top-bar",
+                  "role": null,
+                  "productShellRegion": "topbar",
+                  "shellControl": null,
+                  "text": "当前位置基础视觉标准Ctrl K欢迎与治理欢迎治理边界欢迎维护者与路由欢迎贡献模型欢迎发布与缺陷策略欢迎品牌标识样式指南色彩体系样式指南文本样式样式指南栅格系统"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "ProductShell 控件契约Storybook 文档前端使用合并后的 ProductShell 权威来承载壳层、页头、侧边导航、搜索、主题、语言和收起控件"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中文简体中文zh-CN未声明EnglishEnglishen未声明日"
+                },
+                {
+                  "tag": "article",
+                  "id": "i18n-theme-contract",
+                  "className": "",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "productShellRegion": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                }
+              ]
+            }
+          ]
         },
         "articleClearancePx": 11.9,
         "titleClearancePx": 28.9,
@@ -2822,7 +4874,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2602,
+      "shellHeaderLayoutGap": -2603,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2872,7 +4924,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2602,
+      "shellHeaderLayoutGap": -2603,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2926,7 +4978,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2602,
+      "shellHeaderLayoutGap": -2603,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2974,7 +5026,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2602,
+      "shellHeaderLayoutGap": -2603,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -3036,7 +5088,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2602,
+      "shellHeaderLayoutGap": -2603,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -3094,7 +5146,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2602,
+      "shellHeaderLayoutGap": -2603,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -3142,7 +5194,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2602,
+      "shellHeaderLayoutGap": -2603,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,

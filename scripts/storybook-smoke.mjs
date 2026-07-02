@@ -760,6 +760,7 @@ const required = [
   "data-storybook-supported-themes=\"light,dark\"",
   "data-current-theme=\"light\"",
   "data-theme-next=\"dark\"",
+  "--tcrn-storybook-shell-mobile-layer-surface",
   "tcrn-design-system-storybook-theme",
   "data-package-backed-shell-control=\"theme-toggle\"",
   "data-theme-icon=\"light\"",
