@@ -33,6 +33,9 @@ function llmsTxt(contract: typeof aiConsumptionContract & { contractPayloadDiges
   const sectionCoverage = contract.coveredStorybookSections.map((section) =>
     `- ${section.section}: ${section.categories.map((category) => `${category.label} [${category.storyIds.join(", ")}]`).join("; ")}`
   ).join("\n");
+  const foundationStandards = contract.foundationVisualStandardCategories.map((standard) =>
+    `- ${standard.id}: ${standard.label}; authority=${standard.authorityLevel}; routes=${standard.storybookRoutes.join(", ")}; proof=${standard.proofExpectations.join("; ")}`
+  ).join("\n");
 
   return `TCRN Design System AI first-read entry
 
@@ -51,6 +54,11 @@ Covered Storybook section/category/story hierarchy:
 ${sectionCoverage}
 Changelog governance: ${contract.changelogGovernance.storybookStory}; records require ${contract.changelogGovernance.requiredFields.join(", ")}; digest proof: ${contract.changelogGovernance.digestAlignmentProof}
 Work Management authority: ${contract.workManagementStaticAuthority.disposition}; stories: ${contract.workManagementStaticAuthority.componentStory}, ${contract.workManagementStaticAuthority.patternStory}; boundary: ${contract.workManagementStaticAuthority.noOverclaimBoundary}
+Foundation visual standards: ${contract.foundationVisualStandards.registryId}; route: ${contract.foundationVisualStandards.storybookRoute}; categories: ${contract.foundationVisualStandards.categoryIds.join(", ")}
+Foundation visual standard category details:
+${foundationStandards}
+Consumer visual style contract: ${contract.consumerVisualStyleContract.id}; allowed inputs: ${contract.consumerVisualStyleContract.allowedConsumerInputs.join(", ")}; forbidden overrides: ${contract.consumerVisualStyleContract.forbiddenConsumerOverrides.join(", ")}
+ProductShell visual oracle: ${contract.productShellVisualOracle.id}; baseline: ${contract.productShellVisualOracle.baselineManifest}#sourceHead=${contract.productShellVisualOracle.sourceHead}; search rest ${contract.productShellVisualOracle.shellMetrics.searchRestWidthPx}px; theme radius ${contract.productShellVisualOracle.shellMetrics.themeToggleRadiusPx}px
 Visual equivalence levels: ${contract.visualEquivalenceLevels.join(" -> ")}
 Visual parity proof: ${contract.storybookVisualParityProof}
 Shell control visual parity proof: ${Array.from(contract.shellControlVisualParityProof.measuredControls).join(", ")} controls; ${Array.from(contract.shellControlVisualParityProof.computedStyleFields).join(", ")} computed style fields; ${Array.from(contract.shellControlVisualParityProof.motionFields).join(", ")} motion fields; reduced motion: ${contract.shellControlVisualParityProof.reducedMotionExpectation}

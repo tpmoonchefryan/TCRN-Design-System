@@ -22,6 +22,12 @@ import patternsMeta from "./patterns.stories.js";
 import proofMeta from "./proof.stories.js";
 import styleGuideMeta from "./style-guide.stories.js";
 import { storybookGovernanceChangelogRecords, storyCategoryDefinitions } from "./contract-stories/governance.js";
+import {
+  consumerVisualStyleContract,
+  foundationVisualStandardCategoryIds,
+  foundationVisualStandards,
+  productShellVisualOracle
+} from "./build/foundation-visual-standards.js";
 import { contractStories, contractStoryGroups } from "./stories.js";
 import type { ContractStoryGroup } from "./stories.js";
 
@@ -43,6 +49,8 @@ const expectedAiReadbackFields = [
   "readAt",
   "coveredRules",
   "coveredStorybookSections",
+  "foundationVisualStandards",
+  "consumerVisualStyleContract",
   "requiredProof",
   "noOverclaimBoundaries"
 ];
@@ -66,6 +74,7 @@ const expectedContractStoryIds = [
   "copy-creation-rules",
   "tokens-copy-state",
   "i18n-theme-contract",
+  "foundation-visual-standards",
   "copy-guidelines",
   "component-family-index",
   "display-primitives-spec",
@@ -97,6 +106,8 @@ const expectedContractStoryIds = [
 const expectedAiRequiredBeforeProductFrontendImplementation = [
   "read_ai_consumption_contract",
   "read_every_required_storybook_section",
+  "read_foundation_visual_standards",
+  "consume_consumer_visual_style_contract",
   "prove_same_storybook_visual_instance_not_only_package_import",
   "use_tcrn_i18n_and_copy_state",
   "use_registered_product_logo_asset_or_route_logo_admission",
@@ -107,6 +118,7 @@ const expectedAiRequiredBeforeProductFrontendImplementation = [
   "verify_light_and_dark_storybook_theme_contract",
   "verify_motion_effect_parity_and_reduced_motion",
   "preserve_compact_storybook_shell_controls",
+  "prove_product_shell_visual_oracle_skin",
   "use_product_shell_semantic_control_api",
   "prove_locale_popup_dismissal_and_focus_return",
   "prove_side_navigation_collapse_state",
@@ -123,8 +135,11 @@ const expectedAiRequiredProof = [
   "forbidden_brand_asset_absence_receipt",
   "package_import_receipt",
   "storybook_doc_shell_package_boundary_receipt",
+  "foundation_visual_standards_registry_receipt",
+  "consumer_visual_style_contract_receipt",
   "theme_mode_receipt",
   "storybook_shell_control_receipt",
+  "product_shell_visual_oracle_skin_receipt",
   "locale_popup_dismissal_receipt",
   "side_navigation_collapse_receipt",
   "work_management_static_pattern_receipt",
@@ -188,7 +203,7 @@ test("static contract story surface is retained and synthetic", () => {
   const pages = contractStoryGroups.map((group) => ({ group, html: readGroupPage(group) }));
   const combinedHtml = pages.map((page) => page.html).join("\n");
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
-  assert.equal(contractStories.length, 40);
+  assert.equal(contractStories.length, 41);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
   for (const story of contractStories) {
     assert.ok(story.category.length > 0, `missing category label for ${story.id}`);
@@ -236,6 +251,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /data-storybook-contract-truth="not-authoritative"/);
   assert.match(combinedHtml, /data-storybook-shell-authority="@tcrn\/ui-react\/ProductShell"/);
   assert.match(combinedHtml, /data-storybook-private-doc-shell-retired="true"/);
+  assert.match(combinedHtml, /data-storybook-product-shell-skin="confirmed-storybook-visual-v1"/);
+  assert.match(combinedHtml, /data-storybook-visual-oracle="docs\/verification\/storybook-visual-proof\/baseline-manifest\.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84"/);
   assert.match(combinedHtml, /data-package-backed-product-shell-boundary="side-nav-shell-v1"/);
   assert.match(combinedHtml, /class="[^"]*tcrn-product-shell/);
   assert.match(combinedHtml, /data-product-shell-route="/);
@@ -653,6 +670,15 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(readGroupPage("Patterns"), /data-aos-exception-record="brand-lockup-product-specific"/);
   assert.doesNotMatch(readGroupPage("Patterns"), /AOS brand treatment exception/);
   assert.match(readGroupPage("Foundations"), /Copy guidelines/);
+  assert.match(readGroupPage("Foundations"), /Foundation visual standards/);
+  assert.match(readGroupPage("Foundations"), /data-foundation-visual-standards="registry"/);
+  for (const categoryId of foundationVisualStandardCategoryIds) {
+    assert.match(readGroupPage("Foundations"), new RegExp(`data-foundation-standard-category-id="${categoryId}"`));
+  }
+  assert.match(readGroupPage("Foundations"), /consumer-visual-style-contract-v1/);
+  assert.match(readGroupPage("Foundations"), /confirmed-storybook-visual-v1/);
+  assert.match(readGroupPage("Foundations"), /consumer-local shell-control geometry/);
+  assert.match(readGroupPage("Foundations"), /Missing standard escalation/);
   assert.match(readGroupPage("Foundations"), /ProductShell control contract/);
   assert.match(readGroupPage("Foundations"), /Use one circular icon-only button/);
   assert.match(readGroupPage("Foundations"), /Use @tcrn\/ui-react ProductShell as the documentation shell authority/);
@@ -762,6 +788,35 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.workManagementStaticAuthority?.patternStory ?? "", /work-management-patterns/);
   assert.match(contract.workManagementStaticAuthority?.managerRuntimeCoverageDisposition ?? "", /static contract story ids are the authoritative/);
   assert.match(contract.workManagementStaticAuthority?.noOverclaimBoundary ?? "", /initiative completion/);
+  assert.equal(contract.foundationVisualStandards?.registryId, "foundation-visual-standards-v1");
+  assert.equal(contract.foundationVisualStandards?.storybookRoute, "foundations.html#foundation-visual-standards");
+  assert.deepEqual(contract.foundationVisualStandards?.categoryIds, foundationVisualStandardCategoryIds);
+  assert.equal(contract.foundationVisualStandardCategories?.length, foundationVisualStandards.length);
+  assert.deepEqual(
+    contract.foundationVisualStandardCategories?.map((standard: { id: string }) => standard.id),
+    foundationVisualStandardCategoryIds
+  );
+  for (const standard of contract.foundationVisualStandardCategories ?? []) {
+    assert.ok(standard.sourcePaths?.length > 0, `foundation standard missing source paths: ${standard.id}`);
+    assert.ok(standard.storybookRoutes?.length > 0, `foundation standard missing storybook routes: ${standard.id}`);
+    assert.ok(standard.readbackFields?.length > 0, `foundation standard missing readback fields: ${standard.id}`);
+    assert.ok(standard.proofExpectations?.length > 0, `foundation standard missing proof expectations: ${standard.id}`);
+    assert.match(standard.missingStandardEscalation ?? "", /Block|Return|Route|Skip|Do not close/);
+  }
+  assert.equal(contract.productShellVisualOracle?.id, productShellVisualOracle.id);
+  assert.equal(contract.productShellVisualOracle?.packageAuthority, "@tcrn/ui-react/ProductShell");
+  assert.equal(contract.productShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 326);
+  assert.equal(contract.productShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 96);
+  assert.equal(contract.productShellVisualOracle?.shellMetrics?.searchRestWidthPx, 180);
+  assert.equal(contract.productShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 320);
+  assert.equal(contract.productShellVisualOracle?.shellMetrics?.themeToggleRadiusPx, 999);
+  assert.deepEqual(contract.productShellVisualOracle?.privateShellClonesForbidden, productShellVisualOracle.privateShellClonesForbidden);
+  assert.equal(contract.consumerVisualStyleContract?.id, consumerVisualStyleContract.id);
+  assert.match(contract.consumerVisualStyleContract?.disposition ?? "", /fail_closed/);
+  assert.ok(contract.consumerVisualStyleContract?.allowedConsumerInputs?.includes("product data"));
+  assert.ok(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.includes("consumer-local ProductShell/search/theme/locale/sidebar clones"));
+  assert.ok(contract.consumerVisualStyleContract?.requiredReadbackFields?.includes("foundationVisualStandards"));
+  assert.match(contract.consumerVisualStyleContract?.rejectCriteria?.join(" ") ?? "", /claims DS compliance/);
   assert.deepEqual(contract.visualEquivalenceLevels, [
     "same_package_version",
     "same_exported_component",
@@ -910,17 +965,21 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
   assert.ok(contract.requiredProof.includes("work_management_static_pattern_receipt"));
   assert.match(contract.storybookMergedShellAuthorityDisposition, /must render the merged shell through @tcrn\/ui-react ProductShell/);
-  assert.match(contract.storybookMergedShellAuthorityDisposition, /may own content slots, static story sections, anchors, search index data, proof pages, and chapter paging content/);
+  assert.match(contract.storybookMergedShellAuthorityDisposition, /ProductShell-scoped visual skin variables\/overrides/);
+  assert.match(contract.storybookMergedShellAuthorityDisposition, /plus content slots, static story sections, anchors, search index data, proof pages, and chapter paging content/);
   assert.match(contract.storybookMergedShellAuthorityDisposition, /must not keep an independent tcrn-doc-shell, tcrn-doc-header, tcrn-doc-nav, tcrn-doc-global-bar, or tcrn-doc-header-search visual shell/);
-  assert.match(contract.storybookMergedShellAuthorityDisposition, /Shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior is ProductShell-owned/);
+  assert.match(contract.storybookMergedShellAuthorityDisposition, /Shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior remains ProductShell-owned/);
   assert.doesNotMatch(JSON.stringify(contract), /storybookDocShellCompositionDisposition/);
   assert.doesNotMatch(JSON.stringify(contract), /\.tcrn-doc-\* selectors may style only documentation skeleton/);
   assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
   assert.match(contract.themeModeDisposition, /light and dark Storybook shell modes/);
   assert.match(contract.storybookProductShellControlContract.implementationBoundary, /Storybook shell is @tcrn\/ui-react ProductShell/);
+  assert.match(contract.storybookProductShellControlContract.implementationBoundary, /confirmed-storybook-visual-v1 ProductShell skin/);
   assert.match(contract.storybookProductShellControlContract.implementationBoundary, /ProductLogo\/ShellBrandLockup, ProductShellSearch\/SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton/);
   assert.match(contract.storybookProductShellControlContract.implementationBoundary, /private tcrn-doc-\* visual shell selectors are not admitted/);
   assert.match(contract.storybookProductShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
+  assert.match(contract.storybookProductShellControlContract.visualSkin, /storybook-visual-proof\/baseline-manifest\.json/);
+  assert.match(contract.storybookProductShellControlContract.visualSkin, /desktop sidebar width, topbar height, compact search width\/border/);
   assert.match(contract.storybookProductShellControlContract.themeTransition, /one whole-page transition/);
   assert.match(contract.storybookProductShellControlContract.themeTransition, /must not darken as independent sections/);
   assert.match(contract.storybookProductShellControlContract.localeSelector, /native names only/);
@@ -961,13 +1020,19 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   const llms = readFileSync(join(process.cwd(), "storybook-static", "llms.txt"), "utf8");
   assert.match(llms, /Agents must read ai-consumption-contract\.json before implementation work\./);
   assert.match(llms, new RegExp(contractPayloadDigest));
-  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
+  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
   assert.match(llms, /Required Storybook sections:/);
   assert.match(llms, /Covered Storybook section\/category\/story hierarchy:/);
   assert.match(llms, /Changelog governance: change-log\.html#local-changelog/);
   assert.match(llms, /Work Management authority: static_contract_authority_explicit_and_smoke_proven/);
+  assert.match(llms, /Foundation visual standards: foundation-visual-standards-v1/);
+  assert.match(llms, /Foundation visual standard category details:/);
+  assert.match(llms, /consumer-enforcement: Consumer enforcement and reject criteria/);
+  assert.match(llms, /Consumer visual style contract: consumer-visual-style-contract-v1/);
+  assert.match(llms, /ProductShell visual oracle: confirmed-storybook-visual-v1/);
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
+  assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
   assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, button-spec-usage, field-spec-usage, navigation-shell-spec, aos-frontend-shell-slice, aos-owner-quality-product-shell, dialog-spec-usage, table-work-index-spec, work-management-components-spec/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, work-management-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);

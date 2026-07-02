@@ -72,6 +72,11 @@
       "storybookId": "tcrn-design-system-foundations--i-18-n-theme-contract"
     },
     {
+      "id": "foundation-visual-standards",
+      "group": "Foundations",
+      "storybookId": "tcrn-design-system-foundations--foundation-visual-standards"
+    },
+    {
       "id": "copy-guidelines",
       "group": "Foundations",
       "storybookId": "tcrn-design-system-foundations--copy-guidelines"
@@ -245,12 +250,28 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "12bbba8a6f388f391e5e08dc68d74e748e7bd515b531a43e155ebbbaca36c7df",
+    "contractPayloadDigest": "988fad9c78665bda60bd4e092f57037a19821ea13d66f50c358c4fb98d316984",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
     "changelogRecordCount": 1,
     "workManagementStaticAuthorityDisposition": "static_contract_authority_explicit_and_smoke_proven",
+    "foundationVisualStandardsRegistryId": "foundation-visual-standards-v1",
+    "foundationVisualStandardCategoryIds": [
+      "visual-philosophy-ownership",
+      "layout-rhythm",
+      "spacing-density",
+      "typography-localization",
+      "color-elevation-border-radius-focus",
+      "component-composition",
+      "interaction-motion-accessibility",
+      "responsive-mobile",
+      "evidence-proof-oracle",
+      "consumer-enforcement"
+    ],
+    "foundationVisualStandardCategoryCount": 10,
+    "consumerVisualStyleContractId": "consumer-visual-style-contract-v1",
+    "productShellVisualOracleId": "confirmed-storybook-visual-v1",
     "llmsTraceabilitySectionsPresent": true
   },
   "componentStorybookParityReadback": {
@@ -354,6 +375,11 @@
     {
       "id": "i18n-theme-contract",
       "storybookId": "tcrn-design-system-foundations--i-18-n-theme-contract",
+      "visible": true
+    },
+    {
+      "id": "foundation-visual-standards",
+      "storybookId": "tcrn-design-system-foundations--foundation-visual-standards",
       "visible": true
     },
     {
@@ -528,6 +554,8 @@
         "scrollY": 0,
         "pageOverflow": false,
         "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "productShellVisualSkin": "confirmed-storybook-visual-v1",
+        "productShellVisualOracle": "docs/verification/storybook-visual-proof/baseline-manifest.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84",
         "privateDocShellCloneCount": 0,
         "docPageHeadCount": 1,
         "onThisPageCount": 1,
@@ -541,45 +569,73 @@
         "expectedGroupCount": 7,
         "header": {
           "top": 0,
-          "left": 280,
+          "left": 326,
           "right": 1440,
-          "bottom": 68,
-          "width": 1160,
-          "height": 68
+          "bottom": 96,
+          "width": 1114,
+          "height": 96
+        },
+        "sideNavRegion": {
+          "top": 0,
+          "left": 0,
+          "right": 326,
+          "bottom": 900,
+          "width": 326,
+          "height": 900
         },
         "pageHead": {
-          "top": 125.44,
-          "left": 337.44,
-          "right": 1382.56,
-          "bottom": 263.05,
-          "width": 1045.13,
-          "height": 137.61
+          "top": 96,
+          "left": 342,
+          "right": 1424,
+          "bottom": 223.11,
+          "width": 1082,
+          "height": 127.11
         },
-        "firstStoryTop": 321.36,
+        "firstStoryTop": 279.42,
         "themeToggleRadius": "999px",
+        "search": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShell": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShellStyles": {
+          "border-color": "rgb(184, 200, 214)",
+          "border-radius": "5px"
+        },
         "headerStyles": {
           "display": "grid",
-          "grid-template-columns": "1120px",
-          "min-height": "68px"
+          "grid-template-columns": "1088px",
+          "min-height": "96px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "1160px",
+          "grid-template-columns": "1114px",
           "gap": "normal"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "711.125px 320px",
+          "grid-template-columns": "748px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "280px 1160px"
+          "grid-template-columns": "326px 1114px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
-        "utilityTrailingGap": 20,
+        "utilityTrailingGap": 26,
         "pageHeadStartsBelowHeader": true,
         "firstStoryDoesNotReplacePageHead": true,
         "ok": true,
@@ -595,6 +651,8 @@
         "scrollY": 0,
         "pageOverflow": false,
         "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "productShellVisualSkin": "confirmed-storybook-visual-v1",
+        "productShellVisualOracle": "docs/verification/storybook-visual-proof/baseline-manifest.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84",
         "privateDocShellCloneCount": 0,
         "docPageHeadCount": 1,
         "onThisPageCount": 1,
@@ -608,45 +666,73 @@
         "expectedGroupCount": 7,
         "header": {
           "top": 0,
-          "left": 280,
+          "left": 326,
           "right": 1440,
-          "bottom": 68,
-          "width": 1160,
-          "height": 68
+          "bottom": 96,
+          "width": 1114,
+          "height": 96
+        },
+        "sideNavRegion": {
+          "top": 0,
+          "left": 0,
+          "right": 326,
+          "bottom": 900,
+          "width": 326,
+          "height": 900
         },
         "pageHead": {
-          "top": 125.44,
-          "left": 337.44,
-          "right": 1382.56,
-          "bottom": 266.48,
-          "width": 1045.13,
-          "height": 141.05
+          "top": 96,
+          "left": 342,
+          "right": 1424,
+          "bottom": 233.05,
+          "width": 1082,
+          "height": 137.05
         },
-        "firstStoryTop": 324.8,
+        "firstStoryTop": 289.36,
         "themeToggleRadius": "999px",
+        "search": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShell": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShellStyles": {
+          "border-color": "rgb(184, 200, 214)",
+          "border-radius": "5px"
+        },
         "headerStyles": {
           "display": "grid",
-          "grid-template-columns": "1120px",
-          "min-height": "68px"
+          "grid-template-columns": "1088px",
+          "min-height": "96px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "1160px",
+          "grid-template-columns": "1114px",
           "gap": "normal"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "711.125px 320px",
+          "grid-template-columns": "748px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "280px 1160px"
+          "grid-template-columns": "326px 1114px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
-        "utilityTrailingGap": 20,
+        "utilityTrailingGap": 26,
         "pageHeadStartsBelowHeader": true,
         "firstStoryDoesNotReplacePageHead": true,
         "ok": true,
@@ -662,6 +748,8 @@
         "scrollY": 0,
         "pageOverflow": false,
         "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "productShellVisualSkin": "confirmed-storybook-visual-v1",
+        "productShellVisualOracle": "docs/verification/storybook-visual-proof/baseline-manifest.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84",
         "privateDocShellCloneCount": 0,
         "docPageHeadCount": 1,
         "onThisPageCount": 1,
@@ -675,45 +763,73 @@
         "expectedGroupCount": 7,
         "header": {
           "top": 0,
-          "left": 280,
+          "left": 326,
           "right": 1440,
-          "bottom": 68,
-          "width": 1160,
-          "height": 68
+          "bottom": 96,
+          "width": 1114,
+          "height": 96
+        },
+        "sideNavRegion": {
+          "top": 0,
+          "left": 0,
+          "right": 326,
+          "bottom": 900,
+          "width": 326,
+          "height": 900
         },
         "pageHead": {
-          "top": 125.44,
-          "left": 337.44,
-          "right": 1382.56,
-          "bottom": 263.05,
-          "width": 1045.13,
-          "height": 137.61
+          "top": 96,
+          "left": 342,
+          "right": 1424,
+          "bottom": 223.11,
+          "width": 1082,
+          "height": 127.11
         },
-        "firstStoryTop": 321.36,
+        "firstStoryTop": 279.42,
         "themeToggleRadius": "999px",
+        "search": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShell": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShellStyles": {
+          "border-color": "rgb(184, 200, 214)",
+          "border-radius": "5px"
+        },
         "headerStyles": {
           "display": "grid",
-          "grid-template-columns": "1120px",
-          "min-height": "68px"
+          "grid-template-columns": "1088px",
+          "min-height": "96px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "1160px",
+          "grid-template-columns": "1114px",
           "gap": "normal"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "711.125px 320px",
+          "grid-template-columns": "748px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "280px 1160px"
+          "grid-template-columns": "326px 1114px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
-        "utilityTrailingGap": 20,
+        "utilityTrailingGap": 26,
         "pageHeadStartsBelowHeader": true,
         "firstStoryDoesNotReplacePageHead": true,
         "ok": true,
@@ -729,6 +845,8 @@
         "scrollY": 0,
         "pageOverflow": false,
         "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "productShellVisualSkin": "confirmed-storybook-visual-v1",
+        "productShellVisualOracle": "docs/verification/storybook-visual-proof/baseline-manifest.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84",
         "privateDocShellCloneCount": 0,
         "docPageHeadCount": 1,
         "onThisPageCount": 1,
@@ -742,45 +860,73 @@
         "expectedGroupCount": 7,
         "header": {
           "top": 0,
-          "left": 280,
+          "left": 326,
           "right": 1440,
-          "bottom": 68,
-          "width": 1160,
-          "height": 68
+          "bottom": 96,
+          "width": 1114,
+          "height": 96
+        },
+        "sideNavRegion": {
+          "top": 0,
+          "left": 0,
+          "right": 326,
+          "bottom": 900,
+          "width": 326,
+          "height": 900
         },
         "pageHead": {
-          "top": 125.44,
-          "left": 337.44,
-          "right": 1382.56,
-          "bottom": 314.86,
-          "width": 1045.13,
-          "height": 189.42
+          "top": 96,
+          "left": 342,
+          "right": 1424,
+          "bottom": 281.42,
+          "width": 1082,
+          "height": 185.42
         },
-        "firstStoryTop": 373.17,
+        "firstStoryTop": 337.73,
         "themeToggleRadius": "999px",
+        "search": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShell": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShellStyles": {
+          "border-color": "rgb(184, 200, 214)",
+          "border-radius": "5px"
+        },
         "headerStyles": {
           "display": "grid",
-          "grid-template-columns": "1120px",
-          "min-height": "68px"
+          "grid-template-columns": "1088px",
+          "min-height": "96px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "1160px",
+          "grid-template-columns": "1114px",
           "gap": "normal"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "711.125px 320px",
+          "grid-template-columns": "748px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "280px 1160px"
+          "grid-template-columns": "326px 1114px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
-        "utilityTrailingGap": 20,
+        "utilityTrailingGap": 26,
         "pageHeadStartsBelowHeader": true,
         "firstStoryDoesNotReplacePageHead": true,
         "ok": true,
@@ -796,6 +942,8 @@
         "scrollY": 0,
         "pageOverflow": false,
         "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "productShellVisualSkin": "confirmed-storybook-visual-v1",
+        "productShellVisualOracle": "docs/verification/storybook-visual-proof/baseline-manifest.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84",
         "privateDocShellCloneCount": 0,
         "docPageHeadCount": 1,
         "onThisPageCount": 1,
@@ -809,45 +957,73 @@
         "expectedGroupCount": 7,
         "header": {
           "top": 0,
-          "left": 280,
+          "left": 326,
           "right": 1440,
-          "bottom": 68,
-          "width": 1160,
-          "height": 68
+          "bottom": 96,
+          "width": 1114,
+          "height": 96
+        },
+        "sideNavRegion": {
+          "top": 0,
+          "left": 0,
+          "right": 326,
+          "bottom": 900,
+          "width": 326,
+          "height": 900
         },
         "pageHead": {
-          "top": 125.44,
-          "left": 337.44,
-          "right": 1382.56,
-          "bottom": 290.67,
-          "width": 1045.13,
-          "height": 165.23
+          "top": 96,
+          "left": 342,
+          "right": 1424,
+          "bottom": 257.23,
+          "width": 1082,
+          "height": 161.23
         },
-        "firstStoryTop": 348.98,
+        "firstStoryTop": 313.55,
         "themeToggleRadius": "999px",
+        "search": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShell": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShellStyles": {
+          "border-color": "rgb(184, 200, 214)",
+          "border-radius": "5px"
+        },
         "headerStyles": {
           "display": "grid",
-          "grid-template-columns": "1120px",
-          "min-height": "68px"
+          "grid-template-columns": "1088px",
+          "min-height": "96px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "1160px",
+          "grid-template-columns": "1114px",
           "gap": "normal"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "711.125px 320px",
+          "grid-template-columns": "748px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "280px 1160px"
+          "grid-template-columns": "326px 1114px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
-        "utilityTrailingGap": 20,
+        "utilityTrailingGap": 26,
         "pageHeadStartsBelowHeader": true,
         "firstStoryDoesNotReplacePageHead": true,
         "ok": true,
@@ -863,6 +1039,8 @@
         "scrollY": 0,
         "pageOverflow": false,
         "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "productShellVisualSkin": "confirmed-storybook-visual-v1",
+        "productShellVisualOracle": "docs/verification/storybook-visual-proof/baseline-manifest.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84",
         "privateDocShellCloneCount": 0,
         "docPageHeadCount": 1,
         "onThisPageCount": 1,
@@ -876,45 +1054,73 @@
         "expectedGroupCount": 7,
         "header": {
           "top": 0,
-          "left": 280,
+          "left": 326,
           "right": 1440,
-          "bottom": 68,
-          "width": 1160,
-          "height": 68
+          "bottom": 96,
+          "width": 1114,
+          "height": 96
+        },
+        "sideNavRegion": {
+          "top": 0,
+          "left": 0,
+          "right": 326,
+          "bottom": 900,
+          "width": 326,
+          "height": 900
         },
         "pageHead": {
-          "top": 125.44,
-          "left": 337.44,
-          "right": 1382.56,
-          "bottom": 263.05,
-          "width": 1045.13,
-          "height": 137.61
+          "top": 96,
+          "left": 342,
+          "right": 1424,
+          "bottom": 223.11,
+          "width": 1082,
+          "height": 127.11
         },
-        "firstStoryTop": 321.36,
+        "firstStoryTop": 279.42,
         "themeToggleRadius": "999px",
+        "search": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShell": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShellStyles": {
+          "border-color": "rgb(184, 200, 214)",
+          "border-radius": "5px"
+        },
         "headerStyles": {
           "display": "grid",
-          "grid-template-columns": "1120px",
-          "min-height": "68px"
+          "grid-template-columns": "1088px",
+          "min-height": "96px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "1160px",
+          "grid-template-columns": "1114px",
           "gap": "normal"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "711.125px 320px",
+          "grid-template-columns": "748px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "280px 1160px"
+          "grid-template-columns": "326px 1114px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
-        "utilityTrailingGap": 20,
+        "utilityTrailingGap": 26,
         "pageHeadStartsBelowHeader": true,
         "firstStoryDoesNotReplacePageHead": true,
         "ok": true,
@@ -930,6 +1136,8 @@
         "scrollY": 0,
         "pageOverflow": false,
         "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "productShellVisualSkin": "confirmed-storybook-visual-v1",
+        "productShellVisualOracle": "docs/verification/storybook-visual-proof/baseline-manifest.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84",
         "privateDocShellCloneCount": 0,
         "docPageHeadCount": 1,
         "onThisPageCount": 1,
@@ -943,45 +1151,73 @@
         "expectedGroupCount": 7,
         "header": {
           "top": 0,
-          "left": 280,
+          "left": 326,
           "right": 1440,
-          "bottom": 68,
-          "width": 1160,
-          "height": 68
+          "bottom": 96,
+          "width": 1114,
+          "height": 96
+        },
+        "sideNavRegion": {
+          "top": 0,
+          "left": 0,
+          "right": 326,
+          "bottom": 900,
+          "width": 326,
+          "height": 900
         },
         "pageHead": {
-          "top": 125.44,
-          "left": 337.44,
-          "right": 1382.56,
-          "bottom": 263.05,
-          "width": 1045.13,
-          "height": 137.61
+          "top": 96,
+          "left": 342,
+          "right": 1424,
+          "bottom": 223.11,
+          "width": 1082,
+          "height": 127.11
         },
-        "firstStoryTop": 321.36,
+        "firstStoryTop": 279.42,
         "themeToggleRadius": "999px",
+        "search": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShell": {
+          "top": 30.98,
+          "left": 1053,
+          "right": 1233,
+          "bottom": 66.98,
+          "width": 180,
+          "height": 36
+        },
+        "searchInputShellStyles": {
+          "border-color": "rgb(184, 200, 214)",
+          "border-radius": "5px"
+        },
         "headerStyles": {
           "display": "grid",
-          "grid-template-columns": "1120px",
-          "min-height": "68px"
+          "grid-template-columns": "1088px",
+          "min-height": "96px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "1160px",
+          "grid-template-columns": "1114px",
           "gap": "normal"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "711.125px 320px",
+          "grid-template-columns": "748px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "280px 1160px"
+          "grid-template-columns": "326px 1114px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
-        "utilityTrailingGap": 20,
+        "utilityTrailingGap": 26,
         "pageHeadStartsBelowHeader": true,
         "firstStoryDoesNotReplacePageHead": true,
         "ok": true,
@@ -998,8 +1234,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 59743,
-      "scrollY": 52920
+      "maxScrollY": 59425,
+      "scrollY": 52699
     }
   },
   "scrollSpyCheck": {
@@ -1009,10 +1245,10 @@
       "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
-      "targetTop": 284,
+      "targetTop": 316,
       "offset": 96,
-      "maxScrollY": 5397,
-      "scrollY": 5397,
+      "maxScrollY": 5264,
+      "scrollY": 5264,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }
@@ -1636,7 +1872,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1644,7 +1880,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1686,7 +1922,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1694,7 +1930,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1740,7 +1976,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1748,7 +1984,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1763,11 +1999,13 @@
       "visibleStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
+        "foundation-visual-standards",
         "copy-guidelines"
       ],
       "expectedStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
+        "foundation-visual-standards",
         "copy-guidelines"
       ]
     },
@@ -1786,7 +2024,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1794,7 +2032,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1848,7 +2086,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1856,7 +2094,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1906,7 +2144,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1914,7 +2152,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1954,7 +2192,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1962,7 +2200,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1996,7 +2234,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2004,7 +2242,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2046,7 +2284,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2054,7 +2292,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2100,7 +2338,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2108,7 +2346,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2123,11 +2361,13 @@
       "visibleStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
+        "foundation-visual-standards",
         "copy-guidelines"
       ],
       "expectedStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
+        "foundation-visual-standards",
         "copy-guidelines"
       ]
     },
@@ -2146,7 +2386,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2154,7 +2394,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2208,7 +2448,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2216,7 +2456,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2266,7 +2506,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2274,7 +2514,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2314,7 +2554,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2322,7 +2562,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -68,
+      "shellHeaderLayoutGap": -96,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2356,7 +2596,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2364,7 +2604,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2519,
+      "shellHeaderLayoutGap": -2602,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2406,7 +2646,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2414,7 +2654,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2519,
+      "shellHeaderLayoutGap": -2602,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2460,7 +2700,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2468,7 +2708,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2519,
+      "shellHeaderLayoutGap": -2602,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2483,11 +2723,13 @@
       "visibleStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
+        "foundation-visual-standards",
         "copy-guidelines"
       ],
       "expectedStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
+        "foundation-visual-standards",
         "copy-guidelines"
       ]
     },
@@ -2506,7 +2748,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2514,7 +2756,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2519,
+      "shellHeaderLayoutGap": -2602,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2568,7 +2810,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2576,7 +2818,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2519,
+      "shellHeaderLayoutGap": -2602,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2626,7 +2868,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2634,7 +2876,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2519,
+      "shellHeaderLayoutGap": -2602,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2674,7 +2916,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "productShellNavItemCount": 40,
+      "productShellNavItemCount": 41,
       "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2682,7 +2924,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2519,
+      "shellHeaderLayoutGap": -2602,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,

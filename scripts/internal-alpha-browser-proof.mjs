@@ -28,6 +28,7 @@ const requiredStories = [
   { id: "copy-creation-rules", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--copy-creation-rules" },
   { id: "tokens-copy-state", group: "Foundations", storybookId: "tcrn-design-system-foundations--tokens-copy-state" },
   { id: "i18n-theme-contract", group: "Foundations", storybookId: "tcrn-design-system-foundations--i-18-n-theme-contract" },
+  { id: "foundation-visual-standards", group: "Foundations", storybookId: "tcrn-design-system-foundations--foundation-visual-standards" },
   { id: "copy-guidelines", group: "Foundations", storybookId: "tcrn-design-system-foundations--copy-guidelines" },
   { id: "component-family-index", group: "Components", storybookId: "tcrn-design-system-components--component-family-index" },
   { id: "display-primitives-spec", group: "Components", storybookId: "tcrn-design-system-components--display-primitives-spec" },
@@ -489,11 +490,36 @@ for (const section of sectionPages) {
 }
 
 const expectedCategoryCount = 18;
+const expectedFoundationStandardCategoryIds = [
+  "visual-philosophy-ownership",
+  "layout-rhythm",
+  "spacing-density",
+  "typography-localization",
+  "color-elevation-border-radius-focus",
+  "component-composition",
+  "interaction-motion-accessibility",
+  "responsive-mobile",
+  "evidence-proof-oracle",
+  "consumer-enforcement"
+];
 const aiContractSource = readFileSync(aiContractPath, "utf8");
 const aiContract = JSON.parse(aiContractSource);
 const { contractPayloadDigest, ...aiContractWithoutDigest } = aiContract;
 const aiContractDigestCheck = contractPayloadDigest === hashText(`${JSON.stringify(aiContractWithoutDigest, null, 2)}\n`);
 const llmsText = readFileSync(llmsPath, "utf8");
+const productShellVisualOracleContract = aiContract.productShellVisualOracle ?? {};
+const expectedStorybookVisualSkin = {
+  id: productShellVisualOracleContract.id ?? "missing",
+  sidebarWidthPx: productShellVisualOracleContract.shellMetrics?.desktopSidebarWidthPx ?? null,
+  sidebarTolerancePx: productShellVisualOracleContract.shellMetrics?.desktopSidebarTolerancePx ?? 0,
+  topbarHeightPx: productShellVisualOracleContract.shellMetrics?.desktopTopbarHeightPx ?? null,
+  topbarTolerancePx: productShellVisualOracleContract.shellMetrics?.desktopTopbarTolerancePx ?? 0,
+  searchRestWidthPx: productShellVisualOracleContract.shellMetrics?.searchRestWidthPx ?? null,
+  searchHeightPx: productShellVisualOracleContract.shellMetrics?.searchHeightPx ?? null,
+  searchBorderColor: productShellVisualOracleContract.shellMetrics?.searchBorderColor ?? null,
+  searchBorderRadiusPx: productShellVisualOracleContract.shellMetrics?.searchBorderRadiusPx ?? null,
+  themeToggleRadiusPx: productShellVisualOracleContract.shellMetrics?.themeToggleRadiusPx ?? null
+};
 const aiContractTraceabilityCheck = {
   ok: aiContractDigestCheck
     && aiContract.contractVersion === "ai_consumption_contract_v1"
@@ -503,9 +529,17 @@ const aiContractTraceabilityCheck = {
     && aiContract.changelogGovernance?.records?.length > 0
     && aiContract.changelogGovernance?.requiredFields?.includes("proofArtifacts")
     && aiContract.workManagementStaticAuthority?.disposition === "static_contract_authority_explicit_and_smoke_proven"
+    && aiContract.foundationVisualStandards?.registryId === "foundation-visual-standards-v1"
+    && JSON.stringify(aiContract.foundationVisualStandards?.categoryIds ?? []) === JSON.stringify(expectedFoundationStandardCategoryIds)
+    && aiContract.foundationVisualStandardCategories?.length === expectedFoundationStandardCategoryIds.length
+    && aiContract.consumerVisualStyleContract?.id === "consumer-visual-style-contract-v1"
+    && aiContract.productShellVisualOracle?.id === "confirmed-storybook-visual-v1"
     && llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
     && llmsText.includes("Work Management authority:")
+    && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
+    && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
+    && llmsText.includes("ProductShell visual oracle: confirmed-storybook-visual-v1")
     && llmsText.includes(contractPayloadDigest),
   contractVersion: aiContract.contractVersion,
   contractPayloadDigest,
@@ -514,9 +548,17 @@ const aiContractTraceabilityCheck = {
   coveredCategoryCount: aiContract.coveredStorybookSections?.reduce((total, section) => total + section.categories.length, 0) ?? 0,
   changelogRecordCount: aiContract.changelogGovernance?.records?.length ?? 0,
   workManagementStaticAuthorityDisposition: aiContract.workManagementStaticAuthority?.disposition ?? null,
+  foundationVisualStandardsRegistryId: aiContract.foundationVisualStandards?.registryId ?? null,
+  foundationVisualStandardCategoryIds: aiContract.foundationVisualStandards?.categoryIds ?? [],
+  foundationVisualStandardCategoryCount: aiContract.foundationVisualStandardCategories?.length ?? 0,
+  consumerVisualStyleContractId: aiContract.consumerVisualStyleContract?.id ?? null,
+  productShellVisualOracleId: aiContract.productShellVisualOracle?.id ?? null,
   llmsTraceabilitySectionsPresent: llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
     && llmsText.includes("Work Management authority:")
+    && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
+    && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
+    && llmsText.includes("ProductShell visual oracle: confirmed-storybook-visual-v1")
 };
 
 const staticServer = await startStaticServer(".");
@@ -707,6 +749,9 @@ for (const route of firstStoryHashShellParityRoutes) {
 	    const headerBottom = header?.bottom ?? 0;
     const currentLocationNode = document.querySelector(".tcrn-product-shell__current-location");
     const searchInput = document.querySelector(".tcrn-search-input__control");
+    const searchInputShell = rectFor(".tcrn-search-input");
+    const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
+    const sideNavRegion = rectFor(".tcrn-product-shell__sidebar");
     const productShellTextSurface = [
       storybookNav?.innerText ?? "",
       currentLocationNode?.textContent ?? "",
@@ -725,6 +770,8 @@ for (const route of firstStoryHashShellParityRoutes) {
       scrollY: Number(window.scrollY.toFixed(2)),
       pageOverflow,
       shellAuthority: shell?.getAttribute("data-storybook-shell-authority") ?? null,
+      productShellVisualSkin: shell?.getAttribute("data-storybook-product-shell-skin") ?? null,
+      productShellVisualOracle: shell?.getAttribute("data-storybook-visual-oracle") ?? null,
       privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
       docPageHeadCount: document.querySelectorAll("[data-doc-page-head='governed-section']").length,
       onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
@@ -737,9 +784,13 @@ for (const route of firstStoryHashShellParityRoutes) {
       expectedCategoryCount,
       expectedGroupCount,
       header,
+      sideNavRegion,
       pageHead,
       firstStoryTop: firstStoryRect ? Number(firstStoryRect.top.toFixed(2)) : null,
       themeToggleRadius: themeToggleStyles?.["border-radius"] ?? null,
+      search,
+      searchInputShell,
+      searchInputShellStyles,
       headerStyles: styleFor(".tcrn-top-bar", ["display", "grid-template-columns", "min-height"]),
       workspaceStyles: styleFor(".tcrn-product-shell__workspace", ["display", "grid-template-columns", "gap"]),
       pageHeadStyles: styleFor("[data-doc-page-head='governed-section']", ["display", "grid-template-columns", "gap", "border-bottom-style"]),
@@ -763,6 +814,12 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.activeStoryId !== route.storyId) failures.push(`active-story:${metrics.activeStoryId}`);
   if (metrics.scrollY > 2) failures.push(`first-story-hash-scrollY:${metrics.scrollY}`);
   if (metrics.shellAuthority !== "@tcrn/ui-react/ProductShell") failures.push(`shell-authority:${metrics.shellAuthority}`);
+  if (metrics.productShellVisualSkin !== expectedStorybookVisualSkin.id) {
+    failures.push(`product-shell-visual-skin:${metrics.productShellVisualSkin ?? "missing"}:expected:${expectedStorybookVisualSkin.id}`);
+  }
+  if (!String(metrics.productShellVisualOracle ?? "").includes("storybook-visual-proof/baseline-manifest.json")) {
+    failures.push(`product-shell-visual-oracle:${metrics.productShellVisualOracle ?? "missing"}`);
+  }
   if (metrics.privateDocShellCloneCount !== 0) failures.push(`private-doc-shell-clones:${metrics.privateDocShellCloneCount}`);
   if (metrics.docPageHeadCount !== 1) failures.push(`page-head-count:${metrics.docPageHeadCount}`);
   if (metrics.onThisPageCount !== 1) failures.push(`on-this-page-count:${metrics.onThisPageCount}`);
@@ -777,6 +834,25 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.pageOverflow) failures.push("page-overflow");
   if (!metrics.currentLocationBeforeSearch) failures.push("current-location-not-before-search");
   if (!metrics.searchBeforeControls) failures.push("search-not-before-controls");
+  const widthWithin = (actual, expected, tolerance) => typeof actual === "number" && typeof expected === "number" && Math.abs(actual - expected) <= tolerance;
+  if (!widthWithin(metrics.sideNavRegion?.width, expectedStorybookVisualSkin.sidebarWidthPx, expectedStorybookVisualSkin.sidebarTolerancePx)) {
+    failures.push(`storybook-skin-sidebar-width:${metrics.sideNavRegion?.width ?? "missing"}:expected:${expectedStorybookVisualSkin.sidebarWidthPx}`);
+  }
+  if (!widthWithin(metrics.header?.height, expectedStorybookVisualSkin.topbarHeightPx, expectedStorybookVisualSkin.topbarTolerancePx)) {
+    failures.push(`storybook-skin-topbar-height:${metrics.header?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.topbarHeightPx}`);
+  }
+  if (!widthWithin(metrics.search?.width, expectedStorybookVisualSkin.searchRestWidthPx, 2)) {
+    failures.push(`storybook-skin-search-width:${metrics.search?.width ?? "missing"}:expected:${expectedStorybookVisualSkin.searchRestWidthPx}`);
+  }
+  if (!widthWithin(metrics.searchInputShell?.height, expectedStorybookVisualSkin.searchHeightPx, 2)) {
+    failures.push(`storybook-skin-search-height:${metrics.searchInputShell?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.searchHeightPx}`);
+  }
+  if (metrics.searchInputShellStyles?.["border-color"] !== expectedStorybookVisualSkin.searchBorderColor) {
+    failures.push(`storybook-skin-search-border:${metrics.searchInputShellStyles?.["border-color"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderColor}`);
+  }
+  if (metrics.searchInputShellStyles?.["border-radius"] !== `${expectedStorybookVisualSkin.searchBorderRadiusPx}px`) {
+    failures.push(`storybook-skin-search-radius:${metrics.searchInputShellStyles?.["border-radius"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderRadiusPx}px`);
+  }
   if (typeof metrics.utilityTrailingGap !== "number" || metrics.utilityTrailingGap < 16 || metrics.utilityTrailingGap > 32) {
     failures.push(`utility-trailing-gap:${metrics.utilityTrailingGap}`);
   }

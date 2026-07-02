@@ -28,6 +28,7 @@ const requiredStories = [
   { id: "copy-creation-rules", group: "Style Guide" },
   { id: "tokens-copy-state", group: "Foundations" },
   { id: "i18n-theme-contract", group: "Foundations" },
+  { id: "foundation-visual-standards", group: "Foundations" },
   { id: "copy-guidelines", group: "Foundations" },
   { id: "component-family-index", group: "Components" },
   { id: "display-primitives-spec", group: "Components" },
@@ -76,6 +77,31 @@ const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-con
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
 const expectedStoryCategoryCount = 18;
+const expectedFoundationStandardCategoryIds = [
+  "visual-philosophy-ownership",
+  "layout-rhythm",
+  "spacing-density",
+  "typography-localization",
+  "color-elevation-border-radius-focus",
+  "component-composition",
+  "interaction-motion-accessibility",
+  "responsive-mobile",
+  "evidence-proof-oracle",
+  "consumer-enforcement"
+];
+const productShellVisualOracleContract = contract.productShellVisualOracle ?? {};
+const expectedStorybookVisualSkin = {
+  id: productShellVisualOracleContract.id ?? "missing",
+  sidebarWidthPx: productShellVisualOracleContract.shellMetrics?.desktopSidebarWidthPx ?? null,
+  sidebarTolerancePx: productShellVisualOracleContract.shellMetrics?.desktopSidebarTolerancePx ?? 0,
+  topbarHeightPx: productShellVisualOracleContract.shellMetrics?.desktopTopbarHeightPx ?? null,
+  topbarTolerancePx: productShellVisualOracleContract.shellMetrics?.desktopTopbarTolerancePx ?? 0,
+  searchRestWidthPx: productShellVisualOracleContract.shellMetrics?.searchRestWidthPx ?? null,
+  searchHeightPx: productShellVisualOracleContract.shellMetrics?.searchHeightPx ?? null,
+  searchBorderColor: productShellVisualOracleContract.shellMetrics?.searchBorderColor ?? null,
+  searchBorderRadiusPx: productShellVisualOracleContract.shellMetrics?.searchBorderRadiusPx ?? null,
+  themeToggleRadiusPx: productShellVisualOracleContract.shellMetrics?.themeToggleRadiusPx ?? null
+};
 const storybookAlphaStylesSource = readFileSync("apps/storybook/src/alpha-styles.ts", "utf8");
 const storybookStaticCssSource = readFileSync("apps/storybook/src/storybook.css", "utf8");
 const staticRoot = "apps/storybook/storybook-static";
@@ -766,6 +792,12 @@ const required = [
   "TCRN 디자인 시스템 계약 스토리",
   "data-contract-surface=\"tcrn-design-system-storybook\"",
   "data-contract-story-id=\"tokens-copy-state\"",
+  "data-contract-story-id=\"foundation-visual-standards\"",
+  "data-foundation-visual-standards=\"registry\"",
+  "data-foundation-standard-category-id=\"consumer-enforcement\"",
+  "consumer-visual-style-contract-v1",
+  "confirmed-storybook-visual-v1",
+  "Missing standard escalation",
   "data-contract-story-id=\"brand-identity\"",
   "data-contract-story-id=\"color-palette\"",
   "data-contract-story-id=\"dashboard-page-templates\"",
@@ -1077,6 +1109,8 @@ for (const field of [
   "readAt",
   "coveredRules",
   "coveredStorybookSections",
+  "foundationVisualStandards",
+  "consumerVisualStyleContract",
   "requiredProof",
   "noOverclaimBoundaries"
 ]) {
@@ -1143,10 +1177,61 @@ if (contract.workManagementStaticAuthority?.disposition !== "static_contract_aut
 if (!String(contract.workManagementStaticAuthority?.managerRuntimeCoverageDisposition ?? "").includes("static contract story ids are the authoritative")) {
   missing.push("contract.workManagementStaticAuthority.managerRuntimeCoverageDisposition");
 }
+if (contract.foundationVisualStandards?.registryId !== "foundation-visual-standards-v1") {
+  missing.push("contract.foundationVisualStandards.registryId");
+}
+if (contract.foundationVisualStandards?.storybookRoute !== "foundations.html#foundation-visual-standards") {
+  missing.push("contract.foundationVisualStandards.storybookRoute");
+}
+if (JSON.stringify(contract.foundationVisualStandards?.categoryIds ?? []) !== JSON.stringify(expectedFoundationStandardCategoryIds)) {
+  missing.push("contract.foundationVisualStandards.categoryIds");
+}
+if ((contract.foundationVisualStandardCategories?.length ?? 0) !== expectedFoundationStandardCategoryIds.length) {
+  missing.push(`contract.foundationVisualStandardCategories.length:${contract.foundationVisualStandardCategories?.length ?? "missing"}`);
+}
+for (const standardId of expectedFoundationStandardCategoryIds) {
+  const standard = contract.foundationVisualStandardCategories?.find?.((item) => item.id === standardId);
+  if (!standard) {
+    missing.push(`contract.foundationVisualStandardCategories:${standardId}`);
+    continue;
+  }
+  for (const field of ["sourcePaths", "storybookRoutes", "readbackFields", "proofExpectations"]) {
+    if (!Array.isArray(standard[field]) || standard[field].length === 0) {
+      missing.push(`contract.foundationVisualStandardCategories.${standardId}.${field}`);
+    }
+  }
+  if (!String(standard.missingStandardEscalation ?? "").match(/Block|Return|Route|Skip|Do not close/)) {
+    missing.push(`contract.foundationVisualStandardCategories.${standardId}.missingStandardEscalation`);
+  }
+}
+if (contract.productShellVisualOracle?.id !== "confirmed-storybook-visual-v1") {
+  missing.push("contract.productShellVisualOracle.id");
+}
+if (contract.productShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx !== 326) {
+  missing.push("contract.productShellVisualOracle.shellMetrics.desktopSidebarWidthPx");
+}
+if (contract.productShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx !== 96) {
+  missing.push("contract.productShellVisualOracle.shellMetrics.desktopTopbarHeightPx");
+}
+if (contract.productShellVisualOracle?.shellMetrics?.searchRestWidthPx !== 180) {
+  missing.push("contract.productShellVisualOracle.shellMetrics.searchRestWidthPx");
+}
+if (contract.productShellVisualOracle?.shellMetrics?.themeToggleRadiusPx !== 999) {
+  missing.push("contract.productShellVisualOracle.shellMetrics.themeToggleRadiusPx");
+}
+if (contract.consumerVisualStyleContract?.id !== "consumer-visual-style-contract-v1") {
+  missing.push("contract.consumerVisualStyleContract.id");
+}
+if (!contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.includes?.("consumer-local ProductShell/search/theme/locale/sidebar clones")) {
+  missing.push("contract.consumerVisualStyleContract.forbiddenConsumerOverrides.productShellClones");
+}
+if (!contract.consumerVisualStyleContract?.requiredReadbackFields?.includes?.("foundationVisualStandards")) {
+  missing.push("contract.consumerVisualStyleContract.requiredReadbackFields.foundationVisualStandards");
+}
 if (!llmsTxt.includes("Agents must read ai-consumption-contract.json before implementation work.")) {
   missing.push("llms-first-read-requirement");
 }
-if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
+if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
   missing.push("llms-required-readback-fields");
 }
 if (!llmsTxt.includes("Required Storybook sections:")) {
@@ -1160,6 +1245,15 @@ if (!llmsTxt.includes("Changelog governance:")) {
 }
 if (!llmsTxt.includes("Work Management authority: static_contract_authority_explicit_and_smoke_proven")) {
   missing.push("llms-work-management-static-authority");
+}
+if (!llmsTxt.includes("Foundation visual standards: foundation-visual-standards-v1")) {
+  missing.push("llms-foundation-visual-standards");
+}
+if (!llmsTxt.includes("Consumer visual style contract: consumer-visual-style-contract-v1")) {
+  missing.push("llms-consumer-visual-style-contract");
+}
+if (!llmsTxt.includes("ProductShell visual oracle: confirmed-storybook-visual-v1")) {
+  missing.push("llms-product-shell-visual-oracle");
 }
 if (!llmsTxt.includes("Shell control visual parity proof:")) {
   missing.push("llms-shell-control-visual-parity-proof");
@@ -2640,6 +2734,9 @@ async function runCrossSectionShellParityProof() {
 		            .filter(Boolean);
           const currentLocationNode = document.querySelector(".tcrn-product-shell__current-location");
           const searchInput = document.querySelector(".tcrn-search-input__control");
+          const searchInputShell = rectFor(".tcrn-search-input");
+          const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
+          const sideNavRegion = rectFor(".tcrn-product-shell__sidebar");
           const productShellTextSurface = [
             storybookNav?.innerText ?? "",
             currentLocationNode?.textContent ?? "",
@@ -2698,6 +2795,8 @@ async function runCrossSectionShellParityProof() {
             scrollY: Number(window.scrollY.toFixed(2)),
             pageOverflow,
             shellAuthority: shell?.getAttribute("data-storybook-shell-authority") ?? null,
+            productShellVisualSkin: shell?.getAttribute("data-storybook-product-shell-skin") ?? null,
+            productShellVisualOracle: shell?.getAttribute("data-storybook-visual-oracle") ?? null,
             privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
             docPageHeadCount: document.querySelectorAll("[data-doc-page-head='governed-section']").length,
             onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
@@ -2713,10 +2812,13 @@ async function runCrossSectionShellParityProof() {
 	            firstStoryTop: firstStory ? Number(firstStory.getBoundingClientRect().top.toFixed(2)) : null,
             pageHead,
             header,
+            sideNavRegion,
             globalBar,
             workspace,
             currentLocation,
             search,
+            searchInputShell,
+            searchInputShellStyles,
             controls,
             themeToggleRadius: themeToggleStyles?.["border-radius"] ?? null,
             localeControl: locale,
@@ -2737,6 +2839,12 @@ async function runCrossSectionShellParityProof() {
         if (metrics.activeStoryId !== route.storyId) routeFailures.push(`active-story:${metrics.activeStoryId}`);
         if (metrics.scrollY > 2) routeFailures.push(`first-story-hash-scrollY:${metrics.scrollY}`);
         if (metrics.shellAuthority !== "@tcrn/ui-react/ProductShell") routeFailures.push(`shell-authority:${metrics.shellAuthority}`);
+        if (metrics.productShellVisualSkin !== expectedStorybookVisualSkin.id) {
+          routeFailures.push(`product-shell-visual-skin:${metrics.productShellVisualSkin ?? "missing"}:expected:${expectedStorybookVisualSkin.id}`);
+        }
+        if (!String(metrics.productShellVisualOracle ?? "").includes("storybook-visual-proof/baseline-manifest.json")) {
+          routeFailures.push(`product-shell-visual-oracle:${metrics.productShellVisualOracle ?? "missing"}`);
+        }
         if (metrics.privateDocShellCloneCount !== 0) routeFailures.push(`private-doc-shell-clones:${metrics.privateDocShellCloneCount}`);
         if (metrics.docPageHeadCount !== 1) routeFailures.push(`page-head-count:${metrics.docPageHeadCount}`);
         if (metrics.onThisPageCount !== 1) routeFailures.push(`on-this-page-count:${metrics.onThisPageCount}`);
@@ -2753,8 +2861,27 @@ async function runCrossSectionShellParityProof() {
         if (metrics.themeToggleRadius !== expectedThemeToggleRadius) {
           routeFailures.push(`theme-toggle-radius:${metrics.themeToggleRadius ?? "missing"}:expected:${expectedThemeToggleRadius}`);
         }
-		        if (metrics.pageOverflow) routeFailures.push("page-overflow");
+        if (metrics.pageOverflow) routeFailures.push("page-overflow");
         if (isDesktopViewport) {
+          const widthWithin = (actual, expected, tolerance) => typeof actual === "number" && typeof expected === "number" && Math.abs(actual - expected) <= tolerance;
+          if (!widthWithin(metrics.sideNavRegion?.width, expectedStorybookVisualSkin.sidebarWidthPx, expectedStorybookVisualSkin.sidebarTolerancePx)) {
+            routeFailures.push(`storybook-skin-sidebar-width:${metrics.sideNavRegion?.width ?? "missing"}:expected:${expectedStorybookVisualSkin.sidebarWidthPx}`);
+          }
+          if (!widthWithin(metrics.header?.height, expectedStorybookVisualSkin.topbarHeightPx, expectedStorybookVisualSkin.topbarTolerancePx)) {
+            routeFailures.push(`storybook-skin-topbar-height:${metrics.header?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.topbarHeightPx}`);
+          }
+          if (!widthWithin(metrics.search?.width, expectedStorybookVisualSkin.searchRestWidthPx, 2)) {
+            routeFailures.push(`storybook-skin-search-width:${metrics.search?.width ?? "missing"}:expected:${expectedStorybookVisualSkin.searchRestWidthPx}`);
+          }
+          if (!widthWithin(metrics.searchInputShell?.height, expectedStorybookVisualSkin.searchHeightPx, 2)) {
+            routeFailures.push(`storybook-skin-search-height:${metrics.searchInputShell?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.searchHeightPx}`);
+          }
+          if (metrics.searchInputShellStyles?.["border-color"] !== expectedStorybookVisualSkin.searchBorderColor) {
+            routeFailures.push(`storybook-skin-search-border:${metrics.searchInputShellStyles?.["border-color"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderColor}`);
+          }
+          if (metrics.searchInputShellStyles?.["border-radius"] !== `${expectedStorybookVisualSkin.searchBorderRadiusPx}px`) {
+            routeFailures.push(`storybook-skin-search-radius:${metrics.searchInputShellStyles?.["border-radius"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderRadiusPx}px`);
+          }
           if (!metrics.currentLocationBeforeSearch) routeFailures.push("current-location-not-before-search");
           if (!metrics.searchBeforeControls) routeFailures.push("search-not-before-controls");
           if (typeof metrics.utilityTrailingGap !== "number" || metrics.utilityTrailingGap < 16 || metrics.utilityTrailingGap > 32) {

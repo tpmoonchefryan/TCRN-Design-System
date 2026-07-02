@@ -1,4 +1,10 @@
 import { storybookGovernanceChangelogRecords, storybookTopLevelSections } from "../contract-stories/governance.js";
+import {
+  consumerVisualStyleContract,
+  foundationVisualStandards,
+  foundationVisualStandardsReadback,
+  productShellVisualOracle
+} from "./foundation-visual-standards.js";
 
 export const aiConsumptionContract = {
   contractVersion: "ai_consumption_contract_v1",
@@ -40,6 +46,8 @@ export const aiConsumptionContract = {
     "readAt",
     "coveredRules",
     "coveredStorybookSections",
+    "foundationVisualStandards",
+    "consumerVisualStyleContract",
     "requiredProof",
     "noOverclaimBoundaries"
   ],
@@ -84,12 +92,14 @@ export const aiConsumptionContract = {
       requiredStories: [
         "tokens-copy-state",
         "i18n-theme-contract",
+        "foundation-visual-standards",
         "copy-guidelines"
       ],
       consumerChecks: [
         "consume semantic tokens, theme variables, locale metadata, and copy-state vocabulary before product copy or CSS",
+        "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, sidebar, focus, motion, or visual-system work",
         "verify light/dark and supported locale behavior against Storybook before product compliance claims",
-        "block hard-coded copy, ad hoc status language, and theme-specific behavior forks"
+        "block hard-coded copy, ad hoc status language, consumer-local reusable visual-system overrides, and theme-specific behavior forks"
       ]
     },
     {
@@ -189,7 +199,7 @@ export const aiConsumptionContract = {
       section: "Foundations",
       route: "foundations.html",
       categories: [
-        { id: "tokens-i18n", label: "Tokens and i18n", storyIds: ["tokens-copy-state", "i18n-theme-contract"] },
+        { id: "tokens-i18n", label: "Tokens and i18n", storyIds: ["tokens-copy-state", "i18n-theme-contract", "foundation-visual-standards"] },
         { id: "copy-governance", label: "Copy governance", storyIds: ["copy-guidelines"] }
       ],
       sourcePaths: ["apps/storybook/src/contract-stories/groups/foundations.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
@@ -266,6 +276,10 @@ export const aiConsumptionContract = {
     noOverclaimBoundary:
       "Work Management Storybook examples do not claim API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, package publication, or initiative completion."
   },
+  foundationVisualStandards: foundationVisualStandardsReadback,
+  foundationVisualStandardCategories: foundationVisualStandards,
+  productShellVisualOracle,
+  consumerVisualStyleContract,
   visualEquivalenceLevels: [
     "same_package_version",
     "same_exported_component",
@@ -775,6 +789,8 @@ export const aiConsumptionContract = {
   requiredBeforeProductFrontendImplementation: [
     "read_ai_consumption_contract",
     "read_every_required_storybook_section",
+    "read_foundation_visual_standards",
+    "consume_consumer_visual_style_contract",
     "prove_same_storybook_visual_instance_not_only_package_import",
     "use_tcrn_i18n_and_copy_state",
     "use_registered_product_logo_asset_or_route_logo_admission",
@@ -785,6 +801,7 @@ export const aiConsumptionContract = {
     "verify_light_and_dark_storybook_theme_contract",
     "verify_motion_effect_parity_and_reduced_motion",
     "preserve_compact_storybook_shell_controls",
+    "prove_product_shell_visual_oracle_skin",
     "use_product_shell_semantic_control_api",
     "prove_locale_popup_dismissal_and_focus_return",
     "prove_side_navigation_collapse_state",
@@ -800,8 +817,11 @@ export const aiConsumptionContract = {
     "forbidden_brand_asset_absence_receipt",
     "package_import_receipt",
     "storybook_doc_shell_package_boundary_receipt",
+    "foundation_visual_standards_registry_receipt",
+    "consumer_visual_style_contract_receipt",
     "theme_mode_receipt",
     "storybook_shell_control_receipt",
+    "product_shell_visual_oracle_skin_receipt",
     "locale_popup_dismissal_receipt",
     "side_navigation_collapse_receipt",
     "work_management_static_pattern_receipt",
@@ -854,16 +874,18 @@ export const aiConsumptionContract = {
   workManagementPatternDisposition:
     "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation, relationship vocabulary, board lanes, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
   storybookMergedShellAuthorityDisposition:
-    "The Storybook documentation frontend must render the merged shell through @tcrn/ui-react ProductShell and package CSS. Storybook may own content slots, static story sections, anchors, search index data, proof pages, and chapter paging content, but it must not keep an independent tcrn-doc-shell, tcrn-doc-header, tcrn-doc-nav, tcrn-doc-global-bar, or tcrn-doc-header-search visual shell. Shell/header/sidebar/search/theme/locale/collapse behavior is ProductShell-owned; private Storybook shell clones and package-looking global control selectors are forbidden.",
+    "The Storybook documentation frontend must render the merged shell through @tcrn/ui-react ProductShell and package CSS. Storybook may own ProductShell-scoped visual skin variables/overrides that preserve the confirmed Storybook presentation, plus content slots, static story sections, anchors, search index data, proof pages, and chapter paging content, but it must not keep an independent tcrn-doc-shell, tcrn-doc-header, tcrn-doc-nav, tcrn-doc-global-bar, or tcrn-doc-header-search visual shell. Shell/header/sidebar/search/theme/locale/collapse behavior remains ProductShell-owned; private Storybook shell clones and package-looking global control selectors are forbidden.",
   tokenConsumptionDisposition:
     "Product implementations must use Design System tokens, reduced-motion rules, and accessibility states before custom CSS.",
   themeModeDisposition:
     "Product implementations must preserve semantic token behavior across light and dark Storybook shell modes and prove both modes before claiming Design System compliance.",
   storybookProductShellControlContract: {
     implementationBoundary:
-      "The Storybook shell is @tcrn/ui-react ProductShell. It consumes package-backed ProductLogo/ShellBrandLockup, ProductShellSearch/SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, NavGroup, NavItem, and ProductShell CSS; private tcrn-doc-* visual shell selectors are not admitted as shell/header/sidebar/control authority.",
+      "The Storybook shell is @tcrn/ui-react ProductShell with the confirmed-storybook-visual-v1 ProductShell skin. It consumes package-backed ProductLogo/ShellBrandLockup, ProductShellSearch/SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, NavGroup, NavItem, and ProductShell CSS; private tcrn-doc-* visual shell selectors are not admitted as shell/header/sidebar/control authority.",
     themeToggle:
       "The Storybook docs shell uses one compact circular icon-only theme toggle that reflects the current mode and toggles only on explicit activation.",
+    visualSkin:
+      "The Storybook ProductShell skin is measured against the committed local visual oracle docs/verification/storybook-visual-proof/baseline-manifest.json at source head 19d6968cda4669572db28b8f88fa4bea580d4b84. Browser proof must assert the desktop sidebar width, topbar height, compact search width/border, trailing theme/locale geometry, no private doc-shell clones, no zh-CN shell leaks, and mobile no-overflow posture.",
     themeTransition:
       "Theme changes must use one whole-page transition through the root View Transition API when available, with a single full-page fallback wash; sidebar, header, and content must not darken as independent sections.",
     localeSelector:

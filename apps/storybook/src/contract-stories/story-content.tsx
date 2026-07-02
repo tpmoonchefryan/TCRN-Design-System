@@ -117,6 +117,12 @@ import {
 } from "./content/index.js";
 import { aiConsumptionContract } from "../build/ai-consumption-contract.js";
 import { storybookGovernanceChangelogRecords, storyCategoryFor, storyGovernanceFor } from "./governance.js";
+import {
+  consumerVisualStyleContract,
+  foundationVisualStandards,
+  foundationVisualStandardsReadback,
+  productShellVisualOracle
+} from "../build/foundation-visual-standards.js";
 
 type LegacyContractStory = Omit<ContractStory, "category" | "categoryId" | "sourcePath" | "packageAuthority" | "readiness" | "proofPosture">;
 
@@ -1070,6 +1076,92 @@ const legacyContractStories: LegacyContractStory[] = [
                 blocked: "Generic icon/text-only brand substitutes or planned modules presented as registered product IA."
               }
             ]}
+          />
+        </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "foundation-visual-standards",
+    title: "Foundation visual standards",
+    group: "Foundations",
+    description: "First-class visual authority registry and consumer style contract for DS-backed product surfaces.",
+    render: () => (
+      <section className="alpha-story-stack" data-foundation-visual-standards="registry">
+        <InlineAlert tone="warning">
+          Foundation standards are the local Storybook and AI-contract authority only. Product adoption, package publication, release readiness, owner acceptance, and live dispatch are not claimed here.
+        </InlineAlert>
+        <ReadbackPanel title="Registry readback">
+          <KeyValueList
+            items={[
+              { key: "registry", label: "Registry id", value: foundationVisualStandardsReadback.registryId },
+              { key: "route", label: "Storybook route", value: foundationVisualStandardsReadback.storybookRoute },
+              { key: "categories", label: "Standard categories", value: String(foundationVisualStandardsReadback.categoryCount) },
+              { key: "oracle", label: "ProductShell visual oracle", value: productShellVisualOracle.id },
+              { key: "consumer", label: "Consumer style contract", value: consumerVisualStyleContract.id }
+            ]}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Foundation standard categories">
+          <TableShell
+            columns={[
+              { key: "standard", label: "Standard" },
+              { key: "authority", label: "Authority" },
+              { key: "readback", label: "Required readback" },
+              { key: "proof", label: "Proof expectation" }
+            ]}
+            rows={foundationVisualStandards.map((standard) => ({
+              standard: (
+                <span data-foundation-standard-category-id={standard.id}>
+                  <strong>{standard.label}</strong>
+                  <br />
+                  <span>{standard.id}</span>
+                </span>
+              ),
+              authority: standard.authorityLevel,
+              readback: standard.readbackFields.join(", "),
+              proof: standard.proofExpectations.join("; ")
+            }))}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="ProductShell visual oracle">
+          <KeyValueList
+            items={[
+              { key: "authority", label: "Package authority", value: productShellVisualOracle.packageAuthority },
+              { key: "baseline", label: "Baseline manifest", value: productShellVisualOracle.baselineManifest },
+              { key: "source", label: "Source head", value: productShellVisualOracle.sourceHead },
+              { key: "sidebar", label: "Desktop sidebar width", value: `${productShellVisualOracle.shellMetrics.desktopSidebarWidthPx}px +/- ${productShellVisualOracle.shellMetrics.desktopSidebarTolerancePx}px` },
+              { key: "topbar", label: "Desktop topbar height", value: `${productShellVisualOracle.shellMetrics.desktopTopbarHeightPx}px +/- ${productShellVisualOracle.shellMetrics.desktopTopbarTolerancePx}px` },
+              { key: "search", label: "Search control", value: `${productShellVisualOracle.shellMetrics.searchRestWidthPx}px rest, ${productShellVisualOracle.shellMetrics.searchExpandedWidthPx}px expanded, ${productShellVisualOracle.shellMetrics.searchHeightPx}px high` },
+              { key: "theme", label: "Theme toggle", value: `${productShellVisualOracle.shellMetrics.themeToggleSizePx}px, radius ${productShellVisualOracle.shellMetrics.themeToggleRadiusPx}px` }
+            ]}
+          />
+          <EvidenceStrip items={Array.from(productShellVisualOracle.requiredProofRoutes)} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Consumer visual style contract">
+          <TableShell
+            columns={[
+              { key: "type", label: "Type" },
+              { key: "items", label: "Items" }
+            ]}
+            rows={[
+              { type: "Allowed inputs", items: consumerVisualStyleContract.allowedConsumerInputs.join(", ") },
+              { type: "Forbidden overrides", items: consumerVisualStyleContract.forbiddenConsumerOverrides.join(", ") },
+              { type: "Required readback fields", items: consumerVisualStyleContract.requiredReadbackFields.join(", ") },
+              { type: "Reject criteria", items: consumerVisualStyleContract.rejectCriteria.join("; ") }
+            ]}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Missing standard escalation">
+          <TableShell
+            columns={[
+              { key: "standard", label: "Standard" },
+              { key: "escalation", label: "Escalation" }
+            ]}
+            rows={foundationVisualStandards.map((standard) => ({
+              standard: standard.id,
+              escalation: standard.missingStandardEscalation
+            }))}
           />
         </ReadbackPanel>
       </section>

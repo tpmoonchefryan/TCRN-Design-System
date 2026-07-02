@@ -294,6 +294,8 @@ ${chapterPagerHtml(group)}
       data-tcrn-theme="light"
       data-storybook-shell-authority="@tcrn/ui-react/ProductShell"
       data-storybook-private-doc-shell-retired="true"
+      data-storybook-product-shell-skin="confirmed-storybook-visual-v1"
+      data-storybook-visual-oracle="docs/verification/storybook-visual-proof/baseline-manifest.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84"
     >
       <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
     </ProductShell>

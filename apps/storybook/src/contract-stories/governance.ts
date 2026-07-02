@@ -84,6 +84,7 @@ const storyCategoryById: Record<string, string> = {
   "copy-creation-rules": "interaction-copy",
   "tokens-copy-state": "tokens-i18n",
   "i18n-theme-contract": "tokens-i18n",
+  "foundation-visual-standards": "tokens-i18n",
   "copy-guidelines": "copy-governance",
   "component-family-index": "component-inventory",
   "display-primitives-spec": "component-inventory",
@@ -118,6 +119,7 @@ const packageAuthorityByStoryId: Record<string, string> = {
   "work-management-components-spec": "@tcrn/ui-react Work Management package exports",
   "work-management-patterns": "@tcrn/ui-react Work Management package exports",
   "ai-consumption-contract": "Storybook static AI contract plus package-backed proof surfaces",
+  "foundation-visual-standards": "Storybook static foundation visual standards registry plus ProductShell oracle",
   "local-changelog": "Durable Storybook governance changelog source"
 };
 

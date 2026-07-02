@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+- 2026-07-02: Add foundational visual standards and consumer visual style
+  contract coverage from
+  `route_tcrn_ds_foundational_visual_standards_contract_ilya_implementation_after_multirole_plan_acceptance_9b983d0_01b4e32_680da66`.
+  Affected stories: `foundation-visual-standards` plus
+  `ai-consumption-contract` readback surfaces.
+  AI contract/readback: `foundationVisualStandards`,
+  `foundationVisualStandardCategories`, `productShellVisualOracle`, and
+  `consumerVisualStyleContract` are exposed in
+  `storybook-static/ai-consumption-contract.json` and aligned into `llms.txt`.
+  Proof artifacts: Storybook smoke and internal-alpha browser proof fail closed
+  on missing standards, missing consumer contract fields, ProductShell visual
+  skin drift, search control geometry drift, private doc-shell clone regression,
+  zh-CN shell leaks, no-overclaim drift, and page overflow.
+  Boundaries: local Storybook/AI-consumption contract only; no package
+  publication, Storybook/docs publication, AOS/TMS product adoption,
+  owner/product/release acceptance, live dispatch, external action, or
+  initiative completion claim.
+
 - 2026-07-01: Add Storybook governance/readability/traceability updates from
   route
   `route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541`.
