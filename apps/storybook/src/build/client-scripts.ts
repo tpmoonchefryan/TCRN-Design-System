@@ -880,6 +880,21 @@ export const anchorScrollScript = `<script>
     const value = Number.parseFloat(raw);
     return Number.isFinite(value) ? value : 22;
   };
+  const readProductShellTopbarOffset = () => {
+    const topbar = document.querySelector("[data-contract-surface='tcrn-design-system-storybook'] .tcrn-top-bar");
+    if (!(topbar instanceof HTMLElement)) {
+      return 0;
+    }
+    const rect = topbar.getBoundingClientRect();
+    return Math.max(0, Math.ceil(rect.bottom) + 12);
+  };
+  const readHashTargetOffset = () => {
+    const baseOffset = readOffset();
+    if (!window.matchMedia("(max-width: 760px)").matches) {
+      return baseOffset;
+    }
+    return Math.max(baseOffset, readProductShellTopbarOffset());
+  };
   const readHashId = (hash = window.location.hash) => {
     try {
       return decodeURIComponent(hash.replace(/^#/, ""));
@@ -909,8 +924,15 @@ export const anchorScrollScript = `<script>
     }
     const nextTop = isFirstStoryTarget(target)
       ? 0
-      : Math.max(0, target.getBoundingClientRect().top + window.scrollY - readOffset());
+      : Math.max(0, target.getBoundingClientRect().top + window.scrollY - readHashTargetOffset());
     window.scrollTo({ top: nextTop, left: 0, behavior: "auto" });
+    window.tcrnStorybookAnchorOffsetReadback = {
+      targetId,
+      baseOffset: readOffset(),
+      appliedOffset: readHashTargetOffset(),
+      mobileTopbarOffset: readProductShellTopbarOffset(),
+      viewportWidth: window.innerWidth
+    };
     return true;
   };
   const scheduleScrollToHashTarget = () => {

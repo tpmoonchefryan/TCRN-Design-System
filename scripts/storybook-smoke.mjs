@@ -739,6 +739,7 @@ const aosOwnerQualityProductShellContract = {
 const required = [
   "data-storybook-shell-authority=\"@tcrn/ui-react/ProductShell\"",
   "data-storybook-private-doc-shell-retired=\"true\"",
+  "data-anchor-scroll-controlled=\"product-shell-topbar-aware\"",
   "data-package-backed-product-shell-boundary=\"side-nav-shell-v1\"",
   "data-product-shell-route=\"",
   "data-navigation-primitive=\"nav-group\"",
@@ -748,7 +749,6 @@ const required = [
   "data-shell-control=\"locale-menu\"",
   "data-shell-control=\"side-nav-collapse\"",
   "data-doc-chapter-pager=\"true\"",
-  "data-anchor-scroll-controlled=\"true\"",
   "<link rel=\"icon\" href=\"tcrn-brand-mark.svg\" type=\"image/svg+xml\" />",
   "--tcrn-anchor-scroll-offset: 96px",
   "tcrnStorybookScrollToHash",
@@ -863,6 +863,9 @@ const required = [
   "Each point uses a white ring with a same-family inner color that differs from the tile fill.",
   "No red, pink, coral, or orange connector points.",
   "Product adoption, publication, release readiness, product acceptance, and final MVP acceptance are not claimed.",
+  "tcrnStorybookAnchorOffsetReadback",
+  "readProductShellTopbarOffset",
+  "readHashTargetOffset",
   "tcrn-shell-layer",
   "data-shell-layer=\"mega-menu\"",
   "Top bar, attached side navigation, content column, and chapter navigation stay one shell"

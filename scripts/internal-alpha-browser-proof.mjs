@@ -888,6 +888,89 @@ const firstStoryHashShellParityCheck = {
   signatureFailures: firstStoryHashShellParitySignatureFailures,
   readbacks: firstStoryHashShellParityReadbacks
 };
+const mobileHashAnchorPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+const mobileFoundationHashRoute = `${staticServer.origin}/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards`;
+const collectMobileHashAnchorMetrics = async (label) => {
+  await mobileHashAnchorPage.waitForSelector("[data-storybook-locale='zh-CN']");
+  await mobileHashAnchorPage.waitForSelector("[data-active-story-section='Foundations']");
+  await mobileHashAnchorPage.waitForSelector("[data-product-shell-route='foundation-visual-standards'][aria-current='location'][data-storybook-nav-item-active='true']");
+  const metrics = await mobileHashAnchorPage.evaluate((phaseLabel) => {
+    const rectFor = (selector) => {
+      const node = document.querySelector(selector);
+      if (!node) {
+        return null;
+      }
+      const rect = node.getBoundingClientRect();
+      return {
+        top: Number(rect.top.toFixed(2)),
+        right: Number(rect.right.toFixed(2)),
+        bottom: Number(rect.bottom.toFixed(2)),
+        left: Number(rect.left.toFixed(2)),
+        width: Number(rect.width.toFixed(2)),
+        height: Number(rect.height.toFixed(2))
+      };
+    };
+    const html = document.documentElement;
+    const body = document.body;
+    const topbar = rectFor(".tcrn-top-bar");
+    const article = rectFor("#foundation-visual-standards");
+    const title = rectFor("#foundation-visual-standards > h2");
+    const minimumClearancePx = 8;
+    const topbarBottom = topbar?.bottom ?? 0;
+    return {
+      label: phaseLabel,
+      route: window.location.pathname + window.location.search + window.location.hash,
+      scrollY: Number(window.scrollY.toFixed(2)),
+      viewport: { width: window.innerWidth, height: window.innerHeight },
+      locale: document.querySelector("[data-storybook-locale]")?.getAttribute("data-storybook-locale") ?? document.documentElement.lang,
+      shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-storybook-shell-authority") ?? null,
+      anchorScrollControlled: document.querySelector("[data-contract-surface]")?.getAttribute("data-anchor-scroll-controlled") ?? null,
+      activeStoryId: document.querySelector("[data-product-shell-route][data-storybook-nav-item-active='true']")?.getAttribute("data-product-shell-route") ?? null,
+      anchorOffsetReadback: window.tcrnStorybookAnchorOffsetReadback ?? null,
+      topbar,
+      article,
+      title,
+      articleClearancePx: article ? Number((article.top - topbarBottom).toFixed(2)) : null,
+      titleClearancePx: title ? Number((title.top - topbarBottom).toFixed(2)) : null,
+      articleReadableBelowTopbar: Boolean(article && article.top >= topbarBottom + minimumClearancePx),
+      titleReadableBelowTopbar: Boolean(title && title.top >= topbarBottom + minimumClearancePx),
+      privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+      pageOverflow: Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1
+    };
+  }, label);
+  const failures = [];
+  if (metrics.viewport.width !== 390 || metrics.viewport.height !== 844) failures.push(`viewport:${metrics.viewport.width}x${metrics.viewport.height}`);
+  if (metrics.locale !== "zh-CN") failures.push(`locale:${metrics.locale}`);
+  if (metrics.shellAuthority !== "@tcrn/ui-react/ProductShell") failures.push(`shell-authority:${metrics.shellAuthority}`);
+  if (metrics.anchorScrollControlled !== "product-shell-topbar-aware") failures.push(`anchor-scroll-controlled:${metrics.anchorScrollControlled}`);
+  if (metrics.activeStoryId !== "foundation-visual-standards") failures.push(`active-story:${metrics.activeStoryId}`);
+  if (!metrics.anchorOffsetReadback || metrics.anchorOffsetReadback.appliedOffset < 200) {
+    failures.push(`anchor-offset:${metrics.anchorOffsetReadback?.appliedOffset ?? "missing"}`);
+  }
+  if (!metrics.articleReadableBelowTopbar) failures.push(`article-clearance:${metrics.articleClearancePx}`);
+  if (!metrics.titleReadableBelowTopbar) failures.push(`title-clearance:${metrics.titleClearancePx}`);
+  if (metrics.privateDocShellCloneCount !== 0) failures.push(`private-doc-shell-clones:${metrics.privateDocShellCloneCount}`);
+  if (metrics.pageOverflow) failures.push("page-overflow");
+  return { ...metrics, ok: failures.length === 0, failures };
+};
+await mobileHashAnchorPage.goto(mobileFoundationHashRoute);
+await mobileHashAnchorPage.waitForLoadState("load");
+await mobileHashAnchorPage.waitForTimeout(80);
+const mobileHashAnchorReadbacks = [await collectMobileHashAnchorMetrics("after-load")];
+await mobileHashAnchorPage.waitForTimeout(700);
+mobileHashAnchorReadbacks.push(await collectMobileHashAnchorMetrics("after-700ms"));
+await mobileHashAnchorPage.waitForTimeout(800);
+mobileHashAnchorReadbacks.push(await collectMobileHashAnchorMetrics("after-1500ms"));
+await mobileHashAnchorPage.reload({ waitUntil: "load" });
+await mobileHashAnchorPage.waitForTimeout(1500);
+mobileHashAnchorReadbacks.push(await collectMobileHashAnchorMetrics("after-reload-1500ms"));
+await mobileHashAnchorPage.close();
+const mobileHashAnchorOcclusionCheck = {
+  ok: mobileHashAnchorReadbacks.every((item) => item.ok),
+  route: "foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+  viewport: { width: 390, height: 844 },
+  readbacks: mobileHashAnchorReadbacks
+};
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=zh-CN#component-family-index`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
@@ -1436,7 +1519,7 @@ const axeSummary = {
   sections: axeSummaries
 };
 const storyCoverageManifest = {
-  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok,
+  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok,
   requiredStories,
   sectionPages,
   staticContractSurface: staticSurfacePath,
@@ -1448,6 +1531,7 @@ const storyCoverageManifest = {
   hashRouteCheck,
   hashStoryRouteCheck,
   firstStoryHashShellParityCheck,
+  mobileHashAnchorOcclusionCheck,
   anchorScrollCheck,
   scrollSpyCheck,
   localeRouteCheck,

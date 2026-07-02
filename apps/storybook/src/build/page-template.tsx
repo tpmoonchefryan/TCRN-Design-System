@@ -285,7 +285,7 @@ ${chapterPagerHtml(group)}
       skipLinkLabel={localeText("shell.skip")}
       className="tcrn-storybook-product-shell"
       data-contract-surface="tcrn-design-system-storybook"
-      data-anchor-scroll-controlled="true"
+      data-anchor-scroll-controlled="product-shell-topbar-aware"
       data-active-story-section={group}
       data-storybook-locale={tcrnDefaultLocale}
       data-storybook-supported-locales={tcrnSupportedLocales.join(",")}

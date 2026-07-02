@@ -278,7 +278,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-governance-boundary-strip="visible"/);
   assert.match(combinedHtml, /data-doc-chapter-pager="true"/);
   assert.match(combinedHtml, /data-contract-surface="tcrn-design-system-storybook"/);
-  assert.match(combinedHtml, /data-anchor-scroll-controlled="true"/);
+  assert.match(combinedHtml, /data-anchor-scroll-controlled="product-shell-topbar-aware"/);
   assert.match(combinedHtml, /--tcrn-anchor-scroll-offset: 96px/);
   assert.match(combinedHtml, /tcrnStorybookScrollToHash/);
   assert.match(combinedHtml, /tcrnStorybookScrollSpy/);

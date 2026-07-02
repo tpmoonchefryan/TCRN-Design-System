@@ -1225,6 +1225,224 @@
       }
     ]
   },
+  "mobileHashAnchorOcclusionCheck": {
+    "ok": true,
+    "route": "foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "readbacks": [
+      {
+        "label": "after-load",
+        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+        "scrollY": 7332,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "locale": "zh-CN",
+        "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "anchorScrollControlled": "product-shell-topbar-aware",
+        "activeStoryId": "foundation-visual-standards",
+        "anchorOffsetReadback": {
+          "targetId": "foundation-visual-standards",
+          "baseOffset": 16,
+          "appliedOffset": 219,
+          "mobileTopbarOffset": 219,
+          "viewportWidth": 390
+        },
+        "topbar": {
+          "top": 0,
+          "right": 390,
+          "bottom": 206.98,
+          "left": 0,
+          "width": 390,
+          "height": 206.98
+        },
+        "article": {
+          "top": 218.88,
+          "right": 374,
+          "bottom": 9059.95,
+          "left": 16,
+          "width": 358,
+          "height": 8841.08
+        },
+        "title": {
+          "top": 235.88,
+          "right": 357,
+          "bottom": 262.19,
+          "left": 33,
+          "width": 324,
+          "height": 26.31
+        },
+        "articleClearancePx": 11.9,
+        "titleClearancePx": 28.9,
+        "articleReadableBelowTopbar": true,
+        "titleReadableBelowTopbar": true,
+        "privateDocShellCloneCount": 0,
+        "pageOverflow": false,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "label": "after-700ms",
+        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+        "scrollY": 7332,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "locale": "zh-CN",
+        "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "anchorScrollControlled": "product-shell-topbar-aware",
+        "activeStoryId": "foundation-visual-standards",
+        "anchorOffsetReadback": {
+          "targetId": "foundation-visual-standards",
+          "baseOffset": 16,
+          "appliedOffset": 219,
+          "mobileTopbarOffset": 219,
+          "viewportWidth": 390
+        },
+        "topbar": {
+          "top": 0,
+          "right": 390,
+          "bottom": 206.98,
+          "left": 0,
+          "width": 390,
+          "height": 206.98
+        },
+        "article": {
+          "top": 218.88,
+          "right": 374,
+          "bottom": 9059.95,
+          "left": 16,
+          "width": 358,
+          "height": 8841.08
+        },
+        "title": {
+          "top": 235.88,
+          "right": 357,
+          "bottom": 262.19,
+          "left": 33,
+          "width": 324,
+          "height": 26.31
+        },
+        "articleClearancePx": 11.9,
+        "titleClearancePx": 28.9,
+        "articleReadableBelowTopbar": true,
+        "titleReadableBelowTopbar": true,
+        "privateDocShellCloneCount": 0,
+        "pageOverflow": false,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "label": "after-1500ms",
+        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+        "scrollY": 7332,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "locale": "zh-CN",
+        "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "anchorScrollControlled": "product-shell-topbar-aware",
+        "activeStoryId": "foundation-visual-standards",
+        "anchorOffsetReadback": {
+          "targetId": "foundation-visual-standards",
+          "baseOffset": 16,
+          "appliedOffset": 219,
+          "mobileTopbarOffset": 219,
+          "viewportWidth": 390
+        },
+        "topbar": {
+          "top": 0,
+          "right": 390,
+          "bottom": 206.98,
+          "left": 0,
+          "width": 390,
+          "height": 206.98
+        },
+        "article": {
+          "top": 218.88,
+          "right": 374,
+          "bottom": 9059.95,
+          "left": 16,
+          "width": 358,
+          "height": 8841.08
+        },
+        "title": {
+          "top": 235.88,
+          "right": 357,
+          "bottom": 262.19,
+          "left": 33,
+          "width": 324,
+          "height": 26.31
+        },
+        "articleClearancePx": 11.9,
+        "titleClearancePx": 28.9,
+        "articleReadableBelowTopbar": true,
+        "titleReadableBelowTopbar": true,
+        "privateDocShellCloneCount": 0,
+        "pageOverflow": false,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "label": "after-reload-1500ms",
+        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+        "scrollY": 7332,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "locale": "zh-CN",
+        "shellAuthority": "@tcrn/ui-react/ProductShell",
+        "anchorScrollControlled": "product-shell-topbar-aware",
+        "activeStoryId": "foundation-visual-standards",
+        "anchorOffsetReadback": {
+          "targetId": "foundation-visual-standards",
+          "baseOffset": 16,
+          "appliedOffset": 219,
+          "mobileTopbarOffset": 219,
+          "viewportWidth": 390
+        },
+        "topbar": {
+          "top": 0,
+          "right": 390,
+          "bottom": 206.98,
+          "left": 0,
+          "width": 390,
+          "height": 206.98
+        },
+        "article": {
+          "top": 218.88,
+          "right": 374,
+          "bottom": 9059.95,
+          "left": 16,
+          "width": 358,
+          "height": 8841.08
+        },
+        "title": {
+          "top": 235.88,
+          "right": 357,
+          "bottom": 262.19,
+          "left": 33,
+          "width": 324,
+          "height": 26.31
+        },
+        "articleClearancePx": 11.9,
+        "titleClearancePx": 28.9,
+        "articleReadableBelowTopbar": true,
+        "titleReadableBelowTopbar": true,
+        "privateDocShellCloneCount": 0,
+        "pageOverflow": false,
+        "ok": true,
+        "failures": []
+      }
+    ]
+  },
   "anchorScrollCheck": {
     "ok": true,
     "source": "left secondary nav click -> table-work-index-spec",
