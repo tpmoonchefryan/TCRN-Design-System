@@ -587,6 +587,7 @@ export function NavItem({ selected = false, disabled = false, disabledReason, ic
       title={normalizedReason ?? props.title}
       className={cx("tcrn-nav-item", className)}
       data-navigation-primitive="nav-item"
+      data-nav-item-has-icon={iconName ? "true" : "false"}
     >
       {iconName ? <Icon name={iconName} /> : null}
       <span className="tcrn-nav-item__content">
@@ -1534,6 +1535,13 @@ export const tcrnComponentCss = `
   min-height: 42px;
   padding: var(--tcrn-space-2);
 }
+.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item[data-nav-item-has-icon="false"]::before {
+  content: "";
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 999px;
+  background: currentColor;
+}
 .tcrn-product-shell__workspace {
   min-width: 0;
   display: grid;
@@ -1721,6 +1729,12 @@ export const tcrnComponentCss = `
   color: var(--tcrn-color-text-secondary);
   text-decoration: none;
 }
+.tcrn-nav-item[data-nav-item-has-icon="false"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.tcrn-nav-item__content {
+  min-width: 0;
+}
 .tcrn-nav-item[data-selected="true"],
 .tcrn-nav-item[aria-current="page"] {
   color: var(--tcrn-color-text-primary);
@@ -1733,7 +1747,8 @@ export const tcrnComponentCss = `
   color: var(--tcrn-color-text-primary);
 }
 .tcrn-nav-item__label {
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 .tcrn-search-input {
   display: grid;

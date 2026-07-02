@@ -55,6 +55,7 @@ test("side navigation primitives render package-backed hierarchy and disabled re
       <SideNav label="Component navigation">
         <NavGroup label="Components" selected>
           <NavItem href="#navigation" iconName="panel-left-open" selected>Navigation</NavItem>
+          <NavItem href="#governance">Welcome and governance</NavItem>
           <NavItem href="#proof" iconName="alert-triangle" disabled disabledReason="Requires proof route">Proof</NavItem>
         </NavGroup>
       </SideNav>
@@ -67,6 +68,8 @@ test("side navigation primitives render package-backed hierarchy and disabled re
   assert.match(html, /data-navigation-primitive="nav-group"/);
   assert.match(html, /class="tcrn-nav-item"/);
   assert.match(html, /aria-current="page"/);
+  assert.match(html, /data-nav-item-has-icon="true"/);
+  assert.match(html, /data-nav-item-has-icon="false"/);
   assert.match(html, /data-icon-name="panel-left-open"/);
   assert.match(html, /aria-disabled="true"/);
   assert.match(html, /data-disabled-reason="Requires proof route"/);
@@ -226,6 +229,9 @@ test("product shell component css isolates topbar from docs chrome", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell :focus-visible:not\(\.tcrn-search-input__control\) \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*box-shadow: none;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input:focus-within \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*outline-offset: 2px;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input__control:focus,[\s\S]*\.tcrn-product-shell \.tcrn-search-input__control:focus-visible \{[\s\S]*outline-style: none;[\s\S]*outline-width: 0;[\s\S]*outline-offset: 0;[\s\S]*box-shadow: none;/);
+  assert.match(tcrnComponentCss, /\.tcrn-nav-item\[data-nav-item-has-icon="false"\] \{[\s\S]*grid-template-columns: minmax\(0, 1fr\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-nav-item__content \{[\s\S]*min-width: 0;/);
+  assert.match(tcrnComponentCss, /\.tcrn-nav-item__label \{[\s\S]*overflow-wrap: normal;[\s\S]*word-break: normal;/);
   assert.match(tcrnComponentCss, /\.tcrn-nav-item\[data-selected="true"\],[\s\S]*\.tcrn-nav-item\[aria-current="page"\] \{[\s\S]*box-shadow: none;/);
 });
 

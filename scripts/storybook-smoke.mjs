@@ -2599,15 +2599,54 @@ async function runCrossSectionShellParityProof() {
           const locale = rectFor(".tcrn-shell-locale-menu");
 	          const pageHead = rectFor("[data-doc-page-head='governed-section']");
 	          const shell = document.querySelector("[data-contract-surface]");
-	          const storybookNav = shell?.querySelector("[data-product-shell-region='side-navigation']");
-	          const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
-	          const activeStory = storybookNav?.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
-	          const categoryLabels = Array.from((storybookNav ?? document).querySelectorAll(".tcrn-nav-group__label"))
-	            .map((node) => node.textContent?.trim() ?? "")
-	            .filter(Boolean);
-          const headerBottom = header?.bottom ?? 0;
-          const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
-          return {
+		          const storybookNav = shell?.querySelector("[data-product-shell-region='side-navigation']");
+		          const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
+		          const activeStory = storybookNav?.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
+		          const categoryLabels = Array.from((storybookNav ?? document).querySelectorAll(".tcrn-nav-group__label"))
+		            .map((node) => node.textContent?.trim() ?? "")
+		            .filter(Boolean);
+          const sidebarNoIconLabelReadbacks = window.innerWidth >= 900 && shell?.getAttribute("data-product-shell-collapsed") !== "true"
+            ? Array.from((storybookNav ?? document).querySelectorAll("[data-product-shell-route]"))
+              .map((item) => {
+                const label = item.querySelector(".tcrn-nav-item__label");
+                const icon = item.querySelector(".tcrn-icon");
+                if (!label || icon) {
+                  return null;
+                }
+                const itemRect = item.getBoundingClientRect();
+                const labelRect = label.getBoundingClientRect();
+                const style = window.getComputedStyle(label);
+                const lineHeight = Number.parseFloat(style.lineHeight) || 1;
+                const lineCount = Math.max(1, Math.round(labelRect.height / lineHeight));
+                const text = label.textContent?.replace(/\s+/g, " ").trim() ?? "";
+                const textLength = text.replace(/\s+/g, "").length;
+                const hasNoIconContract = item.getAttribute("data-nav-item-has-icon") === "false";
+                const minReadableWidth = Math.min(64, Math.max(40, itemRect.width * 0.25));
+                return {
+                  route: item.getAttribute("data-product-shell-route"),
+                  text,
+                  textLength,
+                  itemWidth: Number(itemRect.width.toFixed(2)),
+                  labelWidth: Number(labelRect.width.toFixed(2)),
+                  labelHeight: Number(labelRect.height.toFixed(2)),
+                  lineHeight: Number(lineHeight.toFixed(2)),
+                  lineCount,
+                  overflowWrap: style.overflowWrap,
+                  wordBreak: style.wordBreak,
+                  hasNoIconContract,
+                  ok: hasNoIconContract
+                    && (textLength < 8
+                      || (labelRect.width >= minReadableWidth
+                        && lineCount <= 3
+                        && style.overflowWrap !== "anywhere"))
+                };
+              })
+              .filter(Boolean)
+            : [];
+          const sidebarNoIconLabelReadabilityFailures = sidebarNoIconLabelReadbacks.filter((item) => !item.ok);
+	          const headerBottom = header?.bottom ?? 0;
+	          const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
+	          return {
             group,
             storyId,
             url: window.location.pathname + window.location.search + window.location.hash,
@@ -2624,9 +2663,11 @@ async function runCrossSectionShellParityProof() {
             noOverclaimBoundaryCount: document.querySelectorAll("[data-no-overclaim-boundary='visible']").length,
             legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
 	            navGroupCount: (storybookNav ?? document).querySelectorAll(".tcrn-nav-group").length,
-            categoryLabelCount: categoryLabels.length,
-            categoryLabels,
-            firstStoryTop: firstStory ? Number(firstStory.getBoundingClientRect().top.toFixed(2)) : null,
+	            categoryLabelCount: categoryLabels.length,
+	            categoryLabels,
+            sidebarNoIconLabelReadbacks,
+            sidebarNoIconLabelReadabilityFailures,
+	            firstStoryTop: firstStory ? Number(firstStory.getBoundingClientRect().top.toFixed(2)) : null,
             pageHead,
             header,
             globalBar,
@@ -2657,9 +2698,12 @@ async function runCrossSectionShellParityProof() {
         if (metrics.onThisPageCount !== 1) routeFailures.push(`on-this-page-count:${metrics.onThisPageCount}`);
         if (metrics.mandatoryBoundaryCount !== 1 || metrics.noOverclaimBoundaryCount !== 1) routeFailures.push("mandatory-boundary-missing");
         if (metrics.legacyGlobalNavCount !== 0) routeFailures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
-        if (metrics.navGroupCount !== expectedStoryCategoryCount) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
-        if (metrics.categoryLabelCount !== expectedStoryCategoryCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
-        if (metrics.pageOverflow) routeFailures.push("page-overflow");
+	        if (metrics.navGroupCount !== expectedStoryCategoryCount) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
+	        if (metrics.categoryLabelCount !== expectedStoryCategoryCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
+        if (metrics.sidebarNoIconLabelReadabilityFailures.length > 0) {
+          routeFailures.push(`sidebar-no-icon-label-readability:${JSON.stringify(metrics.sidebarNoIconLabelReadabilityFailures.slice(0, 3))}`);
+        }
+	        if (metrics.pageOverflow) routeFailures.push("page-overflow");
         if (isDesktopViewport) {
           if (!metrics.currentLocationBeforeSearch) routeFailures.push("current-location-not-before-search");
           if (!metrics.searchBeforeControls) routeFailures.push("search-not-before-controls");

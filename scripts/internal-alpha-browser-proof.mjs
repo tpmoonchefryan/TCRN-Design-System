@@ -312,6 +312,45 @@ async function collectPageHealth(page) {
 	    const currentStoryLink = navRoot.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
 	    const currentStoryNav = currentStoryLink?.getAttribute("data-product-shell-route") ?? null;
 	    const categoryGroups = Array.from(navRoot.querySelectorAll(".tcrn-nav-group"));
+    const sidebarNoIconLabelReadbacks = window.innerWidth >= 900 && shell?.getAttribute("data-product-shell-collapsed") !== "true"
+      ? Array.from(navRoot.querySelectorAll("[data-product-shell-route]"))
+        .map((item) => {
+          const label = item.querySelector(".tcrn-nav-item__label");
+          const icon = item.querySelector(".tcrn-icon");
+          if (!label || icon) {
+            return null;
+          }
+          const itemRect = item.getBoundingClientRect();
+          const labelRect = label.getBoundingClientRect();
+          const style = window.getComputedStyle(label);
+          const lineHeight = Number.parseFloat(style.lineHeight) || 1;
+	          const lineCount = Math.max(1, Math.round(labelRect.height / lineHeight));
+	          const text = label.textContent?.replace(/\s+/g, " ").trim() ?? "";
+          const textLength = text.replace(/\s+/g, "").length;
+          const hasNoIconContract = item.getAttribute("data-nav-item-has-icon") === "false";
+          const minReadableWidth = Math.min(64, Math.max(40, itemRect.width * 0.25));
+	          return {
+	            route: item.getAttribute("data-product-shell-route"),
+	            text,
+	            textLength,
+	            itemWidth: Number(itemRect.width.toFixed(2)),
+	            labelWidth: Number(labelRect.width.toFixed(2)),
+            labelHeight: Number(labelRect.height.toFixed(2)),
+            lineHeight: Number(lineHeight.toFixed(2)),
+	            lineCount,
+	            overflowWrap: style.overflowWrap,
+	            wordBreak: style.wordBreak,
+	            hasNoIconContract,
+	            ok: hasNoIconContract
+                && (textLength < 8
+                  || (labelRect.width >= minReadableWidth
+                    && lineCount <= 3
+                    && style.overflowWrap !== "anywhere"))
+	          };
+        })
+        .filter(Boolean)
+      : [];
+    const sidebarNoIconLabelReadabilityFailures = sidebarNoIconLabelReadbacks.filter((item) => !item.ok);
     const categoryAriaFailures = categoryGroups
       .filter((node) => !node.getAttribute("data-storybook-category-description"))
       .map((node) => node.textContent?.replace(/\s+/g, " ").trim() ?? "");
@@ -342,8 +381,10 @@ async function collectPageHealth(page) {
       productShellNavGroupCount: categoryGroups.length,
       docNavCategoryCount: categoryGroups.length,
       docNavOpenCategoryCount: categoryGroups.length,
-      activeStoryHiddenByCategory: false,
-      categoryAriaFailures,
+	      activeStoryHiddenByCategory: false,
+	      categoryAriaFailures,
+      sidebarNoIconLabelReadbacks,
+      sidebarNoIconLabelReadabilityFailures,
 	      productShellNavItemCount: navRoot.querySelectorAll("[data-product-shell-route]").length,
 	      productShellCurrentStoryCount: navRoot.querySelectorAll("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']").length,
       docChapterPagerCount: document.querySelectorAll("[data-doc-chapter-pager='true']").length,
@@ -1191,9 +1232,10 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     && summary.productShellNavGroupCount === expectedCategoryCount
     && summary.docNavCategoryCount === expectedCategoryCount
     && summary.docNavOpenCategoryCount === expectedCategoryCount
-    && !summary.activeStoryHiddenByCategory
-    && summary.categoryAriaFailures.length === 0
-    && summary.productShellNavItemCount === requiredStories.length
+	    && !summary.activeStoryHiddenByCategory
+	    && summary.categoryAriaFailures.length === 0
+    && summary.sidebarNoIconLabelReadabilityFailures.length === 0
+	    && summary.productShellNavItemCount === requiredStories.length
     && summary.productShellCurrentStoryCount === 1
     && summary.docChapterPagerCount === 1
     && summary.onThisPageCount === 1
@@ -1225,9 +1267,10 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     productShellNavGroupCount: summary.productShellNavGroupCount,
     docNavCategoryCount: summary.docNavCategoryCount,
     docNavOpenCategoryCount: summary.docNavOpenCategoryCount,
-    activeStoryHiddenByCategory: summary.activeStoryHiddenByCategory,
-    categoryAriaFailures: summary.categoryAriaFailures,
-    productShellNavItemCount: summary.productShellNavItemCount,
+	    activeStoryHiddenByCategory: summary.activeStoryHiddenByCategory,
+	    categoryAriaFailures: summary.categoryAriaFailures,
+    sidebarNoIconLabelReadabilityFailures: summary.sidebarNoIconLabelReadabilityFailures,
+	    productShellNavItemCount: summary.productShellNavItemCount,
     productShellCurrentStoryCount: summary.productShellCurrentStoryCount,
     docChapterPagerCount: summary.docChapterPagerCount,
     onThisPageCount: summary.onThisPageCount,
