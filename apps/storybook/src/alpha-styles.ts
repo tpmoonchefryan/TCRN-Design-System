@@ -107,6 +107,41 @@ body {
 .tcrn-storybook-product-shell .tcrn-product-shell__brand {
   min-height: 46px;
 }
+.tcrn-storybook-product-shell .tcrn-shell-brand-lockup {
+  align-items: center;
+  gap: 10px;
+}
+.tcrn-storybook-product-shell .tcrn-shell-brand-lockup__copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.tcrn-storybook-product-shell .tcrn-brand-wordmark {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+  color: var(--tcrn-color-text-primary);
+  font-size: 15px;
+  line-height: 1.18;
+  font-weight: 800;
+  overflow-wrap: normal;
+}
+.tcrn-storybook-product-shell .tcrn-brand-wordmark__suffix--design-system,
+.tcrn-storybook-product-shell .tcrn-brand-wordmark__suffix {
+  background: linear-gradient(105deg, #6577f3 0%, #3096f4 31%, #43d4cf 62%, #b8e978 100%);
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tcrn-storybook-product-shell .tcrn-shell-brand-lockup__caption {
+  color: var(--tcrn-color-brand-primary);
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 700;
+}
 .tcrn-storybook-product-shell .tcrn-product-logo__line-one {
   font-size: 15px;
   line-height: 1.18;
@@ -117,26 +152,44 @@ body {
   line-height: 1.25;
 }
 .tcrn-storybook-product-shell .tcrn-side-nav {
-  gap: 18px;
+  gap: 16px;
 }
 .tcrn-storybook-product-shell .tcrn-nav-group {
-  gap: 9px;
+  gap: 8px;
 }
 .tcrn-storybook-product-shell .tcrn-nav-group__label {
-  padding-inline: 0;
+  padding-inline: 4px;
   color: var(--tcrn-color-text-primary);
   font-size: 13px;
+  line-height: 1.25;
+  font-weight: 800;
   text-transform: none;
 }
 .tcrn-storybook-product-shell .tcrn-nav-item {
+  position: relative;
   min-height: 34px;
-  padding: 6px 12px;
+  padding: 6px 12px 6px 18px;
   color: var(--tcrn-color-text-secondary);
+}
+.tcrn-storybook-product-shell .tcrn-nav-item::before {
+  content: "";
+  position: absolute;
+  inset-block: 7px;
+  inset-inline-start: 7px;
+  width: 3px;
+  border-radius: 999px;
+  background: transparent;
 }
 .tcrn-storybook-product-shell .tcrn-nav-item[data-selected="true"],
 .tcrn-storybook-product-shell .tcrn-nav-item[aria-current="page"] {
   border-color: var(--tcrn-storybook-shell-card-border);
   background: color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 52%, var(--tcrn-color-surface-panel));
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-storybook-product-shell .tcrn-nav-item[data-selected="true"]::before,
+.tcrn-storybook-product-shell .tcrn-nav-item[aria-current="page"]::before,
+.tcrn-storybook-product-shell .tcrn-nav-item[aria-current="location"]::before {
+  background: var(--tcrn-color-brand-primary);
 }
 .tcrn-storybook-product-shell .tcrn-product-shell__workspace {
   background:
@@ -185,6 +238,15 @@ body {
   border-color: var(--tcrn-storybook-shell-control-border);
   background: var(--tcrn-storybook-shell-panel-wash);
 }
+.tcrn-storybook-product-shell .tcrn-search-input__control {
+  min-height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  outline: 0;
+}
 .tcrn-storybook-product-shell .tcrn-search-input__shortcut {
   padding: 1px 7px;
   border-radius: 6px;
@@ -200,16 +262,39 @@ body {
   padding: 0;
 }
 .tcrn-storybook-product-shell .tcrn-doc-content {
-  max-width: none;
-  padding: 0 16px 28px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0;
+  padding: 16px 32px 32px;
   gap: 16px;
   background: transparent;
 }
 .tcrn-storybook-product-shell .tcrn-doc-page-head {
-  padding: 0 0 14px;
+  order: 2;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 2px;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--tcrn-color-border-subtle);
+  border-bottom: 0;
 }
 .tcrn-storybook-product-shell .tcrn-doc-page-head h2 {
-  font-size: 23px;
+  font-size: 18px;
+}
+.tcrn-storybook-product-shell .tcrn-doc-page-head__intro {
+  gap: 5px;
+}
+.tcrn-storybook-product-shell .tcrn-doc-page-head__intro p {
+  max-width: 86ch;
+  font-size: var(--tcrn-type-size-caption);
+}
+.tcrn-storybook-product-shell .tcrn-doc-on-this-page {
+  border-left: 0;
+  border-top: 1px solid var(--tcrn-color-border-subtle);
+  padding: 10px 0 0;
+}
+.tcrn-storybook-product-shell .tcrn-doc-on-this-page ol {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 .tcrn-storybook-product-shell article,
 .tcrn-storybook-product-shell .alpha-story-card,

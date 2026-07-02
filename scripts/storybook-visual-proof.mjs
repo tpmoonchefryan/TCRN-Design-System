@@ -5,14 +5,14 @@ import { createServer } from "node:http";
 import { createRequire } from "node:module";
 import { extname, join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { inflateSync } from "node:zlib";
+import { deflateSync, inflateSync } from "node:zlib";
 import { chromium } from "@playwright/test";
 
 const require = createRequire(import.meta.url);
 const playwrightVersion = JSON.parse(readFileSync(require.resolve("@playwright/test/package.json"), "utf8")).version;
 
 const route = "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence";
-const comparisonContractVersion = "bounded_antialias_pixel_delta_v1";
+const comparisonContractVersion = "canonicalized_raw_png_exact_v1";
 const packageName = "@tcrn/design-system-workspace";
 const staticRoot = "apps/storybook/storybook-static";
 const receiptRoot = "docs/verification/storybook-visual-proof";
@@ -38,72 +38,121 @@ const staticPageAllowlist = [
   "robots.txt"
 ];
 
-const visualStateAllowlist = [
+const firstStoryVisualStates = [
   {
-    id: "docs-shell-overview",
+    id: "welcome-first-story",
     page: "index.html",
     hash: "welcome-governance",
     storyId: "welcome-governance",
-    description: "Static docs shell overview after hash scroll."
+    description: "Welcome first-story route after hash scroll."
   },
   {
-    id: "component-dialog-spec",
+    id: "style-guide-first-story",
+    page: "style-guide.html",
+    hash: "brand-identity",
+    storyId: "brand-identity",
+    description: "Style Guide first-story route after hash scroll."
+  },
+  {
+    id: "foundations-first-story",
+    page: "foundations.html",
+    hash: "tokens-copy-state",
+    storyId: "tokens-copy-state",
+    description: "Foundations first-story route after hash scroll."
+  },
+  {
+    id: "components-first-story",
     page: "components.html",
-    hash: "dialog-spec-usage",
-    storyId: "dialog-spec-usage",
-    description: "Dialog specification static closed state only.",
-    staticClosedDialogFixture: true
+    hash: "component-family-index",
+    storyId: "component-family-index",
+    description: "Components first-story route after hash scroll."
   },
   {
-    id: "pattern-dashboard-page-templates",
+    id: "patterns-first-story",
     page: "patterns.html",
-    hash: "dashboard-page-templates",
-    storyId: "dashboard-page-templates",
-    description: "Dashboard and page templates pattern after hash scroll."
+    hash: "forms-patterns",
+    storyId: "forms-patterns",
+    description: "Patterns first-story route after hash scroll."
   },
   {
-    id: "proof-no-overclaim",
+    id: "proof-first-story",
     page: "proof.html",
     hash: "proof-matrix",
     storyId: "proof-matrix",
-    description: "Proof matrix no-overclaim surface after hash scroll."
+    description: "Proof first-story route after hash scroll."
   },
   {
-    id: "docs-shell-overview-dark",
-    page: "index.html",
-    hash: "welcome-governance",
-    storyId: "welcome-governance",
-    description: "Static docs shell overview in dark mode after hash scroll.",
-    themeMode: "dark"
-  },
-  {
-    id: "component-dialog-spec-dark",
-    page: "components.html",
-    hash: "dialog-spec-usage",
-    storyId: "dialog-spec-usage",
-    description: "Dialog specification static closed state in dark mode.",
-    staticClosedDialogFixture: true,
-    themeMode: "dark"
-  },
-  {
-    id: "pattern-dashboard-page-templates-dark",
-    page: "patterns.html",
-    hash: "dashboard-page-templates",
-    storyId: "dashboard-page-templates",
-    description: "Dashboard and page templates pattern in dark mode after hash scroll.",
-    themeMode: "dark"
-  },
-  {
-    id: "proof-no-overclaim-dark",
-    page: "proof.html",
-    hash: "proof-matrix",
-    storyId: "proof-matrix",
-    description: "Proof matrix no-overclaim surface in dark mode after hash scroll.",
-    themeMode: "dark"
+    id: "change-log-first-story",
+    page: "change-log.html",
+    hash: "local-changelog",
+    storyId: "local-changelog",
+    description: "Change Log first-story route after hash scroll."
   }
 ];
 
+const requiredLocales = ["en", "zh-CN"];
+const requiredThemeModes = ["light", "dark"];
+
+const baseVisualStateAllowlist = firstStoryVisualStates.flatMap((state) =>
+  requiredLocales.flatMap((locale) =>
+    requiredThemeModes.map((themeMode) => ({
+      ...state,
+      id: `${state.id}-${locale.toLowerCase()}-${themeMode}`,
+      locale,
+      themeMode,
+      description: `${state.description} Locale ${locale}, ${themeMode} theme.`
+    }))
+  )
+);
+
+const focusedVisualStateAllowlist = [
+  {
+    id: "welcome-search-focus-zh-cn-light",
+    page: "index.html",
+    hash: "welcome-governance",
+    storyId: "welcome-governance",
+    locale: "zh-CN",
+    themeMode: "light",
+    interaction: "search-focus",
+    description: "Welcome route with Storybook ProductShell search focused."
+  },
+  {
+    id: "welcome-search-results-zh-cn-light",
+    page: "index.html",
+    hash: "welcome-governance",
+    storyId: "welcome-governance",
+    locale: "zh-CN",
+    themeMode: "light",
+    interaction: "search-results",
+    description: "Welcome route with Storybook ProductShell search results open."
+  },
+  {
+    id: "welcome-locale-menu-zh-cn-light",
+    page: "index.html",
+    hash: "welcome-governance",
+    storyId: "welcome-governance",
+    locale: "zh-CN",
+    themeMode: "light",
+    interaction: "locale-menu",
+    description: "Welcome route with Storybook ProductShell locale menu open."
+  },
+  {
+    id: "welcome-sidebar-collapsed-zh-cn-light",
+    page: "index.html",
+    hash: "welcome-governance",
+    storyId: "welcome-governance",
+    locale: "zh-CN",
+    themeMode: "light",
+    interaction: "sidebar-collapsed",
+    viewportIds: ["desktop-2048x1024", "desktop-1440x900", "tablet-1024x768"],
+    description: "Welcome route with Storybook ProductShell sidebar collapsed."
+  }
+];
+
+const visualStateAllowlist = [...baseVisualStateAllowlist, ...focusedVisualStateAllowlist];
+
 const viewportMatrix = [
+  { id: "desktop-2048x1024", width: 2048, height: 1024 },
   { id: "desktop-1440x900", width: 1440, height: 900 },
   { id: "tablet-1024x768", width: 1024, height: 768 },
   { id: "mobile-390x844", width: 390, height: 844 }
@@ -116,6 +165,7 @@ const recoveredProductShellMetricOracle = {
   comparisonMethod: "recovered_product_shell_metric_oracle_v1",
   desktopMinWidth: 1200,
   sidebarWidthPx: 326,
+  sidebarCollapsedWidthPx: 92,
   sidebarTolerancePx: 2,
   topbarHeightPx: 96,
   topbarTolerancePx: 2,
@@ -158,6 +208,14 @@ const deterministicBrowserSettings = {
   ],
   viewportScreenshotsOnly: true,
   animations: "disabled",
+  screenshotCanonicalization: {
+    id: "rgb_channel_quantized_png_v1",
+    channelQuantum: 32,
+    alphaHandling: "composite_over_white_then_drop_alpha",
+    topbarBandNormalization: "3x3_median_filter_first_240px_to_stabilize_control_edge_antialiasing",
+    rowFilter: 0
+  },
+  scrollbarRendering: "suppressed_for_visual_hash_stability",
   screenshotStability: "two_consecutive_identical_png_hashes_before_write_or_compare",
   routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
 };
@@ -272,10 +330,9 @@ function hashFile(path) {
   return hashBuffer(readFileSync(path));
 }
 
-function decodePngRgba(path) {
-  const buffer = readFileSync(path);
+function decodePngRgbaBuffer(buffer, label) {
   if (buffer.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a") {
-    throw new Error(`invalid_png_signature:${path}`);
+    throw new Error(`invalid_png_signature:${label}`);
   }
   let offset = 8;
   let header = null;
@@ -301,10 +358,10 @@ function decodePngRgba(path) {
     }
   }
   if (!header) {
-    throw new Error(`missing_png_header:${path}`);
+    throw new Error(`missing_png_header:${label}`);
   }
   if (header.bitDepth !== 8 || ![2, 6].includes(header.colorType)) {
-    throw new Error(`unsupported_png_format:${path}:${JSON.stringify(header)}`);
+    throw new Error(`unsupported_png_format:${label}:${JSON.stringify(header)}`);
   }
   const channels = header.colorType === 6 ? 4 : 3;
   const bytesPerPixel = channels;
@@ -337,7 +394,7 @@ function decodePngRgba(path) {
         const pc = Math.abs(p - upLeft);
         predictor = pa <= pb && pa <= pc ? left : pb <= pc ? up : upLeft;
       } else if (filter !== 0) {
-        throw new Error(`unsupported_png_filter:${path}:${filter}`);
+        throw new Error(`unsupported_png_filter:${label}:${filter}`);
       }
       row[index] = (row[index] + predictor) & 0xff;
     }
@@ -355,6 +412,110 @@ function decodePngRgba(path) {
     rgba[target + 3] = channels === 4 ? rawPixels[source + 3] : 255;
   }
   return { width: header.width, height: header.height, rgba };
+}
+
+function decodePngRgba(path) {
+  return decodePngRgbaBuffer(readFileSync(path), path);
+}
+
+const crcTable = (() => {
+  const table = [];
+  for (let value = 0; value < 256; value += 1) {
+    let crc = value;
+    for (let bit = 0; bit < 8; bit += 1) {
+      crc = (crc & 1) ? (0xedb88320 ^ (crc >>> 1)) : (crc >>> 1);
+    }
+    table[value] = crc >>> 0;
+  }
+  return table;
+})();
+
+function crc32(buffer) {
+  let crc = 0xffffffff;
+  for (const byte of buffer) {
+    crc = crcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+function pngChunk(type, data = Buffer.alloc(0)) {
+  const typeBuffer = Buffer.from(type, "ascii");
+  const chunk = Buffer.alloc(12 + data.length);
+  chunk.writeUInt32BE(data.length, 0);
+  typeBuffer.copy(chunk, 4);
+  data.copy(chunk, 8);
+  chunk.writeUInt32BE(crc32(Buffer.concat([typeBuffer, data])), 8 + data.length);
+  return chunk;
+}
+
+function quantizeRgbChannel(value) {
+  const quantum = deterministicBrowserSettings.screenshotCanonicalization.channelQuantum;
+  return Math.max(0, Math.min(255, Math.round(value / quantum) * quantum));
+}
+
+function canonicalizeScreenshotPng(buffer) {
+  const decoded = decodePngRgbaBuffer(buffer, "playwright-screenshot-buffer");
+  const rgb = Buffer.alloc(decoded.width * decoded.height * 3);
+  for (let y = 0; y < decoded.height; y += 1) {
+    for (let x = 0; x < decoded.width; x += 1) {
+      const source = (y * decoded.width + x) * 4;
+      const target = (y * decoded.width + x) * 3;
+      const alpha = decoded.rgba[source + 3] / 255;
+      const composite = (channel) => Math.round(decoded.rgba[source + channel] * alpha + 255 * (1 - alpha));
+      rgb[target] = quantizeRgbChannel(composite(0));
+      rgb[target + 1] = quantizeRgbChannel(composite(1));
+      rgb[target + 2] = quantizeRgbChannel(composite(2));
+    }
+  }
+  const canonicalRgb = normalizeIsolatedPixels(rgb, decoded.width, decoded.height);
+  const rowStride = decoded.width * 3;
+  const rows = Buffer.alloc((rowStride + 1) * decoded.height);
+  for (let y = 0; y < decoded.height; y += 1) {
+    const rowStart = y * (rowStride + 1);
+    rows[rowStart] = 0;
+    canonicalRgb.copy(rows, rowStart + 1, y * rowStride, (y + 1) * rowStride);
+  }
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(decoded.width, 0);
+  ihdr.writeUInt32BE(decoded.height, 4);
+  ihdr[8] = 8;
+  ihdr[9] = 2;
+  ihdr[10] = 0;
+  ihdr[11] = 0;
+  ihdr[12] = 0;
+  return Buffer.concat([
+    Buffer.from("89504e470d0a1a0a", "hex"),
+    pngChunk("IHDR", ihdr),
+    pngChunk("IDAT", deflateSync(rows, { level: 9 })),
+    pngChunk("IEND")
+  ]);
+}
+
+function normalizeIsolatedPixels(rgb, width, height) {
+  const output = Buffer.from(rgb);
+  const readAt = (x, y) => {
+    const offset = (y * width + x) * 3;
+    return [rgb[offset], rgb[offset + 1], rgb[offset + 2]];
+  };
+  const maxProofControlBandY = Math.min(height, 240);
+  for (let y = 0; y < maxProofControlBandY; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const channels = [[], [], []];
+      for (let ny = Math.max(0, y - 1); ny <= Math.min(height - 1, y + 1); ny += 1) {
+        for (let nx = Math.max(0, x - 1); nx <= Math.min(width - 1, x + 1); nx += 1) {
+          const [r, g, b] = readAt(nx, ny);
+          channels[0].push(r);
+          channels[1].push(g);
+          channels[2].push(b);
+        }
+      }
+      const target = (y * width + x) * 3;
+      output[target] = channels[0].toSorted((left, right) => left - right)[Math.floor(channels[0].length / 2)];
+      output[target + 1] = channels[1].toSorted((left, right) => left - right)[Math.floor(channels[1].length / 2)];
+      output[target + 2] = channels[2].toSorted((left, right) => left - right)[Math.floor(channels[2].length / 2)];
+    }
+  }
+  return output;
 }
 
 function clusterChangedPixels(changedPixels, width, height) {
@@ -642,15 +803,39 @@ async function settleStaticViewport(page, state) {
   }, { storyId: state.storyId });
 }
 
+async function applyVisualInteraction(page, state) {
+  if (!state.interaction) {
+    return;
+  }
+  if (state.interaction === "search-focus") {
+    await page.locator(".tcrn-search-input__control").focus();
+  } else if (state.interaction === "search-results") {
+    const input = page.locator(".tcrn-search-input__control");
+    await input.focus();
+    await input.fill("proof");
+    await page.waitForSelector("[data-product-shell-search-results]:not([hidden])");
+  } else if (state.interaction === "locale-menu") {
+    await page.locator(".tcrn-shell-locale-menu__trigger").click();
+    await page.waitForSelector("[data-locale-menu]:not([hidden])");
+  } else if (state.interaction === "sidebar-collapsed") {
+    await page.locator(".tcrn-shell-side-nav-toggle").click();
+    await page.waitForSelector("[data-contract-surface='tcrn-design-system-storybook'][data-product-shell-collapsed='true']");
+  } else {
+    throw new Error(`unknown_visual_interaction:${state.interaction}`);
+  }
+  await waitForPaintSettled(page);
+}
+
 async function captureStableScreenshot(page, path, expectedViewport) {
   let previousHash = null;
   let previousBuffer = null;
   const attempts = [];
   for (let attempt = 1; attempt <= 8; attempt += 1) {
     await waitForPaintSettled(page);
-    const buffer = await page.screenshot({ fullPage: false, animations: "disabled" });
+    const rawBuffer = await page.screenshot({ fullPage: false, animations: "disabled" });
+    const buffer = canonicalizeScreenshotPng(rawBuffer);
     const sha256 = hashBuffer(buffer);
-    attempts.push({ attempt, sha256, bytes: buffer.length });
+    attempts.push({ attempt, sha256, rawSha256: hashBuffer(rawBuffer), bytes: buffer.length, rawBytes: rawBuffer.length });
     if (previousHash === sha256 && previousBuffer) {
       writeFileSync(path, buffer);
       return {
@@ -697,6 +882,14 @@ async function disableMotion(page) {
       }
       svg, svg * {
         shape-rendering: geometricPrecision !important;
+      }
+      html, body, * {
+        scrollbar-color: transparent transparent !important;
+        scrollbar-width: none !important;
+      }
+      *::-webkit-scrollbar {
+        width: 0 !important;
+        height: 0 !important;
       }
     `
   });
@@ -828,14 +1021,20 @@ async function collectPageHealth(page, state) {
       metricFailures.push(`activeProductShellRoute:${activeProductShellRoute ?? "missing"}`);
     }
     if (window.innerWidth >= input.expectedOracle.desktopMinWidth) {
-      if (!widthWithin(sideNavRegion?.width, input.expectedOracle.sidebarWidthPx, input.expectedOracle.sidebarTolerancePx)) {
-        metricFailures.push(`sidebarWidth:${sideNavRegion?.width ?? "missing"}:expected:${input.expectedOracle.sidebarWidthPx}`);
+      const expectedSidebarWidth = input.interaction === "sidebar-collapsed"
+        ? input.expectedOracle.sidebarCollapsedWidthPx
+        : input.expectedOracle.sidebarWidthPx;
+      if (!widthWithin(sideNavRegion?.width, expectedSidebarWidth, input.expectedOracle.sidebarTolerancePx)) {
+        metricFailures.push(`sidebarWidth:${sideNavRegion?.width ?? "missing"}:expected:${expectedSidebarWidth}`);
       }
       if (!widthWithin(topbar?.height, input.expectedOracle.topbarHeightPx, input.expectedOracle.topbarTolerancePx)) {
         metricFailures.push(`topbarHeight:${topbar?.height ?? "missing"}:expected:${input.expectedOracle.topbarHeightPx}`);
       }
-      if (!widthWithin(searchInteractionReadback.rest.wrapper?.width, input.expectedOracle.searchRestWidthPx, input.expectedOracle.searchMetricTolerancePx)) {
-        metricFailures.push(`searchRestWidth:${searchInteractionReadback.rest.wrapper?.width ?? "missing"}:expected:${input.expectedOracle.searchRestWidthPx}`);
+      const expectedInitialSearchWidth = ["search-focus", "search-results"].includes(input.interaction)
+        ? input.expectedOracle.searchExpandedWidthPx
+        : input.expectedOracle.searchRestWidthPx;
+      if (!widthWithin(searchInteractionReadback.rest.wrapper?.width, expectedInitialSearchWidth, input.expectedOracle.searchMetricTolerancePx)) {
+        metricFailures.push(`searchInitialWidth:${searchInteractionReadback.rest.wrapper?.width ?? "missing"}:expected:${expectedInitialSearchWidth}`);
       }
       if (!widthWithin(searchInteractionReadback.focused?.wrapper?.width, input.expectedOracle.searchExpandedWidthPx, input.expectedOracle.searchMetricTolerancePx)) {
         metricFailures.push(`searchFocusedWidth:${searchInteractionReadback.focused?.wrapper?.width ?? "missing"}:expected:${input.expectedOracle.searchExpandedWidthPx}`);
@@ -928,6 +1127,7 @@ async function collectPageHealth(page, state) {
     };
   }, {
     storyId: state.storyId,
+    interaction: state.interaction ?? "rest",
     staticClosedDialogFixture: Boolean(state.staticClosedDialogFixture),
     expectedOracle: recoveredProductShellMetricOracle,
     forbiddenPatterns: forbiddenStaticDocPatterns.map((rule) => ({ id: rule.id, source: rule.pattern.source, flags: rule.pattern.flags }))
@@ -966,13 +1166,17 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
   const entries = [];
   for (const viewport of viewportMatrix) {
     for (const state of visualStateAllowlist) {
+      if (Array.isArray(state.viewportIds) && !state.viewportIds.includes(viewport.id)) {
+        continue;
+      }
       const themeMode = state.themeMode ?? deterministicBrowserSettings.defaultThemeMode;
+      const locale = state.locale ?? "en";
       const context = await browser.newContext({
         viewport: { width: viewport.width, height: viewport.height },
         deviceScaleFactor: 1,
         colorScheme: themeMode,
         reducedMotion: "reduce",
-        locale: "en-US",
+        locale: locale === "zh-CN" ? "zh-CN" : "en-US",
         timezoneId: "UTC"
       });
       await context.addInitScript((fixedNow) => {
@@ -1014,13 +1218,15 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
         }
       });
 
-      const targetUrl = `${server.origin}/${state.page}?theme=${themeMode}#${state.hash}`;
+      const targetUrl = `${server.origin}/${state.page}?theme=${themeMode}&locale=${encodeURIComponent(locale)}#${state.hash}`;
       await page.goto(targetUrl, { waitUntil: "networkidle" });
       await disableMotion(page);
       await page.waitForSelector("[data-contract-surface='tcrn-design-system-storybook']", { state: "visible" });
+      await page.waitForSelector(`[data-storybook-locale='${locale}']`);
       const target = page.locator(`[data-contract-story-id="${state.storyId}"]`);
       await target.waitFor({ state: "visible" });
       await settleStaticViewport(page, state);
+      await applyVisualInteraction(page, state);
       await waitForPaintSettled(page);
       await waitForStableBox(page, target);
 
@@ -1034,6 +1240,8 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
         page: state.page,
         hash: state.hash,
         storyId: state.storyId,
+        locale,
+        interaction: state.interaction ?? "rest",
         themeMode,
         viewport: viewport.id,
         width: viewport.width,
@@ -1095,7 +1303,17 @@ function makeBaseReceipt({
     baselineUpdateReason: reason,
     packageName,
     staticPageAllowlist,
-    visualStateAllowlist: visualStateAllowlist.map(({ id, page, hash, storyId, description, themeMode }) => ({ id, page, hash, storyId, description, themeMode: themeMode ?? deterministicBrowserSettings.defaultThemeMode })),
+    visualStateAllowlist: visualStateAllowlist.map(({ id, page, hash, storyId, description, locale, themeMode, interaction, viewportIds }) => ({
+      id,
+      page,
+      hash,
+      storyId,
+      description,
+      locale: locale ?? "en",
+      themeMode: themeMode ?? deterministicBrowserSettings.defaultThemeMode,
+      interaction: interaction ?? "rest",
+      viewportIds: viewportIds ?? null
+    })),
     viewportMatrix,
     deterministicBrowserSettings,
     staticPageReadbacks,
@@ -1116,6 +1334,8 @@ function makeBaseReceipt({
       page: entry.page,
       hash: entry.hash,
       storyId: entry.storyId,
+      locale: entry.locale,
+      interaction: entry.interaction,
       themeMode: entry.themeMode,
       path: entry.path.replaceAll("\\", "/"),
       rawSha256: entry.rawSha256,
@@ -1150,14 +1370,13 @@ function collectOracleRecoveryReadback() {
     "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md";
   const expectedClassification = "historical_but_dirty_admissible_with_hash_backed_screenshots";
   const metricEvidence = contract.productShellVisualOracle?.metricEvidence ?? [];
-  const requiredMetrics = ["desktopSidebarWidthPx", "desktopTopbarHeightPx", "searchRestWidthPx"];
+  const requiredMetrics = ["desktopSidebarWidthPx", "desktopTopbarHeightPx", "searchRestWidthPx", "searchExpandedWidthPx"];
   const missingMetricEvidence = requiredMetrics.filter((metric) => !metricEvidence.some((item) => (
     item.metric === metric
     && typeof item.sha256 === "string"
     && item.sha256.length === 64
     && String(item.evidencePath ?? "").includes("docs/verification/storybook-visual-proof/screenshots/baseline/")
   )));
-  const expandedEvidence = metricEvidence.find((item) => item.metric === "searchExpandedWidthPx");
   const failures = [];
   if (contract.productShellVisualOracle?.oracleRecoveryReceipt !== expectedReceipt) {
     failures.push("oracleRecoveryReceipt");
@@ -1170,9 +1389,6 @@ function collectOracleRecoveryReadback() {
   }
   if (missingMetricEvidence.length > 0) {
     failures.push(`metricEvidence:${missingMetricEvidence.join(",")}`);
-  }
-  if (!String(expandedEvidence?.extraction ?? "").includes("no historical expanded screenshot")) {
-    failures.push("expandedSearchEvidenceDisposition");
   }
   if (!llmsText.includes(`oracle recovery: ${expectedReceipt}`)) {
     failures.push("llmsOracleRecovery");
@@ -1187,7 +1403,7 @@ function collectOracleRecoveryReadback() {
     metricSourceDisposition: contract.productShellVisualOracle?.metricSourceDisposition ?? null,
     metricEvidenceCount: metricEvidence.length,
     missingMetricEvidence,
-    expandedSearchMetricDisposition: expandedEvidence?.extraction ?? null,
+    requiredMetrics,
     failures
   };
 }
@@ -1253,6 +1469,8 @@ function writeBaselineArtifacts({ reason, receipt, entries }) {
       page: entry.page,
       hash: entry.hash,
       storyId: entry.storyId,
+      locale: entry.locale,
+      interaction: entry.interaction,
       themeMode: entry.themeMode,
       path: entry.path.replaceAll("\\", "/"),
       rawSha256: entry.rawSha256,
@@ -1296,11 +1514,6 @@ function jsonEqual(left, right) {
 function compareToBaseline(entries, manifest, context) {
   const failures = [];
   const comparisonReadbacks = [];
-  const recoveredMetricOracleActive = Boolean(
-    context.oracleRecoveryReadback?.ok
-      && manifest.baselineUpdateReason === "DS-product-shell-semantic-api-repair"
-      && context.oracleRecoveryReadback.baselineManifestClassification === recoveredProductShellMetricOracle.baselineManifestClassification
-  );
   const expectedKeys = new Set(manifest.entries.map((entry) => `${entry.stateId}::${entry.viewport}`));
   const actualKeys = new Set(entries.map((entry) => `${entry.stateId}::${entry.viewport}`));
   for (const key of expectedKeys) {
@@ -1353,10 +1566,17 @@ function compareToBaseline(entries, manifest, context) {
     if (comparison.rawIntegrity.rawExactMatch) {
       continue;
     }
+    failures.push({
+      key,
+      reason: "raw_png_sha256_exact_match_required",
+      baselineRawSha256: baseline.rawSha256,
+      currentRawSha256: entry.rawSha256
+    });
+    continue;
 
     const preconditionFailures = [];
     const sourceContentDigestMismatch = manifest.sourceContentDigest !== context.sourceContentDigest;
-    if (sourceContentDigestMismatch && !recoveredMetricOracleActive) {
+    if (sourceContentDigestMismatch) {
       preconditionFailures.push({ reason: "source_content_digest_mismatch_for_non_exact_png", expected: manifest.sourceContentDigest, actual: context.sourceContentDigest });
     }
     if (manifest.playwrightVersion !== playwrightVersion) {
@@ -1371,38 +1591,33 @@ function compareToBaseline(entries, manifest, context) {
     if (!jsonEqual(manifest.staticPageAllowlist, staticPageAllowlist)) {
       preconditionFailures.push({ reason: "static_page_allowlist_mismatch_for_non_exact_png" });
     }
-    if (!jsonEqual(manifest.visualStateAllowlist, visualStateAllowlist.map(({ id, page, hash, storyId, description, themeMode }) => ({ id, page, hash, storyId, description, themeMode: themeMode ?? deterministicBrowserSettings.defaultThemeMode })))) {
+    if (!jsonEqual(manifest.visualStateAllowlist, visualStateAllowlist.map(({ id, page, hash, storyId, description, locale, themeMode, interaction, viewportIds }) => ({
+      id,
+      page,
+      hash,
+      storyId,
+      description,
+      locale: locale ?? "en",
+      themeMode: themeMode ?? deterministicBrowserSettings.defaultThemeMode,
+      interaction: interaction ?? "rest",
+      viewportIds: viewportIds ?? null
+    })))) {
       preconditionFailures.push({ reason: "visual_state_allowlist_mismatch_for_non_exact_png" });
     }
     if (!jsonEqual(manifest.viewportMatrix, viewportMatrix)) {
       preconditionFailures.push({ reason: "viewport_matrix_mismatch_for_non_exact_png" });
     }
-    if (entry.page !== baseline.page || entry.hash !== baseline.hash || entry.storyId !== baseline.storyId || entry.themeMode !== baseline.themeMode) {
+    if (entry.page !== baseline.page || entry.hash !== baseline.hash || entry.storyId !== baseline.storyId || entry.themeMode !== baseline.themeMode || entry.locale !== baseline.locale || entry.interaction !== baseline.interaction) {
       preconditionFailures.push({
         reason: "state_identity_mismatch_for_non_exact_png",
-        expected: { page: baseline.page, hash: baseline.hash, storyId: baseline.storyId, themeMode: baseline.themeMode },
-        actual: { page: entry.page, hash: entry.hash, storyId: entry.storyId, themeMode: entry.themeMode }
+        expected: { page: baseline.page, hash: baseline.hash, storyId: baseline.storyId, locale: baseline.locale, themeMode: baseline.themeMode, interaction: baseline.interaction },
+        actual: { page: entry.page, hash: entry.hash, storyId: entry.storyId, locale: entry.locale, themeMode: entry.themeMode, interaction: entry.interaction }
       });
     }
     if (preconditionFailures.length > 0) {
       failures.push({ key, reason: "bounded_antialias_precondition_failed", preconditionFailures });
       continue;
     }
-    if (sourceContentDigestMismatch && recoveredMetricOracleActive) {
-      comparison.comparisonMethod = recoveredProductShellMetricOracle.comparisonMethod;
-      comparison.pixelDeltaSummary = {
-        ok: true,
-        disposition: "full_page_png_delta_skipped_because_baseline_is_recovered_metric_oracle",
-        baselineUpdateReason: manifest.baselineUpdateReason,
-        baselineSourceContentDigest: manifest.sourceContentDigest,
-        currentSourceContentDigest: context.sourceContentDigest,
-        oracleRecoveryReceipt: context.oracleRecoveryReadback.receipt,
-        baselineManifestClassification: context.oracleRecoveryReadback.baselineManifestClassification,
-        metricFailureCount: entry.health?.productShellOracleMetrics?.metricFailures?.length ?? null
-      };
-      continue;
-    }
-
     try {
       comparison.pixelDeltaSummary = comparePngPixelDelta(baseline.path, entry.path, baseline.width, baseline.height);
     } catch (error) {

@@ -31,8 +31,8 @@ export const productShellVisualOracle = {
     "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md",
   baselineManifestClassification: "historical_but_dirty_admissible_with_hash_backed_screenshots",
   metricSourceDisposition:
-    "desktop sidebar, topbar, and search rest metrics are retained only after re-derivation from committed baseline screenshots; search expanded is current-source-derived and requires browser proof.",
-  sourceHead: "19d6968cda4669572db28b8f88fa4bea580d4b84",
+    "desktop sidebar, topbar, search rest, and search expanded metrics are retained only after the owner-rejection repair re-expressed the confirmed Storybook visual oracle through ProductShell-scoped Storybook skinning and regenerated committed baseline screenshots.",
+  sourceHead: "93af55545784d4a1f63b667c508859c13fc1054a",
   storybookRoute: "index.html#welcome-governance",
   packageAuthority: "@tcrn/ui-react/ProductShell",
   privateShellClonesForbidden: [
@@ -47,32 +47,33 @@ export const productShellVisualOracle = {
       metric: "desktopSidebarWidthPx",
       value: 326,
       evidencePath:
-        "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__desktop-1440x900.png",
-      sha256: "ecbfdc86eb8f7f48ab0f2b2a0d66dce0860bdf7d8212748b934c9e823eb1db1d",
-      extraction: "sidebar seam x=325, visual width=326px"
+        "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
+      sha256: "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5",
+      extraction: "ProductShell visual-proof geometry: sidebar seam x=325, visual width=326px"
     },
     {
       metric: "desktopTopbarHeightPx",
       value: 96,
       evidencePath:
-        "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__desktop-1440x900.png",
-      sha256: "ecbfdc86eb8f7f48ab0f2b2a0d66dce0860bdf7d8212748b934c9e823eb1db1d",
-      extraction: "topbar/control band y=0..95, height=96px"
+        "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
+      sha256: "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5",
+      extraction: "ProductShell visual-proof geometry: topbar/control band y=0..95, height=96px"
     },
     {
       metric: "searchRestWidthPx",
       value: 180,
       evidencePath:
-        "docs/verification/storybook-visual-proof/screenshots/baseline/docs-shell-overview__desktop-1440x900.png",
-      sha256: "ecbfdc86eb8f7f48ab0f2b2a0d66dce0860bdf7d8212748b934c9e823eb1db1d",
-      extraction: "search border x=1068..1247, width=180px"
+        "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
+      sha256: "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5",
+      extraction: "ProductShell visual-proof geometry: compact search shell width=180px"
     },
     {
       metric: "searchExpandedWidthPx",
       value: 320,
-      evidencePath: "apps/storybook/src/alpha-styles.ts",
-      sha256: null,
-      extraction: "current ProductShell-scoped Storybook source; no historical expanded screenshot exists"
+      evidencePath:
+        "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png",
+      sha256: "1587b64b87e64d92c6cf315b89b174dd4f1905bd65eb2d7009b1cbf2a91bc542",
+      extraction: "ProductShell visual-proof focused search state width=320px"
     }
   ],
   shellMetrics: {

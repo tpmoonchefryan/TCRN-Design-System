@@ -162,6 +162,7 @@ const expectedRootAdapterTitles = [
 ];
 
 const expectedStoryCategoryCount = Object.values(storyCategoryDefinitions).reduce((count, categories) => count + categories.length, 0);
+const expectedStorybookShellNavGroupCount = expectedContractStoryGroups.length;
 
 function groupSlug(group: ContractStoryGroup): string {
   return group.toLowerCase().replace(/\s+/g, "-");
@@ -252,7 +253,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-storybook-shell-authority="@tcrn\/ui-react\/ProductShell"/);
   assert.match(combinedHtml, /data-storybook-private-doc-shell-retired="true"/);
   assert.match(combinedHtml, /data-storybook-product-shell-skin="confirmed-storybook-visual-v1"/);
-  assert.match(combinedHtml, /data-storybook-visual-oracle="docs\/verification\/storybook-visual-proof\/baseline-manifest\.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84"/);
+  assert.match(combinedHtml, /data-storybook-visual-oracle="docs\/verification\/storybook-visual-proof\/baseline-manifest\.json#owner-rejection-repair=d412c79"/);
   assert.match(combinedHtml, /data-package-backed-product-shell-boundary="side-nav-shell-v1"/);
   assert.match(combinedHtml, /class="[^"]*tcrn-product-shell/);
   assert.match(combinedHtml, /data-product-shell-route="/);
@@ -405,8 +406,8 @@ test("static contract story surface is retained and synthetic", () => {
     assert.match(html, new RegExp(`data-story-section="${escapeRegExp(group)}"`));
     assert.ok(defaultStory);
     assert.match(html, new RegExp(`data-product-shell-route="${escapeRegExp(defaultStory.id)}"[^>]*aria-current="page"`));
-    assert.equal(readProductShellCategoryIds(html).length, expectedStoryCategoryCount);
-    assert.equal(readProductShellNavHtml(html).match(/data-navigation-primitive="nav-group"/g)?.length, expectedStoryCategoryCount);
+    assert.equal(readProductShellCategoryIds(html).length, expectedStorybookShellNavGroupCount);
+    assert.equal(readProductShellNavHtml(html).match(/data-navigation-primitive="nav-group"/g)?.length, expectedStorybookShellNavGroupCount);
     assert.equal(readProductShellNavHtml(html).match(/data-product-shell-route="/g)?.length, contractStories.length);
     assert.equal(html.match(/data-doc-chapter-pager="true"/g)?.length, 1);
     const productShellNavHtml = readProductShellNavHtml(html);
@@ -807,11 +808,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(contract.productShellVisualOracle?.packageAuthority, "@tcrn/ui-react/ProductShell");
   assert.equal(contract.productShellVisualOracle?.oracleRecoveryReceipt, productShellVisualOracle.oracleRecoveryReceipt);
   assert.equal(contract.productShellVisualOracle?.baselineManifestClassification, "historical_but_dirty_admissible_with_hash_backed_screenshots");
-  assert.match(contract.productShellVisualOracle?.metricSourceDisposition ?? "", /re-derivation from committed baseline screenshots/);
+  assert.match(contract.productShellVisualOracle?.metricSourceDisposition ?? "", /owner-rejection repair/);
   assert.ok(
     contract.productShellVisualOracle?.metricEvidence?.some((item: { metric: string; sha256?: string | null }) => (
       item.metric === "desktopSidebarWidthPx"
-      && item.sha256 === "ecbfdc86eb8f7f48ab0f2b2a0d66dce0860bdf7d8212748b934c9e823eb1db1d"
+      && item.sha256 === "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5"
     )),
     "ProductShell visual oracle must cite hash-backed sidebar evidence"
   );
@@ -989,7 +990,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.storybookProductShellControlContract.implementationBoundary, /private tcrn-doc-\* visual shell selectors are not admitted/);
   assert.match(contract.storybookProductShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
   assert.match(contract.storybookProductShellControlContract.visualSkin, /storybook-visual-proof\/baseline-manifest\.json/);
-  assert.match(contract.storybookProductShellControlContract.visualSkin, /desktop sidebar width, topbar height, compact search width\/border/);
+  assert.match(contract.storybookProductShellControlContract.visualSkin, /desktop sidebar width, topbar height, compact and focused search width\/border/);
   assert.match(contract.storybookProductShellControlContract.themeTransition, /one whole-page transition/);
   assert.match(contract.storybookProductShellControlContract.themeTransition, /must not darken as independent sections/);
   assert.match(contract.storybookProductShellControlContract.localeSelector, /native names only/);

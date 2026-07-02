@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "6b58c4699d0461e861fa3459933eb572d01dbbb97b46291efdfd4564c054f3e7",
+    "contractPayloadDigest": "d7457e8c4a0e399c374138720599c148a9e1d762376120c47442aaff99b4be5e",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
@@ -109,9 +109,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -410,20 +410,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -471,6 +457,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -726,31 +726,31 @@
         {
           "id": "welcome-governance",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 878
         },
         {
           "id": "governance-boundaries",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 673
         },
         {
           "id": "maintainers-routing",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 634
         },
         {
           "id": "contribution-model",
           "visible": true,
-          "width": 1082,
-          "height": 322
+          "width": 1050,
+          "height": 339
         },
         {
           "id": "release-bug-policy",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 483
         }
       ],
@@ -784,9 +784,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -1085,20 +1085,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -1146,6 +1132,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -1395,44 +1395,44 @@
         {
           "id": "brand-identity",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 1304
         },
         {
           "id": "color-palette",
           "visible": true,
-          "width": 1082,
-          "height": 2736
+          "width": 1050,
+          "height": 2578
         },
         {
           "id": "text-styles",
           "visible": true,
-          "width": 1082,
-          "height": 2709
+          "width": 1050,
+          "height": 2797
         },
         {
           "id": "grid-system",
           "visible": true,
-          "width": 1082,
-          "height": 751
+          "width": 1050,
+          "height": 768
         },
         {
           "id": "icons-motion",
           "visible": true,
-          "width": 1082,
-          "height": 2344
+          "width": 1050,
+          "height": 2509
         },
         {
           "id": "global-states",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 779
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
-          "width": 1082,
-          "height": 710
+          "width": 1050,
+          "height": 728
         }
       ],
       "clipped": [],
@@ -1462,9 +1462,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -1763,20 +1763,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -1824,6 +1810,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -2073,25 +2073,25 @@
         {
           "id": "tokens-copy-state",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 429
         },
         {
           "id": "i18n-theme-contract",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 1669
         },
         {
           "id": "foundation-visual-standards",
           "visible": true,
-          "width": 1082,
-          "height": 3612
+          "width": 1050,
+          "height": 3700
         },
         {
           "id": "copy-guidelines",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 513
         }
       ],
@@ -2129,9 +2129,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -2430,20 +2430,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -2491,6 +2477,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -2782,68 +2782,68 @@
         {
           "id": "component-family-index",
           "visible": true,
-          "width": 1082,
-          "height": 8523
+          "width": 1050,
+          "height": 8575
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
-          "width": 1082,
-          "height": 1038
+          "width": 1050,
+          "height": 1056
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 1188
         },
         {
           "id": "button-spec-usage",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 755
         },
         {
           "id": "field-spec-usage",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 1300
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
-          "width": 1082,
-          "height": 6293
+          "width": 1050,
+          "height": 6369
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
-          "width": 1082,
-          "height": 13735
+          "width": 1050,
+          "height": 13815
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
-          "width": 1082,
-          "height": 18660
+          "width": 1050,
+          "height": 18678
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 1277
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
-          "width": 1082,
-          "height": 2349
+          "width": 1050,
+          "height": 2401
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
-          "width": 1082,
-          "height": 5140
+          "width": 1050,
+          "height": 5205
         }
       ],
       "clipped": [],
@@ -2878,9 +2878,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -3179,20 +3179,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -3240,6 +3226,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -3489,55 +3489,55 @@
         {
           "id": "forms-patterns",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 241
         },
         {
           "id": "workbench-patterns",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 498
         },
         {
           "id": "work-management-patterns",
           "visible": true,
-          "width": 1082,
-          "height": 3022
+          "width": 1050,
+          "height": 3071
         },
         {
           "id": "readiness-notification-patterns",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 249
         },
         {
           "id": "selection-list-patterns",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 277
         },
         {
           "id": "modal-validation-patterns",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 316
         },
         {
           "id": "datagrid-fields-patterns",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 271
         },
         {
           "id": "big-list-search-patterns",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 316
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 449
         }
       ],
@@ -3568,9 +3568,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -3869,20 +3869,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -3930,6 +3916,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -4179,25 +4179,25 @@
         {
           "id": "proof-matrix",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 503
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
-          "width": 1082,
-          "height": 5935
+          "width": 1050,
+          "height": 6128
         },
         {
           "id": "blocked-actions",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 580
         },
         {
           "id": "overlay-focus",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 225
         }
       ],
@@ -4225,9 +4225,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -4526,20 +4526,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -4587,6 +4573,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -4836,7 +4836,7 @@
         {
           "id": "local-changelog",
           "visible": true,
-          "width": 1082,
+          "width": 1050,
           "height": 726
         }
       ],
@@ -4868,9 +4868,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -5169,20 +5169,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -5230,6 +5216,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -5485,31 +5485,31 @@
         {
           "id": "welcome-governance",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 1006
         },
         {
           "id": "governance-boundaries",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 771
         },
         {
           "id": "maintainers-routing",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 721
         },
         {
           "id": "contribution-model",
           "visible": true,
-          "width": 666,
-          "height": 444
+          "width": 634,
+          "height": 462
         },
         {
           "id": "release-bug-policy",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 536
         }
       ],
@@ -5543,9 +5543,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -5844,20 +5844,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -5905,6 +5891,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -6154,43 +6154,43 @@
         {
           "id": "brand-identity",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 1826
         },
         {
           "id": "color-palette",
           "visible": true,
-          "width": 666,
-          "height": 3248
+          "width": 634,
+          "height": 3318
         },
         {
           "id": "text-styles",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 2990
         },
         {
           "id": "grid-system",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 897
         },
         {
           "id": "icons-motion",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 2822
         },
         {
           "id": "global-states",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 890
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 795
         }
       ],
@@ -6221,9 +6221,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -6522,20 +6522,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -6583,6 +6569,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -6832,25 +6832,25 @@
         {
           "id": "tokens-copy-state",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 461
         },
         {
           "id": "i18n-theme-contract",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 2063
         },
         {
           "id": "foundation-visual-standards",
           "visible": true,
-          "width": 666,
-          "height": 4366
+          "width": 634,
+          "height": 4471
         },
         {
           "id": "copy-guidelines",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 545
         }
       ],
@@ -6888,9 +6888,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -7189,20 +7189,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -7250,6 +7236,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -7541,68 +7541,68 @@
         {
           "id": "component-family-index",
           "visible": true,
-          "width": 666,
-          "height": 8995
+          "width": 634,
+          "height": 9012
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
-          "width": 666,
-          "height": 1202
+          "width": 634,
+          "height": 1220
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
-          "width": 666,
-          "height": 1310
+          "width": 634,
+          "height": 1328
         },
         {
           "id": "button-spec-usage",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 825
         },
         {
           "id": "field-spec-usage",
           "visible": true,
-          "width": 666,
-          "height": 1388
+          "width": 634,
+          "height": 1405
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
-          "width": 666,
-          "height": 6856
+          "width": 634,
+          "height": 6901
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
-          "width": 666,
-          "height": 16844
+          "width": 634,
+          "height": 17373
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
-          "width": 666,
-          "height": 21139
+          "width": 634,
+          "height": 21310
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 1382
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
-          "width": 666,
-          "height": 2658
+          "width": 634,
+          "height": 2676
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
-          "width": 666,
-          "height": 6574
+          "width": 634,
+          "height": 6645
         }
       ],
       "clipped": [],
@@ -7637,9 +7637,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -7938,20 +7938,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -7999,6 +7985,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -8248,55 +8248,55 @@
         {
           "id": "forms-patterns",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 258
         },
         {
           "id": "workbench-patterns",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 516
         },
         {
           "id": "work-management-patterns",
           "visible": true,
-          "width": 666,
-          "height": 3837
+          "width": 634,
+          "height": 3876
         },
         {
           "id": "readiness-notification-patterns",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 359
         },
         {
           "id": "selection-list-patterns",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 277
         },
         {
           "id": "modal-validation-patterns",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 351
         },
         {
           "id": "datagrid-fields-patterns",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 288
         },
         {
           "id": "big-list-search-patterns",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 351
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 537
         }
       ],
@@ -8327,9 +8327,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -8628,20 +8628,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -8689,6 +8675,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -8938,25 +8938,25 @@
         {
           "id": "proof-matrix",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 503
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
-          "width": 666,
-          "height": 7511
+          "width": 634,
+          "height": 7563
         },
         {
           "id": "blocked-actions",
           "visible": true,
-          "width": 666,
-          "height": 580
+          "width": 634,
+          "height": 597
         },
         {
           "id": "overlay-focus",
           "visible": true,
-          "width": 666,
+          "width": 634,
           "height": 243
         }
       ],
@@ -8984,9 +8984,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
@@ -9285,20 +9285,6 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
-          "itemWidth": 235,
-          "labelWidth": 157.53,
-          "labelHeight": 18,
-          "lineHeight": 17.55,
-          "lineCount": 1,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
@@ -9346,6 +9332,20 @@
           "textLength": 18,
           "itemWidth": 235,
           "labelWidth": 135.89,
+          "labelHeight": 18,
+          "lineHeight": 17.55,
+          "lineCount": 1,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "table-work-index-spec",
+          "text": "Table and work index spec",
+          "textLength": 21,
+          "itemWidth": 235,
+          "labelWidth": 157.53,
           "labelHeight": 18,
           "lineHeight": 17.55,
           "lineCount": 1,
@@ -9595,8 +9595,8 @@
         {
           "id": "local-changelog",
           "visible": true,
-          "width": 666,
-          "height": 758
+          "width": 634,
+          "height": 775
         }
       ],
       "clipped": [],
@@ -9627,9 +9627,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
@@ -9642,7 +9642,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2603,
+      "shellHeaderLayoutGap": -2129,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -9727,9 +9727,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
@@ -9742,7 +9742,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2603,
+      "shellHeaderLayoutGap": -2129,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -9830,9 +9830,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
@@ -9845,7 +9845,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2603,
+      "shellHeaderLayoutGap": -2129,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -9879,7 +9879,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9105
+          "height": 9123
         },
         {
           "id": "copy-guidelines",
@@ -9922,9 +9922,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
@@ -9937,7 +9937,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2603,
+      "shellHeaderLayoutGap": -2129,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -10031,19 +10031,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 358,
-          "height": 13912
+          "height": 13908
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 28246
+          "height": 28241
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 41641
+          "height": 41635
         },
         {
           "id": "dialog-spec-usage",
@@ -10096,9 +10096,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
@@ -10111,7 +10111,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2603,
+      "shellHeaderLayoutGap": -2129,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -10211,9 +10211,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
@@ -10226,7 +10226,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2603,
+      "shellHeaderLayoutGap": -2129,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -10293,9 +10293,9 @@
       "privateDocShellCloneCount": 0,
       "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "productShellNavGroupCount": 18,
-      "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 18,
+      "productShellNavGroupCount": 7,
+      "docNavCategoryCount": 7,
+      "docNavOpenCategoryCount": 7,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
@@ -10308,7 +10308,7 @@
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": -2603,
+      "shellHeaderLayoutGap": -2129,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,

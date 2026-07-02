@@ -129,26 +129,26 @@ function storyHref(story: ReturnType<typeof contractStoriesByGroup>[number]): st
 }
 
 function buildStorybookNavGroups(activeGroup: ContractStoryGroup): ProductShellNavGroup[] {
-  return contractStoryGroups.flatMap((group) => {
+  return contractStoryGroups.map((group) => {
     const stories = contractStoriesByGroup(group);
     const firstStory = stories[0];
-    return storyCategoriesForGroup(group, stories).map((category) => ({
-      id: `${groupSlug(group)}-${category.id}`,
-      label: category.label,
-      labelKey: category.label,
-      description: category.description,
-      descriptionKey: category.description,
+    return {
+      id: groupSlug(group),
+      label: localeText(`group.${group}`),
+      labelKey: `group.${group}`,
+      description: localeText("shell.governedSectionDescription"),
+      descriptionKey: "shell.governedSectionDescription",
       sectionLabel: localeText(`group.${group}`),
       sectionLabelKey: `group.${group}`,
-      selected: group === activeGroup && category.stories.some((story) => story.id === firstStory?.id),
-      items: category.stories.map((story) => ({
+      selected: group === activeGroup,
+      items: stories.map((story) => ({
         id: story.id,
         label: localeText(`story.${story.id}.title`),
         labelKey: `story.${story.id}.title`,
         href: storyHref(story),
         selected: group === activeGroup && firstStory?.id === story.id
       }))
-    }));
+    };
   });
 }
 
@@ -239,8 +239,8 @@ function storybookProductShellHtml(group: ContractStoryGroup): string {
   const contentHtml = `<div class="tcrn-doc-content" data-storybook-content-slot="contract-stories">
   <h1 class="tcrn-sr-only" id="tcrn-doc-page-title">${i18nText("shell.title")}</h1>
 ${hiddenLocaleSelectHtml()}
-${pageHeadHtml(group)}
 ${storyHtml(group)}
+${pageHeadHtml(group)}
 ${chapterPagerHtml(group)}
 </div>`;
 
@@ -248,7 +248,8 @@ ${chapterPagerHtml(group)}
     <ProductShell
       productName="TCRN Design System"
       moduleName={localeText("shell.title")}
-      brandProductId="design-system"
+      brandSuffix={localeText("shell.brandSuffix")}
+      brandCaption={localeText("shell.eyebrow")}
       brandHref="index.html"
       brandMarkSrc="tcrn-brand-mark.svg"
       brandMarkAlt={localeText("shell.brand")}
@@ -295,7 +296,7 @@ ${chapterPagerHtml(group)}
       data-storybook-shell-authority="@tcrn/ui-react/ProductShell"
       data-storybook-private-doc-shell-retired="true"
       data-storybook-product-shell-skin="confirmed-storybook-visual-v1"
-      data-storybook-visual-oracle="docs/verification/storybook-visual-proof/baseline-manifest.json#sourceHead=19d6968cda4669572db28b8f88fa4bea580d4b84"
+      data-storybook-visual-oracle="docs/verification/storybook-visual-proof/baseline-manifest.json#owner-rejection-repair=d412c79"
     >
       <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
     </ProductShell>

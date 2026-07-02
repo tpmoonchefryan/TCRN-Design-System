@@ -490,6 +490,7 @@ for (const section of sectionPages) {
 }
 
 const expectedCategoryCount = 18;
+const expectedStorybookShellNavGroupCount = sectionPages.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
   "layout-rhythm",
@@ -539,7 +540,7 @@ const aiContractTraceabilityCheck = {
     && String(aiContract.productShellVisualOracle?.metricSourceDisposition ?? "").includes("committed baseline screenshots")
     && (aiContract.productShellVisualOracle?.metricEvidence ?? []).some((item) => (
       item.metric === "searchRestWidthPx"
-      && item.sha256 === "ecbfdc86eb8f7f48ab0f2b2a0d66dce0860bdf7d8212748b934c9e823eb1db1d"
+      && item.sha256 === "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5"
     ))
     && llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
@@ -721,7 +722,7 @@ for (const route of firstStoryHashShellParityRoutes) {
   await storybookPage.waitForSelector(`[data-active-story-section='${route.group}']`);
   await storybookPage.waitForSelector(`[data-product-shell-route='${route.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
   await storybookPage.waitForTimeout(180);
-  const metrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount, forbiddenZhCnProductShellText }) => {
+  const metrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount, expectedShellNavGroupCount, forbiddenZhCnProductShellText }) => {
     const rectFor = (selector) => {
       const node = document.querySelector(selector);
       if (!node) {
@@ -796,6 +797,7 @@ for (const route of firstStoryHashShellParityRoutes) {
 	      categoryLabelCount: navRoot.querySelectorAll(".tcrn-nav-group__label").length,
       productShellEnglishLeaks,
       expectedCategoryCount,
+      expectedShellNavGroupCount,
       expectedGroupCount,
       header,
       sideNavRegion,
@@ -813,12 +815,13 @@ for (const route of firstStoryHashShellParityRoutes) {
       searchBeforeControls: Boolean(search && controls && search.right <= controls.left + 1),
       utilityTrailingGap: locale ? Number((window.innerWidth - locale.right).toFixed(2)) : null,
       pageHeadStartsBelowHeader: Boolean(pageHead && pageHead.top >= headerBottom - 1),
-      firstStoryDoesNotReplacePageHead: Boolean(pageHead && firstStoryRect && pageHead.top < firstStoryRect.top)
+      storyFirstBeforePageHead: Boolean(pageHead && firstStoryRect && firstStoryRect.top <= pageHead.top)
     };
   }, {
     group: route.group,
 	    storyId: route.storyId,
 	    expectedCategoryCount,
+	    expectedShellNavGroupCount: expectedStorybookShellNavGroupCount,
 	    expectedGroupCount: sectionPages.length,
     forbiddenZhCnProductShellText
 	  });
@@ -839,8 +842,8 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.onThisPageCount !== 1) failures.push(`on-this-page-count:${metrics.onThisPageCount}`);
   if (metrics.mandatoryBoundaryCount !== 1 || metrics.noOverclaimBoundaryCount !== 1) failures.push("mandatory-boundary-missing");
   if (metrics.legacyGlobalNavCount !== 0) failures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
-  if (metrics.navGroupCount !== expectedCategoryCount) failures.push(`nav-group-count:${metrics.navGroupCount}`);
-  if (metrics.categoryLabelCount !== expectedCategoryCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
+  if (metrics.navGroupCount !== expectedStorybookShellNavGroupCount) failures.push(`nav-group-count:${metrics.navGroupCount}`);
+  if (metrics.categoryLabelCount !== expectedStorybookShellNavGroupCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
   if (metrics.productShellEnglishLeaks.length > 0) failures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
   if (metrics.themeToggleRadius !== expectedProductShellThemeToggleRadius) {
     failures.push(`theme-toggle-radius:${metrics.themeToggleRadius ?? "missing"}:expected:${expectedProductShellThemeToggleRadius}`);
@@ -871,7 +874,7 @@ for (const route of firstStoryHashShellParityRoutes) {
     failures.push(`utility-trailing-gap:${metrics.utilityTrailingGap}`);
   }
   if (!metrics.pageHeadStartsBelowHeader) failures.push("page-head-not-below-header");
-  if (!metrics.firstStoryDoesNotReplacePageHead) failures.push("first-story-replaces-page-head");
+  if (!metrics.storyFirstBeforePageHead) failures.push("story-not-before-page-head");
   firstStoryHashShellParityReadbacks.push({ ...metrics, ok: failures.length === 0, failures });
 }
 const firstStoryHashDesktopReadbacks = firstStoryHashShellParityReadbacks.filter((item) => item.headerStyles);
@@ -880,9 +883,6 @@ const firstStoryHashShellParitySignature = {
   workspaceStyles: new Set(firstStoryHashDesktopReadbacks.map((item) => JSON.stringify(item.workspaceStyles))).size,
   pageHeadStyles: new Set(firstStoryHashDesktopReadbacks.map((item) => JSON.stringify(item.pageHeadStyles))).size,
   layoutStyles: new Set(firstStoryHashDesktopReadbacks.map((item) => JSON.stringify(item.layoutStyles))).size,
-  pageHeadTopDelta: firstStoryHashDesktopReadbacks.length
-    ? Number((Math.max(...firstStoryHashDesktopReadbacks.map((item) => item.pageHead?.top ?? 0)) - Math.min(...firstStoryHashDesktopReadbacks.map((item) => item.pageHead?.top ?? 0))).toFixed(2))
-    : 0,
   utilityTrailingGapDelta: firstStoryHashDesktopReadbacks.length
     ? Number((Math.max(...firstStoryHashDesktopReadbacks.map((item) => item.utilityTrailingGap ?? 0)) - Math.min(...firstStoryHashDesktopReadbacks.map((item) => item.utilityTrailingGap ?? 0))).toFixed(2))
     : 0
@@ -1240,8 +1240,8 @@ async function collectLocalizedShellChromeCheck(page, check) {
       && metrics.missingRequiredText.length === 0
       && metrics.leakedForbiddenText.length === 0
       && metrics.accessibilityAttributeLeaks.length === 0
-      && metrics.categoryLabelCount === check.expectedCategoryCount
-      && metrics.categoryDescriptionCount === check.expectedCategoryCount
+      && metrics.categoryLabelCount === check.expectedShellNavGroupCount
+      && metrics.categoryDescriptionCount === check.expectedShellNavGroupCount
       && metrics.categoryDescriptionEnglishLeaks.length === 0
       && metrics.currentLocationText?.includes(check.expectedCurrentLocationAriaLabel)
       && metrics.onThisPageAriaLabel === check.expectedOnThisPageAriaLabel
@@ -1288,29 +1288,21 @@ const globalZhCnIaShellCheck = await collectLocalizedShellChromeCheck(storybookP
   route: `${staticSurfacePath}?theme=light&locale=zh-CN#welcome-governance`,
   section: "Welcome",
   storyId: "welcome-governance",
-  expectedCategoryCount,
+    expectedCategoryCount,
+    expectedShellNavGroupCount: expectedStorybookShellNavGroupCount,
   expectedCurrentLocationAriaLabel: "当前位置",
   expectedOnThisPageAriaLabel: "本页内容",
   requiredText: [
     "当前位置",
     "受治理的 Storybook 栏目",
     "本页内容",
-    "治理入口",
-    "路由与贡献",
-    "标识与品牌",
-    "文字与布局",
-    "交互与文案",
-    "令牌与 i18n",
-    "文案治理",
-    "组件清单",
-    "控件与数据",
-    "导航与壳层",
-    "工作管理",
-    "表单与工作台",
-    "反馈与选择",
-    "数据与页面",
-    "证明治理",
-    "治理记录"
+    "欢迎",
+    "样式指南",
+    "基础",
+    "组件",
+    "模式",
+    "证明",
+    "变更日志"
   ],
   forbiddenText: [
 	    "Current location",
@@ -1534,9 +1526,9 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     && summary.privateDocShellCloneCount === 0
     && summary.productShellSidebarVisible
     && summary.docGlobalNavCount === 0
-    && summary.productShellNavGroupCount === expectedCategoryCount
-    && summary.docNavCategoryCount === expectedCategoryCount
-    && summary.docNavOpenCategoryCount === expectedCategoryCount
+    && summary.productShellNavGroupCount === expectedStorybookShellNavGroupCount
+    && summary.docNavCategoryCount === expectedStorybookShellNavGroupCount
+    && summary.docNavOpenCategoryCount === expectedStorybookShellNavGroupCount
 	    && !summary.activeStoryHiddenByCategory
 	    && summary.categoryAriaFailures.length === 0
     && summary.sidebarNoIconLabelReadabilityFailures.length === 0

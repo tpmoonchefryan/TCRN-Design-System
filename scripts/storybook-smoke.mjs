@@ -77,6 +77,7 @@ const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-con
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
 const expectedStoryCategoryCount = 18;
+const expectedStorybookShellNavGroupCount = expectedContractStoryGroups.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
   "layout-rhythm",
@@ -1222,7 +1223,7 @@ if (!String(contract.productShellVisualOracle?.metricSourceDisposition ?? "").in
 }
 if (!(contract.productShellVisualOracle?.metricEvidence ?? []).some((item) => (
   item.metric === "desktopSidebarWidthPx"
-  && item.sha256 === "ecbfdc86eb8f7f48ab0f2b2a0d66dce0860bdf7d8212748b934c9e823eb1db1d"
+  && item.sha256 === "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5"
 ))) {
   missing.push("contract.productShellVisualOracle.metricEvidence.desktopSidebarWidthPx");
 }
@@ -1318,11 +1319,11 @@ for (const [group, html] of Object.entries(pages)) {
     missing.push(`current-product-shell-route:${group}:${defaultStory?.id ?? "missing"}`);
   }
   const groupNavCount = navHtml.match(/data-navigation-primitive="nav-group"/g)?.length ?? 0;
-  if (groupNavCount !== expectedStoryCategoryCount) {
+  if (groupNavCount !== expectedStorybookShellNavGroupCount) {
     missing.push(`product-shell-nav-group-count:${group}:${groupNavCount}`);
   }
   const categoryNavCount = navHtml.match(/data-storybook-category-id="/g)?.length ?? 0;
-  if (categoryNavCount !== expectedStoryCategoryCount) {
+  if (categoryNavCount !== expectedStorybookShellNavGroupCount) {
     missing.push(`product-shell-category-count:${group}:${categoryNavCount}`);
   }
   for (const marker of [
@@ -2508,22 +2509,13 @@ async function runGlobalStorybookZhCnIaProof() {
     "当前位置",
     "受治理的 Storybook 栏目",
     "本页内容",
-    "治理入口",
-    "路由与贡献",
-    "标识与品牌",
-    "文字与布局",
-    "交互与文案",
-    "令牌与 i18n",
-    "文案治理",
-    "组件清单",
-    "控件与数据",
-    "导航与壳层",
-    "工作管理",
-    "表单与工作台",
-    "反馈与选择",
-    "数据与页面",
-    "证明治理",
-    "治理记录"
+    "欢迎",
+    "样式指南",
+    "基础",
+    "组件",
+    "模式",
+    "证明",
+    "变更日志"
   ];
   const forbiddenText = [
     "Current location",
@@ -2571,7 +2563,7 @@ async function runGlobalStorybookZhCnIaProof() {
       await page.waitForSelector("[data-product-shell-route='welcome-governance'][aria-current='location'][data-storybook-nav-item-active='true']");
       await page.waitForSelector("[data-navigation-primitive='nav-group']");
       await page.waitForTimeout(150);
-      const metrics = await page.evaluate(({ requiredText, forbiddenText }) => {
+      const metrics = await page.evaluate(({ requiredText, forbiddenText, expectedShellNavGroupCount }) => {
         const bodyText = document.body.innerText;
         const html = document.documentElement;
         const body = document.body;
@@ -2624,7 +2616,7 @@ async function runGlobalStorybookZhCnIaProof() {
           currentLocationText: currentLocation?.textContent?.replace(/\s+/g, " ").trim() ?? null,
           onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null
         };
-      }, { requiredText, forbiddenText });
+      }, { requiredText, forbiddenText, expectedShellNavGroupCount: expectedStorybookShellNavGroupCount });
       await context.close();
       return {
         viewport,
@@ -2636,8 +2628,8 @@ async function runGlobalStorybookZhCnIaProof() {
           && metrics.leakedForbiddenText.length === 0
           && metrics.accessibilityAttributeLeaks.length === 0
           && !metrics.pageOverflow
-          && metrics.categoryLabelCount === expectedStoryCategoryCount
-          && metrics.categoryDescriptionCount === expectedStoryCategoryCount
+          && metrics.categoryLabelCount === expectedStorybookShellNavGroupCount
+          && metrics.categoryDescriptionCount === expectedStorybookShellNavGroupCount
           && metrics.categoryDescriptionEnglishLeaks.length === 0
           && metrics.currentLocationText?.includes("当前位置")
           && metrics.onThisPageAriaLabel === "本页内容"
@@ -2828,7 +2820,7 @@ async function runCrossSectionShellParityProof() {
             mandatoryBoundaryCount: document.querySelectorAll("[data-mandatory-boundary-block='visible']").length,
             noOverclaimBoundaryCount: document.querySelectorAll("[data-no-overclaim-boundary='visible']").length,
             legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
-	            navGroupCount: (storybookNav ?? document).querySelectorAll(".tcrn-nav-group").length,
+	          navGroupCount: (storybookNav ?? document).querySelectorAll(".tcrn-nav-group").length,
             categoryLabelCount: categoryLabels.length,
 	            categoryLabels,
             productShellEnglishLeaks,
@@ -2855,7 +2847,7 @@ async function runCrossSectionShellParityProof() {
             searchBeforeControls: Boolean(search && controls && search.right <= controls.left + 1),
             utilityTrailingGap: locale ? Number((window.innerWidth - locale.right).toFixed(2)) : null,
             pageHeadStartsBelowHeader: Boolean(pageHead && pageHead.top >= headerBottom - 1),
-            firstStoryDoesNotReplacePageHead: Boolean(pageHead && firstStory && pageHead.top < firstStory.getBoundingClientRect().top)
+            storyFirstBeforePageHead: Boolean(pageHead && firstStory && firstStory.getBoundingClientRect().top <= pageHead.top)
           };
         }, { group: route.group, storyId: route.storyId, forbiddenZhCnProductShellText });
         const routeFailures = [];
@@ -2875,8 +2867,8 @@ async function runCrossSectionShellParityProof() {
         if (metrics.onThisPageCount !== 1) routeFailures.push(`on-this-page-count:${metrics.onThisPageCount}`);
         if (metrics.mandatoryBoundaryCount !== 1 || metrics.noOverclaimBoundaryCount !== 1) routeFailures.push("mandatory-boundary-missing");
         if (metrics.legacyGlobalNavCount !== 0) routeFailures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
-	        if (metrics.navGroupCount !== expectedStoryCategoryCount) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
-	        if (metrics.categoryLabelCount !== expectedStoryCategoryCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
+        if (metrics.navGroupCount !== expectedStorybookShellNavGroupCount) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
+	        if (metrics.categoryLabelCount !== expectedStorybookShellNavGroupCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
         if (metrics.productShellEnglishLeaks.length > 0) {
           routeFailures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
         }
@@ -2914,7 +2906,7 @@ async function runCrossSectionShellParityProof() {
           }
         }
         if (!metrics.pageHeadStartsBelowHeader) routeFailures.push("page-head-not-below-header");
-        if (!metrics.firstStoryDoesNotReplacePageHead) routeFailures.push("first-story-replaces-page-head");
+        if (!metrics.storyFirstBeforePageHead) routeFailures.push("story-not-before-page-head");
         readbacks.push({ ...metrics, ok: routeFailures.length === 0, failures: routeFailures });
       }
       await context.close();
@@ -2924,9 +2916,6 @@ async function runCrossSectionShellParityProof() {
         workspaceStyles: new Set(desktopReadbacks.map((item) => JSON.stringify(item.workspaceStyles))).size,
         pageHeadStyles: new Set(desktopReadbacks.map((item) => JSON.stringify(item.pageHeadStyles))).size,
         layoutStyles: new Set(desktopReadbacks.map((item) => JSON.stringify(item.layoutStyles))).size,
-        pageHeadTopDelta: desktopReadbacks.length
-          ? Number((Math.max(...desktopReadbacks.map((item) => item.pageHead?.top ?? 0)) - Math.min(...desktopReadbacks.map((item) => item.pageHead?.top ?? 0))).toFixed(2))
-          : 0,
         utilityTrailingGapDelta: desktopReadbacks.length
           ? Number((Math.max(...desktopReadbacks.map((item) => item.utilityTrailingGap ?? 0)) - Math.min(...desktopReadbacks.map((item) => item.utilityTrailingGap ?? 0))).toFixed(2))
           : 0

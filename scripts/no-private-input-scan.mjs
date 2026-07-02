@@ -16,6 +16,11 @@ const ignoredDirectories = new Set([
 
 const maxScanBytes = 1_000_000;
 const outputReceiptPath = "docs/verification/internal-alpha/no-overclaim-scan.json";
+const generatedReceiptPaths = new Set([
+  outputReceiptPath,
+  "docs/verification/storybook-visual-proof/check-receipt.json",
+  "docs/verification/storybook-visual-proof/update-receipt.json"
+]);
 const visualReceiptRoots = [
   "docs/verification/internal-alpha/screenshots",
   "docs/verification/storybook-visual-proof/screenshots"
@@ -39,8 +44,11 @@ function walk(directory, context) {
       continue;
     }
     const path = join(directory, entry.name);
-    if (path === outputReceiptPath) {
-      context.generatedReceiptExclusions.push({ file: path, reason: "regenerated_by_current_scan" });
+    if (generatedReceiptPaths.has(path)) {
+      context.generatedReceiptExclusions.push({
+        file: path,
+        reason: path === outputReceiptPath ? "regenerated_by_current_scan" : "generated_visual_proof_receipt"
+      });
       continue;
     }
     if (isBinaryVisualReceipt(path)) {
