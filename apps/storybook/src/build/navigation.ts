@@ -24,7 +24,7 @@ export function navDomId(value: string): string {
 }
 
 export function categoryDomId(group: ContractStoryGroup, categoryId: string): string {
-  return `tcrn-doc-nav-category-${navDomId(group)}-${navDomId(categoryId)}`;
+  return `tcrn-storybook-category-${navDomId(group)}-${navDomId(categoryId)}`;
 }
 
 export function storyCategoriesForGroup(group: ContractStoryGroup, stories: ContractStory[]): Array<{ id: string; label: string; description: string; stories: ContractStory[] }> {

@@ -305,13 +305,15 @@ async function collectPageHealth(page) {
       status: node.getAttribute("data-component-library-status"),
       visible: node.getBoundingClientRect().width > 0 && node.getBoundingClientRect().height > 0
     }));
-    const currentNav = document.querySelector("[data-story-nav][aria-current='page']")?.getAttribute("data-story-nav") ?? null;
-    const currentStoryLink = document.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']");
-    const currentStoryNav = currentStoryLink?.getAttribute("data-doc-nav-item") ?? null;
-    const activeStoryList = currentStoryLink?.closest(".tcrn-doc-nav__stories");
-    const categoryToggles = Array.from(document.querySelectorAll("[data-doc-nav-category-toggle]"));
-    const categoryAriaFailures = categoryToggles
-      .filter((node) => !node.getAttribute("aria-controls") || !node.hasAttribute("aria-expanded"))
+	    const shell = document.querySelector("[data-contract-surface]");
+	    const storybookNav = shell?.querySelector("[data-product-shell-region='side-navigation']");
+	    const navRoot = storybookNav ?? document;
+	    const currentNav = shell?.getAttribute("data-active-story-section") ?? null;
+	    const currentStoryLink = navRoot.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
+	    const currentStoryNav = currentStoryLink?.getAttribute("data-product-shell-route") ?? null;
+	    const categoryGroups = Array.from(navRoot.querySelectorAll(".tcrn-nav-group"));
+    const categoryAriaFailures = categoryGroups
+      .filter((node) => !node.getAttribute("data-storybook-category-description"))
       .map((node) => node.textContent?.replace(/\s+/g, " ").trim() ?? "");
     const isVisibleElement = (node) => {
       if (!node) return false;
@@ -327,22 +329,23 @@ async function collectPageHealth(page) {
         || !node.hasAttribute("data-story-readiness")
         || !node.hasAttribute("data-story-proof-posture"))
       .map((node) => node.getAttribute("data-contract-story-id"));
-    const sidebar = document.querySelector(".tcrn-doc-sidebar");
+    const sidebar = document.querySelector(".tcrn-product-shell__sidebar");
     const sidebarRect = sidebar?.getBoundingClientRect();
-    const headerRect = document.querySelector(".tcrn-doc-header")?.getBoundingClientRect();
-    const layoutRect = document.querySelector(".tcrn-doc-layout")?.getBoundingClientRect();
+    const headerRect = document.querySelector(".tcrn-top-bar")?.getBoundingClientRect();
+    const layoutRect = document.querySelector(".tcrn-product-shell")?.getBoundingClientRect();
     return {
       title: document.title,
-      docShellMode: document.querySelector("[data-doc-shell]")?.getAttribute("data-doc-shell") ?? null,
-      docSidebarVisible: Boolean(sidebarRect && sidebarRect.width > 0 && sidebarRect.height > 0),
+	      shellAuthority: shell?.getAttribute("data-storybook-shell-authority") ?? null,
+      privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+      productShellSidebarVisible: Boolean(sidebarRect && sidebarRect.width > 0 && sidebarRect.height > 0),
       docGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
-      docNavGroupCount: document.querySelectorAll("[data-doc-nav-group]").length,
-      docNavCategoryCount: categoryToggles.length,
-      docNavOpenCategoryCount: document.querySelectorAll("[data-doc-nav-category-toggle][aria-expanded='true']").length,
-      activeStoryHiddenByCategory: activeStoryList ? activeStoryList.hasAttribute("hidden") : true,
+      productShellNavGroupCount: categoryGroups.length,
+      docNavCategoryCount: categoryGroups.length,
+      docNavOpenCategoryCount: categoryGroups.length,
+      activeStoryHiddenByCategory: false,
       categoryAriaFailures,
-      docNavItemCount: document.querySelectorAll("[data-doc-nav-item]").length,
-      docNavCurrentStoryCount: document.querySelectorAll("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']").length,
+	      productShellNavItemCount: navRoot.querySelectorAll("[data-product-shell-route]").length,
+	      productShellCurrentStoryCount: navRoot.querySelectorAll("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']").length,
       docChapterPagerCount: document.querySelectorAll("[data-doc-chapter-pager='true']").length,
       onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
       mandatoryBoundaryVisible: isVisibleElement(document.querySelector("[data-mandatory-boundary-block='visible']")),
@@ -351,13 +354,13 @@ async function collectPageHealth(page) {
       governanceStoryMetadataMissing,
       shellHeaderLayoutGap: headerRect && layoutRect ? Math.round(layoutRect.top - headerRect.bottom) : null,
       sidebarLeft: sidebarRect ? Math.round(sidebarRect.left) : null,
-      storybookLocale: document.querySelector("[data-contract-surface]")?.getAttribute("data-storybook-locale") ?? null,
+	      storybookLocale: shell?.getAttribute("data-storybook-locale") ?? null,
       localeOptionCount: document.querySelectorAll("[data-i18n-locale-select] option").length,
       localeSelectVisible: Boolean(document.querySelector("[data-i18n-locale-select]")),
       componentStorybookParityNodes,
       packageBackedDisabledNavItems,
       storybookOnlyPrototypeNodes,
-      activeSection: document.querySelector("[data-contract-surface]")?.getAttribute("data-active-story-section") ?? null,
+	      activeSection: shell?.getAttribute("data-active-story-section") ?? null,
       storySections,
       currentNav,
       currentStoryNav,
@@ -566,26 +569,26 @@ for (const viewport of viewports) {
 const storybookPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#components`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
-await storybookPage.waitForSelector("[data-doc-nav-item='component-family-index'][aria-current='location'][data-doc-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-product-shell-route='component-family-index'][aria-current='location'][data-storybook-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
 const hashRouteCheck = {
   ok: storybookPage.url().endsWith("/components.html")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
     && await storybookPage.locator("[data-story-id='component-family-index']").isVisible()
-    && await storybookPage.locator("[data-doc-nav-item='component-family-index'][aria-current='location'][data-doc-nav-item-active='true']").count() === 1
+    && await storybookPage.locator("[data-product-shell-route='component-family-index'][aria-current='location'][data-storybook-nav-item-active='true']").count() === 1
     && await storybookPage.locator("[data-story-id='welcome-governance']").count() === 0,
   source: `${staticSurfacePath}#components`,
   url: storybookPage.url()
 };
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#button-spec-usage`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
-await storybookPage.waitForSelector("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-product-shell-route='button-spec-usage'][aria-current='location'][data-storybook-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
 const hashStoryRouteCheck = {
   ok: storybookPage.url().endsWith("/components.html#button-spec-usage")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
     && await storybookPage.locator("[data-story-id='button-spec-usage']").isVisible()
-    && await storybookPage.locator("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']").count() === 1
+    && await storybookPage.locator("[data-product-shell-route='button-spec-usage'][aria-current='location'][data-storybook-nav-item-active='true']").count() === 1
     && await storybookPage.locator("[data-story-id='welcome-governance']").count() === 0,
   source: `${staticSurfacePath}#button-spec-usage`,
   url: storybookPage.url()
@@ -606,7 +609,7 @@ for (const route of firstStoryHashShellParityRoutes) {
   await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/${route.file}?theme=light&locale=zh-CN#${route.storyId}`);
   await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
   await storybookPage.waitForSelector(`[data-active-story-section='${route.group}']`);
-  await storybookPage.waitForSelector(`[data-doc-nav-item='${route.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
+  await storybookPage.waitForSelector(`[data-product-shell-route='${route.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
   await storybookPage.waitForTimeout(180);
   const metrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount }) => {
     const rectFor = (selector) => {
@@ -634,17 +637,19 @@ for (const route of firstStoryHashShellParityRoutes) {
     };
     const html = document.documentElement;
     const body = document.body;
-    const header = rectFor(".tcrn-doc-header");
+    const header = rectFor(".tcrn-top-bar");
     const pageHead = rectFor("[data-doc-page-head='governed-section']");
     const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
     const firstStoryRect = firstStory?.getBoundingClientRect();
-    const currentLocation = rectFor(".tcrn-doc-current-location");
-    const search = rectFor(".tcrn-doc-header-search");
-    const controls = rectFor(".tcrn-doc-header-controls");
-    const locale = rectFor(".tcrn-doc-locale-control-slot");
-    const activeStory = document.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']");
-    const shell = document.querySelector("[data-doc-shell]");
-    const headerBottom = header?.bottom ?? 0;
+    const currentLocation = rectFor(".tcrn-product-shell__current-location");
+    const search = rectFor(".tcrn-product-shell-search");
+    const controls = rectFor("[data-shell-control='theme-toggle']");
+    const locale = rectFor(".tcrn-shell-locale-menu");
+	    const shell = document.querySelector("[data-contract-surface]");
+	    const storybookNav = shell?.querySelector("[data-product-shell-region='side-navigation']");
+	    const navRoot = storybookNav ?? document;
+	    const activeStory = navRoot.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
+	    const headerBottom = header?.bottom ?? 0;
     const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
     return {
       group,
@@ -652,26 +657,27 @@ for (const route of firstStoryHashShellParityRoutes) {
       route: window.location.pathname + window.location.search + window.location.hash,
       locale: shell?.getAttribute("data-storybook-locale") ?? null,
       activeSection: shell?.getAttribute("data-active-story-section") ?? null,
-      activeStoryId: activeStory?.getAttribute("data-doc-nav-item") ?? null,
+      activeStoryId: activeStory?.getAttribute("data-product-shell-route") ?? null,
       scrollY: Number(window.scrollY.toFixed(2)),
       pageOverflow,
-      docShellMode: shell?.getAttribute("data-doc-shell") ?? null,
+      shellAuthority: shell?.getAttribute("data-storybook-shell-authority") ?? null,
+      privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
       docPageHeadCount: document.querySelectorAll("[data-doc-page-head='governed-section']").length,
       onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
       mandatoryBoundaryCount: document.querySelectorAll("[data-mandatory-boundary-block='visible']").length,
       noOverclaimBoundaryCount: document.querySelectorAll("[data-no-overclaim-boundary='visible']").length,
       legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
-      navGroupCount: document.querySelectorAll("[data-doc-nav-group]").length,
-      categoryLabelCount: document.querySelectorAll(".tcrn-doc-nav__category-label").length,
+	      navGroupCount: navRoot.querySelectorAll(".tcrn-nav-group").length,
+	      categoryLabelCount: navRoot.querySelectorAll(".tcrn-nav-group__label").length,
       expectedCategoryCount,
       expectedGroupCount,
       header,
       pageHead,
       firstStoryTop: firstStoryRect ? Number(firstStoryRect.top.toFixed(2)) : null,
-      headerStyles: styleFor(".tcrn-doc-global-bar", ["display", "grid-template-columns", "min-height"]),
-      workspaceStyles: styleFor(".tcrn-doc-header__workspace", ["display", "grid-template-columns", "gap"]),
+      headerStyles: styleFor(".tcrn-top-bar", ["display", "grid-template-columns", "min-height"]),
+      workspaceStyles: styleFor(".tcrn-product-shell__workspace", ["display", "grid-template-columns", "gap"]),
       pageHeadStyles: styleFor("[data-doc-page-head='governed-section']", ["display", "grid-template-columns", "gap", "border-bottom-style"]),
-      layoutStyles: styleFor(".tcrn-doc-layout", ["display", "grid-template-columns"]),
+      layoutStyles: styleFor(".tcrn-product-shell", ["display", "grid-template-columns"]),
       currentLocationBeforeSearch: Boolean(currentLocation && search && currentLocation.right <= search.left + 1),
       searchBeforeControls: Boolean(search && controls && search.right <= controls.left + 1),
       utilityTrailingGap: locale ? Number((window.innerWidth - locale.right).toFixed(2)) : null,
@@ -689,12 +695,13 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.activeSection !== route.group) failures.push(`active-section:${metrics.activeSection}`);
   if (metrics.activeStoryId !== route.storyId) failures.push(`active-story:${metrics.activeStoryId}`);
   if (metrics.scrollY > 2) failures.push(`first-story-hash-scrollY:${metrics.scrollY}`);
-  if (metrics.docShellMode !== "online-docs") failures.push(`doc-shell:${metrics.docShellMode}`);
+  if (metrics.shellAuthority !== "@tcrn/ui-react/ProductShell") failures.push(`shell-authority:${metrics.shellAuthority}`);
+  if (metrics.privateDocShellCloneCount !== 0) failures.push(`private-doc-shell-clones:${metrics.privateDocShellCloneCount}`);
   if (metrics.docPageHeadCount !== 1) failures.push(`page-head-count:${metrics.docPageHeadCount}`);
   if (metrics.onThisPageCount !== 1) failures.push(`on-this-page-count:${metrics.onThisPageCount}`);
   if (metrics.mandatoryBoundaryCount !== 1 || metrics.noOverclaimBoundaryCount !== 1) failures.push("mandatory-boundary-missing");
   if (metrics.legacyGlobalNavCount !== 0) failures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
-  if (metrics.navGroupCount !== sectionPages.length) failures.push(`nav-group-count:${metrics.navGroupCount}`);
+  if (metrics.navGroupCount !== expectedCategoryCount) failures.push(`nav-group-count:${metrics.navGroupCount}`);
   if (metrics.categoryLabelCount !== expectedCategoryCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
   if (metrics.pageOverflow) failures.push("page-overflow");
   if (!metrics.currentLocationBeforeSearch) failures.push("current-location-not-before-search");
@@ -737,19 +744,17 @@ const firstStoryHashShellParityCheck = {
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=zh-CN#component-family-index`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
-await storybookPage.locator("[data-doc-nav-category-toggle='controls-data']").click();
-await storybookPage.waitForSelector("[data-doc-nav-category-toggle='controls-data'][aria-expanded='true']");
-await storybookPage.locator("[data-doc-nav-item='table-work-index-spec']").waitFor({ state: "visible" });
-await storybookPage.locator("[data-doc-nav-item='table-work-index-spec']").click();
-await storybookPage.waitForSelector("[data-doc-nav-item='table-work-index-spec'][aria-current='location'][data-doc-nav-item-active='true']");
+await storybookPage.locator("[data-product-shell-region='side-navigation'] [data-product-shell-route='table-work-index-spec']").waitFor({ state: "visible" });
+await storybookPage.locator("[data-product-shell-region='side-navigation'] [data-product-shell-route='table-work-index-spec']").evaluate((link) => link.click());
+await storybookPage.waitForSelector("[data-product-shell-route='table-work-index-spec'][aria-current='location'][data-storybook-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
 const anchorScrollMetrics = await storybookPage.evaluate(() => {
   const target = document.getElementById("table-work-index-spec");
   const previous = document.getElementById("dialog-spec-usage");
-  const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
+  const active = document.querySelector("[data-product-shell-route][data-storybook-nav-item-active='true']");
   return {
     url: window.location.href,
-    activeStoryId: active?.getAttribute("data-doc-nav-item") ?? null,
+    activeStoryId: active?.getAttribute("data-product-shell-route") ?? null,
     targetTop: target ? Math.round(target.getBoundingClientRect().top) : null,
     previousBottom: previous ? Math.round(previous.getBoundingClientRect().bottom) : null,
     offset: Number.parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue("--tcrn-anchor-scroll-offset")),
@@ -768,7 +773,7 @@ const anchorScrollCheck = {
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns`);
 await storybookPage.waitForSelector("[data-active-story-section='Patterns']");
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
-await storybookPage.waitForSelector("[data-doc-nav-item='readiness-notification-patterns'][aria-current='location'][data-doc-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-product-shell-route='readiness-notification-patterns'][aria-current='location'][data-storybook-nav-item-active='true']");
 await storybookPage.waitForTimeout(300);
 await storybookPage.evaluate(() => {
   const target = document.getElementById("dashboard-page-templates");
@@ -782,15 +787,15 @@ await storybookPage.evaluate(() => {
   window.scrollTo({ top: nextTop, left: 0, behavior: "auto" });
 });
 await storybookPage.waitForFunction(() => {
-  const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
-  return active?.getAttribute("data-doc-nav-item") === "dashboard-page-templates";
+  const active = document.querySelector("[data-product-shell-route][data-storybook-nav-item-active='true']");
+  return active?.getAttribute("data-product-shell-route") === "dashboard-page-templates";
 });
 const scrollSpyMetrics = await storybookPage.evaluate(() => {
   const target = document.getElementById("dashboard-page-templates");
-  const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
+  const active = document.querySelector("[data-product-shell-route][data-storybook-nav-item-active='true']");
   return {
     url: window.location.href,
-    activeStoryId: active?.getAttribute("data-doc-nav-item") ?? null,
+    activeStoryId: active?.getAttribute("data-product-shell-route") ?? null,
     activeAriaCurrent: active?.getAttribute("aria-current") ?? null,
     targetTop: target ? Math.round(target.getBoundingClientRect().top) : null,
     offset: Number.parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue("--tcrn-anchor-scroll-offset")),
@@ -813,7 +818,7 @@ async function collectLocalizedTextCheck(page, check) {
   await page.goto(`${staticServer.origin}/${check.route}`);
   await page.waitForSelector(`[data-storybook-locale='${check.locale}']`);
   await page.waitForSelector(`[data-active-story-section='${check.section}']`);
-  await page.waitForSelector(`[data-doc-nav-item='${check.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
+  await page.waitForSelector(`[data-product-shell-route='${check.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
   await page.waitForTimeout(150);
   const bodyText = await page.evaluate(() => document.body.innerText);
   const missingRequiredText = check.requiredText.filter((text) => !bodyText.includes(text));
@@ -834,8 +839,8 @@ async function collectLocalizedShellChromeCheck(page, check) {
   await page.goto(`${staticServer.origin}/${check.route}`);
   await page.waitForSelector(`[data-storybook-locale='${check.locale}']`);
   await page.waitForSelector(`[data-active-story-section='${check.section}']`);
-  await page.waitForSelector(`[data-doc-nav-item='${check.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
-  await page.waitForSelector("[data-doc-nav-category-toggle]");
+  await page.waitForSelector(`[data-product-shell-route='${check.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
+  await page.waitForSelector("[data-navigation-primitive='nav-group']");
   await page.waitForTimeout(150);
   const metrics = await page.evaluate(({ requiredText, forbiddenText, expectedCategoryCount }) => {
     const bodyText = document.body.innerText;
@@ -854,26 +859,34 @@ async function collectLocalizedShellChromeCheck(page, check) {
             attribute: item.name,
             value: item.value
           }))));
-    const categoryLabels = Array.from(document.querySelectorAll(".tcrn-doc-nav__category-label"))
-      .map((node) => node.textContent?.trim() ?? "")
-      .filter(Boolean);
-    const categoryDescriptions = Array.from(document.querySelectorAll("[id^='tcrn-doc-nav-category-'][id$='-description']"))
-      .map((node) => node.textContent?.trim() ?? "")
-      .filter(Boolean);
-    const currentLocation = document.querySelector(".tcrn-doc-header__workspace");
-    const onThisPage = document.querySelector(".tcrn-doc-on-this-page");
-    return {
+	    const storybookNav = document.querySelector("[data-contract-surface='tcrn-design-system-storybook'] [data-product-shell-region='side-navigation']");
+	    const navRoot = storybookNav ?? document;
+	    const categoryLabels = Array.from(navRoot.querySelectorAll(".tcrn-nav-group__label"))
+	      .map((node) => node.textContent?.trim() ?? "")
+	      .filter(Boolean);
+	    const categoryDescriptions = Array.from(navRoot.querySelectorAll(".tcrn-nav-group[title]"))
+	      .map((node) => node.getAttribute("title")?.trim() ?? "")
+	      .filter(Boolean);
+	    const currentLocation = document.querySelector(".tcrn-product-shell__current-location");
+	    const onThisPage = document.querySelector(".tcrn-doc-on-this-page");
+	    const localizedTextSurface = [
+	      bodyText,
+	      currentLocation?.textContent ?? "",
+	      categoryLabels.join("\\n"),
+	      categoryDescriptions.join("\\n")
+	    ].join("\\n");
+	    return {
       locale: document.querySelector("[data-storybook-locale]")?.getAttribute("data-storybook-locale") ?? document.documentElement.getAttribute("data-storybook-locale"),
       route: window.location.pathname + window.location.search + window.location.hash,
-      missingRequiredText: requiredText.filter((text) => !bodyText.includes(text)),
-      leakedForbiddenText: forbiddenText.filter((text) => bodyText.includes(text)),
+	      missingRequiredText: requiredText.filter((text) => !localizedTextSurface.includes(text)),
+	      leakedForbiddenText: forbiddenText.filter((text) => localizedTextSurface.includes(text)),
       accessibilityAttributeLeaks,
       categoryLabels,
       categoryLabelCount: categoryLabels.length,
       categoryDescriptions,
       categoryDescriptionCount: categoryDescriptions.length,
       categoryDescriptionEnglishLeaks: categoryDescriptions.filter((text) => forbiddenText.some((term) => text.includes(term))),
-      currentLocationAriaLabel: currentLocation?.getAttribute("aria-label") ?? null,
+      currentLocationText: currentLocation?.textContent?.replace(/\s+/g, " ").trim() ?? null,
       onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null,
       expectedCategoryCount,
       bodyScrollWidth: body.scrollWidth,
@@ -893,7 +906,7 @@ async function collectLocalizedShellChromeCheck(page, check) {
       && metrics.categoryLabelCount === check.expectedCategoryCount
       && metrics.categoryDescriptionCount === check.expectedCategoryCount
       && metrics.categoryDescriptionEnglishLeaks.length === 0
-      && metrics.currentLocationAriaLabel === check.expectedCurrentLocationAriaLabel
+      && metrics.currentLocationText?.includes(check.expectedCurrentLocationAriaLabel)
       && metrics.onThisPageAriaLabel === check.expectedOnThisPageAriaLabel
       && !metrics.pageOverflow
   };
@@ -1061,7 +1074,7 @@ for (const locale of ["zh-CN", "en", "ja", "ko", "fr"]) {
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}?locale=ja#button-spec-usage`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-storybook-locale='ja']");
-await storybookPage.waitForSelector("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-product-shell-route='button-spec-usage'][aria-current='location'][data-storybook-nav-item-active='true']");
 const localeRouteCheck = {
   ok: storybookPage.url().endsWith("/components.html?locale=ja#button-spec-usage")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
@@ -1171,16 +1184,17 @@ const staticSectionChecks = browserSummaries.map((summary) => {
   const visibleStoryIds = summary.storyRegions.filter((story) => story.visible).map((story) => story.id);
   const expectedCurrentStoryNav = summary.expectedStoryIds[0];
   const ok = summary.activeSection === summary.expectedSection
-    && summary.docShellMode === "online-docs"
-    && summary.docSidebarVisible
+    && summary.shellAuthority === "@tcrn/ui-react/ProductShell"
+    && summary.privateDocShellCloneCount === 0
+    && summary.productShellSidebarVisible
     && summary.docGlobalNavCount === 0
-    && summary.docNavGroupCount === sectionPages.length
+    && summary.productShellNavGroupCount === expectedCategoryCount
     && summary.docNavCategoryCount === expectedCategoryCount
-    && summary.docNavOpenCategoryCount === 1
+    && summary.docNavOpenCategoryCount === expectedCategoryCount
     && !summary.activeStoryHiddenByCategory
     && summary.categoryAriaFailures.length === 0
-    && summary.docNavItemCount === requiredStories.length
-    && summary.docNavCurrentStoryCount === 1
+    && summary.productShellNavItemCount === requiredStories.length
+    && summary.productShellCurrentStoryCount === 1
     && summary.docChapterPagerCount === 1
     && summary.onThisPageCount === 1
     && summary.mandatoryBoundaryVisible
@@ -1204,16 +1218,17 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     section: summary.expectedSection,
     url: summary.url,
     ok,
-    docShellMode: summary.docShellMode,
-    docSidebarVisible: summary.docSidebarVisible,
+    shellAuthority: summary.shellAuthority,
+    privateDocShellCloneCount: summary.privateDocShellCloneCount,
+    productShellSidebarVisible: summary.productShellSidebarVisible,
     docGlobalNavCount: summary.docGlobalNavCount,
-    docNavGroupCount: summary.docNavGroupCount,
+    productShellNavGroupCount: summary.productShellNavGroupCount,
     docNavCategoryCount: summary.docNavCategoryCount,
     docNavOpenCategoryCount: summary.docNavOpenCategoryCount,
     activeStoryHiddenByCategory: summary.activeStoryHiddenByCategory,
     categoryAriaFailures: summary.categoryAriaFailures,
-    docNavItemCount: summary.docNavItemCount,
-    docNavCurrentStoryCount: summary.docNavCurrentStoryCount,
+    productShellNavItemCount: summary.productShellNavItemCount,
+    productShellCurrentStoryCount: summary.productShellCurrentStoryCount,
     docChapterPagerCount: summary.docChapterPagerCount,
     onThisPageCount: summary.onThisPageCount,
     mandatoryBoundaryVisible: summary.mandatoryBoundaryVisible,

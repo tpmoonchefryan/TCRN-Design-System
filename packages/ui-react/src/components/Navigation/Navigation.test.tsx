@@ -119,6 +119,7 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
       productName="TCRN AOS"
       moduleName="Frontend shell slice"
       brandProductId="aos"
+      brandHref="/cockpit"
       brandMarkSrc="/assets/tcrn-brand-mark.svg"
       brandMarkAlt="TCRN registered brand mark"
       currentRouteLabel="Cockpit"
@@ -166,6 +167,7 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"/);
   assert.match(html, /data-product-shell-semantic-api="collapse-theme-locale-search"/);
   assert.match(html, /data-registered-brand-lockup="@tcrn\/ui-react\/ShellBrandLockup"/);
+  assert.match(html, /href="\/cockpit"/);
   assert.match(html, /data-registered-product-logo="@tcrn\/ui-react\/ProductLogo"/);
   assert.match(html, /data-visible-registered-brand-lockup="true"/);
   assert.match(html, /data-product-id="aos"/);

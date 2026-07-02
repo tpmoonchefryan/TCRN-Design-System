@@ -733,7 +733,7 @@ async function collectPageHealth(page, state) {
       viewportWidth: window.innerWidth,
       bodyOverflowX: document.documentElement.scrollWidth > window.innerWidth + 1,
       storyRegionCount: document.querySelectorAll("[data-contract-story-id]").length,
-      currentDocNavItem: document.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']")?.getAttribute("data-doc-nav-item") ?? null,
+      currentProductShellRoute: document.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']")?.getAttribute("data-product-shell-route") ?? null,
       forbiddenHits,
       staticClosedDialogFixture: input.staticClosedDialogFixture ? {
         panelHidden: dialogPanel?.hasAttribute("hidden") ?? false,

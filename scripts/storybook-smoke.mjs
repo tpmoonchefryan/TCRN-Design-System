@@ -60,6 +60,18 @@ const pages = Object.fromEntries(Object.entries(pagesByGroup).map(([group, file]
   readFileSync(`apps/storybook/storybook-static/${file}`, "utf8")
 ]));
 const combinedHtml = Object.values(pages).join("\n");
+const readProductShellNavHtml = (html) => {
+  const start = html.indexOf('data-product-shell-region="side-navigation"');
+  if (start === -1) {
+    return "";
+  }
+  const asideStart = html.lastIndexOf("<aside", start);
+  const end = html.indexOf("</nav></aside>", start);
+  if (asideStart === -1 || end === -1) {
+    return "";
+  }
+  return html.slice(asideStart, end + "</nav></aside>".length);
+};
 const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-consumption-contract.json", "utf8"));
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
@@ -699,8 +711,16 @@ const aosOwnerQualityProductShellContract = {
   ]
 };
 const required = [
-  "data-doc-shell=\"online-docs\"",
-  "data-doc-nav=\"sections\"",
+  "data-storybook-shell-authority=\"@tcrn/ui-react/ProductShell\"",
+  "data-storybook-private-doc-shell-retired=\"true\"",
+  "data-package-backed-product-shell-boundary=\"side-nav-shell-v1\"",
+  "data-product-shell-route=\"",
+  "data-navigation-primitive=\"nav-group\"",
+  "data-navigation-primitive=\"nav-item\"",
+  "data-shell-control=\"product-shell-search\"",
+  "data-shell-control=\"theme-toggle\"",
+  "data-shell-control=\"locale-menu\"",
+  "data-shell-control=\"side-nav-collapse\"",
   "data-doc-chapter-pager=\"true\"",
   "data-anchor-scroll-controlled=\"true\"",
   "<link rel=\"icon\" href=\"tcrn-brand-mark.svg\" type=\"image/svg+xml\" />",
@@ -712,10 +732,8 @@ const required = [
   "data-storybook-supported-locales=\"zh-CN,en,ja,ko,fr\"",
   "data-storybook-theme=\"light\"",
   "data-storybook-supported-themes=\"light,dark\"",
-  "data-storybook-theme-control",
-  "data-storybook-theme-toggle",
   "data-current-theme=\"light\"",
-  "data-storybook-theme-option=\"dark\"",
+  "data-theme-next=\"dark\"",
   "tcrn-design-system-storybook-theme",
   "data-package-backed-shell-control=\"theme-toggle\"",
   "data-theme-icon=\"light\"",
@@ -731,8 +749,6 @@ const required = [
   "tcrn-doc-theme-transition-wash",
   "document.startViewTransition",
   "runFallbackThemeTransition",
-  "--tcrn-doc-header-search-resting-width: 180px",
-  "--tcrn-doc-header-search-expanded-width: 320px",
   "data-locale-menu-toggle",
   "data-package-backed-shell-control=\"locale-menu\"",
   "data-icon-name=\"globe-2\"",
@@ -800,7 +816,7 @@ const required = [
   "name=\"tcrn-ai-consumption-contract-route\" content=\"proof.html#ai-consumption-contract\"",
   "name=\"tcrn-ai-consumption-contract-required\" content=\"must-read-first\"",
   "Light and dark Storybook shell",
-  "Docs shell control contract",
+  "ProductShell control contract",
   "Use one circular icon-only button",
   "one whole-page transition",
   "current locale name in that locale",
@@ -817,18 +833,12 @@ const required = [
   "Product adoption, publication, release readiness, product acceptance, and final MVP acceptance are not claimed.",
   "tcrn-shell-layer",
   "data-shell-layer=\"mega-menu\"",
-  "tcrn-knowledge-shell-layout",
-  "data-standard-shell=\"online-docs\"",
-  "tcrn-knowledge-shell__topbar",
-  "tcrn-knowledge-shell__sidebar",
-  "tcrn-knowledge-shell__content",
-  "tcrn-knowledge-shell__pager",
   "Top bar, attached side navigation, content column, and chapter navigation stay one shell"
 ];
 const componentPage = pages.Components;
 const staticDocStyleIndex = componentPage.indexOf("data-tcrn-static-doc-style-source=\"storybook\"");
 const componentStyleIndex = componentPage.indexOf("data-tcrn-component-style-source=\"@tcrn/ui-react\"");
-const docShellComponentStyleIndex = componentPage.indexOf("data-tcrn-doc-shell-component-style=\"package-backed\"");
+const productShellComponentStyleIndex = componentPage.indexOf("data-storybook-product-shell-component-style=\"package-backed\"");
 const comparatorComponentStyleIndex = componentPage.indexOf("data-tcrn-product-shell-comparator-style=\"package-backed\"");
 if (staticDocStyleIndex < 0) {
   required.push("data-tcrn-static-doc-style-source=\"storybook\"");
@@ -836,8 +846,8 @@ if (staticDocStyleIndex < 0) {
 if (componentStyleIndex < 0) {
   required.push("data-tcrn-component-style-source=\"@tcrn/ui-react\"");
 }
-if (docShellComponentStyleIndex < 0) {
-  required.push("data-tcrn-doc-shell-component-style=\"package-backed\"");
+if (productShellComponentStyleIndex < 0) {
+  required.push("data-storybook-product-shell-component-style=\"package-backed\"");
 }
 if (comparatorComponentStyleIndex < 0) {
   required.push("data-tcrn-product-shell-comparator-style=\"package-backed\"");
@@ -1175,29 +1185,26 @@ if (forbidden.length > 0) {
 }
 for (const [group, html] of Object.entries(pages)) {
   const defaultStory = requiredStories.find((story) => story.group === group);
+  const navHtml = readProductShellNavHtml(html);
+  if (!navHtml) {
+    missing.push(`product-shell-side-navigation:${group}`);
+  }
   if (!html.includes(`data-active-story-section="${group}"`)) {
     missing.push(`data-active-story-section="${group}"`);
   }
   if (!html.includes(`data-story-section="${group}"`)) {
     missing.push(`data-story-section="${group}"`);
   }
-  if (!html.includes(`data-story-nav="${group}" aria-current="page"`)) {
-    missing.push(`data-story-nav="${group}" aria-current="page"`);
+  if (!defaultStory || !new RegExp(`data-product-shell-route="${defaultStory.id}"[^>]*aria-current="page"`).test(navHtml)) {
+    missing.push(`current-product-shell-route:${group}:${defaultStory?.id ?? "missing"}`);
   }
-  if (!defaultStory || !new RegExp(`data-doc-nav-item="${defaultStory.id}"[^>]*aria-current="location"[^>]*data-doc-nav-item-active="true"`).test(html)) {
-    missing.push(`current-doc-nav-item:${group}:${defaultStory?.id ?? "missing"}`);
+  const groupNavCount = navHtml.match(/data-navigation-primitive="nav-group"/g)?.length ?? 0;
+  if (groupNavCount !== expectedStoryCategoryCount) {
+    missing.push(`product-shell-nav-group-count:${group}:${groupNavCount}`);
   }
-  const groupNavCount = html.match(/data-doc-nav-group="/g)?.length ?? 0;
-  if (groupNavCount !== Object.keys(pagesByGroup).length) {
-    missing.push(`doc-nav-group-count:${group}:${groupNavCount}`);
-  }
-  const categoryNavCount = html.match(/data-doc-nav-category-toggle="/g)?.length ?? 0;
+  const categoryNavCount = navHtml.match(/data-storybook-category-id="/g)?.length ?? 0;
   if (categoryNavCount !== expectedStoryCategoryCount) {
-    missing.push(`doc-nav-category-count:${group}:${categoryNavCount}`);
-  }
-  const openCategoryNavCount = html.match(/data-doc-nav-category-open="true"/g)?.length ?? 0;
-  if (openCategoryNavCount !== 1) {
-    missing.push(`doc-nav-open-category-count:${group}:${openCategoryNavCount}`);
+    missing.push(`product-shell-category-count:${group}:${categoryNavCount}`);
   }
   for (const marker of [
     "data-doc-on-this-page=\"true\"",
@@ -1209,17 +1216,17 @@ for (const [group, html] of Object.entries(pages)) {
       missing.push(`${group}:${marker}`);
     }
   }
-  const storyNavCount = html.match(/data-doc-nav-item="/g)?.length ?? 0;
+  const storyNavCount = navHtml.match(/data-product-shell-route="/g)?.length ?? 0;
   if (storyNavCount !== requiredStories.length) {
-    missing.push(`doc-nav-story-count:${group}:${storyNavCount}`);
+    missing.push(`product-shell-story-count:${group}:${storyNavCount}`);
   }
-  const currentStoryNavCount = html.match(/<a [^>]*data-doc-nav-item-active="true"/g)?.length ?? 0;
+  const currentStoryNavCount = navHtml.match(/<a [^>]*data-selected="true"[^>]*data-navigation-primitive="nav-item"/g)?.length ?? 0;
   if (currentStoryNavCount !== 1) {
-    missing.push(`doc-nav-current-story-count:${group}:${currentStoryNavCount}`);
+    missing.push(`product-shell-current-story-count:${group}:${currentStoryNavCount}`);
   }
-  const ariaCurrentStoryCount = html.match(/<a [^>]*aria-current="location"/g)?.length ?? 0;
+  const ariaCurrentStoryCount = navHtml.match(/<a [^>]*aria-current="page"/g)?.length ?? 0;
   if (ariaCurrentStoryCount !== 1) {
-    missing.push(`doc-nav-current-story-aria-count:${group}:${ariaCurrentStoryCount}`);
+    missing.push(`product-shell-current-story-aria-count:${group}:${ariaCurrentStoryCount}`);
   }
   const sectionCount = html.match(/data-story-section="/g)?.length ?? 0;
   if (sectionCount !== 1) {
@@ -1235,8 +1242,8 @@ for (const story of requiredStories) {
     missing.push(`owning-page-story-governance-metadata:${story.group}:${story.id}`);
   }
   for (const html of Object.values(pages)) {
-    if (!html.includes(`data-doc-nav-item="${story.id}"`)) {
-      missing.push(`missing-doc-nav-item:${story.id}`);
+    if (!html.includes(`data-product-shell-route="${story.id}"`)) {
+      missing.push(`missing-product-shell-route:${story.id}`);
     }
   }
   for (const [group, html] of Object.entries(pages)) {
@@ -2273,7 +2280,7 @@ async function runChangelogI18nReadabilityProof() {
       await page.goto(`${origin}/${route}`);
       await page.waitForSelector("[data-storybook-locale='zh-CN']");
       await page.waitForSelector("[data-contract-story-id='local-changelog']");
-      await page.waitForSelector("[data-doc-nav-item='local-changelog'][aria-current='location'][data-doc-nav-item-active='true']");
+      await page.waitForSelector("[data-product-shell-route='local-changelog'][aria-current='location'][data-storybook-nav-item-active='true']");
       await page.waitForTimeout(150);
       const metrics = await page.evaluate(({ requiredText, forbiddenText }) => {
         const bodyText = document.body.innerText;
@@ -2424,8 +2431,8 @@ async function runGlobalStorybookZhCnIaProof() {
       await page.goto(`${origin}/${route}`);
       await page.waitForSelector("[data-storybook-locale='zh-CN']");
       await page.waitForSelector("[data-contract-story-id='welcome-governance']");
-      await page.waitForSelector("[data-doc-nav-item='welcome-governance'][aria-current='location'][data-doc-nav-item-active='true']");
-      await page.waitForSelector("[data-doc-nav-category-toggle='governance-entry']");
+      await page.waitForSelector("[data-product-shell-route='welcome-governance'][aria-current='location'][data-storybook-nav-item-active='true']");
+      await page.waitForSelector("[data-navigation-primitive='nav-group']");
       await page.waitForTimeout(150);
       const metrics = await page.evaluate(({ requiredText, forbiddenText }) => {
         const bodyText = document.body.innerText;
@@ -2444,31 +2451,39 @@ async function runGlobalStorybookZhCnIaProof() {
                 attribute: item.name,
                 value: item.value
               }))));
-        const categoryLabels = Array.from(document.querySelectorAll(".tcrn-doc-nav__category-label"))
-          .map((node) => node.textContent?.trim() ?? "")
-          .filter(Boolean);
-        const categoryDescriptions = Array.from(document.querySelectorAll("[id^='tcrn-doc-nav-category-'][id$='-description']"))
-          .map((node) => node.textContent?.trim() ?? "")
-          .filter(Boolean);
-        const currentLocation = document.querySelector(".tcrn-doc-header__workspace");
-        const onThisPage = document.querySelector(".tcrn-doc-on-this-page");
-        const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
-        return {
+	        const storybookNav = document.querySelector("[data-contract-surface='tcrn-design-system-storybook'] [data-product-shell-region='side-navigation']");
+	        const navRoot = storybookNav ?? document;
+	        const categoryLabels = Array.from(navRoot.querySelectorAll(".tcrn-nav-group__label"))
+	          .map((node) => node.textContent?.trim() ?? "")
+	          .filter(Boolean);
+	        const categoryDescriptions = Array.from(navRoot.querySelectorAll(".tcrn-nav-group[title]"))
+	          .map((node) => node.getAttribute("title")?.trim() ?? "")
+	          .filter(Boolean);
+	        const currentLocation = document.querySelector(".tcrn-product-shell__current-location");
+	        const onThisPage = document.querySelector(".tcrn-doc-on-this-page");
+	        const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
+	        const localizedTextSurface = [
+	          bodyText,
+	          currentLocation?.textContent ?? "",
+	          categoryLabels.join("\\n"),
+	          categoryDescriptions.join("\\n")
+	        ].join("\\n");
+	        return {
           locale: document.querySelector("[data-storybook-locale]")?.getAttribute("data-storybook-locale") ?? document.documentElement.getAttribute("data-storybook-locale"),
           bodyClientWidth: body.clientWidth,
           bodyScrollWidth: body.scrollWidth,
           htmlClientWidth: html.clientWidth,
           htmlScrollWidth: html.scrollWidth,
           pageOverflow,
-          missingRequiredText: requiredText.filter((text) => !bodyText.includes(text)),
-          leakedForbiddenText: forbiddenText.filter((text) => bodyText.includes(text)),
+	          missingRequiredText: requiredText.filter((text) => !localizedTextSurface.includes(text)),
+	          leakedForbiddenText: forbiddenText.filter((text) => localizedTextSurface.includes(text)),
           accessibilityAttributeLeaks,
           categoryLabelCount: categoryLabels.length,
           categoryLabels,
           categoryDescriptions,
           categoryDescriptionCount: categoryDescriptions.length,
           categoryDescriptionEnglishLeaks: categoryDescriptions.filter((text) => forbiddenText.some((term) => text.includes(term))),
-          currentLocationAriaLabel: currentLocation?.getAttribute("aria-label") ?? null,
+          currentLocationText: currentLocation?.textContent?.replace(/\s+/g, " ").trim() ?? null,
           onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null
         };
       }, { requiredText, forbiddenText });
@@ -2486,7 +2501,7 @@ async function runGlobalStorybookZhCnIaProof() {
           && metrics.categoryLabelCount === expectedStoryCategoryCount
           && metrics.categoryDescriptionCount === expectedStoryCategoryCount
           && metrics.categoryDescriptionEnglishLeaks.length === 0
-          && metrics.currentLocationAriaLabel === "当前位置"
+          && metrics.currentLocationText?.includes("当前位置")
           && metrics.onThisPageAriaLabel === "本页内容"
       };
     } finally {
@@ -2547,7 +2562,7 @@ async function runCrossSectionShellParityProof() {
         await page.goto(`${origin}/${route.file}?theme=light&locale=zh-CN#${route.storyId}`);
         await page.waitForSelector("[data-storybook-locale='zh-CN']");
         await page.waitForSelector(`[data-active-story-section='${route.group}']`);
-        await page.waitForSelector(`[data-doc-nav-item='${route.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
+        await page.waitForSelector(`[data-product-shell-route='${route.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
         await page.waitForTimeout(180);
         const metrics = await page.evaluate(({ group, storyId }) => {
           const rectFor = (selector) => {
@@ -2575,20 +2590,21 @@ async function runCrossSectionShellParityProof() {
           };
           const html = document.documentElement;
           const body = document.body;
-          const header = rectFor(".tcrn-doc-header");
-          const globalBar = rectFor(".tcrn-doc-global-bar");
-          const workspace = rectFor(".tcrn-doc-header__workspace");
-          const currentLocation = rectFor(".tcrn-doc-current-location");
-          const search = rectFor(".tcrn-doc-header-search");
-          const controls = rectFor(".tcrn-doc-header-controls");
-          const locale = rectFor(".tcrn-doc-locale-control-slot");
-          const pageHead = rectFor("[data-doc-page-head='governed-section']");
-          const shell = document.querySelector("[data-doc-shell]");
-          const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
-          const activeStory = document.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']");
-          const categoryLabels = Array.from(document.querySelectorAll(".tcrn-doc-nav__category-label"))
-            .map((node) => node.textContent?.trim() ?? "")
-            .filter(Boolean);
+          const header = rectFor(".tcrn-top-bar");
+          const globalBar = rectFor(".tcrn-product-shell__utility-row");
+          const workspace = rectFor(".tcrn-product-shell__workspace");
+          const currentLocation = rectFor(".tcrn-product-shell__current-location");
+          const search = rectFor(".tcrn-product-shell-search");
+          const controls = rectFor("[data-shell-control='theme-toggle']");
+          const locale = rectFor(".tcrn-shell-locale-menu");
+	          const pageHead = rectFor("[data-doc-page-head='governed-section']");
+	          const shell = document.querySelector("[data-contract-surface]");
+	          const storybookNav = shell?.querySelector("[data-product-shell-region='side-navigation']");
+	          const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
+	          const activeStory = storybookNav?.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
+	          const categoryLabels = Array.from((storybookNav ?? document).querySelectorAll(".tcrn-nav-group__label"))
+	            .map((node) => node.textContent?.trim() ?? "")
+	            .filter(Boolean);
           const headerBottom = header?.bottom ?? 0;
           const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
           return {
@@ -2597,16 +2613,17 @@ async function runCrossSectionShellParityProof() {
             url: window.location.pathname + window.location.search + window.location.hash,
             locale: shell?.getAttribute("data-storybook-locale") ?? null,
             activeSection: shell?.getAttribute("data-active-story-section") ?? null,
-            activeStoryId: activeStory?.getAttribute("data-doc-nav-item") ?? null,
+            activeStoryId: activeStory?.getAttribute("data-product-shell-route") ?? null,
             scrollY: Number(window.scrollY.toFixed(2)),
             pageOverflow,
-            docShellMode: shell?.getAttribute("data-doc-shell") ?? null,
+            shellAuthority: shell?.getAttribute("data-storybook-shell-authority") ?? null,
+            privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
             docPageHeadCount: document.querySelectorAll("[data-doc-page-head='governed-section']").length,
             onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
             mandatoryBoundaryCount: document.querySelectorAll("[data-mandatory-boundary-block='visible']").length,
             noOverclaimBoundaryCount: document.querySelectorAll("[data-no-overclaim-boundary='visible']").length,
             legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
-            navGroupCount: document.querySelectorAll("[data-doc-nav-group]").length,
+	            navGroupCount: (storybookNav ?? document).querySelectorAll(".tcrn-nav-group").length,
             categoryLabelCount: categoryLabels.length,
             categoryLabels,
             firstStoryTop: firstStory ? Number(firstStory.getBoundingClientRect().top.toFixed(2)) : null,
@@ -2618,10 +2635,10 @@ async function runCrossSectionShellParityProof() {
             search,
             controls,
             localeControl: locale,
-            headerStyles: styleFor(".tcrn-doc-global-bar", ["display", "grid-template-columns", "min-height"]),
-            workspaceStyles: styleFor(".tcrn-doc-header__workspace", ["display", "grid-template-columns", "gap", "padding-left", "padding-right"]),
+            headerStyles: styleFor(".tcrn-top-bar", ["display", "grid-template-columns", "min-height"]),
+            workspaceStyles: styleFor(".tcrn-product-shell__workspace", ["display", "grid-template-columns", "gap", "padding-left", "padding-right"]),
             pageHeadStyles: styleFor("[data-doc-page-head='governed-section']", ["display", "grid-template-columns", "gap", "border-bottom-style"]),
-            layoutStyles: styleFor(".tcrn-doc-layout", ["display", "grid-template-columns"]),
+            layoutStyles: styleFor(".tcrn-product-shell", ["display", "grid-template-columns"]),
             currentLocationBeforeSearch: Boolean(currentLocation && search && currentLocation.right <= search.left + 1),
             searchBeforeControls: Boolean(search && controls && search.right <= controls.left + 1),
             utilityTrailingGap: locale ? Number((window.innerWidth - locale.right).toFixed(2)) : null,
@@ -2634,12 +2651,13 @@ async function runCrossSectionShellParityProof() {
         if (metrics.activeSection !== route.group) routeFailures.push(`active-section:${metrics.activeSection}`);
         if (metrics.activeStoryId !== route.storyId) routeFailures.push(`active-story:${metrics.activeStoryId}`);
         if (metrics.scrollY > 2) routeFailures.push(`first-story-hash-scrollY:${metrics.scrollY}`);
-        if (metrics.docShellMode !== "online-docs") routeFailures.push(`doc-shell:${metrics.docShellMode}`);
+        if (metrics.shellAuthority !== "@tcrn/ui-react/ProductShell") routeFailures.push(`shell-authority:${metrics.shellAuthority}`);
+        if (metrics.privateDocShellCloneCount !== 0) routeFailures.push(`private-doc-shell-clones:${metrics.privateDocShellCloneCount}`);
         if (metrics.docPageHeadCount !== 1) routeFailures.push(`page-head-count:${metrics.docPageHeadCount}`);
         if (metrics.onThisPageCount !== 1) routeFailures.push(`on-this-page-count:${metrics.onThisPageCount}`);
         if (metrics.mandatoryBoundaryCount !== 1 || metrics.noOverclaimBoundaryCount !== 1) routeFailures.push("mandatory-boundary-missing");
         if (metrics.legacyGlobalNavCount !== 0) routeFailures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
-        if (metrics.navGroupCount !== expectedContractStoryGroups.length) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
+        if (metrics.navGroupCount !== expectedStoryCategoryCount) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
         if (metrics.categoryLabelCount !== expectedStoryCategoryCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
         if (metrics.pageOverflow) routeFailures.push("page-overflow");
         if (isDesktopViewport) {

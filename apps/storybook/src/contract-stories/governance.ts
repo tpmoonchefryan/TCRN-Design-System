@@ -46,7 +46,7 @@ export const storyCategoryDefinitions: Record<ContractStoryGroup, readonly Story
   ],
   Foundations: [
     { id: "tokens-i18n", label: "Tokens and i18n", description: "Design tokens, locale, theme, and copy-state contracts." },
-    { id: "copy-governance", label: "Copy governance", description: "Product copy rules, docs shell controls, and unsupported copy boundaries." }
+    { id: "copy-governance", label: "Copy governance", description: "Product copy rules, ProductShell controls, and unsupported copy boundaries." }
   ],
   Components: [
     { id: "component-inventory", label: "Component inventory", description: "Package-backed inventory, display primitives, and disclosure primitives." },

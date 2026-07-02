@@ -1018,9 +1018,9 @@ const legacyContractStories: LegacyContractStory[] = [
             <Button disabled disabledReason="Requires product adoption route">Publish theme</Button>
           </div>
         </section>
-        <ReadbackPanel title="Docs shell control contract">
+        <ReadbackPanel title="ProductShell control contract">
           <Text>
-            The Storybook documentation shell keeps global controls compact so they do not crowd search, current-location readback, or navigation.
+            The Storybook documentation frontend uses the merged ProductShell authority for shell, header, side navigation, search, theme, locale, and collapse controls.
           </Text>
           <TableShell
             columns={[
@@ -1031,8 +1031,8 @@ const legacyContractStories: LegacyContractStory[] = [
             rows={[
               {
                 control: "Implementation boundary",
-                rule: "Keep Storybook-specific page skeleton, routes, anchors, section navigation, and layout slots in the documentation shell; consume reusable controls from @tcrn/ui-react.",
-                blocked: "Private documentation-shell clones of theme toggle, locale menu, search results, side-nav collapse, or brand lockup components."
+                rule: "Use @tcrn/ui-react ProductShell as the documentation shell authority; Storybook may own content slots, anchors, static story sections, search index data, and proof pages.",
+                blocked: "Private tcrn-doc-shell, tcrn-doc-header, tcrn-doc-nav, tcrn-doc-global-bar, or tcrn-doc-header-search visual shells."
               },
               {
                 control: "Theme toggle",
@@ -2083,7 +2083,7 @@ const legacyContractStories: LegacyContractStory[] = [
               { rule: "Locale and copy-state", evidence: "All visible product copy uses approved i18n and copy-state contracts." },
               { rule: "Brand and logo", evidence: "Use admitted brand assets or route brand component admission before product use." },
               { rule: "Component imports", evidence: "Import package-backed Design System primitives from @tcrn/ui-react; do not rebuild local clones." },
-              { rule: "Storybook doc shell boundary", evidence: "Storybook page skeleton may keep .tcrn-doc-* layout slots, but SearchInput, ShellBrandLockup, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductShell comparator CSS, and reusable component behavior must be package-backed." },
+              { rule: "Storybook ProductShell boundary", evidence: "Storybook uses @tcrn/ui-react ProductShell for shell/header/sidebar/search/theme/locale/collapse behavior; private tcrn-doc-* visual shell clones are not admitted." },
               { rule: "Storybook section coverage", evidence: "Read every required Storybook section in the AI contract before implementation; do not treat one component page as the whole Design System." },
               { rule: "Visual equivalence", evidence: "Prove same package, same export, same variant/props/slots, and same Storybook visual instance; package import or boundary markers alone are insufficient." },
               { rule: "Token usage", evidence: "Use Design System tokens, reduced-motion rules, and accessibility states before custom CSS." },

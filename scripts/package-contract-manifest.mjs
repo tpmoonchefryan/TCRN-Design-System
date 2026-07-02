@@ -261,7 +261,7 @@ const storybookConsumption = {
   packageBackedNavigationProofVisible: storybookBodies.some((source) => /data-package-backed-navigation-proof="true"/.test(source.body)),
   noReusableInlineSourceClaim: storybookOnlyMarkers.length > 0 && deepImportHits.length === 0
 };
-const storybookShellControlContract = {
+const storybookProductShellControlContract = {
   uiReactReadmeBoundaryVisible: uiReactReadme.includes("Storybook Shell Control Boundary")
     && uiReactReadme.includes("registered package-backed product shell/effect boundary")
     && uiReactReadme.includes("`ProductShell`, `ProductShellSearch`, `ShellThemeToggle`, `ShellLocaleMenu`")
@@ -269,7 +269,7 @@ const storybookShellControlContract = {
     && uiReactReadme.includes("`productShellControlProps`")
     && uiReactReadme.includes("`onSearchResultActivate`"),
   themeToggleRuleVisible: uiReactReadme.includes("single icon-only circular button")
-    && storybookBodies.some((source) => /data-storybook-theme-toggle/.test(source.body)),
+    && storybookBodies.some((source) => /data-theme-toggle=['"]true['"]|data-shell-control=['"]theme-toggle['"]/.test(source.body)),
   wholePageTransitionRuleVisible: uiReactReadme.includes("whole-page shell transition")
     && storybookBodies.some((source) => /document\.startViewTransition/.test(source.body))
     && storybookBodies.some((source) => /tcrn-doc-theme-transition-wash/.test(source.body)),
@@ -278,7 +278,8 @@ const storybookShellControlContract = {
     && storybookBodies.some((source) => /data-locale-menu-toggle/.test(source.body)),
   focusSearchRuleVisible: uiReactReadme.includes("compact at rest and expand on focus")
     && /collapse on\s+blur/.test(uiReactReadme)
-    && storybookBodies.some((source) => /--tcrn-doc-header-search-expanded-width/.test(source.body)),
+    && storybookBodies.some((source) => /data-shell-control=['"]product-shell-search['"]/.test(source.body))
+    && storybookBodies.some((source) => /data-search-expanded/.test(source.body)),
   aiContractToolbarBoundaryVisible: /not a primary top-bar control for human\s+readers/.test(uiReactReadme)
     && storybookBodies.some((source) => /data-ai-consumption-contract-story/.test(source.body))
     && !storybookRuntimeBodies.some((source) => /data-ai-consumption-contract-link/.test(source.body))
@@ -345,7 +346,7 @@ const packageContractManifest = {
     && storybookConsumption.packageBackedComponentParityMarkers
     && storybookConsumption.packageBackedNavigationProofVisible
     && storybookConsumption.noReusableInlineSourceClaim
-    && Object.values(storybookShellControlContract).every(Boolean)
+    && Object.values(storybookProductShellControlContract).every(Boolean)
     && iconLibraryContract.dependencyExact
     && iconLibraryContract.iconExported
     && iconLibraryContract.iconNamesExported
@@ -363,7 +364,7 @@ const packageContractManifest = {
     componentParityMatrix,
     packageMetadataMatchesSource,
     storybookConsumption,
-    storybookShellControlContract,
+    storybookProductShellControlContract,
     noProductAdoptionClaimed: true,
     noPackagePublicationClaimed: true
   },

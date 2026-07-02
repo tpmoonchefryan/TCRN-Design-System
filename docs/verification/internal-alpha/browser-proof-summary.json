@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "a9e7ac04f3ebc8c65cfaa04f3c392f20e16d8306401bf3c01ac0ff07486f428f",
+    "contractPayloadDigest": "12bbba8a6f388f391e5e08dc68d74e748e7bd515b531a43e155ebbbaca36c7df",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
@@ -86,23 +86,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Welcome - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -129,31 +130,31 @@
         {
           "id": "welcome-governance",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 878
         },
         {
           "id": "governance-boundaries",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 673
         },
         {
           "id": "maintainers-routing",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 634
         },
         {
           "id": "contribution-model",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 339
         },
         {
           "id": "release-bug-policy",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 483
         }
       ],
@@ -183,23 +184,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Style Guide - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -220,44 +222,44 @@
         {
           "id": "brand-identity",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 1304
         },
         {
           "id": "color-palette",
           "visible": true,
-          "width": 1077,
-          "height": 2736
+          "width": 1045,
+          "height": 2595
         },
         {
           "id": "text-styles",
           "visible": true,
-          "width": 1077,
-          "height": 2744
+          "width": 1045,
+          "height": 2797
         },
         {
           "id": "grid-system",
           "visible": true,
-          "width": 1077,
-          "height": 751
+          "width": 1045,
+          "height": 768
         },
         {
           "id": "icons-motion",
           "visible": true,
-          "width": 1077,
-          "height": 2344
+          "width": 1045,
+          "height": 2509
         },
         {
           "id": "global-states",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 779
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
-          "width": 1077,
-          "height": 710
+          "width": 1045,
+          "height": 728
         }
       ],
       "clipped": [],
@@ -282,23 +284,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Foundations - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -319,19 +322,19 @@
         {
           "id": "tokens-copy-state",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 429
         },
         {
           "id": "i18n-theme-contract",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 1669
         },
         {
           "id": "copy-guidelines",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 513
         }
       ],
@@ -365,23 +368,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Components - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -444,68 +448,68 @@
         {
           "id": "component-family-index",
           "visible": true,
-          "width": 1077,
-          "height": 8523
+          "width": 1045,
+          "height": 8593
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
-          "width": 1077,
-          "height": 1038
+          "width": 1045,
+          "height": 1056
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 1188
         },
         {
           "id": "button-spec-usage",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 755
         },
         {
           "id": "field-spec-usage",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 1300
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
-          "width": 1077,
-          "height": 6293
+          "width": 1045,
+          "height": 6382
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
-          "width": 1077,
-          "height": 13735
+          "width": 1045,
+          "height": 13825
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
-          "width": 1077,
-          "height": 18660
+          "width": 1045,
+          "height": 18678
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 1277
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
-          "width": 1077,
-          "height": 2384
+          "width": 1045,
+          "height": 2401
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
-          "width": 1077,
-          "height": 5156
+          "width": 1045,
+          "height": 5223
         }
       ],
       "clipped": [],
@@ -536,23 +540,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Patterns - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -573,55 +578,55 @@
         {
           "id": "forms-patterns",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 241
         },
         {
           "id": "workbench-patterns",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 498
         },
         {
           "id": "work-management-patterns",
           "visible": true,
-          "width": 1077,
-          "height": 3039
+          "width": 1045,
+          "height": 3071
         },
         {
           "id": "readiness-notification-patterns",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 249
         },
         {
           "id": "selection-list-patterns",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 277
         },
         {
           "id": "modal-validation-patterns",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 316
         },
         {
           "id": "datagrid-fields-patterns",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 271
         },
         {
           "id": "big-list-search-patterns",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 316
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 449
         }
       ],
@@ -648,23 +653,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Proof - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -685,25 +691,25 @@
         {
           "id": "proof-matrix",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 503
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
-          "width": 1077,
-          "height": 5829
+          "width": 1045,
+          "height": 5987
         },
         {
           "id": "blocked-actions",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 580
         },
         {
           "id": "overlay-focus",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 225
         }
       ],
@@ -727,23 +733,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Change Log - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -764,7 +771,7 @@
         {
           "id": "local-changelog",
           "visible": true,
-          "width": 1077,
+          "width": 1045,
           "height": 726
         }
       ],
@@ -792,23 +799,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Welcome - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -835,31 +843,31 @@
         {
           "id": "welcome-governance",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 1006
         },
         {
           "id": "governance-boundaries",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 771
         },
         {
           "id": "maintainers-routing",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 721
         },
         {
           "id": "contribution-model",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 444
         },
         {
           "id": "release-bug-policy",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 536
         }
       ],
@@ -889,23 +897,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Style Guide - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -926,44 +935,44 @@
         {
           "id": "brand-identity",
           "visible": true,
-          "width": 691,
-          "height": 1808
+          "width": 651,
+          "height": 1826
         },
         {
           "id": "color-palette",
           "visible": true,
-          "width": 691,
-          "height": 3213
+          "width": 651,
+          "height": 3283
         },
         {
           "id": "text-styles",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 2990
         },
         {
           "id": "grid-system",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 897
         },
         {
           "id": "icons-motion",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 2822
         },
         {
           "id": "global-states",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 890
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
-          "width": 691,
-          "height": 763
+          "width": 651,
+          "height": 795
         }
       ],
       "clipped": [],
@@ -988,23 +997,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Foundations - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1025,20 +1035,20 @@
         {
           "id": "tokens-copy-state",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 461
         },
         {
           "id": "i18n-theme-contract",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 2063
         },
         {
           "id": "copy-guidelines",
           "visible": true,
-          "width": 691,
-          "height": 513
+          "width": 651,
+          "height": 545
         }
       ],
       "clipped": [],
@@ -1071,23 +1081,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Components - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1150,68 +1161,68 @@
         {
           "id": "component-family-index",
           "visible": true,
-          "width": 691,
-          "height": 8995
+          "width": 651,
+          "height": 9012
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 1202
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
-          "width": 691,
-          "height": 1293
+          "width": 651,
+          "height": 1310
         },
         {
           "id": "button-spec-usage",
           "visible": true,
-          "width": 691,
-          "height": 808
+          "width": 651,
+          "height": 825
         },
         {
           "id": "field-spec-usage",
           "visible": true,
-          "width": 691,
-          "height": 1388
+          "width": 651,
+          "height": 1405
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
-          "width": 691,
-          "height": 6838
+          "width": 651,
+          "height": 6888
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
-          "width": 691,
-          "height": 16556
+          "width": 651,
+          "height": 17014
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
-          "width": 691,
-          "height": 20906
+          "width": 651,
+          "height": 21179
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 1382
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
-          "width": 691,
-          "height": 2658
+          "width": 651,
+          "height": 2676
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
-          "width": 691,
-          "height": 6524
+          "width": 651,
+          "height": 6623
         }
       ],
       "clipped": [],
@@ -1242,23 +1253,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Patterns - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1279,55 +1291,55 @@
         {
           "id": "forms-patterns",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 258
         },
         {
           "id": "workbench-patterns",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 516
         },
         {
           "id": "work-management-patterns",
           "visible": true,
-          "width": 691,
-          "height": 3819
+          "width": 651,
+          "height": 3854
         },
         {
           "id": "readiness-notification-patterns",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 359
         },
         {
           "id": "selection-list-patterns",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 277
         },
         {
           "id": "modal-validation-patterns",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 351
         },
         {
           "id": "datagrid-fields-patterns",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 288
         },
         {
           "id": "big-list-search-patterns",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 351
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 537
         }
       ],
@@ -1354,23 +1366,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Proof - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1391,25 +1404,25 @@
         {
           "id": "proof-matrix",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 503
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
-          "width": 691,
-          "height": 7335
+          "width": 651,
+          "height": 7300
         },
         {
           "id": "blocked-actions",
           "visible": true,
-          "width": 691,
-          "height": 580
+          "width": 651,
+          "height": 597
         },
         {
           "id": "overlay-focus",
           "visible": true,
-          "width": 691,
+          "width": 651,
           "height": 243
         }
       ],
@@ -1433,23 +1446,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Change Log - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -68,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1470,8 +1484,8 @@
         {
           "id": "local-changelog",
           "visible": true,
-          "width": 691,
-          "height": 726
+          "width": 651,
+          "height": 758
         }
       ],
       "clipped": [],
@@ -1498,23 +1512,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Welcome - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -7632,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1541,32 +1556,32 @@
         {
           "id": "welcome-governance",
           "visible": true,
-          "width": 358,
-          "height": 1676
+          "width": 326,
+          "height": 1852
         },
         {
           "id": "governance-boundaries",
           "visible": true,
-          "width": 358,
-          "height": 1321
+          "width": 326,
+          "height": 1443
         },
         {
           "id": "maintainers-routing",
           "visible": true,
-          "width": 358,
-          "height": 1428
+          "width": 326,
+          "height": 1533
         },
         {
           "id": "contribution-model",
           "visible": true,
-          "width": 358,
+          "width": 326,
           "height": 607
         },
         {
           "id": "release-bug-policy",
           "visible": true,
-          "width": 358,
-          "height": 1015
+          "width": 326,
+          "height": 1050
         }
       ],
       "clipped": [],
@@ -1595,23 +1610,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Style Guide - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -7632,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1632,44 +1648,44 @@
         {
           "id": "brand-identity",
           "visible": true,
-          "width": 358,
-          "height": 3033
+          "width": 326,
+          "height": 3297
         },
         {
           "id": "color-palette",
           "visible": true,
-          "width": 358,
-          "height": 6391
+          "width": 326,
+          "height": 6950
         },
         {
           "id": "text-styles",
           "visible": true,
-          "width": 358,
-          "height": 6080
+          "width": 326,
+          "height": 6502
         },
         {
           "id": "grid-system",
           "visible": true,
-          "width": 358,
-          "height": 1557
+          "width": 326,
+          "height": 1644
         },
         {
           "id": "icons-motion",
           "visible": true,
-          "width": 358,
-          "height": 6216
+          "width": 326,
+          "height": 6619
         },
         {
           "id": "global-states",
           "visible": true,
-          "width": 358,
+          "width": 326,
           "height": 1748
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
-          "width": 358,
-          "height": 1411
+          "width": 326,
+          "height": 1516
         }
       ],
       "clipped": [],
@@ -1694,23 +1710,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Foundations - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -7632,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1731,20 +1748,20 @@
         {
           "id": "tokens-copy-state",
           "visible": true,
-          "width": 358,
+          "width": 326,
           "height": 578
         },
         {
           "id": "i18n-theme-contract",
           "visible": true,
-          "width": 358,
-          "height": 4075
+          "width": 326,
+          "height": 4654
         },
         {
           "id": "copy-guidelines",
           "visible": true,
-          "width": 358,
-          "height": 933
+          "width": 326,
+          "height": 986
         }
       ],
       "clipped": [],
@@ -1777,23 +1794,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Components - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -7632,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1856,68 +1874,68 @@
         {
           "id": "component-family-index",
           "visible": true,
-          "width": 358,
-          "height": 23575
+          "width": 326,
+          "height": 24509
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
-          "width": 358,
-          "height": 1989
+          "width": 326,
+          "height": 2111
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
-          "width": 358,
-          "height": 2015
+          "width": 326,
+          "height": 2169
         },
         {
           "id": "button-spec-usage",
           "visible": true,
-          "width": 358,
-          "height": 1217
+          "width": 326,
+          "height": 1415
         },
         {
           "id": "field-spec-usage",
           "visible": true,
-          "width": 358,
-          "height": 1855
+          "width": 326,
+          "height": 1960
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
-          "width": 358,
-          "height": 13959
+          "width": 326,
+          "height": 16574
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
-          "width": 358,
-          "height": 28238
+          "width": 326,
+          "height": 29939
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
-          "width": 358,
-          "height": 41629
+          "width": 326,
+          "height": 45540
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
-          "width": 358,
-          "height": 2129
+          "width": 326,
+          "height": 2182
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
-          "width": 358,
-          "height": 6472
+          "width": 326,
+          "height": 7086
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
-          "width": 358,
-          "height": 12330
+          "width": 326,
+          "height": 13330
         }
       ],
       "clipped": [],
@@ -1948,23 +1966,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Patterns - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -7632,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -1985,56 +2004,56 @@
         {
           "id": "forms-patterns",
           "visible": true,
-          "width": 358,
+          "width": 326,
           "height": 404
         },
         {
           "id": "workbench-patterns",
           "visible": true,
-          "width": 358,
+          "width": 326,
           "height": 778
         },
         {
           "id": "work-management-patterns",
           "visible": true,
-          "width": 358,
-          "height": 7358
+          "width": 326,
+          "height": 7824
         },
         {
           "id": "readiness-notification-patterns",
           "visible": true,
-          "width": 358,
-          "height": 481
+          "width": 326,
+          "height": 525
         },
         {
           "id": "selection-list-patterns",
           "visible": true,
-          "width": 358,
-          "height": 364
+          "width": 326,
+          "height": 381
         },
         {
           "id": "modal-validation-patterns",
           "visible": true,
-          "width": 358,
+          "width": 326,
           "height": 444
         },
         {
           "id": "datagrid-fields-patterns",
           "visible": true,
-          "width": 358,
+          "width": 326,
           "height": 396
         },
         {
           "id": "big-list-search-patterns",
           "visible": true,
-          "width": 358,
-          "height": 502
+          "width": 326,
+          "height": 520
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
-          "width": 358,
-          "height": 824
+          "width": 326,
+          "height": 920
         }
       ],
       "clipped": [],
@@ -2060,23 +2079,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Proof - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -7632,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2097,25 +2117,25 @@
         {
           "id": "proof-matrix",
           "visible": true,
-          "width": 358,
-          "height": 894
+          "width": 326,
+          "height": 911
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
-          "width": 358,
-          "height": 13049
+          "width": 326,
+          "height": 15327
         },
         {
           "id": "blocked-actions",
           "visible": true,
-          "width": 358,
+          "width": 326,
           "height": 588
         },
         {
           "id": "overlay-focus",
           "visible": true,
-          "width": 358,
+          "width": 326,
           "height": 314
         }
       ],
@@ -2139,23 +2159,24 @@
       "pageErrors": [],
       "failedRequests": [],
       "title": "Change Log - TCRN Design System Contract Stories",
-      "docShellMode": "online-docs",
-      "docSidebarVisible": true,
+      "shellAuthority": "@tcrn/ui-react/ProductShell",
+      "privateDocShellCloneCount": 0,
+      "productShellSidebarVisible": true,
       "docGlobalNavCount": 0,
-      "docNavGroupCount": 7,
+      "productShellNavGroupCount": 18,
       "docNavCategoryCount": 18,
-      "docNavOpenCategoryCount": 1,
+      "docNavOpenCategoryCount": 18,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
-      "docNavItemCount": 40,
-      "docNavCurrentStoryCount": 1,
+      "productShellNavItemCount": 40,
+      "productShellCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
       "mandatoryBoundaryVisible": true,
       "noOverclaimBoundaryVisible": true,
       "governanceBoundaryStripVisible": true,
       "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
+      "shellHeaderLayoutGap": -7632,
       "sidebarLeft": 0,
       "storybookLocale": "en",
       "localeOptionCount": 5,
@@ -2176,8 +2197,8 @@
         {
           "id": "local-changelog",
           "visible": true,
-          "width": 358,
-          "height": 1189
+          "width": 326,
+          "height": 1206
         }
       ],
       "clipped": [],

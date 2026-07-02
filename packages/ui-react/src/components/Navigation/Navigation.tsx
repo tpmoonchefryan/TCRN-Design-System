@@ -788,6 +788,8 @@ export interface ProductShellNavItem {
 export interface ProductShellNavGroup {
   id: string;
   label: string;
+  description?: string;
+  sectionLabel?: string;
   selected?: boolean;
   items: readonly ProductShellNavItem[];
 }
@@ -796,6 +798,7 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   productName: string;
   moduleName: string;
   brandProductId?: TcrnProductLogoId;
+  brandHref?: string;
   brandSuffix?: string;
   brandCaption?: string;
   brandMarkSrc?: string;
@@ -832,6 +835,7 @@ export function ProductShell({
   productName,
   moduleName,
   brandProductId,
+  brandHref = "/",
   brandSuffix,
   brandCaption,
   brandMarkSrc,
@@ -907,7 +911,7 @@ export function ProductShell({
         <div className="tcrn-product-shell__sidebar-header">
           <a
             className="tcrn-product-shell__brand"
-            href="/"
+            href={brandHref}
             aria-label={`${productName} home`}
             data-registered-brand-lockup="@tcrn/ui-react/ShellBrandLockup"
             data-registered-product-logo="@tcrn/ui-react/ProductLogo"
@@ -929,24 +933,32 @@ export function ProductShell({
             onCollapsedChange={onCollapsedChange}
           />
         </div>
-        <SideNav id={navId} label={navLabel} className="tcrn-product-shell__nav" data-registered-navigation-only="true">
-          {navGroups.map((group) => (
-            <NavGroup key={group.id} label={group.label} selected={group.selected}>
-              {group.items.map((item) => (
-                <NavItem key={item.id}
-                  href={item.href}
-                  iconName={item.iconName}
-                  selected={item.selected}
-                  disabled={item.disabled}
-                  disabledReason={item.disabledReason}
-                  data-product-shell-route={item.id}
-                >
-                  {item.label}
-                </NavItem>
-              ))}
-            </NavGroup>
-          ))}
-        </SideNav>
+          <SideNav id={navId} label={navLabel} className="tcrn-product-shell__nav" data-registered-navigation-only="true">
+            {navGroups.map((group) => (
+              <NavGroup key={group.id}
+                label={group.label}
+                selected={group.selected}
+                title={group.description}
+                data-storybook-category-id={group.id}
+                data-storybook-category-label={group.label}
+                data-storybook-category-description={group.description}
+                data-storybook-section-label={group.sectionLabel}
+              >
+                {group.items.map((item) => (
+                  <NavItem key={item.id}
+                    href={item.href}
+                    iconName={item.iconName}
+                    selected={item.selected}
+                    disabled={item.disabled}
+                    disabledReason={item.disabledReason}
+                    data-product-shell-route={item.id}
+                  >
+                    {item.label}
+                  </NavItem>
+                ))}
+              </NavGroup>
+            ))}
+          </SideNav>
       </aside>
       <div className="tcrn-product-shell__workspace">
         <header className="tcrn-top-bar" aria-label={`${moduleName} shell controls`} data-product-shell-region="topbar">

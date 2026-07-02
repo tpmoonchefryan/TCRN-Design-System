@@ -1107,7 +1107,7 @@
       "packageBackedNavigationProofVisible": true,
       "noReusableInlineSourceClaim": true
     },
-    "storybookShellControlContract": {
+    "storybookProductShellControlContract": {
       "uiReactReadmeBoundaryVisible": true,
       "themeToggleRuleVisible": true,
       "wholePageTransitionRuleVisible": true,
