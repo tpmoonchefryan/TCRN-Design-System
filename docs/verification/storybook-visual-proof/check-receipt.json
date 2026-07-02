@@ -1,11 +1,11 @@
 {
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
-  "sourceHead": "d1d042a33a3f49d60311ae47048423161f3b8589",
+  "sourceHead": "77839945be212a7d184b219d38cbdc72963de03e",
   "sourceGitStatus": "## main...origin/main [ahead 40]",
   "sourceHeadEquivalenceReadback": {
     "disposition": "clean_head_receipt_generated_from_committed_source",
-    "sourceHead": "d1d042a33a3f49d60311ae47048423161f3b8589",
+    "sourceHead": "77839945be212a7d184b219d38cbdc72963de03e",
     "sourceDirtyFileCount": 0,
     "sourceContentDigest": "e689cd1938dcf052365f653ecebbf534870014495b03258516b5a2604d31199c",
     "sourceContentDigestDisposition": "digest covers the built static contract-doc outputs, package metadata, visual proof script, and private-output scan script used by this receipt",
@@ -7136,16 +7136,16 @@
           {
             "attempt": 1,
             "sha256": "14fde3ce8f1deeb4635da7456c616ee66ce481c1cb452b9ca1d4de13c45f8fd7",
-            "rawSha256": "088d2a6b17298eac07a532a49bc51c57d79fd098c9afe0e5b948f5d5a1a18ffe",
+            "rawSha256": "8334fe0960dd8b154aa3a10836fbb4a15943e42beb56e60f39c04d5f1d65c2d4",
             "bytes": 83068,
-            "rawBytes": 425821
+            "rawBytes": 425813
           },
           {
             "attempt": 2,
             "sha256": "14fde3ce8f1deeb4635da7456c616ee66ce481c1cb452b9ca1d4de13c45f8fd7",
-            "rawSha256": "088d2a6b17298eac07a532a49bc51c57d79fd098c9afe0e5b948f5d5a1a18ffe",
+            "rawSha256": "8334fe0960dd8b154aa3a10836fbb4a15943e42beb56e60f39c04d5f1d65c2d4",
             "bytes": 83068,
-            "rawBytes": 425821
+            "rawBytes": 425813
           }
         ]
       },
@@ -9152,16 +9152,16 @@
           {
             "attempt": 1,
             "sha256": "c3d7121ada3e88ad489a89673a9d3bce497e53cbecde4f5e7dcb2a768d831c4c",
-            "rawSha256": "b026590306a9edcad8c369225ce839d9f9b110b9cc468110967f24fd419f3d46",
+            "rawSha256": "f47d5fe0e93684fea45cf6b3a129972e1d9a5e4912fa77cdf964f4981e3314bc",
             "bytes": 62782,
-            "rawBytes": 330560
+            "rawBytes": 330545
           },
           {
             "attempt": 2,
             "sha256": "c3d7121ada3e88ad489a89673a9d3bce497e53cbecde4f5e7dcb2a768d831c4c",
-            "rawSha256": "b026590306a9edcad8c369225ce839d9f9b110b9cc468110967f24fd419f3d46",
+            "rawSha256": "f47d5fe0e93684fea45cf6b3a129972e1d9a5e4912fa77cdf964f4981e3314bc",
             "bytes": 62782,
-            "rawBytes": 330560
+            "rawBytes": 330545
           }
         ]
       },
@@ -15200,16 +15200,16 @@
           {
             "attempt": 1,
             "sha256": "d15bbaf8fa1cf6f674d96ca4780a18a51e01dd6835f392d99c5ab0c67f5fd5cc",
-            "rawSha256": "9f42217f5cda9725789f6c1c88e8d66a89a494a0d2b48254a2f30ecb54794b00",
+            "rawSha256": "eef792303fa0a3b2a4686eae47b3fb72ea1af8cf475bb9907c8a78046e24179f",
             "bytes": 66860,
-            "rawBytes": 330555
+            "rawBytes": 330539
           },
           {
             "attempt": 2,
             "sha256": "d15bbaf8fa1cf6f674d96ca4780a18a51e01dd6835f392d99c5ab0c67f5fd5cc",
-            "rawSha256": "9f42217f5cda9725789f6c1c88e8d66a89a494a0d2b48254a2f30ecb54794b00",
+            "rawSha256": "eef792303fa0a3b2a4686eae47b3fb72ea1af8cf475bb9907c8a78046e24179f",
             "bytes": 66860,
-            "rawBytes": 330555
+            "rawBytes": 330539
           }
         ]
       },
