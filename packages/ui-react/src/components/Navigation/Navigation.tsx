@@ -617,7 +617,9 @@ export function SkipLink({ href = "#content", className, children, ...props }: S
 export interface ProductShellSearchResult {
   id: string;
   title: string;
+  titleKey?: string;
   meta?: string;
+  metaKey?: string;
   href: string;
   selected?: boolean;
 }
@@ -636,6 +638,9 @@ export interface ProductShellSearchProps extends Omit<HTMLAttributes<HTMLDivElem
   onDismiss?: (reason: ProductShellSearchDismissReason) => void;
   onResultActivate?: (result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void;
   inputProps?: Omit<SearchInputProps, "type" | "placeholder" | "shortcut" | "value" | "defaultValue" | "onChange" | "onInput" | "onFocus" | "onBlur" | "onKeyDown">;
+  "data-product-shell-search-label-key"?: string;
+  "data-product-shell-search-results-label-key"?: string;
+  "data-product-shell-search-empty-label-key"?: string;
 }
 
 export function ProductShellSearch({
@@ -764,6 +769,8 @@ export function ProductShellSearch({
             aria-selected={result.selected ? "true" : undefined}
             data-search-result
             data-selected={result.selected ? "true" : undefined}
+            data-search-result-title-key={result.titleKey}
+            data-search-result-meta-key={result.metaKey}
           >
             <strong>{result.title}</strong>
             {result.meta ? <span>{result.meta}</span> : null}
@@ -779,6 +786,7 @@ export function ProductShellSearch({
 export interface ProductShellNavItem {
   id: string;
   label: string;
+  labelKey?: string;
   href: string;
   iconName?: IconName;
   selected?: boolean;
@@ -789,8 +797,11 @@ export interface ProductShellNavItem {
 export interface ProductShellNavGroup {
   id: string;
   label: string;
+  labelKey?: string;
   description?: string;
+  descriptionKey?: string;
   sectionLabel?: string;
+  sectionLabelKey?: string;
   selected?: boolean;
   items: readonly ProductShellNavItem[];
 }
@@ -805,7 +816,9 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   brandMarkSrc?: string;
   brandMarkAlt?: string;
   currentRouteLabel: string;
+  currentRouteLabelKey?: string;
   currentLocationLabel?: string;
+  currentLocationLabelKey?: string;
   navLabel: string;
   navGroups: readonly ProductShellNavGroup[];
   locales: readonly ShellLocaleOption[];
@@ -842,7 +855,9 @@ export function ProductShell({
   brandMarkSrc,
   brandMarkAlt,
   currentRouteLabel,
+  currentRouteLabelKey,
   currentLocationLabel = "Current location",
+  currentLocationLabelKey,
   navLabel,
   navGroups,
   locales,
@@ -944,6 +959,9 @@ export function ProductShell({
                 data-storybook-category-label={group.label}
                 data-storybook-category-description={group.description}
                 data-storybook-section-label={group.sectionLabel}
+                data-product-shell-nav-group-label-key={group.labelKey}
+                data-product-shell-nav-group-description-key={group.descriptionKey}
+                data-product-shell-nav-group-section-label-key={group.sectionLabelKey}
               >
                 {group.items.map((item) => (
                   <NavItem key={item.id}
@@ -953,6 +971,7 @@ export function ProductShell({
                     disabled={item.disabled}
                     disabledReason={item.disabledReason}
                     data-product-shell-route={item.id}
+                    data-product-shell-route-label-key={item.labelKey}
                   >
                     {item.label}
                   </NavItem>
@@ -964,7 +983,11 @@ export function ProductShell({
       <div className="tcrn-product-shell__workspace">
         <header className="tcrn-top-bar" aria-label={`${moduleName} shell controls`} data-product-shell-region="topbar">
           <div className="tcrn-product-shell__utility-row" data-product-shell-region="utility-row">
-            <div className="tcrn-product-shell__current-location">
+            <div
+              className="tcrn-product-shell__current-location"
+              data-product-shell-current-location-label-key={currentLocationLabelKey}
+              data-product-shell-current-route-label-key={currentRouteLabelKey}
+            >
               <span>{currentLocationLabel}</span>
               <strong>{currentRouteLabel}</strong>
             </div>

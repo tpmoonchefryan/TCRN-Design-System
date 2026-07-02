@@ -536,6 +536,7 @@
         "legacyGlobalNavCount": 0,
         "navGroupCount": 18,
         "categoryLabelCount": 18,
+        "productShellEnglishLeaks": [],
         "expectedCategoryCount": 18,
         "expectedGroupCount": 7,
         "header": {
@@ -601,6 +602,7 @@
         "legacyGlobalNavCount": 0,
         "navGroupCount": 18,
         "categoryLabelCount": 18,
+        "productShellEnglishLeaks": [],
         "expectedCategoryCount": 18,
         "expectedGroupCount": 7,
         "header": {
@@ -666,6 +668,7 @@
         "legacyGlobalNavCount": 0,
         "navGroupCount": 18,
         "categoryLabelCount": 18,
+        "productShellEnglishLeaks": [],
         "expectedCategoryCount": 18,
         "expectedGroupCount": 7,
         "header": {
@@ -731,6 +734,7 @@
         "legacyGlobalNavCount": 0,
         "navGroupCount": 18,
         "categoryLabelCount": 18,
+        "productShellEnglishLeaks": [],
         "expectedCategoryCount": 18,
         "expectedGroupCount": 7,
         "header": {
@@ -796,6 +800,7 @@
         "legacyGlobalNavCount": 0,
         "navGroupCount": 18,
         "categoryLabelCount": 18,
+        "productShellEnglishLeaks": [],
         "expectedCategoryCount": 18,
         "expectedGroupCount": 7,
         "header": {
@@ -861,6 +866,7 @@
         "legacyGlobalNavCount": 0,
         "navGroupCount": 18,
         "categoryLabelCount": 18,
+        "productShellEnglishLeaks": [],
         "expectedCategoryCount": 18,
         "expectedGroupCount": 7,
         "header": {
@@ -926,6 +932,7 @@
         "legacyGlobalNavCount": 0,
         "navGroupCount": 18,
         "categoryLabelCount": 18,
+        "productShellEnglishLeaks": [],
         "expectedCategoryCount": 18,
         "expectedGroupCount": 7,
         "header": {
@@ -1139,6 +1146,15 @@
           "Current location",
           "On this page",
           "Documentation sections",
+          "Welcome and governance",
+          "Maintainers and routing",
+          "Contribution model",
+          "Icons and motion",
+          "Global states",
+          "Copy creation rules",
+          "Component family index",
+          "AI consumption contract",
+          "Local changelog",
           "Governance entry",
           "Routing and contribution",
           "Identity and brand",

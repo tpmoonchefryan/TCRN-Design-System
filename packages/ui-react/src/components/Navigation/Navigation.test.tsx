@@ -126,6 +126,8 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
       brandMarkSrc="/assets/tcrn-brand-mark.svg"
       brandMarkAlt="TCRN registered brand mark"
       currentRouteLabel="Cockpit"
+      currentRouteLabelKey="story.cockpit.title"
+      currentLocationLabelKey="shell.currentLocationLabel"
       navLabel="Registered AOS modules"
       collapsed
       collapsedStorageKey="tcrn-aos-side-nav-collapsed"
@@ -142,17 +144,23 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
         query: "shell",
         expanded: true,
         results: [
-          { id: "cockpit", title: "Cockpit", meta: "Local proof shell", href: "/cockpit", selected: true }
-        ]
+          { id: "cockpit", title: "Cockpit", titleKey: "story.cockpit.title", meta: "Local proof shell", metaKey: "group.Operations", href: "/cockpit", selected: true }
+        ],
+        "data-product-shell-search-label-key": "shell.searchLabel"
       }}
       navGroups={[
         {
           id: "registered",
           label: "Registered shell entries",
+          labelKey: "category.registered",
+          description: "Registered IA routes",
+          descriptionKey: "category.registered.description",
+          sectionLabel: "Operations",
+          sectionLabelKey: "group.Operations",
           selected: true,
           items: [
-            { id: "cockpit", label: "Cockpit", href: "/cockpit", iconName: "home", selected: true },
-            { id: "work", label: "Work", href: "/work", iconName: "database" }
+            { id: "cockpit", label: "Cockpit", labelKey: "story.cockpit.title", href: "/cockpit", iconName: "home", selected: true },
+            { id: "work", label: "Work", labelKey: "story.work.title", href: "/work", iconName: "database" }
           ]
         }
       ]}
@@ -169,6 +177,8 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"/);
   assert.match(html, /data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"/);
   assert.match(html, /data-product-shell-semantic-api="collapse-theme-locale-search"/);
+  assert.match(html, /data-product-shell-current-location-label-key="shell.currentLocationLabel"/);
+  assert.match(html, /data-product-shell-current-route-label-key="story.cockpit.title"/);
   assert.match(html, /data-registered-brand-lockup="@tcrn\/ui-react\/ShellBrandLockup"/);
   assert.match(html, /href="\/cockpit"/);
   assert.match(html, /data-registered-product-logo="@tcrn\/ui-react\/ProductLogo"/);
@@ -185,9 +195,17 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-side-nav-persisted-key="tcrn-aos-side-nav-collapsed"/);
   assert.match(html, /data-side-nav-semantic-api="onCollapsedChange"/);
   assert.match(html, /data-registered-navigation-only="true"/);
+  assert.match(html, /data-product-shell-nav-group-label-key="category.registered"/);
+  assert.match(html, /data-product-shell-nav-group-description-key="category.registered.description"/);
+  assert.match(html, /data-product-shell-nav-group-section-label-key="group.Operations"/);
   assert.match(html, /data-product-shell-route="cockpit"/);
+  assert.match(html, /data-product-shell-route-label-key="story.cockpit.title"/);
   assert.match(html, /data-product-shell-route="work"/);
+  assert.match(html, /data-product-shell-route-label-key="story.work.title"/);
   assert.match(html, /data-shell-control="product-shell-search"/);
+  assert.match(html, /data-product-shell-search-label-key="shell.searchLabel"/);
+  assert.match(html, /data-search-result-title-key="story.cockpit.title"/);
+  assert.match(html, /data-search-result-meta-key="group.Operations"/);
   assert.match(html, /data-search-dismissal-contract="blur-outside-pointer-tab-escape"/);
   assert.match(html, /data-search-semantic-api="onQueryChange-onExpandedChange-onDismiss-onResultActivate"/);
   assert.match(html, /data-search-expanded="true"/);

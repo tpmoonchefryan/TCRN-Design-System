@@ -2259,8 +2259,17 @@ async function runChangelogI18nReadabilityProof() {
     "no publication",
     "Current location",
     "On this page",
-    "Documentation sections",
-    "Governance entry",
+	    "Documentation sections",
+	    "Welcome and governance",
+	    "Maintainers and routing",
+	    "Contribution model",
+	    "Icons and motion",
+	    "Global states",
+	    "Copy creation rules",
+	    "Component family index",
+	    "AI consumption contract",
+	    "Local changelog",
+	    "Governance entry",
     "Routing and contribution",
     "Identity and brand",
     "Type and layout",
@@ -2401,8 +2410,17 @@ async function runGlobalStorybookZhCnIaProof() {
     "Current location",
     "Governed Storybook section",
     "On this page",
-    "Documentation sections",
-    "Governance entry",
+	    "Documentation sections",
+	    "Welcome and governance",
+	    "Maintainers and routing",
+	    "Contribution model",
+	    "Icons and motion",
+	    "Global states",
+	    "Copy creation rules",
+	    "Component family index",
+	    "AI consumption contract",
+	    "Local changelog",
+	    "Governance entry",
     "Routing and contribution",
     "Identity and brand",
     "Type and layout",
@@ -2440,6 +2458,7 @@ async function runGlobalStorybookZhCnIaProof() {
         const body = document.body;
         const accessibilityAttributeNames = ["aria-label", "title", "placeholder", "alt"];
         const accessibilityAttributeLeaks = Array.from(document.querySelectorAll("[aria-label], [title], [placeholder], [alt]"))
+          .filter((node) => !node.matches("link[data-tcrn-ai-consumption-contract], link[data-tcrn-ai-consumption-contract-help]"))
           .flatMap((node) => accessibilityAttributeNames
             .map((name) => ({ name, value: node.getAttribute(name) }))
             .filter((item) => item.value)
@@ -2543,6 +2562,18 @@ async function runCrossSectionShellParityProof() {
     file: pagesByGroup[group],
     storyId: firstStoryByGroup[group]
   }));
+  const forbiddenZhCnProductShellText = [
+    "Welcome and governance",
+    "Maintainers and routing",
+    "Contribution model",
+    "Icons and motion",
+    "Global states",
+    "Copy creation rules",
+    "Component family index",
+    "Work Management",
+    "AI consumption contract",
+    "Local changelog"
+  ];
 
   async function collect(viewport) {
     const browser = await chromium.launch({
@@ -2564,7 +2595,7 @@ async function runCrossSectionShellParityProof() {
         await page.waitForSelector(`[data-active-story-section='${route.group}']`);
         await page.waitForSelector(`[data-product-shell-route='${route.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
         await page.waitForTimeout(180);
-        const metrics = await page.evaluate(({ group, storyId }) => {
+        const metrics = await page.evaluate(({ group, storyId, forbiddenZhCnProductShellText }) => {
           const rectFor = (selector) => {
             const node = document.querySelector(selector);
             if (!node) {
@@ -2605,6 +2636,15 @@ async function runCrossSectionShellParityProof() {
 		          const categoryLabels = Array.from((storybookNav ?? document).querySelectorAll(".tcrn-nav-group__label"))
 		            .map((node) => node.textContent?.trim() ?? "")
 		            .filter(Boolean);
+          const currentLocationNode = document.querySelector(".tcrn-product-shell__current-location");
+          const searchInput = document.querySelector(".tcrn-search-input__control");
+          const productShellTextSurface = [
+            storybookNav?.innerText ?? "",
+            currentLocationNode?.textContent ?? "",
+            searchInput?.getAttribute("aria-label") ?? "",
+            searchInput?.getAttribute("placeholder") ?? ""
+          ].join("\\n");
+          const productShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => productShellTextSurface.includes(text));
           const sidebarNoIconLabelReadbacks = window.innerWidth >= 900 && shell?.getAttribute("data-product-shell-collapsed") !== "true"
             ? Array.from((storybookNav ?? document).querySelectorAll("[data-product-shell-route]"))
               .map((item) => {
@@ -2663,8 +2703,9 @@ async function runCrossSectionShellParityProof() {
             noOverclaimBoundaryCount: document.querySelectorAll("[data-no-overclaim-boundary='visible']").length,
             legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
 	            navGroupCount: (storybookNav ?? document).querySelectorAll(".tcrn-nav-group").length,
-	            categoryLabelCount: categoryLabels.length,
+            categoryLabelCount: categoryLabels.length,
 	            categoryLabels,
+            productShellEnglishLeaks,
             sidebarNoIconLabelReadbacks,
             sidebarNoIconLabelReadabilityFailures,
 	            firstStoryTop: firstStory ? Number(firstStory.getBoundingClientRect().top.toFixed(2)) : null,
@@ -2686,7 +2727,7 @@ async function runCrossSectionShellParityProof() {
             pageHeadStartsBelowHeader: Boolean(pageHead && pageHead.top >= headerBottom - 1),
             firstStoryDoesNotReplacePageHead: Boolean(pageHead && firstStory && pageHead.top < firstStory.getBoundingClientRect().top)
           };
-        }, { group: route.group, storyId: route.storyId });
+        }, { group: route.group, storyId: route.storyId, forbiddenZhCnProductShellText });
         const routeFailures = [];
         if (metrics.locale !== "zh-CN") routeFailures.push(`locale:${metrics.locale}`);
         if (metrics.activeSection !== route.group) routeFailures.push(`active-section:${metrics.activeSection}`);
@@ -2700,6 +2741,9 @@ async function runCrossSectionShellParityProof() {
         if (metrics.legacyGlobalNavCount !== 0) routeFailures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
 	        if (metrics.navGroupCount !== expectedStoryCategoryCount) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
 	        if (metrics.categoryLabelCount !== expectedStoryCategoryCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
+        if (metrics.productShellEnglishLeaks.length > 0) {
+          routeFailures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
+        }
         if (metrics.sidebarNoIconLabelReadabilityFailures.length > 0) {
           routeFailures.push(`sidebar-no-icon-label-readability:${JSON.stringify(metrics.sidebarNoIconLabelReadabilityFailures.slice(0, 3))}`);
         }

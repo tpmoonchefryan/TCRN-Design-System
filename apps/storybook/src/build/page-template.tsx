@@ -135,12 +135,16 @@ function buildStorybookNavGroups(activeGroup: ContractStoryGroup): ProductShellN
     return storyCategoriesForGroup(group, stories).map((category) => ({
       id: `${groupSlug(group)}-${category.id}`,
       label: category.label,
+      labelKey: category.label,
       description: category.description,
+      descriptionKey: category.description,
       sectionLabel: localeText(`group.${group}`),
+      sectionLabelKey: `group.${group}`,
       selected: group === activeGroup && category.stories.some((story) => story.id === firstStory?.id),
       items: category.stories.map((story) => ({
         id: story.id,
         label: localeText(`story.${story.id}.title`),
+        labelKey: `story.${story.id}.title`,
         href: storyHref(story),
         selected: group === activeGroup && firstStory?.id === story.id
       }))
@@ -152,7 +156,9 @@ function buildStorybookSearchResults(): ProductShellSearchResult[] {
   return contractStoryGroups.flatMap((group) => contractStoriesByGroup(group).map((story) => ({
     id: story.id,
     title: localeText(`story.${story.id}.title`),
+    titleKey: `story.${story.id}.title`,
     meta: localeText(`group.${group}`),
+    metaKey: `group.${group}`,
     href: storyHref(story)
   })));
 }
@@ -247,7 +253,9 @@ ${chapterPagerHtml(group)}
       brandMarkSrc="tcrn-brand-mark.svg"
       brandMarkAlt={localeText("shell.brand")}
       currentRouteLabel={`${localeText(`group.${group}`)} / ${localeText(`story.${firstStory.id}.title`)}`}
+      currentRouteLabelKey={`story.${firstStory.id}.title`}
       currentLocationLabel={localeText("shell.currentLocationLabel")}
+      currentLocationLabelKey="shell.currentLocationLabel"
       navLabel={localeText("shell.topNavLabel")}
       navGroups={buildStorybookNavGroups(group)}
       locales={tcrnLocaleMetadata}
@@ -266,7 +274,10 @@ ${chapterPagerHtml(group)}
         emptyLabel: localeText("shell.searchNoResults"),
         inputProps: {
           readOnly: false
-        }
+        },
+        "data-product-shell-search-label-key": "shell.searchLabel",
+        "data-product-shell-search-results-label-key": "shell.searchResultsLabel",
+        "data-product-shell-search-empty-label-key": "shell.searchNoResults"
       }}
       contentId="content"
       contentRole="main"

@@ -330,6 +330,91 @@ export const storybookI18nScript = `<script>
       option.setAttribute("title", label);
     }
   };
+  const applyProductShellTextKeys = (locale) => {
+    const shell = document.querySelector("[data-contract-surface='tcrn-design-system-storybook']");
+    if (!shell) {
+      return;
+    }
+    for (const group of shell.querySelectorAll("[data-product-shell-nav-group-label-key]")) {
+      const labelKey = group.getAttribute("data-product-shell-nav-group-label-key");
+      const descriptionKey = group.getAttribute("data-product-shell-nav-group-description-key");
+      const sectionLabelKey = group.getAttribute("data-product-shell-nav-group-section-label-key");
+      if (labelKey) {
+        const label = textFor(locale, labelKey);
+        const labelNode = group.querySelector(".tcrn-nav-group__label");
+        if (labelNode) {
+          labelNode.textContent = label;
+        }
+        group.setAttribute("data-storybook-category-label", label);
+      }
+      if (descriptionKey) {
+        const description = textFor(locale, descriptionKey);
+        group.setAttribute("title", description);
+        group.setAttribute("data-storybook-category-description", description);
+      }
+      if (sectionLabelKey) {
+        group.setAttribute("data-storybook-section-label", textFor(locale, sectionLabelKey));
+      }
+    }
+    for (const link of shell.querySelectorAll("[data-product-shell-route][data-product-shell-route-label-key]")) {
+      const labelKey = link.getAttribute("data-product-shell-route-label-key");
+      if (!labelKey) {
+        continue;
+      }
+      const label = textFor(locale, labelKey);
+      const labelNode = link.querySelector(".tcrn-nav-item__label");
+      if (labelNode) {
+        labelNode.textContent = label;
+      }
+      link.setAttribute("aria-label", label);
+    }
+    const currentLocation = shell.querySelector(".tcrn-product-shell__current-location");
+    const currentLocationLabelKey = currentLocation?.getAttribute("data-product-shell-current-location-label-key");
+    const currentRouteLabelKey = currentLocation?.getAttribute("data-product-shell-current-route-label-key");
+    if (currentLocationLabelKey) {
+      const labelNode = currentLocation.querySelector("span");
+      if (labelNode) {
+        labelNode.textContent = textFor(locale, currentLocationLabelKey);
+      }
+    }
+    if (currentRouteLabelKey) {
+      const routeNode = currentLocation.querySelector("strong");
+      if (routeNode) {
+        routeNode.textContent = textFor(locale, currentRouteLabelKey);
+        routeNode.setAttribute("data-i18n", currentRouteLabelKey);
+      }
+    }
+    const searchRoot = shell.querySelector("[data-shell-control='product-shell-search']");
+    if (searchRoot) {
+      const input = searchRoot.querySelector(".tcrn-search-input__control");
+      const labelKey = searchRoot.getAttribute("data-product-shell-search-label-key");
+      const resultsLabelKey = searchRoot.getAttribute("data-product-shell-search-results-label-key");
+      if (labelKey && input) {
+        const label = textFor(locale, labelKey);
+        input.setAttribute("aria-label", label);
+        input.setAttribute("placeholder", label);
+      }
+      if (resultsLabelKey) {
+        searchRoot.querySelector("[data-product-shell-search-results]")?.setAttribute("aria-label", textFor(locale, resultsLabelKey));
+      }
+      for (const result of searchRoot.querySelectorAll("[data-search-result]")) {
+        const titleKey = result.getAttribute("data-search-result-title-key");
+        const metaKey = result.getAttribute("data-search-result-meta-key");
+        if (titleKey) {
+          const title = result.querySelector("strong");
+          if (title) {
+            title.textContent = textFor(locale, titleKey);
+          }
+        }
+        if (metaKey) {
+          const meta = result.querySelector("span");
+          if (meta) {
+            meta.textContent = textFor(locale, metaKey);
+          }
+        }
+      }
+    }
+  };
   const applyLocale = (locale, updateUrl) => {
     const resolvedLocale = isSupported(locale) ? locale : defaultLocale;
     window.tcrnStorybookResolvedLocale = resolvedLocale;
@@ -348,6 +433,7 @@ export const storybookI18nScript = `<script>
       node.setAttribute("title", textFor(resolvedLocale, node.getAttribute("data-i18n-title")));
     }
     translateContentTree(resolvedLocale);
+    applyProductShellTextKeys(resolvedLocale);
     applyClientShortcuts();
     for (const toggle of document.querySelectorAll("[data-side-nav-toggle='true']")) {
       toggle.setAttribute("data-expanded-label", textFor(resolvedLocale, "shell.collapseNavigationLabel"));

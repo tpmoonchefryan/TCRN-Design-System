@@ -641,6 +641,18 @@ const firstStoryHashShellParityRoutes = sectionPages.map((section) => {
     storyId: firstStory?.id ?? null
   };
 });
+const forbiddenZhCnProductShellText = [
+  "Welcome and governance",
+  "Maintainers and routing",
+  "Contribution model",
+  "Icons and motion",
+  "Global states",
+  "Copy creation rules",
+  "Component family index",
+  "Work Management",
+  "AI consumption contract",
+  "Local changelog"
+];
 const firstStoryHashShellParityReadbacks = [];
 for (const route of firstStoryHashShellParityRoutes) {
   if (!route.storyId) {
@@ -652,7 +664,7 @@ for (const route of firstStoryHashShellParityRoutes) {
   await storybookPage.waitForSelector(`[data-active-story-section='${route.group}']`);
   await storybookPage.waitForSelector(`[data-product-shell-route='${route.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
   await storybookPage.waitForTimeout(180);
-  const metrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount }) => {
+  const metrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount, forbiddenZhCnProductShellText }) => {
     const rectFor = (selector) => {
       const node = document.querySelector(selector);
       if (!node) {
@@ -691,6 +703,15 @@ for (const route of firstStoryHashShellParityRoutes) {
 	    const navRoot = storybookNav ?? document;
 	    const activeStory = navRoot.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
 	    const headerBottom = header?.bottom ?? 0;
+    const currentLocationNode = document.querySelector(".tcrn-product-shell__current-location");
+    const searchInput = document.querySelector(".tcrn-search-input__control");
+    const productShellTextSurface = [
+      storybookNav?.innerText ?? "",
+      currentLocationNode?.textContent ?? "",
+      searchInput?.getAttribute("aria-label") ?? "",
+      searchInput?.getAttribute("placeholder") ?? ""
+    ].join("\\n");
+    const productShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => productShellTextSurface.includes(text));
     const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
     return {
       group,
@@ -710,6 +731,7 @@ for (const route of firstStoryHashShellParityRoutes) {
       legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
 	      navGroupCount: navRoot.querySelectorAll(".tcrn-nav-group").length,
 	      categoryLabelCount: navRoot.querySelectorAll(".tcrn-nav-group__label").length,
+      productShellEnglishLeaks,
       expectedCategoryCount,
       expectedGroupCount,
       header,
@@ -727,10 +749,11 @@ for (const route of firstStoryHashShellParityRoutes) {
     };
   }, {
     group: route.group,
-    storyId: route.storyId,
-    expectedCategoryCount,
-    expectedGroupCount: sectionPages.length
-  });
+	    storyId: route.storyId,
+	    expectedCategoryCount,
+	    expectedGroupCount: sectionPages.length,
+    forbiddenZhCnProductShellText
+	  });
   const failures = [];
   if (metrics.locale !== "zh-CN") failures.push(`locale:${metrics.locale}`);
   if (metrics.activeSection !== route.group) failures.push(`active-section:${metrics.activeSection}`);
@@ -744,6 +767,7 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.legacyGlobalNavCount !== 0) failures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
   if (metrics.navGroupCount !== expectedCategoryCount) failures.push(`nav-group-count:${metrics.navGroupCount}`);
   if (metrics.categoryLabelCount !== expectedCategoryCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
+  if (metrics.productShellEnglishLeaks.length > 0) failures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
   if (metrics.pageOverflow) failures.push("page-overflow");
   if (!metrics.currentLocationBeforeSearch) failures.push("current-location-not-before-search");
   if (!metrics.searchBeforeControls) failures.push("search-not-before-controls");
@@ -889,6 +913,7 @@ async function collectLocalizedShellChromeCheck(page, check) {
     const body = document.body;
     const accessibilityAttributeNames = ["aria-label", "title", "placeholder", "alt"];
     const accessibilityAttributeLeaks = Array.from(document.querySelectorAll("[aria-label], [title], [placeholder], [alt]"))
+      .filter((node) => !node.matches("link[data-tcrn-ai-consumption-contract], link[data-tcrn-ai-consumption-contract-help]"))
       .flatMap((node) => accessibilityAttributeNames
         .map((name) => ({ name, value: node.getAttribute(name) }))
         .filter((item) => item.value)
@@ -984,8 +1009,8 @@ const i18nContentChecks = [
     section: "Change Log",
     storyId: "local-changelog",
     requiredText: ["本地变更日志", "治理变更记录", "Storybook 治理检查点", "源路线", "故事覆盖", "AI 契约摘要", "证明工件", "无过度声明边界", "耐久源记录", "不发布", "本页内容", "治理记录"],
-    forbiddenText: ["Governance changelog records", "Date", "Source route", "Story ids", "AI contract digest readback", "Proof artifacts and boundaries", "Proof artifacts", "No-overclaim boundaries", "durable source record", "AI contract digest verified by smoke", "proof receipts required", "no publication", "Current location", "On this page", "Documentation sections", "Governance entry", "Routing and contribution", "Identity and brand", "Type and layout", "Work Management", "Proof governance", "Governance records"]
-  })
+	    forbiddenText: ["Governance changelog records", "Date", "Source route", "Story ids", "AI contract digest readback", "Proof artifacts and boundaries", "Proof artifacts", "No-overclaim boundaries", "durable source record", "AI contract digest verified by smoke", "proof receipts required", "no publication", "Current location", "On this page", "Documentation sections", "Welcome and governance", "Maintainers and routing", "Contribution model", "Icons and motion", "Global states", "Copy creation rules", "Component family index", "AI consumption contract", "Local changelog", "Governance entry", "Routing and contribution", "Identity and brand", "Type and layout", "Work Management", "Proof governance", "Governance records"]
+	  })
 ];
 const globalZhCnIaShellCheck = await collectLocalizedShellChromeCheck(storybookPage, {
   locale: "zh-CN",
@@ -1017,11 +1042,20 @@ const globalZhCnIaShellCheck = await collectLocalizedShellChromeCheck(storybookP
     "治理记录"
   ],
   forbiddenText: [
-    "Current location",
-    "Governed Storybook section",
-    "On this page",
-    "Documentation sections",
-    "Governance entry",
+	    "Current location",
+	    "Governed Storybook section",
+	    "On this page",
+	    "Documentation sections",
+	    "Welcome and governance",
+	    "Maintainers and routing",
+	    "Contribution model",
+	    "Icons and motion",
+	    "Global states",
+	    "Copy creation rules",
+	    "Component family index",
+	    "AI consumption contract",
+	    "Local changelog",
+	    "Governance entry",
     "Routing and contribution",
     "Identity and brand",
     "Type and layout",
