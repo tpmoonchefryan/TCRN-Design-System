@@ -250,7 +250,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "988fad9c78665bda60bd4e092f57037a19821ea13d66f50c358c4fb98d316984",
+    "contractPayloadDigest": "6b58c4699d0461e861fa3459933eb572d01dbbb97b46291efdfd4564c054f3e7",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
@@ -272,6 +272,9 @@
     "foundationVisualStandardCategoryCount": 10,
     "consumerVisualStyleContractId": "consumer-visual-style-contract-v1",
     "productShellVisualOracleId": "confirmed-storybook-visual-v1",
+    "productShellVisualOracleReceipt": "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md",
+    "productShellVisualOracleBaselineClassification": "historical_but_dirty_admissible_with_hash_backed_screenshots",
+    "productShellVisualOracleMetricEvidenceCount": 4,
     "llmsTraceabilitySectionsPresent": true
   },
   "componentStorybookParityReadback": {
@@ -1263,10 +1266,10 @@
         "article": {
           "top": 219.88,
           "right": 374,
-          "bottom": 9060.95,
+          "bottom": 9360.44,
           "left": 16,
           "width": 358,
-          "height": 8841.08
+          "height": 9140.56
         },
         "title": {
           "top": 236.88,
@@ -1828,10 +1831,10 @@
         "article": {
           "top": 219.88,
           "right": 374,
-          "bottom": 9060.95,
+          "bottom": 9360.44,
           "left": 16,
           "width": 358,
-          "height": 8841.08
+          "height": 9140.56
         },
         "title": {
           "top": 236.88,
@@ -2393,10 +2396,10 @@
         "article": {
           "top": 219.88,
           "right": 374,
-          "bottom": 9060.95,
+          "bottom": 9360.44,
           "left": 16,
           "width": 358,
-          "height": 8841.08
+          "height": 9140.56
         },
         "title": {
           "top": 236.88,
@@ -2958,10 +2961,10 @@
         "article": {
           "top": 219.88,
           "right": 374,
-          "bottom": 9060.95,
+          "bottom": 9360.44,
           "left": 16,
           "width": 358,
-          "height": 8841.08
+          "height": 9140.56
         },
         "title": {
           "top": 236.88,

@@ -4,8 +4,10 @@ Route: `route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s
 Mode: `check`
 OK: `true`
 Comparison contract: `bounded_antialias_pixel_delta_v1`
-Source head: `19d6968cda4669572db28b8f88fa4bea580d4b84`
+Source head: `edb1ab0074b8cb578f158c62040be7e30fc6380b`
 Source equivalence: `source_equivalent_dirty_tree_receipt_generated_before_commit`
+Oracle recovery: `true`
+Oracle receipt: `TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md`
 Static pages: 11
 Screenshots: 24
 Compare failures: 0

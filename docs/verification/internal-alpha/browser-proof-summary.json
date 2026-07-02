@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "988fad9c78665bda60bd4e092f57037a19821ea13d66f50c358c4fb98d316984",
+    "contractPayloadDigest": "6b58c4699d0461e861fa3459933eb572d01dbbb97b46291efdfd4564c054f3e7",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
@@ -50,6 +50,9 @@
     "foundationVisualStandardCategoryCount": 10,
     "consumerVisualStyleContractId": "consumer-visual-style-contract-v1",
     "productShellVisualOracleId": "confirmed-storybook-visual-v1",
+    "productShellVisualOracleReceipt": "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md",
+    "productShellVisualOracleBaselineClassification": "historical_but_dirty_admissible_with_hash_backed_screenshots",
+    "productShellVisualOracleMetricEvidenceCount": 4,
     "llmsTraceabilitySectionsPresent": true
   },
   "componentStorybookParityReadback": {
@@ -2083,7 +2086,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 1082,
-          "height": 3493
+          "height": 3612
         },
         {
           "id": "copy-guidelines",
@@ -6842,7 +6845,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 666,
-          "height": 4057
+          "height": 4366
         },
         {
           "id": "copy-guidelines",
@@ -9876,7 +9879,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 8753
+          "height": 9105
         },
         {
           "id": "copy-guidelines",

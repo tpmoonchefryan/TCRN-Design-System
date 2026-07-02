@@ -1211,6 +1211,21 @@ for (const standardId of expectedFoundationStandardCategoryIds) {
 if (contract.productShellVisualOracle?.id !== "confirmed-storybook-visual-v1") {
   missing.push("contract.productShellVisualOracle.id");
 }
+if (contract.productShellVisualOracle?.oracleRecoveryReceipt !== "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md") {
+  missing.push("contract.productShellVisualOracle.oracleRecoveryReceipt");
+}
+if (contract.productShellVisualOracle?.baselineManifestClassification !== "historical_but_dirty_admissible_with_hash_backed_screenshots") {
+  missing.push("contract.productShellVisualOracle.baselineManifestClassification");
+}
+if (!String(contract.productShellVisualOracle?.metricSourceDisposition ?? "").includes("committed baseline screenshots")) {
+  missing.push("contract.productShellVisualOracle.metricSourceDisposition");
+}
+if (!(contract.productShellVisualOracle?.metricEvidence ?? []).some((item) => (
+  item.metric === "desktopSidebarWidthPx"
+  && item.sha256 === "ecbfdc86eb8f7f48ab0f2b2a0d66dce0860bdf7d8212748b934c9e823eb1db1d"
+))) {
+  missing.push("contract.productShellVisualOracle.metricEvidence.desktopSidebarWidthPx");
+}
 if (contract.productShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx !== 326) {
   missing.push("contract.productShellVisualOracle.shellMetrics.desktopSidebarWidthPx");
 }
@@ -1258,6 +1273,12 @@ if (!llmsTxt.includes("Consumer visual style contract: consumer-visual-style-con
 }
 if (!llmsTxt.includes("ProductShell visual oracle: confirmed-storybook-visual-v1")) {
   missing.push("llms-product-shell-visual-oracle");
+}
+if (!llmsTxt.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md")) {
+  missing.push("llms-product-shell-visual-oracle-recovery");
+}
+if (!llmsTxt.includes("baseline classification: historical_but_dirty_admissible_with_hash_backed_screenshots")) {
+  missing.push("llms-product-shell-visual-oracle-classification");
 }
 if (!llmsTxt.includes("Shell control visual parity proof:")) {
   missing.push("llms-shell-control-visual-parity-proof");

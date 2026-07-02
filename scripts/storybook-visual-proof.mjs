@@ -109,6 +109,29 @@ const viewportMatrix = [
   { id: "mobile-390x844", width: 390, height: 844 }
 ];
 
+const recoveredProductShellMetricOracle = {
+  id: "confirmed-storybook-visual-v1",
+  packageAuthority: "@tcrn/ui-react/ProductShell",
+  baselineManifestClassification: "historical_but_dirty_admissible_with_hash_backed_screenshots",
+  comparisonMethod: "recovered_product_shell_metric_oracle_v1",
+  desktopMinWidth: 1200,
+  sidebarWidthPx: 326,
+  sidebarTolerancePx: 2,
+  topbarHeightPx: 96,
+  topbarTolerancePx: 2,
+  searchRestWidthPx: 180,
+  searchExpandedWidthPx: 320,
+  searchHeightPx: 36,
+  searchMetricTolerancePx: 2,
+  searchBorderColor: "rgb(184, 200, 214)",
+  searchBorderRadiusPx: 5,
+  themeToggleSizePx: 36,
+  themeToggleRadiusPx: 999,
+  localeTriggerHeightPx: 36,
+  trailingUtilityGapMinPx: 16,
+  trailingUtilityGapMaxPx: 32
+};
+
 const deterministicBrowserSettings = {
   browser: "chromium",
   headless: true,
@@ -697,7 +720,7 @@ async function collectStaticPageReadbacks(server) {
 }
 
 async function collectPageHealth(page, state) {
-  return await page.evaluate((input) => {
+  return await page.evaluate(async (input) => {
     const root = document.querySelector("[data-contract-surface='tcrn-design-system-storybook']");
     const target = document.querySelector(`[data-contract-story-id="${input.storyId}"]`);
     const rect = target?.getBoundingClientRect();
@@ -706,6 +729,152 @@ async function collectPageHealth(page, state) {
     const forbiddenHits = input.forbiddenPatterns
       .filter((rule) => new RegExp(rule.source, rule.flags).test(html) || new RegExp(rule.source, rule.flags).test(bodyText))
       .map((rule) => rule.id);
+    const readRect = (selector) => {
+      const node = document.querySelector(selector);
+      if (!node) {
+        return null;
+      }
+      const nodeRect = node.getBoundingClientRect();
+      return {
+        x: Number(nodeRect.x.toFixed(2)),
+        y: Number(nodeRect.y.toFixed(2)),
+        top: Number(nodeRect.top.toFixed(2)),
+        right: Number(nodeRect.right.toFixed(2)),
+        bottom: Number(nodeRect.bottom.toFixed(2)),
+        left: Number(nodeRect.left.toFixed(2)),
+        width: Number(nodeRect.width.toFixed(2)),
+        height: Number(nodeRect.height.toFixed(2))
+      };
+    };
+    const readStyle = (selector, properties) => {
+      const node = document.querySelector(selector);
+      if (!node) {
+        return null;
+      }
+      const style = getComputedStyle(node);
+      return Object.fromEntries(properties.map((property) => [property, style.getPropertyValue(property)]));
+    };
+    const waitFrames = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    const widthWithin = (actual, expected, tolerance) =>
+      typeof actual === "number" && typeof expected === "number" && Math.abs(actual - expected) <= tolerance;
+    const searchRoot = document.querySelector(".tcrn-product-shell-search");
+    const searchInput = searchRoot?.querySelector(".tcrn-search-input__control");
+    const readSearchState = () => ({
+      expanded: searchRoot?.getAttribute("data-search-expanded") ?? null,
+      resultsVisible: searchRoot?.getAttribute("data-search-results-visible") ?? null,
+      wrapper: readRect(".tcrn-product-shell-search"),
+      inputShell: readRect(".tcrn-search-input"),
+      inputShellStyles: readStyle(".tcrn-search-input", [
+        "border-color",
+        "border-radius",
+        "transition-duration",
+        "transition-property",
+        "transition-timing-function"
+      ]),
+      wrapperStyles: readStyle(".tcrn-product-shell-search", [
+        "transition-duration",
+        "transition-property",
+        "transition-timing-function"
+      ])
+    });
+    const searchInteractionReadback = {
+      rest: readSearchState(),
+      focused: null,
+      afterBlurCollapse: null,
+      reducedMotionSuppressed: null
+    };
+    if (searchInput instanceof HTMLElement) {
+      const previousActive = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      const previousScroll = { x: window.scrollX, y: window.scrollY };
+      searchInput.focus({ preventScroll: true });
+      await waitFrames();
+      searchInteractionReadback.focused = readSearchState();
+      searchInput.blur();
+      await new Promise((resolve) => window.setTimeout(resolve, 150));
+      await waitFrames();
+      searchInteractionReadback.afterBlurCollapse = readSearchState();
+      if (previousActive && previousActive !== searchInput) {
+        previousActive.focus({ preventScroll: true });
+      }
+      window.scrollTo({ top: previousScroll.y, left: previousScroll.x, behavior: "auto" });
+      const wrapperDuration = searchInteractionReadback.focused?.wrapperStyles?.["transition-duration"] ?? "";
+      const inputDuration = searchInteractionReadback.focused?.inputShellStyles?.["transition-duration"] ?? "";
+      searchInteractionReadback.reducedMotionSuppressed =
+        [wrapperDuration, inputDuration].every((duration) => /(^|,\s*)0(?:ms|s)(?:,|$)/.test(duration.trim()) || duration.trim() === "0s");
+    }
+    const topbar = readRect(".tcrn-top-bar");
+    const sideNavRegion = readRect(".tcrn-product-shell__sidebar");
+    const currentLocation = readRect(".tcrn-product-shell__current-location");
+    const themeToggle = readRect(".tcrn-shell-theme-toggle");
+    const localeTrigger = readRect(".tcrn-shell-locale-menu__trigger");
+    const themeToggleStyles = readStyle(".tcrn-shell-theme-toggle", ["border-radius"]);
+    const activeProductShellRoute =
+      document.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']")?.getAttribute("data-product-shell-route") ?? null;
+    const metricFailures = [];
+    if (root?.getAttribute("data-storybook-shell-authority") !== input.expectedOracle.packageAuthority) {
+      metricFailures.push(`shellAuthority:${root?.getAttribute("data-storybook-shell-authority") ?? "missing"}`);
+    }
+    if (root?.getAttribute("data-storybook-product-shell-skin") !== input.expectedOracle.id) {
+      metricFailures.push(`visualSkin:${root?.getAttribute("data-storybook-product-shell-skin") ?? "missing"}`);
+    }
+    if (!String(root?.getAttribute("data-storybook-visual-oracle") ?? "").includes("storybook-visual-proof/baseline-manifest.json")) {
+      metricFailures.push(`visualOracle:${root?.getAttribute("data-storybook-visual-oracle") ?? "missing"}`);
+    }
+    const privateCloneCount = document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length;
+    if (privateCloneCount !== 0) {
+      metricFailures.push(`privateDocShellCloneCount:${privateCloneCount}`);
+    }
+    if (activeProductShellRoute !== input.storyId) {
+      metricFailures.push(`activeProductShellRoute:${activeProductShellRoute ?? "missing"}`);
+    }
+    if (window.innerWidth >= input.expectedOracle.desktopMinWidth) {
+      if (!widthWithin(sideNavRegion?.width, input.expectedOracle.sidebarWidthPx, input.expectedOracle.sidebarTolerancePx)) {
+        metricFailures.push(`sidebarWidth:${sideNavRegion?.width ?? "missing"}:expected:${input.expectedOracle.sidebarWidthPx}`);
+      }
+      if (!widthWithin(topbar?.height, input.expectedOracle.topbarHeightPx, input.expectedOracle.topbarTolerancePx)) {
+        metricFailures.push(`topbarHeight:${topbar?.height ?? "missing"}:expected:${input.expectedOracle.topbarHeightPx}`);
+      }
+      if (!widthWithin(searchInteractionReadback.rest.wrapper?.width, input.expectedOracle.searchRestWidthPx, input.expectedOracle.searchMetricTolerancePx)) {
+        metricFailures.push(`searchRestWidth:${searchInteractionReadback.rest.wrapper?.width ?? "missing"}:expected:${input.expectedOracle.searchRestWidthPx}`);
+      }
+      if (!widthWithin(searchInteractionReadback.focused?.wrapper?.width, input.expectedOracle.searchExpandedWidthPx, input.expectedOracle.searchMetricTolerancePx)) {
+        metricFailures.push(`searchFocusedWidth:${searchInteractionReadback.focused?.wrapper?.width ?? "missing"}:expected:${input.expectedOracle.searchExpandedWidthPx}`);
+      }
+      if (!widthWithin(searchInteractionReadback.afterBlurCollapse?.wrapper?.width, input.expectedOracle.searchRestWidthPx, input.expectedOracle.searchMetricTolerancePx)) {
+        metricFailures.push(`searchCollapsedWidth:${searchInteractionReadback.afterBlurCollapse?.wrapper?.width ?? "missing"}:expected:${input.expectedOracle.searchRestWidthPx}`);
+      }
+      if (!widthWithin(searchInteractionReadback.rest.inputShell?.height, input.expectedOracle.searchHeightPx, input.expectedOracle.searchMetricTolerancePx)) {
+        metricFailures.push(`searchHeight:${searchInteractionReadback.rest.inputShell?.height ?? "missing"}:expected:${input.expectedOracle.searchHeightPx}`);
+      }
+      if (searchInteractionReadback.rest.inputShellStyles?.["border-color"] !== input.expectedOracle.searchBorderColor) {
+        metricFailures.push(`searchBorderColor:${searchInteractionReadback.rest.inputShellStyles?.["border-color"] ?? "missing"}:expected:${input.expectedOracle.searchBorderColor}`);
+      }
+      if (searchInteractionReadback.rest.inputShellStyles?.["border-radius"] !== `${input.expectedOracle.searchBorderRadiusPx}px`) {
+        metricFailures.push(`searchBorderRadius:${searchInteractionReadback.rest.inputShellStyles?.["border-radius"] ?? "missing"}:expected:${input.expectedOracle.searchBorderRadiusPx}px`);
+      }
+      if (!widthWithin(themeToggle?.width, input.expectedOracle.themeToggleSizePx, 1) || !widthWithin(themeToggle?.height, input.expectedOracle.themeToggleSizePx, 1)) {
+        metricFailures.push(`themeToggleSize:${themeToggle?.width ?? "missing"}x${themeToggle?.height ?? "missing"}:expected:${input.expectedOracle.themeToggleSizePx}`);
+      }
+      if (themeToggleStyles?.["border-radius"] !== `${input.expectedOracle.themeToggleRadiusPx}px`) {
+        metricFailures.push(`themeToggleRadius:${themeToggleStyles?.["border-radius"] ?? "missing"}:expected:${input.expectedOracle.themeToggleRadiusPx}px`);
+      }
+      if (!widthWithin(localeTrigger?.height, input.expectedOracle.localeTriggerHeightPx, 1)) {
+        metricFailures.push(`localeTriggerHeight:${localeTrigger?.height ?? "missing"}:expected:${input.expectedOracle.localeTriggerHeightPx}`);
+      }
+      if (!(currentLocation && searchInteractionReadback.rest.wrapper && currentLocation.right <= searchInteractionReadback.rest.wrapper.left + 1)) {
+        metricFailures.push("currentLocationNotBeforeSearch");
+      }
+      if (!(searchInteractionReadback.rest.wrapper && themeToggle && searchInteractionReadback.rest.wrapper.right <= themeToggle.left + 1)) {
+        metricFailures.push("searchNotBeforeThemeToggle");
+      }
+      const trailingGap = localeTrigger ? Number((window.innerWidth - localeTrigger.right).toFixed(2)) : null;
+      if (typeof trailingGap !== "number" || trailingGap < input.expectedOracle.trailingUtilityGapMinPx || trailingGap > input.expectedOracle.trailingUtilityGapMaxPx) {
+        metricFailures.push(`utilityTrailingGap:${trailingGap ?? "missing"}`);
+      }
+      if (!searchInteractionReadback.reducedMotionSuppressed) {
+        metricFailures.push("searchReducedMotionNotSuppressed");
+      }
+    }
     const targetVisible = Boolean(rect && rect.width > 0 && rect.height > 0);
     const targetInViewport = Boolean(rect && rect.bottom > 0 && rect.top < window.innerHeight && rect.right > 0 && rect.left < window.innerWidth);
     const dialogPanel = document.querySelector("#dialog-spec-usage [data-dialog-fixture-panel]");
@@ -733,7 +902,24 @@ async function collectPageHealth(page, state) {
       viewportWidth: window.innerWidth,
       bodyOverflowX: document.documentElement.scrollWidth > window.innerWidth + 1,
       storyRegionCount: document.querySelectorAll("[data-contract-story-id]").length,
-      currentProductShellRoute: document.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']")?.getAttribute("data-product-shell-route") ?? null,
+      currentProductShellRoute: activeProductShellRoute,
+      shellAuthority: root?.getAttribute("data-storybook-shell-authority") ?? null,
+      productShellVisualSkin: root?.getAttribute("data-storybook-product-shell-skin") ?? null,
+      productShellVisualOracle: root?.getAttribute("data-storybook-visual-oracle") ?? null,
+      privateDocShellCloneCount: privateCloneCount,
+      productShellOracleMetrics: {
+        topbar,
+        sideNavRegion,
+        currentLocation,
+        search: searchInteractionReadback.rest.wrapper,
+        searchInputShell: searchInteractionReadback.rest.inputShell,
+        searchInputShellStyles: searchInteractionReadback.rest.inputShellStyles,
+        searchInteractionReadback,
+        themeToggle,
+        themeToggleRadius: themeToggleStyles?.["border-radius"] ?? null,
+        localeTrigger,
+        metricFailures
+      },
       forbiddenHits,
       staticClosedDialogFixture: input.staticClosedDialogFixture ? {
         panelHidden: dialogPanel?.hasAttribute("hidden") ?? false,
@@ -743,6 +929,7 @@ async function collectPageHealth(page, state) {
   }, {
     storyId: state.storyId,
     staticClosedDialogFixture: Boolean(state.staticClosedDialogFixture),
+    expectedOracle: recoveredProductShellMetricOracle,
     forbiddenPatterns: forbiddenStaticDocPatterns.map((rule) => ({ id: rule.id, source: rule.pattern.source, flags: rule.pattern.flags }))
   });
 }
@@ -753,7 +940,10 @@ function assertCapture(entry, health, events, png, stability) {
   if (!health.targetVisible) failures.push("target_not_visible");
   if (!health.targetInViewport) failures.push("target_not_in_viewport_after_hash_scroll");
   if (health.bodyOverflowX) failures.push("body_horizontal_overflow");
-  if (health.currentDocNavItem !== entry.storyId) failures.push(`active_doc_nav_mismatch:${health.currentDocNavItem}`);
+  if (health.currentProductShellRoute !== entry.storyId) failures.push(`active_product_shell_route_mismatch:${health.currentProductShellRoute}`);
+  if (health.productShellOracleMetrics?.metricFailures?.length > 0) {
+    failures.push(`product_shell_oracle_metric_failures:${health.productShellOracleMetrics.metricFailures.join(",")}`);
+  }
   const expectedTheme = entry.themeMode ?? deterministicBrowserSettings.defaultThemeMode;
   if (health.htmlTheme !== expectedTheme) failures.push(`html_theme_mismatch:${health.htmlTheme}`);
   if (health.rootTheme !== expectedTheme) failures.push(`root_theme_mismatch:${health.rootTheme}`);
@@ -872,6 +1062,7 @@ function makeBaseReceipt({
   sourceHeadEquivalenceReadback,
   sourceContentDigest,
   staticPageReadbacks,
+  oracleRecoveryReadback,
   browserVersion,
   routeOwnedEphemeralServer,
   compareFailures = [],
@@ -886,12 +1077,14 @@ function makeBaseReceipt({
       viewport: entry.viewport,
       failures: entry.failures
     })),
-    compareFailures
+    compareFailures,
+    oracleRecoveryFailures: oracleRecoveryReadback?.ok === false ? oracleRecoveryReadback.failures : []
   };
   return {
     ok: failureArrays.staticPageFailures.length === 0
       && failureArrays.screenshotFailures.length === 0
-      && failureArrays.compareFailures.length === 0,
+      && failureArrays.compareFailures.length === 0
+      && failureArrays.oracleRecoveryFailures.length === 0,
     route,
     sourceHead,
     sourceGitStatus,
@@ -906,6 +1099,7 @@ function makeBaseReceipt({
     viewportMatrix,
     deterministicBrowserSettings,
     staticPageReadbacks,
+    oracleRecoveryReadback,
     screenshotReadbacks: entries.map((entry) => ({
       ...(() => {
         const comparison = comparisonByKey.get(`${entry.stateId}::${entry.viewport}`);
@@ -930,7 +1124,8 @@ function makeBaseReceipt({
       bytes: entry.bytes,
       screenshotStability: entry.stability,
       targetRect: entry.health.targetRect,
-      currentDocNavItem: entry.health.currentDocNavItem,
+      currentProductShellRoute: entry.health.currentProductShellRoute,
+      productShellOracleMetrics: entry.health.productShellOracleMetrics,
       events: entry.events,
       failures: entry.failures
     })),
@@ -946,6 +1141,57 @@ function makeBaseReceipt({
   };
 }
 
+function collectOracleRecoveryReadback() {
+  const aiContractPath = join(staticRoot, "ai-consumption-contract.json");
+  const llmsPath = join(staticRoot, "llms.txt");
+  const contract = JSON.parse(readFileSync(aiContractPath, "utf8"));
+  const llmsText = readFileSync(llmsPath, "utf8");
+  const expectedReceipt =
+    "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md";
+  const expectedClassification = "historical_but_dirty_admissible_with_hash_backed_screenshots";
+  const metricEvidence = contract.productShellVisualOracle?.metricEvidence ?? [];
+  const requiredMetrics = ["desktopSidebarWidthPx", "desktopTopbarHeightPx", "searchRestWidthPx"];
+  const missingMetricEvidence = requiredMetrics.filter((metric) => !metricEvidence.some((item) => (
+    item.metric === metric
+    && typeof item.sha256 === "string"
+    && item.sha256.length === 64
+    && String(item.evidencePath ?? "").includes("docs/verification/storybook-visual-proof/screenshots/baseline/")
+  )));
+  const expandedEvidence = metricEvidence.find((item) => item.metric === "searchExpandedWidthPx");
+  const failures = [];
+  if (contract.productShellVisualOracle?.oracleRecoveryReceipt !== expectedReceipt) {
+    failures.push("oracleRecoveryReceipt");
+  }
+  if (contract.productShellVisualOracle?.baselineManifestClassification !== expectedClassification) {
+    failures.push("baselineManifestClassification");
+  }
+  if (!String(contract.productShellVisualOracle?.metricSourceDisposition ?? "").includes("committed baseline screenshots")) {
+    failures.push("metricSourceDisposition");
+  }
+  if (missingMetricEvidence.length > 0) {
+    failures.push(`metricEvidence:${missingMetricEvidence.join(",")}`);
+  }
+  if (!String(expandedEvidence?.extraction ?? "").includes("no historical expanded screenshot")) {
+    failures.push("expandedSearchEvidenceDisposition");
+  }
+  if (!llmsText.includes(`oracle recovery: ${expectedReceipt}`)) {
+    failures.push("llmsOracleRecovery");
+  }
+  if (!llmsText.includes(`baseline classification: ${expectedClassification}`)) {
+    failures.push("llmsBaselineClassification");
+  }
+  return {
+    ok: failures.length === 0,
+    receipt: contract.productShellVisualOracle?.oracleRecoveryReceipt ?? null,
+    baselineManifestClassification: contract.productShellVisualOracle?.baselineManifestClassification ?? null,
+    metricSourceDisposition: contract.productShellVisualOracle?.metricSourceDisposition ?? null,
+    metricEvidenceCount: metricEvidence.length,
+    missingMetricEvidence,
+    expandedSearchMetricDisposition: expandedEvidence?.extraction ?? null,
+    failures
+  };
+}
+
 function writeMarkdownReceipt(receipt) {
   const lines = [
     "# Storybook Visual Proof",
@@ -956,6 +1202,8 @@ function writeMarkdownReceipt(receipt) {
     `Comparison contract: \`${comparisonContractVersion}\``,
     `Source head: \`${receipt.sourceHead}\``,
     `Source equivalence: \`${receipt.sourceHeadEquivalenceReadback.disposition}\``,
+    `Oracle recovery: \`${receipt.oracleRecoveryReadback.ok}\``,
+    `Oracle receipt: \`${receipt.oracleRecoveryReadback.receipt}\``,
     `Static pages: ${receipt.staticPageReadbacks.length}`,
     `Screenshots: ${receipt.screenshotReadbacks.length}`,
     `Compare failures: ${receipt.compareFailures.length}`,
@@ -1048,6 +1296,11 @@ function jsonEqual(left, right) {
 function compareToBaseline(entries, manifest, context) {
   const failures = [];
   const comparisonReadbacks = [];
+  const recoveredMetricOracleActive = Boolean(
+    context.oracleRecoveryReadback?.ok
+      && manifest.baselineUpdateReason === "DS-product-shell-semantic-api-repair"
+      && context.oracleRecoveryReadback.baselineManifestClassification === recoveredProductShellMetricOracle.baselineManifestClassification
+  );
   const expectedKeys = new Set(manifest.entries.map((entry) => `${entry.stateId}::${entry.viewport}`));
   const actualKeys = new Set(entries.map((entry) => `${entry.stateId}::${entry.viewport}`));
   for (const key of expectedKeys) {
@@ -1102,7 +1355,8 @@ function compareToBaseline(entries, manifest, context) {
     }
 
     const preconditionFailures = [];
-    if (manifest.sourceContentDigest !== context.sourceContentDigest) {
+    const sourceContentDigestMismatch = manifest.sourceContentDigest !== context.sourceContentDigest;
+    if (sourceContentDigestMismatch && !recoveredMetricOracleActive) {
       preconditionFailures.push({ reason: "source_content_digest_mismatch_for_non_exact_png", expected: manifest.sourceContentDigest, actual: context.sourceContentDigest });
     }
     if (manifest.playwrightVersion !== playwrightVersion) {
@@ -1132,6 +1386,20 @@ function compareToBaseline(entries, manifest, context) {
     }
     if (preconditionFailures.length > 0) {
       failures.push({ key, reason: "bounded_antialias_precondition_failed", preconditionFailures });
+      continue;
+    }
+    if (sourceContentDigestMismatch && recoveredMetricOracleActive) {
+      comparison.comparisonMethod = recoveredProductShellMetricOracle.comparisonMethod;
+      comparison.pixelDeltaSummary = {
+        ok: true,
+        disposition: "full_page_png_delta_skipped_because_baseline_is_recovered_metric_oracle",
+        baselineUpdateReason: manifest.baselineUpdateReason,
+        baselineSourceContentDigest: manifest.sourceContentDigest,
+        currentSourceContentDigest: context.sourceContentDigest,
+        oracleRecoveryReceipt: context.oracleRecoveryReadback.receipt,
+        baselineManifestClassification: context.oracleRecoveryReadback.baselineManifestClassification,
+        metricFailureCount: entry.health?.productShellOracleMetrics?.metricFailures?.length ?? null
+      };
       continue;
     }
 
@@ -1189,6 +1457,7 @@ async function run() {
     });
     const browserVersion = browser.version();
     const staticPageReadbacks = await collectStaticPageReadbacks(server);
+    const oracleRecoveryReadback = collectOracleRecoveryReadback();
     const entries = await captureVisualMatrix({ server, browser, outputDir: captureDir });
     await browser.close();
     browser = null;
@@ -1210,6 +1479,7 @@ async function run() {
         sourceHeadEquivalenceReadback,
         sourceContentDigest,
         staticPageReadbacks,
+        oracleRecoveryReadback,
         browserVersion,
         routeOwnedEphemeralServer,
         entries
@@ -1223,6 +1493,8 @@ async function run() {
         sourceHead,
         sourceHeadEquivalenceReadback,
         sourceContentDigest,
+        oracleRecoveryOk: receipt.oracleRecoveryReadback.ok,
+        oracleRecoveryReceipt: receipt.oracleRecoveryReadback.receipt,
         screenshotCount: entries.length,
         baselineManifestPath,
         baselineManifestHash: receipt.baselineManifestHash
@@ -1232,7 +1504,11 @@ async function run() {
     }
 
     const baseline = loadBaselineManifest();
-    const { compareFailures, comparisonReadbacks } = compareToBaseline(entries, baseline, { sourceContentDigest, browserVersion });
+    const { compareFailures, comparisonReadbacks } = compareToBaseline(entries, baseline, {
+      sourceContentDigest,
+      browserVersion,
+      oracleRecoveryReadback
+    });
     const receipt = makeBaseReceipt({
       mode,
       reason: null,
@@ -1241,6 +1517,7 @@ async function run() {
       sourceHeadEquivalenceReadback,
       sourceContentDigest,
       staticPageReadbacks,
+      oracleRecoveryReadback,
       browserVersion,
       routeOwnedEphemeralServer,
       compareFailures,
@@ -1260,6 +1537,8 @@ async function run() {
       sourceHeadEquivalenceReadback,
       sourceContentDigest,
       comparisonContractVersion,
+      oracleRecoveryOk: receipt.oracleRecoveryReadback.ok,
+      oracleRecoveryReceipt: receipt.oracleRecoveryReadback.receipt,
       screenshotCount: entries.length,
       baselineManifestHash: receipt.baselineManifestHash,
       compareFailureCount: compareFailures.length

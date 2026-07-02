@@ -534,12 +534,21 @@ const aiContractTraceabilityCheck = {
     && aiContract.foundationVisualStandardCategories?.length === expectedFoundationStandardCategoryIds.length
     && aiContract.consumerVisualStyleContract?.id === "consumer-visual-style-contract-v1"
     && aiContract.productShellVisualOracle?.id === "confirmed-storybook-visual-v1"
+    && aiContract.productShellVisualOracle?.oracleRecoveryReceipt === "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md"
+    && aiContract.productShellVisualOracle?.baselineManifestClassification === "historical_but_dirty_admissible_with_hash_backed_screenshots"
+    && String(aiContract.productShellVisualOracle?.metricSourceDisposition ?? "").includes("committed baseline screenshots")
+    && (aiContract.productShellVisualOracle?.metricEvidence ?? []).some((item) => (
+      item.metric === "searchRestWidthPx"
+      && item.sha256 === "ecbfdc86eb8f7f48ab0f2b2a0d66dce0860bdf7d8212748b934c9e823eb1db1d"
+    ))
     && llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
     && llmsText.includes("Work Management authority:")
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
     && llmsText.includes("ProductShell visual oracle: confirmed-storybook-visual-v1")
+    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md")
+    && llmsText.includes("baseline classification: historical_but_dirty_admissible_with_hash_backed_screenshots")
     && llmsText.includes(contractPayloadDigest),
   contractVersion: aiContract.contractVersion,
   contractPayloadDigest,
@@ -553,12 +562,17 @@ const aiContractTraceabilityCheck = {
   foundationVisualStandardCategoryCount: aiContract.foundationVisualStandardCategories?.length ?? 0,
   consumerVisualStyleContractId: aiContract.consumerVisualStyleContract?.id ?? null,
   productShellVisualOracleId: aiContract.productShellVisualOracle?.id ?? null,
+  productShellVisualOracleReceipt: aiContract.productShellVisualOracle?.oracleRecoveryReceipt ?? null,
+  productShellVisualOracleBaselineClassification: aiContract.productShellVisualOracle?.baselineManifestClassification ?? null,
+  productShellVisualOracleMetricEvidenceCount: aiContract.productShellVisualOracle?.metricEvidence?.length ?? 0,
   llmsTraceabilitySectionsPresent: llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
     && llmsText.includes("Work Management authority:")
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
     && llmsText.includes("ProductShell visual oracle: confirmed-storybook-visual-v1")
+    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md")
+    && llmsText.includes("baseline classification: historical_but_dirty_admissible_with_hash_backed_screenshots")
 };
 
 const staticServer = await startStaticServer(".");

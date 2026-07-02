@@ -805,6 +805,16 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   }
   assert.equal(contract.productShellVisualOracle?.id, productShellVisualOracle.id);
   assert.equal(contract.productShellVisualOracle?.packageAuthority, "@tcrn/ui-react/ProductShell");
+  assert.equal(contract.productShellVisualOracle?.oracleRecoveryReceipt, productShellVisualOracle.oracleRecoveryReceipt);
+  assert.equal(contract.productShellVisualOracle?.baselineManifestClassification, "historical_but_dirty_admissible_with_hash_backed_screenshots");
+  assert.match(contract.productShellVisualOracle?.metricSourceDisposition ?? "", /re-derivation from committed baseline screenshots/);
+  assert.ok(
+    contract.productShellVisualOracle?.metricEvidence?.some((item: { metric: string; sha256?: string | null }) => (
+      item.metric === "desktopSidebarWidthPx"
+      && item.sha256 === "ecbfdc86eb8f7f48ab0f2b2a0d66dce0860bdf7d8212748b934c9e823eb1db1d"
+    )),
+    "ProductShell visual oracle must cite hash-backed sidebar evidence"
+  );
   assert.equal(contract.productShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 326);
   assert.equal(contract.productShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 96);
   assert.equal(contract.productShellVisualOracle?.shellMetrics?.searchRestWidthPx, 180);
@@ -1030,6 +1040,8 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /consumer-enforcement: Consumer enforcement and reject criteria/);
   assert.match(llms, /Consumer visual style contract: consumer-visual-style-contract-v1/);
   assert.match(llms, /ProductShell visual oracle: confirmed-storybook-visual-v1/);
+  assert.match(llms, /oracle recovery: TCRN Workflow\/vault\/initiatives\/projects\/TCRN-DESIGN-SYSTEM\/active\/foundation-visual-standards-ai-contract\/65-visual-oracle-recovery\.md/);
+  assert.match(llms, /baseline classification: historical_but_dirty_admissible_with_hash_backed_screenshots/);
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);

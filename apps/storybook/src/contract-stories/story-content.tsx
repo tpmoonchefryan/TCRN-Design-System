@@ -1129,6 +1129,9 @@ const legacyContractStories: LegacyContractStory[] = [
             items={[
               { key: "authority", label: "Package authority", value: productShellVisualOracle.packageAuthority },
               { key: "baseline", label: "Baseline manifest", value: productShellVisualOracle.baselineManifest },
+              { key: "receipt", label: "Oracle recovery receipt", value: productShellVisualOracle.oracleRecoveryReceipt },
+              { key: "classification", label: "Baseline classification", value: productShellVisualOracle.baselineManifestClassification },
+              { key: "metric-source", label: "Metric source", value: productShellVisualOracle.metricSourceDisposition },
               { key: "source", label: "Source head", value: productShellVisualOracle.sourceHead },
               { key: "sidebar", label: "Desktop sidebar width", value: `${productShellVisualOracle.shellMetrics.desktopSidebarWidthPx}px +/- ${productShellVisualOracle.shellMetrics.desktopSidebarTolerancePx}px` },
               { key: "topbar", label: "Desktop topbar height", value: `${productShellVisualOracle.shellMetrics.desktopTopbarHeightPx}px +/- ${productShellVisualOracle.shellMetrics.desktopTopbarTolerancePx}px` },
