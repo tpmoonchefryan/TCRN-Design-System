@@ -2574,6 +2574,7 @@ async function runCrossSectionShellParityProof() {
     "AI consumption contract",
     "Local changelog"
   ];
+  const expectedThemeToggleRadius = `${productShellComparatorContract.expectedControlMetrics.themeToggle.radius}px`;
 
   async function collect(viewport) {
     const browser = await chromium.launch({
@@ -2627,6 +2628,7 @@ async function runCrossSectionShellParityProof() {
           const currentLocation = rectFor(".tcrn-product-shell__current-location");
           const search = rectFor(".tcrn-product-shell-search");
           const controls = rectFor("[data-shell-control='theme-toggle']");
+          const themeToggleStyles = styleFor("[data-shell-control='theme-toggle']", ["border-radius"]);
           const locale = rectFor(".tcrn-shell-locale-menu");
 	          const pageHead = rectFor("[data-doc-page-head='governed-section']");
 	          const shell = document.querySelector("[data-contract-surface]");
@@ -2716,6 +2718,7 @@ async function runCrossSectionShellParityProof() {
             currentLocation,
             search,
             controls,
+            themeToggleRadius: themeToggleStyles?.["border-radius"] ?? null,
             localeControl: locale,
             headerStyles: styleFor(".tcrn-top-bar", ["display", "grid-template-columns", "min-height"]),
             workspaceStyles: styleFor(".tcrn-product-shell__workspace", ["display", "grid-template-columns", "gap", "padding-left", "padding-right"]),
@@ -2747,7 +2750,10 @@ async function runCrossSectionShellParityProof() {
         if (metrics.sidebarNoIconLabelReadabilityFailures.length > 0) {
           routeFailures.push(`sidebar-no-icon-label-readability:${JSON.stringify(metrics.sidebarNoIconLabelReadabilityFailures.slice(0, 3))}`);
         }
-	        if (metrics.pageOverflow) routeFailures.push("page-overflow");
+        if (metrics.themeToggleRadius !== expectedThemeToggleRadius) {
+          routeFailures.push(`theme-toggle-radius:${metrics.themeToggleRadius ?? "missing"}:expected:${expectedThemeToggleRadius}`);
+        }
+		        if (metrics.pageOverflow) routeFailures.push("page-overflow");
         if (isDesktopViewport) {
           if (!metrics.currentLocationBeforeSearch) routeFailures.push("current-location-not-before-search");
           if (!metrics.searchBeforeControls) routeFailures.push("search-not-before-controls");

@@ -653,6 +653,7 @@ const forbiddenZhCnProductShellText = [
   "AI consumption contract",
   "Local changelog"
 ];
+const expectedProductShellThemeToggleRadius = "999px";
 const firstStoryHashShellParityReadbacks = [];
 for (const route of firstStoryHashShellParityRoutes) {
   if (!route.storyId) {
@@ -697,6 +698,7 @@ for (const route of firstStoryHashShellParityRoutes) {
     const currentLocation = rectFor(".tcrn-product-shell__current-location");
     const search = rectFor(".tcrn-product-shell-search");
     const controls = rectFor("[data-shell-control='theme-toggle']");
+    const themeToggleStyles = styleFor("[data-shell-control='theme-toggle']", ["border-radius"]);
     const locale = rectFor(".tcrn-shell-locale-menu");
 	    const shell = document.querySelector("[data-contract-surface]");
 	    const storybookNav = shell?.querySelector("[data-product-shell-region='side-navigation']");
@@ -737,6 +739,7 @@ for (const route of firstStoryHashShellParityRoutes) {
       header,
       pageHead,
       firstStoryTop: firstStoryRect ? Number(firstStoryRect.top.toFixed(2)) : null,
+      themeToggleRadius: themeToggleStyles?.["border-radius"] ?? null,
       headerStyles: styleFor(".tcrn-top-bar", ["display", "grid-template-columns", "min-height"]),
       workspaceStyles: styleFor(".tcrn-product-shell__workspace", ["display", "grid-template-columns", "gap"]),
       pageHeadStyles: styleFor("[data-doc-page-head='governed-section']", ["display", "grid-template-columns", "gap", "border-bottom-style"]),
@@ -768,6 +771,9 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.navGroupCount !== expectedCategoryCount) failures.push(`nav-group-count:${metrics.navGroupCount}`);
   if (metrics.categoryLabelCount !== expectedCategoryCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
   if (metrics.productShellEnglishLeaks.length > 0) failures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
+  if (metrics.themeToggleRadius !== expectedProductShellThemeToggleRadius) {
+    failures.push(`theme-toggle-radius:${metrics.themeToggleRadius ?? "missing"}:expected:${expectedProductShellThemeToggleRadius}`);
+  }
   if (metrics.pageOverflow) failures.push("page-overflow");
   if (!metrics.currentLocationBeforeSearch) failures.push("current-location-not-before-search");
   if (!metrics.searchBeforeControls) failures.push("search-not-before-controls");

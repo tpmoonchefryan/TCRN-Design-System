@@ -1308,7 +1308,8 @@ export const tcrnComponentCss = `
   block-size: 38px;
   padding: 0;
 }
-.tcrn-shell-theme-toggle {
+.tcrn-shell-theme-toggle,
+.tcrn-button.tcrn-shell-theme-toggle {
   position: relative;
   inline-size: 36px;
   block-size: 36px;
@@ -2311,6 +2312,7 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
     animation: none;
   }
   .tcrn-button,
+  .tcrn-button.tcrn-shell-theme-toggle,
   .tcrn-nav-item,
   .tcrn-search-input,
   .tcrn-shell-theme-toggle__icon,

@@ -556,6 +556,7 @@
           "height": 137.61
         },
         "firstStoryTop": 321.36,
+        "themeToggleRadius": "999px",
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1120px",
@@ -622,6 +623,7 @@
           "height": 141.05
         },
         "firstStoryTop": 324.8,
+        "themeToggleRadius": "999px",
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1120px",
@@ -688,6 +690,7 @@
           "height": 137.61
         },
         "firstStoryTop": 321.36,
+        "themeToggleRadius": "999px",
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1120px",
@@ -754,6 +757,7 @@
           "height": 189.42
         },
         "firstStoryTop": 373.17,
+        "themeToggleRadius": "999px",
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1120px",
@@ -820,6 +824,7 @@
           "height": 165.23
         },
         "firstStoryTop": 348.98,
+        "themeToggleRadius": "999px",
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1120px",
@@ -886,6 +891,7 @@
           "height": 137.61
         },
         "firstStoryTop": 321.36,
+        "themeToggleRadius": "999px",
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1120px",
@@ -952,6 +958,7 @@
           "height": 137.61
         },
         "firstStoryTop": 321.36,
+        "themeToggleRadius": "999px",
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1120px",
