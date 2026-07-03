@@ -54,6 +54,8 @@ test("table shell records arbitrary column counts for responsive layout", () => 
   );
   assert.match(oneColumn, /aria-label="Single column fixture"/);
   assert.match(oneColumn, /--tcrn-table-column-count:1/);
+  assert.match(oneColumn, /--tcrn-table-shell-columns:repeat\(1, minmax\(var\(--tcrn-table-shell-column-min-width, 160px\), 1fr\)\)/);
+  assert.match(oneColumn, /--tcrn-table-shell-min-width:max\(100%, calc\(1 \* var\(--tcrn-table-shell-column-min-width, 160px\)\)\)/);
   assert.match(oneColumn, /tabindex="0"/);
   assert.match(oneColumn, /role="row" class="tcrn-table-shell__empty-row"/);
   assert.match(oneColumn, /role="cell" aria-colspan="1" class="tcrn-table-shell__empty"/);
@@ -71,6 +73,8 @@ test("table shell records arbitrary column counts for responsive layout", () => 
     />
   );
   assert.match(fourColumns, /--tcrn-table-column-count:4/);
+  assert.match(fourColumns, /--tcrn-table-shell-columns:repeat\(4, minmax\(var\(--tcrn-table-shell-column-min-width, 160px\), 1fr\)\)/);
+  assert.match(fourColumns, /--tcrn-table-shell-min-width:max\(100%, calc\(4 \* var\(--tcrn-table-shell-column-min-width, 160px\)\)\)/);
   assert.match(fourColumns, /data-label="D"/);
 });
 

@@ -250,7 +250,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "c84cb8976eb6408a55f4b12138630728195d57d508d2d8f9638c9ac9e650b07b",
+    "contractPayloadDigest": "e1e67daf177a2f9f08fbbc7079043c8661cb3ed7f986f3cb356bec4f75c5167e",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
@@ -602,25 +602,55 @@
         "firstStoryTop": 329.36,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShell": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShellStyles": {
           "border-color": "rgb(184, 200, 214)",
           "border-radius": "5px"
         },
+        "searchControl": {
+          "top": 38.22,
+          "left": 1012.09,
+          "right": 1174.14,
+          "bottom": 57.77,
+          "width": 162.05,
+          "height": 19.55
+        },
+        "searchIcon": {
+          "top": 40,
+          "left": 988.09,
+          "right": 1004.09,
+          "bottom": 56,
+          "width": 16,
+          "height": 16
+        },
+        "searchShortcut": {
+          "top": 37.58,
+          "left": 1182.14,
+          "right": 1226.09,
+          "bottom": 58.42,
+          "width": 43.95,
+          "height": 20.84
+        },
+        "searchInputGridStyles": {
+          "display": "grid",
+          "grid-template-columns": "16px 162.047px 43.9531px",
+          "overflow": "visible"
+        },
+        "searchFitFailures": [],
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
@@ -628,7 +658,7 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "705.75px 180px",
+          "grid-template-columns": "625.75px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
@@ -711,25 +741,55 @@
         "firstStoryTop": 332.8,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShell": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShellStyles": {
           "border-color": "rgb(184, 200, 214)",
           "border-radius": "5px"
         },
+        "searchControl": {
+          "top": 38.22,
+          "left": 1012.09,
+          "right": 1174.14,
+          "bottom": 57.77,
+          "width": 162.05,
+          "height": 19.55
+        },
+        "searchIcon": {
+          "top": 40,
+          "left": 988.09,
+          "right": 1004.09,
+          "bottom": 56,
+          "width": 16,
+          "height": 16
+        },
+        "searchShortcut": {
+          "top": 37.58,
+          "left": 1182.14,
+          "right": 1226.09,
+          "bottom": 58.42,
+          "width": 43.95,
+          "height": 20.84
+        },
+        "searchInputGridStyles": {
+          "display": "grid",
+          "grid-template-columns": "16px 162.047px 43.9531px",
+          "overflow": "visible"
+        },
+        "searchFitFailures": [],
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
@@ -737,7 +797,7 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "705.75px 180px",
+          "grid-template-columns": "625.75px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
@@ -814,25 +874,55 @@
         "firstStoryTop": 329.36,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShell": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShellStyles": {
           "border-color": "rgb(184, 200, 214)",
           "border-radius": "5px"
         },
+        "searchControl": {
+          "top": 38.22,
+          "left": 1012.09,
+          "right": 1174.14,
+          "bottom": 57.77,
+          "width": 162.05,
+          "height": 19.55
+        },
+        "searchIcon": {
+          "top": 40,
+          "left": 988.09,
+          "right": 1004.09,
+          "bottom": 56,
+          "width": 16,
+          "height": 16
+        },
+        "searchShortcut": {
+          "top": 37.58,
+          "left": 1182.14,
+          "right": 1226.09,
+          "bottom": 58.42,
+          "width": 43.95,
+          "height": 20.84
+        },
+        "searchInputGridStyles": {
+          "display": "grid",
+          "grid-template-columns": "16px 162.047px 43.9531px",
+          "overflow": "visible"
+        },
+        "searchFitFailures": [],
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
@@ -840,7 +930,7 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "705.75px 180px",
+          "grid-template-columns": "625.75px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
@@ -917,25 +1007,55 @@
         "firstStoryTop": 381.17,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShell": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShellStyles": {
           "border-color": "rgb(184, 200, 214)",
           "border-radius": "5px"
         },
+        "searchControl": {
+          "top": 38.22,
+          "left": 1012.09,
+          "right": 1174.14,
+          "bottom": 57.77,
+          "width": 162.05,
+          "height": 19.55
+        },
+        "searchIcon": {
+          "top": 40,
+          "left": 988.09,
+          "right": 1004.09,
+          "bottom": 56,
+          "width": 16,
+          "height": 16
+        },
+        "searchShortcut": {
+          "top": 37.58,
+          "left": 1182.14,
+          "right": 1226.09,
+          "bottom": 58.42,
+          "width": 43.95,
+          "height": 20.84
+        },
+        "searchInputGridStyles": {
+          "display": "grid",
+          "grid-template-columns": "16px 162.047px 43.9531px",
+          "overflow": "visible"
+        },
+        "searchFitFailures": [],
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
@@ -943,7 +1063,7 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "705.75px 180px",
+          "grid-template-columns": "625.75px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
@@ -1020,25 +1140,55 @@
         "firstStoryTop": 356.98,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShell": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShellStyles": {
           "border-color": "rgb(184, 200, 214)",
           "border-radius": "5px"
         },
+        "searchControl": {
+          "top": 38.22,
+          "left": 1012.09,
+          "right": 1174.14,
+          "bottom": 57.77,
+          "width": 162.05,
+          "height": 19.55
+        },
+        "searchIcon": {
+          "top": 40,
+          "left": 988.09,
+          "right": 1004.09,
+          "bottom": 56,
+          "width": 16,
+          "height": 16
+        },
+        "searchShortcut": {
+          "top": 37.58,
+          "left": 1182.14,
+          "right": 1226.09,
+          "bottom": 58.42,
+          "width": 43.95,
+          "height": 20.84
+        },
+        "searchInputGridStyles": {
+          "display": "grid",
+          "grid-template-columns": "16px 162.047px 43.9531px",
+          "overflow": "visible"
+        },
+        "searchFitFailures": [],
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
@@ -1046,7 +1196,7 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "705.75px 180px",
+          "grid-template-columns": "625.75px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
@@ -1123,25 +1273,55 @@
         "firstStoryTop": 329.36,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShell": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShellStyles": {
           "border-color": "rgb(184, 200, 214)",
           "border-radius": "5px"
         },
+        "searchControl": {
+          "top": 38.22,
+          "left": 1012.09,
+          "right": 1174.14,
+          "bottom": 57.77,
+          "width": 162.05,
+          "height": 19.55
+        },
+        "searchIcon": {
+          "top": 40,
+          "left": 988.09,
+          "right": 1004.09,
+          "bottom": 56,
+          "width": 16,
+          "height": 16
+        },
+        "searchShortcut": {
+          "top": 37.58,
+          "left": 1182.14,
+          "right": 1226.09,
+          "bottom": 58.42,
+          "width": 43.95,
+          "height": 20.84
+        },
+        "searchInputGridStyles": {
+          "display": "grid",
+          "grid-template-columns": "16px 162.047px 43.9531px",
+          "overflow": "visible"
+        },
+        "searchFitFailures": [],
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
@@ -1149,7 +1329,7 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "705.75px 180px",
+          "grid-template-columns": "625.75px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
@@ -1226,25 +1406,55 @@
         "firstStoryTop": 329.36,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShell": {
-          "top": 29,
-          "left": 1057.09,
+          "top": 30,
+          "left": 977.09,
           "right": 1237.09,
-          "bottom": 67,
-          "width": 180,
-          "height": 38
+          "bottom": 66,
+          "width": 260,
+          "height": 36
         },
         "searchInputShellStyles": {
           "border-color": "rgb(184, 200, 214)",
           "border-radius": "5px"
         },
+        "searchControl": {
+          "top": 38.22,
+          "left": 1012.09,
+          "right": 1174.14,
+          "bottom": 57.77,
+          "width": 162.05,
+          "height": 19.55
+        },
+        "searchIcon": {
+          "top": 40,
+          "left": 988.09,
+          "right": 1004.09,
+          "bottom": 56,
+          "width": 16,
+          "height": 16
+        },
+        "searchShortcut": {
+          "top": 37.58,
+          "left": 1182.14,
+          "right": 1226.09,
+          "bottom": 58.42,
+          "width": 43.95,
+          "height": 20.84
+        },
+        "searchInputGridStyles": {
+          "display": "grid",
+          "grid-template-columns": "16px 162.047px 43.9531px",
+          "overflow": "visible"
+        },
+        "searchFitFailures": [],
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
@@ -1252,7 +1462,7 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "705.75px 180px",
+          "grid-template-columns": "625.75px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
@@ -1299,23 +1509,23 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 399.69,
+          "bottom": 397.69,
           "left": 0,
           "width": 390,
-          "height": 399.69
+          "height": 397.69
         },
         "article": {
-          "top": 411.8,
+          "top": 411.52,
           "right": 374,
-          "bottom": 9605,
+          "bottom": 9614.23,
           "left": 16,
           "width": 358,
-          "height": 9193.2
+          "height": 9202.72
         },
         "title": {
-          "top": 428.8,
+          "top": 428.52,
           "right": 357,
-          "bottom": 455.11,
+          "bottom": 454.83,
           "left": 33,
           "width": 324,
           "height": 26.31
@@ -1331,10 +1541,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 399.69,
+            "bottom": 397.69,
             "left": 0,
             "width": 390,
-            "height": 399.69
+            "height": 397.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -1346,10 +1556,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 389.69,
+            "bottom": 387.69,
             "left": 10,
             "width": 370,
-            "height": 379.69
+            "height": 377.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -1376,10 +1586,10 @@
             "zIndex": "auto",
             "top": 285.69,
             "right": 364,
-            "bottom": 323.69,
+            "bottom": 321.69,
             "left": 26,
             "width": 338,
-            "height": 38
+            "height": 36
           },
           "searchInput": {
             "selector": ".tcrn-search-input",
@@ -1387,14 +1597,14 @@
             "backgroundImage": "none",
             "backgroundAlpha": 1,
             "opacity": 1,
-            "position": "relative",
+            "position": "static",
             "zIndex": "auto",
             "top": 285.69,
             "right": 364,
-            "bottom": 323.69,
+            "bottom": 321.69,
             "left": 26,
             "width": 338,
-            "height": 38
+            "height": 36
           },
           "themeToggle": {
             "selector": ".tcrn-shell-theme-toggle",
@@ -1404,9 +1614,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 341.69,
+            "top": 339.69,
             "right": 237,
-            "bottom": 377.69,
+            "bottom": 375.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -1419,9 +1629,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 341.69,
+            "top": 339.69,
             "right": 364,
-            "bottom": 377.69,
+            "bottom": 375.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -1474,7 +1684,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Product SideNav collapseAny product or documentation shell that claims SideNav b"
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
                 },
                 {
                   "tag": "div",
@@ -1873,8 +2083,8 @@
             }
           ]
         },
-        "articleClearancePx": 12.11,
-        "titleClearancePx": 29.11,
+        "articleClearancePx": 13.83,
+        "titleClearancePx": 30.83,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -1899,23 +2109,23 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 399.69,
+          "bottom": 397.69,
           "left": 0,
           "width": 390,
-          "height": 399.69
+          "height": 397.69
         },
         "article": {
-          "top": 411.8,
+          "top": 411.52,
           "right": 374,
-          "bottom": 9605,
+          "bottom": 9614.23,
           "left": 16,
           "width": 358,
-          "height": 9193.2
+          "height": 9202.72
         },
         "title": {
-          "top": 428.8,
+          "top": 428.52,
           "right": 357,
-          "bottom": 455.11,
+          "bottom": 454.83,
           "left": 33,
           "width": 324,
           "height": 26.31
@@ -1931,10 +2141,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 399.69,
+            "bottom": 397.69,
             "left": 0,
             "width": 390,
-            "height": 399.69
+            "height": 397.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -1946,10 +2156,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 389.69,
+            "bottom": 387.69,
             "left": 10,
             "width": 370,
-            "height": 379.69
+            "height": 377.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -1976,10 +2186,10 @@
             "zIndex": "auto",
             "top": 285.69,
             "right": 364,
-            "bottom": 323.69,
+            "bottom": 321.69,
             "left": 26,
             "width": 338,
-            "height": 38
+            "height": 36
           },
           "searchInput": {
             "selector": ".tcrn-search-input",
@@ -1987,14 +2197,14 @@
             "backgroundImage": "none",
             "backgroundAlpha": 1,
             "opacity": 1,
-            "position": "relative",
+            "position": "static",
             "zIndex": "auto",
             "top": 285.69,
             "right": 364,
-            "bottom": 323.69,
+            "bottom": 321.69,
             "left": 26,
             "width": 338,
-            "height": 38
+            "height": 36
           },
           "themeToggle": {
             "selector": ".tcrn-shell-theme-toggle",
@@ -2004,9 +2214,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 341.69,
+            "top": 339.69,
             "right": 237,
-            "bottom": 377.69,
+            "bottom": 375.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -2019,9 +2229,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 341.69,
+            "top": 339.69,
             "right": 364,
-            "bottom": 377.69,
+            "bottom": 375.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -2074,7 +2284,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Product SideNav collapseAny product or documentation shell that claims SideNav b"
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
                 },
                 {
                   "tag": "div",
@@ -2473,8 +2683,8 @@
             }
           ]
         },
-        "articleClearancePx": 12.11,
-        "titleClearancePx": 29.11,
+        "articleClearancePx": 13.83,
+        "titleClearancePx": 30.83,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -2499,23 +2709,23 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 399.69,
+          "bottom": 397.69,
           "left": 0,
           "width": 390,
-          "height": 399.69
+          "height": 397.69
         },
         "article": {
-          "top": 411.8,
+          "top": 411.52,
           "right": 374,
-          "bottom": 9605,
+          "bottom": 9614.23,
           "left": 16,
           "width": 358,
-          "height": 9193.2
+          "height": 9202.72
         },
         "title": {
-          "top": 428.8,
+          "top": 428.52,
           "right": 357,
-          "bottom": 455.11,
+          "bottom": 454.83,
           "left": 33,
           "width": 324,
           "height": 26.31
@@ -2531,10 +2741,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 399.69,
+            "bottom": 397.69,
             "left": 0,
             "width": 390,
-            "height": 399.69
+            "height": 397.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -2546,10 +2756,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 389.69,
+            "bottom": 387.69,
             "left": 10,
             "width": 370,
-            "height": 379.69
+            "height": 377.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -2576,10 +2786,10 @@
             "zIndex": "auto",
             "top": 285.69,
             "right": 364,
-            "bottom": 323.69,
+            "bottom": 321.69,
             "left": 26,
             "width": 338,
-            "height": 38
+            "height": 36
           },
           "searchInput": {
             "selector": ".tcrn-search-input",
@@ -2587,14 +2797,14 @@
             "backgroundImage": "none",
             "backgroundAlpha": 1,
             "opacity": 1,
-            "position": "relative",
+            "position": "static",
             "zIndex": "auto",
             "top": 285.69,
             "right": 364,
-            "bottom": 323.69,
+            "bottom": 321.69,
             "left": 26,
             "width": 338,
-            "height": 38
+            "height": 36
           },
           "themeToggle": {
             "selector": ".tcrn-shell-theme-toggle",
@@ -2604,9 +2814,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 341.69,
+            "top": 339.69,
             "right": 237,
-            "bottom": 377.69,
+            "bottom": 375.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -2619,9 +2829,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 341.69,
+            "top": 339.69,
             "right": 364,
-            "bottom": 377.69,
+            "bottom": 375.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -2674,7 +2884,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Product SideNav collapseAny product or documentation shell that claims SideNav b"
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
                 },
                 {
                   "tag": "div",
@@ -3073,8 +3283,8 @@
             }
           ]
         },
-        "articleClearancePx": 12.11,
-        "titleClearancePx": 29.11,
+        "articleClearancePx": 13.83,
+        "titleClearancePx": 30.83,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -3099,23 +3309,23 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 399.69,
+          "bottom": 397.69,
           "left": 0,
           "width": 390,
-          "height": 399.69
+          "height": 397.69
         },
         "article": {
-          "top": 411.8,
+          "top": 411.52,
           "right": 374,
-          "bottom": 9605,
+          "bottom": 9614.23,
           "left": 16,
           "width": 358,
-          "height": 9193.2
+          "height": 9202.72
         },
         "title": {
-          "top": 428.8,
+          "top": 428.52,
           "right": 357,
-          "bottom": 455.11,
+          "bottom": 454.83,
           "left": 33,
           "width": 324,
           "height": 26.31
@@ -3131,10 +3341,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 399.69,
+            "bottom": 397.69,
             "left": 0,
             "width": 390,
-            "height": 399.69
+            "height": 397.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -3146,10 +3356,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 389.69,
+            "bottom": 387.69,
             "left": 10,
             "width": 370,
-            "height": 379.69
+            "height": 377.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -3176,10 +3386,10 @@
             "zIndex": "auto",
             "top": 285.69,
             "right": 364,
-            "bottom": 323.69,
+            "bottom": 321.69,
             "left": 26,
             "width": 338,
-            "height": 38
+            "height": 36
           },
           "searchInput": {
             "selector": ".tcrn-search-input",
@@ -3187,14 +3397,14 @@
             "backgroundImage": "none",
             "backgroundAlpha": 1,
             "opacity": 1,
-            "position": "relative",
+            "position": "static",
             "zIndex": "auto",
             "top": 285.69,
             "right": 364,
-            "bottom": 323.69,
+            "bottom": 321.69,
             "left": 26,
             "width": 338,
-            "height": 38
+            "height": 36
           },
           "themeToggle": {
             "selector": ".tcrn-shell-theme-toggle",
@@ -3204,9 +3414,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 341.69,
+            "top": 339.69,
             "right": 237,
-            "bottom": 377.69,
+            "bottom": 375.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -3219,9 +3429,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 341.69,
+            "top": 339.69,
             "right": 364,
-            "bottom": 377.69,
+            "bottom": 375.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -3274,7 +3484,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Product SideNav collapseAny product or documentation shell that claims SideNav b"
+                  "text": "Product IA and brandProduct shells use admitted brand assets and show only route"
                 },
                 {
                   "tag": "div",
@@ -3673,8 +3883,8 @@
             }
           ]
         },
-        "articleClearancePx": 12.11,
-        "titleClearancePx": 29.11,
+        "articleClearancePx": 13.83,
+        "titleClearancePx": 30.83,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -3694,8 +3904,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 59425,
-      "scrollY": 52690
+      "maxScrollY": 50030,
+      "scrollY": 44585
     }
   },
   "scrollSpyCheck": {
@@ -3705,10 +3915,10 @@
       "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
-      "targetTop": 304,
+      "targetTop": 363,
       "offset": 96,
-      "maxScrollY": 5334,
-      "scrollY": 5334,
+      "maxScrollY": 4586,
+      "scrollY": 4586,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }

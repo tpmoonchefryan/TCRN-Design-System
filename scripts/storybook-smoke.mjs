@@ -1284,7 +1284,7 @@ if (!String(contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "
 }
 if (!(contract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) => (
   item.metric === "desktopSidebarWidthPx"
-  && item.sha256 === "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d"
+  && item.sha256 === "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953"
 ))) {
   missing.push("contract.storybookDocShellVisualOracle.metricEvidence.desktopSidebarWidthPx");
 }
@@ -1300,11 +1300,38 @@ if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidth
 if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx !== 96) {
   missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopTopbarHeightPx");
 }
-if (contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx !== 180) {
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx !== 260) {
   missing.push("contract.storybookDocShellVisualOracle.shellMetrics.searchRestWidthPx");
+}
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.searchExpandedWidthPx !== 360) {
+  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.searchExpandedWidthPx");
 }
 if (contract.storybookDocShellVisualOracle?.shellMetrics?.themeToggleRadiusPx !== 999) {
   missing.push("contract.storybookDocShellVisualOracle.shellMetrics.themeToggleRadiusPx");
+}
+if (contract.designSystemAuthorityDisposition !== "package_primitives_and_storybook_doc_shell_split") {
+  missing.push("contract.designSystemAuthorityDisposition");
+}
+if (contract.componentStorybookParityDisposition !== "package_primitives_consumed_without_internal_clones") {
+  missing.push("contract.componentStorybookParityDisposition");
+}
+if (contract.ownerVisualAdmissionDisposition !== "owner_review_required") {
+  missing.push("contract.ownerVisualAdmissionDisposition");
+}
+if (contract.visualFitControlContract?.search?.storybookRestWidthPx !== 260 || contract.visualFitControlContract?.search?.storybookExpandedWidthPx !== 360) {
+  missing.push("contract.visualFitControlContract.search.storybookWidth");
+}
+if (contract.visualFitControlContract?.search?.packageDefaultControlMinInlineSize !== "9ch") {
+  missing.push("contract.visualFitControlContract.search.packageDefaultControlMinInlineSize");
+}
+if (!String(contract.visualFitControlContract?.productLockups?.rule ?? "").includes("suffix accents are package-owned")) {
+  missing.push("contract.visualFitControlContract.productLockups.rule");
+}
+if (!String(contract.visualFitControlContract?.sidebar?.rule ?? "").includes("orphan visual lane")) {
+  missing.push("contract.visualFitControlContract.sidebar.rule");
+}
+if (!String(contract.visualFitControlContract?.tablesAndContainers?.rule ?? "").includes("package-emitted column/min-width variables")) {
+  missing.push("contract.visualFitControlContract.tablesAndContainers.rule");
 }
 if (contract.consumerVisualStyleContract?.id !== "consumer-visual-style-contract-v1") {
   missing.push("contract.consumerVisualStyleContract.id");
@@ -2835,6 +2862,19 @@ async function runCrossSectionShellParityProof() {
           const searchInput = document.querySelector(".tcrn-search-input__control");
           const searchInputShell = rectFor(".tcrn-search-input");
           const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
+          const searchControl = rectFor(".tcrn-doc-header-search .tcrn-search-input__control");
+          const searchIcon = rectFor(".tcrn-doc-header-search .tcrn-search-input__icon");
+          const searchShortcut = rectFor(".tcrn-doc-header-search .tcrn-search-input__shortcut");
+          const searchInputGridStyles = styleFor(".tcrn-doc-header-search .tcrn-search-input", ["display", "grid-template-columns", "overflow"]);
+          const searchFitFailures = [];
+          if (searchInputShell && searchControl && searchIcon && searchShortcut) {
+            if (searchControl.width < 84) searchFitFailures.push(`control-width:${searchControl.width}`);
+            if (searchIcon.left < searchInputShell.left - 1 || searchIcon.right > searchControl.left + 1) searchFitFailures.push("icon-track-overlap");
+            if (searchShortcut.left < searchControl.right - 1 || searchShortcut.right > searchInputShell.right + 1) searchFitFailures.push("shortcut-track-overlap");
+          } else {
+            searchFitFailures.push("search-track-missing");
+          }
+          if (searchInputGridStyles?.display !== "grid") searchFitFailures.push(`display:${searchInputGridStyles?.display ?? "missing"}`);
           const sideNavRegion = rectFor(".tcrn-doc-sidebar");
           const docShellTextSurface = [
             brandNode?.textContent ?? "",
@@ -2940,6 +2980,11 @@ async function runCrossSectionShellParityProof() {
             search,
             searchInputShell,
             searchInputShellStyles,
+            searchControl,
+            searchIcon,
+            searchShortcut,
+            searchInputGridStyles,
+            searchFitFailures,
             controls,
             themeToggleRadius: themeToggleStyles?.["border-radius"] ?? null,
             localeControl: locale,
@@ -3003,6 +3048,9 @@ async function runCrossSectionShellParityProof() {
           }
           if (!widthWithin(metrics.search?.width, expectedStorybookVisualSkin.searchRestWidthPx, 2)) {
             routeFailures.push(`storybook-skin-search-width:${metrics.search?.width ?? "missing"}:expected:${expectedStorybookVisualSkin.searchRestWidthPx}`);
+          }
+          if ((metrics.searchFitFailures ?? []).length > 0) {
+            routeFailures.push(`storybook-skin-search-fit:${metrics.searchFitFailures.join("|")}`);
           }
           if (!widthWithin(metrics.searchInputShell?.height, expectedStorybookVisualSkin.searchHeightPx, 2)) {
             routeFailures.push(`storybook-skin-search-height:${metrics.searchInputShell?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.searchHeightPx}`);

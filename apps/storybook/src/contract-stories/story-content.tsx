@@ -449,6 +449,20 @@ const legacyContractStories: LegacyContractStory[] = [
             </div>
           </div>
         </ReadbackPanel>
+        <ReadbackPanel title="Product lockups">
+          <div className="tcrn-brand-lockups" aria-label="TCRN product lockup examples">
+            <div className="tcrn-brand-lockup-card">
+              <ProductLockup suffix="AOS" suffixClassName="tcrn-brand-wordmark__suffix--aos" />
+            </div>
+            <div className="tcrn-brand-lockup-card">
+              <ProductLockup suffix="TMS" suffixClassName="tcrn-brand-wordmark__suffix--tms" />
+            </div>
+            <div className="tcrn-brand-lockup-card">
+              <ProductLockup suffix="Design System" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
+            </div>
+          </div>
+          <Text>Product suffix typography follows the mother-brand wordmark rhythm. Long product suffixes stack below TCRN; suffix color is product-owned and must not change the TCRN symbol colors.</Text>
+        </ReadbackPanel>
         <ReadbackPanel title="Logo construction rules">
           <TableShell
             columns={[
@@ -464,14 +478,6 @@ const legacyContractStories: LegacyContractStory[] = [
               { element: "Wordmark", rule: "TCRN is the mother-brand text. Product-type suffixes follow TCRN, and long suffixes stack below it before truncation.", boundary: "Suffix color belongs to the product surface." }
             ]}
           />
-        </ReadbackPanel>
-        <ReadbackPanel title="Product lockups">
-          <div className="tcrn-brand-lockups" aria-label="TCRN product lockup examples">
-            <ProductLockup suffix="AOS" suffixClassName="tcrn-brand-wordmark__suffix--aos" />
-            <ProductLockup suffix="TMS" suffixClassName="tcrn-brand-wordmark__suffix--tms" />
-            <ProductLockup suffix="Design System" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
-          </div>
-          <Text>Product suffix typography follows the mother-brand wordmark rhythm. Long product suffixes stack below TCRN; suffix color is product-owned and must not change the TCRN symbol colors.</Text>
         </ReadbackPanel>
       </section>
     )

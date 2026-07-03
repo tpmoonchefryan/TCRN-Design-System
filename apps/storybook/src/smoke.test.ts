@@ -835,18 +835,27 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.ok(
 	  contract.storybookDocShellVisualOracle?.metricEvidence?.some((item: { metric: string; sha256?: string | null }) => (
 	    item.metric === "desktopSidebarWidthPx"
-	    && item.sha256 === "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d"
+	    && item.sha256 === "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953"
 	  )),
 	  "Storybook doc shell visual oracle must cite hash-backed sidebar evidence"
 	);
-	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 288);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 288);
 	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 280);
 	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx, 360);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 96);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx, 180);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 320);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx, 260);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 360);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.themeToggleRadiusPx, 999);
   assert.deepEqual(contract.storybookDocShellVisualOracle?.globalProductShellSelectorsForbidden, storybookDocShellVisualOracle.globalProductShellSelectorsForbidden);
+  assert.equal(contract.designSystemAuthorityDisposition, "package_primitives_and_storybook_doc_shell_split");
+  assert.equal(contract.componentStorybookParityDisposition, "package_primitives_consumed_without_internal_clones");
+  assert.equal(contract.ownerVisualAdmissionDisposition, "owner_review_required");
+  assert.equal(contract.visualFitControlContract?.search?.storybookRestWidthPx, 260);
+  assert.equal(contract.visualFitControlContract?.search?.storybookExpandedWidthPx, 360);
+  assert.equal(contract.visualFitControlContract?.search?.packageDefaultControlMinInlineSize, "9ch");
+  assert.match(contract.visualFitControlContract?.productLockups?.rule ?? "", /suffix accents are package-owned/);
+  assert.match(contract.visualFitControlContract?.sidebar?.rule ?? "", /orphan visual lane/);
+  assert.match(contract.visualFitControlContract?.tablesAndContainers?.rule ?? "", /package-emitted column\/min-width variables/);
   assert.equal(contract.consumerVisualStyleContract?.id, consumerVisualStyleContract.id);
   assert.match(contract.consumerVisualStyleContract?.disposition ?? "", /fail_closed/);
   assert.ok(contract.consumerVisualStyleContract?.allowedConsumerInputs?.includes("product data"));

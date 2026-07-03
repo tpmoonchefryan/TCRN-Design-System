@@ -21,12 +21,17 @@ export interface TableShellProps {
 
 type TableShellStyle = CSSProperties & {
   "--tcrn-table-column-count"?: number;
+  "--tcrn-table-shell-columns"?: string;
+  "--tcrn-table-shell-min-width"?: string;
 };
 
 export function TableShell({ columns, rows, emptyState, label }: TableShellProps) {
   const columnCount = Math.max(columns.length, 1);
+  const columnMinWidth = "var(--tcrn-table-shell-column-min-width, 160px)";
   const tableStyle: TableShellStyle = {
-    "--tcrn-table-column-count": columnCount
+    "--tcrn-table-column-count": columnCount,
+    "--tcrn-table-shell-columns": `repeat(${columnCount}, minmax(${columnMinWidth}, 1fr))`,
+    "--tcrn-table-shell-min-width": `max(100%, calc(${columnCount} * ${columnMinWidth}))`
   };
 
   return (

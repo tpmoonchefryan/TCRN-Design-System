@@ -12,6 +12,31 @@ export const aiConsumptionContract = {
   route: "proof.html#ai-consumption-contract",
   artifact: "ai-consumption-contract.json",
   mustReadFirst: true,
+  designSystemAuthorityDisposition: "package_primitives_and_storybook_doc_shell_split",
+  componentStorybookParityDisposition: "package_primitives_consumed_without_internal_clones",
+  ownerVisualAdmissionDisposition: "owner_review_required",
+  visualFitControlContract: {
+    storybookGlobalShellAuthority: "original_storybook_doc_shell",
+    packagePrimitiveAuthority: ["SearchInput", "ProductLockup", "TableShell"],
+    search: {
+      storybookRestWidthPx: 260,
+      storybookExpandedWidthPx: 360,
+      packageDefaultControlMinInlineSize: "9ch",
+      rule: "Storybook may set SearchInput root width variables, but must not absolute-position package icon, input, or shortcut internals."
+    },
+    productLockups: {
+      primarySurface: "style-guide.html#brand-identity",
+      rule: "Product lockups remain the primary Brand identity logo section; suffix accents are package-owned and product-specific."
+    },
+    sidebar: {
+      authority: "storybook_doc_shell",
+      rule: "Category disclosure chevrons live inside the category toggle grid; active state uses inset styling and must not create an orphan visual lane."
+    },
+    tablesAndContainers: {
+      authority: "@tcrn/ui-react/TableShell",
+      rule: "Tables use package-emitted column/min-width variables and local overflow; Storybook must not clone row, head, or cell layout."
+    }
+  },
   discovery: {
     staticArtifact: "apps/storybook/storybook-static/ai-consumption-contract.json",
     hostedArtifact: "https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json",

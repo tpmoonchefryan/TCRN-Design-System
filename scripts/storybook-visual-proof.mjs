@@ -188,12 +188,12 @@ const storybookDocShellMetricOracle = {
   sidebarMinWidthPx: 280,
   sidebarPreferredViewportRatio: 0.2,
   sidebarMaxWidthPx: 360,
-  sidebarCollapsedWidthPx: 78,
+  sidebarCollapsedWidthPx: 88,
   sidebarTolerancePx: 2,
   topbarHeightPx: 96,
   topbarTolerancePx: 2,
-  searchRestWidthPx: 180,
-  searchExpandedWidthPx: 320,
+  searchRestWidthPx: 260,
+  searchExpandedWidthPx: 360,
   searchHeightPx: 36,
   searchMetricTolerancePx: 2,
   searchBorderColor: "rgb(184, 200, 214)",
@@ -1023,24 +1023,46 @@ async function collectPageHealth(page, state) {
       typeof actual === "number" && typeof expected === "number" && Math.abs(actual - expected) <= tolerance;
     const searchRoot = document.querySelector(".tcrn-doc-header-search");
     const searchInput = searchRoot?.querySelector(".tcrn-search-input__control");
-    const readSearchState = () => ({
-      expanded: searchRoot?.closest(".tcrn-doc-header__workspace")?.getAttribute("data-search-expanded") ?? null,
-      resultsVisible: document.querySelector("[data-doc-search-results]")?.hasAttribute("hidden") ? "false" : "true",
-      wrapper: readRect(".tcrn-doc-header-search"),
-      inputShell: readRect(".tcrn-search-input"),
-      inputShellStyles: readStyle(".tcrn-search-input", [
+    const readSearchState = () => {
+      const inputShell = readRect(".tcrn-search-input");
+      const control = readRect(".tcrn-doc-header-search .tcrn-search-input__control");
+      const icon = readRect(".tcrn-doc-header-search .tcrn-search-input__icon");
+      const shortcut = readRect(".tcrn-doc-header-search .tcrn-search-input__shortcut");
+      const fitFailures = [];
+      if (inputShell && control && icon && shortcut) {
+        if (control.width < 84) fitFailures.push(`control-width:${control.width}`);
+        if (icon.left < inputShell.left - 1 || icon.right > control.left + 1) fitFailures.push("icon-track-overlap");
+        if (shortcut.left < control.right - 1 || shortcut.right > inputShell.right + 1) fitFailures.push("shortcut-track-overlap");
+      } else {
+        fitFailures.push("search-track-missing");
+      }
+      const inputShellStyles = readStyle(".tcrn-search-input", [
         "border-color",
         "border-radius",
+        "display",
+        "grid-template-columns",
         "transition-duration",
         "transition-property",
         "transition-timing-function"
-      ]),
-      wrapperStyles: readStyle(".tcrn-doc-header-search", [
-        "transition-duration",
-        "transition-property",
-        "transition-timing-function"
-      ])
-    });
+      ]);
+      if (inputShellStyles?.display !== "grid") fitFailures.push(`display:${inputShellStyles?.display ?? "missing"}`);
+      return {
+        expanded: searchRoot?.closest(".tcrn-doc-header__workspace")?.getAttribute("data-search-expanded") ?? null,
+        resultsVisible: document.querySelector("[data-doc-search-results]")?.hasAttribute("hidden") ? "false" : "true",
+        wrapper: readRect(".tcrn-doc-header-search"),
+        inputShell,
+        control,
+        icon,
+        shortcut,
+        fitFailures,
+        inputShellStyles,
+        wrapperStyles: readStyle(".tcrn-doc-header-search", [
+          "transition-duration",
+          "transition-property",
+          "transition-timing-function"
+        ])
+      };
+    };
     const searchInteractionReadback = {
       rest: readSearchState(),
       focused: null,
@@ -1116,6 +1138,9 @@ async function collectPageHealth(page, state) {
         : input.expectedOracle.searchRestWidthPx;
       if (!widthWithin(searchInteractionReadback.rest.wrapper?.width, expectedInitialSearchWidth, input.expectedOracle.searchMetricTolerancePx)) {
         metricFailures.push(`searchInitialWidth:${searchInteractionReadback.rest.wrapper?.width ?? "missing"}:expected:${expectedInitialSearchWidth}`);
+      }
+      if ((searchInteractionReadback.rest.fitFailures ?? []).length > 0) {
+        metricFailures.push(`searchFit:${searchInteractionReadback.rest.fitFailures.join("|")}`);
       }
       if (!widthWithin(searchInteractionReadback.focused?.wrapper?.width, input.expectedOracle.searchExpandedWidthPx, input.expectedOracle.searchMetricTolerancePx)) {
         metricFailures.push(`searchFocusedWidth:${searchInteractionReadback.focused?.wrapper?.width ?? "missing"}:expected:${input.expectedOracle.searchExpandedWidthPx}`);
@@ -1745,16 +1770,57 @@ function compareToBaseline(entries, manifest, context) {
   return { compareFailures: failures, comparisonReadbacks };
 }
 
+function sourceDirtyFileCountFromStatus(sourceGitStatus) {
+  return sourceGitStatus.split("\n").filter((line) => line && !line.startsWith("##")).length;
+}
+
+function applyStableSourceGitStatus(receipt, {
+  sourceGitStatus,
+  preWriteSourceGitStatus,
+  disposition
+}) {
+  const sourceDirtyFileCount = sourceDirtyFileCountFromStatus(sourceGitStatus);
+  receipt.sourceGitStatus = sourceGitStatus;
+  receipt.sourceHeadEquivalenceReadback = {
+    ...receipt.sourceHeadEquivalenceReadback,
+    disposition: sourceDirtyFileCount > 0
+      ? "source_equivalent_dirty_tree_receipt_generated_before_commit"
+      : "clean_head_receipt_generated_from_committed_source",
+    sourceDirtyFileCount,
+    sourceGitStatusDisposition: disposition,
+    preWriteSourceGitStatus,
+    postWriteSourceGitStatus: sourceGitStatus
+  };
+  return receipt;
+}
+
+function markCurrentCapturePathsNonRetained(receipt) {
+  receipt.currentCaptureDisposition = "ephemeral_current_check_removed_after_success";
+  receipt.currentCapturePathOpenable = false;
+  receipt.currentCapturePathDisposition =
+    "check-mode screenshot paths under docs/verification/storybook-visual-proof/.current-check are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof";
+  receipt.screenshotReadbacks = receipt.screenshotReadbacks.map((readback) => ({
+    ...readback,
+    currentCapturePathOpenable: false,
+    currentCapturePathDisposition: receipt.currentCapturePathDisposition
+  }));
+  return receipt;
+}
+
 async function run() {
   const { mode, reason } = parseArgs(process.argv.slice(2));
   assertStaticOutput();
+  const preWriteSourceGitStatus = git(["status", "--short", "--branch"]);
   if (mode === "update-baseline") {
-    rmSync(receiptRoot, { recursive: true, force: true });
+    rmSync(baselineDir, { recursive: true, force: true });
+    rmSync(currentCaptureDir, { recursive: true, force: true });
   }
   mkdirSync(receiptRoot, { recursive: true });
   const sourceHead = git(["rev-parse", "HEAD"]);
-  const sourceGitStatus = git(["status", "--short", "--branch"]);
-  const sourceDirtyFileCount = sourceGitStatus.split("\n").filter((line) => line && !line.startsWith("##")).length;
+  const sourceGitStatus = mode === "update-baseline"
+    ? preWriteSourceGitStatus
+    : git(["status", "--short", "--branch"]);
+  const sourceDirtyFileCount = sourceDirtyFileCountFromStatus(sourceGitStatus);
   const sourceContentDigest = digestFiles([
     "package.json",
     "scripts/storybook-visual-proof.mjs",
@@ -1812,13 +1878,19 @@ async function run() {
         entries
       });
       writeBaselineArtifacts({ reason, receipt, entries });
+      applyStableSourceGitStatus(receipt, {
+        sourceGitStatus: git(["status", "--short", "--branch"]),
+        preWriteSourceGitStatus,
+        disposition: "post_write_stable_status_after_baseline_receipt_package_restored"
+      });
+      writeBaselineArtifacts({ reason, receipt, entries });
       console.log(JSON.stringify({
 	        ok: receipt.ok,
 	        mode,
-	        comparisonContractVersion,
-	        baselineUpdateReason: reason,
+        comparisonContractVersion,
+        baselineUpdateReason: reason,
         sourceHead,
-        sourceHeadEquivalenceReadback,
+        sourceHeadEquivalenceReadback: receipt.sourceHeadEquivalenceReadback,
         sourceContentDigest,
         oracleRecoveryOk: receipt.oracleRecoveryReadback.ok,
         oracleRecoveryReceipt: receipt.oracleRecoveryReadback.receipt,
@@ -1852,16 +1924,25 @@ async function run() {
       entries
     });
     receipt.baselineManifestHash = baseline.baselineManifestHash;
-    writeFileSync(checkReceiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
-    writeMarkdownReceipt(receipt);
     if (receipt.ok) {
       rmSync(currentCaptureDir, { recursive: true, force: true });
+      markCurrentCapturePathsNonRetained(receipt);
     }
+    applyStableSourceGitStatus(receipt, {
+      sourceGitStatus: git(["status", "--short", "--branch"]),
+      preWriteSourceGitStatus,
+      disposition: receipt.ok
+        ? "post_cleanup_stable_status_after_current_check_removed"
+        : "post_write_failure_status_with_current_check_preserved_for_debug"
+    });
+    receipt.baselineManifestHash = baseline.baselineManifestHash;
+    writeFileSync(checkReceiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
+    writeMarkdownReceipt(receipt);
     console.log(JSON.stringify({
       ok: receipt.ok,
       mode,
       sourceHead,
-      sourceHeadEquivalenceReadback,
+      sourceHeadEquivalenceReadback: receipt.sourceHeadEquivalenceReadback,
       sourceContentDigest,
       comparisonContractVersion,
       oracleRecoveryOk: receipt.oracleRecoveryReadback.ok,

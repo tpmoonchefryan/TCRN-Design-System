@@ -559,7 +559,7 @@ const aiContractTraceabilityCheck = {
     && String(aiContract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "").includes("Storybook documentation shell")
 	    && (aiContract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) => (
 	      item.metric === "searchRestWidthPx"
-	      && item.sha256 === "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d"
+	      && item.sha256 === "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953"
 	    ))
     && llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
@@ -793,6 +793,19 @@ for (const route of firstStoryHashShellParityRoutes) {
     const searchInput = document.querySelector(".tcrn-search-input__control");
     const searchInputShell = rectFor(".tcrn-search-input");
     const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
+    const searchControl = rectFor(".tcrn-doc-header-search .tcrn-search-input__control");
+    const searchIcon = rectFor(".tcrn-doc-header-search .tcrn-search-input__icon");
+    const searchShortcut = rectFor(".tcrn-doc-header-search .tcrn-search-input__shortcut");
+    const searchInputGridStyles = styleFor(".tcrn-doc-header-search .tcrn-search-input", ["display", "grid-template-columns", "overflow"]);
+    const searchFitFailures = [];
+    if (searchInputShell && searchControl && searchIcon && searchShortcut) {
+      if (searchControl.width < 84) searchFitFailures.push(`control-width:${searchControl.width}`);
+      if (searchIcon.left < searchInputShell.left - 1 || searchIcon.right > searchControl.left + 1) searchFitFailures.push("icon-track-overlap");
+      if (searchShortcut.left < searchControl.right - 1 || searchShortcut.right > searchInputShell.right + 1) searchFitFailures.push("shortcut-track-overlap");
+    } else {
+      searchFitFailures.push("search-track-missing");
+    }
+    if (searchInputGridStyles?.display !== "grid") searchFitFailures.push(`display:${searchInputGridStyles?.display ?? "missing"}`);
     const sideNavRegion = rectFor(".tcrn-doc-sidebar");
     const docShellTextSurface = [
       brandNode?.textContent ?? "",
@@ -858,6 +871,11 @@ for (const route of firstStoryHashShellParityRoutes) {
       search,
       searchInputShell,
       searchInputShellStyles,
+      searchControl,
+      searchIcon,
+      searchShortcut,
+      searchInputGridStyles,
+      searchFitFailures,
       headerStyles: styleFor(".tcrn-doc-header", ["display", "grid-template-columns", "min-height"]),
       workspaceStyles: styleFor(".tcrn-doc-header__workspace", ["display", "grid-template-columns", "gap"]),
       pageHeadStyles: styleFor("[data-doc-page-head='governed-section']", ["display", "grid-template-columns", "gap", "border-bottom-style"]),
@@ -918,6 +936,9 @@ for (const route of firstStoryHashShellParityRoutes) {
   }
   if (!widthWithin(metrics.search?.width, expectedStorybookVisualSkin.searchRestWidthPx, 2)) {
     failures.push(`storybook-skin-search-width:${metrics.search?.width ?? "missing"}:expected:${expectedStorybookVisualSkin.searchRestWidthPx}`);
+  }
+  if ((metrics.searchFitFailures ?? []).length > 0) {
+    failures.push(`storybook-skin-search-fit:${metrics.searchFitFailures.join("|")}`);
   }
   if (!widthWithin(metrics.searchInputShell?.height, expectedStorybookVisualSkin.searchHeightPx, 2)) {
     failures.push(`storybook-skin-search-height:${metrics.searchInputShell?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.searchHeightPx}`);

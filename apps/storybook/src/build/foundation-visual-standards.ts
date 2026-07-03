@@ -32,7 +32,11 @@ export const storybookDocShellVisualOracle = {
   baselineManifestClassification: "owner_declared_original_storybook_doc_shell_standard",
   metricSourceDisposition:
     "desktop sidebar, header, search rest, and search expanded metrics are retained only after the owner-approved restoration re-expresses the pre-d1d1291 Storybook documentation shell through current Storybook-owned doc-shell selectors and committed proof receipts.",
-  sourceHead: "fc85adf8760d29e2ff76402ba13b477c4cb859b0",
+  sourceHead: "generated_by_storybook_visual_proof_receipt",
+  sourceHeadDisposition:
+    "This oracle is refreshed by the committed Storybook visual-proof receipt for the final implementation basis; reviewers must use the receipt sourceHead/sourceContentDigest and final DS commit SHA rather than treating this static field as a freshness claim.",
+  metricRevisionDisposition:
+    "Search shell metrics are intentionally revised to 260px rest and 360px focused/expanded by the visual-unification repair so localized placeholder plus Ctrl K fit without clipping.",
   storybookRoute: "index.html#welcome-governance",
   shellAuthority: "storybook_doc_shell_with_package_primitives",
   packagePrimitives: [
@@ -56,7 +60,7 @@ export const storybookDocShellVisualOracle = {
       value: 360,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
+      sha256: "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953",
       extraction: "Restored Storybook doc-shell visual-proof geometry: responsive sidebar clamp(280px, 20vw, 360px), maxing at 360px in 2048px baseline and yielding 288px at 1440px smoke proof"
     },
     {
@@ -64,24 +68,24 @@ export const storybookDocShellVisualOracle = {
       value: 96,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
+      sha256: "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953",
       extraction: "Storybook doc-shell visual-proof geometry: header/control band y=0..95, height=96px"
     },
     {
       metric: "searchRestWidthPx",
-      value: 180,
+      value: 260,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
-      extraction: "Storybook doc-shell visual-proof geometry: compact search shell width=180px"
+      sha256: "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953",
+      extraction: "Storybook doc-shell visual-proof geometry: compact search shell width=260px so localized placeholder and shortcut fit without clipping"
     },
     {
       metric: "searchExpandedWidthPx",
-      value: 320,
+      value: 360,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png",
-      sha256: "f13c5c81f2074f6734afa075a69d42ce4e23ddc9d73fc4d4142994295a774a75",
-      extraction: "Storybook doc-shell visual-proof focused search state width=320px"
+      sha256: "8ec91db170d42300eac9739041bd5916b1ae03d715f486868b6b68d1c2819b5b",
+      extraction: "Storybook doc-shell visual-proof focused search state width=360px with package SearchInput internals preserving icon/control/shortcut grid tracks"
     }
   ],
   shellMetrics: {
@@ -92,8 +96,8 @@ export const storybookDocShellVisualOracle = {
     desktopSidebarTolerancePx: 2,
     desktopTopbarHeightPx: 96,
     desktopTopbarTolerancePx: 2,
-    searchRestWidthPx: 180,
-    searchExpandedWidthPx: 320,
+    searchRestWidthPx: 260,
+    searchExpandedWidthPx: 360,
     searchHeightPx: 36,
     searchBorderColor: "rgb(184, 200, 214)",
     searchBorderRadiusPx: 5,
