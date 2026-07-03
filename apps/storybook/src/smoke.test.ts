@@ -192,6 +192,16 @@ function readProductShellCategoryIds(html: string): string[] {
   return Array.from(readProductShellNavHtml(html).matchAll(/data-storybook-category-id="([^"]+)"/g), (match) => match[1]);
 }
 
+function readStoryHtml(html: string, storyId: string): string {
+  const storyMarker = `data-contract-story-id="${storyId}"`;
+  const markerStart = html.indexOf(storyMarker);
+  assert.ok(markerStart > -1, `missing story ${storyId}`);
+  const articleStart = html.lastIndexOf("<article", markerStart);
+  const articleEnd = html.indexOf("</article>", markerStart);
+  assert.ok(articleStart > -1 && articleEnd > articleStart, `missing story article ${storyId}`);
+  return html.slice(articleStart, articleEnd + "</article>".length);
+}
+
 function readInternalLabSource(): string {
   const internalLabDir = join(process.cwd(), "src", "internal-dev", "overlay-family-lab");
   return readdirSync(internalLabDir)
@@ -424,14 +434,16 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Style Guide"), /Brand identity/);
   assert.match(readGroupPage("Style Guide"), /Logo construction rules/);
   assert.match(readGroupPage("Style Guide"), /src="tcrn-brand-mark\.svg"/);
-  assert.match(readGroupPage("Style Guide"), /Registered product logos/);
-  assert.match(readGroupPage("Style Guide"), /data-product-id="design-system"/);
-  assert.match(readGroupPage("Style Guide"), /data-product-logo-asset-id="tcrn-design-system-two-line"/);
-  assert.match(readGroupPage("Style Guide"), /data-product-id="aos"/);
-  assert.match(readGroupPage("Style Guide"), /data-product-logo-asset-id="tcrn-aos-two-line"/);
-  assert.match(readGroupPage("Style Guide"), />AI Operation System</);
-  assert.match(readGroupPage("Style Guide"), /data-product-id="tms"/);
-  assert.match(readGroupPage("Style Guide"), />Talent Management System</);
+  const brandIdentityHtml = readStoryHtml(readGroupPage("Style Guide"), "brand-identity");
+  assert.match(brandIdentityHtml, /Product lockups/);
+  assert.match(brandIdentityHtml, /TCRN product lockup examples/);
+  assert.equal(brandIdentityHtml.match(/data-brand-lockup="product"/g)?.length, 3);
+  assert.match(brandIdentityHtml, />AOS</);
+  assert.match(brandIdentityHtml, />TMS</);
+  assert.match(brandIdentityHtml, />Design System</);
+  assert.doesNotMatch(brandIdentityHtml, /Registered product logos/);
+  assert.doesNotMatch(brandIdentityHtml, /ProductLogo \/ tcrnProductLogoRegistry/);
+  assert.doesNotMatch(brandIdentityHtml, /data-product-logo-asset-id="tcrn-aos-two-line"/);
   assert.match(readGroupPage("Style Guide"), /Icon library contract/);
   assert.match(readGroupPage("Style Guide"), /data-icon-library-source="lucide-react"/);
   assert.match(readGroupPage("Style Guide"), /data-icon-library-wrapper="@tcrn\/ui-react\/Icon"/);

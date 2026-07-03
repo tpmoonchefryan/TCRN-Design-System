@@ -28,7 +28,7 @@ import {
   NavGroup,
   NavItem,
   Pagination,
-  ProductLogo,
+  ProductLockup,
   Popover,
   ProductShell,
   ProductSwitcher,
@@ -51,7 +51,6 @@ import {
   Textarea,
   TopBar,
   TcrnBrandMark,
-  tcrnProductLogoRegistry,
   tcrnIconNames,
   Tooltip,
   EvidenceAttachmentList,
@@ -435,7 +434,7 @@ const legacyContractStories: LegacyContractStory[] = [
     id: "brand-identity",
     title: "Brand identity",
     group: "Style Guide",
-    description: "TCRN mother-brand mark, registered product logos, and local draft boundaries.",
+    description: "TCRN mother-brand mark, product suffix lockups, and local draft boundaries.",
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="TCRN mother brand">
@@ -466,29 +465,13 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
           />
         </ReadbackPanel>
-        <ReadbackPanel title="Registered product logos">
-          <div className="tcrn-brand-lockups" aria-label="TCRN registered product logo examples">
-            <ProductLogo productId="design-system" />
-            <ProductLogo productId="aos" />
-            <ProductLogo productId="tms" />
+        <ReadbackPanel title="Product lockups">
+          <div className="tcrn-brand-lockups" aria-label="TCRN product lockup examples">
+            <ProductLockup suffix="AOS" suffixClassName="tcrn-brand-wordmark__suffix--aos" />
+            <ProductLockup suffix="TMS" suffixClassName="tcrn-brand-wordmark__suffix--tms" />
+            <ProductLockup suffix="Design System" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
           </div>
-          <Text>Accepted product surfaces consume registered product-logo assets instead of composing product identity from free-form suffix and caption props.</Text>
-          <TableShell
-            columns={[
-              { key: "productId", label: "Product id" },
-              { key: "assetId", label: "Asset id" },
-              { key: "lineOne", label: "Line 1" },
-              { key: "lineTwo", label: "Line 2" },
-              { key: "export", label: "Package export" }
-            ]}
-            rows={Object.values(tcrnProductLogoRegistry).map((asset) => ({
-              productId: asset.productId,
-              assetId: asset.assetId,
-              lineOne: asset.lineOne,
-              lineTwo: asset.lineTwo,
-              export: "ProductLogo / tcrnProductLogoRegistry"
-            }))}
-          />
+          <Text>Product suffix typography follows the mother-brand wordmark rhythm. Long product suffixes stack below TCRN; suffix color is product-owned and must not change the TCRN symbol colors.</Text>
         </ReadbackPanel>
       </section>
     )

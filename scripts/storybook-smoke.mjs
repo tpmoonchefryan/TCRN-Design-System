@@ -73,6 +73,19 @@ const readProductShellNavHtml = (html) => {
   }
   return html.slice(asideStart, end + "</nav></aside>".length);
 };
+const readStoryHtml = (html, storyId) => {
+  const storyMarker = `data-contract-story-id="${storyId}"`;
+  const markerStart = html.indexOf(storyMarker);
+  if (markerStart === -1) {
+    return "";
+  }
+  const articleStart = html.lastIndexOf("<article", markerStart);
+  const articleEnd = html.indexOf("</article>", markerStart);
+  if (articleStart === -1 || articleEnd === -1 || articleEnd < articleStart) {
+    return "";
+  }
+  return html.slice(articleStart, articleEnd + "</article>".length);
+};
 const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-consumption-contract.json", "utf8"));
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
@@ -806,14 +819,9 @@ const required = [
   "data-contract-story-id=\"aos-frontend-shell-slice\"",
   "data-contract-story-id=\"aos-owner-quality-product-shell\"",
   "data-registered-product-logo=\"@tcrn/ui-react/ProductLogo\"",
-  "data-product-id=\"design-system\"",
-  "data-product-logo-asset-id=\"tcrn-design-system-two-line\"",
   "data-product-id=\"aos\"",
   "data-product-logo-asset-id=\"tcrn-aos-two-line\"",
   "AI Operation System",
-  "data-product-id=\"tms\"",
-  "data-product-logo-asset-id=\"tcrn-tms-two-line\"",
-  "Talent Management System",
   "data-storybook-visual-instance=\"aos-frontend-shell-slice\"",
   "data-visual-instance-name=\"AosFrontendShellSliceVisualInstance\"",
   "data-visual-instance-disposition=\"ds_oracle_review_required_before_owner_admission\"",
@@ -932,6 +940,19 @@ for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "dup
 }
 const combinedContractText = `${combinedHtml}\n${JSON.stringify(contract)}\n${llmsTxt}`;
 const missing = required.filter((text) => !combinedContractText.includes(text));
+const brandIdentityStoryHtml = readStoryHtml(pages["Style Guide"], "brand-identity");
+if (!brandIdentityStoryHtml.includes("Product lockups")) {
+  missing.push("brand-identity:product-lockups");
+}
+if ((brandIdentityStoryHtml.match(/data-brand-lockup="product"/g) ?? []).length !== 3) {
+  missing.push("brand-identity:three-product-lockups");
+}
+if (brandIdentityStoryHtml.includes("Registered product logos")) {
+  missing.push("brand-identity:registered-product-logos-primary-surface");
+}
+if (brandIdentityStoryHtml.includes("ProductLogo / tcrnProductLogoRegistry")) {
+  missing.push("brand-identity:product-logo-registry-table-primary-surface");
+}
 for (const [sourceName, source] of [
   ["alpha-styles.ts", storybookAlphaStylesSource],
   ["storybook.css", storybookStaticCssSource]
@@ -2772,6 +2793,15 @@ async function runCrossSectionShellParityProof() {
           ].join("\\n");
           const productShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => productShellTextSurface.includes(text));
           const ownerVisibleCaptionHits = forbiddenOwnerVisibleCaptionText.filter((text) => ownerVisibleCaptionSurface.includes(text));
+          const brandIdentityLogoSectionReadback = storyId === "brand-identity" && firstStory instanceof HTMLElement
+            ? {
+              productLockupCount: firstStory.querySelectorAll("[data-brand-lockup='product']").length,
+              hasProductLockupsLabel: firstStory.innerText.includes("产品组合标识") || firstStory.innerText.includes("Product lockups"),
+              hasRegisteredProductLogosLabel: firstStory.innerText.includes("Registered product logos"),
+              hasRegistryExportText: firstStory.innerText.includes("ProductLogo / tcrnProductLogoRegistry"),
+              hasAosRegisteredAssetId: firstStory.innerText.includes("tcrn-aos-two-line")
+            }
+            : null;
           const sidebarNoIconLabelReadbacks = window.innerWidth >= 900 && shell?.getAttribute("data-product-shell-collapsed") !== "true"
             ? Array.from((storybookNav ?? document).querySelectorAll("[data-product-shell-route]"))
               .map((item) => {
@@ -2836,6 +2866,7 @@ async function runCrossSectionShellParityProof() {
             categoryLabels,
             productShellEnglishLeaks,
             ownerVisibleCaptionHits,
+            brandIdentityLogoSectionReadback,
             sidebarNoIconLabelReadbacks,
             sidebarNoIconLabelReadabilityFailures,
 	            firstStoryTop: firstStory ? Number(firstStory.getBoundingClientRect().top.toFixed(2)) : null,
@@ -2886,6 +2917,14 @@ async function runCrossSectionShellParityProof() {
         }
         if (metrics.ownerVisibleCaptionHits.length > 0) {
           routeFailures.push(`owner-visible-caption-hits:${metrics.ownerVisibleCaptionHits.join("|")}`);
+        }
+        if (metrics.brandIdentityLogoSectionReadback) {
+          const readback = metrics.brandIdentityLogoSectionReadback;
+          if (readback.productLockupCount !== 3) routeFailures.push(`brand-identity-product-lockup-count:${readback.productLockupCount}`);
+          if (!readback.hasProductLockupsLabel) routeFailures.push("brand-identity-product-lockups-label-missing");
+          if (readback.hasRegisteredProductLogosLabel) routeFailures.push("brand-identity-registered-product-logos-primary-surface");
+          if (readback.hasRegistryExportText) routeFailures.push("brand-identity-registry-export-primary-surface");
+          if (readback.hasAosRegisteredAssetId) routeFailures.push("brand-identity-registered-asset-id-primary-surface");
         }
         if (metrics.sidebarNoIconLabelReadabilityFailures.length > 0) {
           routeFailures.push(`sidebar-no-icon-label-readability:${JSON.stringify(metrics.sidebarNoIconLabelReadabilityFailures.slice(0, 3))}`);

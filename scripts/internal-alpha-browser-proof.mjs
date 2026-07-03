@@ -785,6 +785,15 @@ for (const route of firstStoryHashShellParityRoutes) {
     ].join("\\n");
     const productShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => productShellTextSurface.includes(text));
     const ownerVisibleCaptionHits = forbiddenOwnerVisibleCaptionText.filter((text) => ownerVisibleCaptionSurface.includes(text));
+    const brandIdentityLogoSectionReadback = storyId === "brand-identity" && firstStory instanceof HTMLElement
+      ? {
+        productLockupCount: firstStory.querySelectorAll("[data-brand-lockup='product']").length,
+        hasProductLockupsLabel: firstStory.innerText.includes("产品组合标识") || firstStory.innerText.includes("Product lockups"),
+        hasRegisteredProductLogosLabel: firstStory.innerText.includes("Registered product logos"),
+        hasRegistryExportText: firstStory.innerText.includes("ProductLogo / tcrnProductLogoRegistry"),
+        hasAosRegisteredAssetId: firstStory.innerText.includes("tcrn-aos-two-line")
+      }
+      : null;
     const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
     return {
       group,
@@ -808,6 +817,7 @@ for (const route of firstStoryHashShellParityRoutes) {
       categoryLabelCount: navRoot.querySelectorAll(".tcrn-nav-group__label").length,
       productShellEnglishLeaks,
       ownerVisibleCaptionHits,
+      brandIdentityLogoSectionReadback,
       expectedCategoryCount,
       expectedShellNavGroupCount,
       expectedGroupCount,
@@ -859,6 +869,14 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.categoryLabelCount !== expectedStorybookShellNavGroupCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
   if (metrics.productShellEnglishLeaks.length > 0) failures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
   if (metrics.ownerVisibleCaptionHits.length > 0) failures.push(`owner-visible-caption-hits:${metrics.ownerVisibleCaptionHits.join("|")}`);
+  if (metrics.brandIdentityLogoSectionReadback) {
+    const readback = metrics.brandIdentityLogoSectionReadback;
+    if (readback.productLockupCount !== 3) failures.push(`brand-identity-product-lockup-count:${readback.productLockupCount}`);
+    if (!readback.hasProductLockupsLabel) failures.push("brand-identity-product-lockups-label-missing");
+    if (readback.hasRegisteredProductLogosLabel) failures.push("brand-identity-registered-product-logos-primary-surface");
+    if (readback.hasRegistryExportText) failures.push("brand-identity-registry-export-primary-surface");
+    if (readback.hasAosRegisteredAssetId) failures.push("brand-identity-registered-asset-id-primary-surface");
+  }
   if (metrics.themeToggleRadius !== expectedProductShellThemeToggleRadius) {
     failures.push(`theme-toggle-radius:${metrics.themeToggleRadius ?? "missing"}:expected:${expectedProductShellThemeToggleRadius}`);
   }
@@ -1357,66 +1375,55 @@ async function collectBrandMarkLocaleCheck(page, locale) {
   const details = await page.evaluate(() => {
     const marks = Array.from(document.querySelectorAll("[data-story-id='brand-identity'] .tcrn-brand-mark"));
     const productLogos = Array.from(document.querySelectorAll("[data-story-id='brand-identity'] .tcrn-product-logo"));
+    const productLockups = Array.from(document.querySelectorAll("[data-story-id='brand-identity'] [data-brand-lockup='product']"));
+    const storyText = document.querySelector("[data-story-id='brand-identity']")?.textContent ?? "";
 
     return {
       labels: marks.map((node) => node.getAttribute("aria-label")),
       sources: marks.map((node) => node.getAttribute("src")),
+      productLockups: productLockups.map((node) => ({
+        suffix: node.querySelector(".tcrn-brand-wordmark__suffix")?.textContent?.trim() ?? null,
+        packageSource: node.getAttribute("data-component-source"),
+        packageBackedBrandLockup: node.getAttribute("data-package-backed-brand-lockup")
+      })),
       productLogos: productLogos.map((node) => ({
         productId: node.getAttribute("data-product-id"),
         assetId: node.getAttribute("data-product-logo-asset-id"),
         lineOne: node.querySelector(".tcrn-product-logo__line-one")?.textContent?.trim() ?? null,
         lineTwo: node.querySelector(".tcrn-product-logo__line-two")?.textContent?.trim() ?? null
-      }))
+      })),
+      hasRegisteredProductLogosLabel: storyText.includes("Registered product logos"),
+      hasRegistryExportText: storyText.includes("ProductLogo / tcrnProductLogoRegistry")
     };
   });
-  const expectedDesignSystemLineOneByLocale = {
-    "zh-CN": "TCRN 设计系统",
-    en: "TCRN Design System",
-    ja: "TCRN デザインシステム",
-    ko: "TCRN 디자인 시스템",
-    fr: "Design System TCRN"
+  const expectedDesignSystemSuffixByLocale = {
+    "zh-CN": "设计系统",
+    en: "Design System",
+    ja: "デザインシステム",
+    ko: "디자인 시스템",
+    fr: "Design System"
   };
-  const expectedProductLogos = [
-    {
-      productId: "design-system",
-      assetId: "tcrn-design-system-two-line",
-      lineOne: expectedDesignSystemLineOneByLocale[locale] ?? "TCRN Design System",
-      lineTwo: "Component Library"
-    },
-    {
-      productId: "aos",
-      assetId: "tcrn-aos-two-line",
-      lineOne: "TCRN AOS",
-      lineTwo: "AI Operation System"
-    },
-    {
-      productId: "tms",
-      assetId: "tcrn-tms-two-line",
-      lineOne: "TCRN TMS",
-      lineTwo: "Talent Management System"
-    }
-  ];
-  const registeredLogoChecks = expectedProductLogos.map((expected) => {
-    const actual = details.productLogos.find((logo) => logo.productId === expected.productId);
+  const expectedProductLockups = ["AOS", "TMS", expectedDesignSystemSuffixByLocale[locale] ?? "Design System"];
+  const productLockupChecks = expectedProductLockups.map((expected) => {
+    const actual = details.productLockups.find((lockup) => lockup.suffix === expected);
     return {
-      ...expected,
+      suffix: expected,
       actual,
-      ok: actual?.assetId === expected.assetId
-        && actual?.lineOne === expected.lineOne
-        && actual?.lineTwo === expected.lineTwo
+      ok: actual?.packageSource === "@tcrn/ui-react"
+        && actual?.packageBackedBrandLockup === "product"
     };
   });
   return {
     locale,
     ...details,
-    registeredLogoChecks,
+    productLockupChecks,
     ok: details.labels.length === 4
       && details.labels.some((label) => label === "TCRN brand mark")
-      && details.labels.some((label) => label === `${expectedDesignSystemLineOneByLocale[locale] ?? "TCRN Design System"}`)
-      && details.labels.some((label) => label === "TCRN AOS AI Operation System")
-      && details.labels.some((label) => label === "TCRN TMS Talent Management System")
       && details.sources.every((source) => source?.endsWith("tcrn-brand-mark.svg"))
-      && registeredLogoChecks.every((check) => check.ok)
+      && details.productLogos.length === 0
+      && productLockupChecks.every((check) => check.ok)
+      && !details.hasRegisteredProductLogosLabel
+      && !details.hasRegistryExportText
   };
 }
 const brandMarkLocaleChecks = [];

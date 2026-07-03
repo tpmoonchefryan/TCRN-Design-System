@@ -568,6 +568,7 @@
         "categoryLabelCount": 7,
         "productShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
+        "brandIdentityLogoSectionReadback": null,
         "expectedCategoryCount": 18,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
@@ -667,6 +668,13 @@
         "categoryLabelCount": 7,
         "productShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
+        "brandIdentityLogoSectionReadback": {
+          "productLockupCount": 3,
+          "hasProductLockupsLabel": true,
+          "hasRegisteredProductLogosLabel": false,
+          "hasRegistryExportText": false,
+          "hasAosRegisteredAssetId": false
+        },
         "expectedCategoryCount": 18,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
@@ -687,10 +695,10 @@
           "height": 900
         },
         "pageHead": {
-          "top": 10893.78,
+          "top": 10605.31,
           "left": 358,
           "right": 1408,
-          "bottom": 11064.97,
+          "bottom": 10776.5,
           "width": 1050,
           "height": 171.19
         },
@@ -766,6 +774,7 @@
         "categoryLabelCount": 7,
         "productShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
+        "brandIdentityLogoSectionReadback": null,
         "expectedCategoryCount": 18,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
@@ -865,6 +874,7 @@
         "categoryLabelCount": 7,
         "productShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
+        "brandIdentityLogoSectionReadback": null,
         "expectedCategoryCount": 18,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
@@ -964,6 +974,7 @@
         "categoryLabelCount": 7,
         "productShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
+        "brandIdentityLogoSectionReadback": null,
         "expectedCategoryCount": 18,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
@@ -1063,6 +1074,7 @@
         "categoryLabelCount": 7,
         "productShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
+        "brandIdentityLogoSectionReadback": null,
         "expectedCategoryCount": 18,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
@@ -1162,6 +1174,7 @@
         "categoryLabelCount": 7,
         "productShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
+        "brandIdentityLogoSectionReadback": null,
         "expectedCategoryCount": 18,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
@@ -3737,9 +3750,9 @@
         "locale": "zh-CN",
         "labels": [
           "TCRN brand mark",
-          "TCRN 设计系统",
-          "TCRN AOS AI Operation System",
-          "TCRN TMS Talent Management System"
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
         ],
         "sources": [
           "tcrn-brand-mark.svg",
@@ -3747,63 +3760,51 @@
           "tcrn-brand-mark.svg",
           "tcrn-brand-mark.svg"
         ],
-        "productLogos": [
+        "productLockups": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "TCRN 设计系统",
-            "lineTwo": "Component Library"
+            "suffix": "AOS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System"
+            "suffix": "TMS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System"
+            "suffix": "设计系统",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           }
         ],
-        "registeredLogoChecks": [
+        "productLogos": [],
+        "hasRegisteredProductLogosLabel": false,
+        "hasRegistryExportText": false,
+        "productLockupChecks": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "TCRN 设计系统",
-            "lineTwo": "Component Library",
+            "suffix": "AOS",
             "actual": {
-              "productId": "design-system",
-              "assetId": "tcrn-design-system-two-line",
-              "lineOne": "TCRN 设计系统",
-              "lineTwo": "Component Library"
+              "suffix": "AOS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System",
+            "suffix": "TMS",
             "actual": {
-              "productId": "aos",
-              "assetId": "tcrn-aos-two-line",
-              "lineOne": "TCRN AOS",
-              "lineTwo": "AI Operation System"
+              "suffix": "TMS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System",
+            "suffix": "设计系统",
             "actual": {
-              "productId": "tms",
-              "assetId": "tcrn-tms-two-line",
-              "lineOne": "TCRN TMS",
-              "lineTwo": "Talent Management System"
+              "suffix": "设计系统",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           }
@@ -3814,9 +3815,9 @@
         "locale": "en",
         "labels": [
           "TCRN brand mark",
-          "TCRN Design System",
-          "TCRN AOS AI Operation System",
-          "TCRN TMS Talent Management System"
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
         ],
         "sources": [
           "tcrn-brand-mark.svg",
@@ -3824,63 +3825,51 @@
           "tcrn-brand-mark.svg",
           "tcrn-brand-mark.svg"
         ],
-        "productLogos": [
+        "productLockups": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "TCRN Design System",
-            "lineTwo": "Component Library"
+            "suffix": "AOS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System"
+            "suffix": "TMS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System"
+            "suffix": "Design System",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           }
         ],
-        "registeredLogoChecks": [
+        "productLogos": [],
+        "hasRegisteredProductLogosLabel": false,
+        "hasRegistryExportText": false,
+        "productLockupChecks": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "TCRN Design System",
-            "lineTwo": "Component Library",
+            "suffix": "AOS",
             "actual": {
-              "productId": "design-system",
-              "assetId": "tcrn-design-system-two-line",
-              "lineOne": "TCRN Design System",
-              "lineTwo": "Component Library"
+              "suffix": "AOS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System",
+            "suffix": "TMS",
             "actual": {
-              "productId": "aos",
-              "assetId": "tcrn-aos-two-line",
-              "lineOne": "TCRN AOS",
-              "lineTwo": "AI Operation System"
+              "suffix": "TMS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System",
+            "suffix": "Design System",
             "actual": {
-              "productId": "tms",
-              "assetId": "tcrn-tms-two-line",
-              "lineOne": "TCRN TMS",
-              "lineTwo": "Talent Management System"
+              "suffix": "Design System",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           }
@@ -3891,9 +3880,9 @@
         "locale": "ja",
         "labels": [
           "TCRN brand mark",
-          "TCRN デザインシステム",
-          "TCRN AOS AI Operation System",
-          "TCRN TMS Talent Management System"
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
         ],
         "sources": [
           "tcrn-brand-mark.svg",
@@ -3901,63 +3890,51 @@
           "tcrn-brand-mark.svg",
           "tcrn-brand-mark.svg"
         ],
-        "productLogos": [
+        "productLockups": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "TCRN デザインシステム",
-            "lineTwo": "Component Library"
+            "suffix": "AOS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System"
+            "suffix": "TMS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System"
+            "suffix": "デザインシステム",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           }
         ],
-        "registeredLogoChecks": [
+        "productLogos": [],
+        "hasRegisteredProductLogosLabel": false,
+        "hasRegistryExportText": false,
+        "productLockupChecks": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "TCRN デザインシステム",
-            "lineTwo": "Component Library",
+            "suffix": "AOS",
             "actual": {
-              "productId": "design-system",
-              "assetId": "tcrn-design-system-two-line",
-              "lineOne": "TCRN デザインシステム",
-              "lineTwo": "Component Library"
+              "suffix": "AOS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System",
+            "suffix": "TMS",
             "actual": {
-              "productId": "aos",
-              "assetId": "tcrn-aos-two-line",
-              "lineOne": "TCRN AOS",
-              "lineTwo": "AI Operation System"
+              "suffix": "TMS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System",
+            "suffix": "デザインシステム",
             "actual": {
-              "productId": "tms",
-              "assetId": "tcrn-tms-two-line",
-              "lineOne": "TCRN TMS",
-              "lineTwo": "Talent Management System"
+              "suffix": "デザインシステム",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           }
@@ -3968,9 +3945,9 @@
         "locale": "ko",
         "labels": [
           "TCRN brand mark",
-          "TCRN 디자인 시스템",
-          "TCRN AOS AI Operation System",
-          "TCRN TMS Talent Management System"
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
         ],
         "sources": [
           "tcrn-brand-mark.svg",
@@ -3978,63 +3955,51 @@
           "tcrn-brand-mark.svg",
           "tcrn-brand-mark.svg"
         ],
-        "productLogos": [
+        "productLockups": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "TCRN 디자인 시스템",
-            "lineTwo": "Component Library"
+            "suffix": "AOS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System"
+            "suffix": "TMS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System"
+            "suffix": "디자인 시스템",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           }
         ],
-        "registeredLogoChecks": [
+        "productLogos": [],
+        "hasRegisteredProductLogosLabel": false,
+        "hasRegistryExportText": false,
+        "productLockupChecks": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "TCRN 디자인 시스템",
-            "lineTwo": "Component Library",
+            "suffix": "AOS",
             "actual": {
-              "productId": "design-system",
-              "assetId": "tcrn-design-system-two-line",
-              "lineOne": "TCRN 디자인 시스템",
-              "lineTwo": "Component Library"
+              "suffix": "AOS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System",
+            "suffix": "TMS",
             "actual": {
-              "productId": "aos",
-              "assetId": "tcrn-aos-two-line",
-              "lineOne": "TCRN AOS",
-              "lineTwo": "AI Operation System"
+              "suffix": "TMS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System",
+            "suffix": "디자인 시스템",
             "actual": {
-              "productId": "tms",
-              "assetId": "tcrn-tms-two-line",
-              "lineOne": "TCRN TMS",
-              "lineTwo": "Talent Management System"
+              "suffix": "디자인 시스템",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           }
@@ -4045,9 +4010,9 @@
         "locale": "fr",
         "labels": [
           "TCRN brand mark",
-          "Design System TCRN",
-          "TCRN AOS AI Operation System",
-          "TCRN TMS Talent Management System"
+          "TCRN brand mark",
+          "TCRN brand mark",
+          "TCRN brand mark"
         ],
         "sources": [
           "tcrn-brand-mark.svg",
@@ -4055,63 +4020,51 @@
           "tcrn-brand-mark.svg",
           "tcrn-brand-mark.svg"
         ],
-        "productLogos": [
+        "productLockups": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "Design System TCRN",
-            "lineTwo": "Component Library"
+            "suffix": "AOS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System"
+            "suffix": "TMS",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System"
+            "suffix": "Design System",
+            "packageSource": "@tcrn/ui-react",
+            "packageBackedBrandLockup": "product"
           }
         ],
-        "registeredLogoChecks": [
+        "productLogos": [],
+        "hasRegisteredProductLogosLabel": false,
+        "hasRegistryExportText": false,
+        "productLockupChecks": [
           {
-            "productId": "design-system",
-            "assetId": "tcrn-design-system-two-line",
-            "lineOne": "Design System TCRN",
-            "lineTwo": "Component Library",
+            "suffix": "AOS",
             "actual": {
-              "productId": "design-system",
-              "assetId": "tcrn-design-system-two-line",
-              "lineOne": "Design System TCRN",
-              "lineTwo": "Component Library"
+              "suffix": "AOS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "aos",
-            "assetId": "tcrn-aos-two-line",
-            "lineOne": "TCRN AOS",
-            "lineTwo": "AI Operation System",
+            "suffix": "TMS",
             "actual": {
-              "productId": "aos",
-              "assetId": "tcrn-aos-two-line",
-              "lineOne": "TCRN AOS",
-              "lineTwo": "AI Operation System"
+              "suffix": "TMS",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           },
           {
-            "productId": "tms",
-            "assetId": "tcrn-tms-two-line",
-            "lineOne": "TCRN TMS",
-            "lineTwo": "Talent Management System",
+            "suffix": "Design System",
             "actual": {
-              "productId": "tms",
-              "assetId": "tcrn-tms-two-line",
-              "lineOne": "TCRN TMS",
-              "lineTwo": "Talent Management System"
+              "suffix": "Design System",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
             },
             "ok": true
           }

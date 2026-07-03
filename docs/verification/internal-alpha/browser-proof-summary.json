@@ -1396,7 +1396,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 1050,
-          "height": 1304
+          "height": 1033
         },
         {
           "id": "color-palette",
@@ -6155,7 +6155,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 634,
-          "height": 1826
+          "height": 1276
         },
         {
           "id": "color-palette",
@@ -9764,7 +9764,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 358,
-          "height": 3033
+          "height": 2209
         },
         {
           "id": "color-palette",
