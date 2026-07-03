@@ -4,8 +4,8 @@ Route: `route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s
 Mode: `check`
 OK: `true`
 Comparison contract: `canonicalized_raw_png_exact_v1`
-Source head: `4415461969e54b9727b81531928e0f99dac05dbd`
-Source equivalence: `clean_head_receipt_generated_from_committed_source`
+Source head: `dad8014ddcde9385676df0728d47c7b3c39def18`
+Source equivalence: `source_equivalent_dirty_tree_receipt_generated_before_commit`
 Oracle recovery: `true`
 Oracle receipt: `TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md`
 Static pages: 11

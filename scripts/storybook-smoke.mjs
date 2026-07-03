@@ -2683,7 +2683,9 @@ async function runCrossSectionShellParityProof() {
     "Component family index",
     "Work Management",
     "AI consumption contract",
-    "Local changelog",
+    "Local changelog"
+  ];
+  const forbiddenOwnerVisibleCaptionText = [
     "私有本地脚手架证明",
     "Private local scaffold proof"
   ];
@@ -2709,7 +2711,7 @@ async function runCrossSectionShellParityProof() {
         await page.waitForSelector(`[data-active-story-section='${route.group}']`);
         await page.waitForSelector(`[data-product-shell-route='${route.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
         await page.waitForTimeout(180);
-        const metrics = await page.evaluate(({ group, storyId, forbiddenZhCnProductShellText }) => {
+        const metrics = await page.evaluate(({ group, storyId, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText }) => {
           const rectFor = (selector) => {
             const node = document.querySelector(selector);
             if (!node) {
@@ -2764,7 +2766,12 @@ async function runCrossSectionShellParityProof() {
             searchInput?.getAttribute("aria-label") ?? "",
             searchInput?.getAttribute("placeholder") ?? ""
           ].join("\\n");
+          const ownerVisibleCaptionSurface = [
+            productShellTextSurface,
+            firstStory instanceof HTMLElement ? firstStory.innerText : ""
+          ].join("\\n");
           const productShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => productShellTextSurface.includes(text));
+          const ownerVisibleCaptionHits = forbiddenOwnerVisibleCaptionText.filter((text) => ownerVisibleCaptionSurface.includes(text));
           const sidebarNoIconLabelReadbacks = window.innerWidth >= 900 && shell?.getAttribute("data-product-shell-collapsed") !== "true"
             ? Array.from((storybookNav ?? document).querySelectorAll("[data-product-shell-route]"))
               .map((item) => {
@@ -2826,8 +2833,9 @@ async function runCrossSectionShellParityProof() {
             legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
 	          navGroupCount: (storybookNav ?? document).querySelectorAll(".tcrn-nav-group").length,
             categoryLabelCount: categoryLabels.length,
-	            categoryLabels,
+            categoryLabels,
             productShellEnglishLeaks,
+            ownerVisibleCaptionHits,
             sidebarNoIconLabelReadbacks,
             sidebarNoIconLabelReadabilityFailures,
 	            firstStoryTop: firstStory ? Number(firstStory.getBoundingClientRect().top.toFixed(2)) : null,
@@ -2853,7 +2861,7 @@ async function runCrossSectionShellParityProof() {
             pageHeadStartsBelowHeader: Boolean(pageHead && pageHead.top >= headerBottom - 1),
             storyFirstBeforePageHead: Boolean(pageHead && firstStory && firstStory.getBoundingClientRect().top <= pageHead.top)
           };
-        }, { group: route.group, storyId: route.storyId, forbiddenZhCnProductShellText });
+        }, { group: route.group, storyId: route.storyId, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText });
         const routeFailures = [];
         if (metrics.locale !== "zh-CN") routeFailures.push(`locale:${metrics.locale}`);
         if (metrics.activeSection !== route.group) routeFailures.push(`active-section:${metrics.activeSection}`);
@@ -2875,6 +2883,9 @@ async function runCrossSectionShellParityProof() {
 	        if (metrics.categoryLabelCount !== expectedStorybookShellNavGroupCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
         if (metrics.productShellEnglishLeaks.length > 0) {
           routeFailures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
+        }
+        if (metrics.ownerVisibleCaptionHits.length > 0) {
+          routeFailures.push(`owner-visible-caption-hits:${metrics.ownerVisibleCaptionHits.join("|")}`);
         }
         if (metrics.sidebarNoIconLabelReadabilityFailures.length > 0) {
           routeFailures.push(`sidebar-no-icon-label-readability:${JSON.stringify(metrics.sidebarNoIconLabelReadabilityFailures.slice(0, 3))}`);

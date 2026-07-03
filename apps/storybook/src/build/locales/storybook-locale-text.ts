@@ -2,7 +2,7 @@ import type { TcrnLocale } from "@tcrn/ui-copy-state";
 
 export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
   "zh-CN": {
-    "shell.eyebrow": "私有本地脚手架证明",
+    "shell.eyebrow": "组件库",
     "shell.title": "TCRN 设计系统契约故事",
     "shell.noClaim": "不声明产品采用、发布、发布就绪、产品验收或最终 MVP 验收。",
     "shell.brand": "TCRN 设计系统",
@@ -131,7 +131,7 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "不声明包发布或发布状态的人类可读本地检查点历史。"
   },
   en: {
-    "shell.eyebrow": "Private local scaffold proof",
+    "shell.eyebrow": "Component library",
     "shell.title": "TCRN Design System Contract Stories",
     "shell.noClaim": "Product adoption, publication, release readiness, product acceptance, and final MVP acceptance are not claimed.",
     "shell.brand": "TCRN Design System",
@@ -260,7 +260,7 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "Human-readable local checkpoint history without package publication or release claims."
   },
   ja: {
-    "shell.eyebrow": "非公開ローカルスキャフォールド証明",
+    "shell.eyebrow": "コンポーネントライブラリ",
     "shell.title": "TCRN デザインシステム契約ストーリー",
     "shell.noClaim": "製品採用、公開、リリース準備、製品受け入れ、最終 MVP 受け入れは主張しません。",
     "shell.brand": "TCRN デザインシステム",
@@ -389,7 +389,7 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "パッケージ公開やリリース主張を伴わない、人が読めるローカルチェックポイント履歴。"
   },
   ko: {
-    "shell.eyebrow": "비공개 로컬 스캐폴드 증명",
+    "shell.eyebrow": "컴포넌트 라이브러리",
     "shell.title": "TCRN 디자인 시스템 계약 스토리",
     "shell.noClaim": "제품 채택, 게시, 릴리스 준비, 제품 수락, 최종 MVP 수락을 주장하지 않습니다.",
     "shell.brand": "TCRN 디자인 시스템",
@@ -518,7 +518,7 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "패키지 게시나 릴리스 주장이 없는 사람이 읽을 수 있는 로컬 체크포인트 기록."
   },
   fr: {
-    "shell.eyebrow": "Preuve locale de scaffold privé",
+    "shell.eyebrow": "Bibliothèque de composants",
     "shell.title": "Histoires contractuelles du Design System TCRN",
     "shell.noClaim": "Aucune adoption produit, publication, préparation de release, acceptation produit ou acceptation MVP finale n'est revendiquée.",
     "shell.brand": "Design System TCRN",

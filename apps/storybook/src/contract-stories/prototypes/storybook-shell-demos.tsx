@@ -193,7 +193,7 @@ export function KnowledgeBaseShellDemo() {
         <header className="tcrn-knowledge-shell__topbar" aria-label="Knowledge base top bar">
           <div className="tcrn-knowledge-shell__brand-cell">
             <a className="tcrn-doc-brand tcrn-knowledge-shell__brand" href="#navigation-shell-spec">
-              <ShellBrandLockup suffix="Design System" caption="Private local scaffold proof" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
+              <ShellBrandLockup suffix="Design System" caption="Component library" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
             </a>
             <button className="tcrn-knowledge-shell__collapse-button" type="button" aria-expanded="true" aria-label="Collapse navigation">
               <Icon name="chevron-left" />
@@ -232,7 +232,7 @@ export function KnowledgeBaseShellDemo() {
         </aside>
         <div className="tcrn-knowledge-shell__content" aria-label="Knowledge base content preview">
           <div className="tcrn-knowledge-preview">
-            <span className="tcrn-eyebrow">Private local scaffold proof</span>
+            <span className="tcrn-eyebrow">Component library</span>
             <Heading level={3}>Navigation and shell spec</Heading>
             <Text>The knowledge-base shell standard mirrors the active TCRN documentation shell: one top bar, attached side navigation, one content column, and bottom chapter navigation.</Text>
             <div className="tcrn-knowledge-preview__panel">
@@ -322,7 +322,7 @@ export function StorybookEntryShellStrip() {
         <TcrnBrandMark />
         <span>
           <strong>Design System</strong>
-          <small>Private local scaffold proof</small>
+          <small>Component library</small>
         </span>
       </div>
       <div className="tcrn-entry-shell-strip__module">

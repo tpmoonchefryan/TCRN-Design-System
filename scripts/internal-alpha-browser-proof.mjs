@@ -708,7 +708,9 @@ const forbiddenZhCnProductShellText = [
   "Component family index",
   "Work Management",
   "AI consumption contract",
-  "Local changelog",
+  "Local changelog"
+];
+const forbiddenOwnerVisibleCaptionText = [
   "私有本地脚手架证明",
   "Private local scaffold proof"
 ];
@@ -724,7 +726,7 @@ for (const route of firstStoryHashShellParityRoutes) {
   await storybookPage.waitForSelector(`[data-active-story-section='${route.group}']`);
   await storybookPage.waitForSelector(`[data-product-shell-route='${route.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
   await storybookPage.waitForTimeout(180);
-  const metrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount, expectedShellNavGroupCount, forbiddenZhCnProductShellText }) => {
+  const metrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount, expectedShellNavGroupCount, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText }) => {
     const rectFor = (selector) => {
       const node = document.querySelector(selector);
       if (!node) {
@@ -777,7 +779,12 @@ for (const route of firstStoryHashShellParityRoutes) {
       searchInput?.getAttribute("aria-label") ?? "",
       searchInput?.getAttribute("placeholder") ?? ""
     ].join("\\n");
+    const ownerVisibleCaptionSurface = [
+      productShellTextSurface,
+      firstStory instanceof HTMLElement ? firstStory.innerText : ""
+    ].join("\\n");
     const productShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => productShellTextSurface.includes(text));
+    const ownerVisibleCaptionHits = forbiddenOwnerVisibleCaptionText.filter((text) => ownerVisibleCaptionSurface.includes(text));
     const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
     return {
       group,
@@ -798,8 +805,9 @@ for (const route of firstStoryHashShellParityRoutes) {
       noOverclaimBoundaryCount: document.querySelectorAll("[data-no-overclaim-boundary='visible']").length,
       legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
 	      navGroupCount: navRoot.querySelectorAll(".tcrn-nav-group").length,
-	      categoryLabelCount: navRoot.querySelectorAll(".tcrn-nav-group__label").length,
+      categoryLabelCount: navRoot.querySelectorAll(".tcrn-nav-group__label").length,
       productShellEnglishLeaks,
+      ownerVisibleCaptionHits,
       expectedCategoryCount,
       expectedShellNavGroupCount,
       expectedGroupCount,
@@ -827,7 +835,8 @@ for (const route of firstStoryHashShellParityRoutes) {
 	    expectedCategoryCount,
 	    expectedShellNavGroupCount: expectedStorybookShellNavGroupCount,
 	    expectedGroupCount: sectionPages.length,
-    forbiddenZhCnProductShellText
+    forbiddenZhCnProductShellText,
+    forbiddenOwnerVisibleCaptionText
 	  });
   const failures = [];
   if (metrics.locale !== "zh-CN") failures.push(`locale:${metrics.locale}`);
@@ -849,6 +858,7 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.navGroupCount !== expectedStorybookShellNavGroupCount) failures.push(`nav-group-count:${metrics.navGroupCount}`);
   if (metrics.categoryLabelCount !== expectedStorybookShellNavGroupCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
   if (metrics.productShellEnglishLeaks.length > 0) failures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
+  if (metrics.ownerVisibleCaptionHits.length > 0) failures.push(`owner-visible-caption-hits:${metrics.ownerVisibleCaptionHits.join("|")}`);
   if (metrics.themeToggleRadius !== expectedProductShellThemeToggleRadius) {
     failures.push(`theme-toggle-radius:${metrics.themeToggleRadius ?? "missing"}:expected:${expectedProductShellThemeToggleRadius}`);
   }

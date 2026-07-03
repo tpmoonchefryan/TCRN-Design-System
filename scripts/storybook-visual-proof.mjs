@@ -955,7 +955,8 @@ async function collectPageHealth(page, state) {
     const visibleShellTextSurface = [
       document.querySelector(".tcrn-product-shell__brand")?.textContent ?? "",
       document.querySelector(".tcrn-product-shell__current-location")?.textContent ?? "",
-      document.querySelector(".tcrn-product-shell__utility-row")?.textContent ?? ""
+      document.querySelector(".tcrn-product-shell__utility-row")?.textContent ?? "",
+      target instanceof HTMLElement ? target.innerText : ""
     ].join("\n");
     const ownerVisibleShellTextHits = input.forbiddenOwnerVisibleShellText
       .filter((rule) => visibleShellTextSurface.includes(rule.text))
