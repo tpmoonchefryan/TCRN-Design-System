@@ -282,12 +282,21 @@ export const storybookI18nScript = `<script>
       link.setAttribute("href", file + next.search + next.hash);
     }
   };
-  const closeLocaleMenu = () => {
+  const focusLocaleMenuTrigger = () => {
+    const toggle = document.querySelector("[data-locale-menu-toggle]");
+    if (toggle instanceof HTMLElement) {
+      toggle.focus({ preventScroll: true });
+    }
+  };
+  const closeLocaleMenu = (options = {}) => {
     const toggle = document.querySelector("[data-locale-menu-toggle]");
     const menu = document.querySelector("[data-locale-menu]");
     toggle?.setAttribute("aria-expanded", "false");
     if (menu) {
       menu.hidden = true;
+    }
+    if (options.restoreFocus) {
+      focusLocaleMenuTrigger();
     }
   };
   const openLocaleMenu = () => {
@@ -380,8 +389,7 @@ export const storybookI18nScript = `<script>
   for (const option of document.querySelectorAll("[data-locale-menu-option]")) {
     option.addEventListener("click", () => {
       applyLocale(option.getAttribute("data-locale"), true);
-      closeLocaleMenu();
-      document.querySelector("[data-locale-menu-toggle]")?.focus();
+      closeLocaleMenu({ restoreFocus: true });
     });
   }
   document.addEventListener("mousedown", (event) => {
@@ -391,7 +399,7 @@ export const storybookI18nScript = `<script>
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      closeLocaleMenu();
+      closeLocaleMenu({ restoreFocus: true });
     }
   });
   applyLocale(initialLocale, false);

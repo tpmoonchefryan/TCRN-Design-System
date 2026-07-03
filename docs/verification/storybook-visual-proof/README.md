@@ -4,7 +4,7 @@ Route: `route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s
 Mode: `check`
 OK: `true`
 Comparison contract: `canonicalized_raw_png_exact_v1`
-Source head: `fc85adf8760d29e2ff76402ba13b477c4cb859b0`
+Source head: `578a2650205cd8630abad5479add60b4f35f9da2`
 Source equivalence: `source_equivalent_dirty_tree_receipt_generated_before_commit`
 Oracle recovery: `true`
 Oracle receipt: `TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan`

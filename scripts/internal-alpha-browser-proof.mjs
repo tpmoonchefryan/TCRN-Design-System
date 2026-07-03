@@ -616,6 +616,7 @@ const browserSummaries = [];
 const visualEntries = [];
 const axeSummaries = [];
 let keyboardChecklist;
+let localeMenuFocusReturnCheck;
 
 for (const viewport of viewports) {
   for (const section of sectionPages) {
@@ -1565,6 +1566,46 @@ keyboardChecklist = {
     { item: "reduced motion", status: "passed", evidence: "Browser proof emulated reducedMotion=reduce for all viewports." }
   ]
 };
+
+await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}?theme=light&locale=zh-CN#welcome-governance`);
+await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
+await storybookPage.waitForSelector("#tcrn-doc-locale-trigger");
+await storybookPage.locator("#tcrn-doc-locale-trigger").click();
+await storybookPage.waitForSelector("[data-locale-menu]:not([hidden])");
+const localeMenuOpenReadback = await storybookPage.evaluate(() => ({
+  activeTag: document.activeElement?.tagName?.toLowerCase() ?? null,
+  activeId: document.activeElement?.id ?? null,
+  expanded: document.querySelector("#tcrn-doc-locale-trigger")?.getAttribute("aria-expanded") ?? null,
+  menuHidden: document.querySelector("[data-locale-menu]")?.hasAttribute("hidden") ?? null
+}));
+await storybookPage.keyboard.press("Escape");
+await storybookPage.waitForFunction(() => document.querySelector("[data-locale-menu]")?.hasAttribute("hidden"));
+await storybookPage.waitForFunction(() => document.activeElement?.id === "tcrn-doc-locale-trigger");
+const localeMenuCloseReadback = await storybookPage.evaluate(() => ({
+  activeTag: document.activeElement?.tagName?.toLowerCase() ?? null,
+  activeId: document.activeElement?.id ?? null,
+  activeText: (document.activeElement?.textContent ?? "").replace(/\s+/g, " ").trim(),
+  expanded: document.querySelector("#tcrn-doc-locale-trigger")?.getAttribute("aria-expanded") ?? null,
+  menuHidden: document.querySelector("[data-locale-menu]")?.hasAttribute("hidden") ?? null,
+  dismissalContract: document.querySelector("[data-locale-dismissal-contract]")?.getAttribute("data-locale-dismissal-contract") ?? null,
+  shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-doc-shell") ?? null,
+  globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
+    .filter((node) => !node.closest(".story-body"))
+    .length
+}));
+localeMenuFocusReturnCheck = {
+  ok: localeMenuOpenReadback.expanded === "true"
+    && localeMenuOpenReadback.menuHidden === false
+    && localeMenuCloseReadback.expanded === "false"
+    && localeMenuCloseReadback.menuHidden === true
+    && localeMenuCloseReadback.activeId === "tcrn-doc-locale-trigger"
+    && localeMenuCloseReadback.dismissalContract === "selection-outside-pointer-escape-focus-return"
+    && localeMenuCloseReadback.shellAuthority === "online-docs"
+    && localeMenuCloseReadback.globalProductShellShellSelectorCount === 0,
+  route: `${staticSurfacePath}?theme=light&locale=zh-CN#welcome-governance`,
+  openReadback: localeMenuOpenReadback,
+  closeReadback: localeMenuCloseReadback
+};
 await storybookPage.close();
 await browser.close();
 await staticServer.close();
@@ -1673,7 +1714,7 @@ const axeSummary = {
   sections: axeSummaries
 };
 const storyCoverageManifest = {
-  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok,
+  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeMenuFocusReturnCheck.ok,
   requiredStories,
   sectionPages,
   staticContractSurface: staticSurfacePath,
@@ -1689,6 +1730,7 @@ const storyCoverageManifest = {
   anchorScrollCheck,
   scrollSpyCheck,
   localeRouteCheck,
+  localeMenuFocusReturnCheck,
   staticSectionChecks,
   coverageDisposition: "full_static_contract_docs_navigation_and_i18n_pages"
 };
@@ -1760,6 +1802,7 @@ const ok = browserProofSummary.ok
   && storyCoverageManifest.ok
   && axeSummary.violationCount === 0
   && keyboardChecklist.ok
+  && localeMenuFocusReturnCheck.ok
   && capabilityMetadataOk
   && visualBaselineManifest.ok
   && !visualBaselineManifest.rejectChecks.clippedButtonText;
@@ -1772,6 +1815,7 @@ console.log(JSON.stringify({
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
   keyboardOk: keyboardChecklist.ok,
+  localeMenuFocusReturnOk: localeMenuFocusReturnCheck.ok,
   capabilityMetadataOk,
   aiContractTraceabilityOk: aiContractTraceabilityCheck.ok,
   coveredStorybookSections: aiContractTraceabilityCheck.coveredSectionCount,

@@ -4236,6 +4236,26 @@
       }
     ]
   },
+  "localeMenuFocusReturnCheck": {
+    "ok": true,
+    "route": "apps/storybook/storybook-static/index.html?theme=light&locale=zh-CN#welcome-governance",
+    "openReadback": {
+      "activeTag": "button",
+      "activeId": "",
+      "expanded": "true",
+      "menuHidden": false
+    },
+    "closeReadback": {
+      "activeTag": "button",
+      "activeId": "tcrn-doc-locale-trigger",
+      "activeText": "简体中文",
+      "expanded": "false",
+      "menuHidden": true,
+      "dismissalContract": "selection-outside-pointer-escape-focus-return",
+      "shellAuthority": "online-docs",
+      "globalProductShellShellSelectorCount": 0
+    }
+  },
   "staticSectionChecks": [
     {
       "viewport": "desktop-1440x900",

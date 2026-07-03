@@ -3061,6 +3061,91 @@ async function runCrossSectionShellParityProof() {
   }
 }
 
+async function runLocaleMenuFocusReturnProof() {
+  const { server, origin } = await startStaticServer(staticRoot);
+  const failures = [];
+  const routes = [
+    {
+      id: "welcome-doc-shell-locale-escape-desktop",
+      route: "index.html?theme=light&locale=zh-CN#welcome-governance",
+      viewport: { width: 1440, height: 900 }
+    },
+    {
+      id: "welcome-doc-shell-locale-escape-mobile",
+      route: "index.html?theme=light&locale=zh-CN#welcome-governance",
+      viewport: { width: 390, height: 844 }
+    }
+  ];
+  const readbacks = [];
+  try {
+    for (const route of routes) {
+      const browser = await chromium.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"]
+      });
+      try {
+        const page = await browser.newPage({ viewport: route.viewport });
+        await page.goto(`${origin}/${route.route}`);
+        await page.waitForSelector("[data-storybook-locale='zh-CN']");
+        await page.waitForSelector("#tcrn-doc-locale-trigger");
+        await page.locator("#tcrn-doc-locale-trigger").click();
+        await page.waitForSelector("[data-locale-menu]:not([hidden])");
+        const openReadback = await page.evaluate(() => ({
+          activeTag: document.activeElement?.tagName?.toLowerCase() ?? null,
+          activeId: document.activeElement?.id ?? null,
+          expanded: document.querySelector("#tcrn-doc-locale-trigger")?.getAttribute("aria-expanded") ?? null,
+          menuHidden: document.querySelector("[data-locale-menu]")?.hasAttribute("hidden") ?? null
+        }));
+        await page.keyboard.press("Escape");
+        await page.waitForFunction(() => document.querySelector("[data-locale-menu]")?.hasAttribute("hidden"));
+        await page.waitForFunction(() => document.activeElement?.id === "tcrn-doc-locale-trigger");
+        const closeReadback = await page.evaluate(() => ({
+          activeTag: document.activeElement?.tagName?.toLowerCase() ?? null,
+          activeId: document.activeElement?.id ?? null,
+          activeText: (document.activeElement?.textContent ?? "").replace(/\s+/g, " ").trim(),
+          expanded: document.querySelector("#tcrn-doc-locale-trigger")?.getAttribute("aria-expanded") ?? null,
+          menuHidden: document.querySelector("[data-locale-menu]")?.hasAttribute("hidden") ?? null,
+          dismissalContract: document.querySelector("[data-locale-dismissal-contract]")?.getAttribute("data-locale-dismissal-contract") ?? null,
+          shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-doc-shell") ?? null,
+          globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
+            .filter((node) => !node.closest(".story-body"))
+            .length
+        }));
+        const routeFailures = [];
+        if (openReadback.expanded !== "true" || openReadback.menuHidden !== false) {
+          routeFailures.push(`locale-menu-open-state:${JSON.stringify(openReadback)}`);
+        }
+        if (closeReadback.expanded !== "false") routeFailures.push(`aria-expanded-after-escape:${closeReadback.expanded}`);
+        if (closeReadback.menuHidden !== true) routeFailures.push(`menu-hidden-after-escape:${closeReadback.menuHidden}`);
+        if (closeReadback.activeId !== "tcrn-doc-locale-trigger") routeFailures.push(`focus-after-escape:${closeReadback.activeTag ?? "missing"}#${closeReadback.activeId ?? ""}`);
+        if (closeReadback.dismissalContract !== "selection-outside-pointer-escape-focus-return") routeFailures.push(`dismissal-contract:${closeReadback.dismissalContract}`);
+        if (closeReadback.shellAuthority !== "online-docs") routeFailures.push(`doc-shell-authority:${closeReadback.shellAuthority}`);
+        if (closeReadback.globalProductShellShellSelectorCount !== 0) routeFailures.push(`global-product-shell-shell-selectors:${closeReadback.globalProductShellShellSelectorCount}`);
+        if (routeFailures.length > 0) {
+          failures.push({ route: route.id, failures: routeFailures });
+        }
+        readbacks.push({
+          ...route,
+          openReadback,
+          closeReadback,
+          ok: routeFailures.length === 0,
+          failures: routeFailures
+        });
+      } finally {
+        await browser.close();
+      }
+    }
+    return {
+      ok: failures.length === 0,
+      failures,
+      readbacks,
+      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+    };
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+}
+
 async function main() {
   const productShellComparatorProof = await runProductShellComparatorProof().catch((error) => ({
     ok: false,
@@ -3089,6 +3174,10 @@ async function main() {
     ok: false,
     failures: [`cross-section-shell-parity-proof-error:${error instanceof Error ? error.message : String(error)}`]
   }));
+  const localeMenuFocusReturnProof = await runLocaleMenuFocusReturnProof().catch((error) => ({
+    ok: false,
+    failures: [`locale-menu-focus-return-proof-error:${error instanceof Error ? error.message : String(error)}`]
+  }));
   const ok = missing.length === 0
     && forbiddenPositiveHits.length === 0
     && storybookPreviewExists
@@ -3097,7 +3186,8 @@ async function main() {
     && ownerQualityProductShellProof.ok
     && changelogI18nReadabilityProof.ok
     && globalStorybookZhCnIaProof.ok
-    && crossSectionShellParityProof.ok;
+    && crossSectionShellParityProof.ok
+    && localeMenuFocusReturnProof.ok;
   console.log(JSON.stringify({
     ok,
     missing,
@@ -3109,7 +3199,8 @@ async function main() {
 	    ownerQualityProductShellProof,
 	    changelogI18nReadabilityProof,
 	    globalStorybookZhCnIaProof,
-	    crossSectionShellParityProof
+	    crossSectionShellParityProof,
+	    localeMenuFocusReturnProof
 	  }, null, 2));
   if (!ok) {
     process.exit(1);
