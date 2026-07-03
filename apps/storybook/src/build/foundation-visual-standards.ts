@@ -32,7 +32,7 @@ export const productShellVisualOracle = {
   baselineManifestClassification: "historical_but_dirty_admissible_with_hash_backed_screenshots",
   metricSourceDisposition:
     "desktop sidebar, topbar, search rest, and search expanded metrics are retained only after the owner-rejection repair re-expressed the confirmed Storybook visual oracle through ProductShell-scoped Storybook skinning and regenerated committed baseline screenshots.",
-  sourceHead: "93af55545784d4a1f63b667c508859c13fc1054a",
+  sourceHead: "2a81366557d7dd781d7455736ac79e6b58cbde0d",
   storybookRoute: "index.html#welcome-governance",
   packageAuthority: "@tcrn/ui-react/ProductShell",
   privateShellClonesForbidden: [
@@ -48,7 +48,7 @@ export const productShellVisualOracle = {
       value: 326,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5",
+      sha256: "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529",
       extraction: "ProductShell visual-proof geometry: sidebar seam x=325, visual width=326px"
     },
     {
@@ -56,7 +56,7 @@ export const productShellVisualOracle = {
       value: 96,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5",
+      sha256: "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529",
       extraction: "ProductShell visual-proof geometry: topbar/control band y=0..95, height=96px"
     },
     {
@@ -64,7 +64,7 @@ export const productShellVisualOracle = {
       value: 180,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5",
+      sha256: "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529",
       extraction: "ProductShell visual-proof geometry: compact search shell width=180px"
     },
     {
@@ -72,7 +72,7 @@ export const productShellVisualOracle = {
       value: 320,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png",
-      sha256: "1587b64b87e64d92c6cf315b89b174dd4f1905bd65eb2d7009b1cbf2a91bc542",
+      sha256: "1f691d095fdcd5963609f42c279da8e9422c50d53c1f123b50f5cbb2f2cc2e47",
       extraction: "ProductShell visual-proof focused search state width=320px"
     }
   ],

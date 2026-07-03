@@ -249,7 +249,7 @@ ${chapterPagerHtml(group)}
       productName="TCRN Design System"
       moduleName={localeText("shell.title")}
       brandSuffix={localeText("shell.brandSuffix")}
-      brandCaption={localeText("shell.eyebrow")}
+      brandCaption={localeText("shell.brandCaption")}
       brandHref="index.html"
       brandMarkSrc="tcrn-brand-mark.svg"
       brandMarkAlt={localeText("shell.brand")}

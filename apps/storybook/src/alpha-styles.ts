@@ -198,14 +198,16 @@ body {
 }
 .tcrn-storybook-product-shell .tcrn-product-shell__workspace > .tcrn-top-bar {
   min-height: var(--tcrn-storybook-shell-topbar-height);
-  padding: 30px var(--tcrn-storybook-shell-topbar-padding-inline) 28px 0;
+  padding: 30px var(--tcrn-storybook-shell-topbar-padding-inline) 28px 32px;
   border-bottom: 0;
-  background: transparent;
+  background: color-mix(in srgb, var(--tcrn-color-surface-canvas) 94%, var(--tcrn-color-surface-panel));
   backdrop-filter: none;
 }
 .tcrn-storybook-product-shell .tcrn-product-shell__utility-row {
+  align-items: center;
   flex-wrap: nowrap;
   gap: 14px;
+  width: 100%;
 }
 .tcrn-storybook-product-shell .tcrn-product-shell__current-location {
   flex: 0 1 320px;

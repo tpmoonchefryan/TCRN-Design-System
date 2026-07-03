@@ -708,7 +708,9 @@ const forbiddenZhCnProductShellText = [
   "Component family index",
   "Work Management",
   "AI consumption contract",
-  "Local changelog"
+  "Local changelog",
+  "私有本地脚手架证明",
+  "Private local scaffold proof"
 ];
 const expectedProductShellThemeToggleRadius = "999px";
 const firstStoryHashShellParityReadbacks = [];
@@ -763,11 +765,13 @@ for (const route of firstStoryHashShellParityRoutes) {
 	    const activeStory = navRoot.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
 	    const headerBottom = header?.bottom ?? 0;
     const currentLocationNode = document.querySelector(".tcrn-product-shell__current-location");
+    const brandNode = document.querySelector(".tcrn-product-shell__brand");
     const searchInput = document.querySelector(".tcrn-search-input__control");
     const searchInputShell = rectFor(".tcrn-search-input");
     const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
     const sideNavRegion = rectFor(".tcrn-product-shell__sidebar");
     const productShellTextSurface = [
+      brandNode?.textContent ?? "",
       storybookNav?.innerText ?? "",
       currentLocationNode?.textContent ?? "",
       searchInput?.getAttribute("aria-label") ?? "",

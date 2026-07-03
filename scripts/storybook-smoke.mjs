@@ -1223,7 +1223,7 @@ if (!String(contract.productShellVisualOracle?.metricSourceDisposition ?? "").in
 }
 if (!(contract.productShellVisualOracle?.metricEvidence ?? []).some((item) => (
   item.metric === "desktopSidebarWidthPx"
-  && item.sha256 === "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5"
+  && item.sha256 === "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529"
 ))) {
   missing.push("contract.productShellVisualOracle.metricEvidence.desktopSidebarWidthPx");
 }
@@ -2683,7 +2683,9 @@ async function runCrossSectionShellParityProof() {
     "Component family index",
     "Work Management",
     "AI consumption contract",
-    "Local changelog"
+    "Local changelog",
+    "私有本地脚手架证明",
+    "Private local scaffold proof"
   ];
   const expectedThemeToggleRadius = `${productShellComparatorContract.expectedControlMetrics.themeToggle.radius}px`;
 
@@ -2750,11 +2752,13 @@ async function runCrossSectionShellParityProof() {
 		            .map((node) => node.textContent?.trim() ?? "")
 		            .filter(Boolean);
           const currentLocationNode = document.querySelector(".tcrn-product-shell__current-location");
+          const brandNode = document.querySelector(".tcrn-product-shell__brand");
           const searchInput = document.querySelector(".tcrn-search-input__control");
           const searchInputShell = rectFor(".tcrn-search-input");
           const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
           const sideNavRegion = rectFor(".tcrn-product-shell__sidebar");
           const productShellTextSurface = [
+            brandNode?.textContent ?? "",
             storybookNav?.innerText ?? "",
             currentLocationNode?.textContent ?? "",
             searchInput?.getAttribute("aria-label") ?? "",

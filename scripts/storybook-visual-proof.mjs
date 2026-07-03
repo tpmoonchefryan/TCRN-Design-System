@@ -137,6 +137,25 @@ const focusedVisualStateAllowlist = [
     description: "Welcome route with Storybook ProductShell locale menu open."
   },
   {
+    id: "welcome-scrolled-zh-cn-light",
+    page: "index.html",
+    hash: "welcome-governance",
+    storyId: "welcome-governance",
+    locale: "zh-CN",
+    themeMode: "light",
+    interaction: "scrolled-topbar",
+    description: "Owner-rejected retained-style Welcome route scrolled with topbar and content rhythm visible."
+  },
+  {
+    id: "foundations-visual-standards-zh-cn-light",
+    page: "foundations.html",
+    hash: "foundation-visual-standards",
+    storyId: "foundation-visual-standards",
+    locale: "zh-CN",
+    themeMode: "light",
+    description: "Foundation visual standards hash route with ProductShell topbar/content rhythm visible."
+  },
+  {
     id: "welcome-sidebar-collapsed-zh-cn-light",
     page: "index.html",
     hash: "welcome-governance",
@@ -178,6 +197,9 @@ const recoveredProductShellMetricOracle = {
   themeToggleSizePx: 36,
   themeToggleRadiusPx: 999,
   localeTriggerHeightPx: 36,
+  currentLocationContentAlignmentTolerancePx: 24,
+  contentTopGapMinPx: 8,
+  contentTopGapMaxPx: 48,
   trailingUtilityGapMinPx: 16,
   trailingUtilityGapMaxPx: 32
 };
@@ -272,6 +294,11 @@ const forbiddenStaticDocPatterns = [
   { id: "release-ready", pattern: /\brelease ready\b/i },
   { id: "public-ready", pattern: /\bpublic ready\b/i },
   { id: "deployment-ready", pattern: /\bdeployment ready\b/i }
+];
+
+const forbiddenOwnerVisibleShellText = [
+  { id: "zh-cn-private-local-scaffold-proof-caption", text: "私有本地脚手架证明" },
+  { id: "en-private-local-scaffold-proof-caption", text: "Private local scaffold proof" }
 ];
 
 function parseArgs(argv) {
@@ -820,6 +847,11 @@ async function applyVisualInteraction(page, state) {
   } else if (state.interaction === "sidebar-collapsed") {
     await page.locator(".tcrn-shell-side-nav-toggle").click();
     await page.waitForSelector("[data-contract-surface='tcrn-design-system-storybook'][data-product-shell-collapsed='true']");
+  } else if (state.interaction === "scrolled-topbar") {
+    await page.evaluate(() => {
+      window.scrollTo({ top: 220, left: 0, behavior: "auto" });
+      window.tcrnUpdateCurrentStoryContext?.();
+    });
   } else {
     throw new Error(`unknown_visual_interaction:${state.interaction}`);
   }
@@ -919,6 +951,14 @@ async function collectPageHealth(page, state) {
     const rect = target?.getBoundingClientRect();
     const html = document.documentElement.outerHTML;
     const bodyText = document.body.innerText;
+    const visibleShellTextSurface = [
+      document.querySelector(".tcrn-product-shell__brand")?.textContent ?? "",
+      document.querySelector(".tcrn-product-shell__current-location")?.textContent ?? "",
+      document.querySelector(".tcrn-product-shell__utility-row")?.textContent ?? ""
+    ].join("\n");
+    const ownerVisibleShellTextHits = input.forbiddenOwnerVisibleShellText
+      .filter((rule) => visibleShellTextSurface.includes(rule.text))
+      .map((rule) => rule.id);
     const forbiddenHits = input.forbiddenPatterns
       .filter((rule) => new RegExp(rule.source, rule.flags).test(html) || new RegExp(rule.source, rule.flags).test(bodyText))
       .map((rule) => rule.id);
@@ -996,11 +1036,18 @@ async function collectPageHealth(page, state) {
         [wrapperDuration, inputDuration].every((duration) => /(^|,\s*)0(?:ms|s)(?:,|$)/.test(duration.trim()) || duration.trim() === "0s");
     }
     const topbar = readRect(".tcrn-top-bar");
+    const topbarStyles = readStyle(".tcrn-top-bar", ["background-color", "background-image"]);
     const sideNavRegion = readRect(".tcrn-product-shell__sidebar");
     const currentLocation = readRect(".tcrn-product-shell__current-location");
     const themeToggle = readRect(".tcrn-shell-theme-toggle");
     const localeTrigger = readRect(".tcrn-shell-locale-menu__trigger");
     const themeToggleStyles = readStyle(".tcrn-shell-theme-toggle", ["border-radius"]);
+    const topbarContentAlignmentDelta = currentLocation && rect
+      ? Number((currentLocation.left - rect.left).toFixed(2))
+      : null;
+    const topbarToContentGap = topbar && rect
+      ? Number((rect.top - topbar.bottom).toFixed(2))
+      : null;
     const activeProductShellRoute =
       document.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']")?.getAttribute("data-product-shell-route") ?? null;
     const metricFailures = [];
@@ -1066,6 +1113,18 @@ async function collectPageHealth(page, state) {
       if (!(searchInteractionReadback.rest.wrapper && themeToggle && searchInteractionReadback.rest.wrapper.right <= themeToggle.left + 1)) {
         metricFailures.push("searchNotBeforeThemeToggle");
       }
+      if (
+        /(?:rgba\\(0, 0, 0, 0\\)|transparent)/i.test(topbarStyles?.["background-color"] ?? "transparent")
+        && (topbarStyles?.["background-image"] ?? "none") === "none"
+      ) {
+        metricFailures.push("transparentTopbarLayer");
+      }
+      if (!["scrolled-topbar"].includes(input.interaction ?? "") && typeof topbarContentAlignmentDelta === "number" && Math.abs(topbarContentAlignmentDelta) > input.expectedOracle.currentLocationContentAlignmentTolerancePx) {
+        metricFailures.push(`currentLocationContentAlignmentDelta:${topbarContentAlignmentDelta}:max:${input.expectedOracle.currentLocationContentAlignmentTolerancePx}`);
+      }
+      if (!["scrolled-topbar"].includes(input.interaction ?? "") && (typeof topbarToContentGap !== "number" || topbarToContentGap < input.expectedOracle.contentTopGapMinPx || topbarToContentGap > input.expectedOracle.contentTopGapMaxPx)) {
+        metricFailures.push(`topbarToContentGap:${topbarToContentGap ?? "missing"}:expected:${input.expectedOracle.contentTopGapMinPx}-${input.expectedOracle.contentTopGapMaxPx}`);
+      }
       const trailingGap = localeTrigger ? Number((window.innerWidth - localeTrigger.right).toFixed(2)) : null;
       if (typeof trailingGap !== "number" || trailingGap < input.expectedOracle.trailingUtilityGapMinPx || trailingGap > input.expectedOracle.trailingUtilityGapMaxPx) {
         metricFailures.push(`utilityTrailingGap:${trailingGap ?? "missing"}`);
@@ -1106,10 +1165,14 @@ async function collectPageHealth(page, state) {
       productShellVisualSkin: root?.getAttribute("data-storybook-product-shell-skin") ?? null,
       productShellVisualOracle: root?.getAttribute("data-storybook-visual-oracle") ?? null,
       privateDocShellCloneCount: privateCloneCount,
+      ownerVisibleShellTextHits,
       productShellOracleMetrics: {
         topbar,
+        topbarStyles,
         sideNavRegion,
         currentLocation,
+        topbarContentAlignmentDelta,
+        topbarToContentGap,
         search: searchInteractionReadback.rest.wrapper,
         searchInputShell: searchInteractionReadback.rest.inputShell,
         searchInputShellStyles: searchInteractionReadback.rest.inputShellStyles,
@@ -1130,6 +1193,7 @@ async function collectPageHealth(page, state) {
     interaction: state.interaction ?? "rest",
     staticClosedDialogFixture: Boolean(state.staticClosedDialogFixture),
     expectedOracle: recoveredProductShellMetricOracle,
+    forbiddenOwnerVisibleShellText,
     forbiddenPatterns: forbiddenStaticDocPatterns.map((rule) => ({ id: rule.id, source: rule.pattern.source, flags: rule.pattern.flags }))
   });
 }
@@ -1148,6 +1212,7 @@ function assertCapture(entry, health, events, png, stability) {
   if (health.htmlTheme !== expectedTheme) failures.push(`html_theme_mismatch:${health.htmlTheme}`);
   if (health.rootTheme !== expectedTheme) failures.push(`root_theme_mismatch:${health.rootTheme}`);
   if (health.forbiddenHits.length > 0) failures.push(`forbidden_static_doc_hits:${health.forbiddenHits.join(",")}`);
+  if (health.ownerVisibleShellTextHits.length > 0) failures.push(`owner_visible_shell_text_hits:${health.ownerVisibleShellTextHits.join(",")}`);
   if (health.staticClosedDialogFixture && !health.staticClosedDialogFixture.panelHidden) failures.push("dialog_fixture_not_static_closed");
   if (health.staticClosedDialogFixture && health.staticClosedDialogFixture.triggerExpanded !== "false") failures.push("dialog_trigger_not_static_closed");
   if (events.consoleMessages.length > 0) failures.push("console_warning_or_error");

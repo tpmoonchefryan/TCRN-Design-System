@@ -2,14 +2,14 @@
 
 Route: `route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence`
 Mode: `check`
-OK: `true`
+OK: `false`
 Comparison contract: `canonicalized_raw_png_exact_v1`
-Source head: `77839945be212a7d184b219d38cbdc72963de03e`
-Source equivalence: `clean_head_receipt_generated_from_committed_source`
+Source head: `2a81366557d7dd781d7455736ac79e6b58cbde0d`
+Source equivalence: `source_equivalent_dirty_tree_receipt_generated_before_commit`
 Oracle recovery: `true`
 Oracle receipt: `TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md`
 Static pages: 11
-Screenshots: 127
+Screenshots: 135
 Compare failures: 0
 
 ## No-Overclaim

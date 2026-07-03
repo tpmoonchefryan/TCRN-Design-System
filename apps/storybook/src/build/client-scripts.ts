@@ -368,6 +368,15 @@ export const storybookI18nScript = `<script>
       }
       link.setAttribute("aria-label", label);
     }
+    const brand = shell.querySelector(".tcrn-product-shell__brand");
+    const brandSuffix = brand?.querySelector(".tcrn-brand-wordmark__suffix");
+    const brandCaption = brand?.querySelector(".tcrn-shell-brand-lockup__caption");
+    if (brandSuffix) {
+      brandSuffix.textContent = textFor(locale, "shell.brandSuffix");
+    }
+    if (brandCaption) {
+      brandCaption.textContent = textFor(locale, "shell.brandCaption");
+    }
     const currentLocation = shell.querySelector(".tcrn-product-shell__current-location");
     const currentLocationLabelKey = currentLocation?.getAttribute("data-product-shell-current-location-label-key");
     const currentRouteLabelKey = currentLocation?.getAttribute("data-product-shell-current-route-label-key");
