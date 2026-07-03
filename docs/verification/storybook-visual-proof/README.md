@@ -1,11 +1,11 @@
 # Storybook Visual Proof
 
 Route: `route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence`
-Mode: `update-baseline`
+Mode: `check`
 OK: `true`
 Comparison contract: `canonicalized_raw_png_exact_v1`
-Source head: `85807b6e186ccdd63d86580555187ae7f95e3249`
-Source equivalence: `source_equivalent_dirty_tree_receipt_generated_before_commit`
+Source head: `4415461969e54b9727b81531928e0f99dac05dbd`
+Source equivalence: `clean_head_receipt_generated_from_committed_source`
 Oracle recovery: `true`
 Oracle receipt: `TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md`
 Static pages: 11
