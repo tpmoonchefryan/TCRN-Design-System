@@ -13,6 +13,28 @@ const playwrightVersion = JSON.parse(readFileSync(require.resolve("@playwright/t
 
 const route = "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence";
 const comparisonContractVersion = "canonicalized_raw_png_exact_v1";
+const visualArtifactContractDisposition = {
+  comparisonPolicy: "canonicalized_raw_png_sha256_exact_required",
+  replacementDisposition: "exact raw PNG matching plus retained manifest dimensions and embedded per-shot geometry readbacks replace the retired bounded-antialias/diff artifact branch",
+  retainedArtifacts: [
+    "docs/verification/storybook-visual-proof/baseline-manifest.json",
+    "docs/verification/storybook-visual-proof/update-receipt.json",
+    "docs/verification/storybook-visual-proof/check-receipt.json",
+    "docs/verification/storybook-visual-proof/screenshots/baseline/*.png"
+  ],
+  currentCheckDisposition: "check-mode current PNGs are ephemeral and must be removed after a successful exact comparison",
+  diffPngDisposition: "retained diff PNGs are not part of canonicalized_raw_png_exact_v1; non-exact PNGs fail closed with raw_png_sha256_exact_match_required and preserve .current-check only on failure for debugging",
+  geometryDisposition: "separate geometry JSON is not part of canonicalized_raw_png_exact_v1; target rects, doc-shell oracle metrics, search/topbar/sidebar geometry, events, and failures are embedded in each screenshotReadbacks entry",
+  failClosedSignals: [
+    "missing_baseline_png",
+    "baseline_png_hash_mismatch",
+    "dimension_mismatch",
+    "raw_png_sha256_exact_match_required",
+    "current_check_cleanup_failed",
+    "missing_current_entry",
+    "unexpected_current_entry"
+  ]
+};
 const packageName = "@tcrn/design-system-workspace";
 const staticRoot = "apps/storybook/storybook-static";
 const receiptRoot = "docs/verification/storybook-visual-proof";
@@ -1437,6 +1459,7 @@ function makeBaseReceipt({
     sourceContentDigest,
     mode,
     comparisonContractVersion,
+    visualArtifactContractDisposition,
     baselineUpdateReason: reason,
     packageName,
     staticPageAllowlist,
@@ -1490,10 +1513,11 @@ function makeBaseReceipt({
     noOverclaimReadback,
     deferredBoundaries,
     playwrightVersion,
-    chromiumVersion: browserVersion,
-    routeOwnedEphemeralServer,
-    baselineManifestHash: null,
-    compareFailures,
+      chromiumVersion: browserVersion,
+      routeOwnedEphemeralServer,
+      visualArtifactContractDisposition,
+      baselineManifestHash: null,
+      compareFailures,
     comparisonReadbacks
   };
 }
@@ -1553,6 +1577,8 @@ function writeMarkdownReceipt(receipt) {
     `Mode: \`${receipt.mode}\``,
     `OK: \`${receipt.ok}\``,
     `Comparison contract: \`${comparisonContractVersion}\``,
+    `Visual artifact contract: \`${visualArtifactContractDisposition.comparisonPolicy}\``,
+    `Current check artifacts: \`${receipt.currentCaptureCleanupReadback?.ok === false ? "cleanup-failed" : visualArtifactContractDisposition.currentCheckDisposition}\``,
     `Source head: \`${receipt.sourceHead}\``,
     `Source equivalence: \`${receipt.sourceHeadEquivalenceReadback.disposition}\``,
     `Oracle recovery: \`${receipt.oracleRecoveryReadback.ok}\``,
@@ -1586,6 +1612,7 @@ function writeBaselineArtifacts({ reason, receipt, entries }) {
     ok: receipt.ok,
     route,
     comparisonContractVersion,
+    visualArtifactContractDisposition,
     sourceHead: receipt.sourceHead,
     sourceGitStatus: receipt.sourceGitStatus,
     sourceHeadEquivalenceReadback: receipt.sourceHeadEquivalenceReadback,
@@ -1703,69 +1730,19 @@ function compareToBaseline(entries, manifest, context) {
     if (comparison.rawIntegrity.rawExactMatch) {
       continue;
     }
+    comparison.pixelDeltaSummary = {
+      computed: false,
+      disposition: visualArtifactContractDisposition.diffPngDisposition
+    };
     failures.push({
       key,
       reason: "raw_png_sha256_exact_match_required",
+      comparisonContractVersion,
+      visualArtifactContractDisposition: visualArtifactContractDisposition.diffPngDisposition,
       baselineRawSha256: baseline.rawSha256,
       currentRawSha256: entry.rawSha256
     });
     continue;
-
-    const preconditionFailures = [];
-    const sourceContentDigestMismatch = manifest.sourceContentDigest !== context.sourceContentDigest;
-    if (sourceContentDigestMismatch) {
-      preconditionFailures.push({ reason: "source_content_digest_mismatch_for_non_exact_png", expected: manifest.sourceContentDigest, actual: context.sourceContentDigest });
-    }
-    if (manifest.playwrightVersion !== playwrightVersion) {
-      preconditionFailures.push({ reason: "playwright_version_mismatch_for_non_exact_png", expected: manifest.playwrightVersion, actual: playwrightVersion });
-    }
-    if (manifest.chromiumVersion !== context.browserVersion) {
-      preconditionFailures.push({ reason: "chromium_version_mismatch_for_non_exact_png", expected: manifest.chromiumVersion, actual: context.browserVersion });
-    }
-    if (!jsonEqual(manifest.deterministicBrowserSettings, deterministicBrowserSettings)) {
-      preconditionFailures.push({ reason: "deterministic_browser_settings_mismatch_for_non_exact_png" });
-    }
-    if (!jsonEqual(manifest.staticPageAllowlist, staticPageAllowlist)) {
-      preconditionFailures.push({ reason: "static_page_allowlist_mismatch_for_non_exact_png" });
-    }
-    if (!jsonEqual(manifest.visualStateAllowlist, visualStateAllowlist.map(({ id, page, hash, storyId, description, locale, themeMode, interaction, viewportIds }) => ({
-      id,
-      page,
-      hash,
-      storyId,
-      description,
-      locale: locale ?? "en",
-      themeMode: themeMode ?? deterministicBrowserSettings.defaultThemeMode,
-      interaction: interaction ?? "rest",
-      viewportIds: viewportIds ?? null
-    })))) {
-      preconditionFailures.push({ reason: "visual_state_allowlist_mismatch_for_non_exact_png" });
-    }
-    if (!jsonEqual(manifest.viewportMatrix, viewportMatrix)) {
-      preconditionFailures.push({ reason: "viewport_matrix_mismatch_for_non_exact_png" });
-    }
-    if (entry.page !== baseline.page || entry.hash !== baseline.hash || entry.storyId !== baseline.storyId || entry.themeMode !== baseline.themeMode || entry.locale !== baseline.locale || entry.interaction !== baseline.interaction) {
-      preconditionFailures.push({
-        reason: "state_identity_mismatch_for_non_exact_png",
-        expected: { page: baseline.page, hash: baseline.hash, storyId: baseline.storyId, locale: baseline.locale, themeMode: baseline.themeMode, interaction: baseline.interaction },
-        actual: { page: entry.page, hash: entry.hash, storyId: entry.storyId, locale: entry.locale, themeMode: entry.themeMode, interaction: entry.interaction }
-      });
-    }
-    if (preconditionFailures.length > 0) {
-      failures.push({ key, reason: "bounded_antialias_precondition_failed", preconditionFailures });
-      continue;
-    }
-    try {
-      comparison.pixelDeltaSummary = comparePngPixelDelta(baseline.path, entry.path, baseline.width, baseline.height);
-    } catch (error) {
-      failures.push({ key, reason: "png_decode_failed_for_bounded_antialias_comparison", message: error.message });
-      continue;
-    }
-    if (comparison.pixelDeltaSummary.ok) {
-      comparison.comparisonMethod = comparisonContractVersion;
-    } else {
-      failures.push({ key, reason: "bounded_antialias_pixel_delta_threshold_breach", pixelDeltaSummary: comparison.pixelDeltaSummary });
-    }
   }
   return { compareFailures: failures, comparisonReadbacks };
 }
@@ -1806,6 +1783,26 @@ function markCurrentCapturePathsNonRetained(receipt) {
     currentCapturePathDisposition: receipt.currentCapturePathDisposition
   }));
   return receipt;
+}
+
+function listCurrentCaptureArtifacts() {
+  if (!existsSync(currentCaptureDir)) {
+    return [];
+  }
+  return readdirSync(currentCaptureDir).map((name) => join(currentCaptureDir, name).replaceAll("\\", "/"));
+}
+
+function cleanupCurrentCaptureDir() {
+  rmSync(currentCaptureDir, { recursive: true, force: true });
+  const residualArtifacts = listCurrentCaptureArtifacts();
+  return {
+    ok: residualArtifacts.length === 0,
+    directory: currentCaptureDir,
+    residualArtifacts,
+    disposition: residualArtifacts.length === 0
+      ? "ephemeral_current_check_removed_after_success"
+      : "current_check_cleanup_failed"
+  };
 }
 
 async function run() {
@@ -1926,8 +1923,19 @@ async function run() {
     });
     receipt.baselineManifestHash = baseline.baselineManifestHash;
     if (receipt.ok) {
-      rmSync(currentCaptureDir, { recursive: true, force: true });
-      markCurrentCapturePathsNonRetained(receipt);
+      receipt.currentCaptureCleanupReadback = cleanupCurrentCaptureDir();
+      if (!receipt.currentCaptureCleanupReadback.ok) {
+        const cleanupFailure = {
+          key: "current-check",
+          reason: "current_check_cleanup_failed",
+          residualArtifacts: receipt.currentCaptureCleanupReadback.residualArtifacts
+        };
+        receipt.compareFailures.push(cleanupFailure);
+        receipt.failureArrays.compareFailures.push(cleanupFailure);
+        receipt.ok = false;
+      } else {
+        markCurrentCapturePathsNonRetained(receipt);
+      }
     }
     applyStableSourceGitStatus(receipt, {
       sourceGitStatus: git(["status", "--short", "--branch"]),
