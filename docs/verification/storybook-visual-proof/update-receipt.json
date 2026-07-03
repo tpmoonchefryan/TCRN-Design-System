@@ -1,17 +1,17 @@
 {
-  "ok": false,
+  "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
-  "sourceHead": "2a81366557d7dd781d7455736ac79e6b58cbde0d",
-  "sourceGitStatus": "## main...origin/main [ahead 41]\n M apps/storybook/src/alpha-styles.ts\n M apps/storybook/src/build/client-scripts.ts\n M apps/storybook/src/build/locales/storybook-locale-text.ts\n M apps/storybook/src/build/page-template.tsx\n D docs/verification/storybook-visual-proof/README.md\n D docs/verification/storybook-visual-proof/baseline-manifest.json\n D docs/verification/storybook-visual-proof/check-receipt.json\n D docs/verification/storybook-visual-proof/intentional-diff-manifest.json\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/update-receipt.json\n M scripts/internal-alpha-browser-proof.mjs\n M scripts/storybook-smoke.mjs\n M scripts/storybook-visual-proof.mjs",
+  "sourceHead": "85807b6e186ccdd63d86580555187ae7f95e3249",
+  "sourceGitStatus": "## main...origin/main [ahead 42]\n D docs/verification/storybook-visual-proof/README.md\n D docs/verification/storybook-visual-proof/baseline-manifest.json\n D docs/verification/storybook-visual-proof/check-receipt.json\n D docs/verification/storybook-visual-proof/intentional-diff-manifest.json\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/update-receipt.json\n M scripts/storybook-visual-proof.mjs",
   "sourceHeadEquivalenceReadback": {
     "disposition": "source_equivalent_dirty_tree_receipt_generated_before_commit",
-    "sourceHead": "2a81366557d7dd781d7455736ac79e6b58cbde0d",
-    "sourceDirtyFileCount": 139,
-    "sourceContentDigest": "37da227c951d4ba4ab569b327ba6aeed2154ecd07cacba881404dd9ab9a0c009",
+    "sourceHead": "85807b6e186ccdd63d86580555187ae7f95e3249",
+    "sourceDirtyFileCount": 141,
+    "sourceContentDigest": "995b673d2f0cbeca6a3a78536316bec99633e3636b8b5bd4730223089b5a0d91",
     "sourceContentDigestDisposition": "digest covers the built static contract-doc outputs, package metadata, visual proof script, and private-output scan script used by this receipt",
     "commitEquivalenceRequirement": "when generated before commit, reviewers should compare this digest and status readback with the committed source/artifact diff rather than treating sourceHead alone as proof freshness"
   },
-  "sourceContentDigest": "37da227c951d4ba4ab569b327ba6aeed2154ecd07cacba881404dd9ab9a0c009",
+  "sourceContentDigest": "995b673d2f0cbeca6a3a78536316bec99633e3636b8b5bd4730223089b5a0d91",
   "mode": "update-baseline",
   "comparisonContractVersion": "canonicalized_raw_png_exact_v1",
   "baselineUpdateReason": "layout-caption-regression-repair-2a81366",
@@ -380,7 +380,11 @@
       "locale": "zh-CN",
       "themeMode": "light",
       "interaction": "scrolled-topbar",
-      "viewportIds": null
+      "viewportIds": [
+        "desktop-2048x1024",
+        "desktop-1440x900",
+        "tablet-1024x768"
+      ]
     },
     {
       "id": "foundations-visual-standards-zh-cn-light",
@@ -493,7 +497,7 @@
       "status": 200,
       "ok": true,
       "bytes": 696221,
-      "sha256": "5b070c7481e7a9c63d6d6d85b44099d0ae8dd35a5b7e503e3ca93109615915ca",
+      "sha256": "51e4f60c76fde7553472bd274a70fed118e798ad11960ce5fdfcb4707fb40101",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -541,7 +545,7 @@
       "status": 200,
       "ok": true,
       "bytes": 76846,
-      "sha256": "0eb69711b9fd104fc4a1d3bf70caff5c37f8f7a3d3964b08d4e95fbfd787d599",
+      "sha256": "4678e7d35353d987d0807e9b1dd91dd20489f14345fe53fa39722eeb5c2efcfe",
       "contentType": "application/json; charset=utf-8"
     },
     {
@@ -549,7 +553,7 @@
       "status": 200,
       "ok": true,
       "bytes": 13174,
-      "sha256": "afccf02e35327ad1c5d144e05ba725aa6a9eacaf7d9b63a6d499ea5c75c6cef9",
+      "sha256": "17c8c85320aac10da8ad9e077fc51b495906f22445f538c2edaec74d4ad103ee",
       "contentType": "application/octet-stream"
     },
     {
@@ -557,7 +561,7 @@
       "status": 200,
       "ok": true,
       "bytes": 518,
-      "sha256": "5aa37b2fa8c754453cdf46717f1c00278d570900fe23c38f8564f740ff6dcc64",
+      "sha256": "0130e4b2cbdb0a661563ec42a5e6899ef37cc2d54783d483b8a80657392bec71",
       "contentType": "application/octet-stream"
     }
   ],
@@ -817,9 +821,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -828,9 +830,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-first-story-en-dark",
@@ -1072,9 +1072,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -1083,9 +1081,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-first-story-zh-cn-light",
@@ -1327,9 +1323,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -1338,9 +1332,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-first-story-zh-cn-dark",
@@ -1582,9 +1574,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -1593,9 +1583,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "style-guide-first-story-en-light",
@@ -1837,9 +1825,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -1848,9 +1834,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "style-guide-first-story-en-dark",
@@ -2092,9 +2076,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -2103,9 +2085,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "style-guide-first-story-zh-cn-light",
@@ -2347,9 +2327,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -2358,9 +2336,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "style-guide-first-story-zh-cn-dark",
@@ -2602,9 +2578,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -2613,9 +2587,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "foundations-first-story-en-light",
@@ -2857,9 +2829,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -2868,9 +2838,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "foundations-first-story-en-dark",
@@ -3112,9 +3080,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -3123,9 +3089,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "foundations-first-story-zh-cn-light",
@@ -3367,9 +3331,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -3378,9 +3340,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "foundations-first-story-zh-cn-dark",
@@ -3622,9 +3582,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -3633,9 +3591,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "components-first-story-en-light",
@@ -3877,9 +3833,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -3888,9 +3842,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "components-first-story-en-dark",
@@ -4132,9 +4084,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -4143,9 +4093,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "components-first-story-zh-cn-light",
@@ -4387,9 +4335,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -4398,9 +4344,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "components-first-story-zh-cn-dark",
@@ -4642,9 +4586,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -4653,9 +4595,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "patterns-first-story-en-light",
@@ -4897,9 +4837,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -4908,9 +4846,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "patterns-first-story-en-dark",
@@ -5152,9 +5088,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -5163,9 +5097,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "patterns-first-story-zh-cn-light",
@@ -5407,9 +5339,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -5418,9 +5348,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "patterns-first-story-zh-cn-dark",
@@ -5662,9 +5590,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -5673,9 +5599,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "proof-first-story-en-light",
@@ -5917,9 +5841,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -5928,9 +5850,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "proof-first-story-en-dark",
@@ -6172,9 +6092,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -6183,9 +6101,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "proof-first-story-zh-cn-light",
@@ -6427,9 +6343,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -6438,9 +6352,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "proof-first-story-zh-cn-dark",
@@ -6682,9 +6594,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -6693,9 +6603,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "change-log-first-story-en-light",
@@ -6937,9 +6845,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -6948,9 +6854,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "change-log-first-story-en-dark",
@@ -7192,9 +7096,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -7203,9 +7105,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "change-log-first-story-zh-cn-light",
@@ -7447,9 +7347,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -7458,9 +7356,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "change-log-first-story-zh-cn-dark",
@@ -7702,9 +7598,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -7713,9 +7607,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-search-focus-zh-cn-light",
@@ -7957,9 +7849,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:56.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -7968,9 +7858,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-search-results-zh-cn-light",
@@ -8212,9 +8100,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:56.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -8223,9 +8109,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-locale-menu-zh-cn-light",
@@ -8467,9 +8351,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:56.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -8478,9 +8360,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-scrolled-zh-cn-light",
@@ -8973,9 +8853,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:-0.25:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -8984,9 +8862,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:-0.25:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-sidebar-collapsed-zh-cn-light",
@@ -9228,9 +9104,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:56.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -9239,9 +9113,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-first-story-en-light",
@@ -9483,9 +9355,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -9494,9 +9364,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-first-story-en-dark",
@@ -9738,9 +9606,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -9749,9 +9615,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-first-story-zh-cn-light",
@@ -9993,9 +9857,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -10004,9 +9866,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-first-story-zh-cn-dark",
@@ -10248,9 +10108,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -10259,9 +10117,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "style-guide-first-story-en-light",
@@ -10503,9 +10359,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -10514,9 +10368,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "style-guide-first-story-en-dark",
@@ -10758,9 +10610,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -10769,9 +10619,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "style-guide-first-story-zh-cn-light",
@@ -11013,9 +10861,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -11024,9 +10870,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "style-guide-first-story-zh-cn-dark",
@@ -11268,9 +11112,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -11279,9 +11121,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "foundations-first-story-en-light",
@@ -11523,9 +11363,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -11534,9 +11372,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "foundations-first-story-en-dark",
@@ -11778,9 +11614,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -11789,9 +11623,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "foundations-first-story-zh-cn-light",
@@ -12033,9 +11865,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -12044,9 +11874,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "foundations-first-story-zh-cn-dark",
@@ -12288,9 +12116,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -12299,9 +12125,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "components-first-story-en-light",
@@ -12543,9 +12367,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -12554,9 +12376,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "components-first-story-en-dark",
@@ -12798,9 +12618,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -12809,9 +12627,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "components-first-story-zh-cn-light",
@@ -13053,9 +12869,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -13064,9 +12878,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "components-first-story-zh-cn-dark",
@@ -13308,9 +13120,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -13319,9 +13129,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "patterns-first-story-en-light",
@@ -13563,9 +13371,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -13574,9 +13380,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "patterns-first-story-en-dark",
@@ -13818,9 +13622,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -13829,9 +13631,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "patterns-first-story-zh-cn-light",
@@ -14073,9 +13873,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -14084,9 +13882,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "patterns-first-story-zh-cn-dark",
@@ -14328,9 +14124,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -14339,9 +14133,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "proof-first-story-en-light",
@@ -14583,9 +14375,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -14594,9 +14384,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "proof-first-story-en-dark",
@@ -14838,9 +14626,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -14849,9 +14635,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "proof-first-story-zh-cn-light",
@@ -15093,9 +14877,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -15104,9 +14886,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "proof-first-story-zh-cn-dark",
@@ -15348,9 +15128,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -15359,9 +15137,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "change-log-first-story-en-light",
@@ -15603,9 +15379,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -15614,9 +15388,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "change-log-first-story-en-dark",
@@ -15858,9 +15630,7 @@
           "width": 111.34,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -15869,9 +15639,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "change-log-first-story-zh-cn-light",
@@ -16113,9 +15881,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -16124,9 +15890,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "change-log-first-story-zh-cn-dark",
@@ -16368,9 +16132,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -16379,9 +16141,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-search-focus-zh-cn-light",
@@ -16623,9 +16383,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:56.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -16634,9 +16392,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-search-results-zh-cn-light",
@@ -16878,9 +16634,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:56.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -16889,9 +16643,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-locale-menu-zh-cn-light",
@@ -17133,9 +16885,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:56.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -17144,9 +16894,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-scrolled-zh-cn-light",
@@ -17639,9 +17387,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:0.3:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -17650,9 +17396,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:0.3:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-sidebar-collapsed-zh-cn-light",
@@ -17894,9 +17638,7 @@
           "width": 117,
           "height": 36
         },
-        "metricFailures": [
-          "topbarToContentGap:56.31:expected:8-48"
-        ]
+        "metricFailures": []
       },
       "events": {
         "consoleMessages": [],
@@ -17905,9 +17647,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [
-        "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-      ]
+      "failures": []
     },
     {
       "stateId": "welcome-first-story-en-light",
@@ -34225,259 +33965,6 @@
       "failures": []
     },
     {
-      "stateId": "welcome-scrolled-zh-cn-light",
-      "viewport": "mobile-390x844",
-      "page": "index.html",
-      "hash": "welcome-governance",
-      "storyId": "welcome-governance",
-      "locale": "zh-CN",
-      "interaction": "scrolled-topbar",
-      "themeMode": "light",
-      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "1aab51490c442ab399027072a9180475245c056c5a412123aa4348a681da2ebe",
-      "width": 390,
-      "height": 844,
-      "bytes": 15262,
-      "screenshotStability": {
-        "ok": true,
-        "requiredConsecutiveIdenticalHashes": 2,
-        "stableAtAttempt": 2,
-        "attempts": [
-          {
-            "attempt": 1,
-            "sha256": "1aab51490c442ab399027072a9180475245c056c5a412123aa4348a681da2ebe",
-            "rawSha256": "a45b455d6d46f4a82d0026753ea444e85ba37a632c04dcd120c371de92cc2d91",
-            "bytes": 15262,
-            "rawBytes": 138620
-          },
-          {
-            "attempt": 2,
-            "sha256": "1aab51490c442ab399027072a9180475245c056c5a412123aa4348a681da2ebe",
-            "rawSha256": "a45b455d6d46f4a82d0026753ea444e85ba37a632c04dcd120c371de92cc2d91",
-            "bytes": 15262,
-            "rawBytes": 138620
-          }
-        ]
-      },
-      "targetRect": {
-        "x": 16,
-        "y": 1965,
-        "width": 358,
-        "height": 1503,
-        "top": 1965,
-        "bottom": 3468
-      },
-      "currentProductShellRoute": "welcome-governance",
-      "productShellOracleMetrics": {
-        "topbar": {
-          "x": 0,
-          "y": 1700.75,
-          "top": 1700.75,
-          "right": 390,
-          "bottom": 1908.73,
-          "left": 0,
-          "width": 390,
-          "height": 207.98
-        },
-        "topbarStyles": {
-          "background-color": "rgb(255, 255, 255)",
-          "background-image": "none"
-        },
-        "sideNavRegion": {
-          "x": 0,
-          "y": -220,
-          "top": -220,
-          "right": 390,
-          "bottom": 1700.75,
-          "left": 0,
-          "width": 390,
-          "height": 1920.75
-        },
-        "currentLocation": {
-          "x": 16,
-          "y": 1716.75,
-          "top": 1716.75,
-          "right": 374,
-          "bottom": 1753.73,
-          "left": 16,
-          "width": 358,
-          "height": 36.98
-        },
-        "topbarContentAlignmentDelta": 0,
-        "topbarToContentGap": 56.32,
-        "search": {
-          "x": 16,
-          "y": 1763.73,
-          "top": 1763.73,
-          "right": 336,
-          "bottom": 1799.73,
-          "left": 16,
-          "width": 320,
-          "height": 36
-        },
-        "searchInputShell": {
-          "x": 16,
-          "y": 1763.73,
-          "top": 1763.73,
-          "right": 336,
-          "bottom": 1799.73,
-          "left": 16,
-          "width": 320,
-          "height": 36
-        },
-        "searchInputShellStyles": {
-          "border-color": "rgb(184, 200, 214)",
-          "border-radius": "5px",
-          "transition-duration": "0s",
-          "transition-property": "none",
-          "transition-timing-function": "ease"
-        },
-        "searchInteractionReadback": {
-          "rest": {
-            "expanded": "false",
-            "resultsVisible": "false",
-            "wrapper": {
-              "x": 16,
-              "y": 1763.73,
-              "top": 1763.73,
-              "right": 336,
-              "bottom": 1799.73,
-              "left": 16,
-              "width": 320,
-              "height": 36
-            },
-            "inputShell": {
-              "x": 16,
-              "y": 1763.73,
-              "top": 1763.73,
-              "right": 336,
-              "bottom": 1799.73,
-              "left": 16,
-              "width": 320,
-              "height": 36
-            },
-            "inputShellStyles": {
-              "border-color": "rgb(184, 200, 214)",
-              "border-radius": "5px",
-              "transition-duration": "0s",
-              "transition-property": "none",
-              "transition-timing-function": "ease"
-            },
-            "wrapperStyles": {
-              "transition-duration": "0s",
-              "transition-property": "none",
-              "transition-timing-function": "ease"
-            }
-          },
-          "focused": {
-            "expanded": "true",
-            "resultsVisible": "false",
-            "wrapper": {
-              "x": 16,
-              "y": 1763.73,
-              "top": 1763.73,
-              "right": 336,
-              "bottom": 1799.73,
-              "left": 16,
-              "width": 320,
-              "height": 36
-            },
-            "inputShell": {
-              "x": 16,
-              "y": 1763.73,
-              "top": 1763.73,
-              "right": 336,
-              "bottom": 1799.73,
-              "left": 16,
-              "width": 320,
-              "height": 36
-            },
-            "inputShellStyles": {
-              "border-color": "rgb(184, 200, 214)",
-              "border-radius": "5px",
-              "transition-duration": "0s",
-              "transition-property": "none",
-              "transition-timing-function": "ease"
-            },
-            "wrapperStyles": {
-              "transition-duration": "0s",
-              "transition-property": "none",
-              "transition-timing-function": "ease"
-            }
-          },
-          "afterBlurCollapse": {
-            "expanded": null,
-            "resultsVisible": "false",
-            "wrapper": {
-              "x": 16,
-              "y": 1763.73,
-              "top": 1763.73,
-              "right": 336,
-              "bottom": 1799.73,
-              "left": 16,
-              "width": 320,
-              "height": 36
-            },
-            "inputShell": {
-              "x": 16,
-              "y": 1763.73,
-              "top": 1763.73,
-              "right": 336,
-              "bottom": 1799.73,
-              "left": 16,
-              "width": 320,
-              "height": 36
-            },
-            "inputShellStyles": {
-              "border-color": "rgb(184, 200, 214)",
-              "border-radius": "5px",
-              "transition-duration": "0s",
-              "transition-property": "none",
-              "transition-timing-function": "ease"
-            },
-            "wrapperStyles": {
-              "transition-duration": "0s",
-              "transition-property": "none",
-              "transition-timing-function": "ease"
-            }
-          },
-          "reducedMotionSuppressed": true
-        },
-        "themeToggle": {
-          "x": 16,
-          "y": 1809.73,
-          "top": 1809.73,
-          "right": 52,
-          "bottom": 1845.73,
-          "left": 16,
-          "width": 36,
-          "height": 36
-        },
-        "themeToggleRadius": "999px",
-        "localeTrigger": {
-          "x": 16,
-          "y": 1855.73,
-          "top": 1855.73,
-          "right": 374,
-          "bottom": 1891.73,
-          "left": 16,
-          "width": 358,
-          "height": 36
-        },
-        "metricFailures": []
-      },
-      "events": {
-        "consoleMessages": [],
-        "pageErrors": [],
-        "failedRequests": [],
-        "nonOkResponses": [],
-        "nonLoopbackRequests": []
-      },
-      "failures": [
-        "target_not_in_viewport_after_hash_scroll"
-      ]
-    },
-    {
       "stateId": "foundations-visual-standards-zh-cn-light",
       "viewport": "mobile-390x844",
       "page": "foundations.html",
@@ -34731,477 +34218,7 @@
   ],
   "failureArrays": {
     "staticPageFailures": [],
-    "screenshotFailures": [
-      {
-        "stateId": "welcome-first-story-en-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-first-story-en-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-first-story-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-first-story-zh-cn-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "style-guide-first-story-en-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "style-guide-first-story-en-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "style-guide-first-story-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "style-guide-first-story-zh-cn-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-first-story-en-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-first-story-en-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-first-story-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-first-story-zh-cn-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "components-first-story-en-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "components-first-story-en-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "components-first-story-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "components-first-story-zh-cn-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "patterns-first-story-en-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "patterns-first-story-en-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "patterns-first-story-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "patterns-first-story-zh-cn-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "proof-first-story-en-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "proof-first-story-en-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "proof-first-story-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "proof-first-story-zh-cn-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "change-log-first-story-en-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "change-log-first-story-en-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "change-log-first-story-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "change-log-first-story-zh-cn-dark",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-search-focus-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-search-results-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-locale-menu-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-visual-standards-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:-0.25:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-sidebar-collapsed-zh-cn-light",
-        "viewport": "desktop-2048x1024",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-first-story-en-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-first-story-en-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-first-story-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-first-story-zh-cn-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "style-guide-first-story-en-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "style-guide-first-story-en-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "style-guide-first-story-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "style-guide-first-story-zh-cn-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-first-story-en-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-first-story-en-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-first-story-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-first-story-zh-cn-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "components-first-story-en-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "components-first-story-en-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "components-first-story-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "components-first-story-zh-cn-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "patterns-first-story-en-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "patterns-first-story-en-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "patterns-first-story-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "patterns-first-story-zh-cn-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "proof-first-story-en-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "proof-first-story-en-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "proof-first-story-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "proof-first-story-zh-cn-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "change-log-first-story-en-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "change-log-first-story-en-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "change-log-first-story-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "change-log-first-story-zh-cn-dark",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-search-focus-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-search-results-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-locale-menu-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "foundations-visual-standards-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:0.3:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-sidebar-collapsed-zh-cn-light",
-        "viewport": "desktop-1440x900",
-        "failures": [
-          "product_shell_oracle_metric_failures:topbarToContentGap:56.31:expected:8-48"
-        ]
-      },
-      {
-        "stateId": "welcome-scrolled-zh-cn-light",
-        "viewport": "mobile-390x844",
-        "failures": [
-          "target_not_in_viewport_after_hash_scroll"
-        ]
-      }
-    ],
+    "screenshotFailures": [],
     "compareFailures": [],
     "oracleRecoveryFailures": []
   },
@@ -35250,7 +34267,7 @@
     "retained": false,
     "stoppedBeforeReturn": true
   },
-  "baselineManifestHash": "b716832571a4a57c280bd3101b1cb49308a57a60f8500c8e3984abd3dea94132",
+  "baselineManifestHash": "ce2c1544c61b0001ff9a0a4690cff9c50d09a9aed0eb7860e8b2f7c58a3931c8",
   "compareFailures": [],
   "comparisonReadbacks": []
 }

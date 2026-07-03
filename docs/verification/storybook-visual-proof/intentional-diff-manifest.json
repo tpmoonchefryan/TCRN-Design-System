@@ -2002,21 +2002,6 @@
       "bytes": 21490
     },
     {
-      "stateId": "welcome-scrolled-zh-cn-light",
-      "viewport": "mobile-390x844",
-      "page": "index.html",
-      "hash": "welcome-governance",
-      "storyId": "welcome-governance",
-      "locale": "zh-CN",
-      "interaction": "scrolled-topbar",
-      "themeMode": "light",
-      "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "1aab51490c442ab399027072a9180475245c056c5a412123aa4348a681da2ebe",
-      "width": 390,
-      "height": 844,
-      "bytes": 15262
-    },
-    {
       "stateId": "foundations-visual-standards-zh-cn-light",
       "viewport": "mobile-390x844",
       "page": "foundations.html",

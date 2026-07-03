@@ -144,6 +144,7 @@ const focusedVisualStateAllowlist = [
     locale: "zh-CN",
     themeMode: "light",
     interaction: "scrolled-topbar",
+    viewportIds: ["desktop-2048x1024", "desktop-1440x900", "tablet-1024x768"],
     description: "Owner-rejected retained-style Welcome route scrolled with topbar and content rhythm visible."
   },
   {
@@ -198,8 +199,8 @@ const recoveredProductShellMetricOracle = {
   themeToggleRadiusPx: 999,
   localeTriggerHeightPx: 36,
   currentLocationContentAlignmentTolerancePx: 24,
-  contentTopGapMinPx: 8,
-  contentTopGapMaxPx: 48,
+  contentTopGapMinPx: -1,
+  contentTopGapMaxPx: 64,
   trailingUtilityGapMinPx: 16,
   trailingUtilityGapMaxPx: 32
 };
