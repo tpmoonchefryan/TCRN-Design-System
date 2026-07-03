@@ -1072,10 +1072,6 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__mobile-390x844.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
       "file": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__tablet-1024x768.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -1128,6 +1124,10 @@
     {
       "file": "docs/verification/internal-alpha/no-overclaim-scan.json",
       "reason": "regenerated_by_current_scan"
+    },
+    {
+      "file": "docs/verification/storybook-visual-proof/check-receipt.json",
+      "reason": "generated_visual_proof_receipt"
     },
     {
       "file": "docs/verification/storybook-visual-proof/update-receipt.json",
