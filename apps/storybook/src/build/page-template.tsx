@@ -2,11 +2,14 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { tcrnDefaultLocale, tcrnLocaleMetadata, tcrnSupportedLocales } from "@tcrn/ui-copy-state";
 import {
   Icon,
-  ProductShell,
+  SearchInput,
+  ShellBrandLockup,
+  ShellLocaleMenu,
+  ShellThemeToggle,
+  SideNavCollapseButton,
+  SkipLink,
   tcrnComponentCss,
-  type IconName,
-  type ProductShellNavGroup,
-  type ProductShellSearchResult
+  type IconName
 } from "@tcrn/ui-react";
 import { DialogSpecFixture, contractStoriesByGroup, contractStoryGroups } from "../stories.js";
 import type { ContractStoryGroup } from "../stories.js";
@@ -22,11 +25,11 @@ import {
   storybookSearchScript
 } from "./client-scripts.js";
 import { escapeHtml, i18nText, localeText } from "./i18n.js";
-import { groupFileName, groupSlug, storyCategoriesForGroup } from "./navigation.js";
+import { categoryDomId, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
 
-function iconHtml(name: IconName, className: string, dataStorybookContentIcon: string): string {
+function iconHtml(name: IconName, className: string, dataDocShellIcon: string): string {
   return renderToStaticMarkup(
-    <Icon name={name} className={className} data-storybook-content-icon={dataStorybookContentIcon} />
+    <Icon name={name} className={className} data-doc-shell-icon={dataDocShellIcon} />
   );
 }
 
@@ -124,49 +127,82 @@ function scopeComponentCss(css: string, scope: string): string {
 
 const staticStoryComponentCss = scopeComponentCss(tcrnComponentCss, ".story-body");
 
-function storyHref(story: ReturnType<typeof contractStoriesByGroup>[number]): string {
-  return `${groupFileName(story.group)}#${story.id}`;
+function skipLinkHtml(): string {
+  return renderToStaticMarkup(
+    <SkipLink className="tcrn-doc-skip" href="#content" aria-label={localeText("shell.skip")}>
+      {localeText("shell.skip")}
+    </SkipLink>
+  );
 }
 
-function buildStorybookNavGroups(activeGroup: ContractStoryGroup): ProductShellNavGroup[] {
-  return contractStoryGroups.map((group) => {
-    const stories = contractStoriesByGroup(group);
-    const firstStory = stories[0];
-    return {
-      id: groupSlug(group),
-      label: localeText(`group.${group}`),
-      labelKey: `group.${group}`,
-      description: localeText("shell.governedSectionDescription"),
-      descriptionKey: "shell.governedSectionDescription",
-      sectionLabel: localeText(`group.${group}`),
-      sectionLabelKey: `group.${group}`,
-      selected: group === activeGroup,
-      items: stories.map((story) => ({
-        id: story.id,
-        label: localeText(`story.${story.id}.title`),
-        labelKey: `story.${story.id}.title`,
-        href: storyHref(story),
-        selected: group === activeGroup && firstStory?.id === story.id
-      }))
-    };
-  });
+function docBrandHtml(): string {
+  return renderToStaticMarkup(
+    <a className="tcrn-doc-brand" href="index.html" data-doc-brand-link="true">
+      <ShellBrandLockup
+        productId="design-system"
+        brandMarkSrc="tcrn-brand-mark.svg"
+        brandMarkAlt={localeText("shell.brand")}
+      />
+    </a>
+  );
 }
 
-function buildStorybookSearchResults(): ProductShellSearchResult[] {
-  return contractStoryGroups.flatMap((group) => contractStoriesByGroup(group).map((story) => ({
-    id: story.id,
-    title: localeText(`story.${story.id}.title`),
-    titleKey: `story.${story.id}.title`,
-    meta: localeText(`group.${group}`),
-    metaKey: `group.${group}`,
-    href: storyHref(story)
-  })));
+function sidebarToggleHtml(): string {
+  return `<span class="tcrn-doc-sidebar-toggle-slot">${renderToStaticMarkup(
+    <SideNavCollapseButton
+      collapsed={false}
+      controls="tcrn-doc-sidebar"
+      expandedLabel={localeText("shell.collapseNavigationLabel")}
+      collapsedLabel={localeText("shell.expandNavigationLabel")}
+      data-doc-sidebar-toggle
+      data-expanded-label={localeText("shell.collapseNavigationLabel")}
+      data-collapsed-label={localeText("shell.expandNavigationLabel")}
+    />
+  )}</span>`;
 }
 
-function hiddenLocaleSelectHtml(): string {
-  return `<select id="tcrn-storybook-locale" data-i18n-locale-select data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}" tabindex="-1" aria-hidden="true" hidden>
-${tcrnLocaleMetadata.map((metadata) => `  <option value="${metadata.locale}">${metadata.nativeName}</option>`).join("\n")}
-</select>`;
+function navHtml(activeGroup: ContractStoryGroup): string {
+  return `<nav class="tcrn-doc-nav" aria-label="${escapeHtml(localeText("shell.topNavLabel"))}" data-i18n-aria-label="shell.topNavLabel" data-doc-nav="sections">
+  <ol class="tcrn-doc-nav__groups">
+${contractStoryGroups.map((group) => {
+  const current = group === activeGroup ? " aria-current=\"page\"" : "";
+  const stories = contractStoriesByGroup(group);
+  const categories = storyCategoriesForGroup(group, stories);
+  const activeStory = group === activeGroup ? stories[0] : null;
+  const activeCategoryId = activeStory?.categoryId ?? categories[0]?.id ?? "";
+  const groupLabel = i18nText(`group.${group}`);
+  const groupAbbr = escapeHtml(navAbbreviations[group]);
+  return `    <li class="tcrn-doc-nav__group" data-doc-nav-group="${group}">
+      <a class="tcrn-doc-nav__section" href="${groupFileName(group)}" data-story-nav="${group}"${current} data-nav-abbr="${groupAbbr}">
+        <span class="tcrn-doc-nav__section-label">${groupLabel}</span>
+        <span class="tcrn-doc-nav__section-abbr" aria-hidden="true">${groupAbbr}</span>
+      </a>
+      <ol class="tcrn-doc-nav__categories" aria-label="${escapeHtml(`${localeText(`group.${group}`)} ${localeText("shell.categoriesLabel")}`)}">
+${categories.map((category) => {
+  const open = group === activeGroup && category.id === activeCategoryId;
+  const listId = categoryDomId(group, category.id);
+  const categoryLabel = localeText(category.label);
+  const categoryDescriptionId = `${listId}-description`;
+  return `        <li class="tcrn-doc-nav__category" data-doc-nav-category="${escapeHtml(category.id)}" data-doc-nav-category-open="${open ? "true" : "false"}">
+          <button class="tcrn-doc-nav__category-toggle" type="button" aria-expanded="${open ? "true" : "false"}" aria-controls="${listId}" aria-describedby="${categoryDescriptionId}" data-doc-nav-category-toggle="${escapeHtml(category.id)}">
+            <span class="tcrn-doc-nav__category-label" data-i18n="${escapeHtml(category.label)}">${escapeHtml(categoryLabel)}</span>
+            <span class="tcrn-doc-nav__category-count" aria-label="${category.stories.length} ${escapeHtml(localeText("shell.storiesCountLabel"))}">${category.stories.length}</span>
+          </button>
+          <span class="tcrn-sr-only" id="${categoryDescriptionId}" data-i18n="${escapeHtml(category.description)}">${escapeHtml(localeText(category.description))}</span>
+          <ol class="tcrn-doc-nav__stories" id="${listId}" aria-label="${escapeHtml(categoryLabel)}" data-i18n-aria-label="${escapeHtml(category.label)}"${open ? "" : " hidden"}>
+${category.stories.map((story, index) => {
+  const href = `${groupFileName(story.group)}#${story.id}`;
+  const currentStory = group === activeGroup && category.id === activeCategoryId && index === 0 ? " aria-current=\"location\" data-doc-nav-item-active=\"true\"" : "";
+  return `            <li><a href="${href}" data-doc-nav-item="${story.id}" data-doc-nav-category-item="${escapeHtml(story.categoryId)}"${currentStory}>${i18nText(`story.${story.id}.title`)}</a></li>`;
+}).join("\n")}
+          </ol>
+        </li>`;
+}).join("\n")}
+      </ol>
+    </li>`;
+}).join("\n")}
+  </ol>
+</nav>`;
 }
 
 function chapterPagerHtml(group: ContractStoryGroup): string {
@@ -191,6 +227,76 @@ function chapterPagerHtml(group: ContractStoryGroup): string {
   ${previous}
   ${next}
 </nav>`;
+}
+
+function docHeaderWorkspaceHtml(group: ContractStoryGroup): string {
+  const firstStory = contractStoriesByGroup(group)[0];
+  if (!firstStory) {
+    throw new Error(`missing_story_for_group:${group}`);
+  }
+  return `<div class="tcrn-doc-header__workspace" aria-label="${escapeHtml(localeText("shell.currentLocationLabel"))}" data-i18n-aria-label="shell.currentLocationLabel">
+          <div class="tcrn-doc-current-location">
+            <span class="tcrn-doc-current-location__label">${i18nText("shell.currentLocationLabel")}</span>
+            <span class="tcrn-doc-current-location__path">
+              <span class="tcrn-doc-current-location__group" data-i18n="${escapeHtml(`group.${group}`)}">${i18nText(`group.${group}`)}</span>
+              <span class="tcrn-doc-current-location__separator" aria-hidden="true">${iconHtml("chevron-right", "tcrn-doc-current-location__separator-icon", "current-location-separator")}</span>
+              <span class="tcrn-doc-current-location__story" data-doc-current-story data-i18n="${escapeHtml(`story.${firstStory.id}.title`)}">${i18nText(`story.${firstStory.id}.title`)}</span>
+            </span>
+          </div>
+          <div class="tcrn-doc-header-search" aria-label="${escapeHtml(localeText("shell.searchLabel"))}">
+            <span class="tcrn-sr-only">${i18nText("shell.searchLabel")}</span>
+            ${renderToStaticMarkup(
+              <SearchInput
+                className="tcrn-search-input--compact"
+                placeholder={localeText("shell.searchLabel")}
+                aria-label={localeText("shell.searchLabel")}
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded="false"
+                aria-controls="tcrn-doc-search-results"
+                shortcut="auto"
+                data-doc-search-input
+              />
+            )}
+            <div id="tcrn-doc-search-results" class="tcrn-product-shell-search__results" role="listbox" aria-label="${escapeHtml(localeText("shell.searchResultsLabel"))}" data-doc-search-results hidden></div>
+          </div>
+        </div>`;
+}
+
+function docHeaderControlsHtml(): string {
+  return `<div class="tcrn-doc-header-controls">
+          <div class="tcrn-doc-header-controls__row">
+            <div class="tcrn-doc-theme-control-slot" data-storybook-theme-control>
+              ${renderToStaticMarkup(
+                <ShellThemeToggle
+                  currentTheme="light"
+                  lightLabel={localeText("shell.themeLightLabel")}
+                  darkLabel={localeText("shell.themeDarkLabel")}
+                  data-storybook-theme-toggle
+                  data-storybook-theme-option="dark"
+                  data-theme-label-key="shell.themeDarkLabel"
+                  aria-pressed="false"
+                />
+              )}
+            </div>
+            <div class="tcrn-doc-locale-control-slot">
+              ${renderToStaticMarkup(
+                <ShellLocaleMenu
+                  locales={tcrnLocaleMetadata}
+                  currentLocale={tcrnDefaultLocale}
+                  label={localeText("shell.languageLabel")}
+                  menuId="tcrn-doc-locale-menu"
+                  triggerId="tcrn-doc-locale-trigger"
+                  data-locale-menu-root
+                  data-i18n-aria-label="shell.languageLabel"
+                />
+              )}
+              <select id="tcrn-doc-locale" data-i18n-locale-select data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}" tabindex="-1" aria-hidden="true" hidden>
+${tcrnLocaleMetadata.map((metadata) => `                <option value="${metadata.locale}">${metadata.nativeName}</option>`).join("\n")}
+              </select>
+            </div>
+          </div>
+        </div>`;
 }
 
 function storyHtml(group: ContractStoryGroup): string {
@@ -231,78 +337,6 @@ ${categories.map((category) => `      <li><a href="#${category.stories[0]?.id ??
 </section>`;
 }
 
-function storybookProductShellHtml(group: ContractStoryGroup): string {
-  const firstStory = contractStoriesByGroup(group)[0];
-  if (!firstStory) {
-    throw new Error(`missing_story_for_group:${group}`);
-  }
-  const contentHtml = `<div class="tcrn-doc-content" data-storybook-content-slot="contract-stories">
-  <h1 class="tcrn-sr-only" id="tcrn-doc-page-title">${i18nText("shell.title")}</h1>
-${hiddenLocaleSelectHtml()}
-${storyHtml(group)}
-${pageHeadHtml(group)}
-${chapterPagerHtml(group)}
-</div>`;
-
-  return renderToStaticMarkup(
-    <ProductShell
-      productName="TCRN Design System"
-      moduleName={localeText("shell.title")}
-      brandSuffix={localeText("shell.brandSuffix")}
-      brandCaption={localeText("shell.brandCaption")}
-      brandHref="index.html"
-      brandMarkSrc="tcrn-brand-mark.svg"
-      brandMarkAlt={localeText("shell.brand")}
-      currentRouteLabel={`${localeText(`group.${group}`)} / ${localeText(`story.${firstStory.id}.title`)}`}
-      currentRouteLabelKey={`story.${firstStory.id}.title`}
-      currentLocationLabel={localeText("shell.currentLocationLabel")}
-      currentLocationLabelKey="shell.currentLocationLabel"
-      navLabel={localeText("shell.topNavLabel")}
-      navGroups={buildStorybookNavGroups(group)}
-      locales={tcrnLocaleMetadata}
-      currentLocale={tcrnDefaultLocale}
-      collapsed={false}
-      collapsedStorageKey="tcrn-design-system-storybook-sidebar-collapsed"
-      currentTheme="light"
-      search={{
-        label: localeText("shell.searchLabel"),
-        placeholder: localeText("shell.searchLabel"),
-        shortcut: "auto",
-        query: "",
-        expanded: false,
-        results: buildStorybookSearchResults(),
-        resultsLabel: localeText("shell.searchResultsLabel"),
-        emptyLabel: localeText("shell.searchNoResults"),
-        inputProps: {
-          readOnly: false
-        },
-        "data-product-shell-search-label-key": "shell.searchLabel",
-        "data-product-shell-search-results-label-key": "shell.searchResultsLabel",
-        "data-product-shell-search-empty-label-key": "shell.searchNoResults"
-      }}
-      contentId="content"
-      contentRole="main"
-      contentLabel={localeText("shell.title")}
-      skipLinkLabel={localeText("shell.skip")}
-      className="tcrn-storybook-product-shell"
-      data-contract-surface="tcrn-design-system-storybook"
-      data-anchor-scroll-controlled="product-shell-topbar-aware"
-      data-active-story-section={group}
-      data-storybook-locale={tcrnDefaultLocale}
-      data-storybook-supported-locales={tcrnSupportedLocales.join(",")}
-      data-storybook-theme="light"
-      data-storybook-supported-themes="light,dark"
-      data-tcrn-theme="light"
-      data-storybook-shell-authority="@tcrn/ui-react/ProductShell"
-      data-storybook-private-doc-shell-retired="true"
-      data-storybook-product-shell-skin="confirmed-storybook-visual-v1"
-      data-storybook-visual-oracle="docs/verification/storybook-visual-proof/baseline-manifest.json#owner-rejection-repair=d412c79"
-    >
-      <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-    </ProductShell>
-  );
-}
-
 export function pageHtml(group: ContractStoryGroup): string {
   return `<!doctype html>
 <html lang="${tcrnDefaultLocale}" data-tcrn-theme="light">
@@ -318,7 +352,7 @@ export function pageHtml(group: ContractStoryGroup): string {
   <meta name="tcrn-ai-consumption-contract-route" content="proof.html#ai-consumption-contract" />
   <meta name="tcrn-ai-consumption-contract-required" content="must-read-first" />
   <title>${localeText(`group.${group}`)} - ${localeText("shell.title")}</title>
-  <style data-tcrn-component-style-source="@tcrn/ui-react" data-storybook-product-shell-component-style="package-backed">
+  <style data-tcrn-component-style-source="@tcrn/ui-react" data-tcrn-doc-shell-component-style="package-backed">
 ${tcrnComponentCss}
   </style>
   <style data-tcrn-static-doc-style-source="storybook">
@@ -329,7 +363,31 @@ ${staticStoryComponentCss}
   </style>
 </head>
 <body>
-  ${storybookProductShellHtml(group)}
+  ${skipLinkHtml()}
+  <div class="tcrn-doc-shell" data-doc-shell="online-docs" data-contract-surface="tcrn-design-system-storybook" data-anchor-scroll-controlled="true" data-active-story-section="${group}" data-storybook-locale="${tcrnDefaultLocale}" data-storybook-supported-locales="${tcrnSupportedLocales.join(",")}" data-storybook-theme="light" data-storybook-supported-themes="light,dark" data-tcrn-theme="light">
+    <header class="tcrn-doc-header">
+      <div class="tcrn-doc-global-bar">
+        <div class="tcrn-doc-global-brand">
+          ${docBrandHtml()}
+          ${sidebarToggleHtml()}
+        </div>
+        ${docHeaderWorkspaceHtml(group)}
+        ${docHeaderControlsHtml()}
+      </div>
+    </header>
+    <div class="tcrn-doc-layout">
+      <aside class="tcrn-doc-sidebar" id="tcrn-doc-sidebar" aria-labelledby="tcrn-doc-sidebar-label">
+        <p class="tcrn-sr-only" id="tcrn-doc-sidebar-label">${i18nText("shell.sidebarLabel")}</p>
+${navHtml(group)}
+      </aside>
+      <main class="tcrn-doc-content" id="content">
+        <h1 class="tcrn-sr-only" id="tcrn-doc-page-title">${i18nText("shell.title")}</h1>
+${pageHeadHtml(group)}
+${storyHtml(group)}
+${chapterPagerHtml(group)}
+      </main>
+    </div>
+  </div>
 ${hashRouteScript}
 ${activeStoryNavScript}
 ${storybookThemeScript}

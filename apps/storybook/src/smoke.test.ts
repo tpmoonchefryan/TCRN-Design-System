@@ -26,7 +26,7 @@ import {
   consumerVisualStyleContract,
   foundationVisualStandardCategoryIds,
   foundationVisualStandards,
-  productShellVisualOracle
+  storybookDocShellVisualOracle
 } from "./build/foundation-visual-standards.js";
 import { contractStories, contractStoryGroups } from "./stories.js";
 import type { ContractStoryGroup } from "./stories.js";
@@ -139,7 +139,7 @@ const expectedAiRequiredProof = [
   "consumer_visual_style_contract_receipt",
   "theme_mode_receipt",
   "storybook_shell_control_receipt",
-  "product_shell_visual_oracle_skin_receipt",
+  "storybook_doc_shell_visual_oracle_receipt",
   "locale_popup_dismissal_receipt",
   "side_navigation_collapse_receipt",
   "work_management_static_pattern_receipt",
@@ -180,16 +180,30 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function readProductShellNavHtml(html: string): string {
-  const start = html.indexOf('id="tcrn-product-shell-side-nav"');
-  const end = html.indexOf("</nav></aside>", start);
-  assert.ok(start > -1, "missing ProductShell side-nav start");
-  assert.ok(end > start, "missing ProductShell side-nav end");
-  return html.slice(start, end);
+function readDocShellNavHtml(html: string): string {
+  const start = html.indexOf('class="tcrn-doc-nav"');
+  const asideStart = html.lastIndexOf("<aside", start);
+  const end = html.indexOf("</nav>", start);
+  assert.ok(start > -1, "missing doc shell nav start");
+  assert.ok(asideStart > -1, "missing doc shell nav aside start");
+  assert.ok(end > start, "missing doc shell nav end");
+  return html.slice(asideStart, end + "</nav>".length);
 }
 
-function readProductShellCategoryIds(html: string): string[] {
-  return Array.from(readProductShellNavHtml(html).matchAll(/data-storybook-category-id="([^"]+)"/g), (match) => match[1]);
+function readDocShellCategoryIds(html: string): string[] {
+  return Array.from(readDocShellNavHtml(html).matchAll(/data-doc-nav-category="([^"]+)"/g), (match) => match[1]);
+}
+
+function readDocShellNavItemIds(html: string): string[] {
+  return Array.from(readDocShellNavHtml(html).matchAll(/data-doc-nav-item="([^"]+)"/g), (match) => match[1]);
+}
+
+function readDocShellActiveStoryIds(html: string): string[] {
+  return Array.from(readDocShellNavHtml(html).matchAll(/data-doc-nav-item="([^"]+)"[^>]*data-doc-nav-item-active="true"/g), (match) => match[1]);
+}
+
+function readDocShellActiveSectionCount(html: string): number {
+  return readDocShellNavHtml(html).match(/data-story-nav="[^"]+"[^>]*aria-current="page"/g)?.length ?? 0;
 }
 
 function readStoryHtml(html: string, storyId: string): string {
@@ -260,36 +274,37 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /Internal\/Overlay family lab/);
   assert.doesNotMatch(combinedHtml, />story\.[^<]+</);
   assert.doesNotMatch(combinedHtml, /data-storybook-contract-truth="not-authoritative"/);
-  assert.match(combinedHtml, /data-storybook-shell-authority="@tcrn\/ui-react\/ProductShell"/);
-  assert.match(combinedHtml, /data-storybook-private-doc-shell-retired="true"/);
-  assert.match(combinedHtml, /data-storybook-product-shell-skin="confirmed-storybook-visual-v1"/);
-  assert.match(combinedHtml, /data-storybook-visual-oracle="docs\/verification\/storybook-visual-proof\/baseline-manifest\.json#owner-rejection-repair=d412c79"/);
-  assert.match(combinedHtml, /data-package-backed-product-shell-boundary="side-nav-shell-v1"/);
-  assert.match(combinedHtml, /class="[^"]*tcrn-product-shell/);
-  assert.match(combinedHtml, /data-product-shell-route="/);
-  assert.match(combinedHtml, /data-navigation-primitive="nav-group"/);
-  assert.match(combinedHtml, /data-navigation-primitive="nav-item"/);
-  assert.match(combinedHtml, /data-shell-control="product-shell-search"/);
+  assert.match(combinedHtml, /data-doc-shell="online-docs"/);
+  assert.match(combinedHtml, /class="[^"]*tcrn-doc-global-bar/);
+  assert.match(combinedHtml, /class="[^"]*tcrn-doc-header(?:\b|__|-search)/);
+  assert.match(combinedHtml, /class="[^"]*tcrn-doc-nav(?:\b|__)/);
+  assert.match(combinedHtml, /class="[^"]*tcrn-doc-sidebar/);
+  assert.match(combinedHtml, /data-doc-nav-item="/);
+  assert.match(combinedHtml, /data-doc-nav-category-toggle="/);
+  assert.match(combinedHtml, /data-doc-nav-item-active="true"/);
+  assert.doesNotMatch(combinedHtml, /data-storybook-shell-authority="@tcrn\/ui-react\/ProductShell"/);
+  assert.doesNotMatch(combinedHtml, /data-storybook-product-shell-skin="confirmed-storybook-visual-v1"/);
+  for (const { group, html } of pages.filter((page) => page.group !== "Components")) {
+    assert.doesNotMatch(html, /data-package-backed-product-shell-boundary="side-nav-shell-v1"/, `unexpected ProductShell boundary outside component examples: ${group}`);
+    assert.doesNotMatch(html, /data-product-shell-region="side-navigation"/, `unexpected ProductShell side nav outside component examples: ${group}`);
+    assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell__sidebar/, `unexpected ProductShell sidebar outside component examples: ${group}`);
+    assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell__main/, `unexpected ProductShell main outside component examples: ${group}`);
+    assert.doesNotMatch(html, /data-product-shell-route="/, `unexpected ProductShell route outside component examples: ${group}`);
+    assert.doesNotMatch(html, /data-shell-control="product-shell-search"/, `unexpected ProductShell search outside component examples: ${group}`);
+  }
   assert.match(combinedHtml, /data-shell-control="theme-toggle"/);
   assert.match(combinedHtml, /data-shell-control="locale-menu"/);
   assert.match(combinedHtml, /data-shell-control="side-nav-collapse"/);
-  assert.doesNotMatch(combinedHtml, /data-doc-shell="online-docs"/);
-  assert.doesNotMatch(combinedHtml, /class="[^"]*tcrn-doc-global-bar/);
-  assert.doesNotMatch(combinedHtml, /class="[^"]*tcrn-doc-header(?:\b|__|-search)/);
-  assert.doesNotMatch(combinedHtml, /class="[^"]*tcrn-doc-nav(?:\b|__)/);
-  assert.doesNotMatch(combinedHtml, /class="[^"]*tcrn-doc-sidebar/);
-  assert.doesNotMatch(combinedHtml, /--tcrn-doc-shell/);
-  assert.doesNotMatch(combinedHtml, /--tcrn-doc-header/);
-  assert.doesNotMatch(combinedHtml, /data-doc-global-nav="sections"/);
-  assert.doesNotMatch(combinedHtml, /data-doc-global-nav-item="/);
-  assert.doesNotMatch(combinedHtml, /data-i18n="shell\.topNavLabel"/);
+  assert.match(combinedHtml, /--tcrn-doc-shell/);
+  assert.match(combinedHtml, /--tcrn-doc-header/);
+  assert.match(combinedHtml, /data-i18n-aria-label="shell\.topNavLabel"/);
   assert.match(combinedHtml, /data-doc-on-this-page="true"/);
   assert.match(combinedHtml, /data-mandatory-boundary-block="visible"/);
   assert.match(combinedHtml, /data-no-overclaim-boundary="visible"/);
   assert.match(combinedHtml, /data-governance-boundary-strip="visible"/);
   assert.match(combinedHtml, /data-doc-chapter-pager="true"/);
   assert.match(combinedHtml, /data-contract-surface="tcrn-design-system-storybook"/);
-  assert.match(combinedHtml, /data-anchor-scroll-controlled="product-shell-topbar-aware"/);
+  assert.match(combinedHtml, /data-anchor-scroll-controlled="true"/);
   assert.match(combinedHtml, /--tcrn-anchor-scroll-offset: 96px/);
   assert.match(combinedHtml, /tcrnStorybookScrollToHash/);
   assert.match(combinedHtml, /tcrnStorybookScrollSpy/);
@@ -297,7 +312,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /addEventListener\("scroll", scheduleScrollSpy/);
   assert.match(combinedHtml, /data-i18n-locale-select/);
   assert.match(combinedHtml, /<link rel="icon" href="tcrn-brand-mark\.svg" type="image\/svg\+xml" \/>/);
-  assert.match(combinedHtml, /data-storybook-product-shell-component-style="package-backed"/);
+  assert.match(combinedHtml, /data-tcrn-doc-shell-component-style="package-backed"/);
   assert.match(combinedHtml, /class="[^"]*tcrn-search-input__control/);
   assert.match(combinedHtml, /--tcrn-doc-motion-spring: 0\.5s cubic-bezier\(0\.175, 0\.885, 0\.32, 1\.275\)/);
   assert.match(combinedHtml, /--tcrn-doc-motion-smooth: 0\.4s ease/);
@@ -308,13 +323,12 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /tcrn-doc-theme-transition-wash/);
   assert.match(combinedHtml, /role="combobox"/);
   assert.match(combinedHtml, /aria-keyshortcuts="Control\+K Meta\+K"/);
-  assert.match(combinedHtml, /data-product-shell-search-results/);
+  assert.match(combinedHtml, /data-doc-search-results/);
   assert.match(combinedHtml, /role="listbox"/);
-  assert.match(combinedHtml, /data-storybook-search-result/);
+  assert.match(combinedHtml, /data-doc-search-result/);
   assert.match(combinedHtml, /data-storybook-theme="light"/);
   assert.match(combinedHtml, /data-storybook-supported-themes="light,dark"/);
   assert.match(combinedHtml, /data-current-theme="light"/);
-  assert.match(combinedHtml, /data-theme-next="dark"/);
   assert.match(combinedHtml, /data-package-backed-shell-control="theme-toggle"/);
   assert.match(combinedHtml, /data-theme-icon="light"[\s\S]*data-icon-name="sun"/);
   assert.match(combinedHtml, /data-theme-icon="dark"[\s\S]*data-icon-name="moon"/);
@@ -351,8 +365,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-side-nav-action="toggle"/);
   assert.match(combinedHtml, /data-side-nav-icon="collapse"[\s\S]*data-icon-name="chevron-left"/);
   assert.match(combinedHtml, /data-side-nav-icon="expand"[\s\S]*data-icon-name="chevron-right"/);
-  assert.match(combinedHtml, /data-storybook-content-icon="previous-chapter"/);
-  assert.match(combinedHtml, /data-storybook-content-icon="next-chapter"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="previous-chapter"/);
+  assert.match(combinedHtml, /data-doc-shell-icon="next-chapter"/);
   assert.match(combinedHtml, /data-sidebar-motion/);
   assert.match(combinedHtml, /setCollapsed\(readStoredState\(\), false, false\)/);
   assert.doesNotMatch(combinedHtml, /font-size var\(--tcrn-motion-emphasis\)/);
@@ -362,8 +376,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-icon-name="chevron-right"/);
   assert.doesNotMatch(combinedHtml, /viewBox="0 0 20 20" focusable="false" aria-hidden="true"/);
   assert.doesNotMatch(combinedHtml, /tcrn-knowledge-shell__collapse-button span::before/);
-  assert.match(combinedHtml, /<main[^>]*id="content"[^>]*class="[^"]*tcrn-product-shell__main[^"]*"[^>]*data-product-shell-region="content"/);
-  assert.match(combinedHtml, /<div class="tcrn-doc-content" data-storybook-content-slot="contract-stories">/);
+  assert.match(combinedHtml, /<main class="tcrn-doc-content" id="content">/);
   assert.match(combinedHtml, /tcrn-doc-page-head/);
   assert.doesNotMatch(combinedHtml, /<main class="tcrn-doc-shell"/);
   assert.match(combinedHtml, /data-storybook-locale="en"/);
@@ -379,7 +392,6 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /tcrn-doc-locale-toggle/);
   assert.doesNotMatch(combinedHtml, /tcrn-doc-locale-menu__/);
   assert.doesNotMatch(combinedHtml, /tcrn-doc-sidebar-toggle__/);
-  assert.doesNotMatch(combinedHtml, /class="[^"]*tcrn-doc-search-result/);
   assert.match(combinedHtml, /data-locale-menu/);
   assert.match(combinedHtml, /data-locale-menu-option[\s\S]*data-locale="ja"[\s\S]*data-locale-name="日本語"/);
   assert.match(combinedHtml, /querySelector\("\.tcrn-shell-locale-menu__name, \[data-locale-option-name\]"\)/);
@@ -403,7 +415,7 @@ test("static contract story surface is retained and synthetic", () => {
     const owningPage = readGroupPage(story.group);
     assert.match(owningPage, new RegExp(`data-story-id="${story.id}"`));
     for (const page of pages) {
-      assert.match(page.html, new RegExp(`data-product-shell-route="${story.id}"`));
+      assert.match(page.html, new RegExp(`data-doc-nav-item="${story.id}"`));
     }
     for (const group of contractStoryGroups.filter((item) => item !== story.group)) {
       assert.doesNotMatch(readGroupPage(group), new RegExp(`data-story-id="${story.id}"`));
@@ -415,14 +427,13 @@ test("static contract story surface is retained and synthetic", () => {
     assert.match(html, new RegExp(`data-active-story-section="${escapeRegExp(group)}"`));
     assert.match(html, new RegExp(`data-story-section="${escapeRegExp(group)}"`));
     assert.ok(defaultStory);
-    assert.match(html, new RegExp(`data-product-shell-route="${escapeRegExp(defaultStory.id)}"[^>]*aria-current="page"`));
-    assert.equal(readProductShellCategoryIds(html).length, expectedStorybookShellNavGroupCount);
-    assert.equal(readProductShellNavHtml(html).match(/data-navigation-primitive="nav-group"/g)?.length, expectedStorybookShellNavGroupCount);
-    assert.equal(readProductShellNavHtml(html).match(/data-product-shell-route="/g)?.length, contractStories.length);
+    assert.match(html, new RegExp(`data-doc-nav-item="${escapeRegExp(defaultStory.id)}"[^>]*aria-current="location"`));
+    assert.equal(readDocShellCategoryIds(html).length, expectedStoryCategoryCount);
+    assert.equal(readDocShellNavHtml(html).match(/data-doc-nav-group="/g)?.length, expectedStorybookShellNavGroupCount);
+    assert.equal(readDocShellNavItemIds(html).length, contractStories.length);
     assert.equal(html.match(/data-doc-chapter-pager="true"/g)?.length, 1);
-    const productShellNavHtml = readProductShellNavHtml(html);
-    assert.equal(productShellNavHtml.match(/<a [^>]*data-selected="true"[^>]*data-navigation-primitive="nav-item"/g)?.length, 1);
-    assert.equal(productShellNavHtml.match(/<a [^>]*aria-current="page"/g)?.length, 1);
+    assert.equal(readDocShellActiveStoryIds(html).length, 1);
+    assert.equal(readDocShellActiveSectionCount(html), 1);
     assert.equal(html.match(/data-story-section="/g)?.length, 1);
     for (const story of contractStories.filter((item) => item.group === group)) {
       assert.match(html, new RegExp(`data-story-id="${escapeRegExp(story.id)}"[^>]*data-story-category="${escapeRegExp(story.category)}"`));
@@ -689,14 +700,14 @@ test("static contract story surface is retained and synthetic", () => {
     assert.match(readGroupPage("Foundations"), new RegExp(`data-foundation-standard-category-id="${categoryId}"`));
   }
   assert.match(readGroupPage("Foundations"), /consumer-visual-style-contract-v1/);
-  assert.match(readGroupPage("Foundations"), /confirmed-storybook-visual-v1/);
+  assert.match(readGroupPage("Foundations"), /original-storybook-doc-shell-v1/);
   assert.match(readGroupPage("Foundations"), /consumer-local shell-control geometry/);
   assert.match(readGroupPage("Foundations"), /Missing standard escalation/);
-  assert.match(readGroupPage("Foundations"), /ProductShell control contract/);
+  assert.match(readGroupPage("Foundations"), /Storybook doc shell control contract/);
   assert.match(readGroupPage("Foundations"), /Use one circular icon-only button/);
-  assert.match(readGroupPage("Foundations"), /Use @tcrn\/ui-react ProductShell as the documentation shell authority/);
-  assert.match(readGroupPage("Foundations"), /Storybook may own content slots, anchors, static story sections, search index data, and proof pages/);
-  assert.match(readGroupPage("Foundations"), /Private tcrn-doc-shell, tcrn-doc-header, tcrn-doc-nav, tcrn-doc-global-bar, or tcrn-doc-header-search visual shells/);
+  assert.match(readGroupPage("Foundations"), /Use the Storybook doc shell as the documentation shell authority/);
+  assert.match(readGroupPage("Foundations"), /ProductShell remains scoped to component docs, product visual instances, and consumer rules/);
+  assert.match(readGroupPage("Foundations"), /Global Storybook pages rendered through ProductShell/);
   assert.match(readGroupPage("Foundations"), /one whole-page transition/);
   assert.match(readGroupPage("Foundations"), /current locale name in that locale/);
   assert.match(readGroupPage("Foundations"), /outside pointer down or click, and Escape/);
@@ -714,9 +725,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Proof"), /Check both light and dark Storybook shell modes before product frontend work/);
   assert.match(readGroupPage("Proof"), /Storybook shell controls/);
   assert.match(readGroupPage("Proof"), /single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition/);
-  assert.match(readGroupPage("Proof"), /Storybook ProductShell boundary/);
-  assert.match(readGroupPage("Proof"), /private tcrn-doc-\* visual shell clones are not admitted/);
-  assert.match(readGroupPage("Proof"), /Storybook uses @tcrn\/ui-react ProductShell for shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior/);
+  assert.match(readGroupPage("Proof"), /Storybook doc shell boundary/);
+  assert.match(readGroupPage("Proof"), /Storybook uses the restored doc shell for global shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior/);
+  assert.match(readGroupPage("Proof"), /ProductShell remains scoped to component and product examples/);
   assert.match(readGroupPage("Proof"), /Locale menu behavior/);
   assert.match(readGroupPage("Proof"), /Side navigation collapse/);
   assert.match(readGroupPage("Proof"), /Registered product IA/);
@@ -816,24 +827,26 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     assert.ok(standard.proofExpectations?.length > 0, `foundation standard missing proof expectations: ${standard.id}`);
     assert.match(standard.missingStandardEscalation ?? "", /Block|Return|Route|Skip|Do not close/);
   }
-  assert.equal(contract.productShellVisualOracle?.id, productShellVisualOracle.id);
-  assert.equal(contract.productShellVisualOracle?.packageAuthority, "@tcrn/ui-react/ProductShell");
-  assert.equal(contract.productShellVisualOracle?.oracleRecoveryReceipt, productShellVisualOracle.oracleRecoveryReceipt);
-  assert.equal(contract.productShellVisualOracle?.baselineManifestClassification, "historical_but_dirty_admissible_with_hash_backed_screenshots");
-  assert.match(contract.productShellVisualOracle?.metricSourceDisposition ?? "", /owner-rejection repair/);
+  assert.equal(contract.storybookDocShellVisualOracle?.id, storybookDocShellVisualOracle.id);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellAuthority, "storybook_doc_shell_with_package_primitives");
+  assert.equal(contract.storybookDocShellVisualOracle?.oracleRecoveryReceipt, storybookDocShellVisualOracle.oracleRecoveryReceipt);
+  assert.equal(contract.storybookDocShellVisualOracle?.baselineManifestClassification, "owner_declared_original_storybook_doc_shell_standard");
+  assert.match(contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "", /Storybook documentation shell/);
   assert.ok(
-    contract.productShellVisualOracle?.metricEvidence?.some((item: { metric: string; sha256?: string | null }) => (
-      item.metric === "desktopSidebarWidthPx"
-      && item.sha256 === "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529"
-    )),
-    "ProductShell visual oracle must cite hash-backed sidebar evidence"
-  );
-  assert.equal(contract.productShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 326);
-  assert.equal(contract.productShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 96);
-  assert.equal(contract.productShellVisualOracle?.shellMetrics?.searchRestWidthPx, 180);
-  assert.equal(contract.productShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 320);
-  assert.equal(contract.productShellVisualOracle?.shellMetrics?.themeToggleRadiusPx, 999);
-  assert.deepEqual(contract.productShellVisualOracle?.privateShellClonesForbidden, productShellVisualOracle.privateShellClonesForbidden);
+	  contract.storybookDocShellVisualOracle?.metricEvidence?.some((item: { metric: string; sha256?: string | null }) => (
+	    item.metric === "desktopSidebarWidthPx"
+	    && item.sha256 === "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d"
+	  )),
+	  "Storybook doc shell visual oracle must cite hash-backed sidebar evidence"
+	);
+	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 288);
+	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 280);
+	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx, 360);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 96);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx, 180);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 320);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.themeToggleRadiusPx, 999);
+  assert.deepEqual(contract.storybookDocShellVisualOracle?.globalProductShellSelectorsForbidden, storybookDocShellVisualOracle.globalProductShellSelectorsForbidden);
   assert.equal(contract.consumerVisualStyleContract?.id, consumerVisualStyleContract.id);
   assert.match(contract.consumerVisualStyleContract?.disposition ?? "", /fail_closed/);
   assert.ok(contract.consumerVisualStyleContract?.allowedConsumerInputs?.includes("product data"));
@@ -987,29 +1000,26 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.workManagementPatternDisposition, /API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS\/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed/);
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
   assert.ok(contract.requiredProof.includes("work_management_static_pattern_receipt"));
-  assert.match(contract.storybookMergedShellAuthorityDisposition, /must render the merged shell through @tcrn\/ui-react ProductShell/);
-  assert.match(contract.storybookMergedShellAuthorityDisposition, /ProductShell-scoped visual skin variables\/overrides/);
-  assert.match(contract.storybookMergedShellAuthorityDisposition, /plus content slots, static story sections, anchors, search index data, proof pages, and chapter paging content/);
-  assert.match(contract.storybookMergedShellAuthorityDisposition, /must not keep an independent tcrn-doc-shell, tcrn-doc-header, tcrn-doc-nav, tcrn-doc-global-bar, or tcrn-doc-header-search visual shell/);
-  assert.match(contract.storybookMergedShellAuthorityDisposition, /Shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior remains ProductShell-owned/);
-  assert.doesNotMatch(JSON.stringify(contract), /storybookDocShellCompositionDisposition/);
-  assert.doesNotMatch(JSON.stringify(contract), /\.tcrn-doc-\* selectors may style only documentation skeleton/);
+  assert.match(contract.storybookDocShellAuthorityDisposition, /original Storybook-owned doc shell composition/);
+  assert.match(contract.storybookDocShellAuthorityDisposition, /data-doc-shell='online-docs'/);
+  assert.match(contract.storybookDocShellAuthorityDisposition, /ProductShell remains documented and package-backed for component examples/);
+  assert.doesNotMatch(JSON.stringify(contract), /must render the merged shell through @tcrn\/ui-react ProductShell/);
+  assert.doesNotMatch(JSON.stringify(contract), /Shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior remains ProductShell-owned/);
   assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
   assert.match(contract.themeModeDisposition, /light and dark Storybook shell modes/);
-  assert.match(contract.storybookProductShellControlContract.implementationBoundary, /Storybook shell is @tcrn\/ui-react ProductShell/);
-  assert.match(contract.storybookProductShellControlContract.implementationBoundary, /confirmed-storybook-visual-v1 ProductShell skin/);
-  assert.match(contract.storybookProductShellControlContract.implementationBoundary, /ProductLogo\/ShellBrandLockup, ProductShellSearch\/SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton/);
-  assert.match(contract.storybookProductShellControlContract.implementationBoundary, /private tcrn-doc-\* visual shell selectors are not admitted/);
-  assert.match(contract.storybookProductShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
-  assert.match(contract.storybookProductShellControlContract.visualSkin, /storybook-visual-proof\/baseline-manifest\.json/);
-  assert.match(contract.storybookProductShellControlContract.visualSkin, /desktop sidebar width, topbar height, compact and focused search width\/border/);
-  assert.match(contract.storybookProductShellControlContract.themeTransition, /one whole-page transition/);
-  assert.match(contract.storybookProductShellControlContract.themeTransition, /must not darken as independent sections/);
-  assert.match(contract.storybookProductShellControlContract.localeSelector, /native names only/);
-  assert.match(contract.storybookProductShellControlContract.localeSelector, /outside pointer down or click, and Escape/);
-  assert.match(contract.storybookProductShellControlContract.localeSelector, /focus returns to the trigger/);
-  assert.match(contract.storybookProductShellControlContract.search, /compact at rest/);
-  assert.match(contract.storybookProductShellControlContract.aiContractAccess, /not in the human top toolbar/);
+  assert.match(contract.storybookDocShellControlContract.implementationBoundary, /global Storybook shell is a Storybook-owned doc shell/);
+  assert.match(contract.storybookDocShellControlContract.implementationBoundary, /data-doc-shell='online-docs'/);
+  assert.match(contract.storybookDocShellControlContract.implementationBoundary, /ProductShell selectors must not replace the global page shell/);
+  assert.match(contract.storybookDocShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
+  assert.match(contract.storybookDocShellControlContract.visualSkin, /storybook-visual-proof\/baseline-manifest\.json/);
+  assert.match(contract.storybookDocShellControlContract.visualSkin, /doc-shell selector authority/);
+  assert.match(contract.storybookDocShellControlContract.themeTransition, /one whole-page transition/);
+  assert.match(contract.storybookDocShellControlContract.themeTransition, /must not darken as independent sections/);
+  assert.match(contract.storybookDocShellControlContract.localeSelector, /native names only/);
+  assert.match(contract.storybookDocShellControlContract.localeSelector, /outside pointer down or click, and Escape/);
+  assert.match(contract.storybookDocShellControlContract.localeSelector, /focus returns to the trigger/);
+  assert.match(contract.storybookDocShellControlContract.search, /compact at rest/);
+  assert.match(contract.storybookDocShellControlContract.aiContractAccess, /not in the human top toolbar/);
   assert.match(contract.productShellHardeningRules.sideNavigation, /keyboard-accessible collapse and expand control/);
   assert.match(contract.productShellHardeningRules.sideNavigation, /center the collapse icon/);
   assert.match(contract.productShellHardeningRules.sideNavigation, /prove both expanded and collapsed states/);
@@ -1052,9 +1062,9 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Foundation visual standard category details:/);
   assert.match(llms, /consumer-enforcement: Consumer enforcement and reject criteria/);
   assert.match(llms, /Consumer visual style contract: consumer-visual-style-contract-v1/);
-  assert.match(llms, /ProductShell visual oracle: confirmed-storybook-visual-v1/);
-  assert.match(llms, /oracle recovery: TCRN Workflow\/vault\/initiatives\/projects\/TCRN-DESIGN-SYSTEM\/active\/foundation-visual-standards-ai-contract\/65-visual-oracle-recovery\.md/);
-  assert.match(llms, /baseline classification: historical_but_dirty_admissible_with_hash_backed_screenshots/);
+  assert.match(llms, /Storybook doc shell visual oracle: original-storybook-doc-shell-v1/);
+  assert.match(llms, /oracle recovery: TCRN Workflow\/vault\/initiatives\/projects\/TCRN-DESIGN-SYSTEM\/active\/storybook-shell-control-stabilization\/50-implementation-plan\.md#storybook-original-shell-restoration-implementation-plan/);
+  assert.match(llms, /baseline classification: owner_declared_original_storybook_doc_shell_standard/);
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);

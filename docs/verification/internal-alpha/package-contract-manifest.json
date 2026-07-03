@@ -1107,8 +1107,10 @@
       "packageBackedNavigationProofVisible": true,
       "noReusableInlineSourceClaim": true
     },
-    "storybookProductShellControlContract": {
+    "storybookDocShellControlContract": {
       "uiReactReadmeBoundaryVisible": true,
+      "docShellMarkersVisible": true,
+      "globalProductShellReplacementAbsent": true,
       "themeToggleRuleVisible": true,
       "wholePageTransitionRuleVisible": true,
       "localeSelectorRuleVisible": true,

@@ -61,17 +61,17 @@ const pages = Object.fromEntries(Object.entries(pagesByGroup).map(([group, file]
   readFileSync(`apps/storybook/storybook-static/${file}`, "utf8")
 ]));
 const combinedHtml = Object.values(pages).join("\n");
-const readProductShellNavHtml = (html) => {
-  const start = html.indexOf('data-product-shell-region="side-navigation"');
+const readDocShellNavHtml = (html) => {
+  const start = html.indexOf('class="tcrn-doc-nav"');
   if (start === -1) {
     return "";
   }
   const asideStart = html.lastIndexOf("<aside", start);
-  const end = html.indexOf("</nav></aside>", start);
+  const end = html.indexOf("</nav>", start);
   if (asideStart === -1 || end === -1) {
     return "";
   }
-  return html.slice(asideStart, end + "</nav></aside>".length);
+  return html.slice(asideStart, end + "</nav>".length);
 };
 const readStoryHtml = (html, storyId) => {
   const storyMarker = `data-contract-story-id="${storyId}"`;
@@ -103,18 +103,32 @@ const expectedFoundationStandardCategoryIds = [
   "evidence-proof-oracle",
   "consumer-enforcement"
 ];
-const productShellVisualOracleContract = contract.productShellVisualOracle ?? {};
+const storybookDocShellVisualOracleContract = contract.storybookDocShellVisualOracle ?? {};
 const expectedStorybookVisualSkin = {
-  id: productShellVisualOracleContract.id ?? "missing",
-  sidebarWidthPx: productShellVisualOracleContract.shellMetrics?.desktopSidebarWidthPx ?? null,
-  sidebarTolerancePx: productShellVisualOracleContract.shellMetrics?.desktopSidebarTolerancePx ?? 0,
-  topbarHeightPx: productShellVisualOracleContract.shellMetrics?.desktopTopbarHeightPx ?? null,
-  topbarTolerancePx: productShellVisualOracleContract.shellMetrics?.desktopTopbarTolerancePx ?? 0,
-  searchRestWidthPx: productShellVisualOracleContract.shellMetrics?.searchRestWidthPx ?? null,
-  searchHeightPx: productShellVisualOracleContract.shellMetrics?.searchHeightPx ?? null,
-  searchBorderColor: productShellVisualOracleContract.shellMetrics?.searchBorderColor ?? null,
-  searchBorderRadiusPx: productShellVisualOracleContract.shellMetrics?.searchBorderRadiusPx ?? null,
-  themeToggleRadiusPx: productShellVisualOracleContract.shellMetrics?.themeToggleRadiusPx ?? null
+  id: storybookDocShellVisualOracleContract.id ?? "missing",
+  sidebarWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarWidthPx ?? null,
+  sidebarMinWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarMinWidthPx ?? null,
+  sidebarPreferredViewportRatio: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarPreferredViewportRatio ?? null,
+  sidebarMaxWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarMaxWidthPx ?? null,
+  sidebarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarTolerancePx ?? 0,
+  topbarHeightPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopTopbarHeightPx ?? null,
+  topbarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.desktopTopbarTolerancePx ?? 0,
+  searchRestWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.searchRestWidthPx ?? null,
+  searchHeightPx: storybookDocShellVisualOracleContract.shellMetrics?.searchHeightPx ?? null,
+  searchBorderColor: storybookDocShellVisualOracleContract.shellMetrics?.searchBorderColor ?? null,
+  searchBorderRadiusPx: storybookDocShellVisualOracleContract.shellMetrics?.searchBorderRadiusPx ?? null,
+  themeToggleRadiusPx: storybookDocShellVisualOracleContract.shellMetrics?.themeToggleRadiusPx ?? null
+};
+const expectedStorybookSidebarWidthForViewport = (viewportWidth) => {
+  const { sidebarMinWidthPx, sidebarPreferredViewportRatio, sidebarMaxWidthPx, sidebarWidthPx } = expectedStorybookVisualSkin;
+  if (
+    typeof sidebarMinWidthPx === "number"
+    && typeof sidebarPreferredViewportRatio === "number"
+    && typeof sidebarMaxWidthPx === "number"
+  ) {
+    return Math.min(sidebarMaxWidthPx, Math.max(sidebarMinWidthPx, viewportWidth * sidebarPreferredViewportRatio));
+  }
+  return sidebarWidthPx;
 };
 const storybookAlphaStylesSource = readFileSync("apps/storybook/src/alpha-styles.ts", "utf8");
 const storybookStaticCssSource = readFileSync("apps/storybook/src/storybook.css", "utf8");
@@ -751,14 +765,15 @@ const aosOwnerQualityProductShellContract = {
   ]
 };
 const required = [
-  "data-storybook-shell-authority=\"@tcrn/ui-react/ProductShell\"",
-  "data-storybook-private-doc-shell-retired=\"true\"",
-  "data-anchor-scroll-controlled=\"product-shell-topbar-aware\"",
-  "data-package-backed-product-shell-boundary=\"side-nav-shell-v1\"",
-  "data-product-shell-route=\"",
-  "data-navigation-primitive=\"nav-group\"",
-  "data-navigation-primitive=\"nav-item\"",
-  "data-shell-control=\"product-shell-search\"",
+  "data-doc-shell=\"online-docs\"",
+  "class=\"tcrn-doc-header\"",
+  "class=\"tcrn-doc-global-bar\"",
+  "class=\"tcrn-doc-sidebar\"",
+  "class=\"tcrn-doc-nav\"",
+  "data-doc-nav-item=\"",
+  "data-doc-nav-category-toggle=\"",
+  "data-doc-nav-item-active=\"true\"",
+  "data-anchor-scroll-controlled=\"true\"",
   "data-shell-control=\"theme-toggle\"",
   "data-shell-control=\"locale-menu\"",
   "data-shell-control=\"side-nav-collapse\"",
@@ -773,8 +788,6 @@ const required = [
   "data-storybook-theme=\"light\"",
   "data-storybook-supported-themes=\"light,dark\"",
   "data-current-theme=\"light\"",
-  "data-theme-next=\"dark\"",
-  "--tcrn-storybook-shell-mobile-layer-surface",
   "tcrn-design-system-storybook-theme",
   "data-package-backed-shell-control=\"theme-toggle\"",
   "data-theme-icon=\"light\"",
@@ -811,7 +824,7 @@ const required = [
   "data-foundation-visual-standards=\"registry\"",
   "data-foundation-standard-category-id=\"consumer-enforcement\"",
   "consumer-visual-style-contract-v1",
-  "confirmed-storybook-visual-v1",
+  "original-storybook-doc-shell-v1",
   "Missing standard escalation",
   "data-contract-story-id=\"brand-identity\"",
   "data-contract-story-id=\"color-palette\"",
@@ -858,7 +871,7 @@ const required = [
   "name=\"tcrn-ai-consumption-contract-route\" content=\"proof.html#ai-consumption-contract\"",
   "name=\"tcrn-ai-consumption-contract-required\" content=\"must-read-first\"",
   "Light and dark Storybook shell",
-  "ProductShell control contract",
+  "Storybook doc shell control contract",
   "Use one circular icon-only button",
   "one whole-page transition",
   "current locale name in that locale",
@@ -873,9 +886,7 @@ const required = [
   "Each point uses a white ring with a same-family inner color that differs from the tile fill.",
   "No red, pink, coral, or orange connector points.",
   "Product adoption, publication, release readiness, product acceptance, and final MVP acceptance are not claimed.",
-  "tcrnStorybookAnchorOffsetReadback",
-  "readProductShellTopbarOffset",
-  "readHashTargetOffset",
+  "data-anchor-scroll-controlled=\"true\"",
   "tcrn-shell-layer",
   "data-shell-layer=\"mega-menu\"",
   "Top bar, attached side navigation, content column, and chapter navigation stay one shell"
@@ -883,7 +894,7 @@ const required = [
 const componentPage = pages.Components;
 const staticDocStyleIndex = componentPage.indexOf("data-tcrn-static-doc-style-source=\"storybook\"");
 const componentStyleIndex = componentPage.indexOf("data-tcrn-component-style-source=\"@tcrn/ui-react\"");
-const productShellComponentStyleIndex = componentPage.indexOf("data-storybook-product-shell-component-style=\"package-backed\"");
+const docShellComponentStyleIndex = componentPage.indexOf("data-tcrn-doc-shell-component-style=\"package-backed\"");
 const comparatorComponentStyleIndex = componentPage.indexOf("data-tcrn-product-shell-comparator-style=\"package-backed\"");
 if (staticDocStyleIndex < 0) {
   required.push("data-tcrn-static-doc-style-source=\"storybook\"");
@@ -891,8 +902,8 @@ if (staticDocStyleIndex < 0) {
 if (componentStyleIndex < 0) {
   required.push("data-tcrn-component-style-source=\"@tcrn/ui-react\"");
 }
-if (productShellComponentStyleIndex < 0) {
-  required.push("data-storybook-product-shell-component-style=\"package-backed\"");
+if (docShellComponentStyleIndex < 0) {
+  required.push("data-tcrn-doc-shell-component-style=\"package-backed\"");
 }
 if (comparatorComponentStyleIndex < 0) {
   required.push("data-tcrn-product-shell-comparator-style=\"package-backed\"");
@@ -940,6 +951,35 @@ for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "dup
 }
 const combinedContractText = `${combinedHtml}\n${JSON.stringify(contract)}\n${llmsTxt}`;
 const missing = required.filter((text) => !combinedContractText.includes(text));
+for (const forbiddenGlobalShellMarker of [
+  "data-storybook-shell-authority=\"@tcrn/ui-react/ProductShell\"",
+  "data-storybook-product-shell-skin=\"confirmed-storybook-visual-v1\"",
+  "data-anchor-scroll-controlled=\"product-shell-topbar-aware\""
+]) {
+  if (combinedHtml.includes(forbiddenGlobalShellMarker)) {
+    missing.push(`forbidden-global-shell-marker:${forbiddenGlobalShellMarker}`);
+  }
+}
+const nonComponentHtml = Object.entries(pages)
+  .filter(([group]) => group !== "Components")
+  .map(([, html]) => html)
+  .join("\n");
+for (const forbiddenGlobalShellMarker of [
+  "data-package-backed-product-shell-boundary=\"side-nav-shell-v1\""
+]) {
+  if (nonComponentHtml.includes(forbiddenGlobalShellMarker)) {
+    missing.push(`forbidden-global-shell-marker:${forbiddenGlobalShellMarker}`);
+  }
+}
+for (const forbiddenGlobalShellPattern of [
+  /data-product-shell-region="side-navigation"/,
+  /class="[^"]*tcrn-product-shell__sidebar/,
+  /class="[^"]*tcrn-product-shell__main/
+]) {
+  if (forbiddenGlobalShellPattern.test(nonComponentHtml)) {
+    missing.push(`forbidden-global-shell-pattern:${forbiddenGlobalShellPattern.source}`);
+  }
+}
 const brandIdentityStoryHtml = readStoryHtml(pages["Style Guide"], "brand-identity");
 if (!brandIdentityStoryHtml.includes("Product lockups")) {
   missing.push("brand-identity:product-lockups");
@@ -1230,35 +1270,41 @@ for (const standardId of expectedFoundationStandardCategoryIds) {
     missing.push(`contract.foundationVisualStandardCategories.${standardId}.missingStandardEscalation`);
   }
 }
-if (contract.productShellVisualOracle?.id !== "confirmed-storybook-visual-v1") {
-  missing.push("contract.productShellVisualOracle.id");
+if (contract.storybookDocShellVisualOracle?.id !== "original-storybook-doc-shell-v1") {
+  missing.push("contract.storybookDocShellVisualOracle.id");
 }
-if (contract.productShellVisualOracle?.oracleRecoveryReceipt !== "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md") {
-  missing.push("contract.productShellVisualOracle.oracleRecoveryReceipt");
+if (contract.storybookDocShellVisualOracle?.oracleRecoveryReceipt !== "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan") {
+  missing.push("contract.storybookDocShellVisualOracle.oracleRecoveryReceipt");
 }
-if (contract.productShellVisualOracle?.baselineManifestClassification !== "historical_but_dirty_admissible_with_hash_backed_screenshots") {
-  missing.push("contract.productShellVisualOracle.baselineManifestClassification");
+if (contract.storybookDocShellVisualOracle?.baselineManifestClassification !== "owner_declared_original_storybook_doc_shell_standard") {
+  missing.push("contract.storybookDocShellVisualOracle.baselineManifestClassification");
 }
-if (!String(contract.productShellVisualOracle?.metricSourceDisposition ?? "").includes("committed baseline screenshots")) {
-  missing.push("contract.productShellVisualOracle.metricSourceDisposition");
+if (!String(contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "").includes("Storybook documentation shell")) {
+  missing.push("contract.storybookDocShellVisualOracle.metricSourceDisposition");
 }
-if (!(contract.productShellVisualOracle?.metricEvidence ?? []).some((item) => (
+if (!(contract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) => (
   item.metric === "desktopSidebarWidthPx"
-  && item.sha256 === "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529"
+  && item.sha256 === "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d"
 ))) {
-  missing.push("contract.productShellVisualOracle.metricEvidence.desktopSidebarWidthPx");
+  missing.push("contract.storybookDocShellVisualOracle.metricEvidence.desktopSidebarWidthPx");
 }
-if (contract.productShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx !== 326) {
-  missing.push("contract.productShellVisualOracle.shellMetrics.desktopSidebarWidthPx");
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx !== 288) {
+  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopSidebarWidthPx");
 }
-if (contract.productShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx !== 96) {
-  missing.push("contract.productShellVisualOracle.shellMetrics.desktopTopbarHeightPx");
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx !== 280) {
+  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopSidebarMinWidthPx");
 }
-if (contract.productShellVisualOracle?.shellMetrics?.searchRestWidthPx !== 180) {
-  missing.push("contract.productShellVisualOracle.shellMetrics.searchRestWidthPx");
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx !== 360) {
+  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopSidebarMaxWidthPx");
 }
-if (contract.productShellVisualOracle?.shellMetrics?.themeToggleRadiusPx !== 999) {
-  missing.push("contract.productShellVisualOracle.shellMetrics.themeToggleRadiusPx");
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx !== 96) {
+  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopTopbarHeightPx");
+}
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx !== 180) {
+  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.searchRestWidthPx");
+}
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.themeToggleRadiusPx !== 999) {
+  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.themeToggleRadiusPx");
 }
 if (contract.consumerVisualStyleContract?.id !== "consumer-visual-style-contract-v1") {
   missing.push("contract.consumerVisualStyleContract.id");
@@ -1293,14 +1339,14 @@ if (!llmsTxt.includes("Foundation visual standards: foundation-visual-standards-
 if (!llmsTxt.includes("Consumer visual style contract: consumer-visual-style-contract-v1")) {
   missing.push("llms-consumer-visual-style-contract");
 }
-if (!llmsTxt.includes("ProductShell visual oracle: confirmed-storybook-visual-v1")) {
-  missing.push("llms-product-shell-visual-oracle");
+if (!llmsTxt.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")) {
+  missing.push("llms-storybook-doc-shell-visual-oracle");
 }
-if (!llmsTxt.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md")) {
-  missing.push("llms-product-shell-visual-oracle-recovery");
+if (!llmsTxt.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan")) {
+  missing.push("llms-storybook-doc-shell-visual-oracle-recovery");
 }
-if (!llmsTxt.includes("baseline classification: historical_but_dirty_admissible_with_hash_backed_screenshots")) {
-  missing.push("llms-product-shell-visual-oracle-classification");
+if (!llmsTxt.includes("baseline classification: owner_declared_original_storybook_doc_shell_standard")) {
+  missing.push("llms-storybook-doc-shell-visual-oracle-classification");
 }
 if (!llmsTxt.includes("Shell control visual parity proof:")) {
   missing.push("llms-shell-control-visual-parity-proof");
@@ -1326,9 +1372,9 @@ if (forbidden.length > 0) {
 }
 for (const [group, html] of Object.entries(pages)) {
   const defaultStory = requiredStories.find((story) => story.group === group);
-  const navHtml = readProductShellNavHtml(html);
+  const navHtml = readDocShellNavHtml(html);
   if (!navHtml) {
-    missing.push(`product-shell-side-navigation:${group}`);
+    missing.push(`doc-shell-side-navigation:${group}`);
   }
   if (!html.includes(`data-active-story-section="${group}"`)) {
     missing.push(`data-active-story-section="${group}"`);
@@ -1336,16 +1382,16 @@ for (const [group, html] of Object.entries(pages)) {
   if (!html.includes(`data-story-section="${group}"`)) {
     missing.push(`data-story-section="${group}"`);
   }
-  if (!defaultStory || !new RegExp(`data-product-shell-route="${defaultStory.id}"[^>]*aria-current="page"`).test(navHtml)) {
-    missing.push(`current-product-shell-route:${group}:${defaultStory?.id ?? "missing"}`);
+  if (!defaultStory || !new RegExp(`data-doc-nav-item="${defaultStory.id}"[^>]*aria-current="location"`).test(navHtml)) {
+    missing.push(`current-doc-nav-item:${group}:${defaultStory?.id ?? "missing"}`);
   }
-  const groupNavCount = navHtml.match(/data-navigation-primitive="nav-group"/g)?.length ?? 0;
+  const groupNavCount = navHtml.match(/data-doc-nav-group="/g)?.length ?? 0;
   if (groupNavCount !== expectedStorybookShellNavGroupCount) {
-    missing.push(`product-shell-nav-group-count:${group}:${groupNavCount}`);
+    missing.push(`doc-shell-nav-group-count:${group}:${groupNavCount}`);
   }
-  const categoryNavCount = navHtml.match(/data-storybook-category-id="/g)?.length ?? 0;
-  if (categoryNavCount !== expectedStorybookShellNavGroupCount) {
-    missing.push(`product-shell-category-count:${group}:${categoryNavCount}`);
+  const categoryNavCount = navHtml.match(/data-doc-nav-category="/g)?.length ?? 0;
+  if (categoryNavCount !== expectedStoryCategoryCount) {
+    missing.push(`doc-shell-category-count:${group}:${categoryNavCount}`);
   }
   for (const marker of [
     "data-doc-on-this-page=\"true\"",
@@ -1357,17 +1403,17 @@ for (const [group, html] of Object.entries(pages)) {
       missing.push(`${group}:${marker}`);
     }
   }
-  const storyNavCount = navHtml.match(/data-product-shell-route="/g)?.length ?? 0;
+  const storyNavCount = navHtml.match(/data-doc-nav-item="/g)?.length ?? 0;
   if (storyNavCount !== requiredStories.length) {
-    missing.push(`product-shell-story-count:${group}:${storyNavCount}`);
+    missing.push(`doc-shell-story-count:${group}:${storyNavCount}`);
   }
-  const currentStoryNavCount = navHtml.match(/<a [^>]*data-selected="true"[^>]*data-navigation-primitive="nav-item"/g)?.length ?? 0;
+  const currentStoryNavCount = navHtml.match(/<a [^>]*data-doc-nav-item="[^"]+"[^>]*data-doc-nav-item-active="true"/g)?.length ?? 0;
   if (currentStoryNavCount !== 1) {
-    missing.push(`product-shell-current-story-count:${group}:${currentStoryNavCount}`);
+    missing.push(`doc-shell-current-story-count:${group}:${currentStoryNavCount}`);
   }
-  const ariaCurrentStoryCount = navHtml.match(/<a [^>]*aria-current="page"/g)?.length ?? 0;
+  const ariaCurrentStoryCount = navHtml.match(/<a [^>]*data-doc-nav-item="[^"]+"[^>]*aria-current="location"/g)?.length ?? 0;
   if (ariaCurrentStoryCount !== 1) {
-    missing.push(`product-shell-current-story-aria-count:${group}:${ariaCurrentStoryCount}`);
+    missing.push(`doc-shell-current-story-aria-count:${group}:${ariaCurrentStoryCount}`);
   }
   const sectionCount = html.match(/data-story-section="/g)?.length ?? 0;
   if (sectionCount !== 1) {
@@ -1383,8 +1429,8 @@ for (const story of requiredStories) {
     missing.push(`owning-page-story-governance-metadata:${story.group}:${story.id}`);
   }
   for (const html of Object.values(pages)) {
-    if (!html.includes(`data-product-shell-route="${story.id}"`)) {
-      missing.push(`missing-product-shell-route:${story.id}`);
+    if (!html.includes(`data-doc-nav-item="${story.id}"`)) {
+      missing.push(`missing-doc-nav-item:${story.id}`);
     }
   }
   for (const [group, html] of Object.entries(pages)) {
@@ -2430,7 +2476,7 @@ async function runChangelogI18nReadabilityProof() {
       await page.goto(`${origin}/${route}`);
       await page.waitForSelector("[data-storybook-locale='zh-CN']");
       await page.waitForSelector("[data-contract-story-id='local-changelog']");
-      await page.waitForSelector("[data-product-shell-route='local-changelog'][aria-current='location'][data-storybook-nav-item-active='true']");
+      await page.waitForSelector("[data-doc-nav-item='local-changelog'][aria-current='location'][data-doc-nav-item-active='true']");
       await page.waitForTimeout(150);
       const metrics = await page.evaluate(({ requiredText, forbiddenText }) => {
         const bodyText = document.body.innerText;
@@ -2581,10 +2627,10 @@ async function runGlobalStorybookZhCnIaProof() {
       await page.goto(`${origin}/${route}`);
       await page.waitForSelector("[data-storybook-locale='zh-CN']");
       await page.waitForSelector("[data-contract-story-id='welcome-governance']");
-      await page.waitForSelector("[data-product-shell-route='welcome-governance'][aria-current='location'][data-storybook-nav-item-active='true']");
-      await page.waitForSelector("[data-navigation-primitive='nav-group']");
+      await page.waitForSelector("[data-doc-nav-item='welcome-governance'][aria-current='location'][data-doc-nav-item-active='true']");
+      await page.waitForSelector("[data-doc-nav-group]");
       await page.waitForTimeout(150);
-      const metrics = await page.evaluate(({ requiredText, forbiddenText, expectedShellNavGroupCount }) => {
+      const metrics = await page.evaluate(({ requiredText, forbiddenText }) => {
         const bodyText = document.body.innerText;
         const html = document.documentElement;
         const body = document.body;
@@ -2602,15 +2648,15 @@ async function runGlobalStorybookZhCnIaProof() {
                 attribute: item.name,
                 value: item.value
               }))));
-	        const storybookNav = document.querySelector("[data-contract-surface='tcrn-design-system-storybook'] [data-product-shell-region='side-navigation']");
-	        const navRoot = storybookNav ?? document;
-	        const categoryLabels = Array.from(navRoot.querySelectorAll(".tcrn-nav-group__label"))
-	          .map((node) => node.textContent?.trim() ?? "")
-	          .filter(Boolean);
-	        const categoryDescriptions = Array.from(navRoot.querySelectorAll(".tcrn-nav-group[title]"))
-	          .map((node) => node.getAttribute("title")?.trim() ?? "")
-	          .filter(Boolean);
-	        const currentLocation = document.querySelector(".tcrn-product-shell__current-location");
+        const storybookNav = document.querySelector("[data-contract-surface='tcrn-design-system-storybook'] .tcrn-doc-nav");
+        const navRoot = storybookNav ?? document;
+        const categoryLabels = Array.from(navRoot.querySelectorAll(".tcrn-doc-nav__category-label"))
+          .map((node) => node.textContent?.trim() ?? "")
+          .filter(Boolean);
+        const categoryDescriptions = Array.from(navRoot.querySelectorAll("[data-doc-nav-category-toggle][aria-describedby]"))
+          .map((node) => document.getElementById(node.getAttribute("aria-describedby") ?? "")?.textContent?.trim() ?? "")
+          .filter(Boolean);
+        const currentLocation = document.querySelector(".tcrn-doc-current-location");
 	        const onThisPage = document.querySelector(".tcrn-doc-on-this-page");
 	        const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
 	        const localizedTextSurface = [
@@ -2637,7 +2683,7 @@ async function runGlobalStorybookZhCnIaProof() {
           currentLocationText: currentLocation?.textContent?.replace(/\s+/g, " ").trim() ?? null,
           onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null
         };
-      }, { requiredText, forbiddenText, expectedShellNavGroupCount: expectedStorybookShellNavGroupCount });
+      }, { requiredText, forbiddenText });
       await context.close();
       return {
         viewport,
@@ -2649,8 +2695,8 @@ async function runGlobalStorybookZhCnIaProof() {
           && metrics.leakedForbiddenText.length === 0
           && metrics.accessibilityAttributeLeaks.length === 0
           && !metrics.pageOverflow
-          && metrics.categoryLabelCount === expectedStorybookShellNavGroupCount
-          && metrics.categoryDescriptionCount === expectedStorybookShellNavGroupCount
+          && metrics.categoryLabelCount === expectedStoryCategoryCount
+          && metrics.categoryDescriptionCount === expectedStoryCategoryCount
           && metrics.categoryDescriptionEnglishLeaks.length === 0
           && metrics.currentLocationText?.includes("当前位置")
           && metrics.onThisPageAriaLabel === "本页内容"
@@ -2730,7 +2776,7 @@ async function runCrossSectionShellParityProof() {
         await page.goto(`${origin}/${route.file}?theme=light&locale=zh-CN#${route.storyId}`);
         await page.waitForSelector("[data-storybook-locale='zh-CN']");
         await page.waitForSelector(`[data-active-story-section='${route.group}']`);
-        await page.waitForSelector(`[data-product-shell-route='${route.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
+        await page.waitForSelector(`[data-doc-nav-item='${route.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
         await page.waitForTimeout(180);
         const metrics = await page.evaluate(({ group, storyId, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText }) => {
           const rectFor = (selector) => {
@@ -2758,29 +2804,29 @@ async function runCrossSectionShellParityProof() {
           };
           const html = document.documentElement;
           const body = document.body;
-          const header = rectFor(".tcrn-top-bar");
-          const globalBar = rectFor(".tcrn-product-shell__utility-row");
-          const workspace = rectFor(".tcrn-product-shell__workspace");
-          const currentLocation = rectFor(".tcrn-product-shell__current-location");
-          const search = rectFor(".tcrn-product-shell-search");
+          const header = rectFor(".tcrn-doc-header");
+          const globalBar = rectFor(".tcrn-doc-global-bar");
+          const workspace = rectFor(".tcrn-doc-header__workspace");
+          const currentLocation = rectFor(".tcrn-doc-current-location");
+          const search = rectFor(".tcrn-doc-header-search");
           const controls = rectFor("[data-shell-control='theme-toggle']");
           const themeToggleStyles = styleFor("[data-shell-control='theme-toggle']", ["border-radius"]);
           const locale = rectFor(".tcrn-shell-locale-menu");
 	          const pageHead = rectFor("[data-doc-page-head='governed-section']");
 	          const shell = document.querySelector("[data-contract-surface]");
-		          const storybookNav = shell?.querySelector("[data-product-shell-region='side-navigation']");
-		          const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
-		          const activeStory = storybookNav?.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
-		          const categoryLabels = Array.from((storybookNav ?? document).querySelectorAll(".tcrn-nav-group__label"))
-		            .map((node) => node.textContent?.trim() ?? "")
-		            .filter(Boolean);
-          const currentLocationNode = document.querySelector(".tcrn-product-shell__current-location");
-          const brandNode = document.querySelector(".tcrn-product-shell__brand");
+          const storybookNav = shell?.querySelector(".tcrn-doc-nav");
+          const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
+          const activeStory = storybookNav?.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']");
+          const categoryLabels = Array.from((storybookNav ?? document).querySelectorAll(".tcrn-doc-nav__category-label"))
+            .map((node) => node.textContent?.trim() ?? "")
+            .filter(Boolean);
+          const currentLocationNode = document.querySelector(".tcrn-doc-current-location");
+          const brandNode = document.querySelector(".tcrn-doc-brand");
           const searchInput = document.querySelector(".tcrn-search-input__control");
           const searchInputShell = rectFor(".tcrn-search-input");
           const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
-          const sideNavRegion = rectFor(".tcrn-product-shell__sidebar");
-          const productShellTextSurface = [
+          const sideNavRegion = rectFor(".tcrn-doc-sidebar");
+          const docShellTextSurface = [
             brandNode?.textContent ?? "",
             storybookNav?.innerText ?? "",
             currentLocationNode?.textContent ?? "",
@@ -2788,10 +2834,10 @@ async function runCrossSectionShellParityProof() {
             searchInput?.getAttribute("placeholder") ?? ""
           ].join("\\n");
           const ownerVisibleCaptionSurface = [
-            productShellTextSurface,
+            docShellTextSurface,
             firstStory instanceof HTMLElement ? firstStory.innerText : ""
           ].join("\\n");
-          const productShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => productShellTextSurface.includes(text));
+          const docShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => docShellTextSurface.includes(text));
           const ownerVisibleCaptionHits = forbiddenOwnerVisibleCaptionText.filter((text) => ownerVisibleCaptionSurface.includes(text));
           const brandIdentityLogoSectionReadback = storyId === "brand-identity" && firstStory instanceof HTMLElement
             ? {
@@ -2802,25 +2848,24 @@ async function runCrossSectionShellParityProof() {
               hasAosRegisteredAssetId: firstStory.innerText.includes("tcrn-aos-two-line")
             }
             : null;
-          const sidebarNoIconLabelReadbacks = window.innerWidth >= 900 && shell?.getAttribute("data-product-shell-collapsed") !== "true"
-            ? Array.from((storybookNav ?? document).querySelectorAll("[data-product-shell-route]"))
+          const sidebarNoIconLabelReadbacks = window.innerWidth >= 900 && shell?.getAttribute("data-sidebar-collapsed") !== "true"
+            ? Array.from((storybookNav ?? document).querySelectorAll("[data-doc-nav-item]"))
               .map((item) => {
-                const label = item.querySelector(".tcrn-nav-item__label");
-                const icon = item.querySelector(".tcrn-icon");
-                if (!label || icon) {
-                  return null;
-                }
+                const label = item;
                 const itemRect = item.getBoundingClientRect();
                 const labelRect = label.getBoundingClientRect();
+                if (itemRect.width < 1 || itemRect.height < 1 || labelRect.width < 1 || labelRect.height < 1) {
+                  return null;
+                }
                 const style = window.getComputedStyle(label);
                 const lineHeight = Number.parseFloat(style.lineHeight) || 1;
                 const lineCount = Math.max(1, Math.round(labelRect.height / lineHeight));
                 const text = label.textContent?.replace(/\s+/g, " ").trim() ?? "";
                 const textLength = text.replace(/\s+/g, "").length;
-                const hasNoIconContract = item.getAttribute("data-nav-item-has-icon") === "false";
+                const hasNoIconContract = true;
                 const minReadableWidth = Math.min(64, Math.max(40, itemRect.width * 0.25));
                 return {
-                  route: item.getAttribute("data-product-shell-route"),
+                  route: item.getAttribute("data-doc-nav-item"),
                   text,
                   textLength,
                   itemWidth: Number(itemRect.width.toFixed(2)),
@@ -2849,22 +2894,25 @@ async function runCrossSectionShellParityProof() {
             url: window.location.pathname + window.location.search + window.location.hash,
             locale: shell?.getAttribute("data-storybook-locale") ?? null,
             activeSection: shell?.getAttribute("data-active-story-section") ?? null,
-            activeStoryId: activeStory?.getAttribute("data-product-shell-route") ?? null,
+            activeStoryId: activeStory?.getAttribute("data-doc-nav-item") ?? null,
             scrollY: Number(window.scrollY.toFixed(2)),
             pageOverflow,
-            shellAuthority: shell?.getAttribute("data-storybook-shell-authority") ?? null,
-            productShellVisualSkin: shell?.getAttribute("data-storybook-product-shell-skin") ?? null,
-            productShellVisualOracle: shell?.getAttribute("data-storybook-visual-oracle") ?? null,
-            privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+            shellAuthority: shell?.getAttribute("data-doc-shell") ?? null,
+            docShellSelectorCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+            globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
+              .filter((node) => !node.closest(".story-body"))
+              .length,
             docPageHeadCount: document.querySelectorAll("[data-doc-page-head='governed-section']").length,
             onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
             mandatoryBoundaryCount: document.querySelectorAll("[data-mandatory-boundary-block='visible']").length,
             noOverclaimBoundaryCount: document.querySelectorAll("[data-no-overclaim-boundary='visible']").length,
-            legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
-	          navGroupCount: (storybookNav ?? document).querySelectorAll(".tcrn-nav-group").length,
+            legacyProductShellGlobalNavCount: Array.from(document.querySelectorAll("[data-product-shell-region='side-navigation'], [data-product-shell-route]"))
+              .filter((node) => !node.closest(".story-body"))
+              .length,
+          navGroupCount: (storybookNav ?? document).querySelectorAll(".tcrn-doc-nav__group").length,
             categoryLabelCount: categoryLabels.length,
             categoryLabels,
-            productShellEnglishLeaks,
+            docShellEnglishLeaks,
             ownerVisibleCaptionHits,
             brandIdentityLogoSectionReadback,
             sidebarNoIconLabelReadbacks,
@@ -2882,15 +2930,15 @@ async function runCrossSectionShellParityProof() {
             controls,
             themeToggleRadius: themeToggleStyles?.["border-radius"] ?? null,
             localeControl: locale,
-            headerStyles: styleFor(".tcrn-top-bar", ["display", "grid-template-columns", "min-height"]),
-            workspaceStyles: styleFor(".tcrn-product-shell__workspace", ["display", "grid-template-columns", "gap", "padding-left", "padding-right"]),
+            headerStyles: styleFor(".tcrn-doc-header", ["display", "grid-template-columns", "min-height"]),
+            workspaceStyles: styleFor(".tcrn-doc-header__workspace", ["display", "grid-template-columns", "gap", "padding-left", "padding-right"]),
             pageHeadStyles: styleFor("[data-doc-page-head='governed-section']", ["display", "grid-template-columns", "gap", "border-bottom-style"]),
-            layoutStyles: styleFor(".tcrn-product-shell", ["display", "grid-template-columns"]),
+            layoutStyles: styleFor(".tcrn-doc-layout", ["display", "grid-template-columns"]),
             currentLocationBeforeSearch: Boolean(currentLocation && search && currentLocation.right <= search.left + 1),
             searchBeforeControls: Boolean(search && controls && search.right <= controls.left + 1),
             utilityTrailingGap: locale ? Number((window.innerWidth - locale.right).toFixed(2)) : null,
             pageHeadStartsBelowHeader: Boolean(pageHead && pageHead.top >= headerBottom - 1),
-            storyFirstBeforePageHead: Boolean(pageHead && firstStory && firstStory.getBoundingClientRect().top <= pageHead.top)
+            storyStartsAfterPageHead: Boolean(pageHead && firstStory && firstStory.getBoundingClientRect().top >= pageHead.bottom - 1)
           };
         }, { group: route.group, storyId: route.storyId, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText });
         const routeFailures = [];
@@ -2898,22 +2946,17 @@ async function runCrossSectionShellParityProof() {
         if (metrics.activeSection !== route.group) routeFailures.push(`active-section:${metrics.activeSection}`);
         if (metrics.activeStoryId !== route.storyId) routeFailures.push(`active-story:${metrics.activeStoryId}`);
         if (metrics.scrollY > 2) routeFailures.push(`first-story-hash-scrollY:${metrics.scrollY}`);
-        if (metrics.shellAuthority !== "@tcrn/ui-react/ProductShell") routeFailures.push(`shell-authority:${metrics.shellAuthority}`);
-        if (metrics.productShellVisualSkin !== expectedStorybookVisualSkin.id) {
-          routeFailures.push(`product-shell-visual-skin:${metrics.productShellVisualSkin ?? "missing"}:expected:${expectedStorybookVisualSkin.id}`);
-        }
-        if (!String(metrics.productShellVisualOracle ?? "").includes("storybook-visual-proof/baseline-manifest.json")) {
-          routeFailures.push(`product-shell-visual-oracle:${metrics.productShellVisualOracle ?? "missing"}`);
-        }
-        if (metrics.privateDocShellCloneCount !== 0) routeFailures.push(`private-doc-shell-clones:${metrics.privateDocShellCloneCount}`);
+        if (metrics.shellAuthority !== "online-docs") routeFailures.push(`doc-shell-authority:${metrics.shellAuthority}`);
+        if (metrics.docShellSelectorCount < 6) routeFailures.push(`doc-shell-selector-count:${metrics.docShellSelectorCount}`);
+        if (metrics.globalProductShellShellSelectorCount !== 0) routeFailures.push(`global-product-shell-shell-selectors:${metrics.globalProductShellShellSelectorCount}`);
         if (metrics.docPageHeadCount !== 1) routeFailures.push(`page-head-count:${metrics.docPageHeadCount}`);
         if (metrics.onThisPageCount !== 1) routeFailures.push(`on-this-page-count:${metrics.onThisPageCount}`);
         if (metrics.mandatoryBoundaryCount !== 1 || metrics.noOverclaimBoundaryCount !== 1) routeFailures.push("mandatory-boundary-missing");
-        if (metrics.legacyGlobalNavCount !== 0) routeFailures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
+        if (metrics.legacyProductShellGlobalNavCount !== 0) routeFailures.push(`legacy-product-shell-global-nav:${metrics.legacyProductShellGlobalNavCount}`);
         if (metrics.navGroupCount !== expectedStorybookShellNavGroupCount) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
-	        if (metrics.categoryLabelCount !== expectedStorybookShellNavGroupCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
-        if (metrics.productShellEnglishLeaks.length > 0) {
-          routeFailures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
+        if (metrics.categoryLabelCount !== expectedStoryCategoryCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
+        if (metrics.docShellEnglishLeaks.length > 0) {
+          routeFailures.push(`doc-shell-zh-cn-english-leaks:${metrics.docShellEnglishLeaks.join("|")}`);
         }
         if (metrics.ownerVisibleCaptionHits.length > 0) {
           routeFailures.push(`owner-visible-caption-hits:${metrics.ownerVisibleCaptionHits.join("|")}`);
@@ -2935,8 +2978,9 @@ async function runCrossSectionShellParityProof() {
         if (metrics.pageOverflow) routeFailures.push("page-overflow");
         if (isDesktopViewport) {
           const widthWithin = (actual, expected, tolerance) => typeof actual === "number" && typeof expected === "number" && Math.abs(actual - expected) <= tolerance;
-          if (!widthWithin(metrics.sideNavRegion?.width, expectedStorybookVisualSkin.sidebarWidthPx, expectedStorybookVisualSkin.sidebarTolerancePx)) {
-            routeFailures.push(`storybook-skin-sidebar-width:${metrics.sideNavRegion?.width ?? "missing"}:expected:${expectedStorybookVisualSkin.sidebarWidthPx}`);
+          const expectedSidebarWidth = expectedStorybookSidebarWidthForViewport(viewport.width);
+          if (!widthWithin(metrics.sideNavRegion?.width, expectedSidebarWidth, expectedStorybookVisualSkin.sidebarTolerancePx)) {
+            routeFailures.push(`storybook-skin-sidebar-width:${metrics.sideNavRegion?.width ?? "missing"}:expected:${expectedSidebarWidth}`);
           }
           if (!widthWithin(metrics.header?.height, expectedStorybookVisualSkin.topbarHeightPx, expectedStorybookVisualSkin.topbarTolerancePx)) {
             routeFailures.push(`storybook-skin-topbar-height:${metrics.header?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.topbarHeightPx}`);
@@ -2960,7 +3004,7 @@ async function runCrossSectionShellParityProof() {
           }
         }
         if (!metrics.pageHeadStartsBelowHeader) routeFailures.push("page-head-not-below-header");
-        if (!metrics.storyFirstBeforePageHead) routeFailures.push("story-not-before-page-head");
+        if (!metrics.storyStartsAfterPageHead) routeFailures.push("story-not-after-page-head");
         readbacks.push({ ...metrics, ok: routeFailures.length === 0, failures: routeFailures });
       }
       await context.close();

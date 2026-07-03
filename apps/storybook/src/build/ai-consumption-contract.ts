@@ -3,7 +3,7 @@ import {
   consumerVisualStyleContract,
   foundationVisualStandards,
   foundationVisualStandardsReadback,
-  productShellVisualOracle
+  storybookDocShellVisualOracle
 } from "./foundation-visual-standards.js";
 
 export const aiConsumptionContract = {
@@ -278,7 +278,7 @@ export const aiConsumptionContract = {
   },
   foundationVisualStandards: foundationVisualStandardsReadback,
   foundationVisualStandardCategories: foundationVisualStandards,
-  productShellVisualOracle,
+  storybookDocShellVisualOracle,
   consumerVisualStyleContract,
   visualEquivalenceLevels: [
     "same_package_version",
@@ -821,7 +821,7 @@ export const aiConsumptionContract = {
     "consumer_visual_style_contract_receipt",
     "theme_mode_receipt",
     "storybook_shell_control_receipt",
-    "product_shell_visual_oracle_skin_receipt",
+    "storybook_doc_shell_visual_oracle_receipt",
     "locale_popup_dismissal_receipt",
     "side_navigation_collapse_receipt",
     "work_management_static_pattern_receipt",
@@ -873,19 +873,19 @@ export const aiConsumptionContract = {
     "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Work Management surfaces including RelationshipChip, MachineToken, WorkManagementSubnav, WorkBoard, WorkHierarchy, GatePipeline, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
   workManagementPatternDisposition:
     "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation, relationship vocabulary, board lanes, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
-  storybookMergedShellAuthorityDisposition:
-    "The Storybook documentation frontend must render the merged shell through @tcrn/ui-react ProductShell and package CSS. Storybook may own ProductShell-scoped visual skin variables/overrides that preserve the confirmed Storybook presentation, plus content slots, static story sections, anchors, search index data, proof pages, and chapter paging content, but it must not keep an independent tcrn-doc-shell, tcrn-doc-header, tcrn-doc-nav, tcrn-doc-global-bar, or tcrn-doc-header-search visual shell. Shell/header/sidebar/search/theme/locale/collapse behavior remains ProductShell-owned; private Storybook shell clones and package-looking global control selectors are forbidden.",
+  storybookDocShellAuthorityDisposition:
+    "The Storybook documentation frontend must render the original Storybook-owned doc shell composition. Global Storybook pages use data-doc-shell='online-docs', tcrn-doc-header, tcrn-doc-global-bar, tcrn-doc-sidebar, tcrn-doc-nav, category navigation, and package-backed control primitives such as SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, and ShellBrandLockup. ProductShell remains documented and package-backed for component examples, AOS visual instances, and product consumer rules, but it is not the global Storybook shell authority.",
   tokenConsumptionDisposition:
     "Product implementations must use Design System tokens, reduced-motion rules, and accessibility states before custom CSS.",
   themeModeDisposition:
     "Product implementations must preserve semantic token behavior across light and dark Storybook shell modes and prove both modes before claiming Design System compliance.",
-  storybookProductShellControlContract: {
+  storybookDocShellControlContract: {
     implementationBoundary:
-      "The Storybook shell is @tcrn/ui-react ProductShell with the confirmed-storybook-visual-v1 ProductShell skin. It consumes package-backed ProductLogo/ShellBrandLockup, ProductShellSearch/SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, NavGroup, NavItem, and ProductShell CSS; private tcrn-doc-* visual shell selectors are not admitted as shell/header/sidebar/control authority.",
+      "The global Storybook shell is a Storybook-owned doc shell using registered DS primitives and selectors: data-doc-shell='online-docs', tcrn-doc-header, tcrn-doc-global-bar, tcrn-doc-sidebar, tcrn-doc-nav, data-doc-nav-item, and data-doc-nav-category-toggle. ProductShell selectors must not replace the global page shell, though ProductShell remains valid inside component/product examples.",
     themeToggle:
       "The Storybook docs shell uses one compact circular icon-only theme toggle that reflects the current mode and toggles only on explicit activation.",
     visualSkin:
-      "The Storybook ProductShell skin is measured against the committed local visual oracle docs/verification/storybook-visual-proof/baseline-manifest.json regenerated by the owner-rejection repair route from source head 93af55545784d4a1f63b667c508859c13fc1054a plus source-equivalence digest readback. Browser proof must assert exact canonical screenshot parity, desktop sidebar width, topbar height, compact and focused search width/border, trailing theme/locale geometry, no private doc-shell clones, no zh-CN shell leaks, and mobile no-overflow posture.",
+      "The Storybook doc-shell skin is measured against the committed local visual oracle docs/verification/storybook-visual-proof/baseline-manifest.json regenerated by the original shell restoration route. Browser proof must assert doc-shell selector authority, category navigation, sidebar scrollability, desktop sidebar/header/search geometry, trailing theme/locale geometry, no global ProductShell shell replacement, no zh-CN shell leaks, and mobile no-overflow posture.",
     themeTransition:
       "Theme changes must use one whole-page transition through the root View Transition API when available, with a single full-page fallback wash; sidebar, header, and content must not darken as independent sections.",
     localeSelector:

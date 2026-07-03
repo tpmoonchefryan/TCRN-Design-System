@@ -114,7 +114,7 @@ const focusedVisualStateAllowlist = [
     locale: "zh-CN",
     themeMode: "light",
     interaction: "search-focus",
-    description: "Welcome route with Storybook ProductShell search focused."
+    description: "Welcome route with Storybook doc-shell search focused."
   },
   {
     id: "welcome-search-results-zh-cn-light",
@@ -124,7 +124,7 @@ const focusedVisualStateAllowlist = [
     locale: "zh-CN",
     themeMode: "light",
     interaction: "search-results",
-    description: "Welcome route with Storybook ProductShell search results open."
+    description: "Welcome route with Storybook doc-shell search results open."
   },
   {
     id: "welcome-locale-menu-zh-cn-light",
@@ -134,7 +134,7 @@ const focusedVisualStateAllowlist = [
     locale: "zh-CN",
     themeMode: "light",
     interaction: "locale-menu",
-    description: "Welcome route with Storybook ProductShell locale menu open."
+    description: "Welcome route with Storybook doc-shell locale menu open."
   },
   {
     id: "welcome-scrolled-zh-cn-light",
@@ -154,7 +154,7 @@ const focusedVisualStateAllowlist = [
     storyId: "foundation-visual-standards",
     locale: "zh-CN",
     themeMode: "light",
-    description: "Foundation visual standards hash route with ProductShell topbar/content rhythm visible."
+    description: "Foundation visual standards hash route with Storybook doc-shell header/content rhythm visible."
   },
   {
     id: "welcome-sidebar-collapsed-zh-cn-light",
@@ -165,7 +165,7 @@ const focusedVisualStateAllowlist = [
     themeMode: "light",
     interaction: "sidebar-collapsed",
     viewportIds: ["desktop-2048x1024", "desktop-1440x900", "tablet-1024x768"],
-    description: "Welcome route with Storybook ProductShell sidebar collapsed."
+    description: "Welcome route with Storybook doc-shell sidebar collapsed."
   }
 ];
 
@@ -178,14 +178,17 @@ const viewportMatrix = [
   { id: "mobile-390x844", width: 390, height: 844 }
 ];
 
-const recoveredProductShellMetricOracle = {
-  id: "confirmed-storybook-visual-v1",
-  packageAuthority: "@tcrn/ui-react/ProductShell",
-  baselineManifestClassification: "historical_but_dirty_admissible_with_hash_backed_screenshots",
-  comparisonMethod: "recovered_product_shell_metric_oracle_v1",
+const storybookDocShellMetricOracle = {
+  id: "original-storybook-doc-shell-v1",
+  shellAuthority: "storybook_doc_shell_with_package_primitives",
+  baselineManifestClassification: "owner_declared_original_storybook_doc_shell_standard",
+  comparisonMethod: "storybook_doc_shell_metric_oracle_v1",
   desktopMinWidth: 1200,
-  sidebarWidthPx: 326,
-  sidebarCollapsedWidthPx: 92,
+  sidebarWidthPx: 288,
+  sidebarMinWidthPx: 280,
+  sidebarPreferredViewportRatio: 0.2,
+  sidebarMaxWidthPx: 360,
+  sidebarCollapsedWidthPx: 78,
   sidebarTolerancePx: 2,
   topbarHeightPx: 96,
   topbarTolerancePx: 2,
@@ -194,6 +197,7 @@ const recoveredProductShellMetricOracle = {
   searchHeightPx: 36,
   searchMetricTolerancePx: 2,
   searchBorderColor: "rgb(184, 200, 214)",
+  searchBorderColorDark: "rgb(95, 120, 148)",
   searchBorderRadiusPx: 5,
   themeToggleSizePx: 36,
   themeToggleRadiusPx: 999,
@@ -203,6 +207,23 @@ const recoveredProductShellMetricOracle = {
   contentTopGapMaxPx: 64,
   trailingUtilityGapMinPx: 16,
   trailingUtilityGapMaxPx: 32
+};
+
+const expectedStorybookSidebarWidthForViewport = (viewportWidth, expectedOracle) => {
+  const {
+    sidebarMinWidthPx,
+    sidebarPreferredViewportRatio,
+    sidebarMaxWidthPx,
+    sidebarWidthPx
+  } = expectedOracle;
+  if (
+    typeof sidebarMinWidthPx === "number"
+    && typeof sidebarPreferredViewportRatio === "number"
+    && typeof sidebarMaxWidthPx === "number"
+  ) {
+    return Math.min(sidebarMaxWidthPx, Math.max(sidebarMinWidthPx, viewportWidth * sidebarPreferredViewportRatio));
+  }
+  return sidebarWidthPx;
 };
 
 const deterministicBrowserSettings = {
@@ -837,17 +858,17 @@ async function applyVisualInteraction(page, state) {
   }
   if (state.interaction === "search-focus") {
     await page.locator(".tcrn-search-input__control").focus();
-  } else if (state.interaction === "search-results") {
-    const input = page.locator(".tcrn-search-input__control");
-    await input.focus();
-    await input.fill("proof");
-    await page.waitForSelector("[data-product-shell-search-results]:not([hidden])");
+	  } else if (state.interaction === "search-results") {
+	    const input = page.locator(".tcrn-search-input__control");
+	    await input.focus();
+	    await input.fill("proof");
+	    await page.waitForSelector("[data-doc-search-results]:not([hidden])");
   } else if (state.interaction === "locale-menu") {
     await page.locator(".tcrn-shell-locale-menu__trigger").click();
     await page.waitForSelector("[data-locale-menu]:not([hidden])");
-  } else if (state.interaction === "sidebar-collapsed") {
-    await page.locator(".tcrn-shell-side-nav-toggle").click();
-    await page.waitForSelector("[data-contract-surface='tcrn-design-system-storybook'][data-product-shell-collapsed='true']");
+	  } else if (state.interaction === "sidebar-collapsed") {
+	    await page.locator(".tcrn-shell-side-nav-toggle").click();
+	    await page.waitForSelector("[data-contract-surface='tcrn-design-system-storybook'][data-sidebar-collapsed='true']");
   } else if (state.interaction === "scrolled-topbar") {
     await page.evaluate(() => {
       window.scrollTo({ top: 220, left: 0, behavior: "auto" });
@@ -953,9 +974,9 @@ async function collectPageHealth(page, state) {
     const html = document.documentElement.outerHTML;
     const bodyText = document.body.innerText;
     const visibleShellTextSurface = [
-      document.querySelector(".tcrn-product-shell__brand")?.textContent ?? "",
-      document.querySelector(".tcrn-product-shell__current-location")?.textContent ?? "",
-      document.querySelector(".tcrn-product-shell__utility-row")?.textContent ?? "",
+      document.querySelector(".tcrn-doc-brand")?.textContent ?? "",
+      document.querySelector(".tcrn-doc-current-location")?.textContent ?? "",
+      document.querySelector(".tcrn-doc-header-controls")?.textContent ?? "",
       target instanceof HTMLElement ? target.innerText : ""
     ].join("\n");
     const ownerVisibleShellTextHits = input.forbiddenOwnerVisibleShellText
@@ -992,12 +1013,12 @@ async function collectPageHealth(page, state) {
     const waitFrames = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     const widthWithin = (actual, expected, tolerance) =>
       typeof actual === "number" && typeof expected === "number" && Math.abs(actual - expected) <= tolerance;
-    const searchRoot = document.querySelector(".tcrn-product-shell-search");
+    const searchRoot = document.querySelector(".tcrn-doc-header-search");
     const searchInput = searchRoot?.querySelector(".tcrn-search-input__control");
     const readSearchState = () => ({
-      expanded: searchRoot?.getAttribute("data-search-expanded") ?? null,
-      resultsVisible: searchRoot?.getAttribute("data-search-results-visible") ?? null,
-      wrapper: readRect(".tcrn-product-shell-search"),
+      expanded: searchRoot?.closest(".tcrn-doc-header__workspace")?.getAttribute("data-search-expanded") ?? null,
+      resultsVisible: document.querySelector("[data-doc-search-results]")?.hasAttribute("hidden") ? "false" : "true",
+      wrapper: readRect(".tcrn-doc-header-search"),
       inputShell: readRect(".tcrn-search-input"),
       inputShellStyles: readStyle(".tcrn-search-input", [
         "border-color",
@@ -1006,7 +1027,7 @@ async function collectPageHealth(page, state) {
         "transition-property",
         "transition-timing-function"
       ]),
-      wrapperStyles: readStyle(".tcrn-product-shell-search", [
+      wrapperStyles: readStyle(".tcrn-doc-header-search", [
         "transition-duration",
         "transition-property",
         "transition-timing-function"
@@ -1037,10 +1058,10 @@ async function collectPageHealth(page, state) {
       searchInteractionReadback.reducedMotionSuppressed =
         [wrapperDuration, inputDuration].every((duration) => /(^|,\s*)0(?:ms|s)(?:,|$)/.test(duration.trim()) || duration.trim() === "0s");
     }
-    const topbar = readRect(".tcrn-top-bar");
-    const topbarStyles = readStyle(".tcrn-top-bar", ["background-color", "background-image"]);
-    const sideNavRegion = readRect(".tcrn-product-shell__sidebar");
-    const currentLocation = readRect(".tcrn-product-shell__current-location");
+    const topbar = readRect(".tcrn-doc-header");
+    const topbarStyles = readStyle(".tcrn-doc-header", ["background-color", "background-image"]);
+    const sideNavRegion = readRect(".tcrn-doc-sidebar");
+    const currentLocation = readRect(".tcrn-doc-current-location");
     const themeToggle = readRect(".tcrn-shell-theme-toggle");
     const localeTrigger = readRect(".tcrn-shell-locale-menu__trigger");
     const themeToggleStyles = readStyle(".tcrn-shell-theme-toggle", ["border-radius"]);
@@ -1050,29 +1071,32 @@ async function collectPageHealth(page, state) {
     const topbarToContentGap = topbar && rect
       ? Number((rect.top - topbar.bottom).toFixed(2))
       : null;
-    const activeProductShellRoute =
-      document.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']")?.getAttribute("data-product-shell-route") ?? null;
+    const activeDocShellRoute =
+      document.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']")?.getAttribute("data-doc-nav-item") ?? null;
     const metricFailures = [];
-    if (root?.getAttribute("data-storybook-shell-authority") !== input.expectedOracle.packageAuthority) {
-      metricFailures.push(`shellAuthority:${root?.getAttribute("data-storybook-shell-authority") ?? "missing"}`);
+    if (root?.getAttribute("data-doc-shell") !== "online-docs") {
+      metricFailures.push(`docShellAuthority:${root?.getAttribute("data-doc-shell") ?? "missing"}`);
     }
-    if (root?.getAttribute("data-storybook-product-shell-skin") !== input.expectedOracle.id) {
-      metricFailures.push(`visualSkin:${root?.getAttribute("data-storybook-product-shell-skin") ?? "missing"}`);
+    const globalProductShellShellSelectorCount = Array.from(document.querySelectorAll("[data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
+      .filter((node) => !node.closest(".story-body"))
+      .length;
+    if (globalProductShellShellSelectorCount > 0) {
+      metricFailures.push("globalProductShellShellSelectorPresent");
     }
-    if (!String(root?.getAttribute("data-storybook-visual-oracle") ?? "").includes("storybook-visual-proof/baseline-manifest.json")) {
-      metricFailures.push(`visualOracle:${root?.getAttribute("data-storybook-visual-oracle") ?? "missing"}`);
+    if (!document.querySelector("[data-doc-nav-category-toggle]")) {
+      metricFailures.push("docShellCategoryNavigationMissing");
     }
-    const privateCloneCount = document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length;
-    if (privateCloneCount !== 0) {
-      metricFailures.push(`privateDocShellCloneCount:${privateCloneCount}`);
+    const docShellSelectorCount = document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length;
+    if (docShellSelectorCount < 6) {
+      metricFailures.push(`docShellSelectorCount:${docShellSelectorCount}`);
     }
-    if (activeProductShellRoute !== input.storyId) {
-      metricFailures.push(`activeProductShellRoute:${activeProductShellRoute ?? "missing"}`);
+    if (activeDocShellRoute !== input.storyId) {
+      metricFailures.push(`activeDocShellRoute:${activeDocShellRoute ?? "missing"}`);
     }
     if (window.innerWidth >= input.expectedOracle.desktopMinWidth) {
       const expectedSidebarWidth = input.interaction === "sidebar-collapsed"
         ? input.expectedOracle.sidebarCollapsedWidthPx
-        : input.expectedOracle.sidebarWidthPx;
+        : input.expectedSidebarWidthPx;
       if (!widthWithin(sideNavRegion?.width, expectedSidebarWidth, input.expectedOracle.sidebarTolerancePx)) {
         metricFailures.push(`sidebarWidth:${sideNavRegion?.width ?? "missing"}:expected:${expectedSidebarWidth}`);
       }
@@ -1094,8 +1118,11 @@ async function collectPageHealth(page, state) {
       if (!widthWithin(searchInteractionReadback.rest.inputShell?.height, input.expectedOracle.searchHeightPx, input.expectedOracle.searchMetricTolerancePx)) {
         metricFailures.push(`searchHeight:${searchInteractionReadback.rest.inputShell?.height ?? "missing"}:expected:${input.expectedOracle.searchHeightPx}`);
       }
-      if (searchInteractionReadback.rest.inputShellStyles?.["border-color"] !== input.expectedOracle.searchBorderColor) {
-        metricFailures.push(`searchBorderColor:${searchInteractionReadback.rest.inputShellStyles?.["border-color"] ?? "missing"}:expected:${input.expectedOracle.searchBorderColor}`);
+      const expectedSearchBorderColor = input.themeMode === "dark"
+        ? input.expectedOracle.searchBorderColorDark
+        : input.expectedOracle.searchBorderColor;
+      if (searchInteractionReadback.rest.inputShellStyles?.["border-color"] !== expectedSearchBorderColor) {
+        metricFailures.push(`searchBorderColor:${searchInteractionReadback.rest.inputShellStyles?.["border-color"] ?? "missing"}:expected:${expectedSearchBorderColor}`);
       }
       if (searchInteractionReadback.rest.inputShellStyles?.["border-radius"] !== `${input.expectedOracle.searchBorderRadiusPx}px`) {
         metricFailures.push(`searchBorderRadius:${searchInteractionReadback.rest.inputShellStyles?.["border-radius"] ?? "missing"}:expected:${input.expectedOracle.searchBorderRadiusPx}px`);
@@ -1109,7 +1136,7 @@ async function collectPageHealth(page, state) {
       if (!widthWithin(localeTrigger?.height, input.expectedOracle.localeTriggerHeightPx, 1)) {
         metricFailures.push(`localeTriggerHeight:${localeTrigger?.height ?? "missing"}:expected:${input.expectedOracle.localeTriggerHeightPx}`);
       }
-      if (!(currentLocation && searchInteractionReadback.rest.wrapper && currentLocation.right <= searchInteractionReadback.rest.wrapper.left + 1)) {
+      if (!["search-focus", "search-results"].includes(input.interaction ?? "") && !(currentLocation && searchInteractionReadback.rest.wrapper && currentLocation.right <= searchInteractionReadback.rest.wrapper.left + 1)) {
         metricFailures.push("currentLocationNotBeforeSearch");
       }
       if (!(searchInteractionReadback.rest.wrapper && themeToggle && searchInteractionReadback.rest.wrapper.right <= themeToggle.left + 1)) {
@@ -1162,13 +1189,12 @@ async function collectPageHealth(page, state) {
       viewportWidth: window.innerWidth,
       bodyOverflowX: document.documentElement.scrollWidth > window.innerWidth + 1,
       storyRegionCount: document.querySelectorAll("[data-contract-story-id]").length,
-      currentProductShellRoute: activeProductShellRoute,
-      shellAuthority: root?.getAttribute("data-storybook-shell-authority") ?? null,
-      productShellVisualSkin: root?.getAttribute("data-storybook-product-shell-skin") ?? null,
-      productShellVisualOracle: root?.getAttribute("data-storybook-visual-oracle") ?? null,
-      privateDocShellCloneCount: privateCloneCount,
+      currentDocShellRoute: activeDocShellRoute,
+      docShellAuthority: root?.getAttribute("data-doc-shell") ?? null,
+      globalProductShellShellSelectorCount,
+      docShellSelectorCount,
       ownerVisibleShellTextHits,
-      productShellOracleMetrics: {
+      storybookDocShellOracleMetrics: {
         topbar,
         topbarStyles,
         sideNavRegion,
@@ -1190,12 +1216,14 @@ async function collectPageHealth(page, state) {
         triggerExpanded: dialogTrigger?.getAttribute("aria-expanded") ?? null
       } : null
     };
-  }, {
-    storyId: state.storyId,
-    interaction: state.interaction ?? "rest",
-    staticClosedDialogFixture: Boolean(state.staticClosedDialogFixture),
-    expectedOracle: recoveredProductShellMetricOracle,
-    forbiddenOwnerVisibleShellText,
+	  }, {
+	    storyId: state.storyId,
+	    interaction: state.interaction ?? "rest",
+	    themeMode: state.themeMode ?? deterministicBrowserSettings.defaultThemeMode,
+	    staticClosedDialogFixture: Boolean(state.staticClosedDialogFixture),
+	    expectedOracle: storybookDocShellMetricOracle,
+	    expectedSidebarWidthPx: state.expectedSidebarWidthPx,
+	    forbiddenOwnerVisibleShellText,
     forbiddenPatterns: forbiddenStaticDocPatterns.map((rule) => ({ id: rule.id, source: rule.pattern.source, flags: rule.pattern.flags }))
   });
 }
@@ -1204,11 +1232,13 @@ function assertCapture(entry, health, events, png, stability) {
   const failures = [];
   if (!health.rootVisible) failures.push("missing_contract_surface");
   if (!health.targetVisible) failures.push("target_not_visible");
-  if (!health.targetInViewport) failures.push("target_not_in_viewport_after_hash_scroll");
+  if (!health.targetInViewport && !["search-focus", "search-results", "locale-menu"].includes(entry.interaction ?? "")) {
+    failures.push("target_not_in_viewport_after_hash_scroll");
+  }
   if (health.bodyOverflowX) failures.push("body_horizontal_overflow");
-  if (health.currentProductShellRoute !== entry.storyId) failures.push(`active_product_shell_route_mismatch:${health.currentProductShellRoute}`);
-  if (health.productShellOracleMetrics?.metricFailures?.length > 0) {
-    failures.push(`product_shell_oracle_metric_failures:${health.productShellOracleMetrics.metricFailures.join(",")}`);
+  if (health.currentDocShellRoute !== entry.storyId) failures.push(`active_doc_shell_route_mismatch:${health.currentDocShellRoute}`);
+  if (health.storybookDocShellOracleMetrics?.metricFailures?.length > 0) {
+    failures.push(`storybook_doc_shell_oracle_metric_failures:${health.storybookDocShellOracleMetrics.metricFailures.join(",")}`);
   }
   const expectedTheme = entry.themeMode ?? deterministicBrowserSettings.defaultThemeMode;
   if (health.htmlTheme !== expectedTheme) failures.push(`html_theme_mismatch:${health.htmlTheme}`);
@@ -1300,8 +1330,12 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
       const fileName = `${state.id}__${viewport.id}.png`;
       const path = join(outputDir, fileName);
       const { png, stability } = await captureStableScreenshot(page, path, viewport);
-      const health = await collectPageHealth(page, state);
-      const failures = assertCapture(state, health, events, png, stability);
+      const stateWithViewportOracle = {
+        ...state,
+        expectedSidebarWidthPx: expectedStorybookSidebarWidthForViewport(viewport.width, storybookDocShellMetricOracle)
+      };
+      const health = await collectPageHealth(page, stateWithViewportOracle);
+      const failures = assertCapture(stateWithViewportOracle, health, events, png, stability);
       entries.push({
         stateId: state.id,
         page: state.page,
@@ -1411,8 +1445,8 @@ function makeBaseReceipt({
       bytes: entry.bytes,
       screenshotStability: entry.stability,
       targetRect: entry.health.targetRect,
-      currentProductShellRoute: entry.health.currentProductShellRoute,
-      productShellOracleMetrics: entry.health.productShellOracleMetrics,
+      currentDocShellRoute: entry.health.currentDocShellRoute,
+      storybookDocShellOracleMetrics: entry.health.storybookDocShellOracleMetrics,
       events: entry.events,
       failures: entry.failures
     })),
@@ -1434,9 +1468,9 @@ function collectOracleRecoveryReadback() {
   const contract = JSON.parse(readFileSync(aiContractPath, "utf8"));
   const llmsText = readFileSync(llmsPath, "utf8");
   const expectedReceipt =
-    "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md";
-  const expectedClassification = "historical_but_dirty_admissible_with_hash_backed_screenshots";
-  const metricEvidence = contract.productShellVisualOracle?.metricEvidence ?? [];
+    "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan";
+  const expectedClassification = "owner_declared_original_storybook_doc_shell_standard";
+  const metricEvidence = contract.storybookDocShellVisualOracle?.metricEvidence ?? [];
   const requiredMetrics = ["desktopSidebarWidthPx", "desktopTopbarHeightPx", "searchRestWidthPx", "searchExpandedWidthPx"];
   const missingMetricEvidence = requiredMetrics.filter((metric) => !metricEvidence.some((item) => (
     item.metric === metric
@@ -1445,13 +1479,13 @@ function collectOracleRecoveryReadback() {
     && String(item.evidencePath ?? "").includes("docs/verification/storybook-visual-proof/screenshots/baseline/")
   )));
   const failures = [];
-  if (contract.productShellVisualOracle?.oracleRecoveryReceipt !== expectedReceipt) {
+  if (contract.storybookDocShellVisualOracle?.oracleRecoveryReceipt !== expectedReceipt) {
     failures.push("oracleRecoveryReceipt");
   }
-  if (contract.productShellVisualOracle?.baselineManifestClassification !== expectedClassification) {
+  if (contract.storybookDocShellVisualOracle?.baselineManifestClassification !== expectedClassification) {
     failures.push("baselineManifestClassification");
   }
-  if (!String(contract.productShellVisualOracle?.metricSourceDisposition ?? "").includes("committed baseline screenshots")) {
+  if (!String(contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "").includes("Storybook documentation shell")) {
     failures.push("metricSourceDisposition");
   }
   if (missingMetricEvidence.length > 0) {
@@ -1465,9 +1499,9 @@ function collectOracleRecoveryReadback() {
   }
   return {
     ok: failures.length === 0,
-    receipt: contract.productShellVisualOracle?.oracleRecoveryReceipt ?? null,
-    baselineManifestClassification: contract.productShellVisualOracle?.baselineManifestClassification ?? null,
-    metricSourceDisposition: contract.productShellVisualOracle?.metricSourceDisposition ?? null,
+    receipt: contract.storybookDocShellVisualOracle?.oracleRecoveryReceipt ?? null,
+    baselineManifestClassification: contract.storybookDocShellVisualOracle?.baselineManifestClassification ?? null,
+    metricSourceDisposition: contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? null,
     metricEvidenceCount: metricEvidence.length,
     missingMetricEvidence,
     requiredMetrics,

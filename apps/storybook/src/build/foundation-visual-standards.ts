@@ -24,60 +24,71 @@ export interface FoundationVisualStandard {
   missingStandardEscalation: string;
 }
 
-export const productShellVisualOracle = {
-  id: "confirmed-storybook-visual-v1",
+export const storybookDocShellVisualOracle = {
+  id: "original-storybook-doc-shell-v1",
   baselineManifest: "docs/verification/storybook-visual-proof/baseline-manifest.json",
   oracleRecoveryReceipt:
-    "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md",
-  baselineManifestClassification: "historical_but_dirty_admissible_with_hash_backed_screenshots",
+    "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan",
+  baselineManifestClassification: "owner_declared_original_storybook_doc_shell_standard",
   metricSourceDisposition:
-    "desktop sidebar, topbar, search rest, and search expanded metrics are retained only after the owner-rejection repair re-expressed the confirmed Storybook visual oracle through ProductShell-scoped Storybook skinning and regenerated committed baseline screenshots.",
-  sourceHead: "2a81366557d7dd781d7455736ac79e6b58cbde0d",
+    "desktop sidebar, header, search rest, and search expanded metrics are retained only after the owner-approved restoration re-expresses the pre-d1d1291 Storybook documentation shell through current Storybook-owned doc-shell selectors and committed proof receipts.",
+  sourceHead: "fc85adf8760d29e2ff76402ba13b477c4cb859b0",
   storybookRoute: "index.html#welcome-governance",
-  packageAuthority: "@tcrn/ui-react/ProductShell",
-  privateShellClonesForbidden: [
-    "data-doc-shell",
-    "tcrn-doc-header",
-    "tcrn-doc-nav",
-    "tcrn-doc-global-bar",
-    "tcrn-doc-header-search"
+  shellAuthority: "storybook_doc_shell_with_package_primitives",
+  packagePrimitives: [
+    "@tcrn/ui-react/ShellBrandLockup",
+    "@tcrn/ui-react/SearchInput",
+    "@tcrn/ui-react/ShellThemeToggle",
+    "@tcrn/ui-react/ShellLocaleMenu",
+    "@tcrn/ui-react/SideNavCollapseButton"
+  ],
+  globalProductShellSelectorsForbidden: [
+    "data-storybook-shell-authority",
+    "data-storybook-product-shell-skin",
+    "data-package-backed-product-shell-boundary",
+    "data-product-shell-region='side-navigation'",
+    "tcrn-product-shell__sidebar",
+    "tcrn-product-shell__main"
   ],
   metricEvidence: [
     {
       metric: "desktopSidebarWidthPx",
-      value: 326,
+      value: 360,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529",
-      extraction: "ProductShell visual-proof geometry: sidebar seam x=325, visual width=326px"
+      sha256: "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
+      extraction: "Restored Storybook doc-shell visual-proof geometry: responsive sidebar clamp(280px, 20vw, 360px), maxing at 360px in 2048px baseline and yielding 288px at 1440px smoke proof"
     },
     {
       metric: "desktopTopbarHeightPx",
       value: 96,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529",
-      extraction: "ProductShell visual-proof geometry: topbar/control band y=0..95, height=96px"
+      sha256: "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
+      extraction: "Storybook doc-shell visual-proof geometry: header/control band y=0..95, height=96px"
     },
     {
       metric: "searchRestWidthPx",
       value: 180,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529",
-      extraction: "ProductShell visual-proof geometry: compact search shell width=180px"
+      sha256: "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
+      extraction: "Storybook doc-shell visual-proof geometry: compact search shell width=180px"
     },
     {
       metric: "searchExpandedWidthPx",
       value: 320,
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png",
-      sha256: "1f691d095fdcd5963609f42c279da8e9422c50d53c1f123b50f5cbb2f2cc2e47",
-      extraction: "ProductShell visual-proof focused search state width=320px"
+      sha256: "f13c5c81f2074f6734afa075a69d42ce4e23ddc9d73fc4d4142994295a774a75",
+      extraction: "Storybook doc-shell visual-proof focused search state width=320px"
     }
   ],
   shellMetrics: {
-    desktopSidebarWidthPx: 326,
+    desktopSidebarWidthPx: 288,
+    desktopSidebarMinWidthPx: 280,
+    desktopSidebarPreferredViewportRatio: 0.2,
+    desktopSidebarMaxWidthPx: 360,
     desktopSidebarTolerancePx: 2,
     desktopTopbarHeightPx: 96,
     desktopTopbarTolerancePx: 2,
@@ -100,7 +111,7 @@ export const productShellVisualOracle = {
     "change-log.html?theme=light&locale=zh-CN#local-changelog"
   ],
   reducedMotionExpectation:
-    "ProductShell shell/search/theme/menu/control transitions and animations are suppressed or reduced to the DS-approved zero-duration fallback under prefers-reduced-motion."
+    "Storybook doc-shell search/theme/menu/control transitions and animations are suppressed or reduced to the DS-approved zero-duration fallback under prefers-reduced-motion."
 } as const;
 
 export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
@@ -115,10 +126,10 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     ],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#ai-consumption-contract"],
     authorityLevel: "storybook_visual_oracle",
-    readbackFields: ["authorityLevel", "packageAuthority", "visualOracleId", "baselineManifest", "forbiddenPrivateShellClones"],
+    readbackFields: ["authorityLevel", "shellAuthority", "visualOracleId", "baselineManifest", "forbiddenGlobalProductShellSelectors"],
     allowedConsumerInputs: ["route IA", "localized labels", "content slots", "DS-defined callbacks"],
     forbiddenConsumerOverrides: ["private shell clones", "package-equivalent local controls", "Storybook-only compliance claims"],
-    proofExpectations: ["ProductShell authority marker", "private doc-shell clone count is zero", "visual oracle id is present"],
+    proofExpectations: ["data-doc-shell online-docs marker", "global ProductShell shell selector count is zero", "doc-shell category navigation is present and scrollable"],
     missingStandardEscalation: "Return to DS/Elara for standards admission before product or Storybook visual implementation."
   },
   {
@@ -175,7 +186,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     allowedConsumerInputs: ["theme mode", "semantic state", "DS component variant"],
     forbiddenConsumerOverrides: ["square shell icon toggles", "inner-input focus rectangles", "custom focus shadows", "local border systems"],
     proofExpectations: ["theme toggle 36x36 radius 999", "search border/radius parity", "focus outline on wrapper surface"],
-    missingStandardEscalation: "Block if actual generated Storybook shell drifts from ProductShell comparator values."
+    missingStandardEscalation: "Block if actual generated Storybook shell drifts from the restored Storybook doc-shell oracle values."
   },
   {
     id: "component-composition",
@@ -271,7 +282,7 @@ export const consumerVisualStyleContract = {
   ],
   requiredReadbackFields: [
     "foundationVisualStandards",
-    "productShellVisualOracle",
+    "storybookDocShellVisualOracle",
     "allowedConsumerInputs",
     "forbiddenConsumerOverrides",
     "proofExpectations",
@@ -292,7 +303,7 @@ export const foundationVisualStandardsReadback = {
   storybookRoute: "foundations.html#foundation-visual-standards",
   categoryCount: foundationVisualStandards.length,
   categoryIds: foundationVisualStandardCategoryIds,
-  productShellVisualOracle,
+  storybookDocShellVisualOracle,
   consumerVisualStyleContract,
   noOverclaimBoundary:
     "Foundation visual standards define local Storybook and consumer-contract authority only; package publication, product adoption, owner acceptance, release readiness, and live dispatch are not claimed."

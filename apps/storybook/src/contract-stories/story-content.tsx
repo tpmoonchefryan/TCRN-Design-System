@@ -120,7 +120,7 @@ import {
   consumerVisualStyleContract,
   foundationVisualStandards,
   foundationVisualStandardsReadback,
-  productShellVisualOracle
+  storybookDocShellVisualOracle
 } from "../build/foundation-visual-standards.js";
 
 type LegacyContractStory = Omit<ContractStory, "category" | "categoryId" | "sourcePath" | "packageAuthority" | "readiness" | "proofPosture">;
@@ -1007,9 +1007,9 @@ const legacyContractStories: LegacyContractStory[] = [
             <Button disabled disabledReason="Requires product adoption route">Publish theme</Button>
           </div>
         </section>
-        <ReadbackPanel title="ProductShell control contract">
+        <ReadbackPanel title="Storybook doc shell control contract">
           <Text>
-            The Storybook documentation frontend uses the merged ProductShell authority for shell, header, side navigation, search, theme, locale, and collapse controls.
+            The Storybook documentation frontend uses the restored Storybook-owned doc shell for shell, header, category navigation, search, theme, locale, and collapse controls.
           </Text>
           <TableShell
             columns={[
@@ -1020,8 +1020,8 @@ const legacyContractStories: LegacyContractStory[] = [
             rows={[
               {
                 control: "Implementation boundary",
-                rule: "Use @tcrn/ui-react ProductShell as the documentation shell authority; Storybook may own content slots, anchors, static story sections, search index data, and proof pages.",
-                blocked: "Private tcrn-doc-shell, tcrn-doc-header, tcrn-doc-nav, tcrn-doc-global-bar, or tcrn-doc-header-search visual shells."
+                rule: "Use the Storybook doc shell as the documentation shell authority; ProductShell remains scoped to component docs, product visual instances, and consumer rules.",
+                blocked: "Global Storybook pages rendered through ProductShell, a flat ProductShell side-nav, or missing doc-shell category navigation."
               },
               {
                 control: "Theme toggle",
@@ -1080,7 +1080,7 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "registry", label: "Registry id", value: foundationVisualStandardsReadback.registryId },
               { key: "route", label: "Storybook route", value: foundationVisualStandardsReadback.storybookRoute },
               { key: "categories", label: "Standard categories", value: String(foundationVisualStandardsReadback.categoryCount) },
-              { key: "oracle", label: "ProductShell visual oracle", value: productShellVisualOracle.id },
+              { key: "oracle", label: "Storybook doc shell visual oracle", value: storybookDocShellVisualOracle.id },
               { key: "consumer", label: "Consumer style contract", value: consumerVisualStyleContract.id }
             ]}
           />
@@ -1107,22 +1107,22 @@ const legacyContractStories: LegacyContractStory[] = [
             }))}
           />
         </ReadbackPanel>
-        <ReadbackPanel title="ProductShell visual oracle">
+        <ReadbackPanel title="Storybook doc shell visual oracle">
           <KeyValueList
             items={[
-              { key: "authority", label: "Package authority", value: productShellVisualOracle.packageAuthority },
-              { key: "baseline", label: "Baseline manifest", value: productShellVisualOracle.baselineManifest },
-              { key: "receipt", label: "Oracle recovery receipt", value: productShellVisualOracle.oracleRecoveryReceipt },
-              { key: "classification", label: "Baseline classification", value: productShellVisualOracle.baselineManifestClassification },
-              { key: "metric-source", label: "Metric source", value: productShellVisualOracle.metricSourceDisposition },
-              { key: "source", label: "Source head", value: productShellVisualOracle.sourceHead },
-              { key: "sidebar", label: "Desktop sidebar width", value: `${productShellVisualOracle.shellMetrics.desktopSidebarWidthPx}px +/- ${productShellVisualOracle.shellMetrics.desktopSidebarTolerancePx}px` },
-              { key: "topbar", label: "Desktop topbar height", value: `${productShellVisualOracle.shellMetrics.desktopTopbarHeightPx}px +/- ${productShellVisualOracle.shellMetrics.desktopTopbarTolerancePx}px` },
-              { key: "search", label: "Search control", value: `${productShellVisualOracle.shellMetrics.searchRestWidthPx}px rest, ${productShellVisualOracle.shellMetrics.searchExpandedWidthPx}px expanded, ${productShellVisualOracle.shellMetrics.searchHeightPx}px high` },
-              { key: "theme", label: "Theme toggle", value: `${productShellVisualOracle.shellMetrics.themeToggleSizePx}px, radius ${productShellVisualOracle.shellMetrics.themeToggleRadiusPx}px` }
+              { key: "authority", label: "Shell authority", value: storybookDocShellVisualOracle.shellAuthority },
+              { key: "baseline", label: "Baseline manifest", value: storybookDocShellVisualOracle.baselineManifest },
+              { key: "receipt", label: "Oracle recovery receipt", value: storybookDocShellVisualOracle.oracleRecoveryReceipt },
+              { key: "classification", label: "Baseline classification", value: storybookDocShellVisualOracle.baselineManifestClassification },
+              { key: "metric-source", label: "Metric source", value: storybookDocShellVisualOracle.metricSourceDisposition },
+              { key: "source", label: "Source head", value: storybookDocShellVisualOracle.sourceHead },
+              { key: "sidebar", label: "Desktop sidebar width", value: `${storybookDocShellVisualOracle.shellMetrics.desktopSidebarWidthPx}px +/- ${storybookDocShellVisualOracle.shellMetrics.desktopSidebarTolerancePx}px` },
+              { key: "topbar", label: "Desktop topbar height", value: `${storybookDocShellVisualOracle.shellMetrics.desktopTopbarHeightPx}px +/- ${storybookDocShellVisualOracle.shellMetrics.desktopTopbarTolerancePx}px` },
+              { key: "search", label: "Search control", value: `${storybookDocShellVisualOracle.shellMetrics.searchRestWidthPx}px rest, ${storybookDocShellVisualOracle.shellMetrics.searchExpandedWidthPx}px expanded, ${storybookDocShellVisualOracle.shellMetrics.searchHeightPx}px high` },
+              { key: "theme", label: "Theme toggle", value: `${storybookDocShellVisualOracle.shellMetrics.themeToggleSizePx}px, radius ${storybookDocShellVisualOracle.shellMetrics.themeToggleRadiusPx}px` }
             ]}
           />
-          <EvidenceStrip items={Array.from(productShellVisualOracle.requiredProofRoutes)} />
+          <EvidenceStrip items={Array.from(storybookDocShellVisualOracle.requiredProofRoutes)} />
         </ReadbackPanel>
         <ReadbackPanel title="Consumer visual style contract">
           <TableShell
@@ -2161,7 +2161,7 @@ const legacyContractStories: LegacyContractStory[] = [
               { rule: "Locale and copy-state", evidence: "All visible product copy uses approved i18n and copy-state contracts." },
               { rule: "Brand and logo", evidence: "Use admitted brand assets or route brand component admission before product use." },
               { rule: "Component imports", evidence: "Import package-backed Design System primitives from @tcrn/ui-react; do not rebuild local clones." },
-              { rule: "Storybook ProductShell boundary", evidence: "Storybook uses @tcrn/ui-react ProductShell for shell/header/sidebar/search/theme/locale/collapse behavior; private tcrn-doc-* visual shell clones are not admitted." },
+              { rule: "Storybook doc shell boundary", evidence: "Storybook uses the restored doc shell for global shell/header/sidebar/search/theme/locale/collapse behavior; ProductShell remains scoped to component and product examples." },
               { rule: "Storybook section coverage", evidence: "Read every required Storybook section in the AI contract before implementation; do not treat one component page as the whole Design System." },
               { rule: "Visual equivalence", evidence: "Prove same package, same export, same variant/props/slots, and same Storybook visual instance; package import or boundary markers alone are insufficient." },
               { rule: "Token usage", evidence: "Use Design System tokens, reduced-motion rules, and accessibility states before custom CSS." },

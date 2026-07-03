@@ -306,35 +306,34 @@ async function collectPageHealth(page) {
       status: node.getAttribute("data-component-library-status"),
       visible: node.getBoundingClientRect().width > 0 && node.getBoundingClientRect().height > 0
     }));
-	    const shell = document.querySelector("[data-contract-surface]");
-	    const storybookNav = shell?.querySelector("[data-product-shell-region='side-navigation']");
-	    const navRoot = storybookNav ?? document;
-	    const currentNav = shell?.getAttribute("data-active-story-section") ?? null;
-	    const currentStoryLink = navRoot.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
-	    const currentStoryNav = currentStoryLink?.getAttribute("data-product-shell-route") ?? null;
-	    const categoryGroups = Array.from(navRoot.querySelectorAll(".tcrn-nav-group"));
-    const sidebarNoIconLabelReadbacks = window.innerWidth >= 900 && shell?.getAttribute("data-product-shell-collapsed") !== "true"
-      ? Array.from(navRoot.querySelectorAll("[data-product-shell-route]"))
-        .map((item) => {
-          const label = item.querySelector(".tcrn-nav-item__label");
-          const icon = item.querySelector(".tcrn-icon");
-          if (!label || icon) {
-            return null;
-          }
-          const itemRect = item.getBoundingClientRect();
-          const labelRect = label.getBoundingClientRect();
-          const style = window.getComputedStyle(label);
+    const shell = document.querySelector("[data-contract-surface]");
+    const storybookNav = shell?.querySelector(".tcrn-doc-nav");
+    const navRoot = storybookNav ?? document;
+    const currentNav = shell?.getAttribute("data-active-story-section") ?? null;
+    const currentStoryLink = navRoot.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']");
+    const currentStoryNav = currentStoryLink?.getAttribute("data-doc-nav-item") ?? null;
+    const categoryGroups = Array.from(navRoot.querySelectorAll(".tcrn-doc-nav__category"));
+    const sidebarNoIconLabelReadbacks = window.innerWidth >= 900 && shell?.getAttribute("data-sidebar-collapsed") !== "true"
+      ? Array.from(navRoot.querySelectorAll("[data-doc-nav-item]"))
+	        .map((item) => {
+	          const label = item;
+	          const itemRect = item.getBoundingClientRect();
+	          const labelRect = label.getBoundingClientRect();
+	          if (itemRect.width < 1 || itemRect.height < 1 || labelRect.width < 1 || labelRect.height < 1) {
+	            return null;
+	          }
+	          const style = window.getComputedStyle(label);
           const lineHeight = Number.parseFloat(style.lineHeight) || 1;
 	          const lineCount = Math.max(1, Math.round(labelRect.height / lineHeight));
-	          const text = label.textContent?.replace(/\s+/g, " ").trim() ?? "";
+          const text = label.textContent?.replace(/\s+/g, " ").trim() ?? "";
           const textLength = text.replace(/\s+/g, "").length;
-          const hasNoIconContract = item.getAttribute("data-nav-item-has-icon") === "false";
+          const hasNoIconContract = true;
           const minReadableWidth = Math.min(64, Math.max(40, itemRect.width * 0.25));
-	          return {
-	            route: item.getAttribute("data-product-shell-route"),
-	            text,
-	            textLength,
-	            itemWidth: Number(itemRect.width.toFixed(2)),
+          return {
+            route: item.getAttribute("data-doc-nav-item"),
+            text,
+            textLength,
+            itemWidth: Number(itemRect.width.toFixed(2)),
 	            labelWidth: Number(labelRect.width.toFixed(2)),
             labelHeight: Number(labelRect.height.toFixed(2)),
             lineHeight: Number(lineHeight.toFixed(2)),
@@ -353,7 +352,11 @@ async function collectPageHealth(page) {
       : [];
     const sidebarNoIconLabelReadabilityFailures = sidebarNoIconLabelReadbacks.filter((item) => !item.ok);
     const categoryAriaFailures = categoryGroups
-      .filter((node) => !node.getAttribute("data-storybook-category-description"))
+      .filter((node) => {
+        const toggle = node.querySelector("[data-doc-nav-category-toggle]");
+        const describedBy = toggle?.getAttribute("aria-describedby");
+        return !toggle || !describedBy || !document.getElementById(describedBy);
+      })
       .map((node) => node.textContent?.replace(/\s+/g, " ").trim() ?? "");
     const isVisibleElement = (node) => {
       if (!node) return false;
@@ -369,25 +372,27 @@ async function collectPageHealth(page) {
         || !node.hasAttribute("data-story-readiness")
         || !node.hasAttribute("data-story-proof-posture"))
       .map((node) => node.getAttribute("data-contract-story-id"));
-    const sidebar = document.querySelector(".tcrn-product-shell__sidebar");
+    const sidebar = document.querySelector(".tcrn-doc-sidebar");
     const sidebarRect = sidebar?.getBoundingClientRect();
-    const headerRect = document.querySelector(".tcrn-top-bar")?.getBoundingClientRect();
-    const layoutRect = document.querySelector(".tcrn-product-shell")?.getBoundingClientRect();
+    const headerRect = document.querySelector(".tcrn-doc-header")?.getBoundingClientRect();
+    const layoutRect = document.querySelector(".tcrn-doc-layout")?.getBoundingClientRect();
     return {
       title: document.title,
-	      shellAuthority: shell?.getAttribute("data-storybook-shell-authority") ?? null,
-      privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
-      productShellSidebarVisible: Boolean(sidebarRect && sidebarRect.width > 0 && sidebarRect.height > 0),
-      docGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
-      productShellNavGroupCount: categoryGroups.length,
+      shellAuthority: shell?.getAttribute("data-doc-shell") ?? null,
+      docShellSelectorCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+      globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
+        .filter((node) => !node.closest(".story-body"))
+        .length,
+      docShellSidebarVisible: Boolean(sidebarRect && sidebarRect.width > 0 && sidebarRect.height > 0),
+      docNavGroupCount: navRoot.querySelectorAll(".tcrn-doc-nav__group").length,
       docNavCategoryCount: categoryGroups.length,
-      docNavOpenCategoryCount: categoryGroups.length,
-	      activeStoryHiddenByCategory: false,
-	      categoryAriaFailures,
+      docNavOpenCategoryCount: navRoot.querySelectorAll(".tcrn-doc-nav__category[data-doc-nav-category-open='true']").length,
+      activeStoryHiddenByCategory: false,
+      categoryAriaFailures,
       sidebarNoIconLabelReadbacks,
       sidebarNoIconLabelReadabilityFailures,
-	      productShellNavItemCount: navRoot.querySelectorAll("[data-product-shell-route]").length,
-	      productShellCurrentStoryCount: navRoot.querySelectorAll("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']").length,
+      docNavItemCount: navRoot.querySelectorAll("[data-doc-nav-item]").length,
+      docCurrentStoryCount: navRoot.querySelectorAll("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']").length,
       docChapterPagerCount: document.querySelectorAll("[data-doc-chapter-pager='true']").length,
       onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
       mandatoryBoundaryVisible: isVisibleElement(document.querySelector("[data-mandatory-boundary-block='visible']")),
@@ -508,18 +513,32 @@ const aiContract = JSON.parse(aiContractSource);
 const { contractPayloadDigest, ...aiContractWithoutDigest } = aiContract;
 const aiContractDigestCheck = contractPayloadDigest === hashText(`${JSON.stringify(aiContractWithoutDigest, null, 2)}\n`);
 const llmsText = readFileSync(llmsPath, "utf8");
-const productShellVisualOracleContract = aiContract.productShellVisualOracle ?? {};
+const storybookDocShellVisualOracleContract = aiContract.storybookDocShellVisualOracle ?? {};
 const expectedStorybookVisualSkin = {
-  id: productShellVisualOracleContract.id ?? "missing",
-  sidebarWidthPx: productShellVisualOracleContract.shellMetrics?.desktopSidebarWidthPx ?? null,
-  sidebarTolerancePx: productShellVisualOracleContract.shellMetrics?.desktopSidebarTolerancePx ?? 0,
-  topbarHeightPx: productShellVisualOracleContract.shellMetrics?.desktopTopbarHeightPx ?? null,
-  topbarTolerancePx: productShellVisualOracleContract.shellMetrics?.desktopTopbarTolerancePx ?? 0,
-  searchRestWidthPx: productShellVisualOracleContract.shellMetrics?.searchRestWidthPx ?? null,
-  searchHeightPx: productShellVisualOracleContract.shellMetrics?.searchHeightPx ?? null,
-  searchBorderColor: productShellVisualOracleContract.shellMetrics?.searchBorderColor ?? null,
-  searchBorderRadiusPx: productShellVisualOracleContract.shellMetrics?.searchBorderRadiusPx ?? null,
-  themeToggleRadiusPx: productShellVisualOracleContract.shellMetrics?.themeToggleRadiusPx ?? null
+  id: storybookDocShellVisualOracleContract.id ?? "missing",
+  sidebarWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarWidthPx ?? null,
+  sidebarMinWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarMinWidthPx ?? null,
+  sidebarPreferredViewportRatio: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarPreferredViewportRatio ?? null,
+  sidebarMaxWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarMaxWidthPx ?? null,
+  sidebarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarTolerancePx ?? 0,
+  topbarHeightPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopTopbarHeightPx ?? null,
+  topbarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.desktopTopbarTolerancePx ?? 0,
+  searchRestWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.searchRestWidthPx ?? null,
+  searchHeightPx: storybookDocShellVisualOracleContract.shellMetrics?.searchHeightPx ?? null,
+  searchBorderColor: storybookDocShellVisualOracleContract.shellMetrics?.searchBorderColor ?? null,
+  searchBorderRadiusPx: storybookDocShellVisualOracleContract.shellMetrics?.searchBorderRadiusPx ?? null,
+  themeToggleRadiusPx: storybookDocShellVisualOracleContract.shellMetrics?.themeToggleRadiusPx ?? null
+};
+const expectedStorybookSidebarWidthForViewport = (viewportWidth) => {
+  const { sidebarMinWidthPx, sidebarPreferredViewportRatio, sidebarMaxWidthPx, sidebarWidthPx } = expectedStorybookVisualSkin;
+  if (
+    typeof sidebarMinWidthPx === "number"
+    && typeof sidebarPreferredViewportRatio === "number"
+    && typeof sidebarMaxWidthPx === "number"
+  ) {
+    return Math.min(sidebarMaxWidthPx, Math.max(sidebarMinWidthPx, viewportWidth * sidebarPreferredViewportRatio));
+  }
+  return sidebarWidthPx;
 };
 const aiContractTraceabilityCheck = {
   ok: aiContractDigestCheck
@@ -534,22 +553,22 @@ const aiContractTraceabilityCheck = {
     && JSON.stringify(aiContract.foundationVisualStandards?.categoryIds ?? []) === JSON.stringify(expectedFoundationStandardCategoryIds)
     && aiContract.foundationVisualStandardCategories?.length === expectedFoundationStandardCategoryIds.length
     && aiContract.consumerVisualStyleContract?.id === "consumer-visual-style-contract-v1"
-    && aiContract.productShellVisualOracle?.id === "confirmed-storybook-visual-v1"
-    && aiContract.productShellVisualOracle?.oracleRecoveryReceipt === "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md"
-    && aiContract.productShellVisualOracle?.baselineManifestClassification === "historical_but_dirty_admissible_with_hash_backed_screenshots"
-    && String(aiContract.productShellVisualOracle?.metricSourceDisposition ?? "").includes("committed baseline screenshots")
-    && (aiContract.productShellVisualOracle?.metricEvidence ?? []).some((item) => (
-      item.metric === "searchRestWidthPx"
-      && item.sha256 === "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529"
-    ))
+    && aiContract.storybookDocShellVisualOracle?.id === "original-storybook-doc-shell-v1"
+    && aiContract.storybookDocShellVisualOracle?.oracleRecoveryReceipt === "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan"
+    && aiContract.storybookDocShellVisualOracle?.baselineManifestClassification === "owner_declared_original_storybook_doc_shell_standard"
+    && String(aiContract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "").includes("Storybook documentation shell")
+	    && (aiContract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) => (
+	      item.metric === "searchRestWidthPx"
+	      && item.sha256 === "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d"
+	    ))
     && llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
     && llmsText.includes("Work Management authority:")
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
-    && llmsText.includes("ProductShell visual oracle: confirmed-storybook-visual-v1")
-    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md")
-    && llmsText.includes("baseline classification: historical_but_dirty_admissible_with_hash_backed_screenshots")
+    && llmsText.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")
+    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan")
+    && llmsText.includes("baseline classification: owner_declared_original_storybook_doc_shell_standard")
     && llmsText.includes(contractPayloadDigest),
   contractVersion: aiContract.contractVersion,
   contractPayloadDigest,
@@ -562,18 +581,18 @@ const aiContractTraceabilityCheck = {
   foundationVisualStandardCategoryIds: aiContract.foundationVisualStandards?.categoryIds ?? [],
   foundationVisualStandardCategoryCount: aiContract.foundationVisualStandardCategories?.length ?? 0,
   consumerVisualStyleContractId: aiContract.consumerVisualStyleContract?.id ?? null,
-  productShellVisualOracleId: aiContract.productShellVisualOracle?.id ?? null,
-  productShellVisualOracleReceipt: aiContract.productShellVisualOracle?.oracleRecoveryReceipt ?? null,
-  productShellVisualOracleBaselineClassification: aiContract.productShellVisualOracle?.baselineManifestClassification ?? null,
-  productShellVisualOracleMetricEvidenceCount: aiContract.productShellVisualOracle?.metricEvidence?.length ?? 0,
+  storybookDocShellVisualOracleId: aiContract.storybookDocShellVisualOracle?.id ?? null,
+  storybookDocShellVisualOracleReceipt: aiContract.storybookDocShellVisualOracle?.oracleRecoveryReceipt ?? null,
+  storybookDocShellVisualOracleBaselineClassification: aiContract.storybookDocShellVisualOracle?.baselineManifestClassification ?? null,
+  storybookDocShellVisualOracleMetricEvidenceCount: aiContract.storybookDocShellVisualOracle?.metricEvidence?.length ?? 0,
   llmsTraceabilitySectionsPresent: llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
     && llmsText.includes("Work Management authority:")
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
-    && llmsText.includes("ProductShell visual oracle: confirmed-storybook-visual-v1")
-    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/foundation-visual-standards-ai-contract/65-visual-oracle-recovery.md")
-    && llmsText.includes("baseline classification: historical_but_dirty_admissible_with_hash_backed_screenshots")
+    && llmsText.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")
+    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan")
+    && llmsText.includes("baseline classification: owner_declared_original_storybook_doc_shell_standard")
 };
 
 const staticServer = await startStaticServer(".");
@@ -667,26 +686,26 @@ for (const viewport of viewports) {
 const storybookPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#components`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
-await storybookPage.waitForSelector("[data-product-shell-route='component-family-index'][aria-current='location'][data-storybook-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-doc-nav-item='component-family-index'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
 const hashRouteCheck = {
   ok: storybookPage.url().endsWith("/components.html")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
     && await storybookPage.locator("[data-story-id='component-family-index']").isVisible()
-    && await storybookPage.locator("[data-product-shell-route='component-family-index'][aria-current='location'][data-storybook-nav-item-active='true']").count() === 1
+    && await storybookPage.locator("[data-doc-nav-item='component-family-index'][aria-current='location'][data-doc-nav-item-active='true']").count() === 1
     && await storybookPage.locator("[data-story-id='welcome-governance']").count() === 0,
   source: `${staticSurfacePath}#components`,
   url: storybookPage.url()
 };
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#button-spec-usage`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
-await storybookPage.waitForSelector("[data-product-shell-route='button-spec-usage'][aria-current='location'][data-storybook-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
 const hashStoryRouteCheck = {
   ok: storybookPage.url().endsWith("/components.html#button-spec-usage")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
     && await storybookPage.locator("[data-story-id='button-spec-usage']").isVisible()
-    && await storybookPage.locator("[data-product-shell-route='button-spec-usage'][aria-current='location'][data-storybook-nav-item-active='true']").count() === 1
+    && await storybookPage.locator("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']").count() === 1
     && await storybookPage.locator("[data-story-id='welcome-governance']").count() === 0,
   source: `${staticSurfacePath}#button-spec-usage`,
   url: storybookPage.url()
@@ -724,7 +743,7 @@ for (const route of firstStoryHashShellParityRoutes) {
   await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/${route.file}?theme=light&locale=zh-CN#${route.storyId}`);
   await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
   await storybookPage.waitForSelector(`[data-active-story-section='${route.group}']`);
-  await storybookPage.waitForSelector(`[data-product-shell-route='${route.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
+  await storybookPage.waitForSelector(`[data-doc-nav-item='${route.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
   await storybookPage.waitForTimeout(180);
   const metrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount, expectedShellNavGroupCount, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText }) => {
     const rectFor = (selector) => {
@@ -752,27 +771,27 @@ for (const route of firstStoryHashShellParityRoutes) {
     };
     const html = document.documentElement;
     const body = document.body;
-    const header = rectFor(".tcrn-top-bar");
+    const header = rectFor(".tcrn-doc-header");
     const pageHead = rectFor("[data-doc-page-head='governed-section']");
     const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
     const firstStoryRect = firstStory?.getBoundingClientRect();
-    const currentLocation = rectFor(".tcrn-product-shell__current-location");
-    const search = rectFor(".tcrn-product-shell-search");
+    const currentLocation = rectFor(".tcrn-doc-current-location");
+    const search = rectFor(".tcrn-doc-header-search");
     const controls = rectFor("[data-shell-control='theme-toggle']");
     const themeToggleStyles = styleFor("[data-shell-control='theme-toggle']", ["border-radius"]);
     const locale = rectFor(".tcrn-shell-locale-menu");
-	    const shell = document.querySelector("[data-contract-surface]");
-	    const storybookNav = shell?.querySelector("[data-product-shell-region='side-navigation']");
-	    const navRoot = storybookNav ?? document;
-	    const activeStory = navRoot.querySelector("[data-product-shell-route][aria-current='location'][data-storybook-nav-item-active='true']");
-	    const headerBottom = header?.bottom ?? 0;
-    const currentLocationNode = document.querySelector(".tcrn-product-shell__current-location");
-    const brandNode = document.querySelector(".tcrn-product-shell__brand");
+    const shell = document.querySelector("[data-contract-surface]");
+    const storybookNav = shell?.querySelector(".tcrn-doc-nav");
+    const navRoot = storybookNav ?? document;
+    const activeStory = navRoot.querySelector("[data-doc-nav-item][aria-current='location'][data-doc-nav-item-active='true']");
+    const headerBottom = header?.bottom ?? 0;
+    const currentLocationNode = document.querySelector(".tcrn-doc-current-location");
+    const brandNode = document.querySelector(".tcrn-doc-brand");
     const searchInput = document.querySelector(".tcrn-search-input__control");
     const searchInputShell = rectFor(".tcrn-search-input");
     const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
-    const sideNavRegion = rectFor(".tcrn-product-shell__sidebar");
-    const productShellTextSurface = [
+    const sideNavRegion = rectFor(".tcrn-doc-sidebar");
+    const docShellTextSurface = [
       brandNode?.textContent ?? "",
       storybookNav?.innerText ?? "",
       currentLocationNode?.textContent ?? "",
@@ -780,10 +799,10 @@ for (const route of firstStoryHashShellParityRoutes) {
       searchInput?.getAttribute("placeholder") ?? ""
     ].join("\\n");
     const ownerVisibleCaptionSurface = [
-      productShellTextSurface,
+      docShellTextSurface,
       firstStory instanceof HTMLElement ? firstStory.innerText : ""
     ].join("\\n");
-    const productShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => productShellTextSurface.includes(text));
+    const docShellEnglishLeaks = forbiddenZhCnProductShellText.filter((text) => docShellTextSurface.includes(text));
     const ownerVisibleCaptionHits = forbiddenOwnerVisibleCaptionText.filter((text) => ownerVisibleCaptionSurface.includes(text));
     const brandIdentityLogoSectionReadback = storyId === "brand-identity" && firstStory instanceof HTMLElement
       ? {
@@ -796,26 +815,30 @@ for (const route of firstStoryHashShellParityRoutes) {
       : null;
     const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
     return {
-      group,
-      storyId,
-      route: window.location.pathname + window.location.search + window.location.hash,
+	      group,
+	      storyId,
+	      viewportWidth: window.innerWidth,
+	      route: window.location.pathname + window.location.search + window.location.hash,
       locale: shell?.getAttribute("data-storybook-locale") ?? null,
       activeSection: shell?.getAttribute("data-active-story-section") ?? null,
-      activeStoryId: activeStory?.getAttribute("data-product-shell-route") ?? null,
+      activeStoryId: activeStory?.getAttribute("data-doc-nav-item") ?? null,
       scrollY: Number(window.scrollY.toFixed(2)),
       pageOverflow,
-      shellAuthority: shell?.getAttribute("data-storybook-shell-authority") ?? null,
-      productShellVisualSkin: shell?.getAttribute("data-storybook-product-shell-skin") ?? null,
-      productShellVisualOracle: shell?.getAttribute("data-storybook-visual-oracle") ?? null,
-      privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+      shellAuthority: shell?.getAttribute("data-doc-shell") ?? null,
+      docShellSelectorCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+      globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
+        .filter((node) => !node.closest(".story-body"))
+        .length,
       docPageHeadCount: document.querySelectorAll("[data-doc-page-head='governed-section']").length,
       onThisPageCount: document.querySelectorAll("[data-doc-on-this-page='true']").length,
       mandatoryBoundaryCount: document.querySelectorAll("[data-mandatory-boundary-block='visible']").length,
       noOverclaimBoundaryCount: document.querySelectorAll("[data-no-overclaim-boundary='visible']").length,
-      legacyGlobalNavCount: document.querySelectorAll("[data-doc-global-nav], [data-doc-global-nav-item]").length,
-	      navGroupCount: navRoot.querySelectorAll(".tcrn-nav-group").length,
-      categoryLabelCount: navRoot.querySelectorAll(".tcrn-nav-group__label").length,
-      productShellEnglishLeaks,
+      legacyProductShellGlobalNavCount: Array.from(document.querySelectorAll("[data-product-shell-region='side-navigation'], [data-product-shell-route]"))
+        .filter((node) => !node.closest(".story-body"))
+        .length,
+      navGroupCount: navRoot.querySelectorAll(".tcrn-doc-nav__group").length,
+      categoryLabelCount: navRoot.querySelectorAll(".tcrn-doc-nav__category-label").length,
+      docShellEnglishLeaks,
       ownerVisibleCaptionHits,
       brandIdentityLogoSectionReadback,
       expectedCategoryCount,
@@ -829,15 +852,15 @@ for (const route of firstStoryHashShellParityRoutes) {
       search,
       searchInputShell,
       searchInputShellStyles,
-      headerStyles: styleFor(".tcrn-top-bar", ["display", "grid-template-columns", "min-height"]),
-      workspaceStyles: styleFor(".tcrn-product-shell__workspace", ["display", "grid-template-columns", "gap"]),
+      headerStyles: styleFor(".tcrn-doc-header", ["display", "grid-template-columns", "min-height"]),
+      workspaceStyles: styleFor(".tcrn-doc-header__workspace", ["display", "grid-template-columns", "gap"]),
       pageHeadStyles: styleFor("[data-doc-page-head='governed-section']", ["display", "grid-template-columns", "gap", "border-bottom-style"]),
-      layoutStyles: styleFor(".tcrn-product-shell", ["display", "grid-template-columns"]),
+      layoutStyles: styleFor(".tcrn-doc-layout", ["display", "grid-template-columns"]),
       currentLocationBeforeSearch: Boolean(currentLocation && search && currentLocation.right <= search.left + 1),
       searchBeforeControls: Boolean(search && controls && search.right <= controls.left + 1),
       utilityTrailingGap: locale ? Number((window.innerWidth - locale.right).toFixed(2)) : null,
       pageHeadStartsBelowHeader: Boolean(pageHead && pageHead.top >= headerBottom - 1),
-      storyFirstBeforePageHead: Boolean(pageHead && firstStoryRect && firstStoryRect.top <= pageHead.top)
+      storyStartsAfterPageHead: Boolean(pageHead && firstStoryRect && firstStoryRect.top >= pageHead.bottom - 1)
     };
   }, {
     group: route.group,
@@ -853,21 +876,16 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.activeSection !== route.group) failures.push(`active-section:${metrics.activeSection}`);
   if (metrics.activeStoryId !== route.storyId) failures.push(`active-story:${metrics.activeStoryId}`);
   if (metrics.scrollY > 2) failures.push(`first-story-hash-scrollY:${metrics.scrollY}`);
-  if (metrics.shellAuthority !== "@tcrn/ui-react/ProductShell") failures.push(`shell-authority:${metrics.shellAuthority}`);
-  if (metrics.productShellVisualSkin !== expectedStorybookVisualSkin.id) {
-    failures.push(`product-shell-visual-skin:${metrics.productShellVisualSkin ?? "missing"}:expected:${expectedStorybookVisualSkin.id}`);
-  }
-  if (!String(metrics.productShellVisualOracle ?? "").includes("storybook-visual-proof/baseline-manifest.json")) {
-    failures.push(`product-shell-visual-oracle:${metrics.productShellVisualOracle ?? "missing"}`);
-  }
-  if (metrics.privateDocShellCloneCount !== 0) failures.push(`private-doc-shell-clones:${metrics.privateDocShellCloneCount}`);
+  if (metrics.shellAuthority !== "online-docs") failures.push(`doc-shell-authority:${metrics.shellAuthority}`);
+  if (metrics.docShellSelectorCount < 6) failures.push(`doc-shell-selector-count:${metrics.docShellSelectorCount}`);
+  if (metrics.globalProductShellShellSelectorCount !== 0) failures.push(`global-product-shell-shell-selectors:${metrics.globalProductShellShellSelectorCount}`);
   if (metrics.docPageHeadCount !== 1) failures.push(`page-head-count:${metrics.docPageHeadCount}`);
   if (metrics.onThisPageCount !== 1) failures.push(`on-this-page-count:${metrics.onThisPageCount}`);
   if (metrics.mandatoryBoundaryCount !== 1 || metrics.noOverclaimBoundaryCount !== 1) failures.push("mandatory-boundary-missing");
-  if (metrics.legacyGlobalNavCount !== 0) failures.push(`legacy-global-nav:${metrics.legacyGlobalNavCount}`);
+  if (metrics.legacyProductShellGlobalNavCount !== 0) failures.push(`legacy-product-shell-global-nav:${metrics.legacyProductShellGlobalNavCount}`);
   if (metrics.navGroupCount !== expectedStorybookShellNavGroupCount) failures.push(`nav-group-count:${metrics.navGroupCount}`);
-  if (metrics.categoryLabelCount !== expectedStorybookShellNavGroupCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
-  if (metrics.productShellEnglishLeaks.length > 0) failures.push(`product-shell-zh-cn-english-leaks:${metrics.productShellEnglishLeaks.join("|")}`);
+  if (metrics.categoryLabelCount !== expectedCategoryCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
+  if (metrics.docShellEnglishLeaks.length > 0) failures.push(`doc-shell-zh-cn-english-leaks:${metrics.docShellEnglishLeaks.join("|")}`);
   if (metrics.ownerVisibleCaptionHits.length > 0) failures.push(`owner-visible-caption-hits:${metrics.ownerVisibleCaptionHits.join("|")}`);
   if (metrics.brandIdentityLogoSectionReadback) {
     const readback = metrics.brandIdentityLogoSectionReadback;
@@ -884,8 +902,9 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (!metrics.currentLocationBeforeSearch) failures.push("current-location-not-before-search");
   if (!metrics.searchBeforeControls) failures.push("search-not-before-controls");
   const widthWithin = (actual, expected, tolerance) => typeof actual === "number" && typeof expected === "number" && Math.abs(actual - expected) <= tolerance;
-  if (!widthWithin(metrics.sideNavRegion?.width, expectedStorybookVisualSkin.sidebarWidthPx, expectedStorybookVisualSkin.sidebarTolerancePx)) {
-    failures.push(`storybook-skin-sidebar-width:${metrics.sideNavRegion?.width ?? "missing"}:expected:${expectedStorybookVisualSkin.sidebarWidthPx}`);
+  const expectedSidebarWidth = expectedStorybookSidebarWidthForViewport(metrics.viewportWidth);
+  if (!widthWithin(metrics.sideNavRegion?.width, expectedSidebarWidth, expectedStorybookVisualSkin.sidebarTolerancePx)) {
+    failures.push(`storybook-skin-sidebar-width:${metrics.sideNavRegion?.width ?? "missing"}:expected:${expectedSidebarWidth}`);
   }
   if (!widthWithin(metrics.header?.height, expectedStorybookVisualSkin.topbarHeightPx, expectedStorybookVisualSkin.topbarTolerancePx)) {
     failures.push(`storybook-skin-topbar-height:${metrics.header?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.topbarHeightPx}`);
@@ -906,7 +925,7 @@ for (const route of firstStoryHashShellParityRoutes) {
     failures.push(`utility-trailing-gap:${metrics.utilityTrailingGap}`);
   }
   if (!metrics.pageHeadStartsBelowHeader) failures.push("page-head-not-below-header");
-  if (!metrics.storyFirstBeforePageHead) failures.push("story-not-before-page-head");
+  if (!metrics.storyStartsAfterPageHead) failures.push("story-not-after-page-head");
   firstStoryHashShellParityReadbacks.push({ ...metrics, ok: failures.length === 0, failures });
 }
 const firstStoryHashDesktopReadbacks = firstStoryHashShellParityReadbacks.filter((item) => item.headerStyles);
@@ -939,7 +958,7 @@ const mobileFoundationHashRoute = `${staticServer.origin}/apps/storybook/storybo
 const collectMobileHashAnchorMetrics = async (label) => {
   await mobileHashAnchorPage.waitForSelector("[data-storybook-locale='zh-CN']");
   await mobileHashAnchorPage.waitForSelector("[data-active-story-section='Foundations']");
-  await mobileHashAnchorPage.waitForSelector("[data-product-shell-route='foundation-visual-standards'][aria-current='location'][data-storybook-nav-item-active='true']");
+  await mobileHashAnchorPage.waitForSelector("[data-doc-nav-item='foundation-visual-standards'][aria-current='location'][data-doc-nav-item-active='true']");
   const metrics = await mobileHashAnchorPage.evaluate((phaseLabel) => {
     const rectFor = (selector) => {
       const node = document.querySelector(selector);
@@ -1000,7 +1019,8 @@ const collectMobileHashAnchorMetrics = async (label) => {
       id: node.id || "",
       className: typeof node.className === "string" ? node.className : "",
       role: node.getAttribute("role"),
-      productShellRegion: node.getAttribute("data-product-shell-region"),
+      docShell: node.getAttribute("data-doc-shell"),
+      docNavItem: node.getAttribute("data-doc-nav-item"),
       shellControl: node.getAttribute("data-shell-control"),
       text: (node.textContent || "").trim().replace(/\s+/g, " ").slice(0, 80)
     }));
@@ -1011,7 +1031,12 @@ const collectMobileHashAnchorMetrics = async (label) => {
       { label: "controls-y178", x: 195, y: 178 }
     ].map((point) => {
       const stack = hitStackFor(point.x, point.y);
-      const shellIndex = stack.findIndex((entry) => entry.productShellRegion === "topbar" || entry.productShellRegion === "utility-row" || entry.shellControl || entry.className.includes("tcrn-shell") || entry.className.includes("tcrn-product-shell"));
+      const shellIndex = stack.findIndex((entry) => entry.docShell === "online-docs"
+        || entry.shellControl
+        || entry.className.includes("tcrn-doc-header")
+        || entry.className.includes("tcrn-doc-global-bar")
+        || entry.className.includes("tcrn-doc-current-location")
+        || entry.className.includes("tcrn-shell"));
       const storyContentIndex = stack.findIndex((entry) => entry.className.includes("tcrn-table-shell") || entry.className.includes("tcrn-readback-panel") || entry.className.includes("alpha-story-stack") || entry.className.includes("story-body"));
       return {
         ...point,
@@ -1024,7 +1049,7 @@ const collectMobileHashAnchorMetrics = async (label) => {
     });
     const html = document.documentElement;
     const body = document.body;
-    const topbar = rectFor(".tcrn-top-bar");
+    const topbar = rectFor(".tcrn-doc-header");
     const article = rectFor("#foundation-visual-standards");
     const title = rectFor("#foundation-visual-standards > h2");
     const minimumClearancePx = 8;
@@ -1035,18 +1060,18 @@ const collectMobileHashAnchorMetrics = async (label) => {
       scrollY: Number(window.scrollY.toFixed(2)),
       viewport: { width: window.innerWidth, height: window.innerHeight },
       locale: document.querySelector("[data-storybook-locale]")?.getAttribute("data-storybook-locale") ?? document.documentElement.lang,
-      shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-storybook-shell-authority") ?? null,
+      shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-doc-shell") ?? null,
       anchorScrollControlled: document.querySelector("[data-contract-surface]")?.getAttribute("data-anchor-scroll-controlled") ?? null,
-      activeStoryId: document.querySelector("[data-product-shell-route][data-storybook-nav-item-active='true']")?.getAttribute("data-product-shell-route") ?? null,
+      activeStoryId: document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']")?.getAttribute("data-doc-nav-item") ?? null,
       anchorOffsetReadback: window.tcrnStorybookAnchorOffsetReadback ?? null,
       topbar,
       article,
       title,
       mobileTopbarLayering: {
-        topbar: styleFor(".tcrn-top-bar"),
-        utilityRow: styleFor(".tcrn-product-shell__utility-row"),
-        currentLocation: styleFor(".tcrn-product-shell__current-location"),
-        searchWrapper: styleFor(".tcrn-product-shell-search"),
+        topbar: styleFor(".tcrn-doc-header"),
+        utilityRow: styleFor(".tcrn-doc-global-bar"),
+        currentLocation: styleFor(".tcrn-doc-current-location"),
+        searchWrapper: styleFor(".tcrn-doc-header-search"),
         searchInput: styleFor(".tcrn-search-input"),
         themeToggle: styleFor(".tcrn-shell-theme-toggle"),
         localeTrigger: styleFor(".tcrn-shell-locale-menu__trigger"),
@@ -1056,19 +1081,19 @@ const collectMobileHashAnchorMetrics = async (label) => {
       titleClearancePx: title ? Number((title.top - topbarBottom).toFixed(2)) : null,
       articleReadableBelowTopbar: Boolean(article && article.top >= topbarBottom + minimumClearancePx),
       titleReadableBelowTopbar: Boolean(title && title.top >= topbarBottom + minimumClearancePx),
-      privateDocShellCloneCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+      docShellSelectorCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+      globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
+        .filter((node) => !node.closest(".story-body"))
+        .length,
       pageOverflow: Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1
     };
   }, label);
   const failures = [];
   if (metrics.viewport.width !== 390 || metrics.viewport.height !== 844) failures.push(`viewport:${metrics.viewport.width}x${metrics.viewport.height}`);
   if (metrics.locale !== "zh-CN") failures.push(`locale:${metrics.locale}`);
-  if (metrics.shellAuthority !== "@tcrn/ui-react/ProductShell") failures.push(`shell-authority:${metrics.shellAuthority}`);
-  if (metrics.anchorScrollControlled !== "product-shell-topbar-aware") failures.push(`anchor-scroll-controlled:${metrics.anchorScrollControlled}`);
+  if (metrics.shellAuthority !== "online-docs") failures.push(`doc-shell-authority:${metrics.shellAuthority}`);
+  if (metrics.anchorScrollControlled !== "true") failures.push(`anchor-scroll-controlled:${metrics.anchorScrollControlled}`);
   if (metrics.activeStoryId !== "foundation-visual-standards") failures.push(`active-story:${metrics.activeStoryId}`);
-  if (!metrics.anchorOffsetReadback || metrics.anchorOffsetReadback.appliedOffset < 200) {
-    failures.push(`anchor-offset:${metrics.anchorOffsetReadback?.appliedOffset ?? "missing"}`);
-  }
   if (!metrics.articleReadableBelowTopbar) failures.push(`article-clearance:${metrics.articleClearancePx}`);
   if (!metrics.titleReadableBelowTopbar) failures.push(`title-clearance:${metrics.titleClearancePx}`);
   for (const [name, layer] of Object.entries(metrics.mobileTopbarLayering ?? {})) {
@@ -1087,7 +1112,8 @@ const collectMobileHashAnchorMetrics = async (label) => {
       failures.push(`mobile-layer-stack:${point.label}:shell:${point.shellIndex}:story:${point.storyContentIndex}`);
     }
   }
-  if (metrics.privateDocShellCloneCount !== 0) failures.push(`private-doc-shell-clones:${metrics.privateDocShellCloneCount}`);
+  if (metrics.docShellSelectorCount < 6) failures.push(`doc-shell-selector-count:${metrics.docShellSelectorCount}`);
+  if (metrics.globalProductShellShellSelectorCount !== 0) failures.push(`global-product-shell-shell-selectors:${metrics.globalProductShellShellSelectorCount}`);
   if (metrics.pageOverflow) failures.push("page-overflow");
   return { ...metrics, ok: failures.length === 0, failures };
 };
@@ -1109,20 +1135,28 @@ const mobileHashAnchorOcclusionCheck = {
   viewport: { width: 390, height: 844 },
   readbacks: mobileHashAnchorReadbacks
 };
-await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=zh-CN#component-family-index`);
-await storybookPage.waitForSelector("[data-active-story-section='Components']");
-await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
-await storybookPage.locator("[data-product-shell-region='side-navigation'] [data-product-shell-route='table-work-index-spec']").waitFor({ state: "visible" });
-await storybookPage.locator("[data-product-shell-region='side-navigation'] [data-product-shell-route='table-work-index-spec']").evaluate((link) => link.click());
-await storybookPage.waitForSelector("[data-product-shell-route='table-work-index-spec'][aria-current='location'][data-storybook-nav-item-active='true']");
+	await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=zh-CN#component-family-index`);
+	await storybookPage.waitForSelector("[data-active-story-section='Components']");
+	await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
+	await storybookPage.evaluate((routeId) => {
+	  const link = document.querySelector(`[data-doc-nav-item='${routeId}']`);
+	  const category = link?.closest(".tcrn-doc-nav__category");
+	  const toggle = category?.querySelector("[data-doc-nav-category-toggle]");
+	  if (category instanceof HTMLElement && category.getAttribute("data-doc-nav-category-open") !== "true" && toggle instanceof HTMLElement) {
+	    toggle.click();
+	  }
+	}, "table-work-index-spec");
+	await storybookPage.locator("[data-doc-nav-item='table-work-index-spec']").waitFor({ state: "visible" });
+await storybookPage.locator("[data-doc-nav-item='table-work-index-spec']").evaluate((link) => link.click());
+await storybookPage.waitForSelector("[data-doc-nav-item='table-work-index-spec'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
 const anchorScrollMetrics = await storybookPage.evaluate(() => {
   const target = document.getElementById("table-work-index-spec");
   const previous = document.getElementById("dialog-spec-usage");
-  const active = document.querySelector("[data-product-shell-route][data-storybook-nav-item-active='true']");
+  const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
   return {
     url: window.location.href,
-    activeStoryId: active?.getAttribute("data-product-shell-route") ?? null,
+    activeStoryId: active?.getAttribute("data-doc-nav-item") ?? null,
     targetTop: target ? Math.round(target.getBoundingClientRect().top) : null,
     previousBottom: previous ? Math.round(previous.getBoundingClientRect().bottom) : null,
     offset: Number.parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue("--tcrn-anchor-scroll-offset")),
@@ -1141,7 +1175,7 @@ const anchorScrollCheck = {
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns`);
 await storybookPage.waitForSelector("[data-active-story-section='Patterns']");
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
-await storybookPage.waitForSelector("[data-product-shell-route='readiness-notification-patterns'][aria-current='location'][data-storybook-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-doc-nav-item='readiness-notification-patterns'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(300);
 await storybookPage.evaluate(() => {
   const target = document.getElementById("dashboard-page-templates");
@@ -1155,15 +1189,15 @@ await storybookPage.evaluate(() => {
   window.scrollTo({ top: nextTop, left: 0, behavior: "auto" });
 });
 await storybookPage.waitForFunction(() => {
-  const active = document.querySelector("[data-product-shell-route][data-storybook-nav-item-active='true']");
-  return active?.getAttribute("data-product-shell-route") === "dashboard-page-templates";
+  const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
+  return active?.getAttribute("data-doc-nav-item") === "dashboard-page-templates";
 });
 const scrollSpyMetrics = await storybookPage.evaluate(() => {
   const target = document.getElementById("dashboard-page-templates");
-  const active = document.querySelector("[data-product-shell-route][data-storybook-nav-item-active='true']");
+  const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
   return {
     url: window.location.href,
-    activeStoryId: active?.getAttribute("data-product-shell-route") ?? null,
+    activeStoryId: active?.getAttribute("data-doc-nav-item") ?? null,
     activeAriaCurrent: active?.getAttribute("aria-current") ?? null,
     targetTop: target ? Math.round(target.getBoundingClientRect().top) : null,
     offset: Number.parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue("--tcrn-anchor-scroll-offset")),
@@ -1186,7 +1220,7 @@ async function collectLocalizedTextCheck(page, check) {
   await page.goto(`${staticServer.origin}/${check.route}`);
   await page.waitForSelector(`[data-storybook-locale='${check.locale}']`);
   await page.waitForSelector(`[data-active-story-section='${check.section}']`);
-  await page.waitForSelector(`[data-product-shell-route='${check.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
+  await page.waitForSelector(`[data-doc-nav-item='${check.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
   await page.waitForTimeout(150);
   const bodyText = await page.evaluate(() => document.body.innerText);
   const missingRequiredText = check.requiredText.filter((text) => !bodyText.includes(text));
@@ -1207,10 +1241,10 @@ async function collectLocalizedShellChromeCheck(page, check) {
   await page.goto(`${staticServer.origin}/${check.route}`);
   await page.waitForSelector(`[data-storybook-locale='${check.locale}']`);
   await page.waitForSelector(`[data-active-story-section='${check.section}']`);
-  await page.waitForSelector(`[data-product-shell-route='${check.storyId}'][aria-current='location'][data-storybook-nav-item-active='true']`);
-  await page.waitForSelector("[data-navigation-primitive='nav-group']");
+  await page.waitForSelector(`[data-doc-nav-item='${check.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
+  await page.waitForSelector("[data-doc-nav-group]");
   await page.waitForTimeout(150);
-  const metrics = await page.evaluate(({ requiredText, forbiddenText, expectedCategoryCount }) => {
+  const metrics = await page.evaluate(({ requiredText, forbiddenText, expectedCategoryCount, expectedShellNavGroupCount }) => {
     const bodyText = document.body.innerText;
     const html = document.documentElement;
     const body = document.body;
@@ -1228,15 +1262,15 @@ async function collectLocalizedShellChromeCheck(page, check) {
             attribute: item.name,
             value: item.value
           }))));
-	    const storybookNav = document.querySelector("[data-contract-surface='tcrn-design-system-storybook'] [data-product-shell-region='side-navigation']");
-	    const navRoot = storybookNav ?? document;
-	    const categoryLabels = Array.from(navRoot.querySelectorAll(".tcrn-nav-group__label"))
-	      .map((node) => node.textContent?.trim() ?? "")
-	      .filter(Boolean);
-	    const categoryDescriptions = Array.from(navRoot.querySelectorAll(".tcrn-nav-group[title]"))
-	      .map((node) => node.getAttribute("title")?.trim() ?? "")
-	      .filter(Boolean);
-	    const currentLocation = document.querySelector(".tcrn-product-shell__current-location");
+    const storybookNav = document.querySelector("[data-contract-surface='tcrn-design-system-storybook'] .tcrn-doc-nav");
+    const navRoot = storybookNav ?? document;
+    const categoryLabels = Array.from(navRoot.querySelectorAll(".tcrn-doc-nav__category-label"))
+      .map((node) => node.textContent?.trim() ?? "")
+      .filter(Boolean);
+    const categoryDescriptions = Array.from(navRoot.querySelectorAll("[data-doc-nav-category-toggle][aria-describedby]"))
+      .map((node) => document.getElementById(node.getAttribute("aria-describedby") ?? "")?.textContent?.trim() ?? "")
+      .filter(Boolean);
+    const currentLocation = document.querySelector(".tcrn-doc-current-location");
 	    const onThisPage = document.querySelector(".tcrn-doc-on-this-page");
 	    const localizedTextSurface = [
 	      bodyText,
@@ -1258,6 +1292,7 @@ async function collectLocalizedShellChromeCheck(page, check) {
       currentLocationText: currentLocation?.textContent?.replace(/\s+/g, " ").trim() ?? null,
       onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null,
       expectedCategoryCount,
+      expectedShellNavGroupCount,
       bodyScrollWidth: body.scrollWidth,
       viewportWidth: window.innerWidth,
       pageOverflow: Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1
@@ -1272,8 +1307,8 @@ async function collectLocalizedShellChromeCheck(page, check) {
       && metrics.missingRequiredText.length === 0
       && metrics.leakedForbiddenText.length === 0
       && metrics.accessibilityAttributeLeaks.length === 0
-      && metrics.categoryLabelCount === check.expectedShellNavGroupCount
-      && metrics.categoryDescriptionCount === check.expectedShellNavGroupCount
+      && metrics.categoryLabelCount === check.expectedCategoryCount
+      && metrics.categoryDescriptionCount === check.expectedCategoryCount
       && metrics.categoryDescriptionEnglishLeaks.length === 0
       && metrics.currentLocationText?.includes(check.expectedCurrentLocationAriaLabel)
       && metrics.onThisPageAriaLabel === check.expectedOnThisPageAriaLabel
@@ -1433,7 +1468,7 @@ for (const locale of ["zh-CN", "en", "ja", "ko", "fr"]) {
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}?locale=ja#button-spec-usage`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-storybook-locale='ja']");
-await storybookPage.waitForSelector("[data-product-shell-route='button-spec-usage'][aria-current='location'][data-storybook-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']");
 const localeRouteCheck = {
   ok: storybookPage.url().endsWith("/components.html?locale=ja#button-spec-usage")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
@@ -1543,18 +1578,18 @@ const staticSectionChecks = browserSummaries.map((summary) => {
   const visibleStoryIds = summary.storyRegions.filter((story) => story.visible).map((story) => story.id);
   const expectedCurrentStoryNav = summary.expectedStoryIds[0];
   const ok = summary.activeSection === summary.expectedSection
-    && summary.shellAuthority === "@tcrn/ui-react/ProductShell"
-    && summary.privateDocShellCloneCount === 0
-    && summary.productShellSidebarVisible
-    && summary.docGlobalNavCount === 0
-    && summary.productShellNavGroupCount === expectedStorybookShellNavGroupCount
-    && summary.docNavCategoryCount === expectedStorybookShellNavGroupCount
-    && summary.docNavOpenCategoryCount === expectedStorybookShellNavGroupCount
-	    && !summary.activeStoryHiddenByCategory
-	    && summary.categoryAriaFailures.length === 0
+    && summary.shellAuthority === "online-docs"
+    && summary.docShellSelectorCount >= 6
+    && summary.globalProductShellShellSelectorCount === 0
+    && summary.docShellSidebarVisible
+    && summary.docNavGroupCount === expectedStorybookShellNavGroupCount
+    && summary.docNavCategoryCount === expectedCategoryCount
+    && summary.docNavOpenCategoryCount >= 1
+    && !summary.activeStoryHiddenByCategory
+    && summary.categoryAriaFailures.length === 0
     && summary.sidebarNoIconLabelReadabilityFailures.length === 0
-	    && summary.productShellNavItemCount === requiredStories.length
-    && summary.productShellCurrentStoryCount === 1
+    && summary.docNavItemCount === requiredStories.length
+    && summary.docCurrentStoryCount === 1
     && summary.docChapterPagerCount === 1
     && summary.onThisPageCount === 1
     && summary.mandatoryBoundaryVisible
@@ -1579,17 +1614,17 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     url: summary.url,
     ok,
     shellAuthority: summary.shellAuthority,
-    privateDocShellCloneCount: summary.privateDocShellCloneCount,
-    productShellSidebarVisible: summary.productShellSidebarVisible,
-    docGlobalNavCount: summary.docGlobalNavCount,
-    productShellNavGroupCount: summary.productShellNavGroupCount,
+    docShellSelectorCount: summary.docShellSelectorCount,
+    globalProductShellShellSelectorCount: summary.globalProductShellShellSelectorCount,
+    docShellSidebarVisible: summary.docShellSidebarVisible,
+    docNavGroupCount: summary.docNavGroupCount,
     docNavCategoryCount: summary.docNavCategoryCount,
     docNavOpenCategoryCount: summary.docNavOpenCategoryCount,
 	    activeStoryHiddenByCategory: summary.activeStoryHiddenByCategory,
 	    categoryAriaFailures: summary.categoryAriaFailures,
     sidebarNoIconLabelReadabilityFailures: summary.sidebarNoIconLabelReadabilityFailures,
-	    productShellNavItemCount: summary.productShellNavItemCount,
-    productShellCurrentStoryCount: summary.productShellCurrentStoryCount,
+    docNavItemCount: summary.docNavItemCount,
+    docCurrentStoryCount: summary.docCurrentStoryCount,
     docChapterPagerCount: summary.docChapterPagerCount,
     onThisPageCount: summary.onThisPageCount,
     mandatoryBoundaryVisible: summary.mandatoryBoundaryVisible,

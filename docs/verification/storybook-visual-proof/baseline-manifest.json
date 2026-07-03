@@ -2,18 +2,18 @@
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
   "comparisonContractVersion": "canonicalized_raw_png_exact_v1",
-  "sourceHead": "39fec20c6822aacc056813883a7464946e291f8a",
-  "sourceGitStatus": "## main...origin/main [ahead 48]\n M apps/storybook/src/contract-stories/story-content.tsx\n M apps/storybook/src/smoke.test.ts\n D docs/verification/storybook-visual-proof/README.md\n D docs/verification/storybook-visual-proof/baseline-manifest.json\n D docs/verification/storybook-visual-proof/check-receipt.json\n D docs/verification/storybook-visual-proof/intentional-diff-manifest.json\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/update-receipt.json\n M scripts/internal-alpha-browser-proof.mjs\n M scripts/storybook-smoke.mjs",
+  "sourceHead": "fc85adf8760d29e2ff76402ba13b477c4cb859b0",
+  "sourceGitStatus": "## main...origin/main [ahead 49]\n M apps/storybook/src/alpha-styles.ts\n M apps/storybook/src/build/ai-consumption-contract.ts\n M apps/storybook/src/build/client-scripts.ts\n M apps/storybook/src/build/foundation-visual-standards.ts\n M apps/storybook/src/build/locales/storybook-content-text.ts\n M apps/storybook/src/build/page-template.tsx\n M apps/storybook/src/build/write-static.ts\n M apps/storybook/src/contract-stories/story-content.tsx\n M apps/storybook/src/smoke.test.ts\n M docs/verification/internal-alpha/browser-proof-summary.json\n M docs/verification/internal-alpha/intentional-diff-manifest.json\n M docs/verification/internal-alpha/story-coverage-manifest.json\n M docs/verification/internal-alpha/visual-baseline-manifest.json\n D docs/verification/storybook-visual-proof/README.md\n D docs/verification/storybook-visual-proof/baseline-manifest.json\n D docs/verification/storybook-visual-proof/check-receipt.json\n D docs/verification/storybook-visual-proof/intentional-diff-manifest.json\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/update-receipt.json\n M scripts/internal-alpha-browser-proof.mjs\n M scripts/package-contract-manifest.mjs\n M scripts/storybook-smoke.mjs\n M scripts/storybook-visual-proof.mjs",
   "sourceHeadEquivalenceReadback": {
     "disposition": "source_equivalent_dirty_tree_receipt_generated_before_commit",
-    "sourceHead": "39fec20c6822aacc056813883a7464946e291f8a",
-    "sourceDirtyFileCount": 143,
-    "sourceContentDigest": "66ea643d73cd35da87a6960f2a94a5c2b6c2104e9de634950fe1470a715d2df7",
+    "sourceHead": "fc85adf8760d29e2ff76402ba13b477c4cb859b0",
+    "sourceDirtyFileCount": 156,
+    "sourceContentDigest": "644073e7cf81326438494828e47de003d0ac6aa01e6d228184f36a59e02d0184",
     "sourceContentDigestDisposition": "digest covers the built static contract-doc outputs, package metadata, visual proof script, and private-output scan script used by this receipt",
     "commitEquivalenceRequirement": "when generated before commit, reviewers should compare this digest and status readback with the committed source/artifact diff rather than treating sourceHead alone as proof freshness"
   },
-  "sourceContentDigest": "66ea643d73cd35da87a6960f2a94a5c2b6c2104e9de634950fe1470a715d2df7",
-  "baselineUpdateReason": "restore-product-lockups-primary-brand-identity-section",
+  "sourceContentDigest": "644073e7cf81326438494828e47de003d0ac6aa01e6d228184f36a59e02d0184",
+  "baselineUpdateReason": "owner-approved restoration of original Storybook doc shell authority from d1d1291 parent with doc-shell mobile anchor layering preservation",
   "packageName": "@tcrn/design-system-workspace",
   "staticPageAllowlist": [
     "index.html",
@@ -342,7 +342,7 @@
       "page": "index.html",
       "hash": "welcome-governance",
       "storyId": "welcome-governance",
-      "description": "Welcome route with Storybook ProductShell search focused.",
+      "description": "Welcome route with Storybook doc-shell search focused.",
       "locale": "zh-CN",
       "themeMode": "light",
       "interaction": "search-focus",
@@ -353,7 +353,7 @@
       "page": "index.html",
       "hash": "welcome-governance",
       "storyId": "welcome-governance",
-      "description": "Welcome route with Storybook ProductShell search results open.",
+      "description": "Welcome route with Storybook doc-shell search results open.",
       "locale": "zh-CN",
       "themeMode": "light",
       "interaction": "search-results",
@@ -364,7 +364,7 @@
       "page": "index.html",
       "hash": "welcome-governance",
       "storyId": "welcome-governance",
-      "description": "Welcome route with Storybook ProductShell locale menu open.",
+      "description": "Welcome route with Storybook doc-shell locale menu open.",
       "locale": "zh-CN",
       "themeMode": "light",
       "interaction": "locale-menu",
@@ -390,7 +390,7 @@
       "page": "foundations.html",
       "hash": "foundation-visual-standards",
       "storyId": "foundation-visual-standards",
-      "description": "Foundation visual standards hash route with ProductShell topbar/content rhythm visible.",
+      "description": "Foundation visual standards hash route with Storybook doc-shell header/content rhythm visible.",
       "locale": "zh-CN",
       "themeMode": "light",
       "interaction": "rest",
@@ -401,7 +401,7 @@
       "page": "index.html",
       "hash": "welcome-governance",
       "storyId": "welcome-governance",
-      "description": "Welcome route with Storybook ProductShell sidebar collapsed.",
+      "description": "Welcome route with Storybook doc-shell sidebar collapsed.",
       "locale": "zh-CN",
       "themeMode": "light",
       "interaction": "sidebar-collapsed",
@@ -524,10 +524,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "5eff809e4f8d2d222573077fd8c6ce2369a605b1d613bbb9ce4d8e9c43e22497",
+      "rawSha256": "b8a41ebabce96443d896598f65c559e19b39e953547b271ec3f4c04a7cbdfbcb",
       "width": 2048,
       "height": 1024,
-      "bytes": 90837
+      "bytes": 73747
     },
     {
       "stateId": "welcome-first-story-en-dark",
@@ -539,10 +539,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "8e0ad8a19ae586b09ccdd3d5281eca7ec7a77f15a36c27f6659319091c371f44",
+      "rawSha256": "e6bb7a9f313ff42f40413678ce7516b215b17f29cbe2cbf849e583419973baa4",
       "width": 2048,
       "height": 1024,
-      "bytes": 82157
+      "bytes": 70199
     },
     {
       "stateId": "welcome-first-story-zh-cn-light",
@@ -554,10 +554,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "b3f5da6dcc82a2ff3ccf7a61afa4a41d2854141538f9d0c9c146a65dae1461c4",
+      "rawSha256": "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
       "width": 2048,
       "height": 1024,
-      "bytes": 78898
+      "bytes": 72370
     },
     {
       "stateId": "welcome-first-story-zh-cn-dark",
@@ -569,10 +569,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "795f2fa4992a3f4e559569896fa2b8860732480e7823be9d7a464fe26e9c006f",
+      "rawSha256": "e1b085a707fc10036581b52155bd2419e9ca9d9bb1cb63270ed8503537556c2a",
       "width": 2048,
       "height": 1024,
-      "bytes": 81910
+      "bytes": 68923
     },
     {
       "stateId": "style-guide-first-story-en-light",
@@ -584,10 +584,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "817c57defa333730e50d24e641619d2955e9c0f6346ceac308f12f4d8dab4a88",
+      "rawSha256": "e80f589cc451e5eaeea3430eb32337c513a178cb1d34fbb973af5dec95f356fe",
       "width": 2048,
       "height": 1024,
-      "bytes": 77878
+      "bytes": 79568
     },
     {
       "stateId": "style-guide-first-story-en-dark",
@@ -599,10 +599,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "bc6f15a60c686ba5ebebcd98dc9a9a5a565dfef5e8673036de8bc4cb245ce127",
+      "rawSha256": "164a839fa4f770cfe89766e31020a5a15bb0b94d094d38ea9f77b63fd0954d70",
       "width": 2048,
       "height": 1024,
-      "bytes": 79679
+      "bytes": 75032
     },
     {
       "stateId": "style-guide-first-story-zh-cn-light",
@@ -614,10 +614,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "bddae5c0050ffc7d3927723bbcef17eea3c8e6b710c706a4d2f5178b8bf117e3",
+      "rawSha256": "fd64b876b2fa725ee59a14037121c9c23f0d81029b5fd8be4c5d0b53e652f3d0",
       "width": 2048,
       "height": 1024,
-      "bytes": 89563
+      "bytes": 83991
     },
     {
       "stateId": "style-guide-first-story-zh-cn-dark",
@@ -629,10 +629,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "31322fa618f1de07999d1acf0111baf11cea1e207a89741fe2220d80d192c2a2",
+      "rawSha256": "6128d5c5ba07480ebc712512cd371ad2265ef1ddc73020269881f789f422e347",
       "width": 2048,
       "height": 1024,
-      "bytes": 91114
+      "bytes": 80149
     },
     {
       "stateId": "foundations-first-story-en-light",
@@ -644,10 +644,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "744f2de69367887e6d8b72997f3b89cf5d72f4d0ecb47943eb37923c794a6eec",
+      "rawSha256": "ab23d111231e8b67d5e5a60f3a0b0940102733e6893aff06cc5501b6c9779e37",
       "width": 2048,
       "height": 1024,
-      "bytes": 78937
+      "bytes": 72533
     },
     {
       "stateId": "foundations-first-story-en-dark",
@@ -659,10 +659,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "3ba59108c608cf12ac701f7c3a3444aa10dcad18cab13758787e98b94585f3c0",
+      "rawSha256": "1cf4a2891199ef14c9be970b5b8486506798ae4a0a69ac54bd93e822be2e881b",
       "width": 2048,
       "height": 1024,
-      "bytes": 76389
+      "bytes": 68313
     },
     {
       "stateId": "foundations-first-story-zh-cn-light",
@@ -674,10 +674,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "71b60c30076c779cb53e9d45ff196f56dd7ca61da9916fde91e2929716788c16",
+      "rawSha256": "52eb38503a9bedab81dd63d0efd179bee868f7d52954e91d442a21e3feea206e",
       "width": 2048,
       "height": 1024,
-      "bytes": 80987
+      "bytes": 72310
     },
     {
       "stateId": "foundations-first-story-zh-cn-dark",
@@ -689,10 +689,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "6722116baec96734e25be5554765872357340cb1a64c8a74482ae09acf366d73",
+      "rawSha256": "3831762fd1dbe51aee3ee0740f2067362ab7128da45bc7df88c267d960cc12c5",
       "width": 2048,
       "height": 1024,
-      "bytes": 78314
+      "bytes": 68057
     },
     {
       "stateId": "components-first-story-en-light",
@@ -704,10 +704,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "4d55a9e9945be511ed27a4776e1d396f358284e80ff3daf60458e1f39b6ed16f",
+      "rawSha256": "925538e8288d87a3ca25e83f4a51d3ca1ee7bf327fe50064cd9e2396f16966ba",
       "width": 2048,
       "height": 1024,
-      "bytes": 94337
+      "bytes": 101048
     },
     {
       "stateId": "components-first-story-en-dark",
@@ -719,10 +719,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "04c5b0194853345cd75c4575c6dc6b70769b5cf6f2f55ead0ad77595e992b041",
+      "rawSha256": "9f7d41a41d418c48ea08594a3765f1e07695507a58a76ee32a650e536d7d913c",
       "width": 2048,
       "height": 1024,
-      "bytes": 95490
+      "bytes": 98008
     },
     {
       "stateId": "components-first-story-zh-cn-light",
@@ -734,10 +734,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "a9177c70d289f5f195f3d445116ca8c9eb113fd2d3a3aad457aa672e5848fe14",
+      "rawSha256": "ab4d75b518586e12d8dcf06cdb918c991544463c17686d90501dbfd3b514903f",
       "width": 2048,
       "height": 1024,
-      "bytes": 103062
+      "bytes": 104742
     },
     {
       "stateId": "components-first-story-zh-cn-dark",
@@ -749,10 +749,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "40b0277ae96953d9b550b2ca4be470273b1ab488c61b1fdc728b8d302dd72465",
+      "rawSha256": "f5c79f23e42b3fc39ff73a9b1b2d9c4ce88b11c817818ef8a318d841bc0c147b",
       "width": 2048,
       "height": 1024,
-      "bytes": 104384
+      "bytes": 102389
     },
     {
       "stateId": "patterns-first-story-en-light",
@@ -764,10 +764,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "3e11cdefa29ee996d6193bc995fc716df9bc0ed2f2849f36271b35d4bda02e7e",
+      "rawSha256": "fc5f5d9c4b34f4aa089a5b7e29a81b2443907af0d37ea5689aca88edeaea4208",
       "width": 2048,
       "height": 1024,
-      "bytes": 99272
+      "bytes": 67908
     },
     {
       "stateId": "patterns-first-story-en-dark",
@@ -779,10 +779,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "5c5536e6a67bd84b7692999f4f62eb3c2b563013f6dafbefca3c47a80281205d",
+      "rawSha256": "5aadb7b06bf12b4cdb4f369ee1f53a06edaa2d57ab99ceb092e74dd0e5ab79d3",
       "width": 2048,
       "height": 1024,
-      "bytes": 75468
+      "bytes": 63878
     },
     {
       "stateId": "patterns-first-story-zh-cn-light",
@@ -794,10 +794,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "7bae46179dbabf7965fbbc35ebf4788b0fc73761768ea9e7e74bba3a0fb0b806",
+      "rawSha256": "65ae323aa546804e5987f634ffaa2be062e1b3698d33e8e4314fd06a1a03a041",
       "width": 2048,
       "height": 1024,
-      "bytes": 101960
+      "bytes": 67236
     },
     {
       "stateId": "patterns-first-story-zh-cn-dark",
@@ -809,10 +809,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "2b2de09459f48792dcce141f255512899519f22070b0c7bc7e5fbe92910484bb",
+      "rawSha256": "c187b2ee70c7afddd388d28f1a6cb23cfe16c92f89e211d411a082287a287296",
       "width": 2048,
       "height": 1024,
-      "bytes": 77966
+      "bytes": 63502
     },
     {
       "stateId": "proof-first-story-en-light",
@@ -824,10 +824,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "d6412b877b3e1d3e806918086ca349020a2d0143cc1ef0148b61e531f190a194",
+      "rawSha256": "dfe87e7e9d84b29eec7c5d72fbd97c0f702d20e8c67e93a7ab9a35bb909dfd99",
       "width": 2048,
       "height": 1024,
-      "bytes": 94822
+      "bytes": 63611
     },
     {
       "stateId": "proof-first-story-en-dark",
@@ -839,10 +839,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "748c9d5eeb09b3449b577b7158807b1adf6e07dac6062d959fecc8db7e5440d9",
+      "rawSha256": "cb27523f268c9df5935d65c62136907d03b266b9d49e539296e7fa77bbb7d7be",
       "width": 2048,
       "height": 1024,
-      "bytes": 72468
+      "bytes": 59340
     },
     {
       "stateId": "proof-first-story-zh-cn-light",
@@ -854,10 +854,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "7c3e073c1915d163559aa1df54d2de4d22f8c981c6240c0385016a89e301b057",
+      "rawSha256": "eb524ff9ea0029852a537a71ad1e61d2eb51b6f1ee2234f5b8c7ed1db56f6660",
       "width": 2048,
       "height": 1024,
-      "bytes": 100909
+      "bytes": 67428
     },
     {
       "stateId": "proof-first-story-zh-cn-dark",
@@ -869,10 +869,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "47a52a671f5b33ed1178aeffa4e8e69ad6f1961e763ed0645971473d3a8e731f",
+      "rawSha256": "c6f9cde656dd5e99e7eaeec281616572ea9652599459d408502856bf976a3de8",
       "width": 2048,
       "height": 1024,
-      "bytes": 78027
+      "bytes": 63050
     },
     {
       "stateId": "change-log-first-story-en-light",
@@ -884,10 +884,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "93c0c9fe42248d5093c4a6ece9931b4d3bd72194bb4b03161a4e9b863b41fa5d",
+      "rawSha256": "2c6119d4df66d357f74abe2ad95af9bdd0a86383136dde1d71a371cfad2516d4",
       "width": 2048,
       "height": 1024,
-      "bytes": 84774
+      "bytes": 76657
     },
     {
       "stateId": "change-log-first-story-en-dark",
@@ -899,10 +899,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "752a4858e5acd227c28751c299cf51504af0e5e7c90dc4d85d218c1bd5a1659e",
+      "rawSha256": "d2d89cc39dd12111d2ab6e878e4d3ed027b6626ad4151981e887dbdd64a767a7",
       "width": 2048,
       "height": 1024,
-      "bytes": 85112
+      "bytes": 73800
     },
     {
       "stateId": "change-log-first-story-zh-cn-light",
@@ -914,10 +914,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "090400d8df89ceea30069051f651a9e51f0e6d907190cae0cc5b05f8e060ae68",
+      "rawSha256": "9ab047520da9f21cdf787e52d78e8d7ab1bb2e55bd730148b2239edd5af389b7",
       "width": 2048,
       "height": 1024,
-      "bytes": 81868
+      "bytes": 76090
     },
     {
       "stateId": "change-log-first-story-zh-cn-dark",
@@ -929,10 +929,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "e912cb4b73c91d43e3df3c4e8bbb6314854d67447259edfdae41f606ec6bf529",
+      "rawSha256": "8e3d71dc6d889e0127d395fb32670c942373f61b538aea375af5d9e054393cbd",
       "width": 2048,
       "height": 1024,
-      "bytes": 86311
+      "bytes": 73360
     },
     {
       "stateId": "welcome-search-focus-zh-cn-light",
@@ -944,10 +944,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "8285b2ef868042d873a4688dd023e3c62ef2b0676f6c92fce4a01119f59c80e4",
+      "rawSha256": "f13c5c81f2074f6734afa075a69d42ce4e23ddc9d73fc4d4142994295a774a75",
       "width": 2048,
       "height": 1024,
-      "bytes": 77503
+      "bytes": 72667
     },
     {
       "stateId": "welcome-search-results-zh-cn-light",
@@ -959,10 +959,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "f5bbc4fb41e95759a39f540f6d02cc75953f96a6358ce33814130b990b95418e",
+      "rawSha256": "94d91f9132e4ea7c403838c029207333db88d98a4135f2cc6fd12518f803145f",
       "width": 2048,
       "height": 1024,
-      "bytes": 78807
+      "bytes": 73458
     },
     {
       "stateId": "welcome-locale-menu-zh-cn-light",
@@ -974,10 +974,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "3f335be621e3327c39cdf706c63a571c1f30ba05af4b23d86a5dfc400a76be46",
+      "rawSha256": "1f7d3dc1e08a6f055527112596aa6d8fe9616f2a5d1457c3bf4b984d8b2da113",
       "width": 2048,
       "height": 1024,
-      "bytes": 79578
+      "bytes": 74881
     },
     {
       "stateId": "welcome-scrolled-zh-cn-light",
@@ -989,10 +989,10 @@
       "interaction": "scrolled-topbar",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "c94b19fdce9efa31c61a35f74b0de6eb92a642da73261352cc0b7ad2ea0f3b1e",
+      "rawSha256": "5b272b771ecb95b3231b2c45e658dc1deaf1fa752e69e6345c2f49fbac0a3824",
       "width": 2048,
       "height": 1024,
-      "bytes": 73507
+      "bytes": 70346
     },
     {
       "stateId": "foundations-visual-standards-zh-cn-light",
@@ -1004,10 +1004,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "9da3a768007f29a4bbf6968d1b475ae5191d0f500ba2202b53d65ea0fc7fb7a2",
+      "rawSha256": "b8124239f39ff0ef8288a50bedd16e2e83c593c5e8356c1a20ec24de4206cb9c",
       "width": 2048,
       "height": 1024,
-      "bytes": 96940
+      "bytes": 98233
     },
     {
       "stateId": "welcome-sidebar-collapsed-zh-cn-light",
@@ -1019,10 +1019,10 @@
       "interaction": "sidebar-collapsed",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "f2ccb6f9400e5909fcfe98be73718503faaa0140d0580e76672244635f10432a",
+      "rawSha256": "307959ddc7e8279d5e924b2d2830292b5c8a9c9f7d4701ef1af7c289b7b8e344",
       "width": 2048,
       "height": 1024,
-      "bytes": 59556
+      "bytes": 54420
     },
     {
       "stateId": "welcome-first-story-en-light",
@@ -1034,10 +1034,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "ca1b210b4ff71e5ccb1b986f7ab84d5fc5ed1aab8b0b5528180285286ae58bcc",
+      "rawSha256": "eff07729e96408d69519d9282e5e95cb01d56c119d0f82553e79659a3438d68d",
       "width": 1440,
       "height": 900,
-      "bytes": 58607
+      "bytes": 60828
     },
     {
       "stateId": "welcome-first-story-en-dark",
@@ -1049,10 +1049,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "104a999e351f3525b7fed9964e2f6ea6a1073a2c7bd29a020053dcf594b90388",
+      "rawSha256": "8e15534fc5723f135037819cc58640794ac75e6899e5c329c903a0e5bf4f2891",
       "width": 1440,
       "height": 900,
-      "bytes": 61298
+      "bytes": 58851
     },
     {
       "stateId": "welcome-first-story-zh-cn-light",
@@ -1064,10 +1064,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "0cc44e20aab2ff9272cba2551693ef81c0ef365b7bda7577f314c5ef343e544c",
+      "rawSha256": "0016b8c752c39c921199b6b5e054f319b81b5eb7f6293fe0a20da2e43f472727",
       "width": 1440,
       "height": 900,
-      "bytes": 60910
+      "bytes": 60907
     },
     {
       "stateId": "welcome-first-story-zh-cn-dark",
@@ -1079,10 +1079,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "9e9989ff19feb7e4b6b366279483f750d544711ec4816a0c6f0121b9e7027750",
+      "rawSha256": "f79a171d9cb64050aba6f9279ce487ba18bfe4d7312c37057f0f48df5be4a37e",
       "width": 1440,
       "height": 900,
-      "bytes": 63248
+      "bytes": 59104
     },
     {
       "stateId": "style-guide-first-story-en-light",
@@ -1094,10 +1094,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "55e9ca4df7c6b0583808958424c6960273fec9155ebbff7448be5c915a3cf68a",
+      "rawSha256": "2d27b6d1808f1154ebb16305514626349a42762f9141f3ae19c9fd2e2cac33a8",
       "width": 1440,
       "height": 900,
-      "bytes": 62083
+      "bytes": 61825
     },
     {
       "stateId": "style-guide-first-story-en-dark",
@@ -1109,10 +1109,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "e70aa5411d9b95b2fe74b9b898606ebd5509e617e5ce6906cd548c41644fa3de",
+      "rawSha256": "357d894b658147abc551423bb6113f186e60b0ce08e43e65719bd6eb6fea068e",
       "width": 1440,
       "height": 900,
-      "bytes": 62519
+      "bytes": 60439
     },
     {
       "stateId": "style-guide-first-story-zh-cn-light",
@@ -1124,10 +1124,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "0452ed519c7d326391f37aea6d822009969217aec3f297deb73c5712d0f3d253",
+      "rawSha256": "88a37524f7f9f11c8d64dc717f55cbf517892b55537b3b7fe250addfca628f07",
       "width": 1440,
       "height": 900,
-      "bytes": 67474
+      "bytes": 67160
     },
     {
       "stateId": "style-guide-first-story-zh-cn-dark",
@@ -1139,10 +1139,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "58553fec743e380dca964eea4413f124688bbb47185d9c68038f90a974973660",
+      "rawSha256": "b8ec3c56130ddfa054f52e9a972707311ec8eff999fced14a30b052837d62dd7",
       "width": 1440,
       "height": 900,
-      "bytes": 68027
+      "bytes": 66185
     },
     {
       "stateId": "foundations-first-story-en-light",
@@ -1154,10 +1154,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "45073184bbab3ac31e5f3f6a006d954c818da0ab29e860f00a699e6f45e37329",
+      "rawSha256": "73bfa4150c29d1b5ac32683a4dd0c160823c63d554252a7038104f031ae214f3",
       "width": 1440,
       "height": 900,
-      "bytes": 59260
+      "bytes": 58759
     },
     {
       "stateId": "foundations-first-story-en-dark",
@@ -1169,10 +1169,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "e82d477ab4add0265f39b836baee42f99fddb4b50ae1a885dcd503ceae697d8d",
+      "rawSha256": "a00bdea859c99c51e08b2df990ebd38132edf824c32443fcc7151138f6ed0d95",
       "width": 1440,
       "height": 900,
-      "bytes": 59702
+      "bytes": 57144
     },
     {
       "stateId": "foundations-first-story-zh-cn-light",
@@ -1184,10 +1184,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "78ab38c6292d501b5630452740709fc4d1deb09aece90a1b02b1ab1099f58a81",
+      "rawSha256": "e0e139c6b9a03c14f8d4632172ee894dd6fe38f9cb2810e1b2f7130fe9d41fa7",
       "width": 1440,
       "height": 900,
-      "bytes": 58106
+      "bytes": 58403
     },
     {
       "stateId": "foundations-first-story-zh-cn-dark",
@@ -1199,10 +1199,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "ca6bb122a1919fdf7fd462bdbcfa9b5a529d429a0a992e62b24fe4718cf65b2a",
+      "rawSha256": "ef07c544372abb625b55035955a9f5fd307ae7eea6910722d9a28fcfd5156595",
       "width": 1440,
       "height": 900,
-      "bytes": 60289
+      "bytes": 56863
     },
     {
       "stateId": "components-first-story-en-light",
@@ -1214,10 +1214,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "3daaec5d7511fd86f902cb78ad46cab8fbcf4d1fd85e66db1a84bc9e25e96d87",
+      "rawSha256": "4310b9d66f64a012fb38e34bab8951f47a1badd6d75dc14386bfbb11f9e2f315",
       "width": 1440,
       "height": 900,
-      "bytes": 68429
+      "bytes": 75432
     },
     {
       "stateId": "components-first-story-en-dark",
@@ -1229,10 +1229,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "df99421acc42bc83398807cea9701d897e88ce49a586c7f9da673d1ad21de3bb",
+      "rawSha256": "1b96ea763f4f830b85a13c6b11af2fdcea0f7f7c723722bdecb87ee5ef0e3abb",
       "width": 1440,
       "height": 900,
-      "bytes": 70781
+      "bytes": 74224
     },
     {
       "stateId": "components-first-story-zh-cn-light",
@@ -1244,10 +1244,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "5d9191381785b982baa6108b762f141b4f185531f11fff76dd2b5d35d9c3fba7",
+      "rawSha256": "c0a9286815b0a46a0952e765324e2fc5b9dbc16f0e6281a1bab61101bd7d651a",
       "width": 1440,
       "height": 900,
-      "bytes": 77199
+      "bytes": 73853
     },
     {
       "stateId": "components-first-story-zh-cn-dark",
@@ -1259,10 +1259,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "185e96fa25fa7ddd4724976bd036eb0570a737f03d0510f28772f4717c84ac03",
+      "rawSha256": "70c510bde86e1a4aef8124709cdfbad71acfa0f8c34797820553c50841443ab5",
       "width": 1440,
       "height": 900,
-      "bytes": 79984
+      "bytes": 72843
     },
     {
       "stateId": "patterns-first-story-en-light",
@@ -1274,10 +1274,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "eda26766ad71f40ef95f174d19712aacf3f5b95cfb40d0082454256a440f547a",
+      "rawSha256": "a94f56bdf1263ce6cbfaf5223fd67e331a77fe79947b46d10ff13c1f66475081",
       "width": 1440,
       "height": 900,
-      "bytes": 55688
+      "bytes": 53146
     },
     {
       "stateId": "patterns-first-story-en-dark",
@@ -1289,10 +1289,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "5e42a03c9701f84534855e8ef4c67304ab50105fdfde20f2ca9b28ea71a88095",
+      "rawSha256": "564671e06b5ff00e406b26238e82375e3a430334f3e4217cb7aac3d6a2a48503",
       "width": 1440,
       "height": 900,
-      "bytes": 55628
+      "bytes": 51814
     },
     {
       "stateId": "patterns-first-story-zh-cn-light",
@@ -1304,10 +1304,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "89be6d2d6301a17417bf9586f7638cfb88d2522c2b656904207fd2792d8d475c",
+      "rawSha256": "37db365d836d0b6f9568d58bca1f0bcd3c75667777319d8984db9d3cf1d823ea",
       "width": 1440,
       "height": 900,
-      "bytes": 55109
+      "bytes": 53953
     },
     {
       "stateId": "patterns-first-story-zh-cn-dark",
@@ -1319,10 +1319,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "54cde3ebab600493052ef0e3e75db01b95e4861b9cb1cb4615517384c178983d",
+      "rawSha256": "d08bd433e3e626b06ca0942dce2c65b663449ec0c9c8d003c5351848a8d778c9",
       "width": 1440,
       "height": 900,
-      "bytes": 56927
+      "bytes": 52718
     },
     {
       "stateId": "proof-first-story-en-light",
@@ -1334,10 +1334,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "abc434f8377893fe99c694caa175a415d2bf50b149454b36a218d3126ca5222b",
+      "rawSha256": "278ccd8cedcba75fab6dbee1223345035c8e8120b227ffe4e71dc2af1a3b017c",
       "width": 1440,
       "height": 900,
-      "bytes": 50743
+      "bytes": 52125
     },
     {
       "stateId": "proof-first-story-en-dark",
@@ -1349,10 +1349,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "ab47a469d2e393a9145f48bd073242bd45d54e481d09e7d47beacbf12e7cf613",
+      "rawSha256": "8cbda49e515c9f538b5c52435d896066c1bafba51328390530a9a95ee90919d5",
       "width": 1440,
       "height": 900,
-      "bytes": 52492
+      "bytes": 49949
     },
     {
       "stateId": "proof-first-story-zh-cn-light",
@@ -1364,10 +1364,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "ee92b031ecc77c0544a68123afb8e332856a04bc7f5c58f01a1ee36ce9684969",
+      "rawSha256": "6d5efdea1413bc71d8e8a88c2bd6422c9b3810c1d6df93de4b74b86d2749e559",
       "width": 1440,
       "height": 900,
-      "bytes": 56604
+      "bytes": 54045
     },
     {
       "stateId": "proof-first-story-zh-cn-dark",
@@ -1379,10 +1379,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "2021c2637c30f325e57baa9dc2ebdbeedaa6482de739cf355b920bbfe9918b80",
+      "rawSha256": "c0caa7d69fb5d073d378eb13594faadd752d3dd65c0d69335aecba0f385326dd",
       "width": 1440,
       "height": 900,
-      "bytes": 57242
+      "bytes": 51833
     },
     {
       "stateId": "change-log-first-story-en-light",
@@ -1394,10 +1394,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "55788067c3d16b72d77000392a6e14b985621989fa3bd02580092aa25b435f2b",
+      "rawSha256": "4f52bd79628210281f2ac26cebb8958e7dc3e5d18358c3751da968f2c4b0c7e2",
       "width": 1440,
       "height": 900,
-      "bytes": 63872
+      "bytes": 65008
     },
     {
       "stateId": "change-log-first-story-en-dark",
@@ -1409,10 +1409,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "97104a14daea4b31848ad748af2f51978ce3ccb57d3cfaabf58336dfb3692fa6",
+      "rawSha256": "6a0cefd37cb715fe61057f83992817410770d76e06952f29f0fe847df147b461",
       "width": 1440,
       "height": 900,
-      "bytes": 66441
+      "bytes": 63360
     },
     {
       "stateId": "change-log-first-story-zh-cn-light",
@@ -1424,10 +1424,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "aeef73884000c1204b963cb84238b2ba814ebdaa613dda9c4172eba12d746264",
+      "rawSha256": "3e8f40820037e4dfe37ebb8b4f2be5290f143702c3bdbe4d10e8804ea1f790db",
       "width": 1440,
       "height": 900,
-      "bytes": 65606
+      "bytes": 64724
     },
     {
       "stateId": "change-log-first-story-zh-cn-dark",
@@ -1439,10 +1439,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "2572293b66f30f7f57575a03f758fa07c74499cb6a799b989d6b231be6af933c",
+      "rawSha256": "0f77c8af76fae9d610d742a3a4f3194aeef201255b474aed96aeaffcf189dd60",
       "width": 1440,
       "height": 900,
-      "bytes": 68458
+      "bytes": 63448
     },
     {
       "stateId": "welcome-search-focus-zh-cn-light",
@@ -1454,10 +1454,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "7a4686f0a544e3e607856d06f5496dc17f616465bd2a304ecf2baabdd0522e84",
+      "rawSha256": "e28f922804c63d0aef2f71c759e5b7cc8c751d8773ae0c7511eb9b946efd6765",
       "width": 1440,
       "height": 900,
-      "bytes": 60358
+      "bytes": 61267
     },
     {
       "stateId": "welcome-search-results-zh-cn-light",
@@ -1469,10 +1469,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "64cf7503bb4f4c6dc987a3ed2663c0b9091183274e52e6f5e62d6fb5cfaf683b",
+      "rawSha256": "5161253251a5304816e4bbfa2a6c0132ec33ca88af4054f3c616b532948139d5",
       "width": 1440,
       "height": 900,
-      "bytes": 61500
+      "bytes": 61903
     },
     {
       "stateId": "welcome-locale-menu-zh-cn-light",
@@ -1484,10 +1484,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "ffa28f918b5cc764a6008c0b0c02567c3d7af18b6f99e7d14d931a2eb4bbb02f",
+      "rawSha256": "0ad27c4f3237ff78b95300fca9f1c94b16e92657a98d75f77c051a5a2d302175",
       "width": 1440,
       "height": 900,
-      "bytes": 61410
+      "bytes": 62951
     },
     {
       "stateId": "welcome-scrolled-zh-cn-light",
@@ -1499,10 +1499,10 @@
       "interaction": "scrolled-topbar",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "cc48258b82b4a4ccdff64be1cacb6d007a6dfdfa8891735cb418f13346a28a7a",
+      "rawSha256": "2241a69e3f2068825d5368e94cd1b10030bafbcb0b9d40004eede10ed65dfc06",
       "width": 1440,
       "height": 900,
-      "bytes": 59156
+      "bytes": 59288
     },
     {
       "stateId": "foundations-visual-standards-zh-cn-light",
@@ -1514,10 +1514,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "632a68fb56973c2f3400bfa4c40d6f29fb57b252b14c6394c01d5daf592950af",
+      "rawSha256": "8af2edb544da9da18fb2a4930d4344614469dc2d1908d862037628dcf3a98dd1",
       "width": 1440,
       "height": 900,
-      "bytes": 73446
+      "bytes": 71525
     },
     {
       "stateId": "welcome-sidebar-collapsed-zh-cn-light",
@@ -1529,10 +1529,10 @@
       "interaction": "sidebar-collapsed",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "a2dc93e213516122ced93d8045badac4a83fc78f72c094bda915b698d820983f",
+      "rawSha256": "0cc54fd7579dd562a3901dea879d5b437ea744e87c6ab7f5294a9f1a9f490348",
       "width": 1440,
       "height": 900,
-      "bytes": 48011
+      "bytes": 46707
     },
     {
       "stateId": "welcome-first-story-en-light",
@@ -1544,10 +1544,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__tablet-1024x768.png",
-      "rawSha256": "8f2f68958e0051bcf2079e6cf7824b5635ef48db8f9c3b20402565b2ef230d43",
+      "rawSha256": "2cdca101e0ce40e1de77cd8d9685f023c7b696a609ea96beb6a08f17dc98f6c0",
       "width": 1024,
       "height": 768,
-      "bytes": 42604
+      "bytes": 44553
     },
     {
       "stateId": "welcome-first-story-en-dark",
@@ -1559,10 +1559,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__tablet-1024x768.png",
-      "rawSha256": "d929bc5b31b5e3470e7c169863d890ea364fc3b082f1d7915ad3bc89b3720810",
+      "rawSha256": "cae51407a957d9d1d6cd5183a37de19e4161f5aee063ab490f82b0b231b60e50",
       "width": 1024,
       "height": 768,
-      "bytes": 44165
+      "bytes": 43082
     },
     {
       "stateId": "welcome-first-story-zh-cn-light",
@@ -1574,10 +1574,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "6d4bcfcb94f4b8fbc3b055fb470ce9803befca15fa8321b034364e0b1c9dd0b4",
+      "rawSha256": "c8ecc2892129042bfdd8b68b1b3c31d9dca5bd2643a9648199670e52eaa66359",
       "width": 1024,
       "height": 768,
-      "bytes": 43817
+      "bytes": 44365
     },
     {
       "stateId": "welcome-first-story-zh-cn-dark",
@@ -1589,10 +1589,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "7c9d78adabf4819cdef634e1934b06ad0e0c5aec179a948479d18caf39f19ec7",
+      "rawSha256": "fc8a4ee55a0dde09b82762dbee431f10a0b9eb46680a9e981001fd5e3d02062e",
       "width": 1024,
       "height": 768,
-      "bytes": 45616
+      "bytes": 43004
     },
     {
       "stateId": "style-guide-first-story-en-light",
@@ -1604,10 +1604,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__tablet-1024x768.png",
-      "rawSha256": "0dff168173f486c86ac5f0cdffcf3e5a8f673a53879c047588fddfd1985dd63c",
+      "rawSha256": "d4333a87d0b14d5bfeddbb0c859f6ad954ee15be1a2fea1e82196d789bfec46b",
       "width": 1024,
       "height": 768,
-      "bytes": 42734
+      "bytes": 44654
     },
     {
       "stateId": "style-guide-first-story-en-dark",
@@ -1619,10 +1619,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__tablet-1024x768.png",
-      "rawSha256": "64d3ac83ff4e15ff68a73dbb5ef766b8af7a5bc857c3765b436dd97e4679318e",
+      "rawSha256": "c812d70c687e47fd1128184222b47f2af060f84781ce34ee13e5a8702ffad48c",
       "width": 1024,
       "height": 768,
-      "bytes": 44742
+      "bytes": 43552
     },
     {
       "stateId": "style-guide-first-story-zh-cn-light",
@@ -1634,10 +1634,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "4c78de036ad89c3b624b6c27a985c3dcddbb6c2fc4c58c880f7f5bf9e3512319",
+      "rawSha256": "322d6cdf3c1772b773f4a2a1968ca31cf5ad3a5b4a9d599fd4d75e8bfa72a097",
       "width": 1024,
       "height": 768,
-      "bytes": 47694
+      "bytes": 48605
     },
     {
       "stateId": "style-guide-first-story-zh-cn-dark",
@@ -1649,10 +1649,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "ffc949c7bdc48b779753c7ae9eb34bcafa25677d6c030c1ed2ec3b39e5bf3536",
+      "rawSha256": "feddafec6c860eb80a0432670f8b86a510e7949f50a073e6ff513baa719d9ec8",
       "width": 1024,
       "height": 768,
-      "bytes": 49693
+      "bytes": 47635
     },
     {
       "stateId": "foundations-first-story-en-light",
@@ -1664,10 +1664,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__tablet-1024x768.png",
-      "rawSha256": "eb85cb492f669ec99dc67c67d0f2515d5c49029bf71bf30349c0ba2c5e152355",
+      "rawSha256": "d191750a0bc238f49ed8fb344089b75644f19a5eb85e7f9d86cf831f1cffeb00",
       "width": 1024,
       "height": 768,
-      "bytes": 45836
+      "bytes": 46379
     },
     {
       "stateId": "foundations-first-story-en-dark",
@@ -1679,10 +1679,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__tablet-1024x768.png",
-      "rawSha256": "efb3c79e6d5134c5de29fc298f3e126688da95957980f741eb29704f4a62d3bd",
+      "rawSha256": "3bc3f54556c14bb5e5e6856268f9a0e40639700316671815e10e5e156314f740",
       "width": 1024,
       "height": 768,
-      "bytes": 46706
+      "bytes": 45226
     },
     {
       "stateId": "foundations-first-story-zh-cn-light",
@@ -1694,10 +1694,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "13597bf0e901edfbe25808cafb8d9fa85e6f2da2e672aadf5a44995a029b7ed0",
+      "rawSha256": "70f2ee248bb8f62086acfff42f4d7bd9e55e246e5f7dd12bef34c024687ac9ef",
       "width": 1024,
       "height": 768,
-      "bytes": 52004
+      "bytes": 46516
     },
     {
       "stateId": "foundations-first-story-zh-cn-dark",
@@ -1709,10 +1709,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "0e05eaad4d7b6825c5fdbc8a799fe2972c6198b85f5a84ba6bd979a7c1dd1be2",
+      "rawSha256": "d1637b3e3963f65d07c17e060f5fa3ce4b5cf218ffc6a3eeaf5b178539b33f29",
       "width": 1024,
       "height": 768,
-      "bytes": 48928
+      "bytes": 45600
     },
     {
       "stateId": "components-first-story-en-light",
@@ -1724,10 +1724,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__tablet-1024x768.png",
-      "rawSha256": "86e9eb2c2d61a7986590b8b44a80f23174d912882fe104923d72c2778c7e8aa2",
+      "rawSha256": "f6a12621560bad1f1f255a3a7f2dcbada0264d391ff2082a4934e15ab06105a9",
       "width": 1024,
       "height": 768,
-      "bytes": 45680
+      "bytes": 51676
     },
     {
       "stateId": "components-first-story-en-dark",
@@ -1739,10 +1739,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__tablet-1024x768.png",
-      "rawSha256": "0688320292a1d8bc7ab2567a1fa982be6a06236caba4c8daef501714a96037e6",
+      "rawSha256": "df12a5b8cdfd5d4e5a06e507a34755ba9c1d3613928bf483cbc953581e7ae1fb",
       "width": 1024,
       "height": 768,
-      "bytes": 47484
+      "bytes": 50596
     },
     {
       "stateId": "components-first-story-zh-cn-light",
@@ -1754,10 +1754,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "d4675625c198328d132aac63e50f5261ab703659511b69a5f620130c7f4fefa0",
+      "rawSha256": "420b16abc3e97cfab8e529f887b110b4ab61b81c90657b7cfb62a4e89fac3dd7",
       "width": 1024,
       "height": 768,
-      "bytes": 53481
+      "bytes": 53775
     },
     {
       "stateId": "components-first-story-zh-cn-dark",
@@ -1769,10 +1769,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "975a9b774d2c6e2606048b8536e3ff832f456c11613745f3bd8a2707797d371f",
+      "rawSha256": "90db26cd53cb36b0983507dcd8970fd90cf56fa987bd1977ec76d51bca9c4f08",
       "width": 1024,
       "height": 768,
-      "bytes": 55748
+      "bytes": 53036
     },
     {
       "stateId": "patterns-first-story-en-light",
@@ -1784,10 +1784,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__tablet-1024x768.png",
-      "rawSha256": "c39f7c4788bf7c32bf18e74cf19d9ef0c833919276123ee21d1cda475d82f9e1",
+      "rawSha256": "9cb10ca6031ac94b3123e35d78fc8c8b7d2bf6b9221affae1a7b6eb3807da250",
       "width": 1024,
       "height": 768,
-      "bytes": 41308
+      "bytes": 41225
     },
     {
       "stateId": "patterns-first-story-en-dark",
@@ -1799,10 +1799,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__tablet-1024x768.png",
-      "rawSha256": "0c41a6c7b6f17c382524747db3c2be51bc747b939cad6688a4de7ac8d05537eb",
+      "rawSha256": "0c8c90a3944d2303c60d209549079002bb9602feb81ff5dbc3017d8fc91b4292",
       "width": 1024,
       "height": 768,
-      "bytes": 41880
+      "bytes": 40228
     },
     {
       "stateId": "patterns-first-story-zh-cn-light",
@@ -1814,10 +1814,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "bd014086495be244d728beaa8ef29e8977c06636e63cbbf2b0503b53af8b51f3",
+      "rawSha256": "0e11b2b1b0a5a24af696dc7c1447b33c364e3aaf62010a1a9732e4fa86605633",
       "width": 1024,
       "height": 768,
-      "bytes": 45486
+      "bytes": 43371
     },
     {
       "stateId": "patterns-first-story-zh-cn-dark",
@@ -1829,10 +1829,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "c77f495579ff2d23f132ed2a4363c72f997d4dcfb7078ca9754fd9bdad387825",
+      "rawSha256": "470749ad2ef6834e17dff0b855871451d0403311f7afdfa3c621d4b571963076",
       "width": 1024,
       "height": 768,
-      "bytes": 46249
+      "bytes": 42483
     },
     {
       "stateId": "proof-first-story-en-light",
@@ -1844,10 +1844,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__tablet-1024x768.png",
-      "rawSha256": "88775af6dd1728cce048c28c704e7d30904ca2e75d8fd1aa642bb6c177591267",
+      "rawSha256": "ffe823d64d482b3a6f7528381f49976e93c9bf3a525b9f6d981ddfc7cb57cc1e",
       "width": 1024,
       "height": 768,
-      "bytes": 44258
+      "bytes": 41186
     },
     {
       "stateId": "proof-first-story-en-dark",
@@ -1859,10 +1859,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__tablet-1024x768.png",
-      "rawSha256": "986036623d57abc1074ca17064157ad31a03fc08e6ae39623b7010fe64cfab1f",
+      "rawSha256": "ccc9a4ce64806fc5a7c41c4bcc6db1e20ecae0274bbaafdc2d5d950fbfafe3b4",
       "width": 1024,
       "height": 768,
-      "bytes": 41347
+      "bytes": 39796
     },
     {
       "stateId": "proof-first-story-zh-cn-light",
@@ -1874,10 +1874,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "48ab64822804560f5c0c8f7fd18a7000ca73c465b9a3005fef4dadff6aad60bc",
+      "rawSha256": "5cbb33c399ed8a8e8f83bcbbe71ff93f4dea5bcc530d472da2f4aa5ba9393125",
       "width": 1024,
       "height": 768,
-      "bytes": 48639
+      "bytes": 43273
     },
     {
       "stateId": "proof-first-story-zh-cn-dark",
@@ -1889,10 +1889,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "af289eed7262fefabba35bac9f1395ab4548228f607d25817e45635ca5eecee8",
+      "rawSha256": "4e11b466925aff3ed8449989da56ea94e39f8aaea4ef280e4222766bab50f479",
       "width": 1024,
       "height": 768,
-      "bytes": 45835
+      "bytes": 42226
     },
     {
       "stateId": "change-log-first-story-en-light",
@@ -1904,10 +1904,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__tablet-1024x768.png",
-      "rawSha256": "7f9036cb790682324607c280dcb4aab2b01eae81aef6ebd941af2057772d627f",
+      "rawSha256": "b8f724e4ac9fadded0b14eed55cfb6bba9890896293922e4cd4aa6bfd6edd662",
       "width": 1024,
       "height": 768,
-      "bytes": 50590
+      "bytes": 54739
     },
     {
       "stateId": "change-log-first-story-en-dark",
@@ -1919,10 +1919,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__tablet-1024x768.png",
-      "rawSha256": "ac6eb29b448f497e95cb970d069873af002be1199ea43359378e40e1ee8716b1",
+      "rawSha256": "20c6b66fd1b09901f007a9e368e9ca015271702111a07f7d384d96beb88c4c0c",
       "width": 1024,
       "height": 768,
-      "bytes": 53243
+      "bytes": 53302
     },
     {
       "stateId": "change-log-first-story-zh-cn-light",
@@ -1934,10 +1934,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "3137dfdf0f534cbbdc1b700dcc192caff183d5bd410e6633cf7c637dc123d5a6",
+      "rawSha256": "0da219317f99799fb49f8b4d124fd9731cf65297fc24b310d319f5fe4deff305",
       "width": 1024,
       "height": 768,
-      "bytes": 54042
+      "bytes": 54881
     },
     {
       "stateId": "change-log-first-story-zh-cn-dark",
@@ -1949,10 +1949,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "d7da3a03154466bf99f88ba130fd85cfd20ffa67ccdc3b3ae202b41bf9a8205e",
+      "rawSha256": "75c3a2bc9488347624b6a3a2b08218f7561344103d294fda97c839d729ca67e6",
       "width": 1024,
       "height": 768,
-      "bytes": 56686
+      "bytes": 53647
     },
     {
       "stateId": "welcome-search-focus-zh-cn-light",
@@ -1964,10 +1964,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "21da274c62f359a89d7a6734bcc38925a6b71b4aa069769181b1da33cd1e9a9b",
+      "rawSha256": "594fde2429f0a164523b5ce1c523bb77883cf1e4dd94b82cd8f4d1a725d4c467",
       "width": 1024,
       "height": 768,
-      "bytes": 45292
+      "bytes": 44732
     },
     {
       "stateId": "welcome-search-results-zh-cn-light",
@@ -1979,10 +1979,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "7e142104668768413f10d2e1aa69971785b27d6c1422b34559259b7650739a60",
+      "rawSha256": "cc9fdaea3f774901856c53347a118928757203f9e693ebe4200b26ccaa75476e",
       "width": 1024,
       "height": 768,
-      "bytes": 46357
+      "bytes": 45448
     },
     {
       "stateId": "welcome-locale-menu-zh-cn-light",
@@ -1994,10 +1994,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "b729ff9251dd6d5867bea048e28d236b030cec378acd6ac9768e464d9ee35741",
+      "rawSha256": "da18aa0f6eb7027563a9ec74ee79b82c7f43c0eba822df4fce7d403c7924314f",
       "width": 1024,
       "height": 768,
-      "bytes": 46256
+      "bytes": 46319
     },
     {
       "stateId": "welcome-scrolled-zh-cn-light",
@@ -2009,10 +2009,10 @@
       "interaction": "scrolled-topbar",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "6c924c2fba22f1682907af83cac848dfb28da973c4e90756a1f98484939ca6e2",
+      "rawSha256": "518777864616f92d8bef176598ed22e17252fcca8a5e4aeea8f35b4ca06df87c",
       "width": 1024,
       "height": 768,
-      "bytes": 43703
+      "bytes": 44361
     },
     {
       "stateId": "foundations-visual-standards-zh-cn-light",
@@ -2024,10 +2024,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "a0780c47cbd7b408479dbca7d063b78a13d570ad8d0d7fe67af87246b3b46832",
+      "rawSha256": "716d40abcd5ba0df2bd961858840f8ae2f83ec502c88dc3da624a01ce809735d",
       "width": 1024,
       "height": 768,
-      "bytes": 51883
+      "bytes": 53100
     },
     {
       "stateId": "welcome-sidebar-collapsed-zh-cn-light",
@@ -2039,10 +2039,10 @@
       "interaction": "sidebar-collapsed",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "8d297a7692c4517bc546f2932c3171598aaecd81d5afb0ecccc7baa06df7099c",
+      "rawSha256": "02c11bea1612b95d4aef3e4997983fe6cae4f483cd29a4495c3dc568a96bd458",
       "width": 1024,
       "height": 768,
-      "bytes": 36200
+      "bytes": 33236
     },
     {
       "stateId": "welcome-first-story-en-light",
@@ -2054,10 +2054,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "d08288d3493f066fdbb0b094e1ef587ff87544d8a999ff7f75e3fbce11f28bec",
+      "rawSha256": "045a1af7cef90ce820223abd653cde7cccbe70ade95d1acdaf4dfe92bc2cbd0f",
       "width": 390,
       "height": 844,
-      "bytes": 20505
+      "bytes": 21577
     },
     {
       "stateId": "welcome-first-story-en-dark",
@@ -2069,10 +2069,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "99925cc52ff33fdd03f22dd9c95c764a440ed6cd3d980cb7ad25c2ede3f2007a",
+      "rawSha256": "5c66031e3fb72c65ad0a0142955bbf1dfce07dcf4853e0a768f592662516f8b5",
       "width": 390,
       "height": 844,
-      "bytes": 20548
+      "bytes": 30782
     },
     {
       "stateId": "welcome-first-story-zh-cn-light",
@@ -2084,10 +2084,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "2b49bb0d19d827a024af799c4dfef1cde0239f80d3b9be49ba78dfbfaa005005",
+      "rawSha256": "44c298fcc83f3e3b403dac79267e115e2afc0008f6b17798894e16aa979ca78c",
       "width": 390,
       "height": 844,
-      "bytes": 20540
+      "bytes": 21513
     },
     {
       "stateId": "welcome-first-story-zh-cn-dark",
@@ -2099,10 +2099,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "4089f07b1fb87128ca7e71931393c080327618928f017568e154052805eb2dc4",
+      "rawSha256": "251e426a473315bb2fa7a3d5b6fd1d2281ff6a0d8463693b26fe8939cc01a016",
       "width": 390,
       "height": 844,
-      "bytes": 21108
+      "bytes": 29049
     },
     {
       "stateId": "style-guide-first-story-en-light",
@@ -2114,10 +2114,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "ef7a4f362663979b24f432dad8a55d4e614ce2141b7927847ffdead089d77342",
+      "rawSha256": "0663f5f7939b2a70c2dba78e4689f713fb250d4e5410f73a2839c1d3af65926e",
       "width": 390,
       "height": 844,
-      "bytes": 19257
+      "bytes": 19325
     },
     {
       "stateId": "style-guide-first-story-en-dark",
@@ -2129,10 +2129,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "c0d04e80396d0bd9ebfa5fde4e66da1b7f5519e91d0562ad098bb33a0f5ee4c2",
+      "rawSha256": "50387b009110ebd4672403eff65c7d17d25a83e5d31b27d1fcccef18ed748309",
       "width": 390,
       "height": 844,
-      "bytes": 20176
+      "bytes": 28588
     },
     {
       "stateId": "style-guide-first-story-zh-cn-light",
@@ -2144,10 +2144,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "ddfab74f14314c5a89c55781dd2be8ef58fb2da2ee42d9ea7b5759af1ae89376",
+      "rawSha256": "caa373e5b1efc6ee8164e769136e6ef15d260fac936f6b185abf85b07f449641",
       "width": 390,
       "height": 844,
-      "bytes": 22905
+      "bytes": 21111
     },
     {
       "stateId": "style-guide-first-story-zh-cn-dark",
@@ -2159,10 +2159,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "4ab804f64e5950349f2468fa3ff8e2e44deca442dd060c464fc4a9b07b051c59",
+      "rawSha256": "3c3766b08daf15d27d2dffe5480ce1361e46a4bd451b4f09ec5f9d9ca8fa8c1a",
       "width": 390,
       "height": 844,
-      "bytes": 24283
+      "bytes": 29788
     },
     {
       "stateId": "foundations-first-story-en-light",
@@ -2174,10 +2174,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "529353a5164f89fc7cec761de1f3ebeb77798d313a1b7c45dc9582ed58bbed72",
+      "rawSha256": "512f66621d8010786b52f04b584d3e3f36e1f025fd9ac07f62851fc67f3f8094",
       "width": 390,
       "height": 844,
-      "bytes": 20516
+      "bytes": 20382
     },
     {
       "stateId": "foundations-first-story-en-dark",
@@ -2189,10 +2189,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "d50ecb4b889518c368bbc0a8a3e5bf78ca3ca8514bdf38fe1a6d4fd2e37e916f",
+      "rawSha256": "6b18ebd824fd4fa14ea974c278d53647428e7481a676c4c1f511d21471dc0838",
       "width": 390,
       "height": 844,
-      "bytes": 22470
+      "bytes": 29438
     },
     {
       "stateId": "foundations-first-story-zh-cn-light",
@@ -2204,10 +2204,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "57fbaba506fe340118fe44a2d653fa5cefcf574eab48b91b246da0e5645465f5",
+      "rawSha256": "4a2e7e8be1e7de12cb7e5b5bdda073fe86b9bd39c2d82811a7232dec8a9c5715",
       "width": 390,
       "height": 844,
-      "bytes": 20990
+      "bytes": 20479
     },
     {
       "stateId": "foundations-first-story-zh-cn-dark",
@@ -2219,10 +2219,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "b55339d69b3a46c2f74faf01af74569130356d89814b10c098dd69df23cc4706",
+      "rawSha256": "4c6a391e04ca6b2b4e311b4640a093b15ed373a3fe2a4518a0a52ca019a1b05e",
       "width": 390,
       "height": 844,
-      "bytes": 22851
+      "bytes": 27791
     },
     {
       "stateId": "components-first-story-en-light",
@@ -2234,10 +2234,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "4e9179d6806a1906ec5eadb1f6c07c385d9d0268d8d006a8cb36602a8e4cb42b",
+      "rawSha256": "dc2494b31482bab35c2766354fd9a56e47009bc1c4c696f5caafcf334299fee8",
       "width": 390,
       "height": 844,
-      "bytes": 19791
+      "bytes": 20140
     },
     {
       "stateId": "components-first-story-en-dark",
@@ -2249,10 +2249,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "fac936b9c3dcf15e9f4d2d949192a131c3c1626e6ddd18506902f308a078c8af",
+      "rawSha256": "b79a3383f342b29044df4f80f764bbfdf235488f490d1311f25e62fa9dc05a35",
       "width": 390,
       "height": 844,
-      "bytes": 20723
+      "bytes": 29610
     },
     {
       "stateId": "components-first-story-zh-cn-light",
@@ -2264,10 +2264,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "2a3d72a50c2150fcc8268201d633dc7ccaf2b7b55edf2779b556ce8f10356e1c",
+      "rawSha256": "d4774783e00491d77e253acd26f7b8d67da3d1cc62021c3b7d88a5e4fc4a2d73",
       "width": 390,
       "height": 844,
-      "bytes": 20169
+      "bytes": 19773
     },
     {
       "stateId": "components-first-story-zh-cn-dark",
@@ -2279,10 +2279,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "701107b66ba03d4e53f024eccd07e4d7e7c45225ac9e8a26360aa8f0ae2e220d",
+      "rawSha256": "6821690a37d87c4efdb8220f163defdc48be7a41d546f50eed3b35c0e0963df3",
       "width": 390,
       "height": 844,
-      "bytes": 21226
+      "bytes": 28234
     },
     {
       "stateId": "patterns-first-story-en-light",
@@ -2294,10 +2294,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "c94931cdd4d4036cf269a4f0dbc18e3bcc7d7edf6d9489287df2aab4bea9ebf3",
+      "rawSha256": "b58af03486fd08c2111a085d43e90fc720c86932478cf517be45416ea4318e56",
       "width": 390,
       "height": 844,
-      "bytes": 18130
+      "bytes": 18081
     },
     {
       "stateId": "patterns-first-story-en-dark",
@@ -2309,10 +2309,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "f5fc413da8521c957e6b9deed0ce9b818ce6d397724da67dffdda7b7adc1e832",
+      "rawSha256": "61a9235fe8fd53841d201fc95c50477d3e0f021f352ac26f50b896bb2b237aca",
       "width": 390,
       "height": 844,
-      "bytes": 19547
+      "bytes": 28026
     },
     {
       "stateId": "patterns-first-story-zh-cn-light",
@@ -2324,10 +2324,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "ad85a6b4f1b7ef015124bd88cdb41471bed71911eebfefe751645a5e3768f9b3",
+      "rawSha256": "88b21d068c771653c14c6e94669d3417e597bab5369681fad48899f6dab17608",
       "width": 390,
       "height": 844,
-      "bytes": 17718
+      "bytes": 21791
     },
     {
       "stateId": "patterns-first-story-zh-cn-dark",
@@ -2339,10 +2339,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "883a7266fd4388c6bbaae14977b442f29f28a07fbaec06be3a4ae3f2526c9371",
+      "rawSha256": "c80bcc182622d992eaa5ef14bc06da27a184a4455c4efbd77a8ff3f50fa0b081",
       "width": 390,
       "height": 844,
-      "bytes": 19316
+      "bytes": 29972
     },
     {
       "stateId": "proof-first-story-en-light",
@@ -2354,10 +2354,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "35738454dba042deb8be9c264264076c8926f12994f14787c588b157e3b8fafc",
+      "rawSha256": "46c1fc6858f11be25821487c66403b2d9d02baa74026869d117e4339d725b922",
       "width": 390,
       "height": 844,
-      "bytes": 13827
+      "bytes": 16440
     },
     {
       "stateId": "proof-first-story-en-dark",
@@ -2369,10 +2369,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "bbcb740aaef1dd19d3ab13cf6019b33f0ee5b1f00b2b462fb4f88803c3ab43ef",
+      "rawSha256": "83ef5013980d6f862f634f245d57609ff3cc903b5365977b784519de212933e4",
       "width": 390,
       "height": 844,
-      "bytes": 15076
+      "bytes": 24252
     },
     {
       "stateId": "proof-first-story-zh-cn-light",
@@ -2384,10 +2384,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "b765b3103291042654d0ad542956b3a850736d2ff4e485ee819bc587dce99a88",
+      "rawSha256": "2ab4572338b2e73275d6d21db8174cf91dcba8c242cbbf9c18e9d4a7efa69d7c",
       "width": 390,
       "height": 844,
-      "bytes": 14354
+      "bytes": 17650
     },
     {
       "stateId": "proof-first-story-zh-cn-dark",
@@ -2399,10 +2399,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "e72e87a5a435dbee4a9338d3d649a02c08369ff11570458219da13e4405da209",
+      "rawSha256": "300a0e93725b966e82a7428de0c714f19a0ca8a1eb91b1432e1a78541979d791",
       "width": 390,
       "height": 844,
-      "bytes": 15468
+      "bytes": 24564
     },
     {
       "stateId": "change-log-first-story-en-light",
@@ -2414,10 +2414,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "4a81b243a35be648734380dd41c5f2c9ccb4483c3dc643f72d83bc2d243b0834",
+      "rawSha256": "772d6908a6952449b748226b70fff72ca9ba458978f0be50ae7010d06ea007ef",
       "width": 390,
       "height": 844,
-      "bytes": 24250
+      "bytes": 20519
     },
     {
       "stateId": "change-log-first-story-en-dark",
@@ -2429,10 +2429,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "849ab333d6ae82deda6e83552ab56f0157f2572a422549d9639774d10b4c625b",
+      "rawSha256": "00603d9922c5de29cc2f1155865ecdc735ff7ff310e79f1e0de5c6d769467818",
       "width": 390,
       "height": 844,
-      "bytes": 24450
+      "bytes": 29588
     },
     {
       "stateId": "change-log-first-story-zh-cn-light",
@@ -2444,10 +2444,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "cbe49011ad5fbea48f3ee8659382386a90eb3194483215eb48c6160a2f7abfd3",
+      "rawSha256": "07e9765ba81c98c1d18d2c45c2b18492a670ce4fc3f3bb77111ee1980b1cbc97",
       "width": 390,
       "height": 844,
-      "bytes": 24021
+      "bytes": 22673
     },
     {
       "stateId": "change-log-first-story-zh-cn-dark",
@@ -2459,10 +2459,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "bd99e2564f2e909f4a3029d9c9edc0559a743fc5e5c2b65345f8376f0a4c9c28",
+      "rawSha256": "9ea5d2e16753b2f7bc41aaa3f815449c711255395e5feb3847fc55dd3ad4ca64",
       "width": 390,
       "height": 844,
-      "bytes": 24681
+      "bytes": 30658
     },
     {
       "stateId": "welcome-search-focus-zh-cn-light",
@@ -2474,10 +2474,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "4abdd16a9e6b491d5252da58fed94b16a7f2e9b1168f11d7b67e3f44cfacab7b",
+      "rawSha256": "fffa39a153a02ed3b39842f02c3234f916a6aa4f0053fd032885ac0509a14d24",
       "width": 390,
       "height": 844,
-      "bytes": 20823
+      "bytes": 18784
     },
     {
       "stateId": "welcome-search-results-zh-cn-light",
@@ -2489,10 +2489,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "241e66a02dc6304687a3fdb114baf11737e500bbd5a27eec72d15207062d763c",
+      "rawSha256": "90b11dfe14ab9fd6d398af972a3c16e2bd19137d4f56d410ba8bfe20545183f1",
       "width": 390,
       "height": 844,
-      "bytes": 21194
+      "bytes": 16039
     },
     {
       "stateId": "welcome-locale-menu-zh-cn-light",
@@ -2504,10 +2504,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "c9a2d98e77c0d6bc6370de5f7b2a84667da31dd21c68fd1b1d55d256723478ee",
+      "rawSha256": "32de08ab7c21be71dd3e33948df05c09f42456a24bfee4d76ec16e30b37d4fb2",
       "width": 390,
       "height": 844,
-      "bytes": 21490
+      "bytes": 23891
     },
     {
       "stateId": "foundations-visual-standards-zh-cn-light",
@@ -2519,11 +2519,11 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "2be34edf857125744887561f6f891682540dccbd0479d68e053ed529657ed632",
+      "rawSha256": "84df825a208945a12b88dbc79820489a1dc606a53caa8b41c5ee1bd17a81e56e",
       "width": 390,
       "height": 844,
-      "bytes": 21775
+      "bytes": 23456
     }
   ],
-  "baselineManifestHash": "c130d5e273b6819c8e18def2cf3a8e7e3b6346beee0f80682a2eecc1892adf24"
+  "baselineManifestHash": "9872901e3946bd5ab804a8cedec4b8828b83e9a031de3e9b2ec4cf4da67d4152"
 }

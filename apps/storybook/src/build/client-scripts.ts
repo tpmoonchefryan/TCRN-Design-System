@@ -51,13 +51,7 @@ export const storybookThemeScript = `<script>
       // Local persistence is helpful, not required for the static proof surface.
     }
   };
-  const storybookShell = () => document.querySelector("[data-contract-surface='tcrn-design-system-storybook']");
-  const storybookNav = () => storybookShell()?.querySelector("[data-product-shell-region='side-navigation']");
-  const themedLinks = () => [
-    ...Array.from(storybookNav()?.querySelectorAll("[data-product-shell-route]") ?? []),
-    ...Array.from(storybookNav()?.querySelectorAll(".tcrn-product-shell__brand") ?? []),
-    ...Array.from(document.querySelectorAll("[data-story-nav], .tcrn-doc-chapter-pager__link"))
-  ];
+  const themedLinks = () => document.querySelectorAll("[data-story-nav], [data-doc-nav-item], .tcrn-doc-brand, .tcrn-doc-chapter-pager__link");
   const updateThemeLinks = (theme) => {
     const shell = document.querySelector("[data-contract-surface]");
     const currentLocale = shell?.getAttribute("data-storybook-locale");
@@ -84,15 +78,14 @@ export const storybookThemeScript = `<script>
     document.documentElement.style.colorScheme = resolvedTheme;
     shell?.setAttribute("data-storybook-theme", resolvedTheme);
     shell?.setAttribute("data-tcrn-theme", resolvedTheme);
-    for (const option of document.querySelectorAll("[data-storybook-theme-option], [data-theme-toggle='true']")) {
-      option.setAttribute("aria-pressed", resolvedTheme === "dark" ? "true" : "false");
+    for (const option of document.querySelectorAll("[data-storybook-theme-option]")) {
+      option.setAttribute("aria-pressed", option.getAttribute("data-storybook-theme-option") === resolvedTheme ? "true" : "false");
     }
-    const toggle = document.querySelector("[data-theme-toggle='true'], [data-storybook-theme-toggle]");
+    const toggle = document.querySelector("[data-storybook-theme-toggle]");
     if (toggle) {
       const labelKey = nextTheme === "dark" ? "shell.themeDarkLabel" : "shell.themeLightLabel";
       toggle.setAttribute("data-current-theme", resolvedTheme);
       toggle.setAttribute("data-storybook-theme-option", nextTheme);
-      toggle.setAttribute("data-theme-next", nextTheme);
       toggle.setAttribute("data-theme-label-key", labelKey);
       toggle.setAttribute("aria-pressed", resolvedTheme === "dark" ? "true" : "false");
       for (const icon of toggle.querySelectorAll("[data-theme-icon]")) {
@@ -157,8 +150,8 @@ export const storybookThemeScript = `<script>
   const urlTheme = new URL(window.location.href).searchParams.get("theme");
   const storedTheme = readStoredTheme();
   const initialTheme = isSupported(urlTheme) ? urlTheme : isSupported(storedTheme) ? storedTheme : defaultTheme;
-  for (const option of document.querySelectorAll("[data-storybook-theme-option], [data-theme-toggle='true']")) {
-    option.addEventListener("click", () => applyTheme(option.getAttribute("data-storybook-theme-option") ?? option.getAttribute("data-theme-next"), true));
+  for (const option of document.querySelectorAll("[data-storybook-theme-option]")) {
+    option.addEventListener("click", () => applyTheme(option.getAttribute("data-storybook-theme-option"), true));
   }
   window.tcrnStorybookApplyTheme = applyTheme;
   window.tcrnStorybookUpdateThemeLinks = () => updateThemeLinks(window.tcrnStorybookResolvedTheme ?? defaultTheme);
@@ -275,7 +268,7 @@ export const storybookI18nScript = `<script>
   const updateLocalizedLinks = (locale) => {
     const shell = document.querySelector("[data-contract-surface]");
     const currentTheme = shell?.getAttribute("data-storybook-theme");
-    for (const link of document.querySelectorAll("[data-product-shell-route], [data-story-nav], .tcrn-product-shell__brand, .tcrn-doc-chapter-pager__link")) {
+    for (const link of document.querySelectorAll("[data-story-nav], [data-doc-nav-item], .tcrn-doc-brand, .tcrn-doc-chapter-pager__link")) {
       const href = link.getAttribute("href");
       if (!href) {
         continue;
@@ -330,100 +323,6 @@ export const storybookI18nScript = `<script>
       option.setAttribute("title", label);
     }
   };
-  const applyProductShellTextKeys = (locale) => {
-    const shell = document.querySelector("[data-contract-surface='tcrn-design-system-storybook']");
-    if (!shell) {
-      return;
-    }
-    for (const group of shell.querySelectorAll("[data-product-shell-nav-group-label-key]")) {
-      const labelKey = group.getAttribute("data-product-shell-nav-group-label-key");
-      const descriptionKey = group.getAttribute("data-product-shell-nav-group-description-key");
-      const sectionLabelKey = group.getAttribute("data-product-shell-nav-group-section-label-key");
-      if (labelKey) {
-        const label = textFor(locale, labelKey);
-        const labelNode = group.querySelector(".tcrn-nav-group__label");
-        if (labelNode) {
-          labelNode.textContent = label;
-        }
-        group.setAttribute("data-storybook-category-label", label);
-      }
-      if (descriptionKey) {
-        const description = textFor(locale, descriptionKey);
-        group.setAttribute("title", description);
-        group.setAttribute("data-storybook-category-description", description);
-      }
-      if (sectionLabelKey) {
-        group.setAttribute("data-storybook-section-label", textFor(locale, sectionLabelKey));
-      }
-    }
-    for (const link of shell.querySelectorAll("[data-product-shell-route][data-product-shell-route-label-key]")) {
-      const labelKey = link.getAttribute("data-product-shell-route-label-key");
-      if (!labelKey) {
-        continue;
-      }
-      const label = textFor(locale, labelKey);
-      const labelNode = link.querySelector(".tcrn-nav-item__label");
-      if (labelNode) {
-        labelNode.textContent = label;
-      }
-      link.setAttribute("aria-label", label);
-    }
-    const brand = shell.querySelector(".tcrn-product-shell__brand");
-    const brandSuffix = brand?.querySelector(".tcrn-brand-wordmark__suffix");
-    const brandCaption = brand?.querySelector(".tcrn-shell-brand-lockup__caption");
-    if (brandSuffix) {
-      brandSuffix.textContent = textFor(locale, "shell.brandSuffix");
-    }
-    if (brandCaption) {
-      brandCaption.textContent = textFor(locale, "shell.brandCaption");
-    }
-    const currentLocation = shell.querySelector(".tcrn-product-shell__current-location");
-    const currentLocationLabelKey = currentLocation?.getAttribute("data-product-shell-current-location-label-key");
-    const currentRouteLabelKey = currentLocation?.getAttribute("data-product-shell-current-route-label-key");
-    if (currentLocationLabelKey) {
-      const labelNode = currentLocation.querySelector("span");
-      if (labelNode) {
-        labelNode.textContent = textFor(locale, currentLocationLabelKey);
-      }
-    }
-    if (currentRouteLabelKey) {
-      const routeNode = currentLocation.querySelector("strong");
-      if (routeNode) {
-        routeNode.textContent = textFor(locale, currentRouteLabelKey);
-        routeNode.setAttribute("data-i18n", currentRouteLabelKey);
-      }
-    }
-    const searchRoot = shell.querySelector("[data-shell-control='product-shell-search']");
-    if (searchRoot) {
-      const input = searchRoot.querySelector(".tcrn-search-input__control");
-      const labelKey = searchRoot.getAttribute("data-product-shell-search-label-key");
-      const resultsLabelKey = searchRoot.getAttribute("data-product-shell-search-results-label-key");
-      if (labelKey && input) {
-        const label = textFor(locale, labelKey);
-        input.setAttribute("aria-label", label);
-        input.setAttribute("placeholder", label);
-      }
-      if (resultsLabelKey) {
-        searchRoot.querySelector("[data-product-shell-search-results]")?.setAttribute("aria-label", textFor(locale, resultsLabelKey));
-      }
-      for (const result of searchRoot.querySelectorAll("[data-search-result]")) {
-        const titleKey = result.getAttribute("data-search-result-title-key");
-        const metaKey = result.getAttribute("data-search-result-meta-key");
-        if (titleKey) {
-          const title = result.querySelector("strong");
-          if (title) {
-            title.textContent = textFor(locale, titleKey);
-          }
-        }
-        if (metaKey) {
-          const meta = result.querySelector("span");
-          if (meta) {
-            meta.textContent = textFor(locale, metaKey);
-          }
-        }
-      }
-    }
-  };
   const applyLocale = (locale, updateUrl) => {
     const resolvedLocale = isSupported(locale) ? locale : defaultLocale;
     window.tcrnStorybookResolvedLocale = resolvedLocale;
@@ -442,9 +341,8 @@ export const storybookI18nScript = `<script>
       node.setAttribute("title", textFor(resolvedLocale, node.getAttribute("data-i18n-title")));
     }
     translateContentTree(resolvedLocale);
-    applyProductShellTextKeys(resolvedLocale);
     applyClientShortcuts();
-    for (const toggle of document.querySelectorAll("[data-side-nav-toggle='true']")) {
+    for (const toggle of document.querySelectorAll("[data-doc-sidebar-toggle]")) {
       toggle.setAttribute("data-expanded-label", textFor(resolvedLocale, "shell.collapseNavigationLabel"));
       toggle.setAttribute("data-collapsed-label", textFor(resolvedLocale, "shell.expandNavigationLabel"));
     }
@@ -487,7 +385,7 @@ export const storybookI18nScript = `<script>
     });
   }
   document.addEventListener("mousedown", (event) => {
-    if (!event.target.closest?.("[data-locale-menu-root], .tcrn-shell-locale-menu")) {
+    if (!event.target.closest?.("[data-locale-menu-root]")) {
       closeLocaleMenu();
     }
   });
@@ -503,7 +401,7 @@ export const storybookI18nScript = `<script>
 export const sidebarToggleScript = `<script>
 (() => {
   const shell = document.querySelector("[data-contract-surface]");
-  const toggle = document.querySelector("[data-side-nav-toggle='true']");
+  const toggle = document.querySelector("[data-doc-sidebar-toggle]");
   if (!shell || !toggle) {
     return;
   }
@@ -540,10 +438,7 @@ export const sidebarToggleScript = `<script>
       shell.removeAttribute("data-sidebar-motion");
     }
     shell.setAttribute("data-sidebar-collapsed", collapsed ? "true" : "false");
-    shell.setAttribute("data-product-shell-collapsed", collapsed ? "true" : "false");
-    shell.setAttribute("data-side-nav-collapsed", collapsed ? "true" : "false");
     toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    toggle.setAttribute("data-side-nav-collapsed", collapsed ? "true" : "false");
     const label = collapsed ? toggle.getAttribute("data-collapsed-label") : toggle.getAttribute("data-expanded-label");
     if (label) {
       toggle.setAttribute("aria-label", label);
@@ -559,12 +454,6 @@ export const sidebarToggleScript = `<script>
   toggle.addEventListener("click", () => {
     setCollapsed(shell.getAttribute("data-sidebar-collapsed") !== "true");
   });
-  toggle.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " " || event.key === "Spacebar") {
-      event.preventDefault();
-      setCollapsed(shell.getAttribute("data-sidebar-collapsed") !== "true");
-    }
-  });
   window.addEventListener("tcrn-storybook-locale-applied", window.tcrnUpdateSidebarToggle);
   setCollapsed(readStoredState(), false, false);
 })();
@@ -572,18 +461,16 @@ export const sidebarToggleScript = `<script>
 
 export const storybookSearchScript = `<script>
 (() => {
-  const searchRoot = document.querySelector("[data-shell-control='product-shell-search'], .tcrn-product-shell-search");
-  const input = searchRoot?.querySelector(".tcrn-search-input__control");
-  const resultsBox = searchRoot?.querySelector("[data-product-shell-search-results]");
+  const input = document.querySelector("[data-doc-search-input]");
+  const resultsBox = document.querySelector("[data-doc-search-results]");
   if (!(input instanceof HTMLInputElement)) {
     return;
   }
-	  const searchWorkspace = searchRoot;
-	  const maxResults = 8;
-	  let results = [];
-	  let activeIndex = -1;
-	  const readStorybookNav = () =>
-	    document.querySelector("[data-contract-surface='tcrn-design-system-storybook'] [data-product-shell-region='side-navigation']");
+  const searchRoot = input.closest(".tcrn-doc-header-search");
+  const searchWorkspace = input.closest(".tcrn-doc-header__workspace");
+  const maxResults = 8;
+  let results = [];
+  let activeIndex = -1;
   const setSearchExpanded = (expanded) => {
     if (!(searchWorkspace instanceof HTMLElement)) {
       return;
@@ -621,15 +508,14 @@ export const storybookSearchScript = `<script>
     }
     return key;
   };
-	  const readItems = () => {
-	    const nav = readStorybookNav();
-	    const links = Array.from((nav ?? document).querySelectorAll("[data-product-shell-route], [data-story-nav]"))
-	      .filter((link) => link instanceof HTMLAnchorElement);
+  const readItems = () => {
+    const links = Array.from(document.querySelectorAll("[data-story-nav], [data-doc-nav-item]"))
+      .filter((link) => link instanceof HTMLAnchorElement);
     return links.map((link) => {
-      const group = link.closest(".tcrn-nav-group");
+      const group = link.closest("[data-doc-nav-group]");
       const readLabel = (source) =>
-        source?.querySelector(".tcrn-nav-group__label")?.textContent?.trim() ?? source?.textContent?.trim() ?? "";
-      const groupLabel = readLabel(group);
+        source?.querySelector(".tcrn-doc-nav__section-label")?.textContent?.trim() ?? source?.textContent?.trim() ?? "";
+      const groupLabel = readLabel(group?.querySelector("[data-story-nav]"));
       const label = readLabel(link);
       const href = link.getAttribute("href") ?? "#";
       const searchable = [label, groupLabel].filter(Boolean).join(" ");
@@ -641,7 +527,6 @@ export const storybookSearchScript = `<script>
       return;
     }
     resultsBox.hidden = !visible;
-    searchRoot?.setAttribute("data-search-results-visible", visible ? "true" : "false");
     input.setAttribute("aria-expanded", visible ? "true" : "false");
   };
   const setActiveIndex = (nextIndex) => {
@@ -651,8 +536,8 @@ export const storybookSearchScript = `<script>
       return;
     }
     activeIndex = (nextIndex + results.length) % results.length;
-    for (const node of Array.from(document.querySelectorAll("[data-storybook-search-result]"))) {
-      const selected = Number(node.getAttribute("data-storybook-search-result")) === activeIndex;
+    for (const node of Array.from(document.querySelectorAll("[data-doc-search-result]"))) {
+      const selected = Number(node.getAttribute("data-doc-search-result")) === activeIndex;
       node.setAttribute("aria-selected", selected ? "true" : "false");
       if (selected) {
         input.setAttribute("aria-activedescendant", node.id);
@@ -680,11 +565,11 @@ export const storybookSearchScript = `<script>
     results.forEach((result, index) => {
       const option = document.createElement("a");
       option.className = "tcrn-product-shell-search__result";
-      option.id = "tcrn-storybook-search-result-" + index;
+      option.id = "tcrn-doc-search-result-" + index;
       option.href = result.href;
       option.setAttribute("role", "option");
       option.setAttribute("aria-selected", index === activeIndex ? "true" : "false");
-      option.setAttribute("data-storybook-search-result", String(index));
+      option.setAttribute("data-doc-search-result", String(index));
       option.innerHTML = "<strong></strong><span></span>";
       option.querySelector("strong").textContent = result.label;
       const meta = option.querySelector("span");
@@ -882,27 +767,12 @@ export const dialogFixtureScript = `<script>
 
 export const anchorScrollScript = `<script>
 (() => {
-  const targetSelector = "[data-product-shell-route], .tcrn-skip-link";
+  const targetSelector = "[data-doc-nav-item], .tcrn-doc-skip";
   const readOffset = () => {
     const source = document.documentElement;
     const raw = window.getComputedStyle(source).getPropertyValue("--tcrn-anchor-scroll-offset");
     const value = Number.parseFloat(raw);
     return Number.isFinite(value) ? value : 22;
-  };
-  const readProductShellTopbarOffset = () => {
-    const topbar = document.querySelector("[data-contract-surface='tcrn-design-system-storybook'] .tcrn-top-bar");
-    if (!(topbar instanceof HTMLElement)) {
-      return 0;
-    }
-    const rect = topbar.getBoundingClientRect();
-    return Math.max(0, Math.ceil(rect.bottom) + 12);
-  };
-  const readHashTargetOffset = () => {
-    const baseOffset = readOffset();
-    if (!window.matchMedia("(max-width: 760px)").matches) {
-      return baseOffset;
-    }
-    return Math.max(baseOffset, readProductShellTopbarOffset());
   };
   const readHashId = (hash = window.location.hash) => {
     try {
@@ -933,15 +803,8 @@ export const anchorScrollScript = `<script>
     }
     const nextTop = isFirstStoryTarget(target)
       ? 0
-      : Math.max(0, target.getBoundingClientRect().top + window.scrollY - readHashTargetOffset());
+      : Math.max(0, target.getBoundingClientRect().top + window.scrollY - readOffset());
     window.scrollTo({ top: nextTop, left: 0, behavior: "auto" });
-    window.tcrnStorybookAnchorOffsetReadback = {
-      targetId,
-      baseOffset: readOffset(),
-      appliedOffset: readHashTargetOffset(),
-      mobileTopbarOffset: readProductShellTopbarOffset(),
-      viewportWidth: window.innerWidth
-    };
     return true;
   };
   const scheduleScrollToHashTarget = () => {
@@ -975,26 +838,48 @@ export const anchorScrollScript = `<script>
 export const activeStoryNavScript = `<script>
 (() => {
   const storyNodes = Array.from(document.querySelectorAll("[data-story-id]"));
-  const storybookShell = document.querySelector("[data-contract-surface='tcrn-design-system-storybook']");
-  const storybookNav = storybookShell?.querySelector("[data-product-shell-region='side-navigation']");
-  const storyLinks = Array.from((storybookNav ?? document).querySelectorAll("[data-product-shell-route]"));
+  const storyLinks = Array.from(document.querySelectorAll("[data-doc-nav-item]"));
+  const categoryToggles = Array.from(document.querySelectorAll("[data-doc-nav-category-toggle]"));
   const storyIds = storyNodes.map((node) => node.getAttribute("data-story-id")).filter(Boolean);
   let hashPinnedStoryId = null;
   let suppressScrollSpyUntil = 0;
   let scrollSpyFrame = 0;
   let currentStoryId = storyIds[0] ?? null;
+  const setCategoryOpen = (toggle, open) => {
+    const controls = toggle.getAttribute("aria-controls");
+    const list = controls ? document.getElementById(controls) : null;
+    const category = toggle.closest("[data-doc-nav-category]");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    category?.setAttribute("data-doc-nav-category-open", open ? "true" : "false");
+    if (list) {
+      list.hidden = !open;
+    }
+  };
+  const openCategoryForLink = (link) => {
+    const category = link?.closest("[data-doc-nav-category]");
+    const toggle = category?.querySelector("[data-doc-nav-category-toggle]");
+    if (toggle) {
+      setCategoryOpen(toggle, true);
+    }
+  };
+  for (const toggle of categoryToggles) {
+    setCategoryOpen(toggle, toggle.getAttribute("aria-expanded") === "true");
+    toggle.addEventListener("click", () => {
+      setCategoryOpen(toggle, toggle.getAttribute("aria-expanded") !== "true");
+    });
+  }
   const readOffset = () => {
     const raw = window.getComputedStyle(document.documentElement).getPropertyValue("--tcrn-anchor-scroll-offset");
     const value = Number.parseFloat(raw);
     return Number.isFinite(value) ? value : 22;
   };
   const keepActiveLinkVisible = (activeLink) => {
-    const sidebar = activeLink.closest(".tcrn-product-shell__sidebar");
+    const sidebar = activeLink.closest(".tcrn-doc-sidebar");
     if (!(sidebar instanceof HTMLElement)) {
       return;
     }
-    const activeGroup = activeLink.closest(".tcrn-nav-group");
-    const groupSection = activeGroup?.querySelector(".tcrn-nav-group__label");
+    const activeGroup = activeLink.closest("[data-doc-nav-group]");
+    const groupSection = activeGroup?.querySelector(".tcrn-doc-nav__section[aria-current='page']");
     const anchor = groupSection instanceof HTMLElement ? groupSection : activeLink;
     const maxScrollTop = Math.max(0, sidebar.scrollHeight - sidebar.clientHeight);
     const nextScrollTop = Math.max(0, Math.min(anchor.offsetTop - 8, maxScrollTop));
@@ -1007,17 +892,16 @@ export const activeStoryNavScript = `<script>
     currentStoryId = storyId;
     for (const link of storyLinks) {
       link.removeAttribute("aria-current");
-      link.removeAttribute("data-storybook-nav-item-active");
-      link.removeAttribute("data-selected");
+      link.removeAttribute("data-doc-nav-item-active");
     }
-    const activeLink = storyLinks.find((link) => link.getAttribute("data-product-shell-route") === storyId);
+    const activeLink = storyLinks.find((link) => link.getAttribute("data-doc-nav-item") === storyId);
     if (activeLink) {
+      openCategoryForLink(activeLink);
       activeLink.setAttribute("aria-current", "location");
-      activeLink.setAttribute("data-storybook-nav-item-active", "true");
-      activeLink.setAttribute("data-selected", "true");
+      activeLink.setAttribute("data-doc-nav-item-active", "true");
       keepActiveLinkVisible(activeLink);
     }
-    const currentStory = storybookShell?.querySelector(".tcrn-product-shell__current-location strong");
+    const currentStory = document.querySelector("[data-doc-current-story]");
     if (currentStory) {
       const key = "story." + storyId + ".title";
       currentStory.setAttribute("data-i18n", key);
