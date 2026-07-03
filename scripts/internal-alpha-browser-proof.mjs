@@ -540,7 +540,7 @@ const aiContractTraceabilityCheck = {
     && String(aiContract.productShellVisualOracle?.metricSourceDisposition ?? "").includes("committed baseline screenshots")
     && (aiContract.productShellVisualOracle?.metricEvidence ?? []).some((item) => (
       item.metric === "searchRestWidthPx"
-      && item.sha256 === "54f754f85b253b6bdf88522edc6b652917d627cf1aba29a416396a6ddd0187a5"
+      && item.sha256 === "6ce4af45dd3af84c0f22f187dd5962e5a760c47e3f0f4e54afbb82a72df10529"
     ))
     && llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
