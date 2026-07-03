@@ -1,20 +1,20 @@
 {
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
-  "sourceHead": "fc85adf8760d29e2ff76402ba13b477c4cb859b0",
-  "sourceGitStatus": "## main...origin/main [ahead 49]\n M apps/storybook/src/alpha-styles.ts\n M apps/storybook/src/build/ai-consumption-contract.ts\n M apps/storybook/src/build/client-scripts.ts\n M apps/storybook/src/build/foundation-visual-standards.ts\n M apps/storybook/src/build/locales/storybook-content-text.ts\n M apps/storybook/src/build/page-template.tsx\n M apps/storybook/src/build/write-static.ts\n M apps/storybook/src/contract-stories/story-content.tsx\n M apps/storybook/src/smoke.test.ts\n M docs/verification/internal-alpha/browser-proof-summary.json\n M docs/verification/internal-alpha/intentional-diff-manifest.json\n M docs/verification/internal-alpha/story-coverage-manifest.json\n M docs/verification/internal-alpha/visual-baseline-manifest.json\n D docs/verification/storybook-visual-proof/README.md\n D docs/verification/storybook-visual-proof/baseline-manifest.json\n D docs/verification/storybook-visual-proof/check-receipt.json\n D docs/verification/storybook-visual-proof/intentional-diff-manifest.json\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/update-receipt.json\n M scripts/internal-alpha-browser-proof.mjs\n M scripts/package-contract-manifest.mjs\n M scripts/storybook-smoke.mjs\n M scripts/storybook-visual-proof.mjs",
+  "sourceHead": "07b7a5e3faaaff98c607f8594776a902c3b56b34",
+  "sourceGitStatus": "## main...origin/main [ahead 51]\n M apps/storybook/src/build/locales/storybook-content-text.ts\n D docs/verification/storybook-visual-proof/README.md\n D docs/verification/storybook-visual-proof/baseline-manifest.json\n D docs/verification/storybook-visual-proof/check-receipt.json\n D docs/verification/storybook-visual-proof/intentional-diff-manifest.json\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__mobile-390x844.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-1440x900.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-2048x1024.png\n D docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__tablet-1024x768.png\n D docs/verification/storybook-visual-proof/update-receipt.json\n M scripts/internal-alpha-browser-proof.mjs\n M scripts/storybook-smoke.mjs\n M scripts/storybook-visual-proof.mjs",
   "sourceHeadEquivalenceReadback": {
     "disposition": "source_equivalent_dirty_tree_receipt_generated_before_commit",
-    "sourceHead": "fc85adf8760d29e2ff76402ba13b477c4cb859b0",
-    "sourceDirtyFileCount": 156,
-    "sourceContentDigest": "644073e7cf81326438494828e47de003d0ac6aa01e6d228184f36a59e02d0184",
+    "sourceHead": "07b7a5e3faaaff98c607f8594776a902c3b56b34",
+    "sourceDirtyFileCount": 143,
+    "sourceContentDigest": "590e6164db718627b6e89d5cfbd3b31f4f65a1cdd3cd4938a828a5794dc50a01",
     "sourceContentDigestDisposition": "digest covers the built static contract-doc outputs, package metadata, visual proof script, and private-output scan script used by this receipt",
     "commitEquivalenceRequirement": "when generated before commit, reviewers should compare this digest and status readback with the committed source/artifact diff rather than treating sourceHead alone as proof freshness"
   },
-  "sourceContentDigest": "644073e7cf81326438494828e47de003d0ac6aa01e6d228184f36a59e02d0184",
+  "sourceContentDigest": "590e6164db718627b6e89d5cfbd3b31f4f65a1cdd3cd4938a828a5794dc50a01",
   "mode": "update-baseline",
   "comparisonContractVersion": "canonicalized_raw_png_exact_v1",
-  "baselineUpdateReason": "owner-approved restoration of original Storybook doc shell authority from d1d1291 parent with doc-shell mobile anchor layering preservation",
+  "baselineUpdateReason": "zh-cn-doc-shell-brand-caption-localization",
   "packageName": "@tcrn/design-system-workspace",
   "staticPageAllowlist": [
     "index.html",
@@ -480,56 +480,56 @@
       "file": "index.html",
       "status": 200,
       "ok": true,
-      "bytes": 693096,
-      "sha256": "ac10fba2ed84496fd0f9a66fb52e074d45812f443d2892fa895945af8979d077",
+      "bytes": 693546,
+      "sha256": "deaf7f2267bdb50b5b74cb864cb7f91608716e495eb163b7ff12877150aef720",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "style-guide.html",
       "status": 200,
       "ok": true,
-      "bytes": 746480,
-      "sha256": "e2e0403dd6260a95513e0299ad457114aa207671b5af248003d577f017aaf774",
+      "bytes": 746930,
+      "sha256": "13a63147b55d372b0a8e139450bc055d39a6ef7adf96d45995cba1c4ac0771c8",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "foundations.html",
       "status": 200,
       "ok": true,
-      "bytes": 708022,
-      "sha256": "48560da7eb18c1ff175785d984356f87756360f5a5b46e34a09c7b17054e30c7",
+      "bytes": 708472,
+      "sha256": "ee053210f0e9a5b3a8846d2589b62d2eeb2277b2aef89a9b29c94fc02e106aef",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "components.html",
       "status": 200,
       "ok": true,
-      "bytes": 1227278,
-      "sha256": "f806d47ed09734a4fc30234ec75116de2ac4f929ca5f11f12b5d018fa6502beb",
+      "bytes": 1227728,
+      "sha256": "6863c935b6585a646e052d791bcce2a9a9ed486907a27f41ee37cff86871e9e4",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "patterns.html",
       "status": 200,
       "ok": true,
-      "bytes": 721572,
-      "sha256": "5be522f5114e8cf9ff808d39301cd1327d0f1faad13760b97cc62e649cd8b78c",
+      "bytes": 722022,
+      "sha256": "e8fe2a9e893167b89e4ad5c793d8c37220d580a1708b965bfdd6f31df6f35121",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "proof.html",
       "status": 200,
       "ok": true,
-      "bytes": 708286,
-      "sha256": "d5826af26f8fd425e4b74481ce3dc95d8d50ad2f8a54b90bd40c0d5a900c7e5e",
+      "bytes": 708736,
+      "sha256": "9bb8b8e8e966e447c4cdfa08da4eecb65e9833055f92efdf35384f8885b13659",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "change-log.html",
       "status": 200,
       "ok": true,
-      "bytes": 684577,
-      "sha256": "6a9f93e738d191b96f1f0782231abb9f64f1445351f07c9608f2bcd0c5c9925c",
+      "bytes": 685027,
+      "sha256": "d43896d6dc61b17ab7782b68badbd93c3d14a11a3d3a51dbf377809d55402488",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -1093,10 +1093,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
+      "rawSha256": "b016af27d2a8afd2d3733f061d1084e43542e01ad7b4e7354cfe5f002e8c6cdf",
       "width": 2048,
       "height": 1024,
-      "bytes": 72370,
+      "bytes": 72249,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -1104,17 +1104,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
-            "rawSha256": "49b7e88e10b618d82c8e5fbea54e0ff848b1aa0235115918d3676e3384236255",
-            "bytes": 72370,
-            "rawBytes": 338517
+            "sha256": "b016af27d2a8afd2d3733f061d1084e43542e01ad7b4e7354cfe5f002e8c6cdf",
+            "rawSha256": "9afebe980b343b308777ddfd73da4864c702eb38e0eaf832188183e84e743f36",
+            "bytes": 72249,
+            "rawBytes": 338215
           },
           {
             "attempt": 2,
-            "sha256": "8899be3403c5ad4f644b62fb895c9cc1ca4aba55ba6a3265214e67f6e974641d",
-            "rawSha256": "49b7e88e10b618d82c8e5fbea54e0ff848b1aa0235115918d3676e3384236255",
-            "bytes": 72370,
-            "rawBytes": 338517
+            "sha256": "b016af27d2a8afd2d3733f061d1084e43542e01ad7b4e7354cfe5f002e8c6cdf",
+            "rawSha256": "9afebe980b343b308777ddfd73da4864c702eb38e0eaf832188183e84e743f36",
+            "bytes": 72249,
+            "rawBytes": 338215
           }
         ]
       },
@@ -1344,10 +1344,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "e1b085a707fc10036581b52155bd2419e9ca9d9bb1cb63270ed8503537556c2a",
+      "rawSha256": "e44a255291e738ab01d667a5c7790295576cbbf9186cf4860d606a07bca0640f",
       "width": 2048,
       "height": 1024,
-      "bytes": 68923,
+      "bytes": 68796,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -1355,17 +1355,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e1b085a707fc10036581b52155bd2419e9ca9d9bb1cb63270ed8503537556c2a",
-            "rawSha256": "8eeb89f959905c3536d1590940a18cea5aed4833e1b967049b0502d23e8a2bef",
-            "bytes": 68923,
-            "rawBytes": 204412
+            "sha256": "e44a255291e738ab01d667a5c7790295576cbbf9186cf4860d606a07bca0640f",
+            "rawSha256": "812d9e8f10e4389aa93d515c1e7014e8ed567fe7a0f4a115501080b98b89036e",
+            "bytes": 68796,
+            "rawBytes": 204159
           },
           {
             "attempt": 2,
-            "sha256": "e1b085a707fc10036581b52155bd2419e9ca9d9bb1cb63270ed8503537556c2a",
-            "rawSha256": "8eeb89f959905c3536d1590940a18cea5aed4833e1b967049b0502d23e8a2bef",
-            "bytes": 68923,
-            "rawBytes": 204412
+            "sha256": "e44a255291e738ab01d667a5c7790295576cbbf9186cf4860d606a07bca0640f",
+            "rawSha256": "812d9e8f10e4389aa93d515c1e7014e8ed567fe7a0f4a115501080b98b89036e",
+            "bytes": 68796,
+            "rawBytes": 204159
           }
         ]
       },
@@ -2097,10 +2097,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "fd64b876b2fa725ee59a14037121c9c23f0d81029b5fd8be4c5d0b53e652f3d0",
+      "rawSha256": "5daf166d64e2c21f30c43b0b0ce90d9ca31bb2a8f0221f6b5c59530206cbbceb",
       "width": 2048,
       "height": 1024,
-      "bytes": 83991,
+      "bytes": 83860,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -2108,17 +2108,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "fd64b876b2fa725ee59a14037121c9c23f0d81029b5fd8be4c5d0b53e652f3d0",
-            "rawSha256": "e553323aed6b4d787ff069284b9befb3fa3d60cd9a1c16fe25fbf926e6d70799",
-            "bytes": 83991,
-            "rawBytes": 347608
+            "sha256": "5daf166d64e2c21f30c43b0b0ce90d9ca31bb2a8f0221f6b5c59530206cbbceb",
+            "rawSha256": "80ea90032c1624d2b5bcf08b223e812192bebabfa23a32b6da51bd04b785f058",
+            "bytes": 83860,
+            "rawBytes": 347238
           },
           {
             "attempt": 2,
-            "sha256": "fd64b876b2fa725ee59a14037121c9c23f0d81029b5fd8be4c5d0b53e652f3d0",
-            "rawSha256": "e553323aed6b4d787ff069284b9befb3fa3d60cd9a1c16fe25fbf926e6d70799",
-            "bytes": 83991,
-            "rawBytes": 347608
+            "sha256": "5daf166d64e2c21f30c43b0b0ce90d9ca31bb2a8f0221f6b5c59530206cbbceb",
+            "rawSha256": "80ea90032c1624d2b5bcf08b223e812192bebabfa23a32b6da51bd04b785f058",
+            "bytes": 83860,
+            "rawBytes": 347238
           }
         ]
       },
@@ -2348,10 +2348,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "6128d5c5ba07480ebc712512cd371ad2265ef1ddc73020269881f789f422e347",
+      "rawSha256": "fffdb1c74d64c245a1ff9355dd9ecd593334fb707367da3405b35a4bcea0b7a3",
       "width": 2048,
       "height": 1024,
-      "bytes": 80149,
+      "bytes": 80035,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -2359,17 +2359,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "6128d5c5ba07480ebc712512cd371ad2265ef1ddc73020269881f789f422e347",
-            "rawSha256": "56cb1ed79bdaa60e97035e4112557757847ed4dc81016d8681930a272e75bfaa",
-            "bytes": 80149,
-            "rawBytes": 208578
+            "sha256": "fffdb1c74d64c245a1ff9355dd9ecd593334fb707367da3405b35a4bcea0b7a3",
+            "rawSha256": "230d23ebf5c106f4f497f8c9ede5d6cab2790c5fd64100a1780c218edf474c3e",
+            "bytes": 80035,
+            "rawBytes": 208426
           },
           {
             "attempt": 2,
-            "sha256": "6128d5c5ba07480ebc712512cd371ad2265ef1ddc73020269881f789f422e347",
-            "rawSha256": "56cb1ed79bdaa60e97035e4112557757847ed4dc81016d8681930a272e75bfaa",
-            "bytes": 80149,
-            "rawBytes": 208578
+            "sha256": "fffdb1c74d64c245a1ff9355dd9ecd593334fb707367da3405b35a4bcea0b7a3",
+            "rawSha256": "230d23ebf5c106f4f497f8c9ede5d6cab2790c5fd64100a1780c218edf474c3e",
+            "bytes": 80035,
+            "rawBytes": 208426
           }
         ]
       },
@@ -3101,10 +3101,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "52eb38503a9bedab81dd63d0efd179bee868f7d52954e91d442a21e3feea206e",
+      "rawSha256": "4f14dffe50845ba168d8934fbd8848b862d19b53b619690a6b653f4a8ce5902d",
       "width": 2048,
       "height": 1024,
-      "bytes": 72310,
+      "bytes": 72193,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -3112,17 +3112,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "52eb38503a9bedab81dd63d0efd179bee868f7d52954e91d442a21e3feea206e",
-            "rawSha256": "bfb6488ef5811057aa92c88db9b61a9be701b4b60979de21bb4ef9408444b3ae",
-            "bytes": 72310,
-            "rawBytes": 364269
+            "sha256": "4f14dffe50845ba168d8934fbd8848b862d19b53b619690a6b653f4a8ce5902d",
+            "rawSha256": "d01a444d3eeeb4164115d9d6757d0cdca690cddd0cee6ebb4e401d4e5f877533",
+            "bytes": 72193,
+            "rawBytes": 364155
           },
           {
             "attempt": 2,
-            "sha256": "52eb38503a9bedab81dd63d0efd179bee868f7d52954e91d442a21e3feea206e",
-            "rawSha256": "bfb6488ef5811057aa92c88db9b61a9be701b4b60979de21bb4ef9408444b3ae",
-            "bytes": 72310,
-            "rawBytes": 364269
+            "sha256": "4f14dffe50845ba168d8934fbd8848b862d19b53b619690a6b653f4a8ce5902d",
+            "rawSha256": "d01a444d3eeeb4164115d9d6757d0cdca690cddd0cee6ebb4e401d4e5f877533",
+            "bytes": 72193,
+            "rawBytes": 364155
           }
         ]
       },
@@ -3352,10 +3352,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "3831762fd1dbe51aee3ee0740f2067362ab7128da45bc7df88c267d960cc12c5",
+      "rawSha256": "dfd3147478ba345c39f8e995167635dd531ff3476713ca2c935f4b2ed083fa83",
       "width": 2048,
       "height": 1024,
-      "bytes": 68057,
+      "bytes": 67928,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -3363,17 +3363,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "3831762fd1dbe51aee3ee0740f2067362ab7128da45bc7df88c267d960cc12c5",
-            "rawSha256": "57d6974d71963e35d7679a08667d947c4b50c52a922056a4fa4e62b9373c8237",
-            "bytes": 68057,
-            "rawBytes": 228433
+            "sha256": "dfd3147478ba345c39f8e995167635dd531ff3476713ca2c935f4b2ed083fa83",
+            "rawSha256": "3cc23d8e2b57c53d5f5d7f422eec0515368e848ba23233cb26b9c41d0211fb41",
+            "bytes": 67928,
+            "rawBytes": 228257
           },
           {
             "attempt": 2,
-            "sha256": "3831762fd1dbe51aee3ee0740f2067362ab7128da45bc7df88c267d960cc12c5",
-            "rawSha256": "57d6974d71963e35d7679a08667d947c4b50c52a922056a4fa4e62b9373c8237",
-            "bytes": 68057,
-            "rawBytes": 228433
+            "sha256": "dfd3147478ba345c39f8e995167635dd531ff3476713ca2c935f4b2ed083fa83",
+            "rawSha256": "3cc23d8e2b57c53d5f5d7f422eec0515368e848ba23233cb26b9c41d0211fb41",
+            "bytes": 67928,
+            "rawBytes": 228257
           }
         ]
       },
@@ -4105,10 +4105,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "ab4d75b518586e12d8dcf06cdb918c991544463c17686d90501dbfd3b514903f",
+      "rawSha256": "087996eec919294b9083942d4fb6f1c23b4b7a05306aa7f856c6c013a0a69410",
       "width": 2048,
       "height": 1024,
-      "bytes": 104742,
+      "bytes": 104600,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -4116,17 +4116,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "ab4d75b518586e12d8dcf06cdb918c991544463c17686d90501dbfd3b514903f",
-            "rawSha256": "925eb498769c322c1f9d5dbf6c63e32b0981d3ae1fd663b9158b3f1cc939655c",
-            "bytes": 104742,
-            "rawBytes": 395079
+            "sha256": "087996eec919294b9083942d4fb6f1c23b4b7a05306aa7f856c6c013a0a69410",
+            "rawSha256": "cd749495649d067dd122aa63d349b59be546857b9ecae838a59d5948fa917e22",
+            "bytes": 104600,
+            "rawBytes": 394446
           },
           {
             "attempt": 2,
-            "sha256": "ab4d75b518586e12d8dcf06cdb918c991544463c17686d90501dbfd3b514903f",
-            "rawSha256": "925eb498769c322c1f9d5dbf6c63e32b0981d3ae1fd663b9158b3f1cc939655c",
-            "bytes": 104742,
-            "rawBytes": 395079
+            "sha256": "087996eec919294b9083942d4fb6f1c23b4b7a05306aa7f856c6c013a0a69410",
+            "rawSha256": "cd749495649d067dd122aa63d349b59be546857b9ecae838a59d5948fa917e22",
+            "bytes": 104600,
+            "rawBytes": 394446
           }
         ]
       },
@@ -4356,10 +4356,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "f5c79f23e42b3fc39ff73a9b1b2d9c4ce88b11c817818ef8a318d841bc0c147b",
+      "rawSha256": "cb5a72c2929b4442349b7b9ea0582979e775c5aa53e0584424dfd6cd2bd1d4d3",
       "width": 2048,
       "height": 1024,
-      "bytes": 102389,
+      "bytes": 102255,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -4367,17 +4367,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "f5c79f23e42b3fc39ff73a9b1b2d9c4ce88b11c817818ef8a318d841bc0c147b",
-            "rawSha256": "9f8c4cd01bcfe6fdf0537d64392a3cc088311f5e50fc6be5d6c9b38cdf68624a",
-            "bytes": 102389,
-            "rawBytes": 256827
+            "sha256": "cb5a72c2929b4442349b7b9ea0582979e775c5aa53e0584424dfd6cd2bd1d4d3",
+            "rawSha256": "b75649b726eac3e50148dc40906bb46417ff35555a6a3891a6c5991617f0eba8",
+            "bytes": 102255,
+            "rawBytes": 256560
           },
           {
             "attempt": 2,
-            "sha256": "f5c79f23e42b3fc39ff73a9b1b2d9c4ce88b11c817818ef8a318d841bc0c147b",
-            "rawSha256": "9f8c4cd01bcfe6fdf0537d64392a3cc088311f5e50fc6be5d6c9b38cdf68624a",
-            "bytes": 102389,
-            "rawBytes": 256827
+            "sha256": "cb5a72c2929b4442349b7b9ea0582979e775c5aa53e0584424dfd6cd2bd1d4d3",
+            "rawSha256": "b75649b726eac3e50148dc40906bb46417ff35555a6a3891a6c5991617f0eba8",
+            "bytes": 102255,
+            "rawBytes": 256560
           }
         ]
       },
@@ -5109,10 +5109,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "65ae323aa546804e5987f634ffaa2be062e1b3698d33e8e4314fd06a1a03a041",
+      "rawSha256": "c2db0bee03ad692225485290f1f0c3f8abfeaacb4c78e5777d9677c528d233f2",
       "width": 2048,
       "height": 1024,
-      "bytes": 67236,
+      "bytes": 67119,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -5120,17 +5120,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "65ae323aa546804e5987f634ffaa2be062e1b3698d33e8e4314fd06a1a03a041",
-            "rawSha256": "180b31bb7fc0ff95f587b60ca00e242ec87015c2159d910d98f984942e0532d6",
-            "bytes": 67236,
-            "rawBytes": 303083
+            "sha256": "c2db0bee03ad692225485290f1f0c3f8abfeaacb4c78e5777d9677c528d233f2",
+            "rawSha256": "e74526f51c458ce8cff3ac471f921c2e931334b4cc417a162299c70e5aa43796",
+            "bytes": 67119,
+            "rawBytes": 302635
           },
           {
             "attempt": 2,
-            "sha256": "65ae323aa546804e5987f634ffaa2be062e1b3698d33e8e4314fd06a1a03a041",
-            "rawSha256": "180b31bb7fc0ff95f587b60ca00e242ec87015c2159d910d98f984942e0532d6",
-            "bytes": 67236,
-            "rawBytes": 303083
+            "sha256": "c2db0bee03ad692225485290f1f0c3f8abfeaacb4c78e5777d9677c528d233f2",
+            "rawSha256": "e74526f51c458ce8cff3ac471f921c2e931334b4cc417a162299c70e5aa43796",
+            "bytes": 67119,
+            "rawBytes": 302635
           }
         ]
       },
@@ -5360,10 +5360,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "c187b2ee70c7afddd388d28f1a6cb23cfe16c92f89e211d411a082287a287296",
+      "rawSha256": "6bb650307a11d1717b1b2e0774ea2ad08d3f1f887a0ada97fba8b09f92f8157b",
       "width": 2048,
       "height": 1024,
-      "bytes": 63502,
+      "bytes": 63377,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -5371,17 +5371,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c187b2ee70c7afddd388d28f1a6cb23cfe16c92f89e211d411a082287a287296",
-            "rawSha256": "d33a76d503f80e3dcfa61510097ade19b57097a886d89fc312511579c4db4b34",
-            "bytes": 63502,
-            "rawBytes": 164372
+            "sha256": "6bb650307a11d1717b1b2e0774ea2ad08d3f1f887a0ada97fba8b09f92f8157b",
+            "rawSha256": "187fea5f78fa0c6b91bc195e4e90161478cb359f765360da1dfd3b26579556a9",
+            "bytes": 63377,
+            "rawBytes": 164107
           },
           {
             "attempt": 2,
-            "sha256": "c187b2ee70c7afddd388d28f1a6cb23cfe16c92f89e211d411a082287a287296",
-            "rawSha256": "d33a76d503f80e3dcfa61510097ade19b57097a886d89fc312511579c4db4b34",
-            "bytes": 63502,
-            "rawBytes": 164372
+            "sha256": "6bb650307a11d1717b1b2e0774ea2ad08d3f1f887a0ada97fba8b09f92f8157b",
+            "rawSha256": "187fea5f78fa0c6b91bc195e4e90161478cb359f765360da1dfd3b26579556a9",
+            "bytes": 63377,
+            "rawBytes": 164107
           }
         ]
       },
@@ -6113,10 +6113,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "eb524ff9ea0029852a537a71ad1e61d2eb51b6f1ee2234f5b8c7ed1db56f6660",
+      "rawSha256": "885417575ebb19ea84282b8f9e0a03b58ecffc90db60622a0bc632fed57b230d",
       "width": 2048,
       "height": 1024,
-      "bytes": 67428,
+      "bytes": 67292,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -6124,17 +6124,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "eb524ff9ea0029852a537a71ad1e61d2eb51b6f1ee2234f5b8c7ed1db56f6660",
-            "rawSha256": "55a539533a76af016944947d6cfae4fbed8a60818ca81f11d1804e85a2ff4756",
-            "bytes": 67428,
-            "rawBytes": 300915
+            "sha256": "885417575ebb19ea84282b8f9e0a03b58ecffc90db60622a0bc632fed57b230d",
+            "rawSha256": "2f78bb9c90eb365d6560a92e1b1db526262863aea0d9a3b9c9389cdc726dd115",
+            "bytes": 67292,
+            "rawBytes": 300275
           },
           {
             "attempt": 2,
-            "sha256": "eb524ff9ea0029852a537a71ad1e61d2eb51b6f1ee2234f5b8c7ed1db56f6660",
-            "rawSha256": "55a539533a76af016944947d6cfae4fbed8a60818ca81f11d1804e85a2ff4756",
-            "bytes": 67428,
-            "rawBytes": 300915
+            "sha256": "885417575ebb19ea84282b8f9e0a03b58ecffc90db60622a0bc632fed57b230d",
+            "rawSha256": "2f78bb9c90eb365d6560a92e1b1db526262863aea0d9a3b9c9389cdc726dd115",
+            "bytes": 67292,
+            "rawBytes": 300275
           }
         ]
       },
@@ -6364,10 +6364,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "c6f9cde656dd5e99e7eaeec281616572ea9652599459d408502856bf976a3de8",
+      "rawSha256": "e9f77f60d0e336314f080d7a3185f688f53861b137634cefbb52b00dd4b54e2f",
       "width": 2048,
       "height": 1024,
-      "bytes": 63050,
+      "bytes": 62920,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -6375,17 +6375,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c6f9cde656dd5e99e7eaeec281616572ea9652599459d408502856bf976a3de8",
-            "rawSha256": "aafe4e46eb1a544c21e3b8830bc10f321b7cf489643c04e15f64964e02543027",
-            "bytes": 63050,
-            "rawBytes": 161199
+            "sha256": "e9f77f60d0e336314f080d7a3185f688f53861b137634cefbb52b00dd4b54e2f",
+            "rawSha256": "bd88186e796b9c90016bfe4d6db033d36a543fdd7f60e49af326e834bc0ba52c",
+            "bytes": 62920,
+            "rawBytes": 160921
           },
           {
             "attempt": 2,
-            "sha256": "c6f9cde656dd5e99e7eaeec281616572ea9652599459d408502856bf976a3de8",
-            "rawSha256": "aafe4e46eb1a544c21e3b8830bc10f321b7cf489643c04e15f64964e02543027",
-            "bytes": 63050,
-            "rawBytes": 161199
+            "sha256": "e9f77f60d0e336314f080d7a3185f688f53861b137634cefbb52b00dd4b54e2f",
+            "rawSha256": "bd88186e796b9c90016bfe4d6db033d36a543fdd7f60e49af326e834bc0ba52c",
+            "bytes": 62920,
+            "rawBytes": 160921
           }
         ]
       },
@@ -7117,10 +7117,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "9ab047520da9f21cdf787e52d78e8d7ab1bb2e55bd730148b2239edd5af389b7",
+      "rawSha256": "017372c54711f0311cc26fcadf12393be99e1e9ca3ee1afd39c908799cd3b83a",
       "width": 2048,
       "height": 1024,
-      "bytes": 76090,
+      "bytes": 75979,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -7128,17 +7128,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "9ab047520da9f21cdf787e52d78e8d7ab1bb2e55bd730148b2239edd5af389b7",
-            "rawSha256": "d3a374b23380e867fb0654079567bffea800f616f5f082655d94ce1ab35eddb2",
-            "bytes": 76090,
-            "rawBytes": 340940
+            "sha256": "017372c54711f0311cc26fcadf12393be99e1e9ca3ee1afd39c908799cd3b83a",
+            "rawSha256": "08670b5bf6dd28195fbca971a8fb3e60f26854ef8d34c06f972bb80ca0d5e910",
+            "bytes": 75979,
+            "rawBytes": 340559
           },
           {
             "attempt": 2,
-            "sha256": "9ab047520da9f21cdf787e52d78e8d7ab1bb2e55bd730148b2239edd5af389b7",
-            "rawSha256": "d3a374b23380e867fb0654079567bffea800f616f5f082655d94ce1ab35eddb2",
-            "bytes": 76090,
-            "rawBytes": 340940
+            "sha256": "017372c54711f0311cc26fcadf12393be99e1e9ca3ee1afd39c908799cd3b83a",
+            "rawSha256": "08670b5bf6dd28195fbca971a8fb3e60f26854ef8d34c06f972bb80ca0d5e910",
+            "bytes": 75979,
+            "rawBytes": 340559
           }
         ]
       },
@@ -7368,10 +7368,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "8e3d71dc6d889e0127d395fb32670c942373f61b538aea375af5d9e054393cbd",
+      "rawSha256": "b8b20ec552cef2ded1f87ddb346e2855da6f9b7183b9223773973bd8b596cdd5",
       "width": 2048,
       "height": 1024,
-      "bytes": 73360,
+      "bytes": 73240,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -7379,17 +7379,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "8e3d71dc6d889e0127d395fb32670c942373f61b538aea375af5d9e054393cbd",
-            "rawSha256": "7c1cc9794ab8b1ec9623c129fe5ca96a11452ef2fd3032e19c09544bf980c1c6",
-            "bytes": 73360,
-            "rawBytes": 215720
+            "sha256": "b8b20ec552cef2ded1f87ddb346e2855da6f9b7183b9223773973bd8b596cdd5",
+            "rawSha256": "252b65c1f30fa40991985a41ba8806b5b4bcee99d8676a6b35dbfa630ec303b1",
+            "bytes": 73240,
+            "rawBytes": 215588
           },
           {
             "attempt": 2,
-            "sha256": "8e3d71dc6d889e0127d395fb32670c942373f61b538aea375af5d9e054393cbd",
-            "rawSha256": "7c1cc9794ab8b1ec9623c129fe5ca96a11452ef2fd3032e19c09544bf980c1c6",
-            "bytes": 73360,
-            "rawBytes": 215720
+            "sha256": "b8b20ec552cef2ded1f87ddb346e2855da6f9b7183b9223773973bd8b596cdd5",
+            "rawSha256": "252b65c1f30fa40991985a41ba8806b5b4bcee99d8676a6b35dbfa630ec303b1",
+            "bytes": 73240,
+            "rawBytes": 215588
           }
         ]
       },
@@ -7619,10 +7619,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "f13c5c81f2074f6734afa075a69d42ce4e23ddc9d73fc4d4142994295a774a75",
+      "rawSha256": "674f5663e62c7e92de3a808d62222d94631516254f25849e1cad3cda56acf232",
       "width": 2048,
       "height": 1024,
-      "bytes": 72667,
+      "bytes": 72552,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -7630,17 +7630,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "f13c5c81f2074f6734afa075a69d42ce4e23ddc9d73fc4d4142994295a774a75",
-            "rawSha256": "e25c19aa7759d7ce21c949aa8e540a7340c2e5060934f051d3b1fb9b37caf8e8",
-            "bytes": 72667,
-            "rawBytes": 336896
+            "sha256": "674f5663e62c7e92de3a808d62222d94631516254f25849e1cad3cda56acf232",
+            "rawSha256": "a47c06ae02c3c7bf79621cd8f6d2ce2eeb27f21e9b295159788bd514a6c6159f",
+            "bytes": 72552,
+            "rawBytes": 336713
           },
           {
             "attempt": 2,
-            "sha256": "f13c5c81f2074f6734afa075a69d42ce4e23ddc9d73fc4d4142994295a774a75",
-            "rawSha256": "e25c19aa7759d7ce21c949aa8e540a7340c2e5060934f051d3b1fb9b37caf8e8",
-            "bytes": 72667,
-            "rawBytes": 336896
+            "sha256": "674f5663e62c7e92de3a808d62222d94631516254f25849e1cad3cda56acf232",
+            "rawSha256": "a47c06ae02c3c7bf79621cd8f6d2ce2eeb27f21e9b295159788bd514a6c6159f",
+            "bytes": 72552,
+            "rawBytes": 336713
           }
         ]
       },
@@ -7870,10 +7870,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "94d91f9132e4ea7c403838c029207333db88d98a4135f2cc6fd12518f803145f",
+      "rawSha256": "1507452773d678d87f79e4bc72f751bb515fec3e5fb16c636ffdbb577477a409",
       "width": 2048,
       "height": 1024,
-      "bytes": 73458,
+      "bytes": 73343,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -7881,17 +7881,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "94d91f9132e4ea7c403838c029207333db88d98a4135f2cc6fd12518f803145f",
-            "rawSha256": "4ea6c976061009cd2b802eaa8572bb84461e1e39d9d816989fed1ee9f08c9c02",
-            "bytes": 73458,
-            "rawBytes": 339684
+            "sha256": "1507452773d678d87f79e4bc72f751bb515fec3e5fb16c636ffdbb577477a409",
+            "rawSha256": "a04face28686d3ea080f4b4bbcf48c1a9437fecd91347beb7833e92ee6e3c8cc",
+            "bytes": 73343,
+            "rawBytes": 339491
           },
           {
             "attempt": 2,
-            "sha256": "94d91f9132e4ea7c403838c029207333db88d98a4135f2cc6fd12518f803145f",
-            "rawSha256": "4ea6c976061009cd2b802eaa8572bb84461e1e39d9d816989fed1ee9f08c9c02",
-            "bytes": 73458,
-            "rawBytes": 339684
+            "sha256": "1507452773d678d87f79e4bc72f751bb515fec3e5fb16c636ffdbb577477a409",
+            "rawSha256": "a04face28686d3ea080f4b4bbcf48c1a9437fecd91347beb7833e92ee6e3c8cc",
+            "bytes": 73343,
+            "rawBytes": 339491
           }
         ]
       },
@@ -8121,10 +8121,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "1f7d3dc1e08a6f055527112596aa6d8fe9616f2a5d1457c3bf4b984d8b2da113",
+      "rawSha256": "5d994b88772e98e05ebfb5663691e494717df4825526a5a2732127d556a2f622",
       "width": 2048,
       "height": 1024,
-      "bytes": 74881,
+      "bytes": 74747,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -8132,17 +8132,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "1f7d3dc1e08a6f055527112596aa6d8fe9616f2a5d1457c3bf4b984d8b2da113",
-            "rawSha256": "342fd0a23533d7bb57932d63674e1b274d64730bdca7988d061a5b79f05072bb",
-            "bytes": 74881,
-            "rawBytes": 345400
+            "sha256": "5d994b88772e98e05ebfb5663691e494717df4825526a5a2732127d556a2f622",
+            "rawSha256": "2bfcbf1b938ed50aea6dfad60c9fd033379439cb5e5e545a3b044c0700b90a23",
+            "bytes": 74747,
+            "rawBytes": 345035
           },
           {
             "attempt": 2,
-            "sha256": "1f7d3dc1e08a6f055527112596aa6d8fe9616f2a5d1457c3bf4b984d8b2da113",
-            "rawSha256": "342fd0a23533d7bb57932d63674e1b274d64730bdca7988d061a5b79f05072bb",
-            "bytes": 74881,
-            "rawBytes": 345400
+            "sha256": "5d994b88772e98e05ebfb5663691e494717df4825526a5a2732127d556a2f622",
+            "rawSha256": "2bfcbf1b938ed50aea6dfad60c9fd033379439cb5e5e545a3b044c0700b90a23",
+            "bytes": 74747,
+            "rawBytes": 345035
           }
         ]
       },
@@ -8372,10 +8372,10 @@
       "interaction": "scrolled-topbar",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "5b272b771ecb95b3231b2c45e658dc1deaf1fa752e69e6345c2f49fbac0a3824",
+      "rawSha256": "790afd71230a40e97dd0a93f649746d3ff70ec245f2f49803ff9577ff0068892",
       "width": 2048,
       "height": 1024,
-      "bytes": 70346,
+      "bytes": 70201,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -8383,17 +8383,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "5b272b771ecb95b3231b2c45e658dc1deaf1fa752e69e6345c2f49fbac0a3824",
-            "rawSha256": "162ca56e5cbc6df98d78312057407c76b16f7d412c446a5f4dbfa4e0258b53fc",
-            "bytes": 70346,
-            "rawBytes": 332723
+            "sha256": "790afd71230a40e97dd0a93f649746d3ff70ec245f2f49803ff9577ff0068892",
+            "rawSha256": "7046f13bff2f91e29f21d588d6ad6c74d9c805f8efc04d5be58de6c527d3c6bb",
+            "bytes": 70201,
+            "rawBytes": 332387
           },
           {
             "attempt": 2,
-            "sha256": "5b272b771ecb95b3231b2c45e658dc1deaf1fa752e69e6345c2f49fbac0a3824",
-            "rawSha256": "162ca56e5cbc6df98d78312057407c76b16f7d412c446a5f4dbfa4e0258b53fc",
-            "bytes": 70346,
-            "rawBytes": 332723
+            "sha256": "790afd71230a40e97dd0a93f649746d3ff70ec245f2f49803ff9577ff0068892",
+            "rawSha256": "7046f13bff2f91e29f21d588d6ad6c74d9c805f8efc04d5be58de6c527d3c6bb",
+            "bytes": 70201,
+            "rawBytes": 332387
           }
         ]
       },
@@ -8623,10 +8623,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "b8124239f39ff0ef8288a50bedd16e2e83c593c5e8356c1a20ec24de4206cb9c",
+      "rawSha256": "d0290ecbd81fd728b55130b9d38917342099eb18da91d633bd7fbe441211b8e8",
       "width": 2048,
       "height": 1024,
-      "bytes": 98233,
+      "bytes": 98124,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -8634,17 +8634,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "b8124239f39ff0ef8288a50bedd16e2e83c593c5e8356c1a20ec24de4206cb9c",
-            "rawSha256": "42abfa6cc4ebb8bd26cc4f5744b09ec4d8e7199f72010927a488434b152e9691",
-            "bytes": 98233,
-            "rawBytes": 374321
+            "sha256": "d0290ecbd81fd728b55130b9d38917342099eb18da91d633bd7fbe441211b8e8",
+            "rawSha256": "3c8402dcb38b9ab26d37e0a7efd8b3b349bd32a38d2de83a09252cfb961c4337",
+            "bytes": 98124,
+            "rawBytes": 373929
           },
           {
             "attempt": 2,
-            "sha256": "b8124239f39ff0ef8288a50bedd16e2e83c593c5e8356c1a20ec24de4206cb9c",
-            "rawSha256": "42abfa6cc4ebb8bd26cc4f5744b09ec4d8e7199f72010927a488434b152e9691",
-            "bytes": 98233,
-            "rawBytes": 374321
+            "sha256": "d0290ecbd81fd728b55130b9d38917342099eb18da91d633bd7fbe441211b8e8",
+            "rawSha256": "3c8402dcb38b9ab26d37e0a7efd8b3b349bd32a38d2de83a09252cfb961c4337",
+            "bytes": 98124,
+            "rawBytes": 373929
           }
         ]
       },
@@ -8874,10 +8874,10 @@
       "interaction": "sidebar-collapsed",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "307959ddc7e8279d5e924b2d2830292b5c8a9c9f7d4701ef1af7c289b7b8e344",
+      "rawSha256": "52bcfdd4d3078b47216a9df5fb286148d1ebc878ad3f324c40d158be7d7b962b",
       "width": 2048,
       "height": 1024,
-      "bytes": 54420,
+      "bytes": 54439,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -8885,17 +8885,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "307959ddc7e8279d5e924b2d2830292b5c8a9c9f7d4701ef1af7c289b7b8e344",
-            "rawSha256": "90f29c09163b53846d6134c897254a51f5cd682944bb6240141fd97ed73ab869",
-            "bytes": 54420,
-            "rawBytes": 239981
+            "sha256": "52bcfdd4d3078b47216a9df5fb286148d1ebc878ad3f324c40d158be7d7b962b",
+            "rawSha256": "9f22fd034927de46f16d5160a5d9b281bf384d6c1700bc6e6e75d12afc907552",
+            "bytes": 54439,
+            "rawBytes": 240077
           },
           {
             "attempt": 2,
-            "sha256": "307959ddc7e8279d5e924b2d2830292b5c8a9c9f7d4701ef1af7c289b7b8e344",
-            "rawSha256": "90f29c09163b53846d6134c897254a51f5cd682944bb6240141fd97ed73ab869",
-            "bytes": 54420,
-            "rawBytes": 239981
+            "sha256": "52bcfdd4d3078b47216a9df5fb286148d1ebc878ad3f324c40d158be7d7b962b",
+            "rawSha256": "9f22fd034927de46f16d5160a5d9b281bf384d6c1700bc6e6e75d12afc907552",
+            "bytes": 54439,
+            "rawBytes": 240077
           }
         ]
       },
@@ -9627,10 +9627,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "0016b8c752c39c921199b6b5e054f319b81b5eb7f6293fe0a20da2e43f472727",
+      "rawSha256": "bcb70708eeae4f6f956ec3fddda5113534c6551c23fc83c0780d98d0d0cb889d",
       "width": 1440,
       "height": 900,
-      "bytes": 60907,
+      "bytes": 60788,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -9638,17 +9638,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0016b8c752c39c921199b6b5e054f319b81b5eb7f6293fe0a20da2e43f472727",
-            "rawSha256": "23e14752875816e075fd3c356c711a1cb65d1d6bff1951bd3169ca85353a0aad",
-            "bytes": 60907,
-            "rawBytes": 280566
+            "sha256": "bcb70708eeae4f6f956ec3fddda5113534c6551c23fc83c0780d98d0d0cb889d",
+            "rawSha256": "6ba16c9296ecc0c274cdca436a33d1855503f1d03a05721e7d6c7c943062d9f0",
+            "bytes": 60788,
+            "rawBytes": 280340
           },
           {
             "attempt": 2,
-            "sha256": "0016b8c752c39c921199b6b5e054f319b81b5eb7f6293fe0a20da2e43f472727",
-            "rawSha256": "23e14752875816e075fd3c356c711a1cb65d1d6bff1951bd3169ca85353a0aad",
-            "bytes": 60907,
-            "rawBytes": 280566
+            "sha256": "bcb70708eeae4f6f956ec3fddda5113534c6551c23fc83c0780d98d0d0cb889d",
+            "rawSha256": "6ba16c9296ecc0c274cdca436a33d1855503f1d03a05721e7d6c7c943062d9f0",
+            "bytes": 60788,
+            "rawBytes": 280340
           }
         ]
       },
@@ -9878,10 +9878,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "f79a171d9cb64050aba6f9279ce487ba18bfe4d7312c37057f0f48df5be4a37e",
+      "rawSha256": "3b8d3f98d55be76d5900dcabb026a243b0522fe5998a423bb4d2acab90ec3fc3",
       "width": 1440,
       "height": 900,
-      "bytes": 59104,
+      "bytes": 59000,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -9889,17 +9889,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "f79a171d9cb64050aba6f9279ce487ba18bfe4d7312c37057f0f48df5be4a37e",
-            "rawSha256": "9d8168fbd77fea404e1008fb6bf899debe83e538ee0819bc8c7845569348fdbc",
-            "bytes": 59104,
-            "rawBytes": 180882
+            "sha256": "3b8d3f98d55be76d5900dcabb026a243b0522fe5998a423bb4d2acab90ec3fc3",
+            "rawSha256": "1fbe2b5e67d58516616caf3f0dd9fdbb1241129e5dfae794f51512cfd24e34c0",
+            "bytes": 59000,
+            "rawBytes": 180636
           },
           {
             "attempt": 2,
-            "sha256": "f79a171d9cb64050aba6f9279ce487ba18bfe4d7312c37057f0f48df5be4a37e",
-            "rawSha256": "9d8168fbd77fea404e1008fb6bf899debe83e538ee0819bc8c7845569348fdbc",
-            "bytes": 59104,
-            "rawBytes": 180882
+            "sha256": "3b8d3f98d55be76d5900dcabb026a243b0522fe5998a423bb4d2acab90ec3fc3",
+            "rawSha256": "1fbe2b5e67d58516616caf3f0dd9fdbb1241129e5dfae794f51512cfd24e34c0",
+            "bytes": 59000,
+            "rawBytes": 180636
           }
         ]
       },
@@ -10631,10 +10631,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "88a37524f7f9f11c8d64dc717f55cbf517892b55537b3b7fe250addfca628f07",
+      "rawSha256": "ef76c8cb96d1608fd029cf12086d67ab95b385c449e57839b4c596ac755b06d4",
       "width": 1440,
       "height": 900,
-      "bytes": 67160,
+      "bytes": 67055,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -10642,17 +10642,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "88a37524f7f9f11c8d64dc717f55cbf517892b55537b3b7fe250addfca628f07",
-            "rawSha256": "1ee9c8d8fbb416276927af2f1d3f65682fdc511afb9254a7144f542923b5e14b",
-            "bytes": 67160,
-            "rawBytes": 282318
+            "sha256": "ef76c8cb96d1608fd029cf12086d67ab95b385c449e57839b4c596ac755b06d4",
+            "rawSha256": "dfa4a2b6260a63eed28b0f5f31e0920f3bad095c5c630e0f32f997704e133a95",
+            "bytes": 67055,
+            "rawBytes": 281863
           },
           {
             "attempt": 2,
-            "sha256": "88a37524f7f9f11c8d64dc717f55cbf517892b55537b3b7fe250addfca628f07",
-            "rawSha256": "1ee9c8d8fbb416276927af2f1d3f65682fdc511afb9254a7144f542923b5e14b",
-            "bytes": 67160,
-            "rawBytes": 282318
+            "sha256": "ef76c8cb96d1608fd029cf12086d67ab95b385c449e57839b4c596ac755b06d4",
+            "rawSha256": "dfa4a2b6260a63eed28b0f5f31e0920f3bad095c5c630e0f32f997704e133a95",
+            "bytes": 67055,
+            "rawBytes": 281863
           }
         ]
       },
@@ -10882,10 +10882,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "b8ec3c56130ddfa054f52e9a972707311ec8eff999fced14a30b052837d62dd7",
+      "rawSha256": "ad0ece9a1a21ff0db5611b5cdb378964a9c9defd50222c8d9336c1f72627cfe6",
       "width": 1440,
       "height": 900,
-      "bytes": 66185,
+      "bytes": 66106,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -10893,17 +10893,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "b8ec3c56130ddfa054f52e9a972707311ec8eff999fced14a30b052837d62dd7",
-            "rawSha256": "7c3beffcae1995262306b0ae2fc5129665ff150b279275876f76010de25cfee1",
-            "bytes": 66185,
-            "rawBytes": 178387
+            "sha256": "ad0ece9a1a21ff0db5611b5cdb378964a9c9defd50222c8d9336c1f72627cfe6",
+            "rawSha256": "8ad702dd7ab6d16e1a7e07ffae21ec5e7ad10301c263dc210d07bfe69a9f1564",
+            "bytes": 66106,
+            "rawBytes": 178150
           },
           {
             "attempt": 2,
-            "sha256": "b8ec3c56130ddfa054f52e9a972707311ec8eff999fced14a30b052837d62dd7",
-            "rawSha256": "7c3beffcae1995262306b0ae2fc5129665ff150b279275876f76010de25cfee1",
-            "bytes": 66185,
-            "rawBytes": 178387
+            "sha256": "ad0ece9a1a21ff0db5611b5cdb378964a9c9defd50222c8d9336c1f72627cfe6",
+            "rawSha256": "8ad702dd7ab6d16e1a7e07ffae21ec5e7ad10301c263dc210d07bfe69a9f1564",
+            "bytes": 66106,
+            "rawBytes": 178150
           }
         ]
       },
@@ -11635,10 +11635,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "e0e139c6b9a03c14f8d4632172ee894dd6fe38f9cb2810e1b2f7130fe9d41fa7",
+      "rawSha256": "bdd3b64f993c2022f5c9f26054a907a995131860f82fae0b707dd4481a34e4de",
       "width": 1440,
       "height": 900,
-      "bytes": 58403,
+      "bytes": 58315,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -11646,17 +11646,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e0e139c6b9a03c14f8d4632172ee894dd6fe38f9cb2810e1b2f7130fe9d41fa7",
-            "rawSha256": "ff52f8cb3b3be80432146d22a5478954bdebd9a740c7356f31e4286a77792974",
-            "bytes": 58403,
-            "rawBytes": 264250
+            "sha256": "bdd3b64f993c2022f5c9f26054a907a995131860f82fae0b707dd4481a34e4de",
+            "rawSha256": "5c0f3c83a092c9191eb3f674c4d86002b4e6fbac34163fae54107beabcfa9f88",
+            "bytes": 58315,
+            "rawBytes": 264012
           },
           {
             "attempt": 2,
-            "sha256": "e0e139c6b9a03c14f8d4632172ee894dd6fe38f9cb2810e1b2f7130fe9d41fa7",
-            "rawSha256": "ff52f8cb3b3be80432146d22a5478954bdebd9a740c7356f31e4286a77792974",
-            "bytes": 58403,
-            "rawBytes": 264250
+            "sha256": "bdd3b64f993c2022f5c9f26054a907a995131860f82fae0b707dd4481a34e4de",
+            "rawSha256": "5c0f3c83a092c9191eb3f674c4d86002b4e6fbac34163fae54107beabcfa9f88",
+            "bytes": 58315,
+            "rawBytes": 264012
           }
         ]
       },
@@ -11886,10 +11886,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "ef07c544372abb625b55035955a9f5fd307ae7eea6910722d9a28fcfd5156595",
+      "rawSha256": "ccee74f2246382c312e20cf54b79ed7935a01433ccba69f54d46bd72da35ae87",
       "width": 1440,
       "height": 900,
-      "bytes": 56863,
+      "bytes": 56759,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -11897,17 +11897,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "ef07c544372abb625b55035955a9f5fd307ae7eea6910722d9a28fcfd5156595",
-            "rawSha256": "f1a912e1cf3aaeb2ffbce7de265f4860b6e161a9cf65db4e86c388debe1aaf6e",
-            "bytes": 56863,
-            "rawBytes": 161107
+            "sha256": "ccee74f2246382c312e20cf54b79ed7935a01433ccba69f54d46bd72da35ae87",
+            "rawSha256": "816e7e483229242181e4f546280b4c28cbee59a7e83210416729828c4c140513",
+            "bytes": 56759,
+            "rawBytes": 160772
           },
           {
             "attempt": 2,
-            "sha256": "ef07c544372abb625b55035955a9f5fd307ae7eea6910722d9a28fcfd5156595",
-            "rawSha256": "f1a912e1cf3aaeb2ffbce7de265f4860b6e161a9cf65db4e86c388debe1aaf6e",
-            "bytes": 56863,
-            "rawBytes": 161107
+            "sha256": "ccee74f2246382c312e20cf54b79ed7935a01433ccba69f54d46bd72da35ae87",
+            "rawSha256": "816e7e483229242181e4f546280b4c28cbee59a7e83210416729828c4c140513",
+            "bytes": 56759,
+            "rawBytes": 160772
           }
         ]
       },
@@ -12639,10 +12639,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "c0a9286815b0a46a0952e765324e2fc5b9dbc16f0e6281a1bab61101bd7d651a",
+      "rawSha256": "d54cf09f5af1a977533ed0180f46ac51e9df36bfac6570941e6a83b24ee50b0f",
       "width": 1440,
       "height": 900,
-      "bytes": 73853,
+      "bytes": 73750,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -12650,17 +12650,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c0a9286815b0a46a0952e765324e2fc5b9dbc16f0e6281a1bab61101bd7d651a",
-            "rawSha256": "bc691e94e1735c86aafc7f9afdd28a69f26f6ada8e756394a74fc1f20d0546b3",
-            "bytes": 73853,
-            "rawBytes": 293743
+            "sha256": "d54cf09f5af1a977533ed0180f46ac51e9df36bfac6570941e6a83b24ee50b0f",
+            "rawSha256": "6e3c321c6addb2ff6e55017044846be0d1ec652c855d0a0df08a54a2ed1bdb2a",
+            "bytes": 73750,
+            "rawBytes": 293293
           },
           {
             "attempt": 2,
-            "sha256": "c0a9286815b0a46a0952e765324e2fc5b9dbc16f0e6281a1bab61101bd7d651a",
-            "rawSha256": "bc691e94e1735c86aafc7f9afdd28a69f26f6ada8e756394a74fc1f20d0546b3",
-            "bytes": 73853,
-            "rawBytes": 293743
+            "sha256": "d54cf09f5af1a977533ed0180f46ac51e9df36bfac6570941e6a83b24ee50b0f",
+            "rawSha256": "6e3c321c6addb2ff6e55017044846be0d1ec652c855d0a0df08a54a2ed1bdb2a",
+            "bytes": 73750,
+            "rawBytes": 293293
           }
         ]
       },
@@ -12890,10 +12890,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "70c510bde86e1a4aef8124709cdfbad71acfa0f8c34797820553c50841443ab5",
+      "rawSha256": "78f4e8e7b81b6303c61c51c0755c9c64128f8c4824d0ccf614f86df5df3486a5",
       "width": 1440,
       "height": 900,
-      "bytes": 72843,
+      "bytes": 72746,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -12901,17 +12901,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "70c510bde86e1a4aef8124709cdfbad71acfa0f8c34797820553c50841443ab5",
-            "rawSha256": "d7475c707bbf4875912105aaf2157e67f20fc96b42bfa9ed26a0a50fb1a356e0",
-            "bytes": 72843,
-            "rawBytes": 190153
+            "sha256": "78f4e8e7b81b6303c61c51c0755c9c64128f8c4824d0ccf614f86df5df3486a5",
+            "rawSha256": "8adc32bcc3d3f57084a2b0b21c773d574258028ef2e11a65b579e08c7209ade9",
+            "bytes": 72746,
+            "rawBytes": 189846
           },
           {
             "attempt": 2,
-            "sha256": "70c510bde86e1a4aef8124709cdfbad71acfa0f8c34797820553c50841443ab5",
-            "rawSha256": "d7475c707bbf4875912105aaf2157e67f20fc96b42bfa9ed26a0a50fb1a356e0",
-            "bytes": 72843,
-            "rawBytes": 190153
+            "sha256": "78f4e8e7b81b6303c61c51c0755c9c64128f8c4824d0ccf614f86df5df3486a5",
+            "rawSha256": "8adc32bcc3d3f57084a2b0b21c773d574258028ef2e11a65b579e08c7209ade9",
+            "bytes": 72746,
+            "rawBytes": 189846
           }
         ]
       },
@@ -13643,10 +13643,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "37db365d836d0b6f9568d58bca1f0bcd3c75667777319d8984db9d3cf1d823ea",
+      "rawSha256": "852d019d090e66007f435e77c8769098bafd1f23307c7dec289acad73cadc71d",
       "width": 1440,
       "height": 900,
-      "bytes": 53953,
+      "bytes": 53854,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -13654,17 +13654,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "37db365d836d0b6f9568d58bca1f0bcd3c75667777319d8984db9d3cf1d823ea",
-            "rawSha256": "b811e9bf64b0d74b067845b170377b680bc5367f2a31d0fa86fe57901bae319d",
-            "bytes": 53953,
-            "rawBytes": 246127
+            "sha256": "852d019d090e66007f435e77c8769098bafd1f23307c7dec289acad73cadc71d",
+            "rawSha256": "ffcb0b1ae33bb2e003f0d300d1be04e3b897dd0b54d5ba895e763afabd839df5",
+            "bytes": 53854,
+            "rawBytes": 245864
           },
           {
             "attempt": 2,
-            "sha256": "37db365d836d0b6f9568d58bca1f0bcd3c75667777319d8984db9d3cf1d823ea",
-            "rawSha256": "b811e9bf64b0d74b067845b170377b680bc5367f2a31d0fa86fe57901bae319d",
-            "bytes": 53953,
-            "rawBytes": 246127
+            "sha256": "852d019d090e66007f435e77c8769098bafd1f23307c7dec289acad73cadc71d",
+            "rawSha256": "ffcb0b1ae33bb2e003f0d300d1be04e3b897dd0b54d5ba895e763afabd839df5",
+            "bytes": 53854,
+            "rawBytes": 245864
           }
         ]
       },
@@ -13894,10 +13894,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "d08bd433e3e626b06ca0942dce2c65b663449ec0c9c8d003c5351848a8d778c9",
+      "rawSha256": "ebccb4d0c387ace99be2a7b58b6c4e354091fd910608de29d12302538f6ac713",
       "width": 1440,
       "height": 900,
-      "bytes": 52718,
+      "bytes": 52627,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -13905,17 +13905,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "d08bd433e3e626b06ca0942dce2c65b663449ec0c9c8d003c5351848a8d778c9",
-            "rawSha256": "80f9be32569f8b63bb75eff9adf3b649031ea3f5b9b35c36eafc1f13683de01f",
-            "bytes": 52718,
-            "rawBytes": 143224
+            "sha256": "ebccb4d0c387ace99be2a7b58b6c4e354091fd910608de29d12302538f6ac713",
+            "rawSha256": "71f1e887176b54a241aa12160b202926835b469d0073ea3d461d24ad0cd2fa8d",
+            "bytes": 52627,
+            "rawBytes": 142925
           },
           {
             "attempt": 2,
-            "sha256": "d08bd433e3e626b06ca0942dce2c65b663449ec0c9c8d003c5351848a8d778c9",
-            "rawSha256": "80f9be32569f8b63bb75eff9adf3b649031ea3f5b9b35c36eafc1f13683de01f",
-            "bytes": 52718,
-            "rawBytes": 143224
+            "sha256": "ebccb4d0c387ace99be2a7b58b6c4e354091fd910608de29d12302538f6ac713",
+            "rawSha256": "71f1e887176b54a241aa12160b202926835b469d0073ea3d461d24ad0cd2fa8d",
+            "bytes": 52627,
+            "rawBytes": 142925
           }
         ]
       },
@@ -14647,10 +14647,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "6d5efdea1413bc71d8e8a88c2bd6422c9b3810c1d6df93de4b74b86d2749e559",
+      "rawSha256": "56fd5e7b960b0238b87b985d2a54b97012846ddaa86cad1956df2fb6ec5f2948",
       "width": 1440,
       "height": 900,
-      "bytes": 54045,
+      "bytes": 53934,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -14658,17 +14658,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "6d5efdea1413bc71d8e8a88c2bd6422c9b3810c1d6df93de4b74b86d2749e559",
-            "rawSha256": "fdd971d9a4c4d498a699070b624245f8d9d21c4dc35b89073a16c31c8636851c",
-            "bytes": 54045,
-            "rawBytes": 242339
+            "sha256": "56fd5e7b960b0238b87b985d2a54b97012846ddaa86cad1956df2fb6ec5f2948",
+            "rawSha256": "f1a97e8f43d457c9e7ee4f504a08f7905176f52af58f11dec6f3b3d7fe5ee051",
+            "bytes": 53934,
+            "rawBytes": 241837
           },
           {
             "attempt": 2,
-            "sha256": "6d5efdea1413bc71d8e8a88c2bd6422c9b3810c1d6df93de4b74b86d2749e559",
-            "rawSha256": "fdd971d9a4c4d498a699070b624245f8d9d21c4dc35b89073a16c31c8636851c",
-            "bytes": 54045,
-            "rawBytes": 242339
+            "sha256": "56fd5e7b960b0238b87b985d2a54b97012846ddaa86cad1956df2fb6ec5f2948",
+            "rawSha256": "f1a97e8f43d457c9e7ee4f504a08f7905176f52af58f11dec6f3b3d7fe5ee051",
+            "bytes": 53934,
+            "rawBytes": 241837
           }
         ]
       },
@@ -14898,10 +14898,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "c0caa7d69fb5d073d378eb13594faadd752d3dd65c0d69335aecba0f385326dd",
+      "rawSha256": "8be909fab8f443f8e878f1d4adc402fc8d44b0b3b7fc4f015062589ddff764dd",
       "width": 1440,
       "height": 900,
-      "bytes": 51833,
+      "bytes": 51727,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -14909,17 +14909,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c0caa7d69fb5d073d378eb13594faadd752d3dd65c0d69335aecba0f385326dd",
-            "rawSha256": "48eee8b7211231f62c8fe76d2aa76988c0a88e59adc918b3ee38904b246c28f4",
-            "bytes": 51833,
-            "rawBytes": 138147
+            "sha256": "8be909fab8f443f8e878f1d4adc402fc8d44b0b3b7fc4f015062589ddff764dd",
+            "rawSha256": "7c22be2d85a5e7b4680bbb1113ec690b03b1cc061b76a9b94dce11dfb99ccec4",
+            "bytes": 51727,
+            "rawBytes": 137818
           },
           {
             "attempt": 2,
-            "sha256": "c0caa7d69fb5d073d378eb13594faadd752d3dd65c0d69335aecba0f385326dd",
-            "rawSha256": "48eee8b7211231f62c8fe76d2aa76988c0a88e59adc918b3ee38904b246c28f4",
-            "bytes": 51833,
-            "rawBytes": 138147
+            "sha256": "8be909fab8f443f8e878f1d4adc402fc8d44b0b3b7fc4f015062589ddff764dd",
+            "rawSha256": "7c22be2d85a5e7b4680bbb1113ec690b03b1cc061b76a9b94dce11dfb99ccec4",
+            "bytes": 51727,
+            "rawBytes": 137818
           }
         ]
       },
@@ -15651,10 +15651,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "3e8f40820037e4dfe37ebb8b4f2be5290f143702c3bdbe4d10e8804ea1f790db",
+      "rawSha256": "2c751d1948601d37f49c8e9c278b7a16ea9f313ac01751db13d546271f3defed",
       "width": 1440,
       "height": 900,
-      "bytes": 64724,
+      "bytes": 64627,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -15662,17 +15662,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "3e8f40820037e4dfe37ebb8b4f2be5290f143702c3bdbe4d10e8804ea1f790db",
-            "rawSha256": "7d25790913c98911df9d8f06fce5e6ee4d887a7deaa585710db5c28c0c001771",
-            "bytes": 64724,
-            "rawBytes": 285121
+            "sha256": "2c751d1948601d37f49c8e9c278b7a16ea9f313ac01751db13d546271f3defed",
+            "rawSha256": "1cd38830b0f510b1b96c5727eb4b8d9ec89cda8024be69d119b93f837fcf810d",
+            "bytes": 64627,
+            "rawBytes": 284674
           },
           {
             "attempt": 2,
-            "sha256": "3e8f40820037e4dfe37ebb8b4f2be5290f143702c3bdbe4d10e8804ea1f790db",
-            "rawSha256": "7d25790913c98911df9d8f06fce5e6ee4d887a7deaa585710db5c28c0c001771",
-            "bytes": 64724,
-            "rawBytes": 285121
+            "sha256": "2c751d1948601d37f49c8e9c278b7a16ea9f313ac01751db13d546271f3defed",
+            "rawSha256": "1cd38830b0f510b1b96c5727eb4b8d9ec89cda8024be69d119b93f837fcf810d",
+            "bytes": 64627,
+            "rawBytes": 284674
           }
         ]
       },
@@ -15902,10 +15902,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "0f77c8af76fae9d610d742a3a4f3194aeef201255b474aed96aeaffcf189dd60",
+      "rawSha256": "c074e0a7c01d630636df402738aefbe9f1d653991353c26828cb57c3e9897ef4",
       "width": 1440,
       "height": 900,
-      "bytes": 63448,
+      "bytes": 63350,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -15913,17 +15913,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0f77c8af76fae9d610d742a3a4f3194aeef201255b474aed96aeaffcf189dd60",
-            "rawSha256": "dbb921357e04a34ad8c6edd3f652f486934135062a7403ecaadfc0e1c483bd74",
-            "bytes": 63448,
-            "rawBytes": 187818
+            "sha256": "c074e0a7c01d630636df402738aefbe9f1d653991353c26828cb57c3e9897ef4",
+            "rawSha256": "6114a0528847d969a2c40671a7b959e2d78218cb4e026e3f2e44293cebeda78a",
+            "bytes": 63350,
+            "rawBytes": 187599
           },
           {
             "attempt": 2,
-            "sha256": "0f77c8af76fae9d610d742a3a4f3194aeef201255b474aed96aeaffcf189dd60",
-            "rawSha256": "dbb921357e04a34ad8c6edd3f652f486934135062a7403ecaadfc0e1c483bd74",
-            "bytes": 63448,
-            "rawBytes": 187818
+            "sha256": "c074e0a7c01d630636df402738aefbe9f1d653991353c26828cb57c3e9897ef4",
+            "rawSha256": "6114a0528847d969a2c40671a7b959e2d78218cb4e026e3f2e44293cebeda78a",
+            "bytes": 63350,
+            "rawBytes": 187599
           }
         ]
       },
@@ -16153,10 +16153,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "e28f922804c63d0aef2f71c759e5b7cc8c751d8773ae0c7511eb9b946efd6765",
+      "rawSha256": "20da5d67b42ba875c034ec6f52f28b9832ae0d0b8bdd8f7bcfa595693d90f95d",
       "width": 1440,
       "height": 900,
-      "bytes": 61267,
+      "bytes": 61167,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -16164,17 +16164,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e28f922804c63d0aef2f71c759e5b7cc8c751d8773ae0c7511eb9b946efd6765",
-            "rawSha256": "40e36f26ba9bee6b784528b8e62bb9dc56c43eda360072f77079ccc454452a00",
-            "bytes": 61267,
-            "rawBytes": 278030
+            "sha256": "20da5d67b42ba875c034ec6f52f28b9832ae0d0b8bdd8f7bcfa595693d90f95d",
+            "rawSha256": "fce01d19f8b5c0ae9d4a0566692501d39a50e055caf281df412128b0e1493c83",
+            "bytes": 61167,
+            "rawBytes": 277735
           },
           {
             "attempt": 2,
-            "sha256": "e28f922804c63d0aef2f71c759e5b7cc8c751d8773ae0c7511eb9b946efd6765",
-            "rawSha256": "40e36f26ba9bee6b784528b8e62bb9dc56c43eda360072f77079ccc454452a00",
-            "bytes": 61267,
-            "rawBytes": 278030
+            "sha256": "20da5d67b42ba875c034ec6f52f28b9832ae0d0b8bdd8f7bcfa595693d90f95d",
+            "rawSha256": "fce01d19f8b5c0ae9d4a0566692501d39a50e055caf281df412128b0e1493c83",
+            "bytes": 61167,
+            "rawBytes": 277735
           }
         ]
       },
@@ -16404,10 +16404,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "5161253251a5304816e4bbfa2a6c0132ec33ca88af4054f3c616b532948139d5",
+      "rawSha256": "4c2f18b7b57360b1b8d0ee52601623356e0d4510432bc0f905b127fe78cf2dec",
       "width": 1440,
       "height": 900,
-      "bytes": 61903,
+      "bytes": 61796,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -16415,17 +16415,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "5161253251a5304816e4bbfa2a6c0132ec33ca88af4054f3c616b532948139d5",
-            "rawSha256": "ebaa93a5ccef4f8b4dc856463e14ac064722c2532bb536ee1775104c8a3ff3f5",
-            "bytes": 61903,
-            "rawBytes": 280292
+            "sha256": "4c2f18b7b57360b1b8d0ee52601623356e0d4510432bc0f905b127fe78cf2dec",
+            "rawSha256": "4c935e21095ffb655052234008d650bcfabb4d84a765545b6cd6e57a657c3586",
+            "bytes": 61796,
+            "rawBytes": 280046
           },
           {
             "attempt": 2,
-            "sha256": "5161253251a5304816e4bbfa2a6c0132ec33ca88af4054f3c616b532948139d5",
-            "rawSha256": "ebaa93a5ccef4f8b4dc856463e14ac064722c2532bb536ee1775104c8a3ff3f5",
-            "bytes": 61903,
-            "rawBytes": 280292
+            "sha256": "4c2f18b7b57360b1b8d0ee52601623356e0d4510432bc0f905b127fe78cf2dec",
+            "rawSha256": "4c935e21095ffb655052234008d650bcfabb4d84a765545b6cd6e57a657c3586",
+            "bytes": 61796,
+            "rawBytes": 280046
           }
         ]
       },
@@ -16655,10 +16655,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "0ad27c4f3237ff78b95300fca9f1c94b16e92657a98d75f77c051a5a2d302175",
+      "rawSha256": "4c6341c31d5ba7a1a16d23f6acfac61e3b93d7287f9cc10d3f712f25a2165d5f",
       "width": 1440,
       "height": 900,
-      "bytes": 62951,
+      "bytes": 62852,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -16666,17 +16666,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0ad27c4f3237ff78b95300fca9f1c94b16e92657a98d75f77c051a5a2d302175",
-            "rawSha256": "4eb856892cb97fde88554f771ad7a826560d29253fd00b782f14e17f05352264",
-            "bytes": 62951,
-            "rawBytes": 286231
+            "sha256": "4c6341c31d5ba7a1a16d23f6acfac61e3b93d7287f9cc10d3f712f25a2165d5f",
+            "rawSha256": "f2e819dfd22691a39a553a5c2328f97a071555b69129b4b6d8a7c10dd82d8100",
+            "bytes": 62852,
+            "rawBytes": 285969
           },
           {
             "attempt": 2,
-            "sha256": "0ad27c4f3237ff78b95300fca9f1c94b16e92657a98d75f77c051a5a2d302175",
-            "rawSha256": "4eb856892cb97fde88554f771ad7a826560d29253fd00b782f14e17f05352264",
-            "bytes": 62951,
-            "rawBytes": 286231
+            "sha256": "4c6341c31d5ba7a1a16d23f6acfac61e3b93d7287f9cc10d3f712f25a2165d5f",
+            "rawSha256": "f2e819dfd22691a39a553a5c2328f97a071555b69129b4b6d8a7c10dd82d8100",
+            "bytes": 62852,
+            "rawBytes": 285969
           }
         ]
       },
@@ -16906,10 +16906,10 @@
       "interaction": "scrolled-topbar",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "2241a69e3f2068825d5368e94cd1b10030bafbcb0b9d40004eede10ed65dfc06",
+      "rawSha256": "bb98d9ea8ed633af74377f5696d5e3cfb217cc65ab2e9ea6d2378b7703533294",
       "width": 1440,
       "height": 900,
-      "bytes": 59288,
+      "bytes": 59175,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -16917,17 +16917,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "2241a69e3f2068825d5368e94cd1b10030bafbcb0b9d40004eede10ed65dfc06",
-            "rawSha256": "eaa72ad735457b5b284b0ac9c919db13d56203e987d52694c1854f817cf976dd",
-            "bytes": 59288,
-            "rawBytes": 274825
+            "sha256": "bb98d9ea8ed633af74377f5696d5e3cfb217cc65ab2e9ea6d2378b7703533294",
+            "rawSha256": "20c6f51960035ba16e31f162f7a2a590036a7fd6e3bd283f54d0169871a45d41",
+            "bytes": 59175,
+            "rawBytes": 274598
           },
           {
             "attempt": 2,
-            "sha256": "2241a69e3f2068825d5368e94cd1b10030bafbcb0b9d40004eede10ed65dfc06",
-            "rawSha256": "eaa72ad735457b5b284b0ac9c919db13d56203e987d52694c1854f817cf976dd",
-            "bytes": 59288,
-            "rawBytes": 274825
+            "sha256": "bb98d9ea8ed633af74377f5696d5e3cfb217cc65ab2e9ea6d2378b7703533294",
+            "rawSha256": "20c6f51960035ba16e31f162f7a2a590036a7fd6e3bd283f54d0169871a45d41",
+            "bytes": 59175,
+            "rawBytes": 274598
           }
         ]
       },
@@ -17157,10 +17157,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "8af2edb544da9da18fb2a4930d4344614469dc2d1908d862037628dcf3a98dd1",
+      "rawSha256": "f8fa9b482678369f382b9226375a7e2e447c8922a374ea0948f404ed0952fd03",
       "width": 1440,
       "height": 900,
-      "bytes": 71525,
+      "bytes": 71422,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -17168,17 +17168,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "8af2edb544da9da18fb2a4930d4344614469dc2d1908d862037628dcf3a98dd1",
-            "rawSha256": "af2b3a6548db7efa3423bf129b7e0711375ee938ff552255c6250c945f2e3f7e",
-            "bytes": 71525,
-            "rawBytes": 285369
+            "sha256": "f8fa9b482678369f382b9226375a7e2e447c8922a374ea0948f404ed0952fd03",
+            "rawSha256": "45c53a706049c6269089ccfb60cad5e65465660f2b2391573316719d7be38ff4",
+            "bytes": 71422,
+            "rawBytes": 284984
           },
           {
             "attempt": 2,
-            "sha256": "8af2edb544da9da18fb2a4930d4344614469dc2d1908d862037628dcf3a98dd1",
-            "rawSha256": "af2b3a6548db7efa3423bf129b7e0711375ee938ff552255c6250c945f2e3f7e",
-            "bytes": 71525,
-            "rawBytes": 285369
+            "sha256": "f8fa9b482678369f382b9226375a7e2e447c8922a374ea0948f404ed0952fd03",
+            "rawSha256": "45c53a706049c6269089ccfb60cad5e65465660f2b2391573316719d7be38ff4",
+            "bytes": 71422,
+            "rawBytes": 284984
           }
         ]
       },
@@ -17408,10 +17408,10 @@
       "interaction": "sidebar-collapsed",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "0cc54fd7579dd562a3901dea879d5b437ea744e87c6ab7f5294a9f1a9f490348",
+      "rawSha256": "4e0e76d6f7eba3af147256ec44d1dfeff9169dd1988d08a0e51e22fac430d3b6",
       "width": 1440,
       "height": 900,
-      "bytes": 46707,
+      "bytes": 46715,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -17419,17 +17419,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0cc54fd7579dd562a3901dea879d5b437ea744e87c6ab7f5294a9f1a9f490348",
-            "rawSha256": "e29a3d38eea506d3b584480e82cdc6fbfa3a1597579a371550fe7eb7c1cbe762",
-            "bytes": 46707,
-            "rawBytes": 206247
+            "sha256": "4e0e76d6f7eba3af147256ec44d1dfeff9169dd1988d08a0e51e22fac430d3b6",
+            "rawSha256": "f40838705f9d2b03f84be203e4e10e6fa09c096810fad76dce3b0ce1934cf63e",
+            "bytes": 46715,
+            "rawBytes": 206334
           },
           {
             "attempt": 2,
-            "sha256": "0cc54fd7579dd562a3901dea879d5b437ea744e87c6ab7f5294a9f1a9f490348",
-            "rawSha256": "e29a3d38eea506d3b584480e82cdc6fbfa3a1597579a371550fe7eb7c1cbe762",
-            "bytes": 46707,
-            "rawBytes": 206247
+            "sha256": "4e0e76d6f7eba3af147256ec44d1dfeff9169dd1988d08a0e51e22fac430d3b6",
+            "rawSha256": "f40838705f9d2b03f84be203e4e10e6fa09c096810fad76dce3b0ce1934cf63e",
+            "bytes": 46715,
+            "rawBytes": 206334
           }
         ]
       },
@@ -18161,10 +18161,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "c8ecc2892129042bfdd8b68b1b3c31d9dca5bd2643a9648199670e52eaa66359",
+      "rawSha256": "e6751a12ea565b9a388690622eb2c4c4cc2f84701193c2d2f3fbb2aa7c906f5f",
       "width": 1024,
       "height": 768,
-      "bytes": 44365,
+      "bytes": 44284,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -18172,17 +18172,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c8ecc2892129042bfdd8b68b1b3c31d9dca5bd2643a9648199670e52eaa66359",
-            "rawSha256": "021e06ffc15ea8c959d1fb33b82c9c51d9c98875872d1964f9bd0a2b67319b16",
-            "bytes": 44365,
-            "rawBytes": 212094
+            "sha256": "e6751a12ea565b9a388690622eb2c4c4cc2f84701193c2d2f3fbb2aa7c906f5f",
+            "rawSha256": "fb3f7bc8a743ad55c28041315632b1ed8e421c5833cd83892eb12daad8077a70",
+            "bytes": 44284,
+            "rawBytes": 211879
           },
           {
             "attempt": 2,
-            "sha256": "c8ecc2892129042bfdd8b68b1b3c31d9dca5bd2643a9648199670e52eaa66359",
-            "rawSha256": "021e06ffc15ea8c959d1fb33b82c9c51d9c98875872d1964f9bd0a2b67319b16",
-            "bytes": 44365,
-            "rawBytes": 212094
+            "sha256": "e6751a12ea565b9a388690622eb2c4c4cc2f84701193c2d2f3fbb2aa7c906f5f",
+            "rawSha256": "fb3f7bc8a743ad55c28041315632b1ed8e421c5833cd83892eb12daad8077a70",
+            "bytes": 44284,
+            "rawBytes": 211879
           }
         ]
       },
@@ -18412,10 +18412,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "fc8a4ee55a0dde09b82762dbee431f10a0b9eb46680a9e981001fd5e3d02062e",
+      "rawSha256": "ed8651ee3dc0c3635349750e6892d821a4faca13938ad1f25bb3569b8196b616",
       "width": 1024,
       "height": 768,
-      "bytes": 43004,
+      "bytes": 42913,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -18423,17 +18423,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "fc8a4ee55a0dde09b82762dbee431f10a0b9eb46680a9e981001fd5e3d02062e",
-            "rawSha256": "a8065eb330b433cc080cef0e4124a7e13eb414d5e37271c3cd58f2e0a30000c1",
-            "bytes": 43004,
-            "rawBytes": 136234
+            "sha256": "ed8651ee3dc0c3635349750e6892d821a4faca13938ad1f25bb3569b8196b616",
+            "rawSha256": "0bcb2127e37bdb3618910870f24832c9dfb067d2b5e7a7d907debc4e38b605a6",
+            "bytes": 42913,
+            "rawBytes": 135950
           },
           {
             "attempt": 2,
-            "sha256": "fc8a4ee55a0dde09b82762dbee431f10a0b9eb46680a9e981001fd5e3d02062e",
-            "rawSha256": "a8065eb330b433cc080cef0e4124a7e13eb414d5e37271c3cd58f2e0a30000c1",
-            "bytes": 43004,
-            "rawBytes": 136234
+            "sha256": "ed8651ee3dc0c3635349750e6892d821a4faca13938ad1f25bb3569b8196b616",
+            "rawSha256": "0bcb2127e37bdb3618910870f24832c9dfb067d2b5e7a7d907debc4e38b605a6",
+            "bytes": 42913,
+            "rawBytes": 135950
           }
         ]
       },
@@ -19165,10 +19165,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "322d6cdf3c1772b773f4a2a1968ca31cf5ad3a5b4a9d599fd4d75e8bfa72a097",
+      "rawSha256": "ea0862da0014a96cc3894a9c5bb3545f011e5f86bbd0f890b998062449d83360",
       "width": 1024,
       "height": 768,
-      "bytes": 48605,
+      "bytes": 48531,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -19176,17 +19176,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "322d6cdf3c1772b773f4a2a1968ca31cf5ad3a5b4a9d599fd4d75e8bfa72a097",
-            "rawSha256": "5312659ca760f07302a3f911e302e6fb591adfe2665292e202169d9b31fcfdd8",
-            "bytes": 48605,
-            "rawBytes": 211590
+            "sha256": "ea0862da0014a96cc3894a9c5bb3545f011e5f86bbd0f890b998062449d83360",
+            "rawSha256": "9416b2820bbc1be756a664c8e374df5b1ce278dfc828ce8a4ccc00765a3dcff0",
+            "bytes": 48531,
+            "rawBytes": 211269
           },
           {
             "attempt": 2,
-            "sha256": "322d6cdf3c1772b773f4a2a1968ca31cf5ad3a5b4a9d599fd4d75e8bfa72a097",
-            "rawSha256": "5312659ca760f07302a3f911e302e6fb591adfe2665292e202169d9b31fcfdd8",
-            "bytes": 48605,
-            "rawBytes": 211590
+            "sha256": "ea0862da0014a96cc3894a9c5bb3545f011e5f86bbd0f890b998062449d83360",
+            "rawSha256": "9416b2820bbc1be756a664c8e374df5b1ce278dfc828ce8a4ccc00765a3dcff0",
+            "bytes": 48531,
+            "rawBytes": 211269
           }
         ]
       },
@@ -19416,10 +19416,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "feddafec6c860eb80a0432670f8b86a510e7949f50a073e6ff513baa719d9ec8",
+      "rawSha256": "75e8a2aa5ea2e10a878af8d11571af10fa292c8427d376336b355e2177d93f68",
       "width": 1024,
       "height": 768,
-      "bytes": 47635,
+      "bytes": 47555,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -19427,17 +19427,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "feddafec6c860eb80a0432670f8b86a510e7949f50a073e6ff513baa719d9ec8",
-            "rawSha256": "d7ee46d2eb3c85b0261a9f3293934d19a5e926ebe585cb1a2da4287f34851275",
-            "bytes": 47635,
-            "rawBytes": 132595
+            "sha256": "75e8a2aa5ea2e10a878af8d11571af10fa292c8427d376336b355e2177d93f68",
+            "rawSha256": "11e4204d6b0ea67a0ce7b2d00ffe135c077570f265d5b730fa2802f969c46494",
+            "bytes": 47555,
+            "rawBytes": 132361
           },
           {
             "attempt": 2,
-            "sha256": "feddafec6c860eb80a0432670f8b86a510e7949f50a073e6ff513baa719d9ec8",
-            "rawSha256": "d7ee46d2eb3c85b0261a9f3293934d19a5e926ebe585cb1a2da4287f34851275",
-            "bytes": 47635,
-            "rawBytes": 132595
+            "sha256": "75e8a2aa5ea2e10a878af8d11571af10fa292c8427d376336b355e2177d93f68",
+            "rawSha256": "11e4204d6b0ea67a0ce7b2d00ffe135c077570f265d5b730fa2802f969c46494",
+            "bytes": 47555,
+            "rawBytes": 132361
           }
         ]
       },
@@ -20169,10 +20169,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "70f2ee248bb8f62086acfff42f4d7bd9e55e246e5f7dd12bef34c024687ac9ef",
+      "rawSha256": "49c7d7550537ee53f8dbacf21204fb357ada2aa711ec0323c77f48e4b69ce38e",
       "width": 1024,
       "height": 768,
-      "bytes": 46516,
+      "bytes": 46445,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -20180,17 +20180,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "70f2ee248bb8f62086acfff42f4d7bd9e55e246e5f7dd12bef34c024687ac9ef",
-            "rawSha256": "429c93dcc2d767a147207d7a04a5eeab3de9bb095b4a6c0cb9c9c62f4bf815d5",
-            "bytes": 46516,
-            "rawBytes": 206526
+            "sha256": "49c7d7550537ee53f8dbacf21204fb357ada2aa711ec0323c77f48e4b69ce38e",
+            "rawSha256": "621fd8249502b21e036e77ea49a957ea7bc7ccb2f6605dede170cc82e679d7f3",
+            "bytes": 46445,
+            "rawBytes": 206311
           },
           {
             "attempt": 2,
-            "sha256": "70f2ee248bb8f62086acfff42f4d7bd9e55e246e5f7dd12bef34c024687ac9ef",
-            "rawSha256": "429c93dcc2d767a147207d7a04a5eeab3de9bb095b4a6c0cb9c9c62f4bf815d5",
-            "bytes": 46516,
-            "rawBytes": 206526
+            "sha256": "49c7d7550537ee53f8dbacf21204fb357ada2aa711ec0323c77f48e4b69ce38e",
+            "rawSha256": "621fd8249502b21e036e77ea49a957ea7bc7ccb2f6605dede170cc82e679d7f3",
+            "bytes": 46445,
+            "rawBytes": 206311
           }
         ]
       },
@@ -20420,10 +20420,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "d1637b3e3963f65d07c17e060f5fa3ce4b5cf218ffc6a3eeaf5b178539b33f29",
+      "rawSha256": "e31105ffb57b9fbdb1d6d28870c48bc3a7eb78bbfab6d2ae02d8fdb1b004f3cb",
       "width": 1024,
       "height": 768,
-      "bytes": 45600,
+      "bytes": 45523,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -20431,17 +20431,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "d1637b3e3963f65d07c17e060f5fa3ce4b5cf218ffc6a3eeaf5b178539b33f29",
-            "rawSha256": "68cb28b6c4738bf3608ffd6c4f29f189805b20f28d7927b6cd5b232750322a5c",
-            "bytes": 45600,
-            "rawBytes": 127550
+            "sha256": "e31105ffb57b9fbdb1d6d28870c48bc3a7eb78bbfab6d2ae02d8fdb1b004f3cb",
+            "rawSha256": "33f871c9bfd14df32af90cc555fde0117c470f6a18d248be8bdef8b54efa1d7b",
+            "bytes": 45523,
+            "rawBytes": 127281
           },
           {
             "attempt": 2,
-            "sha256": "d1637b3e3963f65d07c17e060f5fa3ce4b5cf218ffc6a3eeaf5b178539b33f29",
-            "rawSha256": "68cb28b6c4738bf3608ffd6c4f29f189805b20f28d7927b6cd5b232750322a5c",
-            "bytes": 45600,
-            "rawBytes": 127550
+            "sha256": "e31105ffb57b9fbdb1d6d28870c48bc3a7eb78bbfab6d2ae02d8fdb1b004f3cb",
+            "rawSha256": "33f871c9bfd14df32af90cc555fde0117c470f6a18d248be8bdef8b54efa1d7b",
+            "bytes": 45523,
+            "rawBytes": 127281
           }
         ]
       },
@@ -21173,10 +21173,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "420b16abc3e97cfab8e529f887b110b4ab61b81c90657b7cfb62a4e89fac3dd7",
+      "rawSha256": "b7b751b8a2b3c9f3f1f2b17a8a475c66fa3429d0e10049e36982aa870e1f1cc4",
       "width": 1024,
       "height": 768,
-      "bytes": 53775,
+      "bytes": 53698,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -21184,17 +21184,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "420b16abc3e97cfab8e529f887b110b4ab61b81c90657b7cfb62a4e89fac3dd7",
-            "rawSha256": "64e819c05d202a42f3a12b24eb89d524815e5285b4954028ffd5e71154dac4cd",
-            "bytes": 53775,
-            "rawBytes": 223418
+            "sha256": "b7b751b8a2b3c9f3f1f2b17a8a475c66fa3429d0e10049e36982aa870e1f1cc4",
+            "rawSha256": "6718f35a1ed71e8d5a10469c3976714bc08f96a011fb1d99d89e08b7ea275901",
+            "bytes": 53698,
+            "rawBytes": 223132
           },
           {
             "attempt": 2,
-            "sha256": "420b16abc3e97cfab8e529f887b110b4ab61b81c90657b7cfb62a4e89fac3dd7",
-            "rawSha256": "64e819c05d202a42f3a12b24eb89d524815e5285b4954028ffd5e71154dac4cd",
-            "bytes": 53775,
-            "rawBytes": 223418
+            "sha256": "b7b751b8a2b3c9f3f1f2b17a8a475c66fa3429d0e10049e36982aa870e1f1cc4",
+            "rawSha256": "6718f35a1ed71e8d5a10469c3976714bc08f96a011fb1d99d89e08b7ea275901",
+            "bytes": 53698,
+            "rawBytes": 223132
           }
         ]
       },
@@ -21424,10 +21424,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "90db26cd53cb36b0983507dcd8970fd90cf56fa987bd1977ec76d51bca9c4f08",
+      "rawSha256": "65850936196b03efc438e0816a46081cb767f84bb5f336f8c377a33ddb49988f",
       "width": 1024,
       "height": 768,
-      "bytes": 53036,
+      "bytes": 52958,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -21435,17 +21435,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "90db26cd53cb36b0983507dcd8970fd90cf56fa987bd1977ec76d51bca9c4f08",
-            "rawSha256": "75eb5c4c0a76b1065814d3af87737262ec7e8527f5d68992e60f8674e111b226",
-            "bytes": 53036,
-            "rawBytes": 143290
+            "sha256": "65850936196b03efc438e0816a46081cb767f84bb5f336f8c377a33ddb49988f",
+            "rawSha256": "94538753215e782e8d2adf0873cb8f7cf6572298c75c7354c74d537311a31f38",
+            "bytes": 52958,
+            "rawBytes": 143034
           },
           {
             "attempt": 2,
-            "sha256": "90db26cd53cb36b0983507dcd8970fd90cf56fa987bd1977ec76d51bca9c4f08",
-            "rawSha256": "75eb5c4c0a76b1065814d3af87737262ec7e8527f5d68992e60f8674e111b226",
-            "bytes": 53036,
-            "rawBytes": 143290
+            "sha256": "65850936196b03efc438e0816a46081cb767f84bb5f336f8c377a33ddb49988f",
+            "rawSha256": "94538753215e782e8d2adf0873cb8f7cf6572298c75c7354c74d537311a31f38",
+            "bytes": 52958,
+            "rawBytes": 143034
           }
         ]
       },
@@ -22177,10 +22177,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "0e11b2b1b0a5a24af696dc7c1447b33c364e3aaf62010a1a9732e4fa86605633",
+      "rawSha256": "7e91a7a9671f7ceabbba929d91453e2dc9eaae881ac5380d6e176c1883ce1f7a",
       "width": 1024,
       "height": 768,
-      "bytes": 43371,
+      "bytes": 43298,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -22188,17 +22188,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0e11b2b1b0a5a24af696dc7c1447b33c364e3aaf62010a1a9732e4fa86605633",
-            "rawSha256": "0fe7b4dc1170d52efc80ff9b9bb10c4276da2789c289bd233a041ce57a94d12b",
-            "bytes": 43371,
-            "rawBytes": 200143
+            "sha256": "7e91a7a9671f7ceabbba929d91453e2dc9eaae881ac5380d6e176c1883ce1f7a",
+            "rawSha256": "435f17cb5157bc25759b2464f8f7cc91491e80024e2f36f6cab11af4a5a86314",
+            "bytes": 43298,
+            "rawBytes": 199896
           },
           {
             "attempt": 2,
-            "sha256": "0e11b2b1b0a5a24af696dc7c1447b33c364e3aaf62010a1a9732e4fa86605633",
-            "rawSha256": "0fe7b4dc1170d52efc80ff9b9bb10c4276da2789c289bd233a041ce57a94d12b",
-            "bytes": 43371,
-            "rawBytes": 200143
+            "sha256": "7e91a7a9671f7ceabbba929d91453e2dc9eaae881ac5380d6e176c1883ce1f7a",
+            "rawSha256": "435f17cb5157bc25759b2464f8f7cc91491e80024e2f36f6cab11af4a5a86314",
+            "bytes": 43298,
+            "rawBytes": 199896
           }
         ]
       },
@@ -22428,10 +22428,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "470749ad2ef6834e17dff0b855871451d0403311f7afdfa3c621d4b571963076",
+      "rawSha256": "df8772de79647b6352a9001ce49bc13f2654211dbdeebaa0c6d103c15ea826e0",
       "width": 1024,
       "height": 768,
-      "bytes": 42483,
+      "bytes": 42408,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -22439,17 +22439,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "470749ad2ef6834e17dff0b855871451d0403311f7afdfa3c621d4b571963076",
-            "rawSha256": "48cc71677e00a69bf87a6d6d6f2fc447a0b72dc9c4cb0566b7efccd05318d46c",
-            "bytes": 42483,
-            "rawBytes": 120132
+            "sha256": "df8772de79647b6352a9001ce49bc13f2654211dbdeebaa0c6d103c15ea826e0",
+            "rawSha256": "ea3467f8ad474377ff32426875c5dab68a52c5953487790887bc5a6e8d8540b0",
+            "bytes": 42408,
+            "rawBytes": 119908
           },
           {
             "attempt": 2,
-            "sha256": "470749ad2ef6834e17dff0b855871451d0403311f7afdfa3c621d4b571963076",
-            "rawSha256": "48cc71677e00a69bf87a6d6d6f2fc447a0b72dc9c4cb0566b7efccd05318d46c",
-            "bytes": 42483,
-            "rawBytes": 120132
+            "sha256": "df8772de79647b6352a9001ce49bc13f2654211dbdeebaa0c6d103c15ea826e0",
+            "rawSha256": "ea3467f8ad474377ff32426875c5dab68a52c5953487790887bc5a6e8d8540b0",
+            "bytes": 42408,
+            "rawBytes": 119908
           }
         ]
       },
@@ -23181,10 +23181,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "5cbb33c399ed8a8e8f83bcbbe71ff93f4dea5bcc530d472da2f4aa5ba9393125",
+      "rawSha256": "79109e1085fdd09878903521bdbb36bb2ae9f017f69118752f902ad878f9b1c6",
       "width": 1024,
       "height": 768,
-      "bytes": 43273,
+      "bytes": 43195,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -23192,17 +23192,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "5cbb33c399ed8a8e8f83bcbbe71ff93f4dea5bcc530d472da2f4aa5ba9393125",
-            "rawSha256": "94da7127990f472715d7995d0c49ea70cf1d5da74abb4d05404b8d2c10cbbe71",
-            "bytes": 43273,
-            "rawBytes": 194598
+            "sha256": "79109e1085fdd09878903521bdbb36bb2ae9f017f69118752f902ad878f9b1c6",
+            "rawSha256": "dbe9693a3509f49d2f9ed9099cfdb332383f1f4067c3e510b05d9d1c81445e4e",
+            "bytes": 43195,
+            "rawBytes": 194243
           },
           {
             "attempt": 2,
-            "sha256": "5cbb33c399ed8a8e8f83bcbbe71ff93f4dea5bcc530d472da2f4aa5ba9393125",
-            "rawSha256": "94da7127990f472715d7995d0c49ea70cf1d5da74abb4d05404b8d2c10cbbe71",
-            "bytes": 43273,
-            "rawBytes": 194598
+            "sha256": "79109e1085fdd09878903521bdbb36bb2ae9f017f69118752f902ad878f9b1c6",
+            "rawSha256": "dbe9693a3509f49d2f9ed9099cfdb332383f1f4067c3e510b05d9d1c81445e4e",
+            "bytes": 43195,
+            "rawBytes": 194243
           }
         ]
       },
@@ -23432,10 +23432,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "4e11b466925aff3ed8449989da56ea94e39f8aaea4ef280e4222766bab50f479",
+      "rawSha256": "b5bcb0a538b43016f8b44ece091dfbb368f554621b54c88721c2b97d817f893c",
       "width": 1024,
       "height": 768,
-      "bytes": 42226,
+      "bytes": 42148,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -23443,17 +23443,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "4e11b466925aff3ed8449989da56ea94e39f8aaea4ef280e4222766bab50f479",
-            "rawSha256": "702510ecbbed3b41011c32a5e568f4d14cbebb285c0b678a1badb6681bd705d5",
-            "bytes": 42226,
-            "rawBytes": 115128
+            "sha256": "b5bcb0a538b43016f8b44ece091dfbb368f554621b54c88721c2b97d817f893c",
+            "rawSha256": "7099b5569d7fb7999a4a63375e63b5a21d33e78ab710ffd3062d7fb9ff575ae2",
+            "bytes": 42148,
+            "rawBytes": 114814
           },
           {
             "attempt": 2,
-            "sha256": "4e11b466925aff3ed8449989da56ea94e39f8aaea4ef280e4222766bab50f479",
-            "rawSha256": "702510ecbbed3b41011c32a5e568f4d14cbebb285c0b678a1badb6681bd705d5",
-            "bytes": 42226,
-            "rawBytes": 115128
+            "sha256": "b5bcb0a538b43016f8b44ece091dfbb368f554621b54c88721c2b97d817f893c",
+            "rawSha256": "7099b5569d7fb7999a4a63375e63b5a21d33e78ab710ffd3062d7fb9ff575ae2",
+            "bytes": 42148,
+            "rawBytes": 114814
           }
         ]
       },
@@ -24185,10 +24185,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "0da219317f99799fb49f8b4d124fd9731cf65297fc24b310d319f5fe4deff305",
+      "rawSha256": "5561b3480225b4f7ca3b75f8b98450ef46973e34fd051daf9080863ef07d21a4",
       "width": 1024,
       "height": 768,
-      "bytes": 54881,
+      "bytes": 54794,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -24196,17 +24196,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0da219317f99799fb49f8b4d124fd9731cf65297fc24b310d319f5fe4deff305",
-            "rawSha256": "3f732e4ffcf9c7758ba7982c67dccd1c2f4c32c6c0b06f8e85f0f74681fa6c5a",
-            "bytes": 54881,
-            "rawBytes": 229168
+            "sha256": "5561b3480225b4f7ca3b75f8b98450ef46973e34fd051daf9080863ef07d21a4",
+            "rawSha256": "4579462bd51c4b1551029890a0e4c61df7b53d48ffd69302014fb428afd057b5",
+            "bytes": 54794,
+            "rawBytes": 228878
           },
           {
             "attempt": 2,
-            "sha256": "0da219317f99799fb49f8b4d124fd9731cf65297fc24b310d319f5fe4deff305",
-            "rawSha256": "3f732e4ffcf9c7758ba7982c67dccd1c2f4c32c6c0b06f8e85f0f74681fa6c5a",
-            "bytes": 54881,
-            "rawBytes": 229168
+            "sha256": "5561b3480225b4f7ca3b75f8b98450ef46973e34fd051daf9080863ef07d21a4",
+            "rawSha256": "4579462bd51c4b1551029890a0e4c61df7b53d48ffd69302014fb428afd057b5",
+            "bytes": 54794,
+            "rawBytes": 228878
           }
         ]
       },
@@ -24436,10 +24436,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "75c3a2bc9488347624b6a3a2b08218f7561344103d294fda97c839d729ca67e6",
+      "rawSha256": "8eb3d3ee6bb397b12de8fee7111b7b604df1d1fc3c7684331143640a162d3be0",
       "width": 1024,
       "height": 768,
-      "bytes": 53647,
+      "bytes": 53575,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -24447,17 +24447,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "75c3a2bc9488347624b6a3a2b08218f7561344103d294fda97c839d729ca67e6",
-            "rawSha256": "bb3a33e85d285639f0dd8aabe46fbe98c96fe7de7dd3cc8c6e00d2ca2f41f197",
-            "bytes": 53647,
-            "rawBytes": 150150
+            "sha256": "8eb3d3ee6bb397b12de8fee7111b7b604df1d1fc3c7684331143640a162d3be0",
+            "rawSha256": "a447abeb1824ae5cc2666f76b818648beb097e9be2844497acd3bf0b1d650b84",
+            "bytes": 53575,
+            "rawBytes": 149990
           },
           {
             "attempt": 2,
-            "sha256": "75c3a2bc9488347624b6a3a2b08218f7561344103d294fda97c839d729ca67e6",
-            "rawSha256": "bb3a33e85d285639f0dd8aabe46fbe98c96fe7de7dd3cc8c6e00d2ca2f41f197",
-            "bytes": 53647,
-            "rawBytes": 150150
+            "sha256": "8eb3d3ee6bb397b12de8fee7111b7b604df1d1fc3c7684331143640a162d3be0",
+            "rawSha256": "a447abeb1824ae5cc2666f76b818648beb097e9be2844497acd3bf0b1d650b84",
+            "bytes": 53575,
+            "rawBytes": 149990
           }
         ]
       },
@@ -24687,10 +24687,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "594fde2429f0a164523b5ce1c523bb77883cf1e4dd94b82cd8f4d1a725d4c467",
+      "rawSha256": "3c0e0a3adc56e21e31cf0f2011d74bb7522ba1bfa6bd3277e476cd6937b65a73",
       "width": 1024,
       "height": 768,
-      "bytes": 44732,
+      "bytes": 44650,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -24698,17 +24698,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "594fde2429f0a164523b5ce1c523bb77883cf1e4dd94b82cd8f4d1a725d4c467",
-            "rawSha256": "5abe6d99018e52664f3ccaec689ec13317be995ff4067373fa07d1af95c6cc43",
-            "bytes": 44732,
-            "rawBytes": 210607
+            "sha256": "3c0e0a3adc56e21e31cf0f2011d74bb7522ba1bfa6bd3277e476cd6937b65a73",
+            "rawSha256": "9be4dc86c6526261a4af5b0933041d9e681bd958cf8e43400ba74d057a061f79",
+            "bytes": 44650,
+            "rawBytes": 210237
           },
           {
             "attempt": 2,
-            "sha256": "594fde2429f0a164523b5ce1c523bb77883cf1e4dd94b82cd8f4d1a725d4c467",
-            "rawSha256": "5abe6d99018e52664f3ccaec689ec13317be995ff4067373fa07d1af95c6cc43",
-            "bytes": 44732,
-            "rawBytes": 210607
+            "sha256": "3c0e0a3adc56e21e31cf0f2011d74bb7522ba1bfa6bd3277e476cd6937b65a73",
+            "rawSha256": "9be4dc86c6526261a4af5b0933041d9e681bd958cf8e43400ba74d057a061f79",
+            "bytes": 44650,
+            "rawBytes": 210237
           }
         ]
       },
@@ -24938,10 +24938,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "cc9fdaea3f774901856c53347a118928757203f9e693ebe4200b26ccaa75476e",
+      "rawSha256": "0df69ffe32ca8b9c675dfeea1b3d0edb351803df8979d196ac3d2eae886b88e1",
       "width": 1024,
       "height": 768,
-      "bytes": 45448,
+      "bytes": 45368,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -24949,17 +24949,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "cc9fdaea3f774901856c53347a118928757203f9e693ebe4200b26ccaa75476e",
-            "rawSha256": "6c7c249f532ffb38b06d9990eeb74bb9209b80428656215dd47d79053042a77c",
-            "bytes": 45448,
-            "rawBytes": 212921
+            "sha256": "0df69ffe32ca8b9c675dfeea1b3d0edb351803df8979d196ac3d2eae886b88e1",
+            "rawSha256": "a981736c163c6eedc78ebd66957850a7b44c82facde57e08d604fe9b56e4102f",
+            "bytes": 45368,
+            "rawBytes": 212566
           },
           {
             "attempt": 2,
-            "sha256": "cc9fdaea3f774901856c53347a118928757203f9e693ebe4200b26ccaa75476e",
-            "rawSha256": "6c7c249f532ffb38b06d9990eeb74bb9209b80428656215dd47d79053042a77c",
-            "bytes": 45448,
-            "rawBytes": 212921
+            "sha256": "0df69ffe32ca8b9c675dfeea1b3d0edb351803df8979d196ac3d2eae886b88e1",
+            "rawSha256": "a981736c163c6eedc78ebd66957850a7b44c82facde57e08d604fe9b56e4102f",
+            "bytes": 45368,
+            "rawBytes": 212566
           }
         ]
       },
@@ -25189,10 +25189,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "da18aa0f6eb7027563a9ec74ee79b82c7f43c0eba822df4fce7d403c7924314f",
+      "rawSha256": "9d3ce33706d7ac5561c7fa43fb9e935cd99d6c56568ae9484f333daf359f6a77",
       "width": 1024,
       "height": 768,
-      "bytes": 46319,
+      "bytes": 46248,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -25200,17 +25200,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "da18aa0f6eb7027563a9ec74ee79b82c7f43c0eba822df4fce7d403c7924314f",
-            "rawSha256": "8abffe248d01b17c21b661b33268256f11b98271653133e89d677c0d25fabad5",
-            "bytes": 46319,
-            "rawBytes": 217443
+            "sha256": "9d3ce33706d7ac5561c7fa43fb9e935cd99d6c56568ae9484f333daf359f6a77",
+            "rawSha256": "7f330872c28ee67ed8247893af85ce5e0a713d78e518632502aa2392122f6ee3",
+            "bytes": 46248,
+            "rawBytes": 217219
           },
           {
             "attempt": 2,
-            "sha256": "da18aa0f6eb7027563a9ec74ee79b82c7f43c0eba822df4fce7d403c7924314f",
-            "rawSha256": "8abffe248d01b17c21b661b33268256f11b98271653133e89d677c0d25fabad5",
-            "bytes": 46319,
-            "rawBytes": 217443
+            "sha256": "9d3ce33706d7ac5561c7fa43fb9e935cd99d6c56568ae9484f333daf359f6a77",
+            "rawSha256": "7f330872c28ee67ed8247893af85ce5e0a713d78e518632502aa2392122f6ee3",
+            "bytes": 46248,
+            "rawBytes": 217219
           }
         ]
       },
@@ -25440,10 +25440,10 @@
       "interaction": "scrolled-topbar",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "518777864616f92d8bef176598ed22e17252fcca8a5e4aeea8f35b4ca06df87c",
+      "rawSha256": "c1e1cc5a848f7d7e06202a88af3bdb58bf40c7e9347dc0c780bb7e2262effe5f",
       "width": 1024,
       "height": 768,
-      "bytes": 44361,
+      "bytes": 44281,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -25451,17 +25451,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "518777864616f92d8bef176598ed22e17252fcca8a5e4aeea8f35b4ca06df87c",
-            "rawSha256": "54ba7c32c65398135ba564737f83c981717642cbb9a8442a744846e0d3da41d8",
-            "bytes": 44361,
-            "rawBytes": 212887
+            "sha256": "c1e1cc5a848f7d7e06202a88af3bdb58bf40c7e9347dc0c780bb7e2262effe5f",
+            "rawSha256": "b2970203fd1c541bc20ec423ed7d61bc56f9d3c60553f060ead3f6015e6c69f7",
+            "bytes": 44281,
+            "rawBytes": 212675
           },
           {
             "attempt": 2,
-            "sha256": "518777864616f92d8bef176598ed22e17252fcca8a5e4aeea8f35b4ca06df87c",
-            "rawSha256": "54ba7c32c65398135ba564737f83c981717642cbb9a8442a744846e0d3da41d8",
-            "bytes": 44361,
-            "rawBytes": 212887
+            "sha256": "c1e1cc5a848f7d7e06202a88af3bdb58bf40c7e9347dc0c780bb7e2262effe5f",
+            "rawSha256": "b2970203fd1c541bc20ec423ed7d61bc56f9d3c60553f060ead3f6015e6c69f7",
+            "bytes": 44281,
+            "rawBytes": 212675
           }
         ]
       },
@@ -25691,10 +25691,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "716d40abcd5ba0df2bd961858840f8ae2f83ec502c88dc3da624a01ce809735d",
+      "rawSha256": "6c769293e550888f7049ac0541a85c31726e9d9288cc1bfa24410d2a657b4a66",
       "width": 1024,
       "height": 768,
-      "bytes": 53100,
+      "bytes": 53049,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -25702,17 +25702,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "716d40abcd5ba0df2bd961858840f8ae2f83ec502c88dc3da624a01ce809735d",
-            "rawSha256": "f8333d6310cf876bfa51c71263c327a8e95e579e4fdd0d4a08d57168cdab386c",
-            "bytes": 53100,
-            "rawBytes": 221537
+            "sha256": "6c769293e550888f7049ac0541a85c31726e9d9288cc1bfa24410d2a657b4a66",
+            "rawSha256": "f3f27bc2f88a6c9e224b33148c5845075dc114cdbaedb487ce538407398671b2",
+            "bytes": 53049,
+            "rawBytes": 221219
           },
           {
             "attempt": 2,
-            "sha256": "716d40abcd5ba0df2bd961858840f8ae2f83ec502c88dc3da624a01ce809735d",
-            "rawSha256": "f8333d6310cf876bfa51c71263c327a8e95e579e4fdd0d4a08d57168cdab386c",
-            "bytes": 53100,
-            "rawBytes": 221537
+            "sha256": "6c769293e550888f7049ac0541a85c31726e9d9288cc1bfa24410d2a657b4a66",
+            "rawSha256": "f3f27bc2f88a6c9e224b33148c5845075dc114cdbaedb487ce538407398671b2",
+            "bytes": 53049,
+            "rawBytes": 221219
           }
         ]
       },
@@ -25942,10 +25942,10 @@
       "interaction": "sidebar-collapsed",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "02c11bea1612b95d4aef3e4997983fe6cae4f483cd29a4495c3dc568a96bd458",
+      "rawSha256": "75e612c408ee262b638b51ae31768050b40ed0516c11d0441fc326a21f9857ca",
       "width": 1024,
       "height": 768,
-      "bytes": 33236,
+      "bytes": 33249,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -25953,17 +25953,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "02c11bea1612b95d4aef3e4997983fe6cae4f483cd29a4495c3dc568a96bd458",
-            "rawSha256": "4bb993ad262da195dbba369a56704ccf2b143af78c036ed2c6cb093ce038ac7d",
-            "bytes": 33236,
-            "rawBytes": 156460
+            "sha256": "75e612c408ee262b638b51ae31768050b40ed0516c11d0441fc326a21f9857ca",
+            "rawSha256": "0929cafe86bacbdd3f5c9958ece4225c80dd00ce1d432ffcced0c2e7143fcb4a",
+            "bytes": 33249,
+            "rawBytes": 156428
           },
           {
             "attempt": 2,
-            "sha256": "02c11bea1612b95d4aef3e4997983fe6cae4f483cd29a4495c3dc568a96bd458",
-            "rawSha256": "4bb993ad262da195dbba369a56704ccf2b143af78c036ed2c6cb093ce038ac7d",
-            "bytes": 33236,
-            "rawBytes": 156460
+            "sha256": "75e612c408ee262b638b51ae31768050b40ed0516c11d0441fc326a21f9857ca",
+            "rawSha256": "0929cafe86bacbdd3f5c9958ece4225c80dd00ce1d432ffcced0c2e7143fcb4a",
+            "bytes": 33249,
+            "rawBytes": 156428
           }
         ]
       },
@@ -26695,10 +26695,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "44c298fcc83f3e3b403dac79267e115e2afc0008f6b17798894e16aa979ca78c",
+      "rawSha256": "f6974ed56ea4f5fb55f866aa1b6f6b84ed4c403a33da31a93667da947c7bbf21",
       "width": 390,
       "height": 844,
-      "bytes": 21513,
+      "bytes": 21163,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -26706,17 +26706,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "44c298fcc83f3e3b403dac79267e115e2afc0008f6b17798894e16aa979ca78c",
-            "rawSha256": "be8e1894ac7745cd7db53a13f83ac3315eb91c05c7e72a1f08d6f26949f57747",
-            "bytes": 21513,
-            "rawBytes": 124175
+            "sha256": "f6974ed56ea4f5fb55f866aa1b6f6b84ed4c403a33da31a93667da947c7bbf21",
+            "rawSha256": "84d66cde8646d864b0b820e205aba8faa81444e6f2ad8d6738ec4bd7101ce5f9",
+            "bytes": 21163,
+            "rawBytes": 122727
           },
           {
             "attempt": 2,
-            "sha256": "44c298fcc83f3e3b403dac79267e115e2afc0008f6b17798894e16aa979ca78c",
-            "rawSha256": "be8e1894ac7745cd7db53a13f83ac3315eb91c05c7e72a1f08d6f26949f57747",
-            "bytes": 21513,
-            "rawBytes": 124175
+            "sha256": "f6974ed56ea4f5fb55f866aa1b6f6b84ed4c403a33da31a93667da947c7bbf21",
+            "rawSha256": "84d66cde8646d864b0b820e205aba8faa81444e6f2ad8d6738ec4bd7101ce5f9",
+            "bytes": 21163,
+            "rawBytes": 122727
           }
         ]
       },
@@ -26946,10 +26946,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "251e426a473315bb2fa7a3d5b6fd1d2281ff6a0d8463693b26fe8939cc01a016",
+      "rawSha256": "1123ad9d64b34092aafa29da71dd350521ac7e6250e664904180aefc720c8997",
       "width": 390,
       "height": 844,
-      "bytes": 29049,
+      "bytes": 28705,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -26957,17 +26957,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "251e426a473315bb2fa7a3d5b6fd1d2281ff6a0d8463693b26fe8939cc01a016",
-            "rawSha256": "3253b0fadd1f6cf0533759ea6418194738600b6033a21c72cd2f209f789e72de",
-            "bytes": 29049,
-            "rawBytes": 106017
+            "sha256": "1123ad9d64b34092aafa29da71dd350521ac7e6250e664904180aefc720c8997",
+            "rawSha256": "a5ebf0c579a34eff9168ffc1a9efedeb1cbaaab77ce02ca2927e4b345b335864",
+            "bytes": 28705,
+            "rawBytes": 104959
           },
           {
             "attempt": 2,
-            "sha256": "251e426a473315bb2fa7a3d5b6fd1d2281ff6a0d8463693b26fe8939cc01a016",
-            "rawSha256": "3253b0fadd1f6cf0533759ea6418194738600b6033a21c72cd2f209f789e72de",
-            "bytes": 29049,
-            "rawBytes": 106017
+            "sha256": "1123ad9d64b34092aafa29da71dd350521ac7e6250e664904180aefc720c8997",
+            "rawSha256": "a5ebf0c579a34eff9168ffc1a9efedeb1cbaaab77ce02ca2927e4b345b335864",
+            "bytes": 28705,
+            "rawBytes": 104959
           }
         ]
       },
@@ -27699,10 +27699,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "caa373e5b1efc6ee8164e769136e6ef15d260fac936f6b185abf85b07f449641",
+      "rawSha256": "af4e7890123d597f6a7d4abbff0e291d2431257f46114d7c029b1f90bab2a484",
       "width": 390,
       "height": 844,
-      "bytes": 21111,
+      "bytes": 20760,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -27710,17 +27710,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "caa373e5b1efc6ee8164e769136e6ef15d260fac936f6b185abf85b07f449641",
-            "rawSha256": "2ee12012316c6ecc9477b817778d8ee807f150addee43278f38ac76b5973d7f4",
-            "bytes": 21111,
-            "rawBytes": 108994
+            "sha256": "af4e7890123d597f6a7d4abbff0e291d2431257f46114d7c029b1f90bab2a484",
+            "rawSha256": "c1bcde4819ab9d2d8ae6559d7da64bdc9c5c76e4a02f20f48594050148a8a70c",
+            "bytes": 20760,
+            "rawBytes": 107588
           },
           {
             "attempt": 2,
-            "sha256": "caa373e5b1efc6ee8164e769136e6ef15d260fac936f6b185abf85b07f449641",
-            "rawSha256": "2ee12012316c6ecc9477b817778d8ee807f150addee43278f38ac76b5973d7f4",
-            "bytes": 21111,
-            "rawBytes": 108994
+            "sha256": "af4e7890123d597f6a7d4abbff0e291d2431257f46114d7c029b1f90bab2a484",
+            "rawSha256": "c1bcde4819ab9d2d8ae6559d7da64bdc9c5c76e4a02f20f48594050148a8a70c",
+            "bytes": 20760,
+            "rawBytes": 107588
           }
         ]
       },
@@ -27950,10 +27950,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "3c3766b08daf15d27d2dffe5480ce1361e46a4bd451b4f09ec5f9d9ca8fa8c1a",
+      "rawSha256": "267fcdfc9ae25bf6bd355f3d7686587290318d25f324135bef24d12cf54e5a8e",
       "width": 390,
       "height": 844,
-      "bytes": 29788,
+      "bytes": 29528,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -27961,17 +27961,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "3c3766b08daf15d27d2dffe5480ce1361e46a4bd451b4f09ec5f9d9ca8fa8c1a",
-            "rawSha256": "0a9168e75f565cba74eeb83f2c7fd2c1a229cb42f98376855a8634c1b1797c13",
-            "bytes": 29788,
-            "rawBytes": 93887
+            "sha256": "267fcdfc9ae25bf6bd355f3d7686587290318d25f324135bef24d12cf54e5a8e",
+            "rawSha256": "5a3acb30de657167a83baa59bdd33432df3ffa4c56e37e852cda1427ddd43329",
+            "bytes": 29528,
+            "rawBytes": 92716
           },
           {
             "attempt": 2,
-            "sha256": "3c3766b08daf15d27d2dffe5480ce1361e46a4bd451b4f09ec5f9d9ca8fa8c1a",
-            "rawSha256": "0a9168e75f565cba74eeb83f2c7fd2c1a229cb42f98376855a8634c1b1797c13",
-            "bytes": 29788,
-            "rawBytes": 93887
+            "sha256": "267fcdfc9ae25bf6bd355f3d7686587290318d25f324135bef24d12cf54e5a8e",
+            "rawSha256": "5a3acb30de657167a83baa59bdd33432df3ffa4c56e37e852cda1427ddd43329",
+            "bytes": 29528,
+            "rawBytes": 92716
           }
         ]
       },
@@ -28703,10 +28703,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "4a2e7e8be1e7de12cb7e5b5bdda073fe86b9bd39c2d82811a7232dec8a9c5715",
+      "rawSha256": "b1acc53566f6b494cbfd26a23ebc1256d440457ca3f2777386a392d50d248a3e",
       "width": 390,
       "height": 844,
-      "bytes": 20479,
+      "bytes": 20129,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -28714,17 +28714,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "4a2e7e8be1e7de12cb7e5b5bdda073fe86b9bd39c2d82811a7232dec8a9c5715",
-            "rawSha256": "a988227aca077c8dadc9579330365b17baa99c1995be2d2de9f045958b1573ba",
-            "bytes": 20479,
-            "rawBytes": 103037
+            "sha256": "b1acc53566f6b494cbfd26a23ebc1256d440457ca3f2777386a392d50d248a3e",
+            "rawSha256": "4c09e63174378efd1812f04395127a0a05973f704db34a64e0b55f4127bdb7ab",
+            "bytes": 20129,
+            "rawBytes": 101555
           },
           {
             "attempt": 2,
-            "sha256": "4a2e7e8be1e7de12cb7e5b5bdda073fe86b9bd39c2d82811a7232dec8a9c5715",
-            "rawSha256": "a988227aca077c8dadc9579330365b17baa99c1995be2d2de9f045958b1573ba",
-            "bytes": 20479,
-            "rawBytes": 103037
+            "sha256": "b1acc53566f6b494cbfd26a23ebc1256d440457ca3f2777386a392d50d248a3e",
+            "rawSha256": "4c09e63174378efd1812f04395127a0a05973f704db34a64e0b55f4127bdb7ab",
+            "bytes": 20129,
+            "rawBytes": 101555
           }
         ]
       },
@@ -28954,10 +28954,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "4c6a391e04ca6b2b4e311b4640a093b15ed373a3fe2a4518a0a52ca019a1b05e",
+      "rawSha256": "df63591a3382fba351d7542b872992497359efe21f282329085a6ce765e8f87b",
       "width": 390,
       "height": 844,
-      "bytes": 27791,
+      "bytes": 27449,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -28965,17 +28965,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "4c6a391e04ca6b2b4e311b4640a093b15ed373a3fe2a4518a0a52ca019a1b05e",
-            "rawSha256": "c7e13c2c798bd2a2f2b420cd4d526d5fb17f83a629140e456af88c9c1248a2d6",
-            "bytes": 27791,
-            "rawBytes": 83554
+            "sha256": "df63591a3382fba351d7542b872992497359efe21f282329085a6ce765e8f87b",
+            "rawSha256": "cffcb96a78ab7bd9579d29895140515eb92831deae1a92203ecf74316799194c",
+            "bytes": 27449,
+            "rawBytes": 82547
           },
           {
             "attempt": 2,
-            "sha256": "4c6a391e04ca6b2b4e311b4640a093b15ed373a3fe2a4518a0a52ca019a1b05e",
-            "rawSha256": "c7e13c2c798bd2a2f2b420cd4d526d5fb17f83a629140e456af88c9c1248a2d6",
-            "bytes": 27791,
-            "rawBytes": 83554
+            "sha256": "df63591a3382fba351d7542b872992497359efe21f282329085a6ce765e8f87b",
+            "rawSha256": "cffcb96a78ab7bd9579d29895140515eb92831deae1a92203ecf74316799194c",
+            "bytes": 27449,
+            "rawBytes": 82547
           }
         ]
       },
@@ -29707,10 +29707,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "d4774783e00491d77e253acd26f7b8d67da3d1cc62021c3b7d88a5e4fc4a2d73",
+      "rawSha256": "922098a9ac174ad24b2fa02dc1ff349251f603fef18741dc6fb62ef30c709c49",
       "width": 390,
       "height": 844,
-      "bytes": 19773,
+      "bytes": 19422,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -29718,17 +29718,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "d4774783e00491d77e253acd26f7b8d67da3d1cc62021c3b7d88a5e4fc4a2d73",
-            "rawSha256": "10317bf46795ad8926ddf0724463982909f9ceb81171f77d21a8812114b0e798",
-            "bytes": 19773,
-            "rawBytes": 99780
+            "sha256": "922098a9ac174ad24b2fa02dc1ff349251f603fef18741dc6fb62ef30c709c49",
+            "rawSha256": "82b10dac3e4a96a12594d30610394a99586666bf506f30937516d32a77735c86",
+            "bytes": 19422,
+            "rawBytes": 98225
           },
           {
             "attempt": 2,
-            "sha256": "d4774783e00491d77e253acd26f7b8d67da3d1cc62021c3b7d88a5e4fc4a2d73",
-            "rawSha256": "10317bf46795ad8926ddf0724463982909f9ceb81171f77d21a8812114b0e798",
-            "bytes": 19773,
-            "rawBytes": 99780
+            "sha256": "922098a9ac174ad24b2fa02dc1ff349251f603fef18741dc6fb62ef30c709c49",
+            "rawSha256": "82b10dac3e4a96a12594d30610394a99586666bf506f30937516d32a77735c86",
+            "bytes": 19422,
+            "rawBytes": 98225
           }
         ]
       },
@@ -29958,10 +29958,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "6821690a37d87c4efdb8220f163defdc48be7a41d546f50eed3b35c0e0963df3",
+      "rawSha256": "657f5ae0ee5bbe9c577cdc389cc74e7e0e92f4766f5c192b4a4f46123405e09c",
       "width": 390,
       "height": 844,
-      "bytes": 28234,
+      "bytes": 27911,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -29969,17 +29969,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "6821690a37d87c4efdb8220f163defdc48be7a41d546f50eed3b35c0e0963df3",
-            "rawSha256": "3ed78c5880afb9b4935411e8ae8ad84bca8cc9d308ffa726bb975e9297d5a6f9",
-            "bytes": 28234,
-            "rawBytes": 82791
+            "sha256": "657f5ae0ee5bbe9c577cdc389cc74e7e0e92f4766f5c192b4a4f46123405e09c",
+            "rawSha256": "74fc0b15a29b4c034facf7d768fa86f2fb82de74ece6c27f1098bb32bd85a224",
+            "bytes": 27911,
+            "rawBytes": 81583
           },
           {
             "attempt": 2,
-            "sha256": "6821690a37d87c4efdb8220f163defdc48be7a41d546f50eed3b35c0e0963df3",
-            "rawSha256": "3ed78c5880afb9b4935411e8ae8ad84bca8cc9d308ffa726bb975e9297d5a6f9",
-            "bytes": 28234,
-            "rawBytes": 82791
+            "sha256": "657f5ae0ee5bbe9c577cdc389cc74e7e0e92f4766f5c192b4a4f46123405e09c",
+            "rawSha256": "74fc0b15a29b4c034facf7d768fa86f2fb82de74ece6c27f1098bb32bd85a224",
+            "bytes": 27911,
+            "rawBytes": 81583
           }
         ]
       },
@@ -30711,10 +30711,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "88b21d068c771653c14c6e94669d3417e597bab5369681fad48899f6dab17608",
+      "rawSha256": "5cb95926e28213bf7120bdb93b047efcfb0d50eb60804f772486673a9f87bc7b",
       "width": 390,
       "height": 844,
-      "bytes": 21791,
+      "bytes": 21442,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -30722,17 +30722,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "88b21d068c771653c14c6e94669d3417e597bab5369681fad48899f6dab17608",
-            "rawSha256": "ef4920e2fe9ee8aec96593052aa9eb5b55fd41beb4fb0ed52b6d3950028bca29",
-            "bytes": 21791,
-            "rawBytes": 108357
+            "sha256": "5cb95926e28213bf7120bdb93b047efcfb0d50eb60804f772486673a9f87bc7b",
+            "rawSha256": "5df039bc2e2bef463f2f41398a81ff999fb434008cf756df9e68903ea0b7e5ac",
+            "bytes": 21442,
+            "rawBytes": 106891
           },
           {
             "attempt": 2,
-            "sha256": "88b21d068c771653c14c6e94669d3417e597bab5369681fad48899f6dab17608",
-            "rawSha256": "ef4920e2fe9ee8aec96593052aa9eb5b55fd41beb4fb0ed52b6d3950028bca29",
-            "bytes": 21791,
-            "rawBytes": 108357
+            "sha256": "5cb95926e28213bf7120bdb93b047efcfb0d50eb60804f772486673a9f87bc7b",
+            "rawSha256": "5df039bc2e2bef463f2f41398a81ff999fb434008cf756df9e68903ea0b7e5ac",
+            "bytes": 21442,
+            "rawBytes": 106891
           }
         ]
       },
@@ -30962,10 +30962,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "c80bcc182622d992eaa5ef14bc06da27a184a4455c4efbd77a8ff3f50fa0b081",
+      "rawSha256": "6b269c17e36036fe8d6c0991256fb69b23b52a18a53b9899c746542b3638ce6b",
       "width": 390,
       "height": 844,
-      "bytes": 29972,
+      "bytes": 29373,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -30973,17 +30973,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c80bcc182622d992eaa5ef14bc06da27a184a4455c4efbd77a8ff3f50fa0b081",
-            "rawSha256": "933cb2a02d12a52912ee5d068304b471135b1fe1f1ae1854ecf62eda058fa2e9",
-            "bytes": 29972,
-            "rawBytes": 89982
+            "sha256": "6b269c17e36036fe8d6c0991256fb69b23b52a18a53b9899c746542b3638ce6b",
+            "rawSha256": "cf91c2b9ccf6f2871cb8670a2e2068a97fd8e04477456a6a7c702cee89beb31f",
+            "bytes": 29373,
+            "rawBytes": 88090
           },
           {
             "attempt": 2,
-            "sha256": "c80bcc182622d992eaa5ef14bc06da27a184a4455c4efbd77a8ff3f50fa0b081",
-            "rawSha256": "933cb2a02d12a52912ee5d068304b471135b1fe1f1ae1854ecf62eda058fa2e9",
-            "bytes": 29972,
-            "rawBytes": 89982
+            "sha256": "6b269c17e36036fe8d6c0991256fb69b23b52a18a53b9899c746542b3638ce6b",
+            "rawSha256": "cf91c2b9ccf6f2871cb8670a2e2068a97fd8e04477456a6a7c702cee89beb31f",
+            "bytes": 29373,
+            "rawBytes": 88090
           }
         ]
       },
@@ -31715,10 +31715,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "2ab4572338b2e73275d6d21db8174cf91dcba8c242cbbf9c18e9d4a7efa69d7c",
+      "rawSha256": "edcaddcc73489084e2f0ab59d2c781b6084c6a76df31eb9604528c1b0b4d45e1",
       "width": 390,
       "height": 844,
-      "bytes": 17650,
+      "bytes": 17299,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -31726,17 +31726,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "2ab4572338b2e73275d6d21db8174cf91dcba8c242cbbf9c18e9d4a7efa69d7c",
-            "rawSha256": "b1f3f9fd2033d1888e961fa8dd04b025ee6e1d56c316e2fb127796215677e83f",
-            "bytes": 17650,
-            "rawBytes": 93326
+            "sha256": "edcaddcc73489084e2f0ab59d2c781b6084c6a76df31eb9604528c1b0b4d45e1",
+            "rawSha256": "d0bd3bcd45acf25669260a4a1e1e6bb8cbd48c917404a91ea5771ad4eb059146",
+            "bytes": 17299,
+            "rawBytes": 91781
           },
           {
             "attempt": 2,
-            "sha256": "2ab4572338b2e73275d6d21db8174cf91dcba8c242cbbf9c18e9d4a7efa69d7c",
-            "rawSha256": "b1f3f9fd2033d1888e961fa8dd04b025ee6e1d56c316e2fb127796215677e83f",
-            "bytes": 17650,
-            "rawBytes": 93326
+            "sha256": "edcaddcc73489084e2f0ab59d2c781b6084c6a76df31eb9604528c1b0b4d45e1",
+            "rawSha256": "d0bd3bcd45acf25669260a4a1e1e6bb8cbd48c917404a91ea5771ad4eb059146",
+            "bytes": 17299,
+            "rawBytes": 91781
           }
         ]
       },
@@ -31966,10 +31966,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "300a0e93725b966e82a7428de0c714f19a0ca8a1eb91b1432e1a78541979d791",
+      "rawSha256": "77c64f2bd83aad2a912075867d2567a118265c313ac4b00659a645f33ae595da",
       "width": 390,
       "height": 844,
-      "bytes": 24564,
+      "bytes": 24142,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -31977,17 +31977,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "300a0e93725b966e82a7428de0c714f19a0ca8a1eb91b1432e1a78541979d791",
-            "rawSha256": "731a3ab576b2df28f679f974877fbc2b20d149ebd3957f7c69212cb1e59dbb6f",
-            "bytes": 24564,
-            "rawBytes": 72159
+            "sha256": "77c64f2bd83aad2a912075867d2567a118265c313ac4b00659a645f33ae595da",
+            "rawSha256": "d26ee3f18205e6c55db83cbadd394e875d1975f638ccf8ca8cb5d07e84bbb73c",
+            "bytes": 24142,
+            "rawBytes": 70920
           },
           {
             "attempt": 2,
-            "sha256": "300a0e93725b966e82a7428de0c714f19a0ca8a1eb91b1432e1a78541979d791",
-            "rawSha256": "731a3ab576b2df28f679f974877fbc2b20d149ebd3957f7c69212cb1e59dbb6f",
-            "bytes": 24564,
-            "rawBytes": 72159
+            "sha256": "77c64f2bd83aad2a912075867d2567a118265c313ac4b00659a645f33ae595da",
+            "rawSha256": "d26ee3f18205e6c55db83cbadd394e875d1975f638ccf8ca8cb5d07e84bbb73c",
+            "bytes": 24142,
+            "rawBytes": 70920
           }
         ]
       },
@@ -32719,10 +32719,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "07e9765ba81c98c1d18d2c45c2b18492a670ce4fc3f3bb77111ee1980b1cbc97",
+      "rawSha256": "41997031ccdb420e979b5024cc9b59affcb2d730da95f36db4a74d35acb97715",
       "width": 390,
       "height": 844,
-      "bytes": 22673,
+      "bytes": 22331,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -32730,17 +32730,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "07e9765ba81c98c1d18d2c45c2b18492a670ce4fc3f3bb77111ee1980b1cbc97",
-            "rawSha256": "7a1797d445c63d9aaf33ba4c09124232519e65279f1d340bcf8deb80edad2ee9",
-            "bytes": 22673,
-            "rawBytes": 108280
+            "sha256": "41997031ccdb420e979b5024cc9b59affcb2d730da95f36db4a74d35acb97715",
+            "rawSha256": "07bdf7672d22d52aecd1353e4ff84f361a9842e565ae2b3fb11c9c928485a189",
+            "bytes": 22331,
+            "rawBytes": 106771
           },
           {
             "attempt": 2,
-            "sha256": "07e9765ba81c98c1d18d2c45c2b18492a670ce4fc3f3bb77111ee1980b1cbc97",
-            "rawSha256": "7a1797d445c63d9aaf33ba4c09124232519e65279f1d340bcf8deb80edad2ee9",
-            "bytes": 22673,
-            "rawBytes": 108280
+            "sha256": "41997031ccdb420e979b5024cc9b59affcb2d730da95f36db4a74d35acb97715",
+            "rawSha256": "07bdf7672d22d52aecd1353e4ff84f361a9842e565ae2b3fb11c9c928485a189",
+            "bytes": 22331,
+            "rawBytes": 106771
           }
         ]
       },
@@ -32970,10 +32970,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "9ea5d2e16753b2f7bc41aaa3f815449c711255395e5feb3847fc55dd3ad4ca64",
+      "rawSha256": "b9c31b67f981b6fa300ba4ad86ac367c68ea7eed8d0011c6b5d1e0f70c46bb0b",
       "width": 390,
       "height": 844,
-      "bytes": 30658,
+      "bytes": 30335,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -32981,17 +32981,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "9ea5d2e16753b2f7bc41aaa3f815449c711255395e5feb3847fc55dd3ad4ca64",
-            "rawSha256": "75424e6e8ea43bc3cce75896f18fd577680eb8bb020e9ce38edae96683e96f1a",
-            "bytes": 30658,
-            "rawBytes": 92878
+            "sha256": "b9c31b67f981b6fa300ba4ad86ac367c68ea7eed8d0011c6b5d1e0f70c46bb0b",
+            "rawSha256": "fb468c9c1671c478089052123b175f4e06c88c79bbcf1755ce835fc8fbdd2d4c",
+            "bytes": 30335,
+            "rawBytes": 91753
           },
           {
             "attempt": 2,
-            "sha256": "9ea5d2e16753b2f7bc41aaa3f815449c711255395e5feb3847fc55dd3ad4ca64",
-            "rawSha256": "75424e6e8ea43bc3cce75896f18fd577680eb8bb020e9ce38edae96683e96f1a",
-            "bytes": 30658,
-            "rawBytes": 92878
+            "sha256": "b9c31b67f981b6fa300ba4ad86ac367c68ea7eed8d0011c6b5d1e0f70c46bb0b",
+            "rawSha256": "fb468c9c1671c478089052123b175f4e06c88c79bbcf1755ce835fc8fbdd2d4c",
+            "bytes": 30335,
+            "rawBytes": 91753
           }
         ]
       },
@@ -33221,10 +33221,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "fffa39a153a02ed3b39842f02c3234f916a6aa4f0053fd032885ac0509a14d24",
+      "rawSha256": "dd7271f7adb12c12f35837597961616b13a3bc2d741889401002eb43a1c3648c",
       "width": 390,
       "height": 844,
-      "bytes": 18784,
+      "bytes": 18428,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -33232,17 +33232,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "fffa39a153a02ed3b39842f02c3234f916a6aa4f0053fd032885ac0509a14d24",
-            "rawSha256": "94a9f235f7f613ec6eac67531402ead94c34059557e6436a11afcae7f1734eb6",
-            "bytes": 18784,
-            "rawBytes": 110467
+            "sha256": "dd7271f7adb12c12f35837597961616b13a3bc2d741889401002eb43a1c3648c",
+            "rawSha256": "08828e585b330bf0bf09df500502b63ae35be4bf127a50b3ec24697c41736cf1",
+            "bytes": 18428,
+            "rawBytes": 109042
           },
           {
             "attempt": 2,
-            "sha256": "fffa39a153a02ed3b39842f02c3234f916a6aa4f0053fd032885ac0509a14d24",
-            "rawSha256": "94a9f235f7f613ec6eac67531402ead94c34059557e6436a11afcae7f1734eb6",
-            "bytes": 18784,
-            "rawBytes": 110467
+            "sha256": "dd7271f7adb12c12f35837597961616b13a3bc2d741889401002eb43a1c3648c",
+            "rawSha256": "08828e585b330bf0bf09df500502b63ae35be4bf127a50b3ec24697c41736cf1",
+            "bytes": 18428,
+            "rawBytes": 109042
           }
         ]
       },
@@ -33472,10 +33472,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "90b11dfe14ab9fd6d398af972a3c16e2bd19137d4f56d410ba8bfe20545183f1",
+      "rawSha256": "bcaa237cfe2085279035accb1adce2e0de1d4478266c398bccd15725b27f861e",
       "width": 390,
       "height": 844,
-      "bytes": 16039,
+      "bytes": 15679,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -33483,17 +33483,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "90b11dfe14ab9fd6d398af972a3c16e2bd19137d4f56d410ba8bfe20545183f1",
-            "rawSha256": "222d2d46a6fd3ae7377e2ba319275d8194da7c58adf587300462c252678ffdcc",
-            "bytes": 16039,
-            "rawBytes": 104923
+            "sha256": "bcaa237cfe2085279035accb1adce2e0de1d4478266c398bccd15725b27f861e",
+            "rawSha256": "2a07bbe0ca3359437b5cafd8a290f2219ab4b07bfb6c99ce24a510f73257327e",
+            "bytes": 15679,
+            "rawBytes": 103550
           },
           {
             "attempt": 2,
-            "sha256": "90b11dfe14ab9fd6d398af972a3c16e2bd19137d4f56d410ba8bfe20545183f1",
-            "rawSha256": "222d2d46a6fd3ae7377e2ba319275d8194da7c58adf587300462c252678ffdcc",
-            "bytes": 16039,
-            "rawBytes": 104923
+            "sha256": "bcaa237cfe2085279035accb1adce2e0de1d4478266c398bccd15725b27f861e",
+            "rawSha256": "2a07bbe0ca3359437b5cafd8a290f2219ab4b07bfb6c99ce24a510f73257327e",
+            "bytes": 15679,
+            "rawBytes": 103550
           }
         ]
       },
@@ -33723,10 +33723,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "32de08ab7c21be71dd3e33948df05c09f42456a24bfee4d76ec16e30b37d4fb2",
+      "rawSha256": "1a1513d1351186347a856fb3c07f2a50b90b8d0c1c15c714e3283d8878f29cc7",
       "width": 390,
       "height": 844,
-      "bytes": 23891,
+      "bytes": 23544,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -33734,17 +33734,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "32de08ab7c21be71dd3e33948df05c09f42456a24bfee4d76ec16e30b37d4fb2",
-            "rawSha256": "473541892eb0dc319bc7725af175be4039a8b9e40e7227468faa5682f6e9be4c",
-            "bytes": 23891,
-            "rawBytes": 128994
+            "sha256": "1a1513d1351186347a856fb3c07f2a50b90b8d0c1c15c714e3283d8878f29cc7",
+            "rawSha256": "b1afb2c3ae1b9ad56382ee01347b12aa6c19034af41765350b0fb17d9c52ed4d",
+            "bytes": 23544,
+            "rawBytes": 127533
           },
           {
             "attempt": 2,
-            "sha256": "32de08ab7c21be71dd3e33948df05c09f42456a24bfee4d76ec16e30b37d4fb2",
-            "rawSha256": "473541892eb0dc319bc7725af175be4039a8b9e40e7227468faa5682f6e9be4c",
-            "bytes": 23891,
-            "rawBytes": 128994
+            "sha256": "1a1513d1351186347a856fb3c07f2a50b90b8d0c1c15c714e3283d8878f29cc7",
+            "rawSha256": "b1afb2c3ae1b9ad56382ee01347b12aa6c19034af41765350b0fb17d9c52ed4d",
+            "bytes": 23544,
+            "rawBytes": 127533
           }
         ]
       },
@@ -33974,10 +33974,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "84df825a208945a12b88dbc79820489a1dc606a53caa8b41c5ee1bd17a81e56e",
+      "rawSha256": "9a12e5c2dc8828cc4a462ef97a8f975455085902b0ee12e9c4d41a738ec768b2",
       "width": 390,
       "height": 844,
-      "bytes": 23456,
+      "bytes": 23112,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -33985,17 +33985,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "84df825a208945a12b88dbc79820489a1dc606a53caa8b41c5ee1bd17a81e56e",
-            "rawSha256": "cc1301b9ef12ccd4c65b39bf3c6267fa7d3f78b1e05d24422231ed085ba18dd5",
-            "bytes": 23456,
-            "rawBytes": 108338
+            "sha256": "9a12e5c2dc8828cc4a462ef97a8f975455085902b0ee12e9c4d41a738ec768b2",
+            "rawSha256": "dad293bda9077bab050a3987949972d78305c1bd80df81e0447b4ed7305b8548",
+            "bytes": 23112,
+            "rawBytes": 106848
           },
           {
             "attempt": 2,
-            "sha256": "84df825a208945a12b88dbc79820489a1dc606a53caa8b41c5ee1bd17a81e56e",
-            "rawSha256": "cc1301b9ef12ccd4c65b39bf3c6267fa7d3f78b1e05d24422231ed085ba18dd5",
-            "bytes": 23456,
-            "rawBytes": 108338
+            "sha256": "9a12e5c2dc8828cc4a462ef97a8f975455085902b0ee12e9c4d41a738ec768b2",
+            "rawSha256": "dad293bda9077bab050a3987949972d78305c1bd80df81e0447b4ed7305b8548",
+            "bytes": 23112,
+            "rawBytes": 106848
           }
         ]
       },
@@ -34267,7 +34267,7 @@
     "retained": false,
     "stoppedBeforeReturn": true
   },
-  "baselineManifestHash": "9872901e3946bd5ab804a8cedec4b8828b83e9a031de3e9b2ec4cf4da67d4152",
+  "baselineManifestHash": "285ee03c27f7a2e1c7d95bbf5caa6200f83722bb954851a3d7cd277b4f8da43f",
   "compareFailures": [],
   "comparisonReadbacks": []
 }

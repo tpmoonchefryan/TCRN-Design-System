@@ -2447,7 +2447,8 @@ async function runChangelogI18nReadabilityProof() {
     "Current location",
     "On this page",
 	    "Documentation sections",
-	    "Welcome and governance",
+    "Welcome and governance",
+    "Component Library",
 	    "Maintainers and routing",
 	    "Contribution model",
 	    "Icons and motion",
@@ -2590,6 +2591,7 @@ async function runGlobalStorybookZhCnIaProof() {
     "On this page",
 	    "Documentation sections",
 	    "Welcome and governance",
+	    "Component Library",
 	    "Maintainers and routing",
 	    "Contribution model",
 	    "Icons and motion",
@@ -2658,6 +2660,8 @@ async function runGlobalStorybookZhCnIaProof() {
           .filter(Boolean);
         const currentLocation = document.querySelector(".tcrn-doc-current-location");
 	        const onThisPage = document.querySelector(".tcrn-doc-on-this-page");
+	        const brandNode = document.querySelector(".tcrn-doc-brand");
+	        const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
 	        const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
 	        const localizedTextSurface = [
 	          bodyText,
@@ -2680,6 +2684,9 @@ async function runGlobalStorybookZhCnIaProof() {
           categoryDescriptions,
           categoryDescriptionCount: categoryDescriptions.length,
           categoryDescriptionEnglishLeaks: categoryDescriptions.filter((text) => forbiddenText.some((term) => text.includes(term))),
+          docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+          docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+          docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("组件库") && !(brandNode?.textContent ?? "").includes("Component Library"),
           currentLocationText: currentLocation?.textContent?.replace(/\s+/g, " ").trim() ?? null,
           onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null
         };
@@ -2698,6 +2705,7 @@ async function runGlobalStorybookZhCnIaProof() {
           && metrics.categoryLabelCount === expectedStoryCategoryCount
           && metrics.categoryDescriptionCount === expectedStoryCategoryCount
           && metrics.categoryDescriptionEnglishLeaks.length === 0
+          && metrics.docBrandCaptionLocalized
           && metrics.currentLocationText?.includes("当前位置")
           && metrics.onThisPageAriaLabel === "本页内容"
       };
@@ -2743,6 +2751,7 @@ async function runCrossSectionShellParityProof() {
   const forbiddenZhCnProductShellText = [
     "Welcome and governance",
     "Maintainers and routing",
+    "Component Library",
     "Contribution model",
     "Icons and motion",
     "Global states",
@@ -2822,6 +2831,7 @@ async function runCrossSectionShellParityProof() {
             .filter(Boolean);
           const currentLocationNode = document.querySelector(".tcrn-doc-current-location");
           const brandNode = document.querySelector(".tcrn-doc-brand");
+          const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
           const searchInput = document.querySelector(".tcrn-search-input__control");
           const searchInputShell = rectFor(".tcrn-search-input");
           const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
@@ -2912,6 +2922,9 @@ async function runCrossSectionShellParityProof() {
           navGroupCount: (storybookNav ?? document).querySelectorAll(".tcrn-doc-nav__group").length,
             categoryLabelCount: categoryLabels.length,
             categoryLabels,
+            docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+            docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+            docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("组件库") && !(brandNode?.textContent ?? "").includes("Component Library"),
             docShellEnglishLeaks,
             ownerVisibleCaptionHits,
             brandIdentityLogoSectionReadback,
@@ -2955,6 +2968,9 @@ async function runCrossSectionShellParityProof() {
         if (metrics.legacyProductShellGlobalNavCount !== 0) routeFailures.push(`legacy-product-shell-global-nav:${metrics.legacyProductShellGlobalNavCount}`);
         if (metrics.navGroupCount !== expectedStorybookShellNavGroupCount) routeFailures.push(`nav-group-count:${metrics.navGroupCount}`);
         if (metrics.categoryLabelCount !== expectedStoryCategoryCount) routeFailures.push(`category-label-count:${metrics.categoryLabelCount}`);
+        if (!metrics.docBrandCaptionLocalized) {
+          routeFailures.push(`doc-brand-caption-zh-cn:${metrics.docBrandCaptionText ?? "missing"}`);
+        }
         if (metrics.docShellEnglishLeaks.length > 0) {
           routeFailures.push(`doc-shell-zh-cn-english-leaks:${metrics.docShellEnglishLeaks.join("|")}`);
         }

@@ -973,8 +973,13 @@ async function collectPageHealth(page, state) {
     const rect = target?.getBoundingClientRect();
     const html = document.documentElement.outerHTML;
     const bodyText = document.body.innerText;
+    const storybookLocale = root?.getAttribute("data-storybook-locale") ?? document.documentElement.getAttribute("data-storybook-locale");
+    const brandNode = document.querySelector(".tcrn-doc-brand");
+    const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
+    const docBrandText = brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null;
+    const docBrandCaptionText = brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null;
     const visibleShellTextSurface = [
-      document.querySelector(".tcrn-doc-brand")?.textContent ?? "",
+      brandNode?.textContent ?? "",
       document.querySelector(".tcrn-doc-current-location")?.textContent ?? "",
       document.querySelector(".tcrn-doc-header-controls")?.textContent ?? "",
       target instanceof HTMLElement ? target.innerText : ""
@@ -982,6 +987,9 @@ async function collectPageHealth(page, state) {
     const ownerVisibleShellTextHits = input.forbiddenOwnerVisibleShellText
       .filter((rule) => visibleShellTextSurface.includes(rule.text))
       .map((rule) => rule.id);
+    if (storybookLocale === "zh-CN" && (docBrandText?.includes("Component Library") || docBrandCaptionText !== "组件库")) {
+      ownerVisibleShellTextHits.push(`zh-cn-doc-brand-caption:${docBrandCaptionText ?? "missing"}`);
+    }
     const forbiddenHits = input.forbiddenPatterns
       .filter((rule) => new RegExp(rule.source, rule.flags).test(html) || new RegExp(rule.source, rule.flags).test(bodyText))
       .map((rule) => rule.id);
@@ -1171,6 +1179,9 @@ async function collectPageHealth(page, state) {
       url: window.location.href.replace(/http:\/\/127\.0\.0\.1:\d+/g, "http://127.0.0.1:<ephemeral>"),
       rootVisible: Boolean(root),
       activeSection: root?.getAttribute("data-active-story-section") ?? null,
+      storybookLocale,
+      docBrandText,
+      docBrandCaptionText,
       htmlTheme: document.documentElement.getAttribute("data-tcrn-theme"),
       rootTheme: root?.getAttribute("data-storybook-theme") ?? null,
       colorScheme: getComputedStyle(document.documentElement).colorScheme,

@@ -721,6 +721,7 @@ const firstStoryHashShellParityRoutes = sectionPages.map((section) => {
 const forbiddenZhCnProductShellText = [
   "Welcome and governance",
   "Maintainers and routing",
+  "Component Library",
   "Contribution model",
   "Icons and motion",
   "Global states",
@@ -788,6 +789,7 @@ for (const route of firstStoryHashShellParityRoutes) {
     const headerBottom = header?.bottom ?? 0;
     const currentLocationNode = document.querySelector(".tcrn-doc-current-location");
     const brandNode = document.querySelector(".tcrn-doc-brand");
+    const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
     const searchInput = document.querySelector(".tcrn-search-input__control");
     const searchInputShell = rectFor(".tcrn-search-input");
     const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
@@ -839,6 +841,9 @@ for (const route of firstStoryHashShellParityRoutes) {
         .length,
       navGroupCount: navRoot.querySelectorAll(".tcrn-doc-nav__group").length,
       categoryLabelCount: navRoot.querySelectorAll(".tcrn-doc-nav__category-label").length,
+      docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+      docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+      docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("组件库") && !(brandNode?.textContent ?? "").includes("Component Library"),
       docShellEnglishLeaks,
       ownerVisibleCaptionHits,
       brandIdentityLogoSectionReadback,
@@ -886,6 +891,7 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (metrics.legacyProductShellGlobalNavCount !== 0) failures.push(`legacy-product-shell-global-nav:${metrics.legacyProductShellGlobalNavCount}`);
   if (metrics.navGroupCount !== expectedStorybookShellNavGroupCount) failures.push(`nav-group-count:${metrics.navGroupCount}`);
   if (metrics.categoryLabelCount !== expectedCategoryCount) failures.push(`category-label-count:${metrics.categoryLabelCount}`);
+  if (!metrics.docBrandCaptionLocalized) failures.push(`doc-brand-caption-zh-cn:${metrics.docBrandCaptionText ?? "missing"}`);
   if (metrics.docShellEnglishLeaks.length > 0) failures.push(`doc-shell-zh-cn-english-leaks:${metrics.docShellEnglishLeaks.join("|")}`);
   if (metrics.ownerVisibleCaptionHits.length > 0) failures.push(`owner-visible-caption-hits:${metrics.ownerVisibleCaptionHits.join("|")}`);
   if (metrics.brandIdentityLogoSectionReadback) {
