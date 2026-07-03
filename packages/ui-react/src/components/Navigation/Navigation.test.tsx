@@ -107,11 +107,13 @@ test("registered product logos expose exact DS AOS and TMS lockups", () => {
   assert.match(html, /data-product-logo-asset-id="tcrn-design-system-two-line"/);
   assert.match(html, /data-product-id="aos"/);
   assert.match(html, /data-product-logo-asset-id="tcrn-aos-two-line"/);
-  assert.match(html, />TCRN AOS</);
+  assert.match(html, /class="tcrn-product-logo__line-one-base">TCRN</);
+  assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--aos">AOS</);
   assert.match(html, />AI Operation System</);
   assert.match(html, /data-product-id="tms"/);
   assert.match(html, /data-product-logo-asset-id="tcrn-tms-two-line"/);
-  assert.match(html, />TCRN TMS</);
+  assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--tms">TMS</);
+  assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--design-system">Design System</);
   assert.match(html, />Talent Management System</);
   assert.doesNotMatch(html, /Rebuild workspace/);
 });
@@ -185,7 +187,8 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-visible-registered-brand-lockup="true"/);
   assert.match(html, /data-product-id="aos"/);
   assert.match(html, /data-product-logo-asset-id="tcrn-aos-two-line"/);
-  assert.match(html, />TCRN AOS</);
+  assert.match(html, /class="tcrn-product-logo__line-one-base">TCRN</);
+  assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--aos">AOS</);
   assert.match(html, />AI Operation System</);
   assert.doesNotMatch(html, /AOS Rebuild Workspace|Rebuild workspace/);
   assert.doesNotMatch(html, /tcrn-top-bar__brand/);
@@ -338,9 +341,11 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-brand-wordmark__suffix--aos \{[\s\S]*color: var\(--tcrn-brand-accent-aos\);/);
   assert.match(tcrnComponentCss, /\.tcrn-brand-wordmark__suffix--tms \{[\s\S]*color: var\(--tcrn-brand-accent-tms\);/);
   assert.match(tcrnComponentCss, /\.tcrn-brand-wordmark__suffix--design-system \{[\s\S]*background: linear-gradient\(/);
+  assert.match(tcrnComponentCss, /\.tcrn-brand-mark \{[\s\S]*inline-size: var\(--tcrn-brand-mark-size\);[\s\S]*filter: var\(--tcrn-brand-mark-filter, none\);/);
   const longNameWordmarkRule = tcrnComponentCss.match(/\.tcrn-brand-lockup--long-name \.tcrn-brand-wordmark \{[^}]*\}/)?.[0] ?? "";
   assert.doesNotMatch(longNameWordmarkRule, /display:\s*grid;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-one \{[\s\S]*font-weight: 800;[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-one \{[\s\S]*display: inline-flex;[\s\S]*align-items: baseline;[\s\S]*font-weight: 800;[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-one-suffix \{[\s\S]*font-weight: var\(--tcrn-type-weight-strong\);/);
   assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-two \{[\s\S]*font-size: 12px;[\s\S]*line-height: var\(--tcrn-type-line-caption\);/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-theme-toggle \{[\s\S]*inline-size: 36px;[\s\S]*min-height: 36px;[\s\S]*border-radius: 999px;/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 38px;[\s\S]*min-height: 38px;[\s\S]*place-items: center;/);

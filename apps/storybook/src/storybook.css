@@ -1284,13 +1284,8 @@ label {
 
 .tcrn-entry-shell-strip__brand {
   gap: 10px;
-}
-
-.tcrn-entry-shell-strip__brand .tcrn-brand-mark {
-  flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
+  --tcrn-brand-mark-size: 36px;
+  --tcrn-brand-mark-filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
 }
 
 .tcrn-entry-shell-strip__brand span {
@@ -1626,12 +1621,8 @@ label {
   justify-content: center;
   width: 42px;
   min-width: 0;
-}
-
-.tcrn-compact-shell__brand .tcrn-brand-mark {
-  width: 38px;
-  height: 38px;
-  filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
+  --tcrn-brand-mark-size: 38px;
+  --tcrn-brand-mark-filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
 }
 
 .tcrn-compact-shell .tcrn-top-bar__module {
@@ -1802,6 +1793,8 @@ label {
 }
 
 .tcrn-doc-brand {
+  --tcrn-brand-mark-size: 52px;
+  --tcrn-brand-mark-filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
   display: grid;
   grid-template-columns: 52px minmax(0, 1fr);
   align-items: center;
@@ -1813,14 +1806,6 @@ label {
   color: var(--tcrn-color-text-primary);
   padding: 4px 0;
   text-decoration: none;
-}
-
-.tcrn-doc-brand .tcrn-brand-mark {
-  display: block;
-  width: 52px;
-  height: 52px;
-  background: transparent;
-  filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
 }
 
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
@@ -1835,16 +1820,52 @@ label {
   font-weight: 700;
 }
 
+.tcrn-doc-search-results {
+  position: absolute;
+  inset-block-start: calc(100% + var(--tcrn-space-2));
+  inset-inline-end: 0;
+  z-index: 40;
+  display: grid;
+  gap: var(--tcrn-space-1);
+  width: min(420px, calc(100vw - 32px));
+  padding: var(--tcrn-space-2);
+  border: 1px solid var(--tcrn-color-border-strong);
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-surface-panel);
+  box-shadow: var(--tcrn-elevation-floating);
+}
+
+.tcrn-doc-search-results[hidden] {
+  display: none;
+}
+
+.tcrn-doc-search-result,
+.tcrn-doc-search-empty {
+  display: grid;
+  gap: 2px;
+  padding: var(--tcrn-space-2);
+  border-radius: var(--tcrn-radius-control);
+  color: var(--tcrn-color-text-primary);
+  text-decoration: none;
+}
+
+.tcrn-doc-search-result:hover,
+.tcrn-doc-search-result[data-selected="true"] {
+  background: var(--tcrn-color-surface-muted);
+}
+
+.tcrn-doc-search-result span,
+.tcrn-doc-search-empty {
+  color: var(--tcrn-color-text-secondary);
+  font-size: 12px;
+}
+
 .tcrn-shell-brand-lockup {
+  --tcrn-brand-mark-size: 52px;
   display: flex;
   align-items: center;
   gap: 10px;
   min-width: 0;
-}
-
-.tcrn-shell-brand-lockup .tcrn-brand-mark {
-  width: 52px;
-  flex: 0 0 auto;
 }
 
 .tcrn-shell-brand-lockup__copy {
@@ -2430,30 +2451,6 @@ label {
   font-weight: 700;
 }
 
-.tcrn-table-shell {
-  display: grid;
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  min-width: 0;
-  max-width: 100%;
-  overflow-x: auto;
-}
-
-.tcrn-table-shell__head,
-.tcrn-table-shell__row {
-  display: grid;
-  grid-template-columns: repeat(var(--tcrn-table-column-count, 3), minmax(140px, 1fr));
-  gap: 8px;
-  min-width: max(100%, calc(var(--tcrn-table-column-count, 3) * 140px));
-  border-bottom: 1px solid var(--tcrn-color-border-subtle);
-  padding: 10px;
-}
-
-.tcrn-table-shell__empty {
-  padding: 14px;
-  color: var(--tcrn-color-text-secondary);
-}
-
 .alpha-overlay-demo {
   display: grid;
   gap: 12px;
@@ -2680,35 +2677,6 @@ label {
   .tcrn-storybook-component-example .tcrn-top-bar {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .tcrn-table-shell {
-    overflow-x: visible;
-  }
-
-  .tcrn-table-shell__head {
-    display: none;
-  }
-
-  .tcrn-table-shell__row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    min-width: 0;
-    padding: 12px;
-  }
-
-  .tcrn-table-shell__cell {
-    display: grid;
-    grid-template-columns: minmax(84px, 0.4fr) minmax(0, 1fr);
-    gap: 8px;
-    min-width: 0;
-  }
-
-  .tcrn-table-shell__cell::before {
-    content: attr(data-label);
-    color: var(--tcrn-color-text-secondary);
-    font-weight: 600;
   }
 
   .tcrn-key-value-list > div {

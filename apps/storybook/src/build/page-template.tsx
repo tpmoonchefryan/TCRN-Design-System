@@ -258,7 +258,7 @@ function docHeaderWorkspaceHtml(group: ContractStoryGroup): string {
                 data-doc-search-input
               />
             )}
-            <div id="tcrn-doc-search-results" class="tcrn-product-shell-search__results" role="listbox" aria-label="${escapeHtml(localeText("shell.searchResultsLabel"))}" data-doc-search-results hidden></div>
+            <div id="tcrn-doc-search-results" class="tcrn-doc-search-results" role="listbox" aria-label="${escapeHtml(localeText("shell.searchResultsLabel"))}" data-doc-search-results hidden></div>
           </div>
         </div>`;
 }

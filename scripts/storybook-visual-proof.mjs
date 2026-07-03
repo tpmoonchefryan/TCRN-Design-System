@@ -1798,9 +1798,10 @@ function markCurrentCapturePathsNonRetained(receipt) {
   receipt.currentCaptureDisposition = "ephemeral_current_check_removed_after_success";
   receipt.currentCapturePathOpenable = false;
   receipt.currentCapturePathDisposition =
-    "check-mode screenshot paths under docs/verification/storybook-visual-proof/.current-check are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof";
+    "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof";
   receipt.screenshotReadbacks = receipt.screenshotReadbacks.map((readback) => ({
-    ...readback,
+    ...Object.fromEntries(Object.entries(readback).filter(([key]) => key !== "path")),
+    ephemeralCurrentCapturePath: null,
     currentCapturePathOpenable: false,
     currentCapturePathDisposition: receipt.currentCapturePathDisposition
   }));

@@ -199,10 +199,10 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["packages/ui-react/src/index.tsx", "apps/storybook/src/contract-stories/story-content.tsx"],
     storybookRoutes: ["components.html#component-family-index", "components.html#navigation-shell-spec"],
     authorityLevel: "package_authority",
-    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute"],
+    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy"],
     allowedConsumerInputs: ["IA/data", "locale data", "content slots", "documented callbacks"],
     forbiddenConsumerOverrides: ["local reusable clones", "Storybook-only prototype imports", "package-looking selectors outside DS"],
-    proofExpectations: ["package import receipt", "component identity markers", "no visible local UI namespace"],
+    proofExpectations: ["package import receipt", "component identity markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace"],
     missingStandardEscalation: "Return a needed DS component/pattern list instead of building product-local shared UI."
   },
   {

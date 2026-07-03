@@ -563,7 +563,7 @@ export const storybookSearchScript = `<script>
     }
     if (!results.length) {
       const empty = document.createElement("div");
-      empty.className = "tcrn-product-shell-search__empty";
+      empty.className = "tcrn-doc-search-empty";
       empty.textContent = textFor("shell.searchNoResults");
       resultsBox.append(empty);
       setResultsVisible(true);
@@ -572,7 +572,7 @@ export const storybookSearchScript = `<script>
     }
     results.forEach((result, index) => {
       const option = document.createElement("a");
-      option.className = "tcrn-product-shell-search__result";
+      option.className = "tcrn-doc-search-result";
       option.id = "tcrn-doc-search-result-" + index;
       option.href = result.href;
       option.setAttribute("role", "option");

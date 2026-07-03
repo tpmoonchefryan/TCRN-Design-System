@@ -63,6 +63,9 @@ export const tcrnProductLogoRegistry = {
     productId: "design-system",
     assetId: "tcrn-design-system-two-line",
     lineOne: "TCRN Design System",
+    lineOneBase: "TCRN",
+    lineOneSuffix: "Design System",
+    suffixClassName: "tcrn-brand-wordmark__suffix--design-system",
     lineTwo: "Component Library",
     alt: "TCRN Design System"
   },
@@ -70,6 +73,9 @@ export const tcrnProductLogoRegistry = {
     productId: "aos",
     assetId: "tcrn-aos-two-line",
     lineOne: "TCRN AOS",
+    lineOneBase: "TCRN",
+    lineOneSuffix: "AOS",
+    suffixClassName: "tcrn-brand-wordmark__suffix--aos",
     lineTwo: "AI Operation System",
     alt: "TCRN AOS AI Operation System"
   },
@@ -77,6 +83,9 @@ export const tcrnProductLogoRegistry = {
     productId: "tms",
     assetId: "tcrn-tms-two-line",
     lineOne: "TCRN TMS",
+    lineOneBase: "TCRN",
+    lineOneSuffix: "TMS",
+    suffixClassName: "tcrn-brand-wordmark__suffix--tms",
     lineTwo: "Talent Management System",
     alt: "TCRN TMS Talent Management System"
   }
@@ -116,7 +125,10 @@ export function ProductLogo({
     >
       <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt ?? asset.alt} />
       <span className="tcrn-product-logo__copy" aria-hidden="true">
-        <span className="tcrn-product-logo__line-one">{asset.lineOne}</span>
+        <span className="tcrn-product-logo__line-one" aria-label={asset.lineOne}>
+          <span className="tcrn-product-logo__line-one-base">{asset.lineOneBase}</span>
+          <span className={cx("tcrn-product-logo__line-one-suffix", asset.suffixClassName)}>{asset.lineOneSuffix}</span>
+        </span>
         <span className="tcrn-product-logo__line-two">{asset.lineTwo}</span>
       </span>
     </div>
@@ -1425,6 +1437,7 @@ export const tcrnComponentCss = `
 .tcrn-brand-lockup,
 .tcrn-shell-brand-lockup,
 .tcrn-product-logo {
+  --tcrn-brand-mark-size: 38px;
   display: inline-flex;
   align-items: center;
   min-width: 0;
@@ -1432,9 +1445,14 @@ export const tcrnComponentCss = `
 }
 .tcrn-brand-mark {
   display: block;
-  inline-size: 38px;
-  block-size: 38px;
+  inline-size: var(--tcrn-brand-mark-size);
+  block-size: var(--tcrn-brand-mark-size);
   flex: 0 0 auto;
+  filter: var(--tcrn-brand-mark-filter, none);
+  transition:
+    inline-size var(--tcrn-motion-emphasis),
+    block-size var(--tcrn-motion-emphasis),
+    filter var(--tcrn-motion-standard);
 }
 .tcrn-brand-wordmark {
   display: inline-flex;
@@ -1488,11 +1506,23 @@ export const tcrnComponentCss = `
   gap: 2px;
 }
 .tcrn-product-logo__line-one {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px var(--tcrn-space-1);
   color: var(--tcrn-color-text-primary);
   font-size: var(--tcrn-type-size-ui);
   font-weight: 800;
   line-height: var(--tcrn-type-line-ui);
   white-space: nowrap;
+}
+.tcrn-product-logo__line-one-base {
+  flex: 0 0 auto;
+}
+.tcrn-product-logo__line-one-suffix {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-weight: var(--tcrn-type-weight-strong);
 }
 .tcrn-shell-brand-lockup__caption,
 .tcrn-product-logo__line-two {

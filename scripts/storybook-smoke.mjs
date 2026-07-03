@@ -803,6 +803,9 @@ const required = [
   "tcrn-doc-theme-transition-wash",
   "document.startViewTransition",
   "runFallbackThemeTransition",
+  "class=\"tcrn-doc-search-results\"",
+  "data-doc-search-results",
+  "data-doc-search-result",
   "data-locale-menu-toggle",
   "data-package-backed-shell-control=\"locale-menu\"",
   "data-icon-name=\"globe-2\"",
@@ -974,7 +977,8 @@ for (const forbiddenGlobalShellMarker of [
 for (const forbiddenGlobalShellPattern of [
   /data-product-shell-region="side-navigation"/,
   /class="[^"]*tcrn-product-shell__sidebar/,
-  /class="[^"]*tcrn-product-shell__main/
+  /class="[^"]*tcrn-product-shell__main/,
+  /class="[^"]*tcrn-product-shell-search__results/
 ]) {
   if (forbiddenGlobalShellPattern.test(nonComponentHtml)) {
     missing.push(`forbidden-global-shell-pattern:${forbiddenGlobalShellPattern.source}`);
@@ -1000,7 +1004,11 @@ for (const [sourceName, source] of [
   for (const [ruleName, pattern] of [
     ["broad-focus-visible", /(^|\n)\s*button:focus-visible\s*,/],
     ["raw-search-input", /(^|\n)\s*\.tcrn-search-input\s*\{/],
-    ["raw-search-control", /(^|\n)\s*\.tcrn-search-input__control\s*\{/],
+    ["raw-search-control", /(^|\n)[^{\n]*\.tcrn-search-input__control[^{]*\{/],
+    ["raw-search-shortcut", /(^|\n)[^{\n]*\.tcrn-search-input__shortcut[^{]*\{/],
+    ["raw-table-shell-row", /(^|\n)[^{\n]*\.tcrn-table-shell__(?:head|row|cell|empty)[^{]*\{/],
+    ["raw-brand-mark", /(^|\n)[^{\n]*\.tcrn-brand-mark[^{]*\{/],
+    ["raw-brand-lockup", /(^|\n)[^{\n]*\.tcrn-brand-lockup(?:[\s.{:#,[>+~]|$)/],
     ["raw-top-bar", /(^|\n)\s*\.tcrn-top-bar\s*\{/],
     ["raw-top-bar-actions", /(^|\n)\s*\.tcrn-top-bar__actions\s*\{/],
     ["raw-nav-item", /(^|\n)\s*\.tcrn-nav-item\s*\{/],

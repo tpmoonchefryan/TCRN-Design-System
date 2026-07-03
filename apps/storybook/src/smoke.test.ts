@@ -176,6 +176,10 @@ function readGroupPage(group: ContractStoryGroup): string {
   return readFileSync(join(process.cwd(), "storybook-static", groupFileName(group)), "utf8");
 }
 
+function readStorybookSource(path: string): string {
+  return readFileSync(join(process.cwd(), path), "utf8");
+}
+
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -291,6 +295,7 @@ test("static contract story surface is retained and synthetic", () => {
     assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell__main/, `unexpected ProductShell main outside component examples: ${group}`);
     assert.doesNotMatch(html, /data-product-shell-route="/, `unexpected ProductShell route outside component examples: ${group}`);
     assert.doesNotMatch(html, /data-shell-control="product-shell-search"/, `unexpected ProductShell search outside component examples: ${group}`);
+    assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell-search__results/, `unexpected ProductShell search results outside component examples: ${group}`);
   }
   assert.match(combinedHtml, /data-shell-control="theme-toggle"/);
   assert.match(combinedHtml, /data-shell-control="locale-menu"/);
@@ -324,6 +329,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /role="combobox"/);
   assert.match(combinedHtml, /aria-keyshortcuts="Control\+K Meta\+K"/);
   assert.match(combinedHtml, /data-doc-search-results/);
+  assert.match(combinedHtml, /class="tcrn-doc-search-results"/);
   assert.match(combinedHtml, /role="listbox"/);
   assert.match(combinedHtml, /data-doc-search-result/);
   assert.match(combinedHtml, /data-storybook-theme="light"/);
@@ -619,6 +625,20 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /@keyframes[^{}]*field/i);
   assert.doesNotMatch(combinedHtml, /highlightError/);
   assert.doesNotMatch(combinedHtml, /\.is-invalid/);
+  for (const [sourceName, source] of [
+    ["src/alpha-styles.ts", readStorybookSource("src/alpha-styles.ts")],
+    ["src/storybook.css", readStorybookSource("src/storybook.css")]
+  ] as const) {
+    for (const [ruleName, pattern] of [
+      ["raw-search-control", /(^|\n)[^{\n]*\.tcrn-search-input__control[^{]*\{/],
+      ["raw-search-shortcut", /(^|\n)[^{\n]*\.tcrn-search-input__shortcut[^{]*\{/],
+      ["raw-table-shell-row", /(^|\n)[^{\n]*\.tcrn-table-shell__(?:head|row|cell|empty)[^{]*\{/],
+      ["raw-brand-mark", /(^|\n)[^{\n]*\.tcrn-brand-mark[^{]*\{/],
+      ["raw-brand-lockup", /(^|\n)[^{\n]*\.tcrn-brand-lockup(?:[\s.{:#,[>+~]|$)/]
+    ] as const) {
+      assert.doesNotMatch(source, pattern, `Storybook source must not clone package primitive internals: ${sourceName}:${ruleName}`);
+    }
+  }
   assert.match(readGroupPage("Components"), /tcrn-brand-mark.svg/);
   assert.match(readGroupPage("Components"), /tcrn-search-input__icon/);
   assert.match(readGroupPage("Components"), /data-dialog-proof="escape-focus-return"/);

@@ -872,6 +872,9 @@ export const aiConsumptionContract = {
       productId: "design-system",
       assetId: "tcrn-design-system-two-line",
       lineOne: "TCRN Design System",
+      lineOneBase: "TCRN",
+      lineOneSuffix: "Design System",
+      suffixClassName: "tcrn-brand-wordmark__suffix--design-system",
       lineTwo: "Component Library",
       packageExport: "ProductLogo"
     },
@@ -879,6 +882,9 @@ export const aiConsumptionContract = {
       productId: "aos",
       assetId: "tcrn-aos-two-line",
       lineOne: "TCRN AOS",
+      lineOneBase: "TCRN",
+      lineOneSuffix: "AOS",
+      suffixClassName: "tcrn-brand-wordmark__suffix--aos",
       lineTwo: "AI Operation System",
       packageExport: "ProductLogo"
     },
@@ -886,12 +892,15 @@ export const aiConsumptionContract = {
       productId: "tms",
       assetId: "tcrn-tms-two-line",
       lineOne: "TCRN TMS",
+      lineOneBase: "TCRN",
+      lineOneSuffix: "TMS",
+      suffixClassName: "tcrn-brand-wordmark__suffix--tms",
       lineTwo: "Talent Management System",
       packageExport: "ProductLogo"
     }
   ],
   brandSurfaceDisposition:
-    "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity; ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
+    "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity and must preserve the product-specific suffix color hierarchy used by package ProductLockup. ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
@@ -924,7 +933,7 @@ export const aiConsumptionContract = {
     sideNavigation:
       "Product and documentation shells that claim SideNav behavior must expose a keyboard-accessible collapse and expand control, persist or route-own collapsed state, preserve active location/accessibility, center the collapse icon within the package-owned button geometry, and prove both expanded and collapsed states. Mobile may hide the affordance only when a named visual-instance oracle declares that policy.",
     brandSurface:
-      "Product shells must use registered package-backed ProductLogo assets or route logo admission before product use; generic icons, free-form suffix/caption identity, text-only substitutes, and deprecated AOS wordmark images are not accepted brand marks.",
+      "Product shells must use registered package-backed ProductLogo assets with product-specific suffix color hierarchy or route logo admission before product use; generic icons, free-form suffix/caption identity, text-only substitutes, and deprecated AOS wordmark images are not accepted brand marks.",
     registeredNavigation:
       "Product shells must not surface unregistered or planned modules as primary navigation, registered module cards, or active product IA before an owning route admits them.",
     primitiveConsumption:

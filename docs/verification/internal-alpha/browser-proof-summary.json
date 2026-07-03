@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "e1e67daf177a2f9f08fbbc7079043c8661cb3ed7f986f3cb356bec4f75c5167e",
+    "contractPayloadDigest": "b96ef7b41beea7294c9f0d69c8109eb48f8f79a98d45a384a7ed389f53dec328",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
@@ -181,7 +181,7 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 1077,
-          "height": 782
+          "height": 780
         },
         {
           "id": "governance-boundaries",
@@ -304,7 +304,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 1077,
-          "height": 909
+          "height": 1029
         },
         {
           "id": "color-palette",
@@ -462,7 +462,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 1077,
-          "height": 3106
+          "height": 3123
         },
         {
           "id": "copy-guidelines",
@@ -1160,7 +1160,7 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 691,
-          "height": 911
+          "height": 909
         },
         {
           "id": "governance-boundaries",
@@ -1283,7 +1283,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 691,
-          "height": 1170
+          "height": 1208
         },
         {
           "id": "color-palette",
@@ -1441,7 +1441,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 691,
-          "height": 4105
+          "height": 4140
         },
         {
           "id": "copy-guidelines",
@@ -2110,7 +2110,7 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 358,
-          "height": 1688
+          "height": 1686
         },
         {
           "id": "governance-boundaries",
@@ -2204,7 +2204,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 358,
-          "height": 2213
+          "height": 2395
         },
         {
           "id": "color-palette",
@@ -2319,7 +2319,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9203
+          "height": 9273
         },
         {
           "id": "copy-guidelines",
