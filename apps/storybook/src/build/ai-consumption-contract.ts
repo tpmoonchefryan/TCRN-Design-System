@@ -876,6 +876,7 @@ export const aiConsumptionContract = {
       lineOneSuffix: "Design System",
       suffixClassName: "tcrn-brand-wordmark__suffix--design-system",
       lineTwo: "Component Library",
+      stackSuffix: true,
       packageExport: "ProductLogo"
     },
     {
@@ -886,6 +887,7 @@ export const aiConsumptionContract = {
       lineOneSuffix: "AOS",
       suffixClassName: "tcrn-brand-wordmark__suffix--aos",
       lineTwo: "AI Operation System",
+      stackSuffix: false,
       packageExport: "ProductLogo"
     },
     {
@@ -896,11 +898,12 @@ export const aiConsumptionContract = {
       lineOneSuffix: "TMS",
       suffixClassName: "tcrn-brand-wordmark__suffix--tms",
       lineTwo: "Talent Management System",
+      stackSuffix: false,
       packageExport: "ProductLogo"
     }
   ],
   brandSurfaceDisposition:
-    "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity and must preserve the product-specific suffix color hierarchy used by package ProductLockup. ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
+    "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity and must preserve the product-specific suffix color hierarchy used by package ProductLockup. TCRN stays regular weight as the mother-brand base; product suffixes carry the accent weight/color, and long suffixes such as Design System must stack under TCRN instead of running inline. ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:

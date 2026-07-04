@@ -1010,7 +1010,10 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.deepEqual(contract.supportedThemeModes, ["light", "dark"]);
   assert.match(contract.productLogoRegistry?.map((logo: { assetId: string }) => logo.assetId).join(" ") ?? "", /tcrn-aos-two-line/);
   assert.match(contract.productLogoRegistry?.map((logo: { lineTwo: string }) => logo.lineTwo).join(" ") ?? "", /AI Operation System/);
+  assert.equal(contract.productLogoRegistry?.find((logo: { productId: string }) => logo.productId === "design-system")?.stackSuffix, true);
   assert.match(contract.brandSurfaceDisposition, /ProductLogo and tcrnProductLogoRegistry are registered @tcrn\/ui-react exports/);
+  assert.match(contract.brandSurfaceDisposition, /TCRN stays regular weight/);
+  assert.match(contract.brandSurfaceDisposition, /long suffixes such as Design System must stack under TCRN/);
   assert.match(contract.brandSurfaceDisposition, /deprecated or unregistered AOS wordmark image assets are forbidden/);
   assert.match(contract.brandSurfaceDisposition, /Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs/);
   assert.match(contract.i18nDisposition, /approved locale and copy-state contract/);

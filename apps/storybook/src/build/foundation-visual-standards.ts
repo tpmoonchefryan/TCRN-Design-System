@@ -85,7 +85,7 @@ export const storybookDocShellVisualOracle = {
       evidencePath:
         "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png",
       sha256: "8ec91db170d42300eac9739041bd5916b1ae03d715f486868b6b68d1c2819b5b",
-      extraction: "Storybook doc-shell visual-proof focused search state width=360px with package SearchInput internals preserving icon/control/shortcut grid tracks"
+      extraction: "Storybook doc-shell visual-proof focused search state width=360px with one root SearchInput border, package SearchInput internals preserving icon/control/shortcut grid tracks, and no nested input border"
     }
   ],
   shellMetrics: {

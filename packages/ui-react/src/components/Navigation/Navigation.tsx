@@ -67,6 +67,7 @@ export const tcrnProductLogoRegistry = {
     lineOneSuffix: "Design System",
     suffixClassName: "tcrn-brand-wordmark__suffix--design-system",
     lineTwo: "Component Library",
+    stackSuffix: true,
     alt: "TCRN Design System"
   },
   aos: {
@@ -77,6 +78,7 @@ export const tcrnProductLogoRegistry = {
     lineOneSuffix: "AOS",
     suffixClassName: "tcrn-brand-wordmark__suffix--aos",
     lineTwo: "AI Operation System",
+    stackSuffix: false,
     alt: "TCRN AOS AI Operation System"
   },
   tms: {
@@ -87,6 +89,7 @@ export const tcrnProductLogoRegistry = {
     lineOneSuffix: "TMS",
     suffixClassName: "tcrn-brand-wordmark__suffix--tms",
     lineTwo: "Talent Management System",
+    stackSuffix: false,
     alt: "TCRN TMS Talent Management System"
   }
 } as const;
@@ -96,6 +99,11 @@ export type TcrnProductLogoAssetId = (typeof tcrnProductLogoRegistry)[TcrnProduc
 
 export function getTcrnProductLogoAsset(productId: TcrnProductLogoId) {
   return tcrnProductLogoRegistry[productId];
+}
+
+function shouldStackProductSuffix(productSuffix: string) {
+  const cjkCount = Array.from(productSuffix).filter((character) => /[\u3400-\u9fff]/u.test(character)).length;
+  return productSuffix.length > 8 || productSuffix.includes(" ") || cjkCount >= 4;
 }
 
 export interface ProductLogoProps extends HTMLAttributes<HTMLDivElement> {
@@ -116,7 +124,7 @@ export function ProductLogo({
   return (
     <div
       {...props}
-      className={cx("tcrn-product-logo", className)}
+      className={cx("tcrn-product-logo", asset.stackSuffix && "tcrn-product-logo--stacked-suffix", className)}
       aria-label={asset.alt}
       data-component-source="@tcrn/ui-react"
       data-registered-product-logo="@tcrn/ui-react/ProductLogo"
@@ -157,7 +165,7 @@ export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMark
   }
 
   const productSuffix = requiredText(suffix, "Product");
-  const isLongSuffix = productSuffix.length > 8;
+  const isLongSuffix = shouldStackProductSuffix(productSuffix);
 
   return (
     <div
@@ -1462,13 +1470,15 @@ export const tcrnComponentCss = `
   gap: 2px var(--tcrn-space-2);
   color: var(--tcrn-color-text-primary);
   font-size: var(--tcrn-type-size-section);
-  font-weight: 800;
+  font-weight: var(--tcrn-type-weight-regular);
   line-height: var(--tcrn-type-line-section);
   overflow-wrap: anywhere;
 }
 .tcrn-brand-wordmark__base {
   flex: 0 0 auto;
   letter-spacing: 0;
+  font-weight: var(--tcrn-type-weight-regular);
+  white-space: nowrap;
 }
 .tcrn-brand-wordmark__suffix {
   flex: 0 1 auto;
@@ -1497,7 +1507,9 @@ export const tcrnComponentCss = `
   -webkit-text-fill-color: transparent;
 }
 .tcrn-brand-lockup--long-name .tcrn-brand-wordmark {
-  gap: 2px var(--tcrn-space-2);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
 }
 .tcrn-shell-brand-lockup__copy,
 .tcrn-product-logo__copy {
@@ -1512,17 +1524,26 @@ export const tcrnComponentCss = `
   gap: 2px var(--tcrn-space-1);
   color: var(--tcrn-color-text-primary);
   font-size: var(--tcrn-type-size-ui);
-  font-weight: 800;
+  font-weight: var(--tcrn-type-weight-regular);
   line-height: var(--tcrn-type-line-ui);
   white-space: nowrap;
 }
 .tcrn-product-logo__line-one-base {
   flex: 0 0 auto;
+  font-weight: var(--tcrn-type-weight-regular);
+  white-space: nowrap;
 }
 .tcrn-product-logo__line-one-suffix {
   flex: 0 1 auto;
   min-width: 0;
   font-weight: var(--tcrn-type-weight-strong);
+  white-space: nowrap;
+}
+.tcrn-product-logo--stacked-suffix .tcrn-product-logo__line-one {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  white-space: normal;
 }
 .tcrn-shell-brand-lockup__caption,
 .tcrn-product-logo__line-two {
@@ -1874,26 +1895,30 @@ export const tcrnComponentCss = `
   inline-size: var(--tcrn-search-input-icon-size);
   block-size: var(--tcrn-search-input-icon-size);
 }
-.tcrn-search-input__control {
+.tcrn-search-input .tcrn-search-input__control {
   appearance: none;
   box-sizing: border-box;
   grid-column: 2;
   width: 100%;
+  min-height: 0;
   min-width: 0;
+  max-width: none;
   padding: 0;
   border: 0;
+  border-radius: 0;
   outline: 0;
   background: transparent;
   color: var(--tcrn-color-text-primary);
   font: inherit;
+  box-shadow: none;
 }
 .tcrn-search-input:focus-within {
   outline: 3px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
   box-shadow: none;
 }
-.tcrn-search-input__control:focus,
-.tcrn-search-input__control:focus-visible {
+.tcrn-search-input .tcrn-search-input__control:focus,
+.tcrn-search-input .tcrn-search-input__control:focus-visible {
   outline-style: none;
   outline-width: 0;
   outline-offset: 0;
