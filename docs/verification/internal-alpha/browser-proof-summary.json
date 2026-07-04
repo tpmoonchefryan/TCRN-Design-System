@@ -1702,7 +1702,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 9257
+          "height": 9303
         }
       ],
       "clipped": [],
@@ -1815,7 +1815,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 691,
-          "height": 4476
+          "height": 4506
         },
         {
           "id": "readiness-notification-patterns",
@@ -2537,7 +2537,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 21424
+          "height": 21455
         }
       ],
       "clipped": [],
@@ -2621,7 +2621,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 10276
+          "height": 10291
         },
         {
           "id": "readiness-notification-patterns",
@@ -2816,5 +2816,14 @@
       "forbiddenHits": [],
       "rootVisible": true
     }
-  ]
+  ],
+  "localAbsolutePathProof": {
+    "ok": true,
+    "checkedTargets": [
+      "browser-proof-summary",
+      "story-coverage-manifest",
+      "visual-baseline-manifest"
+    ],
+    "hits": []
+  }
 }

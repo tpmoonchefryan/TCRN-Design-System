@@ -380,7 +380,7 @@ const workGatePipeline: GatePipelineGate[] = [
 
 const workEvidenceItems: EvidenceAttachment[] = [
   { id: "commit", type: "commit", label: "Implementation commit", reference: "c4865675", state: { state: "local_only" } },
-  { id: "artifact", type: "artifact_dir", label: "QA artifact directory", reference: "/tmp/rowan-work-management-patterns", state: { state: "proof_required" } },
+  { id: "artifact", type: "artifact_dir", label: "QA artifact receipt", reference: "route-artifact:rowan-work-management-patterns", state: { state: "proof_required" } },
   { id: "route", type: "policy", label: "Codex route record", reference: "route_tcrn_ds_work_management_patterns_ilya_ds_package_storybook_implementation_after_minerva_initiative_c4865675" },
   { id: "api", type: "api_readback", label: "API readback", reference: "No Work API integration in this Storybook fixture", state: { state: "not_claimed" } }
 ];

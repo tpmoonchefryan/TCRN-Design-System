@@ -184,6 +184,12 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+const localAbsolutePathPattern = /(?:file:\/\/|\/Users\/|\/tmp(?:\/|$)|\/private\/tmp(?:\/|$)|\/var\/folders(?:\/|$)|\/srv\/tcrn(?:\/|$))/i;
+
+function assertNoLocalAbsolutePathText(label: string, value: string): void {
+  assert.doesNotMatch(value, localAbsolutePathPattern, `${label} must not retain local absolute paths`);
+}
+
 function readDocShellNavHtml(html: string): string {
   const start = html.indexOf('class="tcrn-doc-nav"');
   const asideStart = html.lastIndexOf("<aside", start);
@@ -289,6 +295,20 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /data-storybook-shell-authority="@tcrn\/ui-react\/ProductShell"/);
   assert.doesNotMatch(combinedHtml, /data-storybook-product-shell-skin="confirmed-storybook-visual-v1"/);
   assert.doesNotMatch(combinedHtml, /Atlassian|Jira|jira-like|issue-style|WorkIssueRow|IssueRow|Kanban|Scrum/i);
+  assertNoLocalAbsolutePathText("generated static Storybook HTML", combinedHtml);
+  assertNoLocalAbsolutePathText("Work Management story source", readStorybookSource("src/contract-stories/story-content.tsx"));
+  assertNoLocalAbsolutePathText("Work Management package test fixture", readStorybookSource("../../packages/ui-react/src/components/DataDisplay/DataDisplay.test.tsx"));
+  for (const receiptPath of [
+    "docs/verification/storybook-visual-proof/baseline-manifest.json",
+    "docs/verification/storybook-visual-proof/check-receipt.json",
+    "docs/verification/storybook-visual-proof/update-receipt.json",
+    "docs/verification/internal-alpha/browser-proof-summary.json",
+    "docs/verification/internal-alpha/story-coverage-manifest.json",
+    "docs/verification/internal-alpha/visual-baseline-manifest.json",
+    "docs/verification/internal-alpha/package-contract-manifest.json"
+  ]) {
+    assertNoLocalAbsolutePathText(`proof receipt ${receiptPath}`, readFileSync(join(process.cwd(), "..", "..", receiptPath), "utf8"));
+  }
   for (const { group, html } of pages.filter((page) => page.group !== "Components")) {
     assert.doesNotMatch(html, /data-package-backed-product-shell-boundary="side-nav-shell-v1"/, `unexpected ProductShell boundary outside component examples: ${group}`);
     assert.doesNotMatch(html, /data-product-shell-region="side-navigation"/, `unexpected ProductShell side nav outside component examples: ${group}`);

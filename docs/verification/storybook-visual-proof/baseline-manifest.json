@@ -19,8 +19,8 @@
       "unexpected_current_entry"
     ]
   },
-  "sourceHead": "01714b9f622d010f07df730d355844544280b517",
-  "sourceContentDigest": "e3609d1570a1ffe7391b4fc5cccecfadd77d6923cc82bb22ad2656d48f5e3c58",
+  "sourceHead": "d4fc88d814af7725761d47436c67aebc2a19e1ef",
+  "sourceContentDigest": "34661724c34ec5cbd82cd3ac254be036de99830ab5d88f439ac4966c79adcca2",
   "packageName": "@tcrn/design-system-workspace",
   "staticPageAllowlist": [
     "index.html",
@@ -2531,5 +2531,5 @@
       "bytes": 23037
     }
   ],
-  "baselineManifestHash": "783c719da7fd73db965523ab06c3a5464be17dd5d24abcb02d1d28039e5d2569"
+  "baselineManifestHash": "7023c194067051dc635f2b4fda4091743e7ad8d4ba4ba0a02da1183d09b19c35"
 }

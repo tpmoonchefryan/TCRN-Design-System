@@ -12,6 +12,20 @@ const screenshotDir = join(outputRoot, "screenshots");
 const staticSurfacePath = "apps/storybook/storybook-static/index.html";
 const aiContractPath = "apps/storybook/storybook-static/ai-consumption-contract.json";
 const llmsPath = "apps/storybook/storybook-static/llms.txt";
+const localAbsolutePathDenyPatterns = [
+  { name: "file-url", pattern: /file:\/\//i },
+  { name: "users-home-path", pattern: /\/Users\//i },
+  { name: "tmp-path", pattern: /\/tmp(?:\/|$)/i },
+  { name: "private-tmp-path", pattern: /\/private\/tmp(?:\/|$)/i },
+  { name: "mac-temp-path", pattern: /\/var\/folders(?:\/|$)/i },
+  { name: "remote-workspace-path", pattern: /\/srv\/tcrn(?:\/|$)/i }
+];
+
+function collectLocalAbsolutePathHits(label, value) {
+  return localAbsolutePathDenyPatterns
+    .filter(({ pattern }) => pattern.test(value))
+    .map(({ name }) => ({ label, rule: name }));
+}
 
 const requiredStories = [
   { id: "welcome-governance", group: "Welcome", storybookId: "tcrn-design-system-welcome--welcome-governance" },
@@ -1814,6 +1828,26 @@ const visualBaselineManifest = {
 };
 const stableStoryCoverageManifest = normalizeEphemeralProofData(storyCoverageManifest);
 const stableBrowserProofSummary = normalizeEphemeralProofData(browserProofSummary);
+const localAbsolutePathProof = {
+  ok: true,
+  checkedTargets: [
+    "browser-proof-summary",
+    "story-coverage-manifest",
+    "visual-baseline-manifest"
+  ],
+  hits: [
+    ...collectLocalAbsolutePathHits("browser-proof-summary", JSON.stringify(stableBrowserProofSummary)),
+    ...collectLocalAbsolutePathHits("story-coverage-manifest", JSON.stringify(stableStoryCoverageManifest)),
+    ...collectLocalAbsolutePathHits("visual-baseline-manifest", JSON.stringify(visualBaselineManifest))
+  ]
+};
+localAbsolutePathProof.ok = localAbsolutePathProof.hits.length === 0;
+browserProofSummary.noLocalAbsolutePathsRetained = localAbsolutePathProof.ok;
+browserProofSummary.localAbsolutePathProof = localAbsolutePathProof;
+browserProofSummary.ok = browserProofSummary.ok && localAbsolutePathProof.ok;
+stableBrowserProofSummary.noLocalAbsolutePathsRetained = localAbsolutePathProof.ok;
+stableBrowserProofSummary.localAbsolutePathProof = localAbsolutePathProof;
+stableBrowserProofSummary.ok = stableBrowserProofSummary.ok && localAbsolutePathProof.ok;
 
 writeFileSync(join(outputRoot, "story-coverage-manifest.json"), `${JSON.stringify(stableStoryCoverageManifest, null, 2)}\n`);
 writeFileSync(join(outputRoot, "browser-proof-summary.json"), `${JSON.stringify(stableBrowserProofSummary, null, 2)}\n`);

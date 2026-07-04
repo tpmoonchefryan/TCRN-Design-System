@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "sourceContentDigest": "e3609d1570a1ffe7391b4fc5cccecfadd77d6923cc82bb22ad2656d48f5e3c58",
-  "sourceHead": "5322425b4030ba67cfda0c08bfd4c5ec90e43e63",
+  "sourceContentDigest": "34661724c34ec5cbd82cd3ac254be036de99830ab5d88f439ac4966c79adcca2",
+  "sourceHead": "d4fc88d814af7725761d47436c67aebc2a19e1ef",
   "mode": "check",
   "comparisonContractVersion": "canonicalized_raw_png_exact_v1",
   "visualArtifactContractDisposition": {
@@ -510,16 +510,16 @@
       "file": "components.html",
       "status": 200,
       "ok": true,
-      "bytes": 1306205,
-      "sha256": "158bd4333020844db4c4622e94d18179f3c974130f83c870d6063ff27cfcaa2d",
+      "bytes": 1306281,
+      "sha256": "ab64503202f18f049029edb793a835ebce55794cfffdac5239eaaca83fc1ad87",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "patterns.html",
       "status": 200,
       "ok": true,
-      "bytes": 766702,
-      "sha256": "51a4ab2cd48db68884a04c8f6b04f98f2a3925647a7b4e73b76ecab8fd478a0e",
+      "bytes": 766740,
+      "sha256": "44a89a058401972e9bd268d9620346484479c5eeada4f954d15046736c831b66",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -48604,7 +48604,7 @@
   ],
   "playwrightVersion": "1.61.0",
   "chromiumVersion": "149.0.7827.55",
-  "baselineManifestHash": "783c719da7fd73db965523ab06c3a5464be17dd5d24abcb02d1d28039e5d2569",
+  "baselineManifestHash": "7023c194067051dc635f2b4fda4091743e7ad8d4ba4ba0a02da1183d09b19c35",
   "compareFailures": [],
   "comparisonReadbacks": [
     {

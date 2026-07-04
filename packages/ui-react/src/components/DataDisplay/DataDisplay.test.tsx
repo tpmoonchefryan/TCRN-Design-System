@@ -272,7 +272,7 @@ test("work management composites render static no-live operational surfaces", ()
         density="compact"
         items={[
           { id: "commit", type: "commit", label: "Implementation commit", reference: "c4865675", state: { state: "local_only" } },
-          { id: "artifact", type: "artifact_dir", label: "QA artifact directory", reference: "/tmp/rowan-static-work" }
+          { id: "artifact", type: "artifact_dir", label: "QA artifact receipt", reference: "route-artifact:rowan-static-work" }
         ]}
       />
       <WorkSplitView

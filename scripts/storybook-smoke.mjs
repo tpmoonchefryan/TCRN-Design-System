@@ -89,6 +89,14 @@ const readStoryHtml = (html, storyId) => {
 const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-consumption-contract.json", "utf8"));
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
+const localAbsolutePathDenyPatterns = [
+  { name: "file-url", pattern: /file:\/\//i },
+  { name: "users-home-path", pattern: /\/Users\//i },
+  { name: "tmp-path", pattern: /\/tmp(?:\/|$)/i },
+  { name: "private-tmp-path", pattern: /\/private\/tmp(?:\/|$)/i },
+  { name: "mac-temp-path", pattern: /\/var\/folders(?:\/|$)/i },
+  { name: "remote-workspace-path", pattern: /\/srv\/tcrn(?:\/|$)/i }
+];
 const expectedStoryCategoryCount = 18;
 const expectedStorybookShellNavGroupCount = expectedContractStoryGroups.length;
 const expectedFoundationStandardCategoryIds = [
@@ -968,6 +976,27 @@ for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "dup
 }
 const combinedContractText = `${combinedHtml}\n${JSON.stringify(contract)}\n${llmsTxt}`;
 const missing = required.filter((text) => !combinedContractText.includes(text));
+for (const { label, value } of [
+  { label: "generated-static-html", value: combinedHtml },
+  { label: "generated-ai-contract-json", value: JSON.stringify(contract) },
+  { label: "generated-llms-txt", value: llmsTxt },
+  { label: "generated-robots-txt", value: robotsTxt },
+  { label: "work-management-story-source", value: readFileSync("apps/storybook/src/contract-stories/story-content.tsx", "utf8") },
+  { label: "work-management-package-test-fixture", value: readFileSync("packages/ui-react/src/components/DataDisplay/DataDisplay.test.tsx", "utf8") },
+  { label: "visual-proof-baseline-manifest", value: readFileSync("docs/verification/storybook-visual-proof/baseline-manifest.json", "utf8") },
+  { label: "visual-proof-check-receipt", value: readFileSync("docs/verification/storybook-visual-proof/check-receipt.json", "utf8") },
+  { label: "visual-proof-update-receipt", value: readFileSync("docs/verification/storybook-visual-proof/update-receipt.json", "utf8") },
+  { label: "internal-alpha-browser-proof-summary", value: readFileSync("docs/verification/internal-alpha/browser-proof-summary.json", "utf8") },
+  { label: "internal-alpha-story-coverage-manifest", value: readFileSync("docs/verification/internal-alpha/story-coverage-manifest.json", "utf8") },
+  { label: "internal-alpha-visual-baseline-manifest", value: readFileSync("docs/verification/internal-alpha/visual-baseline-manifest.json", "utf8") },
+  { label: "internal-alpha-package-contract-manifest", value: readFileSync("docs/verification/internal-alpha/package-contract-manifest.json", "utf8") }
+]) {
+  for (const { name, pattern } of localAbsolutePathDenyPatterns) {
+    if (pattern.test(value)) {
+      missing.push(`forbidden-local-absolute-path:${label}:${name}`);
+    }
+  }
+}
 for (const forbiddenGlobalShellMarker of [
   "data-storybook-shell-authority=\"@tcrn/ui-react/ProductShell\"",
   "data-storybook-product-shell-skin=\"confirmed-storybook-visual-v1\"",
