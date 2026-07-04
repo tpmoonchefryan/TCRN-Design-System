@@ -455,7 +455,7 @@ const aosFrontendShellVisualInstanceContract = {
   slots: ["brand lockup", "attached side navigation", "topbar", "search", "content", "secondary disclosure"],
   requiredContentSelectors: {
     dummyCockpit: "[data-aos-dummy-cockpit=\"true\"]",
-    workEntry: "[data-aos-work-module-entry=\"jira-like\"]",
+    workEntry: "[data-aos-work-module-entry=\"work-module\"]",
     rawSecondaryDisclosure: "[data-raw-json-disclosure=\"secondary\"]",
     registeredBoundary: "[data-aos-registered-module-boundary=\"cockpit-work-only\"]",
     notAccepted: "[data-product-acceptance=\"not-claimed\"]",
@@ -936,10 +936,24 @@ for (const text of [
   "data-work-management-patterns=\"static-no-live\"",
   "RelationshipChip",
   "MachineToken",
+  "MachineTokenCell",
   "WorkManagementSubnav",
+  "WorkPageHeader",
+  "WorkViewTabs",
+  "WorkQuickFilters",
+  "WorkItemRow",
+  "WorkList",
+  "WorkSplitView",
+  "WorkBacklogGroup",
   "WorkBoard",
+  "WorkBoardView",
+  "WorkDetailLayout",
+  "MetadataRail",
+  "WorkFieldPanel",
+  "WorkActivityFeed",
   "WorkHierarchy",
   "GatePipeline",
+  "GatePipelineCompact",
   "EvidenceAttachmentList",
   "WorkItemInspector",
   "SavedViewToolbar",
@@ -961,6 +975,20 @@ for (const forbiddenGlobalShellMarker of [
 ]) {
   if (combinedHtml.includes(forbiddenGlobalShellMarker)) {
     missing.push(`forbidden-global-shell-marker:${forbiddenGlobalShellMarker}`);
+  }
+}
+for (const forbiddenCleanRoomRuntimePattern of [
+  /Atlassian/i,
+  /Jira/i,
+  /jira-like/i,
+  /issue-style/i,
+  /WorkIssueRow/,
+  /IssueRow/,
+  /Kanban/,
+  /Scrum/
+]) {
+  if (forbiddenCleanRoomRuntimePattern.test(combinedHtml)) {
+    missing.push(`forbidden-clean-room-runtime:${forbiddenCleanRoomRuntimePattern.source}`);
   }
 }
 const nonComponentHtml = Object.entries(pages)
@@ -1341,11 +1369,22 @@ if (!String(contract.visualFitControlContract?.sidebar?.rule ?? "").includes("or
 if (!String(contract.visualFitControlContract?.tablesAndContainers?.rule ?? "").includes("package-emitted column/min-width variables")) {
   missing.push("contract.visualFitControlContract.tablesAndContainers.rule");
 }
+if (!String(contract.visualFitControlContract?.workLayoutDensity?.authority ?? "").includes("Work Management exports")) {
+  missing.push("contract.visualFitControlContract.workLayoutDensity.authority");
+}
+if (!contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("WorkItemRow")
+  || !contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("WorkDetailLayout")
+  || !contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("MachineTokenCell")) {
+  missing.push("contract.visualFitControlContract.workLayoutDensity.packageExports");
+}
 if (contract.consumerVisualStyleContract?.id !== "consumer-visual-style-contract-v1") {
   missing.push("contract.consumerVisualStyleContract.id");
 }
 if (!contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.includes?.("consumer-local ProductShell/search/theme/locale/sidebar clones")) {
   missing.push("contract.consumerVisualStyleContract.forbiddenConsumerOverrides.productShellClones");
+}
+if (!String(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.join(" ") ?? "").includes("consumer-local Work page header")) {
+  missing.push("contract.consumerVisualStyleContract.forbiddenConsumerOverrides.workLayoutClones");
 }
 if (!contract.consumerVisualStyleContract?.requiredReadbackFields?.includes?.("foundationVisualStandards")) {
   missing.push("contract.consumerVisualStyleContract.requiredReadbackFields.foundationVisualStandards");

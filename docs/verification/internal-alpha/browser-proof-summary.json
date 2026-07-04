@@ -28,12 +28,48 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "f07a9de14767c537a2f5b4c63df83df0c418100388477b07f77794a03a420865",
+    "contractPayloadDigest": "f62c37e4fb602d784f27b0e5bcc8e66dc2f73f2964e31a08f5680c0ed27b262d",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
     "changelogRecordCount": 1,
     "workManagementStaticAuthorityDisposition": "static_contract_authority_explicit_and_smoke_proven",
+    "workManagementAdmittedPackageExports": [
+      "WorkPageHeader",
+      "WorkViewTabs",
+      "WorkQuickFilters",
+      "WorkItemRow",
+      "WorkList",
+      "WorkSplitView",
+      "WorkBacklogGroup",
+      "WorkInlineCreateStatic",
+      "WorkBoard",
+      "WorkBoardView",
+      "WorkDetailLayout",
+      "MetadataRail",
+      "WorkFieldPanel",
+      "WorkActivityFeed",
+      "GatePipelineCompact",
+      "EvidenceAttachmentList",
+      "MachineTokenCell"
+    ],
+    "workLayoutDensityPackageExports": [
+      "WorkPageHeader",
+      "WorkViewTabs",
+      "WorkQuickFilters",
+      "WorkItemRow",
+      "WorkList",
+      "WorkSplitView",
+      "WorkBacklogGroup",
+      "WorkInlineCreateStatic",
+      "WorkBoardView",
+      "WorkDetailLayout",
+      "MetadataRail",
+      "WorkFieldPanel",
+      "WorkActivityFeed",
+      "GatePipelineCompact",
+      "MachineTokenCell"
+    ],
     "foundationVisualStandardsRegistryId": "foundation-visual-standards-v1",
     "foundationVisualStandardCategoryIds": [
       "visual-philosophy-ownership",
@@ -462,7 +498,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 1077,
-          "height": 3123
+          "height": 3299
         },
         {
           "id": "copy-guidelines",
@@ -627,7 +663,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 6316
+          "height": 7191
         },
         {
           "id": "display-primitives-spec",
@@ -687,7 +723,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 4368
+          "height": 7657
         }
       ],
       "clipped": [],
@@ -800,7 +836,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 1077,
-          "height": 2556
+          "height": 4082
         },
         {
           "id": "readiness-notification-patterns",
@@ -836,7 +872,7 @@
           "id": "dashboard-page-templates",
           "visible": true,
           "width": 1077,
-          "height": 391
+          "height": 461
         }
       ],
       "clipped": [],
@@ -966,7 +1002,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 4955
+          "height": 5008
         },
         {
           "id": "blocked-actions",
@@ -1441,7 +1477,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 691,
-          "height": 4140
+          "height": 4404
         },
         {
           "id": "copy-guidelines",
@@ -1606,7 +1642,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 6919
+          "height": 7899
         },
         {
           "id": "display-primitives-spec",
@@ -1666,7 +1702,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 5556
+          "height": 9257
         }
       ],
       "clipped": [],
@@ -1779,7 +1815,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 691,
-          "height": 3099
+          "height": 4476
         },
         {
           "id": "readiness-notification-patterns",
@@ -1815,7 +1851,7 @@
           "id": "dashboard-page-templates",
           "visible": true,
           "width": 691,
-          "height": 477
+          "height": 670
         }
       ],
       "clipped": [],
@@ -1945,7 +1981,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 7102
+          "height": 7190
         },
         {
           "id": "blocked-actions",
@@ -2319,7 +2355,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9273
+          "height": 9770
         },
         {
           "id": "copy-guidelines",
@@ -2441,7 +2477,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 23664
+          "height": 27060
         },
         {
           "id": "display-primitives-spec",
@@ -2501,7 +2537,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 12395
+          "height": 21424
         }
       ],
       "clipped": [],
@@ -2585,7 +2621,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 7399
+          "height": 10276
         },
         {
           "id": "readiness-notification-patterns",
@@ -2621,7 +2657,7 @@
           "id": "dashboard-page-templates",
           "visible": true,
           "width": 358,
-          "height": 827
+          "height": 1002
         }
       ],
       "clipped": [],
@@ -2694,7 +2730,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 13235
+          "height": 13322
         },
         {
           "id": "blocked-actions",

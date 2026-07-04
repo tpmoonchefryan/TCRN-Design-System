@@ -288,6 +288,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-doc-nav-item-active="true"/);
   assert.doesNotMatch(combinedHtml, /data-storybook-shell-authority="@tcrn\/ui-react\/ProductShell"/);
   assert.doesNotMatch(combinedHtml, /data-storybook-product-shell-skin="confirmed-storybook-visual-v1"/);
+  assert.doesNotMatch(combinedHtml, /Atlassian|Jira|jira-like|issue-style|WorkIssueRow|IssueRow|Kanban|Scrum/i);
   for (const { group, html } of pages.filter((page) => page.group !== "Components")) {
     assert.doesNotMatch(html, /data-package-backed-product-shell-boundary="side-nav-shell-v1"/, `unexpected ProductShell boundary outside component examples: ${group}`);
     assert.doesNotMatch(html, /data-product-shell-region="side-navigation"/, `unexpected ProductShell side nav outside component examples: ${group}`);
@@ -688,10 +689,24 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-work-management-contract="package-backed-static"/);
   assert.match(readGroupPage("Components"), /RelationshipChip/);
   assert.match(readGroupPage("Components"), /MachineToken/);
+  assert.match(readGroupPage("Components"), /MachineTokenCell/);
   assert.match(readGroupPage("Components"), /WorkManagementSubnav/);
+  assert.match(readGroupPage("Components"), /WorkPageHeader/);
+  assert.match(readGroupPage("Components"), /WorkViewTabs/);
+  assert.match(readGroupPage("Components"), /WorkQuickFilters/);
+  assert.match(readGroupPage("Components"), /WorkItemRow/);
+  assert.match(readGroupPage("Components"), /WorkList/);
+  assert.match(readGroupPage("Components"), /WorkSplitView/);
+  assert.match(readGroupPage("Components"), /WorkBacklogGroup/);
   assert.match(readGroupPage("Components"), /WorkBoard/);
+  assert.match(readGroupPage("Components"), /WorkBoardView/);
+  assert.match(readGroupPage("Components"), /WorkDetailLayout/);
+  assert.match(readGroupPage("Components"), /MetadataRail/);
+  assert.match(readGroupPage("Components"), /WorkFieldPanel/);
+  assert.match(readGroupPage("Components"), /WorkActivityFeed/);
   assert.match(readGroupPage("Components"), /WorkHierarchy/);
   assert.match(readGroupPage("Components"), /GatePipeline/);
+  assert.match(readGroupPage("Components"), /GatePipelineCompact/);
   assert.match(readGroupPage("Components"), /EvidenceAttachmentList/);
   assert.match(readGroupPage("Components"), /WorkItemInspector/);
   assert.match(readGroupPage("Components"), /SavedViewToolbar/);
@@ -876,12 +891,18 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.visualFitControlContract?.productLockups?.rule ?? "", /suffix accents are package-owned/);
   assert.match(contract.visualFitControlContract?.sidebar?.rule ?? "", /orphan visual lane/);
   assert.match(contract.visualFitControlContract?.tablesAndContainers?.rule ?? "", /package-emitted column\/min-width variables/);
+  assert.match(contract.visualFitControlContract?.workLayoutDensity?.authority ?? "", /Work Management exports/);
+  assert.ok(contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes("WorkItemRow"));
+  assert.ok(contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes("WorkDetailLayout"));
+  assert.match(contract.visualFitControlContract?.workLayoutDensity?.rule ?? "", /admitted package exports/);
   assert.equal(contract.consumerVisualStyleContract?.id, consumerVisualStyleContract.id);
   assert.match(contract.consumerVisualStyleContract?.disposition ?? "", /fail_closed/);
   assert.ok(contract.consumerVisualStyleContract?.allowedConsumerInputs?.includes("product data"));
   assert.ok(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.includes("consumer-local ProductShell/search/theme/locale/sidebar clones"));
+  assert.match(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.join(" ") ?? "", /consumer-local Work page header/);
   assert.ok(contract.consumerVisualStyleContract?.requiredReadbackFields?.includes("foundationVisualStandards"));
   assert.match(contract.consumerVisualStyleContract?.rejectCriteria?.join(" ") ?? "", /claims DS compliance/);
+  assert.match(contract.consumerVisualStyleContract?.rejectCriteria?.join(" ") ?? "", /reusable Work module rows/);
   assert.deepEqual(contract.visualEquivalenceLevels, [
     "same_package_version",
     "same_exported_component",
@@ -1021,14 +1042,17 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.componentConsumptionDisposition, /ProductShell, TopBar, SideNav/);
   assert.match(contract.componentConsumptionDisposition, /ProductShellSearch is required only when the product exposes a real topbar\/global search surface/);
   assert.match(contract.componentConsumptionDisposition, /must be omitted rather than rendered as an inert placeholder/);
-  assert.match(contract.componentConsumptionDisposition, /RelationshipChip, MachineToken, WorkManagementSubnav, WorkBoard, WorkHierarchy, GatePipeline, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar/);
+  assert.match(contract.componentConsumptionDisposition, /RelationshipChip, MachineToken, MachineTokenCell, WorkManagementSubnav, WorkPageHeader/);
+  assert.match(contract.componentConsumptionDisposition, /WorkItemRow, WorkList, WorkSplitView, WorkBacklogGroup/);
+  assert.match(contract.componentConsumptionDisposition, /WorkDetailLayout, MetadataRail, WorkFieldPanel, WorkActivityFeed/);
   assert.match(contract.componentConsumptionDisposition, /useProductShellController/);
   assert.match(contract.componentConsumptionDisposition, /ProductShell semantic callbacks/);
   assert.match(contract.componentConsumptionDisposition, /productShellControlProps/);
   assert.match(contract.componentConsumptionDisposition, /when search is present, onSearchQueryChange/);
   assert.match(contract.componentConsumptionDisposition, /onSearchResultActivate/);
   assert.match(contract.workManagementPatternDisposition, /static Initiative\/Epic\/Story\/Task or Work Item\/Subtask or Evidence Task presentation/);
-  assert.match(contract.workManagementPatternDisposition, /relationship vocabulary, board lanes, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment/);
+  assert.match(contract.workManagementPatternDisposition, /compact route context, local view tabs, quick filters, dense Work item rows\/lists/);
+  assert.match(contract.workManagementPatternDisposition, /relationship vocabulary, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment/);
   assert.match(contract.workManagementPatternDisposition, /API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS\/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed/);
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
   assert.ok(contract.requiredProof.includes("work_management_static_pattern_receipt"));

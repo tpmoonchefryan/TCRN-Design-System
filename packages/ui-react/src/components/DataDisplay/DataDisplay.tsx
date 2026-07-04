@@ -207,6 +207,7 @@ export const workRelationshipTypes = [
 export type WorkRelationshipType = (typeof workRelationshipTypes)[number];
 
 export type WorkManagementPatternLevel = "primitive" | "pattern" | "composite";
+export type WorkDensity = "comfortable" | "compact";
 
 export interface WorkManagementPatternRegistryItem {
   candidateId: string;
@@ -265,10 +266,100 @@ export const workManagementPatternRegistry: WorkManagementPatternRegistryItem[] 
     purpose: "Saved Work views and local filter chips without ProductShell global search."
   },
   {
-    candidateId: "26-machine-token-cell",
+    candidateId: "26-machine-token",
     componentName: "MachineToken",
     level: "primitive",
     purpose: "Readable route, thread, commit, and artifact tokens that preserve full values while preventing cell overlap."
+  },
+  {
+    candidateId: "27-machine-token-cell",
+    componentName: "MachineTokenCell",
+    level: "primitive",
+    purpose: "Dense route, thread, commit, artifact, and Work item token cell with full metadata preserved."
+  },
+  {
+    candidateId: "28-work-page-header",
+    componentName: "WorkPageHeader",
+    level: "pattern",
+    purpose: "Compact Work page context, breadcrumbs, metadata, and guarded static actions without proof material dominating the first viewport."
+  },
+  {
+    candidateId: "29-work-view-tabs",
+    componentName: "WorkViewTabs",
+    level: "pattern",
+    purpose: "Local Work view navigation that stays separate from ProductShell global navigation and search."
+  },
+  {
+    candidateId: "30-work-quick-filters",
+    componentName: "WorkQuickFilters",
+    level: "pattern",
+    purpose: "Compact Work-scoped filters and static action affordances without fake global search."
+  },
+  {
+    candidateId: "31-work-item-row",
+    componentName: "WorkItemRow",
+    level: "primitive",
+    purpose: "Dense Work item row with inline status, owner, priority, rank, fields, and relationship metadata."
+  },
+  {
+    candidateId: "32-work-list",
+    componentName: "WorkList",
+    level: "composite",
+    purpose: "Dense selected Work item list with optional detail rail handoff and mobile-safe row stacking."
+  },
+  {
+    candidateId: "33-work-split-view",
+    componentName: "WorkSplitView",
+    level: "composite",
+    purpose: "List and detail composition with stable primary pane and metadata rail regions."
+  },
+  {
+    candidateId: "34-work-backlog-group",
+    componentName: "WorkBacklogGroup",
+    level: "composite",
+    purpose: "Grouped Work backlog rows with static inline-create affordance and disabled route-owned actions."
+  },
+  {
+    candidateId: "35-work-inline-create-static",
+    componentName: "WorkInlineCreateStatic",
+    level: "pattern",
+    purpose: "Static create affordance that communicates no backend mutation or live dispatch is wired."
+  },
+  {
+    candidateId: "36-work-board-view",
+    componentName: "WorkBoardView",
+    level: "composite",
+    purpose: "Compact board columns and dense cards with local overflow containment."
+  },
+  {
+    candidateId: "37-work-detail-layout",
+    componentName: "WorkDetailLayout",
+    level: "composite",
+    purpose: "Work detail main pane, metadata rail, and activity region with long-token containment."
+  },
+  {
+    candidateId: "38-metadata-rail",
+    componentName: "MetadataRail",
+    level: "pattern",
+    purpose: "Compact metadata rail for owners, gates, proof basis, and disabled route-owned actions."
+  },
+  {
+    candidateId: "39-work-field-panel",
+    componentName: "WorkFieldPanel",
+    level: "pattern",
+    purpose: "Compact Work field grouping for status, owner, basis, evidence, and route metadata."
+  },
+  {
+    candidateId: "40-work-activity-feed",
+    componentName: "WorkActivityFeed",
+    level: "composite",
+    purpose: "Static route, return, evidence, and activity chronology with no live dispatch claim."
+  },
+  {
+    candidateId: "41-gate-pipeline-compact",
+    componentName: "GatePipelineCompact",
+    level: "pattern",
+    purpose: "Compact gate scan variant for Work pages where gate status supports task context."
   }
 ];
 
@@ -354,12 +445,20 @@ export interface MachineTokenProps {
   label?: string;
   kind?: MachineTokenKind;
   copyable?: boolean;
+  density?: WorkDensity;
 }
 
-export function MachineToken({ token, label, kind = "generic", copyable = false }: MachineTokenProps) {
+export function MachineToken({ token, label, kind = "generic", copyable = false, density = "comfortable" }: MachineTokenProps) {
   const accessibleLabel = label ? `${label}: ${token}` : token;
   return (
-    <span className="tcrn-machine-token" data-machine-token-kind={kind} data-full-token={token} title={token} aria-label={accessibleLabel}>
+    <span
+      className={cx("tcrn-machine-token", density === "compact" && "tcrn-machine-token--compact")}
+      data-density={density}
+      data-machine-token-kind={kind}
+      data-full-token={token}
+      title={token}
+      aria-label={accessibleLabel}
+    >
       {label ? <span className="tcrn-machine-token__label">{label}</span> : null}
       <code className="tcrn-machine-token__value">{token}</code>
       {copyable ? (
@@ -372,6 +471,14 @@ export function MachineToken({ token, label, kind = "generic", copyable = false 
           className="tcrn-machine-token__copy"
         />
       ) : null}
+    </span>
+  );
+}
+
+export function MachineTokenCell(props: MachineTokenProps) {
+  return (
+    <span className="tcrn-machine-token-cell" data-work-management-pattern="machine-token-cell">
+      <MachineToken {...props} density={props.density ?? "compact"} />
     </span>
   );
 }
@@ -448,12 +555,301 @@ export function SavedViewToolbar({ label = "Saved Work views", views, filters, r
   );
 }
 
+export interface WorkPageHeaderBreadcrumb {
+  id: string;
+  label: string;
+  href?: string;
+}
+
+export interface WorkAction {
+  id: string;
+  label: string;
+  disabledReason: string;
+}
+
+export interface WorkPageHeaderProps {
+  title: string;
+  description?: ReactNode;
+  breadcrumbs?: WorkPageHeaderBreadcrumb[];
+  meta?: ReactNode;
+  actions?: WorkAction[];
+  density?: WorkDensity;
+}
+
+export function WorkPageHeader({ title, description, breadcrumbs = [], meta, actions = [], density = "compact" }: WorkPageHeaderProps) {
+  return (
+    <header className={cx("tcrn-work-page-header", `tcrn-work-page-header--${density}`)} data-work-management-pattern="work-page-header" data-density={density}>
+      {breadcrumbs.length ? (
+        <nav className="tcrn-work-page-header__breadcrumbs" aria-label="Work breadcrumbs">
+          {breadcrumbs.map((breadcrumb, index) => (
+            <span key={breadcrumb.id} className="tcrn-work-page-header__breadcrumb">
+              {breadcrumb.href ? <a href={breadcrumb.href}>{breadcrumb.label}</a> : <span>{breadcrumb.label}</span>}
+              {index < breadcrumbs.length - 1 ? <span aria-hidden="true">/</span> : null}
+            </span>
+          ))}
+        </nav>
+      ) : null}
+      <div className="tcrn-work-page-header__body">
+        <div className="tcrn-work-page-header__title">
+          <Heading level={2}>{title}</Heading>
+          {description ? <Text>{description}</Text> : null}
+        </div>
+        {meta ? <div className="tcrn-work-page-header__meta">{meta}</div> : null}
+        {actions.length ? (
+          <div className="tcrn-work-page-header__actions">
+            {actions.map((action) => (
+              <Button key={action.id} type="button" size="sm" disabled disabledReason={action.disabledReason}>
+                {action.label}
+              </Button>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </header>
+  );
+}
+
+export type WorkViewTab = WorkManagementSubnavItem;
+
+export interface WorkViewTabsProps {
+  label?: string;
+  tabs: WorkViewTab[];
+}
+
+export function WorkViewTabs({ label = "Work views", tabs }: WorkViewTabsProps) {
+  return (
+    <nav className="tcrn-work-view-tabs" aria-label={label} data-work-management-pattern="work-view-tabs">
+      {tabs.map((tab) => {
+        const content = (
+          <>
+            <span>{tab.label}</span>
+            {typeof tab.count === "number" ? <Badge>{tab.count}</Badge> : null}
+          </>
+        );
+        if (tab.href && !tab.disabled) {
+          return (
+            <a key={tab.id} href={tab.href} aria-current={tab.current ? "page" : undefined} data-selected={tab.current || undefined}>
+              {content}
+            </a>
+          );
+        }
+        return (
+          <span key={tab.id} aria-disabled={tab.disabled || undefined} data-selected={tab.current || undefined}>
+            {content}
+          </span>
+        );
+      })}
+    </nav>
+  );
+}
+
+export interface WorkQuickFilter {
+  id: string;
+  label: string;
+  value?: string;
+  href?: string;
+  current?: boolean;
+  count?: number;
+  disabled?: boolean;
+  disabledReason?: string;
+}
+
+export interface WorkQuickFiltersProps {
+  label?: string;
+  filters: WorkQuickFilter[];
+  density?: WorkDensity;
+}
+
+export function WorkQuickFilters({ label = "Work quick filters", filters, density = "compact" }: WorkQuickFiltersProps) {
+  return (
+    <section className={cx("tcrn-work-quick-filters", `tcrn-work-quick-filters--${density}`)} aria-label={label} data-work-management-pattern="work-quick-filters" data-density={density}>
+      {filters.map((filter) => {
+        const content = (
+          <>
+            <span>{filter.label}</span>
+            {filter.value ? <span className="tcrn-work-quick-filters__value">{filter.value}</span> : null}
+            {typeof filter.count === "number" ? <Badge>{filter.count}</Badge> : null}
+          </>
+        );
+        if (filter.href && !filter.disabled) {
+          return (
+            <a key={filter.id} href={filter.href} aria-current={filter.current ? "page" : undefined} data-selected={filter.current || undefined}>
+              {content}
+            </a>
+          );
+        }
+        return (
+          <span key={filter.id} aria-disabled={filter.disabled || undefined} data-selected={filter.current || undefined} title={filter.disabledReason}>
+            {content}
+          </span>
+        );
+      })}
+    </section>
+  );
+}
+
+export interface WorkItemRowField {
+  key: string;
+  label: string;
+  value: ReactNode;
+}
+
+export interface WorkItemRowProps {
+  id: string;
+  title: string;
+  state: CopyStateInput;
+  owner: string;
+  href?: string;
+  selected?: boolean;
+  rank?: string;
+  priority?: string;
+  summary?: ReactNode;
+  fields?: WorkItemRowField[];
+  relationships?: RelationshipChipProps[];
+  density?: WorkDensity;
+}
+
+function WorkItemRowBody({ id, title, state, owner, rank, priority, summary, fields = [], relationships = [], density = "compact" }: WorkItemRowProps) {
+  return (
+    <>
+      <div className="tcrn-work-item-row__id">
+        <MachineTokenCell token={id} kind="work-item" density={density} />
+        {rank ? <Badge>{rank}</Badge> : null}
+      </div>
+      <div className="tcrn-work-item-row__summary">
+        <strong>{title}</strong>
+        {summary ? <Text>{summary}</Text> : null}
+      </div>
+      <div className="tcrn-work-item-row__meta">
+        <StatusBadge state={state} />
+        {priority ? <Badge>{priority}</Badge> : null}
+        <Badge>{owner}</Badge>
+        {fields.map((field) => (
+          <span key={field.key} className="tcrn-work-item-row__field">
+            <span>{field.label}</span>
+            <strong>{field.value}</strong>
+          </span>
+        ))}
+      </div>
+      {relationships.length ? (
+        <div className="tcrn-work-item-row__relationships" aria-label={`${title} relationships`}>
+          {relationships.map((relationship, index) => (
+            <RelationshipChip key={`${relationship.relation}-${relationship.target}-${index}`} {...relationship} source={id} />
+          ))}
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+export function WorkItemRow(props: WorkItemRowProps) {
+  const { href, selected = false, density = "compact", title } = props;
+  const className = cx("tcrn-work-item-row", `tcrn-work-item-row--${density}`);
+  if (href) {
+    return (
+      <a className={className} href={href} aria-label={title} data-selected={selected || undefined} data-work-management-pattern="work-item-row" data-density={density}>
+        <WorkItemRowBody {...props} density={density} />
+      </a>
+    );
+  }
+  return (
+    <article className={className} aria-label={title} data-selected={selected || undefined} data-work-management-pattern="work-item-row" data-density={density}>
+      <WorkItemRowBody {...props} density={density} />
+    </article>
+  );
+}
+
+export interface WorkListProps {
+  label?: string;
+  rows: WorkItemRowProps[];
+  density?: WorkDensity;
+}
+
+export function WorkList({ label = "Work list", rows, density = "compact" }: WorkListProps) {
+  return (
+    <section className={cx("tcrn-work-list", `tcrn-work-list--${density}`)} aria-label={label} data-work-management-pattern="work-list" data-density={density}>
+      {rows.map((row) => (
+        <WorkItemRow key={row.id} {...row} density={row.density ?? density} />
+      ))}
+    </section>
+  );
+}
+
+export interface WorkSplitViewProps {
+  label?: string;
+  list: ReactNode;
+  detail: ReactNode;
+  density?: WorkDensity;
+}
+
+export function WorkSplitView({ label = "Work split view", list, detail, density = "compact" }: WorkSplitViewProps) {
+  return (
+    <section className={cx("tcrn-work-split-view", `tcrn-work-split-view--${density}`)} aria-label={label} data-work-management-pattern="work-split-view" data-density={density}>
+      <div className="tcrn-work-split-view__list">{list}</div>
+      <div className="tcrn-work-split-view__detail">{detail}</div>
+    </section>
+  );
+}
+
+export interface WorkInlineCreateStaticProps {
+  label?: string;
+  disabledReason: string;
+  hint?: ReactNode;
+}
+
+export function WorkInlineCreateStatic({ label = "Add work item", disabledReason, hint }: WorkInlineCreateStaticProps) {
+  return (
+    <div className="tcrn-work-inline-create-static" data-work-management-pattern="work-inline-create-static">
+      <Button type="button" size="sm" disabled disabledReason={disabledReason}>
+        {label}
+      </Button>
+      {hint ? <Text>{hint}</Text> : null}
+    </div>
+  );
+}
+
+export interface WorkBacklogGroupProps {
+  title: string;
+  description?: ReactNode;
+  rows: WorkItemRowProps[];
+  actions?: WorkAction[];
+  inlineCreate?: WorkInlineCreateStaticProps;
+  density?: WorkDensity;
+}
+
+export function WorkBacklogGroup({ title, description, rows, actions = [], inlineCreate, density = "compact" }: WorkBacklogGroupProps) {
+  return (
+    <section className={cx("tcrn-work-backlog-group", `tcrn-work-backlog-group--${density}`)} aria-label={title} data-work-management-pattern="work-backlog-group" data-density={density}>
+      <div className="tcrn-work-backlog-group__head">
+        <div>
+          <Heading level={3}>{title}</Heading>
+          {description ? <Text>{description}</Text> : null}
+        </div>
+        <Badge>{rows.length}</Badge>
+        {actions.length ? (
+          <div className="tcrn-work-backlog-group__actions">
+            {actions.map((action) => (
+              <Button key={action.id} type="button" size="sm" disabled disabledReason={action.disabledReason}>
+                {action.label}
+              </Button>
+            ))}
+          </div>
+        ) : null}
+      </div>
+      <WorkList label={`${title} rows`} rows={rows} density={density} />
+      {inlineCreate ? <WorkInlineCreateStatic {...inlineCreate} /> : null}
+    </section>
+  );
+}
+
 export interface WorkBoardCard {
   id: string;
   title: string;
   state: CopyStateInput;
   owner: string;
   meta?: ReactNode;
+  priority?: string;
+  fields?: WorkItemRowField[];
   relationships?: RelationshipChipProps[];
 }
 
@@ -467,11 +863,12 @@ export interface WorkBoardLane {
 export interface WorkBoardProps {
   label?: string;
   lanes: WorkBoardLane[];
+  density?: WorkDensity;
 }
 
-export function WorkBoard({ label = "Work board", lanes }: WorkBoardProps) {
+export function WorkBoard({ label = "Work board", lanes, density = "comfortable" }: WorkBoardProps) {
   return (
-    <section className="tcrn-work-board" aria-label={label} data-work-management-pattern="work-board">
+    <section className={cx("tcrn-work-board", `tcrn-work-board--${density}`)} aria-label={label} data-work-management-pattern="work-board" data-density={density}>
       {lanes.map((lane) => (
         <Surface key={lane.id} className="tcrn-work-board__lane" data-work-board-lane={lane.id}>
           <div className="tcrn-work-board__lane-head">
@@ -483,12 +880,23 @@ export function WorkBoard({ label = "Work board", lanes }: WorkBoardProps) {
             {lane.cards.map((card) => (
               <article key={card.id} className="tcrn-work-board__card" aria-label={card.title}>
                 <div className="tcrn-work-board__card-head">
-                  <MachineToken token={card.id} kind="work-item" />
+                  <MachineTokenCell token={card.id} kind="work-item" density={density} />
                   <StatusBadge state={card.state} />
+                  {card.priority ? <Badge>{card.priority}</Badge> : null}
                 </div>
                 <strong>{card.title}</strong>
                 <Text>{card.owner}</Text>
                 {card.meta ? <div className="tcrn-work-board__card-meta">{card.meta}</div> : null}
+                {card.fields?.length ? (
+                  <div className="tcrn-work-board__card-fields">
+                    {card.fields.map((field) => (
+                      <span key={field.key} className="tcrn-work-board__card-field">
+                        <span>{field.label}</span>
+                        <strong>{field.value}</strong>
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
                 {card.relationships?.length ? (
                   <div className="tcrn-work-board__relations" aria-label={`${card.title} relationships`}>
                     {card.relationships.map((relationship, index) => (
@@ -501,6 +909,19 @@ export function WorkBoard({ label = "Work board", lanes }: WorkBoardProps) {
           </div>
         </Surface>
       ))}
+    </section>
+  );
+}
+
+export interface WorkBoardViewProps extends WorkBoardProps {
+  toolbar?: ReactNode;
+}
+
+export function WorkBoardView({ toolbar, density = "compact", ...props }: WorkBoardViewProps) {
+  return (
+    <section className={cx("tcrn-work-board-view", `tcrn-work-board-view--${density}`)} data-work-management-pattern="work-board-view" data-density={density}>
+      {toolbar ? <div className="tcrn-work-board-view__toolbar">{toolbar}</div> : null}
+      <WorkBoard {...props} density={density} />
     </section>
   );
 }
@@ -572,11 +993,12 @@ export interface GatePipelineGate {
 export interface GatePipelineProps {
   label?: string;
   gates: GatePipelineGate[];
+  density?: WorkDensity;
 }
 
-export function GatePipeline({ label = "Gate pipeline", gates }: GatePipelineProps) {
+export function GatePipeline({ label = "Gate pipeline", gates, density = "comfortable" }: GatePipelineProps) {
   return (
-    <section className="tcrn-gate-pipeline" aria-label={label} data-work-management-pattern="gate-pipeline">
+    <section className={cx("tcrn-gate-pipeline", `tcrn-gate-pipeline--${density}`)} aria-label={label} data-work-management-pattern="gate-pipeline" data-density={density}>
       <TableShell
         label={label}
         columns={[
@@ -599,6 +1021,10 @@ export function GatePipeline({ label = "Gate pipeline", gates }: GatePipelinePro
   );
 }
 
+export function GatePipelineCompact(props: GatePipelineProps) {
+  return <GatePipeline {...props} density="compact" />;
+}
+
 export type EvidenceAttachmentType = "screenshot" | "artifact_dir" | "qa_summary" | "api_readback" | "commit" | "preview" | "policy" | "redacted";
 
 export interface EvidenceAttachment {
@@ -612,11 +1038,12 @@ export interface EvidenceAttachment {
 export interface EvidenceAttachmentListProps {
   label?: string;
   items: EvidenceAttachment[];
+  density?: WorkDensity;
 }
 
-export function EvidenceAttachmentList({ label = "Evidence attachments", items }: EvidenceAttachmentListProps) {
+export function EvidenceAttachmentList({ label = "Evidence attachments", items, density = "comfortable" }: EvidenceAttachmentListProps) {
   return (
-    <section className="tcrn-evidence-attachment-list" aria-label={label} data-work-management-pattern="evidence-attachment-list">
+    <section className={cx("tcrn-evidence-attachment-list", `tcrn-evidence-attachment-list--${density}`)} aria-label={label} data-work-management-pattern="evidence-attachment-list" data-density={density}>
       <TableShell
         label={label}
         columns={[
@@ -628,10 +1055,123 @@ export function EvidenceAttachmentList({ label = "Evidence attachments", items }
         rows={items.map((item) => ({
           type: item.type,
           label: item.label,
-          reference: <MachineToken token={item.reference} label={item.id} kind={item.type === "commit" ? "commit" : item.type === "artifact_dir" ? "artifact" : "generic"} />,
+          reference: <MachineTokenCell token={item.reference} label={item.id} kind={item.type === "commit" ? "commit" : item.type === "artifact_dir" ? "artifact" : "generic"} density={density} />,
           state: item.state ? <StatusBadge state={item.state} /> : <StatusBadge state={{ state: "local_only" }} />
         }))}
       />
+    </section>
+  );
+}
+
+export interface WorkFieldPanelProps {
+  title: string;
+  items: KeyValueItem[];
+  density?: WorkDensity;
+}
+
+export function WorkFieldPanel({ title, items, density = "compact" }: WorkFieldPanelProps) {
+  return (
+    <Surface className={cx("tcrn-work-field-panel", `tcrn-work-field-panel--${density}`)} data-work-management-pattern="work-field-panel" data-density={density}>
+      <Heading level={3}>{title}</Heading>
+      <KeyValueList items={items} />
+    </Surface>
+  );
+}
+
+export interface MetadataRailProps {
+  title?: string;
+  items: KeyValueItem[];
+  actions?: WorkAction[];
+  density?: WorkDensity;
+}
+
+export function MetadataRail({ title = "Metadata", items, actions = [], density = "compact" }: MetadataRailProps) {
+  return (
+    <aside className={cx("tcrn-metadata-rail", `tcrn-metadata-rail--${density}`)} data-work-management-pattern="metadata-rail" data-density={density}>
+      <WorkFieldPanel title={title} items={items} density={density} />
+      {actions.length ? (
+        <div className="tcrn-metadata-rail__actions">
+          {actions.map((action) => (
+            <Button key={action.id} type="button" size="sm" disabled disabledReason={action.disabledReason}>
+              {action.label}
+            </Button>
+          ))}
+        </div>
+      ) : null}
+    </aside>
+  );
+}
+
+export interface WorkActivityFeedItem {
+  id: string;
+  actor: string;
+  action: string;
+  timestamp?: string;
+  summary?: ReactNode;
+  state?: CopyStateInput;
+  evidence?: EvidenceAttachment[];
+}
+
+export interface WorkActivityFeedProps {
+  label?: string;
+  items: WorkActivityFeedItem[];
+  density?: WorkDensity;
+}
+
+export function WorkActivityFeed({ label = "Work activity", items, density = "compact" }: WorkActivityFeedProps) {
+  return (
+    <section className={cx("tcrn-work-activity-feed", `tcrn-work-activity-feed--${density}`)} aria-label={label} data-work-management-pattern="work-activity-feed" data-density={density}>
+      {items.map((item) => (
+        <article key={item.id} className="tcrn-work-activity-feed__item">
+          <div className="tcrn-work-activity-feed__head">
+            <strong>{item.actor}</strong>
+            <span>{item.action}</span>
+            {item.timestamp ? <time>{item.timestamp}</time> : null}
+            {item.state ? <StatusBadge state={item.state} /> : null}
+          </div>
+          {item.summary ? <Text>{item.summary}</Text> : null}
+          {item.evidence?.length ? <EvidenceAttachmentList label={`${item.id} evidence`} items={item.evidence} density={density} /> : null}
+        </article>
+      ))}
+    </section>
+  );
+}
+
+export interface WorkDetailLayoutProps {
+  title: string;
+  summary?: ReactNode;
+  state?: CopyStateInput;
+  main: ReactNode;
+  metadata: ReactNode;
+  activity?: ReactNode;
+  actions?: WorkAction[];
+  density?: WorkDensity;
+}
+
+export function WorkDetailLayout({ title, summary, state, main, metadata, activity, actions = [], density = "compact" }: WorkDetailLayoutProps) {
+  return (
+    <section className={cx("tcrn-work-detail-layout", `tcrn-work-detail-layout--${density}`)} aria-label={title} data-work-management-pattern="work-detail-layout" data-density={density}>
+      <div className="tcrn-work-detail-layout__head">
+        <div>
+          <Heading level={2}>{title}</Heading>
+          {summary ? <Text>{summary}</Text> : null}
+        </div>
+        {state ? <StatusBadge state={state} /> : null}
+      </div>
+      <div className="tcrn-work-detail-layout__grid">
+        <div className="tcrn-work-detail-layout__main">{main}</div>
+        <aside className="tcrn-work-detail-layout__rail">{metadata}</aside>
+      </div>
+      {activity ? <div className="tcrn-work-detail-layout__activity">{activity}</div> : null}
+      {actions.length ? (
+        <div className="tcrn-work-detail-layout__actions">
+          {actions.map((action) => (
+            <Button key={action.id} type="button" disabled disabledReason={action.disabledReason}>
+              {action.label}
+            </Button>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }

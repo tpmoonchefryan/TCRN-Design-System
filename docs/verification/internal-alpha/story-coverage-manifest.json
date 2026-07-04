@@ -250,12 +250,48 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "f07a9de14767c537a2f5b4c63df83df0c418100388477b07f77794a03a420865",
+    "contractPayloadDigest": "f62c37e4fb602d784f27b0e5bcc8e66dc2f73f2964e31a08f5680c0ed27b262d",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
     "changelogRecordCount": 1,
     "workManagementStaticAuthorityDisposition": "static_contract_authority_explicit_and_smoke_proven",
+    "workManagementAdmittedPackageExports": [
+      "WorkPageHeader",
+      "WorkViewTabs",
+      "WorkQuickFilters",
+      "WorkItemRow",
+      "WorkList",
+      "WorkSplitView",
+      "WorkBacklogGroup",
+      "WorkInlineCreateStatic",
+      "WorkBoard",
+      "WorkBoardView",
+      "WorkDetailLayout",
+      "MetadataRail",
+      "WorkFieldPanel",
+      "WorkActivityFeed",
+      "GatePipelineCompact",
+      "EvidenceAttachmentList",
+      "MachineTokenCell"
+    ],
+    "workLayoutDensityPackageExports": [
+      "WorkPageHeader",
+      "WorkViewTabs",
+      "WorkQuickFilters",
+      "WorkItemRow",
+      "WorkList",
+      "WorkSplitView",
+      "WorkBacklogGroup",
+      "WorkInlineCreateStatic",
+      "WorkBoardView",
+      "WorkDetailLayout",
+      "MetadataRail",
+      "WorkFieldPanel",
+      "WorkActivityFeed",
+      "GatePipelineCompact",
+      "MachineTokenCell"
+    ],
     "foundationVisualStandardsRegistryId": "foundation-visual-standards-v1",
     "foundationVisualStandardCategoryIds": [
       "visual-philosophy-ownership",
@@ -1517,10 +1553,10 @@
         "article": {
           "top": 411.52,
           "right": 374,
-          "bottom": 9684.42,
+          "bottom": 10181.41,
           "left": 16,
           "width": 358,
-          "height": 9272.91
+          "height": 9769.89
         },
         "title": {
           "top": 428.52,
@@ -2117,10 +2153,10 @@
         "article": {
           "top": 411.52,
           "right": 374,
-          "bottom": 9684.42,
+          "bottom": 10181.41,
           "left": 16,
           "width": 358,
-          "height": 9272.91
+          "height": 9769.89
         },
         "title": {
           "top": 428.52,
@@ -2717,10 +2753,10 @@
         "article": {
           "top": 411.52,
           "right": 374,
-          "bottom": 9684.42,
+          "bottom": 10181.41,
           "left": 16,
           "width": 358,
-          "height": 9272.91
+          "height": 9769.89
         },
         "title": {
           "top": 428.52,
@@ -3317,10 +3353,10 @@
         "article": {
           "top": 411.52,
           "right": 374,
-          "bottom": 9684.42,
+          "bottom": 10181.41,
           "left": 16,
           "width": 358,
-          "height": 9272.91
+          "height": 9769.89
         },
         "title": {
           "top": 428.52,
@@ -3904,8 +3940,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 50065,
-      "scrollY": 44620
+      "maxScrollY": 54248,
+      "scrollY": 45495
     }
   },
   "scrollSpyCheck": {
@@ -3915,10 +3951,10 @@
       "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
-      "targetTop": 363,
+      "targetTop": 292,
       "offset": 96,
-      "maxScrollY": 4586,
-      "scrollY": 4586,
+      "maxScrollY": 6199,
+      "scrollY": 6199,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }

@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "sourceContentDigest": "bf4086896b113d1e1b6f32cb4a015c52349930c00389991bc52849b439812607",
-  "sourceHead": "808519649de3fc7cbc7beb7cc75dfbad5c325124",
+  "sourceContentDigest": "e3609d1570a1ffe7391b4fc5cccecfadd77d6923cc82bb22ad2656d48f5e3c58",
+  "sourceHead": "01714b9f622d010f07df730d355844544280b517",
   "mode": "update-baseline",
   "comparisonContractVersion": "canonicalized_raw_png_exact_v1",
   "visualArtifactContractDisposition": {
@@ -486,56 +486,56 @@
       "file": "index.html",
       "status": 200,
       "ok": true,
-      "bytes": 702012,
-      "sha256": "0467661f13bad7b328f69fb9697c38d72e6a7da761a8094af3b0088f4eae2a9b",
+      "bytes": 718896,
+      "sha256": "dd2de7b33c17672675be336f649a716ed9e8a19d45af72f284a7b7022db9cf07",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "style-guide.html",
       "status": 200,
       "ok": true,
-      "bytes": 757492,
-      "sha256": "f032488fe0b0149f99c74c9ebfc8e38c6d262d75ff2e76282d85a6ce54a647ff",
+      "bytes": 774376,
+      "sha256": "f1b4f7e359ca8385d1a7339535dd6d27b30dda0502e12a9d319c8fab708d214e",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "foundations.html",
       "status": 200,
       "ok": true,
-      "bytes": 717204,
-      "sha256": "4d3adc3d45f11275ebed00a592f9b90b6bea64a3b8e144d5b877fc2109e53f19",
+      "bytes": 734659,
+      "sha256": "975355b4efbc44697dac9f09053a568cd2ffac431304c7f827df05037ec3ba5b",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "components.html",
       "status": 200,
       "ok": true,
-      "bytes": 1250488,
-      "sha256": "593994f619c90aca92c8b6162ab9471bc2bde97cdb0fae14d0444722d3d4d05a",
+      "bytes": 1306205,
+      "sha256": "158bd4333020844db4c4622e94d18179f3c974130f83c870d6063ff27cfcaa2d",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "patterns.html",
       "status": 200,
       "ok": true,
-      "bytes": 731670,
-      "sha256": "6e1fb292cebe1d18270255762e933e3b2373ad8cdd2500a935fddb639a7004e1",
+      "bytes": 766702,
+      "sha256": "51a4ab2cd48db68884a04c8f6b04f98f2a3925647a7b4e73b76ecab8fd478a0e",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "proof.html",
       "status": 200,
       "ok": true,
-      "bytes": 717793,
-      "sha256": "0486c0911f3e5df7071b8f33967e752967ef573c7700d745442ba868e3997f61",
+      "bytes": 734779,
+      "sha256": "965670e6bdb113d3352c9e12090cd039d387d39c9940db9b0dd5948b2bb2a43c",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "change-log.html",
       "status": 200,
       "ok": true,
-      "bytes": 692705,
-      "sha256": "2d50588cd858fd940834cec1348a672eee670b786930173fdaf87c6ddf583e00",
+      "bytes": 709589,
+      "sha256": "719dad5e1a4fd6fe3e82024ea8f8268c93ae5056bed5d844790235efb0097a0d",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -550,16 +550,16 @@
       "file": "ai-consumption-contract.json",
       "status": 200,
       "ok": true,
-      "bytes": 81947,
-      "sha256": "5536d345663ba56174bd51ef3af73760ff5a4e3ab93e6e15df3e1f37ac15cd2c",
+      "bytes": 85425,
+      "sha256": "8b92d3b41d5a4b1518b1f074c6dfabcfce06bcdb9f7e1779a82e1eaad2ed4b67",
       "contentType": "application/json; charset=utf-8"
     },
     {
       "file": "llms.txt",
       "status": 200,
       "ok": true,
-      "bytes": 13311,
-      "sha256": "fff7921271087124fb096aadd11b4c5aae3b41379fb35bb804a6e87087f32f61",
+      "bytes": 13886,
+      "sha256": "c649db7ea99a805696185971121d6f1fb0e69d9a4b0827c02894a122de4cd3b9",
       "contentType": "application/octet-stream"
     },
     {
@@ -567,7 +567,7 @@
       "status": 200,
       "ok": true,
       "bytes": 518,
-      "sha256": "4e9e5e749921fbb7ff81dfb94720c47b81b194f6ad2937625b12920632327f18",
+      "sha256": "83d59ebea50bc8b2831859fdc820a53081b5a519311a0bc60e15b51c44c23982",
       "contentType": "application/octet-stream"
     }
   ],
@@ -596,10 +596,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "99d4fd0e48b9dee0251037babb329623bf78667e0b4c0b49ad29f36ea4adb841",
+      "rawSha256": "07ec826044ac575a22fd1271bd2c4295a6e3c94f1b455f8cd843dfd222c23563",
       "width": 2048,
       "height": 1024,
-      "bytes": 75572,
+      "bytes": 75579,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -607,17 +607,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "99d4fd0e48b9dee0251037babb329623bf78667e0b4c0b49ad29f36ea4adb841",
-            "rawSha256": "06da9ac6125ed07c788a6aa83cfc0e22a31263c0484daf2cee3570b3c71a031c",
-            "bytes": 75572,
-            "rawBytes": 346109
+            "sha256": "07ec826044ac575a22fd1271bd2c4295a6e3c94f1b455f8cd843dfd222c23563",
+            "rawSha256": "ea6c07587b40f4bc8b3837c1a830fc2b1ad892812daf962c5ab7be58975836e0",
+            "bytes": 75579,
+            "rawBytes": 346227
           },
           {
             "attempt": 2,
-            "sha256": "99d4fd0e48b9dee0251037babb329623bf78667e0b4c0b49ad29f36ea4adb841",
-            "rawSha256": "06da9ac6125ed07c788a6aa83cfc0e22a31263c0484daf2cee3570b3c71a031c",
-            "bytes": 75572,
-            "rawBytes": 346109
+            "sha256": "07ec826044ac575a22fd1271bd2c4295a6e3c94f1b455f8cd843dfd222c23563",
+            "rawSha256": "ea6c07587b40f4bc8b3837c1a830fc2b1ad892812daf962c5ab7be58975836e0",
+            "bytes": 75579,
+            "rawBytes": 346227
           }
         ]
       },
@@ -948,10 +948,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "ba211d54edc6c53848470e1407c0577d61702b8b99688dc6bfa44ff2805e0c4b",
+      "rawSha256": "f73d69dec91b22ed7470d71f73f9435d2ac1791282803975a77d92fa4be457f2",
       "width": 2048,
       "height": 1024,
-      "bytes": 72135,
+      "bytes": 72133,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -959,17 +959,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "ba211d54edc6c53848470e1407c0577d61702b8b99688dc6bfa44ff2805e0c4b",
-            "rawSha256": "18532dbcf583f7c1f27a2124aa662b357e70603f7f9f0caa9f514218ad6d4490",
-            "bytes": 72135,
-            "rawBytes": 207469
+            "sha256": "f73d69dec91b22ed7470d71f73f9435d2ac1791282803975a77d92fa4be457f2",
+            "rawSha256": "4a3638dea5f268ba1021da2e2933daafe72c97dac8ef3bbcbfaef164e3c58340",
+            "bytes": 72133,
+            "rawBytes": 207760
           },
           {
             "attempt": 2,
-            "sha256": "ba211d54edc6c53848470e1407c0577d61702b8b99688dc6bfa44ff2805e0c4b",
-            "rawSha256": "18532dbcf583f7c1f27a2124aa662b357e70603f7f9f0caa9f514218ad6d4490",
-            "bytes": 72135,
-            "rawBytes": 207469
+            "sha256": "f73d69dec91b22ed7470d71f73f9435d2ac1791282803975a77d92fa4be457f2",
+            "rawSha256": "4a3638dea5f268ba1021da2e2933daafe72c97dac8ef3bbcbfaef164e3c58340",
+            "bytes": 72133,
+            "rawBytes": 207760
           }
         ]
       },
@@ -1300,10 +1300,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "3bf0a80449e3059b231f893d44ad9d173c6b7c369e6cb189c60b2cb92594f2e6",
+      "rawSha256": "9394232e28d6e12b458ae846a56fad7b456b3f71d70431fecde14e6b93c4d831",
       "width": 2048,
       "height": 1024,
-      "bytes": 74403,
+      "bytes": 74409,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -1311,17 +1311,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "3bf0a80449e3059b231f893d44ad9d173c6b7c369e6cb189c60b2cb92594f2e6",
-            "rawSha256": "4ade552c25aa2505bb7b77326625926a54d356126c41f80f53fbd49446cd49b6",
-            "bytes": 74403,
-            "rawBytes": 342900
+            "sha256": "9394232e28d6e12b458ae846a56fad7b456b3f71d70431fecde14e6b93c4d831",
+            "rawSha256": "de05fa89dac2cc3d7984b2a67df7c8b7bee43b7bc733c51e56557e15e99f4a52",
+            "bytes": 74409,
+            "rawBytes": 343030
           },
           {
             "attempt": 2,
-            "sha256": "3bf0a80449e3059b231f893d44ad9d173c6b7c369e6cb189c60b2cb92594f2e6",
-            "rawSha256": "4ade552c25aa2505bb7b77326625926a54d356126c41f80f53fbd49446cd49b6",
-            "bytes": 74403,
-            "rawBytes": 342900
+            "sha256": "9394232e28d6e12b458ae846a56fad7b456b3f71d70431fecde14e6b93c4d831",
+            "rawSha256": "de05fa89dac2cc3d7984b2a67df7c8b7bee43b7bc733c51e56557e15e99f4a52",
+            "bytes": 74409,
+            "rawBytes": 343030
           }
         ]
       },
@@ -1652,10 +1652,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "373e91afe6ec8c16cef1e730458b96c7a4cd985005572b3334aea29b7a4b3f17",
+      "rawSha256": "b8f54c08008f5453b67ef74f2dc2b93d37ee1c27cf6948636fdbd0cc4a4fad0e",
       "width": 2048,
       "height": 1024,
-      "bytes": 70878,
+      "bytes": 70869,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -1663,17 +1663,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "373e91afe6ec8c16cef1e730458b96c7a4cd985005572b3334aea29b7a4b3f17",
-            "rawSha256": "70866b7ed1ab715328070f2b3fdf967771724d67089cb42b6c50646a2ca85354",
-            "bytes": 70878,
-            "rawBytes": 209343
+            "sha256": "b8f54c08008f5453b67ef74f2dc2b93d37ee1c27cf6948636fdbd0cc4a4fad0e",
+            "rawSha256": "bcf769815d325929f50c3f3652737870b709ead4a44d6fa2d92a28684fa2dd0c",
+            "bytes": 70869,
+            "rawBytes": 209339
           },
           {
             "attempt": 2,
-            "sha256": "373e91afe6ec8c16cef1e730458b96c7a4cd985005572b3334aea29b7a4b3f17",
-            "rawSha256": "70866b7ed1ab715328070f2b3fdf967771724d67089cb42b6c50646a2ca85354",
-            "bytes": 70878,
-            "rawBytes": 209343
+            "sha256": "b8f54c08008f5453b67ef74f2dc2b93d37ee1c27cf6948636fdbd0cc4a4fad0e",
+            "rawSha256": "bcf769815d325929f50c3f3652737870b709ead4a44d6fa2d92a28684fa2dd0c",
+            "bytes": 70869,
+            "rawBytes": 209339
           }
         ]
       },
@@ -2004,10 +2004,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "21d6614e0e1d6c6e03da996f31173b97afb6a39806104b7210c479295dd86f20",
+      "rawSha256": "871a897c3f30f67cab2f4dbb5b32664acbdbbe7a13c7f36455497b14de997649",
       "width": 2048,
       "height": 1024,
-      "bytes": 82332,
+      "bytes": 82338,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -2015,17 +2015,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "21d6614e0e1d6c6e03da996f31173b97afb6a39806104b7210c479295dd86f20",
-            "rawSha256": "f1833ce43216e8de586b67a8b684d6d64bd1b88efc03076f50838d64f37363f1",
-            "bytes": 82332,
-            "rawBytes": 351037
+            "sha256": "871a897c3f30f67cab2f4dbb5b32664acbdbbe7a13c7f36455497b14de997649",
+            "rawSha256": "037f3a07ddc7e174f0f774f8de693552510b058e6a8cbaf65f5e2141ab1dd4f7",
+            "bytes": 82338,
+            "rawBytes": 350912
           },
           {
             "attempt": 2,
-            "sha256": "21d6614e0e1d6c6e03da996f31173b97afb6a39806104b7210c479295dd86f20",
-            "rawSha256": "f1833ce43216e8de586b67a8b684d6d64bd1b88efc03076f50838d64f37363f1",
-            "bytes": 82332,
-            "rawBytes": 351037
+            "sha256": "871a897c3f30f67cab2f4dbb5b32664acbdbbe7a13c7f36455497b14de997649",
+            "rawSha256": "037f3a07ddc7e174f0f774f8de693552510b058e6a8cbaf65f5e2141ab1dd4f7",
+            "bytes": 82338,
+            "rawBytes": 350912
           }
         ]
       },
@@ -2356,10 +2356,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "61d37663c65e987cc0df847362a390efe69a3cbed4aa54bab03f56be92429eb8",
+      "rawSha256": "fa4fe7c0648f12033438867b3048f7e3f5ce1a18583d751644e4128d03e6006b",
       "width": 2048,
       "height": 1024,
-      "bytes": 77479,
+      "bytes": 77499,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -2367,17 +2367,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "61d37663c65e987cc0df847362a390efe69a3cbed4aa54bab03f56be92429eb8",
-            "rawSha256": "c0b13ad1bb3c7a4dd6fa88e74055c1d432707bb596464f606e157800c9e4ca7e",
-            "bytes": 77479,
-            "rawBytes": 207506
+            "sha256": "fa4fe7c0648f12033438867b3048f7e3f5ce1a18583d751644e4128d03e6006b",
+            "rawSha256": "c40389488e1478dd188818d9bde9dc2fddab1abc6fb6d9b7749bbe92be3b0081",
+            "bytes": 77499,
+            "rawBytes": 207525
           },
           {
             "attempt": 2,
-            "sha256": "61d37663c65e987cc0df847362a390efe69a3cbed4aa54bab03f56be92429eb8",
-            "rawSha256": "c0b13ad1bb3c7a4dd6fa88e74055c1d432707bb596464f606e157800c9e4ca7e",
-            "bytes": 77479,
-            "rawBytes": 207506
+            "sha256": "fa4fe7c0648f12033438867b3048f7e3f5ce1a18583d751644e4128d03e6006b",
+            "rawSha256": "c40389488e1478dd188818d9bde9dc2fddab1abc6fb6d9b7749bbe92be3b0081",
+            "bytes": 77499,
+            "rawBytes": 207525
           }
         ]
       },
@@ -3412,7 +3412,7 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "95bda5457486be7f900439d2d7959e90f9cf446c35138e50e861a321d8dd712d",
+      "rawSha256": "4b82783878a75a48e5c283d00638d43daaa87a397f955fe84abf1cdd466c28ef",
       "width": 2048,
       "height": 1024,
       "bytes": 71987,
@@ -3423,17 +3423,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "95bda5457486be7f900439d2d7959e90f9cf446c35138e50e861a321d8dd712d",
-            "rawSha256": "03c993c3c04a953d167bf2ca7725ff5ad72278005a3916438a38b3f1629bcd05",
+            "sha256": "4b82783878a75a48e5c283d00638d43daaa87a397f955fe84abf1cdd466c28ef",
+            "rawSha256": "fe6486339732b8d261b4e26e488c1cbae2e2c9b055ca42ad70dc69646191c4d4",
             "bytes": 71987,
-            "rawBytes": 369904
+            "rawBytes": 369759
           },
           {
             "attempt": 2,
-            "sha256": "95bda5457486be7f900439d2d7959e90f9cf446c35138e50e861a321d8dd712d",
-            "rawSha256": "03c993c3c04a953d167bf2ca7725ff5ad72278005a3916438a38b3f1629bcd05",
+            "sha256": "4b82783878a75a48e5c283d00638d43daaa87a397f955fe84abf1cdd466c28ef",
+            "rawSha256": "fe6486339732b8d261b4e26e488c1cbae2e2c9b055ca42ad70dc69646191c4d4",
             "bytes": 71987,
-            "rawBytes": 369904
+            "rawBytes": 369759
           }
         ]
       },
@@ -3764,10 +3764,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "5ac562da17445d0a6613f3e638d03a212303933525935596626f6c29a08799e3",
+      "rawSha256": "e235411a0479fe7a8e1b68ed17784baaeae69fbe1e785bfaa39a7553a2b993ae",
       "width": 2048,
       "height": 1024,
-      "bytes": 67986,
+      "bytes": 67985,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -3775,17 +3775,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "5ac562da17445d0a6613f3e638d03a212303933525935596626f6c29a08799e3",
-            "rawSha256": "a79e7d99a4e0bb436bfe4d286533bb6a940d1fdfed5ed355af2d5cc43459874e",
-            "bytes": 67986,
-            "rawBytes": 228819
+            "sha256": "e235411a0479fe7a8e1b68ed17784baaeae69fbe1e785bfaa39a7553a2b993ae",
+            "rawSha256": "48a1563592ccbf7b4b818cacbf930f0545b66cc34e81c4d84317a7d2090825ab",
+            "bytes": 67985,
+            "rawBytes": 228477
           },
           {
             "attempt": 2,
-            "sha256": "5ac562da17445d0a6613f3e638d03a212303933525935596626f6c29a08799e3",
-            "rawSha256": "a79e7d99a4e0bb436bfe4d286533bb6a940d1fdfed5ed355af2d5cc43459874e",
-            "bytes": 67986,
-            "rawBytes": 228819
+            "sha256": "e235411a0479fe7a8e1b68ed17784baaeae69fbe1e785bfaa39a7553a2b993ae",
+            "rawSha256": "48a1563592ccbf7b4b818cacbf930f0545b66cc34e81c4d84317a7d2090825ab",
+            "bytes": 67985,
+            "rawBytes": 228477
           }
         ]
       },
@@ -4820,10 +4820,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
+      "rawSha256": "a29c540fe4eae721a38617eed05583871487bd81fae398f202ea702872597cbd",
       "width": 2048,
       "height": 1024,
-      "bytes": 111979,
+      "bytes": 116438,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -4831,17 +4831,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
-            "rawSha256": "0c856c68c731e5aee5ef60629e5e68118dfb79c97aec06b481e5a1291ad005e7",
-            "bytes": 111979,
-            "rawBytes": 407809
+            "sha256": "a29c540fe4eae721a38617eed05583871487bd81fae398f202ea702872597cbd",
+            "rawSha256": "bc992a9f55eeb714d8c899afbe4f5bb5153122ec9147723b066f0c3dbff73f95",
+            "bytes": 116438,
+            "rawBytes": 418363
           },
           {
             "attempt": 2,
-            "sha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
-            "rawSha256": "0c856c68c731e5aee5ef60629e5e68118dfb79c97aec06b481e5a1291ad005e7",
-            "bytes": 111979,
-            "rawBytes": 407809
+            "sha256": "a29c540fe4eae721a38617eed05583871487bd81fae398f202ea702872597cbd",
+            "rawSha256": "bc992a9f55eeb714d8c899afbe4f5bb5153122ec9147723b066f0c3dbff73f95",
+            "bytes": 116438,
+            "rawBytes": 418363
           }
         ]
       },
@@ -4849,9 +4849,9 @@
         "x": 408,
         "y": 96,
         "width": 1592,
-        "height": 6072,
+        "height": 6894,
         "top": 96,
-        "bottom": 6167
+        "bottom": 6990
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -5172,10 +5172,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
+      "rawSha256": "64cea1418d1441daf6aeed6814b79164c8024facc215f9ff89131f123bdc25f8",
       "width": 2048,
       "height": 1024,
-      "bytes": 109200,
+      "bytes": 113701,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -5183,17 +5183,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
-            "rawSha256": "f416eeff3f06d4f6d03dd121c8d46492e1a49acd42c052a885097b43be5c51a0",
-            "bytes": 109200,
-            "rawBytes": 265658
+            "sha256": "64cea1418d1441daf6aeed6814b79164c8024facc215f9ff89131f123bdc25f8",
+            "rawSha256": "b5d4b34eb9985e328398d3845a9d93ad7838ad59c7d3371d6410894f9e46229c",
+            "bytes": 113701,
+            "rawBytes": 276843
           },
           {
             "attempt": 2,
-            "sha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
-            "rawSha256": "f416eeff3f06d4f6d03dd121c8d46492e1a49acd42c052a885097b43be5c51a0",
-            "bytes": 109200,
-            "rawBytes": 265658
+            "sha256": "64cea1418d1441daf6aeed6814b79164c8024facc215f9ff89131f123bdc25f8",
+            "rawSha256": "b5d4b34eb9985e328398d3845a9d93ad7838ad59c7d3371d6410894f9e46229c",
+            "bytes": 113701,
+            "rawBytes": 276843
           }
         ]
       },
@@ -5201,9 +5201,9 @@
         "x": 408,
         "y": 96,
         "width": 1592,
-        "height": 6072,
+        "height": 6894,
         "top": 96,
-        "bottom": 6167
+        "bottom": 6990
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -5524,10 +5524,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
+      "rawSha256": "62c9a26060f53d6062a1a9ccdc4f6d367eeb90cb5d88c915bf46ea11372475b2",
       "width": 2048,
       "height": 1024,
-      "bytes": 113413,
+      "bytes": 121071,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -5535,17 +5535,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
-            "rawSha256": "55a34f815f26f0de92503a525f90ab99ecd8cae02eee6a446a0e7db1406df1a0",
-            "bytes": 113413,
-            "rawBytes": 417198
+            "sha256": "62c9a26060f53d6062a1a9ccdc4f6d367eeb90cb5d88c915bf46ea11372475b2",
+            "rawSha256": "8f8264e08e4bc8981963cf5a83e60089a01c02fab5082e75f92b12d4f94b0449",
+            "bytes": 121071,
+            "rawBytes": 435430
           },
           {
             "attempt": 2,
-            "sha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
-            "rawSha256": "55a34f815f26f0de92503a525f90ab99ecd8cae02eee6a446a0e7db1406df1a0",
-            "bytes": 113413,
-            "rawBytes": 417198
+            "sha256": "62c9a26060f53d6062a1a9ccdc4f6d367eeb90cb5d88c915bf46ea11372475b2",
+            "rawSha256": "8f8264e08e4bc8981963cf5a83e60089a01c02fab5082e75f92b12d4f94b0449",
+            "bytes": 121071,
+            "rawBytes": 435430
           }
         ]
       },
@@ -5553,9 +5553,9 @@
         "x": 408,
         "y": 96,
         "width": 1592,
-        "height": 6040,
+        "height": 6862,
         "top": 96,
-        "bottom": 6135
+        "bottom": 6958
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -5876,10 +5876,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-2048x1024.png",
-      "rawSha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
+      "rawSha256": "df1cae513bc37751262a03b678f5ed4419ae45670abce1ad758b33ed4b6a407f",
       "width": 2048,
       "height": 1024,
-      "bytes": 111439,
+      "bytes": 119106,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -5887,17 +5887,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
-            "rawSha256": "725c82c46e571d8dc9aacbfa364b71374e505d01daa170433606682f04b5f3c4",
-            "bytes": 111439,
-            "rawBytes": 280865
+            "sha256": "df1cae513bc37751262a03b678f5ed4419ae45670abce1ad758b33ed4b6a407f",
+            "rawSha256": "a7e9d9e6e072606bc5a1aaa566d07e8bc3670a77b3328dfb22d71956376c20c3",
+            "bytes": 119106,
+            "rawBytes": 299468
           },
           {
             "attempt": 2,
-            "sha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
-            "rawSha256": "725c82c46e571d8dc9aacbfa364b71374e505d01daa170433606682f04b5f3c4",
-            "bytes": 111439,
-            "rawBytes": 280865
+            "sha256": "df1cae513bc37751262a03b678f5ed4419ae45670abce1ad758b33ed4b6a407f",
+            "rawSha256": "a7e9d9e6e072606bc5a1aaa566d07e8bc3670a77b3328dfb22d71956376c20c3",
+            "bytes": 119106,
+            "rawBytes": 299468
           }
         ]
       },
@@ -5905,9 +5905,9 @@
         "x": 408,
         "y": 96,
         "width": 1592,
-        "height": 6040,
+        "height": 6862,
         "top": 96,
-        "bottom": 6135
+        "bottom": 6958
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -9044,10 +9044,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-2048x1024.png",
-      "rawSha256": "9333baac14be1bd9f56b8376cf3d20f54643dbaf97e30dd14c1049fb12a8b1a6",
+      "rawSha256": "1b37ec76b645af9492e95afe5b6425481148736ee7261d9cb90dc2f011138f42",
       "width": 2048,
       "height": 1024,
-      "bytes": 76089,
+      "bytes": 76102,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -9055,17 +9055,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "9333baac14be1bd9f56b8376cf3d20f54643dbaf97e30dd14c1049fb12a8b1a6",
-            "rawSha256": "ec9ec37817b5a42b8241c4943e1edc31414226c54781bda13a2bfee0dd402373",
-            "bytes": 76089,
-            "rawBytes": 344417
+            "sha256": "1b37ec76b645af9492e95afe5b6425481148736ee7261d9cb90dc2f011138f42",
+            "rawSha256": "d6c96005382696feaf5a73c5b8c7a996c8a7f500d07ea11cc84e8c6925bbc83c",
+            "bytes": 76102,
+            "rawBytes": 344301
           },
           {
             "attempt": 2,
-            "sha256": "9333baac14be1bd9f56b8376cf3d20f54643dbaf97e30dd14c1049fb12a8b1a6",
-            "rawSha256": "ec9ec37817b5a42b8241c4943e1edc31414226c54781bda13a2bfee0dd402373",
-            "bytes": 76089,
-            "rawBytes": 344417
+            "sha256": "1b37ec76b645af9492e95afe5b6425481148736ee7261d9cb90dc2f011138f42",
+            "rawSha256": "d6c96005382696feaf5a73c5b8c7a996c8a7f500d07ea11cc84e8c6925bbc83c",
+            "bytes": 76102,
+            "rawBytes": 344301
           }
         ]
       },
@@ -9396,10 +9396,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-2048x1024.png",
-      "rawSha256": "cf6fa526653caec12c67fe1108800a595c3b3a42b7261221bd361cc7c261ebf2",
+      "rawSha256": "5355ae1568db8783e8d41be2d953c01d39e30208968c8b4f1fd5dab06e839916",
       "width": 2048,
       "height": 1024,
-      "bytes": 73466,
+      "bytes": 73483,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -9407,17 +9407,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "cf6fa526653caec12c67fe1108800a595c3b3a42b7261221bd361cc7c261ebf2",
-            "rawSha256": "54d463d23c03a619a14d2ebe15cb124309fb965a9db76800b2fe1bf82751002e",
-            "bytes": 73466,
-            "rawBytes": 215764
+            "sha256": "5355ae1568db8783e8d41be2d953c01d39e30208968c8b4f1fd5dab06e839916",
+            "rawSha256": "30c167a8dac7201773afda945a9a677ab4ba8b59b8b82068fae58eba8948f8bf",
+            "bytes": 73483,
+            "rawBytes": 215757
           },
           {
             "attempt": 2,
-            "sha256": "cf6fa526653caec12c67fe1108800a595c3b3a42b7261221bd361cc7c261ebf2",
-            "rawSha256": "54d463d23c03a619a14d2ebe15cb124309fb965a9db76800b2fe1bf82751002e",
-            "bytes": 73466,
-            "rawBytes": 215764
+            "sha256": "5355ae1568db8783e8d41be2d953c01d39e30208968c8b4f1fd5dab06e839916",
+            "rawSha256": "30c167a8dac7201773afda945a9a677ab4ba8b59b8b82068fae58eba8948f8bf",
+            "bytes": 73483,
+            "rawBytes": 215757
           }
         ]
       },
@@ -10452,10 +10452,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "2344c862766e8cab21e281708f978e9496531e684acaaff91d268b64aa73e7ba",
+      "rawSha256": "78f1f5d460b59b84ce9edad3ce7646fd228563c72718639107de6c111c91e209",
       "width": 2048,
       "height": 1024,
-      "bytes": 74764,
+      "bytes": 74771,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -10463,17 +10463,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "2344c862766e8cab21e281708f978e9496531e684acaaff91d268b64aa73e7ba",
-            "rawSha256": "35471cd01562ac620e98200c2539677513809c4d348010720ac87f74cfb46af5",
-            "bytes": 74764,
-            "rawBytes": 341333
+            "sha256": "78f1f5d460b59b84ce9edad3ce7646fd228563c72718639107de6c111c91e209",
+            "rawSha256": "f8987407ebc367a9268e4c7b46c0a5a0406988d3bd93f17e545b28fa6e178790",
+            "bytes": 74771,
+            "rawBytes": 341485
           },
           {
             "attempt": 2,
-            "sha256": "2344c862766e8cab21e281708f978e9496531e684acaaff91d268b64aa73e7ba",
-            "rawSha256": "35471cd01562ac620e98200c2539677513809c4d348010720ac87f74cfb46af5",
-            "bytes": 74764,
-            "rawBytes": 341333
+            "sha256": "78f1f5d460b59b84ce9edad3ce7646fd228563c72718639107de6c111c91e209",
+            "rawSha256": "f8987407ebc367a9268e4c7b46c0a5a0406988d3bd93f17e545b28fa6e178790",
+            "bytes": 74771,
+            "rawBytes": 341485
           }
         ]
       },
@@ -10804,10 +10804,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "4bf9356e4178166b17c5f8f13d6505f39d2b20f0b0a440788dff50b07c1bd2e5",
+      "rawSha256": "8b30a6e317b955d6ed71306f535e7c6e801c899d74bb7a5206d1e0ae452f2b2e",
       "width": 2048,
       "height": 1024,
-      "bytes": 75540,
+      "bytes": 75548,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -10815,17 +10815,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "4bf9356e4178166b17c5f8f13d6505f39d2b20f0b0a440788dff50b07c1bd2e5",
-            "rawSha256": "53da4c856fb1e1060f9500d32e322200dfb9bbf7fd039dddb7692bc22a73b50f",
-            "bytes": 75540,
-            "rawBytes": 344183
+            "sha256": "8b30a6e317b955d6ed71306f535e7c6e801c899d74bb7a5206d1e0ae452f2b2e",
+            "rawSha256": "988f8a88cd61334738730bc0b4430c84c7ee712a555fe8453dd78a18a317f958",
+            "bytes": 75548,
+            "rawBytes": 344316
           },
           {
             "attempt": 2,
-            "sha256": "4bf9356e4178166b17c5f8f13d6505f39d2b20f0b0a440788dff50b07c1bd2e5",
-            "rawSha256": "53da4c856fb1e1060f9500d32e322200dfb9bbf7fd039dddb7692bc22a73b50f",
-            "bytes": 75540,
-            "rawBytes": 344183
+            "sha256": "8b30a6e317b955d6ed71306f535e7c6e801c899d74bb7a5206d1e0ae452f2b2e",
+            "rawSha256": "988f8a88cd61334738730bc0b4430c84c7ee712a555fe8453dd78a18a317f958",
+            "bytes": 75548,
+            "rawBytes": 344316
           }
         ]
       },
@@ -11508,10 +11508,10 @@
       "interaction": "scrolled-topbar",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "5e301e70fa6df03ce1bd06a7dde94889478e3ad7e66010a4fee6f26741958971",
+      "rawSha256": "3e7d30ee32765b3a1357ccbbf7f8e8b4d5eaed28dffd7b36e0468f18f9b117a0",
       "width": 2048,
       "height": 1024,
-      "bytes": 73901,
+      "bytes": 73912,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -11519,17 +11519,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "5e301e70fa6df03ce1bd06a7dde94889478e3ad7e66010a4fee6f26741958971",
-            "rawSha256": "c59f6efe03176ad4025db5e70c00550bacbba77ca237fae7241367718a633016",
-            "bytes": 73901,
-            "rawBytes": 339295
+            "sha256": "3e7d30ee32765b3a1357ccbbf7f8e8b4d5eaed28dffd7b36e0468f18f9b117a0",
+            "rawSha256": "faa4345e5fcc410461734d457ee309eb41719c1d58171cb66240901e7d10959d",
+            "bytes": 73912,
+            "rawBytes": 339357
           },
           {
             "attempt": 2,
-            "sha256": "5e301e70fa6df03ce1bd06a7dde94889478e3ad7e66010a4fee6f26741958971",
-            "rawSha256": "c59f6efe03176ad4025db5e70c00550bacbba77ca237fae7241367718a633016",
-            "bytes": 73901,
-            "rawBytes": 339295
+            "sha256": "3e7d30ee32765b3a1357ccbbf7f8e8b4d5eaed28dffd7b36e0468f18f9b117a0",
+            "rawSha256": "faa4345e5fcc410461734d457ee309eb41719c1d58171cb66240901e7d10959d",
+            "bytes": 73912,
+            "rawBytes": 339357
           }
         ]
       },
@@ -11860,10 +11860,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "a201de5954ff19a81ec150567a74892be5d675617128e774fe3dc65fe75ed864",
+      "rawSha256": "cab41b7d731806673a150bff68480e56e42c175d4cbe351c39faefdc216f24a9",
       "width": 2048,
       "height": 1024,
-      "bytes": 111577,
+      "bytes": 110883,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -11871,17 +11871,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "a201de5954ff19a81ec150567a74892be5d675617128e774fe3dc65fe75ed864",
-            "rawSha256": "6233fbfc3de5764596a1fe8f783a8b3a156c3f98a7438813d083696bbaacf09a",
-            "bytes": 111577,
-            "rawBytes": 408566
+            "sha256": "cab41b7d731806673a150bff68480e56e42c175d4cbe351c39faefdc216f24a9",
+            "rawSha256": "aef822ff400177cf7f564bf3e48f7b6092d819a6eac0acebdae1f443daa36a59",
+            "bytes": 110883,
+            "rawBytes": 405655
           },
           {
             "attempt": 2,
-            "sha256": "a201de5954ff19a81ec150567a74892be5d675617128e774fe3dc65fe75ed864",
-            "rawSha256": "6233fbfc3de5764596a1fe8f783a8b3a156c3f98a7438813d083696bbaacf09a",
-            "bytes": 111577,
-            "rawBytes": 408566
+            "sha256": "cab41b7d731806673a150bff68480e56e42c175d4cbe351c39faefdc216f24a9",
+            "rawSha256": "aef822ff400177cf7f564bf3e48f7b6092d819a6eac0acebdae1f443daa36a59",
+            "bytes": 110883,
+            "rawBytes": 405655
           }
         ]
       },
@@ -11889,9 +11889,9 @@
         "x": 408,
         "y": 96,
         "width": 1592,
-        "height": 2526,
+        "height": 2614,
         "top": 96,
-        "bottom": 2622
+        "bottom": 2710
       },
       "currentDocShellRoute": "foundation-visual-standards",
       "storybookDocShellOracleMetrics": {
@@ -12212,10 +12212,10 @@
       "interaction": "sidebar-collapsed",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-2048x1024.png",
-      "rawSha256": "0e09bc2f0dd2ef8e84cb438f733b88a6fd0f2c085a777168d913e5651fe9022a",
+      "rawSha256": "423c66ffad649b6fb73ffb351c77bfd7eba86a5e2ca01a3896cd646460817c84",
       "width": 2048,
       "height": 1024,
-      "bytes": 57204,
+      "bytes": 57213,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -12223,17 +12223,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0e09bc2f0dd2ef8e84cb438f733b88a6fd0f2c085a777168d913e5651fe9022a",
-            "rawSha256": "75a1d20b0b569a538d8058649afc49f97a85e5f71f4aef921cc84e835cddc6b5",
-            "bytes": 57204,
-            "rawBytes": 246587
+            "sha256": "423c66ffad649b6fb73ffb351c77bfd7eba86a5e2ca01a3896cd646460817c84",
+            "rawSha256": "a394b42c4ab986e171e9740290c3b96d733fafa5f6666c40d0b412fd35fd86cf",
+            "bytes": 57213,
+            "rawBytes": 246708
           },
           {
             "attempt": 2,
-            "sha256": "0e09bc2f0dd2ef8e84cb438f733b88a6fd0f2c085a777168d913e5651fe9022a",
-            "rawSha256": "75a1d20b0b569a538d8058649afc49f97a85e5f71f4aef921cc84e835cddc6b5",
-            "bytes": 57204,
-            "rawBytes": 246587
+            "sha256": "423c66ffad649b6fb73ffb351c77bfd7eba86a5e2ca01a3896cd646460817c84",
+            "rawSha256": "a394b42c4ab986e171e9740290c3b96d733fafa5f6666c40d0b412fd35fd86cf",
+            "bytes": 57213,
+            "rawBytes": 246708
           }
         ]
       },
@@ -12564,10 +12564,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "0833a2c711c1c252f3dd3b3abb92bd853e37f42171a64645d419f7e6d9a32cd8",
+      "rawSha256": "0a8544e5cb764d632c289ed5d4932993b0d26bc9fb7f1370389c83c4ca39b625",
       "width": 1440,
       "height": 900,
-      "bytes": 62418,
+      "bytes": 62424,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -12575,17 +12575,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0833a2c711c1c252f3dd3b3abb92bd853e37f42171a64645d419f7e6d9a32cd8",
-            "rawSha256": "aeb0206c1b7e45c71f620f9910d0873aec02e55c77e2c83572d3dc118ac34f1c",
-            "bytes": 62418,
-            "rawBytes": 284385
+            "sha256": "0a8544e5cb764d632c289ed5d4932993b0d26bc9fb7f1370389c83c4ca39b625",
+            "rawSha256": "9a77a2d816d89e7c8f85dc3afad6e3a48e741bf57ab5de68e37ac2497cd11b91",
+            "bytes": 62424,
+            "rawBytes": 284457
           },
           {
             "attempt": 2,
-            "sha256": "0833a2c711c1c252f3dd3b3abb92bd853e37f42171a64645d419f7e6d9a32cd8",
-            "rawSha256": "aeb0206c1b7e45c71f620f9910d0873aec02e55c77e2c83572d3dc118ac34f1c",
-            "bytes": 62418,
-            "rawBytes": 284385
+            "sha256": "0a8544e5cb764d632c289ed5d4932993b0d26bc9fb7f1370389c83c4ca39b625",
+            "rawSha256": "9a77a2d816d89e7c8f85dc3afad6e3a48e741bf57ab5de68e37ac2497cd11b91",
+            "bytes": 62424,
+            "rawBytes": 284457
           }
         ]
       },
@@ -12916,10 +12916,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "837d9a5482e1987f072f7d607ba49bb4f270fe5d1b1eb4e85afeab8c4b58d464",
+      "rawSha256": "5b7447abaaafee67aece36473519adfdbe4ebac1854a2afee29c01f0522e1d8b",
       "width": 1440,
       "height": 900,
-      "bytes": 60749,
+      "bytes": 60747,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -12927,17 +12927,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "837d9a5482e1987f072f7d607ba49bb4f270fe5d1b1eb4e85afeab8c4b58d464",
-            "rawSha256": "4c0f75830daa7ca6f35568a76a22d24cdabd17816322514e6acf10cab212c623",
-            "bytes": 60749,
-            "rawBytes": 182006
+            "sha256": "5b7447abaaafee67aece36473519adfdbe4ebac1854a2afee29c01f0522e1d8b",
+            "rawSha256": "83098ad62186c1d86bde132fe01d29b3ab41061b4f563400813d36faf52e2eb5",
+            "bytes": 60747,
+            "rawBytes": 181979
           },
           {
             "attempt": 2,
-            "sha256": "837d9a5482e1987f072f7d607ba49bb4f270fe5d1b1eb4e85afeab8c4b58d464",
-            "rawSha256": "4c0f75830daa7ca6f35568a76a22d24cdabd17816322514e6acf10cab212c623",
-            "bytes": 60749,
-            "rawBytes": 182006
+            "sha256": "5b7447abaaafee67aece36473519adfdbe4ebac1854a2afee29c01f0522e1d8b",
+            "rawSha256": "83098ad62186c1d86bde132fe01d29b3ab41061b4f563400813d36faf52e2eb5",
+            "bytes": 60747,
+            "rawBytes": 181979
           }
         ]
       },
@@ -13268,7 +13268,7 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "b351c2e006f8fe61d069c7c34e0f133eac704524f2bf9d739e3962438a25445d",
+      "rawSha256": "0cd8de7708eeca1dafe235b5e2118f0fb00ff431f04538ef6011f8156f25d4ed",
       "width": 1440,
       "height": 900,
       "bytes": 61415,
@@ -13279,17 +13279,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "b351c2e006f8fe61d069c7c34e0f133eac704524f2bf9d739e3962438a25445d",
-            "rawSha256": "6e919e1fff4682a296fa2065317b49e8b2927baf450605baf7e71812693ff0da",
+            "sha256": "0cd8de7708eeca1dafe235b5e2118f0fb00ff431f04538ef6011f8156f25d4ed",
+            "rawSha256": "2e20ba8866a9fbb921893345a6df10d0f560148298dc4c19e498033df35c0b40",
             "bytes": 61415,
-            "rawBytes": 281114
+            "rawBytes": 281135
           },
           {
             "attempt": 2,
-            "sha256": "b351c2e006f8fe61d069c7c34e0f133eac704524f2bf9d739e3962438a25445d",
-            "rawSha256": "6e919e1fff4682a296fa2065317b49e8b2927baf450605baf7e71812693ff0da",
+            "sha256": "0cd8de7708eeca1dafe235b5e2118f0fb00ff431f04538ef6011f8156f25d4ed",
+            "rawSha256": "2e20ba8866a9fbb921893345a6df10d0f560148298dc4c19e498033df35c0b40",
             "bytes": 61415,
-            "rawBytes": 281114
+            "rawBytes": 281135
           }
         ]
       },
@@ -13620,10 +13620,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "26fe59019a0de6decf5d6c9b7b0254e0673c8cb7ad1dca26c0fcb911e3314b76",
+      "rawSha256": "6045fb83b6d7fd9e0587f2a9a9119ed0cd636468350537e861410738a55b0fa6",
       "width": 1440,
       "height": 900,
-      "bytes": 59760,
+      "bytes": 59772,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -13631,17 +13631,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "26fe59019a0de6decf5d6c9b7b0254e0673c8cb7ad1dca26c0fcb911e3314b76",
-            "rawSha256": "f159506fb15328a8641b69a21b7f87ab07843a6fcded7dd2ef613b0936ed8292",
-            "bytes": 59760,
-            "rawBytes": 182906
+            "sha256": "6045fb83b6d7fd9e0587f2a9a9119ed0cd636468350537e861410738a55b0fa6",
+            "rawSha256": "62603dcee87aa316627435e96679a272ed3e2bd796b132e0bff7cd3cee7a20c4",
+            "bytes": 59772,
+            "rawBytes": 182896
           },
           {
             "attempt": 2,
-            "sha256": "26fe59019a0de6decf5d6c9b7b0254e0673c8cb7ad1dca26c0fcb911e3314b76",
-            "rawSha256": "f159506fb15328a8641b69a21b7f87ab07843a6fcded7dd2ef613b0936ed8292",
-            "bytes": 59760,
-            "rawBytes": 182906
+            "sha256": "6045fb83b6d7fd9e0587f2a9a9119ed0cd636468350537e861410738a55b0fa6",
+            "rawSha256": "62603dcee87aa316627435e96679a272ed3e2bd796b132e0bff7cd3cee7a20c4",
+            "bytes": 59772,
+            "rawBytes": 182896
           }
         ]
       },
@@ -14676,10 +14676,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "8fa20b2d7c14a05abbad19120d1bf149966a095513084b7e4baf5f07a7ccb23c",
+      "rawSha256": "007214bd9a710f491b2980fb17a91f5ab82d1c88510463c0da19070201598f97",
       "width": 1440,
       "height": 900,
-      "bytes": 66779,
+      "bytes": 66770,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -14687,17 +14687,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "8fa20b2d7c14a05abbad19120d1bf149966a095513084b7e4baf5f07a7ccb23c",
-            "rawSha256": "f54da5b5dc43a4853303966a49bc0a2ab43614345c15d8ccb499b40212fc6ed8",
-            "bytes": 66779,
-            "rawBytes": 291341
+            "sha256": "007214bd9a710f491b2980fb17a91f5ab82d1c88510463c0da19070201598f97",
+            "rawSha256": "b58994bea65b258be411dfcbaae3c0bb3fa2f07a4285db0fe2e7c89f8fb25a74",
+            "bytes": 66770,
+            "rawBytes": 291313
           },
           {
             "attempt": 2,
-            "sha256": "8fa20b2d7c14a05abbad19120d1bf149966a095513084b7e4baf5f07a7ccb23c",
-            "rawSha256": "f54da5b5dc43a4853303966a49bc0a2ab43614345c15d8ccb499b40212fc6ed8",
-            "bytes": 66779,
-            "rawBytes": 291341
+            "sha256": "007214bd9a710f491b2980fb17a91f5ab82d1c88510463c0da19070201598f97",
+            "rawSha256": "b58994bea65b258be411dfcbaae3c0bb3fa2f07a4285db0fe2e7c89f8fb25a74",
+            "bytes": 66770,
+            "rawBytes": 291313
           }
         ]
       },
@@ -15028,10 +15028,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "daea05f615a9280df5c81fbe2c93b0f88675b12ab56f32c1eef63eda54c9c254",
+      "rawSha256": "dcf90e2d5e7c941dc1c24aecbb25764b11357d5a0197f4607915041fbdab4f85",
       "width": 1440,
       "height": 900,
-      "bytes": 65748,
+      "bytes": 65744,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -15039,17 +15039,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "daea05f615a9280df5c81fbe2c93b0f88675b12ab56f32c1eef63eda54c9c254",
-            "rawSha256": "76ee7663b5f9b3848735e210c74c3643f503dd089e706dea66cf670e765b2017",
-            "bytes": 65748,
-            "rawBytes": 188139
+            "sha256": "dcf90e2d5e7c941dc1c24aecbb25764b11357d5a0197f4607915041fbdab4f85",
+            "rawSha256": "3ff6e34b8be1705ea89373c9139c691a2f7014e669cf5a35fb56cf073e8edf3c",
+            "bytes": 65744,
+            "rawBytes": 188123
           },
           {
             "attempt": 2,
-            "sha256": "daea05f615a9280df5c81fbe2c93b0f88675b12ab56f32c1eef63eda54c9c254",
-            "rawSha256": "76ee7663b5f9b3848735e210c74c3643f503dd089e706dea66cf670e765b2017",
-            "bytes": 65748,
-            "rawBytes": 188139
+            "sha256": "dcf90e2d5e7c941dc1c24aecbb25764b11357d5a0197f4607915041fbdab4f85",
+            "rawSha256": "3ff6e34b8be1705ea89373c9139c691a2f7014e669cf5a35fb56cf073e8edf3c",
+            "bytes": 65744,
+            "rawBytes": 188123
           }
         ]
       },
@@ -15380,10 +15380,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "914c94cdf201618aa18a627e3ced98178d3afd0a970993d540b5c79185e07ae0",
+      "rawSha256": "965b72299d1b2077f8ba1ba7a708cf7959e99ff898311997f736a4235e3a8a3d",
       "width": 1440,
       "height": 900,
-      "bytes": 58303,
+      "bytes": 58308,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -15391,17 +15391,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "914c94cdf201618aa18a627e3ced98178d3afd0a970993d540b5c79185e07ae0",
-            "rawSha256": "2db65331cb196eba2f3c86aa67ae2ffb782e597640771d0dcd3944b3d5698dfe",
-            "bytes": 58303,
-            "rawBytes": 264666
+            "sha256": "965b72299d1b2077f8ba1ba7a708cf7959e99ff898311997f736a4235e3a8a3d",
+            "rawSha256": "81f7f1dc6c21c2480705d79234e7563adde3f252ffb4c8a3022678395b62107b",
+            "bytes": 58308,
+            "rawBytes": 264694
           },
           {
             "attempt": 2,
-            "sha256": "914c94cdf201618aa18a627e3ced98178d3afd0a970993d540b5c79185e07ae0",
-            "rawSha256": "2db65331cb196eba2f3c86aa67ae2ffb782e597640771d0dcd3944b3d5698dfe",
-            "bytes": 58303,
-            "rawBytes": 264666
+            "sha256": "965b72299d1b2077f8ba1ba7a708cf7959e99ff898311997f736a4235e3a8a3d",
+            "rawSha256": "81f7f1dc6c21c2480705d79234e7563adde3f252ffb4c8a3022678395b62107b",
+            "bytes": 58308,
+            "rawBytes": 264694
           }
         ]
       },
@@ -15732,10 +15732,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "b7ab0b19292b3fb1047877d655a7f60c18ea2232c97733e9b8fb5006dcd90653",
+      "rawSha256": "b4b08aaaf8b5c896906fcaa8d4e533f1ea724a355881c8f19054be8167c01c1e",
       "width": 1440,
       "height": 900,
-      "bytes": 56766,
+      "bytes": 56790,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -15743,17 +15743,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "b7ab0b19292b3fb1047877d655a7f60c18ea2232c97733e9b8fb5006dcd90653",
-            "rawSha256": "97506af75f8c20fbc8c8f803f4876a3d73bbb70b37e21750bce2ce2d6b6a1222",
-            "bytes": 56766,
-            "rawBytes": 156793
+            "sha256": "b4b08aaaf8b5c896906fcaa8d4e533f1ea724a355881c8f19054be8167c01c1e",
+            "rawSha256": "bcd3acb8c00027297b35de94a5b699f3ae86f9fad5ba9c73620d9a8e4520da6a",
+            "bytes": 56790,
+            "rawBytes": 156939
           },
           {
             "attempt": 2,
-            "sha256": "b7ab0b19292b3fb1047877d655a7f60c18ea2232c97733e9b8fb5006dcd90653",
-            "rawSha256": "97506af75f8c20fbc8c8f803f4876a3d73bbb70b37e21750bce2ce2d6b6a1222",
-            "bytes": 56766,
-            "rawBytes": 156793
+            "sha256": "b4b08aaaf8b5c896906fcaa8d4e533f1ea724a355881c8f19054be8167c01c1e",
+            "rawSha256": "bcd3acb8c00027297b35de94a5b699f3ae86f9fad5ba9c73620d9a8e4520da6a",
+            "bytes": 56790,
+            "rawBytes": 156939
           }
         ]
       },
@@ -16084,10 +16084,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "e718bda0851e077983ff0c5190d67fb21c465928889fa154fb5ba90e491a0c8b",
+      "rawSha256": "cedbe0700dd83afe5d46f0258ffa3b03bb318e0de137db1205adbd0724ae89d4",
       "width": 1440,
       "height": 900,
-      "bytes": 58062,
+      "bytes": 58071,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -16095,17 +16095,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e718bda0851e077983ff0c5190d67fb21c465928889fa154fb5ba90e491a0c8b",
-            "rawSha256": "9a6eacd5b379808fb89a0559ba226c5ae41cd89f779839a5bdc153990505e3c8",
-            "bytes": 58062,
-            "rawBytes": 261930
+            "sha256": "cedbe0700dd83afe5d46f0258ffa3b03bb318e0de137db1205adbd0724ae89d4",
+            "rawSha256": "f2cdab2aa66cec8ca62eeb4c33504c57f33476462c58e0e76f5668293c086ffe",
+            "bytes": 58071,
+            "rawBytes": 261958
           },
           {
             "attempt": 2,
-            "sha256": "e718bda0851e077983ff0c5190d67fb21c465928889fa154fb5ba90e491a0c8b",
-            "rawSha256": "9a6eacd5b379808fb89a0559ba226c5ae41cd89f779839a5bdc153990505e3c8",
-            "bytes": 58062,
-            "rawBytes": 261930
+            "sha256": "cedbe0700dd83afe5d46f0258ffa3b03bb318e0de137db1205adbd0724ae89d4",
+            "rawSha256": "f2cdab2aa66cec8ca62eeb4c33504c57f33476462c58e0e76f5668293c086ffe",
+            "bytes": 58071,
+            "rawBytes": 261958
           }
         ]
       },
@@ -16436,10 +16436,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "a1ff01f9e347864412ef2fd1230705359576b451b63dde3bf2c0154314dd4bf7",
+      "rawSha256": "5b5e0f9e453da859b95d3f14cf1d013767411373fc1349884775c37a960e421e",
       "width": 1440,
       "height": 900,
-      "bytes": 56577,
+      "bytes": 56579,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -16447,17 +16447,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "a1ff01f9e347864412ef2fd1230705359576b451b63dde3bf2c0154314dd4bf7",
-            "rawSha256": "de2bc1283f3258d1e032592b7d94cee177d21a86c68a5963fd8fc75d0219068d",
-            "bytes": 56577,
-            "rawBytes": 160232
+            "sha256": "5b5e0f9e453da859b95d3f14cf1d013767411373fc1349884775c37a960e421e",
+            "rawSha256": "df8e7f981f9d75b9c0cf50e29897652dcbf4c8e4b25dd550e5394d7fd71fc9d1",
+            "bytes": 56579,
+            "rawBytes": 160275
           },
           {
             "attempt": 2,
-            "sha256": "a1ff01f9e347864412ef2fd1230705359576b451b63dde3bf2c0154314dd4bf7",
-            "rawSha256": "de2bc1283f3258d1e032592b7d94cee177d21a86c68a5963fd8fc75d0219068d",
-            "bytes": 56577,
-            "rawBytes": 160232
+            "sha256": "5b5e0f9e453da859b95d3f14cf1d013767411373fc1349884775c37a960e421e",
+            "rawSha256": "df8e7f981f9d75b9c0cf50e29897652dcbf4c8e4b25dd550e5394d7fd71fc9d1",
+            "bytes": 56579,
+            "rawBytes": 160275
           }
         ]
       },
@@ -16788,10 +16788,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
+      "rawSha256": "e4cf60bcef4dc32b9996d5eb20772835881cd455761da47fefabd8a44dac0d83",
       "width": 1440,
       "height": 900,
-      "bytes": 85931,
+      "bytes": 87854,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -16799,17 +16799,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
-            "rawSha256": "7ff2c2e43c82dfbb8fd948320880e8e3678a96230d25cef9eeea0dcc5fa9eb00",
-            "bytes": 85931,
-            "rawBytes": 323746
+            "sha256": "e4cf60bcef4dc32b9996d5eb20772835881cd455761da47fefabd8a44dac0d83",
+            "rawSha256": "f8c51f639dbdf75822337b1db3efce750ba8e96383b45a39b1150cfcb1bd4739",
+            "bytes": 87854,
+            "rawBytes": 329066
           },
           {
             "attempt": 2,
-            "sha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
-            "rawSha256": "7ff2c2e43c82dfbb8fd948320880e8e3678a96230d25cef9eeea0dcc5fa9eb00",
-            "bytes": 85931,
-            "rawBytes": 323746
+            "sha256": "e4cf60bcef4dc32b9996d5eb20772835881cd455761da47fefabd8a44dac0d83",
+            "rawSha256": "f8c51f639dbdf75822337b1db3efce750ba8e96383b45a39b1150cfcb1bd4739",
+            "bytes": 87854,
+            "rawBytes": 329066
           }
         ]
       },
@@ -16817,9 +16817,9 @@
         "x": 325,
         "y": 96,
         "width": 1077,
-        "height": 6316,
+        "height": 7191,
         "top": 96,
-        "bottom": 6412
+        "bottom": 7287
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -17140,10 +17140,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
+      "rawSha256": "409e614df45c85835b5fad45c6d8847f6aaf4c9bd91194eeaff34724e4d7039b",
       "width": 1440,
       "height": 900,
-      "bytes": 85167,
+      "bytes": 87173,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -17151,17 +17151,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
-            "rawSha256": "dd4c4d70bccb606cffdb878db281f0db2f60eb005d1a2fad382b188942544b99",
-            "bytes": 85167,
-            "rawBytes": 218654
+            "sha256": "409e614df45c85835b5fad45c6d8847f6aaf4c9bd91194eeaff34724e4d7039b",
+            "rawSha256": "d06890533431bc4330b2a027bb5b0d9ba160b34967c5b86e1dbc03e2a7514f37",
+            "bytes": 87173,
+            "rawBytes": 223857
           },
           {
             "attempt": 2,
-            "sha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
-            "rawSha256": "dd4c4d70bccb606cffdb878db281f0db2f60eb005d1a2fad382b188942544b99",
-            "bytes": 85167,
-            "rawBytes": 218654
+            "sha256": "409e614df45c85835b5fad45c6d8847f6aaf4c9bd91194eeaff34724e4d7039b",
+            "rawSha256": "d06890533431bc4330b2a027bb5b0d9ba160b34967c5b86e1dbc03e2a7514f37",
+            "bytes": 87173,
+            "rawBytes": 223857
           }
         ]
       },
@@ -17169,9 +17169,9 @@
         "x": 325,
         "y": 96,
         "width": 1077,
-        "height": 6316,
+        "height": 7191,
         "top": 96,
-        "bottom": 6412
+        "bottom": 7287
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -17492,10 +17492,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
+      "rawSha256": "9e2b3092714704ead0d57a45b4240b23cf467328ad97abfba3fd81f7c4a0a894",
       "width": 1440,
       "height": 900,
-      "bytes": 85669,
+      "bytes": 90151,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -17503,17 +17503,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
-            "rawSha256": "5ec7a0f7e83eeedae9a0f80fa08ea8387e2f82695e775d431aab2158c58af298",
-            "bytes": 85669,
-            "rawBytes": 323562
+            "sha256": "9e2b3092714704ead0d57a45b4240b23cf467328ad97abfba3fd81f7c4a0a894",
+            "rawSha256": "c5f97ab5e7c42103fa049b23b8a1df4285ba13ea7a18df0033bf6129d92ee5e3",
+            "bytes": 90151,
+            "rawBytes": 335357
           },
           {
             "attempt": 2,
-            "sha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
-            "rawSha256": "5ec7a0f7e83eeedae9a0f80fa08ea8387e2f82695e775d431aab2158c58af298",
-            "bytes": 85669,
-            "rawBytes": 323562
+            "sha256": "9e2b3092714704ead0d57a45b4240b23cf467328ad97abfba3fd81f7c4a0a894",
+            "rawSha256": "c5f97ab5e7c42103fa049b23b8a1df4285ba13ea7a18df0033bf6129d92ee5e3",
+            "bytes": 90151,
+            "rawBytes": 335357
           }
         ]
       },
@@ -17521,9 +17521,9 @@
         "x": 325,
         "y": 96,
         "width": 1077,
-        "height": 6247,
+        "height": 7123,
         "top": 96,
-        "bottom": 6343
+        "bottom": 7219
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -17844,10 +17844,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
+      "rawSha256": "4d4f1098f9388bafeed5ec58f14008731612423589b818db9e39feec111a4279",
       "width": 1440,
       "height": 900,
-      "bytes": 85296,
+      "bytes": 89983,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -17855,17 +17855,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
-            "rawSha256": "56aa88f97b2ab5a58d1bee26741807b18247e5a21e703d9bf51f3833154a42cc",
-            "bytes": 85296,
-            "rawBytes": 223582
+            "sha256": "4d4f1098f9388bafeed5ec58f14008731612423589b818db9e39feec111a4279",
+            "rawSha256": "8ab2f1afb363dd08dfbcb643db23e342c7cf83bcd21ab22effba9527d6d0d9b9",
+            "bytes": 89983,
+            "rawBytes": 235678
           },
           {
             "attempt": 2,
-            "sha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
-            "rawSha256": "56aa88f97b2ab5a58d1bee26741807b18247e5a21e703d9bf51f3833154a42cc",
-            "bytes": 85296,
-            "rawBytes": 223582
+            "sha256": "4d4f1098f9388bafeed5ec58f14008731612423589b818db9e39feec111a4279",
+            "rawSha256": "8ab2f1afb363dd08dfbcb643db23e342c7cf83bcd21ab22effba9527d6d0d9b9",
+            "bytes": 89983,
+            "rawBytes": 235678
           }
         ]
       },
@@ -17873,9 +17873,9 @@
         "x": 325,
         "y": 96,
         "width": 1077,
-        "height": 6247,
+        "height": 7123,
         "top": 96,
-        "bottom": 6343
+        "bottom": 7219
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -18900,10 +18900,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "c85e0fe6bb3f122fad94458665138b86fcdc408cdaf027eed87f89dd2c98f518",
+      "rawSha256": "d0b0ed22c9c28fa1830419e6544c70a0609129a1435c7c9c1553d630a4b3506f",
       "width": 1440,
       "height": 900,
-      "bytes": 55807,
+      "bytes": 55817,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -18911,17 +18911,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c85e0fe6bb3f122fad94458665138b86fcdc408cdaf027eed87f89dd2c98f518",
-            "rawSha256": "4e1840a4fb9c2cd3c499962ccdb25bad6230194ac1b9cfdf1141019699d6113c",
-            "bytes": 55807,
-            "rawBytes": 250412
+            "sha256": "d0b0ed22c9c28fa1830419e6544c70a0609129a1435c7c9c1553d630a4b3506f",
+            "rawSha256": "ad0301f5846278168e4350b7e5639b7410f5fd80b5b3e88a182b10c5360f4b5f",
+            "bytes": 55817,
+            "rawBytes": 250358
           },
           {
             "attempt": 2,
-            "sha256": "c85e0fe6bb3f122fad94458665138b86fcdc408cdaf027eed87f89dd2c98f518",
-            "rawSha256": "4e1840a4fb9c2cd3c499962ccdb25bad6230194ac1b9cfdf1141019699d6113c",
-            "bytes": 55807,
-            "rawBytes": 250412
+            "sha256": "d0b0ed22c9c28fa1830419e6544c70a0609129a1435c7c9c1553d630a4b3506f",
+            "rawSha256": "ad0301f5846278168e4350b7e5639b7410f5fd80b5b3e88a182b10c5360f4b5f",
+            "bytes": 55817,
+            "rawBytes": 250358
           }
         ]
       },
@@ -19252,10 +19252,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "c800564ef34bdfe0c1069e041a3a492827473cdb8df5a8db52226b3d6a3c9dce",
+      "rawSha256": "28869e5d8a1434929f216d72c9e21dd0f568567a5997665cca4cee2583e72135",
       "width": 1440,
       "height": 900,
-      "bytes": 54918,
+      "bytes": 54931,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -19263,17 +19263,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c800564ef34bdfe0c1069e041a3a492827473cdb8df5a8db52226b3d6a3c9dce",
-            "rawSha256": "3f43389251a356c204783aac1d8d94fb003583d2840ea6a81e836eaca1b126bc",
-            "bytes": 54918,
-            "rawBytes": 148998
+            "sha256": "28869e5d8a1434929f216d72c9e21dd0f568567a5997665cca4cee2583e72135",
+            "rawSha256": "49023ea4bfb0286fd140c75647218e8dc37d57e486c5d749b08939b038c11a45",
+            "bytes": 54931,
+            "rawBytes": 149051
           },
           {
             "attempt": 2,
-            "sha256": "c800564ef34bdfe0c1069e041a3a492827473cdb8df5a8db52226b3d6a3c9dce",
-            "rawSha256": "3f43389251a356c204783aac1d8d94fb003583d2840ea6a81e836eaca1b126bc",
-            "bytes": 54918,
-            "rawBytes": 148998
+            "sha256": "28869e5d8a1434929f216d72c9e21dd0f568567a5997665cca4cee2583e72135",
+            "rawSha256": "49023ea4bfb0286fd140c75647218e8dc37d57e486c5d749b08939b038c11a45",
+            "bytes": 54931,
+            "rawBytes": 149051
           }
         ]
       },
@@ -19604,10 +19604,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "abb93e046e5525d356bf9cc59f4df269d551de8ca08e9a09f99be891f82389aa",
+      "rawSha256": "c10a2eb0506daa3ecb9720d2463a4455683059e1131ddca90bf17bbe43dff5ed",
       "width": 1440,
       "height": 900,
-      "bytes": 56506,
+      "bytes": 56511,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -19615,17 +19615,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "abb93e046e5525d356bf9cc59f4df269d551de8ca08e9a09f99be891f82389aa",
-            "rawSha256": "f19f7974233217fbb6b3d8b9955a6a8d57f39c85488b92a347ca1af9722bd729",
-            "bytes": 56506,
-            "rawBytes": 249644
+            "sha256": "c10a2eb0506daa3ecb9720d2463a4455683059e1131ddca90bf17bbe43dff5ed",
+            "rawSha256": "54279160e11dc4c24e971d14b02e70d90236ba7dd041ddcc8f82d4161000a565",
+            "bytes": 56511,
+            "rawBytes": 249951
           },
           {
             "attempt": 2,
-            "sha256": "abb93e046e5525d356bf9cc59f4df269d551de8ca08e9a09f99be891f82389aa",
-            "rawSha256": "f19f7974233217fbb6b3d8b9955a6a8d57f39c85488b92a347ca1af9722bd729",
-            "bytes": 56506,
-            "rawBytes": 249644
+            "sha256": "c10a2eb0506daa3ecb9720d2463a4455683059e1131ddca90bf17bbe43dff5ed",
+            "rawSha256": "54279160e11dc4c24e971d14b02e70d90236ba7dd041ddcc8f82d4161000a565",
+            "bytes": 56511,
+            "rawBytes": 249951
           }
         ]
       },
@@ -19956,10 +19956,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "35cc86e54a348af2e594c5c60a5d44b28356c3402c65af3231a3a6241ce53788",
+      "rawSha256": "90e56ac21edeaeb396e28968761fd7f8a7b1758f9e0144863131c5b48db05968",
       "width": 1440,
       "height": 900,
-      "bytes": 54572,
+      "bytes": 54599,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -19967,17 +19967,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "35cc86e54a348af2e594c5c60a5d44b28356c3402c65af3231a3a6241ce53788",
-            "rawSha256": "884de4e1aa94b8f4a2a9f24ec2dd869a2c17505b8ea0537878db34f58b111b66",
-            "bytes": 54572,
-            "rawBytes": 142690
+            "sha256": "90e56ac21edeaeb396e28968761fd7f8a7b1758f9e0144863131c5b48db05968",
+            "rawSha256": "c236d44433f2919173ac6351c2afe1a1708ba79446e7851a9decbc1ee268066d",
+            "bytes": 54599,
+            "rawBytes": 142664
           },
           {
             "attempt": 2,
-            "sha256": "35cc86e54a348af2e594c5c60a5d44b28356c3402c65af3231a3a6241ce53788",
-            "rawSha256": "884de4e1aa94b8f4a2a9f24ec2dd869a2c17505b8ea0537878db34f58b111b66",
-            "bytes": 54572,
-            "rawBytes": 142690
+            "sha256": "90e56ac21edeaeb396e28968761fd7f8a7b1758f9e0144863131c5b48db05968",
+            "rawSha256": "c236d44433f2919173ac6351c2afe1a1708ba79446e7851a9decbc1ee268066d",
+            "bytes": 54599,
+            "rawBytes": 142664
           }
         ]
       },
@@ -20308,10 +20308,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "19e9ac0d79c09639eea1e5626b98e563036e3413c94127eeb2f04f192a3cd684",
+      "rawSha256": "6f98724fa7b4b627a14795bdf0bbe9970354c4db85a1c2a26d85557e96165683",
       "width": 1440,
       "height": 900,
-      "bytes": 59257,
+      "bytes": 59275,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -20319,17 +20319,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "19e9ac0d79c09639eea1e5626b98e563036e3413c94127eeb2f04f192a3cd684",
-            "rawSha256": "03bf3b066d032ad912b929b8a749481eefd6957e767871bdc7d5eaca8a7b0503",
-            "bytes": 59257,
-            "rawBytes": 255589
+            "sha256": "6f98724fa7b4b627a14795bdf0bbe9970354c4db85a1c2a26d85557e96165683",
+            "rawSha256": "91b1f411affdb78cafbe16783bdb650e3d369f7d362cc777a0cc9979f845a6cb",
+            "bytes": 59275,
+            "rawBytes": 255556
           },
           {
             "attempt": 2,
-            "sha256": "19e9ac0d79c09639eea1e5626b98e563036e3413c94127eeb2f04f192a3cd684",
-            "rawSha256": "03bf3b066d032ad912b929b8a749481eefd6957e767871bdc7d5eaca8a7b0503",
-            "bytes": 59257,
-            "rawBytes": 255589
+            "sha256": "6f98724fa7b4b627a14795bdf0bbe9970354c4db85a1c2a26d85557e96165683",
+            "rawSha256": "91b1f411affdb78cafbe16783bdb650e3d369f7d362cc777a0cc9979f845a6cb",
+            "bytes": 59275,
+            "rawBytes": 255556
           }
         ]
       },
@@ -20660,10 +20660,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "31e5ffd6ac04c095d1ebf8b00e72034da8b684eb26e2858380a42f549739ebf5",
+      "rawSha256": "3e3f6409e0795666d0eab3fd520760b643c5b70d351828cf3390f6cdfbb008a1",
       "width": 1440,
       "height": 900,
-      "bytes": 57524,
+      "bytes": 57530,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -20671,17 +20671,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "31e5ffd6ac04c095d1ebf8b00e72034da8b684eb26e2858380a42f549739ebf5",
-            "rawSha256": "1c1be4205f7ac6dba113e80017b24e4705f5351b5a054bf00bf578071a0d3aeb",
-            "bytes": 57524,
-            "rawBytes": 152857
+            "sha256": "3e3f6409e0795666d0eab3fd520760b643c5b70d351828cf3390f6cdfbb008a1",
+            "rawSha256": "db473bd55e9156594065a51d33090206632a89512338ec16a1707ab9ac336ab9",
+            "bytes": 57530,
+            "rawBytes": 152836
           },
           {
             "attempt": 2,
-            "sha256": "31e5ffd6ac04c095d1ebf8b00e72034da8b684eb26e2858380a42f549739ebf5",
-            "rawSha256": "1c1be4205f7ac6dba113e80017b24e4705f5351b5a054bf00bf578071a0d3aeb",
-            "bytes": 57524,
-            "rawBytes": 152857
+            "sha256": "3e3f6409e0795666d0eab3fd520760b643c5b70d351828cf3390f6cdfbb008a1",
+            "rawSha256": "db473bd55e9156594065a51d33090206632a89512338ec16a1707ab9ac336ab9",
+            "bytes": 57530,
+            "rawBytes": 152836
           }
         ]
       },
@@ -21012,10 +21012,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__desktop-1440x900.png",
-      "rawSha256": "67540d1ea83baae528ba1ac01843e036c91f22ee262135ac4645130217d38da5",
+      "rawSha256": "d28900f06316eec79e2844e0ee997e7a71c98706e2adb7b1aacfb9a5011f5c3f",
       "width": 1440,
       "height": 900,
-      "bytes": 64529,
+      "bytes": 64544,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -21023,17 +21023,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "67540d1ea83baae528ba1ac01843e036c91f22ee262135ac4645130217d38da5",
-            "rawSha256": "5c8e5915239cafcebaff3e70afa9d73cd7c4c7b00d22b4c751f02f9a1c4fb27f",
-            "bytes": 64529,
-            "rawBytes": 285100
+            "sha256": "d28900f06316eec79e2844e0ee997e7a71c98706e2adb7b1aacfb9a5011f5c3f",
+            "rawSha256": "dd65b23d910b2db63e7cd802af1c08683d4d4591e30177257aaf42d9a8e5952f",
+            "bytes": 64544,
+            "rawBytes": 285208
           },
           {
             "attempt": 2,
-            "sha256": "67540d1ea83baae528ba1ac01843e036c91f22ee262135ac4645130217d38da5",
-            "rawSha256": "5c8e5915239cafcebaff3e70afa9d73cd7c4c7b00d22b4c751f02f9a1c4fb27f",
-            "bytes": 64529,
-            "rawBytes": 285100
+            "sha256": "d28900f06316eec79e2844e0ee997e7a71c98706e2adb7b1aacfb9a5011f5c3f",
+            "rawSha256": "dd65b23d910b2db63e7cd802af1c08683d4d4591e30177257aaf42d9a8e5952f",
+            "bytes": 64544,
+            "rawBytes": 285208
           }
         ]
       },
@@ -21364,10 +21364,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__desktop-1440x900.png",
-      "rawSha256": "898b00e8db665090005fe66df640b7b65d3f2c81a32f408fe4f247c00107a157",
+      "rawSha256": "0c4cb5edcd36b4ab6b1efa0ee2bbcfc4950f071959efee8ce13c1d31a07e2ef8",
       "width": 1440,
       "height": 900,
-      "bytes": 63015,
+      "bytes": 63018,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -21375,17 +21375,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "898b00e8db665090005fe66df640b7b65d3f2c81a32f408fe4f247c00107a157",
-            "rawSha256": "06ac542bc2d7c2c06371ff197da10a144aba9aca8f820173d4ed0aee73426451",
-            "bytes": 63015,
-            "rawBytes": 181303
+            "sha256": "0c4cb5edcd36b4ab6b1efa0ee2bbcfc4950f071959efee8ce13c1d31a07e2ef8",
+            "rawSha256": "6e05ae910b89aa832e63fd3e18a40443ddfa9e830f4fdd47c895365b5a641d17",
+            "bytes": 63018,
+            "rawBytes": 181410
           },
           {
             "attempt": 2,
-            "sha256": "898b00e8db665090005fe66df640b7b65d3f2c81a32f408fe4f247c00107a157",
-            "rawSha256": "06ac542bc2d7c2c06371ff197da10a144aba9aca8f820173d4ed0aee73426451",
-            "bytes": 63015,
-            "rawBytes": 181303
+            "sha256": "0c4cb5edcd36b4ab6b1efa0ee2bbcfc4950f071959efee8ce13c1d31a07e2ef8",
+            "rawSha256": "6e05ae910b89aa832e63fd3e18a40443ddfa9e830f4fdd47c895365b5a641d17",
+            "bytes": 63018,
+            "rawBytes": 181410
           }
         ]
       },
@@ -21716,10 +21716,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "a8014fb22aed43a18f69949625f1ef5438e8538f514666a7612bb4681b241d5b",
+      "rawSha256": "746ad510cc58a7a0e64895d0710f597d07f90178dca51e3d5947d25bb6077be1",
       "width": 1440,
       "height": 900,
-      "bytes": 64277,
+      "bytes": 64273,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -21727,17 +21727,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "a8014fb22aed43a18f69949625f1ef5438e8538f514666a7612bb4681b241d5b",
-            "rawSha256": "c252bbc654ea33bd9452a6247a81303b2c610cabef5b84f42b73e7097548a511",
-            "bytes": 64277,
-            "rawBytes": 282913
+            "sha256": "746ad510cc58a7a0e64895d0710f597d07f90178dca51e3d5947d25bb6077be1",
+            "rawSha256": "03e5c7fdddb49096a61ad25143a066ab7498d2adb4e688d412446d2c3b5049d5",
+            "bytes": 64273,
+            "rawBytes": 282986
           },
           {
             "attempt": 2,
-            "sha256": "a8014fb22aed43a18f69949625f1ef5438e8538f514666a7612bb4681b241d5b",
-            "rawSha256": "c252bbc654ea33bd9452a6247a81303b2c610cabef5b84f42b73e7097548a511",
-            "bytes": 64277,
-            "rawBytes": 282913
+            "sha256": "746ad510cc58a7a0e64895d0710f597d07f90178dca51e3d5947d25bb6077be1",
+            "rawSha256": "03e5c7fdddb49096a61ad25143a066ab7498d2adb4e688d412446d2c3b5049d5",
+            "bytes": 64273,
+            "rawBytes": 282986
           }
         ]
       },
@@ -22068,10 +22068,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__desktop-1440x900.png",
-      "rawSha256": "ff5204dc17023d9cecc6e4e15bf6264729ead9de646424681ba404ee606ac822",
+      "rawSha256": "75b7501c0662fdefa2d6e6d2996b4b95b6b93448897926288524df2b22e7a1d3",
       "width": 1440,
       "height": 900,
-      "bytes": 63156,
+      "bytes": 63150,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -22079,17 +22079,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "ff5204dc17023d9cecc6e4e15bf6264729ead9de646424681ba404ee606ac822",
-            "rawSha256": "74f3586eb34eb47dd8767fa455b0b9b48b5275b1993e26b76d56e986d85967af",
-            "bytes": 63156,
-            "rawBytes": 186821
+            "sha256": "75b7501c0662fdefa2d6e6d2996b4b95b6b93448897926288524df2b22e7a1d3",
+            "rawSha256": "44b693938d88761b5b16297603500d686fe2e6b56e152cfcf88269b6fdaff888",
+            "bytes": 63150,
+            "rawBytes": 186845
           },
           {
             "attempt": 2,
-            "sha256": "ff5204dc17023d9cecc6e4e15bf6264729ead9de646424681ba404ee606ac822",
-            "rawSha256": "74f3586eb34eb47dd8767fa455b0b9b48b5275b1993e26b76d56e986d85967af",
-            "bytes": 63156,
-            "rawBytes": 186821
+            "sha256": "75b7501c0662fdefa2d6e6d2996b4b95b6b93448897926288524df2b22e7a1d3",
+            "rawSha256": "44b693938d88761b5b16297603500d686fe2e6b56e152cfcf88269b6fdaff888",
+            "bytes": 63150,
+            "rawBytes": 186845
           }
         ]
       },
@@ -22420,10 +22420,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "c32ae456d90e61cc75fbd1d9d9db029c4a892580c1d02dee5832c4e30020f1c4",
+      "rawSha256": "eba7bcd01b8566d9dcf63bb4c922265733c19eb5d769894d43e5e9adb8da4ac2",
       "width": 1440,
       "height": 900,
-      "bytes": 61678,
+      "bytes": 61677,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -22431,17 +22431,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c32ae456d90e61cc75fbd1d9d9db029c4a892580c1d02dee5832c4e30020f1c4",
-            "rawSha256": "cd2482f9b064efefe5f801af88138c39444c257ddd5a57210db27e8765991e2f",
-            "bytes": 61678,
-            "rawBytes": 278498
+            "sha256": "eba7bcd01b8566d9dcf63bb4c922265733c19eb5d769894d43e5e9adb8da4ac2",
+            "rawSha256": "d8543d11384c4ed3294dec010981e89f9902a429504eb074096065064092d5f9",
+            "bytes": 61677,
+            "rawBytes": 278521
           },
           {
             "attempt": 2,
-            "sha256": "c32ae456d90e61cc75fbd1d9d9db029c4a892580c1d02dee5832c4e30020f1c4",
-            "rawSha256": "cd2482f9b064efefe5f801af88138c39444c257ddd5a57210db27e8765991e2f",
-            "bytes": 61678,
-            "rawBytes": 278498
+            "sha256": "eba7bcd01b8566d9dcf63bb4c922265733c19eb5d769894d43e5e9adb8da4ac2",
+            "rawSha256": "d8543d11384c4ed3294dec010981e89f9902a429504eb074096065064092d5f9",
+            "bytes": 61677,
+            "rawBytes": 278521
           }
         ]
       },
@@ -22772,10 +22772,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "747173e529b15c7928ec9ac795cded9b350457c6fe3db5f4ec8fe3bdff65f1d3",
+      "rawSha256": "3f7a3cca3da26aac1a36f50ae7dfa9d6b78833d3ca89512e08ecd3e65a79b20f",
       "width": 1440,
       "height": 900,
-      "bytes": 62385,
+      "bytes": 62386,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -22783,17 +22783,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "747173e529b15c7928ec9ac795cded9b350457c6fe3db5f4ec8fe3bdff65f1d3",
-            "rawSha256": "70f363a0402acaf094a5a38ac75f5fefd992c93e5424cc3c4b8df86429aed5aa",
-            "bytes": 62385,
-            "rawBytes": 280858
+            "sha256": "3f7a3cca3da26aac1a36f50ae7dfa9d6b78833d3ca89512e08ecd3e65a79b20f",
+            "rawSha256": "10ded09db9789c2565a68eb56778d024266a76bae90ae8d3bc4916dbee149a3c",
+            "bytes": 62386,
+            "rawBytes": 280878
           },
           {
             "attempt": 2,
-            "sha256": "747173e529b15c7928ec9ac795cded9b350457c6fe3db5f4ec8fe3bdff65f1d3",
-            "rawSha256": "70f363a0402acaf094a5a38ac75f5fefd992c93e5424cc3c4b8df86429aed5aa",
-            "bytes": 62385,
-            "rawBytes": 280858
+            "sha256": "3f7a3cca3da26aac1a36f50ae7dfa9d6b78833d3ca89512e08ecd3e65a79b20f",
+            "rawSha256": "10ded09db9789c2565a68eb56778d024266a76bae90ae8d3bc4916dbee149a3c",
+            "bytes": 62386,
+            "rawBytes": 280878
           }
         ]
       },
@@ -23124,10 +23124,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "5dd2428488236825faf8c8e183092b7f0c0c113f7686f51b831fc07e8071a6be",
+      "rawSha256": "d7e9b505ee7ed60eece299ef90b178d1baac0f8066fdc86c4d920e5a5f70d63a",
       "width": 1440,
       "height": 900,
-      "bytes": 63498,
+      "bytes": 63499,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -23135,17 +23135,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "5dd2428488236825faf8c8e183092b7f0c0c113f7686f51b831fc07e8071a6be",
-            "rawSha256": "94b70371c87eabf781d456d67c1343cb50f51b59d5d2a6eeb96bc49f0f0217cc",
-            "bytes": 63498,
-            "rawBytes": 287002
+            "sha256": "d7e9b505ee7ed60eece299ef90b178d1baac0f8066fdc86c4d920e5a5f70d63a",
+            "rawSha256": "3065809c9b41534893e2b6eb22be64d0ccc17342881f7ce2774900ddea04ccf2",
+            "bytes": 63499,
+            "rawBytes": 287025
           },
           {
             "attempt": 2,
-            "sha256": "5dd2428488236825faf8c8e183092b7f0c0c113f7686f51b831fc07e8071a6be",
-            "rawSha256": "94b70371c87eabf781d456d67c1343cb50f51b59d5d2a6eeb96bc49f0f0217cc",
-            "bytes": 63498,
-            "rawBytes": 287002
+            "sha256": "d7e9b505ee7ed60eece299ef90b178d1baac0f8066fdc86c4d920e5a5f70d63a",
+            "rawSha256": "3065809c9b41534893e2b6eb22be64d0ccc17342881f7ce2774900ddea04ccf2",
+            "bytes": 63499,
+            "rawBytes": 287025
           }
         ]
       },
@@ -23476,10 +23476,10 @@
       "interaction": "scrolled-topbar",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-scrolled-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "eee9ed5b432a4383473f6f40ccafb311b3826185c20a12b8280c80582944064c",
+      "rawSha256": "899acf90996bfa58b5bd52133828d338b8dbc226c6481afe0b07ab754931574f",
       "width": 1440,
       "height": 900,
-      "bytes": 61201,
+      "bytes": 61194,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -23487,16 +23487,16 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "eee9ed5b432a4383473f6f40ccafb311b3826185c20a12b8280c80582944064c",
-            "rawSha256": "2393797f20dfbeec113b0cc3108f60cd95811e4a472964d688552d2fd9f75fb2",
-            "bytes": 61201,
+            "sha256": "899acf90996bfa58b5bd52133828d338b8dbc226c6481afe0b07ab754931574f",
+            "rawSha256": "b41a21abb3db9a360f55032adfddcf6b6fc9ad639aa7b68028aff9bf1a4f4cf8",
+            "bytes": 61194,
             "rawBytes": 278888
           },
           {
             "attempt": 2,
-            "sha256": "eee9ed5b432a4383473f6f40ccafb311b3826185c20a12b8280c80582944064c",
-            "rawSha256": "2393797f20dfbeec113b0cc3108f60cd95811e4a472964d688552d2fd9f75fb2",
-            "bytes": 61201,
+            "sha256": "899acf90996bfa58b5bd52133828d338b8dbc226c6481afe0b07ab754931574f",
+            "rawSha256": "b41a21abb3db9a360f55032adfddcf6b6fc9ad639aa7b68028aff9bf1a4f4cf8",
+            "bytes": 61194,
             "rawBytes": 278888
           }
         ]
@@ -23828,10 +23828,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "f90e272a9ad13feca37c16b8baf9c281ceaabfdda515184a3fdfa60c2709477e",
+      "rawSha256": "9f9d26b5d8afe2f4f64d0fec364c36d21f17f235c21b8a2845027417008d7238",
       "width": 1440,
       "height": 900,
-      "bytes": 77341,
+      "bytes": 77174,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -23839,17 +23839,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "f90e272a9ad13feca37c16b8baf9c281ceaabfdda515184a3fdfa60c2709477e",
-            "rawSha256": "c7d298e6bbe9441f1f90337ca04981e3d59d9e66225605a00f39a6a567b3d13c",
-            "bytes": 77341,
-            "rawBytes": 299774
+            "sha256": "9f9d26b5d8afe2f4f64d0fec364c36d21f17f235c21b8a2845027417008d7238",
+            "rawSha256": "d8a6293341a9fecd5f8faf3959192a0bb682a182cfa0a4cb34f6b3d45fee4b51",
+            "bytes": 77174,
+            "rawBytes": 299280
           },
           {
             "attempt": 2,
-            "sha256": "f90e272a9ad13feca37c16b8baf9c281ceaabfdda515184a3fdfa60c2709477e",
-            "rawSha256": "c7d298e6bbe9441f1f90337ca04981e3d59d9e66225605a00f39a6a567b3d13c",
-            "bytes": 77341,
-            "rawBytes": 299774
+            "sha256": "9f9d26b5d8afe2f4f64d0fec364c36d21f17f235c21b8a2845027417008d7238",
+            "rawSha256": "d8a6293341a9fecd5f8faf3959192a0bb682a182cfa0a4cb34f6b3d45fee4b51",
+            "bytes": 77174,
+            "rawBytes": 299280
           }
         ]
       },
@@ -23857,9 +23857,9 @@
         "x": 325,
         "y": 96,
         "width": 1077,
-        "height": 3109,
+        "height": 3284,
         "top": 96,
-        "bottom": 3204
+        "bottom": 3380
       },
       "currentDocShellRoute": "foundation-visual-standards",
       "storybookDocShellOracleMetrics": {
@@ -24180,10 +24180,10 @@
       "interaction": "sidebar-collapsed",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-sidebar-collapsed-zh-cn-light__desktop-1440x900.png",
-      "rawSha256": "f136790c3611994129cc7ef34d8123b48dc761a646fdae3b62c71a458e2f1c02",
+      "rawSha256": "9649fe219080fe1c8ec001bd4ade7e51895ea8ac2ac27c995438fbef644f7560",
       "width": 1440,
       "height": 900,
-      "bytes": 47080,
+      "bytes": 47078,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -24191,17 +24191,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "f136790c3611994129cc7ef34d8123b48dc761a646fdae3b62c71a458e2f1c02",
-            "rawSha256": "f17756d2df288f0241e3cda06a34f90ef3ea1f3e9c6493777d26f607dcf33ce2",
-            "bytes": 47080,
-            "rawBytes": 206783
+            "sha256": "9649fe219080fe1c8ec001bd4ade7e51895ea8ac2ac27c995438fbef644f7560",
+            "rawSha256": "5c8c732c38cc9105b9f4af43d813d5cc88eb97a6c9c32ec446596f283b80d667",
+            "bytes": 47078,
+            "rawBytes": 206805
           },
           {
             "attempt": 2,
-            "sha256": "f136790c3611994129cc7ef34d8123b48dc761a646fdae3b62c71a458e2f1c02",
-            "rawSha256": "f17756d2df288f0241e3cda06a34f90ef3ea1f3e9c6493777d26f607dcf33ce2",
-            "bytes": 47080,
-            "rawBytes": 206783
+            "sha256": "9649fe219080fe1c8ec001bd4ade7e51895ea8ac2ac27c995438fbef644f7560",
+            "rawSha256": "5c8c732c38cc9105b9f4af43d813d5cc88eb97a6c9c32ec446596f283b80d667",
+            "bytes": 47078,
+            "rawBytes": 206805
           }
         ]
       },
@@ -28052,10 +28052,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "534965cbdec9b404ad3dfdcbedddfae62907c3827dff09fafec21175836139d2",
+      "rawSha256": "e949d9987d426857c124c970180df87889795ac847a75688e400b09c0674f01f",
       "width": 1024,
       "height": 768,
-      "bytes": 46234,
+      "bytes": 46250,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -28063,17 +28063,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "534965cbdec9b404ad3dfdcbedddfae62907c3827dff09fafec21175836139d2",
-            "rawSha256": "43e4b18c15a58768b19171762adbebbf148c2820ce0c0f0117d39cde26ed923e",
-            "bytes": 46234,
-            "rawBytes": 205073
+            "sha256": "e949d9987d426857c124c970180df87889795ac847a75688e400b09c0674f01f",
+            "rawSha256": "cc2de3e672b7c8389d9faaab84518aa58717c0387001d01fe58677f1428c4ca7",
+            "bytes": 46250,
+            "rawBytes": 205132
           },
           {
             "attempt": 2,
-            "sha256": "534965cbdec9b404ad3dfdcbedddfae62907c3827dff09fafec21175836139d2",
-            "rawSha256": "43e4b18c15a58768b19171762adbebbf148c2820ce0c0f0117d39cde26ed923e",
-            "bytes": 46234,
-            "rawBytes": 205073
+            "sha256": "e949d9987d426857c124c970180df87889795ac847a75688e400b09c0674f01f",
+            "rawSha256": "cc2de3e672b7c8389d9faaab84518aa58717c0387001d01fe58677f1428c4ca7",
+            "bytes": 46250,
+            "rawBytes": 205132
           }
         ]
       },
@@ -28404,7 +28404,7 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "92460b2b58cdea5fcaec8ba7eaec7c7fc791348f68c5c9fae00995ab973c63f9",
+      "rawSha256": "4844cbd665554269cbab666ff7be12ab18c21fc75c571c9d0d72574fa39ce6f4",
       "width": 1024,
       "height": 768,
       "bytes": 45273,
@@ -28415,17 +28415,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "92460b2b58cdea5fcaec8ba7eaec7c7fc791348f68c5c9fae00995ab973c63f9",
-            "rawSha256": "d83d51661e57a2a9dd6e11a38ed51a51ad8673298f51a1e403750c08b7b28a93",
+            "sha256": "4844cbd665554269cbab666ff7be12ab18c21fc75c571c9d0d72574fa39ce6f4",
+            "rawSha256": "d5a06a11fa669e614b25275ec6165b49f4c803c823749918f922dfbdb2f6a688",
             "bytes": 45273,
-            "rawBytes": 126715
+            "rawBytes": 126744
           },
           {
             "attempt": 2,
-            "sha256": "92460b2b58cdea5fcaec8ba7eaec7c7fc791348f68c5c9fae00995ab973c63f9",
-            "rawSha256": "d83d51661e57a2a9dd6e11a38ed51a51ad8673298f51a1e403750c08b7b28a93",
+            "sha256": "4844cbd665554269cbab666ff7be12ab18c21fc75c571c9d0d72574fa39ce6f4",
+            "rawSha256": "d5a06a11fa669e614b25275ec6165b49f4c803c823749918f922dfbdb2f6a688",
             "bytes": 45273,
-            "rawBytes": 126715
+            "rawBytes": 126744
           }
         ]
       },
@@ -28785,9 +28785,9 @@
         "x": 307,
         "y": 96,
         "width": 691,
-        "height": 6954,
+        "height": 7952,
         "top": 96,
-        "bottom": 7049
+        "bottom": 8048
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -29137,9 +29137,9 @@
         "x": 307,
         "y": 96,
         "width": 691,
-        "height": 6954,
+        "height": 7952,
         "top": 96,
-        "bottom": 7049
+        "bottom": 8048
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -29489,9 +29489,9 @@
         "x": 307,
         "y": 96,
         "width": 691,
-        "height": 6794,
+        "height": 7793,
         "top": 96,
-        "bottom": 6891
+        "bottom": 7889
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -29841,9 +29841,9 @@
         "x": 307,
         "y": 96,
         "width": 691,
-        "height": 6794,
+        "height": 7793,
         "top": 96,
-        "bottom": 6891
+        "bottom": 7889
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -30868,10 +30868,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "5d1f85fd4bf1d60031f037f8a09f30a1c65a529056365db5075ca5d4e57c568e",
+      "rawSha256": "4b8a6ab568660b24fd35bf58ab99e4581ac55153096f6fca7d2f706e0f00e3b6",
       "width": 1024,
       "height": 768,
-      "bytes": 44524,
+      "bytes": 44540,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -30879,17 +30879,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "5d1f85fd4bf1d60031f037f8a09f30a1c65a529056365db5075ca5d4e57c568e",
-            "rawSha256": "1f565a808948aa8c821836772b742cf5f19b5b37332c0b06dfc8be9e656679b2",
-            "bytes": 44524,
-            "rawBytes": 202996
+            "sha256": "4b8a6ab568660b24fd35bf58ab99e4581ac55153096f6fca7d2f706e0f00e3b6",
+            "rawSha256": "b2c2f9213405ebffe9329fe65a10aa8b5af8a3cd24f99f3715bb506d1292ed5c",
+            "bytes": 44540,
+            "rawBytes": 203005
           },
           {
             "attempt": 2,
-            "sha256": "5d1f85fd4bf1d60031f037f8a09f30a1c65a529056365db5075ca5d4e57c568e",
-            "rawSha256": "1f565a808948aa8c821836772b742cf5f19b5b37332c0b06dfc8be9e656679b2",
-            "bytes": 44524,
-            "rawBytes": 202996
+            "sha256": "4b8a6ab568660b24fd35bf58ab99e4581ac55153096f6fca7d2f706e0f00e3b6",
+            "rawSha256": "b2c2f9213405ebffe9329fe65a10aa8b5af8a3cd24f99f3715bb506d1292ed5c",
+            "bytes": 44540,
+            "rawBytes": 203005
           }
         ]
       },
@@ -31220,10 +31220,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "bbec5e045661fb74d4fc0b460eedcbde6f59bb707e0bced5dbf478b893b6f413",
+      "rawSha256": "9a3b3a4ab4294c11b09914d2227c8f4594a08bb6634e6935072cd05df0328fd7",
       "width": 1024,
       "height": 768,
-      "bytes": 43556,
+      "bytes": 43562,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -31231,17 +31231,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "bbec5e045661fb74d4fc0b460eedcbde6f59bb707e0bced5dbf478b893b6f413",
-            "rawSha256": "d849ade01e638a6ae3da6aa3aee3c87201b183056d0a7457a61aedaa29ce90f7",
-            "bytes": 43556,
-            "rawBytes": 124031
+            "sha256": "9a3b3a4ab4294c11b09914d2227c8f4594a08bb6634e6935072cd05df0328fd7",
+            "rawSha256": "8ad32e614ff5ab66cc9cbb809fc5478ccbe95ef428f0f666a5b66d471728a4ca",
+            "bytes": 43562,
+            "rawBytes": 124014
           },
           {
             "attempt": 2,
-            "sha256": "bbec5e045661fb74d4fc0b460eedcbde6f59bb707e0bced5dbf478b893b6f413",
-            "rawSha256": "d849ade01e638a6ae3da6aa3aee3c87201b183056d0a7457a61aedaa29ce90f7",
-            "bytes": 43556,
-            "rawBytes": 124031
+            "sha256": "9a3b3a4ab4294c11b09914d2227c8f4594a08bb6634e6935072cd05df0328fd7",
+            "rawSha256": "8ad32e614ff5ab66cc9cbb809fc5478ccbe95ef428f0f666a5b66d471728a4ca",
+            "bytes": 43562,
+            "rawBytes": 124014
           }
         ]
       },
@@ -32276,10 +32276,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "72aaf3afc69421f1c52e698a95709e25014be217c2098761fb27f5b35f533f69",
+      "rawSha256": "9643c2ee73a1e6ccc7d3ef1cdd7096e7c1eaabd0b6f1444886f2a4728c34bfa4",
       "width": 1024,
       "height": 768,
-      "bytes": 45966,
+      "bytes": 45973,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -32287,17 +32287,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "72aaf3afc69421f1c52e698a95709e25014be217c2098761fb27f5b35f533f69",
-            "rawSha256": "f8e366ced2e62c90dcace044a7c295d726e6ec0de297ee73365c779c1eb24647",
-            "bytes": 45966,
-            "rawBytes": 202891
+            "sha256": "9643c2ee73a1e6ccc7d3ef1cdd7096e7c1eaabd0b6f1444886f2a4728c34bfa4",
+            "rawSha256": "b0deb3ebdd2239ec259c0a988e7ee6c2a672d36c42d76f376300e1d781ca7c46",
+            "bytes": 45973,
+            "rawBytes": 202923
           },
           {
             "attempt": 2,
-            "sha256": "72aaf3afc69421f1c52e698a95709e25014be217c2098761fb27f5b35f533f69",
-            "rawSha256": "f8e366ced2e62c90dcace044a7c295d726e6ec0de297ee73365c779c1eb24647",
-            "bytes": 45966,
-            "rawBytes": 202891
+            "sha256": "9643c2ee73a1e6ccc7d3ef1cdd7096e7c1eaabd0b6f1444886f2a4728c34bfa4",
+            "rawSha256": "b0deb3ebdd2239ec259c0a988e7ee6c2a672d36c42d76f376300e1d781ca7c46",
+            "bytes": 45973,
+            "rawBytes": 202923
           }
         ]
       },
@@ -32628,10 +32628,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "27a16dc5c628269433591aae2c514647691cca4b9ac7ab57bc830b3e236c3417",
+      "rawSha256": "141c4455303d87336cf3ef2c02830c3b241c91930d8788b229e7695265a55a49",
       "width": 1024,
       "height": 768,
-      "bytes": 44886,
+      "bytes": 44887,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -32639,17 +32639,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "27a16dc5c628269433591aae2c514647691cca4b9ac7ab57bc830b3e236c3417",
-            "rawSha256": "5745c156e1139be6d380fd8661856bcafb8f11679389a87a723bf522fd47e046",
-            "bytes": 44886,
-            "rawBytes": 124098
+            "sha256": "141c4455303d87336cf3ef2c02830c3b241c91930d8788b229e7695265a55a49",
+            "rawSha256": "a529cd85f0e8709a233db8f73902f4aa3a964ca848fa055f43061353b13ece39",
+            "bytes": 44887,
+            "rawBytes": 124044
           },
           {
             "attempt": 2,
-            "sha256": "27a16dc5c628269433591aae2c514647691cca4b9ac7ab57bc830b3e236c3417",
-            "rawSha256": "5745c156e1139be6d380fd8661856bcafb8f11679389a87a723bf522fd47e046",
-            "bytes": 44886,
-            "rawBytes": 124098
+            "sha256": "141c4455303d87336cf3ef2c02830c3b241c91930d8788b229e7695265a55a49",
+            "rawSha256": "a529cd85f0e8709a233db8f73902f4aa3a964ca848fa055f43061353b13ece39",
+            "bytes": 44887,
+            "rawBytes": 124044
           }
         ]
       },
@@ -33684,10 +33684,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__tablet-1024x768.png",
-      "rawSha256": "e7dd3fd8594bf24efb45a1c61752982f878e3365469d0d9cf245c6b7cf0ed265",
+      "rawSha256": "cdaba57285918dfbe9348b69747ae5f1545ca8480928c4df92dc14b68f6e1940",
       "width": 1024,
       "height": 768,
-      "bytes": 54597,
+      "bytes": 54613,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -33695,17 +33695,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e7dd3fd8594bf24efb45a1c61752982f878e3365469d0d9cf245c6b7cf0ed265",
-            "rawSha256": "0588e59bfd69b7e2692d18670ab328d0e119299a773ec41c2d92b6c2e7e0da28",
-            "bytes": 54597,
-            "rawBytes": 227716
+            "sha256": "cdaba57285918dfbe9348b69747ae5f1545ca8480928c4df92dc14b68f6e1940",
+            "rawSha256": "7fcff036564d7ce4442239f921bfc5839503483604d4b5698a2153d6260b96e7",
+            "bytes": 54613,
+            "rawBytes": 227699
           },
           {
             "attempt": 2,
-            "sha256": "e7dd3fd8594bf24efb45a1c61752982f878e3365469d0d9cf245c6b7cf0ed265",
-            "rawSha256": "0588e59bfd69b7e2692d18670ab328d0e119299a773ec41c2d92b6c2e7e0da28",
-            "bytes": 54597,
-            "rawBytes": 227716
+            "sha256": "cdaba57285918dfbe9348b69747ae5f1545ca8480928c4df92dc14b68f6e1940",
+            "rawSha256": "7fcff036564d7ce4442239f921bfc5839503483604d4b5698a2153d6260b96e7",
+            "bytes": 54613,
+            "rawBytes": 227699
           }
         ]
       },
@@ -34036,10 +34036,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__tablet-1024x768.png",
-      "rawSha256": "3ffdacda24eed1bd1bdfb0468bfbbd5aaa08304c2e13f29916a3f3d23845a208",
+      "rawSha256": "61163b6eb8e3411e00ff140f9c62d29cbf23f0b8465affd194b71ebdd1c9333a",
       "width": 1024,
       "height": 768,
-      "bytes": 53293,
+      "bytes": 53291,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -34047,17 +34047,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "3ffdacda24eed1bd1bdfb0468bfbbd5aaa08304c2e13f29916a3f3d23845a208",
-            "rawSha256": "e8444c11f412bce53b24ac1f611058fe2dca96eeb8f9181c50f83e0492ee76f2",
-            "bytes": 53293,
-            "rawBytes": 149485
+            "sha256": "61163b6eb8e3411e00ff140f9c62d29cbf23f0b8465affd194b71ebdd1c9333a",
+            "rawSha256": "b71b0015aed0531b09a475507ab89159440e6c05218b8054b85405c40037f49b",
+            "bytes": 53291,
+            "rawBytes": 149472
           },
           {
             "attempt": 2,
-            "sha256": "3ffdacda24eed1bd1bdfb0468bfbbd5aaa08304c2e13f29916a3f3d23845a208",
-            "rawSha256": "e8444c11f412bce53b24ac1f611058fe2dca96eeb8f9181c50f83e0492ee76f2",
-            "bytes": 53293,
-            "rawBytes": 149485
+            "sha256": "61163b6eb8e3411e00ff140f9c62d29cbf23f0b8465affd194b71ebdd1c9333a",
+            "rawSha256": "b71b0015aed0531b09a475507ab89159440e6c05218b8054b85405c40037f49b",
+            "bytes": 53291,
+            "rawBytes": 149472
           }
         ]
       },
@@ -35825,9 +35825,9 @@
         "x": 307,
         "y": 96,
         "width": 691,
-        "height": 4126,
+        "height": 4389,
         "top": 96,
-        "bottom": 4221
+        "bottom": 4484
       },
       "currentDocShellRoute": "foundation-visual-standards",
       "storybookDocShellOracleMetrics": {
@@ -40753,9 +40753,9 @@
         "x": 16,
         "y": 412,
         "width": 358,
-        "height": 24888,
+        "height": 28525,
         "top": 412,
-        "bottom": 25300
+        "bottom": 28937
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -41105,9 +41105,9 @@
         "x": 16,
         "y": 412,
         "width": 358,
-        "height": 24888,
+        "height": 28525,
         "top": 412,
-        "bottom": 25300
+        "bottom": 28937
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -41457,9 +41457,9 @@
         "x": 16,
         "y": 412,
         "width": 358,
-        "height": 20854,
+        "height": 23842,
         "top": 412,
-        "bottom": 21266
+        "bottom": 24254
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -41809,9 +41809,9 @@
         "x": 16,
         "y": 412,
         "width": 358,
-        "height": 20854,
+        "height": 23842,
         "top": 412,
-        "bottom": 21266
+        "bottom": 24254
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -44244,10 +44244,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "1d82a2376da660c0b9f45916beff0dc191251cd0e6cd458b29f9374b497f05fc",
+      "rawSha256": "b4fe57a235ead818cdf895ebd2f010efbd5bfd84e6823844ac3bbc445ccd2829",
       "width": 390,
       "height": 844,
-      "bytes": 17202,
+      "bytes": 17206,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -44255,17 +44255,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "1d82a2376da660c0b9f45916beff0dc191251cd0e6cd458b29f9374b497f05fc",
-            "rawSha256": "2046e6a16d756e36065fa2a031edefddf6aa9caa85979d7b4aeda632e4928883",
-            "bytes": 17202,
-            "rawBytes": 91964
+            "sha256": "b4fe57a235ead818cdf895ebd2f010efbd5bfd84e6823844ac3bbc445ccd2829",
+            "rawSha256": "d8ac483d0f78f4b9b09a2c1b7c4801898990682ff3f60bf83d1630eafc8adb12",
+            "bytes": 17206,
+            "rawBytes": 91995
           },
           {
             "attempt": 2,
-            "sha256": "1d82a2376da660c0b9f45916beff0dc191251cd0e6cd458b29f9374b497f05fc",
-            "rawSha256": "2046e6a16d756e36065fa2a031edefddf6aa9caa85979d7b4aeda632e4928883",
-            "bytes": 17202,
-            "rawBytes": 91964
+            "sha256": "b4fe57a235ead818cdf895ebd2f010efbd5bfd84e6823844ac3bbc445ccd2829",
+            "rawSha256": "d8ac483d0f78f4b9b09a2c1b7c4801898990682ff3f60bf83d1630eafc8adb12",
+            "bytes": 17206,
+            "rawBytes": 91995
           }
         ]
       },
@@ -44596,10 +44596,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "e067cfa61a71cdcfdd96ecb64e6703dc1d73b2eb997b296f98dad211f276b79d",
+      "rawSha256": "c6453e4b38a650d8031f5f0a5a7423ad03aeda8da40e6d2e81447a9c8e4962cc",
       "width": 390,
       "height": 844,
-      "bytes": 24091,
+      "bytes": 24096,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -44607,17 +44607,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e067cfa61a71cdcfdd96ecb64e6703dc1d73b2eb997b296f98dad211f276b79d",
-            "rawSha256": "3f800f90fdebb9ef311983353196f78a710315cd39951ed5f6a5c21cc546e1a6",
-            "bytes": 24091,
-            "rawBytes": 70816
+            "sha256": "c6453e4b38a650d8031f5f0a5a7423ad03aeda8da40e6d2e81447a9c8e4962cc",
+            "rawSha256": "0d6587742e39085d16360f3f8fb5268c7149370790166c243e0e7ae58467d4e8",
+            "bytes": 24096,
+            "rawBytes": 70847
           },
           {
             "attempt": 2,
-            "sha256": "e067cfa61a71cdcfdd96ecb64e6703dc1d73b2eb997b296f98dad211f276b79d",
-            "rawSha256": "3f800f90fdebb9ef311983353196f78a710315cd39951ed5f6a5c21cc546e1a6",
-            "bytes": 24091,
-            "rawBytes": 70816
+            "sha256": "c6453e4b38a650d8031f5f0a5a7423ad03aeda8da40e6d2e81447a9c8e4962cc",
+            "rawSha256": "0d6587742e39085d16360f3f8fb5268c7149370790166c243e0e7ae58467d4e8",
+            "bytes": 24096,
+            "rawBytes": 70847
           }
         ]
       },
@@ -47441,9 +47441,9 @@
         "x": 16,
         "y": 412,
         "width": 358,
-        "height": 9307,
+        "height": 9804,
         "top": 412,
-        "bottom": 9719
+        "bottom": 10216
       },
       "currentDocShellRoute": "foundation-visual-standards",
       "storybookDocShellOracleMetrics": {
@@ -47800,7 +47800,7 @@
   ],
   "playwrightVersion": "1.61.0",
   "chromiumVersion": "149.0.7827.55",
-  "baselineManifestHash": "ec9eb7c1fba2b0fcde6f30391846518e8371c9e89bbac8ca9ab41eb055b82f3f",
+  "baselineManifestHash": "783c719da7fd73db965523ab06c3a5464be17dd5d24abcb02d1d28039e5d2569",
   "compareFailures": [],
   "comparisonReadbacks": []
 }

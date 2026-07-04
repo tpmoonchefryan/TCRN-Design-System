@@ -549,6 +549,10 @@ const aiContractTraceabilityCheck = {
     && aiContract.changelogGovernance?.records?.length > 0
     && aiContract.changelogGovernance?.requiredFields?.includes("proofArtifacts")
     && aiContract.workManagementStaticAuthority?.disposition === "static_contract_authority_explicit_and_smoke_proven"
+    && (aiContract.workManagementStaticAuthority?.admittedPackageExports ?? []).includes("WorkItemRow")
+    && (aiContract.workManagementStaticAuthority?.admittedPackageExports ?? []).includes("WorkDetailLayout")
+    && (aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? []).includes("WorkQuickFilters")
+    && (aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? []).includes("MachineTokenCell")
     && aiContract.foundationVisualStandards?.registryId === "foundation-visual-standards-v1"
     && JSON.stringify(aiContract.foundationVisualStandards?.categoryIds ?? []) === JSON.stringify(expectedFoundationStandardCategoryIds)
     && aiContract.foundationVisualStandardCategories?.length === expectedFoundationStandardCategoryIds.length
@@ -577,6 +581,8 @@ const aiContractTraceabilityCheck = {
   coveredCategoryCount: aiContract.coveredStorybookSections?.reduce((total, section) => total + section.categories.length, 0) ?? 0,
   changelogRecordCount: aiContract.changelogGovernance?.records?.length ?? 0,
   workManagementStaticAuthorityDisposition: aiContract.workManagementStaticAuthority?.disposition ?? null,
+  workManagementAdmittedPackageExports: aiContract.workManagementStaticAuthority?.admittedPackageExports ?? [],
+  workLayoutDensityPackageExports: aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? [],
   foundationVisualStandardsRegistryId: aiContract.foundationVisualStandards?.registryId ?? null,
   foundationVisualStandardCategoryIds: aiContract.foundationVisualStandards?.categoryIds ?? [],
   foundationVisualStandardCategoryCount: aiContract.foundationVisualStandardCategories?.length ?? 0,

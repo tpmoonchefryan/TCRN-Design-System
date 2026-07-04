@@ -17,7 +17,7 @@ export const aiConsumptionContract = {
   ownerVisualAdmissionDisposition: "owner_review_required",
   visualFitControlContract: {
     storybookGlobalShellAuthority: "original_storybook_doc_shell",
-    packagePrimitiveAuthority: ["SearchInput", "ProductLockup", "TableShell"],
+    packagePrimitiveAuthority: ["SearchInput", "ProductLockup", "TableShell", "Work Management layout/density exports"],
     search: {
       storybookRestWidthPx: 260,
       storybookExpandedWidthPx: 360,
@@ -35,6 +35,29 @@ export const aiConsumptionContract = {
     tablesAndContainers: {
       authority: "@tcrn/ui-react/TableShell",
       rule: "Tables use package-emitted column/min-width variables and local overflow; Storybook must not clone row, head, or cell layout."
+    },
+    workLayoutDensity: {
+      authority: "@tcrn/ui-react Work Management exports",
+      storybookRoutes: ["components.html#work-management-components-spec", "patterns.html#work-management-patterns"],
+      packageExports: [
+        "WorkPageHeader",
+        "WorkViewTabs",
+        "WorkQuickFilters",
+        "WorkItemRow",
+        "WorkList",
+        "WorkSplitView",
+        "WorkBacklogGroup",
+        "WorkInlineCreateStatic",
+        "WorkBoardView",
+        "WorkDetailLayout",
+        "MetadataRail",
+        "WorkFieldPanel",
+        "WorkActivityFeed",
+        "GatePipelineCompact",
+        "MachineTokenCell"
+      ],
+      rule:
+        "Product Work routes must consume admitted package exports for route context, local tabs, quick filters, dense rows/lists, backlog groups, board density, split detail, metadata rails, field panels, activity, compact gates/evidence, and dense machine-token cells instead of local reusable clones."
     }
   },
   discovery: {
@@ -165,7 +188,7 @@ export const aiConsumptionContract = {
       ],
       consumerChecks: [
         "consume page, dashboard, workbench, list, form, notification, validation, data-grid, and search composition rules before arranging product screens",
-        "consume Work Management hierarchy, board, gate, evidence, relationship, saved-view, and machine-token patterns before building Initiative/Epic/Story/Work Item surfaces",
+        "consume Work Management route context, local view tabs, quick filters, dense rows/lists, split detail, backlog groups, board density, gate, evidence, activity, relationship, saved-view, and machine-token patterns before building Initiative/Epic/Story/Work Item surfaces",
         "prove information hierarchy, density, mobile reflow, empty/loading/error states, and route-level IA match the relevant Storybook pattern",
         "block proof/status panels from replacing product-first page composition unless the Storybook pattern explicitly requires them"
       ]
@@ -294,6 +317,25 @@ export const aiConsumptionContract = {
     disposition: "static_contract_authority_explicit_and_smoke_proven",
     componentStory: "components.html#work-management-components-spec",
     patternStory: "patterns.html#work-management-patterns",
+    admittedPackageExports: [
+      "WorkPageHeader",
+      "WorkViewTabs",
+      "WorkQuickFilters",
+      "WorkItemRow",
+      "WorkList",
+      "WorkSplitView",
+      "WorkBacklogGroup",
+      "WorkInlineCreateStatic",
+      "WorkBoard",
+      "WorkBoardView",
+      "WorkDetailLayout",
+      "MetadataRail",
+      "WorkFieldPanel",
+      "WorkActivityFeed",
+      "GatePipelineCompact",
+      "EvidenceAttachmentList",
+      "MachineTokenCell"
+    ],
     managerRuntimeCoverageDisposition:
       "CSF adapters expose the Components and Patterns top-level Storybook pages while static contract story ids are the authoritative Work Management story coverage for this local checkpoint.",
     smokeCoverage:
@@ -910,9 +952,9 @@ export const aiConsumptionContract = {
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Work Management surfaces including RelationshipChip, MachineToken, WorkManagementSubnav, WorkBoard, WorkHierarchy, GatePipeline, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
+    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Work Management surfaces including RelationshipChip, MachineToken, MachineTokenCell, WorkManagementSubnav, WorkPageHeader, WorkViewTabs, WorkQuickFilters, WorkItemRow, WorkList, WorkSplitView, WorkBacklogGroup, WorkInlineCreateStatic, WorkBoard, WorkBoardView, WorkDetailLayout, MetadataRail, WorkFieldPanel, WorkActivityFeed, WorkHierarchy, GatePipeline, GatePipelineCompact, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
   workManagementPatternDisposition:
-    "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation, relationship vocabulary, board lanes, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
+    "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation, compact route context, local view tabs, quick filters, dense Work item rows/lists, split detail, backlog groups, static create affordances, compact board view, metadata rails, field panels, activity feed, relationship vocabulary, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
   storybookDocShellAuthorityDisposition:
     "The Storybook documentation frontend must render the original Storybook-owned doc shell composition. Global Storybook pages use data-doc-shell='online-docs', tcrn-doc-header, tcrn-doc-global-bar, tcrn-doc-sidebar, tcrn-doc-nav, category navigation, and package-backed control primitives such as SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, and ShellBrandLockup. ProductShell remains documented and package-backed for component examples, AOS visual instances, and product consumer rules, but it is not the global Storybook shell authority.",
   tokenConsumptionDisposition:

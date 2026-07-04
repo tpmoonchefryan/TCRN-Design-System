@@ -1167,8 +1167,13 @@ h1, h2, h3, p, span, button, label {
   display: inline-flex;
   width: max-content;
   max-width: 100%;
+  min-width: 0;
   border-radius: var(--tcrn-radius-control);
   padding: 4px 8px;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
   background: var(--tcrn-color-surface-muted);
   color: var(--tcrn-color-text-secondary);
 }
