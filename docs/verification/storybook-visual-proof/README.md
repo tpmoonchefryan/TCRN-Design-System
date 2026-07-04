@@ -6,7 +6,7 @@ OK: `true`
 Comparison contract: `canonicalized_raw_png_exact_v1`
 Visual artifact contract: `canonicalized_raw_png_sha256_exact_required`
 Current check artifacts: `check-mode current PNGs are ephemeral and must be removed after a successful exact comparison`
-Source head: `6af2de893d32a56f33225a2dc108145b51e152f4`
+Source head: `05a5b48aa3c3dc0820577faaaf2a819e23efb147`
 Source equivalence: `clean_head_receipt_generated_from_committed_source`
 Oracle recovery: `true`
 Oracle receipt: `TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan`

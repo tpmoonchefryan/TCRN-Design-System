@@ -1,18 +1,18 @@
 {
   "ok": true,
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
-  "sourceHead": "6af2de893d32a56f33225a2dc108145b51e152f4",
-  "sourceGitStatus": "## main...origin/main [ahead 59]",
+  "sourceHead": "05a5b48aa3c3dc0820577faaaf2a819e23efb147",
+  "sourceGitStatus": "## main...origin/main [ahead 61]",
   "sourceHeadEquivalenceReadback": {
     "disposition": "clean_head_receipt_generated_from_committed_source",
-    "sourceHead": "6af2de893d32a56f33225a2dc108145b51e152f4",
+    "sourceHead": "05a5b48aa3c3dc0820577faaaf2a819e23efb147",
     "sourceDirtyFileCount": 0,
     "sourceContentDigest": "1e86d4154f91af34467088192e3d91fdb5e410531baa052012ef9cd186c40a16",
     "sourceContentDigestDisposition": "digest covers the built static contract-doc outputs, package metadata, visual proof script, and private-output scan script used by this receipt",
     "commitEquivalenceRequirement": "when generated before commit, reviewers should compare this digest and status readback with the committed source/artifact diff rather than treating sourceHead alone as proof freshness",
     "sourceGitStatusDisposition": "post_cleanup_stable_status_after_current_check_removed",
-    "preWriteSourceGitStatus": "## main...origin/main [ahead 59]",
-    "postWriteSourceGitStatus": "## main...origin/main [ahead 59]"
+    "preWriteSourceGitStatus": "## main...origin/main [ahead 61]",
+    "postWriteSourceGitStatus": "## main...origin/main [ahead 61]"
   },
   "sourceContentDigest": "1e86d4154f91af34467088192e3d91fdb5e410531baa052012ef9cd186c40a16",
   "mode": "check",
