@@ -250,7 +250,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "b96ef7b41beea7294c9f0d69c8109eb48f8f79a98d45a384a7ed389f53dec328",
+    "contractPayloadDigest": "d1f3bd91b33485bd74b01ba8c4b5bdf1fc3c18b92322249fe7a68651d1dd15b2",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
@@ -622,12 +622,12 @@
           "border-radius": "5px"
         },
         "searchControl": {
-          "top": 31,
+          "top": 39.22,
           "left": 1012.09,
           "right": 1173.63,
-          "bottom": 65,
+          "bottom": 56.77,
           "width": 161.53,
-          "height": 34
+          "height": 17.55
         },
         "searchIcon": {
           "top": 40,
@@ -761,12 +761,12 @@
           "border-radius": "5px"
         },
         "searchControl": {
-          "top": 31,
+          "top": 39.22,
           "left": 1012.09,
           "right": 1173.63,
-          "bottom": 65,
+          "bottom": 56.77,
           "width": 161.53,
-          "height": 34
+          "height": 17.55
         },
         "searchIcon": {
           "top": 40,
@@ -894,12 +894,12 @@
           "border-radius": "5px"
         },
         "searchControl": {
-          "top": 31,
+          "top": 39.22,
           "left": 1012.09,
           "right": 1173.63,
-          "bottom": 65,
+          "bottom": 56.77,
           "width": 161.53,
-          "height": 34
+          "height": 17.55
         },
         "searchIcon": {
           "top": 40,
@@ -1027,12 +1027,12 @@
           "border-radius": "5px"
         },
         "searchControl": {
-          "top": 31,
+          "top": 39.22,
           "left": 1012.09,
           "right": 1173.63,
-          "bottom": 65,
+          "bottom": 56.77,
           "width": 161.53,
-          "height": 34
+          "height": 17.55
         },
         "searchIcon": {
           "top": 40,
@@ -1160,12 +1160,12 @@
           "border-radius": "5px"
         },
         "searchControl": {
-          "top": 31,
+          "top": 39.22,
           "left": 1012.09,
           "right": 1173.63,
-          "bottom": 65,
+          "bottom": 56.77,
           "width": 161.53,
-          "height": 34
+          "height": 17.55
         },
         "searchIcon": {
           "top": 40,
@@ -1293,12 +1293,12 @@
           "border-radius": "5px"
         },
         "searchControl": {
-          "top": 31,
+          "top": 39.22,
           "left": 1012.09,
           "right": 1173.63,
-          "bottom": 65,
+          "bottom": 56.77,
           "width": 161.53,
-          "height": 34
+          "height": 17.55
         },
         "searchIcon": {
           "top": 40,
@@ -1426,12 +1426,12 @@
           "border-radius": "5px"
         },
         "searchControl": {
-          "top": 31,
+          "top": 39.22,
           "left": 1012.09,
           "right": 1173.63,
-          "bottom": 65,
+          "bottom": 56.77,
           "width": 161.53,
-          "height": 34
+          "height": 17.55
         },
         "searchIcon": {
           "top": 40,
