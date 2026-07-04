@@ -4,7 +4,7 @@ Mode: `check`
 OK: `true`
 Comparison contract: `canonicalized_raw_png_exact_v1`
 Visual artifact contract: `canonicalized_raw_png_sha256_exact_required`
-Source head: `d4fc88d814af7725761d47436c67aebc2a19e1ef`
+Source head: `de1d66aa0fc191addaaa4a668ec208b051d4c95f`
 Oracle recovery: `true`
 Static pages: 11
 Screenshots: 134
