@@ -2,7 +2,7 @@
   "ok": true,
   "mode": "update-baseline",
   "comparisonContractVersion": "canonicalized_raw_png_exact_v1",
-  "reason": "visual-unification-package-primitive-parity-final",
+  "reason": "visual-proof-contract-cleanup-exact-png-artifact-disposition",
   "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
   "disposition": "DSCVH-S005-initial-local-static-baseline",
   "entries": [
