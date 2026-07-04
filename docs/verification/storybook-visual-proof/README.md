@@ -1,15 +1,11 @@
 # Storybook Visual Proof
 
-Route: `route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence`
 Mode: `check`
 OK: `true`
 Comparison contract: `canonicalized_raw_png_exact_v1`
 Visual artifact contract: `canonicalized_raw_png_sha256_exact_required`
-Current check artifacts: `check-mode current PNGs are ephemeral and must be removed after a successful exact comparison`
-Source head: `05a5b48aa3c3dc0820577faaaf2a819e23efb147`
-Source equivalence: `clean_head_receipt_generated_from_committed_source`
+Source head: `808519649de3fc7cbc7beb7cc75dfbad5c325124`
 Oracle recovery: `true`
-Oracle receipt: `TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan`
 Static pages: 11
 Screenshots: 134
 Compare failures: 0

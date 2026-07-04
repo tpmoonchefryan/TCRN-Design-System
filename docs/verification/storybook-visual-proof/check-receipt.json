@@ -1,34 +1,17 @@
 {
   "ok": true,
-  "route": "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence",
-  "sourceHead": "05a5b48aa3c3dc0820577faaaf2a819e23efb147",
-  "sourceGitStatus": "## main...origin/main [ahead 61]",
-  "sourceHeadEquivalenceReadback": {
-    "disposition": "clean_head_receipt_generated_from_committed_source",
-    "sourceHead": "05a5b48aa3c3dc0820577faaaf2a819e23efb147",
-    "sourceDirtyFileCount": 0,
-    "sourceContentDigest": "1e86d4154f91af34467088192e3d91fdb5e410531baa052012ef9cd186c40a16",
-    "sourceContentDigestDisposition": "digest covers the built static contract-doc outputs, package metadata, visual proof script, and private-output scan script used by this receipt",
-    "commitEquivalenceRequirement": "when generated before commit, reviewers should compare this digest and status readback with the committed source/artifact diff rather than treating sourceHead alone as proof freshness",
-    "sourceGitStatusDisposition": "post_cleanup_stable_status_after_current_check_removed",
-    "preWriteSourceGitStatus": "## main...origin/main [ahead 61]",
-    "postWriteSourceGitStatus": "## main...origin/main [ahead 61]"
-  },
-  "sourceContentDigest": "1e86d4154f91af34467088192e3d91fdb5e410531baa052012ef9cd186c40a16",
+  "sourceContentDigest": "bf4086896b113d1e1b6f32cb4a015c52349930c00389991bc52849b439812607",
+  "sourceHead": "808519649de3fc7cbc7beb7cc75dfbad5c325124",
   "mode": "check",
   "comparisonContractVersion": "canonicalized_raw_png_exact_v1",
   "visualArtifactContractDisposition": {
     "comparisonPolicy": "canonicalized_raw_png_sha256_exact_required",
-    "replacementDisposition": "exact raw PNG matching plus retained manifest dimensions and embedded per-shot geometry readbacks replace the retired bounded-antialias/diff artifact branch",
     "retainedArtifacts": [
       "docs/verification/storybook-visual-proof/baseline-manifest.json",
       "docs/verification/storybook-visual-proof/update-receipt.json",
       "docs/verification/storybook-visual-proof/check-receipt.json",
       "docs/verification/storybook-visual-proof/screenshots/baseline/*.png"
     ],
-    "currentCheckDisposition": "check-mode current PNGs are ephemeral and must be removed after a successful exact comparison",
-    "diffPngDisposition": "retained diff PNGs are not part of canonicalized_raw_png_exact_v1; non-exact PNGs fail closed with raw_png_sha256_exact_match_required and preserve .current-check only on failure for debugging",
-    "geometryDisposition": "separate geometry JSON is not part of canonicalized_raw_png_exact_v1; target rects, doc-shell oracle metrics, search/topbar/sidebar geometry, events, and failures are embedded in each screenshotReadbacks entry",
     "failClosedSignals": [
       "missing_baseline_png",
       "baseline_png_hash_mismatch",
@@ -39,7 +22,6 @@
       "unexpected_current_entry"
     ]
   },
-  "baselineUpdateReason": null,
   "packageName": "@tcrn/design-system-workspace",
   "staticPageAllowlist": [
     "index.html",
@@ -497,64 +479,63 @@
       "rowFilter": 0
     },
     "scrollbarRendering": "suppressed_for_visual_hash_stability",
-    "screenshotStability": "two_consecutive_identical_png_hashes_before_write_or_compare",
-    "routeOwnedLoopbackServer": "127.0.0.1:<ephemeral>"
+    "screenshotStability": "two_consecutive_identical_png_hashes_before_write_or_compare"
   },
   "staticPageReadbacks": [
     {
       "file": "index.html",
       "status": 200,
       "ok": true,
-      "bytes": 699680,
-      "sha256": "74857a7a8de5e1c73bb5f64c91844f7fc23499c03badea0f5e9124516391f165",
+      "bytes": 702012,
+      "sha256": "0467661f13bad7b328f69fb9697c38d72e6a7da761a8094af3b0088f4eae2a9b",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "style-guide.html",
       "status": 200,
       "ok": true,
-      "bytes": 755160,
-      "sha256": "933c7891c0c44f13acc7bd24cdc1f557c53afafb636fa2a5449421e85e1cf3c3",
+      "bytes": 757492,
+      "sha256": "f032488fe0b0149f99c74c9ebfc8e38c6d262d75ff2e76282d85a6ce54a647ff",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "foundations.html",
       "status": 200,
       "ok": true,
-      "bytes": 714872,
-      "sha256": "710c89013569e4374fac3d3667be4a510fee26686b70608808ef70f7a55f259f",
+      "bytes": 717204,
+      "sha256": "4d3adc3d45f11275ebed00a592f9b90b6bea64a3b8e144d5b877fc2109e53f19",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "components.html",
       "status": 200,
       "ok": true,
-      "bytes": 1248109,
-      "sha256": "7569e6f6e3b1021e278c06d65ffc065aef8342fcfe746847f6c7c1645ef1282e",
+      "bytes": 1250488,
+      "sha256": "593994f619c90aca92c8b6162ab9471bc2bde97cdb0fae14d0444722d3d4d05a",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "patterns.html",
       "status": 200,
       "ok": true,
-      "bytes": 729338,
-      "sha256": "79d0fd21eba25e9da6907586abf6dd181f6a86347d9b69d5805e31295cca2c3c",
+      "bytes": 731670,
+      "sha256": "6e1fb292cebe1d18270255762e933e3b2373ad8cdd2500a935fddb639a7004e1",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "proof.html",
       "status": 200,
       "ok": true,
-      "bytes": 715461,
-      "sha256": "95693d194ea64e4a007122ad159cb2a90f8d2ecda93a778a732ac82c96684976",
+      "bytes": 717793,
+      "sha256": "0486c0911f3e5df7071b8f33967e752967ef573c7700d745442ba868e3997f61",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "change-log.html",
       "status": 200,
       "ok": true,
-      "bytes": 690373,
-      "sha256": "096e5f503623b331c612e61091c07aa339289f04122110a5e64ed83ac2e41f7a",
+      "bytes": 692705,
+      "sha256": "2d50588cd858fd940834cec1348a672eee670b786930173fdaf87c6ddf583e00",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -569,8 +550,8 @@
       "file": "ai-consumption-contract.json",
       "status": 200,
       "ok": true,
-      "bytes": 81817,
-      "sha256": "81b8b2a1fa0579dfc1d26404b508ebc5774730cbc9908eb506afb324516e004c",
+      "bytes": 81947,
+      "sha256": "5536d345663ba56174bd51ef3af73760ff5a4e3ab93e6e15df3e1f37ac15cd2c",
       "contentType": "application/json; charset=utf-8"
     },
     {
@@ -578,7 +559,7 @@
       "status": 200,
       "ok": true,
       "bytes": 13311,
-      "sha256": "475c1990940b8a905d4c9bfe1fa07d53b6b9358b009c4fac78be668d9a62f3d2",
+      "sha256": "fff7921271087124fb096aadd11b4c5aae3b41379fb35bb804a6e87087f32f61",
       "contentType": "application/octet-stream"
     },
     {
@@ -586,13 +567,12 @@
       "status": 200,
       "ok": true,
       "bytes": 518,
-      "sha256": "db03da6c5208e68892d53488023ed0a0dce07eb473c70001b2fc63ca14dc07c8",
+      "sha256": "4e9e5e749921fbb7ff81dfb94720c47b81b194f6ad2937625b12920632327f18",
       "contentType": "application/octet-stream"
     }
   ],
   "oracleRecoveryReadback": {
     "ok": true,
-    "receipt": "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan",
     "baselineManifestClassification": "owner_declared_original_storybook_doc_shell_standard",
     "metricSourceDisposition": "desktop sidebar, header, search rest, and search expanded metrics are retained only after the owner-approved restoration re-expresses the pre-d1d1291 Storybook documentation shell through current Storybook-owned doc-shell selectors and committed proof receipts.",
     "metricEvidenceCount": 4,
@@ -962,10 +942,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -1323,10 +1300,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -1684,10 +1658,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -2045,10 +2016,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -2406,10 +2374,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -2767,10 +2732,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -3128,10 +3090,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -3489,10 +3448,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -3850,10 +3806,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -4211,10 +4164,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -4572,10 +4522,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -4933,15 +4880,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "e26039825d37df4589fce08752a844ac1a00cdcb6aabaa8e47fa9611e34a1e47",
-        "currentRawSha256": "e26039825d37df4589fce08752a844ac1a00cdcb6aabaa8e47fa9611e34a1e47",
+        "baselineRawSha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
+        "currentRawSha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -4954,10 +4898,10 @@
       "locale": "en",
       "interaction": "rest",
       "themeMode": "light",
-      "rawSha256": "e26039825d37df4589fce08752a844ac1a00cdcb6aabaa8e47fa9611e34a1e47",
+      "rawSha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
       "width": 2048,
       "height": 1024,
-      "bytes": 111781,
+      "bytes": 111979,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -4965,17 +4909,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e26039825d37df4589fce08752a844ac1a00cdcb6aabaa8e47fa9611e34a1e47",
-            "rawSha256": "ba675d306d476ca784c17e5dc0e0ae78f2650c1a0a6f18e4ee304ab1e9cbc6e9",
-            "bytes": 111781,
-            "rawBytes": 406841
+            "sha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
+            "rawSha256": "0c856c68c731e5aee5ef60629e5e68118dfb79c97aec06b481e5a1291ad005e7",
+            "bytes": 111979,
+            "rawBytes": 407809
           },
           {
             "attempt": 2,
-            "sha256": "e26039825d37df4589fce08752a844ac1a00cdcb6aabaa8e47fa9611e34a1e47",
-            "rawSha256": "ba675d306d476ca784c17e5dc0e0ae78f2650c1a0a6f18e4ee304ab1e9cbc6e9",
-            "bytes": 111781,
-            "rawBytes": 406841
+            "sha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
+            "rawSha256": "0c856c68c731e5aee5ef60629e5e68118dfb79c97aec06b481e5a1291ad005e7",
+            "bytes": 111979,
+            "rawBytes": 407809
           }
         ]
       },
@@ -4983,9 +4927,9 @@
         "x": 408,
         "y": 96,
         "width": 1592,
-        "height": 6038,
+        "height": 6072,
         "top": 96,
-        "bottom": 6134
+        "bottom": 6167
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -5294,15 +5238,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "24b59cebee24f1f813e5fa8c0a0b2adfb0969678a1396ccc2836a022b0fc0414",
-        "currentRawSha256": "24b59cebee24f1f813e5fa8c0a0b2adfb0969678a1396ccc2836a022b0fc0414",
+        "baselineRawSha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
+        "currentRawSha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -5315,10 +5256,10 @@
       "locale": "en",
       "interaction": "rest",
       "themeMode": "dark",
-      "rawSha256": "24b59cebee24f1f813e5fa8c0a0b2adfb0969678a1396ccc2836a022b0fc0414",
+      "rawSha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
       "width": 2048,
       "height": 1024,
-      "bytes": 109032,
+      "bytes": 109200,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -5326,17 +5267,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "24b59cebee24f1f813e5fa8c0a0b2adfb0969678a1396ccc2836a022b0fc0414",
-            "rawSha256": "76ca141e5c2baf4e803c489c9fa49b478f01017a53a044e5363c3d919060018b",
-            "bytes": 109032,
-            "rawBytes": 265031
+            "sha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
+            "rawSha256": "f416eeff3f06d4f6d03dd121c8d46492e1a49acd42c052a885097b43be5c51a0",
+            "bytes": 109200,
+            "rawBytes": 265658
           },
           {
             "attempt": 2,
-            "sha256": "24b59cebee24f1f813e5fa8c0a0b2adfb0969678a1396ccc2836a022b0fc0414",
-            "rawSha256": "76ca141e5c2baf4e803c489c9fa49b478f01017a53a044e5363c3d919060018b",
-            "bytes": 109032,
-            "rawBytes": 265031
+            "sha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
+            "rawSha256": "f416eeff3f06d4f6d03dd121c8d46492e1a49acd42c052a885097b43be5c51a0",
+            "bytes": 109200,
+            "rawBytes": 265658
           }
         ]
       },
@@ -5344,9 +5285,9 @@
         "x": 408,
         "y": 96,
         "width": 1592,
-        "height": 6038,
+        "height": 6072,
         "top": 96,
-        "bottom": 6134
+        "bottom": 6167
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -5655,15 +5596,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "b3bf151baca6839397f0e539c48d30f1ca2736f46ccff7bbbb5654768d6e147a",
-        "currentRawSha256": "b3bf151baca6839397f0e539c48d30f1ca2736f46ccff7bbbb5654768d6e147a",
+        "baselineRawSha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
+        "currentRawSha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -5676,10 +5614,10 @@
       "locale": "zh-CN",
       "interaction": "rest",
       "themeMode": "light",
-      "rawSha256": "b3bf151baca6839397f0e539c48d30f1ca2736f46ccff7bbbb5654768d6e147a",
+      "rawSha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
       "width": 2048,
       "height": 1024,
-      "bytes": 112591,
+      "bytes": 113413,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -5687,17 +5625,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "b3bf151baca6839397f0e539c48d30f1ca2736f46ccff7bbbb5654768d6e147a",
-            "rawSha256": "374d86fab0720a6e0bbd12f2a97a4f13e811a31dddfed93ec11b87c57a9b9fad",
-            "bytes": 112591,
-            "rawBytes": 414863
+            "sha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
+            "rawSha256": "55a34f815f26f0de92503a525f90ab99ecd8cae02eee6a446a0e7db1406df1a0",
+            "bytes": 113413,
+            "rawBytes": 417198
           },
           {
             "attempt": 2,
-            "sha256": "b3bf151baca6839397f0e539c48d30f1ca2736f46ccff7bbbb5654768d6e147a",
-            "rawSha256": "374d86fab0720a6e0bbd12f2a97a4f13e811a31dddfed93ec11b87c57a9b9fad",
-            "bytes": 112591,
-            "rawBytes": 414863
+            "sha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
+            "rawSha256": "55a34f815f26f0de92503a525f90ab99ecd8cae02eee6a446a0e7db1406df1a0",
+            "bytes": 113413,
+            "rawBytes": 417198
           }
         ]
       },
@@ -5705,9 +5643,9 @@
         "x": 408,
         "y": 96,
         "width": 1592,
-        "height": 6006,
+        "height": 6040,
         "top": 96,
-        "bottom": 6102
+        "bottom": 6135
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -6016,15 +5954,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "99365af374ea311db074c996a26c2e5cffd1d29cf9eb0f11907139abab5fec24",
-        "currentRawSha256": "99365af374ea311db074c996a26c2e5cffd1d29cf9eb0f11907139abab5fec24",
+        "baselineRawSha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
+        "currentRawSha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -6037,10 +5972,10 @@
       "locale": "zh-CN",
       "interaction": "rest",
       "themeMode": "dark",
-      "rawSha256": "99365af374ea311db074c996a26c2e5cffd1d29cf9eb0f11907139abab5fec24",
+      "rawSha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
       "width": 2048,
       "height": 1024,
-      "bytes": 110586,
+      "bytes": 111439,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -6048,17 +5983,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "99365af374ea311db074c996a26c2e5cffd1d29cf9eb0f11907139abab5fec24",
-            "rawSha256": "627c943cddd67fa4a16e60625bc34973ffb01794f4b4de5e6f16dfef42d7b9e7",
-            "bytes": 110586,
-            "rawBytes": 278749
+            "sha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
+            "rawSha256": "725c82c46e571d8dc9aacbfa364b71374e505d01daa170433606682f04b5f3c4",
+            "bytes": 111439,
+            "rawBytes": 280865
           },
           {
             "attempt": 2,
-            "sha256": "99365af374ea311db074c996a26c2e5cffd1d29cf9eb0f11907139abab5fec24",
-            "rawSha256": "627c943cddd67fa4a16e60625bc34973ffb01794f4b4de5e6f16dfef42d7b9e7",
-            "bytes": 110586,
-            "rawBytes": 278749
+            "sha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
+            "rawSha256": "725c82c46e571d8dc9aacbfa364b71374e505d01daa170433606682f04b5f3c4",
+            "bytes": 111439,
+            "rawBytes": 280865
           }
         ]
       },
@@ -6066,9 +6001,9 @@
         "x": 408,
         "y": 96,
         "width": 1592,
-        "height": 6006,
+        "height": 6040,
         "top": 96,
-        "bottom": 6102
+        "bottom": 6135
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -6377,10 +6312,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -6738,10 +6670,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -7099,10 +7028,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -7460,10 +7386,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -7821,10 +7744,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -8182,10 +8102,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -8543,10 +8460,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -8904,10 +8818,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -9265,10 +9176,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -9626,10 +9534,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -9987,10 +9892,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -10348,10 +10250,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -10709,10 +10608,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -11070,10 +10966,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -11431,10 +11324,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -11792,10 +11682,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -12153,10 +12040,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -12514,10 +12398,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -12875,10 +12756,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -13236,10 +13114,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -13597,10 +13472,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -13958,10 +13830,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -14319,10 +14188,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -14680,10 +14546,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -15041,10 +14904,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -15402,10 +15262,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -15763,10 +15620,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -16124,10 +15978,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -16485,10 +16336,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -16846,10 +16694,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -17207,15 +17052,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "1723fa3c7d7914f3b822450126b69f361131e994298ebf4a95e5720aa91ccdb0",
-        "currentRawSha256": "1723fa3c7d7914f3b822450126b69f361131e994298ebf4a95e5720aa91ccdb0",
+        "baselineRawSha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
+        "currentRawSha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -17228,10 +17070,10 @@
       "locale": "en",
       "interaction": "rest",
       "themeMode": "light",
-      "rawSha256": "1723fa3c7d7914f3b822450126b69f361131e994298ebf4a95e5720aa91ccdb0",
+      "rawSha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
       "width": 1440,
       "height": 900,
-      "bytes": 85682,
+      "bytes": 85931,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -17239,17 +17081,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "1723fa3c7d7914f3b822450126b69f361131e994298ebf4a95e5720aa91ccdb0",
-            "rawSha256": "39b3c552602895e7d770606b02f214506b4e56639d82dba4fe7be78156752577",
-            "bytes": 85682,
-            "rawBytes": 323541
+            "sha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
+            "rawSha256": "7ff2c2e43c82dfbb8fd948320880e8e3678a96230d25cef9eeea0dcc5fa9eb00",
+            "bytes": 85931,
+            "rawBytes": 323746
           },
           {
             "attempt": 2,
-            "sha256": "1723fa3c7d7914f3b822450126b69f361131e994298ebf4a95e5720aa91ccdb0",
-            "rawSha256": "39b3c552602895e7d770606b02f214506b4e56639d82dba4fe7be78156752577",
-            "bytes": 85682,
-            "rawBytes": 323541
+            "sha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
+            "rawSha256": "7ff2c2e43c82dfbb8fd948320880e8e3678a96230d25cef9eeea0dcc5fa9eb00",
+            "bytes": 85931,
+            "rawBytes": 323746
           }
         ]
       },
@@ -17257,9 +17099,9 @@
         "x": 325,
         "y": 96,
         "width": 1077,
-        "height": 6281,
+        "height": 6316,
         "top": 96,
-        "bottom": 6377
+        "bottom": 6412
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -17568,15 +17410,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "20c9a7f17efc40d84045b0055157acb37a9ac134832c6a596ff56cd3af0bc469",
-        "currentRawSha256": "20c9a7f17efc40d84045b0055157acb37a9ac134832c6a596ff56cd3af0bc469",
+        "baselineRawSha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
+        "currentRawSha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -17589,10 +17428,10 @@
       "locale": "en",
       "interaction": "rest",
       "themeMode": "dark",
-      "rawSha256": "20c9a7f17efc40d84045b0055157acb37a9ac134832c6a596ff56cd3af0bc469",
+      "rawSha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
       "width": 1440,
       "height": 900,
-      "bytes": 84949,
+      "bytes": 85167,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -17600,17 +17439,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "20c9a7f17efc40d84045b0055157acb37a9ac134832c6a596ff56cd3af0bc469",
-            "rawSha256": "717d834924a6ca63fac29dbe3d4d8c84945ea557b3aafd11a99a048539803951",
-            "bytes": 84949,
-            "rawBytes": 218032
+            "sha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
+            "rawSha256": "dd4c4d70bccb606cffdb878db281f0db2f60eb005d1a2fad382b188942544b99",
+            "bytes": 85167,
+            "rawBytes": 218654
           },
           {
             "attempt": 2,
-            "sha256": "20c9a7f17efc40d84045b0055157acb37a9ac134832c6a596ff56cd3af0bc469",
-            "rawSha256": "717d834924a6ca63fac29dbe3d4d8c84945ea557b3aafd11a99a048539803951",
-            "bytes": 84949,
-            "rawBytes": 218032
+            "sha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
+            "rawSha256": "dd4c4d70bccb606cffdb878db281f0db2f60eb005d1a2fad382b188942544b99",
+            "bytes": 85167,
+            "rawBytes": 218654
           }
         ]
       },
@@ -17618,9 +17457,9 @@
         "x": 325,
         "y": 96,
         "width": 1077,
-        "height": 6281,
+        "height": 6316,
         "top": 96,
-        "bottom": 6377
+        "bottom": 6412
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -17929,15 +17768,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "f6bdf1912cf479a25e0a56f1c2bc0b625469ae5c8cab72ce645a72e57579a906",
-        "currentRawSha256": "f6bdf1912cf479a25e0a56f1c2bc0b625469ae5c8cab72ce645a72e57579a906",
+        "baselineRawSha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
+        "currentRawSha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -17950,10 +17786,10 @@
       "locale": "zh-CN",
       "interaction": "rest",
       "themeMode": "light",
-      "rawSha256": "f6bdf1912cf479a25e0a56f1c2bc0b625469ae5c8cab72ce645a72e57579a906",
+      "rawSha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
       "width": 1440,
       "height": 900,
-      "bytes": 87987,
+      "bytes": 85669,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -17961,17 +17797,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "f6bdf1912cf479a25e0a56f1c2bc0b625469ae5c8cab72ce645a72e57579a906",
-            "rawSha256": "46a6215f778d64931e7de99fee726bd6fefb9645dfbeb65369f0c9a71a092459",
-            "bytes": 87987,
-            "rawBytes": 330074
+            "sha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
+            "rawSha256": "5ec7a0f7e83eeedae9a0f80fa08ea8387e2f82695e775d431aab2158c58af298",
+            "bytes": 85669,
+            "rawBytes": 323562
           },
           {
             "attempt": 2,
-            "sha256": "f6bdf1912cf479a25e0a56f1c2bc0b625469ae5c8cab72ce645a72e57579a906",
-            "rawSha256": "46a6215f778d64931e7de99fee726bd6fefb9645dfbeb65369f0c9a71a092459",
-            "bytes": 87987,
-            "rawBytes": 330074
+            "sha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
+            "rawSha256": "5ec7a0f7e83eeedae9a0f80fa08ea8387e2f82695e775d431aab2158c58af298",
+            "bytes": 85669,
+            "rawBytes": 323562
           }
         ]
       },
@@ -17979,9 +17815,9 @@
         "x": 325,
         "y": 96,
         "width": 1077,
-        "height": 6212,
+        "height": 6247,
         "top": 96,
-        "bottom": 6308
+        "bottom": 6343
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -18290,15 +18126,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "633f36bb3a1d1e1f58492aa7638a0ceca57c109e8a53e8055d43ffff654a8d61",
-        "currentRawSha256": "633f36bb3a1d1e1f58492aa7638a0ceca57c109e8a53e8055d43ffff654a8d61",
+        "baselineRawSha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
+        "currentRawSha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -18311,10 +18144,10 @@
       "locale": "zh-CN",
       "interaction": "rest",
       "themeMode": "dark",
-      "rawSha256": "633f36bb3a1d1e1f58492aa7638a0ceca57c109e8a53e8055d43ffff654a8d61",
+      "rawSha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
       "width": 1440,
       "height": 900,
-      "bytes": 87720,
+      "bytes": 85296,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -18322,17 +18155,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "633f36bb3a1d1e1f58492aa7638a0ceca57c109e8a53e8055d43ffff654a8d61",
-            "rawSha256": "78cbf475ec41ecfa829d0e29d23757d098057f03c20e9456c71b83359b491af7",
-            "bytes": 87720,
-            "rawBytes": 229411
+            "sha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
+            "rawSha256": "56aa88f97b2ab5a58d1bee26741807b18247e5a21e703d9bf51f3833154a42cc",
+            "bytes": 85296,
+            "rawBytes": 223582
           },
           {
             "attempt": 2,
-            "sha256": "633f36bb3a1d1e1f58492aa7638a0ceca57c109e8a53e8055d43ffff654a8d61",
-            "rawSha256": "78cbf475ec41ecfa829d0e29d23757d098057f03c20e9456c71b83359b491af7",
-            "bytes": 87720,
-            "rawBytes": 229411
+            "sha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
+            "rawSha256": "56aa88f97b2ab5a58d1bee26741807b18247e5a21e703d9bf51f3833154a42cc",
+            "bytes": 85296,
+            "rawBytes": 223582
           }
         ]
       },
@@ -18340,9 +18173,9 @@
         "x": 325,
         "y": 96,
         "width": 1077,
-        "height": 6212,
+        "height": 6247,
         "top": 96,
-        "bottom": 6308
+        "bottom": 6343
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -18651,10 +18484,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -19012,10 +18842,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -19373,10 +19200,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -19734,10 +19558,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -20095,10 +19916,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -20456,10 +20274,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -20817,10 +20632,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -21178,10 +20990,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -21539,10 +21348,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -21900,10 +21706,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -22261,10 +22064,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -22622,10 +22422,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -22983,10 +22780,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -23344,10 +23138,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -23705,10 +23496,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -24066,10 +23854,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -24427,10 +24212,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -24788,10 +24570,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -25149,10 +24928,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -25510,10 +25286,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -25871,10 +25644,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -26232,10 +26002,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -26593,10 +26360,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -26954,10 +26718,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -27315,10 +27076,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -27676,10 +27434,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -28037,10 +27792,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -28398,10 +28150,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -28759,10 +28508,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -29120,10 +28866,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -29481,15 +29224,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "2d7436e96b0398329ca62f16762dfe0b7385583f668b2bc6c95fc7dc6a442788",
-        "currentRawSha256": "2d7436e96b0398329ca62f16762dfe0b7385583f668b2bc6c95fc7dc6a442788",
+        "baselineRawSha256": "a3d8ae1fe32a2b2e478316dec1c35dabe7bf74f33c9e538e9ddb9db07e92e154",
+        "currentRawSha256": "a3d8ae1fe32a2b2e478316dec1c35dabe7bf74f33c9e538e9ddb9db07e92e154",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -29502,10 +29242,10 @@
       "locale": "en",
       "interaction": "rest",
       "themeMode": "light",
-      "rawSha256": "2d7436e96b0398329ca62f16762dfe0b7385583f668b2bc6c95fc7dc6a442788",
+      "rawSha256": "a3d8ae1fe32a2b2e478316dec1c35dabe7bf74f33c9e538e9ddb9db07e92e154",
       "width": 1024,
       "height": 768,
-      "bytes": 56409,
+      "bytes": 56214,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -29513,17 +29253,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "2d7436e96b0398329ca62f16762dfe0b7385583f668b2bc6c95fc7dc6a442788",
-            "rawSha256": "66a5c9aeb271f1336a51e8ce7a74759f13688e617c8784ea8872eadfc8343d42",
-            "bytes": 56409,
-            "rawBytes": 232176
+            "sha256": "a3d8ae1fe32a2b2e478316dec1c35dabe7bf74f33c9e538e9ddb9db07e92e154",
+            "rawSha256": "f50ad0bdb06d55043efdde9a8c852302bc3e54ef31b854f4896203640b4fae09",
+            "bytes": 56214,
+            "rawBytes": 231700
           },
           {
             "attempt": 2,
-            "sha256": "2d7436e96b0398329ca62f16762dfe0b7385583f668b2bc6c95fc7dc6a442788",
-            "rawSha256": "66a5c9aeb271f1336a51e8ce7a74759f13688e617c8784ea8872eadfc8343d42",
-            "bytes": 56409,
-            "rawBytes": 232176
+            "sha256": "a3d8ae1fe32a2b2e478316dec1c35dabe7bf74f33c9e538e9ddb9db07e92e154",
+            "rawSha256": "f50ad0bdb06d55043efdde9a8c852302bc3e54ef31b854f4896203640b4fae09",
+            "bytes": 56214,
+            "rawBytes": 231700
           }
         ]
       },
@@ -29531,9 +29271,9 @@
         "x": 307,
         "y": 96,
         "width": 691,
-        "height": 6919,
+        "height": 6954,
         "top": 96,
-        "bottom": 7014
+        "bottom": 7049
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -29842,15 +29582,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "a942e085587c338b8fd00f2e5ce90b3ff4cde90d7d2cd4115cfb5709be2c9ea2",
-        "currentRawSha256": "a942e085587c338b8fd00f2e5ce90b3ff4cde90d7d2cd4115cfb5709be2c9ea2",
+        "baselineRawSha256": "a2b150963896c026585bb6b93f538395f09e6421c5d4eaaa62f78937512dbfa6",
+        "currentRawSha256": "a2b150963896c026585bb6b93f538395f09e6421c5d4eaaa62f78937512dbfa6",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -29863,10 +29600,10 @@
       "locale": "en",
       "interaction": "rest",
       "themeMode": "dark",
-      "rawSha256": "a942e085587c338b8fd00f2e5ce90b3ff4cde90d7d2cd4115cfb5709be2c9ea2",
+      "rawSha256": "a2b150963896c026585bb6b93f538395f09e6421c5d4eaaa62f78937512dbfa6",
       "width": 1024,
       "height": 768,
-      "bytes": 55579,
+      "bytes": 55385,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -29874,17 +29611,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "a942e085587c338b8fd00f2e5ce90b3ff4cde90d7d2cd4115cfb5709be2c9ea2",
-            "rawSha256": "25119ec46ddcb7028b06a32928308d5b61c1503b81dd8eb4f4244273d6a59dc7",
-            "bytes": 55579,
-            "rawBytes": 150214
+            "sha256": "a2b150963896c026585bb6b93f538395f09e6421c5d4eaaa62f78937512dbfa6",
+            "rawSha256": "885f698bd7e95e834a18386c0859c0f132e137ada37b81dac8a81aa2d08a6f50",
+            "bytes": 55385,
+            "rawBytes": 149677
           },
           {
             "attempt": 2,
-            "sha256": "a942e085587c338b8fd00f2e5ce90b3ff4cde90d7d2cd4115cfb5709be2c9ea2",
-            "rawSha256": "25119ec46ddcb7028b06a32928308d5b61c1503b81dd8eb4f4244273d6a59dc7",
-            "bytes": 55579,
-            "rawBytes": 150214
+            "sha256": "a2b150963896c026585bb6b93f538395f09e6421c5d4eaaa62f78937512dbfa6",
+            "rawSha256": "885f698bd7e95e834a18386c0859c0f132e137ada37b81dac8a81aa2d08a6f50",
+            "bytes": 55385,
+            "rawBytes": 149677
           }
         ]
       },
@@ -29892,9 +29629,9 @@
         "x": 307,
         "y": 96,
         "width": 691,
-        "height": 6919,
+        "height": 6954,
         "top": 96,
-        "bottom": 7014
+        "bottom": 7049
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -30203,15 +29940,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "28b9825a0f1238bb5b789a5527420776a28090a578471990a8b35cc4ff3896f5",
-        "currentRawSha256": "28b9825a0f1238bb5b789a5527420776a28090a578471990a8b35cc4ff3896f5",
+        "baselineRawSha256": "4f009452d88840b9b806716233864bb714cb60cc72ea88df975d87f29f2ea915",
+        "currentRawSha256": "4f009452d88840b9b806716233864bb714cb60cc72ea88df975d87f29f2ea915",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -30224,10 +29958,10 @@
       "locale": "zh-CN",
       "interaction": "rest",
       "themeMode": "light",
-      "rawSha256": "28b9825a0f1238bb5b789a5527420776a28090a578471990a8b35cc4ff3896f5",
+      "rawSha256": "4f009452d88840b9b806716233864bb714cb60cc72ea88df975d87f29f2ea915",
       "width": 1024,
       "height": 768,
-      "bytes": 59100,
+      "bytes": 56888,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -30235,17 +29969,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "28b9825a0f1238bb5b789a5527420776a28090a578471990a8b35cc4ff3896f5",
-            "rawSha256": "d68377acf65c2fe2fcec7eca03febd293c6835320813dad80cf54d9cf3af1ed0",
-            "bytes": 59100,
-            "rawBytes": 237024
+            "sha256": "4f009452d88840b9b806716233864bb714cb60cc72ea88df975d87f29f2ea915",
+            "rawSha256": "a5a7550f31691e16ec93b5497e7283478de68dbd7276a916966c5682448e996b",
+            "bytes": 56888,
+            "rawBytes": 230843
           },
           {
             "attempt": 2,
-            "sha256": "28b9825a0f1238bb5b789a5527420776a28090a578471990a8b35cc4ff3896f5",
-            "rawSha256": "d68377acf65c2fe2fcec7eca03febd293c6835320813dad80cf54d9cf3af1ed0",
-            "bytes": 59100,
-            "rawBytes": 237024
+            "sha256": "4f009452d88840b9b806716233864bb714cb60cc72ea88df975d87f29f2ea915",
+            "rawSha256": "a5a7550f31691e16ec93b5497e7283478de68dbd7276a916966c5682448e996b",
+            "bytes": 56888,
+            "rawBytes": 230843
           }
         ]
       },
@@ -30253,9 +29987,9 @@
         "x": 307,
         "y": 96,
         "width": 691,
-        "height": 6707,
+        "height": 6794,
         "top": 96,
-        "bottom": 6803
+        "bottom": 6891
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -30564,15 +30298,12 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
-        "baselineRawSha256": "975117db04d0bbdbed45a634848ae9b7b5d5c9b5259abc1d933b17f9bc0c7e8a",
-        "currentRawSha256": "975117db04d0bbdbed45a634848ae9b7b5d5c9b5259abc1d933b17f9bc0c7e8a",
+        "baselineRawSha256": "162eda95da92f99808b710b98074d737e6b29297730a5b4e3c43c70975654ae0",
+        "currentRawSha256": "162eda95da92f99808b710b98074d737e6b29297730a5b4e3c43c70975654ae0",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -30585,10 +30316,10 @@
       "locale": "zh-CN",
       "interaction": "rest",
       "themeMode": "dark",
-      "rawSha256": "975117db04d0bbdbed45a634848ae9b7b5d5c9b5259abc1d933b17f9bc0c7e8a",
+      "rawSha256": "162eda95da92f99808b710b98074d737e6b29297730a5b4e3c43c70975654ae0",
       "width": 1024,
       "height": 768,
-      "bytes": 58665,
+      "bytes": 56311,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -30596,17 +30327,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "975117db04d0bbdbed45a634848ae9b7b5d5c9b5259abc1d933b17f9bc0c7e8a",
-            "rawSha256": "45ec2fc7976112b0543145d56154adc9f82418a0b793f476f4ab16f24d14c9da",
-            "bytes": 58665,
-            "rawBytes": 158568
+            "sha256": "162eda95da92f99808b710b98074d737e6b29297730a5b4e3c43c70975654ae0",
+            "rawSha256": "314ef2b716d9e0567bea2bf1a1d09cddcee5dd481a6b1b0723b3e54576bab917",
+            "bytes": 56311,
+            "rawBytes": 152162
           },
           {
             "attempt": 2,
-            "sha256": "975117db04d0bbdbed45a634848ae9b7b5d5c9b5259abc1d933b17f9bc0c7e8a",
-            "rawSha256": "45ec2fc7976112b0543145d56154adc9f82418a0b793f476f4ab16f24d14c9da",
-            "bytes": 58665,
-            "rawBytes": 158568
+            "sha256": "162eda95da92f99808b710b98074d737e6b29297730a5b4e3c43c70975654ae0",
+            "rawSha256": "314ef2b716d9e0567bea2bf1a1d09cddcee5dd481a6b1b0723b3e54576bab917",
+            "bytes": 56311,
+            "rawBytes": 152162
           }
         ]
       },
@@ -30614,9 +30345,9 @@
         "x": 307,
         "y": 96,
         "width": 691,
-        "height": 6707,
+        "height": 6794,
         "top": 96,
-        "bottom": 6803
+        "bottom": 6891
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -30925,10 +30656,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -31286,10 +31014,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -31647,10 +31372,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -32008,10 +31730,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -32369,10 +32088,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -32730,10 +32446,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -33091,10 +32804,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -33452,10 +33162,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -33813,10 +33520,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -34174,10 +33878,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -34535,10 +34236,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -34896,10 +34594,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -35257,10 +34952,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -35618,10 +35310,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -35979,10 +35668,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -36340,10 +36026,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -36701,10 +36384,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -37062,10 +36742,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -37423,10 +37100,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -37784,10 +37458,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -38145,10 +37816,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -38506,10 +38174,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -38867,10 +38532,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -39228,10 +38890,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -39589,10 +39248,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -39950,10 +39606,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -40311,10 +39964,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -40672,10 +40322,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -41033,10 +40680,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -41394,10 +41038,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -41755,10 +41396,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -41805,9 +41443,9 @@
         "x": 16,
         "y": 412,
         "width": 358,
-        "height": 24835,
+        "height": 24888,
         "top": 412,
-        "bottom": 25247
+        "bottom": 25300
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -42116,10 +41754,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -42166,9 +41801,9 @@
         "x": 16,
         "y": 412,
         "width": 358,
-        "height": 24835,
+        "height": 24888,
         "top": 412,
-        "bottom": 25247
+        "bottom": 25300
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -42477,10 +42112,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -42527,9 +42159,9 @@
         "x": 16,
         "y": 412,
         "width": 358,
-        "height": 20801,
+        "height": 20854,
         "top": 412,
-        "bottom": 21213
+        "bottom": 21266
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -42838,10 +42470,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -42888,9 +42517,9 @@
         "x": 16,
         "y": 412,
         "width": 358,
-        "height": 20801,
+        "height": 20854,
         "top": 412,
-        "bottom": 21213
+        "bottom": 21266
       },
       "currentDocShellRoute": "component-family-index",
       "storybookDocShellOracleMetrics": {
@@ -43199,10 +42828,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -43560,10 +43186,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -43921,10 +43544,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -44282,10 +43902,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -44643,10 +44260,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -45004,10 +44618,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -45365,10 +44976,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -45726,10 +45334,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -46087,10 +45692,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -46448,10 +46050,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -46809,10 +46408,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -47170,10 +46766,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -47531,10 +47124,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -47892,10 +47482,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -48253,10 +47840,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -48614,10 +48198,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     },
     {
       "rawIntegrity": {
@@ -48975,10 +48556,7 @@
         "nonOkResponses": [],
         "nonLoopbackRequests": []
       },
-      "failures": [],
-      "ephemeralCurrentCapturePath": null,
-      "currentCapturePathOpenable": false,
-      "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+      "failures": []
     }
   ],
   "failureArrays": {
@@ -49026,13 +48604,7 @@
   ],
   "playwrightVersion": "1.61.0",
   "chromiumVersion": "149.0.7827.55",
-  "routeOwnedEphemeralServer": {
-    "origin": "http://127.0.0.1:<ephemeral>",
-    "loopbackOnly": true,
-    "retained": false,
-    "stoppedBeforeReturn": true
-  },
-  "baselineManifestHash": "eb6bd37fe85a05639c6162903b0cb15ab35cad4422c4ed9718cbc9eb67e8ecdd",
+  "baselineManifestHash": "ec9eb7c1fba2b0fcde6f30391846518e8371c9e89bbac8ca9ab41eb055b82f3f",
   "compareFailures": [],
   "comparisonReadbacks": [
     {
@@ -49171,8 +48743,8 @@
       "stateId": "components-first-story-en-light",
       "viewport": "desktop-2048x1024",
       "rawIntegrity": {
-        "baselineRawSha256": "e26039825d37df4589fce08752a844ac1a00cdcb6aabaa8e47fa9611e34a1e47",
-        "currentRawSha256": "e26039825d37df4589fce08752a844ac1a00cdcb6aabaa8e47fa9611e34a1e47",
+        "baselineRawSha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
+        "currentRawSha256": "e5bf482e10799be8343faac23c7088d870936137360c4288268a18e6c388833a",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49182,8 +48754,8 @@
       "stateId": "components-first-story-en-dark",
       "viewport": "desktop-2048x1024",
       "rawIntegrity": {
-        "baselineRawSha256": "24b59cebee24f1f813e5fa8c0a0b2adfb0969678a1396ccc2836a022b0fc0414",
-        "currentRawSha256": "24b59cebee24f1f813e5fa8c0a0b2adfb0969678a1396ccc2836a022b0fc0414",
+        "baselineRawSha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
+        "currentRawSha256": "a8c209b322579d3154d47dc2887ce7a26b5c76d899225dabce5d4c88016d2193",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49193,8 +48765,8 @@
       "stateId": "components-first-story-zh-cn-light",
       "viewport": "desktop-2048x1024",
       "rawIntegrity": {
-        "baselineRawSha256": "b3bf151baca6839397f0e539c48d30f1ca2736f46ccff7bbbb5654768d6e147a",
-        "currentRawSha256": "b3bf151baca6839397f0e539c48d30f1ca2736f46ccff7bbbb5654768d6e147a",
+        "baselineRawSha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
+        "currentRawSha256": "32891328370cda14e11fca8e5da687264f1af54b83a3c6ae9a2cb07a5a82deea",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49204,8 +48776,8 @@
       "stateId": "components-first-story-zh-cn-dark",
       "viewport": "desktop-2048x1024",
       "rawIntegrity": {
-        "baselineRawSha256": "99365af374ea311db074c996a26c2e5cffd1d29cf9eb0f11907139abab5fec24",
-        "currentRawSha256": "99365af374ea311db074c996a26c2e5cffd1d29cf9eb0f11907139abab5fec24",
+        "baselineRawSha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
+        "currentRawSha256": "c0fa37593fab8ee7fd1d100d60d8a0a41a684d4822a134031afdd9e81f887d47",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49545,8 +49117,8 @@
       "stateId": "components-first-story-en-light",
       "viewport": "desktop-1440x900",
       "rawIntegrity": {
-        "baselineRawSha256": "1723fa3c7d7914f3b822450126b69f361131e994298ebf4a95e5720aa91ccdb0",
-        "currentRawSha256": "1723fa3c7d7914f3b822450126b69f361131e994298ebf4a95e5720aa91ccdb0",
+        "baselineRawSha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
+        "currentRawSha256": "48d8e3eb5ed28491f180a32641a871c5513d7475679437bb6c51b289582c8585",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49556,8 +49128,8 @@
       "stateId": "components-first-story-en-dark",
       "viewport": "desktop-1440x900",
       "rawIntegrity": {
-        "baselineRawSha256": "20c9a7f17efc40d84045b0055157acb37a9ac134832c6a596ff56cd3af0bc469",
-        "currentRawSha256": "20c9a7f17efc40d84045b0055157acb37a9ac134832c6a596ff56cd3af0bc469",
+        "baselineRawSha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
+        "currentRawSha256": "3d816da57b24beb965121cffe69a81ee0fa8589bfc65f4e838a0c7c931b95eb1",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49567,8 +49139,8 @@
       "stateId": "components-first-story-zh-cn-light",
       "viewport": "desktop-1440x900",
       "rawIntegrity": {
-        "baselineRawSha256": "f6bdf1912cf479a25e0a56f1c2bc0b625469ae5c8cab72ce645a72e57579a906",
-        "currentRawSha256": "f6bdf1912cf479a25e0a56f1c2bc0b625469ae5c8cab72ce645a72e57579a906",
+        "baselineRawSha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
+        "currentRawSha256": "ea3a3808a80f3039d29e43f9b0bb7bfce7e94ecec983ebc11b617123b7ee5f47",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49578,8 +49150,8 @@
       "stateId": "components-first-story-zh-cn-dark",
       "viewport": "desktop-1440x900",
       "rawIntegrity": {
-        "baselineRawSha256": "633f36bb3a1d1e1f58492aa7638a0ceca57c109e8a53e8055d43ffff654a8d61",
-        "currentRawSha256": "633f36bb3a1d1e1f58492aa7638a0ceca57c109e8a53e8055d43ffff654a8d61",
+        "baselineRawSha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
+        "currentRawSha256": "c20e7144c7829ff09121afa57495593c6253b056ffffd2a759feb7cf7b35685c",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49919,8 +49491,8 @@
       "stateId": "components-first-story-en-light",
       "viewport": "tablet-1024x768",
       "rawIntegrity": {
-        "baselineRawSha256": "2d7436e96b0398329ca62f16762dfe0b7385583f668b2bc6c95fc7dc6a442788",
-        "currentRawSha256": "2d7436e96b0398329ca62f16762dfe0b7385583f668b2bc6c95fc7dc6a442788",
+        "baselineRawSha256": "a3d8ae1fe32a2b2e478316dec1c35dabe7bf74f33c9e538e9ddb9db07e92e154",
+        "currentRawSha256": "a3d8ae1fe32a2b2e478316dec1c35dabe7bf74f33c9e538e9ddb9db07e92e154",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49930,8 +49502,8 @@
       "stateId": "components-first-story-en-dark",
       "viewport": "tablet-1024x768",
       "rawIntegrity": {
-        "baselineRawSha256": "a942e085587c338b8fd00f2e5ce90b3ff4cde90d7d2cd4115cfb5709be2c9ea2",
-        "currentRawSha256": "a942e085587c338b8fd00f2e5ce90b3ff4cde90d7d2cd4115cfb5709be2c9ea2",
+        "baselineRawSha256": "a2b150963896c026585bb6b93f538395f09e6421c5d4eaaa62f78937512dbfa6",
+        "currentRawSha256": "a2b150963896c026585bb6b93f538395f09e6421c5d4eaaa62f78937512dbfa6",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49941,8 +49513,8 @@
       "stateId": "components-first-story-zh-cn-light",
       "viewport": "tablet-1024x768",
       "rawIntegrity": {
-        "baselineRawSha256": "28b9825a0f1238bb5b789a5527420776a28090a578471990a8b35cc4ff3896f5",
-        "currentRawSha256": "28b9825a0f1238bb5b789a5527420776a28090a578471990a8b35cc4ff3896f5",
+        "baselineRawSha256": "4f009452d88840b9b806716233864bb714cb60cc72ea88df975d87f29f2ea915",
+        "currentRawSha256": "4f009452d88840b9b806716233864bb714cb60cc72ea88df975d87f29f2ea915",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -49952,8 +49524,8 @@
       "stateId": "components-first-story-zh-cn-dark",
       "viewport": "tablet-1024x768",
       "rawIntegrity": {
-        "baselineRawSha256": "975117db04d0bbdbed45a634848ae9b7b5d5c9b5259abc1d933b17f9bc0c7e8a",
-        "currentRawSha256": "975117db04d0bbdbed45a634848ae9b7b5d5c9b5259abc1d933b17f9bc0c7e8a",
+        "baselineRawSha256": "162eda95da92f99808b710b98074d737e6b29297730a5b4e3c43c70975654ae0",
+        "currentRawSha256": "162eda95da92f99808b710b98074d737e6b29297730a5b4e3c43c70975654ae0",
         "rawExactMatch": true
       },
       "comparisonMethod": "raw_png_sha256_exact",
@@ -50509,14 +50081,5 @@
       "comparisonMethod": "raw_png_sha256_exact",
       "pixelDeltaSummary": null
     }
-  ],
-  "currentCaptureCleanupReadback": {
-    "ok": true,
-    "directory": "docs/verification/storybook-visual-proof/.current-check",
-    "residualArtifacts": [],
-    "disposition": "ephemeral_current_check_removed_after_success"
-  },
-  "currentCaptureDisposition": "ephemeral_current_check_removed_after_success",
-  "currentCapturePathOpenable": false,
-  "currentCapturePathDisposition": "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof"
+  ]
 }

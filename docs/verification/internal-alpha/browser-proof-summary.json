@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "d1f3bd91b33485bd74b01ba8c4b5bdf1fc3c18b92322249fe7a68651d1dd15b2",
+    "contractPayloadDigest": "f07a9de14767c537a2f5b4c63df83df0c418100388477b07f77794a03a420865",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
@@ -627,7 +627,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 6281
+          "height": 6316
         },
         {
           "id": "display-primitives-spec",
@@ -1606,7 +1606,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 6901
+          "height": 6919
         },
         {
           "id": "display-primitives-spec",
@@ -2441,7 +2441,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 23612
+          "height": 23664
         },
         {
           "id": "display-primitives-spec",

@@ -877,6 +877,7 @@ export const aiConsumptionContract = {
       suffixClassName: "tcrn-brand-wordmark__suffix--design-system",
       lineTwo: "Component Library",
       stackSuffix: true,
+      alt: "TCRN Design System",
       packageExport: "ProductLogo"
     },
     {
@@ -888,6 +889,7 @@ export const aiConsumptionContract = {
       suffixClassName: "tcrn-brand-wordmark__suffix--aos",
       lineTwo: "AI Operation System",
       stackSuffix: false,
+      alt: "TCRN AOS AI Operation System",
       packageExport: "ProductLogo"
     },
     {
@@ -899,6 +901,7 @@ export const aiConsumptionContract = {
       suffixClassName: "tcrn-brand-wordmark__suffix--tms",
       lineTwo: "Talent Management System",
       stackSuffix: false,
+      alt: "TCRN TMS Talent Management System",
       packageExport: "ProductLogo"
     }
   ],

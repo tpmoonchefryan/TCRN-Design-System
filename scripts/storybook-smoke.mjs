@@ -2423,8 +2423,7 @@ async function runProductShellComparatorProof(contract = productShellComparatorC
         contract,
         readbacks: {
           variants: variantReadbacks
-        },
-        routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+        }
       };
     }
 	    const desktop = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "no-preference", contract);
@@ -2441,8 +2440,7 @@ async function runProductShellComparatorProof(contract = productShellComparatorC
         desktop,
         reducedMotion: reduced,
         mobile
-      },
-      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+      }
     };
   } finally {
     await new Promise((resolve) => server.close(resolve));
@@ -2596,8 +2594,7 @@ async function runChangelogI18nReadabilityProof() {
       ok: failures.length === 0,
       route,
       failures,
-      readbacks: { desktop, mobile },
-      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+      readbacks: { desktop, mobile }
     };
   } finally {
     await new Promise((resolve) => server.close(resolve));
@@ -2762,8 +2759,7 @@ async function runGlobalStorybookZhCnIaProof() {
       ok: failures.length === 0,
       route,
       failures,
-      readbacks: { desktop, mobile },
-      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+      readbacks: { desktop, mobile }
     };
   } finally {
     await new Promise((resolve) => server.close(resolve));
@@ -3125,8 +3121,7 @@ async function runCrossSectionShellParityProof() {
       ok: failures.length === 0,
       routes: routes.map((route) => `${route.file}?theme=light&locale=zh-CN#${route.storyId}`),
       failures,
-      readbacks: { desktop, mobile },
-      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+      readbacks: { desktop, mobile }
     };
   } finally {
     await new Promise((resolve) => server.close(resolve));
@@ -3210,8 +3205,7 @@ async function runLocaleMenuFocusReturnProof() {
     return {
       ok: failures.length === 0,
       failures,
-      readbacks,
-      routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+      readbacks
     };
   } finally {
     await new Promise((resolve) => server.close(resolve));

@@ -250,7 +250,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "d1f3bd91b33485bd74b01ba8c4b5bdf1fc3c18b92322249fe7a68651d1dd15b2",
+    "contractPayloadDigest": "f07a9de14767c537a2f5b4c63df83df0c418100388477b07f77794a03a420865",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 18,
@@ -3904,8 +3904,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 50030,
-      "scrollY": 44585
+      "maxScrollY": 50065,
+      "scrollY": 44620
     }
   },
   "scrollSpyCheck": {

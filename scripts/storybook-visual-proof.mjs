@@ -11,20 +11,15 @@ import { chromium } from "@playwright/test";
 const require = createRequire(import.meta.url);
 const playwrightVersion = JSON.parse(readFileSync(require.resolve("@playwright/test/package.json"), "utf8")).version;
 
-const route = "route_tcrn_design_system_storybook_content_visual_proof_hardening_ilya_s005_local_visual_snapshot_proof_repair_after_elara_verity_raw_hash_contract_revision_concurrence";
 const comparisonContractVersion = "canonicalized_raw_png_exact_v1";
 const visualArtifactContractDisposition = {
   comparisonPolicy: "canonicalized_raw_png_sha256_exact_required",
-  replacementDisposition: "exact raw PNG matching plus retained manifest dimensions and embedded per-shot geometry readbacks replace the retired bounded-antialias/diff artifact branch",
   retainedArtifacts: [
     "docs/verification/storybook-visual-proof/baseline-manifest.json",
     "docs/verification/storybook-visual-proof/update-receipt.json",
     "docs/verification/storybook-visual-proof/check-receipt.json",
     "docs/verification/storybook-visual-proof/screenshots/baseline/*.png"
   ],
-  currentCheckDisposition: "check-mode current PNGs are ephemeral and must be removed after a successful exact comparison",
-  diffPngDisposition: "retained diff PNGs are not part of canonicalized_raw_png_exact_v1; non-exact PNGs fail closed with raw_png_sha256_exact_match_required and preserve .current-check only on failure for debugging",
-  geometryDisposition: "separate geometry JSON is not part of canonicalized_raw_png_exact_v1; target rects, doc-shell oracle metrics, search/topbar/sidebar geometry, events, and failures are embedded in each screenshotReadbacks entry",
   failClosedSignals: [
     "missing_baseline_png",
     "baseline_png_hash_mismatch",
@@ -35,6 +30,8 @@ const visualArtifactContractDisposition = {
     "unexpected_current_entry"
   ]
 };
+const exactMismatchDisposition = "raw_png_sha256_exact_match_required";
+const currentCaptureCleanupFailure = "current_check_cleanup_failed";
 const packageName = "@tcrn/design-system-workspace";
 const staticRoot = "apps/storybook/storybook-static";
 const receiptRoot = "docs/verification/storybook-visual-proof";
@@ -282,8 +279,7 @@ const deterministicBrowserSettings = {
     rowFilter: 0
   },
   scrollbarRendering: "suppressed_for_visual_hash_stability",
-  screenshotStability: "two_consecutive_identical_png_hashes_before_write_or_compare",
-  routeOwnedLoopbackServer: "127.0.0.1:<ephemeral>"
+  screenshotStability: "two_consecutive_identical_png_hashes_before_write_or_compare"
 };
 
 const noOverclaimReadback = {
@@ -1423,15 +1419,11 @@ async function captureVisualMatrix({ server, browser, outputDir }) {
 
 function makeBaseReceipt({
   mode,
-  reason,
   sourceHead,
-  sourceGitStatus,
-  sourceHeadEquivalenceReadback,
   sourceContentDigest,
   staticPageReadbacks,
   oracleRecoveryReadback,
   browserVersion,
-  routeOwnedEphemeralServer,
   compareFailures = [],
   comparisonReadbacks = [],
   entries
@@ -1452,15 +1444,11 @@ function makeBaseReceipt({
       && failureArrays.screenshotFailures.length === 0
       && failureArrays.compareFailures.length === 0
       && failureArrays.oracleRecoveryFailures.length === 0,
-    route,
-    sourceHead,
-    sourceGitStatus,
-    sourceHeadEquivalenceReadback,
     sourceContentDigest,
+    sourceHead,
     mode,
     comparisonContractVersion,
     visualArtifactContractDisposition,
-    baselineUpdateReason: reason,
     packageName,
     staticPageAllowlist,
     visualStateAllowlist: visualStateAllowlist.map(({ id, page, hash, storyId, description, locale, themeMode, interaction, viewportIds }) => ({
@@ -1513,11 +1501,9 @@ function makeBaseReceipt({
     noOverclaimReadback,
     deferredBoundaries,
     playwrightVersion,
-      chromiumVersion: browserVersion,
-      routeOwnedEphemeralServer,
-      visualArtifactContractDisposition,
-      baselineManifestHash: null,
-      compareFailures,
+    chromiumVersion: browserVersion,
+    baselineManifestHash: null,
+    compareFailures,
     comparisonReadbacks
   };
 }
@@ -1559,7 +1545,6 @@ function collectOracleRecoveryReadback() {
   }
   return {
     ok: failures.length === 0,
-    receipt: contract.storybookDocShellVisualOracle?.oracleRecoveryReceipt ?? null,
     baselineManifestClassification: contract.storybookDocShellVisualOracle?.baselineManifestClassification ?? null,
     metricSourceDisposition: contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? null,
     metricEvidenceCount: metricEvidence.length,
@@ -1573,16 +1558,12 @@ function writeMarkdownReceipt(receipt) {
   const lines = [
     "# Storybook Visual Proof",
     "",
-    `Route: \`${route}\``,
     `Mode: \`${receipt.mode}\``,
     `OK: \`${receipt.ok}\``,
     `Comparison contract: \`${comparisonContractVersion}\``,
     `Visual artifact contract: \`${visualArtifactContractDisposition.comparisonPolicy}\``,
-    `Current check artifacts: \`${receipt.currentCaptureCleanupReadback?.ok === false ? "cleanup-failed" : visualArtifactContractDisposition.currentCheckDisposition}\``,
     `Source head: \`${receipt.sourceHead}\``,
-    `Source equivalence: \`${receipt.sourceHeadEquivalenceReadback.disposition}\``,
     `Oracle recovery: \`${receipt.oracleRecoveryReadback.ok}\``,
-    `Oracle receipt: \`${receipt.oracleRecoveryReadback.receipt}\``,
     `Static pages: ${receipt.staticPageReadbacks.length}`,
     `Screenshots: ${receipt.screenshotReadbacks.length}`,
     `Compare failures: ${receipt.compareFailures.length}`,
@@ -1607,17 +1588,13 @@ function writeMarkdownReceipt(receipt) {
   writeFileSync(markdownReceiptPath, `${lines.join("\n")}\n`);
 }
 
-function writeBaselineArtifacts({ reason, receipt, entries }) {
+function writeBaselineArtifacts({ receipt, entries }) {
   const manifest = {
     ok: receipt.ok,
-    route,
     comparisonContractVersion,
     visualArtifactContractDisposition,
     sourceHead: receipt.sourceHead,
-    sourceGitStatus: receipt.sourceGitStatus,
-    sourceHeadEquivalenceReadback: receipt.sourceHeadEquivalenceReadback,
     sourceContentDigest: receipt.sourceContentDigest,
-    baselineUpdateReason: reason,
     packageName,
     staticPageAllowlist,
     visualStateAllowlist: receipt.visualStateAllowlist,
@@ -1647,12 +1624,10 @@ function writeBaselineArtifacts({ reason, receipt, entries }) {
   receipt.baselineManifestHash = manifest.baselineManifestHash;
   writeFileSync(baselineManifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
   writeFileSync(intentionalDiffManifestPath, `${JSON.stringify({
-	    ok: true,
-	    mode: "update-baseline",
-	    comparisonContractVersion,
-	    reason,
-    route,
-    disposition: "DSCVH-S005-initial-local-static-baseline",
+    ok: true,
+    mode: "update-baseline",
+    comparisonContractVersion,
+    disposition: "visual_baseline_updated",
     entries: manifest.entries
   }, null, 2)}\n`);
   writeFileSync(updateReceiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
@@ -1732,13 +1707,13 @@ function compareToBaseline(entries, manifest, context) {
     }
     comparison.pixelDeltaSummary = {
       computed: false,
-      disposition: visualArtifactContractDisposition.diffPngDisposition
+      disposition: exactMismatchDisposition
     };
     failures.push({
       key,
       reason: "raw_png_sha256_exact_match_required",
       comparisonContractVersion,
-      visualArtifactContractDisposition: visualArtifactContractDisposition.diffPngDisposition,
+      disposition: exactMismatchDisposition,
       baselineRawSha256: baseline.rawSha256,
       currentRawSha256: entry.rawSha256
     });
@@ -1747,40 +1722,9 @@ function compareToBaseline(entries, manifest, context) {
   return { compareFailures: failures, comparisonReadbacks };
 }
 
-function sourceDirtyFileCountFromStatus(sourceGitStatus) {
-  return sourceGitStatus.split("\n").filter((line) => line && !line.startsWith("##")).length;
-}
-
-function applyStableSourceGitStatus(receipt, {
-  sourceGitStatus,
-  preWriteSourceGitStatus,
-  disposition
-}) {
-  const sourceDirtyFileCount = sourceDirtyFileCountFromStatus(sourceGitStatus);
-  receipt.sourceGitStatus = sourceGitStatus;
-  receipt.sourceHeadEquivalenceReadback = {
-    ...receipt.sourceHeadEquivalenceReadback,
-    disposition: sourceDirtyFileCount > 0
-      ? "source_equivalent_dirty_tree_receipt_generated_before_commit"
-      : "clean_head_receipt_generated_from_committed_source",
-    sourceDirtyFileCount,
-    sourceGitStatusDisposition: disposition,
-    preWriteSourceGitStatus,
-    postWriteSourceGitStatus: sourceGitStatus
-  };
-  return receipt;
-}
-
 function markCurrentCapturePathsNonRetained(receipt) {
-  receipt.currentCaptureDisposition = "ephemeral_current_check_removed_after_success";
-  receipt.currentCapturePathOpenable = false;
-  receipt.currentCapturePathDisposition =
-    "check-mode current screenshot artifacts are removed after a successful exact comparison; use rawSha256, baseline path, and comparisonReadbacks for retained proof";
   receipt.screenshotReadbacks = receipt.screenshotReadbacks.map((readback) => ({
-    ...Object.fromEntries(Object.entries(readback).filter(([key]) => key !== "path")),
-    ephemeralCurrentCapturePath: null,
-    currentCapturePathOpenable: false,
-    currentCapturePathDisposition: receipt.currentCapturePathDisposition
+    ...Object.fromEntries(Object.entries(readback).filter(([key]) => key !== "path"))
   }));
   return receipt;
 }
@@ -1797,46 +1741,25 @@ function cleanupCurrentCaptureDir() {
   const residualArtifacts = listCurrentCaptureArtifacts();
   return {
     ok: residualArtifacts.length === 0,
-    directory: currentCaptureDir,
-    residualArtifacts,
-    disposition: residualArtifacts.length === 0
-      ? "ephemeral_current_check_removed_after_success"
-      : "current_check_cleanup_failed"
+    residualArtifacts
   };
 }
 
 async function run() {
   const { mode, reason } = parseArgs(process.argv.slice(2));
   assertStaticOutput();
-  const preWriteSourceGitStatus = git(["status", "--short", "--branch"]);
   if (mode === "update-baseline") {
     rmSync(baselineDir, { recursive: true, force: true });
     rmSync(currentCaptureDir, { recursive: true, force: true });
   }
   mkdirSync(receiptRoot, { recursive: true });
   const sourceHead = git(["rev-parse", "HEAD"]);
-  const sourceGitStatus = mode === "update-baseline"
-    ? preWriteSourceGitStatus
-    : git(["status", "--short", "--branch"]);
-  const sourceDirtyFileCount = sourceDirtyFileCountFromStatus(sourceGitStatus);
   const sourceContentDigest = digestFiles([
     "package.json",
     "scripts/storybook-visual-proof.mjs",
     "scripts/no-private-input-scan.mjs",
     ...staticPageAllowlist.map((file) => join(staticRoot, file))
   ]);
-  const sourceHeadEquivalenceReadback = {
-    disposition: sourceDirtyFileCount > 0
-      ? "source_equivalent_dirty_tree_receipt_generated_before_commit"
-      : "clean_head_receipt_generated_from_committed_source",
-    sourceHead,
-    sourceDirtyFileCount,
-    sourceContentDigest,
-    sourceContentDigestDisposition:
-      "digest covers the built static contract-doc outputs, package metadata, visual proof script, and private-output scan script used by this receipt",
-    commitEquivalenceRequirement:
-      "when generated before commit, reviewers should compare this digest and status readback with the committed source/artifact diff rather than treating sourceHead alone as proof freshness"
-  };
   const captureDir = mode === "update-baseline" ? baselineDir : currentCaptureDir;
   const server = await startStaticServer(staticRoot);
   let browser;
@@ -1854,44 +1777,25 @@ async function run() {
     browser = null;
     await server.close();
     serverStopped = true;
-    const routeOwnedEphemeralServer = {
-      origin: server.stableOrigin,
-      loopbackOnly: true,
-      retained: false,
-      stoppedBeforeReturn: true
-    };
 
     if (mode === "update-baseline") {
       const receipt = makeBaseReceipt({
         mode,
-        reason,
         sourceHead,
-        sourceGitStatus,
-        sourceHeadEquivalenceReadback,
         sourceContentDigest,
         staticPageReadbacks,
         oracleRecoveryReadback,
         browserVersion,
-        routeOwnedEphemeralServer,
         entries
       });
-      writeBaselineArtifacts({ reason, receipt, entries });
-      applyStableSourceGitStatus(receipt, {
-        sourceGitStatus: git(["status", "--short", "--branch"]),
-        preWriteSourceGitStatus,
-        disposition: "post_write_stable_status_after_baseline_receipt_package_restored"
-      });
-      writeBaselineArtifacts({ reason, receipt, entries });
+      writeBaselineArtifacts({ receipt, entries });
       console.log(JSON.stringify({
-	        ok: receipt.ok,
-	        mode,
+        ok: receipt.ok,
+        mode,
         comparisonContractVersion,
-        baselineUpdateReason: reason,
         sourceHead,
-        sourceHeadEquivalenceReadback: receipt.sourceHeadEquivalenceReadback,
         sourceContentDigest,
         oracleRecoveryOk: receipt.oracleRecoveryReadback.ok,
-        oracleRecoveryReceipt: receipt.oracleRecoveryReadback.receipt,
         screenshotCount: entries.length,
         baselineManifestPath,
         baselineManifestHash: receipt.baselineManifestHash
@@ -1908,15 +1812,11 @@ async function run() {
     });
     const receipt = makeBaseReceipt({
       mode,
-      reason: null,
       sourceHead,
-      sourceGitStatus,
-      sourceHeadEquivalenceReadback,
       sourceContentDigest,
       staticPageReadbacks,
       oracleRecoveryReadback,
       browserVersion,
-      routeOwnedEphemeralServer,
       compareFailures,
       comparisonReadbacks,
       entries
@@ -1927,7 +1827,7 @@ async function run() {
       if (!receipt.currentCaptureCleanupReadback.ok) {
         const cleanupFailure = {
           key: "current-check",
-          reason: "current_check_cleanup_failed",
+          reason: currentCaptureCleanupFailure,
           residualArtifacts: receipt.currentCaptureCleanupReadback.residualArtifacts
         };
         receipt.compareFailures.push(cleanupFailure);
@@ -1937,13 +1837,7 @@ async function run() {
         markCurrentCapturePathsNonRetained(receipt);
       }
     }
-    applyStableSourceGitStatus(receipt, {
-      sourceGitStatus: git(["status", "--short", "--branch"]),
-      preWriteSourceGitStatus,
-      disposition: receipt.ok
-        ? "post_cleanup_stable_status_after_current_check_removed"
-        : "post_write_failure_status_with_current_check_preserved_for_debug"
-    });
+    delete receipt.currentCaptureCleanupReadback;
     receipt.baselineManifestHash = baseline.baselineManifestHash;
     writeFileSync(checkReceiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
     writeMarkdownReceipt(receipt);
@@ -1951,11 +1845,9 @@ async function run() {
       ok: receipt.ok,
       mode,
       sourceHead,
-      sourceHeadEquivalenceReadback: receipt.sourceHeadEquivalenceReadback,
       sourceContentDigest,
       comparisonContractVersion,
       oracleRecoveryOk: receipt.oracleRecoveryReadback.ok,
-      oracleRecoveryReceipt: receipt.oracleRecoveryReadback.receipt,
       screenshotCount: entries.length,
       baselineManifestHash: receipt.baselineManifestHash,
       compareFailureCount: compareFailures.length
