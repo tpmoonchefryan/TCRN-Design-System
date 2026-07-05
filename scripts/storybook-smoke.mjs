@@ -41,6 +41,7 @@ const requiredStories = [
   { id: "dialog-spec-usage", group: "Components" },
   { id: "table-work-index-spec", group: "Components" },
   { id: "work-management-components-spec", group: "Components" },
+  { id: "knowledge-management-components-spec", group: "Components" },
   { id: "forms-patterns", group: "Patterns" },
   { id: "workbench-patterns", group: "Patterns" },
   { id: "work-management-patterns", group: "Patterns" },
@@ -97,7 +98,7 @@ const localAbsolutePathDenyPatterns = [
   { name: "mac-temp-path", pattern: /\/var\/folders(?:\/|$)/i },
   { name: "remote-workspace-path", pattern: /\/srv\/tcrn(?:\/|$)/i }
 ];
-const expectedStoryCategoryCount = 18;
+const expectedStoryCategoryCount = 19;
 const expectedStorybookShellNavGroupCount = expectedContractStoryGroups.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
@@ -958,6 +959,16 @@ for (const text of [
   "WorkDetailLayout",
   "MetadataRail",
   "WorkFieldPanel",
+  "KnowledgePageTree",
+  "KnowledgeDocumentCanvas",
+  "KnowledgeTocRail",
+  "KnowledgeInlineCommentList",
+  "KnowledgeMetadataRail",
+  "KnowledgeAttachmentList",
+  "KnowledgeLabelSet",
+  "KnowledgeVersionHistory",
+  "KnowledgeTemplateGallery",
+  "KnowledgeSearchResults",
   "WorkActivityFeed",
   "WorkHierarchy",
   "GatePipeline",

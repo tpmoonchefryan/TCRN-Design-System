@@ -154,12 +154,12 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Spacing and density",
     category: "Foundation",
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx"],
-    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-work-index-spec", "components.html#work-management-components-spec"],
+    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-work-index-spec", "components.html#work-management-components-spec", "components.html#knowledge-management-components-spec"],
     authorityLevel: "package_authority",
-    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "workDensityComponents"],
-    allowedConsumerInputs: ["content-specific row data", "table columns", "local filters", "documented Work density props"],
-    forbiddenConsumerOverrides: ["ad hoc dense card padding", "global table overflow rules", "page-level horizontal scrollers", "consumer-local Work row/list/backlog/detail density systems"],
-    proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment", "WorkItemRow/WorkList/WorkDetailLayout examples fit without overlarge card regression"],
+    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "workDensityComponents", "knowledgeDensityComponents"],
+    allowedConsumerInputs: ["content-specific row data", "table columns", "local filters", "documented Work density props", "documented Knowledge static content props"],
+    forbiddenConsumerOverrides: ["ad hoc dense card padding", "global table overflow rules", "page-level horizontal scrollers", "consumer-local Work row/list/backlog/detail density systems", "consumer-local Knowledge tree/document/comment/template systems"],
+    proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment", "WorkItemRow/WorkList/WorkDetailLayout examples fit without overlarge card regression", "KnowledgePageTree/KnowledgeDocumentCanvas/KnowledgeTocRail examples fit without vendor-asset leakage"],
     missingStandardEscalation: "Skip product-specific reusable pattern work and list the missing DS primitive/pattern."
   },
   {

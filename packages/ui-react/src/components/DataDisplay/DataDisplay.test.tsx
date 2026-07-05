@@ -5,6 +5,16 @@ import {
   EvidenceAttachmentList,
   GatePipeline,
   GatePipelineCompact,
+  KnowledgeAttachmentList,
+  KnowledgeDocumentCanvas,
+  KnowledgeInlineCommentList,
+  KnowledgeLabelSet,
+  KnowledgeMetadataRail,
+  KnowledgePageTree,
+  KnowledgeSearchResults,
+  KnowledgeTemplateGallery,
+  KnowledgeTocRail,
+  KnowledgeVersionHistory,
   MachineToken,
   MachineTokenCell,
   MetadataRail,
@@ -28,6 +38,7 @@ import {
   WorkQuickFilters,
   WorkSplitView,
   WorkViewTabs,
+  knowledgeManagementPatternRegistry,
   workManagementPatternRegistry,
   workRelationshipTypes
 } from "./DataDisplay.js";
@@ -147,6 +158,80 @@ test("work management registry admits candidates 18 through 41", () => {
   assert.match(workManagementPatternRegistry.map((item) => item.componentName).join(" "), /WorkBoard/);
   assert.match(workManagementPatternRegistry.map((item) => item.componentName).join(" "), /WorkDetailLayout/);
   assert.match(workManagementPatternRegistry.map((item) => item.level).join(" "), /primitive pattern composite/);
+});
+
+test("knowledge management registry admits static DS candidates 42 through 51", () => {
+  assert.deepEqual(knowledgeManagementPatternRegistry.map((item) => item.candidateId), [
+    "42-knowledge-page-tree",
+    "43-knowledge-document-canvas",
+    "44-knowledge-toc-rail",
+    "45-knowledge-inline-comment-list",
+    "46-knowledge-metadata-rail",
+    "47-knowledge-attachment-list",
+    "48-knowledge-label-set",
+    "49-knowledge-version-history",
+    "50-knowledge-template-gallery",
+    "51-knowledge-search-results"
+  ]);
+  assert.match(knowledgeManagementPatternRegistry.map((item) => item.componentName).join(" "), /KnowledgeDocumentCanvas/);
+  assert.match(knowledgeManagementPatternRegistry.map((item) => item.purpose).join(" "), /without external vendor integration/);
+});
+
+test("knowledge management components render static no-live surfaces", () => {
+  const html = renderToStaticMarkup(
+    <section>
+      <KnowledgePageTree
+        items={[
+          {
+            id: "root",
+            title: "Runbook space",
+            current: true,
+            children: [{ id: "child", title: "Owner inspection guide", state: { state: "local_only" } }]
+          }
+        ]}
+      />
+      <KnowledgeDocumentCanvas
+        title="Owner inspection guide"
+        summary="Static Knowledge canvas for design confirmation."
+        labels={["runbook", "owner-review"]}
+        meta={<MachineTokenCell token="KB-12" kind="generic" />}
+        sections={[
+          { id: "scope", heading: "Scope", body: "No backend publishing is wired." },
+          { id: "proof", heading: "Proof", body: "Evidence links stay local and sanitized." }
+        ]}
+      />
+      <KnowledgeTocRail items={[{ id: "scope", label: "Scope", href: "#scope", current: true }]} />
+      <KnowledgeInlineCommentList
+        comments={[{ id: "c1", author: "Mara", body: "Clarify acceptance boundary.", state: { state: "review_required" } }]}
+      />
+      <KnowledgeMetadataRail
+        items={[{ key: "owner", label: "Owner", value: "Mara" }]}
+        labels={["static"]}
+        actions={[{ id: "publish", label: "Publish", disabledReason: "No publishing backend in DS fixture" }]}
+      />
+      <KnowledgeAttachmentList items={[{ id: "evd", label: "Evidence", reference: "artifact:kb-static", state: { state: "local_only" } }]} />
+      <KnowledgeLabelSet labels={["policy", "draft"]} />
+      <KnowledgeVersionHistory versions={[{ id: "v1", title: "Draft", author: "Ilya", state: { state: "fixture_only" } }]} />
+      <KnowledgeTemplateGallery templates={[{ id: "template", title: "Runbook", description: "Static template only.", state: { state: "not_claimed" } }]} />
+      <KnowledgeSearchResults
+        query="inspection"
+        results={[{ id: "result", title: "Owner inspection guide", excerpt: "Static local result only.", labels: ["runbook"] }]}
+      />
+    </section>
+  );
+
+  assert.match(html, /data-knowledge-management-pattern="knowledge-page-tree"/);
+  assert.match(html, /data-knowledge-management-pattern="knowledge-document-canvas"/);
+  assert.match(html, /data-knowledge-management-pattern="knowledge-toc-rail"/);
+  assert.match(html, /data-knowledge-management-pattern="knowledge-inline-comment-list"/);
+  assert.match(html, /data-knowledge-management-pattern="knowledge-metadata-rail"/);
+  assert.match(html, /data-knowledge-management-pattern="knowledge-attachment-list"/);
+  assert.match(html, /data-knowledge-management-pattern="knowledge-label-set"/);
+  assert.match(html, /data-knowledge-management-pattern="knowledge-version-history"/);
+  assert.match(html, /data-knowledge-management-pattern="knowledge-template-gallery"/);
+  assert.match(html, /data-knowledge-management-pattern="knowledge-search-results"/);
+  assert.match(html, /data-search-capability="static-local-fixture"/);
+  assert.doesNotMatch(html, /Confluence|Jira|Atlassian|atlaskit/i);
 });
 
 test("work management composites render static no-live operational surfaces", () => {

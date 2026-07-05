@@ -79,6 +79,16 @@ const publicUiReactComponentExports = [
   "WorkActivityFeed",
   "WorkItemInspector",
   "SavedViewToolbar",
+  "KnowledgePageTree",
+  "KnowledgeDocumentCanvas",
+  "KnowledgeTocRail",
+  "KnowledgeInlineCommentList",
+  "KnowledgeMetadataRail",
+  "KnowledgeAttachmentList",
+  "KnowledgeLabelSet",
+  "KnowledgeVersionHistory",
+  "KnowledgeTemplateGallery",
+  "KnowledgeSearchResults",
   "DetailInspector",
   "Breadcrumb",
   "ModuleTabs",
@@ -116,6 +126,7 @@ const publicUiReactUtilityExports = [
   "tcrnProductLogoRegistry",
   "getTcrnProductLogoAsset",
   "workManagementPatternRegistry",
+  "knowledgeManagementPatternRegistry",
   "workRelationshipTypes"
 ];
 

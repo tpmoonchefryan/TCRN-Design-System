@@ -28,10 +28,10 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "f62c37e4fb602d784f27b0e5bcc8e66dc2f73f2964e31a08f5680c0ed27b262d",
+    "contractPayloadDigest": "a8d747d165cc6ef1a29d41a3e4f57b03ecaad4b937179af807b76613ee797621",
     "digestVerified": true,
     "coveredSectionCount": 7,
-    "coveredCategoryCount": 18,
+    "coveredCategoryCount": 19,
     "changelogRecordCount": 1,
     "workManagementStaticAuthorityDisposition": "static_contract_authority_explicit_and_smoke_proven",
     "workManagementAdmittedPackageExports": [
@@ -146,7 +146,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -181,7 +181,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -275,7 +275,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -310,7 +310,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -407,7 +407,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -456,7 +456,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -498,7 +498,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 1077,
-          "height": 3299
+          "height": 3369
         },
         {
           "id": "copy-guidelines",
@@ -531,7 +531,8 @@
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ],
       "consoleMessages": [],
       "pageErrors": [],
@@ -542,7 +543,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -591,7 +592,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -663,7 +664,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 7191
+          "height": 7980
         },
         {
           "id": "display-primitives-spec",
@@ -717,13 +718,19 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 1077,
-          "height": 1869
+          "height": 1947
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 7657
+          "height": 7632
+        },
+        {
+          "id": "knowledge-management-components-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 2755
         }
       ],
       "clipped": [],
@@ -759,7 +766,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -794,7 +801,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -836,7 +843,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 1077,
-          "height": 4082
+          "height": 4066
         },
         {
           "id": "readiness-notification-patterns",
@@ -903,7 +910,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -966,7 +973,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1002,7 +1009,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 5008
+          "height": 5026
         },
         {
           "id": "blocked-actions",
@@ -1042,7 +1049,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1063,7 +1070,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1125,7 +1132,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1160,7 +1167,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1254,7 +1261,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1289,7 +1296,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1386,7 +1393,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1435,7 +1442,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1477,7 +1484,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 691,
-          "height": 4404
+          "height": 4491
         },
         {
           "id": "copy-guidelines",
@@ -1510,7 +1517,8 @@
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ],
       "consoleMessages": [],
       "pageErrors": [],
@@ -1521,7 +1529,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1570,7 +1578,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1642,7 +1650,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 7899
+          "height": 8833
         },
         {
           "id": "display-primitives-spec",
@@ -1696,13 +1704,19 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 691,
-          "height": 2266
+          "height": 2344
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 9303
+          "height": 9319
+        },
+        {
+          "id": "knowledge-management-components-spec",
+          "visible": true,
+          "width": 691,
+          "height": 3133
         }
       ],
       "clipped": [],
@@ -1738,7 +1752,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1773,7 +1787,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1815,7 +1829,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 691,
-          "height": 4506
+          "height": 4514
         },
         {
           "id": "readiness-notification-patterns",
@@ -1882,7 +1896,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1945,7 +1959,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1981,7 +1995,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 7190
+          "height": 7243
         },
         {
           "id": "blocked-actions",
@@ -2021,7 +2035,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -2042,7 +2056,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2104,13 +2118,13 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2204,13 +2218,13 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2307,13 +2321,13 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2355,7 +2369,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9770
+          "height": 9893
         },
         {
           "id": "copy-guidelines",
@@ -2388,7 +2402,8 @@
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ],
       "consoleMessages": [],
       "pageErrors": [],
@@ -2399,13 +2414,13 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2477,7 +2492,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 27060
+          "height": 30339
         },
         {
           "id": "display-primitives-spec",
@@ -2531,13 +2546,19 @@
           "id": "table-work-index-spec",
           "visible": true,
           "width": 358,
-          "height": 6487
+          "height": 6698
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 21455
+          "height": 21541
+        },
+        {
+          "id": "knowledge-management-components-spec",
+          "visible": true,
+          "width": 358,
+          "height": 5680
         }
       ],
       "clipped": [],
@@ -2573,13 +2594,13 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2621,7 +2642,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 10291
+          "height": 10353
         },
         {
           "id": "readiness-notification-patterns",
@@ -2688,13 +2709,13 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2730,7 +2751,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 13322
+          "height": 13463
         },
         {
           "id": "blocked-actions",
@@ -2770,13 +2791,13 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,

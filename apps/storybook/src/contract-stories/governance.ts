@@ -53,7 +53,8 @@ export const storyCategoryDefinitions: Record<ContractStoryGroup, readonly Story
     { id: "controls-data", label: "Controls and data", description: "Buttons, fields, tables, and dense data primitives." },
     { id: "navigation-shells", label: "Navigation and shells", description: "Navigation, ProductShell, AOS visual instances, and shell control contracts." },
     { id: "overlays", label: "Overlays", description: "Dialog, drawer, popover, and focus behavior contracts." },
-    { id: "work-management", label: "Work Management", description: "Package-backed Work Management components and execution-record containment." }
+    { id: "work-management", label: "Work Management", description: "Package-backed Work Management components and execution-record containment." },
+    { id: "knowledge-management", label: "Knowledge Management", description: "Package-backed static Knowledge components, sanitized references, and no-live publishing boundaries." }
   ],
   Patterns: [
     { id: "forms-workbench", label: "Forms and workbench", description: "Form, workbench, and local filtering patterns." },
@@ -97,6 +98,7 @@ const storyCategoryById: Record<string, string> = {
   "aos-owner-quality-product-shell": "navigation-shells",
   "dialog-spec-usage": "overlays",
   "work-management-components-spec": "work-management",
+  "knowledge-management-components-spec": "knowledge-management",
   "forms-patterns": "forms-workbench",
   "workbench-patterns": "forms-workbench",
   "work-management-patterns": "work-management",
@@ -117,6 +119,7 @@ const packageAuthorityByStoryId: Record<string, string> = {
   "aos-frontend-shell-slice": "@tcrn/ui-react ProductShell visual oracle; internal proof scaffold",
   "aos-owner-quality-product-shell": "@tcrn/ui-react ProductShell owner-quality visual oracle",
   "work-management-components-spec": "@tcrn/ui-react Work Management package exports",
+  "knowledge-management-components-spec": "@tcrn/ui-react Knowledge Management package exports",
   "work-management-patterns": "@tcrn/ui-react Work Management package exports",
   "ai-consumption-contract": "Storybook static AI contract plus package-backed proof surfaces",
   "foundation-visual-standards": "Storybook static foundation visual standards registry plus ProductShell oracle",

@@ -58,6 +58,16 @@ import {
   GatePipelineCompact,
   MachineToken,
   MachineTokenCell,
+  KnowledgeAttachmentList,
+  KnowledgeDocumentCanvas,
+  KnowledgeInlineCommentList,
+  KnowledgeLabelSet,
+  KnowledgeMetadataRail,
+  KnowledgePageTree,
+  KnowledgeSearchResults,
+  KnowledgeTemplateGallery,
+  KnowledgeTocRail,
+  KnowledgeVersionHistory,
   MetadataRail,
   RelationshipChip,
   SavedViewToolbar,
@@ -78,6 +88,7 @@ import {
   WorkQuickFilters,
   WorkSplitView,
   WorkViewTabs,
+  knowledgeManagementPatternRegistry,
   workManagementPatternRegistry,
   workRelationshipTypes
 } from "@tcrn/ui-react";
@@ -413,6 +424,78 @@ const workActivityItems: WorkActivityFeedItem[] = [
     timestamp: "2026-07-04",
     summary: "Proof must remain static and source-visible before any preview refresh.",
     evidence: workEvidenceItems.slice(0, 1)
+  }
+];
+
+const knowledgePageTreeItems = [
+  {
+    id: "kb-root",
+    title: "Operations handbook",
+    current: true,
+    children: [
+      { id: "kb-owner", title: "Owner inspection guide", state: { state: "local_only" } },
+      { id: "kb-proof", title: "Proof and evidence runbook", state: { state: "proof_required" } }
+    ]
+  },
+  {
+    id: "kb-ai",
+    title: "AI operating notes",
+    children: [{ id: "kb-no-live", title: "No-live dispatch boundary", state: { state: "not_claimed" } }]
+  }
+];
+
+const knowledgeDocumentSections = [
+  {
+    id: "kb-scope",
+    heading: "Scope",
+    body: "Knowledge surfaces are static Design System components for review. They do not claim backend publishing, live collaboration, or external workspace integration."
+  },
+  {
+    id: "kb-proof",
+    heading: "Proof",
+    body: "Evidence references are sanitized tokens and local fixtures; raw private evidence and unmanaged local paths are not part of the component contract."
+  }
+];
+
+const knowledgeMetadataItems = [
+  { key: "owner", label: "Owner", value: "Mara" },
+  { key: "state", label: "State", value: <StatusBadge state={{ state: "local_only" }} /> },
+  { key: "basis", label: "Basis", value: <MachineTokenCell token="KB-STATIC-01" kind="generic" /> }
+];
+
+const knowledgeComments = [
+  { id: "comment-1", author: "Elara", body: "Keep document reading width stable and prove mobile stacking.", timestamp: "2026-07-05", state: { state: "review_required" } },
+  { id: "comment-2", author: "Sable", body: "Use sanitized abstraction notes only; no private screenshots or session captures.", timestamp: "2026-07-05", state: { state: "proof_required" } }
+];
+
+const knowledgeAttachments = [
+  { id: "kb-evd-1", label: "Sanitized reference note", reference: "artifact:knowledge-abstraction-note", state: { state: "local_only" } },
+  { id: "kb-evd-2", label: "Visual proof receipt", reference: "receipt:storybook-knowledge-static-proof", state: { state: "proof_required" } }
+];
+
+const knowledgeVersions = [
+  { id: "v1", title: "Initial static draft", author: "Mara", timestamp: "2026-07-05", state: { state: "local_only" } },
+  { id: "v2", title: "Review-ready layout", author: "Elara", timestamp: "2026-07-05", state: { state: "proof_required" } }
+];
+
+const knowledgeTemplates = [
+  { id: "runbook", title: "Runbook", description: "Operational instructions with proof and owner-review boundaries.", state: { state: "fixture_only" } },
+  { id: "decision", title: "Decision note", description: "Decision, alternatives, and no-overclaim readback.", state: { state: "fixture_only" } }
+];
+
+const knowledgeSearchResults = [
+  {
+    id: "kb-result-1",
+    title: "Owner inspection guide",
+    excerpt: "Static local result showing document hierarchy, metadata, and proof boundary.",
+    labels: ["owner-review", "static"]
+  },
+  {
+    id: "kb-result-2",
+    title: "No-live dispatch boundary",
+    excerpt: "Explains why Knowledge examples do not create backend, collaboration, or external integration claims.",
+    labels: ["policy", "no-live"],
+    state: { state: "not_claimed" }
   }
 ];
 
@@ -2047,6 +2130,7 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Dense list and split detail">
           <WorkSplitView
+            label="Work Management component split view"
             list={<WorkList label="Selected Work rows" rows={workItemRows} />}
             detail={
               <WorkDetailLayout
@@ -2115,6 +2199,74 @@ const legacyContractStories: LegacyContractStory[] = [
             actions={[{ id: "dispatch", label: "Dispatch Codex route", disabledReason: "Live Codex dispatch is not available in this static Storybook fixture" }]}
           />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "knowledge-management-components-spec",
+    title: "Knowledge Management component specs",
+    group: "Components",
+    description: "Static Knowledge Base surfaces for page trees, document canvas, metadata, comments, versions, templates, and local results.",
+    render: () => (
+      <section className="alpha-story-stack" data-knowledge-management-contract="package-backed-static">
+        <ReadbackPanel title="Registered Knowledge candidates">
+          <TableShell
+            label="Knowledge Management registry"
+            columns={[
+              { key: "candidate", label: "Candidate" },
+              { key: "component", label: "Component" },
+              { key: "purpose", label: "Purpose" }
+            ]}
+            rows={knowledgeManagementPatternRegistry.map((item) => ({
+              candidate: item.candidateId,
+              component: item.componentName,
+              purpose: item.purpose
+            }))}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Tree, canvas, and local rail">
+          <WorkSplitView
+            label="Knowledge Management component split view"
+            density="dense"
+            list={<KnowledgePageTree items={knowledgePageTreeItems} density="dense" />}
+            detail={
+              <KnowledgeDocumentCanvas
+                density="dense"
+                title="Owner inspection guide"
+                summary="Static Knowledge canvas using TCRN-owned component primitives and sanitized references."
+                labels={["owner-review", "static", "no-live"]}
+                meta={<MachineTokenCell token="KB-STATIC-01" kind="generic" density="dense" />}
+                sections={knowledgeDocumentSections}
+              />
+            }
+          />
+          <KnowledgeTocRail
+            density="dense"
+            items={[
+              { id: "kb-scope", label: "Scope", href: "#kb-scope", current: true },
+              { id: "kb-proof", label: "Proof", href: "#kb-proof" }
+            ]}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Metadata, comments, evidence, and history">
+          <KnowledgeMetadataRail
+            density="dense"
+            items={knowledgeMetadataItems}
+            labels={["sanitized", "fixture"]}
+            actions={[{ id: "publish", label: "Publish", disabledReason: "Knowledge publishing is not wired in this static DS fixture" }]}
+          />
+          <KnowledgeInlineCommentList density="dense" comments={knowledgeComments} />
+          <KnowledgeAttachmentList density="dense" items={knowledgeAttachments} />
+          <KnowledgeVersionHistory density="dense" versions={knowledgeVersions} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Templates and local results">
+          <KnowledgeTemplateGallery density="dense" templates={knowledgeTemplates} />
+          <KnowledgeSearchResults density="dense" query="owner inspection" results={knowledgeSearchResults} />
+          <KnowledgeLabelSet labels={["TCRN-owned", "static", "sanitized-reference"]} density="dense" />
+        </ReadbackPanel>
+        <InlineAlert tone="warning">
+          Knowledge Management examples are static DS components only: no backend publishing, live collaboration, external workspace integration, product adoption, owner acceptance, release readiness, or global search capability is claimed.
+        </InlineAlert>
       </section>
     )
   },
@@ -2201,6 +2353,7 @@ const legacyContractStories: LegacyContractStory[] = [
           <WorkViewTabs tabs={workManagementSubnavItems} />
           <WorkQuickFilters filters={workQuickFilters} />
           <WorkSplitView
+            label="Work Management pattern split view"
             list={<WorkList rows={workItemRows} />}
             detail={
               <WorkDetailLayout

@@ -207,7 +207,7 @@ export const workRelationshipTypes = [
 export type WorkRelationshipType = (typeof workRelationshipTypes)[number];
 
 export type WorkManagementPatternLevel = "primitive" | "pattern" | "composite";
-export type WorkDensity = "comfortable" | "compact";
+export type WorkDensity = "comfortable" | "compact" | "dense";
 
 export interface WorkManagementPatternRegistryItem {
   candidateId: string;
@@ -360,6 +360,69 @@ export const workManagementPatternRegistry: WorkManagementPatternRegistryItem[] 
     componentName: "GatePipelineCompact",
     level: "pattern",
     purpose: "Compact gate scan variant for Work pages where gate status supports task context."
+  }
+];
+
+export const knowledgeManagementPatternRegistry: WorkManagementPatternRegistryItem[] = [
+  {
+    candidateId: "42-knowledge-page-tree",
+    componentName: "KnowledgePageTree",
+    level: "pattern",
+    purpose: "Dense page tree navigation for static Knowledge surfaces without external vendor integration."
+  },
+  {
+    candidateId: "43-knowledge-document-canvas",
+    componentName: "KnowledgeDocumentCanvas",
+    level: "composite",
+    purpose: "Readable document canvas with metadata, labels, and section content using TCRN-owned typography."
+  },
+  {
+    candidateId: "44-knowledge-toc-rail",
+    componentName: "KnowledgeTocRail",
+    level: "pattern",
+    purpose: "Local table of contents rail with current-anchor display and mobile-safe wrapping."
+  },
+  {
+    candidateId: "45-knowledge-inline-comment-list",
+    componentName: "KnowledgeInlineCommentList",
+    level: "composite",
+    purpose: "Static inline comment discussion list with no collaboration, notification, or live edit claim."
+  },
+  {
+    candidateId: "46-knowledge-metadata-rail",
+    componentName: "KnowledgeMetadataRail",
+    level: "pattern",
+    purpose: "Knowledge page owner, state, version, proof, and policy metadata rail."
+  },
+  {
+    candidateId: "47-knowledge-attachment-list",
+    componentName: "KnowledgeAttachmentList",
+    level: "composite",
+    purpose: "Static attachment references using evidence-safe token containment."
+  },
+  {
+    candidateId: "48-knowledge-label-set",
+    componentName: "KnowledgeLabelSet",
+    level: "primitive",
+    purpose: "Compact Knowledge labels for classification, topic, and policy markers."
+  },
+  {
+    candidateId: "49-knowledge-version-history",
+    componentName: "KnowledgeVersionHistory",
+    level: "composite",
+    purpose: "Static version list that does not imply live publishing or collaborative editing."
+  },
+  {
+    candidateId: "50-knowledge-template-gallery",
+    componentName: "KnowledgeTemplateGallery",
+    level: "composite",
+    purpose: "Template cards for owner-reviewed Knowledge drafting without backend create flow."
+  },
+  {
+    candidateId: "51-knowledge-search-results",
+    componentName: "KnowledgeSearchResults",
+    level: "composite",
+    purpose: "Static local Knowledge result list for design confirmation only, not product-wide search."
   }
 ];
 
@@ -1232,5 +1295,329 @@ export function WorkItemInspector({ title, summary, hierarchy, details, relation
         </div>
       ) : null}
     </Surface>
+  );
+}
+
+export interface KnowledgePageTreeItem {
+  id: string;
+  title: string;
+  href?: string;
+  level?: number;
+  current?: boolean;
+  state?: CopyStateInput;
+  children?: KnowledgePageTreeItem[];
+}
+
+export interface KnowledgePageTreeProps {
+  label?: string;
+  items: KnowledgePageTreeItem[];
+  density?: WorkDensity;
+}
+
+function KnowledgePageTreeItems({ items }: { items: KnowledgePageTreeItem[] }) {
+  return (
+    <ul className="tcrn-knowledge-page-tree__list">
+      {items.map((item) => {
+        const level = Math.max(item.level ?? 1, 1);
+        const content = (
+          <>
+            <span className="tcrn-knowledge-page-tree__title">{item.title}</span>
+            {item.state ? <StatusBadge state={item.state} /> : null}
+          </>
+        );
+        return (
+          <li key={item.id} className="tcrn-knowledge-page-tree__item" data-tree-level={level}>
+            {item.href ? (
+              <a href={item.href} aria-current={item.current ? "page" : undefined} data-selected={item.current || undefined}>
+                {content}
+              </a>
+            ) : (
+              <span data-selected={item.current || undefined}>{content}</span>
+            )}
+            {item.children?.length ? <KnowledgePageTreeItems items={item.children.map((child) => ({ ...child, level: (child.level ?? level + 1) }))} /> : null}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+export function KnowledgePageTree({ label = "Knowledge page tree", items, density = "compact" }: KnowledgePageTreeProps) {
+  return (
+    <nav className={cx("tcrn-knowledge-page-tree", `tcrn-knowledge-page-tree--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-page-tree" data-density={density}>
+      <KnowledgePageTreeItems items={items} />
+    </nav>
+  );
+}
+
+export interface KnowledgeLabelSetProps {
+  labels: string[];
+  label?: string;
+  density?: WorkDensity;
+}
+
+export function KnowledgeLabelSet({ labels, label = "Knowledge labels", density = "compact" }: KnowledgeLabelSetProps) {
+  return (
+    <div className={cx("tcrn-knowledge-label-set", `tcrn-knowledge-label-set--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-label-set" data-density={density}>
+      {labels.map((item) => (
+        <Badge key={item}>{item}</Badge>
+      ))}
+    </div>
+  );
+}
+
+export interface KnowledgeDocumentSection {
+  id: string;
+  heading: string;
+  body: ReactNode;
+}
+
+export interface KnowledgeDocumentCanvasProps {
+  title: string;
+  summary?: ReactNode;
+  labels?: string[];
+  meta?: ReactNode;
+  sections: KnowledgeDocumentSection[];
+  density?: WorkDensity;
+}
+
+export function KnowledgeDocumentCanvas({ title, summary, labels = [], meta, sections, density = "compact" }: KnowledgeDocumentCanvasProps) {
+  return (
+    <article className={cx("tcrn-knowledge-document-canvas", `tcrn-knowledge-document-canvas--${density}`)} data-knowledge-management-pattern="knowledge-document-canvas" data-density={density}>
+      <header className="tcrn-knowledge-document-canvas__head">
+        <div>
+          <Heading level={2}>{title}</Heading>
+          {summary ? <Text>{summary}</Text> : null}
+        </div>
+        {meta ? <div className="tcrn-knowledge-document-canvas__meta">{meta}</div> : null}
+      </header>
+      {labels.length ? <KnowledgeLabelSet labels={labels} density={density} /> : null}
+      <div className="tcrn-knowledge-document-canvas__body">
+        {sections.map((section) => (
+          <section key={section.id} id={section.id} className="tcrn-knowledge-document-canvas__section">
+            <Heading level={3}>{section.heading}</Heading>
+            <Text>{section.body}</Text>
+          </section>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+export interface KnowledgeTocItem {
+  id: string;
+  label: string;
+  href?: string;
+  current?: boolean;
+}
+
+export interface KnowledgeTocRailProps {
+  label?: string;
+  items: KnowledgeTocItem[];
+  density?: WorkDensity;
+}
+
+export function KnowledgeTocRail({ label = "On this page", items, density = "compact" }: KnowledgeTocRailProps) {
+  return (
+    <aside className={cx("tcrn-knowledge-toc-rail", `tcrn-knowledge-toc-rail--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-toc-rail" data-density={density}>
+      <Heading level={3}>{label}</Heading>
+      <nav>
+        {items.map((item) =>
+          item.href ? (
+            <a key={item.id} href={item.href} aria-current={item.current ? "location" : undefined} data-selected={item.current || undefined}>{item.label}</a>
+          ) : (
+            <span key={item.id} data-selected={item.current || undefined}>{item.label}</span>
+          )
+        )}
+      </nav>
+    </aside>
+  );
+}
+
+export interface KnowledgeComment {
+  id: string;
+  author: string;
+  body: ReactNode;
+  timestamp?: string;
+  state?: CopyStateInput;
+}
+
+export interface KnowledgeInlineCommentListProps {
+  label?: string;
+  comments: KnowledgeComment[];
+  density?: WorkDensity;
+}
+
+export function KnowledgeInlineCommentList({ label = "Knowledge comments", comments, density = "compact" }: KnowledgeInlineCommentListProps) {
+  return (
+    <section className={cx("tcrn-knowledge-inline-comment-list", `tcrn-knowledge-inline-comment-list--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-inline-comment-list" data-density={density}>
+      {comments.map((comment) => (
+        <article key={comment.id} className="tcrn-knowledge-inline-comment-list__item">
+          <div className="tcrn-knowledge-inline-comment-list__head">
+            <strong>{comment.author}</strong>
+            {comment.timestamp ? <time>{comment.timestamp}</time> : null}
+            {comment.state ? <StatusBadge state={comment.state} /> : null}
+          </div>
+          <Text>{comment.body}</Text>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+export interface KnowledgeMetadataRailProps {
+  title?: string;
+  items: KeyValueItem[];
+  labels?: string[];
+  actions?: WorkAction[];
+  density?: WorkDensity;
+}
+
+export function KnowledgeMetadataRail({ title = "Knowledge metadata", items, labels = [], actions = [], density = "compact" }: KnowledgeMetadataRailProps) {
+  return (
+    <aside className={cx("tcrn-knowledge-metadata-rail", `tcrn-knowledge-metadata-rail--${density}`)} data-knowledge-management-pattern="knowledge-metadata-rail" data-density={density}>
+      <WorkFieldPanel title={title} items={items} density={density} />
+      {labels.length ? <KnowledgeLabelSet labels={labels} density={density} /> : null}
+      {actions.length ? (
+        <div className="tcrn-knowledge-metadata-rail__actions">
+          {actions.map((action) => (
+            <Button key={action.id} type="button" size="sm" disabled disabledReason={action.disabledReason}>
+              {action.label}
+            </Button>
+          ))}
+        </div>
+      ) : null}
+    </aside>
+  );
+}
+
+export interface KnowledgeAttachment {
+  id: string;
+  label: string;
+  reference: string;
+  type?: EvidenceAttachmentType;
+  state?: CopyStateInput;
+}
+
+export interface KnowledgeAttachmentListProps {
+  label?: string;
+  items: KnowledgeAttachment[];
+  density?: WorkDensity;
+}
+
+export function KnowledgeAttachmentList({ label = "Knowledge attachments", items, density = "compact" }: KnowledgeAttachmentListProps) {
+  return (
+    <section className={cx("tcrn-knowledge-attachment-list", `tcrn-knowledge-attachment-list--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-attachment-list" data-density={density}>
+      <TableShell
+        label={label}
+        columns={[
+          { key: "label", label: "Label" },
+          { key: "reference", label: "Reference" },
+          { key: "state", label: "State" }
+        ]}
+        rows={items.map((item) => ({
+          label: item.label,
+          reference: <MachineTokenCell token={item.reference} label={item.id} kind={item.type === "commit" ? "commit" : item.type === "artifact_dir" ? "artifact" : "generic"} density={density} />,
+          state: item.state ? <StatusBadge state={item.state} /> : <StatusBadge state={{ state: "fixture_only" }} />
+        }))}
+      />
+    </section>
+  );
+}
+
+export interface KnowledgeVersion {
+  id: string;
+  title: string;
+  author: string;
+  timestamp?: string;
+  state?: CopyStateInput;
+}
+
+export interface KnowledgeVersionHistoryProps {
+  label?: string;
+  versions: KnowledgeVersion[];
+  density?: WorkDensity;
+}
+
+export function KnowledgeVersionHistory({ label = "Knowledge version history", versions, density = "compact" }: KnowledgeVersionHistoryProps) {
+  return (
+    <section className={cx("tcrn-knowledge-version-history", `tcrn-knowledge-version-history--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-version-history" data-density={density}>
+      {versions.map((version) => (
+        <article key={version.id} className="tcrn-knowledge-version-history__item">
+          <MachineTokenCell token={version.id} kind="generic" density={density} />
+          <strong>{version.title}</strong>
+          <span>{version.author}</span>
+          {version.timestamp ? <time>{version.timestamp}</time> : null}
+          {version.state ? <StatusBadge state={version.state} /> : null}
+        </article>
+      ))}
+    </section>
+  );
+}
+
+export interface KnowledgeTemplate {
+  id: string;
+  title: string;
+  description: ReactNode;
+  state?: CopyStateInput;
+}
+
+export interface KnowledgeTemplateGalleryProps {
+  label?: string;
+  templates: KnowledgeTemplate[];
+  density?: WorkDensity;
+}
+
+export function KnowledgeTemplateGallery({ label = "Knowledge templates", templates, density = "compact" }: KnowledgeTemplateGalleryProps) {
+  return (
+    <section className={cx("tcrn-knowledge-template-gallery", `tcrn-knowledge-template-gallery--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-template-gallery" data-density={density}>
+      {templates.map((template) => (
+        <Surface key={template.id} className="tcrn-knowledge-template-gallery__card">
+          <Heading level={3}>{template.title}</Heading>
+          <Text>{template.description}</Text>
+          {template.state ? <StatusBadge state={template.state} /> : null}
+          <Button type="button" size="sm" disabled disabledReason="Static Design System template fixture; product route owns creation">
+            Use template
+          </Button>
+        </Surface>
+      ))}
+    </section>
+  );
+}
+
+export interface KnowledgeSearchResult {
+  id: string;
+  title: string;
+  href?: string;
+  excerpt: ReactNode;
+  labels?: string[];
+  state?: CopyStateInput;
+}
+
+export interface KnowledgeSearchResultsProps {
+  label?: string;
+  query?: string;
+  results: KnowledgeSearchResult[];
+  density?: WorkDensity;
+}
+
+export function KnowledgeSearchResults({ label = "Knowledge search results", query, results, density = "compact" }: KnowledgeSearchResultsProps) {
+  return (
+    <section className={cx("tcrn-knowledge-search-results", `tcrn-knowledge-search-results--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-search-results" data-density={density} data-search-capability="static-local-fixture">
+      {query ? <Text>Static local results for {query}; no product-wide search or external index is wired.</Text> : null}
+      {results.map((result) => {
+        const title = result.href ? <a href={result.href}>{result.title}</a> : <span>{result.title}</span>;
+        return (
+          <article key={result.id} className="tcrn-knowledge-search-results__item">
+            <div className="tcrn-knowledge-search-results__head">
+              <strong>{title}</strong>
+              {result.state ? <StatusBadge state={result.state} /> : null}
+            </div>
+            <Text>{result.excerpt}</Text>
+            {result.labels?.length ? <KnowledgeLabelSet labels={result.labels} density={density} /> : null}
+          </article>
+        );
+      })}
+    </section>
   );
 }

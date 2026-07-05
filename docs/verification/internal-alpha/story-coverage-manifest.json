@@ -137,6 +137,11 @@
       "storybookId": "tcrn-design-system-components--work-management-components-spec"
     },
     {
+      "id": "knowledge-management-components-spec",
+      "group": "Components",
+      "storybookId": "tcrn-design-system-components--knowledge-management-components-spec"
+    },
+    {
       "id": "forms-patterns",
       "group": "Patterns",
       "storybookId": "tcrn-design-system-patterns--forms-patterns"
@@ -250,10 +255,10 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "f62c37e4fb602d784f27b0e5bcc8e66dc2f73f2964e31a08f5680c0ed27b262d",
+    "contractPayloadDigest": "a8d747d165cc6ef1a29d41a3e4f57b03ecaad4b937179af807b76613ee797621",
     "digestVerified": true,
     "coveredSectionCount": 7,
-    "coveredCategoryCount": 18,
+    "coveredCategoryCount": 19,
     "changelogRecordCount": 1,
     "workManagementStaticAuthorityDisposition": "static_contract_authority_explicit_and_smoke_proven",
     "workManagementAdmittedPackageExports": [
@@ -482,6 +487,11 @@
       "visible": true
     },
     {
+      "id": "knowledge-management-components-spec",
+      "storybookId": "tcrn-design-system-components--knowledge-management-components-spec",
+      "visible": true
+    },
+    {
       "id": "forms-patterns",
       "storybookId": "tcrn-design-system-patterns--forms-patterns",
       "visible": true
@@ -601,14 +611,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 18,
+        "categoryLabelCount": 19,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 18,
+        "expectedCategoryCount": 19,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -734,7 +744,7 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 18,
+        "categoryLabelCount": 19,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
@@ -747,7 +757,7 @@
           "hasRegistryExportText": false,
           "hasAosRegisteredAssetId": false
         },
-        "expectedCategoryCount": 18,
+        "expectedCategoryCount": 19,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -873,14 +883,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 18,
+        "categoryLabelCount": 19,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 18,
+        "expectedCategoryCount": 19,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1006,14 +1016,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 18,
+        "categoryLabelCount": 19,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 18,
+        "expectedCategoryCount": 19,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1036,11 +1046,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 322.86,
+          "bottom": 347.05,
           "width": 1077.13,
-          "height": 189.42
+          "height": 213.61
         },
-        "firstStoryTop": 381.17,
+        "firstStoryTop": 405.36,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1139,14 +1149,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 18,
+        "categoryLabelCount": 19,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 18,
+        "expectedCategoryCount": 19,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1272,14 +1282,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 18,
+        "categoryLabelCount": 19,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 18,
+        "expectedCategoryCount": 19,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1405,14 +1415,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 18,
+        "categoryLabelCount": 19,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 18,
+        "expectedCategoryCount": 19,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1532,7 +1542,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 5906,
+        "scrollY": 5939,
         "viewport": {
           "width": 390,
           "height": 844
@@ -1551,17 +1561,17 @@
           "height": 397.69
         },
         "article": {
-          "top": 411.52,
+          "top": 412.06,
           "right": 374,
-          "bottom": 10181.41,
+          "bottom": 10304.78,
           "left": 16,
           "width": 358,
-          "height": 9769.89
+          "height": 9892.72
         },
         "title": {
-          "top": 428.52,
+          "top": 429.06,
           "right": 357,
-          "bottom": 454.83,
+          "bottom": 455.38,
           "left": 33,
           "width": 324,
           "height": 26.31
@@ -1725,6 +1735,16 @@
                 {
                   "tag": "div",
                   "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Product SideNav collapseAny product or documentation shell that claims SideNav b"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
                   "className": "tcrn-table-shell",
                   "role": "table",
                   "docShell": null,
@@ -1771,16 +1791,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
-                },
-                {
-                  "tag": "section",
-                  "id": "foundations",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
                 }
               ]
             },
@@ -2119,8 +2129,8 @@
             }
           ]
         },
-        "articleClearancePx": 13.83,
-        "titleClearancePx": 30.83,
+        "articleClearancePx": 14.37,
+        "titleClearancePx": 31.37,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -2132,7 +2142,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 5906,
+        "scrollY": 5939,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2151,17 +2161,17 @@
           "height": 397.69
         },
         "article": {
-          "top": 411.52,
+          "top": 412.06,
           "right": 374,
-          "bottom": 10181.41,
+          "bottom": 10304.78,
           "left": 16,
           "width": 358,
-          "height": 9769.89
+          "height": 9892.72
         },
         "title": {
-          "top": 428.52,
+          "top": 429.06,
           "right": 357,
-          "bottom": 454.83,
+          "bottom": 455.38,
           "left": 33,
           "width": 324,
           "height": 26.31
@@ -2325,6 +2335,16 @@
                 {
                   "tag": "div",
                   "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Product SideNav collapseAny product or documentation shell that claims SideNav b"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
                   "className": "tcrn-table-shell",
                   "role": "table",
                   "docShell": null,
@@ -2371,16 +2391,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
-                },
-                {
-                  "tag": "section",
-                  "id": "foundations",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
                 }
               ]
             },
@@ -2719,8 +2729,8 @@
             }
           ]
         },
-        "articleClearancePx": 13.83,
-        "titleClearancePx": 30.83,
+        "articleClearancePx": 14.37,
+        "titleClearancePx": 31.37,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -2732,7 +2742,7 @@
       {
         "label": "after-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 5906,
+        "scrollY": 5939,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2751,17 +2761,17 @@
           "height": 397.69
         },
         "article": {
-          "top": 411.52,
+          "top": 412.06,
           "right": 374,
-          "bottom": 10181.41,
+          "bottom": 10304.78,
           "left": 16,
           "width": 358,
-          "height": 9769.89
+          "height": 9892.72
         },
         "title": {
-          "top": 428.52,
+          "top": 429.06,
           "right": 357,
-          "bottom": 454.83,
+          "bottom": 455.38,
           "left": 33,
           "width": 324,
           "height": 26.31
@@ -2925,6 +2935,16 @@
                 {
                   "tag": "div",
                   "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Product SideNav collapseAny product or documentation shell that claims SideNav b"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
                   "className": "tcrn-table-shell",
                   "role": "table",
                   "docShell": null,
@@ -2971,16 +2991,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
-                },
-                {
-                  "tag": "section",
-                  "id": "foundations",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
                 }
               ]
             },
@@ -3319,8 +3329,8 @@
             }
           ]
         },
-        "articleClearancePx": 13.83,
-        "titleClearancePx": 30.83,
+        "articleClearancePx": 14.37,
+        "titleClearancePx": 31.37,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -3332,7 +3342,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 5906,
+        "scrollY": 5939,
         "viewport": {
           "width": 390,
           "height": 844
@@ -3351,17 +3361,17 @@
           "height": 397.69
         },
         "article": {
-          "top": 411.52,
+          "top": 412.06,
           "right": 374,
-          "bottom": 10181.41,
+          "bottom": 10304.78,
           "left": 16,
           "width": 358,
-          "height": 9769.89
+          "height": 9892.72
         },
         "title": {
-          "top": 428.52,
+          "top": 429.06,
           "right": 357,
-          "bottom": 454.83,
+          "bottom": 455.38,
           "left": 33,
           "width": 324,
           "height": 26.31
@@ -3525,6 +3535,16 @@
                 {
                   "tag": "div",
                   "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Product SideNav collapseAny product or documentation shell that claims SideNav b"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
                   "className": "tcrn-table-shell",
                   "role": "table",
                   "docShell": null,
@@ -3571,16 +3591,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "I18n 与主题契约 本地契约证明所需的语言和深色主题令牌覆盖。 I18n 标准默认语言为 en；回退语言为 en；原始枚举标签在进入 UI 前会被阻止。简体中"
-                },
-                {
-                  "tag": "section",
-                  "id": "foundations",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
                 }
               ]
             },
@@ -3919,8 +3929,8 @@
             }
           ]
         },
-        "articleClearancePx": 13.83,
-        "titleClearancePx": 30.83,
+        "articleClearancePx": 14.37,
+        "titleClearancePx": 31.37,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -3940,8 +3950,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 54248,
-      "scrollY": 45495
+      "maxScrollY": 57882,
+      "scrollY": 46308
     }
   },
   "scrollSpyCheck": {
@@ -3951,10 +3961,10 @@
       "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
-      "targetTop": 292,
+      "targetTop": 293,
       "offset": 96,
-      "maxScrollY": 6199,
-      "scrollY": 6199,
+      "maxScrollY": 6182,
+      "scrollY": 6182,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }
@@ -4136,6 +4146,7 @@
         "导航与壳层",
         "覆盖层",
         "工作管理",
+        "知识管理",
         "表单与工作台",
         "工作管理",
         "反馈与选择",
@@ -4143,7 +4154,7 @@
         "证明治理",
         "治理记录"
       ],
-      "categoryLabelCount": 18,
+      "categoryLabelCount": 19,
       "categoryDescriptions": [
         "读者导向与声明边界。",
         "维护者路由、贡献模型和发布策略。",
@@ -4157,6 +4168,7 @@
         "导航、ProductShell、AOS 视觉实例和壳层控件契约。",
         "对话框、抽屉、浮层和焦点行为契约。",
         "包支持的工作管理组件和执行记录收纳。",
+        "包支持的静态知识组件、已净化参考和无实时发布边界。",
         "表单、工作台和本地过滤模式。",
         "工作层级、看板、门禁、证据和保存视图组合。",
         "就绪、选择、弹窗校验和阻止状态模式。",
@@ -4164,11 +4176,11 @@
         "证明矩阵、AI 契约、阻止操作和焦点证明。",
         "耐久 Storybook 和根变更日志记录。"
       ],
-      "categoryDescriptionCount": 18,
+      "categoryDescriptionCount": 19,
       "categoryDescriptionEnglishLeaks": [],
       "currentLocationText": "当前位置 欢迎 欢迎与治理",
       "onThisPageAriaLabel": "本页内容",
-      "expectedCategoryCount": 18,
+      "expectedCategoryCount": 19,
       "expectedShellNavGroupCount": 7,
       "bodyScrollWidth": 1440,
       "viewportWidth": 1440,
@@ -4534,12 +4546,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4584,12 +4596,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4638,12 +4650,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4686,12 +4698,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4722,7 +4734,8 @@
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ],
       "expectedStoryIds": [
         "component-family-index",
@@ -4735,7 +4748,8 @@
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ]
     },
     {
@@ -4748,12 +4762,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4806,12 +4820,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4854,12 +4868,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4896,12 +4910,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4946,12 +4960,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5000,12 +5014,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5048,12 +5062,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5084,7 +5098,8 @@
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ],
       "expectedStoryIds": [
         "component-family-index",
@@ -5097,7 +5112,8 @@
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ]
     },
     {
@@ -5110,12 +5126,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5168,12 +5184,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5216,12 +5232,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5258,12 +5274,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5308,12 +5324,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5362,12 +5378,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5410,12 +5426,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5446,7 +5462,8 @@
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ],
       "expectedStoryIds": [
         "component-family-index",
@@ -5459,7 +5476,8 @@
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ]
     },
     {
@@ -5472,12 +5490,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5530,12 +5548,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5578,12 +5596,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 18,
+      "docNavCategoryCount": 19,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 41,
+      "docNavItemCount": 42,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,

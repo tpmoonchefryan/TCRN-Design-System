@@ -55,6 +55,7 @@ const requiredStories = [
   { id: "dialog-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--dialog-spec-usage" },
   { id: "table-work-index-spec", group: "Components", storybookId: "tcrn-design-system-components--table-work-index-spec" },
   { id: "work-management-components-spec", group: "Components", storybookId: "tcrn-design-system-components--work-management-components-spec" },
+  { id: "knowledge-management-components-spec", group: "Components", storybookId: "tcrn-design-system-components--knowledge-management-components-spec" },
   { id: "forms-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--forms-patterns" },
   { id: "workbench-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--workbench-patterns" },
   { id: "work-management-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--work-management-patterns" },
@@ -508,7 +509,7 @@ for (const section of sectionPages) {
   assertBuiltSurface(`apps/storybook/storybook-static/${section.file}`);
 }
 
-const expectedCategoryCount = 18;
+const expectedCategoryCount = 19;
 const expectedStorybookShellNavGroupCount = sectionPages.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",

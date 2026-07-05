@@ -12,5 +12,6 @@ export const componentsStories: ContractStory[] = [
   selectStory("aos-owner-quality-product-shell"),
   selectStory("dialog-spec-usage"),
   selectStory("table-work-index-spec"),
-  selectStory("work-management-components-spec")
+  selectStory("work-management-components-spec"),
+  selectStory("knowledge-management-components-spec")
 ];
