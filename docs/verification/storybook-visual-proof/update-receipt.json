@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "sourceContentDigest": "dd3ad537b07e0766e624308e853ba7d0c3a93910dba232d7c343fd8b59d2413c",
-  "sourceHead": "a97c0f466b27b72dc0726acdc3aa0957ea44c7c1",
+  "sourceContentDigest": "97566d69c1c12077c5e2bf049ff226973659b0ecaff9ead8552e9c836055325e",
+  "sourceHead": "19a47ae6075b02badf08bfd170f902edc4a4a061",
   "mode": "update-baseline",
   "comparisonContractVersion": "canonicalized_raw_png_exact_v1",
   "visualArtifactContractDisposition": {
@@ -486,56 +486,56 @@
       "file": "index.html",
       "status": 200,
       "ok": true,
-      "bytes": 735889,
-      "sha256": "e8bb5cbb3de670d2352773987a3ff33b0ff5a46b98870bce4cb1cfb9981954d4",
+      "bytes": 736075,
+      "sha256": "27104ecdba626d0aac8a4a72470d0b3ae3833a69d603f3621e3d7eb90a5f746e",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "style-guide.html",
       "status": 200,
       "ok": true,
-      "bytes": 791369,
-      "sha256": "ae5796797a3152e11c032969abf905c00645d9e5b1c16c1938c9c916baebbb5c",
+      "bytes": 791555,
+      "sha256": "771e0e028483e72fbd38e832280cabb8e3b7c69fa1191b50a552dd553c19356a",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "foundations.html",
       "status": 200,
       "ok": true,
-      "bytes": 751782,
-      "sha256": "c11348b06c4e43c0079c07cb0331859c3916029a8362b38cdeba3f82e524809d",
+      "bytes": 751968,
+      "sha256": "b8bb37786df12fbbdfdb0d69c5644ec5ef4169c93b879fa29866ddb5c56ba088",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "components.html",
       "status": 200,
       "ok": true,
-      "bytes": 1350719,
-      "sha256": "139d7e631174fc5e69e401298475b2d68f2be3cb26b683096bf56f581e65a9cf",
+      "bytes": 1350905,
+      "sha256": "68af18255dd0f31e8c6919adebf6eb0a2a0ed1edc43020d7e1dc645a497d824d",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "patterns.html",
       "status": 200,
       "ok": true,
-      "bytes": 783752,
-      "sha256": "260e3fdce248b3567abc98833a004d8abd45a506d0a108779ae2e4755112f5d1",
+      "bytes": 783938,
+      "sha256": "b28a51ae512fbf4e38893d287f83071544b8a92578f994b63e4a02cf54258110",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "proof.html",
       "status": 200,
       "ok": true,
-      "bytes": 751870,
-      "sha256": "4b76645c33b71109e510d634dc8e40821ccf7bb5ab22205876446c7783131bb0",
+      "bytes": 752056,
+      "sha256": "a5380c869a7afd57c0da975568593fd292fa0878c45f43529d85adb050ca5094",
       "contentType": "text/html; charset=utf-8"
     },
     {
       "file": "change-log.html",
       "status": 200,
       "ok": true,
-      "bytes": 726582,
-      "sha256": "135e8fc3a7fc809a65197165d1f8350544c19b99a3bfc61d9e8f9ddb549c9321",
+      "bytes": 726768,
+      "sha256": "4bc8519dcc03f4f8e0184fbdfd27b20666eb2be2d48e42ce7edf3f8f8846ff01",
       "contentType": "text/html; charset=utf-8"
     },
     {
@@ -36500,10 +36500,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "3fa6c1b621161621fe84c1051e63ffb5945ef3e6a6549ef01e6f69fe7ea26bbd",
+      "rawSha256": "d2127859ee51f2582c4d6e98e5288e210faadd798bab87a9806ca961583a92e2",
       "width": 390,
       "height": 844,
-      "bytes": 21541,
+      "bytes": 21194,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -36511,17 +36511,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "3fa6c1b621161621fe84c1051e63ffb5945ef3e6a6549ef01e6f69fe7ea26bbd",
-            "rawSha256": "b911e2068183523ead96844192ba123c170d53614020e6de119a6a1f6863e270",
-            "bytes": 21541,
-            "rawBytes": 121844
+            "sha256": "d2127859ee51f2582c4d6e98e5288e210faadd798bab87a9806ca961583a92e2",
+            "rawSha256": "5f18c64c6f6d4ac2cbf3e31f3dd51bae7940cb459d6c2a96846d7cff322dcf7b",
+            "bytes": 21194,
+            "rawBytes": 99477
           },
           {
             "attempt": 2,
-            "sha256": "3fa6c1b621161621fe84c1051e63ffb5945ef3e6a6549ef01e6f69fe7ea26bbd",
-            "rawSha256": "b911e2068183523ead96844192ba123c170d53614020e6de119a6a1f6863e270",
-            "bytes": 21541,
-            "rawBytes": 121844
+            "sha256": "d2127859ee51f2582c4d6e98e5288e210faadd798bab87a9806ca961583a92e2",
+            "rawSha256": "5f18c64c6f6d4ac2cbf3e31f3dd51bae7940cb459d6c2a96846d7cff322dcf7b",
+            "bytes": 21194,
+            "rawBytes": 99477
           }
         ]
       },
@@ -36546,8 +36546,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -36852,10 +36852,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "b6f437652f82c49526d242c9a2fad3c3a42e60ccb5702bc8b36643cfa95474a2",
+      "rawSha256": "d4fb40cd54e7ea6f97723782a6759f69e0abc0403f62f7e9d657032be1f9ddf4",
       "width": 390,
       "height": 844,
-      "bytes": 30770,
+      "bytes": 21744,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -36863,17 +36863,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "b6f437652f82c49526d242c9a2fad3c3a42e60ccb5702bc8b36643cfa95474a2",
-            "rawSha256": "a29b54ab687e6e4cb65df55fa99fe96948cd6a045fe42832c9ddc0df8f613df9",
-            "bytes": 30770,
-            "rawBytes": 109568
+            "sha256": "d4fb40cd54e7ea6f97723782a6759f69e0abc0403f62f7e9d657032be1f9ddf4",
+            "rawSha256": "41ba4d3b13ccfef88f5c66dc6267cf4a49f8f3d01b8ac15d4c5237b9d11ecc7e",
+            "bytes": 21744,
+            "rawBytes": 78356
           },
           {
             "attempt": 2,
-            "sha256": "b6f437652f82c49526d242c9a2fad3c3a42e60ccb5702bc8b36643cfa95474a2",
-            "rawSha256": "a29b54ab687e6e4cb65df55fa99fe96948cd6a045fe42832c9ddc0df8f613df9",
-            "bytes": 30770,
-            "rawBytes": 109568
+            "sha256": "d4fb40cd54e7ea6f97723782a6759f69e0abc0403f62f7e9d657032be1f9ddf4",
+            "rawSha256": "41ba4d3b13ccfef88f5c66dc6267cf4a49f8f3d01b8ac15d4c5237b9d11ecc7e",
+            "bytes": 21744,
+            "rawBytes": 78356
           }
         ]
       },
@@ -36898,7 +36898,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -37204,10 +37204,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "e2c6926a2c0450e6cd013f6fdbf50f891d411148fcd1da71f926839642b9e7c3",
+      "rawSha256": "542249bbb4488275553cc51c26e40b2f629313b970392974659933d2dd1fe647",
       "width": 390,
       "height": 844,
-      "bytes": 20991,
+      "bytes": 20678,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -37215,17 +37215,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e2c6926a2c0450e6cd013f6fdbf50f891d411148fcd1da71f926839642b9e7c3",
-            "rawSha256": "c16f48252f24ec4232ec17f498ef6ca8e38b4fead836660c5547c77b28eaedfc",
-            "bytes": 20991,
-            "rawBytes": 122224
+            "sha256": "542249bbb4488275553cc51c26e40b2f629313b970392974659933d2dd1fe647",
+            "rawSha256": "7ee287dd74893ed0ac4b1545151c6a43bbc1b6ffe28a3285714d608a5ad1d4f4",
+            "bytes": 20678,
+            "rawBytes": 100429
           },
           {
             "attempt": 2,
-            "sha256": "e2c6926a2c0450e6cd013f6fdbf50f891d411148fcd1da71f926839642b9e7c3",
-            "rawSha256": "c16f48252f24ec4232ec17f498ef6ca8e38b4fead836660c5547c77b28eaedfc",
-            "bytes": 20991,
-            "rawBytes": 122224
+            "sha256": "542249bbb4488275553cc51c26e40b2f629313b970392974659933d2dd1fe647",
+            "rawSha256": "7ee287dd74893ed0ac4b1545151c6a43bbc1b6ffe28a3285714d608a5ad1d4f4",
+            "bytes": 20678,
+            "rawBytes": 100429
           }
         ]
       },
@@ -37250,8 +37250,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -37556,10 +37556,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "c4b99baf19f57dd8be511e7b3eb236c2d10a41498674230676cc078328bd9781",
+      "rawSha256": "e04e53b4e04568eddd0cd3cc8209dbc96c430ce9595d91884e4010c893105944",
       "width": 390,
       "height": 844,
-      "bytes": 28529,
+      "bytes": 21115,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -37567,17 +37567,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "c4b99baf19f57dd8be511e7b3eb236c2d10a41498674230676cc078328bd9781",
-            "rawSha256": "9bbccd4a2e590b8bd13723e634640d99e9ff78e017f222a5546719bdf05e17df",
-            "bytes": 28529,
-            "rawBytes": 104791
+            "sha256": "e04e53b4e04568eddd0cd3cc8209dbc96c430ce9595d91884e4010c893105944",
+            "rawSha256": "6aa0f0e88e39391fa232bcba39025510bfb43e6db3a227d60b07cec61511ce70",
+            "bytes": 21115,
+            "rawBytes": 79325
           },
           {
             "attempt": 2,
-            "sha256": "c4b99baf19f57dd8be511e7b3eb236c2d10a41498674230676cc078328bd9781",
-            "rawSha256": "9bbccd4a2e590b8bd13723e634640d99e9ff78e017f222a5546719bdf05e17df",
-            "bytes": 28529,
-            "rawBytes": 104791
+            "sha256": "e04e53b4e04568eddd0cd3cc8209dbc96c430ce9595d91884e4010c893105944",
+            "rawSha256": "6aa0f0e88e39391fa232bcba39025510bfb43e6db3a227d60b07cec61511ce70",
+            "bytes": 21115,
+            "rawBytes": 79325
           }
         ]
       },
@@ -37602,7 +37602,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -37908,10 +37908,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "8188c5202aa604c75022cd9dcaa77b2ae81a1c8a7e47d31fcb94ff5e64857b1c",
+      "rawSha256": "2cb3df40eba5eb92b762b86e0af4e881e89fecb21b0cee4aed36f882290a3d1f",
       "width": 390,
       "height": 844,
-      "bytes": 17162,
+      "bytes": 16821,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -37919,17 +37919,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "8188c5202aa604c75022cd9dcaa77b2ae81a1c8a7e47d31fcb94ff5e64857b1c",
-            "rawSha256": "44f1e635466d9c24318de44e87df0e1521fa67ebf5d1766847ceac6061e5bbd2",
-            "bytes": 17162,
-            "rawBytes": 108662
+            "sha256": "2cb3df40eba5eb92b762b86e0af4e881e89fecb21b0cee4aed36f882290a3d1f",
+            "rawSha256": "3425f3ec0fafa54ad6daf453556b5fc064f70f4d31987d6e57a898b237f14303",
+            "bytes": 16821,
+            "rawBytes": 86443
           },
           {
             "attempt": 2,
-            "sha256": "8188c5202aa604c75022cd9dcaa77b2ae81a1c8a7e47d31fcb94ff5e64857b1c",
-            "rawSha256": "44f1e635466d9c24318de44e87df0e1521fa67ebf5d1766847ceac6061e5bbd2",
-            "bytes": 17162,
-            "rawBytes": 108662
+            "sha256": "2cb3df40eba5eb92b762b86e0af4e881e89fecb21b0cee4aed36f882290a3d1f",
+            "rawSha256": "3425f3ec0fafa54ad6daf453556b5fc064f70f4d31987d6e57a898b237f14303",
+            "bytes": 16821,
+            "rawBytes": 86443
           }
         ]
       },
@@ -37954,8 +37954,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -38260,10 +38260,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "ba49afe6d3d30131774732f7bd25858a69e59b2f0a3e67ac105029fe03e94c69",
+      "rawSha256": "a083001c17681a45c9bfebf57825808ac0e277f693cd5da5dfc6b0be707837a1",
       "width": 390,
       "height": 844,
-      "bytes": 26616,
+      "bytes": 16902,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -38271,17 +38271,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "ba49afe6d3d30131774732f7bd25858a69e59b2f0a3e67ac105029fe03e94c69",
-            "rawSha256": "5998077744b1c1dcbf4a38a03644c3605fc7a4fc8b1b2853f4bbda5331673aeb",
-            "bytes": 26616,
-            "rawBytes": 97195
+            "sha256": "a083001c17681a45c9bfebf57825808ac0e277f693cd5da5dfc6b0be707837a1",
+            "rawSha256": "4fea810a8bc062e683fd7cfb8e6c87e66c01c25f4826a6946fd82f8a7313c883",
+            "bytes": 16902,
+            "rawBytes": 64772
           },
           {
             "attempt": 2,
-            "sha256": "ba49afe6d3d30131774732f7bd25858a69e59b2f0a3e67ac105029fe03e94c69",
-            "rawSha256": "5998077744b1c1dcbf4a38a03644c3605fc7a4fc8b1b2853f4bbda5331673aeb",
-            "bytes": 26616,
-            "rawBytes": 97195
+            "sha256": "a083001c17681a45c9bfebf57825808ac0e277f693cd5da5dfc6b0be707837a1",
+            "rawSha256": "4fea810a8bc062e683fd7cfb8e6c87e66c01c25f4826a6946fd82f8a7313c883",
+            "bytes": 16902,
+            "rawBytes": 64772
           }
         ]
       },
@@ -38306,7 +38306,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -38612,10 +38612,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "6058802f52982c96e83be778a7872c4d7c69c5adcb7c1a3e990e6eb64a648821",
+      "rawSha256": "db9c088665b3d38f6423284c8a2d1c367fb7a1916193d5233958b734b2261842",
       "width": 390,
       "height": 844,
-      "bytes": 17458,
+      "bytes": 17140,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -38623,17 +38623,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "6058802f52982c96e83be778a7872c4d7c69c5adcb7c1a3e990e6eb64a648821",
-            "rawSha256": "9bbc55e0cda4c4485aa27cefbc9cfb48e46b8abe00167a1d533f5c8f903544bf",
-            "bytes": 17458,
-            "rawBytes": 110532
+            "sha256": "db9c088665b3d38f6423284c8a2d1c367fb7a1916193d5233958b734b2261842",
+            "rawSha256": "bd51c7c49548a7c7065f5fd3925da1a801356d7be7c863761b14d541151d5d90",
+            "bytes": 17140,
+            "rawBytes": 88032
           },
           {
             "attempt": 2,
-            "sha256": "6058802f52982c96e83be778a7872c4d7c69c5adcb7c1a3e990e6eb64a648821",
-            "rawSha256": "9bbc55e0cda4c4485aa27cefbc9cfb48e46b8abe00167a1d533f5c8f903544bf",
-            "bytes": 17458,
-            "rawBytes": 110532
+            "sha256": "db9c088665b3d38f6423284c8a2d1c367fb7a1916193d5233958b734b2261842",
+            "rawSha256": "bd51c7c49548a7c7065f5fd3925da1a801356d7be7c863761b14d541151d5d90",
+            "bytes": 17140,
+            "rawBytes": 88032
           }
         ]
       },
@@ -38658,8 +38658,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -38964,10 +38964,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/style-guide-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "1a6c41d46844249eb52649709c16738f02fe60bc925b07ceea048306e38e0aaa",
+      "rawSha256": "4262e6d5c2067fc33760a8dd8f95e7ad5f456c159d728186e55cf7075681823d",
       "width": 390,
       "height": 844,
-      "bytes": 25995,
+      "bytes": 17068,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -38975,17 +38975,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "1a6c41d46844249eb52649709c16738f02fe60bc925b07ceea048306e38e0aaa",
-            "rawSha256": "8bae7a1d1a750773eed3c8cc9b19c93388bc6dab976f1d57eab9862cd2b5b74a",
-            "bytes": 25995,
-            "rawBytes": 94750
+            "sha256": "4262e6d5c2067fc33760a8dd8f95e7ad5f456c159d728186e55cf7075681823d",
+            "rawSha256": "97dec7ad91f9af764e23826d9fe808c212952e2e453b6b16d8d8ae0c93fea0cd",
+            "bytes": 17068,
+            "rawBytes": 66408
           },
           {
             "attempt": 2,
-            "sha256": "1a6c41d46844249eb52649709c16738f02fe60bc925b07ceea048306e38e0aaa",
-            "rawSha256": "8bae7a1d1a750773eed3c8cc9b19c93388bc6dab976f1d57eab9862cd2b5b74a",
-            "bytes": 25995,
-            "rawBytes": 94750
+            "sha256": "4262e6d5c2067fc33760a8dd8f95e7ad5f456c159d728186e55cf7075681823d",
+            "rawSha256": "97dec7ad91f9af764e23826d9fe808c212952e2e453b6b16d8d8ae0c93fea0cd",
+            "bytes": 17068,
+            "rawBytes": 66408
           }
         ]
       },
@@ -39010,7 +39010,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -39316,10 +39316,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "f38abbded2751b96168d39ad53d7582638d8847b0bf332f38396cf858d6b18c5",
+      "rawSha256": "7ab1d44fc597cd39faac9ec9cf13e1b247a3443db88feacca3ab3a3a7337f453",
       "width": 390,
       "height": 844,
-      "bytes": 20415,
+      "bytes": 20090,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -39327,17 +39327,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "f38abbded2751b96168d39ad53d7582638d8847b0bf332f38396cf858d6b18c5",
-            "rawSha256": "4955ac731450ce8171d0033c80cfa11a672662b8408561f0d5b28dedf74f55ae",
-            "bytes": 20415,
-            "rawBytes": 102855
+            "sha256": "7ab1d44fc597cd39faac9ec9cf13e1b247a3443db88feacca3ab3a3a7337f453",
+            "rawSha256": "16b93958904ae058e71740240768771920bb11d3f982648fac3ed4ea3e170f04",
+            "bytes": 20090,
+            "rawBytes": 79786
           },
           {
             "attempt": 2,
-            "sha256": "f38abbded2751b96168d39ad53d7582638d8847b0bf332f38396cf858d6b18c5",
-            "rawSha256": "4955ac731450ce8171d0033c80cfa11a672662b8408561f0d5b28dedf74f55ae",
-            "bytes": 20415,
-            "rawBytes": 102855
+            "sha256": "7ab1d44fc597cd39faac9ec9cf13e1b247a3443db88feacca3ab3a3a7337f453",
+            "rawSha256": "16b93958904ae058e71740240768771920bb11d3f982648fac3ed4ea3e170f04",
+            "bytes": 20090,
+            "rawBytes": 79786
           }
         ]
       },
@@ -39362,8 +39362,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -39668,10 +39668,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "de6f60f3a58ebd1ac0a2fdf048f23cf310ea0f2a85711da8c1069ce07e780bd7",
+      "rawSha256": "35ad9561a8fefc20335e823f96aa27ceb7abd3e3d220e7df807184970dd1eab1",
       "width": 390,
       "height": 844,
-      "bytes": 29521,
+      "bytes": 20649,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -39679,17 +39679,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "de6f60f3a58ebd1ac0a2fdf048f23cf310ea0f2a85711da8c1069ce07e780bd7",
-            "rawSha256": "88a269e832a9113550423c9cc8c11ce53924d3f9e724e1225e3b9b794954aba5",
-            "bytes": 29521,
-            "rawBytes": 89672
+            "sha256": "35ad9561a8fefc20335e823f96aa27ceb7abd3e3d220e7df807184970dd1eab1",
+            "rawSha256": "71eb42bd2c5c4464dae35e5e8800b0b23359f6490977fd1d3ffe701c5b5eb93a",
+            "bytes": 20649,
+            "rawBytes": 58511
           },
           {
             "attempt": 2,
-            "sha256": "de6f60f3a58ebd1ac0a2fdf048f23cf310ea0f2a85711da8c1069ce07e780bd7",
-            "rawSha256": "88a269e832a9113550423c9cc8c11ce53924d3f9e724e1225e3b9b794954aba5",
-            "bytes": 29521,
-            "rawBytes": 89672
+            "sha256": "35ad9561a8fefc20335e823f96aa27ceb7abd3e3d220e7df807184970dd1eab1",
+            "rawSha256": "71eb42bd2c5c4464dae35e5e8800b0b23359f6490977fd1d3ffe701c5b5eb93a",
+            "bytes": 20649,
+            "rawBytes": 58511
           }
         ]
       },
@@ -39714,7 +39714,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -40020,10 +40020,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "26ca0f08eb80837ae6076a74a23e2a67a96a289111e632e6c17c2194f82ad5ba",
+      "rawSha256": "4347fdeedf0fa685ed3075764dc660c6af7f4d1d85e917bcb15177d75f641e78",
       "width": 390,
       "height": 844,
-      "bytes": 20050,
+      "bytes": 19772,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -40031,17 +40031,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "26ca0f08eb80837ae6076a74a23e2a67a96a289111e632e6c17c2194f82ad5ba",
-            "rawSha256": "11f42c0f829d07a40fadfeef2c3a38fd547ffc07114dcd3231b5a5551fc31be1",
-            "bytes": 20050,
-            "rawBytes": 101704
+            "sha256": "4347fdeedf0fa685ed3075764dc660c6af7f4d1d85e917bcb15177d75f641e78",
+            "rawSha256": "ca3e82df51b153e08e672b8c731ce0eca9f0a8fe0f9c98bf6b28ad488985450b",
+            "bytes": 19772,
+            "rawBytes": 78783
           },
           {
             "attempt": 2,
-            "sha256": "26ca0f08eb80837ae6076a74a23e2a67a96a289111e632e6c17c2194f82ad5ba",
-            "rawSha256": "11f42c0f829d07a40fadfeef2c3a38fd547ffc07114dcd3231b5a5551fc31be1",
-            "bytes": 20050,
-            "rawBytes": 101704
+            "sha256": "4347fdeedf0fa685ed3075764dc660c6af7f4d1d85e917bcb15177d75f641e78",
+            "rawSha256": "ca3e82df51b153e08e672b8c731ce0eca9f0a8fe0f9c98bf6b28ad488985450b",
+            "bytes": 19772,
+            "rawBytes": 78783
           }
         ]
       },
@@ -40066,8 +40066,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -40372,10 +40372,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "cebd1095d172b9564198a3c99498d52bbbb5a84c194848856eaba79f5551108c",
+      "rawSha256": "263e4f0d7c3c49afd366250acd24d6f66d98adb31ff973308621f42c8d0cf06a",
       "width": 390,
       "height": 844,
-      "bytes": 27395,
+      "bytes": 20156,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -40383,17 +40383,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "cebd1095d172b9564198a3c99498d52bbbb5a84c194848856eaba79f5551108c",
-            "rawSha256": "42111cbea4c074e8cf828f2fb332ecda4e2aed9f213b2a8e11eb2deaf3a0dd1c",
-            "bytes": 27395,
-            "rawBytes": 82494
+            "sha256": "263e4f0d7c3c49afd366250acd24d6f66d98adb31ff973308621f42c8d0cf06a",
+            "rawSha256": "18283ffb39b73737f231481828eedc1e9762b001fc789aabade939370cf9add1",
+            "bytes": 20156,
+            "rawBytes": 57137
           },
           {
             "attempt": 2,
-            "sha256": "cebd1095d172b9564198a3c99498d52bbbb5a84c194848856eaba79f5551108c",
-            "rawSha256": "42111cbea4c074e8cf828f2fb332ecda4e2aed9f213b2a8e11eb2deaf3a0dd1c",
-            "bytes": 27395,
-            "rawBytes": 82494
+            "sha256": "263e4f0d7c3c49afd366250acd24d6f66d98adb31ff973308621f42c8d0cf06a",
+            "rawSha256": "18283ffb39b73737f231481828eedc1e9762b001fc789aabade939370cf9add1",
+            "bytes": 20156,
+            "rawBytes": 57137
           }
         ]
       },
@@ -40418,7 +40418,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -40724,10 +40724,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "8890cb2c27d4757d26398e9e271d4ce4af9e0237f9810a3d62585a2f31e23fbf",
+      "rawSha256": "8f764aec21d45211bd1611f4e7e70812c46bc1d7b8b4fd05c33c4748d75b89b7",
       "width": 390,
       "height": 844,
-      "bytes": 20133,
+      "bytes": 19791,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -40735,17 +40735,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "8890cb2c27d4757d26398e9e271d4ce4af9e0237f9810a3d62585a2f31e23fbf",
-            "rawSha256": "fae490d700021d8e2c4482f607ae839fa4aacf3093343b5e5a5361d860a29766",
-            "bytes": 20133,
-            "rawBytes": 101119
+            "sha256": "8f764aec21d45211bd1611f4e7e70812c46bc1d7b8b4fd05c33c4748d75b89b7",
+            "rawSha256": "54c9600fbbd55eeedb5b7180a571e53edf92692217abbb17bc936dbdfb2b73d8",
+            "bytes": 19791,
+            "rawBytes": 78068
           },
           {
             "attempt": 2,
-            "sha256": "8890cb2c27d4757d26398e9e271d4ce4af9e0237f9810a3d62585a2f31e23fbf",
-            "rawSha256": "fae490d700021d8e2c4482f607ae839fa4aacf3093343b5e5a5361d860a29766",
-            "bytes": 20133,
-            "rawBytes": 101119
+            "sha256": "8f764aec21d45211bd1611f4e7e70812c46bc1d7b8b4fd05c33c4748d75b89b7",
+            "rawSha256": "54c9600fbbd55eeedb5b7180a571e53edf92692217abbb17bc936dbdfb2b73d8",
+            "bytes": 19791,
+            "rawBytes": 78068
           }
         ]
       },
@@ -40770,8 +40770,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -41076,10 +41076,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "cfe8d54c40bb4dd24330707c6b00b4a69c242d869525e96253e1095a45ea5078",
+      "rawSha256": "1721a96c25770d3f11edc623d471522172878d2e18c99e5496b068eb3b76959d",
       "width": 390,
       "height": 844,
-      "bytes": 29820,
+      "bytes": 20405,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -41087,17 +41087,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "cfe8d54c40bb4dd24330707c6b00b4a69c242d869525e96253e1095a45ea5078",
-            "rawSha256": "a5259568b4acd82cffd9bf2dc7736760dedb3af3762ac8b9d00fa2e1f6e7314f",
-            "bytes": 29820,
-            "rawBytes": 87969
+            "sha256": "1721a96c25770d3f11edc623d471522172878d2e18c99e5496b068eb3b76959d",
+            "rawSha256": "96fdae86124e6bcf96f1549a96c868b779399f4a910efccfda4f7c099def331b",
+            "bytes": 20405,
+            "rawBytes": 56546
           },
           {
             "attempt": 2,
-            "sha256": "cfe8d54c40bb4dd24330707c6b00b4a69c242d869525e96253e1095a45ea5078",
-            "rawSha256": "a5259568b4acd82cffd9bf2dc7736760dedb3af3762ac8b9d00fa2e1f6e7314f",
-            "bytes": 29820,
-            "rawBytes": 87969
+            "sha256": "1721a96c25770d3f11edc623d471522172878d2e18c99e5496b068eb3b76959d",
+            "rawSha256": "96fdae86124e6bcf96f1549a96c868b779399f4a910efccfda4f7c099def331b",
+            "bytes": 20405,
+            "rawBytes": 56546
           }
         ]
       },
@@ -41122,7 +41122,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -41428,10 +41428,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "29ea1c2eb268cda70acb012a14b9f495e9e9c2d155f424c74b425e25686e11bc",
+      "rawSha256": "bc9f846d06677d45223c2515856b7ceb1266da94017c212e50242be1260de966",
       "width": 390,
       "height": 844,
-      "bytes": 19326,
+      "bytes": 19026,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -41439,17 +41439,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "29ea1c2eb268cda70acb012a14b9f495e9e9c2d155f424c74b425e25686e11bc",
-            "rawSha256": "1c895a632f6ef86f592219da098bf2763b9211d03d36ff9c74fd9767166f921e",
-            "bytes": 19326,
-            "rawBytes": 98431
+            "sha256": "bc9f846d06677d45223c2515856b7ceb1266da94017c212e50242be1260de966",
+            "rawSha256": "f116e3ae0dab0b734ff4b66d330265308dd9659ea2f2d7036167d933fca5a25b",
+            "bytes": 19026,
+            "rawBytes": 75402
           },
           {
             "attempt": 2,
-            "sha256": "29ea1c2eb268cda70acb012a14b9f495e9e9c2d155f424c74b425e25686e11bc",
-            "rawSha256": "1c895a632f6ef86f592219da098bf2763b9211d03d36ff9c74fd9767166f921e",
-            "bytes": 19326,
-            "rawBytes": 98431
+            "sha256": "bc9f846d06677d45223c2515856b7ceb1266da94017c212e50242be1260de966",
+            "rawSha256": "f116e3ae0dab0b734ff4b66d330265308dd9659ea2f2d7036167d933fca5a25b",
+            "bytes": 19026,
+            "rawBytes": 75402
           }
         ]
       },
@@ -41474,8 +41474,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -41780,10 +41780,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/components-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "597b20ca27f584b195370d86c06735d9d610fcc7982b5d8fb2bae72b19a0dff6",
+      "rawSha256": "664a31df9c14651db6da49fc6ea6772e505b1ecd266a1f1a5a56112892218bf0",
       "width": 390,
       "height": 844,
-      "bytes": 27063,
+      "bytes": 19512,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -41791,17 +41791,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "597b20ca27f584b195370d86c06735d9d610fcc7982b5d8fb2bae72b19a0dff6",
-            "rawSha256": "54b6f8d70f45437b2d90f7f165f378bce0040fcbfec7e73c46ac857abb59a186",
-            "bytes": 27063,
-            "rawBytes": 79262
+            "sha256": "664a31df9c14651db6da49fc6ea6772e505b1ecd266a1f1a5a56112892218bf0",
+            "rawSha256": "10373416a734d5d35798e891e50625215269b3c27e433a74689032a871bf5d43",
+            "bytes": 19512,
+            "rawBytes": 53805
           },
           {
             "attempt": 2,
-            "sha256": "597b20ca27f584b195370d86c06735d9d610fcc7982b5d8fb2bae72b19a0dff6",
-            "rawSha256": "54b6f8d70f45437b2d90f7f165f378bce0040fcbfec7e73c46ac857abb59a186",
-            "bytes": 27063,
-            "rawBytes": 79262
+            "sha256": "664a31df9c14651db6da49fc6ea6772e505b1ecd266a1f1a5a56112892218bf0",
+            "rawSha256": "10373416a734d5d35798e891e50625215269b3c27e433a74689032a871bf5d43",
+            "bytes": 19512,
+            "rawBytes": 53805
           }
         ]
       },
@@ -41826,7 +41826,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -42132,10 +42132,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "08739abacbce80fc05d511cba75f13a5aac2f0a2a6c4cb60c0ac9fe50ffade65",
+      "rawSha256": "887d1d7baa3202affc62a83a22b7af1928d41a598ba8ff7283ecef5316095b82",
       "width": 390,
       "height": 844,
-      "bytes": 18078,
+      "bytes": 17801,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -42143,17 +42143,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "08739abacbce80fc05d511cba75f13a5aac2f0a2a6c4cb60c0ac9fe50ffade65",
-            "rawSha256": "3812b6077bed4b955b0006523e5c3633e1976439029c0a777a2a66799ea8c5c0",
-            "bytes": 18078,
-            "rawBytes": 96962
+            "sha256": "887d1d7baa3202affc62a83a22b7af1928d41a598ba8ff7283ecef5316095b82",
+            "rawSha256": "b4fdeedd0fcde783bdecc66746749a5810705f083670f6bb6b5f128e86475355",
+            "bytes": 17801,
+            "rawBytes": 74125
           },
           {
             "attempt": 2,
-            "sha256": "08739abacbce80fc05d511cba75f13a5aac2f0a2a6c4cb60c0ac9fe50ffade65",
-            "rawSha256": "3812b6077bed4b955b0006523e5c3633e1976439029c0a777a2a66799ea8c5c0",
-            "bytes": 18078,
-            "rawBytes": 96962
+            "sha256": "887d1d7baa3202affc62a83a22b7af1928d41a598ba8ff7283ecef5316095b82",
+            "rawSha256": "b4fdeedd0fcde783bdecc66746749a5810705f083670f6bb6b5f128e86475355",
+            "bytes": 17801,
+            "rawBytes": 74125
           }
         ]
       },
@@ -42178,8 +42178,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -42484,10 +42484,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "4ad0ad9f28b0e30da254c7e6c5b31bdc34196f62ec45fbfb08c50a04057e02cc",
+      "rawSha256": "5100310a0f1c43c887a28b495d364d892b014905d200e425cb057c8e9d83eae3",
       "width": 390,
       "height": 844,
-      "bytes": 28076,
+      "bytes": 18392,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -42495,17 +42495,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "4ad0ad9f28b0e30da254c7e6c5b31bdc34196f62ec45fbfb08c50a04057e02cc",
-            "rawSha256": "aecab931afab3905a93ae4b2fec367892c9ecc41d909f81dddbbf5928063ff6c",
-            "bytes": 28076,
-            "rawBytes": 85005
+            "sha256": "5100310a0f1c43c887a28b495d364d892b014905d200e425cb057c8e9d83eae3",
+            "rawSha256": "5f5d60f9507522fa2da7921f26ce9abae36d09aae0718a10934d13bc941936b7",
+            "bytes": 18392,
+            "rawBytes": 52114
           },
           {
             "attempt": 2,
-            "sha256": "4ad0ad9f28b0e30da254c7e6c5b31bdc34196f62ec45fbfb08c50a04057e02cc",
-            "rawSha256": "aecab931afab3905a93ae4b2fec367892c9ecc41d909f81dddbbf5928063ff6c",
-            "bytes": 28076,
-            "rawBytes": 85005
+            "sha256": "5100310a0f1c43c887a28b495d364d892b014905d200e425cb057c8e9d83eae3",
+            "rawSha256": "5f5d60f9507522fa2da7921f26ce9abae36d09aae0718a10934d13bc941936b7",
+            "bytes": 18392,
+            "rawBytes": 52114
           }
         ]
       },
@@ -42530,7 +42530,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -42836,10 +42836,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "0b79e8f52f3d90d69267d06ddf1a316212229353a8d7c444de3e91526d28f012",
+      "rawSha256": "bb277c7686007df7e1e9e726b865dfc87dccb0fdd7d748b45e49d0f8f095c443",
       "width": 390,
       "height": 844,
-      "bytes": 21335,
+      "bytes": 21044,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -42847,17 +42847,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0b79e8f52f3d90d69267d06ddf1a316212229353a8d7c444de3e91526d28f012",
-            "rawSha256": "2ac7150465c189c31e926527fc2f574e8117a169978bac629a2354311211fd02",
-            "bytes": 21335,
-            "rawBytes": 107021
+            "sha256": "bb277c7686007df7e1e9e726b865dfc87dccb0fdd7d748b45e49d0f8f095c443",
+            "rawSha256": "7bd1f71ab5cc65c010e3d40d16e6dfaec837d1151a37b65b0d9cc4870978fe04",
+            "bytes": 21044,
+            "rawBytes": 84300
           },
           {
             "attempt": 2,
-            "sha256": "0b79e8f52f3d90d69267d06ddf1a316212229353a8d7c444de3e91526d28f012",
-            "rawSha256": "2ac7150465c189c31e926527fc2f574e8117a169978bac629a2354311211fd02",
-            "bytes": 21335,
-            "rawBytes": 107021
+            "sha256": "bb277c7686007df7e1e9e726b865dfc87dccb0fdd7d748b45e49d0f8f095c443",
+            "rawSha256": "7bd1f71ab5cc65c010e3d40d16e6dfaec837d1151a37b65b0d9cc4870978fe04",
+            "bytes": 21044,
+            "rawBytes": 84300
           }
         ]
       },
@@ -42882,8 +42882,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -43188,10 +43188,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/patterns-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "ab534b4b8bdd3cf45d02f8473dd7edd502aeaa048743e7d3256503f639ded37e",
+      "rawSha256": "34126d05b7436ac8039d47aa3cfd70ee03add546eb912df10cc394ca79fb39fc",
       "width": 390,
       "height": 844,
-      "bytes": 29771,
+      "bytes": 21779,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -43199,17 +43199,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "ab534b4b8bdd3cf45d02f8473dd7edd502aeaa048743e7d3256503f639ded37e",
-            "rawSha256": "648b443209746319a33e41554d0dd096c717b680895640cf68f237689af712f2",
-            "bytes": 29771,
-            "rawBytes": 89768
+            "sha256": "34126d05b7436ac8039d47aa3cfd70ee03add546eb912df10cc394ca79fb39fc",
+            "rawSha256": "19e91a26bbeadcb564e8f4fe37a2cc7f422ad8a3a810c3eb487094ce247cd553",
+            "bytes": 21779,
+            "rawBytes": 63079
           },
           {
             "attempt": 2,
-            "sha256": "ab534b4b8bdd3cf45d02f8473dd7edd502aeaa048743e7d3256503f639ded37e",
-            "rawSha256": "648b443209746319a33e41554d0dd096c717b680895640cf68f237689af712f2",
-            "bytes": 29771,
-            "rawBytes": 89768
+            "sha256": "34126d05b7436ac8039d47aa3cfd70ee03add546eb912df10cc394ca79fb39fc",
+            "rawSha256": "19e91a26bbeadcb564e8f4fe37a2cc7f422ad8a3a810c3eb487094ce247cd553",
+            "bytes": 21779,
+            "rawBytes": 63079
           }
         ]
       },
@@ -43234,7 +43234,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -43540,10 +43540,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "1e638443ea0d721f7317ef97221d42034c7d66eba8a1374e26b5af31642abbda",
+      "rawSha256": "c8aa7a61f5c3b222b3b9f5324606d44dc871b3aea7fff7d212e580bdbcecd631",
       "width": 390,
       "height": 844,
-      "bytes": 16429,
+      "bytes": 16191,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -43551,17 +43551,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "1e638443ea0d721f7317ef97221d42034c7d66eba8a1374e26b5af31642abbda",
-            "rawSha256": "e23318a0e0630caad7a2e5a9d5c4896101c1e2118094121a4eb654c7355a6a6b",
-            "bytes": 16429,
-            "rawBytes": 91344
+            "sha256": "c8aa7a61f5c3b222b3b9f5324606d44dc871b3aea7fff7d212e580bdbcecd631",
+            "rawSha256": "712734b3542b1732c0fef605711f834663f2b0d96861309fdfb3d6689edf2b6d",
+            "bytes": 16191,
+            "rawBytes": 68041
           },
           {
             "attempt": 2,
-            "sha256": "1e638443ea0d721f7317ef97221d42034c7d66eba8a1374e26b5af31642abbda",
-            "rawSha256": "e23318a0e0630caad7a2e5a9d5c4896101c1e2118094121a4eb654c7355a6a6b",
-            "bytes": 16429,
-            "rawBytes": 91344
+            "sha256": "c8aa7a61f5c3b222b3b9f5324606d44dc871b3aea7fff7d212e580bdbcecd631",
+            "rawSha256": "712734b3542b1732c0fef605711f834663f2b0d96861309fdfb3d6689edf2b6d",
+            "bytes": 16191,
+            "rawBytes": 68041
           }
         ]
       },
@@ -43586,8 +43586,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -43892,10 +43892,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "bab90449eb67429ed05372002e1c93a9926fedd0e85d41f19aeee96f02a38cc5",
+      "rawSha256": "a8b0f37b3e5d5df995c84f4ace037df9b983d5ab354ec9c7434760cf63d2fcce",
       "width": 390,
       "height": 844,
-      "bytes": 24150,
+      "bytes": 16584,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -43903,17 +43903,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "bab90449eb67429ed05372002e1c93a9926fedd0e85d41f19aeee96f02a38cc5",
-            "rawSha256": "76574461bae3adedea0b8443dd5def8e777c7f1224b2c2175a181fdb9fc02c14",
-            "bytes": 24150,
-            "rawBytes": 73398
+            "sha256": "a8b0f37b3e5d5df995c84f4ace037df9b983d5ab354ec9c7434760cf63d2fcce",
+            "rawSha256": "6ed88a1d66e3db9001febc18d03d14c55a20cba34a89c353f770f22b7afc03c3",
+            "bytes": 16584,
+            "rawBytes": 45895
           },
           {
             "attempt": 2,
-            "sha256": "bab90449eb67429ed05372002e1c93a9926fedd0e85d41f19aeee96f02a38cc5",
-            "rawSha256": "76574461bae3adedea0b8443dd5def8e777c7f1224b2c2175a181fdb9fc02c14",
-            "bytes": 24150,
-            "rawBytes": 73398
+            "sha256": "a8b0f37b3e5d5df995c84f4ace037df9b983d5ab354ec9c7434760cf63d2fcce",
+            "rawSha256": "6ed88a1d66e3db9001febc18d03d14c55a20cba34a89c353f770f22b7afc03c3",
+            "bytes": 16584,
+            "rawBytes": 45895
           }
         ]
       },
@@ -43938,7 +43938,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -44244,10 +44244,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "55a49bcdab7d6ae8225aff5e8cebc38703662387236f7ff16090c0389c191ce5",
+      "rawSha256": "4642b121ca9fc0ba70c51dc50c498f81fb45f112d8e078b001fe6bc41a3014ee",
       "width": 390,
       "height": 844,
-      "bytes": 17203,
+      "bytes": 16919,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -44255,17 +44255,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "55a49bcdab7d6ae8225aff5e8cebc38703662387236f7ff16090c0389c191ce5",
-            "rawSha256": "7f77cf6dd4918187cfa24712a21e6a3ea054c95c7e1aa039a69069f19f15ce67",
-            "bytes": 17203,
-            "rawBytes": 91958
+            "sha256": "4642b121ca9fc0ba70c51dc50c498f81fb45f112d8e078b001fe6bc41a3014ee",
+            "rawSha256": "be460831d4fa0e8f3ea24ec72c5e9261eff7c1f1483dfed448e786725c5ad79c",
+            "bytes": 16919,
+            "rawBytes": 69009
           },
           {
             "attempt": 2,
-            "sha256": "55a49bcdab7d6ae8225aff5e8cebc38703662387236f7ff16090c0389c191ce5",
-            "rawSha256": "7f77cf6dd4918187cfa24712a21e6a3ea054c95c7e1aa039a69069f19f15ce67",
-            "bytes": 17203,
-            "rawBytes": 91958
+            "sha256": "4642b121ca9fc0ba70c51dc50c498f81fb45f112d8e078b001fe6bc41a3014ee",
+            "rawSha256": "be460831d4fa0e8f3ea24ec72c5e9261eff7c1f1483dfed448e786725c5ad79c",
+            "bytes": 16919,
+            "rawBytes": 69009
           }
         ]
       },
@@ -44290,8 +44290,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -44596,10 +44596,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/proof-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "e5ac8ee90361dbfaefaf0a5a396ef26f1fdb60b79af1bf265afc58d28494324e",
+      "rawSha256": "be5ecbaac78b43751704f23fe24eca526722e4b4ce139b20eaa7927163747429",
       "width": 390,
       "height": 844,
-      "bytes": 24146,
+      "bytes": 17151,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -44607,17 +44607,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e5ac8ee90361dbfaefaf0a5a396ef26f1fdb60b79af1bf265afc58d28494324e",
-            "rawSha256": "bfa872719d693a5b9f06339c614f4341a3a49684d4ab7a6656c953ad2ea4513c",
-            "bytes": 24146,
-            "rawBytes": 71002
+            "sha256": "be5ecbaac78b43751704f23fe24eca526722e4b4ce139b20eaa7927163747429",
+            "rawSha256": "29b547885c174a5eab683bb9d717c741812d7a1127ef7d7122b2c4a3d39711cd",
+            "bytes": 17151,
+            "rawBytes": 46940
           },
           {
             "attempt": 2,
-            "sha256": "e5ac8ee90361dbfaefaf0a5a396ef26f1fdb60b79af1bf265afc58d28494324e",
-            "rawSha256": "bfa872719d693a5b9f06339c614f4341a3a49684d4ab7a6656c953ad2ea4513c",
-            "bytes": 24146,
-            "rawBytes": 71002
+            "sha256": "be5ecbaac78b43751704f23fe24eca526722e4b4ce139b20eaa7927163747429",
+            "rawSha256": "29b547885c174a5eab683bb9d717c741812d7a1127ef7d7122b2c4a3d39711cd",
+            "bytes": 17151,
+            "rawBytes": 46940
           }
         ]
       },
@@ -44642,7 +44642,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -44948,10 +44948,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-light__mobile-390x844.png",
-      "rawSha256": "cb7775ae63e131f0d3bed67883c81368f3f21ccef1d202a0c2497ee1083f90c2",
+      "rawSha256": "af82b2bcdb78d128672bfbabe7cc561a599baa49bd5b63b5504088a9c84caa7a",
       "width": 390,
       "height": 844,
-      "bytes": 20509,
+      "bytes": 20176,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -44959,17 +44959,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "cb7775ae63e131f0d3bed67883c81368f3f21ccef1d202a0c2497ee1083f90c2",
-            "rawSha256": "a6798a7157df0656876526207c558b0fc15d50de0cac66ef0a91fddd9fa11367",
-            "bytes": 20509,
-            "rawBytes": 101906
+            "sha256": "af82b2bcdb78d128672bfbabe7cc561a599baa49bd5b63b5504088a9c84caa7a",
+            "rawSha256": "0d45bb69f159e095423af4384adb52049bc936b40b979c4d449baee4f3fe6754",
+            "bytes": 20176,
+            "rawBytes": 78747
           },
           {
             "attempt": 2,
-            "sha256": "cb7775ae63e131f0d3bed67883c81368f3f21ccef1d202a0c2497ee1083f90c2",
-            "rawSha256": "a6798a7157df0656876526207c558b0fc15d50de0cac66ef0a91fddd9fa11367",
-            "bytes": 20509,
-            "rawBytes": 101906
+            "sha256": "af82b2bcdb78d128672bfbabe7cc561a599baa49bd5b63b5504088a9c84caa7a",
+            "rawSha256": "0d45bb69f159e095423af4384adb52049bc936b40b979c4d449baee4f3fe6754",
+            "bytes": 20176,
+            "rawBytes": 78747
           }
         ]
       },
@@ -44994,8 +44994,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -45300,10 +45300,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-en-dark__mobile-390x844.png",
-      "rawSha256": "7ec8758552909ff6171874ac47b558d16fd7fc95e974c35dc46ad98123e3c854",
+      "rawSha256": "e4432067e9c61d0f9df6fa41b9a7c10efc6254e5beda3ccd655f51d4def00c44",
       "width": 390,
       "height": 844,
-      "bytes": 29440,
+      "bytes": 20749,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -45311,17 +45311,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "7ec8758552909ff6171874ac47b558d16fd7fc95e974c35dc46ad98123e3c854",
-            "rawSha256": "4646e8c9f8c0371982ed04bfaf4d59ae56ceeaa5b2d0a1a4bc7cb20b8df5702e",
-            "bytes": 29440,
-            "rawBytes": 88712
+            "sha256": "e4432067e9c61d0f9df6fa41b9a7c10efc6254e5beda3ccd655f51d4def00c44",
+            "rawSha256": "9191deeed059c996ccadcce2186f88a8d962bce24922caf974432e03aff19bd4",
+            "bytes": 20749,
+            "rawBytes": 56825
           },
           {
             "attempt": 2,
-            "sha256": "7ec8758552909ff6171874ac47b558d16fd7fc95e974c35dc46ad98123e3c854",
-            "rawSha256": "4646e8c9f8c0371982ed04bfaf4d59ae56ceeaa5b2d0a1a4bc7cb20b8df5702e",
-            "bytes": 29440,
-            "rawBytes": 88712
+            "sha256": "e4432067e9c61d0f9df6fa41b9a7c10efc6254e5beda3ccd655f51d4def00c44",
+            "rawSha256": "9191deeed059c996ccadcce2186f88a8d962bce24922caf974432e03aff19bd4",
+            "bytes": 20749,
+            "rawBytes": 56825
           }
         ]
       },
@@ -45346,7 +45346,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -45652,10 +45652,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "d54be6543a185a1c4436d2bdd9d45ef081fd35766086916529ae09d99297c307",
+      "rawSha256": "91d268b8c21e21e77990fecfc190b5eccfbf3df327597352616ae7e0ee5899c7",
       "width": 390,
       "height": 844,
-      "bytes": 22231,
+      "bytes": 21930,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -45663,17 +45663,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "d54be6543a185a1c4436d2bdd9d45ef081fd35766086916529ae09d99297c307",
-            "rawSha256": "5585c9cafd53d4d3e3ed80192d4652765eb8b6d387fdd2d48fd8b0bd07af7047",
-            "bytes": 22231,
-            "rawBytes": 106998
+            "sha256": "91d268b8c21e21e77990fecfc190b5eccfbf3df327597352616ae7e0ee5899c7",
+            "rawSha256": "b1f87b95249c6fbb6f1a962e8df44c3508d0c64e93bb51a3774ba4c442ea3519",
+            "bytes": 21930,
+            "rawBytes": 83960
           },
           {
             "attempt": 2,
-            "sha256": "d54be6543a185a1c4436d2bdd9d45ef081fd35766086916529ae09d99297c307",
-            "rawSha256": "5585c9cafd53d4d3e3ed80192d4652765eb8b6d387fdd2d48fd8b0bd07af7047",
-            "bytes": 22231,
-            "rawBytes": 106998
+            "sha256": "91d268b8c21e21e77990fecfc190b5eccfbf3df327597352616ae7e0ee5899c7",
+            "rawSha256": "b1f87b95249c6fbb6f1a962e8df44c3508d0c64e93bb51a3774ba4c442ea3519",
+            "bytes": 21930,
+            "rawBytes": 83960
           }
         ]
       },
@@ -45698,8 +45698,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -46004,10 +46004,10 @@
       "interaction": "rest",
       "themeMode": "dark",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/change-log-first-story-zh-cn-dark__mobile-390x844.png",
-      "rawSha256": "e41d768c7272a989859d4c1a34c4f432a6e18b3a1732f41f092e0f29645d4d47",
+      "rawSha256": "39718eefaa7b465a8d0326d218ea1fa5ef8ff339ff179dd63d7159b6e8472447",
       "width": 390,
       "height": 844,
-      "bytes": 30167,
+      "bytes": 22261,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -46015,17 +46015,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "e41d768c7272a989859d4c1a34c4f432a6e18b3a1732f41f092e0f29645d4d47",
-            "rawSha256": "af22f06ea78096fb4c8adea163407c07e2fdb619acfe878853bd4225f38e96d9",
-            "bytes": 30167,
-            "rawBytes": 91284
+            "sha256": "39718eefaa7b465a8d0326d218ea1fa5ef8ff339ff179dd63d7159b6e8472447",
+            "rawSha256": "7ef3904bc4e0bb9172fc1ae0fe5fe489bf4cbb57abb7bc474f857fa7c8773628",
+            "bytes": 22261,
+            "rawBytes": 62245
           },
           {
             "attempt": 2,
-            "sha256": "e41d768c7272a989859d4c1a34c4f432a6e18b3a1732f41f092e0f29645d4d47",
-            "rawSha256": "af22f06ea78096fb4c8adea163407c07e2fdb619acfe878853bd4225f38e96d9",
-            "bytes": 30167,
-            "rawBytes": 91284
+            "sha256": "39718eefaa7b465a8d0326d218ea1fa5ef8ff339ff179dd63d7159b6e8472447",
+            "rawSha256": "7ef3904bc4e0bb9172fc1ae0fe5fe489bf4cbb57abb7bc474f857fa7c8773628",
+            "bytes": 22261,
+            "rawBytes": 62245
           }
         ]
       },
@@ -46050,7 +46050,7 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
+          "background-color": "rgb(24, 36, 55)",
           "background-image": "none"
         },
         "sideNavRegion": {
@@ -46356,10 +46356,10 @@
       "interaction": "search-focus",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "4313ca1cc12cbf37bea78c60e97a39bad8d3112837b4a0cdb5fd3f77530a1998",
+      "rawSha256": "e10b8e04fe9cd6a673dae84f12cf3e2a55f6f78e652600d28e78cbd8fa39c35f",
       "width": 390,
       "height": 844,
-      "bytes": 18231,
+      "bytes": 18007,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -46367,17 +46367,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "4313ca1cc12cbf37bea78c60e97a39bad8d3112837b4a0cdb5fd3f77530a1998",
-            "rawSha256": "08176be010d9232f0cdb79380409830289f9cb0168012b8b632b309cfe9dcec7",
-            "bytes": 18231,
-            "rawBytes": 108928
+            "sha256": "e10b8e04fe9cd6a673dae84f12cf3e2a55f6f78e652600d28e78cbd8fa39c35f",
+            "rawSha256": "4867c657591f4bc758023a188d1c9174c8096604cdebf9fc4becc0b63f33b7e8",
+            "bytes": 18007,
+            "rawBytes": 88191
           },
           {
             "attempt": 2,
-            "sha256": "4313ca1cc12cbf37bea78c60e97a39bad8d3112837b4a0cdb5fd3f77530a1998",
-            "rawSha256": "08176be010d9232f0cdb79380409830289f9cb0168012b8b632b309cfe9dcec7",
-            "bytes": 18231,
-            "rawBytes": 108928
+            "sha256": "e10b8e04fe9cd6a673dae84f12cf3e2a55f6f78e652600d28e78cbd8fa39c35f",
+            "rawSha256": "4867c657591f4bc758023a188d1c9174c8096604cdebf9fc4becc0b63f33b7e8",
+            "bytes": 18007,
+            "rawBytes": 88191
           }
         ]
       },
@@ -46402,8 +46402,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -46708,10 +46708,10 @@
       "interaction": "search-results",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-results-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "9f05c84c6a72dd03ce232a45c63babab16cbc63ebdaef2cc390d576722de5f08",
+      "rawSha256": "56b6bbb919e5bd37628a546dfe4239695668242b07664e665a8697d511c06430",
       "width": 390,
       "height": 844,
-      "bytes": 15595,
+      "bytes": 14775,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -46719,17 +46719,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "9f05c84c6a72dd03ce232a45c63babab16cbc63ebdaef2cc390d576722de5f08",
-            "rawSha256": "6929cd10b0865e39bbb497615dea719de4477ffa731daeeef84ad3d73fa5a971",
-            "bytes": 15595,
-            "rawBytes": 103753
+            "sha256": "56b6bbb919e5bd37628a546dfe4239695668242b07664e665a8697d511c06430",
+            "rawSha256": "4c903cd13c1ecf9edc79f4c042cb978b5a758ee25d3ee45855c39ebf092e5cea",
+            "bytes": 14775,
+            "rawBytes": 84591
           },
           {
             "attempt": 2,
-            "sha256": "9f05c84c6a72dd03ce232a45c63babab16cbc63ebdaef2cc390d576722de5f08",
-            "rawSha256": "6929cd10b0865e39bbb497615dea719de4477ffa731daeeef84ad3d73fa5a971",
-            "bytes": 15595,
-            "rawBytes": 103753
+            "sha256": "56b6bbb919e5bd37628a546dfe4239695668242b07664e665a8697d511c06430",
+            "rawSha256": "4c903cd13c1ecf9edc79f4c042cb978b5a758ee25d3ee45855c39ebf092e5cea",
+            "bytes": 14775,
+            "rawBytes": 84591
           }
         ]
       },
@@ -46754,8 +46754,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -47060,10 +47060,10 @@
       "interaction": "locale-menu",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-locale-menu-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "0a7aa27c5121a33842c16714a810eb6d86f65dfc523b0bd895f263eaff38f3db",
+      "rawSha256": "3d7e0a367a398a9bf40d20b8a9fb501f55816e936bac80860c6a798b41b94a46",
       "width": 390,
       "height": 844,
-      "bytes": 23387,
+      "bytes": 22705,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -47071,17 +47071,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "0a7aa27c5121a33842c16714a810eb6d86f65dfc523b0bd895f263eaff38f3db",
-            "rawSha256": "bd9b097fcb41647000ed26ef8ea640c0e6d407909a75eab8317756598d0064b1",
-            "bytes": 23387,
-            "rawBytes": 126735
+            "sha256": "3d7e0a367a398a9bf40d20b8a9fb501f55816e936bac80860c6a798b41b94a46",
+            "rawSha256": "90ac31d0d19d135dc35d80221443d492c8f2c9a8b9d2ab40065116f06a9b4298",
+            "bytes": 22705,
+            "rawBytes": 105000
           },
           {
             "attempt": 2,
-            "sha256": "0a7aa27c5121a33842c16714a810eb6d86f65dfc523b0bd895f263eaff38f3db",
-            "rawSha256": "bd9b097fcb41647000ed26ef8ea640c0e6d407909a75eab8317756598d0064b1",
-            "bytes": 23387,
-            "rawBytes": 126735
+            "sha256": "3d7e0a367a398a9bf40d20b8a9fb501f55816e936bac80860c6a798b41b94a46",
+            "rawSha256": "90ac31d0d19d135dc35d80221443d492c8f2c9a8b9d2ab40065116f06a9b4298",
+            "bytes": 22705,
+            "rawBytes": 105000
           }
         ]
       },
@@ -47106,8 +47106,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -47412,10 +47412,10 @@
       "interaction": "rest",
       "themeMode": "light",
       "path": "docs/verification/storybook-visual-proof/screenshots/baseline/foundations-visual-standards-zh-cn-light__mobile-390x844.png",
-      "rawSha256": "16d0851f36001eb240d8dc1e91cdf7a1c017e1f50e0dc6b9cac1f78fdccb7efd",
+      "rawSha256": "57fdbdefe0b27b19587b8b446ca1847c52d12275100aa6f02ea22de1b215b25d",
       "width": 390,
       "height": 844,
-      "bytes": 23031,
+      "bytes": 22736,
       "screenshotStability": {
         "ok": true,
         "requiredConsecutiveIdenticalHashes": 2,
@@ -47423,17 +47423,17 @@
         "attempts": [
           {
             "attempt": 1,
-            "sha256": "16d0851f36001eb240d8dc1e91cdf7a1c017e1f50e0dc6b9cac1f78fdccb7efd",
-            "rawSha256": "8b74bc2fdc9e82913ac5a7caf7157a88b55b7401fc3aa86a09546ea51e706176",
-            "bytes": 23031,
-            "rawBytes": 107033
+            "sha256": "57fdbdefe0b27b19587b8b446ca1847c52d12275100aa6f02ea22de1b215b25d",
+            "rawSha256": "ad68aa9a1bf106643e98649b4bf839bedfcc8c1d2de197a9f9dd5e8936248a38",
+            "bytes": 22736,
+            "rawBytes": 84118
           },
           {
             "attempt": 2,
-            "sha256": "16d0851f36001eb240d8dc1e91cdf7a1c017e1f50e0dc6b9cac1f78fdccb7efd",
-            "rawSha256": "8b74bc2fdc9e82913ac5a7caf7157a88b55b7401fc3aa86a09546ea51e706176",
-            "bytes": 23031,
-            "rawBytes": 107033
+            "sha256": "57fdbdefe0b27b19587b8b446ca1847c52d12275100aa6f02ea22de1b215b25d",
+            "rawSha256": "ad68aa9a1bf106643e98649b4bf839bedfcc8c1d2de197a9f9dd5e8936248a38",
+            "bytes": 22736,
+            "rawBytes": 84118
           }
         ]
       },
@@ -47458,8 +47458,8 @@
           "height": 397.69
         },
         "topbarStyles": {
-          "background-color": "rgba(0, 0, 0, 0)",
-          "background-image": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)"
+          "background-color": "rgb(255, 255, 255)",
+          "background-image": "none"
         },
         "sideNavRegion": {
           "x": 0,
@@ -47800,7 +47800,7 @@
   ],
   "playwrightVersion": "1.61.0",
   "chromiumVersion": "149.0.7827.55",
-  "baselineManifestHash": "a1bfcd556c886927bff8d09605c3105f77ce085b69b728c501ae97ff5ed5f987",
+  "baselineManifestHash": "2856af26ad79734b4546365fce9bbdf0cb0adfaabca59a52079161dcbc23aade",
   "compareFailures": [],
   "comparisonReadbacks": []
 }

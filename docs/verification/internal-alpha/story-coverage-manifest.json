@@ -1579,9 +1579,9 @@
         "mobileTopbarLayering": {
           "topbar": {
             "selector": ".tcrn-doc-header",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "sticky",
             "zIndex": "30",
@@ -1594,9 +1594,9 @@
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
@@ -1607,11 +1607,26 @@
             "width": 370,
             "height": 377.69
           },
+          "workspace": {
+            "selector": ".tcrn-doc-header__workspace",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 229,
+            "right": 380,
+            "bottom": 331.69,
+            "left": 10,
+            "width": 370,
+            "height": 102.69
+          },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
@@ -1624,9 +1639,9 @@
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
@@ -1650,6 +1665,36 @@
             "bottom": 321.69,
             "left": 26,
             "width": 338,
+            "height": 36
+          },
+          "headerControls": {
+            "selector": ".tcrn-doc-header-controls",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 331.69,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 185,
+            "width": 195,
+            "height": 56
+          },
+          "controlsRow": {
+            "selector": ".tcrn-doc-header-controls__row",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 163,
             "height": 36
           },
           "themeToggle": {
@@ -2179,9 +2224,9 @@
         "mobileTopbarLayering": {
           "topbar": {
             "selector": ".tcrn-doc-header",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "sticky",
             "zIndex": "30",
@@ -2194,9 +2239,9 @@
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
@@ -2207,11 +2252,26 @@
             "width": 370,
             "height": 377.69
           },
+          "workspace": {
+            "selector": ".tcrn-doc-header__workspace",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 229,
+            "right": 380,
+            "bottom": 331.69,
+            "left": 10,
+            "width": 370,
+            "height": 102.69
+          },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
@@ -2224,9 +2284,9 @@
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
@@ -2250,6 +2310,36 @@
             "bottom": 321.69,
             "left": 26,
             "width": 338,
+            "height": 36
+          },
+          "headerControls": {
+            "selector": ".tcrn-doc-header-controls",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 331.69,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 185,
+            "width": 195,
+            "height": 56
+          },
+          "controlsRow": {
+            "selector": ".tcrn-doc-header-controls__row",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 163,
             "height": 36
           },
           "themeToggle": {
@@ -2779,9 +2869,9 @@
         "mobileTopbarLayering": {
           "topbar": {
             "selector": ".tcrn-doc-header",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "sticky",
             "zIndex": "30",
@@ -2794,9 +2884,9 @@
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
@@ -2807,11 +2897,26 @@
             "width": 370,
             "height": 377.69
           },
+          "workspace": {
+            "selector": ".tcrn-doc-header__workspace",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 229,
+            "right": 380,
+            "bottom": 331.69,
+            "left": 10,
+            "width": 370,
+            "height": 102.69
+          },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
@@ -2824,9 +2929,9 @@
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
@@ -2850,6 +2955,36 @@
             "bottom": 321.69,
             "left": 26,
             "width": 338,
+            "height": 36
+          },
+          "headerControls": {
+            "selector": ".tcrn-doc-header-controls",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 331.69,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 185,
+            "width": 195,
+            "height": 56
+          },
+          "controlsRow": {
+            "selector": ".tcrn-doc-header-controls__row",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 163,
             "height": 36
           },
           "themeToggle": {
@@ -3379,9 +3514,9 @@
         "mobileTopbarLayering": {
           "topbar": {
             "selector": ".tcrn-doc-header",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "sticky",
             "zIndex": "30",
@@ -3394,9 +3529,9 @@
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
@@ -3407,11 +3542,26 @@
             "width": 370,
             "height": 377.69
           },
+          "workspace": {
+            "selector": ".tcrn-doc-header__workspace",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 229,
+            "right": 380,
+            "bottom": 331.69,
+            "left": 10,
+            "width": 370,
+            "height": 102.69
+          },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
@@ -3424,9 +3574,9 @@
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "backgroundImage": "radial-gradient(circle at 8% 0%, color(srgb 0.933333 0.941177 1 / 0.7) 0%, rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 18%, color(srgb 0.894118 0.968627 0.976471 / 0.58) 0%, rgba(0, 0, 0, 0) 34%), linear-gradient(135deg, rgb(255, 255, 255) 0%, color(srgb 0.959059 0.97498 0.981804) 100%)",
-            "backgroundAlpha": 0,
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
@@ -3450,6 +3600,36 @@
             "bottom": 321.69,
             "left": 26,
             "width": 338,
+            "height": 36
+          },
+          "headerControls": {
+            "selector": ".tcrn-doc-header-controls",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 331.69,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 185,
+            "width": 195,
+            "height": 56
+          },
+          "controlsRow": {
+            "selector": ".tcrn-doc-header-controls__row",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 163,
             "height": 36
           },
           "themeToggle": {
@@ -3931,6 +4111,2614 @@
         },
         "articleClearancePx": 14.37,
         "titleClearancePx": 31.37,
+        "articleReadableBelowTopbar": true,
+        "titleReadableBelowTopbar": true,
+        "docShellSelectorCount": 6,
+        "globalProductShellShellSelectorCount": 0,
+        "pageOverflow": false,
+        "ok": true,
+        "failures": []
+      }
+    ]
+  },
+  "mobileKnowledgeDocShellLayeringCheck": {
+    "ok": true,
+    "route": "components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "readbacks": [
+      {
+        "label": "after-load",
+        "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+        "scrollY": 146359,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "locale": "zh-CN",
+        "shellAuthority": "online-docs",
+        "anchorScrollControlled": "true",
+        "activeStoryId": "knowledge-management-components-spec",
+        "topbar": {
+          "top": 0,
+          "right": 390,
+          "bottom": 397.69,
+          "left": 0,
+          "width": 390,
+          "height": 397.69
+        },
+        "article": {
+          "top": 412.31,
+          "right": 374,
+          "bottom": 6011.19,
+          "left": 16,
+          "width": 358,
+          "height": 5598.88
+        },
+        "title": {
+          "top": 429.31,
+          "right": 357,
+          "bottom": 455.63,
+          "left": 33,
+          "width": 324,
+          "height": 26.31
+        },
+        "mobileTopbarLayering": {
+          "topbar": {
+            "selector": ".tcrn-doc-header",
+            "backgroundColor": "rgb(70, 80, 95)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "sticky",
+            "zIndex": "30",
+            "top": 0,
+            "right": 390,
+            "bottom": 397.69,
+            "left": 0,
+            "width": 390,
+            "height": 397.69
+          },
+          "utilityRow": {
+            "selector": ".tcrn-doc-global-bar",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 10,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 10,
+            "width": 370,
+            "height": 377.69
+          },
+          "workspace": {
+            "selector": ".tcrn-doc-header__workspace",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 229,
+            "right": 380,
+            "bottom": 331.69,
+            "left": 10,
+            "width": 370,
+            "height": 102.69
+          },
+          "currentLocation": {
+            "selector": ".tcrn-doc-current-location",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 239,
+            "right": 364,
+            "bottom": 275.69,
+            "left": 26,
+            "width": 338,
+            "height": 36.69
+          },
+          "searchWrapper": {
+            "selector": ".tcrn-doc-header-search",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 285.69,
+            "right": 364,
+            "bottom": 321.69,
+            "left": 26,
+            "width": 338,
+            "height": 36
+          },
+          "searchInput": {
+            "selector": ".tcrn-search-input",
+            "backgroundColor": "rgb(70, 80, 95)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 285.69,
+            "right": 364,
+            "bottom": 321.69,
+            "left": 26,
+            "width": 338,
+            "height": 36
+          },
+          "headerControls": {
+            "selector": ".tcrn-doc-header-controls",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 331.69,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 185,
+            "width": 195,
+            "height": 56
+          },
+          "controlsRow": {
+            "selector": ".tcrn-doc-header-controls__row",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 163,
+            "height": 36
+          },
+          "themeToggle": {
+            "selector": ".tcrn-shell-theme-toggle",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 237,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 36,
+            "height": 36
+          },
+          "localeTrigger": {
+            "selector": ".tcrn-shell-locale-menu__trigger",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 247,
+            "width": 117,
+            "height": 36
+          },
+          "pointReadbacks": [
+            {
+              "label": "mobile-doc-shell-y20",
+              "x": 195,
+              "y": 20,
+              "shellIndex": 1,
+              "storyContentIndex": 3,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dir"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-evidence-attachment-list tcrn-evidence-attachment-list--comfortable",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 1,
+              "storyContentIndex": 3,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "QA artifact receipt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-evidence-attachment-list tcrn-evidence-attachment-list--comfortable",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 2,
+              "storyContentIndex": 7,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "tcrn-doc-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-machine-token__label",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-machine-token",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifactroute-artifact:rowan-work-management-patterns"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-machine-token-cell",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifactroute-artifact:rowan-work-management-patterns"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifactroute-artifact:rowan-work-management-patterns"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y260",
+              "x": 195,
+              "y": 260,
+              "shellIndex": 0,
+              "storyContentIndex": 7,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-doc-current-location__story",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "知识管理组件规范"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-doc-current-location__path",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 知识管理组件规范"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-current-location",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前位置 组件 知识管理组件规范"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header__workspace",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-badge tcrn-badge--warning",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "需要证明"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "需要证明"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y305",
+              "x": 195,
+              "y": 305,
+              "shellIndex": 2,
+              "storyContentIndex": 7,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "input",
+                  "id": "",
+                  "className": "tcrn-input tcrn-search-input__control tcrn-search-input--compact",
+                  "role": "combobox",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": ""
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-search-input",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header-search",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "搜索文档 Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header__workspace",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y360",
+              "x": 195,
+              "y": 360,
+              "shellIndex": 0,
+              "storyContentIndex": 4,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header-controls",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "简体中文简体中文English日本語한국어Français 简体中文 English 日文 韩文 Français"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                },
+                {
+                  "tag": "article",
+                  "id": "work-management-components-spec",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "工作管理组件规范 用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。 Admitted can"
+                },
+                {
+                  "tag": "section",
+                  "id": "components",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族组件族推荐组件范围组件状态操作Button, IconButt"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                }
+              ]
+            }
+          ]
+        },
+        "articleClearancePx": 14.62,
+        "titleClearancePx": 31.62,
+        "articleReadableBelowTopbar": true,
+        "titleReadableBelowTopbar": true,
+        "docShellSelectorCount": 6,
+        "globalProductShellShellSelectorCount": 0,
+        "pageOverflow": false,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "label": "after-700ms",
+        "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+        "scrollY": 146359,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "locale": "zh-CN",
+        "shellAuthority": "online-docs",
+        "anchorScrollControlled": "true",
+        "activeStoryId": "knowledge-management-components-spec",
+        "topbar": {
+          "top": 0,
+          "right": 390,
+          "bottom": 397.69,
+          "left": 0,
+          "width": 390,
+          "height": 397.69
+        },
+        "article": {
+          "top": 412.31,
+          "right": 374,
+          "bottom": 6011.19,
+          "left": 16,
+          "width": 358,
+          "height": 5598.88
+        },
+        "title": {
+          "top": 429.31,
+          "right": 357,
+          "bottom": 455.63,
+          "left": 33,
+          "width": 324,
+          "height": 26.31
+        },
+        "mobileTopbarLayering": {
+          "topbar": {
+            "selector": ".tcrn-doc-header",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "sticky",
+            "zIndex": "30",
+            "top": 0,
+            "right": 390,
+            "bottom": 397.69,
+            "left": 0,
+            "width": 390,
+            "height": 397.69
+          },
+          "utilityRow": {
+            "selector": ".tcrn-doc-global-bar",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 10,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 10,
+            "width": 370,
+            "height": 377.69
+          },
+          "workspace": {
+            "selector": ".tcrn-doc-header__workspace",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 229,
+            "right": 380,
+            "bottom": 331.69,
+            "left": 10,
+            "width": 370,
+            "height": 102.69
+          },
+          "currentLocation": {
+            "selector": ".tcrn-doc-current-location",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 239,
+            "right": 364,
+            "bottom": 275.69,
+            "left": 26,
+            "width": 338,
+            "height": 36.69
+          },
+          "searchWrapper": {
+            "selector": ".tcrn-doc-header-search",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 285.69,
+            "right": 364,
+            "bottom": 321.69,
+            "left": 26,
+            "width": 338,
+            "height": 36
+          },
+          "searchInput": {
+            "selector": ".tcrn-search-input",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 285.69,
+            "right": 364,
+            "bottom": 321.69,
+            "left": 26,
+            "width": 338,
+            "height": 36
+          },
+          "headerControls": {
+            "selector": ".tcrn-doc-header-controls",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 331.69,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 185,
+            "width": 195,
+            "height": 56
+          },
+          "controlsRow": {
+            "selector": ".tcrn-doc-header-controls__row",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 163,
+            "height": 36
+          },
+          "themeToggle": {
+            "selector": ".tcrn-shell-theme-toggle",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 237,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 36,
+            "height": 36
+          },
+          "localeTrigger": {
+            "selector": ".tcrn-shell-locale-menu__trigger",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 247,
+            "width": 117,
+            "height": 36
+          },
+          "pointReadbacks": [
+            {
+              "label": "mobile-doc-shell-y20",
+              "x": 195,
+              "y": 20,
+              "shellIndex": 1,
+              "storyContentIndex": 3,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dir"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-evidence-attachment-list tcrn-evidence-attachment-list--comfortable",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 1,
+              "storyContentIndex": 3,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "QA artifact receipt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-evidence-attachment-list tcrn-evidence-attachment-list--comfortable",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 2,
+              "storyContentIndex": 7,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "tcrn-doc-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-machine-token__label",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-machine-token",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifactroute-artifact:rowan-work-management-patterns"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-machine-token-cell",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifactroute-artifact:rowan-work-management-patterns"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifactroute-artifact:rowan-work-management-patterns"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y260",
+              "x": 195,
+              "y": 260,
+              "shellIndex": 0,
+              "storyContentIndex": 7,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-doc-current-location__story",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "知识管理组件规范"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-doc-current-location__path",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 知识管理组件规范"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-current-location",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前位置 组件 知识管理组件规范"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header__workspace",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-badge tcrn-badge--warning",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "需要证明"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "需要证明"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y305",
+              "x": 195,
+              "y": 305,
+              "shellIndex": 2,
+              "storyContentIndex": 7,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "input",
+                  "id": "",
+                  "className": "tcrn-input tcrn-search-input__control tcrn-search-input--compact",
+                  "role": "combobox",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": ""
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-search-input",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header-search",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "搜索文档 Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header__workspace",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y360",
+              "x": 195,
+              "y": 360,
+              "shellIndex": 0,
+              "storyContentIndex": 4,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header-controls",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "简体中文简体中文English日本語한국어Français 简体中文 English 日文 韩文 Français"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                },
+                {
+                  "tag": "article",
+                  "id": "work-management-components-spec",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "工作管理组件规范 用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。 Admitted can"
+                },
+                {
+                  "tag": "section",
+                  "id": "components",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族组件族推荐组件范围组件状态操作Button, IconButt"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                }
+              ]
+            }
+          ]
+        },
+        "articleClearancePx": 14.62,
+        "titleClearancePx": 31.62,
+        "articleReadableBelowTopbar": true,
+        "titleReadableBelowTopbar": true,
+        "docShellSelectorCount": 6,
+        "globalProductShellShellSelectorCount": 0,
+        "pageOverflow": false,
+        "ok": true,
+        "failures": []
+      },
+      {
+        "label": "after-reload-1500ms",
+        "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+        "scrollY": 146359,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "locale": "zh-CN",
+        "shellAuthority": "online-docs",
+        "anchorScrollControlled": "true",
+        "activeStoryId": "knowledge-management-components-spec",
+        "topbar": {
+          "top": 0,
+          "right": 390,
+          "bottom": 397.69,
+          "left": 0,
+          "width": 390,
+          "height": 397.69
+        },
+        "article": {
+          "top": 412.31,
+          "right": 374,
+          "bottom": 6011.19,
+          "left": 16,
+          "width": 358,
+          "height": 5598.88
+        },
+        "title": {
+          "top": 429.31,
+          "right": 357,
+          "bottom": 455.63,
+          "left": 33,
+          "width": 324,
+          "height": 26.31
+        },
+        "mobileTopbarLayering": {
+          "topbar": {
+            "selector": ".tcrn-doc-header",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "sticky",
+            "zIndex": "30",
+            "top": 0,
+            "right": 390,
+            "bottom": 397.69,
+            "left": 0,
+            "width": 390,
+            "height": 397.69
+          },
+          "utilityRow": {
+            "selector": ".tcrn-doc-global-bar",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 10,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 10,
+            "width": 370,
+            "height": 377.69
+          },
+          "workspace": {
+            "selector": ".tcrn-doc-header__workspace",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 229,
+            "right": 380,
+            "bottom": 331.69,
+            "left": 10,
+            "width": 370,
+            "height": 102.69
+          },
+          "currentLocation": {
+            "selector": ".tcrn-doc-current-location",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 239,
+            "right": 364,
+            "bottom": 275.69,
+            "left": 26,
+            "width": 338,
+            "height": 36.69
+          },
+          "searchWrapper": {
+            "selector": ".tcrn-doc-header-search",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 285.69,
+            "right": 364,
+            "bottom": 321.69,
+            "left": 26,
+            "width": 338,
+            "height": 36
+          },
+          "searchInput": {
+            "selector": ".tcrn-search-input",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 285.69,
+            "right": 364,
+            "bottom": 321.69,
+            "left": 26,
+            "width": 338,
+            "height": 36
+          },
+          "headerControls": {
+            "selector": ".tcrn-doc-header-controls",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 331.69,
+            "right": 380,
+            "bottom": 387.69,
+            "left": 185,
+            "width": 195,
+            "height": 56
+          },
+          "controlsRow": {
+            "selector": ".tcrn-doc-header-controls__row",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 163,
+            "height": 36
+          },
+          "themeToggle": {
+            "selector": ".tcrn-shell-theme-toggle",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "relative",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 237,
+            "bottom": 375.69,
+            "left": 201,
+            "width": 36,
+            "height": 36
+          },
+          "localeTrigger": {
+            "selector": ".tcrn-shell-locale-menu__trigger",
+            "backgroundColor": "rgb(24, 36, 55)",
+            "backgroundImage": "none",
+            "backgroundAlpha": 1,
+            "opacity": 1,
+            "position": "static",
+            "zIndex": "auto",
+            "top": 339.69,
+            "right": 364,
+            "bottom": 375.69,
+            "left": 247,
+            "width": 117,
+            "height": 36
+          },
+          "pointReadbacks": [
+            {
+              "label": "mobile-doc-shell-y20",
+              "x": 195,
+              "y": 20,
+              "shellIndex": 1,
+              "storyContentIndex": 3,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dir"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-evidence-attachment-list tcrn-evidence-attachment-list--comfortable",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 1,
+              "storyContentIndex": 3,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "QA artifact receipt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-evidence-attachment-list tcrn-evidence-attachment-list--comfortable",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 2,
+              "storyContentIndex": 7,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "tcrn-doc-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-machine-token__label",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-machine-token",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifactroute-artifact:rowan-work-management-patterns"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-machine-token-cell",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifactroute-artifact:rowan-work-management-patterns"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifactroute-artifact:rowan-work-management-patterns"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y260",
+              "x": 195,
+              "y": 260,
+              "shellIndex": 0,
+              "storyContentIndex": 7,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-doc-current-location__story",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "知识管理组件规范"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-doc-current-location__path",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 知识管理组件规范"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-current-location",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前位置 组件 知识管理组件规范"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header__workspace",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-badge tcrn-badge--warning",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "需要证明"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-table-shell__cell",
+                  "role": "cell",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "需要证明"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell__row",
+                  "role": "row",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "artifact_dirQA artifact receiptartifactroute-artifact:rowan-work-management-patt"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-table-shell",
+                  "role": "table",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TypeLabelReference状态commitImplementation commitcommitc4865675仅本地证明artifact_dirQA"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y305",
+              "x": 195,
+              "y": 305,
+              "shellIndex": 2,
+              "storyContentIndex": 7,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "input",
+                  "id": "",
+                  "className": "tcrn-input tcrn-search-input__control tcrn-search-input--compact",
+                  "role": "combobox",
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": ""
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-search-input",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header-search",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "搜索文档 Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header__workspace",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y360",
+              "x": 195,
+              "y": 360,
+              "shellIndex": 0,
+              "storyContentIndex": 4,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": true,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-header-controls",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "简体中文简体中文English日本語한국어Français 简体中文 English 日文 韩文 Français"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-work-item-inspector",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS-128 Work ItemCodex Activity is execution and evidence context attached to th"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-surface tcrn-readback-panel",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Evidence and inspectorAOS-128 Work ItemCodex Activity is execution and evidence "
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "alpha-story-stack",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "story-body",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Admitted candidates 18-41These Work Management surfaces are package-backed stati"
+                },
+                {
+                  "tag": "article",
+                  "id": "work-management-components-spec",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "工作管理组件规范 用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。 Admitted can"
+                },
+                {
+                  "tag": "section",
+                  "id": "components",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族组件族推荐组件范围组件状态操作Button, IconButt"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                }
+              ]
+            }
+          ]
+        },
+        "articleClearancePx": 14.62,
+        "titleClearancePx": 31.62,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,

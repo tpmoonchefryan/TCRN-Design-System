@@ -1119,9 +1119,12 @@ const collectMobileHashAnchorMetrics = async (label) => {
       mobileTopbarLayering: {
         topbar: styleFor(".tcrn-doc-header"),
         utilityRow: styleFor(".tcrn-doc-global-bar"),
+        workspace: styleFor(".tcrn-doc-header__workspace"),
         currentLocation: styleFor(".tcrn-doc-current-location"),
         searchWrapper: styleFor(".tcrn-doc-header-search"),
         searchInput: styleFor(".tcrn-search-input"),
+        headerControls: styleFor(".tcrn-doc-header-controls"),
+        controlsRow: styleFor(".tcrn-doc-header-controls__row"),
         themeToggle: styleFor(".tcrn-shell-theme-toggle"),
         localeTrigger: styleFor(".tcrn-shell-locale-menu__trigger"),
         pointReadbacks
@@ -1151,7 +1154,7 @@ const collectMobileHashAnchorMetrics = async (label) => {
       failures.push(`mobile-layer-missing:${name}`);
       continue;
     }
-    if (layer.backgroundAlpha < 0.98 && layer.backgroundImage === "none") {
+    if (layer.backgroundAlpha < 0.98) {
       failures.push(`mobile-layer-transparent:${name}:${layer.backgroundColor}`);
     }
     if (layer.opacity < 0.98) failures.push(`mobile-layer-opacity:${name}:${layer.opacity}`);
@@ -1183,6 +1186,191 @@ const mobileHashAnchorOcclusionCheck = {
   route: "foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
   viewport: { width: 390, height: 844 },
   readbacks: mobileHashAnchorReadbacks
+};
+const mobileKnowledgeDocShellLayeringPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+const mobileKnowledgeDocShellLayeringRoute = `${staticServer.origin}/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec`;
+const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
+  await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-storybook-locale='zh-CN']");
+  await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-active-story-section='Components']");
+  await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-doc-nav-item='knowledge-management-components-spec'][aria-current='location'][data-doc-nav-item-active='true']");
+  const metrics = await mobileKnowledgeDocShellLayeringPage.evaluate((phaseLabel) => {
+    const rectFor = (selector) => {
+      const node = document.querySelector(selector);
+      if (!node) {
+        return null;
+      }
+      const rect = node.getBoundingClientRect();
+      return {
+        top: Number(rect.top.toFixed(2)),
+        right: Number(rect.right.toFixed(2)),
+        bottom: Number(rect.bottom.toFixed(2)),
+        left: Number(rect.left.toFixed(2)),
+        width: Number(rect.width.toFixed(2)),
+        height: Number(rect.height.toFixed(2))
+      };
+    };
+    const alphaFromColor = (color) => {
+      const normalized = String(color || "").trim();
+      if (!normalized || normalized === "transparent") return 0;
+      const rgbaMatch = normalized.match(/^rgba?\((.+)\)$/i);
+      if (rgbaMatch) {
+        const parts = rgbaMatch[1].split(",").map((part) => part.trim());
+        return parts.length >= 4 ? Number.parseFloat(parts[3]) : 1;
+      }
+      const colorFunctionAlpha = normalized.match(/\/\s*([0-9.]+%?)\s*\)$/i);
+      if (colorFunctionAlpha) {
+        const rawAlpha = colorFunctionAlpha[1];
+        return rawAlpha.endsWith("%") ? Number.parseFloat(rawAlpha) / 100 : Number.parseFloat(rawAlpha);
+      }
+      return 1;
+    };
+    const styleFor = (selector) => {
+      const node = document.querySelector(selector);
+      if (!node) {
+        return null;
+      }
+      const rect = node.getBoundingClientRect();
+      const style = getComputedStyle(node);
+      const backgroundAlpha = alphaFromColor(style.backgroundColor);
+      return {
+        selector,
+        backgroundColor: style.backgroundColor,
+        backgroundImage: style.backgroundImage,
+        backgroundAlpha: Number.isFinite(backgroundAlpha) ? Number(backgroundAlpha.toFixed(2)) : 0,
+        opacity: Number.parseFloat(style.opacity || "1"),
+        position: style.position,
+        zIndex: style.zIndex,
+        top: Number(rect.top.toFixed(2)),
+        right: Number(rect.right.toFixed(2)),
+        bottom: Number(rect.bottom.toFixed(2)),
+        left: Number(rect.left.toFixed(2)),
+        width: Number(rect.width.toFixed(2)),
+        height: Number(rect.height.toFixed(2))
+      };
+    };
+    const hitStackFor = (x, y) => document.elementsFromPoint(x, y).slice(0, 10).map((node) => ({
+      tag: node.tagName.toLowerCase(),
+      id: node.id || "",
+      className: typeof node.className === "string" ? node.className : "",
+      role: node.getAttribute("role"),
+      docShell: node.getAttribute("data-doc-shell"),
+      docNavItem: node.getAttribute("data-doc-nav-item"),
+      shellControl: node.getAttribute("data-shell-control"),
+      text: (node.textContent || "").trim().replace(/\s+/g, " ").slice(0, 80)
+    }));
+    const topbar = rectFor(".tcrn-doc-header");
+    const topbarBottom = topbar?.bottom ?? 0;
+    const sampledYs = [20, 60, 125, 260, 305, 360]
+      .filter((y) => y > 0 && y < Math.max(1, topbarBottom - 1));
+    const pointReadbacks = sampledYs.map((y) => {
+      const point = { label: `mobile-doc-shell-y${y}`, x: 195, y };
+      const stack = hitStackFor(point.x, point.y);
+      const shellIndex = stack.findIndex((entry) => entry.docShell === "online-docs"
+        || entry.shellControl
+        || entry.className.includes("tcrn-doc-header")
+        || entry.className.includes("tcrn-doc-global-bar")
+        || entry.className.includes("tcrn-doc-current-location")
+        || entry.className.includes("tcrn-doc-header-search")
+        || entry.className.includes("tcrn-doc-header-controls")
+        || entry.className.includes("tcrn-shell"));
+      const storyContentIndex = stack.findIndex((entry) => entry.className.includes("tcrn-table-shell")
+        || entry.className.includes("tcrn-readback-panel")
+        || entry.className.includes("alpha-story-stack")
+        || entry.className.includes("story-body"));
+      return {
+        ...point,
+        shellIndex,
+        storyContentIndex,
+        shellPaintsAboveStoryContent: shellIndex >= 0 && (storyContentIndex === -1 || shellIndex < storyContentIndex),
+        storyContentBehindShell: storyContentIndex >= 0,
+        stack
+      };
+    });
+    const html = document.documentElement;
+    const body = document.body;
+    const article = rectFor("#knowledge-management-components-spec");
+    const title = rectFor("#knowledge-management-components-spec > h2");
+    const minimumClearancePx = 8;
+    return {
+      label: phaseLabel,
+      route: window.location.pathname + window.location.search + window.location.hash,
+      scrollY: Number(window.scrollY.toFixed(2)),
+      viewport: { width: window.innerWidth, height: window.innerHeight },
+      locale: document.querySelector("[data-storybook-locale]")?.getAttribute("data-storybook-locale") ?? document.documentElement.lang,
+      shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-doc-shell") ?? null,
+      anchorScrollControlled: document.querySelector("[data-contract-surface]")?.getAttribute("data-anchor-scroll-controlled") ?? null,
+      activeStoryId: document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']")?.getAttribute("data-doc-nav-item") ?? null,
+      topbar,
+      article,
+      title,
+      mobileTopbarLayering: {
+        topbar: styleFor(".tcrn-doc-header"),
+        utilityRow: styleFor(".tcrn-doc-global-bar"),
+        workspace: styleFor(".tcrn-doc-header__workspace"),
+        currentLocation: styleFor(".tcrn-doc-current-location"),
+        searchWrapper: styleFor(".tcrn-doc-header-search"),
+        searchInput: styleFor(".tcrn-search-input"),
+        headerControls: styleFor(".tcrn-doc-header-controls"),
+        controlsRow: styleFor(".tcrn-doc-header-controls__row"),
+        themeToggle: styleFor(".tcrn-shell-theme-toggle"),
+        localeTrigger: styleFor(".tcrn-shell-locale-menu__trigger"),
+        pointReadbacks
+      },
+      articleClearancePx: article ? Number((article.top - topbarBottom).toFixed(2)) : null,
+      titleClearancePx: title ? Number((title.top - topbarBottom).toFixed(2)) : null,
+      articleReadableBelowTopbar: Boolean(article && article.top >= topbarBottom + minimumClearancePx),
+      titleReadableBelowTopbar: Boolean(title && title.top >= topbarBottom + minimumClearancePx),
+      docShellSelectorCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+      globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
+        .filter((node) => !node.closest(".story-body"))
+        .length,
+      pageOverflow: Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1
+    };
+  }, label);
+  const failures = [];
+  if (metrics.viewport.width !== 390 || metrics.viewport.height !== 844) failures.push(`viewport:${metrics.viewport.width}x${metrics.viewport.height}`);
+  if (metrics.locale !== "zh-CN") failures.push(`locale:${metrics.locale}`);
+  if (metrics.shellAuthority !== "online-docs") failures.push(`doc-shell-authority:${metrics.shellAuthority}`);
+  if (metrics.anchorScrollControlled !== "true") failures.push(`anchor-scroll-controlled:${metrics.anchorScrollControlled}`);
+  if (metrics.activeStoryId !== "knowledge-management-components-spec") failures.push(`active-story:${metrics.activeStoryId}`);
+  if (!metrics.articleReadableBelowTopbar) failures.push(`article-clearance:${metrics.articleClearancePx}`);
+  if (!metrics.titleReadableBelowTopbar) failures.push(`title-clearance:${metrics.titleClearancePx}`);
+  for (const [name, layer] of Object.entries(metrics.mobileTopbarLayering ?? {})) {
+    if (name === "pointReadbacks") continue;
+    if (!layer) {
+      failures.push(`mobile-knowledge-layer-missing:${name}`);
+      continue;
+    }
+    if (layer.backgroundAlpha < 0.98) {
+      failures.push(`mobile-knowledge-layer-transparent:${name}:${layer.backgroundColor}`);
+    }
+    if (layer.opacity < 0.98) failures.push(`mobile-knowledge-layer-opacity:${name}:${layer.opacity}`);
+  }
+  for (const point of metrics.mobileTopbarLayering?.pointReadbacks ?? []) {
+    if (!point.shellPaintsAboveStoryContent) {
+      failures.push(`mobile-knowledge-layer-stack:${point.label}:shell:${point.shellIndex}:story:${point.storyContentIndex}`);
+    }
+  }
+  if (metrics.docShellSelectorCount < 6) failures.push(`doc-shell-selector-count:${metrics.docShellSelectorCount}`);
+  if (metrics.globalProductShellShellSelectorCount !== 0) failures.push(`global-product-shell-shell-selectors:${metrics.globalProductShellShellSelectorCount}`);
+  if (metrics.pageOverflow) failures.push("page-overflow");
+  return { ...metrics, ok: failures.length === 0, failures };
+};
+await mobileKnowledgeDocShellLayeringPage.goto(mobileKnowledgeDocShellLayeringRoute);
+await mobileKnowledgeDocShellLayeringPage.waitForLoadState("load");
+await mobileKnowledgeDocShellLayeringPage.waitForTimeout(80);
+const mobileKnowledgeDocShellLayeringReadbacks = [await collectMobileKnowledgeDocShellLayeringMetrics("after-load")];
+await mobileKnowledgeDocShellLayeringPage.waitForTimeout(700);
+mobileKnowledgeDocShellLayeringReadbacks.push(await collectMobileKnowledgeDocShellLayeringMetrics("after-700ms"));
+await mobileKnowledgeDocShellLayeringPage.reload({ waitUntil: "load" });
+await mobileKnowledgeDocShellLayeringPage.waitForTimeout(1500);
+mobileKnowledgeDocShellLayeringReadbacks.push(await collectMobileKnowledgeDocShellLayeringMetrics("after-reload-1500ms"));
+await mobileKnowledgeDocShellLayeringPage.close();
+const mobileKnowledgeDocShellLayeringCheck = {
+  ok: mobileKnowledgeDocShellLayeringReadbacks.every((item) => item.ok),
+  route: "components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+  viewport: { width: 390, height: 844 },
+  readbacks: mobileKnowledgeDocShellLayeringReadbacks
 };
 	await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=zh-CN#component-family-index`);
 	await storybookPage.waitForSelector("[data-active-story-section='Components']");
@@ -1762,7 +1950,7 @@ const axeSummary = {
   sections: axeSummaries
 };
 const storyCoverageManifest = {
-  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeMenuFocusReturnCheck.ok,
+  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && mobileKnowledgeDocShellLayeringCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeMenuFocusReturnCheck.ok,
   requiredStories,
   sectionPages,
   staticContractSurface: staticSurfacePath,
@@ -1775,6 +1963,7 @@ const storyCoverageManifest = {
   hashStoryRouteCheck,
   firstStoryHashShellParityCheck,
   mobileHashAnchorOcclusionCheck,
+  mobileKnowledgeDocShellLayeringCheck,
   anchorScrollCheck,
   scrollSpyCheck,
   localeRouteCheck,

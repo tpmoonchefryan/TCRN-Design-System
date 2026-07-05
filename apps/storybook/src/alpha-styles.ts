@@ -3237,23 +3237,27 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     position: sticky;
     top: 0;
     z-index: 30;
+    isolation: isolate;
     min-height: 0;
-    background-color: var(--tcrn-color-surface);
-    background-image: var(--tcrn-doc-shell-top-surface);
+    background-color: var(--tcrn-color-surface-panel);
+    background-image: none;
     padding: 10px;
+    box-shadow:
+      0 1px 0 var(--tcrn-color-border-subtle),
+      0 18px 32px rgba(10, 17, 31, 0.16);
   }
   .tcrn-doc-global-bar {
     grid-template-columns: 1fr;
     min-height: 0;
-    background-color: var(--tcrn-color-surface);
-    background-image: var(--tcrn-doc-shell-top-surface);
+    background-color: var(--tcrn-color-surface-panel);
+    background-image: none;
   }
   .tcrn-doc-header__workspace {
     grid-template-columns: 1fr;
     gap: 10px;
     padding: 10px 16px;
-    background-color: var(--tcrn-color-surface);
-    background-image: var(--tcrn-doc-shell-top-surface);
+    background-color: var(--tcrn-color-surface-panel);
+    background-image: none;
   }
   .tcrn-doc-header__workspace:focus-within,
   .tcrn-doc-header__workspace[data-search-expanded="true"] {
@@ -3265,16 +3269,16 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   .tcrn-doc-header-search {
     justify-self: stretch;
     width: 100%;
-    background-color: var(--tcrn-color-surface);
-    background-image: var(--tcrn-doc-shell-top-surface);
+    background-color: var(--tcrn-color-surface-panel);
+    background-image: none;
   }
   .tcrn-doc-current-location {
-    background-color: var(--tcrn-color-surface);
-    background-image: var(--tcrn-doc-shell-top-surface);
+    background-color: var(--tcrn-color-surface-panel);
+    background-image: none;
   }
   .tcrn-doc-global-brand {
     min-height: var(--tcrn-doc-mobile-brand-height);
-    background-color: var(--tcrn-color-surface);
+    background-color: var(--tcrn-color-surface-panel);
     background-image: var(--tcrn-doc-shell-left-surface);
     border-right: 0;
     border-bottom: 0;
@@ -3294,9 +3298,13 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   .tcrn-doc-header-controls {
     justify-self: end;
     padding: 8px 16px 12px;
+    background-color: var(--tcrn-color-surface-panel);
+    background-image: none;
   }
   .tcrn-doc-header-controls__row {
     display: inline-flex;
+    background-color: var(--tcrn-color-surface-panel);
+    background-image: none;
   }
   .tcrn-doc-page-head {
     grid-template-columns: 1fr;
