@@ -722,7 +722,7 @@
       "storyId": "maintainers-routing",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-maintainers-routing.png",
-      "sha256": "679c6f7fc9bf2249440daab8378c737e95c2a7ae92579d5c4f7b0222c93405b3",
+      "sha256": "9fb8621f89259145aa96ea74b80fb32c9e9e3cf0f2b1d453321bfbee0425f651",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -764,7 +764,7 @@
       "storyId": "text-styles",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-text-styles.png",
-      "sha256": "2bed2dbb05f00dab106fae8b8c82ad358ed521e9cd67e9bc7acf46b8119c639f",
+      "sha256": "2e1e5a32b5014c27abbbeb4218812b34c135fa4128bded04aa6fc0e6874db87d",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -834,7 +834,7 @@
       "storyId": "section-components",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-components.png",
-      "sha256": "fc78c645d3c5ae0c2dbde22126d3a9aa9a5979f702cdc0bf014a7a633eb82bdd",
+      "sha256": "0a9cb72587c07f26eb51078721a91a0470535ea524442cee04d806b7a43be1ab",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -862,14 +862,14 @@
       "storyId": "button-spec-usage",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-button-spec-usage.png",
-      "sha256": "0df7e2b080b7701bd6526356d52b12c25b9406555326b24fd554ba33fab55ff9",
+      "sha256": "c0933fc1434eb0a6d15cfcc54d84a98c3cf3691a8af36624b80709b67c52d083",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "field-spec-usage",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-field-spec-usage.png",
-      "sha256": "19faf51b6735b11cfce8622c844ae4e15e203f04523c0b25685b6a7dc58fbd91",
+      "sha256": "3c9ede6f395266769ee7352a95205cc48b0d90f671573876df58f59892cfbee8",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -946,7 +946,7 @@
       "storyId": "work-management-patterns",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-patterns.png",
-      "sha256": "7ae41fcf1451d04e7e07d910a0659c3f46f60460f757dfd787719451f62bd21c",
+      "sha256": "f7356030b92a853c15af4746744e7828e6a32c20af3316152719cbfe923b61bf",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {

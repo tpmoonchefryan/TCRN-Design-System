@@ -4168,7 +4168,7 @@
         "mobileTopbarLayering": {
           "topbar": {
             "selector": ".tcrn-doc-header",
-            "backgroundColor": "rgb(70, 80, 95)",
+            "backgroundColor": "rgb(53, 64, 80)",
             "backgroundImage": "none",
             "backgroundAlpha": 1,
             "opacity": 1,
@@ -4243,7 +4243,7 @@
           },
           "searchInput": {
             "selector": ".tcrn-search-input",
-            "backgroundColor": "rgb(70, 80, 95)",
+            "backgroundColor": "rgb(53, 64, 80)",
             "backgroundImage": "none",
             "backgroundAlpha": 1,
             "opacity": 1,

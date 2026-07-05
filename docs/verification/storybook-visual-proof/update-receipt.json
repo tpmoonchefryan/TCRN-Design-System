@@ -1,7 +1,7 @@
 {
   "ok": true,
   "sourceContentDigest": "97566d69c1c12077c5e2bf049ff226973659b0ecaff9ead8552e9c836055325e",
-  "sourceHead": "19a47ae6075b02badf08bfd170f902edc4a4a061",
+  "sourceHead": "ec57b606f0cd43e577861515fb5f1736c7548c29",
   "mode": "update-baseline",
   "comparisonContractVersion": "canonicalized_raw_png_exact_v1",
   "visualArtifactContractDisposition": {
@@ -47800,7 +47800,7 @@
   ],
   "playwrightVersion": "1.61.0",
   "chromiumVersion": "149.0.7827.55",
-  "baselineManifestHash": "2856af26ad79734b4546365fce9bbdf0cb0adfaabca59a52079161dcbc23aade",
+  "baselineManifestHash": "5294f395bcc23c1b379cb7f973c9fb0574c2f3f5a09fbc3890e8755126b8434c",
   "compareFailures": [],
   "comparisonReadbacks": []
 }
