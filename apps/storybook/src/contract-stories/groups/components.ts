@@ -5,6 +5,7 @@ export const componentsStories: ContractStory[] = [
   selectStory("component-family-index"),
   selectStory("display-primitives-spec"),
   selectStory("interaction-disclosure-spec"),
+  selectStory("stamp-spec-usage"),
   selectStory("button-spec-usage"),
   selectStory("field-spec-usage"),
   selectStory("navigation-shell-spec"),

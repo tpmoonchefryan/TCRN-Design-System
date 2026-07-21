@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "e8901515add43e577bba0f7a692db22f7fc96b30c6edac9cc326748ceafc3c00",
+    "contractPayloadDigest": "6fad585b3778738a46e7615b70fac5e3f158ea795b8fdf8ab65737b268208a60",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 19,
@@ -181,7 +181,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -310,7 +310,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -456,7 +456,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -524,6 +524,7 @@
         "component-family-index",
         "display-primitives-spec",
         "interaction-disclosure-spec",
+        "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
@@ -592,7 +593,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -677,6 +678,12 @@
           "visible": true,
           "width": 1077,
           "height": 1037
+        },
+        {
+          "id": "stamp-spec-usage",
+          "visible": true,
+          "width": 1077,
+          "height": 606
         },
         {
           "id": "button-spec-usage",
@@ -801,7 +808,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -973,7 +980,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1009,7 +1016,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 5026
+          "height": 5043
         },
         {
           "id": "blocked-actions",
@@ -1070,7 +1077,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1167,7 +1174,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1296,7 +1303,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1332,7 +1339,7 @@
           "id": "color-palette",
           "visible": true,
           "width": 691,
-          "height": 2879
+          "height": 2861
         },
         {
           "id": "text-styles",
@@ -1442,7 +1449,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1510,6 +1517,7 @@
         "component-family-index",
         "display-primitives-spec",
         "interaction-disclosure-spec",
+        "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
@@ -1578,7 +1586,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1663,6 +1671,12 @@
           "visible": true,
           "width": 691,
           "height": 1141
+        },
+        {
+          "id": "stamp-spec-usage",
+          "visible": true,
+          "width": 691,
+          "height": 676
         },
         {
           "id": "button-spec-usage",
@@ -1787,7 +1801,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1959,7 +1973,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2056,7 +2070,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2124,7 +2138,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2224,7 +2238,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2260,7 +2274,7 @@
           "id": "color-palette",
           "visible": true,
           "width": 358,
-          "height": 6416
+          "height": 6381
         },
         {
           "id": "text-styles",
@@ -2327,7 +2341,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2395,6 +2409,7 @@
         "component-family-index",
         "display-primitives-spec",
         "interaction-disclosure-spec",
+        "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
@@ -2420,7 +2435,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2505,6 +2520,12 @@
           "visible": true,
           "width": 358,
           "height": 2042
+        },
+        {
+          "id": "stamp-spec-usage",
+          "visible": true,
+          "width": 358,
+          "height": 989
         },
         {
           "id": "button-spec-usage",
@@ -2600,7 +2621,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2715,7 +2736,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2751,7 +2772,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 13495
+          "height": 13530
         },
         {
           "id": "blocked-actions",
@@ -2797,7 +2818,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 42,
+      "docNavItemCount": 43,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,

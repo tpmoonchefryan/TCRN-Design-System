@@ -175,6 +175,7 @@ export const aiConsumptionContract = {
         "component-family-index",
         "display-primitives-spec",
         "interaction-disclosure-spec",
+        "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
@@ -277,7 +278,7 @@ export const aiConsumptionContract = {
       route: "components.html",
       categories: [
         { id: "component-inventory", label: "Component inventory", storyIds: ["component-family-index", "display-primitives-spec", "interaction-disclosure-spec"] },
-        { id: "controls-data", label: "Controls and data", storyIds: ["button-spec-usage", "field-spec-usage", "table-work-index-spec"] },
+        { id: "controls-data", label: "Controls and data", storyIds: ["stamp-spec-usage", "button-spec-usage", "field-spec-usage", "table-work-index-spec"] },
         { id: "navigation-shells", label: "Navigation and shells", storyIds: ["navigation-shell-spec", "aos-frontend-shell-slice", "aos-owner-quality-product-shell"] },
         { id: "overlays", label: "Overlays", storyIds: ["dialog-spec-usage"] },
         { id: "work-management", label: "Work Management", storyIds: ["work-management-components-spec"] },

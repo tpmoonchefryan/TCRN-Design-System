@@ -44,6 +44,8 @@ import {
   ErrorState,
   StateSurface,
   StateView,
+  Stamp,
+  StampRule,
   StatusBadge,
   Surface,
   TableShell,
@@ -679,6 +681,10 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "boundary", label: "Boundary" }
             ]}
             rows={[
+              // The colour names here describe the brand mark SVG, which is a frozen brand
+              // asset rather than part of the visual language: changing it runs through brand
+              // admission, not through a design-system revision (TCRN-DS-MIN-007, ruling 2).
+              // The description therefore stays accurate as written.
               { element: "Outer tiles", rule: "Four large rounded diamond tiles use iris blue, violet-blue, aqua, and slate with tight even gaps.", boundary: "No asymmetric extra pieces." },
               { element: "Center tile", rule: "The center tile uses a fifth color outside the four outer tile colors.", boundary: "Do not reuse an outer color for the center." },
               { element: "Connector points", rule: "Each point uses a white ring with a same-family inner color that differs from the tile fill.", boundary: "No red, pink, coral, or orange connector points." },
@@ -702,7 +708,7 @@ const legacyContractStories: LegacyContractStory[] = [
             <TokenSwatch label="Primary brand" token="--tcrn-color-brand-primary" note="Use for TCRN identity, selected navigation, and creator-channel emphasis." />
             <TokenSwatch label="Primary brand background" token="--tcrn-color-brand-primary-bg" note="Use for quiet selected surfaces and brand callouts." />
             <TokenSwatch label="Secondary brand" token="--tcrn-color-brand-secondary" note="Use for system connection, informational support, charts, and secondary emphasis." />
-            <TokenSwatch label="Secondary brand background" token="--tcrn-color-brand-secondary-bg" note="Use for quiet aqua informational surfaces." />
+            <TokenSwatch label="Secondary brand background" token="--tcrn-color-brand-secondary-bg" note="Use for quiet informational surfaces." />
             <TokenSwatch label="Accent brand" token="--tcrn-color-brand-accent" note="Use sparingly for highlights; never use as state truth." />
             <TokenSwatch label="Neutral brand" token="--tcrn-color-brand-neutral" note="Use for dense structure, muted metadata, and low-emphasis support." />
           </div>
@@ -714,7 +720,7 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
             rows={[
               { family: "Primary", role: "Identity, selected navigation, primary emphasis", guardrail: "Do not use as proof state." },
-              { family: "Secondary", role: "Aqua system connection, informational support, and charts", guardrail: "Do not compete with primary actions." },
+              { family: "Secondary", role: "Informational support, charts, and secondary emphasis", guardrail: "Do not compete with primary actions." },
               { family: "Accent", role: "Sparing highlights and onboarding emphasis", guardrail: "Never use as readiness or error truth." },
               { family: "Neutral", role: "Dense operational structure and muted metadata", guardrail: "Do not replace disabled text color." },
               { family: "State", role: "Ready, warning, blocked, unavailable, and unknown status", guardrail: "State colors are not brand colors." }
@@ -1597,6 +1603,55 @@ const legacyContractStories: LegacyContractStory[] = [
         <InlineAlert tone="warning">
           These primitives do not implement Accordion semantics, drawers, clipboard, sensitive-data masking, product filtering, log viewing, publication, package release, or product adoption.
         </InlineAlert>
+      </section>
+    )
+  },
+  {
+    id: "stamp-spec-usage",
+    title: "Stamp spec and usage",
+    group: "Components",
+    description: "Identity-moment stamp, its three admitted moments, and the boundary that keeps it rare.",
+    render: () => (
+      <section className="alpha-story-stack">
+        <ReadbackPanel title="The three admitted moments">
+          <Text>
+            Stamp marks a moment the governed record cannot take back: a gate closing, a ruling landing, a
+            release being accepted. It is the only component that may use the serif face and the stamp ink,
+            and that restriction is what gives it weight — an impression that appears everywhere stops
+            meaning anything.
+          </Text>
+          <div className="tcrn-action-row">
+            <Stamp moment="gate-close">Gate closed</Stamp>
+            <Stamp moment="ruling">Ruling recorded</Stamp>
+            <Stamp moment="release">Release accepted</Stamp>
+          </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="Stamped header">
+          <Text>
+            The double rule is the archival-document memory: two weights rather than one, so a header
+            carrying a ruling reads differently from an ordinary panel header.
+          </Text>
+          <Heading level={3}>Ruling · direction A+B adopted</Heading>
+          <StampRule />
+          <Text>Minutes body follows the rule; the rule itself is decorative and hidden from assistive technology.</Text>
+        </ReadbackPanel>
+        <ReadbackPanel title="Boundary">
+          <Text>
+            Not a status. Status is carried by StatusBadge and reads as an ink dot plus a word; a stamp says
+            something was decided, not how something currently is. Stamp is also never a heading substitute
+            and never appears in a data row — the serif loses its strokes below 12px, which is why the
+            minimum stamp size is a token rather than a suggestion.
+          </Text>
+          <div className="tcrn-action-row">
+            <StatusBadge state={{ state: "ready" }} />
+            <Stamp moment="gate-close">Gate closed</Stamp>
+          </div>
+          <Text>
+            Use outside the three moments is a design-system violation and fails the build: `pnpm stamp:proof`
+            checks that neither the stamp tokens nor the stamp class appear beyond the stamp components, and
+            that no unlisted moment is rendered.
+          </Text>
+        </ReadbackPanel>
       </section>
     )
   },
