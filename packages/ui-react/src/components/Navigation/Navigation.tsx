@@ -1274,7 +1274,7 @@ export const tcrnComponentCss = `
   --tcrn-space-5: 20px;
   --tcrn-radius-panel: var(--tcrn-radius-surface);
   --tcrn-motion-product-shell: var(--tcrn-motion-emphasis);
-  --tcrn-motion-product-shell-search: 320ms cubic-bezier(0.2, 0, 0.2, 1);
+  --tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer);
   --tcrn-color-brand-secondary-readable: #246f80;
   --tcrn-brand-accent-aos: #187c7c;
   --tcrn-brand-accent-tms: #2c63c8;
@@ -1282,8 +1282,6 @@ export const tcrnComponentCss = `
   --tcrn-brand-accent-design-system-2: #3096f4;
   --tcrn-brand-accent-design-system-3: #43d4cf;
   --tcrn-brand-accent-design-system-4: #78b957;
-  --tcrn-color-text-inverse: #ffffff;
-  --tcrn-elevation-floating: 0 18px 42px rgba(23, 32, 51, 0.16);
 }
 [data-tcrn-theme="dark"] {
   --tcrn-color-brand-secondary-readable: #a6e8ef;
@@ -1293,7 +1291,6 @@ export const tcrnComponentCss = `
   --tcrn-brand-accent-design-system-2: #83c8ff;
   --tcrn-brand-accent-design-system-3: #7ce4df;
   --tcrn-brand-accent-design-system-4: #c9f08f;
-  --tcrn-elevation-floating: 0 18px 42px rgba(0, 0, 0, 0.34);
 }
 .tcrn-button,
 .tcrn-shell-locale-menu__trigger,
@@ -1307,12 +1304,19 @@ export const tcrnComponentCss = `
   gap: var(--tcrn-space-2);
   min-height: 38px;
   padding: 0 var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-border-control);
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
   font-size: var(--tcrn-type-size-ui);
   font-weight: var(--tcrn-type-weight-strong);
+  transition: transform var(--tcrn-motion-instant), background-color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast);
+}
+/* A pressable surface has to answer the press, or the interface reads as not
+   listening. Scale is deliberately subtle and lives on :active (not :hover), so it
+   works the same under a finger as under a pointer. */
+.tcrn-button:active {
+  transform: scale(var(--tcrn-motion-press-scale));
 }
 .tcrn-button--primary {
   background: var(--tcrn-color-brand-primary);
@@ -1368,7 +1372,7 @@ export const tcrnComponentCss = `
 .tcrn-shell-theme-toggle:hover,
 .tcrn-shell-locale-menu__trigger:hover,
 .tcrn-shell-locale-menu__trigger[aria-expanded="true"] {
-  border-color: var(--tcrn-color-border-strong);
+  border-color: var(--tcrn-color-border-control);
   background: color-mix(in srgb, var(--tcrn-color-surface-muted) 72%, var(--tcrn-color-surface-panel));
   color: var(--tcrn-color-text-primary);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
@@ -1877,7 +1881,7 @@ export const tcrnComponentCss = `
   min-inline-size: var(--tcrn-search-input-min-inline-size, 0);
   max-inline-size: 100%;
   padding: 0 var(--tcrn-search-input-padding-inline);
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-border-control);
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-surface-panel);
 }
@@ -1954,7 +1958,7 @@ export const tcrnComponentCss = `
   max-width: 132px;
   min-height: 36px;
   padding: 0 10px;
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-border-control);
   border-radius: 999px;
   background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
@@ -2058,25 +2062,91 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   margin: var(--tcrn-space-2) 0 0;
   color: var(--tcrn-color-text-secondary);
 }
+/* Status reads as ink dot plus word. The pill-with-pastel-fill it replaces put a
+   saturated block of colour behind every row in a dense table, which is loud at
+   this density and is the single most recognisable tell of generated UI. Squaring
+   the chip to the control radius keeps it reading as an instrument value rather
+   than a marketing badge. */
 .tcrn-badge {
+  position: relative;
   display: inline-flex;
   align-items: center;
   width: max-content;
+  max-width: 100%;
+  min-width: 0;
   min-height: 24px;
-  padding: 3px var(--tcrn-space-2);
-  border-radius: 999px;
+  padding: var(--tcrn-state-chip-padding);
+  padding-inline-start: calc(var(--tcrn-space-2) + var(--tcrn-state-dot-size) + 4px);
+  border-radius: var(--tcrn-state-chip-radius);
   font-size: 12px;
+  line-height: 1.25;
   font-weight: var(--tcrn-type-weight-strong);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
   background: var(--tcrn-color-surface-muted);
   color: var(--tcrn-color-text-secondary);
 }
+/* The dot is positioned rather than laid out. As a flex item it contributed its own
+   min-content width, which left the anonymous text item unable to shrink and clipped
+   longer labels ("Proof required") at narrow widths; out of flow it costs the label
+   nothing and the text wraps as it did before. */
+.tcrn-badge::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: var(--tcrn-space-2);
+  inset-block-start: 50%;
+  inline-size: var(--tcrn-state-dot-size);
+  block-size: var(--tcrn-state-dot-size);
+  margin-block-start: calc(var(--tcrn-state-dot-size) / -2);
+  border-radius: 50%;
+  background: currentColor;
+}
 .tcrn-badge--warning {
   background: var(--tcrn-color-state-warning-bg);
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-state-warning);
 }
 .tcrn-badge--positive {
   background: var(--tcrn-color-state-ready-bg);
   color: var(--tcrn-color-state-ready);
+}
+.tcrn-badge--danger {
+  background: var(--tcrn-color-state-blocked-bg);
+  color: var(--tcrn-color-state-blocked);
+}
+
+/* ── B「治理纸感」identity stamp ──────────────────────────────────────────────
+   Reserved for identity moments: a gate closing, a ruling landing, a release being
+   accepted. It is deliberately the only place the serif and the oxblood ink appear,
+   because an impression that shows up everywhere stops meaning anything. The
+   whitelist is enforced mechanically by scripts/stamp-whitelist-proof.mjs. */
+.tcrn-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+  padding: 4px 10px;
+  border: 1px solid currentColor;
+  border-radius: var(--tcrn-state-chip-radius);
+  color: var(--tcrn-color-brand-accent);
+  background: transparent;
+  font-family: var(--tcrn-type-family-stamp);
+  font-size: var(--tcrn-type-size-stamp-min);
+  font-weight: var(--tcrn-type-weight-strong);
+  letter-spacing: var(--tcrn-type-tracking-stamp);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.tcrn-stamp[data-stamp-moment="release"] {
+  color: var(--tcrn-color-state-ready);
+}
+/* The double rule is the archival-document memory: two weights, not one, so a
+   header carrying a ruling reads differently from an ordinary panel header. */
+.tcrn-stamp-rule {
+  border: 0;
+  border-top: 2px solid var(--tcrn-color-border-strong);
+  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  block-size: 3px;
+  margin: 0;
 }
 .tcrn-readback-panel,
 .tcrn-table-shell {
@@ -2238,13 +2308,119 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   min-height: 28px;
   padding: 2px var(--tcrn-space-2);
 }
+.tcrn-machine-token--compact {
+  gap: var(--tcrn-space-1);
+}
+.tcrn-machine-token--compact .tcrn-machine-token__label {
+  font-size: 10px;
+}
+.tcrn-machine-token--compact .tcrn-machine-token__value {
+  font-size: 11px;
+}
+.tcrn-machine-token-cell {
+  display: inline-grid;
+  min-width: 0;
+  max-width: 100%;
+}
 .tcrn-work-management-subnav,
 .tcrn-saved-view-toolbar,
+.tcrn-work-page-header,
+.tcrn-work-view-tabs,
+.tcrn-work-quick-filters,
+.tcrn-work-item-row,
+.tcrn-work-list,
+.tcrn-work-split-view,
+.tcrn-work-backlog-group,
+.tcrn-work-inline-create-static,
+.tcrn-work-board-view,
 .tcrn-gate-pipeline,
 .tcrn-evidence-attachment-list,
 .tcrn-work-hierarchy,
+.tcrn-work-field-panel,
+.tcrn-metadata-rail,
+.tcrn-work-activity-feed,
+.tcrn-work-detail-layout,
 .tcrn-work-item-inspector {
   min-width: 0;
+}
+.tcrn-work-page-header,
+.tcrn-work-view-tabs,
+.tcrn-work-quick-filters,
+.tcrn-work-item-row,
+.tcrn-work-list,
+.tcrn-work-split-view,
+.tcrn-work-backlog-group,
+.tcrn-work-board,
+.tcrn-work-board-view,
+.tcrn-work-detail-layout,
+.tcrn-work-field-panel,
+.tcrn-metadata-rail,
+.tcrn-work-activity-feed {
+  --tcrn-work-density-gap: var(--tcrn-space-2);
+  --tcrn-work-density-padding: var(--tcrn-space-3);
+  --tcrn-work-density-row-min: 40px;
+}
+.tcrn-work-page-header--dense,
+.tcrn-work-view-tabs--dense,
+.tcrn-work-quick-filters--dense,
+.tcrn-work-item-row--dense,
+.tcrn-work-list--dense,
+.tcrn-work-split-view--dense,
+.tcrn-work-backlog-group--dense,
+.tcrn-work-board--dense,
+.tcrn-work-board-view--dense,
+.tcrn-work-detail-layout--dense,
+.tcrn-work-field-panel--dense,
+.tcrn-metadata-rail--dense,
+.tcrn-work-activity-feed--dense {
+  --tcrn-work-density-gap: var(--tcrn-space-1);
+  --tcrn-work-density-padding: var(--tcrn-space-2);
+  --tcrn-work-density-row-min: 34px;
+}
+.tcrn-work-page-header {
+  display: grid;
+  gap: var(--tcrn-work-density-gap);
+  padding-block-end: var(--tcrn-space-3);
+  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+}
+.tcrn-work-page-header__breadcrumbs,
+.tcrn-work-page-header__breadcrumb,
+.tcrn-work-page-header__meta,
+.tcrn-work-page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+  min-width: 0;
+}
+.tcrn-work-page-header__breadcrumbs {
+  color: var(--tcrn-color-text-secondary);
+  font-size: 12px;
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-work-page-header__breadcrumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+.tcrn-work-page-header__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--tcrn-space-3);
+  min-width: 0;
+}
+.tcrn-work-page-header__title {
+  min-width: 0;
+}
+.tcrn-work-page-header__title .tcrn-heading,
+.tcrn-work-page-header__title .tcrn-text {
+  margin: 0;
+}
+.tcrn-work-page-header__meta {
+  justify-content: flex-end;
+}
+.tcrn-work-page-header__actions {
+  grid-column: 1 / -1;
 }
 .tcrn-work-management-subnav {
   display: flex;
@@ -2252,8 +2428,8 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   align-items: center;
   gap: var(--tcrn-space-2);
 }
-.tcrn-work-management-subnav a,
-.tcrn-work-management-subnav span {
+.tcrn-work-management-subnav > a,
+.tcrn-work-management-subnav > span {
   display: inline-flex;
   align-items: center;
   gap: var(--tcrn-space-2);
@@ -2266,18 +2442,186 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   background: var(--tcrn-color-surface-panel);
 }
 .tcrn-work-management-subnav [data-selected="true"] {
-  border-color: var(--tcrn-color-border-strong);
+  border-color: var(--tcrn-color-border-control);
   background: var(--tcrn-color-brand-primary-bg);
 }
 .tcrn-saved-view-toolbar {
   display: grid;
   gap: var(--tcrn-space-3);
 }
+.tcrn-work-view-tabs,
+.tcrn-work-quick-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tcrn-work-density-gap);
+}
+.tcrn-work-view-tabs > a,
+.tcrn-work-view-tabs > span,
+.tcrn-work-quick-filters > a,
+.tcrn-work-quick-filters > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+  min-width: 0;
+  min-height: var(--tcrn-work-density-row-min);
+  padding: 3px var(--tcrn-space-2);
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-control);
+  color: var(--tcrn-color-text-primary);
+  text-decoration: none;
+  background: var(--tcrn-color-surface-panel);
+}
+.tcrn-work-view-tabs [data-selected="true"],
+.tcrn-work-quick-filters [data-selected="true"] {
+  border-color: var(--tcrn-color-border-control);
+  box-shadow: inset 0 -2px 0 var(--tcrn-color-brand-primary);
+}
+.tcrn-work-quick-filters__value {
+  color: var(--tcrn-color-text-secondary);
+  font-size: 12px;
+}
+.tcrn-work-item-row,
+.tcrn-work-backlog-group,
+.tcrn-work-activity-feed__item,
+.tcrn-work-detail-layout,
+.tcrn-work-field-panel {
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-surface-panel);
+}
+.tcrn-work-item-row {
+  display: grid;
+  grid-template-columns: minmax(112px, 0.18fr) minmax(180px, 1fr) minmax(220px, 0.8fr);
+  align-items: center;
+  gap: var(--tcrn-work-density-gap);
+  min-height: var(--tcrn-work-density-row-min);
+  padding: var(--tcrn-work-density-padding);
+  color: var(--tcrn-color-text-primary);
+  text-decoration: none;
+}
+.tcrn-work-item-row--compact {
+  grid-template-columns: minmax(96px, 0.16fr) minmax(160px, 1fr) minmax(192px, 0.72fr);
+  gap: var(--tcrn-space-2);
+  padding: var(--tcrn-space-2) var(--tcrn-space-3);
+}
+.tcrn-work-item-row--dense {
+  grid-template-columns: minmax(92px, 0.14fr) minmax(180px, 1fr) minmax(172px, 0.62fr);
+  padding: var(--tcrn-space-1) var(--tcrn-space-2);
+  font-size: var(--tcrn-type-size-ui);
+}
+.tcrn-work-item-row[data-selected="true"] {
+  border-color: var(--tcrn-color-border-control);
+  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+}
+.tcrn-work-item-row__id,
+.tcrn-work-item-row__summary,
+.tcrn-work-item-row__meta,
+.tcrn-work-item-row__relationships {
+  min-width: 0;
+}
+.tcrn-work-item-row__id,
+.tcrn-work-item-row__meta,
+.tcrn-work-item-row__relationships {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+}
+.tcrn-work-item-row__summary {
+  display: grid;
+  gap: 2px;
+}
+.tcrn-work-item-row__summary strong {
+  overflow-wrap: anywhere;
+}
+.tcrn-work-item-row__summary .tcrn-text {
+  margin: 0;
+}
+.tcrn-work-item-row__field,
+.tcrn-work-board__card-field {
+  display: inline-grid;
+  gap: 1px;
+  min-width: 0;
+  font-size: 12px;
+}
+.tcrn-work-item-row__field span,
+.tcrn-work-board__card-field span {
+  color: var(--tcrn-color-text-secondary);
+}
+.tcrn-work-item-row__relationships {
+  grid-column: 1 / -1;
+}
+.tcrn-work-list,
+.tcrn-work-board-view,
+.tcrn-work-backlog-group,
+.tcrn-work-field-panel,
+.tcrn-metadata-rail,
+.tcrn-work-activity-feed,
+.tcrn-work-detail-layout__main,
+.tcrn-work-detail-layout__rail {
+  display: grid;
+  gap: var(--tcrn-work-density-gap);
+}
+.tcrn-work-split-view {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+  gap: var(--tcrn-work-density-gap);
+  align-items: start;
+}
+.tcrn-work-split-view__list,
+.tcrn-work-split-view__detail {
+  min-width: 0;
+}
+.tcrn-work-backlog-group,
+.tcrn-work-field-panel,
+.tcrn-work-activity-feed__item,
+.tcrn-work-detail-layout {
+  padding: var(--tcrn-work-density-padding);
+}
+.tcrn-work-backlog-group__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+  min-width: 0;
+}
+.tcrn-work-backlog-group__head > div:first-child {
+  min-width: 0;
+  margin-right: auto;
+}
+.tcrn-work-backlog-group__head .tcrn-heading,
+.tcrn-work-backlog-group__head .tcrn-text,
+.tcrn-work-field-panel .tcrn-heading {
+  margin: 0;
+}
+.tcrn-work-field-panel .tcrn-key-value-list > div,
+.tcrn-metadata-rail .tcrn-key-value-list > div {
+  grid-template-columns: minmax(0, 1fr);
+}
+.tcrn-work-backlog-group__actions,
+.tcrn-work-inline-create-static,
+.tcrn-metadata-rail__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+}
+.tcrn-work-inline-create-static .tcrn-text {
+  margin: 0;
+}
 .tcrn-work-board {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--tcrn-space-3);
+  gap: var(--tcrn-work-density-gap);
   min-width: 0;
+}
+.tcrn-work-board--compact {
+  grid-template-columns: repeat(auto-fit, minmax(196px, 1fr));
+  gap: var(--tcrn-space-2);
+}
+.tcrn-work-board--dense {
+  grid-template-columns: repeat(auto-fit, minmax(188px, 1fr));
 }
 .tcrn-work-board__lane {
   display: grid;
@@ -2306,9 +2650,9 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 }
 .tcrn-work-board__card {
   display: grid;
-  gap: var(--tcrn-space-2);
+  gap: var(--tcrn-work-density-gap);
   min-width: 0;
-  padding: var(--tcrn-space-3);
+  padding: var(--tcrn-work-density-padding);
   border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-surface-muted);
@@ -2320,8 +2664,22 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 .tcrn-work-board__card .tcrn-text {
   margin: 0;
 }
+.tcrn-work-board--compact .tcrn-work-board__lane,
+.tcrn-work-board--compact .tcrn-work-board__card {
+  gap: var(--tcrn-space-2);
+}
+.tcrn-work-board--compact .tcrn-work-board__card {
+  padding: var(--tcrn-space-2);
+}
+.tcrn-work-board__card-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--tcrn-space-2);
+  min-width: 0;
+}
 .tcrn-work-board__relations,
-.tcrn-work-item-inspector__relationships {
+.tcrn-work-item-inspector__relationships,
+.tcrn-work-detail-layout__actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--tcrn-space-2);
@@ -2364,6 +2722,192 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   flex-wrap: wrap;
   gap: var(--tcrn-space-2);
 }
+.tcrn-work-activity-feed__head,
+.tcrn-work-detail-layout__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--tcrn-space-2);
+  min-width: 0;
+}
+.tcrn-work-activity-feed__head time {
+  color: var(--tcrn-color-text-secondary);
+  font-size: 12px;
+  margin-left: auto;
+}
+.tcrn-work-activity-feed__item .tcrn-text,
+.tcrn-work-detail-layout__head .tcrn-heading,
+.tcrn-work-detail-layout__head .tcrn-text {
+  margin: 0;
+}
+.tcrn-work-detail-layout {
+  gap: var(--tcrn-work-density-gap);
+  padding: var(--tcrn-work-density-padding);
+}
+.tcrn-work-detail-layout__head > div {
+  min-width: 0;
+  margin-right: auto;
+}
+.tcrn-work-detail-layout__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.34fr);
+  gap: var(--tcrn-space-3);
+  min-width: 0;
+  align-items: start;
+}
+.tcrn-knowledge-page-tree,
+.tcrn-knowledge-document-canvas,
+.tcrn-knowledge-toc-rail,
+.tcrn-knowledge-inline-comment-list,
+.tcrn-knowledge-metadata-rail,
+.tcrn-knowledge-attachment-list,
+.tcrn-knowledge-label-set,
+.tcrn-knowledge-version-history,
+.tcrn-knowledge-template-gallery,
+.tcrn-knowledge-search-results {
+  min-width: 0;
+}
+.tcrn-knowledge-page-tree,
+.tcrn-knowledge-document-canvas,
+.tcrn-knowledge-toc-rail,
+.tcrn-knowledge-inline-comment-list__item,
+.tcrn-knowledge-metadata-rail,
+.tcrn-knowledge-version-history__item,
+.tcrn-knowledge-search-results__item {
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-surface-panel);
+}
+.tcrn-knowledge-page-tree,
+.tcrn-knowledge-document-canvas,
+.tcrn-knowledge-toc-rail,
+.tcrn-knowledge-inline-comment-list__item,
+.tcrn-knowledge-metadata-rail,
+.tcrn-knowledge-version-history__item,
+.tcrn-knowledge-search-results__item {
+  padding: var(--tcrn-space-3);
+}
+.tcrn-knowledge-page-tree__list {
+  display: grid;
+  gap: var(--tcrn-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tcrn-knowledge-page-tree__item {
+  min-width: 0;
+}
+.tcrn-knowledge-page-tree__item > a,
+.tcrn-knowledge-page-tree__item > span,
+.tcrn-knowledge-toc-rail nav > a,
+.tcrn-knowledge-toc-rail nav > span {
+  display: flex;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+  min-height: 32px;
+  min-width: 0;
+  padding: 3px var(--tcrn-space-2);
+  border-radius: var(--tcrn-radius-control);
+  color: var(--tcrn-color-text-primary);
+  text-decoration: none;
+}
+.tcrn-knowledge-page-tree__item > [data-selected="true"],
+.tcrn-knowledge-toc-rail nav > [data-selected="true"] {
+  background: var(--tcrn-color-brand-primary-bg);
+  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+}
+.tcrn-knowledge-page-tree__item[data-tree-level="2"] > a,
+.tcrn-knowledge-page-tree__item[data-tree-level="2"] > span {
+  padding-inline-start: var(--tcrn-space-4);
+}
+.tcrn-knowledge-page-tree__item[data-tree-level="3"] > a,
+.tcrn-knowledge-page-tree__item[data-tree-level="3"] > span {
+  padding-inline-start: var(--tcrn-space-6);
+}
+.tcrn-knowledge-page-tree__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-knowledge-document-canvas,
+.tcrn-knowledge-inline-comment-list,
+.tcrn-knowledge-metadata-rail,
+.tcrn-knowledge-attachment-list,
+.tcrn-knowledge-version-history,
+.tcrn-knowledge-template-gallery,
+.tcrn-knowledge-search-results {
+  display: grid;
+  gap: var(--tcrn-space-2);
+}
+.tcrn-knowledge-document-canvas__head,
+.tcrn-knowledge-inline-comment-list__head,
+.tcrn-knowledge-search-results__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--tcrn-space-2);
+  min-width: 0;
+}
+.tcrn-knowledge-document-canvas__head > div:first-child,
+.tcrn-knowledge-search-results__head > strong {
+  min-width: 0;
+  margin-right: auto;
+}
+.tcrn-knowledge-document-canvas__head .tcrn-heading,
+.tcrn-knowledge-document-canvas__head .tcrn-text,
+.tcrn-knowledge-document-canvas__section .tcrn-heading,
+.tcrn-knowledge-document-canvas__section .tcrn-text,
+.tcrn-knowledge-inline-comment-list__item .tcrn-text,
+.tcrn-knowledge-template-gallery__card .tcrn-heading,
+.tcrn-knowledge-template-gallery__card .tcrn-text,
+.tcrn-knowledge-search-results__item .tcrn-text,
+.tcrn-knowledge-toc-rail .tcrn-heading {
+  margin: 0;
+}
+.tcrn-knowledge-document-canvas__body {
+  display: grid;
+  gap: var(--tcrn-space-4);
+  max-width: 74ch;
+}
+.tcrn-knowledge-document-canvas__section {
+  display: grid;
+  gap: var(--tcrn-space-2);
+}
+.tcrn-knowledge-label-set,
+.tcrn-knowledge-metadata-rail__actions,
+.tcrn-knowledge-version-history__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+}
+.tcrn-knowledge-toc-rail nav {
+  display: grid;
+  gap: var(--tcrn-space-1);
+}
+.tcrn-knowledge-template-gallery {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.tcrn-knowledge-template-gallery__card {
+  display: grid;
+  gap: var(--tcrn-space-2);
+  min-width: 0;
+}
+.tcrn-knowledge-version-history__item {
+  justify-content: flex-start;
+}
+.tcrn-knowledge-version-history__item > strong,
+.tcrn-knowledge-search-results__head a,
+.tcrn-knowledge-search-results__head span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.tcrn-work-detail-layout__main,
+.tcrn-work-detail-layout__rail,
+.tcrn-work-detail-layout__activity {
+  min-width: 0;
+}
 .tcrn-skip-link {
   position: fixed;
   z-index: 1000;
@@ -2373,7 +2917,7 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   padding: var(--tcrn-space-2) var(--tcrn-space-3);
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-surface-panel);
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-border-control);
 }
 .tcrn-skip-link:focus {
   transform: translateY(0);
@@ -2418,11 +2962,25 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   }
   .tcrn-work-board,
   .tcrn-work-hierarchy__levels,
-  .tcrn-work-item-inspector__grid {
+  .tcrn-work-item-inspector__grid,
+  .tcrn-work-page-header__body,
+  .tcrn-work-item-row,
+  .tcrn-work-item-row--compact,
+  .tcrn-work-split-view,
+  .tcrn-work-detail-layout__grid {
     grid-template-columns: minmax(0, 1fr);
   }
-  .tcrn-work-management-subnav a,
-  .tcrn-work-management-subnav span {
+  .tcrn-work-page-header__meta,
+  .tcrn-work-page-header__actions,
+  .tcrn-work-detail-layout__actions {
+    justify-content: flex-start;
+  }
+  .tcrn-work-management-subnav > a,
+  .tcrn-work-management-subnav > span,
+  .tcrn-work-view-tabs > a,
+  .tcrn-work-view-tabs > span,
+  .tcrn-work-quick-filters > a,
+  .tcrn-work-quick-filters > span {
     flex: 1 1 160px;
   }
   .tcrn-shell-locale-menu__trigger {
@@ -2445,9 +3003,14 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  /* Reduced motion means fewer and gentler animations, not none. Travel is what
+     causes discomfort, so transform and position animation is removed; opacity and
+     colour transitions stay, because they are how the interface says that something
+     changed. Killing them outright leaves state changes to happen with no cue at
+     all, which is a comprehension regression dressed up as an accessibility win. */
   .tcrn-product-shell,
   .tcrn-product-shell-search {
-    transition: none;
+    transition: opacity var(--tcrn-motion-comprehension), background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), border-color var(--tcrn-motion-comprehension);
   }
   .tcrn-product-shell[data-theme-switching="true"]::after {
     animation: none;
@@ -2459,7 +3022,13 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   .tcrn-shell-theme-toggle__icon,
   .tcrn-shell-locale-menu__trigger,
   .tcrn-shell-locale-menu__chevron {
-    transition: none;
+    transition: opacity var(--tcrn-motion-comprehension), background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), border-color var(--tcrn-motion-comprehension);
+  }
+  /* No travel, and no press-scale either: scale is transform. */
+  .tcrn-button:active,
+  .tcrn-nav-item:active,
+  .tcrn-shell-locale-menu__trigger:active {
+    transform: none;
   }
 }
 `;

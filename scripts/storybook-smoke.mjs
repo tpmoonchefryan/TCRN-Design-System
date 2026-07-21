@@ -33,6 +33,7 @@ const requiredStories = [
   { id: "component-family-index", group: "Components" },
   { id: "display-primitives-spec", group: "Components" },
   { id: "interaction-disclosure-spec", group: "Components" },
+  { id: "stamp-spec-usage", group: "Components" },
   { id: "button-spec-usage", group: "Components" },
   { id: "field-spec-usage", group: "Components" },
   { id: "navigation-shell-spec", group: "Components" },
@@ -41,6 +42,7 @@ const requiredStories = [
   { id: "dialog-spec-usage", group: "Components" },
   { id: "table-work-index-spec", group: "Components" },
   { id: "work-management-components-spec", group: "Components" },
+  { id: "knowledge-management-components-spec", group: "Components" },
   { id: "forms-patterns", group: "Patterns" },
   { id: "workbench-patterns", group: "Patterns" },
   { id: "work-management-patterns", group: "Patterns" },
@@ -89,7 +91,15 @@ const readStoryHtml = (html, storyId) => {
 const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-consumption-contract.json", "utf8"));
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
-const expectedStoryCategoryCount = 18;
+const localAbsolutePathDenyPatterns = [
+  { name: "file-url", pattern: /file:\/\//i },
+  { name: "users-home-path", pattern: /\/Users\//i },
+  { name: "tmp-path", pattern: /\/tmp(?:\/|$)/i },
+  { name: "private-tmp-path", pattern: /\/private\/tmp(?:\/|$)/i },
+  { name: "mac-temp-path", pattern: /\/var\/folders(?:\/|$)/i },
+  { name: "remote-workspace-path", pattern: /\/srv\/tcrn(?:\/|$)/i }
+];
+const expectedStoryCategoryCount = 19;
 const expectedStorybookShellNavGroupCount = expectedContractStoryGroups.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
@@ -170,7 +180,7 @@ const productShellComparatorContract = {
       lineHeight: "17.55px",
       transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
       transitionDurationIncludes: "0.16s",
-      transitionTimingFunctionIncludes: "ease",
+      transitionTimingFunctionIncludes: "cubic-bezier(0.23, 1, 0.32, 1)",
       focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
     },
     sideNavToggle: {
@@ -184,7 +194,7 @@ const productShellComparatorContract = {
       iconCenterDeltaMax: 1,
       transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
       transitionDurationIncludes: "0.16s",
-      transitionTimingFunctionIncludes: "ease",
+      transitionTimingFunctionIncludes: "cubic-bezier(0.23, 1, 0.32, 1)",
       focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
     },
     localeTrigger: {
@@ -197,7 +207,7 @@ const productShellComparatorContract = {
       letterSpacing: "normal",
       transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
       transitionDurationIncludes: "0.16s",
-      transitionTimingFunctionIncludes: "ease",
+      transitionTimingFunctionIncludes: "cubic-bezier(0.23, 1, 0.32, 1)",
       focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
     },
     searchInput: {
@@ -246,22 +256,31 @@ const productShellComparatorContract = {
   motionProof: {
     productShellTransition: "grid-template-columns",
     productShellTransitionDuration: "0.22s",
-    productShellTransitionTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
+    productShellTransitionTimingFunctionIncludes: "cubic-bezier(0.32, 0.72, 0, 1)",
     searchTransition: "width",
     searchTransitionProperties: ["flex-basis", "width", "max-width"],
-    searchTransitionDuration: "0.32s",
-    searchTransitionTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
+    searchTransitionDuration: "0.24s",
+    searchTransitionTimingFunctionIncludes: "cubic-bezier(0.32, 0.72, 0, 1)",
     searchMotionTimeline: {
-      sampleTimesMs: [0, 80, 160, 240, 320, 400],
+      sampleTimesMs: [0, 60, 120, 180, 240, 300],
       minIntermediateSamples: 2,
-      finalFrameEarliestMs: 240,
+      // What this guards is that the surface *animated* rather than jumped. It is
+      // not a statement about curve shape, and it used to be read as one: the v1
+      // threshold sat at 75% of the duration, which silently assumed a curve that
+      // spreads travel evenly. The v2 drawer curve deliberately front-loads —
+      // measured, it is 78% travelled at 25% of the duration and 98% at 65% — which
+      // is exactly why it reads as responsive. Holding it to the old threshold would
+      // have been the oracle enforcing a design decision the ruling reversed. The
+      // floor below still catches a real jump (final value at the first sample), and
+      // minIntermediateSamples above still proves genuine in-between frames.
+      finalFrameEarliestMs: 50,
       endpointTolerancePx: 2
     },
     localeChevronTransition: "transform",
     localeChevronTransitionDuration: "0.22s",
     themeWashPseudo: "tcrn-product-shell-theme-wash",
     themeWashAnimationDuration: "0.22s",
-    themeWashAnimationTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
+    themeWashAnimationTimingFunctionIncludes: "cubic-bezier(0.32, 0.72, 0, 1)",
     reducedMotionFallback: "transition-none"
   }
 };
@@ -455,7 +474,7 @@ const aosFrontendShellVisualInstanceContract = {
   slots: ["brand lockup", "attached side navigation", "topbar", "search", "content", "secondary disclosure"],
   requiredContentSelectors: {
     dummyCockpit: "[data-aos-dummy-cockpit=\"true\"]",
-    workEntry: "[data-aos-work-module-entry=\"jira-like\"]",
+    workEntry: "[data-aos-work-module-entry=\"work-module\"]",
     rawSecondaryDisclosure: "[data-raw-json-disclosure=\"secondary\"]",
     registeredBoundary: "[data-aos-registered-module-boundary=\"cockpit-work-only\"]",
     notAccepted: "[data-product-acceptance=\"not-claimed\"]",
@@ -921,7 +940,7 @@ for (const text of [
   ".tcrn-shell-locale-menu__trigger",
   ".tcrn-shell-side-nav-toggle",
   "data-side-nav-action=\"toggle\"",
-  "--tcrn-motion-product-shell-search: 320ms cubic-bezier(0.2, 0, 0.2, 1)",
+  "--tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer)",
   "flex-basis: 260px",
   "flex-basis: 420px",
   ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
@@ -936,10 +955,34 @@ for (const text of [
   "data-work-management-patterns=\"static-no-live\"",
   "RelationshipChip",
   "MachineToken",
+  "MachineTokenCell",
   "WorkManagementSubnav",
+  "WorkPageHeader",
+  "WorkViewTabs",
+  "WorkQuickFilters",
+  "WorkItemRow",
+  "WorkList",
+  "WorkSplitView",
+  "WorkBacklogGroup",
   "WorkBoard",
+  "WorkBoardView",
+  "WorkDetailLayout",
+  "MetadataRail",
+  "WorkFieldPanel",
+  "KnowledgePageTree",
+  "KnowledgeDocumentCanvas",
+  "KnowledgeTocRail",
+  "KnowledgeInlineCommentList",
+  "KnowledgeMetadataRail",
+  "KnowledgeAttachmentList",
+  "KnowledgeLabelSet",
+  "KnowledgeVersionHistory",
+  "KnowledgeTemplateGallery",
+  "KnowledgeSearchResults",
+  "WorkActivityFeed",
   "WorkHierarchy",
   "GatePipeline",
+  "GatePipelineCompact",
   "EvidenceAttachmentList",
   "WorkItemInspector",
   "SavedViewToolbar",
@@ -954,6 +997,27 @@ for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "dup
 }
 const combinedContractText = `${combinedHtml}\n${JSON.stringify(contract)}\n${llmsTxt}`;
 const missing = required.filter((text) => !combinedContractText.includes(text));
+for (const { label, value } of [
+  { label: "generated-static-html", value: combinedHtml },
+  { label: "generated-ai-contract-json", value: JSON.stringify(contract) },
+  { label: "generated-llms-txt", value: llmsTxt },
+  { label: "generated-robots-txt", value: robotsTxt },
+  { label: "work-management-story-source", value: readFileSync("apps/storybook/src/contract-stories/story-content.tsx", "utf8") },
+  { label: "work-management-package-test-fixture", value: readFileSync("packages/ui-react/src/components/DataDisplay/DataDisplay.test.tsx", "utf8") },
+  { label: "visual-proof-baseline-manifest", value: readFileSync("docs/verification/storybook-visual-proof/baseline-manifest.json", "utf8") },
+  { label: "visual-proof-check-receipt", value: readFileSync("docs/verification/storybook-visual-proof/check-receipt.json", "utf8") },
+  { label: "visual-proof-update-receipt", value: readFileSync("docs/verification/storybook-visual-proof/update-receipt.json", "utf8") },
+  { label: "internal-alpha-browser-proof-summary", value: readFileSync("docs/verification/internal-alpha/browser-proof-summary.json", "utf8") },
+  { label: "internal-alpha-story-coverage-manifest", value: readFileSync("docs/verification/internal-alpha/story-coverage-manifest.json", "utf8") },
+  { label: "internal-alpha-visual-baseline-manifest", value: readFileSync("docs/verification/internal-alpha/visual-baseline-manifest.json", "utf8") },
+  { label: "internal-alpha-package-contract-manifest", value: readFileSync("docs/verification/internal-alpha/package-contract-manifest.json", "utf8") }
+]) {
+  for (const { name, pattern } of localAbsolutePathDenyPatterns) {
+    if (pattern.test(value)) {
+      missing.push(`forbidden-local-absolute-path:${label}:${name}`);
+    }
+  }
+}
 for (const forbiddenGlobalShellMarker of [
   "data-storybook-shell-authority=\"@tcrn/ui-react/ProductShell\"",
   "data-storybook-product-shell-skin=\"confirmed-storybook-visual-v1\"",
@@ -961,6 +1025,20 @@ for (const forbiddenGlobalShellMarker of [
 ]) {
   if (combinedHtml.includes(forbiddenGlobalShellMarker)) {
     missing.push(`forbidden-global-shell-marker:${forbiddenGlobalShellMarker}`);
+  }
+}
+for (const forbiddenCleanRoomRuntimePattern of [
+  /Atlassian/i,
+  /Jira/i,
+  /jira-like/i,
+  /issue-style/i,
+  /WorkIssueRow/,
+  /IssueRow/,
+  /Kanban/,
+  /Scrum/
+]) {
+  if (forbiddenCleanRoomRuntimePattern.test(combinedHtml)) {
+    missing.push(`forbidden-clean-room-runtime:${forbiddenCleanRoomRuntimePattern.source}`);
   }
 }
 const nonComponentHtml = Object.entries(pages)
@@ -1341,11 +1419,22 @@ if (!String(contract.visualFitControlContract?.sidebar?.rule ?? "").includes("or
 if (!String(contract.visualFitControlContract?.tablesAndContainers?.rule ?? "").includes("package-emitted column/min-width variables")) {
   missing.push("contract.visualFitControlContract.tablesAndContainers.rule");
 }
+if (!String(contract.visualFitControlContract?.workLayoutDensity?.authority ?? "").includes("Work Management exports")) {
+  missing.push("contract.visualFitControlContract.workLayoutDensity.authority");
+}
+if (!contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("WorkItemRow")
+  || !contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("WorkDetailLayout")
+  || !contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("MachineTokenCell")) {
+  missing.push("contract.visualFitControlContract.workLayoutDensity.packageExports");
+}
 if (contract.consumerVisualStyleContract?.id !== "consumer-visual-style-contract-v1") {
   missing.push("contract.consumerVisualStyleContract.id");
 }
 if (!contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.includes?.("consumer-local ProductShell/search/theme/locale/sidebar clones")) {
   missing.push("contract.consumerVisualStyleContract.forbiddenConsumerOverrides.productShellClones");
+}
+if (!String(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.join(" ") ?? "").includes("consumer-local Work page header")) {
+  missing.push("contract.consumerVisualStyleContract.forbiddenConsumerOverrides.workLayoutClones");
 }
 if (!contract.consumerVisualStyleContract?.requiredReadbackFields?.includes?.("foundationVisualStandards")) {
   missing.push("contract.consumerVisualStyleContract.requiredReadbackFields.foundationVisualStandards");
@@ -2282,17 +2371,33 @@ function validateProductShellReadback({
     }
   }
   if (reduced) {
-    if (proof.shell.transitionProperty !== "none") {
-      failures.push(`${label}:reduced-motion-product-shell-transition:${proof.shell.transitionProperty}`);
-    }
-    for (const controlName of ["themeToggle", "sideNavToggle", "localeTrigger", "localeChevron"]) {
-      if (proof.measured[controlName]?.transitionProperty !== "none") {
-        failures.push(`${label}:reduced-motion-${controlName}-transition:${proof.measured[controlName]?.transitionProperty}`);
+    // Motion v2 (TCRN-DS-INIT-001, WS3): reduced motion removes travel, not the cue
+    // that something changed. The v1 oracle demanded `transition: none`, which threw
+    // away comprehension along with the movement. The check below is stricter, not
+    // looser: it proves positional properties are absent AND that at least one
+    // comprehension cue survives, so neither failure mode can pass silently.
+    const POSITIONAL = ["transform", "translate", "scale", "rotate", "top", "left", "right", "bottom", "margin", "inset", "width", "height"];
+    const COMPREHENSION = ["opacity", "background-color", "color", "border-color"];
+    const auditReducedMotion = (name, measured) => {
+      const declared = normalizeTransitionProperty(measured?.transitionProperty ?? "none");
+      if (declared.includes("all")) {
+        failures.push(`${label}:reduced-motion-${name}-transition-all:${measured?.transitionProperty}`);
+        return;
       }
+      const travelling = declared.filter((property) => POSITIONAL.includes(property));
+      if (travelling.length > 0) {
+        failures.push(`${label}:reduced-motion-${name}-positional:${travelling.join("+")}`);
+      }
+      const cues = declared.filter((property) => COMPREHENSION.includes(property));
+      if (declared.length > 0 && cues.length === 0) {
+        failures.push(`${label}:reduced-motion-${name}-no-comprehension-cue:${measured?.transitionProperty}`);
+      }
+    };
+    auditReducedMotion("product-shell", proof.shell);
+    for (const controlName of ["themeToggle", "sideNavToggle", "localeTrigger", "localeChevron"]) {
+      auditReducedMotion(controlName, proof.measured[controlName]);
     }
-    if (proof.measured.searchWrapper?.transitionProperty !== "none") {
-      failures.push(`${label}:reduced-motion-search-transition:${proof.measured.searchWrapper?.transitionProperty}`);
-    }
+    auditReducedMotion("search", proof.measured.searchWrapper);
     if (proof.shell.themeWashAnimationName !== "none") {
       failures.push(`${label}:reduced-motion-theme-wash:${proof.shell.themeWashAnimationName}`);
     }

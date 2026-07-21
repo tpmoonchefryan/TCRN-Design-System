@@ -44,6 +44,8 @@ import {
   ErrorState,
   StateSurface,
   StateView,
+  Stamp,
+  StampRule,
   StatusBadge,
   Surface,
   TableShell,
@@ -55,14 +57,40 @@ import {
   Tooltip,
   EvidenceAttachmentList,
   GatePipeline,
+  GatePipelineCompact,
   MachineToken,
+  MachineTokenCell,
+  KnowledgeAttachmentList,
+  KnowledgeDocumentCanvas,
+  KnowledgeInlineCommentList,
+  KnowledgeLabelSet,
+  KnowledgeMetadataRail,
+  KnowledgePageTree,
+  KnowledgeSearchResults,
+  KnowledgeTemplateGallery,
+  KnowledgeTocRail,
+  KnowledgeVersionHistory,
+  MetadataRail,
   RelationshipChip,
   SavedViewToolbar,
   WorkBoard,
+  WorkBoardView,
+  WorkActivityFeed,
+  WorkBacklogGroup,
+  WorkDetailLayout,
+  WorkFieldPanel,
   WorkHierarchy,
   WorkIndex,
+  WorkInlineCreateStatic,
+  WorkItemRow,
   WorkItemInspector,
+  WorkList,
   WorkManagementSubnav,
+  WorkPageHeader,
+  WorkQuickFilters,
+  WorkSplitView,
+  WorkViewTabs,
+  knowledgeManagementPatternRegistry,
   workManagementPatternRegistry,
   workRelationshipTypes
 } from "@tcrn/ui-react";
@@ -77,9 +105,11 @@ import type { ContractStory, ContractStoryGroup } from "./types.js";
 import type {
   EvidenceAttachment,
   GatePipelineGate,
+  WorkActivityFeedItem,
   WorkBoardLane,
   WorkHierarchyEdge,
-  WorkHierarchyNode
+  WorkHierarchyNode,
+  WorkItemRowProps
 } from "@tcrn/ui-react";
 import {
   DialogSpecFixture,
@@ -186,6 +216,7 @@ function ChangelogToken({ label, value, compactValue, kind }: { label: string; v
 const workManagementSubnavItems = [
   { id: "queue", label: "Queue", href: "#work-management-components-spec", current: true, count: 6 },
   { id: "board", label: "Board", href: "#work-management-components-spec", count: 3 },
+  { id: "backlog", label: "Backlog", href: "#work-management-components-spec", count: 8 },
   { id: "gates", label: "Gates", href: "#work-management-components-spec", count: 7 },
   { id: "evidence", label: "Evidence", href: "#work-management-components-spec", count: 5 }
 ];
@@ -202,6 +233,73 @@ const workManagementFilters = [
   { id: "state", label: "State", value: "Proof required" }
 ];
 
+const workQuickFilters = [
+  { id: "owner-feedback", label: "Owner feedback", current: true, count: 4 },
+  { id: "needs-proof", label: "Needs proof", value: "Rowan", count: 3 },
+  { id: "blocked", label: "Blocked", value: "Gate", count: 2 },
+  { id: "static-only", label: "Static only", value: "No API" }
+];
+
+const workItemRows: WorkItemRowProps[] = [
+  {
+    id: "AOS-128",
+    title: "Rebuild Work routes with admitted DS components",
+    state: { state: "review_required" },
+    owner: "Ilya",
+    href: "#work-management-components-spec",
+    selected: true,
+    rank: "1",
+    priority: "P1",
+    summary: "Selected row connects queue, board, backlog, detail, and evidence examples.",
+    fields: [
+      { key: "gate", label: "Gate", value: "DS review" },
+      { key: "basis", label: "Basis", value: "static fixture" }
+    ],
+    relationships: [
+      { relation: "implements", target: "STORY-WM-03" },
+      { relation: "verifies", target: "EV-221" }
+    ]
+  },
+  {
+    id: "AOS-129",
+    title: "Mobile detail route density",
+    state: { state: "proof_required" },
+    owner: "Rowan",
+    rank: "2",
+    priority: "P2",
+    fields: [{ key: "surface", label: "Surface", value: "mobile detail" }]
+  },
+  {
+    id: "AOS-130",
+    title: "Backlog grouping and disabled static actions",
+    state: { state: "local_only" },
+    owner: "Mara",
+    rank: "3",
+    fields: [{ key: "scope", label: "Scope", value: "design confirmation" }]
+  }
+];
+
+const workBacklogRows: WorkItemRowProps[] = [
+  {
+    id: "AOS-131",
+    title: "Shaped Work route acceptance markers",
+    state: { state: "local_only" },
+    owner: "Product",
+    rank: "1",
+    priority: "P1",
+    fields: [{ key: "decision", label: "Decision", value: "accepted plan" }]
+  },
+  {
+    id: "AOS-132",
+    title: "Unshaped mobile proof target",
+    state: { state: "proof_required" },
+    owner: "QA",
+    rank: "2",
+    priority: "P3",
+    fields: [{ key: "decision", label: "Decision", value: "needs proof" }]
+  }
+];
+
 const workBoardLanes: WorkBoardLane[] = [
   {
     id: "ready-for-review",
@@ -214,6 +312,11 @@ const workBoardLanes: WorkBoardLane[] = [
         state: { state: "review_required" },
         owner: "Elara",
         meta: "Story: smallest acceptable workflow result",
+        priority: "P1",
+        fields: [
+          { key: "Gate", label: "Gate", value: "DS review" },
+          { key: "Proof", label: "Proof", value: "Storybook" }
+        ],
         relationships: [
           { relation: "implements", target: "STORY-WM-03" },
           { relation: "verifies", target: "QA-178" }
@@ -232,6 +335,8 @@ const workBoardLanes: WorkBoardLane[] = [
         state: { state: "blocked" },
         owner: "Design System",
         meta: "Waits for component admission",
+        priority: "P2",
+        fields: [{ key: "Gate", label: "Gate", value: "blocked" }],
         relationships: [
           { relation: "blocked_by", target: "DS Review" },
           { relation: "relates_to", target: "AOS-128" }
@@ -250,6 +355,8 @@ const workBoardLanes: WorkBoardLane[] = [
         state: { state: "local_only" },
         owner: "Rowan",
         meta: "Execution record attached to Work Item",
+        priority: "P3",
+        fields: [{ key: "Evidence", label: "Evidence", value: "browser proof" }],
         relationships: [
           { relation: "reviews", target: "AOS-128" },
           { relation: "refreshes", target: "Atlas preview" }
@@ -286,9 +393,112 @@ const workGatePipeline: GatePipelineGate[] = [
 
 const workEvidenceItems: EvidenceAttachment[] = [
   { id: "commit", type: "commit", label: "Implementation commit", reference: "c4865675", state: { state: "local_only" } },
-  { id: "artifact", type: "artifact_dir", label: "QA artifact directory", reference: "/tmp/rowan-work-management-patterns", state: { state: "proof_required" } },
+  { id: "artifact", type: "artifact_dir", label: "QA artifact receipt", reference: "route-artifact:rowan-work-management-patterns", state: { state: "proof_required" } },
   { id: "route", type: "policy", label: "Codex route record", reference: "route_tcrn_ds_work_management_patterns_ilya_ds_package_storybook_implementation_after_minerva_initiative_c4865675" },
   { id: "api", type: "api_readback", label: "API readback", reference: "No Work API integration in this Storybook fixture", state: { state: "not_claimed" } }
+];
+
+const workFieldPanelItems = [
+  { key: "result", label: "Result", value: "Smallest owner-visible Work outcome" },
+  { key: "scope", label: "Scope", value: "Static presentation and routing proof only" },
+  { key: "blocked", label: "Blocked claim", value: "No backend Work mutation or live dispatch" }
+];
+
+const workMetadataItems = [
+  { key: "owner", label: "Owner", value: "Ilya" },
+  { key: "gate", label: "Gate", value: <StatusBadge state={{ state: "review_required" }} /> },
+  { key: "basis", label: "Basis", value: <MachineTokenCell token="AOS-128" kind="work-item" /> }
+];
+
+const workActivityItems: WorkActivityFeedItem[] = [
+  {
+    id: "activity-1",
+    actor: "Mara",
+    action: "captured owner feedback",
+    timestamp: "2026-07-04",
+    summary: "Feedback stays product-neutral and route-owned until review gates pass.",
+    state: { state: "local_only" }
+  },
+  {
+    id: "activity-2",
+    actor: "Rowan",
+    action: "requested evidence",
+    timestamp: "2026-07-04",
+    summary: "Proof must remain static and source-visible before any preview refresh.",
+    evidence: workEvidenceItems.slice(0, 1)
+  }
+];
+
+const knowledgePageTreeItems = [
+  {
+    id: "kb-root",
+    title: "Operations handbook",
+    current: true,
+    children: [
+      { id: "kb-owner", title: "Owner inspection guide", state: { state: "local_only" } },
+      { id: "kb-proof", title: "Proof and evidence runbook", state: { state: "proof_required" } }
+    ]
+  },
+  {
+    id: "kb-ai",
+    title: "AI operating notes",
+    children: [{ id: "kb-no-live", title: "No-live dispatch boundary", state: { state: "not_claimed" } }]
+  }
+];
+
+const knowledgeDocumentSections = [
+  {
+    id: "kb-scope",
+    heading: "Scope",
+    body: "Knowledge surfaces are static Design System components for review. They do not claim backend publishing, live collaboration, or external workspace integration."
+  },
+  {
+    id: "kb-proof",
+    heading: "Proof",
+    body: "Evidence references are sanitized tokens and local fixtures; raw private evidence and unmanaged local paths are not part of the component contract."
+  }
+];
+
+const knowledgeMetadataItems = [
+  { key: "owner", label: "Owner", value: "Mara" },
+  { key: "state", label: "State", value: <StatusBadge state={{ state: "local_only" }} /> },
+  { key: "basis", label: "Basis", value: <MachineTokenCell token="KB-STATIC-01" kind="generic" /> }
+];
+
+const knowledgeComments = [
+  { id: "comment-1", author: "Elara", body: "Keep document reading width stable and prove mobile stacking.", timestamp: "2026-07-05", state: { state: "review_required" } },
+  { id: "comment-2", author: "Sable", body: "Use sanitized abstraction notes only; no private screenshots or session captures.", timestamp: "2026-07-05", state: { state: "proof_required" } }
+];
+
+const knowledgeAttachments = [
+  { id: "kb-evd-1", label: "Sanitized reference note", reference: "artifact:knowledge-abstraction-note", state: { state: "local_only" } },
+  { id: "kb-evd-2", label: "Visual proof receipt", reference: "receipt:storybook-knowledge-static-proof", state: { state: "proof_required" } }
+];
+
+const knowledgeVersions = [
+  { id: "v1", title: "Initial static draft", author: "Mara", timestamp: "2026-07-05", state: { state: "local_only" } },
+  { id: "v2", title: "Review-ready layout", author: "Elara", timestamp: "2026-07-05", state: { state: "proof_required" } }
+];
+
+const knowledgeTemplates = [
+  { id: "runbook", title: "Runbook", description: "Operational instructions with proof and owner-review boundaries.", state: { state: "fixture_only" } },
+  { id: "decision", title: "Decision note", description: "Decision, alternatives, and no-overclaim readback.", state: { state: "fixture_only" } }
+];
+
+const knowledgeSearchResults = [
+  {
+    id: "kb-result-1",
+    title: "Owner inspection guide",
+    excerpt: "Static local result showing document hierarchy, metadata, and proof boundary.",
+    labels: ["owner-review", "static"]
+  },
+  {
+    id: "kb-result-2",
+    title: "No-live dispatch boundary",
+    excerpt: "Explains why Knowledge examples do not create backend, collaboration, or external integration claims.",
+    labels: ["policy", "no-live"],
+    state: { state: "not_claimed" }
+  }
 ];
 
 const legacyContractStories: LegacyContractStory[] = [
@@ -471,6 +681,10 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "boundary", label: "Boundary" }
             ]}
             rows={[
+              // The colour names here describe the brand mark SVG, which is a frozen brand
+              // asset rather than part of the visual language: changing it runs through brand
+              // admission, not through a design-system revision (TCRN-DS-MIN-007, ruling 2).
+              // The description therefore stays accurate as written.
               { element: "Outer tiles", rule: "Four large rounded diamond tiles use iris blue, violet-blue, aqua, and slate with tight even gaps.", boundary: "No asymmetric extra pieces." },
               { element: "Center tile", rule: "The center tile uses a fifth color outside the four outer tile colors.", boundary: "Do not reuse an outer color for the center." },
               { element: "Connector points", rule: "Each point uses a white ring with a same-family inner color that differs from the tile fill.", boundary: "No red, pink, coral, or orange connector points." },
@@ -492,10 +706,10 @@ const legacyContractStories: LegacyContractStory[] = [
         <ReadbackPanel title="Brand palette">
           <div className="tcrn-token-swatch-grid">
             <TokenSwatch label="Primary brand" token="--tcrn-color-brand-primary" note="Use for TCRN identity, selected navigation, and creator-channel emphasis." />
-            <TokenSwatch label="Primary brand background" token="--tcrn-color-brand-primary-bg" note="Use for quiet selected surfaces and iris-blue brand callouts." />
+            <TokenSwatch label="Primary brand background" token="--tcrn-color-brand-primary-bg" note="Use for quiet selected surfaces and brand callouts." />
             <TokenSwatch label="Secondary brand" token="--tcrn-color-brand-secondary" note="Use for system connection, informational support, charts, and secondary emphasis." />
-            <TokenSwatch label="Secondary brand background" token="--tcrn-color-brand-secondary-bg" note="Use for quiet aqua informational surfaces." />
-            <TokenSwatch label="Accent brand" token="--tcrn-color-brand-accent" note="Use rose-coral sparingly for creator warmth; never use as state truth." />
+            <TokenSwatch label="Secondary brand background" token="--tcrn-color-brand-secondary-bg" note="Use for quiet informational surfaces." />
+            <TokenSwatch label="Accent brand" token="--tcrn-color-brand-accent" note="Use sparingly for highlights; never use as state truth." />
             <TokenSwatch label="Neutral brand" token="--tcrn-color-brand-neutral" note="Use for dense structure, muted metadata, and low-emphasis support." />
           </div>
           <TableShell
@@ -505,9 +719,9 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "guardrail", label: "Guardrail" }
             ]}
             rows={[
-              { family: "Primary", role: "Iris-blue identity, selected navigation, creator-channel emphasis", guardrail: "Do not use as proof state." },
-              { family: "Secondary", role: "Aqua system connection, informational support, and charts", guardrail: "Do not compete with primary actions." },
-              { family: "Accent", role: "Rose-coral highlights and onboarding warmth", guardrail: "Never use as readiness or error truth." },
+              { family: "Primary", role: "Identity, selected navigation, primary emphasis", guardrail: "Do not use as proof state." },
+              { family: "Secondary", role: "Informational support, charts, and secondary emphasis", guardrail: "Do not compete with primary actions." },
+              { family: "Accent", role: "Sparing highlights and onboarding emphasis", guardrail: "Never use as readiness or error truth." },
               { family: "Neutral", role: "Dense operational structure and muted metadata", guardrail: "Do not replace disabled text color." },
               { family: "State", role: "Ready, warning, blocked, unavailable, and unknown status", guardrail: "State colors are not brand colors." }
             ]}
@@ -1393,6 +1607,55 @@ const legacyContractStories: LegacyContractStory[] = [
     )
   },
   {
+    id: "stamp-spec-usage",
+    title: "Stamp spec and usage",
+    group: "Components",
+    description: "Identity-moment stamp, its three admitted moments, and the boundary that keeps it rare.",
+    render: () => (
+      <section className="alpha-story-stack">
+        <ReadbackPanel title="The three admitted moments">
+          <Text>
+            Stamp marks a moment the governed record cannot take back: a gate closing, a ruling landing, a
+            release being accepted. It is the only component that may use the serif face and the stamp ink,
+            and that restriction is what gives it weight — an impression that appears everywhere stops
+            meaning anything.
+          </Text>
+          <div className="tcrn-action-row">
+            <Stamp moment="gate-close">Gate closed</Stamp>
+            <Stamp moment="ruling">Ruling recorded</Stamp>
+            <Stamp moment="release">Release accepted</Stamp>
+          </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="Stamped header">
+          <Text>
+            The double rule is the archival-document memory: two weights rather than one, so a header
+            carrying a ruling reads differently from an ordinary panel header.
+          </Text>
+          <Heading level={3}>Ruling · direction A+B adopted</Heading>
+          <StampRule />
+          <Text>Minutes body follows the rule; the rule itself is decorative and hidden from assistive technology.</Text>
+        </ReadbackPanel>
+        <ReadbackPanel title="Boundary">
+          <Text>
+            Not a status. Status is carried by StatusBadge and reads as an ink dot plus a word; a stamp says
+            something was decided, not how something currently is. Stamp is also never a heading substitute
+            and never appears in a data row — the serif loses its strokes below 12px, which is why the
+            minimum stamp size is a token rather than a suggestion.
+          </Text>
+          <div className="tcrn-action-row">
+            <StatusBadge state={{ state: "ready" }} />
+            <Stamp moment="gate-close">Gate closed</Stamp>
+          </div>
+          <Text>
+            Use outside the three moments is a design-system violation and fails the build: `pnpm stamp:proof`
+            checks that neither the stamp tokens nor the stamp class appear beyond the stamp components, and
+            that no unlisted moment is rendered.
+          </Text>
+        </ReadbackPanel>
+      </section>
+    )
+  },
+  {
     id: "button-spec-usage",
     title: "Button spec and usage",
     group: "Components",
@@ -1621,7 +1884,7 @@ const legacyContractStories: LegacyContractStory[] = [
                 expanded: true,
                 results: [
                   { id: "cockpit", title: "Cockpit", meta: "Registered shell entry", href: "/cockpit", selected: true },
-                  { id: "work", title: "Work", meta: "Jira-like module entry", href: "/work" }
+                  { id: "work", title: "Work", meta: "Work module entry", href: "/work" }
                 ]
               }}
               navGroups={[
@@ -1843,9 +2106,9 @@ const legacyContractStories: LegacyContractStory[] = [
     description: "Package-backed Work Management components for Initiative, Epic, Story, Work Item, gate, evidence, and execution-record surfaces.",
     render: () => (
       <section className="alpha-story-stack" data-work-management-contract="package-backed-static">
-        <ReadbackPanel title="Admitted candidates 18-26">
+        <ReadbackPanel title="Admitted candidates 18-41">
           <Text>
-            These Work Management surfaces are package-backed static presentation patterns. They do not integrate APIs, backend persistence, live Codex dispatch, external queues, product acceptance, release readiness, or product adoption.
+            These Work Management surfaces are package-backed static presentation patterns for dense route layout, local view movement, selected-row detail, backlog grouping, and evidence context. They do not integrate APIs, backend persistence, live Codex dispatch, external queues, product acceptance, release readiness, or product adoption.
           </Text>
           <TableShell
             label="Work Management pattern registry"
@@ -1903,13 +2166,67 @@ const legacyContractStories: LegacyContractStory[] = [
           <SavedViewToolbar views={workManagementSavedViews} filters={workManagementFilters} />
           <WorkManagementSubnav items={workManagementSubnavItems} />
         </ReadbackPanel>
-        <ReadbackPanel title="Board, hierarchy, and gates">
-          <WorkBoard lanes={workBoardLanes} />
+        <ReadbackPanel title="Dense route context">
+          <WorkPageHeader
+            title="Owner feedback queue"
+            description="Compact page context keeps proof metadata outside the primary operational row stack."
+            breadcrumbs={[
+              { id: "work", label: "Work" },
+              { id: "owner-feedback", label: "Owner feedback" }
+            ]}
+            meta={<MachineTokenCell token="AOS-128" kind="work-item" label="selected" />}
+            actions={[
+              { id: "route", label: "Route", disabledReason: "Static Storybook fixture; product route owns routing" },
+              { id: "promote", label: "Promote", disabledReason: "No backend promotion is wired" }
+            ]}
+          />
+          <WorkViewTabs tabs={workManagementSubnavItems} />
+          <WorkQuickFilters filters={workQuickFilters} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Dense list and split detail">
+          <WorkSplitView
+            label="Work Management component split view"
+            list={<WorkList label="Selected Work rows" rows={workItemRows} />}
+            detail={
+              <WorkDetailLayout
+                title="AOS-128"
+                summary="Detail composition keeps the main narrative, metadata rail, and activity evidence readable without product-local layout clones."
+                state={{ state: "review_required" }}
+                main={<WorkFieldPanel title="Work fields" items={workFieldPanelItems} />}
+                metadata={
+                  <MetadataRail
+                    title="Metadata rail"
+                    items={workMetadataItems}
+                    actions={[{ id: "inspect", label: "Inspect", disabledReason: "Preview inspection remains downstream" }]}
+                  />
+                }
+                activity={<WorkActivityFeed items={workActivityItems} />}
+                actions={[{ id: "dispatch", label: "Dispatch", disabledReason: "No live dispatch in this static Storybook fixture" }]}
+              />
+            }
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Backlog and compact board">
+          <WorkBacklogGroup
+            title="Shaped backlog"
+            description="Rows stay dense, ranked, and static; disabled actions describe missing route-owned mutation."
+            rows={workBacklogRows}
+            actions={[{ id: "promote", label: "Promote", disabledReason: "No backend promotion in Storybook fixture" }]}
+            inlineCreate={{ label: "Add placeholder", disabledReason: "Static-only affordance", hint: "Products own real create flows after backend admission." }}
+          />
+          <WorkInlineCreateStatic label="Add Work placeholder" disabledReason="Static Storybook fixture only" />
+          <WorkBoardView
+            toolbar={<WorkQuickFilters label="Board filters" filters={workQuickFilters.slice(0, 3)} />}
+            lanes={workBoardLanes}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Hierarchy, gates, and evidence">
           <WorkHierarchy nodes={workHierarchyNodes} edges={workHierarchyEdges} />
           <GatePipeline gates={workGatePipeline} />
+          <GatePipelineCompact label="Compact gate scan" gates={workGatePipeline.slice(0, 3)} />
+          <EvidenceAttachmentList density="compact" items={workEvidenceItems} />
         </ReadbackPanel>
         <ReadbackPanel title="Evidence and inspector">
-          <EvidenceAttachmentList items={workEvidenceItems} />
           <WorkItemInspector
             title="AOS-128 Work Item"
             summary="Codex Activity is execution and evidence context attached to this Work Item; it is not a replacement for Story or Task / Work Item."
@@ -1937,6 +2254,74 @@ const legacyContractStories: LegacyContractStory[] = [
             actions={[{ id: "dispatch", label: "Dispatch Codex route", disabledReason: "Live Codex dispatch is not available in this static Storybook fixture" }]}
           />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "knowledge-management-components-spec",
+    title: "Knowledge Management component specs",
+    group: "Components",
+    description: "Static Knowledge Base surfaces for page trees, document canvas, metadata, comments, versions, templates, and local results.",
+    render: () => (
+      <section className="alpha-story-stack" data-knowledge-management-contract="package-backed-static">
+        <ReadbackPanel title="Registered Knowledge candidates">
+          <TableShell
+            label="Knowledge Management registry"
+            columns={[
+              { key: "candidate", label: "Candidate" },
+              { key: "component", label: "Component" },
+              { key: "purpose", label: "Purpose" }
+            ]}
+            rows={knowledgeManagementPatternRegistry.map((item) => ({
+              candidate: item.candidateId,
+              component: item.componentName,
+              purpose: item.purpose
+            }))}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Tree, canvas, and local rail">
+          <WorkSplitView
+            label="Knowledge Management component split view"
+            density="dense"
+            list={<KnowledgePageTree items={knowledgePageTreeItems} density="dense" />}
+            detail={
+              <KnowledgeDocumentCanvas
+                density="dense"
+                title="Owner inspection guide"
+                summary="Static Knowledge canvas using TCRN-owned component primitives and sanitized references."
+                labels={["owner-review", "static", "no-live"]}
+                meta={<MachineTokenCell token="KB-STATIC-01" kind="generic" density="dense" />}
+                sections={knowledgeDocumentSections}
+              />
+            }
+          />
+          <KnowledgeTocRail
+            density="dense"
+            items={[
+              { id: "kb-scope", label: "Scope", href: "#kb-scope", current: true },
+              { id: "kb-proof", label: "Proof", href: "#kb-proof" }
+            ]}
+          />
+        </ReadbackPanel>
+        <ReadbackPanel title="Metadata, comments, evidence, and history">
+          <KnowledgeMetadataRail
+            density="dense"
+            items={knowledgeMetadataItems}
+            labels={["sanitized", "fixture"]}
+            actions={[{ id: "publish", label: "Publish", disabledReason: "Knowledge publishing is not wired in this static DS fixture" }]}
+          />
+          <KnowledgeInlineCommentList density="dense" comments={knowledgeComments} />
+          <KnowledgeAttachmentList density="dense" items={knowledgeAttachments} />
+          <KnowledgeVersionHistory density="dense" versions={knowledgeVersions} />
+        </ReadbackPanel>
+        <ReadbackPanel title="Templates and local results">
+          <KnowledgeTemplateGallery density="dense" templates={knowledgeTemplates} />
+          <KnowledgeSearchResults density="dense" query="owner inspection" results={knowledgeSearchResults} />
+          <KnowledgeLabelSet labels={["TCRN-owned", "static", "sanitized-reference"]} density="dense" />
+        </ReadbackPanel>
+        <InlineAlert tone="warning">
+          Knowledge Management examples are static DS components only: no backend publishing, live collaboration, external workspace integration, product adoption, owner acceptance, release readiness, or global search capability is claimed.
+        </InlineAlert>
       </section>
     )
   },
@@ -2012,13 +2397,41 @@ const legacyContractStories: LegacyContractStory[] = [
           />
         </ReadbackPanel>
         <ReadbackPanel title="Recommended static composition">
+          <WorkPageHeader
+            title="Work module route composition"
+            description="Route context, view tabs, quick filters, list selection, and detail metadata compose from admitted DS package exports."
+            breadcrumbs={[{ id: "work", label: "Work" }, { id: "patterns", label: "Patterns" }]}
+            meta={<MachineTokenCell token="route_tcrn_aos_work_module_static_design_confirmation" kind="route" label="route" />}
+            actions={[{ id: "refresh", label: "Refresh", disabledReason: "Preview refresh is downstream and route-owned" }]}
+          />
           <SavedViewToolbar views={workManagementSavedViews} filters={workManagementFilters} />
-          <WorkBoard lanes={workBoardLanes} />
+          <WorkViewTabs tabs={workManagementSubnavItems} />
+          <WorkQuickFilters filters={workQuickFilters} />
+          <WorkSplitView
+            label="Work Management pattern split view"
+            list={<WorkList rows={workItemRows} />}
+            detail={
+              <WorkDetailLayout
+                title="Selected Work item"
+                summary="The selected pane uses a metadata rail and activity feed rather than a product-local card system."
+                state={{ state: "proof_required" }}
+                main={<WorkFieldPanel title="Detail fields" items={workFieldPanelItems} />}
+                metadata={<MetadataRail items={workMetadataItems} />}
+                activity={<WorkActivityFeed items={workActivityItems} />}
+              />
+            }
+          />
+          <WorkBacklogGroup
+            title="Backlog group"
+            rows={workBacklogRows}
+            inlineCreate={{ label: "Add placeholder", disabledReason: "Static-only pattern" }}
+          />
+          <WorkBoardView lanes={workBoardLanes} />
         </ReadbackPanel>
         <ReadbackPanel title="Dependency and evidence flow">
           <WorkHierarchy nodes={workHierarchyNodes} edges={workHierarchyEdges} />
-          <GatePipeline gates={workGatePipeline} />
-          <EvidenceAttachmentList items={workEvidenceItems} />
+          <GatePipelineCompact gates={workGatePipeline} />
+          <EvidenceAttachmentList density="compact" items={workEvidenceItems} />
         </ReadbackPanel>
         <InlineAlert tone="warning">
           Work Management patterns remain static and product-neutral here: no API integration, backend persistence, live Codex dispatch, external queue, product adoption, owner acceptance, package publication, or release readiness is claimed.

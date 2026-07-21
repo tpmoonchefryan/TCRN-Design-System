@@ -13,9 +13,16 @@ import {
 test("tokens expose canonical CSS variables", () => {
   assert.ok(tcrnTokens.length >= 25);
   assert.equal(new Set(tcrnTokens.map((token) => token.variable)).size, tcrnTokens.length);
-  assert.equal(createTokenMap()["--tcrn-color-brand-primary"], "#5865d8");
-  assert.equal(createTokenMap()["--tcrn-color-brand-secondary"], "#2f8fa3");
-  assert.equal(createTokenMap()["--tcrn-color-brand-accent"], "#c96a7e");
+  // Visual language v2 (TCRN-DS-INIT-001, direction A+B): the brand accent is the
+  // purified teal, and the former iris-blue is gone from the palette entirely.
+  assert.equal(createTokenMap()["--tcrn-color-brand-primary"], "#17707f");
+  assert.equal(createTokenMap()["--tcrn-color-brand-secondary"], "#2a6b76");
+  assert.equal(createTokenMap()["--tcrn-color-brand-accent"], "#93332a");
+  assert.equal(createTokenMap()["--tcrn-color-text-tertiary"], "#73757c");
+  assert.equal(createTokenMap()["--tcrn-color-border-control"], "#8e8e88");
+  for (const value of Object.values(createTokenMap())) {
+    assert.doesNotMatch(value, /#5865d8|#c96a7e|#eef0ff|#fcebf0/i, "v1 iris/rose palette must not survive");
+  }
   assert.equal(createTokenMap()["--tcrn-color-neutral-calibration-canvas"], "#f5f5f5");
   assert.equal(createTokenMap()["--tcrn-color-neutral-calibration-panel"], "#fcfcfc");
   assert.equal(createTokenMap()["--tcrn-color-focus-ring-calibrated"], "#0056a4");
@@ -34,6 +41,11 @@ test("tokens expose canonical CSS variables", () => {
   assert.equal(createTokenMap()["--tcrn-motion-skeleton-loop"], "1400ms ease-in-out");
   assert.equal(createTokenMap()["--tcrn-motion-progress-loop"], "1200ms ease-in-out");
   assert.equal(createTokenMap()["--tcrn-motion-reduced-duration"], "0.01ms");
+  // Motion v2: reduced motion removes travel but keeps comprehension cues alive.
+  assert.equal(createTokenMap()["--tcrn-motion-comprehension"], "160ms linear");
+  assert.equal(createTokenMap()["--tcrn-motion-press-scale"], "0.97");
+  assert.match(createTokenMap()["--tcrn-motion-ease-out"], /cubic-bezier/);
+  assert.doesNotMatch(createTokenMap()["--tcrn-motion-standard"], /ease$/, "built-in easings are too weak for UI motion");
   assert.equal(createTokenMap()["--tcrn-density-compact-row-height"], "36px");
   assert.equal(createTokenMap()["--tcrn-type-size-ui"], "13px");
   assert.equal(createTokenMap()["--tcrn-type-size-reading"], "14px");
@@ -97,9 +109,9 @@ test("dark theme overrides only canonical token variables", () => {
     assert.equal(canonicalVariables.has(token.variable), true, `unknown dark token ${token.variable}`);
   }
   const darkCss = createThemeCssVariables("dark");
-  assert.match(darkCss, /--tcrn-color-surface-canvas: #121a2a/);
+  assert.match(darkCss, /--tcrn-color-surface-canvas: #111214/);
   assert.match(darkCss, /--tcrn-color-neutral-calibration-canvas: #161616/);
-  assert.match(darkCss, /--tcrn-color-text-primary: #f2f7ff/);
-  assert.match(darkCss, /--tcrn-color-brand-primary: #a7b0ff/);
+  assert.match(darkCss, /--tcrn-color-text-primary: #ececea/);
+  assert.match(darkCss, /--tcrn-color-brand-primary: #62c3d2/);
   assert.match(darkCss, /--tcrn-color-focus-ring-calibrated: #5cb3ff/);
 });

@@ -242,7 +242,11 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
 
 test("product shell component css keeps motion shorthands valid", () => {
   assert.match(tcrnComponentCss, /--tcrn-motion-product-shell: var\(--tcrn-motion-emphasis\)/);
-  assert.match(tcrnComponentCss, /--tcrn-motion-product-shell-search: 320ms cubic-bezier\(0\.2, 0, 0\.2, 1\)/);
+  assert.match(tcrnComponentCss, /--tcrn-motion-product-shell-search: 240ms var\(--tcrn-motion-ease-drawer\)/);
+  // Elevation and inverse text are governed by @tcrn/ui-tokens now; a local
+  // redefinition here would silently shadow the package and un-govern the look.
+  assert.doesNotMatch(tcrnComponentCss, /--tcrn-elevation-floating:/);
+  assert.doesNotMatch(tcrnComponentCss, /--tcrn-color-text-inverse:/);
   assert.match(tcrnComponentCss, /transition: grid-template-columns var\(--tcrn-motion-product-shell\);/);
   assert.match(tcrnComponentCss, /animation: tcrn-product-shell-theme-wash var\(--tcrn-motion-product-shell\) both;/);
   assert.match(tcrnComponentCss, /flex-basis var\(--tcrn-motion-product-shell-search\),[\s\S]*width var\(--tcrn-motion-product-shell-search\),[\s\S]*max-width var\(--tcrn-motion-product-shell-search\);/);
@@ -377,6 +381,10 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-section-grid \{[\s\S]*grid-template-columns: minmax\(0, 1\.45fr\) minmax\(280px, 0\.75fr\);/);
   assert.match(tcrnComponentCss, /\.tcrn-table-shell__head,[\s\S]*\.tcrn-table-shell__row \{[\s\S]*grid-template-columns: var\([\s\S]*--tcrn-table-shell-columns/);
   assert.match(tcrnComponentCss, /\.tcrn-table-shell__head span,[\s\S]*\.tcrn-table-shell__cell \{[\s\S]*overflow-wrap: anywhere;/);
+  assert.match(tcrnComponentCss, /\.tcrn-work-item-row--dense \{[\s\S]*grid-template-columns: minmax\(92px, 0\.14fr\)/);
+  assert.match(tcrnComponentCss, /\.tcrn-work-page-header--dense,[\s\S]*\.tcrn-work-activity-feed--dense \{[\s\S]*--tcrn-work-density-row-min: 34px;/);
+  assert.match(tcrnComponentCss, /\.tcrn-knowledge-page-tree,[\s\S]*\.tcrn-knowledge-search-results \{[\s\S]*min-width: 0;/);
+  assert.match(tcrnComponentCss, /\.tcrn-knowledge-template-gallery \{[\s\S]*grid-template-columns: repeat\(auto-fit, minmax\(180px, 1fr\)\);/);
 });
 
 test("product shell search stays hidden when compact at rest", () => {

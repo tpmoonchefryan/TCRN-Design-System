@@ -30,30 +30,44 @@ export const tcrnTokens = [
   {
     name: "color.text.primary",
     variable: "--tcrn-color-text-primary",
-    value: "#172033",
+    value: "#1c1d21",
     group: "color",
     description: "Primary body and dense operational text."
   },
   {
     name: "color.text.secondary",
     variable: "--tcrn-color-text-secondary",
-    value: "#536579",
+    value: "#55575e",
     group: "color",
     description: "Secondary labels and supporting operational text."
   },
   {
     name: "color.text.muted",
     variable: "--tcrn-color-text-muted",
-    value: "#7b8a9a",
+    value: "#8a8c93",
     group: "color",
     description: "Muted text for disabled or unavailable controls."
   },
   {
+    name: "color.text.tertiary",
+    variable: "--tcrn-color-text-tertiary",
+    value: "#73757c",
+    group: "color",
+    description: "Tertiary metadata text: keys, timestamps, and row-level attribution."
+  },
+  {
+    name: "color.text.inverse",
+    variable: "--tcrn-color-text-inverse",
+    value: "#fafaf9",
+    group: "color",
+    description: "Text on filled accent surfaces."
+  },
+  {
     name: "color.surface.canvas",
     variable: "--tcrn-color-surface-canvas",
-    value: "#f6f7fb",
+    value: "#fafaf9",
     group: "color",
-    description: "App canvas background for operational work surfaces."
+    description: "App canvas background: warm-neutral graphite paper for operational work surfaces."
   },
   {
     name: "color.surface.panel",
@@ -65,7 +79,7 @@ export const tcrnTokens = [
   {
     name: "color.surface.muted",
     variable: "--tcrn-color-surface-muted",
-    value: "#edf4f7",
+    value: "#f2f2f0",
     group: "color",
     description: "Subtle background for badges, disabled controls, and proof chips."
   },
@@ -100,84 +114,91 @@ export const tcrnTokens = [
   {
     name: "color.border.subtle",
     variable: "--tcrn-color-border-subtle",
-    value: "#d7e0e8",
+    value: "#e7e7e3",
     group: "color",
-    description: "Low-emphasis component boundary."
+    description: "Low-emphasis component boundary; carries elevation in place of shadow."
   },
   {
     name: "color.border.strong",
     variable: "--tcrn-color-border-strong",
-    value: "#b8c8d6",
+    value: "#cfcfc9",
     group: "color",
     description: "Control boundary and table rule."
   },
   {
+    name: "color.border.control",
+    variable: "--tcrn-color-border-control",
+    value: "#8e8e88",
+    group: "color",
+    description: "Interactive control boundary (input, select, secondary button). Meets WCAG 1.4.11 3:1 against panel and canvas; distinct from the lighter structural rules above, which carry no contrast duty."
+  },
+  {
     name: "color.brand.teal",
     variable: "--tcrn-color-brand-teal",
-    value: "#2f8fa3",
+    value: "#17707f",
     group: "color",
-    description: "Legacy aqua support accent retained for compatibility."
+    description: "Legacy aqua support accent, aligned to the purified brand teal."
   },
   {
     name: "color.brand.primary",
     variable: "--tcrn-color-brand-primary",
-    value: "#5865d8",
+    value: "#17707f",
     group: "color",
-    description: "Primary iris-blue brand color for TCRN identity, selected navigation, and professional creator-channel emphasis."
+    description: "Primary brand teal: the single accent of the quiet-instrument base."
   },
   {
     name: "color.brand.primary.bg",
     variable: "--tcrn-color-brand-primary-bg",
-    value: "#eef0ff",
+    value: "#e6f1f3",
     group: "color",
-    description: "Quiet iris-blue background for selected surfaces and brand callouts."
+    description: "Quiet teal background for selected surfaces and brand callouts."
   },
   {
     name: "color.brand.secondary",
     variable: "--tcrn-color-brand-secondary",
-    value: "#2f8fa3",
+    value: "#2a6b76",
     group: "color",
-    description: "Aqua support color for system connection, informational emphasis, and charts."
+    description: "Deep teal support color for system connection and charts."
   },
   {
     name: "color.brand.secondary.bg",
     variable: "--tcrn-color-brand-secondary-bg",
-    value: "#e4f7f9",
+    value: "#e3eff1",
     group: "color",
     description: "Quiet secondary background for informational surfaces."
   },
   {
     name: "color.brand.accent",
     variable: "--tcrn-color-brand-accent",
-    value: "#c96a7e",
+    value: "#93332a",
     group: "color",
-    description: "Restrained rose-coral accent for creator-channel warmth, highlights, and onboarding emphasis."
+    description: "Stamp oxblood: identity-moment accent (gate close, ruling, release acceptance)."
   },
   {
     name: "color.brand.accent.bg",
     variable: "--tcrn-color-brand-accent-bg",
-    value: "#fcebf0",
+    value: "#f5e9e5",
     group: "color",
-    description: "Quiet rose-coral background for sparing highlight surfaces."
+    description: "Quiet oxblood background for sparing identity-moment surfaces."
   },
   {
     name: "color.brand.neutral",
     variable: "--tcrn-color-brand-neutral",
-    value: "#536579",
+    value: "#55575e",
     group: "color",
     description: "Neutral brand support for dense operational structure."
   },
   {
     name: "color.brand.neutral.bg",
     variable: "--tcrn-color-brand-neutral-bg",
-    value: "#edf4f7",
+    value: "#f2f2f0",
     group: "color",
     description: "Neutral support background for muted structure and chips."
   },
   {
     name: "color.focus.ring",
     variable: "--tcrn-color-focus-ring",
-    value: "#5865d8",
+    value: "#17707f",
     group: "color",
     description: "Visible focus outline for keyboard navigation."
   },
@@ -212,44 +233,44 @@ export const tcrnTokens = [
   {
     name: "color.state.ready",
     variable: "--tcrn-color-state-ready",
-    value: "#147a46",
+    value: "#15693a",
     group: "color",
     description: "Local-ready or fixture-ready state foreground."
   },
   {
     name: "color.state.ready.bg",
     variable: "--tcrn-color-state-ready-bg",
-    value: "#dff7ea",
+    value: "#eaf2ec",
     group: "color",
-    description: "Local-ready or fixture-ready state background."
+    description: "Local-ready state background: low-noise wash, not a pastel fill."
   },
   {
     name: "color.state.blocked",
     variable: "--tcrn-color-state-blocked",
-    value: "#ad211c",
+    value: "#b3271e",
     group: "color",
-    description: "Blocked or denied state foreground."
+    description: "Blocked state foreground."
   },
   {
     name: "color.state.blocked.bg",
     variable: "--tcrn-color-state-blocked-bg",
-    value: "#ffe7e3",
+    value: "#f7eae8",
     group: "color",
-    description: "Blocked or denied state background."
+    description: "Blocked state background: low-noise wash."
   },
   {
     name: "color.state.warning",
     variable: "--tcrn-color-state-warning",
-    value: "#7a4e00",
+    value: "#8a5a08",
     group: "color",
-    description: "Evidence required or pending proof foreground."
+    description: "Warning state foreground."
   },
   {
     name: "color.state.warning.bg",
     variable: "--tcrn-color-state-warning-bg",
-    value: "#fff1d6",
+    value: "#f5eee1",
     group: "color",
-    description: "Evidence required or pending proof background."
+    description: "Warning state background: low-noise wash."
   },
   {
     name: "color.state.warning.calibrated",
@@ -355,6 +376,41 @@ export const tcrnTokens = [
     value: "SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace",
     group: "typography",
     description: "Runtime monospace stack. Liberation Mono is distributable; system monospace names are fallback only."
+  },
+  {
+    name: "typography.family.stamp",
+    variable: "--tcrn-type-family-stamp",
+    value: "Source Serif 4, Songti SC, Noto Serif CJK SC, Georgia, serif",
+    group: "typography",
+    description: "Identity-moment serif for stamp titles and rulings. Restricted to the identity whitelist (gate close, ruling, release acceptance); never used for data or dense body text."
+  },
+  {
+    name: "typography.family.distributable.stamp.latin",
+    variable: "--tcrn-type-family-distributable-stamp-latin",
+    value: "Source Serif 4, serif",
+    group: "typography",
+    description: "Bundleable Latin stamp serif (SIL OFL-1.1). Reserved Font Name applies: a modified build must be renamed."
+  },
+  {
+    name: "typography.family.distributable.stamp.zhCN",
+    variable: "--tcrn-type-family-distributable-stamp-zh-cn",
+    value: "Noto Serif CJK SC, serif",
+    group: "typography",
+    description: "Bundleable Simplified-Chinese stamp serif (SIL OFL-1.1). Reserved Font Name applies."
+  },
+  {
+    name: "typography.size.stamp.min",
+    variable: "--tcrn-type-size-stamp-min",
+    value: "12px",
+    group: "typography",
+    description: "Floor for stamp type. Below this the CJK serif loses its strokes on standard-density displays, which is why the whitelist keeps data rows on the sans face."
+  },
+  {
+    name: "typography.tracking.stamp",
+    variable: "--tcrn-type-tracking-stamp",
+    value: "0.06em",
+    group: "typography",
+    description: "Stamp letter-spacing: opens small-caps enough to read as an impression rather than a label."
   },
   {
     name: "typography.size.ui",
@@ -490,6 +546,41 @@ export const tcrnTokens = [
     description: "Composite readable prose role for proof-gated explanatory copy; not auto-applied."
   },
   {
+    name: "radius.panel",
+    variable: "--tcrn-radius-panel",
+    value: "6px",
+    group: "radius",
+    description: "Panel and popover corner radius; matches radius.surface so panels and surfaces share one silhouette."
+  },
+  {
+    name: "elevation.floating",
+    variable: "--tcrn-elevation-floating",
+    value: "0 1px 2px rgba(28, 29, 33, 0.06), 0 0 0 1px var(--tcrn-color-border-subtle)",
+    group: "elevation",
+    description: "Floating layer (popover, menu, toast). Elevation is drawn as a hairline with a whisper of shadow, never a soft cloud: the quiet-instrument base separates layers by edge, not by blur."
+  },
+  {
+    name: "state.dot.size",
+    variable: "--tcrn-state-dot-size",
+    value: "6px",
+    group: "space",
+    description: "Ink-dot diameter in a status chip. State reads as dot plus word, so the chip needs no saturated fill."
+  },
+  {
+    name: "state.chip.padding",
+    variable: "--tcrn-state-chip-padding",
+    value: "3px 8px 3px 6px",
+    group: "space",
+    description: "Status chip padding, asymmetric to close the optical gap the leading ink dot opens."
+  },
+  {
+    name: "state.chip.radius",
+    variable: "--tcrn-state-chip-radius",
+    value: "4px",
+    group: "radius",
+    description: "Status chip radius. Squared to the control family — a pill would read as a marketing badge, not an instrument reading."
+  },
+  {
     name: "space.2",
     variable: "--tcrn-space-2",
     value: "8px",
@@ -513,51 +604,100 @@ export const tcrnTokens = [
   {
     name: "radius.control",
     variable: "--tcrn-radius-control",
-    value: "5px",
+    value: "4px",
     group: "radius",
     description: "Default control radius."
   },
   {
     name: "radius.surface",
     variable: "--tcrn-radius-surface",
-    value: "8px",
+    value: "6px",
     group: "radius",
     description: "Panel and card radius for framed surfaces."
   },
   {
     name: "elevation.focus",
     variable: "--tcrn-elevation-focus",
-    value: "0 0 0 3px rgba(88, 101, 216, 0.2)",
+    value: "0 0 0 2px #fafaf9, 0 0 0 4px #17707f",
     group: "elevation",
-    description: "Accessible focus halo."
+    description: "Accessible focus halo: canvas gap plus solid ring (elevation is drawn, never blurred)."
+  },
+  {
+    name: "motion.ease.out",
+    variable: "--tcrn-motion-ease-out",
+    value: "cubic-bezier(0.23, 1, 0.32, 1)",
+    group: "motion",
+    description: "Strong ease-out for anything entering or leaving. The default curve of the system."
+  },
+  {
+    name: "motion.ease.inOut",
+    variable: "--tcrn-motion-ease-in-out",
+    value: "cubic-bezier(0.77, 0, 0.175, 1)",
+    group: "motion",
+    description: "Strong ease-in-out for elements moving or morphing on screen while remaining visible."
+  },
+  {
+    name: "motion.ease.drawer",
+    variable: "--tcrn-motion-ease-drawer",
+    value: "cubic-bezier(0.32, 0.72, 0, 1)",
+    group: "motion",
+    description: "Drawer and sheet curve for large surfaces travelling a long distance."
+  },
+  {
+    name: "motion.comprehension",
+    variable: "--tcrn-motion-comprehension",
+    value: "160ms linear",
+    group: "motion",
+    description: "Opacity and colour transitions that SURVIVE prefers-reduced-motion. Reduced motion removes travel, not the cue that something changed."
+  },
+  {
+    name: "motion.press.scale",
+    variable: "--tcrn-motion-press-scale",
+    value: "0.97",
+    group: "motion",
+    description: "Scale applied on :active. A pressable surface must visibly answer the press; subtle is the point (0.95-0.98)."
+  },
+  {
+    name: "motion.spring.duration",
+    variable: "--tcrn-motion-spring-duration",
+    value: "0.5s",
+    group: "motion",
+    description: "Spring duration for gesture-driven and floating surfaces (direction C contribution to the baseline)."
+  },
+  {
+    name: "motion.spring.bounce",
+    variable: "--tcrn-motion-spring-bounce",
+    value: "0.15",
+    group: "motion",
+    description: "Spring bounce for gesture-driven surfaces. Kept low: bounce belongs to drag-to-dismiss, not to an instrument panel."
   },
   {
     name: "motion.fast",
     variable: "--tcrn-motion-fast",
-    value: "120ms ease",
+    value: "120ms cubic-bezier(0.23, 1, 0.32, 1)",
     group: "motion",
-    description: "Fast state transition."
+    description: "Fast interface response (hover, chip, small state change). Strong ease-out so the first frame moves."
   },
   {
     name: "motion.instant",
     variable: "--tcrn-motion-instant",
-    value: "80ms ease-out",
+    value: "80ms cubic-bezier(0.23, 1, 0.32, 1)",
     group: "motion",
-    description: "Immediate press, focus, or affordance feedback."
+    description: "Near-instant feedback for press and toggle states."
   },
   {
     name: "motion.standard",
     variable: "--tcrn-motion-standard",
-    value: "160ms ease",
+    value: "160ms cubic-bezier(0.23, 1, 0.32, 1)",
     group: "motion",
-    description: "Default hover, selection, and lightweight surface transition."
+    description: "Standard entry/exit for menus, popovers, and inline reveals."
   },
   {
     name: "motion.emphasis",
     variable: "--tcrn-motion-emphasis",
-    value: "220ms cubic-bezier(0.2, 0, 0.2, 1)",
+    value: "220ms cubic-bezier(0.32, 0.72, 0, 1)",
     group: "motion",
-    description: "Drawer, dialog, and high-attention transition."
+    description: "Emphasis movement for drawers and panels: the iOS-style drawer curve, decelerating into rest."
   },
   {
     name: "motion.loading.loop",
@@ -585,7 +725,7 @@ export const tcrnTokens = [
     variable: "--tcrn-motion-reduced-duration",
     value: "0.01ms",
     group: "motion",
-    description: "Reduced-motion duration token for internal-alpha motion proof."
+    description: "Collapsed duration for POSITIONAL motion only under prefers-reduced-motion. Never apply it to opacity or colour: reduced motion means fewer and gentler animations, not none, and comprehension cues must survive. Pair with --tcrn-motion-comprehension."
   },
   {
     name: "zIndex.overlay",
@@ -611,43 +751,46 @@ export const tcrnTokens = [
 ] as const satisfies readonly DesignToken[];
 
 export const tcrnDarkThemeTokens = [
-  { variable: "--tcrn-color-text-primary", value: "#f2f7ff", description: "Dark-mode primary text." },
-  { variable: "--tcrn-color-text-secondary", value: "#bdcae0", description: "Dark-mode secondary text." },
-  { variable: "--tcrn-color-text-muted", value: "#8fa2ba", description: "Dark-mode disabled and muted text." },
-  { variable: "--tcrn-color-surface-canvas", value: "#121a2a", description: "Dark-mode deep navy canvas." },
-  { variable: "--tcrn-color-surface-panel", value: "#182437", description: "Dark-mode blue-gray panel surface." },
-  { variable: "--tcrn-color-surface-muted", value: "#223149", description: "Dark-mode cool muted surface." },
+  { variable: "--tcrn-color-border-control", value: "#66686e", description: "Dark-mode interactive control boundary; meets 3:1 against dark panel and canvas." },
+  { variable: "--tcrn-color-text-tertiary", value: "#83858b", description: "Dark-mode tertiary metadata text." },
+  { variable: "--tcrn-color-text-inverse", value: "#0e1c20", description: "Dark-mode text on filled accent surfaces." },
+  { variable: "--tcrn-color-text-primary", value: "#ececea", description: "Dark-mode primary text." },
+  { variable: "--tcrn-color-text-secondary", value: "#a9abb1", description: "Dark-mode secondary text." },
+  { variable: "--tcrn-color-text-muted", value: "#7a7c82", description: "Dark-mode disabled and muted text." },
+  { variable: "--tcrn-color-surface-canvas", value: "#111214", description: "Dark-mode graphite canvas." },
+  { variable: "--tcrn-color-surface-panel", value: "#18191c", description: "Dark-mode panel surface." },
+  { variable: "--tcrn-color-surface-muted", value: "#212226", description: "Dark-mode muted surface." },
   { variable: "--tcrn-color-neutral-calibration-canvas", value: "#161616", description: "Dark-mode neutral calibration canvas." },
   { variable: "--tcrn-color-neutral-calibration-panel", value: "#222222", description: "Dark-mode neutral calibration panel." },
   { variable: "--tcrn-color-neutral-calibration-muted", value: "#2f2f2f", description: "Dark-mode neutral calibration muted surface." },
   { variable: "--tcrn-color-neutral-calibration-border", value: "#808080", description: "Dark-mode neutral calibration boundary." },
-  { variable: "--tcrn-color-border-subtle", value: "#344963", description: "Dark-mode low-emphasis blue-gray boundary." },
-  { variable: "--tcrn-color-border-strong", value: "#5f7894", description: "Dark-mode control boundary." },
-  { variable: "--tcrn-color-brand-teal", value: "#79d1da", description: "Dark-mode legacy aqua support accent." },
-  { variable: "--tcrn-color-brand-primary", value: "#a7b0ff", description: "Dark-mode primary iris-blue brand color." },
-  { variable: "--tcrn-color-brand-primary-bg", value: "#25345f", description: "Dark-mode quiet iris-blue background." },
-  { variable: "--tcrn-color-brand-secondary", value: "#79d1da", description: "Dark-mode aqua support color." },
-  { variable: "--tcrn-color-brand-secondary-bg", value: "#133946", description: "Dark-mode quiet aqua background." },
-  { variable: "--tcrn-color-brand-accent", value: "#f2a3b5", description: "Dark-mode rose-coral accent brand color." },
-  { variable: "--tcrn-color-brand-accent-bg", value: "#44252f", description: "Dark-mode quiet rose-coral accent background." },
-  { variable: "--tcrn-color-brand-neutral", value: "#b7c3ce", description: "Dark-mode neutral support color." },
-  { variable: "--tcrn-color-brand-neutral-bg", value: "#223149", description: "Dark-mode neutral support background." },
-  { variable: "--tcrn-color-focus-ring", value: "#b5baff", description: "Dark-mode keyboard focus outline." },
+  { variable: "--tcrn-color-border-subtle", value: "#292b2f", description: "Dark-mode low-emphasis boundary." },
+  { variable: "--tcrn-color-border-strong", value: "#3f4147", description: "Dark-mode control boundary." },
+  { variable: "--tcrn-color-brand-teal", value: "#62c3d2", description: "Dark-mode aqua support accent." },
+  { variable: "--tcrn-color-brand-primary", value: "#62c3d2", description: "Dark-mode primary brand teal." },
+  { variable: "--tcrn-color-brand-primary-bg", value: "#12333a", description: "Dark-mode quiet teal background." },
+  { variable: "--tcrn-color-brand-secondary", value: "#62c3d2", description: "Dark-mode support teal." },
+  { variable: "--tcrn-color-brand-secondary-bg", value: "#12333a", description: "Dark-mode quiet secondary background." },
+  { variable: "--tcrn-color-brand-accent", value: "#d98d82", description: "Dark-mode stamp oxblood for identity moments." },
+  { variable: "--tcrn-color-brand-accent-bg", value: "#3a211d", description: "Dark-mode quiet oxblood background." },
+  { variable: "--tcrn-color-brand-neutral", value: "#a9abb1", description: "Dark-mode neutral support color." },
+  { variable: "--tcrn-color-brand-neutral-bg", value: "#212226", description: "Dark-mode neutral support background." },
+  { variable: "--tcrn-color-focus-ring", value: "#62c3d2", description: "Dark-mode keyboard focus outline." },
   { variable: "--tcrn-color-focus-ring-calibrated", value: "#5cb3ff", description: "Dark-mode measured solid focus ring candidate." },
   { variable: "--tcrn-color-progress-track-calibrated", value: "#222222", description: "Dark-mode measured progress track." },
   { variable: "--tcrn-color-progress-fill-start-calibrated", value: "#2784d5", description: "Dark-mode measured progress fill start." },
   { variable: "--tcrn-color-progress-fill-end-calibrated", value: "#8d92f9", description: "Dark-mode measured progress fill end." },
-  { variable: "--tcrn-color-state-ready", value: "#6dd69a", description: "Dark-mode ready foreground." },
-  { variable: "--tcrn-color-state-ready-bg", value: "#123a2a", description: "Dark-mode ready background." },
-  { variable: "--tcrn-color-state-blocked", value: "#ff8a7f", description: "Dark-mode blocked foreground." },
-  { variable: "--tcrn-color-state-blocked-bg", value: "#4a1d1b", description: "Dark-mode blocked background." },
-  { variable: "--tcrn-color-state-warning", value: "#ffd27a", description: "Dark-mode warning foreground." },
-  { variable: "--tcrn-color-state-warning-bg", value: "#3f2f12", description: "Dark-mode warning background." },
+  { variable: "--tcrn-color-state-ready", value: "#5fbe8b", description: "Dark-mode ready foreground." },
+  { variable: "--tcrn-color-state-ready-bg", value: "#16261e", description: "Dark-mode ready background." },
+  { variable: "--tcrn-color-state-blocked", value: "#e0837b", description: "Dark-mode blocked foreground." },
+  { variable: "--tcrn-color-state-blocked-bg", value: "#2b1a18", description: "Dark-mode blocked background." },
+  { variable: "--tcrn-color-state-warning", value: "#d9ab52", description: "Dark-mode warning foreground." },
+  { variable: "--tcrn-color-state-warning-bg", value: "#2a2317", description: "Dark-mode warning background." },
   { variable: "--tcrn-color-state-warning-calibrated", value: "#604200", description: "Dark-mode measured warning foreground candidate." },
   { variable: "--tcrn-color-state-warning-calibrated-bg", value: "#fde1a7", description: "Dark-mode measured warning background candidate." },
   { variable: "--tcrn-color-state-danger-calibrated", value: "#742e2b", description: "Dark-mode measured danger foreground candidate." },
   { variable: "--tcrn-color-state-danger-calibrated-bg", value: "#ffd1ca", description: "Dark-mode measured danger background candidate." },
-  { variable: "--tcrn-elevation-focus", value: "0 0 0 3px rgba(181, 186, 255, 0.24)", description: "Dark-mode accessible focus halo." }
+  { variable: "--tcrn-elevation-focus", value: "0 0 0 2px #111214, 0 0 0 4px #62c3d2", description: "Dark-mode accessible focus halo." }
 ] as const satisfies readonly ThemeTokenOverride[];
 
 export function createTokenMap(tokens: readonly DesignToken[] = tcrnTokens): Record<string, string> {

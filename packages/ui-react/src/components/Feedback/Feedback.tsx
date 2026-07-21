@@ -20,6 +20,35 @@ export function Badge({ tone = "neutral", className, ...props }: BadgeProps) {
   return <span {...props} className={cx("tcrn-badge", `tcrn-badge--${tone}`, className)} />;
 }
 
+/**
+ * Identity moments in which a stamp is admitted. The list is closed on purpose: the
+ * B「治理纸感」語彙 earns its weight by being rare, so it is bound to the three
+ * points where the governed workflow records something irreversible.
+ */
+export type StampMoment = "gate-close" | "ruling" | "release";
+
+export interface StampProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+  /** Which identity moment this stamp marks. */
+  moment: StampMoment;
+  /** The impression text, e.g. the gate name or the ruling id. */
+  children: ReactNode;
+}
+
+/**
+ * Stamp marks an identity moment — a gate closing, a ruling landing, a release being
+ * accepted. It is the only component that may use the serif face and the oxblood ink.
+ * Using it anywhere else is a design-system violation and is caught by
+ * `pnpm stamp:proof`, not merely discouraged in prose.
+ */
+export function Stamp({ moment, className, ...props }: StampProps) {
+  return <span {...props} data-stamp-moment={moment} className={cx("tcrn-stamp", className)} />;
+}
+
+/** The archival double rule that accompanies a stamped header. Decorative by design. */
+export function StampRule({ className, ...props }: HTMLAttributes<HTMLHRElement>) {
+  return <hr {...props} aria-hidden="true" className={cx("tcrn-stamp-rule", className)} />;
+}
+
 export interface StatusBadgeProps extends Omit<BadgeProps, "tone"> {
   state: CopyStateInput;
   locale?: TcrnLocale | string;

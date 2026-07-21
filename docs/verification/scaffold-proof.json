@@ -62,7 +62,7 @@
     {
       "path": "package.json",
       "exists": true,
-      "sha256": "11a8f9500c3829a0e1c7ea3c3aa02f7fab04b47c7f3dbce53101c57c499706bc"
+      "sha256": "9eefe1789fc5da0c44a7281fc0df3e57558eca6a8121f332221e7a91fefa7df7"
     },
     {
       "path": "pnpm-workspace.yaml",
@@ -82,7 +82,7 @@
     {
       "path": "CHANGELOG.md",
       "exists": true,
-      "sha256": "32222d754b63c87b39fb56baab1a9eaee68396c4d9cf0614b97d864d763ad717"
+      "sha256": "f8a3259341ee080186c6b07366c1385393fd2813065364d15f42e71b2494497b"
     },
     {
       "path": "LICENSE",
@@ -107,7 +107,7 @@
     {
       "path": "packages/ui-tokens/src/index.ts",
       "exists": true,
-      "sha256": "34667c2297708ab53800bf5819eb2b54d08f7c28ba109598513633638ad01525"
+      "sha256": "ce7c4bd743ff9f831e1f261bf71de7d7178681eb57dcd39fea0760947a98204d"
     },
     {
       "path": "packages/ui-copy-state/src/index.ts",
@@ -117,7 +117,7 @@
     {
       "path": "packages/ui-react/src/index.tsx",
       "exists": true,
-      "sha256": "173d0ae5b216bba16e48bf754058deb16932af91882f6bd7e8c8c32d4a38f6f2"
+      "sha256": "462f32cbd782064fee56e0512264937a4e3ef1c9b78d90b0283f24736a90c907"
     },
     {
       "path": "apps/storybook/src/stories.tsx",

@@ -70,3 +70,8 @@ export const TableWorkIndexSpec: Story = {
   name: "Table and work index spec",
   render: () => renderContractStory("table-work-index-spec")
 };
+
+export const KnowledgeManagementComponentsSpec: Story = {
+  name: "Knowledge Management component specs",
+  render: () => renderContractStory("knowledge-management-components-spec")
+};

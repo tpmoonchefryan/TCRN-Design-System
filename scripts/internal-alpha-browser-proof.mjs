@@ -4,6 +4,8 @@ import { createServer } from "node:http";
 import { extname, normalize, resolve, join, relative } from "node:path";
 import { createRequire } from "node:module";
 import { chromium } from "@playwright/test";
+import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.mjs";
+import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE } from "./lib/visual-signature.mjs";
 
 const require = createRequire(import.meta.url);
 const axePath = require.resolve("axe-core/axe.min.js");
@@ -12,6 +14,20 @@ const screenshotDir = join(outputRoot, "screenshots");
 const staticSurfacePath = "apps/storybook/storybook-static/index.html";
 const aiContractPath = "apps/storybook/storybook-static/ai-consumption-contract.json";
 const llmsPath = "apps/storybook/storybook-static/llms.txt";
+const localAbsolutePathDenyPatterns = [
+  { name: "file-url", pattern: /file:\/\//i },
+  { name: "users-home-path", pattern: /\/Users\//i },
+  { name: "tmp-path", pattern: /\/tmp(?:\/|$)/i },
+  { name: "private-tmp-path", pattern: /\/private\/tmp(?:\/|$)/i },
+  { name: "mac-temp-path", pattern: /\/var\/folders(?:\/|$)/i },
+  { name: "remote-workspace-path", pattern: /\/srv\/tcrn(?:\/|$)/i }
+];
+
+function collectLocalAbsolutePathHits(label, value) {
+  return localAbsolutePathDenyPatterns
+    .filter(({ pattern }) => pattern.test(value))
+    .map(({ name }) => ({ label, rule: name }));
+}
 
 const requiredStories = [
   { id: "welcome-governance", group: "Welcome", storybookId: "tcrn-design-system-welcome--welcome-governance" },
@@ -33,6 +49,7 @@ const requiredStories = [
   { id: "component-family-index", group: "Components", storybookId: "tcrn-design-system-components--component-family-index" },
   { id: "display-primitives-spec", group: "Components", storybookId: "tcrn-design-system-components--display-primitives-spec" },
   { id: "interaction-disclosure-spec", group: "Components", storybookId: "tcrn-design-system-components--interaction-disclosure-spec" },
+  { id: "stamp-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--stamp-spec-usage" },
   { id: "button-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--button-spec-usage" },
   { id: "field-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--field-spec-usage" },
   { id: "navigation-shell-spec", group: "Components", storybookId: "tcrn-design-system-components--navigation-shell-spec" },
@@ -41,6 +58,7 @@ const requiredStories = [
   { id: "dialog-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--dialog-spec-usage" },
   { id: "table-work-index-spec", group: "Components", storybookId: "tcrn-design-system-components--table-work-index-spec" },
   { id: "work-management-components-spec", group: "Components", storybookId: "tcrn-design-system-components--work-management-components-spec" },
+  { id: "knowledge-management-components-spec", group: "Components", storybookId: "tcrn-design-system-components--knowledge-management-components-spec" },
   { id: "forms-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--forms-patterns" },
   { id: "workbench-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--workbench-patterns" },
   { id: "work-management-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--work-management-patterns" },
@@ -467,22 +485,93 @@ function targetTopMatchesAnchorOffset(metrics) {
   return atPageEnd && targetTop !== null && targetTop >= lowerBound;
 }
 
+/**
+ * Pin every animation to a deterministic frame. A finite transition is finished, so
+ * a capture shows what the surface settles to rather than a point on the way there;
+ * an infinite one (the skeleton, loading and progress loops run forever by design and
+ * can never finish) is paused at time zero. Without this, any story containing a loop
+ * — or any element still easing — hashes differently on every run, which is what made
+ * story-coverage-manifest.json and visual-baseline-manifest.json churn.
+ */
+const PIN_ANIMATIONS = () => {
+  if (typeof document.getAnimations !== "function") return;
+  for (const animation of document.getAnimations()) {
+    const iterations = animation.effect?.getComputedTiming?.().iterations;
+    if (iterations === Infinity) {
+      animation.pause();
+      animation.currentTime = 0;
+      continue;
+    }
+    try {
+      animation.finish();
+    } catch {
+      animation.pause();
+      animation.currentTime = 0;
+    }
+  }
+};
+
+async function pinAnimations(page) {
+  await page.evaluate(PIN_ANIMATIONS);
+}
+
 async function setTransientScreenshotChromeHidden(page, hidden) {
-  await page.evaluate((shouldHide) => {
+  await page.evaluate(([shouldHide, pinSource]) => {
     const styleId = "tcrn-proof-screenshot-chrome-hidden";
     document.getElementById(styleId)?.remove();
     const skipLink = document.querySelector(".tcrn-doc-skip");
     if (skipLink instanceof HTMLElement) {
       skipLink.blur();
     }
-    if (!shouldHide) {
-      return;
+    if (shouldHide) {
+      const style = document.createElement("style");
+      style.id = styleId;
+      style.textContent = ".tcrn-doc-skip { visibility: hidden !important; }";
+      document.head.appendChild(style);
     }
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = ".tcrn-doc-skip { visibility: hidden !important; }";
-    document.head.appendChild(style);
-  }, hidden);
+    // Pinning has to happen *after* the chrome style lands: appending a stylesheet is
+    // itself capable of starting a transition, so pinning first would leave the very
+    // animations this hook introduces still running when the shutter opens.
+    // eslint-disable-next-line no-new-func
+    new Function(`return (${pinSource})`)()();
+  }, [hidden, PIN_ANIMATIONS.toString()]);
+}
+
+const signatureBaselinePath = "docs/verification/internal-alpha/visual-signature-baseline.json";
+const updateVisualBaseline = process.argv.includes("--update-visual-baseline");
+const signatureBaseline = existsSync(signatureBaselinePath)
+  ? JSON.parse(readFileSync(signatureBaselinePath, "utf8"))
+  : { schemaVersion: "tcrn.visual-signature-baseline.v1", tolerance: SIGNATURE_TOLERANCE, entries: {} };
+const signatureResults = [];
+
+/**
+ * Capture, then reduce to a perceptual signature and compare against the committed
+ * baseline. The signature — not the PNG's sha256 — is the invariant: see
+ * scripts/lib/visual-signature.mjs for the measurements the tolerance rests on.
+ */
+async function captureWithSignature(target, key, path, { gated = true, ...options } = {}) {
+  const buffer = await target.screenshot({ path, animations: "disabled", ...options });
+  if (!gated) {
+    // The capture is kept on disk for a human to look at, but nothing about it is
+    // recorded: its signature is not reproducible, and writing an unreproducible value
+    // into a committed artifact is precisely the churn this work set out to remove.
+    signatureResults.push({ key, status: "recorded-only", distance: null, gated: false });
+    return null;
+  }
+  const cells = await computeSignature(signatureContext.page, buffer);
+  const encoded = encodeSignature(cells);
+  const baseline = signatureBaseline.entries[key];
+  let status = "new";
+  let distance = null;
+  if (baseline) {
+    distance = compareSignatures(decodeSignature(baseline), cells);
+    status = withinTolerance(distance) ? "match" : "regression";
+  }
+  if (updateVisualBaseline || !baseline) {
+    signatureBaseline.entries[key] = encoded;
+  }
+  signatureResults.push({ key, status, distance, gated: true });
+  return encoded;
 }
 
 rmSync(screenshotDir, { recursive: true, force: true });
@@ -494,7 +583,7 @@ for (const section of sectionPages) {
   assertBuiltSurface(`apps/storybook/storybook-static/${section.file}`);
 }
 
-const expectedCategoryCount = 18;
+const expectedCategoryCount = 19;
 const expectedStorybookShellNavGroupCount = sectionPages.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
@@ -549,6 +638,10 @@ const aiContractTraceabilityCheck = {
     && aiContract.changelogGovernance?.records?.length > 0
     && aiContract.changelogGovernance?.requiredFields?.includes("proofArtifacts")
     && aiContract.workManagementStaticAuthority?.disposition === "static_contract_authority_explicit_and_smoke_proven"
+    && (aiContract.workManagementStaticAuthority?.admittedPackageExports ?? []).includes("WorkItemRow")
+    && (aiContract.workManagementStaticAuthority?.admittedPackageExports ?? []).includes("WorkDetailLayout")
+    && (aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? []).includes("WorkQuickFilters")
+    && (aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? []).includes("MachineTokenCell")
     && aiContract.foundationVisualStandards?.registryId === "foundation-visual-standards-v1"
     && JSON.stringify(aiContract.foundationVisualStandards?.categoryIds ?? []) === JSON.stringify(expectedFoundationStandardCategoryIds)
     && aiContract.foundationVisualStandardCategories?.length === expectedFoundationStandardCategoryIds.length
@@ -577,6 +670,8 @@ const aiContractTraceabilityCheck = {
   coveredCategoryCount: aiContract.coveredStorybookSections?.reduce((total, section) => total + section.categories.length, 0) ?? 0,
   changelogRecordCount: aiContract.changelogGovernance?.records?.length ?? 0,
   workManagementStaticAuthorityDisposition: aiContract.workManagementStaticAuthority?.disposition ?? null,
+  workManagementAdmittedPackageExports: aiContract.workManagementStaticAuthority?.admittedPackageExports ?? [],
+  workLayoutDensityPackageExports: aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? [],
   foundationVisualStandardsRegistryId: aiContract.foundationVisualStandards?.registryId ?? null,
   foundationVisualStandardCategoryIds: aiContract.foundationVisualStandards?.categoryIds ?? [],
   foundationVisualStandardCategoryCount: aiContract.foundationVisualStandardCategories?.length ?? 0,
@@ -611,6 +706,9 @@ function normalizeEphemeralProofData(value) {
   return value;
 }
 const browser = await chromium.launch({ headless: true });
+// A CSP-free page used only to reduce captures to signatures; the docs shell refuses
+// data: image sources, so the measurement cannot run inside the page under test.
+const signatureContext = await createSignatureContext(browser);
 const browserVersion = browser.version();
 const browserSummaries = [];
 const visualEntries = [];
@@ -638,13 +736,19 @@ for (const viewport of viewports) {
     const sectionStories = requiredStories.filter((story) => story.group === section.group);
     const screenshotPath = relativeScreenshotPath(`${viewport.name}-section-${section.slug}.png`);
     await setTransientScreenshotChromeHidden(page, true);
-    await page.screenshot({ path: screenshotPath, fullPage: true });
+    // Section captures are whole-page compositions of stories that are each gated below,
+    // so they add no coverage — and their height is unbounded (section-components reaches
+    // 159,919px on mobile), which makes a full-page capture depend on whether lazy content
+    // finished painting. Measured: its signature swings mean=34.6 between runs, four times
+    // the distance a real one-token colour change produces. Recorded for human inspection,
+    // deliberately not gated: a tolerance wide enough to admit it would admit real regressions.
+    const sectionSignature = await captureWithSignature(page, `section-${section.slug}@${viewport.name}`, screenshotPath, { fullPage: true, gated: false });
     await setTransientScreenshotChromeHidden(page, false);
     visualEntries.push({
       storyId: `section-${section.slug}`,
       viewport: viewport.name,
       path: screenshotPath,
-      sha256: hashFile(screenshotPath),
+      visualGate: "not-gated-unbounded-full-page",
       intentionalDiffDisposition: "new_internal_alpha_baseline"
     });
 
@@ -653,13 +757,13 @@ for (const viewport of viewports) {
       await locator.waitFor({ state: "visible" });
       const storyPath = relativeScreenshotPath(`${viewport.name}-${story.id}.png`);
       await setTransientScreenshotChromeHidden(page, true);
-      await locator.screenshot({ path: storyPath });
+      const storySignature = await captureWithSignature(locator, `${story.id}@${viewport.name}`, storyPath);
       await setTransientScreenshotChromeHidden(page, false);
       visualEntries.push({
         storyId: story.id,
         viewport: viewport.name,
         path: storyPath,
-        sha256: hashFile(storyPath),
+        signature: storySignature,
         intentionalDiffDisposition: "new_internal_alpha_baseline"
       });
     }
@@ -1018,6 +1122,27 @@ const collectMobileHashAnchorMetrics = async (label) => {
       }
       return 1;
     };
+    // getComputedStyle reports the *current* value of a property, which for an
+    // element mid-transition is a point on the interpolation rather than the settled
+    // colour. The theme wash and the shell's background transitions are still running
+    // when this proof samples, so the recorded baseline drifted run to run — on the v1
+    // palette it moved across rgb(41,42,45) … rgb(61,71,87), which made
+    // story-coverage-manifest.json unreproducible and, worse, trained readers to
+    // ignore a file that changes every time. Finishing every running animation first
+    // makes the sample deterministic and is also the value the baseline is meant to
+    // capture: what the surface settles to, not what it looked like in passing.
+    const settleAnimations = () => {
+      if (typeof document.getAnimations !== "function") return;
+      for (const animation of document.getAnimations()) {
+        try {
+          animation.finish();
+        } catch {
+          // A never-ending animation (an infinite spinner) cannot finish; its own
+          // frames are not what this proof measures, so skipping it is correct.
+        }
+      }
+    };
+    settleAnimations();
     const styleFor = (selector) => {
       const node = document.querySelector(selector);
       if (!node) {
@@ -1098,9 +1223,12 @@ const collectMobileHashAnchorMetrics = async (label) => {
       mobileTopbarLayering: {
         topbar: styleFor(".tcrn-doc-header"),
         utilityRow: styleFor(".tcrn-doc-global-bar"),
+        workspace: styleFor(".tcrn-doc-header__workspace"),
         currentLocation: styleFor(".tcrn-doc-current-location"),
         searchWrapper: styleFor(".tcrn-doc-header-search"),
         searchInput: styleFor(".tcrn-search-input"),
+        headerControls: styleFor(".tcrn-doc-header-controls"),
+        controlsRow: styleFor(".tcrn-doc-header-controls__row"),
         themeToggle: styleFor(".tcrn-shell-theme-toggle"),
         localeTrigger: styleFor(".tcrn-shell-locale-menu__trigger"),
         pointReadbacks
@@ -1130,7 +1258,7 @@ const collectMobileHashAnchorMetrics = async (label) => {
       failures.push(`mobile-layer-missing:${name}`);
       continue;
     }
-    if (layer.backgroundAlpha < 0.98 && layer.backgroundImage === "none") {
+    if (layer.backgroundAlpha < 0.98) {
       failures.push(`mobile-layer-transparent:${name}:${layer.backgroundColor}`);
     }
     if (layer.opacity < 0.98) failures.push(`mobile-layer-opacity:${name}:${layer.opacity}`);
@@ -1162,6 +1290,212 @@ const mobileHashAnchorOcclusionCheck = {
   route: "foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
   viewport: { width: 390, height: 844 },
   readbacks: mobileHashAnchorReadbacks
+};
+const mobileKnowledgeDocShellLayeringPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+const mobileKnowledgeDocShellLayeringRoute = `${staticServer.origin}/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec`;
+const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
+  await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-storybook-locale='zh-CN']");
+  await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-active-story-section='Components']");
+  await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-doc-nav-item='knowledge-management-components-spec'][aria-current='location'][data-doc-nav-item-active='true']");
+  const metrics = await mobileKnowledgeDocShellLayeringPage.evaluate((phaseLabel) => {
+    const rectFor = (selector) => {
+      const node = document.querySelector(selector);
+      if (!node) {
+        return null;
+      }
+      const rect = node.getBoundingClientRect();
+      return {
+        top: Number(rect.top.toFixed(2)),
+        right: Number(rect.right.toFixed(2)),
+        bottom: Number(rect.bottom.toFixed(2)),
+        left: Number(rect.left.toFixed(2)),
+        width: Number(rect.width.toFixed(2)),
+        height: Number(rect.height.toFixed(2))
+      };
+    };
+    const alphaFromColor = (color) => {
+      const normalized = String(color || "").trim();
+      if (!normalized || normalized === "transparent") return 0;
+      const rgbaMatch = normalized.match(/^rgba?\((.+)\)$/i);
+      if (rgbaMatch) {
+        const parts = rgbaMatch[1].split(",").map((part) => part.trim());
+        return parts.length >= 4 ? Number.parseFloat(parts[3]) : 1;
+      }
+      const colorFunctionAlpha = normalized.match(/\/\s*([0-9.]+%?)\s*\)$/i);
+      if (colorFunctionAlpha) {
+        const rawAlpha = colorFunctionAlpha[1];
+        return rawAlpha.endsWith("%") ? Number.parseFloat(rawAlpha) / 100 : Number.parseFloat(rawAlpha);
+      }
+      return 1;
+    };
+    // getComputedStyle reports the *current* value of a property, which for an
+    // element mid-transition is a point on the interpolation rather than the settled
+    // colour. The theme wash and the shell's background transitions are still running
+    // when this proof samples, so the recorded baseline drifted run to run — on the v1
+    // palette it moved across rgb(41,42,45) … rgb(61,71,87), which made
+    // story-coverage-manifest.json unreproducible and, worse, trained readers to
+    // ignore a file that changes every time. Finishing every running animation first
+    // makes the sample deterministic and is also the value the baseline is meant to
+    // capture: what the surface settles to, not what it looked like in passing.
+    const settleAnimations = () => {
+      if (typeof document.getAnimations !== "function") return;
+      for (const animation of document.getAnimations()) {
+        try {
+          animation.finish();
+        } catch {
+          // A never-ending animation (an infinite spinner) cannot finish; its own
+          // frames are not what this proof measures, so skipping it is correct.
+        }
+      }
+    };
+    settleAnimations();
+    const styleFor = (selector) => {
+      const node = document.querySelector(selector);
+      if (!node) {
+        return null;
+      }
+      const rect = node.getBoundingClientRect();
+      const style = getComputedStyle(node);
+      const backgroundAlpha = alphaFromColor(style.backgroundColor);
+      return {
+        selector,
+        backgroundColor: style.backgroundColor,
+        backgroundImage: style.backgroundImage,
+        backgroundAlpha: Number.isFinite(backgroundAlpha) ? Number(backgroundAlpha.toFixed(2)) : 0,
+        opacity: Number.parseFloat(style.opacity || "1"),
+        position: style.position,
+        zIndex: style.zIndex,
+        top: Number(rect.top.toFixed(2)),
+        right: Number(rect.right.toFixed(2)),
+        bottom: Number(rect.bottom.toFixed(2)),
+        left: Number(rect.left.toFixed(2)),
+        width: Number(rect.width.toFixed(2)),
+        height: Number(rect.height.toFixed(2))
+      };
+    };
+    const hitStackFor = (x, y) => document.elementsFromPoint(x, y).slice(0, 10).map((node) => ({
+      tag: node.tagName.toLowerCase(),
+      id: node.id || "",
+      className: typeof node.className === "string" ? node.className : "",
+      role: node.getAttribute("role"),
+      docShell: node.getAttribute("data-doc-shell"),
+      docNavItem: node.getAttribute("data-doc-nav-item"),
+      shellControl: node.getAttribute("data-shell-control"),
+      text: (node.textContent || "").trim().replace(/\s+/g, " ").slice(0, 80)
+    }));
+    const topbar = rectFor(".tcrn-doc-header");
+    const topbarBottom = topbar?.bottom ?? 0;
+    const sampledYs = [20, 60, 125, 260, 305, 360]
+      .filter((y) => y > 0 && y < Math.max(1, topbarBottom - 1));
+    const pointReadbacks = sampledYs.map((y) => {
+      const point = { label: `mobile-doc-shell-y${y}`, x: 195, y };
+      const stack = hitStackFor(point.x, point.y);
+      const shellIndex = stack.findIndex((entry) => entry.docShell === "online-docs"
+        || entry.shellControl
+        || entry.className.includes("tcrn-doc-header")
+        || entry.className.includes("tcrn-doc-global-bar")
+        || entry.className.includes("tcrn-doc-current-location")
+        || entry.className.includes("tcrn-doc-header-search")
+        || entry.className.includes("tcrn-doc-header-controls")
+        || entry.className.includes("tcrn-shell"));
+      const storyContentIndex = stack.findIndex((entry) => entry.className.includes("tcrn-table-shell")
+        || entry.className.includes("tcrn-readback-panel")
+        || entry.className.includes("alpha-story-stack")
+        || entry.className.includes("story-body"));
+      return {
+        ...point,
+        shellIndex,
+        storyContentIndex,
+        shellPaintsAboveStoryContent: shellIndex >= 0 && (storyContentIndex === -1 || shellIndex < storyContentIndex),
+        storyContentBehindShell: storyContentIndex >= 0,
+        stack
+      };
+    });
+    const html = document.documentElement;
+    const body = document.body;
+    const article = rectFor("#knowledge-management-components-spec");
+    const title = rectFor("#knowledge-management-components-spec > h2");
+    const minimumClearancePx = 8;
+    return {
+      label: phaseLabel,
+      route: window.location.pathname + window.location.search + window.location.hash,
+      scrollY: Number(window.scrollY.toFixed(2)),
+      viewport: { width: window.innerWidth, height: window.innerHeight },
+      locale: document.querySelector("[data-storybook-locale]")?.getAttribute("data-storybook-locale") ?? document.documentElement.lang,
+      shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-doc-shell") ?? null,
+      anchorScrollControlled: document.querySelector("[data-contract-surface]")?.getAttribute("data-anchor-scroll-controlled") ?? null,
+      activeStoryId: document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']")?.getAttribute("data-doc-nav-item") ?? null,
+      topbar,
+      article,
+      title,
+      mobileTopbarLayering: {
+        topbar: styleFor(".tcrn-doc-header"),
+        utilityRow: styleFor(".tcrn-doc-global-bar"),
+        workspace: styleFor(".tcrn-doc-header__workspace"),
+        currentLocation: styleFor(".tcrn-doc-current-location"),
+        searchWrapper: styleFor(".tcrn-doc-header-search"),
+        searchInput: styleFor(".tcrn-search-input"),
+        headerControls: styleFor(".tcrn-doc-header-controls"),
+        controlsRow: styleFor(".tcrn-doc-header-controls__row"),
+        themeToggle: styleFor(".tcrn-shell-theme-toggle"),
+        localeTrigger: styleFor(".tcrn-shell-locale-menu__trigger"),
+        pointReadbacks
+      },
+      articleClearancePx: article ? Number((article.top - topbarBottom).toFixed(2)) : null,
+      titleClearancePx: title ? Number((title.top - topbarBottom).toFixed(2)) : null,
+      articleReadableBelowTopbar: Boolean(article && article.top >= topbarBottom + minimumClearancePx),
+      titleReadableBelowTopbar: Boolean(title && title.top >= topbarBottom + minimumClearancePx),
+      docShellSelectorCount: document.querySelectorAll("[data-doc-shell], .tcrn-doc-header, .tcrn-doc-global-bar, .tcrn-doc-header-search, .tcrn-doc-nav, .tcrn-doc-sidebar").length,
+      globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
+        .filter((node) => !node.closest(".story-body"))
+        .length,
+      pageOverflow: Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1
+    };
+  }, label);
+  const failures = [];
+  if (metrics.viewport.width !== 390 || metrics.viewport.height !== 844) failures.push(`viewport:${metrics.viewport.width}x${metrics.viewport.height}`);
+  if (metrics.locale !== "zh-CN") failures.push(`locale:${metrics.locale}`);
+  if (metrics.shellAuthority !== "online-docs") failures.push(`doc-shell-authority:${metrics.shellAuthority}`);
+  if (metrics.anchorScrollControlled !== "true") failures.push(`anchor-scroll-controlled:${metrics.anchorScrollControlled}`);
+  if (metrics.activeStoryId !== "knowledge-management-components-spec") failures.push(`active-story:${metrics.activeStoryId}`);
+  if (!metrics.articleReadableBelowTopbar) failures.push(`article-clearance:${metrics.articleClearancePx}`);
+  if (!metrics.titleReadableBelowTopbar) failures.push(`title-clearance:${metrics.titleClearancePx}`);
+  for (const [name, layer] of Object.entries(metrics.mobileTopbarLayering ?? {})) {
+    if (name === "pointReadbacks") continue;
+    if (!layer) {
+      failures.push(`mobile-knowledge-layer-missing:${name}`);
+      continue;
+    }
+    if (layer.backgroundAlpha < 0.98) {
+      failures.push(`mobile-knowledge-layer-transparent:${name}:${layer.backgroundColor}`);
+    }
+    if (layer.opacity < 0.98) failures.push(`mobile-knowledge-layer-opacity:${name}:${layer.opacity}`);
+  }
+  for (const point of metrics.mobileTopbarLayering?.pointReadbacks ?? []) {
+    if (!point.shellPaintsAboveStoryContent) {
+      failures.push(`mobile-knowledge-layer-stack:${point.label}:shell:${point.shellIndex}:story:${point.storyContentIndex}`);
+    }
+  }
+  if (metrics.docShellSelectorCount < 6) failures.push(`doc-shell-selector-count:${metrics.docShellSelectorCount}`);
+  if (metrics.globalProductShellShellSelectorCount !== 0) failures.push(`global-product-shell-shell-selectors:${metrics.globalProductShellShellSelectorCount}`);
+  if (metrics.pageOverflow) failures.push("page-overflow");
+  return { ...metrics, ok: failures.length === 0, failures };
+};
+await mobileKnowledgeDocShellLayeringPage.goto(mobileKnowledgeDocShellLayeringRoute);
+await mobileKnowledgeDocShellLayeringPage.waitForLoadState("load");
+await mobileKnowledgeDocShellLayeringPage.waitForTimeout(80);
+const mobileKnowledgeDocShellLayeringReadbacks = [await collectMobileKnowledgeDocShellLayeringMetrics("after-load")];
+await mobileKnowledgeDocShellLayeringPage.waitForTimeout(700);
+mobileKnowledgeDocShellLayeringReadbacks.push(await collectMobileKnowledgeDocShellLayeringMetrics("after-700ms"));
+await mobileKnowledgeDocShellLayeringPage.reload({ waitUntil: "load" });
+await mobileKnowledgeDocShellLayeringPage.waitForTimeout(1500);
+mobileKnowledgeDocShellLayeringReadbacks.push(await collectMobileKnowledgeDocShellLayeringMetrics("after-reload-1500ms"));
+await mobileKnowledgeDocShellLayeringPage.close();
+const mobileKnowledgeDocShellLayeringCheck = {
+  ok: mobileKnowledgeDocShellLayeringReadbacks.every((item) => item.ok),
+  route: "components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+  viewport: { width: 390, height: 844 },
+  readbacks: mobileKnowledgeDocShellLayeringReadbacks
 };
 	await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=zh-CN#component-family-index`);
 	await storybookPage.waitForSelector("[data-active-story-section='Components']");
@@ -1539,12 +1873,19 @@ await storybookPage.waitForSelector("[data-contract-story-id='dialog-spec-usage'
 await storybookPage.locator("#dialog-spec-usage").getByRole("button", { name: "Open confirmation" }).click();
 await storybookPage.waitForSelector("#dialog-spec-usage [data-dialog-fixture-panel]:not([hidden]) [role='dialog']");
 const openDialogPath = relativeScreenshotPath("desktop-1440x900-overlay-focus-open-dialog.png");
-await storybookPage.locator("#dialog-spec-usage [data-dialog-fixture-panel] [role='dialog']").screenshot({ path: openDialogPath });
+// This capture does not go through setTransientScreenshotChromeHidden, and the dialog
+// has just been opened, so its entry animation is still running: pin explicitly.
+await pinAnimations(storybookPage);
+const openDialogSignature = await captureWithSignature(
+  storybookPage.locator("#dialog-spec-usage [data-dialog-fixture-panel] [role='dialog']"),
+  "overlay-focus-open-dialog@desktop-1440x900",
+  openDialogPath
+);
 visualEntries.push({
   storyId: "overlay-focus-open-dialog",
   viewport: "desktop-1440x900",
   path: openDialogPath,
-  sha256: hashFile(openDialogPath),
+  signature: openDialogSignature,
   intentionalDiffDisposition: "new_internal_alpha_baseline"
 });
 const interactiveDialogCapabilities = await storybookPage.locator("#dialog-spec-usage [data-dialog-fixture-panel] [role='dialog']").evaluate((node) => ({
@@ -1634,6 +1975,7 @@ localeMenuFocusReturnCheck = {
   closeReadback: localeMenuCloseReadback
 };
 await storybookPage.close();
+await signatureContext.close();
 await browser.close();
 await staticServer.close();
 
@@ -1741,7 +2083,7 @@ const axeSummary = {
   sections: axeSummaries
 };
 const storyCoverageManifest = {
-  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeMenuFocusReturnCheck.ok,
+  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && mobileKnowledgeDocShellLayeringCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeMenuFocusReturnCheck.ok,
   requiredStories,
   sectionPages,
   staticContractSurface: staticSurfacePath,
@@ -1754,6 +2096,7 @@ const storyCoverageManifest = {
   hashStoryRouteCheck,
   firstStoryHashShellParityCheck,
   mobileHashAnchorOcclusionCheck,
+  mobileKnowledgeDocShellLayeringCheck,
   anchorScrollCheck,
   scrollSpyCheck,
   localeRouteCheck,
@@ -1792,22 +2135,50 @@ const browserProofSummary = {
   componentStorybookParityReadback,
   summaries: browserSummaries
 };
+const { findings: shellFidelityFindings, ...shellFidelity } = fidelityRejectChecks();
+const signatureRegressions = signatureResults.filter((entry) => entry.status === "regression");
 const visualBaselineManifest = {
   ok: visualEntries.length === requiredStories.length * viewports.length + sectionPages.length * viewports.length + 1,
   generatedAt: "stable_internal_alpha_visual_baseline",
+  // Six of the seven entries here were the literal `false` — claims wearing the costume
+  // of checks, and they travelled into the AI consumption contract that way. The three
+  // below that a machine can decide now come from a real scan of the shell sources; the
+  // palette check is bound to the perceptual signature gate, which is the defence that
+  // actually catches a palette moving. The three that remain compositional judgements
+  // are reported as unchecked rather than asserted false: the contract now claims less,
+  // and everything it does claim was measured.
   rejectChecks: {
-    oneNotePaletteDrift: false,
-    genericLeftRailAdminShellCreep: false,
-    decorativeGradientsOrOrbs: false,
-    nestedCards: false,
-    radiusDriftAboveContract: false,
-    clippedButtonText: browserSummaries.some((summary) => summary.clipped.length > 0),
-    incoherentOverlap: false
+    oneNotePaletteDrift: signatureRegressions.length > 0,
+    decorativeGradientsOrOrbs: shellFidelity.decorativeGradientsOrOrbs,
+    radiusDriftAboveContract: shellFidelity.radiusDriftAboveContract,
+    softCloudElevation: shellFidelity.softCloudElevation,
+    clippedButtonText: browserSummaries.some((summary) => summary.clipped.length > 0)
   },
+  uncheckedClaims: UNCHECKED_CLAIMS,
   entries: visualEntries
 };
 const stableStoryCoverageManifest = normalizeEphemeralProofData(storyCoverageManifest);
 const stableBrowserProofSummary = normalizeEphemeralProofData(browserProofSummary);
+const localAbsolutePathProof = {
+  ok: true,
+  checkedTargets: [
+    "browser-proof-summary",
+    "story-coverage-manifest",
+    "visual-baseline-manifest"
+  ],
+  hits: [
+    ...collectLocalAbsolutePathHits("browser-proof-summary", JSON.stringify(stableBrowserProofSummary)),
+    ...collectLocalAbsolutePathHits("story-coverage-manifest", JSON.stringify(stableStoryCoverageManifest)),
+    ...collectLocalAbsolutePathHits("visual-baseline-manifest", JSON.stringify(visualBaselineManifest))
+  ]
+};
+localAbsolutePathProof.ok = localAbsolutePathProof.hits.length === 0;
+browserProofSummary.noLocalAbsolutePathsRetained = localAbsolutePathProof.ok;
+browserProofSummary.localAbsolutePathProof = localAbsolutePathProof;
+browserProofSummary.ok = browserProofSummary.ok && localAbsolutePathProof.ok;
+stableBrowserProofSummary.noLocalAbsolutePathsRetained = localAbsolutePathProof.ok;
+stableBrowserProofSummary.localAbsolutePathProof = localAbsolutePathProof;
+stableBrowserProofSummary.ok = stableBrowserProofSummary.ok && localAbsolutePathProof.ok;
 
 writeFileSync(join(outputRoot, "story-coverage-manifest.json"), `${JSON.stringify(stableStoryCoverageManifest, null, 2)}\n`);
 writeFileSync(join(outputRoot, "browser-proof-summary.json"), `${JSON.stringify(stableBrowserProofSummary, null, 2)}\n`);
@@ -1825,7 +2196,31 @@ writeFileSync(join(outputRoot, "intentional-diff-manifest.json"), `${JSON.string
   entries: visualEntries.map((entry) => ({ storyId: entry.storyId, viewport: entry.viewport, path: entry.path, sha256: entry.sha256 }))
 }, null, 2)}\n`);
 
-const ok = browserProofSummary.ok
+const signatureNew = signatureResults.filter((entry) => entry.status === "new");
+if (updateVisualBaseline || signatureNew.length > 0) {
+  const ordered = Object.fromEntries(Object.keys(signatureBaseline.entries).sort().map((key) => [key, signatureBaseline.entries[key]]));
+  writeFileSync(signatureBaselinePath, `${JSON.stringify({ ...signatureBaseline, tolerance: SIGNATURE_TOLERANCE, entries: ordered }, null, 2)}\n`);
+}
+if (signatureRegressions.length > 0) {
+  console.error(`VISUAL REGRESSION: ${signatureRegressions.length} capture(s) moved beyond tolerance ` +
+    `(mean<=${SIGNATURE_TOLERANCE.meanAbsolute}, maxCell<=${SIGNATURE_TOLERANCE.maxCell}):`);
+  for (const entry of signatureRegressions) {
+    console.error(`  - ${entry.key}: mean=${entry.distance.meanAbsolute} maxCell=${entry.distance.maxCell}`);
+  }
+  console.error("If the change is intended, re-run with --update-visual-baseline and commit the new baseline.");
+}
+
+const shellFidelityTripped = Object.entries(shellFidelity).filter(([, tripped]) => tripped);
+if (shellFidelityTripped.length > 0) {
+  console.error(`SHELL FIDELITY DRIFT: ${shellFidelityTripped.map(([name]) => name).join(", ")}`);
+  for (const [group, list] of Object.entries(shellFidelityFindings)) {
+    for (const item of list.slice(0, 8)) console.error(`  ${group}: ${item.where} ${item.selector}`);
+  }
+}
+
+const ok = signatureRegressions.length === 0
+  && shellFidelityTripped.length === 0
+  && browserProofSummary.ok
   && storyCoverageManifest.ok
   && axeSummary.violationCount === 0
   && keyboardChecklist.ok
@@ -1841,6 +2236,11 @@ console.log(JSON.stringify({
   viewportCount: viewports.length,
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
+  shellFidelityDrift: shellFidelityTripped.length,
+  visualSignatureGated: signatureResults.filter((entry) => entry.gated).length,
+  visualSignatureRecordedOnly: signatureResults.filter((entry) => !entry.gated).length,
+  visualSignatureRegressions: signatureRegressions.length,
+  visualSignatureNewBaselines: signatureNew.length,
   keyboardOk: keyboardChecklist.ok,
   localeMenuFocusReturnOk: localeMenuFocusReturnCheck.ok,
   capabilityMetadataOk,
