@@ -482,22 +482,56 @@ function targetTopMatchesAnchorOffset(metrics) {
   return atPageEnd && targetTop !== null && targetTop >= lowerBound;
 }
 
+/**
+ * Pin every animation to a deterministic frame. A finite transition is finished, so
+ * a capture shows what the surface settles to rather than a point on the way there;
+ * an infinite one (the skeleton, loading and progress loops run forever by design and
+ * can never finish) is paused at time zero. Without this, any story containing a loop
+ * — or any element still easing — hashes differently on every run, which is what made
+ * story-coverage-manifest.json and visual-baseline-manifest.json churn.
+ */
+const PIN_ANIMATIONS = () => {
+  if (typeof document.getAnimations !== "function") return;
+  for (const animation of document.getAnimations()) {
+    const iterations = animation.effect?.getComputedTiming?.().iterations;
+    if (iterations === Infinity) {
+      animation.pause();
+      animation.currentTime = 0;
+      continue;
+    }
+    try {
+      animation.finish();
+    } catch {
+      animation.pause();
+      animation.currentTime = 0;
+    }
+  }
+};
+
+async function pinAnimations(page) {
+  await page.evaluate(PIN_ANIMATIONS);
+}
+
 async function setTransientScreenshotChromeHidden(page, hidden) {
-  await page.evaluate((shouldHide) => {
+  await page.evaluate(([shouldHide, pinSource]) => {
     const styleId = "tcrn-proof-screenshot-chrome-hidden";
     document.getElementById(styleId)?.remove();
     const skipLink = document.querySelector(".tcrn-doc-skip");
     if (skipLink instanceof HTMLElement) {
       skipLink.blur();
     }
-    if (!shouldHide) {
-      return;
+    if (shouldHide) {
+      const style = document.createElement("style");
+      style.id = styleId;
+      style.textContent = ".tcrn-doc-skip { visibility: hidden !important; }";
+      document.head.appendChild(style);
     }
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = ".tcrn-doc-skip { visibility: hidden !important; }";
-    document.head.appendChild(style);
-  }, hidden);
+    // Pinning has to happen *after* the chrome style lands: appending a stylesheet is
+    // itself capable of starting a transition, so pinning first would leave the very
+    // animations this hook introduces still running when the shutter opens.
+    // eslint-disable-next-line no-new-func
+    new Function(`return (${pinSource})`)()();
+  }, [hidden, PIN_ANIMATIONS.toString()]);
 }
 
 rmSync(screenshotDir, { recursive: true, force: true });
@@ -659,7 +693,7 @@ for (const viewport of viewports) {
     const sectionStories = requiredStories.filter((story) => story.group === section.group);
     const screenshotPath = relativeScreenshotPath(`${viewport.name}-section-${section.slug}.png`);
     await setTransientScreenshotChromeHidden(page, true);
-    await page.screenshot({ path: screenshotPath, fullPage: true });
+    await page.screenshot({ path: screenshotPath, fullPage: true, animations: "disabled" });
     await setTransientScreenshotChromeHidden(page, false);
     visualEntries.push({
       storyId: `section-${section.slug}`,
@@ -674,7 +708,7 @@ for (const viewport of viewports) {
       await locator.waitFor({ state: "visible" });
       const storyPath = relativeScreenshotPath(`${viewport.name}-${story.id}.png`);
       await setTransientScreenshotChromeHidden(page, true);
-      await locator.screenshot({ path: storyPath });
+      await locator.screenshot({ path: storyPath, animations: "disabled" });
       await setTransientScreenshotChromeHidden(page, false);
       visualEntries.push({
         storyId: story.id,
@@ -1039,6 +1073,27 @@ const collectMobileHashAnchorMetrics = async (label) => {
       }
       return 1;
     };
+    // getComputedStyle reports the *current* value of a property, which for an
+    // element mid-transition is a point on the interpolation rather than the settled
+    // colour. The theme wash and the shell's background transitions are still running
+    // when this proof samples, so the recorded baseline drifted run to run — on the v1
+    // palette it moved across rgb(41,42,45) … rgb(61,71,87), which made
+    // story-coverage-manifest.json unreproducible and, worse, trained readers to
+    // ignore a file that changes every time. Finishing every running animation first
+    // makes the sample deterministic and is also the value the baseline is meant to
+    // capture: what the surface settles to, not what it looked like in passing.
+    const settleAnimations = () => {
+      if (typeof document.getAnimations !== "function") return;
+      for (const animation of document.getAnimations()) {
+        try {
+          animation.finish();
+        } catch {
+          // A never-ending animation (an infinite spinner) cannot finish; its own
+          // frames are not what this proof measures, so skipping it is correct.
+        }
+      }
+    };
+    settleAnimations();
     const styleFor = (selector) => {
       const node = document.querySelector(selector);
       if (!node) {
@@ -1224,6 +1279,27 @@ const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
       }
       return 1;
     };
+    // getComputedStyle reports the *current* value of a property, which for an
+    // element mid-transition is a point on the interpolation rather than the settled
+    // colour. The theme wash and the shell's background transitions are still running
+    // when this proof samples, so the recorded baseline drifted run to run — on the v1
+    // palette it moved across rgb(41,42,45) … rgb(61,71,87), which made
+    // story-coverage-manifest.json unreproducible and, worse, trained readers to
+    // ignore a file that changes every time. Finishing every running animation first
+    // makes the sample deterministic and is also the value the baseline is meant to
+    // capture: what the surface settles to, not what it looked like in passing.
+    const settleAnimations = () => {
+      if (typeof document.getAnimations !== "function") return;
+      for (const animation of document.getAnimations()) {
+        try {
+          animation.finish();
+        } catch {
+          // A never-ending animation (an infinite spinner) cannot finish; its own
+          // frames are not what this proof measures, so skipping it is correct.
+        }
+      }
+    };
+    settleAnimations();
     const styleFor = (selector) => {
       const node = document.querySelector(selector);
       if (!node) {
@@ -1748,7 +1824,10 @@ await storybookPage.waitForSelector("[data-contract-story-id='dialog-spec-usage'
 await storybookPage.locator("#dialog-spec-usage").getByRole("button", { name: "Open confirmation" }).click();
 await storybookPage.waitForSelector("#dialog-spec-usage [data-dialog-fixture-panel]:not([hidden]) [role='dialog']");
 const openDialogPath = relativeScreenshotPath("desktop-1440x900-overlay-focus-open-dialog.png");
-await storybookPage.locator("#dialog-spec-usage [data-dialog-fixture-panel] [role='dialog']").screenshot({ path: openDialogPath });
+// This capture does not go through setTransientScreenshotChromeHidden, and the dialog
+// has just been opened, so its entry animation is still running: pin explicitly.
+await pinAnimations(storybookPage);
+await storybookPage.locator("#dialog-spec-usage [data-dialog-fixture-panel] [role='dialog']").screenshot({ path: openDialogPath, animations: "disabled" });
 visualEntries.push({
   storyId: "overlay-focus-open-dialog",
   viewport: "desktop-1440x900",
