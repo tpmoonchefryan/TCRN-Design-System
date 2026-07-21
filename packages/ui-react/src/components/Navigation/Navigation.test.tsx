@@ -242,7 +242,11 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
 
 test("product shell component css keeps motion shorthands valid", () => {
   assert.match(tcrnComponentCss, /--tcrn-motion-product-shell: var\(--tcrn-motion-emphasis\)/);
-  assert.match(tcrnComponentCss, /--tcrn-motion-product-shell-search: 320ms cubic-bezier\(0\.2, 0, 0\.2, 1\)/);
+  assert.match(tcrnComponentCss, /--tcrn-motion-product-shell-search: 240ms var\(--tcrn-motion-ease-drawer\)/);
+  // Elevation and inverse text are governed by @tcrn/ui-tokens now; a local
+  // redefinition here would silently shadow the package and un-govern the look.
+  assert.doesNotMatch(tcrnComponentCss, /--tcrn-elevation-floating:/);
+  assert.doesNotMatch(tcrnComponentCss, /--tcrn-color-text-inverse:/);
   assert.match(tcrnComponentCss, /transition: grid-template-columns var\(--tcrn-motion-product-shell\);/);
   assert.match(tcrnComponentCss, /animation: tcrn-product-shell-theme-wash var\(--tcrn-motion-product-shell\) both;/);
   assert.match(tcrnComponentCss, /flex-basis var\(--tcrn-motion-product-shell-search\),[\s\S]*width var\(--tcrn-motion-product-shell-search\),[\s\S]*max-width var\(--tcrn-motion-product-shell-search\);/);

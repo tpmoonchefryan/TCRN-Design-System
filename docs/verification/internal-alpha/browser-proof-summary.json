@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "a8d747d165cc6ef1a29d41a3e4f57b03ecaad4b937179af807b76613ee797621",
+    "contractPayloadDigest": "e8901515add43e577bba0f7a692db22f7fc96b30c6edac9cc326748ceafc3c00",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 19,
@@ -346,7 +346,7 @@
           "id": "color-palette",
           "visible": true,
           "width": 1077,
-          "height": 2361
+          "height": 2345
         },
         {
           "id": "text-styles",
@@ -724,7 +724,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 7632
+          "height": 7696
         },
         {
           "id": "knowledge-management-components-spec",
@@ -843,7 +843,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 1077,
-          "height": 4066
+          "height": 4098
         },
         {
           "id": "readiness-notification-patterns",
@@ -1332,7 +1332,7 @@
           "id": "color-palette",
           "visible": true,
           "width": 691,
-          "height": 2896
+          "height": 2879
         },
         {
           "id": "text-styles",
@@ -1362,7 +1362,7 @@
           "id": "copy-creation-rules",
           "visible": true,
           "width": 691,
-          "height": 657
+          "height": 689
         }
       ],
       "clipped": [],
@@ -1490,7 +1490,7 @@
           "id": "copy-guidelines",
           "visible": true,
           "width": 691,
-          "height": 468
+          "height": 500
         }
       ],
       "clipped": [],
@@ -1686,7 +1686,7 @@
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 15117
+          "height": 15437
         },
         {
           "id": "aos-owner-quality-product-shell",
@@ -1710,7 +1710,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 9319
+          "height": 9455
         },
         {
           "id": "knowledge-management-components-spec",
@@ -1829,7 +1829,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 691,
-          "height": 4514
+          "height": 4606
         },
         {
           "id": "readiness-notification-patterns",
@@ -2086,7 +2086,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 691,
-          "height": 726
+          "height": 758
         }
       ],
       "clipped": [],
@@ -2260,7 +2260,7 @@
           "id": "color-palette",
           "visible": true,
           "width": 358,
-          "height": 6401
+          "height": 6416
         },
         {
           "id": "text-styles",
@@ -2504,7 +2504,7 @@
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 358,
-          "height": 2010
+          "height": 2042
         },
         {
           "id": "button-spec-usage",
@@ -2552,13 +2552,13 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 21541
+          "height": 21532
         },
         {
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 5680
+          "height": 5738
         }
       ],
       "clipped": [],
@@ -2642,7 +2642,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 10353
+          "height": 10344
         },
         {
           "id": "readiness-notification-patterns",
@@ -2751,7 +2751,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 13463
+          "height": 13495
         },
         {
           "id": "blocked-actions",

@@ -25,8 +25,8 @@ export const storybookThemeScript = `<script>
   const defaultTheme = "light";
   const storageKey = "tcrn-design-system-storybook-theme";
   const themeColors = {
-    light: "#f6f7fb",
-    dark: "#101827"
+    light: "#fafaf9",
+    dark: "#111214"
   };
   const themeTransitionMs = 400;
   const isSupported = (theme) => supportedThemes.includes(theme);

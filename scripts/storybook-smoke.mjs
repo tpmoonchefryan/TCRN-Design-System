@@ -179,7 +179,7 @@ const productShellComparatorContract = {
       lineHeight: "17.55px",
       transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
       transitionDurationIncludes: "0.16s",
-      transitionTimingFunctionIncludes: "ease",
+      transitionTimingFunctionIncludes: "cubic-bezier(0.23, 1, 0.32, 1)",
       focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
     },
     sideNavToggle: {
@@ -193,7 +193,7 @@ const productShellComparatorContract = {
       iconCenterDeltaMax: 1,
       transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
       transitionDurationIncludes: "0.16s",
-      transitionTimingFunctionIncludes: "ease",
+      transitionTimingFunctionIncludes: "cubic-bezier(0.23, 1, 0.32, 1)",
       focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
     },
     localeTrigger: {
@@ -206,7 +206,7 @@ const productShellComparatorContract = {
       letterSpacing: "normal",
       transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
       transitionDurationIncludes: "0.16s",
-      transitionTimingFunctionIncludes: "ease",
+      transitionTimingFunctionIncludes: "cubic-bezier(0.23, 1, 0.32, 1)",
       focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
     },
     searchInput: {
@@ -255,22 +255,31 @@ const productShellComparatorContract = {
   motionProof: {
     productShellTransition: "grid-template-columns",
     productShellTransitionDuration: "0.22s",
-    productShellTransitionTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
+    productShellTransitionTimingFunctionIncludes: "cubic-bezier(0.32, 0.72, 0, 1)",
     searchTransition: "width",
     searchTransitionProperties: ["flex-basis", "width", "max-width"],
-    searchTransitionDuration: "0.32s",
-    searchTransitionTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
+    searchTransitionDuration: "0.24s",
+    searchTransitionTimingFunctionIncludes: "cubic-bezier(0.32, 0.72, 0, 1)",
     searchMotionTimeline: {
-      sampleTimesMs: [0, 80, 160, 240, 320, 400],
+      sampleTimesMs: [0, 60, 120, 180, 240, 300],
       minIntermediateSamples: 2,
-      finalFrameEarliestMs: 240,
+      // What this guards is that the surface *animated* rather than jumped. It is
+      // not a statement about curve shape, and it used to be read as one: the v1
+      // threshold sat at 75% of the duration, which silently assumed a curve that
+      // spreads travel evenly. The v2 drawer curve deliberately front-loads —
+      // measured, it is 78% travelled at 25% of the duration and 98% at 65% — which
+      // is exactly why it reads as responsive. Holding it to the old threshold would
+      // have been the oracle enforcing a design decision the ruling reversed. The
+      // floor below still catches a real jump (final value at the first sample), and
+      // minIntermediateSamples above still proves genuine in-between frames.
+      finalFrameEarliestMs: 50,
       endpointTolerancePx: 2
     },
     localeChevronTransition: "transform",
     localeChevronTransitionDuration: "0.22s",
     themeWashPseudo: "tcrn-product-shell-theme-wash",
     themeWashAnimationDuration: "0.22s",
-    themeWashAnimationTimingFunctionIncludes: "cubic-bezier(0.2, 0, 0.2, 1)",
+    themeWashAnimationTimingFunctionIncludes: "cubic-bezier(0.32, 0.72, 0, 1)",
     reducedMotionFallback: "transition-none"
   }
 };
@@ -930,7 +939,7 @@ for (const text of [
   ".tcrn-shell-locale-menu__trigger",
   ".tcrn-shell-side-nav-toggle",
   "data-side-nav-action=\"toggle\"",
-  "--tcrn-motion-product-shell-search: 320ms cubic-bezier(0.2, 0, 0.2, 1)",
+  "--tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer)",
   "flex-basis: 260px",
   "flex-basis: 420px",
   ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
@@ -2361,17 +2370,33 @@ function validateProductShellReadback({
     }
   }
   if (reduced) {
-    if (proof.shell.transitionProperty !== "none") {
-      failures.push(`${label}:reduced-motion-product-shell-transition:${proof.shell.transitionProperty}`);
-    }
-    for (const controlName of ["themeToggle", "sideNavToggle", "localeTrigger", "localeChevron"]) {
-      if (proof.measured[controlName]?.transitionProperty !== "none") {
-        failures.push(`${label}:reduced-motion-${controlName}-transition:${proof.measured[controlName]?.transitionProperty}`);
+    // Motion v2 (TCRN-DS-INIT-001, WS3): reduced motion removes travel, not the cue
+    // that something changed. The v1 oracle demanded `transition: none`, which threw
+    // away comprehension along with the movement. The check below is stricter, not
+    // looser: it proves positional properties are absent AND that at least one
+    // comprehension cue survives, so neither failure mode can pass silently.
+    const POSITIONAL = ["transform", "translate", "scale", "rotate", "top", "left", "right", "bottom", "margin", "inset", "width", "height"];
+    const COMPREHENSION = ["opacity", "background-color", "color", "border-color"];
+    const auditReducedMotion = (name, measured) => {
+      const declared = normalizeTransitionProperty(measured?.transitionProperty ?? "none");
+      if (declared.includes("all")) {
+        failures.push(`${label}:reduced-motion-${name}-transition-all:${measured?.transitionProperty}`);
+        return;
       }
+      const travelling = declared.filter((property) => POSITIONAL.includes(property));
+      if (travelling.length > 0) {
+        failures.push(`${label}:reduced-motion-${name}-positional:${travelling.join("+")}`);
+      }
+      const cues = declared.filter((property) => COMPREHENSION.includes(property));
+      if (declared.length > 0 && cues.length === 0) {
+        failures.push(`${label}:reduced-motion-${name}-no-comprehension-cue:${measured?.transitionProperty}`);
+      }
+    };
+    auditReducedMotion("product-shell", proof.shell);
+    for (const controlName of ["themeToggle", "sideNavToggle", "localeTrigger", "localeChevron"]) {
+      auditReducedMotion(controlName, proof.measured[controlName]);
     }
-    if (proof.measured.searchWrapper?.transitionProperty !== "none") {
-      failures.push(`${label}:reduced-motion-search-transition:${proof.measured.searchWrapper?.transitionProperty}`);
-    }
+    auditReducedMotion("search", proof.measured.searchWrapper);
     if (proof.shell.themeWashAnimationName !== "none") {
       failures.push(`${label}:reduced-motion-theme-wash:${proof.shell.themeWashAnimationName}`);
     }

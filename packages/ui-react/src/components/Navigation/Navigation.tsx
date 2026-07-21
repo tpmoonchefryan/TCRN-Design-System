@@ -1274,7 +1274,7 @@ export const tcrnComponentCss = `
   --tcrn-space-5: 20px;
   --tcrn-radius-panel: var(--tcrn-radius-surface);
   --tcrn-motion-product-shell: var(--tcrn-motion-emphasis);
-  --tcrn-motion-product-shell-search: 320ms cubic-bezier(0.2, 0, 0.2, 1);
+  --tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer);
   --tcrn-color-brand-secondary-readable: #246f80;
   --tcrn-brand-accent-aos: #187c7c;
   --tcrn-brand-accent-tms: #2c63c8;
@@ -1282,8 +1282,6 @@ export const tcrnComponentCss = `
   --tcrn-brand-accent-design-system-2: #3096f4;
   --tcrn-brand-accent-design-system-3: #43d4cf;
   --tcrn-brand-accent-design-system-4: #78b957;
-  --tcrn-color-text-inverse: #ffffff;
-  --tcrn-elevation-floating: 0 18px 42px rgba(23, 32, 51, 0.16);
 }
 [data-tcrn-theme="dark"] {
   --tcrn-color-brand-secondary-readable: #a6e8ef;
@@ -1293,7 +1291,6 @@ export const tcrnComponentCss = `
   --tcrn-brand-accent-design-system-2: #83c8ff;
   --tcrn-brand-accent-design-system-3: #7ce4df;
   --tcrn-brand-accent-design-system-4: #c9f08f;
-  --tcrn-elevation-floating: 0 18px 42px rgba(0, 0, 0, 0.34);
 }
 .tcrn-button,
 .tcrn-shell-locale-menu__trigger,
@@ -1307,12 +1304,19 @@ export const tcrnComponentCss = `
   gap: var(--tcrn-space-2);
   min-height: 38px;
   padding: 0 var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-border-control);
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
   font-size: var(--tcrn-type-size-ui);
   font-weight: var(--tcrn-type-weight-strong);
+  transition: transform var(--tcrn-motion-instant), background-color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast);
+}
+/* A pressable surface has to answer the press, or the interface reads as not
+   listening. Scale is deliberately subtle and lives on :active (not :hover), so it
+   works the same under a finger as under a pointer. */
+.tcrn-button:active {
+  transform: scale(var(--tcrn-motion-press-scale));
 }
 .tcrn-button--primary {
   background: var(--tcrn-color-brand-primary);
@@ -1368,7 +1372,7 @@ export const tcrnComponentCss = `
 .tcrn-shell-theme-toggle:hover,
 .tcrn-shell-locale-menu__trigger:hover,
 .tcrn-shell-locale-menu__trigger[aria-expanded="true"] {
-  border-color: var(--tcrn-color-border-strong);
+  border-color: var(--tcrn-color-border-control);
   background: color-mix(in srgb, var(--tcrn-color-surface-muted) 72%, var(--tcrn-color-surface-panel));
   color: var(--tcrn-color-text-primary);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
@@ -1877,7 +1881,7 @@ export const tcrnComponentCss = `
   min-inline-size: var(--tcrn-search-input-min-inline-size, 0);
   max-inline-size: 100%;
   padding: 0 var(--tcrn-search-input-padding-inline);
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-border-control);
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-surface-panel);
 }
@@ -1954,7 +1958,7 @@ export const tcrnComponentCss = `
   max-width: 132px;
   min-height: 36px;
   padding: 0 10px;
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-border-control);
   border-radius: 999px;
   background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
@@ -2058,15 +2062,22 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   margin: var(--tcrn-space-2) 0 0;
   color: var(--tcrn-color-text-secondary);
 }
+/* Status reads as ink dot plus word. The pill-with-pastel-fill it replaces put a
+   saturated block of colour behind every row in a dense table, which is loud at
+   this density and is the single most recognisable tell of generated UI. Squaring
+   the chip to the control radius keeps it reading as an instrument value rather
+   than a marketing badge. */
 .tcrn-badge {
+  position: relative;
   display: inline-flex;
   align-items: center;
   width: max-content;
   max-width: 100%;
   min-width: 0;
   min-height: 24px;
-  padding: 3px var(--tcrn-space-2);
-  border-radius: 999px;
+  padding: var(--tcrn-state-chip-padding);
+  padding-inline-start: calc(var(--tcrn-space-2) + var(--tcrn-state-dot-size) + 4px);
+  border-radius: var(--tcrn-state-chip-radius);
   font-size: 12px;
   line-height: 1.25;
   font-weight: var(--tcrn-type-weight-strong);
@@ -2076,13 +2087,66 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   background: var(--tcrn-color-surface-muted);
   color: var(--tcrn-color-text-secondary);
 }
+/* The dot is positioned rather than laid out. As a flex item it contributed its own
+   min-content width, which left the anonymous text item unable to shrink and clipped
+   longer labels ("Proof required") at narrow widths; out of flow it costs the label
+   nothing and the text wraps as it did before. */
+.tcrn-badge::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: var(--tcrn-space-2);
+  inset-block-start: 50%;
+  inline-size: var(--tcrn-state-dot-size);
+  block-size: var(--tcrn-state-dot-size);
+  margin-block-start: calc(var(--tcrn-state-dot-size) / -2);
+  border-radius: 50%;
+  background: currentColor;
+}
 .tcrn-badge--warning {
   background: var(--tcrn-color-state-warning-bg);
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-state-warning);
 }
 .tcrn-badge--positive {
   background: var(--tcrn-color-state-ready-bg);
   color: var(--tcrn-color-state-ready);
+}
+.tcrn-badge--danger {
+  background: var(--tcrn-color-state-blocked-bg);
+  color: var(--tcrn-color-state-blocked);
+}
+
+/* ── B「治理纸感」identity stamp ──────────────────────────────────────────────
+   Reserved for identity moments: a gate closing, a ruling landing, a release being
+   accepted. It is deliberately the only place the serif and the oxblood ink appear,
+   because an impression that shows up everywhere stops meaning anything. The
+   whitelist is enforced mechanically by scripts/stamp-whitelist-proof.mjs. */
+.tcrn-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+  padding: 4px 10px;
+  border: 1px solid currentColor;
+  border-radius: var(--tcrn-state-chip-radius);
+  color: var(--tcrn-color-brand-accent);
+  background: transparent;
+  font-family: var(--tcrn-type-family-stamp);
+  font-size: var(--tcrn-type-size-stamp-min);
+  font-weight: var(--tcrn-type-weight-strong);
+  letter-spacing: var(--tcrn-type-tracking-stamp);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.tcrn-stamp[data-stamp-moment="release"] {
+  color: var(--tcrn-color-state-ready);
+}
+/* The double rule is the archival-document memory: two weights, not one, so a
+   header carrying a ruling reads differently from an ordinary panel header. */
+.tcrn-stamp-rule {
+  border: 0;
+  border-top: 2px solid var(--tcrn-color-border-strong);
+  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  block-size: 3px;
+  margin: 0;
 }
 .tcrn-readback-panel,
 .tcrn-table-shell {
@@ -2378,7 +2442,7 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   background: var(--tcrn-color-surface-panel);
 }
 .tcrn-work-management-subnav [data-selected="true"] {
-  border-color: var(--tcrn-color-border-strong);
+  border-color: var(--tcrn-color-border-control);
   background: var(--tcrn-color-brand-primary-bg);
 }
 .tcrn-saved-view-toolbar {
@@ -2410,7 +2474,7 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 }
 .tcrn-work-view-tabs [data-selected="true"],
 .tcrn-work-quick-filters [data-selected="true"] {
-  border-color: var(--tcrn-color-border-strong);
+  border-color: var(--tcrn-color-border-control);
   box-shadow: inset 0 -2px 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-work-quick-filters__value {
@@ -2447,7 +2511,7 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   font-size: var(--tcrn-type-size-ui);
 }
 .tcrn-work-item-row[data-selected="true"] {
-  border-color: var(--tcrn-color-border-strong);
+  border-color: var(--tcrn-color-border-control);
   box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-work-item-row__id,
@@ -2853,7 +2917,7 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   padding: var(--tcrn-space-2) var(--tcrn-space-3);
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-surface-panel);
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-border-control);
 }
 .tcrn-skip-link:focus {
   transform: translateY(0);
@@ -2939,9 +3003,14 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  /* Reduced motion means fewer and gentler animations, not none. Travel is what
+     causes discomfort, so transform and position animation is removed; opacity and
+     colour transitions stay, because they are how the interface says that something
+     changed. Killing them outright leaves state changes to happen with no cue at
+     all, which is a comprehension regression dressed up as an accessibility win. */
   .tcrn-product-shell,
   .tcrn-product-shell-search {
-    transition: none;
+    transition: opacity var(--tcrn-motion-comprehension), background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), border-color var(--tcrn-motion-comprehension);
   }
   .tcrn-product-shell[data-theme-switching="true"]::after {
     animation: none;
@@ -2953,7 +3022,13 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   .tcrn-shell-theme-toggle__icon,
   .tcrn-shell-locale-menu__trigger,
   .tcrn-shell-locale-menu__chevron {
-    transition: none;
+    transition: opacity var(--tcrn-motion-comprehension), background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), border-color var(--tcrn-motion-comprehension);
+  }
+  /* No travel, and no press-scale either: scale is transform. */
+  .tcrn-button:active,
+  .tcrn-nav-item:active,
+  .tcrn-shell-locale-menu__trigger:active {
+    transform: none;
   }
 }
 `;

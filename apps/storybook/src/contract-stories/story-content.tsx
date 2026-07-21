@@ -700,10 +700,10 @@ const legacyContractStories: LegacyContractStory[] = [
         <ReadbackPanel title="Brand palette">
           <div className="tcrn-token-swatch-grid">
             <TokenSwatch label="Primary brand" token="--tcrn-color-brand-primary" note="Use for TCRN identity, selected navigation, and creator-channel emphasis." />
-            <TokenSwatch label="Primary brand background" token="--tcrn-color-brand-primary-bg" note="Use for quiet selected surfaces and iris-blue brand callouts." />
+            <TokenSwatch label="Primary brand background" token="--tcrn-color-brand-primary-bg" note="Use for quiet selected surfaces and brand callouts." />
             <TokenSwatch label="Secondary brand" token="--tcrn-color-brand-secondary" note="Use for system connection, informational support, charts, and secondary emphasis." />
             <TokenSwatch label="Secondary brand background" token="--tcrn-color-brand-secondary-bg" note="Use for quiet aqua informational surfaces." />
-            <TokenSwatch label="Accent brand" token="--tcrn-color-brand-accent" note="Use rose-coral sparingly for creator warmth; never use as state truth." />
+            <TokenSwatch label="Accent brand" token="--tcrn-color-brand-accent" note="Use sparingly for highlights; never use as state truth." />
             <TokenSwatch label="Neutral brand" token="--tcrn-color-brand-neutral" note="Use for dense structure, muted metadata, and low-emphasis support." />
           </div>
           <TableShell
@@ -713,9 +713,9 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "guardrail", label: "Guardrail" }
             ]}
             rows={[
-              { family: "Primary", role: "Iris-blue identity, selected navigation, creator-channel emphasis", guardrail: "Do not use as proof state." },
+              { family: "Primary", role: "Identity, selected navigation, primary emphasis", guardrail: "Do not use as proof state." },
               { family: "Secondary", role: "Aqua system connection, informational support, and charts", guardrail: "Do not compete with primary actions." },
-              { family: "Accent", role: "Rose-coral highlights and onboarding warmth", guardrail: "Never use as readiness or error truth." },
+              { family: "Accent", role: "Sparing highlights and onboarding emphasis", guardrail: "Never use as readiness or error truth." },
               { family: "Neutral", role: "Dense operational structure and muted metadata", guardrail: "Do not replace disabled text color." },
               { family: "State", role: "Ready, warning, blocked, unavailable, and unknown status", guardrail: "State colors are not brand colors." }
             ]}

@@ -62,7 +62,7 @@
     {
       "path": "package.json",
       "exists": true,
-      "sha256": "11a8f9500c3829a0e1c7ea3c3aa02f7fab04b47c7f3dbce53101c57c499706bc"
+      "sha256": "090b22607964397d1726538cc3d5647b1f74d9c8e09c71168a4edb3cbf6cafad"
     },
     {
       "path": "pnpm-workspace.yaml",
@@ -82,7 +82,7 @@
     {
       "path": "CHANGELOG.md",
       "exists": true,
-      "sha256": "32222d754b63c87b39fb56baab1a9eaee68396c4d9cf0614b97d864d763ad717"
+      "sha256": "5e7a5d589afcc329f18fa62d86af7eead0cb6d894d2b6d765e7b2e373383176f"
     },
     {
       "path": "LICENSE",
@@ -107,7 +107,7 @@
     {
       "path": "packages/ui-tokens/src/index.ts",
       "exists": true,
-      "sha256": "34667c2297708ab53800bf5819eb2b54d08f7c28ba109598513633638ad01525"
+      "sha256": "ce7c4bd743ff9f831e1f261bf71de7d7178681eb57dcd39fea0760947a98204d"
     },
     {
       "path": "packages/ui-copy-state/src/index.ts",

@@ -411,11 +411,11 @@ export const aiConsumptionContract = {
     },
     searchMotionTimeline: {
       transitionProperties: ["flex-basis", "width", "max-width"],
-      transitionDuration: "0.32s",
-      transitionTimingFunction: "cubic-bezier(0.2, 0, 0.2, 1)",
-      sampleTimesMs: [0, 80, 160, 240, 320, 400],
+      transitionDuration: "0.24s",
+      transitionTimingFunction: "cubic-bezier(0.32, 0.72, 0, 1)",
+      sampleTimesMs: [0, 60, 120, 180, 240, 300],
       minIntermediateSamples: 2,
-      finalFrameEarliestMs: 240,
+      finalFrameEarliestMs: 50,
       rule:
         "ProductShellSearch expand/collapse must expose sampled intermediate widths and must not jump directly between rest and expanded endpoints."
     },
