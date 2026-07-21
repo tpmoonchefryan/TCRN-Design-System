@@ -285,7 +285,7 @@ function buildSearchResults(variant: AosVisualInstanceVariant): ProductShellSear
     {
       id: "work",
       title: labels.work,
-      meta: variant.locale === "zh-CN" ? "类 Jira 模块入口" : "Jira-like module entry",
+      meta: variant.locale === "zh-CN" ? "工作模块入口" : "Work module entry",
       href: "/work",
       selected: variant.route === "work"
     },
@@ -380,7 +380,7 @@ function WorkContent({ variant }: { variant: AosVisualInstanceVariant }) {
   return (
     <section
       id={`${variant.id}-work`}
-      data-aos-work-module-entry="jira-like"
+      data-aos-work-module-entry="work-module"
       aria-label={`${variant.label}: ${isZh ? "工作模块入口" : "Work module entry"}`}
     >
       <ReadbackPanel title={isZh ? "工作模块入口" : "Work module entry"}>

@@ -155,11 +155,51 @@
         "exported": true
       },
       {
+        "name": "MachineTokenCell",
+        "exported": true
+      },
+      {
         "name": "WorkManagementSubnav",
         "exported": true
       },
       {
+        "name": "WorkPageHeader",
+        "exported": true
+      },
+      {
+        "name": "WorkViewTabs",
+        "exported": true
+      },
+      {
+        "name": "WorkQuickFilters",
+        "exported": true
+      },
+      {
+        "name": "WorkItemRow",
+        "exported": true
+      },
+      {
+        "name": "WorkList",
+        "exported": true
+      },
+      {
+        "name": "WorkSplitView",
+        "exported": true
+      },
+      {
+        "name": "WorkBacklogGroup",
+        "exported": true
+      },
+      {
+        "name": "WorkInlineCreateStatic",
+        "exported": true
+      },
+      {
         "name": "WorkBoard",
+        "exported": true
+      },
+      {
+        "name": "WorkBoardView",
         "exported": true
       },
       {
@@ -171,7 +211,27 @@
         "exported": true
       },
       {
+        "name": "GatePipelineCompact",
+        "exported": true
+      },
+      {
         "name": "EvidenceAttachmentList",
+        "exported": true
+      },
+      {
+        "name": "WorkDetailLayout",
+        "exported": true
+      },
+      {
+        "name": "MetadataRail",
+        "exported": true
+      },
+      {
+        "name": "WorkFieldPanel",
+        "exported": true
+      },
+      {
+        "name": "WorkActivityFeed",
         "exported": true
       },
       {
@@ -180,6 +240,46 @@
       },
       {
         "name": "SavedViewToolbar",
+        "exported": true
+      },
+      {
+        "name": "KnowledgePageTree",
+        "exported": true
+      },
+      {
+        "name": "KnowledgeDocumentCanvas",
+        "exported": true
+      },
+      {
+        "name": "KnowledgeTocRail",
+        "exported": true
+      },
+      {
+        "name": "KnowledgeInlineCommentList",
+        "exported": true
+      },
+      {
+        "name": "KnowledgeMetadataRail",
+        "exported": true
+      },
+      {
+        "name": "KnowledgeAttachmentList",
+        "exported": true
+      },
+      {
+        "name": "KnowledgeLabelSet",
+        "exported": true
+      },
+      {
+        "name": "KnowledgeVersionHistory",
+        "exported": true
+      },
+      {
+        "name": "KnowledgeTemplateGallery",
+        "exported": true
+      },
+      {
+        "name": "KnowledgeSearchResults",
         "exported": true
       },
       {
@@ -318,6 +418,10 @@
       },
       {
         "name": "workManagementPatternRegistry",
+        "exported": true
+      },
+      {
+        "name": "knowledgeManagementPatternRegistry",
         "exported": true
       },
       {
@@ -680,6 +784,15 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "MachineTokenCell",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "WorkManagementSubnav",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -689,7 +802,88 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "WorkPageHeader",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkViewTabs",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkQuickFilters",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkItemRow",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkList",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkSplitView",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkBacklogGroup",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkInlineCreateStatic",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "WorkBoard",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkBoardView",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -716,7 +910,52 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "GatePipelineCompact",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "EvidenceAttachmentList",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkDetailLayout",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "MetadataRail",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkFieldPanel",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "WorkActivityFeed",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -735,6 +974,96 @@
       },
       {
         "storybookItem": "SavedViewToolbar",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgePageTree",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeDocumentCanvas",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeTocRail",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeInlineCommentList",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeMetadataRail",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeAttachmentList",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeLabelSet",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeVersionHistory",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeTemplateGallery",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "KnowledgeSearchResults",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -1049,6 +1378,15 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "knowledgeManagementPatternRegistry",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "workRelationshipTypes",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -1144,7 +1482,7 @@
       "typePath": "packages/ui-tokens/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "4c52bf28f8f182f707f1a1f17afa6a5dfc3d18431c2ff187cb0d8b9e1271bb62"
+      "manifestSha256": "053aecda2211f0c50602fe1d6df2b92c89ef6cea96d06906f0f869a37ef1901b"
     },
     {
       "name": "@tcrn/ui-copy-state",
@@ -1154,7 +1492,7 @@
       "typePath": "packages/ui-copy-state/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "dd6a7926d3837c32df86137767512be095faa02b61fa293e5d5a05efa677847f"
+      "manifestSha256": "5e985bf252dae84c4674a5b83a11f284a9a8716fc1e1732526e47c8a4e0f94fc"
     },
     {
       "name": "@tcrn/ui-react",
@@ -1164,7 +1502,7 @@
       "typePath": "packages/ui-react/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "f7323aa2bd14590bc91e9dfc6c2a4f4fdb13336a4371e5a3128aa32aed36a9f2"
+      "manifestSha256": "f280e0d7270d285b111f6330e24403b26aea3404cf9dad19b66bc1b5ba4c49ff"
     }
   ],
   "exactDependencyChecks": [

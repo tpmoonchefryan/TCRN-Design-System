@@ -17,7 +17,7 @@ export const aiConsumptionContract = {
   ownerVisualAdmissionDisposition: "owner_review_required",
   visualFitControlContract: {
     storybookGlobalShellAuthority: "original_storybook_doc_shell",
-    packagePrimitiveAuthority: ["SearchInput", "ProductLockup", "TableShell"],
+    packagePrimitiveAuthority: ["SearchInput", "ProductLockup", "TableShell", "Work Management layout/density exports", "Knowledge Management static exports"],
     search: {
       storybookRestWidthPx: 260,
       storybookExpandedWidthPx: 360,
@@ -35,6 +35,47 @@ export const aiConsumptionContract = {
     tablesAndContainers: {
       authority: "@tcrn/ui-react/TableShell",
       rule: "Tables use package-emitted column/min-width variables and local overflow; Storybook must not clone row, head, or cell layout."
+    },
+    workLayoutDensity: {
+      authority: "@tcrn/ui-react Work Management exports",
+      storybookRoutes: ["components.html#work-management-components-spec", "patterns.html#work-management-patterns"],
+      packageExports: [
+        "WorkPageHeader",
+        "WorkViewTabs",
+        "WorkQuickFilters",
+        "WorkItemRow",
+        "WorkList",
+        "WorkSplitView",
+        "WorkBacklogGroup",
+        "WorkInlineCreateStatic",
+        "WorkBoardView",
+        "WorkDetailLayout",
+        "MetadataRail",
+        "WorkFieldPanel",
+        "WorkActivityFeed",
+        "GatePipelineCompact",
+        "MachineTokenCell"
+      ],
+      rule:
+        "Product Work routes must consume admitted package exports for route context, local tabs, quick filters, dense rows/lists, backlog groups, board density, split detail, metadata rails, field panels, activity, compact gates/evidence, and dense machine-token cells instead of local reusable clones."
+    },
+    knowledgeLayoutDensity: {
+      authority: "@tcrn/ui-react Knowledge Management exports",
+      storybookRoutes: ["components.html#knowledge-management-components-spec"],
+      packageExports: [
+        "KnowledgePageTree",
+        "KnowledgeDocumentCanvas",
+        "KnowledgeTocRail",
+        "KnowledgeInlineCommentList",
+        "KnowledgeMetadataRail",
+        "KnowledgeAttachmentList",
+        "KnowledgeLabelSet",
+        "KnowledgeVersionHistory",
+        "KnowledgeTemplateGallery",
+        "KnowledgeSearchResults"
+      ],
+      rule:
+        "Product Knowledge routes must consume admitted package exports for page trees, document canvas, local table of contents, inline comments, metadata, attachments, labels, version history, templates, and static local results. backend publishing, live collaboration, external workspace integration, and global search remain unclaimed unless downstream product routes prove them."
     }
   },
   discovery: {
@@ -134,6 +175,7 @@ export const aiConsumptionContract = {
         "component-family-index",
         "display-primitives-spec",
         "interaction-disclosure-spec",
+        "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
@@ -141,7 +183,8 @@ export const aiConsumptionContract = {
         "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "knowledge-management-components-spec"
       ],
       consumerChecks: [
         "identify every registered primitive, export, variant, prop, slot, and state required by the product surface",
@@ -165,7 +208,7 @@ export const aiConsumptionContract = {
       ],
       consumerChecks: [
         "consume page, dashboard, workbench, list, form, notification, validation, data-grid, and search composition rules before arranging product screens",
-        "consume Work Management hierarchy, board, gate, evidence, relationship, saved-view, and machine-token patterns before building Initiative/Epic/Story/Work Item surfaces",
+        "consume Work Management route context, local view tabs, quick filters, dense rows/lists, split detail, backlog groups, board density, gate, evidence, activity, relationship, saved-view, and machine-token patterns before building Initiative/Epic/Story/Work Item surfaces",
         "prove information hierarchy, density, mobile reflow, empty/loading/error states, and route-level IA match the relevant Storybook pattern",
         "block proof/status panels from replacing product-first page composition unless the Storybook pattern explicitly requires them"
       ]
@@ -235,10 +278,11 @@ export const aiConsumptionContract = {
       route: "components.html",
       categories: [
         { id: "component-inventory", label: "Component inventory", storyIds: ["component-family-index", "display-primitives-spec", "interaction-disclosure-spec"] },
-        { id: "controls-data", label: "Controls and data", storyIds: ["button-spec-usage", "field-spec-usage", "table-work-index-spec"] },
+        { id: "controls-data", label: "Controls and data", storyIds: ["stamp-spec-usage", "button-spec-usage", "field-spec-usage", "table-work-index-spec"] },
         { id: "navigation-shells", label: "Navigation and shells", storyIds: ["navigation-shell-spec", "aos-frontend-shell-slice", "aos-owner-quality-product-shell"] },
         { id: "overlays", label: "Overlays", storyIds: ["dialog-spec-usage"] },
-        { id: "work-management", label: "Work Management", storyIds: ["work-management-components-spec"] }
+        { id: "work-management", label: "Work Management", storyIds: ["work-management-components-spec"] },
+        { id: "knowledge-management", label: "Knowledge Management", storyIds: ["knowledge-management-components-spec"] }
       ],
       sourcePaths: ["apps/storybook/src/contract-stories/groups/components.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
       authority: "package_backed_components_plus_static_contract_storybook_governance"
@@ -294,12 +338,51 @@ export const aiConsumptionContract = {
     disposition: "static_contract_authority_explicit_and_smoke_proven",
     componentStory: "components.html#work-management-components-spec",
     patternStory: "patterns.html#work-management-patterns",
+    admittedPackageExports: [
+      "WorkPageHeader",
+      "WorkViewTabs",
+      "WorkQuickFilters",
+      "WorkItemRow",
+      "WorkList",
+      "WorkSplitView",
+      "WorkBacklogGroup",
+      "WorkInlineCreateStatic",
+      "WorkBoard",
+      "WorkBoardView",
+      "WorkDetailLayout",
+      "MetadataRail",
+      "WorkFieldPanel",
+      "WorkActivityFeed",
+      "GatePipelineCompact",
+      "EvidenceAttachmentList",
+      "MachineTokenCell"
+    ],
     managerRuntimeCoverageDisposition:
       "CSF adapters expose the Components and Patterns top-level Storybook pages while static contract story ids are the authoritative Work Management story coverage for this local checkpoint.",
     smokeCoverage:
       "storybook smoke and internal-alpha browser proof fail if Work Management story ids, package-backed markers, relationship vocabulary, or no-live boundaries disappear.",
     noOverclaimBoundary:
       "Work Management Storybook examples do not claim API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, package publication, or initiative completion."
+  },
+  knowledgeManagementStaticAuthority: {
+    disposition: "static_contract_authority_explicit_and_smoke_proven",
+    componentStory: "components.html#knowledge-management-components-spec",
+    admittedPackageExports: [
+      "KnowledgePageTree",
+      "KnowledgeDocumentCanvas",
+      "KnowledgeTocRail",
+      "KnowledgeInlineCommentList",
+      "KnowledgeMetadataRail",
+      "KnowledgeAttachmentList",
+      "KnowledgeLabelSet",
+      "KnowledgeVersionHistory",
+      "KnowledgeTemplateGallery",
+      "KnowledgeSearchResults"
+    ],
+    smokeCoverage:
+      "storybook smoke and package tests fail if Knowledge Management story ids, package-backed markers, static local result boundaries, or sanitized evidence posture disappear.",
+    noOverclaimBoundary:
+      "Knowledge Management Storybook examples do not claim backend publishing, live collaboration, external workspace integration, product adoption, owner acceptance, release readiness, package publication, or initiative completion."
   },
   foundationVisualStandards: foundationVisualStandardsReadback,
   foundationVisualStandardCategories: foundationVisualStandards,
@@ -329,11 +412,11 @@ export const aiConsumptionContract = {
     },
     searchMotionTimeline: {
       transitionProperties: ["flex-basis", "width", "max-width"],
-      transitionDuration: "0.32s",
-      transitionTimingFunction: "cubic-bezier(0.2, 0, 0.2, 1)",
-      sampleTimesMs: [0, 80, 160, 240, 320, 400],
+      transitionDuration: "0.24s",
+      transitionTimingFunction: "cubic-bezier(0.32, 0.72, 0, 1)",
+      sampleTimesMs: [0, 60, 120, 180, 240, 300],
       minIntermediateSamples: 2,
-      finalFrameEarliestMs: 240,
+      finalFrameEarliestMs: 50,
       rule:
         "ProductShellSearch expand/collapse must expose sampled intermediate widths and must not jump directly between rest and expanded endpoints."
     },
@@ -831,6 +914,7 @@ export const aiConsumptionContract = {
     "prove_locale_popup_dismissal_and_focus_return",
     "prove_side_navigation_collapse_state",
     "use_work_management_patterns_for_static_work_surfaces",
+    "use_knowledge_management_patterns_for_static_knowledge_surfaces",
     "block_unregistered_modules_from_primary_navigation",
     "prove_browser_interactions_not_static_markers",
     "prove_product_adoption_before_ds_compliance_claim"
@@ -850,6 +934,7 @@ export const aiConsumptionContract = {
     "locale_popup_dismissal_receipt",
     "side_navigation_collapse_receipt",
     "work_management_static_pattern_receipt",
+    "knowledge_management_static_pattern_receipt",
     "registered_navigation_receipt",
     "browser_interaction_receipt",
     "storybook_section_coverage_receipt",
@@ -910,9 +995,11 @@ export const aiConsumptionContract = {
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Work Management surfaces including RelationshipChip, MachineToken, WorkManagementSubnav, WorkBoard, WorkHierarchy, GatePipeline, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
+    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Work Management surfaces including RelationshipChip, MachineToken, MachineTokenCell, WorkManagementSubnav, WorkPageHeader, WorkViewTabs, WorkQuickFilters, WorkItemRow, WorkList, WorkSplitView, WorkBacklogGroup, WorkInlineCreateStatic, WorkBoard, WorkBoardView, WorkDetailLayout, MetadataRail, WorkFieldPanel, WorkActivityFeed, WorkHierarchy, GatePipeline, GatePipelineCompact, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar, plus static Knowledge Management surfaces including KnowledgePageTree, KnowledgeDocumentCanvas, KnowledgeTocRail, KnowledgeInlineCommentList, KnowledgeMetadataRail, KnowledgeAttachmentList, KnowledgeLabelSet, KnowledgeVersionHistory, KnowledgeTemplateGallery, and KnowledgeSearchResults, instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
   workManagementPatternDisposition:
-    "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation, relationship vocabulary, board lanes, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
+    "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation, compact route context, local view tabs, quick filters, dense Work item rows/lists, split detail, backlog groups, static create affordances, compact board view, metadata rails, field panels, activity feed, relationship vocabulary, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
+  knowledgeManagementPatternDisposition:
+    "Knowledge Management package exports cover static page trees, document canvas, table of contents, inline comments, metadata rails, attachment lists, labels, version history, templates, and local result lists. They are local Storybook contract patterns only: backend publishing, live collaboration, external workspace integration, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
   storybookDocShellAuthorityDisposition:
     "The Storybook documentation frontend must render the original Storybook-owned doc shell composition. Global Storybook pages use data-doc-shell='online-docs', tcrn-doc-header, tcrn-doc-global-bar, tcrn-doc-sidebar, tcrn-doc-nav, category navigation, and package-backed control primitives such as SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, and ShellBrandLockup. ProductShell remains documented and package-backed for component examples, AOS visual instances, and product consumer rules, but it is not the global Storybook shell authority.",
   tokenConsumptionDisposition:

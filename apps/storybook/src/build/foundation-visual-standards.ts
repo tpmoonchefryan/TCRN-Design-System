@@ -99,8 +99,8 @@ export const storybookDocShellVisualOracle = {
     searchRestWidthPx: 260,
     searchExpandedWidthPx: 360,
     searchHeightPx: 36,
-    searchBorderColor: "rgb(184, 200, 214)",
-    searchBorderRadiusPx: 5,
+    searchBorderColor: "rgb(142, 142, 136)",
+    searchBorderRadiusPx: 4,
     themeToggleSizePx: 36,
     themeToggleRadiusPx: 999,
     localeTriggerHeightPx: 36,
@@ -154,12 +154,12 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Spacing and density",
     category: "Foundation",
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx"],
-    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-work-index-spec"],
+    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-work-index-spec", "components.html#work-management-components-spec", "components.html#knowledge-management-components-spec"],
     authorityLevel: "package_authority",
-    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment"],
-    allowedConsumerInputs: ["content-specific row data", "table columns", "local filters"],
-    forbiddenConsumerOverrides: ["ad hoc dense card padding", "global table overflow rules", "page-level horizontal scrollers"],
-    proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment"],
+    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "workDensityComponents", "knowledgeDensityComponents"],
+    allowedConsumerInputs: ["content-specific row data", "table columns", "local filters", "documented Work density props", "documented Knowledge static content props"],
+    forbiddenConsumerOverrides: ["ad hoc dense card padding", "global table overflow rules", "page-level horizontal scrollers", "consumer-local Work row/list/backlog/detail density systems", "consumer-local Knowledge tree/document/comment/template systems"],
+    proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment", "WorkItemRow/WorkList/WorkDetailLayout examples fit without overlarge card regression", "KnowledgePageTree/KnowledgeDocumentCanvas/KnowledgeTocRail examples fit without vendor-asset leakage"],
     missingStandardEscalation: "Skip product-specific reusable pattern work and list the missing DS primitive/pattern."
   },
   {
@@ -197,12 +197,12 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Component composition",
     category: "Foundation",
     sourcePaths: ["packages/ui-react/src/index.tsx", "apps/storybook/src/contract-stories/story-content.tsx"],
-    storybookRoutes: ["components.html#component-family-index", "components.html#navigation-shell-spec"],
+    storybookRoutes: ["components.html#component-family-index", "components.html#navigation-shell-spec", "components.html#work-management-components-spec", "patterns.html#work-management-patterns"],
     authorityLevel: "package_authority",
-    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy"],
+    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy", "workLayoutDensityRegistry"],
     allowedConsumerInputs: ["IA/data", "locale data", "content slots", "documented callbacks"],
-    forbiddenConsumerOverrides: ["local reusable clones", "Storybook-only prototype imports", "package-looking selectors outside DS"],
-    proofExpectations: ["package import receipt", "component identity markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace"],
+    forbiddenConsumerOverrides: ["local reusable clones", "Storybook-only prototype imports", "package-looking selectors outside DS", "consumer-local Work page header/filter/list/backlog/board/detail/activity systems"],
+    proofExpectations: ["package import receipt", "component identity markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace", "Work layout and density components exported by @tcrn/ui-react"],
     missingStandardEscalation: "Return a needed DS component/pattern list instead of building product-local shared UI."
   },
   {
@@ -257,7 +257,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     authorityLevel: "consumer_contract",
     readbackFields: ["allowedInputs", "forbiddenOverrides", "rejectCriteria", "missingStandardEscalation", "routeOwner"],
     allowedConsumerInputs: ["product data", "IA labels", "copy keys", "documented DS props", "callbacks"],
-    forbiddenConsumerOverrides: ["consumer-local shared spacing", "consumer-local typography", "shell-control geometry", "package-equivalent styles"],
+    forbiddenConsumerOverrides: ["consumer-local shared spacing", "consumer-local typography", "shell-control geometry", "package-equivalent styles", "consumer-local Work layout/density components"],
     proofExpectations: ["consumer contract present in AI JSON", "local style clone reject criteria present", "llms first-read alignment"],
     missingStandardEscalation: "Route a DS standards admission request before product-local framework/style work."
   }
@@ -281,6 +281,7 @@ export const consumerVisualStyleContract = {
     "consumer-local type ramps",
     "consumer-local shell-control geometry",
     "consumer-local ProductShell/search/theme/locale/sidebar clones",
+    "consumer-local Work page header, route tabs, quick filters, item rows, lists, backlog groups, board density, detail rails, field panels, activity feeds, and evidence/gate layout clones",
     "Storybook-only compliance claims",
     "package-equivalent visual systems outside @tcrn/ui-react"
   ],
@@ -295,6 +296,7 @@ export const consumerVisualStyleContract = {
   rejectCriteria: [
     "A product claims DS compliance without naming a foundation standard id and Storybook route.",
     "A product fixes shared typography, spacing, shell-control geometry, or ProductShell visual behavior locally instead of routing DS standards admission.",
+    "A product builds reusable Work module rows, filters, backlog groups, board cards, detail rails, or activity feeds locally instead of consuming admitted Work Management package exports.",
     "A proof compares only endpoints or markers and omits computed style, motion, i18n, overflow, and browser interaction metrics.",
     "Storybook surfaces hide mandatory owner-review/no-overclaim/proof posture inside optional disclosure."
   ]
