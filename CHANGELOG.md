@@ -2,6 +2,40 @@
 
 ## Unreleased
 
+### Storybook fidelity — A-tier repair (TCRN-DS-INIT-003)
+
+The docs surface now shows the language it documents, and its self-checks report
+what they actually measured.
+
+**The fidelity checks were mostly claims.** `rejectChecks` carried seven entries of
+which six were the literal `false` — assertions wearing the shape of checks, and
+they travelled into the AI consumption contract that way. Three are now real scans
+of the shell sources (decorative gradients, radius drift, soft-cloud elevation), one
+binds to the perceptual signature gate (palette drift), and the three that are
+compositional judgements no code here can make are reported as explicitly
+**unchecked** rather than asserted false. The contract claims less and means it.
+
+**Turning them on found what they had been covering:** 86 decorative gradient
+washes, 21 soft-cloud shadows up to 54px of blur, and 6 radius literals off the
+token scale. All are zero now. Functional gradients — progress fill, skeleton
+shimmer, tracked-nav indicator — stay, and are named in an allowlist rather than
+recognised by accident.
+
+**`.tcrn-theme-preview` was demonstrating a dead theme.** It hardcoded the v1 navy
+wash, so the one component whose job is showing the dark theme was showing the
+theme v2 replaced. It is token-driven now.
+
+**The stamp finally has a chapter.** Adoption is defined as matching a component's
+Storybook chapter, and v2's only new component family had none. Components now
+documents the three admitted moments, the stamped header, and the boundary that
+keeps the language rare.
+
+**The v1 colour vocabulary is retired** from the locale table — six orphaned keys
+removed, two live ones moved to the colour-neutral variants already translated.
+The brand mark's description keeps its v1 colour names on purpose: the mark is a
+frozen brand asset, changed through brand admission rather than a design-system
+revision.
+
 ### Visual language v2 — direction A+B (TCRN-DS-INIT-001)
 
 Breaking: the visual language is a contract surface, so consumers comparing computed
