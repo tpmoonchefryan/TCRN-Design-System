@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import { extname, normalize, resolve, join, relative } from "node:path";
 import { createRequire } from "node:module";
 import { chromium } from "@playwright/test";
+import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE } from "./lib/visual-signature.mjs";
 
 const require = createRequire(import.meta.url);
 const axePath = require.resolve("axe-core/axe.min.js");
@@ -534,6 +535,43 @@ async function setTransientScreenshotChromeHidden(page, hidden) {
   }, [hidden, PIN_ANIMATIONS.toString()]);
 }
 
+const signatureBaselinePath = "docs/verification/internal-alpha/visual-signature-baseline.json";
+const updateVisualBaseline = process.argv.includes("--update-visual-baseline");
+const signatureBaseline = existsSync(signatureBaselinePath)
+  ? JSON.parse(readFileSync(signatureBaselinePath, "utf8"))
+  : { schemaVersion: "tcrn.visual-signature-baseline.v1", tolerance: SIGNATURE_TOLERANCE, entries: {} };
+const signatureResults = [];
+
+/**
+ * Capture, then reduce to a perceptual signature and compare against the committed
+ * baseline. The signature — not the PNG's sha256 — is the invariant: see
+ * scripts/lib/visual-signature.mjs for the measurements the tolerance rests on.
+ */
+async function captureWithSignature(target, key, path, { gated = true, ...options } = {}) {
+  const buffer = await target.screenshot({ path, animations: "disabled", ...options });
+  if (!gated) {
+    // The capture is kept on disk for a human to look at, but nothing about it is
+    // recorded: its signature is not reproducible, and writing an unreproducible value
+    // into a committed artifact is precisely the churn this work set out to remove.
+    signatureResults.push({ key, status: "recorded-only", distance: null, gated: false });
+    return null;
+  }
+  const cells = await computeSignature(signatureContext.page, buffer);
+  const encoded = encodeSignature(cells);
+  const baseline = signatureBaseline.entries[key];
+  let status = "new";
+  let distance = null;
+  if (baseline) {
+    distance = compareSignatures(decodeSignature(baseline), cells);
+    status = withinTolerance(distance) ? "match" : "regression";
+  }
+  if (updateVisualBaseline || !baseline) {
+    signatureBaseline.entries[key] = encoded;
+  }
+  signatureResults.push({ key, status, distance, gated: true });
+  return encoded;
+}
+
 rmSync(screenshotDir, { recursive: true, force: true });
 mkdirSync(screenshotDir, { recursive: true });
 assertBuiltSurface(staticSurfacePath);
@@ -666,6 +704,9 @@ function normalizeEphemeralProofData(value) {
   return value;
 }
 const browser = await chromium.launch({ headless: true });
+// A CSP-free page used only to reduce captures to signatures; the docs shell refuses
+// data: image sources, so the measurement cannot run inside the page under test.
+const signatureContext = await createSignatureContext(browser);
 const browserVersion = browser.version();
 const browserSummaries = [];
 const visualEntries = [];
@@ -693,13 +734,19 @@ for (const viewport of viewports) {
     const sectionStories = requiredStories.filter((story) => story.group === section.group);
     const screenshotPath = relativeScreenshotPath(`${viewport.name}-section-${section.slug}.png`);
     await setTransientScreenshotChromeHidden(page, true);
-    await page.screenshot({ path: screenshotPath, fullPage: true, animations: "disabled" });
+    // Section captures are whole-page compositions of stories that are each gated below,
+    // so they add no coverage — and their height is unbounded (section-components reaches
+    // 159,919px on mobile), which makes a full-page capture depend on whether lazy content
+    // finished painting. Measured: its signature swings mean=34.6 between runs, four times
+    // the distance a real one-token colour change produces. Recorded for human inspection,
+    // deliberately not gated: a tolerance wide enough to admit it would admit real regressions.
+    const sectionSignature = await captureWithSignature(page, `section-${section.slug}@${viewport.name}`, screenshotPath, { fullPage: true, gated: false });
     await setTransientScreenshotChromeHidden(page, false);
     visualEntries.push({
       storyId: `section-${section.slug}`,
       viewport: viewport.name,
       path: screenshotPath,
-      sha256: hashFile(screenshotPath),
+      visualGate: "not-gated-unbounded-full-page",
       intentionalDiffDisposition: "new_internal_alpha_baseline"
     });
 
@@ -708,13 +755,13 @@ for (const viewport of viewports) {
       await locator.waitFor({ state: "visible" });
       const storyPath = relativeScreenshotPath(`${viewport.name}-${story.id}.png`);
       await setTransientScreenshotChromeHidden(page, true);
-      await locator.screenshot({ path: storyPath, animations: "disabled" });
+      const storySignature = await captureWithSignature(locator, `${story.id}@${viewport.name}`, storyPath);
       await setTransientScreenshotChromeHidden(page, false);
       visualEntries.push({
         storyId: story.id,
         viewport: viewport.name,
         path: storyPath,
-        sha256: hashFile(storyPath),
+        signature: storySignature,
         intentionalDiffDisposition: "new_internal_alpha_baseline"
       });
     }
@@ -1827,12 +1874,16 @@ const openDialogPath = relativeScreenshotPath("desktop-1440x900-overlay-focus-op
 // This capture does not go through setTransientScreenshotChromeHidden, and the dialog
 // has just been opened, so its entry animation is still running: pin explicitly.
 await pinAnimations(storybookPage);
-await storybookPage.locator("#dialog-spec-usage [data-dialog-fixture-panel] [role='dialog']").screenshot({ path: openDialogPath, animations: "disabled" });
+const openDialogSignature = await captureWithSignature(
+  storybookPage.locator("#dialog-spec-usage [data-dialog-fixture-panel] [role='dialog']"),
+  "overlay-focus-open-dialog@desktop-1440x900",
+  openDialogPath
+);
 visualEntries.push({
   storyId: "overlay-focus-open-dialog",
   viewport: "desktop-1440x900",
   path: openDialogPath,
-  sha256: hashFile(openDialogPath),
+  signature: openDialogSignature,
   intentionalDiffDisposition: "new_internal_alpha_baseline"
 });
 const interactiveDialogCapabilities = await storybookPage.locator("#dialog-spec-usage [data-dialog-fixture-panel] [role='dialog']").evaluate((node) => ({
@@ -1922,6 +1973,7 @@ localeMenuFocusReturnCheck = {
   closeReadback: localeMenuCloseReadback
 };
 await storybookPage.close();
+await signatureContext.close();
 await browser.close();
 await staticServer.close();
 
@@ -2134,7 +2186,23 @@ writeFileSync(join(outputRoot, "intentional-diff-manifest.json"), `${JSON.string
   entries: visualEntries.map((entry) => ({ storyId: entry.storyId, viewport: entry.viewport, path: entry.path, sha256: entry.sha256 }))
 }, null, 2)}\n`);
 
-const ok = browserProofSummary.ok
+const signatureRegressions = signatureResults.filter((entry) => entry.status === "regression");
+const signatureNew = signatureResults.filter((entry) => entry.status === "new");
+if (updateVisualBaseline || signatureNew.length > 0) {
+  const ordered = Object.fromEntries(Object.keys(signatureBaseline.entries).sort().map((key) => [key, signatureBaseline.entries[key]]));
+  writeFileSync(signatureBaselinePath, `${JSON.stringify({ ...signatureBaseline, tolerance: SIGNATURE_TOLERANCE, entries: ordered }, null, 2)}\n`);
+}
+if (signatureRegressions.length > 0) {
+  console.error(`VISUAL REGRESSION: ${signatureRegressions.length} capture(s) moved beyond tolerance ` +
+    `(mean<=${SIGNATURE_TOLERANCE.meanAbsolute}, maxCell<=${SIGNATURE_TOLERANCE.maxCell}):`);
+  for (const entry of signatureRegressions) {
+    console.error(`  - ${entry.key}: mean=${entry.distance.meanAbsolute} maxCell=${entry.distance.maxCell}`);
+  }
+  console.error("If the change is intended, re-run with --update-visual-baseline and commit the new baseline.");
+}
+
+const ok = signatureRegressions.length === 0
+  && browserProofSummary.ok
   && storyCoverageManifest.ok
   && axeSummary.violationCount === 0
   && keyboardChecklist.ok
@@ -2150,6 +2218,10 @@ console.log(JSON.stringify({
   viewportCount: viewports.length,
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
+  visualSignatureGated: signatureResults.filter((entry) => entry.gated).length,
+  visualSignatureRecordedOnly: signatureResults.filter((entry) => !entry.gated).length,
+  visualSignatureRegressions: signatureRegressions.length,
+  visualSignatureNewBaselines: signatureNew.length,
   keyboardOk: keyboardChecklist.ok,
   localeMenuFocusReturnOk: localeMenuFocusReturnCheck.ok,
   capabilityMetadataOk,
