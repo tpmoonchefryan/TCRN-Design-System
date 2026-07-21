@@ -101,14 +101,8 @@ h1, h2, h3, p {
   --tcrn-doc-shell-side-expanded-width: clamp(280px, 20vw, 360px);
   --tcrn-doc-shell-side-collapsed-width: 88px;
   --tcrn-doc-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
-  --tcrn-doc-shell-left-surface:
-    linear-gradient(155deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 88%, transparent) 0%, transparent 38%),
-    linear-gradient(22deg, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 76%, transparent) 0%, transparent 34%),
-    linear-gradient(180deg, color-mix(in srgb, var(--tcrn-color-surface-panel) 64%, var(--tcrn-color-brand-primary-bg)) 0%, color-mix(in srgb, var(--tcrn-color-surface-muted) 72%, var(--tcrn-color-brand-secondary-bg)) 100%);
-  --tcrn-doc-shell-top-surface:
-    radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 70%, transparent) 0%, transparent 30%),
-    radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 58%, transparent) 0%, transparent 34%),
-    linear-gradient(135deg, var(--tcrn-color-surface-panel) 0%, color-mix(in srgb, var(--tcrn-color-surface-muted) 58%, var(--tcrn-color-surface-panel)) 100%);
+  --tcrn-doc-shell-left-surface: var(--tcrn-color-brand-secondary-bg);
+  --tcrn-doc-shell-top-surface: var(--tcrn-color-surface-panel);
   min-height: 100vh;
   max-width: none;
   margin: 0;
@@ -530,7 +524,7 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 }
 .tcrn-doc-brand {
   --tcrn-brand-mark-size: 52px;
-  --tcrn-brand-mark-filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
+  --tcrn-brand-mark-filter: drop-shadow(0 1px 2px rgba(28, 29, 33, 0.10));
   display: grid;
   grid-template-columns: 52px minmax(0, 1fr);
   align-items: center;
@@ -699,8 +693,7 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   gap: 18px;
   align-content: start;
   min-width: 0;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--tcrn-color-surface-canvas) 88%, var(--tcrn-color-surface-panel)) 0%, var(--tcrn-color-surface-canvas) 220px);
+  background: var(--tcrn-color-surface-canvas);
   padding: clamp(24px, 2.6vw, 48px);
   transition: padding var(--tcrn-motion-emphasis);
 }
@@ -853,12 +846,7 @@ article {
   visibility: hidden;
 }
 .tcrn-doc-nav__section[aria-current="page"] {
-  background: linear-gradient(
-    90deg,
-    var(--tcrn-color-brand-primary-bg) 0%,
-    var(--tcrn-color-brand-primary-bg) 48%,
-    var(--tcrn-color-surface-muted) 100%
-  );
+  background: var(--tcrn-color-surface-muted);
 }
 .tcrn-doc-nav__categories {
   padding-left: 10px;
@@ -954,12 +942,7 @@ article {
 }
 .tcrn-doc-nav__stories a[aria-current="location"],
 .tcrn-doc-nav__stories a[data-doc-nav-item-active="true"] {
-  background: linear-gradient(
-    90deg,
-    var(--tcrn-color-brand-primary-bg) 0%,
-    var(--tcrn-color-brand-primary-bg) 48%,
-    var(--tcrn-color-surface-muted) 100%
-  );
+  background: var(--tcrn-color-surface-muted);
   border-color: var(--tcrn-color-border-subtle);
   color: var(--tcrn-color-text-primary);
   font-weight: 700;
@@ -1042,8 +1025,7 @@ article {
   min-height: 78px;
   border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 70%, var(--tcrn-color-surface-panel)) 0%, var(--tcrn-color-surface-panel) 76%);
+  background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
   padding: 14px;
   text-decoration: none;
@@ -1055,8 +1037,7 @@ article {
 }
 .tcrn-doc-chapter-pager__link--next {
   text-align: right;
-  background:
-    linear-gradient(225deg, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 72%, var(--tcrn-color-surface-panel)) 0%, var(--tcrn-color-surface-panel) 76%);
+  background: var(--tcrn-color-surface-panel);
 }
 .tcrn-doc-chapter-pager__link--next .tcrn-doc-chapter-pager__icon {
   justify-self: end;
@@ -1193,7 +1174,7 @@ h1, h2, h3, p, span, button, label {
   display: inline;
 }
 .tcrn-highlight-mark {
-  border-radius: 3px;
+  border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-brand-primary-bg);
   color: var(--tcrn-color-text-primary);
   font-weight: var(--tcrn-type-weight-medium);
@@ -1393,9 +1374,7 @@ h1, h2, h3, p, span, button, label {
   display: grid;
   place-items: center;
   border-radius: calc(var(--tcrn-radius-surface) + 4px);
-  background:
-    radial-gradient(circle at 35% 20%, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 64%, transparent), transparent 42%),
-    var(--tcrn-color-surface-muted);
+  background: var(--tcrn-color-surface-muted);
   padding: 22px;
 }
 .tcrn-brand-system__copy {
@@ -1734,14 +1713,13 @@ h1, h2, h3, p, span, button, label {
   display: grid;
   gap: 10px;
   color: var(--tcrn-color-text-primary);
-  background:
-    linear-gradient(145deg, rgba(30, 43, 70, 0.96) 0%, rgba(18, 42, 57, 0.96) 55%, rgba(25, 35, 58, 0.96) 100%),
-    var(--tcrn-color-surface-canvas);
-  border: 1px solid rgba(143, 162, 186, 0.34);
+  background: var(--tcrn-color-surface-canvas);
+  /* Token-driven so the preview shows the language it documents. It used to paint a
+     hardcoded v1 navy wash with a blue-grey edge, which meant the component whose whole
+     job is demonstrating the dark theme was demonstrating a theme that no longer exists. */
+  border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 18px 44px rgba(8, 18, 32, 0.18);
+  box-shadow: var(--tcrn-elevation-floating);
   padding: 12px;
 }
 .tcrn-surface,
@@ -1769,7 +1747,7 @@ h1, h2, h3, p, span, button, label {
 }
 .tcrn-inline-alert--warning {
   background: var(--tcrn-color-state-warning-bg);
-  border-color: rgba(122, 78, 0, 0.32);
+  border-color: var(--tcrn-color-state-warning);
 }
 .tcrn-state-view {
   display: grid;
@@ -1897,7 +1875,7 @@ h1, h2, h3, p, span, button, label {
   opacity: 0;
   transform: translateY(4px);
   transition: opacity var(--tcrn-motion-standard), transform var(--tcrn-motion-standard);
-  box-shadow: 0 10px 24px rgba(12, 22, 34, 0.18);
+  box-shadow: var(--tcrn-elevation-floating);
 }
 .tcrn-tooltip:hover .tcrn-tooltip__content,
 .tcrn-tooltip:focus-within .tcrn-tooltip__content,
@@ -2066,8 +2044,7 @@ h1, h2, h3, p, span, button, label {
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
   border-radius: var(--tcrn-radius-surface);
-  background:
-    linear-gradient(105deg, color-mix(in srgb, var(--tcrn-color-surface-panel) 96%, transparent) 0%, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 54%, var(--tcrn-color-surface-panel)) 100%);
+  background: var(--tcrn-color-surface-panel);
   padding: 10px 12px;
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tcrn-color-surface-panel) 78%, transparent);
 }
@@ -2080,7 +2057,7 @@ h1, h2, h3, p, span, button, label {
 .tcrn-entry-shell-strip__brand {
   gap: 10px;
   --tcrn-brand-mark-size: 36px;
-  --tcrn-brand-mark-filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
+  --tcrn-brand-mark-filter: drop-shadow(0 1px 2px rgba(28, 29, 33, 0.10));
 }
 .tcrn-entry-shell-strip__brand span {
   display: grid;
@@ -2147,7 +2124,7 @@ h1, h2, h3, p, span, button, label {
 .tcrn-segmented-nav button {
   min-height: 34px;
   border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 76%, transparent);
-  border-radius: 8px;
+  border-radius: var(--tcrn-radius-control);
   background: color-mix(in srgb, var(--tcrn-color-surface-panel) 92%, transparent);
   color: var(--tcrn-color-text-secondary);
   padding: 0 11px;
@@ -2164,13 +2141,9 @@ h1, h2, h3, p, span, button, label {
 .tcrn-section-tabs button[aria-current="page"],
 .tcrn-segmented-nav button[aria-current="page"] {
   border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 30%, var(--tcrn-color-border-subtle));
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 82%, transparent), color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 44%, transparent)),
-    var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
-  box-shadow:
-    0 5px 14px color-mix(in srgb, var(--tcrn-color-brand-neutral) 10%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--tcrn-color-surface-panel) 72%, transparent);
+  box-shadow: var(--tcrn-elevation-floating);
 }
 .tcrn-nav-component-preview {
   display: grid;
@@ -2178,9 +2151,7 @@ h1, h2, h3, p, span, button, label {
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
   border-radius: var(--tcrn-radius-surface);
-  background:
-    linear-gradient(145deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 54%, transparent), transparent 42%),
-    color-mix(in srgb, var(--tcrn-color-surface-muted) 48%, var(--tcrn-color-surface-panel));
+  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 48%, var(--tcrn-color-surface-panel));
   padding: 12px;
 }
 .tcrn-nav-component-preview .tcrn-product-switcher {
@@ -2225,9 +2196,7 @@ h1, h2, h3, p, span, button, label {
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 82%, transparent);
   border-radius: var(--tcrn-radius-surface);
-  background:
-    linear-gradient(160deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 42%, transparent) 0%, transparent 38%),
-    linear-gradient(180deg, var(--tcrn-color-surface-panel) 0%, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 36%, var(--tcrn-color-surface-panel)) 100%);
+  background: var(--tcrn-color-surface-panel);
   padding: 10px;
 }
 .tcrn-nav-group {
@@ -2270,8 +2239,7 @@ h1, h2, h3, p, span, button, label {
 .tcrn-storybook-component-example .tcrn-nav-item[data-selected="true"],
 .tcrn-doc-sidebar .tcrn-nav-item[data-selected="true"] {
   border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 26%, var(--tcrn-color-border-subtle));
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 84%, var(--tcrn-color-surface-panel)) 0%, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 34%, var(--tcrn-color-surface-panel)) 100%);
+  background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
   box-shadow: inset 4px 0 0 color-mix(in srgb, var(--tcrn-color-brand-primary) 74%, var(--tcrn-color-brand-secondary));
 }
@@ -2347,13 +2315,9 @@ h1, h2, h3, p, span, button, label {
   min-width: 0;
   border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 70%, transparent) 0%, transparent 34%),
-    linear-gradient(225deg, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 72%, transparent) 0%, transparent 34%),
-    linear-gradient(180deg, color-mix(in srgb, var(--tcrn-color-surface-panel) 96%, var(--tcrn-color-brand-primary-bg)) 0%, color-mix(in srgb, var(--tcrn-color-surface-muted) 45%, var(--tcrn-color-surface-panel)) 100%),
-    var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-surface-panel);
   padding: 14px;
-  box-shadow: 0 14px 36px color-mix(in srgb, var(--tcrn-color-brand-neutral) 12%, transparent);
+  box-shadow: var(--tcrn-elevation-floating);
 }
 .tcrn-shell-demo--compact {
   padding: 0;
@@ -2364,10 +2328,7 @@ h1, h2, h3, p, span, button, label {
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 84%, transparent);
   border-radius: var(--tcrn-radius-surface);
-  background:
-    linear-gradient(145deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 62%, transparent) 0%, transparent 40%),
-    linear-gradient(220deg, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 62%, transparent) 0%, transparent 34%),
-    color-mix(in srgb, var(--tcrn-color-surface-muted) 54%, var(--tcrn-color-surface-panel));
+  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 54%, var(--tcrn-color-surface-panel));
   overflow: hidden;
 }
 .tcrn-compact-shell .tcrn-top-bar {
@@ -2377,8 +2338,7 @@ h1, h2, h3, p, span, button, label {
   border: 0;
   border-bottom: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 80%, transparent);
   border-radius: 0;
-  background:
-    linear-gradient(105deg, color-mix(in srgb, var(--tcrn-color-surface-panel) 96%, transparent) 0%, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 56%, var(--tcrn-color-surface-panel)) 100%);
+  background: var(--tcrn-color-surface-panel);
   padding: 0 16px;
 }
 .tcrn-compact-shell__brand {
@@ -2388,7 +2348,7 @@ h1, h2, h3, p, span, button, label {
   width: 42px;
   min-width: 0;
   --tcrn-brand-mark-size: 38px;
-  --tcrn-brand-mark-filter: drop-shadow(0 3px 6px rgba(49, 75, 112, 0.16));
+  --tcrn-brand-mark-filter: drop-shadow(0 1px 2px rgba(28, 29, 33, 0.10));
 }
 .tcrn-compact-shell .tcrn-top-bar__module {
   justify-self: center;
@@ -2420,9 +2380,7 @@ h1, h2, h3, p, span, button, label {
   padding: 12px;
 }
 .tcrn-compact-shell__summary {
-  background:
-    linear-gradient(160deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 72%, transparent), transparent 58%),
-    color-mix(in srgb, var(--tcrn-color-surface-panel) 84%, transparent);
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 84%, transparent);
 }
 .tcrn-compact-shell__summary > span {
   color: var(--tcrn-color-brand-primary);
@@ -2453,7 +2411,7 @@ h1, h2, h3, p, span, button, label {
 .tcrn-compact-shell__switcher .tcrn-module-tabs button {
   min-height: 34px;
   border-color: transparent;
-  border-radius: 8px;
+  border-radius: var(--tcrn-radius-control);
   background: transparent;
   padding: 0 12px;
   box-shadow: none;
@@ -2461,12 +2419,8 @@ h1, h2, h3, p, span, button, label {
 .tcrn-compact-shell__switcher .tcrn-module-tabs button[data-selected="true"],
 .tcrn-compact-shell__switcher .tcrn-module-tabs button[aria-current="page"] {
   border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 24%, transparent);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 82%, transparent), color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 44%, transparent)),
-    var(--tcrn-color-surface-panel);
-  box-shadow:
-    0 5px 14px color-mix(in srgb, var(--tcrn-color-brand-neutral) 10%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--tcrn-color-surface-panel) 70%, transparent);
+  background: var(--tcrn-color-surface-panel);
+  box-shadow: var(--tcrn-elevation-floating);
 }
 .tcrn-compact-shell__panel {
   display: grid;
@@ -2517,8 +2471,7 @@ h1, h2, h3, p, span, button, label {
   border: 0;
   border-bottom: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 82%, transparent);
   border-radius: calc(var(--tcrn-radius-surface) - 1px) calc(var(--tcrn-radius-surface) - 1px) 0 0;
-  background:
-    linear-gradient(110deg, color-mix(in srgb, var(--tcrn-color-surface-panel) 94%, transparent) 0%, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 60%, var(--tcrn-color-surface-panel)) 100%);
+  background: var(--tcrn-color-surface-panel);
   padding: 0 16px;
 }
 .tcrn-shell-demo__topbar--docs {
@@ -2574,8 +2527,7 @@ h1, h2, h3, p, span, button, label {
   padding: 0;
   font-weight: 700;
   border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 42%, var(--tcrn-color-border-subtle));
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 72%, var(--tcrn-color-surface-panel)), var(--tcrn-color-surface-panel));
+  background: var(--tcrn-color-surface-panel);
 }
 .tcrn-shell-demo__menu-button .tcrn-icon {
   width: 16px;
@@ -2620,14 +2572,9 @@ h1, h2, h3, p, span, button, label {
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 82%, transparent);
   border-radius: var(--tcrn-radius-surface);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 70%, transparent) 0%, transparent 42%),
-    linear-gradient(215deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 70%, transparent) 0%, transparent 38%),
-    color-mix(in srgb, var(--tcrn-color-surface-muted) 78%, var(--tcrn-color-surface-panel));
+  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 78%, var(--tcrn-color-surface-panel));
   padding: 12px;
-  box-shadow:
-    0 24px 54px color-mix(in srgb, var(--tcrn-color-brand-neutral) 22%, transparent),
-    0 0 0 1px color-mix(in srgb, var(--tcrn-color-surface-panel) 68%, transparent);
+  box-shadow: var(--tcrn-elevation-floating);
 }
 .tcrn-shell-hub-menu {
   display: grid;
@@ -2636,14 +2583,9 @@ h1, h2, h3, p, span, button, label {
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 82%, transparent);
   border-radius: var(--tcrn-radius-surface);
-  background:
-    radial-gradient(circle at 18% 14%, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 80%, transparent), transparent 34%),
-    linear-gradient(135deg, color-mix(in srgb, var(--tcrn-color-surface-panel) 92%, transparent), color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 26%, var(--tcrn-color-surface-panel))),
-    var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-surface-panel);
   padding: 12px;
-  box-shadow:
-    0 22px 50px color-mix(in srgb, var(--tcrn-color-brand-neutral) 18%, transparent),
-    0 0 0 1px color-mix(in srgb, var(--tcrn-color-surface-panel) 70%, transparent);
+  box-shadow: var(--tcrn-elevation-floating);
 }
 .tcrn-shell-domain-nav,
 .tcrn-shell-domain-group,
@@ -2677,16 +2619,12 @@ h1, h2, h3, p, span, button, label {
 }
 .tcrn-shell-domain-nav {
   align-content: start;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 48%, transparent), transparent 42%),
-    color-mix(in srgb, var(--tcrn-color-surface-panel) 76%, transparent);
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 76%, transparent);
 }
 .tcrn-shell-hub-summary {
   align-content: start;
   gap: 8px;
-  background:
-    linear-gradient(160deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 72%, transparent), transparent 56%),
-    color-mix(in srgb, var(--tcrn-color-surface-panel) 84%, transparent);
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 84%, transparent);
 }
 .tcrn-shell-hub-summary > span {
   color: var(--tcrn-color-brand-primary);
@@ -2713,8 +2651,7 @@ h1, h2, h3, p, span, button, label {
   gap: 9px;
   min-height: 88px;
   padding: 12px;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--tcrn-color-surface-panel) 92%, transparent), color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 22%, var(--tcrn-color-surface-panel)));
+  background: var(--tcrn-color-surface-panel);
 }
 .tcrn-shell-hub-action .tcrn-icon {
   color: var(--tcrn-color-brand-primary);
@@ -2742,15 +2679,11 @@ h1, h2, h3, p, span, button, label {
 }
 .tcrn-shell-hub-action[data-selected="true"] {
   border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 34%, var(--tcrn-color-border-subtle));
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 82%, transparent), color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 46%, transparent)),
-    var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-surface-panel);
 }
 .tcrn-shell-hub-sidecar {
   align-content: start;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 62%, transparent), transparent 50%),
-    color-mix(in srgb, var(--tcrn-color-surface-panel) 82%, transparent);
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 82%, transparent);
 }
 .tcrn-shell-hub-sidecar ul {
   display: grid;
@@ -2846,18 +2779,14 @@ h1, h2, h3, p, span, button, label {
 .tcrn-bookmark-nav__group > a[data-selected="true"],
 .tcrn-bookmark-nav__children a[data-selected="true"] {
   border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 32%, var(--tcrn-color-border-subtle));
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 80%, transparent), color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 48%, transparent)),
-    var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
   font-weight: 700;
 }
 .tcrn-shell-quick-rail {
   align-content: start;
   gap: 8px;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 52%, transparent), transparent 44%),
-    color-mix(in srgb, var(--tcrn-color-surface-panel) 78%, transparent);
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 78%, transparent);
 }
 .tcrn-bookmark-nav a {
   display: flex;
@@ -2872,13 +2801,8 @@ h1, h2, h3, p, span, button, label {
 .tcrn-knowledge-shell-layout {
   --tcrn-knowledge-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
   --tcrn-knowledge-shell-content-gutter: 18px;
-  --tcrn-knowledge-shell-left-surface:
-    linear-gradient(155deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 88%, transparent) 0%, transparent 38%),
-    linear-gradient(22deg, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 76%, transparent) 0%, transparent 34%),
-    linear-gradient(180deg, color-mix(in srgb, var(--tcrn-color-surface-panel) 64%, var(--tcrn-color-brand-primary-bg)) 0%, color-mix(in srgb, var(--tcrn-color-surface-muted) 72%, var(--tcrn-color-brand-secondary-bg)) 100%);
-  --tcrn-knowledge-shell-top-surface:
-    linear-gradient(112deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 50%, transparent) 0%, transparent 34%),
-    linear-gradient(100deg, var(--tcrn-color-surface-panel) 0%, color-mix(in srgb, var(--tcrn-color-brand-secondary-bg) 64%, var(--tcrn-color-surface-panel)) 100%);
+  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-brand-secondary-bg);
+  --tcrn-knowledge-shell-top-surface: var(--tcrn-color-surface-panel);
   display: grid;
   grid-template-areas:
     "topbar topbar"
@@ -3048,9 +2972,7 @@ h1, h2, h3, p, span, button, label {
   align-content: start;
   border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 84%, transparent);
   border-radius: var(--tcrn-radius-surface);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 58%, transparent) 0%, transparent 38%),
-    var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-surface-panel);
   padding: 14px;
 }
 .tcrn-knowledge-preview__panel {
@@ -3154,9 +3076,7 @@ html[data-tcrn-theme="dark"] .tcrn-overlay-static-card {
 }
 html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   border-color: color-mix(in srgb, var(--tcrn-color-border-strong) 58%, transparent);
-  background:
-    linear-gradient(145deg, color-mix(in srgb, var(--tcrn-color-surface-muted) 82%, var(--tcrn-color-brand-primary-bg)), color-mix(in srgb, var(--tcrn-color-surface-muted) 78%, var(--tcrn-color-brand-secondary-bg))),
-    var(--tcrn-color-surface-muted);
+  background: var(--tcrn-color-surface-muted);
 }
 .tcrn-dialog-spec-fixture__header {
   display: grid;
@@ -3180,7 +3100,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
 }
 .tcrn-dialog-spec-fixture__dialog {
   border-color: rgba(73, 91, 219, 0.26);
-  box-shadow: 0 16px 36px rgba(30, 43, 70, 0.12);
+  box-shadow: var(--tcrn-elevation-floating);
 }
 .tcrn-dialog-spec-fixture [data-dialog-fixture-panel],
 .tcrn-dialog-spec-fixture [data-popover-fixture-panel] {
@@ -3220,7 +3140,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   z-index: var(--tcrn-z-popover);
   max-width: 420px;
   border-color: rgba(38, 156, 174, 0.24);
-  box-shadow: 0 14px 34px rgba(18, 42, 66, 0.14);
+  box-shadow: var(--tcrn-elevation-floating);
 }
 @media (max-width: 760px) {
   html {
@@ -3242,9 +3162,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     background-color: var(--tcrn-color-surface-panel);
     background-image: none;
     padding: 10px;
-    box-shadow:
-      0 1px 0 var(--tcrn-color-border-subtle),
-      0 18px 32px rgba(10, 17, 31, 0.16);
+    box-shadow: var(--tcrn-elevation-floating);
   }
   .tcrn-doc-global-bar {
     grid-template-columns: 1fr;

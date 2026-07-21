@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import { extname, normalize, resolve, join, relative } from "node:path";
 import { createRequire } from "node:module";
 import { chromium } from "@playwright/test";
+import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.mjs";
 import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE } from "./lib/visual-signature.mjs";
 
 const require = createRequire(import.meta.url);
@@ -2133,18 +2134,26 @@ const browserProofSummary = {
   componentStorybookParityReadback,
   summaries: browserSummaries
 };
+const { findings: shellFidelityFindings, ...shellFidelity } = fidelityRejectChecks();
+const signatureRegressions = signatureResults.filter((entry) => entry.status === "regression");
 const visualBaselineManifest = {
   ok: visualEntries.length === requiredStories.length * viewports.length + sectionPages.length * viewports.length + 1,
   generatedAt: "stable_internal_alpha_visual_baseline",
+  // Six of the seven entries here were the literal `false` — claims wearing the costume
+  // of checks, and they travelled into the AI consumption contract that way. The three
+  // below that a machine can decide now come from a real scan of the shell sources; the
+  // palette check is bound to the perceptual signature gate, which is the defence that
+  // actually catches a palette moving. The three that remain compositional judgements
+  // are reported as unchecked rather than asserted false: the contract now claims less,
+  // and everything it does claim was measured.
   rejectChecks: {
-    oneNotePaletteDrift: false,
-    genericLeftRailAdminShellCreep: false,
-    decorativeGradientsOrOrbs: false,
-    nestedCards: false,
-    radiusDriftAboveContract: false,
-    clippedButtonText: browserSummaries.some((summary) => summary.clipped.length > 0),
-    incoherentOverlap: false
+    oneNotePaletteDrift: signatureRegressions.length > 0,
+    decorativeGradientsOrOrbs: shellFidelity.decorativeGradientsOrOrbs,
+    radiusDriftAboveContract: shellFidelity.radiusDriftAboveContract,
+    softCloudElevation: shellFidelity.softCloudElevation,
+    clippedButtonText: browserSummaries.some((summary) => summary.clipped.length > 0)
   },
+  uncheckedClaims: UNCHECKED_CLAIMS,
   entries: visualEntries
 };
 const stableStoryCoverageManifest = normalizeEphemeralProofData(storyCoverageManifest);
@@ -2186,7 +2195,6 @@ writeFileSync(join(outputRoot, "intentional-diff-manifest.json"), `${JSON.string
   entries: visualEntries.map((entry) => ({ storyId: entry.storyId, viewport: entry.viewport, path: entry.path, sha256: entry.sha256 }))
 }, null, 2)}\n`);
 
-const signatureRegressions = signatureResults.filter((entry) => entry.status === "regression");
 const signatureNew = signatureResults.filter((entry) => entry.status === "new");
 if (updateVisualBaseline || signatureNew.length > 0) {
   const ordered = Object.fromEntries(Object.keys(signatureBaseline.entries).sort().map((key) => [key, signatureBaseline.entries[key]]));
@@ -2201,7 +2209,16 @@ if (signatureRegressions.length > 0) {
   console.error("If the change is intended, re-run with --update-visual-baseline and commit the new baseline.");
 }
 
+const shellFidelityTripped = Object.entries(shellFidelity).filter(([, tripped]) => tripped);
+if (shellFidelityTripped.length > 0) {
+  console.error(`SHELL FIDELITY DRIFT: ${shellFidelityTripped.map(([name]) => name).join(", ")}`);
+  for (const [group, list] of Object.entries(shellFidelityFindings)) {
+    for (const item of list.slice(0, 8)) console.error(`  ${group}: ${item.where} ${item.selector}`);
+  }
+}
+
 const ok = signatureRegressions.length === 0
+  && shellFidelityTripped.length === 0
   && browserProofSummary.ok
   && storyCoverageManifest.ok
   && axeSummary.violationCount === 0
@@ -2218,6 +2235,7 @@ console.log(JSON.stringify({
   viewportCount: viewports.length,
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
+  shellFidelityDrift: shellFidelityTripped.length,
   visualSignatureGated: signatureResults.filter((entry) => entry.gated).length,
   visualSignatureRecordedOnly: signatureResults.filter((entry) => !entry.gated).length,
   visualSignatureRegressions: signatureRegressions.length,

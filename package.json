@@ -28,9 +28,10 @@
     "typecheck": "tsc -b --pretty false",
     "verify": "pnpm typecheck && pnpm build && pnpm test && pnpm tokens:proof && pnpm exports:check && pnpm pack:smoke && pnpm storybook:smoke && pnpm readme:proof && pnpm public-output:scan && pnpm scan && pnpm scaffold:proof && pnpm internal-alpha:proof",
     "tokens:sync": "node scripts/tokens-sync.mjs",
-    "tokens:proof": "node scripts/tokens-sync.mjs --check && node scripts/token-contrast-proof.mjs && node scripts/fonts-proof.mjs && node scripts/stamp-whitelist-proof.mjs",
+    "tokens:proof": "node scripts/tokens-sync.mjs --check && node scripts/token-contrast-proof.mjs && node scripts/fonts-proof.mjs && node scripts/stamp-whitelist-proof.mjs && node scripts/shell-fidelity-proof.mjs",
     "fonts:proof": "node scripts/fonts-proof.mjs",
-    "stamp:proof": "node scripts/stamp-whitelist-proof.mjs"
+    "stamp:proof": "node scripts/stamp-whitelist-proof.mjs",
+    "shell:fidelity": "node scripts/shell-fidelity-proof.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.61.0",
