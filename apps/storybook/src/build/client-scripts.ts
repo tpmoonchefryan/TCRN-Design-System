@@ -447,6 +447,11 @@ export const sidebarToggleScript = `<script>
     }
     shell.setAttribute("data-sidebar-collapsed", collapsed ? "true" : "false");
     toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    // The SideNavCollapseButton contract keys its two state icons (collapse "<" /
+    // expand ">") off this attribute; without it the collapse icon shows in both
+    // states. React hosts get it from the collapsed prop; this static shell must
+    // mirror it by hand.
+    toggle.setAttribute("data-side-nav-collapsed", collapsed ? "true" : "false");
     const label = collapsed ? toggle.getAttribute("data-collapsed-label") : toggle.getAttribute("data-expanded-label");
     if (label) {
       toggle.setAttribute("aria-label", label);
