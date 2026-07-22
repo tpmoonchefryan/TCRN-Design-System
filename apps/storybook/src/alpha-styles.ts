@@ -518,6 +518,47 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
     transition: none;
   }
 }
+/* Progressive disclosure: a page opens as a compact index — story title, one-line
+   locator, ledger +/- notation — and each story reveals on demand. Hash navigation
+   expands its target, so deep links keep working. Expansion is instant: disclosure
+   is a reading act, not a scene change. */
+article[data-story-collapsed="true"] > .story-body {
+  display: none;
+}
+.tcrn-story-disclosure__heading {
+  margin: 0;
+}
+.tcrn-story-disclosure {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  padding: 2px 0;
+  cursor: pointer;
+}
+.tcrn-story-disclosure::after {
+  content: "+";
+  flex: 0 0 auto;
+  color: var(--tcrn-color-text-secondary);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.tcrn-story-disclosure[aria-expanded="true"]::after {
+  content: "−";
+}
+.tcrn-story-disclosure:hover {
+  color: var(--tcrn-color-brand-primary);
+}
+article[data-story-collapsed="false"] > .tcrn-story-disclosure__heading {
+  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+  padding-left: 10px;
+}
 /* The collapse motion is travel; under reduced motion, travel is removed and the
    width snaps (v2 reduced-motion semantics — comprehension cues stay, movement goes). */
 @media (prefers-reduced-motion: reduce) {
