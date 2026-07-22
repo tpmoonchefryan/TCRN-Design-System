@@ -1,6 +1,15 @@
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 
 export const storybookContentText: Record<string, Record<TcrnLocale, string>> = {
+  "Component family table tools": { "zh-CN": "组件族表格工具", en: "Component family table tools", ja: "コンポーネントファミリー表ツール", ko: "컴포넌트 패밀리 표 도구", fr: "Outils du tableau des familles de composants" },
+  "Component API table tools": { "zh-CN": "组件 API 表格工具", en: "Component API table tools", ja: "コンポーネント API 表ツール", ko: "컴포넌트 API 표 도구", fr: "Outils du tableau d'API de composants" },
+  "Search component families": { "zh-CN": "搜索组件族", en: "Search component families", ja: "コンポーネントファミリーを検索", ko: "컴포넌트 패밀리 검색", fr: "Rechercher des familles de composants" },
+  "Search public exports": { "zh-CN": "搜索公共导出", en: "Search public exports", ja: "公開エクスポートを検索", ko: "공개 내보내기 검색", fr: "Rechercher des exports publics" },
+  "Search this table": { "zh-CN": "搜索此表", en: "Search this table", ja: "この表を検索", ko: "이 표 검색", fr: "Rechercher dans ce tableau" },
+  "All": { "zh-CN": "全部", en: "All", ja: "すべて", ko: "전체", fr: "Tous" },
+  "With caveats": { "zh-CN": "含附加边界", en: "With caveats", ja: "注記あり", ko: "주의사항 있음", fr: "Avec réserves" },
+  "Collapse table": { "zh-CN": "收起表格", en: "Collapse table", ja: "表を折りたたむ", ko: "표 접기", fr: "Replier le tableau" },
+  "Expand table": { "zh-CN": "展开表格", en: "Expand table", ja: "表を展開", ko: "표 펼치기", fr: "Déplier le tableau" },
   "Design System": { "zh-CN": "设计系统", en: "Design System", ja: "デザインシステム", ko: "디자인 시스템", fr: "Design System" },
   "TCRN multicolor mother-brand mark draft": { "zh-CN": "TCRN 多彩母品牌标识草案", en: "TCRN multicolor mother-brand mark draft", ja: "TCRN 多色母ブランドマーク案", ko: "TCRN 다색 모브랜드 마크 초안", fr: "Brouillon de marque mère multicolore TCRN" },
   "Local proof only": { "zh-CN": "仅本地证明", en: "Local proof only", ja: "ローカル証明のみ", ko: "로컬 증명만", fr: "Preuve locale seulement" },
