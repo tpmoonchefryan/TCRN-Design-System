@@ -874,6 +874,7 @@ article {
 }
 .tcrn-doc-nav__section[aria-current="page"] {
   background: var(--tcrn-color-surface-muted);
+  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-doc-nav__categories {
   padding-left: 10px;
@@ -890,7 +891,9 @@ article {
 }
 .tcrn-doc-nav__category-toggle {
   display: grid;
-  grid-template-columns: 12px minmax(0, 1fr) auto;
+  /* No disclosure arrow: the whole row toggles and the count badge already signals
+     content. The label takes the first column. */
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
   width: 100%;
@@ -903,22 +906,8 @@ article {
   padding: 5px 8px;
   text-align: left;
 }
-.tcrn-doc-nav__category-toggle::before {
-  content: "";
-  display: block;
-  grid-column: 1;
-  width: 6px;
-  height: 6px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(-45deg);
-  transition: transform var(--tcrn-motion-standard);
-}
-.tcrn-doc-nav__category-toggle[aria-expanded="true"]::before {
-  transform: rotate(45deg);
-}
 .tcrn-doc-nav__category-label {
-  grid-column: 2;
+  grid-column: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -973,14 +962,12 @@ article {
   border-color: var(--tcrn-color-border-subtle);
   color: var(--tcrn-color-text-primary);
   font-weight: 700;
-  box-shadow:
-    inset 3px 0 0 var(--tcrn-color-brand-primary),
-    0 0 0 1px color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 68%, transparent);
+  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
+/* The collapsed abbr keeps the same left-edge indicator as the expanded state — one
+   selection language on one axis, no halo ring, no bottom underline. */
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section[aria-current="page"] {
-  box-shadow:
-    inset 0 -3px 0 var(--tcrn-color-brand-primary),
-    0 0 0 1px color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 68%, transparent);
+  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
   max-width: 220px;
