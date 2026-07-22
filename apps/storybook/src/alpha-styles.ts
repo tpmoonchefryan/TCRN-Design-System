@@ -99,7 +99,7 @@ h1, h2, h3, p {
 .tcrn-doc-shell {
   --tcrn-doc-shell-side-width: clamp(280px, 20vw, 360px);
   --tcrn-doc-shell-side-expanded-width: clamp(280px, 20vw, 360px);
-  --tcrn-doc-shell-side-collapsed-width: 88px;
+  --tcrn-doc-shell-side-collapsed-width: 120px;
   --tcrn-doc-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
   --tcrn-doc-shell-left-surface: var(--tcrn-color-brand-secondary-bg);
   --tcrn-doc-shell-top-surface: var(--tcrn-color-surface-panel);
@@ -512,6 +512,12 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-doc-sidebar-toggle-slot,
+  .tcrn-doc-global-brand .tcrn-doc-brand {
+    transition: none;
+  }
+}
 /* The collapse motion is travel; under reduced motion, travel is removed and the
    width snaps (v2 reduced-motion semantics — comprehension cues stay, movement goes). */
 @media (prefers-reduced-motion: reduce) {
@@ -573,6 +579,9 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 }
 .tcrn-doc-global-brand .tcrn-doc-brand {
   position: absolute;
+  transition:
+    left var(--tcrn-motion-emphasis),
+    top var(--tcrn-motion-emphasis);
   top: calc((var(--tcrn-anchor-scroll-offset) - 52px) / 2);
   left: clamp(18px, 2vw, 30px);
   width: calc(var(--tcrn-doc-shell-side-expanded-width) - clamp(18px, 2vw, 30px) - 68px);
@@ -600,6 +609,7 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 }
 .tcrn-doc-sidebar-toggle-slot {
   position: absolute;
+  transition: left var(--tcrn-motion-emphasis);
   /* 38px = the SideNavCollapseButton's real size (tcrn-icon-button); the old 32px
      assumption left the control off-centre in both anchoring states. */
   top: calc((var(--tcrn-anchor-scroll-offset) - 38px) / 2);
@@ -622,8 +632,11 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   padding: 0;
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-global-brand .tcrn-doc-brand {
-  top: 14px;
-  left: calc((var(--tcrn-doc-shell-side-collapsed-width) - 40px) / 2);
+  /* The 120px rail keeps the 40px mark and the 38px toggle side by side inside the
+     96px header band (15/40/12/38/15), so collapsing never moves anything on the
+     Y axis and nothing straddles the band's bottom divider. */
+  top: calc((var(--tcrn-anchor-scroll-offset) - 40px) / 2);
+  left: 15px;
   width: 40px;
   transform: none;
 }
@@ -641,10 +654,9 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   visibility: hidden;
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar-toggle-slot {
-  /* Below the 40px brand mark (which ends ~54px) with real breathing room, centred in
-     the 88px rail. */
-  top: 66px;
-  left: calc((var(--tcrn-doc-shell-side-collapsed-width) - 38px) / 2);
+  /* Same top as the expanded state — the toggle translates on X only, staying inside
+     the header band beside the mark (15px margin + 40px mark + 12px gap). */
+  left: calc(15px + 40px + 12px);
   transform: none;
 }
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
