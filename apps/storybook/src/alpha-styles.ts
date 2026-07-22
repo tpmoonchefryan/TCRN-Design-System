@@ -542,15 +542,20 @@ article[data-story-collapsed="true"] > .story-body {
   padding: 2px 0;
   cursor: pointer;
 }
-.tcrn-story-disclosure::after {
-  content: "+";
+.tcrn-story-disclosure__chevron {
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--tcrn-color-text-secondary);
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
 }
-.tcrn-story-disclosure[aria-expanded="true"]::after {
-  content: "−";
+.tcrn-story-disclosure__chevron .tcrn-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--tcrn-motion-standard);
+}
+.tcrn-story-disclosure[aria-expanded="true"] .tcrn-story-disclosure__chevron .tcrn-icon {
+  transform: rotate(90deg);
 }
 .tcrn-story-disclosure:hover {
   color: var(--tcrn-color-brand-primary);
@@ -806,10 +811,10 @@ article {
 }
 .tcrn-doc-nav__group {
   display: grid;
-  gap: 4px;
+  gap: 6px;
 }
 .tcrn-doc-nav__group + .tcrn-doc-nav__group {
-  margin-top: 10px;
+  margin-top: 18px;
   transition: margin-top var(--tcrn-motion-emphasis);
 }
 .tcrn-doc-nav__section,
@@ -826,9 +831,11 @@ article {
 .tcrn-doc-nav__section {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  border-radius: var(--tcrn-radius-control);
   min-height: 34px;
   padding: 7px 11px;
+}
+.tcrn-doc-nav__section-icon {
+  display: none;
   color: var(--tcrn-color-text-primary);
   font-weight: 700;
   transition:
@@ -867,7 +874,7 @@ article {
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar {
   overflow: hidden auto;
-  padding: 14px 10px;
+  padding: 14px 0;
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__groups {
   justify-items: stretch;
@@ -880,12 +887,30 @@ article {
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section {
   justify-content: center;
-  min-height: 38px;
-  padding: 7px 8px;
+  min-height: 40px;
+  padding: 0;
+  place-items: center;
+}
+.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+}
+.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-icon .tcrn-icon {
+  width: 20px;
+  height: 20px;
+}
+.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-abbr {
+  display: none;
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-label {
-  opacity: 0;
-  transform: translateX(-10px) scale(0.78);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-abbr {
   opacity: 1;
@@ -914,11 +939,11 @@ article {
   visibility: hidden;
 }
 .tcrn-doc-nav__section[aria-current="page"] {
-  background: var(--tcrn-color-surface-muted);
+  color: var(--tcrn-color-brand-primary);
   box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-doc-nav__categories {
-  padding-left: 10px;
+  padding-left: 0;
   transition:
     max-height var(--tcrn-motion-emphasis),
     opacity var(--tcrn-motion-standard),
@@ -938,7 +963,7 @@ article {
   align-items: center;
   gap: 8px;
   width: 100%;
-  min-height: 28px;
+  min-height: 26px;
   min-width: 0;
   border: 1px solid transparent;
   border-radius: var(--tcrn-radius-control);
@@ -971,7 +996,7 @@ article {
   color: var(--tcrn-color-text-primary);
 }
 .tcrn-doc-nav__stories {
-  padding-left: 12px;
+  padding-left: 0;
   max-height: 420px;
   opacity: 1;
   overflow: hidden;
@@ -990,24 +1015,21 @@ article {
 }
 .tcrn-doc-nav__stories a {
   display: flex;
-  border-radius: var(--tcrn-radius-control);
   border: 1px solid transparent;
   min-height: 30px;
-  padding: 5px 10px;
+  padding: 5px 10px 5px 32px;
   font-size: 12px;
   line-height: 1.35;
 }
 .tcrn-doc-nav__stories a[aria-current="location"],
 .tcrn-doc-nav__stories a[data-doc-nav-item-active="true"] {
-  background: var(--tcrn-color-surface-muted);
-  border-color: var(--tcrn-color-border-subtle);
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-brand-primary);
   font-weight: 700;
   box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
-/* The collapsed abbr keeps the same left-edge indicator as the expanded state — one
-   selection language on one axis, no halo ring, no bottom underline. */
+/* Collapsed, the same bar sits on the same axis and the icon takes the brand colour. */
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section[aria-current="page"] {
+  color: var(--tcrn-color-brand-primary);
   box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {

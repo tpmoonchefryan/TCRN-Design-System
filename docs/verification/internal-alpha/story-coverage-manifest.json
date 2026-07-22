@@ -1552,7 +1552,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1646,
+        "scrollY": 1708,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2197,7 +2197,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1646,
+        "scrollY": 1708,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2842,7 +2842,7 @@
       {
         "label": "after-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1646,
+        "scrollY": 1708,
         "viewport": {
           "width": 390,
           "height": 844
@@ -3487,7 +3487,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1646,
+        "scrollY": 1708,
         "viewport": {
           "width": 390,
           "height": 844
@@ -4142,7 +4142,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2862,
+        "scrollY": 2924,
         "viewport": {
           "width": 390,
           "height": 844
@@ -4377,6 +4377,16 @@
                   "text": "AOS owner 质量产品壳层基准"
                 },
                 {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-story-disclosure__title",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS owner 质量产品壳层基准"
+                },
+                {
                   "tag": "button",
                   "id": "",
                   "className": "tcrn-story-disclosure",
@@ -4425,16 +4435,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
                 }
               ]
             },
@@ -5008,7 +5008,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2862,
+        "scrollY": 2924,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5243,6 +5243,16 @@
                   "text": "AOS owner 质量产品壳层基准"
                 },
                 {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-story-disclosure__title",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS owner 质量产品壳层基准"
+                },
+                {
                   "tag": "button",
                   "id": "",
                   "className": "tcrn-story-disclosure",
@@ -5291,16 +5301,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
                 }
               ]
             },
@@ -5874,7 +5874,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2862,
+        "scrollY": 2924,
         "viewport": {
           "width": 390,
           "height": 844
@@ -6109,6 +6109,16 @@
                   "text": "AOS owner 质量产品壳层基准"
                 },
                 {
+                  "tag": "span",
+                  "id": "",
+                  "className": "tcrn-story-disclosure__title",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "AOS owner 质量产品壳层基准"
+                },
+                {
                   "tag": "button",
                   "id": "",
                   "className": "tcrn-story-disclosure",
@@ -6157,16 +6167,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
                 }
               ]
             },
