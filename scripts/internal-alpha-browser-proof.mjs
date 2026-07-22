@@ -713,6 +713,7 @@ const browserVersion = browser.version();
 const browserSummaries = [];
 const visualEntries = [];
 const axeSummaries = [];
+const disclosureChecks = [];
 let keyboardChecklist;
 let localeMenuFocusReturnCheck;
 
@@ -732,6 +733,45 @@ for (const viewport of viewports) {
 
     await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}`);
     await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+    if (viewport.name === "desktop-1440x900") {
+      // Progressive-disclosure contract: pages open as a compact index (all stories
+      // collapsed), a disclosure click expands its story, and hash navigation expands
+      // its target. Checked before the capture pass force-expands everything.
+      disclosureChecks.push(await page.evaluate(() => {
+        const articles = Array.from(document.querySelectorAll("article[data-story-collapsed]"));
+        const collapsedByDefault = articles.length > 0 && articles.every((node) => node.getAttribute("data-story-collapsed") === "true");
+        const first = articles[0];
+        const toggle = first ? first.querySelector("[data-story-disclosure]") : null;
+        let clickExpands = false;
+        let clickRestores = false;
+        if (toggle) {
+          toggle.click();
+          clickExpands = first.getAttribute("data-story-collapsed") === "false" && toggle.getAttribute("aria-expanded") === "true";
+          toggle.click();
+          clickRestores = first.getAttribute("data-story-collapsed") === "true";
+        }
+        const last = articles[articles.length - 1];
+        let hashExpands = false;
+        if (last) {
+          window.location.hash = `#${last.id}`;
+          window.dispatchEvent(new HashChangeEvent("hashchange"));
+          hashExpands = last.getAttribute("data-story-collapsed") === "false";
+          window.location.hash = "";
+        }
+        return { section: document.title, storyCount: articles.length, collapsedByDefault, clickExpands, clickRestores, hashExpands };
+      }));
+    }
+    // The signature gates prove story content, not the disclosure shell: expand every
+    // story before any layout- or capture-reading step runs.
+    await page.evaluate(() => {
+      for (const article of document.querySelectorAll("article[data-story-collapsed]")) {
+        article.setAttribute("data-story-collapsed", "false");
+        const toggle = article.querySelector("[data-story-disclosure]");
+        if (toggle) {
+          toggle.setAttribute("aria-expanded", "true");
+        }
+      }
+    });
     const health = await collectPageHealth(page);
     const sectionStories = requiredStories.filter((story) => story.group === section.group);
     const screenshotPath = relativeScreenshotPath(`${viewport.name}-section-${section.slug}.png`);
@@ -1578,12 +1618,24 @@ const scrollSpyCheck = {
   source: "manual page scroll -> dashboard-page-templates active nav",
   metrics: scrollSpyMetrics
 };
+async function expandAllStoriesForContentRead(page) {
+  // Localized-content checks read innerText, which excludes collapsed story bodies.
+  // They prove localization, not the disclosure state — disclosure has its own gate —
+  // so the stories are expanded before the read.
+  await page.evaluate(() => {
+    for (const article of document.querySelectorAll("article[data-story-collapsed]")) {
+      article.setAttribute("data-story-collapsed", "false");
+    }
+  });
+}
+
 async function collectLocalizedTextCheck(page, check) {
   await page.goto(`${staticServer.origin}/${check.route}`);
   await page.waitForSelector(`[data-storybook-locale='${check.locale}']`);
   await page.waitForSelector(`[data-active-story-section='${check.section}']`);
   await page.waitForSelector(`[data-doc-nav-item='${check.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
   await page.waitForTimeout(150);
+  await expandAllStoriesForContentRead(page);
   const bodyText = await page.evaluate(() => document.body.innerText);
   const missingRequiredText = check.requiredText.filter((text) => !bodyText.includes(text));
   const leakedForbiddenText = check.forbiddenText.filter((text) => bodyText.includes(text));
@@ -1606,6 +1658,7 @@ async function collectLocalizedShellChromeCheck(page, check) {
   await page.waitForSelector(`[data-doc-nav-item='${check.storyId}'][aria-current='location'][data-doc-nav-item-active='true']`);
   await page.waitForSelector("[data-doc-nav-group]");
   await page.waitForTimeout(150);
+  await expandAllStoriesForContentRead(page);
   const metrics = await page.evaluate(({ requiredText, forbiddenText, expectedCategoryCount, expectedShellNavGroupCount }) => {
     const bodyText = document.body.innerText;
     const html = document.documentElement;
@@ -2218,7 +2271,11 @@ if (shellFidelityTripped.length > 0) {
   }
 }
 
+const disclosureOk = disclosureChecks.length > 0 && disclosureChecks.every(
+  (entry) => entry.collapsedByDefault && entry.clickExpands && entry.clickRestores && entry.hashExpands
+);
 const ok = signatureRegressions.length === 0
+  && disclosureOk
   && shellFidelityTripped.length === 0
   && browserProofSummary.ok
   && storyCoverageManifest.ok
@@ -2236,6 +2293,7 @@ console.log(JSON.stringify({
   viewportCount: viewports.length,
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
+  disclosureOk,
   shellFidelityDrift: shellFidelityTripped.length,
   visualSignatureGated: signatureResults.filter((entry) => entry.gated).length,
   visualSignatureRecordedOnly: signatureResults.filter((entry) => !entry.gated).length,

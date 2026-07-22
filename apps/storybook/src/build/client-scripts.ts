@@ -472,6 +472,46 @@ export const sidebarToggleScript = `<script>
 })();
 </script>`;
 
+export const storyDisclosureScript = `<script>
+(() => {
+  const articles = Array.from(document.querySelectorAll("article[data-story-collapsed]"));
+  if (articles.length === 0) {
+    return;
+  }
+  const setOpen = (article, open) => {
+    article.setAttribute("data-story-collapsed", open ? "false" : "true");
+    const toggle = article.querySelector("[data-story-disclosure]");
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+  };
+  for (const article of articles) {
+    const toggle = article.querySelector("[data-story-disclosure]");
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        setOpen(article, article.getAttribute("data-story-collapsed") === "true");
+      });
+    }
+  }
+  const expandForHash = () => {
+    const id = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+    if (!id) {
+      return;
+    }
+    const target = document.getElementById(id);
+    if (!target) {
+      return;
+    }
+    const article = target.closest("article[data-story-collapsed]") || (target.matches("article[data-story-collapsed]") ? target : null);
+    if (article) {
+      setOpen(article, true);
+    }
+  };
+  window.addEventListener("hashchange", expandForHash);
+  expandForHash();
+})();
+</script>`;
+
 export const tableToolbarScript = `<script>
 (() => {
   for (const toolbar of document.querySelectorAll("[data-table-toolbar]")) {
