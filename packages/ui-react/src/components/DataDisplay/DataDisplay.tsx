@@ -5,6 +5,7 @@ import { ClipboardCopyButton } from "../Clipboard/index.js";
 import { Badge, EvidenceStrip, InlineAlert, StatusBadge, StateView } from "../Feedback/index.js";
 import { Heading, Text } from "../Typography/index.js";
 import { Surface } from "../Layout/index.js";
+import { SearchInput } from "../Form/index.js";
 import { cx } from "../../utils.js";
 
 export interface TableColumn {
@@ -172,6 +173,85 @@ export function FilterBar({ label, children }: FilterBarProps) {
     <section className="tcrn-filter-bar" aria-label={label}>
       {children}
     </section>
+  );
+}
+
+export interface TableToolbarFilterOption {
+  id: string;
+  label: string;
+}
+
+export interface TableToolbarProps {
+  label: string;
+  controlsId: string;
+  searchLabel: string;
+  searchPlaceholder?: string;
+  filterLabel?: string;
+  filterOptions?: TableToolbarFilterOption[];
+  allFilterLabel?: string;
+  matchCountFormat?: string;
+  collapseLabel?: string;
+  expandLabel?: string;
+}
+
+/* A dense table's tools: text search, optional key-based filter chips, a live match
+   count, and an optional collapse control. The component is presentational and
+   host-agnostic — it declares a data-attribute contract (data-table-toolbar-*) that
+   the host wires: rows match a chip when they contain an element whose
+   data-table-filter-key lists the chip's id, and match the search when their visible
+   text contains the query. Both labels of the collapse control stay in the DOM so
+   locale swaps keep working. */
+export function TableToolbar({
+  label,
+  controlsId,
+  searchLabel,
+  searchPlaceholder,
+  filterLabel,
+  filterOptions,
+  allFilterLabel = "All",
+  matchCountFormat = "{shown} / {total}",
+  collapseLabel,
+  expandLabel
+}: TableToolbarProps) {
+  return (
+    <div role="group" className="tcrn-table-toolbar" aria-label={label} data-table-toolbar="true" data-table-toolbar-target={controlsId}>
+      <SearchInput
+        aria-label={searchLabel}
+        placeholder={searchPlaceholder}
+        aria-controls={controlsId}
+        data-table-toolbar-search="true"
+      />
+      {filterOptions && filterOptions.length > 0 ? (
+        <FilterBar label={filterLabel ?? label}>
+          <button type="button" className="tcrn-table-toolbar__chip" aria-pressed="true" data-table-toolbar-filter="">
+            {allFilterLabel}
+          </button>
+          {filterOptions.map((option) => (
+            <button key={option.id}
+              type="button"
+              className="tcrn-table-toolbar__chip"
+              aria-pressed="false"
+              data-table-toolbar-filter={option.id}
+            >
+              {option.label}
+            </button>
+          ))}
+        </FilterBar>
+      ) : null}
+      <span className="tcrn-table-toolbar__count" data-table-toolbar-count={matchCountFormat} aria-live="polite" />
+      {collapseLabel ? (
+        <button
+          type="button"
+          className="tcrn-table-toolbar__collapse"
+          data-table-toolbar-collapse="true"
+          aria-expanded="true"
+          aria-controls={controlsId}
+        >
+          <span data-table-toolbar-collapse-label="collapse">{collapseLabel}</span>
+          <span data-table-toolbar-collapse-label="expand">{expandLabel ?? collapseLabel}</span>
+        </button>
+      ) : null}
+    </div>
   );
 }
 

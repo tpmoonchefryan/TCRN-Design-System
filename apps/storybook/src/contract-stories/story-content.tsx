@@ -49,6 +49,7 @@ import {
   StatusBadge,
   Surface,
   TableShell,
+  TableToolbar,
   Text,
   Textarea,
   TopBar,
@@ -1408,18 +1409,44 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="Recommended component families">
-          <TableShell
-            columns={[
-              { key: "family", label: "Component family" },
-              { key: "components", label: "Recommended components" },
-              { key: "scope", label: "Scope" },
-              { key: "status", label: "Component status" }
-            ]}
-            rows={componentFamilyRows}
+          <TableToolbar
+            label="Component family table tools"
+            controlsId="component-family-index-table"
+            searchLabel="Search component families"
+            searchPlaceholder="Search this table"
+            allFilterLabel="All"
+            filterOptions={[{ id: "caveat", label: "With caveats" }]}
+            collapseLabel="Collapse table"
+            expandLabel="Expand table"
           />
+          <div id="component-family-index-table">
+            <TableShell
+              columns={[
+                { key: "family", label: "Component family" },
+                { key: "components", label: "Recommended components" },
+                { key: "scope", label: "Scope" },
+                { key: "status", label: "Component status" }
+              ]}
+              rows={componentFamilyRows.map((row) => ({
+                ...row,
+                status: (
+                  <span data-table-filter-key={row.status.includes(";") ? "caveat" : "plain"}>{row.status}</span>
+                )
+              }))}
+            />
+          </div>
         </ReadbackPanel>
         <ReadbackPanel title="Package-backed component API">
+          <TableToolbar
+            label="Component API table tools"
+            controlsId="component-api-table"
+            searchLabel="Search public exports"
+            searchPlaceholder="Search this table"
+            collapseLabel="Collapse table"
+            expandLabel="Expand table"
+          />
           <div
+            id="component-api-table"
             data-component-library-parity="package-backed"
             data-component-source="@tcrn/ui-react"
             data-token-source="@tcrn/ui-tokens"

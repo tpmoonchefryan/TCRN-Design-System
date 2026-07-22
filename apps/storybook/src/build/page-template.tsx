@@ -20,6 +20,7 @@ import {
   dialogFixtureScript,
   hashRouteScript,
   sidebarToggleScript,
+  tableToolbarScript,
   storybookI18nScript,
   storybookThemeScript,
   storybookSearchScript
@@ -395,6 +396,7 @@ ${storybookI18nScript}
 ${sidebarToggleScript}
 ${storybookSearchScript}
 ${dialogFixtureScript}
+${tableToolbarScript}
 ${anchorScrollScript}
 </body>
 </html>
