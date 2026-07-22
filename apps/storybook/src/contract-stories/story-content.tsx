@@ -1452,32 +1452,18 @@ const legacyContractStories: LegacyContractStory[] = [
             data-token-source="@tcrn/ui-tokens"
             data-copy-state-source="@tcrn/ui-copy-state"
           >
+            <EvidenceStrip items={["@tcrn/ui-react", "Local proof only"]} />
             <TableShell
-              columns={[
-                { key: "exportName", label: "Public export" },
-                { key: "source", label: "Source package" },
-                { key: "status", label: "Library status" }
-              ]}
-              rows={componentLibraryPublicComponentNames.map((exportName) => ({
-                exportName,
-                source: "@tcrn/ui-react",
-                status: <StatusBadge state={{ state: "local_only" }} />
-              }))}
+              columns={[{ key: "exportName", label: "Public export" }]}
+              rows={componentLibraryPublicComponentNames.map((exportName) => ({ exportName }))}
             />
           </div>
         </ReadbackPanel>
         <ReadbackPanel title="Package utility exports">
+          <EvidenceStrip items={["@tcrn/ui-react", "Local proof only"]} />
           <TableShell
-            columns={[
-              { key: "exportName", label: "Public export" },
-              { key: "source", label: "Source package" },
-              { key: "status", label: "Library status" }
-            ]}
-            rows={componentLibraryPublicUtilityNames.map((exportName) => ({
-              exportName,
-              source: "@tcrn/ui-react",
-              status: <StatusBadge state={{ state: "local_only" }} />
-            }))}
+            columns={[{ key: "exportName", label: "Public export" }]}
+            rows={componentLibraryPublicUtilityNames.map((exportName) => ({ exportName }))}
           />
         </ReadbackPanel>
         <ReadbackPanel title="Storybook-only prototypes">

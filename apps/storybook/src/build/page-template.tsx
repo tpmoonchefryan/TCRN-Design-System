@@ -20,6 +20,7 @@ import {
   dialogFixtureScript,
   hashRouteScript,
   sidebarToggleScript,
+  storyDisclosureScript,
   tableToolbarScript,
   storybookI18nScript,
   storybookThemeScript,
@@ -306,10 +307,10 @@ function storyHtml(group: ContractStoryGroup): string {
   <h2>${i18nText(`group.${group}`)}</h2>
 ${stories.map((story) => {
   const body = renderToStaticMarkup(story.id === "overlay-focus" ? <DialogSpecFixture /> : story.render());
-  return `  <article id="${story.id}" data-contract-story-id="${story.id}" data-story-id="${story.id}" data-story-group="${story.group}" data-story-category="${escapeHtml(story.category)}" data-story-category-id="${escapeHtml(story.categoryId)}" data-story-source-path="${escapeHtml(story.sourcePath)}" data-story-package-authority="${escapeHtml(story.packageAuthority)}" data-story-readiness="${escapeHtml(story.readiness)}" data-story-proof-posture="${escapeHtml(story.proofPosture)}">
-  <h2>${i18nText(`story.${story.id}.title`)}</h2>
+  return `  <article id="${story.id}" data-contract-story-id="${story.id}" data-story-id="${story.id}" data-story-group="${story.group}" data-story-category="${escapeHtml(story.category)}" data-story-category-id="${escapeHtml(story.categoryId)}" data-story-source-path="${escapeHtml(story.sourcePath)}" data-story-package-authority="${escapeHtml(story.packageAuthority)}" data-story-readiness="${escapeHtml(story.readiness)}" data-story-proof-posture="${escapeHtml(story.proofPosture)}" data-story-collapsed="true">
+  <h2 class="tcrn-story-disclosure__heading"><button type="button" class="tcrn-story-disclosure" aria-expanded="false" aria-controls="${story.id}-region" data-story-disclosure="${story.id}">${i18nText(`story.${story.id}.title`)}</button></h2>
   <p>${i18nText(`story.${story.id}.description`)}</p>
-  <div class="story-body">${body}</div>
+  <div class="story-body" id="${story.id}-region">${body}</div>
 </article>`;
 }).join("\n")}
 </section>`;
@@ -396,6 +397,7 @@ ${storybookI18nScript}
 ${sidebarToggleScript}
 ${storybookSearchScript}
 ${dialogFixtureScript}
+${storyDisclosureScript}
 ${tableToolbarScript}
 ${anchorScrollScript}
 </body>
