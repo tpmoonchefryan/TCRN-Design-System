@@ -4142,7 +4142,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 147513,
+        "scrollY": 147689,
         "viewport": {
           "width": 390,
           "height": 844
@@ -4979,7 +4979,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族组件族推荐组件范围组件状态操作Button, IconButt"
+                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
                 },
                 {
                   "tag": "main",
@@ -5008,7 +5008,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 147513,
+        "scrollY": 147689,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5845,7 +5845,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族组件族推荐组件范围组件状态操作Button, IconButt"
+                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
                 },
                 {
                   "tag": "main",
@@ -5874,7 +5874,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 147513,
+        "scrollY": 147689,
         "viewport": {
           "width": 390,
           "height": 844
@@ -6711,7 +6711,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族组件族推荐组件范围组件状态操作Button, IconButt"
+                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
                 },
                 {
                   "tag": "main",
@@ -6748,8 +6748,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 58566,
-      "scrollY": 46928
+      "maxScrollY": 58674,
+      "scrollY": 47036
     }
   },
   "scrollSpyCheck": {
