@@ -29,6 +29,16 @@ import {
 import { escapeHtml, i18nText, localeText } from "./i18n.js";
 import { categoryDomId, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
 
+const navGroupIcons: Record<ContractStoryGroup, IconName> = {
+  Welcome: "home",
+  "Style Guide": "palette",
+  Foundations: "layers",
+  Components: "package",
+  Patterns: "layout-grid",
+  Proof: "shield-check",
+  "Change Log": "history"
+};
+
 function iconHtml(name: IconName, className: string, dataDocShellIcon: string): string {
   return renderToStaticMarkup(
     <Icon name={name} className={className} data-doc-shell-icon={dataDocShellIcon} />
@@ -177,6 +187,7 @@ ${contractStoryGroups.map((group) => {
   return `    <li class="tcrn-doc-nav__group" data-doc-nav-group="${group}">
       <a class="tcrn-doc-nav__section" href="${groupFileName(group)}" data-story-nav="${group}"${current} data-nav-abbr="${groupAbbr}">
         <span class="tcrn-doc-nav__section-label">${groupLabel}</span>
+        <span class="tcrn-doc-nav__section-icon" aria-hidden="true">${iconHtml(navGroupIcons[group], "tcrn-doc-nav__section-icon-svg", "nav-group")}</span>
         <span class="tcrn-doc-nav__section-abbr" aria-hidden="true">${groupAbbr}</span>
       </a>
       <ol class="tcrn-doc-nav__categories" aria-label="${escapeHtml(`${localeText(`group.${group}`)} ${localeText("shell.categoriesLabel")}`)}">
@@ -308,7 +319,7 @@ function storyHtml(group: ContractStoryGroup): string {
 ${stories.map((story) => {
   const body = renderToStaticMarkup(story.id === "overlay-focus" ? <DialogSpecFixture /> : story.render());
   return `  <article id="${story.id}" data-contract-story-id="${story.id}" data-story-id="${story.id}" data-story-group="${story.group}" data-story-category="${escapeHtml(story.category)}" data-story-category-id="${escapeHtml(story.categoryId)}" data-story-source-path="${escapeHtml(story.sourcePath)}" data-story-package-authority="${escapeHtml(story.packageAuthority)}" data-story-readiness="${escapeHtml(story.readiness)}" data-story-proof-posture="${escapeHtml(story.proofPosture)}" data-story-collapsed="true">
-  <h2 class="tcrn-story-disclosure__heading"><button type="button" class="tcrn-story-disclosure" aria-expanded="false" aria-controls="${story.id}-region" data-story-disclosure="${story.id}">${i18nText(`story.${story.id}.title`)}</button></h2>
+  <h2 class="tcrn-story-disclosure__heading"><button type="button" class="tcrn-story-disclosure" aria-expanded="false" aria-controls="${story.id}-region" data-story-disclosure="${story.id}"><span class="tcrn-story-disclosure__title">${i18nText(`story.${story.id}.title`)}</span><span class="tcrn-story-disclosure__chevron" aria-hidden="true">${iconHtml("chevron-right", "tcrn-story-disclosure__chevron-svg", "story-disclosure")}</span></button></h2>
   <p>${i18nText(`story.${story.id}.description`)}</p>
   <div class="story-body" id="${story.id}-region">${body}</div>
 </article>`;
