@@ -2664,10 +2664,15 @@ label {
     transform: none;
   }
 
+/* Reduced motion stops loops and cancels travel, but does not flatten the v2
+     comprehension cue: opacity and colour transitions survive at a real duration,
+     governed by the component reduced-motion rules. The old blanket
+     transition-duration clamp made the docs shell demonstrate the v1 kill-switch the
+     component CSS had deliberately moved away from. */
   *,
   *::before,
   *::after {
-    transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
