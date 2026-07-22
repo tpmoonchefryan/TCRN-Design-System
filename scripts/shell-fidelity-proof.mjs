@@ -65,7 +65,7 @@ function owningSelector(lines, index) {
 }
 
 export function scanShellFidelity() {
-  const findings = { decorativeGradients: [], radiusLiterals: [], softCloudShadows: [] };
+  const findings = { decorativeGradients: [], radiusLiterals: [], softCloudShadows: [], reducedMotionKillSwitches: [] };
 
   for (const surface of SURFACES) {
     const text = readFileSync(resolve(root, surface), "utf8");
@@ -101,6 +101,31 @@ export function scanShellFidelity() {
     });
   }
 
+  // A blanket `* { transition-duration: <n> !important }` inside a reduced-motion block
+  // is the v1 kill switch: it collapses the v2 comprehension cue (opacity/colour at a
+  // real duration) that reduced motion is meant to keep. Loop/animation clamps are fine.
+  for (const surface of SURFACES) {
+    const text = readFileSync(resolve(root, surface), "utf8");
+    const blockRe = /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{/g;
+    let match;
+    while ((match = blockRe.exec(text)) !== null) {
+      let depth = 1;
+      let i = match.index + match[0].length;
+      const start = i;
+      while (i < text.length && depth > 0) {
+        if (text[i] === "{") depth += 1;
+        else if (text[i] === "}") depth -= 1;
+        i += 1;
+      }
+      const body = text.slice(start, i - 1);
+      if (/\*\s*,\s*\*::before[\s\S]*?transition-duration:[^;]*!important/.test(body)
+        || /\*\s*\{[^}]*transition-duration:[^;]*!important/.test(body)) {
+        const line = text.slice(0, match.index).split("\n").length;
+        findings.reducedMotionKillSwitches.push({ where: `${surface}:${line}`, selector: "* (reduced-motion block)" });
+      }
+    }
+  }
+
   return findings;
 }
 
@@ -110,6 +135,7 @@ export function fidelityRejectChecks() {
     decorativeGradientsOrOrbs: findings.decorativeGradients.length > 0,
     radiusDriftAboveContract: findings.radiusLiterals.length > 0,
     softCloudElevation: findings.softCloudShadows.length > 0,
+    reducedMotionKillSwitch: findings.reducedMotionKillSwitches.length > 0,
     findings
   };
 }
