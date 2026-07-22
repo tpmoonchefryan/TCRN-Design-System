@@ -1370,6 +1370,7 @@ export const tcrnComponentCss = `
     box-shadow var(--tcrn-motion-standard);
 }
 .tcrn-shell-theme-toggle:hover,
+.tcrn-shell-side-nav-toggle:hover,
 .tcrn-shell-locale-menu__trigger:hover,
 .tcrn-shell-locale-menu__trigger[aria-expanded="true"] {
   border-color: var(--tcrn-color-border-control);

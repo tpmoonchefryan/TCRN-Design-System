@@ -223,9 +223,7 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   gap: 0;
   min-width: 0;
   min-height: var(--tcrn-anchor-scroll-offset);
-  /* No grid-template-columns transition: animating a grid track width reflows the whole
-     bar every frame. The collapse snaps; the gentle feel comes from the nav content
-     (opacity/transform), not from thrashing layout. */
+  transition: grid-template-columns var(--tcrn-motion-emphasis);
 }
 .tcrn-doc-header__copy {
   display: grid;
@@ -504,10 +502,23 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   width: 100%;
   min-height: calc(100vh - var(--tcrn-anchor-scroll-offset));
   padding: 0;
-  /* Sidebar collapse changes this grid track from ~300px to 88px. Transitioning
-     grid-template-columns reflowed the entire content area on every frame — the source
-     of the collapse jank. The width now snaps instantly (a collapse is an occasional
-     action, and an instant snap is smoother than a janky animation). */
+  transition: grid-template-columns var(--tcrn-motion-emphasis);
+}
+/* While the collapse/expand motion runs (the runtime holds data-sidebar-motion for
+   its 260ms window), off-screen stories skip per-frame layout and paint so the grid
+   transition keeps its frame budget on long pages. Outside the motion window the rule
+   is inert, so captures, anchors, and search see fully rendered content. */
+.tcrn-doc-shell[data-sidebar-motion] article[data-story-id] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+/* The collapse motion is travel; under reduced motion, travel is removed and the
+   width snaps (v2 reduced-motion semantics — comprehension cues stay, movement goes). */
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-doc-layout,
+  .tcrn-doc-global-bar {
+    transition: none;
+  }
 }
 .tcrn-doc-sidebar {
   position: sticky;
@@ -520,7 +531,6 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   overflow: auto;
   border-right: 0;
   background: var(--tcrn-doc-shell-left-surface);
-  background-attachment: fixed;
   box-shadow: none;
   padding: 16px clamp(16px, 1.6vw, 24px) 18px clamp(18px, 2vw, 30px);
   /* padding is a layout property; it snaps with the collapse rather than animating. */
@@ -556,7 +566,6 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   border-right: 0;
   border-radius: 0;
   background: var(--tcrn-doc-shell-left-surface);
-  background-attachment: fixed;
   box-shadow: none;
   padding: 0;
   overflow: hidden;
@@ -583,22 +592,18 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   color: var(--tcrn-color-brand-primary);
   cursor: pointer;
   padding: 0;
-  /* left/top are layout properties; animating them made the button fly across the
-     shell as it re-anchored between the expanded and collapsed positions. It now snaps
-     to its position; only the press/hover feedback and the icon flip animate. */
   transition:
     background-color var(--tcrn-motion-standard),
     border-color var(--tcrn-motion-standard),
     color var(--tcrn-motion-standard),
     transform var(--tcrn-motion-fast);
 }
-.tcrn-knowledge-shell__collapse-button:active {
-  transform: scale(var(--tcrn-motion-press-scale, 0.97));
-}
 .tcrn-doc-sidebar-toggle-slot {
   position: absolute;
-  top: calc((var(--tcrn-anchor-scroll-offset) - 32px) / 2);
-  left: calc(var(--tcrn-doc-shell-side-expanded-width) - clamp(16px, 1.6vw, 24px) - 34px);
+  /* 38px = the SideNavCollapseButton's real size (tcrn-icon-button); the old 32px
+     assumption left the control off-centre in both anchoring states. */
+  top: calc((var(--tcrn-anchor-scroll-offset) - 38px) / 2);
+  left: calc(var(--tcrn-doc-shell-side-expanded-width) - clamp(16px, 1.6vw, 24px) - 38px);
   transform: none;
 }
 .tcrn-knowledge-shell__collapse-button:hover {
@@ -637,16 +642,10 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar-toggle-slot {
   /* Below the 40px brand mark (which ends ~54px) with real breathing room, centred in
-     the 88px rail. Was cramped at 60px, only 6px under the mark. */
+     the 88px rail. */
   top: 66px;
-  left: calc((var(--tcrn-doc-shell-side-collapsed-width) - 32px) / 2);
+  left: calc((var(--tcrn-doc-shell-side-collapsed-width) - 38px) / 2);
   transform: none;
-}
-/* Collapsed, the button points the other way: it now expands. The icon is a single
-   chevron; flipping it 180deg turns the "collapse" arrow into an "expand" arrow so the
-   control reads correctly in both states. */
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-knowledge-shell__collapse-button .tcrn-icon {
-  transform: rotate(180deg);
 }
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
   display: grid;
