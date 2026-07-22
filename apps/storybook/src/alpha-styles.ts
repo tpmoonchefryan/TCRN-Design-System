@@ -3363,8 +3363,8 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     transform: none;
   }
   *, *::before, *::after {
-    transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
 @media (forced-colors: active) {
