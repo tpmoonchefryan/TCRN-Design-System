@@ -21,6 +21,7 @@ import {
   RelationshipChip,
   SavedViewToolbar,
   TableShell,
+  TableToolbar,
   WorkBoard,
   WorkBoardView,
   WorkActivityFeed,
@@ -410,4 +411,28 @@ test("work management composites render static no-live operational surfaces", ()
   assert.match(html, /Smallest executable ticket\/task unit/);
   assert.match(html, /No live dispatch in Storybook fixture/);
   assert.doesNotMatch(html, /ProductShellSearch|data-shell-control="product-shell-search"|live dispatch authorized|release ready|Atlassian|Jira|WorkIssueRow|IssueRow|issue-style/i);
+});
+
+test("TableToolbar declares its host-wiring contract", () => {
+  const html = renderToStaticMarkup(
+    <TableToolbar
+      label="Demo table tools"
+      controlsId="demo-table"
+      searchLabel="Search demo rows"
+      filterOptions={[{ id: "caveat", label: "With caveats" }]}
+      allFilterLabel="All"
+      collapseLabel="Collapse table"
+      expandLabel="Expand table"
+    />
+  );
+  assert.match(html, /data-table-toolbar="true"/);
+  assert.match(html, /data-table-toolbar-target="demo-table"/);
+  assert.match(html, /data-table-toolbar-search="true"/);
+  assert.match(html, /aria-controls="demo-table"/);
+  assert.match(html, /aria-pressed="true"[^>]*data-table-toolbar-filter=""/);
+  assert.match(html, /aria-pressed="false"[^>]*data-table-toolbar-filter="caveat"/);
+  assert.match(html, /data-table-toolbar-count="\{shown\} \/ \{total\}"/);
+  assert.match(html, /data-table-toolbar-collapse="true"/);
+  assert.match(html, /data-table-toolbar-collapse-label="collapse"/);
+  assert.match(html, /data-table-toolbar-collapse-label="expand"/);
 });

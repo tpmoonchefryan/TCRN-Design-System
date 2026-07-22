@@ -665,7 +665,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 7980
+          "height": 8088
         },
         {
           "id": "display-primitives-spec",
@@ -1658,7 +1658,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 8833
+          "height": 8941
         },
         {
           "id": "display-primitives-spec",
@@ -2507,7 +2507,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 30339
+          "height": 30549
         },
         {
           "id": "display-primitives-spec",

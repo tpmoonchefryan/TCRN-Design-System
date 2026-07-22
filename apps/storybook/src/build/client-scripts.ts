@@ -472,6 +472,68 @@ export const sidebarToggleScript = `<script>
 })();
 </script>`;
 
+export const tableToolbarScript = `<script>
+(() => {
+  for (const toolbar of document.querySelectorAll("[data-table-toolbar]")) {
+    const target = document.getElementById(toolbar.getAttribute("data-table-toolbar-target") || "");
+    if (!target) {
+      continue;
+    }
+    const rows = Array.from(target.querySelectorAll('[role="row"]')).filter(
+      (row) => !row.classList.contains("tcrn-table-shell__head")
+    );
+    const input = toolbar.querySelector("[data-table-toolbar-search]");
+    const chips = Array.from(toolbar.querySelectorAll("[data-table-toolbar-filter]"));
+    const count = toolbar.querySelector("[data-table-toolbar-count]");
+    const collapse = toolbar.querySelector("[data-table-toolbar-collapse]");
+    const countFormat = count ? count.getAttribute("data-table-toolbar-count") || "{shown} / {total}" : "";
+    const apply = () => {
+      const query = input ? input.value.trim().toLowerCase() : "";
+      const active = chips.find((chip) => chip.getAttribute("aria-pressed") === "true");
+      const filterKey = active ? active.getAttribute("data-table-toolbar-filter") || "" : "";
+      let shown = 0;
+      for (const row of rows) {
+        const matchesQuery = !query || (row.textContent || "").toLowerCase().includes(query);
+        const matchesFilter = !filterKey || Boolean(row.querySelector('[data-table-filter-key~="' + filterKey + '"]'));
+        const visible = matchesQuery && matchesFilter;
+        if (visible) {
+          row.removeAttribute("hidden");
+          shown += 1;
+        } else {
+          row.setAttribute("hidden", "");
+        }
+      }
+      if (count) {
+        count.textContent = countFormat.replace("{shown}", String(shown)).replace("{total}", String(rows.length));
+      }
+    };
+    if (input) {
+      input.addEventListener("input", apply);
+    }
+    for (const chip of chips) {
+      chip.addEventListener("click", () => {
+        for (const other of chips) {
+          other.setAttribute("aria-pressed", other === chip ? "true" : "false");
+        }
+        apply();
+      });
+    }
+    if (collapse) {
+      collapse.addEventListener("click", () => {
+        const open = collapse.getAttribute("aria-expanded") !== "false";
+        collapse.setAttribute("aria-expanded", open ? "false" : "true");
+        if (open) {
+          target.setAttribute("hidden", "");
+        } else {
+          target.removeAttribute("hidden");
+        }
+      });
+    }
+    apply();
+  }
+})();
+</script>`;
+
 export const storybookSearchScript = `<script>
 (() => {
   const input = document.querySelector("[data-doc-search-input]");
