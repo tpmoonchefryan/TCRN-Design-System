@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Breadcrumb,
+  Checkbox,
   ClipboardCopyButton,
   componentLibraryDeferredPrototypeNames,
   componentLibraryPublicComponentNames,
@@ -14,6 +15,7 @@ import {
   DetailInspector,
   DisclosurePanel,
   Dialog,
+  Divider,
   EnvironmentBanner,
   EvidenceStrip,
   Field,
@@ -25,11 +27,14 @@ import {
   InlineAlert,
   Input,
   KeyValueList,
+  LinkButton,
+  LiveRegion,
   NavGroup,
   NavItem,
   Pagination,
   ProductLockup,
   Popover,
+  ProductLauncher,
   ProductShell,
   ProductSwitcher,
   ReadbackPanel,
@@ -1547,6 +1552,15 @@ const legacyContractStories: LegacyContractStory[] = [
             />
           </div>
         </ReadbackPanel>
+        <ReadbackPanel title="Divider">
+          <Text>Dividers separate stacked content groups without adding semantic meaning to the reading order.</Text>
+          <Divider />
+          <Text>Content below the divider stays in the same reading flow.</Text>
+        </ReadbackPanel>
+        <ReadbackPanel title="Live region">
+          <Text>LiveRegion politely announces asynchronous status text to assistive technology without stealing focus.</Text>
+          <LiveRegion>Synthetic status: proof route pending.</LiveRegion>
+        </ReadbackPanel>
         <InlineAlert tone="warning">
           These primitives do not implement React ErrorBoundary wrappers, telemetry, product error policy, publication, package release, or product adoption.
         </InlineAlert>
@@ -1683,6 +1697,16 @@ const legacyContractStories: LegacyContractStory[] = [
             <Button variant="danger">Destructive action</Button>
           </div>
         </ReadbackPanel>
+        <ReadbackPanel title="Link button (anchor)">
+          <div className="tcrn-action-row">
+            <LinkButton href="#button-spec-usage" variant="primary">Primary link</LinkButton>
+            <LinkButton href="#button-spec-usage">Secondary link</LinkButton>
+            <LinkButton href="#button-spec-usage" variant="quiet">Quiet link</LinkButton>
+          </div>
+          <Text>
+            LinkButton renders an anchor styled as a button for navigation actions. Variant fidelity (primary, secondary, quiet) depends on the package styling landed in S036; before that styling the three variants share the base button-shaped appearance.
+          </Text>
+        </ReadbackPanel>
         <ReadbackPanel title="Disabled usage">
           <Text>Visible button labels stay clean; disabled reasons are exposed through title and assistive text.</Text>
           <div className="tcrn-action-row">
@@ -1756,6 +1780,12 @@ const legacyContractStories: LegacyContractStory[] = [
         <Field label="Invalid state" hint="Hint text is visible and retained in the DOM." error="Synthetic validation message">
           <Input value="Blocked local fixture" readOnly aria-invalid />
         </Field>
+        <Field label="Consent">
+          <div className="tcrn-action-row">
+            <Checkbox defaultChecked />
+            <Checkbox disabled disabledReason="Consent unavailable in this synthetic fixture" />
+          </div>
+        </Field>
         <ReadbackPanel title="Field width rules">
           <TableShell
             columns={[
@@ -1826,6 +1856,11 @@ const legacyContractStories: LegacyContractStory[] = [
           <CompactToolShellDemo />
         </ReadbackPanel>
         <ReadbackPanel title="Navigation component contracts">
+          <TopBar
+            productName="TCRN Design System"
+            moduleName="Components"
+            actions={<StatusBadge state={{ state: "local_only" }} />}
+          />
           <Breadcrumb
             items={[
               { id: "home", label: "TCRN" },
@@ -1840,6 +1875,14 @@ const legacyContractStories: LegacyContractStory[] = [
                 { id: "design-system", label: "TCRN Design System" }
               ]}
             />
+            <ProductLauncher
+              items={[
+                { id: "aos", label: "TCRN AOS" },
+                { id: "tms", label: "TCRN TMS", selected: true },
+                { id: "design-system", label: "TCRN Design System" }
+              ]}
+            />
+            <Text>Deprecated alias of ProductSwitcher — see ruling. ProductLauncher is code-identical to ProductSwitcher and is retained only for backward compatibility; prefer ProductSwitcher for new surfaces.</Text>
             <div className="tcrn-package-nav-proof" data-package-backed-navigation-proof="true">
               <div className="tcrn-package-nav-proof__skip">
                 <SkipLink href="#navigation-shell-spec">Skip to navigation shell content</SkipLink>

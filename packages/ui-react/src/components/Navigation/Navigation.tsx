@@ -20,16 +20,17 @@ export interface NavItem {
   selected?: boolean;
 }
 
-export interface TopBarProps {
-  productName: string;
-  moduleName: string;
+export interface TopBarProps extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+  productName: ReactNode;
+  moduleName: ReactNode;
   actions?: ReactNode;
+  brandProps?: HTMLAttributes<HTMLDivElement>;
 }
 
-export function TopBar({ productName, moduleName, actions }: TopBarProps) {
+export function TopBar({ productName, moduleName, actions, brandProps, className, ...rest }: TopBarProps) {
   return (
-    <header className="tcrn-top-bar">
-      <div className="tcrn-top-bar__brand">{productName}</div>
+    <header {...rest} className={cx("tcrn-top-bar", className)}>
+      <div {...brandProps} className={cx("tcrn-top-bar__brand", brandProps?.className)}>{productName}</div>
       <div className="tcrn-top-bar__module">{moduleName}</div>
       <div className="tcrn-top-bar__actions">{actions}</div>
     </header>
