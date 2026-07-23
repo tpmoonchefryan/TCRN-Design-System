@@ -108,6 +108,7 @@ import {
   tcrnI18nContract,
   tcrnLocaleMetadata
 } from "@tcrn/ui-copy-state";
+import { tcrnTokens } from "@tcrn/ui-tokens";
 import type { ContractStory, ContractStoryGroup } from "./types.js";
 import type {
   EvidenceAttachment,
@@ -162,12 +163,24 @@ import {
 
 type LegacyContractStory = Omit<ContractStory, "category" | "categoryId" | "sourcePath" | "packageAuthority" | "readiness" | "proofPosture">;
 
+// Live value lookup against the token registry. Throws at module evaluation (build time)
+// so a renamed or removed CSS variable can never silently resolve to an empty/transparent
+// value — the defect a hand-copied swatch or prose-frozen size string would hide (S039).
+function tokenValue(variable: string): string {
+  const token = tcrnTokens.find((candidate) => candidate.variable === variable);
+  if (!token) {
+    throw new Error(`unknown design token ${variable}`);
+  }
+  return token.value;
+}
+
 function TokenSwatch({ label, token, note }: { label: string; token: string; note: string }) {
   return (
     <div className="tcrn-token-swatch">
       <span className="tcrn-token-swatch__color" style={{ background: `var(${token})` }} aria-hidden="true" />
       <strong>{label}</strong>
       <code>{token}</code>
+      <code>{tokenValue(token)}</code>
       <Text>{note}</Text>
     </div>
   );
@@ -784,6 +797,20 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
           />
         </ReadbackPanel>
+        <ReadbackPanel title="Color token index">
+          <Text>Every color token surfaces here by identifier and live value, sourced from the token registry so a rename can never silently drop a swatch.</Text>
+          <div className="tcrn-token-swatch-grid">
+            {tcrnTokens
+              .filter((token) => token.group === "color")
+              .map((token) => (
+                <div key={token.variable} className="tcrn-token-swatch">
+                  <span className="tcrn-token-swatch__color" style={{ background: `var(${token.variable})` }} aria-hidden="true" />
+                  <code>{token.variable}</code>
+                  <code>{token.value}</code>
+                </div>
+              ))}
+          </div>
+        </ReadbackPanel>
         <ReadbackPanel title="Theme parity">
           <Text>Light and dark themes must keep the same semantic token names. A dark override changes values only; it must not fork component behavior or readiness copy.</Text>
         </ReadbackPanel>
@@ -893,23 +920,30 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "usage", label: "Usage" }
             ]}
             rows={[
-              { token: "Page title", size: "28px / 1.3 / 700", usage: "One page title per route or documentation page." },
-              { token: "Section title", size: "18px / 1.25 / 700", usage: "Story titles, major panels, and route sections." },
-              { token: "Dense UI body", size: "13px / 1.35 / 400", usage: "Tables, navigation, controls, and operational scanning remain dense." },
-              { token: "Reading body", size: "14px / 1.45 / 400", usage: "Proof-gated explanatory copy and prose only; not auto-applied to dense UI." },
-              { token: "Body copy", size: "13px / 1.45 / 400", usage: "Rules, descriptions, table cells, and proof notes." },
-              { token: "Control text", size: "13px / 1.2 / 600", usage: "Buttons, tabs, labels, and compact control text." },
-              { token: "Caption", size: "11px / 1.35 / 600", usage: "Metadata, helper text, and evidence strip context." },
-              { token: "Code text", size: "12px / 1.4 / mono", usage: "Token names, ids, commands, and technical readback." }
+              // size strings are single template literals derived from the token registry so a
+              // renamed/removed size, line, or weight token throws via tokenValue instead of
+              // silently freezing a stale prose value (S039). usage prose keeps its translations.
+              { token: "Page title", size: `${tokenValue("--tcrn-type-size-page")} / ${tokenValue("--tcrn-type-line-page")} / ${tokenValue("--tcrn-type-weight-strong")}`, usage: "One page title per route or documentation page." },
+              { token: "Section title", size: `${tokenValue("--tcrn-type-size-section")} / ${tokenValue("--tcrn-type-line-section")} / ${tokenValue("--tcrn-type-weight-strong")}`, usage: "Story titles, major panels, and route sections." },
+              { token: "Dense UI body", size: `${tokenValue("--tcrn-type-size-ui")} / ${tokenValue("--tcrn-type-line-ui")} / ${tokenValue("--tcrn-type-weight-regular")}`, usage: "Tables, navigation, controls, and operational scanning remain dense." },
+              { token: "Reading body", size: `${tokenValue("--tcrn-type-size-reading")} / ${tokenValue("--tcrn-type-line-reading")} / ${tokenValue("--tcrn-type-weight-regular")}`, usage: "Proof-gated explanatory copy and prose only; not auto-applied to dense UI." },
+              { token: "Body copy", size: `${tokenValue("--tcrn-type-size-body")} / ${tokenValue("--tcrn-type-line-body")} / ${tokenValue("--tcrn-type-weight-regular")}`, usage: "Rules, descriptions, table cells, and proof notes." },
+              { token: "Control text", size: `${tokenValue("--tcrn-type-size-control")} / ${tokenValue("--tcrn-type-line-control")} / ${tokenValue("--tcrn-type-weight-medium")}`, usage: "Buttons, tabs, labels, and compact control text." },
+              { token: "Caption", size: `${tokenValue("--tcrn-type-size-caption")} / ${tokenValue("--tcrn-type-line-caption")} / ${tokenValue("--tcrn-type-weight-medium")}`, usage: "Metadata, helper text, and evidence strip context." },
+              // no --tcrn-type-line-meta token; 1.4 line-height and the mono family stay literal.
+              { token: "Code text", size: `${tokenValue("--tcrn-type-size-meta")} / 1.4 / mono`, usage: "Token names, ids, commands, and technical readback." }
             ]}
           />
           <div className="tcrn-type-scale-demo" aria-label="Type scale specimen">
-            <p className="tcrn-type-scale-demo__page">Page title / 28px</p>
-            <p className="tcrn-type-scale-demo__section">Section title / 18px</p>
-            <p className="tcrn-type-scale-demo__dense">Dense UI body / 13px remains the default for operational scanning.</p>
-            <p className="tcrn-type-scale-demo__reading">Reading body / 14px is reserved for proof-gated explanatory copy.</p>
-            <p className="tcrn-type-scale-demo__body">Body copy / 13px keeps dense product surfaces readable without becoming tiny.</p>
-            <p className="tcrn-type-scale-demo__caption">Caption / 11px is reserved for metadata and helper context.</p>
+            {/* each specimen is one template-literal child (single text node) so the localization
+                dictionary lookup on the full string still hits — a `text {expr}` split would leak
+                English on zh-CN/ja/ko/fr and trip the browser localization proof (S039). */}
+            <p className="tcrn-type-scale-demo__page">{`Page title / ${tokenValue("--tcrn-type-size-page")}`}</p>
+            <p className="tcrn-type-scale-demo__section">{`Section title / ${tokenValue("--tcrn-type-size-section")}`}</p>
+            <p className="tcrn-type-scale-demo__dense">{`Dense UI body / ${tokenValue("--tcrn-type-size-ui")} remains the default for operational scanning.`}</p>
+            <p className="tcrn-type-scale-demo__reading">{`Reading body / ${tokenValue("--tcrn-type-size-reading")} is reserved for proof-gated explanatory copy.`}</p>
+            <p className="tcrn-type-scale-demo__body">{`Body copy / ${tokenValue("--tcrn-type-size-body")} keeps dense product surfaces readable without becoming tiny.`}</p>
+            <p className="tcrn-type-scale-demo__caption">{`Caption / ${tokenValue("--tcrn-type-size-caption")} is reserved for metadata and helper context.`}</p>
             <code className="tcrn-type-scale-demo__code">--tcrn-type-family-mono</code>
           </div>
         </ReadbackPanel>
