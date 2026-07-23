@@ -595,11 +595,25 @@ export const tcrnTokens = [
     description: "Status chip padding, asymmetric to close the optical gap the leading ink dot opens."
   },
   {
-    name: "state.chip.radius",
-    variable: "--tcrn-state-chip-radius",
+    name: "space.0h",
+    variable: "--tcrn-space-0h",
+    value: "2px",
+    group: "space",
+    description: "Hairline gap: icon-to-label micro-spacing and tight inline stacks."
+  },
+  {
+    name: "space.1",
+    variable: "--tcrn-space-1",
     value: "4px",
-    group: "radius",
-    description: "Status chip radius. Squared to the control family — a pill would read as a marketing badge, not an instrument reading."
+    group: "space",
+    description: "Tight gap for closely related items."
+  },
+  {
+    name: "space.1h",
+    variable: "--tcrn-space-1h",
+    value: "6px",
+    group: "space",
+    description: "Snug gap between related controls or chip clusters."
   },
   {
     name: "space.2",
@@ -607,6 +621,27 @@ export const tcrnTokens = [
     value: "8px",
     group: "space",
     description: "Compact gap for adjacent controls."
+  },
+  {
+    name: "space.2h",
+    variable: "--tcrn-space-2h",
+    value: "10px",
+    group: "space",
+    description: "Comfortable gap between grouped controls and list rows."
+  },
+  {
+    name: "space.3",
+    variable: "--tcrn-space-3",
+    value: "12px",
+    group: "space",
+    description: "Default gap between distinct controls and card internals."
+  },
+  {
+    name: "space.3h",
+    variable: "--tcrn-space-3h",
+    value: "14px",
+    group: "space",
+    description: "Roomy gap for separated groups within a panel."
   },
   {
     name: "density.compact.rowHeight",
@@ -623,6 +658,27 @@ export const tcrnTokens = [
     description: "Panel interior spacing."
   },
   {
+    name: "space.4h",
+    variable: "--tcrn-space-4h",
+    value: "18px",
+    group: "space",
+    description: "Generous gap between panel sections."
+  },
+  {
+    name: "space.5",
+    variable: "--tcrn-space-5",
+    value: "20px",
+    group: "space",
+    description: "Section-level spacing between panels."
+  },
+  {
+    name: "space.6",
+    variable: "--tcrn-space-6",
+    value: "32px",
+    group: "space",
+    description: "Large layout gap between major regions."
+  },
+  {
     name: "radius.control",
     variable: "--tcrn-radius-control",
     value: "4px",
@@ -635,6 +691,13 @@ export const tcrnTokens = [
     value: "6px",
     group: "radius",
     description: "Panel and card radius for framed surfaces."
+  },
+  {
+    name: "radius.pill",
+    variable: "--tcrn-radius-pill",
+    value: "999px",
+    group: "radius",
+    description: "Fully rounded pill radius for badges, toggles, and abbreviation dots."
   },
   {
     name: "elevation.focus",
