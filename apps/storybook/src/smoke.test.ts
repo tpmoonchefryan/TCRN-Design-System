@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
-import { createTokenMap, tcrnDarkThemeTokens } from "@tcrn/ui-tokens";
+import { createTokenMap, tcrnDarkThemeTokens, tcrnTokens } from "@tcrn/ui-tokens";
 import alphaMeta from "./alpha.stories.js";
 import {
   i18nText,
@@ -862,6 +862,63 @@ test("static contract story surface is retained and synthetic", () => {
     assert.match(html, /<meta name="tcrn-ai-consumption-contract" content="ai-consumption-contract\.json" \/>/);
     assert.match(html, /<meta name="tcrn-ai-consumption-contract-route" content="proof\.html#ai-consumption-contract" \/>/);
     assert.match(html, /<meta name="tcrn-ai-consumption-contract-required" content="must-read-first" \/>/);
+  }
+});
+
+test("style guide color index surfaces every color token and type-scale sizes stay token-derived", () => {
+  const tokenValueOf = (variable: string): string => {
+    const token = tcrnTokens.find((candidate) => candidate.variable === variable);
+    assert.ok(token, `design token ${variable} must exist in @tcrn/ui-tokens`);
+    return token.value;
+  };
+
+  // Completeness: the registry-driven "Color token index" panel must render EVERY color token
+  // (identifier + live value) inside the color-palette story, so no color can be silently
+  // omitted and a rename/removal cannot leave a transparent swatch behind (S039). Iterating the
+  // same registry the page iterates keeps this gate true through future token renames.
+  const colorPaletteHtml = readStoryHtml(readGroupPage("Style Guide"), "color-palette");
+  const colorTokens = tcrnTokens.filter((token) => token.group === "color");
+  assert.ok(colorTokens.length >= 39, `expected at least 39 color tokens, found ${colorTokens.length}`);
+  for (const token of colorTokens) {
+    assert.ok(
+      colorPaletteHtml.includes(token.variable),
+      `color token ${token.variable} must render in the Style Guide color-palette swatches`
+    );
+  }
+
+  // Drift: every type-scale size cell and demo specimen must equal its token-derived value, so a
+  // prose-frozen literal that no longer matches the registry is rejected. The expected strings are
+  // themselves derived from the registry, guarding the template reconstruction against byte drift.
+  const textStylesHtml = readStoryHtml(readGroupPage("Style Guide"), "text-styles");
+  const expectedTypeScaleSizes = [
+    `${tokenValueOf("--tcrn-type-size-page")} / ${tokenValueOf("--tcrn-type-line-page")} / ${tokenValueOf("--tcrn-type-weight-strong")}`,
+    `${tokenValueOf("--tcrn-type-size-section")} / ${tokenValueOf("--tcrn-type-line-section")} / ${tokenValueOf("--tcrn-type-weight-strong")}`,
+    `${tokenValueOf("--tcrn-type-size-ui")} / ${tokenValueOf("--tcrn-type-line-ui")} / ${tokenValueOf("--tcrn-type-weight-regular")}`,
+    `${tokenValueOf("--tcrn-type-size-reading")} / ${tokenValueOf("--tcrn-type-line-reading")} / ${tokenValueOf("--tcrn-type-weight-regular")}`,
+    `${tokenValueOf("--tcrn-type-size-body")} / ${tokenValueOf("--tcrn-type-line-body")} / ${tokenValueOf("--tcrn-type-weight-regular")}`,
+    `${tokenValueOf("--tcrn-type-size-control")} / ${tokenValueOf("--tcrn-type-line-control")} / ${tokenValueOf("--tcrn-type-weight-medium")}`,
+    `${tokenValueOf("--tcrn-type-size-caption")} / ${tokenValueOf("--tcrn-type-line-caption")} / ${tokenValueOf("--tcrn-type-weight-medium")}`,
+    `${tokenValueOf("--tcrn-type-size-meta")} / 1.4 / mono`
+  ];
+  for (const size of expectedTypeScaleSizes) {
+    assert.ok(
+      textStylesHtml.includes(size),
+      `type-scale size "${size}" must render from a token-derived template, not a frozen literal`
+    );
+  }
+  const expectedTypeScaleSpecimens = [
+    `Page title / ${tokenValueOf("--tcrn-type-size-page")}`,
+    `Section title / ${tokenValueOf("--tcrn-type-size-section")}`,
+    `Dense UI body / ${tokenValueOf("--tcrn-type-size-ui")} remains the default for operational scanning.`,
+    `Reading body / ${tokenValueOf("--tcrn-type-size-reading")} is reserved for proof-gated explanatory copy.`,
+    `Body copy / ${tokenValueOf("--tcrn-type-size-body")} keeps dense product surfaces readable without becoming tiny.`,
+    `Caption / ${tokenValueOf("--tcrn-type-size-caption")} is reserved for metadata and helper context.`
+  ];
+  for (const specimen of expectedTypeScaleSpecimens) {
+    assert.ok(
+      textStylesHtml.includes(specimen),
+      `type-scale specimen "${specimen}" must render from a token-derived template`
+    );
   }
 });
 
