@@ -1174,40 +1174,6 @@ h1, h2, h3, p, span, button, label {
   white-space: nowrap;
   border: 0;
 }
-.tcrn-button, .tcrn-link-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--tcrn-space-1h);
-  border: 1px solid var(--tcrn-color-border-strong);
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-panel);
-  color: var(--tcrn-color-text-primary);
-  min-height: 34px;
-  padding: 0 var(--tcrn-space-3);
-}
-.tcrn-button[disabled] {
-  cursor: not-allowed;
-  color: var(--tcrn-color-text-muted);
-  background: var(--tcrn-color-surface-muted);
-  border-color: var(--tcrn-color-border-subtle);
-}
-.tcrn-button--primary {
-  background: var(--tcrn-color-focus-ring);
-  color: var(--tcrn-color-text-inverse);
-  border-color: var(--tcrn-color-focus-ring);
-}
-[data-tcrn-theme="dark"] .tcrn-button--primary {
-  color: var(--tcrn-color-surface-canvas);
-  font-weight: 700;
-}
-.tcrn-button--danger {
-  color: var(--tcrn-color-state-blocked);
-}
-.tcrn-button--quiet {
-  border-color: transparent;
-  background: transparent;
-}
 .tcrn-icon {
   display: inline-block;
   flex: none;
@@ -3176,7 +3142,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   gap: var(--tcrn-space-2);
 }
 .tcrn-dialog-spec-fixture__dialog {
-  border-color: rgba(73, 91, 219, 0.26);
+  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 26%, transparent);
   box-shadow: var(--tcrn-elevation-floating);
 }
 .tcrn-dialog-spec-fixture [data-dialog-fixture-panel],
@@ -3216,7 +3182,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
 .tcrn-popover {
   z-index: var(--tcrn-z-popover);
   max-width: 420px;
-  border-color: rgba(38, 156, 174, 0.24);
+  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 24%, transparent);
   box-shadow: var(--tcrn-elevation-floating);
 }
 @media (max-width: 760px) {
