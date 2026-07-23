@@ -181,6 +181,20 @@ function readGroupPage(group: ContractStoryGroup): string {
   return readFileSync(join(process.cwd(), "storybook-static", groupFileName(group)), "utf8");
 }
 
+// TCRN-DS-STORY-051: raw page bytes inline the entire i18n dictionary inside the
+// storybookI18nScript <script> block (client-scripts.ts), so a pinned string can be
+// satisfied by the dictionary payload even when it never renders. Strip <script>/<style>
+// blocks so rendered-content pins assert what is actually in the document, not the payload.
+function stripDictionaryPayload(html: string): string {
+  return html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "");
+}
+
+function readRenderedGroupPage(group: ContractStoryGroup): string {
+  return stripDictionaryPayload(readGroupPage(group));
+}
+
 function readStorybookSource(path: string): string {
   return readFileSync(join(process.cwd(), path), "utf8");
 }
@@ -242,6 +256,15 @@ function readInternalLabSource(): string {
 test("static contract story surface is retained and synthetic", () => {
   const pages = contractStoryGroups.map((group) => ({ group, html: readGroupPage(group) }));
   const combinedHtml = pages.map((page) => page.html).join("\n");
+  // TCRN-DS-STORY-051 stripper self-test: "结构型抽屉" is the zh-only dictionary value for
+  // "Structural drawers" and lives ONLY inside the embedded i18n <script> payload (the static
+  // pages render English), so it must NOT survive script-strip into rendered markup. This
+  // red-proofs stripDictionaryPayload itself: if the stripper stops removing the payload, the
+  // zh value leaks through and this assertion fails.
+  assert.ok(
+    !readRenderedGroupPage("Components").includes("结构型抽屉"),
+    "zh-only dictionary value must not survive script-strip into rendered markup"
+  );
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
   assert.equal(contractStories.length, expectedContractStoryIds.length);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
@@ -475,13 +498,22 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /next\.searchParams\.set\("theme", currentTheme\)/);
   for (const locale of tcrnSupportedLocales) {
     assert.match(combinedHtml, new RegExp(`option value="${escapeRegExp(locale)}"`));
-    for (const key of ["shell.themeLabel", "shell.themeHint", "shell.themeLightLabel", "shell.themeDarkLabel", "shell.themeLightShort", "shell.themeDarkShort"]) {
+    // TCRN-DS-STORY-051: only the two theme labels the shell actually renders (page-template
+    // theme toggle + client-scripts label swap) are pinned. shell.themeLabel/themeHint/
+    // themeLightShort/themeDarkShort were dormant dictionary keys (defined + translated but
+    // never referenced) and have been removed.
+    for (const key of ["shell.themeLightLabel", "shell.themeDarkLabel"]) {
       assert.notEqual(localeText(key, locale), key, `missing Storybook theme locale text for ${locale}:${key}`);
     }
   }
   assert.match(combinedHtml, /data-i18n="story\.welcome-governance\.title"/);
-  assert.match(combinedHtml, /TCRN デザインシステム契約ストーリー/);
-  assert.match(combinedHtml, /TCRN 디자인 시스템 계약 스토리/);
+  // TCRN-DS-STORY-051: the ja/ko shell titles ship in the embedded i18n payload for runtime
+  // locale switching but never render on the static en pages, so a raw-byte combinedHtml match
+  // would be satisfied by the dictionary <script> alone. Assert dictionary coverage directly
+  // (payload translation coverage, not static rendering) — mirroring the zh shell.title check
+  // above — so these are not mistaken for rendered-text pins.
+  assert.equal(localeText("shell.title", "ja"), "TCRN デザインシステム契約ストーリー");
+  assert.equal(localeText("shell.title", "ko"), "TCRN 디자인 시스템 계약 스토리");
   assert.ok(contractStories.length >= 15);
   for (const story of contractStories) {
     const owningPage = readGroupPage(story.group);
@@ -512,10 +544,10 @@ test("static contract story surface is retained and synthetic", () => {
       assert.match(html, new RegExp(`data-story-id="${escapeRegExp(story.id)}"[^>]*data-story-source-path="${escapeRegExp(story.sourcePath)}"`));
     }
   }
-  assert.match(readGroupPage("Welcome"), /Welcome and governance/);
-  assert.match(readGroupPage("Welcome"), /Maintainers and routing/);
-  assert.match(readGroupPage("Style Guide"), /Brand identity/);
-  assert.match(readGroupPage("Style Guide"), /Logo construction rules/);
+  assert.match(readRenderedGroupPage("Welcome"), /Welcome and governance/);
+  assert.match(readRenderedGroupPage("Welcome"), /Maintainers and routing/);
+  assert.match(readRenderedGroupPage("Style Guide"), /Brand identity/);
+  assert.match(readRenderedGroupPage("Style Guide"), /Logo construction rules/);
   assert.match(readGroupPage("Style Guide"), /src="tcrn-brand-mark\.svg"/);
   const brandIdentityHtml = readStoryHtml(readGroupPage("Style Guide"), "brand-identity");
   assert.match(brandIdentityHtml, /Product lockups/);
@@ -527,7 +559,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(brandIdentityHtml, /Registered product logos/);
   assert.doesNotMatch(brandIdentityHtml, /ProductLogo \/ tcrnProductLogoRegistry/);
   assert.doesNotMatch(brandIdentityHtml, /data-product-logo-asset-id="tcrn-aos-two-line"/);
-  assert.match(readGroupPage("Style Guide"), /Icon library contract/);
+  assert.match(readRenderedGroupPage("Style Guide"), /Icon library contract/);
   assert.match(readGroupPage("Style Guide"), /data-icon-library-source="lucide-react"/);
   assert.match(readGroupPage("Style Guide"), /data-icon-library-wrapper="@tcrn\/ui-react\/Icon"/);
   assert.match(readGroupPage("Style Guide"), /data-icon-library-license="ISC"/);
@@ -538,24 +570,24 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(iconSampleGridCss, /--tcrn-space-3/);
   assert.match(readGroupPage("Style Guide"), /\.tcrn-icon-sample-grid[\s\S]*margin: var\(--tcrn-space-4\) 0 0/);
   assert.match(readGroupPage("Style Guide"), /data-icon-name="search"/);
-  assert.match(readGroupPage("Style Guide"), /No red, pink, coral, or orange connector points/);
-  assert.match(readGroupPage("Style Guide"), /Color palette/);
-  assert.match(readGroupPage("Style Guide"), /Copy creation rules/);
-  assert.match(readGroupPage("Components"), /Component family index/);
-  assert.match(readGroupPage("Components"), /Recommended component families/);
-  assert.match(readGroupPage("Components"), /Package-backed component API/);
-  assert.match(readGroupPage("Components"), /Package utility exports/);
-  assert.match(readGroupPage("Components"), /ProductShell/);
-  assert.match(readGroupPage("Components"), /ProductShellSearch/);
+  assert.match(readRenderedGroupPage("Style Guide"), /No red, pink, coral, or orange connector points/);
+  assert.match(readRenderedGroupPage("Style Guide"), /Color palette/);
+  assert.match(readRenderedGroupPage("Style Guide"), /Copy creation rules/);
+  assert.match(readRenderedGroupPage("Components"), /Component family index/);
+  assert.match(readRenderedGroupPage("Components"), /Recommended component families/);
+  assert.match(readRenderedGroupPage("Components"), /Package-backed component API/);
+  assert.match(readRenderedGroupPage("Components"), /Package utility exports/);
+  assert.match(readRenderedGroupPage("Components"), /ProductShell/);
+  assert.match(readRenderedGroupPage("Components"), /ProductShellSearch/);
   assert.match(readGroupPage("Components"), /useProductShellController/);
-  assert.match(readGroupPage("Components"), /Component library available/);
+  assert.match(readRenderedGroupPage("Components"), /Component library available/);
   assert.match(readGroupPage("Components"), /data-component-library-parity="package-backed"/);
   assert.match(readGroupPage("Components"), /data-component-source="@tcrn\/ui-react"/);
   assert.match(readGroupPage("Components"), /data-token-source="@tcrn\/ui-tokens"/);
   assert.match(readGroupPage("Components"), /data-copy-state-source="@tcrn\/ui-copy-state"/);
-  assert.match(readGroupPage("Components"), /Storybook-only prototypes/);
-  assert.match(readGroupPage("Components"), /Storybook prototype/);
-  assert.match(readGroupPage("Components"), /ProductLogo/);
+  assert.match(readRenderedGroupPage("Components"), /Storybook-only prototypes/);
+  assert.match(readRenderedGroupPage("Components"), /Storybook prototype/);
+  assert.match(readRenderedGroupPage("Components"), /ProductLogo/);
   assert.match(readGroupPage("Components"), /tcrnProductLogoRegistry/);
   assert.doesNotMatch(readGroupPage("Components"), /Foundation A package exports/);
   assert.doesNotMatch(readGroupPage("Components"), /Component Library Foundation A/);
@@ -594,13 +626,13 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /tcrn-skip-link/);
   assert.match(readGroupPage("Style Guide"), /data-registered-product-logo="@tcrn\/ui-react\/ProductLogo"/);
   assert.match(readGroupPage("Style Guide"), /data-brand-asset-registration="design-system"/);
-  assert.match(readGroupPage("Components"), /Navigation and shell spec/);
-  assert.match(readGroupPage("Components"), /Navigation shell components are first-class component contracts/);
-  assert.match(readGroupPage("Components"), /Current location may scroll into view and highlight, but must not reorder sections/);
-  assert.match(readGroupPage("Components"), /Control\/Command\+K shortcut labels belong only to navigation or shell search with a real focus target and result behavior/);
-  assert.match(readGroupPage("Components"), /Shell selection matrix/);
-  assert.match(readGroupPage("Components"), /TMS dense operations shell/);
-  assert.match(readGroupPage("Components"), /Knowledge base bookmark shell/);
+  assert.match(readRenderedGroupPage("Components"), /Navigation and shell spec/);
+  assert.match(readRenderedGroupPage("Components"), /Navigation shell components are first-class component contracts/);
+  assert.match(readRenderedGroupPage("Components"), /Current location may scroll into view and highlight, but must not reorder sections/);
+  assert.match(readRenderedGroupPage("Components"), /Control\/Command\+K shortcut labels belong only to navigation or shell search with a real focus target and result behavior/);
+  assert.match(readRenderedGroupPage("Components"), /Shell selection matrix/);
+  assert.match(readRenderedGroupPage("Components"), /TMS dense operations shell/);
+  assert.match(readRenderedGroupPage("Components"), /Knowledge base bookmark shell/);
   assert.match(readGroupPage("Components"), /tcrn-shell-mega-menu/);
   assert.match(readGroupPage("Components"), /tcrn-shell-layer/);
   assert.match(readGroupPage("Components"), /data-shell-layer="mega-menu"/);
@@ -647,35 +679,35 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /tcrn-knowledge-shell__sidebar/);
   assert.match(readGroupPage("Components"), /tcrn-knowledge-shell__content/);
   assert.match(readGroupPage("Components"), /tcrn-knowledge-shell__pager/);
-  assert.match(readGroupPage("Components"), /Top bar, attached side navigation, content column, and chapter navigation stay one shell/);
+  assert.match(readRenderedGroupPage("Components"), /Top bar, attached side navigation, content column, and chapter navigation stay one shell/);
   assert.match(readGroupPage("Components"), /tcrn-bookmark-nav/);
   assert.match(readGroupPage("Components"), /tcrn-bookmark-nav--tracked/);
-  assert.match(readGroupPage("Components"), /Search menu/);
-  assert.match(readGroupPage("Components"), /Open dense navigation menu/);
-  assert.match(readGroupPage("Components"), /Open compact operations hub/);
-  assert.match(readGroupPage("Components"), /Use when the selected primary area has 3-8 secondary routes and no overflow/);
-  assert.match(readGroupPage("Components"), /Do not force sparse secondary routes into the command-center or dense directory layout/);
-  assert.match(readGroupPage("Components"), /Low secondary density/);
-  assert.match(readGroupPage("Components"), /Switch density when/);
-  assert.match(readGroupPage("Components"), /Zoom or available space causes overflow/);
-  assert.match(readGroupPage("Components"), /Campaigns/);
-  assert.match(readGroupPage("Components"), /Configuration/);
-  assert.match(readGroupPage("Components"), /Support/);
-  assert.match(readGroupPage("Components"), /This command-center layer groups 10\+ primary routes by business domain/);
-  assert.match(readGroupPage("Components"), /Operations/);
-  assert.match(readGroupPage("Components"), /Commercial/);
-  assert.match(readGroupPage("Components"), /Control tower/);
-  assert.match(readGroupPage("Components"), /Daily operations/);
-  assert.match(readGroupPage("Components"), /Review and exceptions/);
-  assert.match(readGroupPage("Components"), /Quick entries/);
-  assert.match(readGroupPage("Components"), /Search docs/);
-  assert.match(readGroupPage("Components"), /Navigation shell search fixture/);
-  assert.match(readGroupPage("Components"), /Shortcut labels are allowed only for navigation or shell search with a real focus target and visible result list/);
-  assert.match(readGroupPage("Components"), /Search shortcut rules/);
-  assert.match(readGroupPage("Components"), /Ordinary search field/);
-  assert.match(readGroupPage("Components"), /No shortcut label/);
-  assert.match(readGroupPage("Components"), /Navigation or shell search/);
-  assert.match(readGroupPage("Components"), /Shortcut allowed/);
+  assert.match(readRenderedGroupPage("Components"), /Search menu/);
+  assert.match(readRenderedGroupPage("Components"), /Open dense navigation menu/);
+  assert.match(readRenderedGroupPage("Components"), /Open compact operations hub/);
+  assert.match(readRenderedGroupPage("Components"), /Use when the selected primary area has 3-8 secondary routes and no overflow/);
+  assert.match(readRenderedGroupPage("Components"), /Do not force sparse secondary routes into the command-center or dense directory layout/);
+  assert.match(readRenderedGroupPage("Components"), /Low secondary density/);
+  assert.match(readRenderedGroupPage("Components"), /Switch density when/);
+  assert.match(readRenderedGroupPage("Components"), /Zoom or available space causes overflow/);
+  assert.match(readRenderedGroupPage("Components"), /Campaigns/);
+  assert.match(readRenderedGroupPage("Components"), /Configuration/);
+  assert.match(readRenderedGroupPage("Components"), /Support/);
+  assert.match(readRenderedGroupPage("Components"), /This command-center layer groups 10\+ primary routes by business domain/);
+  assert.match(readRenderedGroupPage("Components"), /Operations/);
+  assert.match(readRenderedGroupPage("Components"), /Commercial/);
+  assert.match(readRenderedGroupPage("Components"), /Control tower/);
+  assert.match(readRenderedGroupPage("Components"), /Daily operations/);
+  assert.match(readRenderedGroupPage("Components"), /Review and exceptions/);
+  assert.match(readRenderedGroupPage("Components"), /Quick entries/);
+  assert.match(readRenderedGroupPage("Components"), /Search docs/);
+  assert.match(readRenderedGroupPage("Components"), /Navigation shell search fixture/);
+  assert.match(readRenderedGroupPage("Components"), /Shortcut labels are allowed only for navigation or shell search with a real focus target and visible result list/);
+  assert.match(readRenderedGroupPage("Components"), /Search shortcut rules/);
+  assert.match(readRenderedGroupPage("Components"), /Ordinary search field/);
+  assert.match(readRenderedGroupPage("Components"), /No shortcut label/);
+  assert.match(readRenderedGroupPage("Components"), /Navigation or shell search/);
+  assert.match(readRenderedGroupPage("Components"), /Shortcut allowed/);
   assert.match(combinedHtml, /\.tcrn-field:focus-within[\s\S]*background-color/);
   assert.match(combinedHtml, /\.tcrn-field--error[\s\S]*outline-color: var\(--tcrn-color-state-blocked\)/);
   assert.match(combinedHtml, /\.tcrn-field \{[\s\S]*transition:[\s\S]*background-color 150ms ease-out,[\s\S]*outline-color 150ms ease-out/);
@@ -716,10 +748,10 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-popover-proof="anchored-close-return"/);
   assert.match(readGroupPage("Components"), /data-popover-fixture-open/);
   assert.match(readGroupPage("Components"), /data-overlay-scope="popover"/);
-  assert.match(readGroupPage("Components"), /Overlay mode matrix/);
-  assert.match(readGroupPage("Components"), /Popover proof fixture/);
-  assert.match(readGroupPage("Components"), /Confirm action dialog/);
-  assert.match(readGroupPage("Components"), /Structural drawers/);
+  assert.match(readRenderedGroupPage("Components"), /Overlay mode matrix/);
+  assert.match(readRenderedGroupPage("Components"), /Popover proof fixture/);
+  assert.match(readRenderedGroupPage("Components"), /Confirm action dialog/);
+  assert.match(readRenderedGroupPage("Components"), /Structural drawers/);
   assert.ok(combinedHtml.includes("querySelectorAll(\"[data-dialog-proof='escape-focus-return']\")"));
   assert.ok(combinedHtml.includes("querySelectorAll(\"[data-popover-proof='anchored-close-return']\")"));
   assert.ok(combinedHtml.includes("data-overlay-transition-state"));
@@ -727,8 +759,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.ok(combinedHtml.includes("panel.getBoundingClientRect()"));
   assert.ok(combinedHtml.includes("panel.setAttribute(\"data-overlay-transition-state\", \"opening\")"));
   assert.ok(combinedHtml.includes("openButton.setAttribute(\"aria-expanded\", open ? \"true\" : \"false\")"));
-  assert.match(readGroupPage("Components"), /Interactive proof fixture/);
-  assert.match(readGroupPage("Components"), /Open the fixture to verify focus entry, Escape close, and focus return without claiming Tab containment/);
+  assert.match(readRenderedGroupPage("Components"), /Interactive proof fixture/);
+  assert.match(readRenderedGroupPage("Components"), /Open the fixture to verify focus entry, Escape close, and focus return without claiming Tab containment/);
   assert.doesNotMatch(readGroupPage("Components"), />Static capability readback</);
   assert.match(readGroupPage("Components"), /data-icon-name="menu"/);
   assert.match(readGroupPage("Components"), /data-icon-name="arrow-left"/);
@@ -736,22 +768,22 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-icon-name="chevron-left"/);
   assert.match(readGroupPage("Components"), /data-shortcut-auto="search"/);
   assert.match(readGroupPage("Components"), /tcrn-input--short/);
-  assert.match(readGroupPage("Components"), /Field width rules/);
-  assert.match(readGroupPage("Components"), /Table shell rules/);
-  assert.match(readGroupPage("Components"), /Accessibility receipt/);
+  assert.match(readRenderedGroupPage("Components"), /Field width rules/);
+  assert.match(readRenderedGroupPage("Components"), /Table shell rules/);
+  assert.match(readRenderedGroupPage("Components"), /Accessibility receipt/);
   assert.match(readGroupPage("Components"), /Never place headings or arbitrary blocks directly under role=table/);
-  assert.match(readGroupPage("Components"), /Sorting and filtering/);
-  assert.match(readGroupPage("Components"), /TableShell does not imply remote filtering, column configuration, or persisted sort state/);
-  assert.match(readGroupPage("Components"), /Row actions/);
-  assert.match(readGroupPage("Components"), /Bulk selection/);
-  assert.match(readGroupPage("Components"), /DataGrid escalation boundary/);
-  assert.match(readGroupPage("Components"), /DataGrid escalation criteria/);
-  assert.match(readGroupPage("Components"), /Editable cells/);
-  assert.match(readGroupPage("Components"), /Remote pagination or filtering/);
-  assert.match(readGroupPage("Components"), /Virtual scrolling/);
-  assert.match(readGroupPage("Components"), /Column resize or frozen columns/);
-  assert.match(readGroupPage("Components"), /Selected count, all\/none behavior, disabled reasons, and undo or confirmation/);
-  assert.match(readGroupPage("Components"), /Work Management component specs/);
+  assert.match(readRenderedGroupPage("Components"), /Sorting and filtering/);
+  assert.match(readRenderedGroupPage("Components"), /TableShell does not imply remote filtering, column configuration, or persisted sort state/);
+  assert.match(readRenderedGroupPage("Components"), /Row actions/);
+  assert.match(readRenderedGroupPage("Components"), /Bulk selection/);
+  assert.match(readRenderedGroupPage("Components"), /DataGrid escalation boundary/);
+  assert.match(readRenderedGroupPage("Components"), /DataGrid escalation criteria/);
+  assert.match(readRenderedGroupPage("Components"), /Editable cells/);
+  assert.match(readRenderedGroupPage("Components"), /Remote pagination or filtering/);
+  assert.match(readRenderedGroupPage("Components"), /Virtual scrolling/);
+  assert.match(readRenderedGroupPage("Components"), /Column resize or frozen columns/);
+  assert.match(readRenderedGroupPage("Components"), /Selected count, all\/none behavior, disabled reasons, and undo or confirmation/);
+  assert.match(readRenderedGroupPage("Components"), /Work Management component specs/);
   assert.match(readGroupPage("Components"), /data-work-management-contract="package-backed-static"/);
   assert.match(readGroupPage("Components"), /RelationshipChip/);
   assert.match(readGroupPage("Components"), /MachineToken/);
@@ -776,7 +808,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /EvidenceAttachmentList/);
   assert.match(readGroupPage("Components"), /WorkItemInspector/);
   assert.match(readGroupPage("Components"), /SavedViewToolbar/);
-  assert.match(readGroupPage("Components"), /Knowledge Management component specs/);
+  assert.match(readRenderedGroupPage("Components"), /Knowledge Management component specs/);
   assert.match(readGroupPage("Components"), /data-knowledge-management-contract="package-backed-static"/);
   assert.match(readGroupPage("Components"), /KnowledgePageTree/);
   assert.match(readGroupPage("Components"), /KnowledgeDocumentCanvas/);
@@ -793,7 +825,7 @@ test("static contract story surface is retained and synthetic", () => {
   }
   assert.match(readGroupPage("Components"), /route_tcrn_ds_work_management_patterns_engineering_ds_package_storybook_implementation_after_ds_initiative_c4865675/);
   assert.match(readGroupPage("Components"), /Activity log is execution and evidence context attached to this Work Item; it is not a replacement for Story or Task \/ Work Item/);
-  assert.match(readGroupPage("Patterns"), /Work Management patterns/);
+  assert.match(readRenderedGroupPage("Patterns"), /Work Management patterns/);
   assert.match(readGroupPage("Patterns"), /data-work-management-patterns="static-no-live"/);
   assert.match(readGroupPage("Patterns"), /Smallest acceptable human\/business\/workflow result/);
   assert.match(readGroupPage("Patterns"), /Smallest executable ticket\/task unit/);
@@ -806,8 +838,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(readGroupPage("Patterns"), /data-aos-disabled-reason-standard="all-controls"/);
   assert.doesNotMatch(readGroupPage("Patterns"), /data-aos-exception-record="brand-lockup-product-specific"/);
   assert.doesNotMatch(readGroupPage("Patterns"), /AOS brand treatment exception/);
-  assert.match(readGroupPage("Foundations"), /Copy guidelines/);
-  assert.match(readGroupPage("Foundations"), /Foundation visual standards/);
+  assert.match(readRenderedGroupPage("Foundations"), /Copy guidelines/);
+  assert.match(readRenderedGroupPage("Foundations"), /Foundation visual standards/);
   assert.match(readGroupPage("Foundations"), /data-foundation-visual-standards="registry"/);
   for (const categoryId of foundationVisualStandardCategoryIds) {
     assert.match(readGroupPage("Foundations"), new RegExp(`data-foundation-standard-category-id="${categoryId}"`));
@@ -816,11 +848,11 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Foundations"), /original-storybook-doc-shell-v1/);
   assert.match(readGroupPage("Foundations"), /consumer-local shell-control geometry/);
   assert.match(readGroupPage("Foundations"), /Missing standard escalation/);
-  assert.match(readGroupPage("Foundations"), /Storybook doc shell control contract/);
+  assert.match(readRenderedGroupPage("Foundations"), /Storybook doc shell control contract/);
   assert.match(readGroupPage("Foundations"), /Use one circular icon-only button/);
-  assert.match(readGroupPage("Foundations"), /Use the Storybook doc shell as the documentation shell authority/);
-  assert.match(readGroupPage("Foundations"), /ProductShell remains scoped to component docs, product visual instances, and consumer rules/);
-  assert.match(readGroupPage("Foundations"), /Global Storybook pages rendered through ProductShell/);
+  assert.match(readRenderedGroupPage("Foundations"), /Use the Storybook doc shell as the documentation shell authority/);
+  assert.match(readRenderedGroupPage("Foundations"), /ProductShell remains scoped to component docs, product visual instances, and consumer rules/);
+  assert.match(readRenderedGroupPage("Foundations"), /Global Storybook pages rendered through ProductShell/);
   assert.match(readGroupPage("Foundations"), /one whole-page transition/);
   assert.match(readGroupPage("Foundations"), /current locale name in that locale/);
   assert.match(readGroupPage("Foundations"), /outside pointer down or click, and Escape/);
@@ -829,38 +861,38 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Foundations"), /planned modules presented as registered product IA/);
   assert.match(readGroupPage("Foundations"), /Keep search compact at rest, expand smoothly on focus, and collapse on blur/);
   assert.match(readGroupPage("Foundations"), /not as a top-bar human navigation item/);
-  assert.match(readGroupPage("Proof"), /AI consumption contract/);
+  assert.match(readRenderedGroupPage("Proof"), /AI consumption contract/);
   assert.match(readGroupPage("Proof"), /data-ai-consumption-contract-story="true"/);
   assert.match(readGroupPage("Proof"), /Covered section hierarchy/);
   assert.match(readGroupPage("Proof"), /Changelog and static-authority readback/);
-  assert.match(readGroupPage("Proof"), /ai-consumption-contract\.json/);
-  assert.match(readGroupPage("Proof"), /Light and dark Storybook shell/);
-  assert.match(readGroupPage("Proof"), /Check both light and dark Storybook shell modes before product frontend work/);
+  assert.match(readRenderedGroupPage("Proof"), /ai-consumption-contract\.json/);
+  assert.match(readRenderedGroupPage("Proof"), /Light and dark Storybook shell/);
+  assert.match(readRenderedGroupPage("Proof"), /Check both light and dark Storybook shell modes before product frontend work/);
   assert.match(readGroupPage("Proof"), /Storybook shell controls/);
   assert.match(readGroupPage("Proof"), /single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition/);
-  assert.match(readGroupPage("Proof"), /Storybook doc shell boundary/);
-  assert.match(readGroupPage("Proof"), /Storybook uses the restored doc shell for global shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior/);
-  assert.match(readGroupPage("Proof"), /ProductShell remains scoped to component and product examples/);
+  assert.match(readRenderedGroupPage("Proof"), /Storybook doc shell boundary/);
+  assert.match(readRenderedGroupPage("Proof"), /Storybook uses the restored doc shell for global shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior/);
+  assert.match(readRenderedGroupPage("Proof"), /ProductShell remains scoped to component and product examples/);
   assert.match(readGroupPage("Proof"), /Locale menu behavior/);
   assert.match(readGroupPage("Proof"), /Side navigation collapse/);
   assert.match(readGroupPage("Proof"), /Registered product IA/);
   assert.match(readGroupPage("Proof"), /Browser interaction proof/);
   assert.match(readGroupPage("Proof"), /marker-only proof is insufficient/);
-  assert.match(readGroupPage("Proof"), /Theme modes/);
+  assert.match(readRenderedGroupPage("Proof"), /Theme modes/);
   assert.match(readGroupPage("Proof"), /Import package-backed Design System primitives from @tcrn\/ui-react; do not rebuild local clones/);
-  assert.match(readGroupPage("Proof"), /Requires a downstream product adoption route/);
-  assert.match(readGroupPage("Proof"), /Proof matrix/);
-  assert.match(readGroupPage("Change Log"), /Local changelog/);
-  assert.match(readGroupPage("Change Log"), /Governance changelog records/);
+  assert.match(readRenderedGroupPage("Proof"), /Requires a downstream product adoption route/);
+  assert.match(readRenderedGroupPage("Proof"), /Proof matrix/);
+  assert.match(readRenderedGroupPage("Change Log"), /Local changelog/);
+  assert.match(readRenderedGroupPage("Change Log"), /Governance changelog records/);
   assert.match(readGroupPage("Change Log"), /data-changelog-localized-readback="true"/);
   assert.match(readGroupPage("Change Log"), /data-changelog-records="governance"/);
   assert.match(readGroupPage("Change Log"), /route_tcrn_ds_storybook_governance_engineering_implementation_after_plan_reviews_success_a1f19b1a_dded541/);
   assert.match(readGroupPage("Change Log"), /data-changelog-route-id="route_tcrn_ds_storybook_governance_engineering_implementation_after_plan_reviews_success_a1f19b1a_dded541"/);
   assert.match(readGroupPage("Change Log"), /data-changelog-proof-artifact="docs\/verification\/internal-alpha\/browser-proof-summary\.json"/);
   assert.match(readGroupPage("Change Log"), /data-changelog-no-overclaim-boundary="no package publication"/);
-  assert.match(readGroupPage("Change Log"), /Storybook governance checkpoint/);
-  assert.match(readGroupPage("Change Log"), /AI contract digest/);
-  assert.match(readGroupPage("Change Log"), /No-overclaim boundaries/);
+  assert.match(readRenderedGroupPage("Change Log"), /Storybook governance checkpoint/);
+  assert.match(readRenderedGroupPage("Change Log"), /AI contract digest/);
+  assert.match(readRenderedGroupPage("Change Log"), /No-overclaim boundaries/);
   assert.doesNotMatch(readGroupPage("Change Log"), /aria-label="Storybook governance changelog"/);
   assert.doesNotMatch(readGroupPage("Change Log"), /role="columnheader"[^>]*>Story ids</);
   assert.doesNotMatch(readGroupPage("Welcome"), /data-story-id="component-family-index"/);
