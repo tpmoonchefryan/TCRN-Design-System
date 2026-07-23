@@ -26,7 +26,7 @@ import {
   storybookThemeScript,
   storybookSearchScript
 } from "./client-scripts.js";
-import { escapeHtml, i18nText, localeText } from "./i18n.js";
+import { escapeHtml, i18nText, localeText, storybookContentText } from "./i18n.js";
 import { categoryDomId, categoryFileForStory, categoryFileName, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
 import type { ContractPage } from "./navigation.js";
 
@@ -39,6 +39,22 @@ const navGroupIcons: Record<ContractStoryGroup, IconName> = {
   Proof: "shield-check",
   "Change Log": "history"
 };
+
+// TCRN-DS-STORY-054: reverse the HTML escaping that React's renderToStaticMarkup and the
+// build's escapeHtml apply, so a build-time substring test over the rendered page equals the
+// runtime text-node value the locale swap matches on (translateContentTree trims a text node
+// and looks its raw value up in the content dictionary). React encodes `'` as `&#x27;` while
+// escapeHtml (i18n.ts) uses `&#39;`; decode both. `&amp;` is decoded LAST so an escaped literal
+// such as `&amp;lt;` (source text "&lt;") is not double-decoded into "<".
+function decodeEntities(value: string): string {
+  return value
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, "\"")
+    .replace(/&#39;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&amp;/g, "&");
+}
 
 function iconHtml(name: IconName, className: string, dataDocShellIcon: string): string {
   return renderToStaticMarkup(
@@ -392,6 +408,44 @@ function renderContractDocument(options: {
   mainBody: string;
 }): string {
   const { group, activeCategoryId, activeStory, pageTitleText, mainBody } = options;
+  // Render every translatable body region exactly once (each of these makes renderToStaticMarkup
+  // passes) so they can be both measured for the content-dict prune and reused in the template
+  // below without a second render.
+  const skipLink = skipLinkHtml();
+  const docBrand = docBrandHtml();
+  const sidebarToggle = sidebarToggleHtml();
+  const headerWorkspace = docHeaderWorkspaceHtml(group, activeStory);
+  const headerControls = docHeaderControlsHtml();
+  const nav = navHtml(group, activeCategoryId, activeStory.id);
+  const pageHead = pageHeadHtml(group);
+  const chapterPager = chapterPagerHtml(group);
+  const sidebarLabel = i18nText("shell.sidebarLabel");
+  const pageTitleHeading = i18nText("shell.title");
+  // TCRN-DS-STORY-054: prune the embedded content-translation dictionary to only the entries
+  // whose English source actually renders inside this page's [data-contract-surface]. The runtime
+  // swap (translateContentTree in client-scripts.ts) skips SCRIPT/STYLE, so the <style> blocks and
+  // scripts are excluded from the match here too — this covers every text node and translatable
+  // attribute the swap can touch. Match on the entity-decoded body so build-time escaping equals
+  // the runtime text value. This is a deliberate SUPERSET: over-inclusion only costs bytes, whereas
+  // under-inclusion would leak English after a locale switch, so err toward including.
+  const translatableSurface = decodeEntities(
+    [
+      skipLink,
+      docBrand,
+      sidebarToggle,
+      headerWorkspace,
+      headerControls,
+      sidebarLabel,
+      pageTitleHeading,
+      nav,
+      pageHead,
+      mainBody,
+      chapterPager
+    ].join("\n")
+  );
+  const usedContentTranslations = Object.fromEntries(
+    Object.entries(storybookContentText).filter(([source]) => translatableSurface.includes(source))
+  );
   return `<!doctype html>
 <html lang="${tcrnDefaultLocale}" data-tcrn-theme="light">
 <head>
@@ -417,35 +471,35 @@ ${staticStoryComponentCss}
   </style>
 </head>
 <body>
-  ${skipLinkHtml()}
+  ${skipLink}
   <div class="tcrn-doc-shell" data-doc-shell="online-docs" data-contract-surface="tcrn-design-system-storybook" data-anchor-scroll-controlled="true" data-active-story-section="${group}" data-storybook-locale="${tcrnDefaultLocale}" data-storybook-supported-locales="${tcrnSupportedLocales.join(",")}" data-storybook-theme="light" data-storybook-supported-themes="light,dark" data-tcrn-theme="light">
     <header class="tcrn-doc-header">
       <div class="tcrn-doc-global-bar">
         <div class="tcrn-doc-global-brand">
-          ${docBrandHtml()}
-          ${sidebarToggleHtml()}
+          ${docBrand}
+          ${sidebarToggle}
         </div>
-        ${docHeaderWorkspaceHtml(group, activeStory)}
-        ${docHeaderControlsHtml()}
+        ${headerWorkspace}
+        ${headerControls}
       </div>
     </header>
     <div class="tcrn-doc-layout">
       <aside class="tcrn-doc-sidebar" id="tcrn-doc-sidebar" aria-labelledby="tcrn-doc-sidebar-label">
-        <p class="tcrn-sr-only" id="tcrn-doc-sidebar-label">${i18nText("shell.sidebarLabel")}</p>
-${navHtml(group, activeCategoryId, activeStory.id)}
+        <p class="tcrn-sr-only" id="tcrn-doc-sidebar-label">${sidebarLabel}</p>
+${nav}
       </aside>
       <main class="tcrn-doc-content" id="content">
-        <h1 class="tcrn-sr-only" id="tcrn-doc-page-title">${i18nText("shell.title")}</h1>
-${pageHeadHtml(group)}
+        <h1 class="tcrn-sr-only" id="tcrn-doc-page-title">${pageTitleHeading}</h1>
+${pageHead}
 ${mainBody}
-${chapterPagerHtml(group)}
+${chapterPager}
       </main>
     </div>
   </div>
 ${hashRouteScript}
 ${activeStoryNavScript}
 ${storybookThemeScript}
-${storybookI18nScript}
+${storybookI18nScript(usedContentTranslations)}
 ${sidebarToggleScript}
 ${storybookSearchScript}
 ${dialogFixtureScript}
