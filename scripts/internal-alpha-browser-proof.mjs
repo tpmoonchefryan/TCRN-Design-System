@@ -2398,7 +2398,31 @@ if (!storyHeightBudget.ok) {
 const disclosureOk = disclosureChecks.length > 0 && disclosureChecks.every(
   (entry) => entry.collapsedByDefault && entry.clickExpands && entry.clickRestores && entry.hashExpands
 );
+
+// Localization policy binding (TCRN-DS-STORY-050). CLAUDE.md and the storybook README carry
+// the written five-locale policy but are read by no other gate, so the prose could silently
+// drift from the code S048's leak scan (localeLeakScan.zhCn) enforces at runtime. Assert the
+// "## Localization" section is present and still points at the artifacts — the five-locale
+// tuple, the exemption ledger path, and this gate's script name. Only these stable tokens are
+// checked (never volatile prose) so the binding does not couple to S046/S047/S049 copy churn.
+const claudeMdLocalizationSection = readFileSync("CLAUDE.md", "utf8")
+  .split(/^## /m)
+  .find((section) => section.startsWith("Localization")) ?? "";
+const localizationPolicyRequiredTokens = ["`zh-CN`", "`en`", "`ja`", "`ko`", "`fr`", "scripts/lib/locale-invariant-ledger.mjs", "internal-alpha:proof"];
+const localizationPolicyBinding = {
+  sectionPresent: claudeMdLocalizationSection.length > 0,
+  missingTokens: localizationPolicyRequiredTokens.filter((token) => !claudeMdLocalizationSection.includes(token))
+};
+localizationPolicyBinding.ok = localizationPolicyBinding.sectionPresent && localizationPolicyBinding.missingTokens.length === 0;
+if (!localizationPolicyBinding.ok) {
+  console.error("localization policy in CLAUDE.md missing/renamed — restore the ## Localization section pointer" +
+    (localizationPolicyBinding.sectionPresent
+      ? ` (missing tokens: ${localizationPolicyBinding.missingTokens.join(", ")})`
+      : " (## Localization section not found)"));
+}
+
 const ok = signatureRegressions.length === 0
+  && localizationPolicyBinding.ok
   && disclosureOk
   && shellFidelityTripped.length === 0
   && browserProofSummary.ok
@@ -2419,6 +2443,7 @@ console.log(JSON.stringify({
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
   disclosureOk,
+  localizationPolicyBindingOk: localizationPolicyBinding.ok,
   shellFidelityDrift: shellFidelityTripped.length,
   visualSignatureGated: signatureResults.filter((entry) => entry.gated).length,
   visualSignatureRecordedOnly: signatureResults.filter((entry) => !entry.gated).length,
