@@ -651,11 +651,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 271.05,
+          "bottom": 267.05,
           "width": 1077.13,
-          "height": 137.61
+          "height": 133.61
         },
-        "firstStoryTop": 329.36,
+        "firstStoryTop": 325.36,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -790,11 +790,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 274.48,
+          "bottom": 267.05,
           "width": 1077.13,
-          "height": 141.05
+          "height": 133.61
         },
-        "firstStoryTop": 332.8,
+        "firstStoryTop": 325.36,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -923,11 +923,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 271.05,
+          "bottom": 267.05,
           "width": 1077.13,
-          "height": 137.61
+          "height": 133.61
         },
-        "firstStoryTop": 329.36,
+        "firstStoryTop": 325.36,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1056,11 +1056,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 347.05,
+          "bottom": 327.05,
           "width": 1077.13,
-          "height": 213.61
+          "height": 193.61
         },
-        "firstStoryTop": 405.36,
+        "firstStoryTop": 385.36,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1189,11 +1189,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 298.67,
+          "bottom": 284.67,
           "width": 1077.13,
-          "height": 165.23
+          "height": 151.23
         },
-        "firstStoryTop": 356.98,
+        "firstStoryTop": 342.98,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1322,11 +1322,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 271.05,
+          "bottom": 267.05,
           "width": 1077.13,
-          "height": 137.61
+          "height": 133.61
         },
-        "firstStoryTop": 329.36,
+        "firstStoryTop": 325.36,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1455,11 +1455,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 271.05,
+          "bottom": 267.05,
           "width": 1077.13,
-          "height": 137.61
+          "height": 133.61
         },
-        "firstStoryTop": 329.36,
+        "firstStoryTop": 325.36,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1552,7 +1552,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1708,
+        "scrollY": 1656,
         "viewport": {
           "width": 390,
           "height": 844
@@ -1565,18 +1565,18 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 397.69,
+          "bottom": 396.69,
           "left": 0,
           "width": 390,
-          "height": 397.69
+          "height": 396.69
         },
         "article": {
           "top": 411.97,
           "right": 374,
-          "bottom": 10308.69,
+          "bottom": 10293.69,
           "left": 16,
           "width": 358,
-          "height": 9896.72
+          "height": 9881.72
         },
         "title": {
           "top": 428.97,
@@ -1597,10 +1597,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 397.69,
+            "bottom": 396.69,
             "left": 0,
             "width": 390,
-            "height": 397.69
+            "height": 396.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -1612,10 +1612,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 10,
             "width": 370,
-            "height": 377.69
+            "height": 376.69
           },
           "workspace": {
             "selector": ".tcrn-doc-header__workspace",
@@ -1627,10 +1627,10 @@
             "zIndex": "auto",
             "top": 229,
             "right": 380,
-            "bottom": 331.69,
+            "bottom": 330.69,
             "left": 10,
             "width": 370,
-            "height": 102.69
+            "height": 101.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -1642,10 +1642,10 @@
             "zIndex": "auto",
             "top": 239,
             "right": 364,
-            "bottom": 275.69,
+            "bottom": 274.69,
             "left": 26,
             "width": 338,
-            "height": 36.69
+            "height": 35.69
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
@@ -1655,9 +1655,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -1670,9 +1670,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -1685,9 +1685,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 331.69,
+            "top": 330.69,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 185,
             "width": 195,
             "height": 56
@@ -1700,9 +1700,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 163,
             "height": 36
@@ -1715,9 +1715,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 237,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -1730,9 +1730,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -1778,34 +1778,14 @@
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 },
                 {
-                  "tag": "a",
+                  "tag": "strong",
                   "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "令牌与 i18n"
-                },
-                {
-                  "tag": "li",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3"
-                },
-                {
-                  "tag": "ol",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3 文案治理1"
+                  "text": "本页内容"
                 },
                 {
                   "tag": "nav",
@@ -1846,6 +1826,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
                 }
               ]
             },
@@ -1887,6 +1887,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "文案治理"
                 },
                 {
                   "tag": "li",
@@ -1947,16 +1957,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-shell",
-                  "role": null,
-                  "docShell": "online-docs",
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 }
               ]
             },
@@ -2067,7 +2067,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             },
@@ -2178,14 +2178,14 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 14.28,
-        "titleClearancePx": 31.28,
+        "articleClearancePx": 15.28,
+        "titleClearancePx": 32.28,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -2197,7 +2197,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1708,
+        "scrollY": 1656,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2210,18 +2210,18 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 397.69,
+          "bottom": 396.69,
           "left": 0,
           "width": 390,
-          "height": 397.69
+          "height": 396.69
         },
         "article": {
           "top": 411.97,
           "right": 374,
-          "bottom": 10308.69,
+          "bottom": 10293.69,
           "left": 16,
           "width": 358,
-          "height": 9896.72
+          "height": 9881.72
         },
         "title": {
           "top": 428.97,
@@ -2242,10 +2242,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 397.69,
+            "bottom": 396.69,
             "left": 0,
             "width": 390,
-            "height": 397.69
+            "height": 396.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -2257,10 +2257,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 10,
             "width": 370,
-            "height": 377.69
+            "height": 376.69
           },
           "workspace": {
             "selector": ".tcrn-doc-header__workspace",
@@ -2272,10 +2272,10 @@
             "zIndex": "auto",
             "top": 229,
             "right": 380,
-            "bottom": 331.69,
+            "bottom": 330.69,
             "left": 10,
             "width": 370,
-            "height": 102.69
+            "height": 101.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -2287,10 +2287,10 @@
             "zIndex": "auto",
             "top": 239,
             "right": 364,
-            "bottom": 275.69,
+            "bottom": 274.69,
             "left": 26,
             "width": 338,
-            "height": 36.69
+            "height": 35.69
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
@@ -2300,9 +2300,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -2315,9 +2315,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -2330,9 +2330,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 331.69,
+            "top": 330.69,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 185,
             "width": 195,
             "height": 56
@@ -2345,9 +2345,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 163,
             "height": 36
@@ -2360,9 +2360,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 237,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -2375,9 +2375,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -2423,34 +2423,14 @@
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 },
                 {
-                  "tag": "a",
+                  "tag": "strong",
                   "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "令牌与 i18n"
-                },
-                {
-                  "tag": "li",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3"
-                },
-                {
-                  "tag": "ol",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3 文案治理1"
+                  "text": "本页内容"
                 },
                 {
                   "tag": "nav",
@@ -2491,6 +2471,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
                 }
               ]
             },
@@ -2532,6 +2532,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "文案治理"
                 },
                 {
                   "tag": "li",
@@ -2592,16 +2602,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-shell",
-                  "role": null,
-                  "docShell": "online-docs",
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 }
               ]
             },
@@ -2712,7 +2712,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             },
@@ -2823,14 +2823,14 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 14.28,
-        "titleClearancePx": 31.28,
+        "articleClearancePx": 15.28,
+        "titleClearancePx": 32.28,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -2842,7 +2842,7 @@
       {
         "label": "after-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1708,
+        "scrollY": 1656,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2855,18 +2855,18 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 397.69,
+          "bottom": 396.69,
           "left": 0,
           "width": 390,
-          "height": 397.69
+          "height": 396.69
         },
         "article": {
           "top": 411.97,
           "right": 374,
-          "bottom": 10308.69,
+          "bottom": 10293.69,
           "left": 16,
           "width": 358,
-          "height": 9896.72
+          "height": 9881.72
         },
         "title": {
           "top": 428.97,
@@ -2887,10 +2887,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 397.69,
+            "bottom": 396.69,
             "left": 0,
             "width": 390,
-            "height": 397.69
+            "height": 396.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -2902,10 +2902,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 10,
             "width": 370,
-            "height": 377.69
+            "height": 376.69
           },
           "workspace": {
             "selector": ".tcrn-doc-header__workspace",
@@ -2917,10 +2917,10 @@
             "zIndex": "auto",
             "top": 229,
             "right": 380,
-            "bottom": 331.69,
+            "bottom": 330.69,
             "left": 10,
             "width": 370,
-            "height": 102.69
+            "height": 101.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -2932,10 +2932,10 @@
             "zIndex": "auto",
             "top": 239,
             "right": 364,
-            "bottom": 275.69,
+            "bottom": 274.69,
             "left": 26,
             "width": 338,
-            "height": 36.69
+            "height": 35.69
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
@@ -2945,9 +2945,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -2960,9 +2960,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -2975,9 +2975,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 331.69,
+            "top": 330.69,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 185,
             "width": 195,
             "height": 56
@@ -2990,9 +2990,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 163,
             "height": 36
@@ -3005,9 +3005,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 237,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -3020,9 +3020,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -3068,34 +3068,14 @@
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 },
                 {
-                  "tag": "a",
+                  "tag": "strong",
                   "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "令牌与 i18n"
-                },
-                {
-                  "tag": "li",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3"
-                },
-                {
-                  "tag": "ol",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3 文案治理1"
+                  "text": "本页内容"
                 },
                 {
                   "tag": "nav",
@@ -3136,6 +3116,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
                 }
               ]
             },
@@ -3177,6 +3177,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "文案治理"
                 },
                 {
                   "tag": "li",
@@ -3237,16 +3247,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-shell",
-                  "role": null,
-                  "docShell": "online-docs",
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 }
               ]
             },
@@ -3357,7 +3357,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             },
@@ -3468,14 +3468,14 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 14.28,
-        "titleClearancePx": 31.28,
+        "articleClearancePx": 15.28,
+        "titleClearancePx": 32.28,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -3487,7 +3487,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1708,
+        "scrollY": 1656,
         "viewport": {
           "width": 390,
           "height": 844
@@ -3500,18 +3500,18 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 397.69,
+          "bottom": 396.69,
           "left": 0,
           "width": 390,
-          "height": 397.69
+          "height": 396.69
         },
         "article": {
           "top": 411.97,
           "right": 374,
-          "bottom": 10308.69,
+          "bottom": 10293.69,
           "left": 16,
           "width": 358,
-          "height": 9896.72
+          "height": 9881.72
         },
         "title": {
           "top": 428.97,
@@ -3532,10 +3532,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 397.69,
+            "bottom": 396.69,
             "left": 0,
             "width": 390,
-            "height": 397.69
+            "height": 396.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -3547,10 +3547,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 10,
             "width": 370,
-            "height": 377.69
+            "height": 376.69
           },
           "workspace": {
             "selector": ".tcrn-doc-header__workspace",
@@ -3562,10 +3562,10 @@
             "zIndex": "auto",
             "top": 229,
             "right": 380,
-            "bottom": 331.69,
+            "bottom": 330.69,
             "left": 10,
             "width": 370,
-            "height": 102.69
+            "height": 101.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -3577,10 +3577,10 @@
             "zIndex": "auto",
             "top": 239,
             "right": 364,
-            "bottom": 275.69,
+            "bottom": 274.69,
             "left": 26,
             "width": 338,
-            "height": 36.69
+            "height": 35.69
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
@@ -3590,9 +3590,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -3605,9 +3605,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -3620,9 +3620,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 331.69,
+            "top": 330.69,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 185,
             "width": 195,
             "height": 56
@@ -3635,9 +3635,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 163,
             "height": 36
@@ -3650,9 +3650,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 237,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -3665,9 +3665,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -3713,34 +3713,14 @@
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 },
                 {
-                  "tag": "a",
+                  "tag": "strong",
                   "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "令牌与 i18n"
-                },
-                {
-                  "tag": "li",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3"
-                },
-                {
-                  "tag": "ol",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3 文案治理1"
+                  "text": "本页内容"
                 },
                 {
                   "tag": "nav",
@@ -3781,6 +3761,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
                 }
               ]
             },
@@ -3822,6 +3822,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "文案治理"
                 },
                 {
                   "tag": "li",
@@ -3882,16 +3892,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-shell",
-                  "role": null,
-                  "docShell": "online-docs",
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 }
               ]
             },
@@ -4002,7 +4002,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             },
@@ -4113,14 +4113,14 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 14.28,
-        "titleClearancePx": 31.28,
+        "articleClearancePx": 15.28,
+        "titleClearancePx": 32.28,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -4142,7 +4142,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2924,
+        "scrollY": 2859,
         "viewport": {
           "width": 390,
           "height": 844
@@ -4154,18 +4154,18 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 397.69,
+          "bottom": 396.69,
           "left": 0,
           "width": 390,
-          "height": 397.69
+          "height": 396.69
         },
         "article": {
           "top": 412.05,
           "right": 374,
-          "bottom": 6046.92,
+          "bottom": 6041.92,
           "left": 16,
           "width": 358,
-          "height": 5634.88
+          "height": 5629.88
         },
         "title": {
           "top": 429.05,
@@ -4186,10 +4186,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 397.69,
+            "bottom": 396.69,
             "left": 0,
             "width": 390,
-            "height": 397.69
+            "height": 396.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -4201,10 +4201,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 10,
             "width": 370,
-            "height": 377.69
+            "height": 376.69
           },
           "workspace": {
             "selector": ".tcrn-doc-header__workspace",
@@ -4216,10 +4216,10 @@
             "zIndex": "auto",
             "top": 229,
             "right": 380,
-            "bottom": 331.69,
+            "bottom": 330.69,
             "left": 10,
             "width": 370,
-            "height": 102.69
+            "height": 101.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -4231,10 +4231,10 @@
             "zIndex": "auto",
             "top": 239,
             "right": 364,
-            "bottom": 275.69,
+            "bottom": 274.69,
             "left": 26,
             "width": 338,
-            "height": 36.69
+            "height": 35.69
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
@@ -4244,9 +4244,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -4259,9 +4259,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -4274,9 +4274,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 331.69,
+            "top": 330.69,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 185,
             "width": 195,
             "height": 56
@@ -4289,9 +4289,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 163,
             "height": 36
@@ -4304,9 +4304,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 237,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -4319,9 +4319,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -4545,7 +4545,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             },
@@ -4995,8 +4995,8 @@
             }
           ]
         },
-        "articleClearancePx": 14.36,
-        "titleClearancePx": 31.36,
+        "articleClearancePx": 15.36,
+        "titleClearancePx": 32.36,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5008,7 +5008,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2924,
+        "scrollY": 2859,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5020,18 +5020,18 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 397.69,
+          "bottom": 396.69,
           "left": 0,
           "width": 390,
-          "height": 397.69
+          "height": 396.69
         },
         "article": {
           "top": 412.05,
           "right": 374,
-          "bottom": 6046.92,
+          "bottom": 6041.92,
           "left": 16,
           "width": 358,
-          "height": 5634.88
+          "height": 5629.88
         },
         "title": {
           "top": 429.05,
@@ -5052,10 +5052,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 397.69,
+            "bottom": 396.69,
             "left": 0,
             "width": 390,
-            "height": 397.69
+            "height": 396.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -5067,10 +5067,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 10,
             "width": 370,
-            "height": 377.69
+            "height": 376.69
           },
           "workspace": {
             "selector": ".tcrn-doc-header__workspace",
@@ -5082,10 +5082,10 @@
             "zIndex": "auto",
             "top": 229,
             "right": 380,
-            "bottom": 331.69,
+            "bottom": 330.69,
             "left": 10,
             "width": 370,
-            "height": 102.69
+            "height": 101.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -5097,10 +5097,10 @@
             "zIndex": "auto",
             "top": 239,
             "right": 364,
-            "bottom": 275.69,
+            "bottom": 274.69,
             "left": 26,
             "width": 338,
-            "height": 36.69
+            "height": 35.69
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
@@ -5110,9 +5110,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -5125,9 +5125,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -5140,9 +5140,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 331.69,
+            "top": 330.69,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 185,
             "width": 195,
             "height": 56
@@ -5155,9 +5155,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 163,
             "height": 36
@@ -5170,9 +5170,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 237,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -5185,9 +5185,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -5411,7 +5411,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             },
@@ -5861,8 +5861,8 @@
             }
           ]
         },
-        "articleClearancePx": 14.36,
-        "titleClearancePx": 31.36,
+        "articleClearancePx": 15.36,
+        "titleClearancePx": 32.36,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5874,7 +5874,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2924,
+        "scrollY": 2859,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5886,18 +5886,18 @@
         "topbar": {
           "top": 0,
           "right": 390,
-          "bottom": 397.69,
+          "bottom": 396.69,
           "left": 0,
           "width": 390,
-          "height": 397.69
+          "height": 396.69
         },
         "article": {
           "top": 412.05,
           "right": 374,
-          "bottom": 6046.92,
+          "bottom": 6041.92,
           "left": 16,
           "width": 358,
-          "height": 5634.88
+          "height": 5629.88
         },
         "title": {
           "top": 429.05,
@@ -5918,10 +5918,10 @@
             "zIndex": "30",
             "top": 0,
             "right": 390,
-            "bottom": 397.69,
+            "bottom": 396.69,
             "left": 0,
             "width": 390,
-            "height": 397.69
+            "height": 396.69
           },
           "utilityRow": {
             "selector": ".tcrn-doc-global-bar",
@@ -5933,10 +5933,10 @@
             "zIndex": "auto",
             "top": 10,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 10,
             "width": 370,
-            "height": 377.69
+            "height": 376.69
           },
           "workspace": {
             "selector": ".tcrn-doc-header__workspace",
@@ -5948,10 +5948,10 @@
             "zIndex": "auto",
             "top": 229,
             "right": 380,
-            "bottom": 331.69,
+            "bottom": 330.69,
             "left": 10,
             "width": 370,
-            "height": 102.69
+            "height": 101.69
           },
           "currentLocation": {
             "selector": ".tcrn-doc-current-location",
@@ -5963,10 +5963,10 @@
             "zIndex": "auto",
             "top": 239,
             "right": 364,
-            "bottom": 275.69,
+            "bottom": 274.69,
             "left": 26,
             "width": 338,
-            "height": 36.69
+            "height": 35.69
           },
           "searchWrapper": {
             "selector": ".tcrn-doc-header-search",
@@ -5976,9 +5976,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -5991,9 +5991,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 285.69,
+            "top": 284.69,
             "right": 364,
-            "bottom": 321.69,
+            "bottom": 320.69,
             "left": 26,
             "width": 338,
             "height": 36
@@ -6006,9 +6006,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 331.69,
+            "top": 330.69,
             "right": 380,
-            "bottom": 387.69,
+            "bottom": 386.69,
             "left": 185,
             "width": 195,
             "height": 56
@@ -6021,9 +6021,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 163,
             "height": 36
@@ -6036,9 +6036,9 @@
             "opacity": 1,
             "position": "relative",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 237,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 201,
             "width": 36,
             "height": 36
@@ -6051,9 +6051,9 @@
             "opacity": 1,
             "position": "static",
             "zIndex": "auto",
-            "top": 339.69,
+            "top": 338.69,
             "right": 364,
-            "bottom": 375.69,
+            "bottom": 374.69,
             "left": 247,
             "width": 117,
             "height": 36
@@ -6277,7 +6277,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-space-1: 4px; --tcrn-space-3: 12px; --tcrn-spa"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
                 }
               ]
             },
@@ -6727,8 +6727,8 @@
             }
           ]
         },
-        "articleClearancePx": 14.36,
-        "titleClearancePx": 31.36,
+        "articleClearancePx": 15.36,
+        "titleClearancePx": 32.36,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -6748,8 +6748,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 10119,
-      "scrollY": 8773
+      "maxScrollY": 10099,
+      "scrollY": 8753
     }
   },
   "scrollSpyCheck": {
@@ -6761,8 +6761,8 @@
       "activeAriaCurrent": "location",
       "targetTop": 669,
       "offset": 96,
-      "maxScrollY": 636,
-      "scrollY": 636,
+      "maxScrollY": 622,
+      "scrollY": 622,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }
