@@ -364,19 +364,19 @@ function queueRows(locale: OwnerQualityVariant["locale"]): WorkIndexRow[] {
       id: "owner-quality-oracle",
       title: isZh ? "定义 owner 质量视觉基准" : "Define owner-quality visual baseline",
       state: { state: "review_required" },
-      owner: "Elara"
+      owner: "Design System"
     },
     {
       id: "aos-remediation",
       title: isZh ? "将 AOS 首页映射到新基准" : "Map AOS first viewport to new baseline",
       state: { state: "blocked" },
-      owner: "Ilya"
+      owner: "Engineering"
     },
     {
       id: "qa-evidence",
       title: isZh ? "专业 QA 证据包" : "Professional QA evidence packet",
       state: { state: "not_configured" },
-      owner: "Rowan"
+      owner: "QA"
     }
   ];
 }
@@ -388,21 +388,21 @@ function gateRows(locale: OwnerQualityVariant["locale"]) {
       gate: isZh ? "DS 视觉基准" : "DS visual baseline",
       evidence: isZh ? "Storybook owner 质量实例" : "Storybook owner-quality instance",
       decision: isZh ? "等待 review" : "Awaiting review",
-      owner: "Elara",
+      owner: "Design System",
       state: <StatusBadge state={{ state: "review_required" }} locale={locale} />
     },
     {
       gate: isZh ? "运行时新鲜度" : "Runtime freshness",
-      evidence: isZh ? "4317 同端口刷新" : "4317 same-port refresh",
+      evidence: isZh ? "同端口预览刷新" : "Same-port preview refresh",
       decision: isZh ? "实现后路由" : "Route after implementation",
-      owner: "Atlas",
+      owner: "Preview",
       state: <StatusBadge state={{ state: "blocked" }} locale={locale} />
     },
     {
       gate: isZh ? "Owner 检查" : "Owner inspection",
       evidence: isZh ? "QA 与 PM 通过后" : "After QA and PM pass",
       decision: isZh ? "未准备" : "Not ready",
-      owner: "Mara",
+      owner: "PM",
       state: <StatusBadge state={{ state: "not_claimed" }} locale={locale} />
     }
   ];
@@ -430,7 +430,7 @@ function serviceItems(locale: OwnerQualityVariant["locale"]) {
     { key: "api", label: isZh ? "API" : "API", value: isZh ? "本地只读摘要" : "Read-only local summary" },
     { key: "queue", label: isZh ? "外部队列" : "External queue", value: isZh ? "无" : "None" },
     { key: "dispatch", label: isZh ? "实时派发" : "Live dispatch", value: isZh ? "未启用" : "Not enabled" },
-    { key: "nextGate", label: isZh ? "下一门禁" : "Next gate", value: isZh ? "Elara DS 评审" : "Elara DS review" }
+    { key: "nextGate", label: isZh ? "下一门禁" : "Next gate", value: isZh ? "DS 评审" : "DS review" }
   ];
 }
 

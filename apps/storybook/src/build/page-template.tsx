@@ -340,7 +340,6 @@ function pageHeadHtml(group: ContractStoryGroup): string {
   <div class="tcrn-doc-page-head__intro">
     <span class="tcrn-doc-page-head__eyebrow">${i18nText("shell.governedSectionLabel")}</span>
     <h2 id="tcrn-doc-visible-page-title">${i18nText(`group.${group}`)}</h2>
-    <p>${i18nText("shell.governedSectionDescription")}</p>
   </div>
   <nav class="tcrn-doc-on-this-page" aria-label="${escapeHtml(localeText("shell.onThisPageLabel"))}" data-doc-on-this-page="true">
     <strong>${i18nText("shell.onThisPageLabel")}</strong>

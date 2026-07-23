@@ -307,7 +307,7 @@ function workRows(locale: "en" | "zh-CN") {
       story: isZh ? "已注册壳切片" : "Registered shell slice",
       gate: isZh ? "DS 视觉实例" : "DS visual instance",
       evidence: isZh ? "Storybook 奇偶性证明" : "Storybook parity proof",
-      assignment: "Ilya",
+      assignment: "Engineering",
       state: <StatusBadge state={{ state: "proof_required" }} />
     },
     {
