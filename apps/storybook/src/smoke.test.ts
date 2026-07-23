@@ -1016,11 +1016,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(contract.storybookDocShellVisualOracle?.baselineManifestClassification, "owner_declared_original_storybook_doc_shell_standard");
   assert.match(contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "", /Storybook documentation shell/);
   assert.ok(
-	  contract.storybookDocShellVisualOracle?.metricEvidence?.some((item: { metric: string; sha256?: string | null }) => (
+	  contract.storybookDocShellVisualOracle?.metricEvidence?.some((item: { metric: string; signatureBaseline?: string | null }) => (
 	    item.metric === "desktopSidebarWidthPx"
-	    && item.sha256 === "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953"
+	    && item.signatureBaseline === "docs/verification/internal-alpha/visual-signature-baseline.json"
 	  )),
-	  "Storybook doc shell visual oracle must cite hash-backed sidebar evidence"
+	  "Storybook doc shell visual oracle must cite perceptual-signature-backed sidebar evidence"
 	);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 288);
 	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 280);
@@ -1223,7 +1223,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.storybookDocShellControlContract.implementationBoundary, /data-doc-shell='online-docs'/);
   assert.match(contract.storybookDocShellControlContract.implementationBoundary, /ProductShell selectors must not replace the global page shell/);
   assert.match(contract.storybookDocShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
-  assert.match(contract.storybookDocShellControlContract.visualSkin, /storybook-visual-proof\/baseline-manifest\.json/);
+  assert.match(contract.storybookDocShellControlContract.visualSkin, /internal-alpha\/visual-signature-baseline\.json/);
   assert.match(contract.storybookDocShellControlContract.visualSkin, /doc-shell selector authority/);
   assert.match(contract.storybookDocShellControlContract.themeTransition, /one whole-page transition/);
   assert.match(contract.storybookDocShellControlContract.themeTransition, /must not darken as independent sections/);
