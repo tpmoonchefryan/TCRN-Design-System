@@ -12,7 +12,7 @@ import {
   type IconName
 } from "@tcrn/ui-react";
 import { DialogSpecFixture, contractStoriesByGroup, contractStoryGroups } from "../stories.js";
-import type { ContractStoryGroup } from "../stories.js";
+import type { ContractStory, ContractStoryGroup } from "../stories.js";
 import { alphaStoryCss } from "../alpha-styles.js";
 import {
   activeStoryNavScript,
@@ -27,7 +27,8 @@ import {
   storybookSearchScript
 } from "./client-scripts.js";
 import { escapeHtml, i18nText, localeText } from "./i18n.js";
-import { categoryDomId, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
+import { categoryDomId, categoryFileForStory, categoryFileName, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
+import type { ContractPage } from "./navigation.js";
 
 const navGroupIcons: Record<ContractStoryGroup, IconName> = {
   Welcome: "home",
@@ -173,15 +174,13 @@ function sidebarToggleHtml(): string {
   )}</span>`;
 }
 
-function navHtml(activeGroup: ContractStoryGroup): string {
+function navHtml(activeGroup: ContractStoryGroup, activeCategoryId: string, activeStoryId: string): string {
   return `<nav class="tcrn-doc-nav" aria-label="${escapeHtml(localeText("shell.topNavLabel"))}" data-i18n-aria-label="shell.topNavLabel" data-doc-nav="sections">
   <ol class="tcrn-doc-nav__groups">
 ${contractStoryGroups.map((group) => {
   const current = group === activeGroup ? " aria-current=\"page\"" : "";
   const stories = contractStoriesByGroup(group);
   const categories = storyCategoriesForGroup(group, stories);
-  const activeStory = group === activeGroup ? stories[0] : null;
-  const activeCategoryId = activeStory?.categoryId ?? categories[0]?.id ?? "";
   const groupLabel = i18nText(`group.${group}`);
   const groupAbbr = escapeHtml(navAbbreviations[group]);
   return `    <li class="tcrn-doc-nav__group" data-doc-nav-group="${group}">
@@ -203,9 +202,12 @@ ${categories.map((category) => {
           </button>
           <span class="tcrn-sr-only" id="${categoryDescriptionId}" data-i18n="${escapeHtml(category.description)}">${escapeHtml(localeText(category.description))}</span>
           <ol class="tcrn-doc-nav__stories" id="${listId}" aria-label="${escapeHtml(categoryLabel)}" data-i18n-aria-label="${escapeHtml(category.label)}"${open ? "" : " hidden"}>
-${category.stories.map((story, index) => {
-  const href = `${groupFileName(story.group)}#${story.id}`;
-  const currentStory = group === activeGroup && category.id === activeCategoryId && index === 0 ? " aria-current=\"location\" data-doc-nav-item-active=\"true\"" : "";
+${category.stories.map((story) => {
+  // TCRN-DS-STORY-056: every nav story link points at the story's CATEGORY page. On the
+  // page that owns the story the anchor-scroll script recognises the same pathname and
+  // scrolls in place; from any other page it is a normal cross-page navigation.
+  const href = `${categoryFileForStory(story)}#${story.id}`;
+  const currentStory = story.id === activeStoryId ? " aria-current=\"location\" data-doc-nav-item-active=\"true\"" : "";
   return `            <li><a href="${href}" data-doc-nav-item="${story.id}" data-doc-nav-category-item="${escapeHtml(story.categoryId)}"${currentStory}>${i18nText(`story.${story.id}.title`)}</a></li>`;
 }).join("\n")}
           </ol>
@@ -242,18 +244,14 @@ function chapterPagerHtml(group: ContractStoryGroup): string {
 </nav>`;
 }
 
-function docHeaderWorkspaceHtml(group: ContractStoryGroup): string {
-  const firstStory = contractStoriesByGroup(group)[0];
-  if (!firstStory) {
-    throw new Error(`missing_story_for_group:${group}`);
-  }
+function docHeaderWorkspaceHtml(group: ContractStoryGroup, activeStory: ContractStory): string {
   return `<div class="tcrn-doc-header__workspace" aria-label="${escapeHtml(localeText("shell.currentLocationLabel"))}" data-i18n-aria-label="shell.currentLocationLabel">
           <div class="tcrn-doc-current-location">
             <span class="tcrn-doc-current-location__label">${i18nText("shell.currentLocationLabel")}</span>
             <span class="tcrn-doc-current-location__path">
               <span class="tcrn-doc-current-location__group" data-i18n="${escapeHtml(`group.${group}`)}">${i18nText(`group.${group}`)}</span>
               <span class="tcrn-doc-current-location__separator" aria-hidden="true">${iconHtml("chevron-right", "tcrn-doc-current-location__separator-icon", "current-location-separator")}</span>
-              <span class="tcrn-doc-current-location__story" data-doc-current-story data-i18n="${escapeHtml(`story.${firstStory.id}.title`)}">${i18nText(`story.${firstStory.id}.title`)}</span>
+              <span class="tcrn-doc-current-location__story" data-doc-current-story data-i18n="${escapeHtml(`story.${activeStory.id}.title`)}">${i18nText(`story.${activeStory.id}.title`)}</span>
             </span>
           </div>
           <div class="tcrn-doc-header-search" aria-label="${escapeHtml(localeText("shell.searchLabel"))}">
@@ -312,8 +310,9 @@ ${tcrnLocaleMetadata.map((metadata) => `                <option value="${metadat
         </div>`;
 }
 
-function storyHtml(group: ContractStoryGroup): string {
-  const stories = contractStoriesByGroup(group);
+// TCRN-DS-STORY-056: a category page renders ONLY its category's story bodies (still inside
+// the one `data-story-section` wrapper the gates expect). Index pages never call this.
+function storyHtml(group: ContractStoryGroup, stories: ContractStory[]): string {
   return `<section class="tcrn-static-section" id="${groupSlug(group)}" data-story-section="${group}">
   <h2>${i18nText(`group.${group}`)}</h2>
 ${stories.map((story) => {
@@ -333,6 +332,33 @@ ${stories.map((story) => {
 </section>`;
 }
 
+// TCRN-DS-STORY-056: the bounded section INDEX body. It carries ZERO `data-contract-story-id`
+// / `data-story-id` article bodies and NO `data-story-section` wrapper — only links out to
+// the category pages that own the bodies. This is what closes the not-gated unbounded-full-page
+// holes: the index page can never accumulate story bodies.
+function sectionIndexBodyHtml(group: ContractStoryGroup): string {
+  const stories = contractStoriesByGroup(group);
+  const categories = storyCategoriesForGroup(group, stories);
+  return `<section class="tcrn-static-section tcrn-static-section--category-index" id="${groupSlug(group)}" data-doc-category-index="${group}">
+  <h2>${i18nText(`group.${group}`)}</h2>
+  <ol class="tcrn-doc-category-index">
+${categories.map((category) => {
+  const categoryLabel = localeText(category.label);
+  return `    <li class="tcrn-doc-category-index__category" data-doc-category-index-item="${escapeHtml(category.id)}">
+      <a class="tcrn-doc-category-index__link" href="${categoryFileName(group, category.id)}" data-doc-category-link="${escapeHtml(category.id)}">
+        <span class="tcrn-doc-category-index__label" data-i18n="${escapeHtml(category.label)}">${escapeHtml(categoryLabel)}</span>
+        <span class="tcrn-doc-category-index__count" aria-label="${category.stories.length} ${escapeHtml(localeText("shell.storiesCountLabel"))}">${category.stories.length}</span>
+      </a>
+      <span class="tcrn-sr-only" data-i18n="${escapeHtml(category.description)}">${escapeHtml(localeText(category.description))}</span>
+      <ol class="tcrn-doc-category-index__stories">
+${category.stories.map((story) => `        <li><a class="tcrn-doc-category-index__story" href="${categoryFileForStory(story)}#${story.id}" data-doc-category-story-link="${story.id}">${i18nText(`story.${story.id}.title`)}</a></li>`).join("\n")}
+      </ol>
+    </li>`;
+}).join("\n")}
+  </ol>
+</section>`;
+}
+
 function pageHeadHtml(group: ContractStoryGroup): string {
   const stories = contractStoriesByGroup(group);
   const categories = storyCategoriesForGroup(group, stories);
@@ -344,7 +370,7 @@ function pageHeadHtml(group: ContractStoryGroup): string {
   <nav class="tcrn-doc-on-this-page" aria-label="${escapeHtml(localeText("shell.onThisPageLabel"))}" data-doc-on-this-page="true">
     <strong>${i18nText("shell.onThisPageLabel")}</strong>
     <ol>
-${categories.map((category) => `      <li><a href="#${category.stories[0]?.id ?? groupSlug(group)}">${i18nText(category.label)}</a><span>${category.stories.length}</span></li>`).join("\n")}
+${categories.map((category) => `      <li><a href="${categoryFileName(group, category.id)}#${category.stories[0]?.id ?? groupSlug(group)}">${i18nText(category.label)}</a><span>${category.stories.length}</span></li>`).join("\n")}
     </ol>
   </nav>
   <div class="tcrn-doc-boundary-strip" data-governance-boundary-strip="visible">
@@ -355,7 +381,17 @@ ${categories.map((category) => `      <li><a href="#${category.stories[0]?.id ??
 </section>`;
 }
 
-export function pageHtml(group: ContractStoryGroup): string {
+// TCRN-DS-STORY-056: the shared shell used by BOTH the section index page and every category
+// page. Everything except `mainBody` (index-of-categories vs the category's story bodies), the
+// active nav state, the current-location story, and the <title> is identical between the two.
+function renderContractDocument(options: {
+  group: ContractStoryGroup;
+  activeCategoryId: string;
+  activeStory: ContractStory;
+  pageTitleText: string;
+  mainBody: string;
+}): string {
+  const { group, activeCategoryId, activeStory, pageTitleText, mainBody } = options;
   return `<!doctype html>
 <html lang="${tcrnDefaultLocale}" data-tcrn-theme="light">
 <head>
@@ -369,7 +405,7 @@ export function pageHtml(group: ContractStoryGroup): string {
   <meta name="tcrn-ai-consumption-contract" content="ai-consumption-contract.json" />
   <meta name="tcrn-ai-consumption-contract-route" content="proof.html#ai-consumption-contract" />
   <meta name="tcrn-ai-consumption-contract-required" content="must-read-first" />
-  <title>${localeText(`group.${group}`)} - ${localeText("shell.title")}</title>
+  <title>${pageTitleText} - ${localeText("shell.title")}</title>
   <style data-tcrn-component-style-source="@tcrn/ui-react" data-tcrn-doc-shell-component-style="package-backed">
 ${tcrnComponentCss}
   </style>
@@ -389,19 +425,19 @@ ${staticStoryComponentCss}
           ${docBrandHtml()}
           ${sidebarToggleHtml()}
         </div>
-        ${docHeaderWorkspaceHtml(group)}
+        ${docHeaderWorkspaceHtml(group, activeStory)}
         ${docHeaderControlsHtml()}
       </div>
     </header>
     <div class="tcrn-doc-layout">
       <aside class="tcrn-doc-sidebar" id="tcrn-doc-sidebar" aria-labelledby="tcrn-doc-sidebar-label">
         <p class="tcrn-sr-only" id="tcrn-doc-sidebar-label">${i18nText("shell.sidebarLabel")}</p>
-${navHtml(group)}
+${navHtml(group, activeCategoryId, activeStory.id)}
       </aside>
       <main class="tcrn-doc-content" id="content">
         <h1 class="tcrn-sr-only" id="tcrn-doc-page-title">${i18nText("shell.title")}</h1>
 ${pageHeadHtml(group)}
-${storyHtml(group)}
+${mainBody}
 ${chapterPagerHtml(group)}
       </main>
     </div>
@@ -419,4 +455,45 @@ ${anchorScrollScript}
 </body>
 </html>
 `;
+}
+
+// Section INDEX page: full shell + nav + page-head strip + a bounded category-index body.
+// Active nav state falls on the group's first category / first story (mirrors the old default).
+export function sectionIndexHtml(group: ContractStoryGroup): string {
+  const stories = contractStoriesByGroup(group);
+  const activeStory = stories[0];
+  if (!activeStory) {
+    throw new Error(`missing_story_for_group:${group}`);
+  }
+  return renderContractDocument({
+    group,
+    activeCategoryId: activeStory.categoryId,
+    activeStory,
+    pageTitleText: localeText(`group.${group}`),
+    mainBody: sectionIndexBodyHtml(group)
+  });
+}
+
+// Category page: full shell + nav + page-head strip + ONLY this category's story bodies.
+// Active nav state falls on this category and its first story so per-page aria-current
+// assertions resolve.
+export function categoryPageHtml(group: ContractStoryGroup, categoryId: string, categoryLabel: string): string {
+  const stories = contractStoriesByGroup(group).filter((story) => story.categoryId === categoryId);
+  const activeStory = stories[0];
+  if (!activeStory) {
+    throw new Error(`missing_story_for_category:${group}:${categoryId}`);
+  }
+  return renderContractDocument({
+    group,
+    activeCategoryId: categoryId,
+    activeStory,
+    pageTitleText: localeText(categoryLabel),
+    mainBody: storyHtml(group, stories)
+  });
+}
+
+export function pageHtml(page: ContractPage): string {
+  return page.kind === "index"
+    ? sectionIndexHtml(page.group)
+    : categoryPageHtml(page.group, page.categoryId, page.categoryLabel);
 }

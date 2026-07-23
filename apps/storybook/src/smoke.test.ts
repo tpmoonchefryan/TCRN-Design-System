@@ -177,8 +177,38 @@ function groupFileName(group: ContractStoryGroup): string {
   return group === "Welcome" ? "index.html" : `${groupSlug(group)}.html`;
 }
 
+// TCRN-DS-STORY-056: category page filenames are group-namespaced (categoryId is not globally
+// unique — "work-management" is in both Components and Patterns). Mirrors navigation.ts.
+function categorySlug(categoryId: string): string {
+  return categoryId.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function categoryFileName(group: ContractStoryGroup, categoryId: string): string {
+  return `${groupSlug(group)}-${categorySlug(categoryId)}.html`;
+}
+
+// The non-empty category pages for a group, in emission (storyCategoryDefinitions) order.
+function categoryPageFilesForGroup(group: ContractStoryGroup): string[] {
+  const idsWithStories = new Set(contractStoriesByGroup(group).map((story) => story.categoryId));
+  return storyCategoryDefinitions[group]
+    .filter((category) => idsWithStories.has(category.id))
+    .map((category) => categoryFileName(group, category.id));
+}
+
+// The full set of HTML files S056 emits: 7 section INDEX pages + one CATEGORY page per
+// non-empty category, derived from the registry (never hand-listed).
+function emittedHtmlFilesForGroup(group: ContractStoryGroup): string[] {
+  return [groupFileName(group), ...categoryPageFilesForGroup(group)];
+}
+
+// TCRN-DS-STORY-056: story bodies moved off the section page onto per-category pages. A group's
+// "page" for the ~299 rendered-content pins is now the CONCATENATION of its bounded INDEX page
+// (first, so the structural nav readers below still read the complete index nav) plus every one
+// of its category pages — so every existing story-body pin still finds its string.
 function readGroupPage(group: ContractStoryGroup): string {
-  return readFileSync(join(process.cwd(), "storybook-static", groupFileName(group)), "utf8");
+  return emittedHtmlFilesForGroup(group)
+    .map((file) => readFileSync(join(process.cwd(), "storybook-static", file), "utf8"))
+    .join("\n");
 }
 
 // TCRN-DS-STORY-051: raw page bytes inline the entire i18n dictionary inside the
@@ -537,10 +567,20 @@ test("static contract story surface is retained and synthetic", () => {
     assert.equal(readDocShellCategoryIds(html).length, expectedStoryCategoryCount);
     assert.equal(readDocShellNavHtml(html).match(/data-doc-nav-group="/g)?.length, expectedStorybookShellNavGroupCount);
     assert.equal(readDocShellNavItemIds(html).length, contractStories.length);
-    assert.equal(html.match(/data-doc-chapter-pager="true"/g)?.length, 1);
-    assert.equal(readDocShellActiveStoryIds(html).length, 1);
-    assert.equal(readDocShellActiveSectionCount(html), 1);
-    assert.equal(html.match(/data-story-section="/g)?.length, 1);
+    // TCRN-DS-STORY-056: readGroupPage concatenates a group's index + category pages, so per-page
+    // chrome (chapter pager, active-section marker, one active story) multiplies. Assert those
+    // invariants on each INDIVIDUAL emitted page instead: every page has exactly one chapter pager
+    // and marks exactly one active section; a bounded index page carries no story-section body while
+    // every category page carries exactly one. (Bounded-body coverage is the S056 gate below.)
+    const groupFiles = emittedHtmlFilesForGroup(group);
+    for (const file of groupFiles) {
+      const pageHtml = readFileSync(join(process.cwd(), "storybook-static", file), "utf8");
+      assert.equal(pageHtml.match(/data-doc-chapter-pager="true"/g)?.length, 1, `${file}: one chapter pager`);
+      assert.equal(readDocShellActiveSectionCount(pageHtml), 1, `${file}: one active section`);
+      const storySectionCount = pageHtml.match(/data-story-section="/g)?.length ?? 0;
+      const isIndex = file === groupFileName(group);
+      assert.equal(storySectionCount, isIndex ? 0 : 1, `${file}: ${isIndex ? "index bounded" : "one category body"}`);
+    }
     for (const story of contractStories.filter((item) => item.group === group)) {
       assert.match(html, new RegExp(`data-story-id="${escapeRegExp(story.id)}"[^>]*data-story-category="${escapeRegExp(story.category)}"`));
       assert.match(html, new RegExp(`data-story-id="${escapeRegExp(story.id)}"[^>]*data-story-source-path="${escapeRegExp(story.sourcePath)}"`));
@@ -1369,4 +1409,57 @@ test("GitHub README exposes the Storybook AI contract without publication overcl
   assert.doesNotMatch(readme, /Storybook\/docs publication is complete/i);
   assert.doesNotMatch(readme, /release readiness is claimed/i);
   assert.doesNotMatch(readme, /product adoption is claimed/i);
+});
+
+// TCRN-DS-STORY-056: prove the section -> category page split is real and bounded. This is the
+// gate that closes the not-gated unbounded-full-page holes: (i) exactly the derived file set is
+// emitted, (ii) every section INDEX page carries ZERO story bodies, (iii) every category page
+// carries EXACTLY its category's stories and no others, (iv) every story's legacy section-anchored
+// deep link resolves through the index page's hashRouteScript route map to its category page.
+test("TCRN-DS-STORY-056: pages are bounded — index pages hold no bodies, category pages hold only their category", () => {
+  const staticDir = join(process.cwd(), "storybook-static");
+  const expectedFiles = expectedContractStoryGroups.flatMap((group) => emittedHtmlFilesForGroup(group));
+  // Derivation safety net (S055 discipline): the sum of category-page story ids per group must
+  // byte-equal contractStoriesByGroup(group), and total across all pages must equal every story.
+  const derivedStoryIds: string[] = [];
+  for (const group of expectedContractStoryGroups) {
+    const perCategory = storyCategoryDefinitions[group]
+      .map((category) => contractStoriesByGroup(group).filter((story) => story.categoryId === category.id).map((story) => story.id))
+      .filter((ids) => ids.length > 0);
+    // Set-equality, not order: registry order need not be category-grouped, so the flattened
+    // by-category order can differ from registry order. The invariant that matters is that the
+    // category pages hold EXACTLY the group's stories — none lost, duplicated, or misfiled.
+    assert.deepEqual(
+      [...perCategory.flat()].sort(),
+      [...contractStoriesByGroup(group).map((story) => story.id)].sort(),
+      `category pages for ${group} must hold exactly contractStoriesByGroup (set)`
+    );
+    derivedStoryIds.push(...perCategory.flat());
+  }
+  assert.deepEqual([...derivedStoryIds].sort(), [...contractStories.map((story) => story.id)].sort(), "derived page story ids must equal all contract stories (set)");
+
+  const emittedHtmlFiles = readdirSync(staticDir).filter((file) => file.endsWith(".html"));
+  assert.deepEqual([...emittedHtmlFiles].sort(), [...expectedFiles].sort(), "emitted HTML files must equal the derived S056 page set");
+
+  for (const group of expectedContractStoryGroups) {
+    const indexHtml = readFileSync(join(staticDir, groupFileName(group)), "utf8");
+    assert.equal(
+      (indexHtml.match(/data-contract-story-id="/g) ?? []).length,
+      0,
+      `section index page ${groupFileName(group)} must contain zero story bodies (bounded)`
+    );
+    // The index page ships the hashRouteScript whose route map redirects every legacy
+    // section-anchored deep link to the owning category page.
+    for (const story of contractStoriesByGroup(group)) {
+      const mapEntry = `"${story.id}":"${categoryFileName(group, story.categoryId)}#${story.id}"`;
+      assert.ok(indexHtml.includes(mapEntry), `index page ${groupFileName(group)} hashRouteScript must map ${story.id} to its category page`);
+    }
+    const idsWithStories = new Set(contractStoriesByGroup(group).map((story) => story.categoryId));
+    for (const category of storyCategoryDefinitions[group].filter((item) => idsWithStories.has(item.id))) {
+      const categoryHtml = readFileSync(join(staticDir, categoryFileName(group, category.id)), "utf8");
+      const bodyIds = Array.from(categoryHtml.matchAll(/data-contract-story-id="([^"]+)"/g), (match) => match[1]);
+      const expectedIds = contractStoriesByGroup(group).filter((story) => story.categoryId === category.id).map((story) => story.id);
+      assert.deepEqual(bodyIds, expectedIds, `category page ${categoryFileName(group, category.id)} must contain exactly its category's stories`);
+    }
+  }
 });

@@ -2,9 +2,9 @@ import { createHash } from "node:crypto";
 import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { findForbiddenPositiveClaimHits } from "@tcrn/ui-copy-state";
-import { contractStories, contractStoryGroups } from "../stories.js";
+import { contractStories } from "../stories.js";
 import { aiConsumptionContract } from "./ai-consumption-contract.js";
-import { groupFileName } from "./navigation.js";
+import { contractPages } from "./navigation.js";
 import { pageHtml } from "./page-template.js";
 
 function stableJson(value: unknown): string {
@@ -98,15 +98,19 @@ export function writeStorybookStaticBuild(): void {
   writtenFiles.push("llms.txt");
   writeFileSync(join(outDir, "robots.txt"), robotsTxt(aiConsumptionContractWithDigest));
   writtenFiles.push("robots.txt");
-  for (const group of contractStoryGroups) {
-    const html = pageHtml(group);
+  // TCRN-DS-STORY-056: emit one bounded file per DERIVED contract page — 7 section INDEX
+  // pages (nav only, no story bodies) + one CATEGORY page per non-empty category (that
+  // category's story bodies). The page set is derived from the registry (navigation.contractPages),
+  // never hand-listed. Each page is independently forbidden-claim scanned before write.
+  for (const page of contractPages()) {
+    const html = pageHtml(page);
     const hits = findForbiddenPositiveClaimHits(html);
     if (hits.length > 0) {
-      throw new Error(`storybook_forbidden_positive_claims:${group}:${hits.join(",")}`);
+      const label = page.kind === "category" ? `${page.group}/${page.categoryId}` : page.group;
+      throw new Error(`storybook_forbidden_positive_claims:${label}:${hits.join(",")}`);
     }
-    const fileName = groupFileName(group);
-    writeFileSync(join(outDir, fileName), html);
-    writtenFiles.push(fileName);
+    writeFileSync(join(outDir, page.file), html);
+    writtenFiles.push(page.file);
   }
   console.log(JSON.stringify({ ok: true, stories: contractStories.length, pages: writtenFiles, forbiddenHits: [], outDir }, null, 2));
 }

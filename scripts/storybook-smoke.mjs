@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join } from "node:path";
 import { chromium } from "@playwright/test";
@@ -25,12 +25,48 @@ const expectedContractStoryGroups = Object.keys(pagesByGroup);
 // Byte-equal to the former hand list: 43 {id, group} entries in registry order. The
 // smoke.test tie-gate ties storyRegistryOrder to the emitted contractStories so this
 // cannot drift from groups/*.ts (TCRN-DS-STORY-055).
-const requiredStories = storyRegistryOrder.map((entry) => ({ id: entry.id, group: entry.group }));
-const pages = Object.fromEntries(Object.entries(pagesByGroup).map(([group, file]) => [
+const requiredStories = storyRegistryOrder.map((entry) => ({ id: entry.id, group: entry.group, categoryId: entry.categoryId }));
+
+// TCRN-DS-STORY-056 page helpers (mirror apps/storybook/src/build/navigation.ts). Category
+// filenames are group-namespaced because categoryId is NOT globally unique.
+const groupSlugFor = (group) => group.toLowerCase().replace(/\s+/g, "-");
+const categorySlug = (categoryId) => categoryId.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const categoryFileName = (group, categoryId) => `${groupSlugFor(group)}-${categorySlug(categoryId)}.html`;
+const categoryFileForStory = (story) => categoryFileName(story.group, story.categoryId);
+
+// Derived page registry: 7 section INDEX pages + one CATEGORY page per non-empty category, in
+// registry (emission) order. Never hand-listed — a new story/category flows in automatically.
+const contractPages = (() => {
+  const list = [];
+  for (const group of expectedContractStoryGroups) {
+    list.push({ kind: "index", group, file: pagesByGroup[group], storyIds: [] });
+    const seen = new Set();
+    for (const story of requiredStories.filter((entry) => entry.group === group)) {
+      if (seen.has(story.categoryId)) continue;
+      seen.add(story.categoryId);
+      list.push({
+        kind: "category",
+        group,
+        categoryId: story.categoryId,
+        file: categoryFileName(group, story.categoryId),
+        storyIds: requiredStories.filter((entry) => entry.group === group && entry.categoryId === story.categoryId).map((entry) => entry.id)
+      });
+    }
+  }
+  return list;
+})();
+
+const pageHtmlByFile = Object.fromEntries(
+  contractPages.map((page) => [page.file, readFileSync(`apps/storybook/storybook-static/${page.file}`, "utf8")])
+);
+// A group's "page" for the ~content pins is the concatenation of its bounded INDEX page (first,
+// so the structural nav readers below still read the complete index nav) plus every one of its
+// category pages, so every existing story-body pin still resolves.
+const pages = Object.fromEntries(expectedContractStoryGroups.map((group) => [
   group,
-  readFileSync(`apps/storybook/storybook-static/${file}`, "utf8")
+  contractPages.filter((page) => page.group === group).map((page) => pageHtmlByFile[page.file]).join("\n")
 ]));
-const combinedHtml = Object.values(pages).join("\n");
+const combinedHtml = Object.values(pageHtmlByFile).join("\n");
 const readDocShellNavHtml = (html) => {
   const start = html.indexOf('class="tcrn-doc-nav"');
   if (start === -1) {
@@ -114,7 +150,7 @@ const staticRoot = "apps/storybook/storybook-static";
 const productShellComparatorContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
   storyId: "navigation-shell-spec",
-  page: "components.html#navigation-shell-spec",
+  page: "components-navigation-shells.html#navigation-shell-spec",
   scopedSelector: ".tcrn-product-shell-contract-proof .tcrn-product-shell",
   componentSelectors: {
     productLogo: ".tcrn-product-logo",
@@ -255,7 +291,7 @@ const productShellComparatorContract = {
 const aosFrontendShellVisualInstanceContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
   storyId: "aos-frontend-shell-slice",
-  page: "proof.html#aos-frontend-shell-slice",
+  page: "proof-proof-visual-instances.html#aos-frontend-shell-slice",
   scopedSelector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
@@ -471,7 +507,7 @@ const aosFrontendShellVisualInstanceContract = {
 const aosOwnerQualityProductShellContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
   storyId: "aos-owner-quality-product-shell",
-  page: "proof.html#aos-owner-quality-product-shell",
+  page: "proof-proof-visual-instances.html#aos-owner-quality-product-shell",
   scopedSelector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
@@ -1545,9 +1581,38 @@ for (const [group, html] of Object.entries(pages)) {
   if (ariaCurrentStoryCount !== 1) {
     missing.push(`doc-shell-current-story-aria-count:${group}:${ariaCurrentStoryCount}`);
   }
+  // TCRN-DS-STORY-056: the group "page" is now the concatenation of its bounded index page plus
+  // one category page per non-empty category. Each category page carries exactly one story
+  // section, so the concatenation carries one per category page.
   const sectionCount = html.match(/data-story-section="/g)?.length ?? 0;
-  if (sectionCount !== 1) {
-    missing.push(`single-section-page:${group}:${sectionCount}`);
+  const expectedSectionCount = contractPages.filter((page) => page.group === group && page.kind === "category").length;
+  if (sectionCount !== expectedSectionCount) {
+    missing.push(`section-page-count:${group}:${sectionCount}!=${expectedSectionCount}`);
+  }
+}
+// TCRN-DS-STORY-056 bounded-page gate: exactly the derived file set is emitted; every section
+// INDEX page carries ZERO story bodies; every category page carries EXACTLY its category's
+// stories; and each index page's hashRouteScript maps every legacy deep link to its category page.
+const emittedHtmlFiles = readdirSync("apps/storybook/storybook-static").filter((file) => file.endsWith(".html"));
+const expectedHtmlFiles = contractPages.map((page) => page.file);
+if ([...emittedHtmlFiles].sort().join(",") !== [...expectedHtmlFiles].sort().join(",")) {
+  missing.push(`emitted-page-set:${[...emittedHtmlFiles].sort().join("|")}`);
+}
+for (const page of contractPages) {
+  const html = pageHtmlByFile[page.file];
+  const bodyIds = Array.from(html.matchAll(/data-contract-story-id="([^"]+)"/g), (match) => match[1]);
+  if (page.kind === "index") {
+    if (bodyIds.length !== 0) {
+      missing.push(`index-page-has-bodies:${page.file}:${bodyIds.length}`);
+    }
+    for (const story of requiredStories.filter((entry) => entry.group === page.group)) {
+      const mapEntry = `"${story.id}":"${categoryFileForStory(story)}#${story.id}"`;
+      if (!html.includes(mapEntry)) {
+        missing.push(`hashroute-map:${page.file}:${story.id}`);
+      }
+    }
+  } else if (bodyIds.join(",") !== page.storyIds.join(",")) {
+    missing.push(`category-page-bodies:${page.file}:${bodyIds.join("|")}`);
   }
 }
 for (const story of requiredStories) {
@@ -3360,9 +3425,12 @@ async function main() {
   // seeded debt); the category cap is a preventive ceiling that is green today. Failures are
   // pushed into `missing` (which folds into `ok`) so they surface in the existing stdout list,
   // and asserted explicitly below so the intent stays legible.
+  // TCRN-DS-STORY-056: the byte budget now measures each EMITTED page file (7 index + category
+  // pages), not the per-group concatenation — the whole point of the split is that every emitted
+  // page is bounded. The PAGE_KB_GRACE_ALLOWLIST is now keyed by page FILE.
   const pageKbBudget = evaluateBudget({
     label: "page-bytes",
-    items: Object.entries(pages).map(([group, html]) => ({ id: group, measure: Buffer.byteLength(html, "utf8") })),
+    items: contractPages.map((page) => ({ id: page.file, measure: Buffer.byteLength(pageHtmlByFile[page.file], "utf8") })),
     budget: PAGE_KB_BUDGET_BYTES,
     allowlist: PAGE_KB_GRACE_ALLOWLIST,
     recordedKey: "recordedBytes"
