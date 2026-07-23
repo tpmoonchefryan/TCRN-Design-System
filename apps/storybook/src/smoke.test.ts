@@ -653,7 +653,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /\.is-invalid/);
   for (const [sourceName, source] of [
     ["src/alpha-styles.ts", readStorybookSource("src/alpha-styles.ts")],
-    ["src/storybook.css", readStorybookSource("src/storybook.css")]
+    ["src/storybook.css", readStorybookSource("src/storybook.css")],
+    ["src/story-demo-styles.ts", readStorybookSource("src/story-demo-styles.ts")]
   ] as const) {
     for (const [ruleName, pattern] of [
       ["raw-search-control", /(^|\n)[^{\n]*\.tcrn-search-input__control[^{]*\{/],

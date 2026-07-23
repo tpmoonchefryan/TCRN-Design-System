@@ -27,7 +27,8 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 const SURFACES = [
   "apps/storybook/src/storybook.css",
-  "apps/storybook/src/alpha-styles.ts"
+  "apps/storybook/src/alpha-styles.ts",
+  "apps/storybook/src/story-demo-styles.ts"
 ];
 
 // Gradients that encode state rather than decorate a surface.
