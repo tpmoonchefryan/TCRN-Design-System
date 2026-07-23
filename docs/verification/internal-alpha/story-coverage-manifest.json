@@ -6748,7 +6748,7 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 10120,
+      "maxScrollY": 10119,
       "scrollY": 8773
     }
   },
@@ -6759,10 +6759,10 @@
       "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
-      "targetTop": 668,
+      "targetTop": 669,
       "offset": 96,
-      "maxScrollY": 637,
-      "scrollY": 637,
+      "maxScrollY": 636,
+      "scrollY": 636,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }

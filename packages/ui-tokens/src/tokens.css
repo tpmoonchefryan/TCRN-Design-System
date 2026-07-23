@@ -57,10 +57,13 @@
   --tcrn-type-size-ui: 13px;
   --tcrn-type-size-reading: 14px;
   --tcrn-type-size-caption: 11px;
+  --tcrn-type-size-meta: 12px;
   --tcrn-type-size-body: 13px;
   --tcrn-type-size-control: 13px;
   --tcrn-type-size-section: 18px;
   --tcrn-type-size-page: 28px;
+  --tcrn-type-size-heading-2: 22px;
+  --tcrn-type-size-heading-3: 16px;
   --tcrn-type-line-ui: 1.35;
   --tcrn-type-line-reading: 1.45;
   --tcrn-type-line-caption: 1.35;
