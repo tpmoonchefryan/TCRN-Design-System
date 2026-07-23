@@ -31,6 +31,11 @@ export const WorkbenchPatterns: Story = {
   render: () => renderContractStory("workbench-patterns")
 };
 
+export const WorkManagementPatterns: Story = {
+  name: "Work Management patterns",
+  render: () => renderContractStory("work-management-patterns")
+};
+
 export const ReadinessNotificationPatterns: Story = {
   name: "Readiness and notification pattern",
   render: () => renderContractStory("readiness-notification-patterns")
