@@ -9,8 +9,8 @@ the repo's `README.md` and `docs/style-scale.md`.
 
 Run `pnpm verify` (defined in `package.json`) and let it pass before reporting a change
 as done. It chains: `typecheck`, `build`, `test`, `tokens:proof`, `exports:check`,
-`pack:smoke`, `storybook:smoke`, `readme:proof`, `public-output:scan`, `scan`,
-`scaffold:proof`, `internal-alpha:proof`. Per-epic convention: run the sub-gate closest
+`pack:smoke`, `storybook:smoke`, `readme:proof`, `public-output:scan`,
+`internal-vocab:scan`, `scan`, `scaffold:proof`, `internal-alpha:proof`. Per-epic convention: run the sub-gate closest
 to your change (for example `pnpm tokens:proof` or `pnpm shell:fidelity`) as you go, then
 the full `pnpm verify` before closeout.
 
@@ -52,6 +52,13 @@ fresh clone) — read the `.ts` source, not those paths.
   forbidden-phrase list lives in `@tcrn/ui-copy-state` and is enforced by `pnpm scan` and
   `pnpm readme:proof`.
 - Commits carry the story key, for example `feat(...): ... (TCRN-DS-STORY-0XX)`.
+- No internal vocabulary in rendered copy: internal story/epic/initiative keys
+  (`S0xx`, `INIT-`, `EPIC-`, `STORY-`, `TCRN-DS-`), team persona names, vendor/model
+  names (Gemini), retired systems (Codex), dev ports (4317), and vault paths must not
+  appear in the rendered visible text of the built pages. Enforced by
+  `pnpm internal-vocab:scan` (wired into `pnpm verify` after `public-output:scan`);
+  legitimate fixture domain-data tokens are registered in the exemption ledger at the
+  top of `scripts/internal-vocabulary-scan.mjs`.
 - Do not commit an owner email, author-email trailers, or local machine paths — the
   privacy scan (`pnpm scan`) fails closed on them.
 
