@@ -1313,7 +1313,11 @@ export const tcrnComponentCss = `
 /* A pressable surface has to answer the press, or the interface reads as not
    listening. Scale is deliberately subtle and lives on :active (not :hover), so it
    works the same under a finger as under a pointer. */
-.tcrn-button:active {
+.tcrn-button:active,
+.tcrn-shell-theme-toggle:active,
+.tcrn-shell-locale-menu__trigger:active,
+.tcrn-table-toolbar__chip:active,
+.tcrn-table-toolbar__collapse:active {
   transform: scale(var(--tcrn-motion-press-scale));
 }
 .tcrn-button--primary {
@@ -2064,6 +2068,11 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 .tcrn-table-toolbar__chip:hover {
   border-color: var(--tcrn-color-border-control);
   color: var(--tcrn-color-text-primary);
+}
+.tcrn-table-toolbar__chip:focus-visible,
+.tcrn-table-toolbar__collapse:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
 }
 .tcrn-table-toolbar__chip[aria-pressed="true"] {
   border-color: var(--tcrn-color-brand-primary);
@@ -3100,7 +3109,10 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   /* No travel, and no press-scale either: scale is transform. */
   .tcrn-button:active,
   .tcrn-nav-item:active,
-  .tcrn-shell-locale-menu__trigger:active {
+  .tcrn-shell-theme-toggle:active,
+  .tcrn-shell-locale-menu__trigger:active,
+  .tcrn-table-toolbar__chip:active,
+  .tcrn-table-toolbar__collapse:active {
     transform: none;
   }
 }
