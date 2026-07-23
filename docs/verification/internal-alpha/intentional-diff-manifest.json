@@ -208,6 +208,26 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-shell-spec.png"
     },
     {
+      "storyId": "navigation-dense-operations-shell-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-dense-operations-shell-spec.png"
+    },
+    {
+      "storyId": "navigation-focused-shells-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-focused-shells-spec.png"
+    },
+    {
+      "storyId": "navigation-primitives-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-primitives-spec.png"
+    },
+    {
+      "storyId": "navigation-product-shell-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-product-shell-spec.png"
+    },
+    {
       "storyId": "page-components-overlays",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-overlays.png"
@@ -228,6 +248,36 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-components-spec.png"
     },
     {
+      "storyId": "work-management-relationships-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-relationships-spec.png"
+    },
+    {
+      "storyId": "work-management-tokens-density-views-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-tokens-density-views-spec.png"
+    },
+    {
+      "storyId": "work-management-route-detail-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-route-detail-spec.png"
+    },
+    {
+      "storyId": "work-management-backlog-board-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-backlog-board-spec.png"
+    },
+    {
+      "storyId": "work-management-hierarchy-gates-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-hierarchy-gates-spec.png"
+    },
+    {
+      "storyId": "work-management-inspector-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-inspector-spec.png"
+    },
+    {
       "storyId": "page-components-knowledge-management",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-knowledge-management.png"
@@ -236,6 +286,16 @@
       "storyId": "knowledge-management-components-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-components-spec.png"
+    },
+    {
+      "storyId": "knowledge-management-density-collaboration-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-density-collaboration-spec.png"
+    },
+    {
+      "storyId": "knowledge-management-templates-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-templates-spec.png"
     },
     {
       "storyId": "page-patterns-forms-workbench",
@@ -558,6 +618,26 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-shell-spec.png"
     },
     {
+      "storyId": "navigation-dense-operations-shell-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-dense-operations-shell-spec.png"
+    },
+    {
+      "storyId": "navigation-focused-shells-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-focused-shells-spec.png"
+    },
+    {
+      "storyId": "navigation-primitives-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-primitives-spec.png"
+    },
+    {
+      "storyId": "navigation-product-shell-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-product-shell-spec.png"
+    },
+    {
       "storyId": "page-components-overlays",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-overlays.png"
@@ -578,6 +658,36 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-components-spec.png"
     },
     {
+      "storyId": "work-management-relationships-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-relationships-spec.png"
+    },
+    {
+      "storyId": "work-management-tokens-density-views-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-tokens-density-views-spec.png"
+    },
+    {
+      "storyId": "work-management-route-detail-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-route-detail-spec.png"
+    },
+    {
+      "storyId": "work-management-backlog-board-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-backlog-board-spec.png"
+    },
+    {
+      "storyId": "work-management-hierarchy-gates-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-hierarchy-gates-spec.png"
+    },
+    {
+      "storyId": "work-management-inspector-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-inspector-spec.png"
+    },
+    {
       "storyId": "page-components-knowledge-management",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-knowledge-management.png"
@@ -586,6 +696,16 @@
       "storyId": "knowledge-management-components-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-components-spec.png"
+    },
+    {
+      "storyId": "knowledge-management-density-collaboration-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-density-collaboration-spec.png"
+    },
+    {
+      "storyId": "knowledge-management-templates-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-templates-spec.png"
     },
     {
       "storyId": "page-patterns-forms-workbench",
@@ -908,6 +1028,26 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-shell-spec.png"
     },
     {
+      "storyId": "navigation-dense-operations-shell-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-dense-operations-shell-spec.png"
+    },
+    {
+      "storyId": "navigation-focused-shells-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-focused-shells-spec.png"
+    },
+    {
+      "storyId": "navigation-primitives-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-primitives-spec.png"
+    },
+    {
+      "storyId": "navigation-product-shell-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-product-shell-spec.png"
+    },
+    {
       "storyId": "page-components-overlays",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-overlays.png"
@@ -928,6 +1068,36 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-components-spec.png"
     },
     {
+      "storyId": "work-management-relationships-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-relationships-spec.png"
+    },
+    {
+      "storyId": "work-management-tokens-density-views-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-tokens-density-views-spec.png"
+    },
+    {
+      "storyId": "work-management-route-detail-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-route-detail-spec.png"
+    },
+    {
+      "storyId": "work-management-backlog-board-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-backlog-board-spec.png"
+    },
+    {
+      "storyId": "work-management-hierarchy-gates-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-hierarchy-gates-spec.png"
+    },
+    {
+      "storyId": "work-management-inspector-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-inspector-spec.png"
+    },
+    {
       "storyId": "page-components-knowledge-management",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-knowledge-management.png"
@@ -936,6 +1106,16 @@
       "storyId": "knowledge-management-components-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-components-spec.png"
+    },
+    {
+      "storyId": "knowledge-management-density-collaboration-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-density-collaboration-spec.png"
+    },
+    {
+      "storyId": "knowledge-management-templates-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-templates-spec.png"
     },
     {
       "storyId": "page-patterns-forms-workbench",

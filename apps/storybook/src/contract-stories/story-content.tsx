@@ -1927,6 +1927,16 @@ const legacyContractStories: LegacyContractStory[] = [
             rows={navigationStrategyRows}
           />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "navigation-dense-operations-shell-spec",
+    title: "Dense operations navigation shell",
+    group: "Components",
+    description: "Top navigation surface for large operational products with a menu button, compact search, and grouped primary and secondary options.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="TMS dense operations shell">
           <Text>Large operational products need a top navigation surface with a menu button, compact search, and an expanded menu that exposes grouped primary and secondary options together.</Text>
           <TableShell
@@ -1940,6 +1950,16 @@ const legacyContractStories: LegacyContractStory[] = [
           />
           <TmsDenseShellDemo />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "navigation-focused-shells-spec",
+    title: "Focused navigation shells",
+    group: "Components",
+    description: "Knowledge-base bookmark shell and compact segmented tool shell for nested reader paths and small, stable peer views.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Knowledge base bookmark shell">
           <Text>Design System and other knowledge-base products need side navigation with multi-level bookmarks because the reader path is nested and scroll-driven.</Text>
           <KnowledgeBaseShellDemo />
@@ -1948,6 +1968,16 @@ const legacyContractStories: LegacyContractStory[] = [
           <Text>Small tools may use local segmented navigation, but only when the number of peer views stays small and stable.</Text>
           <CompactToolShellDemo />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "navigation-primitives-spec",
+    title: "Navigation component primitives",
+    group: "Components",
+    description: "Package-backed navigation primitives — top bar, breadcrumb, product switcher, side navigation, segmented nav, and pagination — with the package-backed navigation proof.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Navigation component contracts">
           <TopBar
             productName="TCRN Design System"
@@ -2008,59 +2038,69 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
             rows={navigationComponentRows}
           />
-          <div
-            className="tcrn-product-shell-contract-proof"
-            data-package-backed-product-shell-proof="true"
-            data-aos-shell-effect-boundary="package-backed"
-          >
-            <ProductShell
-              productName="AOS Rebuild Workspace"
-              moduleName="Frontend shell slice"
-              brandProductId="aos"
-              brandMarkSrc="tcrn-brand-mark.svg"
-              brandMarkAlt="TCRN registered brand mark"
-              currentRouteLabel="Cockpit"
-              navLabel="Registered AOS modules"
-              collapsed={false}
-              collapsedStorageKey="tcrn-aos-side-nav-collapsed"
-              currentTheme="light"
-              locales={tcrnLocaleMetadata}
-              currentLocale={tcrnDefaultLocale}
-              search={{
-                label: "Search AOS shell",
-                placeholder: "Search modules, work items, or proof",
-                query: "cockpit",
-                expanded: true,
-                results: [
-                  { id: "cockpit", title: "Cockpit", meta: "Registered shell entry", href: "/cockpit", selected: true },
-                  { id: "work", title: "Work", meta: "Work module entry", href: "/work" }
-                ]
-              }}
-              navGroups={[
-                {
-                  id: "registered-aos-shell-entries",
-                  label: "Registered shell entries",
-                  selected: true,
-                  items: [
-                    { id: "cockpit", label: "Cockpit", href: "/cockpit", iconName: "home", selected: true },
-                    { id: "work", label: "Work", href: "/work", iconName: "database" }
-                  ]
-                }
-              ]}
-            >
-              <ReadbackPanel title="Package-backed AOS shell boundary">
-                <Text>
-                  Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks. Collapse, theme, locale popup, and search behavior must flow through ProductShell semantic props or the useProductShellController prop bundles instead of wrapper event delegation.
-                </Text>
-                <EvidenceStrip items={["package-backed shell boundary", "semantic control APIs", "controller prop bundles", "product adoption separate"]} />
-              </ReadbackPanel>
-            </ProductShell>
-          </div>
         </ReadbackPanel>
         <ReadbackPanel title="Pagination and skip-link boundary">
           <Text>Pagination and skip links belong to shared navigation primitives because they preserve orientation, keyboard access, and proof context across long surfaces.</Text>
           <Pagination label="Synthetic component pages" />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "navigation-product-shell-spec",
+    title: "Package-backed ProductShell contract",
+    group: "Components",
+    description: "Package-backed ProductShell contract-proof composition with semantic control APIs, controller prop bundles, and the package-backed shell boundary.",
+    render: () => (
+      <section className="alpha-story-stack">
+        <div
+          className="tcrn-product-shell-contract-proof"
+          data-package-backed-product-shell-proof="true"
+          data-aos-shell-effect-boundary="package-backed"
+        >
+          <ProductShell
+            productName="AOS Rebuild Workspace"
+            moduleName="Frontend shell slice"
+            brandProductId="aos"
+            brandMarkSrc="tcrn-brand-mark.svg"
+            brandMarkAlt="TCRN registered brand mark"
+            currentRouteLabel="Cockpit"
+            navLabel="Registered AOS modules"
+            collapsed={false}
+            collapsedStorageKey="tcrn-aos-side-nav-collapsed"
+            currentTheme="light"
+            locales={tcrnLocaleMetadata}
+            currentLocale={tcrnDefaultLocale}
+            search={{
+              label: "Search AOS shell",
+              placeholder: "Search modules, work items, or proof",
+              query: "cockpit",
+              expanded: true,
+              results: [
+                { id: "cockpit", title: "Cockpit", meta: "Registered shell entry", href: "/cockpit", selected: true },
+                { id: "work", title: "Work", meta: "Work module entry", href: "/work" }
+              ]
+            }}
+            navGroups={[
+              {
+                id: "registered-aos-shell-entries",
+                label: "Registered shell entries",
+                selected: true,
+                items: [
+                  { id: "cockpit", label: "Cockpit", href: "/cockpit", iconName: "home", selected: true },
+                  { id: "work", label: "Work", href: "/work", iconName: "database" }
+                ]
+              }
+            ]}
+          >
+            <ReadbackPanel title="Package-backed AOS shell boundary">
+              <Text>
+                Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks. Collapse, theme, locale popup, and search behavior must flow through ProductShell semantic props or the useProductShellController prop bundles instead of wrapper event delegation.
+              </Text>
+              <EvidenceStrip items={["package-backed shell boundary", "semantic control APIs", "controller prop bundles", "product adoption separate"]} />
+            </ReadbackPanel>
+          </ProductShell>
+        </div>
       </section>
     )
   },
@@ -2292,6 +2332,16 @@ const legacyContractStories: LegacyContractStory[] = [
             }))}
           />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "work-management-relationships-spec",
+    title: "Work Management relationship vocabulary",
+    group: "Components",
+    description: "Package-backed Work Management relationship chips for typed links between hierarchy records, including href and disabled affordances.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Relationship vocabulary">
           <div className="tcrn-work-board__relations" aria-label="Work relationship vocabulary examples">
             {workRelationshipTypes.map((relation) => (
@@ -2302,6 +2352,16 @@ const legacyContractStories: LegacyContractStory[] = [
           </div>
           <Text>A chip with an href renders an anchor for navigation to the related item; a disabled chip records data-disabled and drops the link affordance.</Text>
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "work-management-tokens-density-views-spec",
+    title: "Work Management tokens, density, and views",
+    group: "Components",
+    description: "Package-backed Work Management machine-token containment, density variants, and saved-view subnav controls.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Machine token containment">
           <Text>MachineToken preserves the full identifier in title, aria-label, and data-full-token while constraining the visible value so it cannot overlap adjacent table cells.</Text>
           <TableShell
@@ -2347,10 +2407,16 @@ const legacyContractStories: LegacyContractStory[] = [
           <EvidenceAttachmentList label="Evidence (compact)" density="compact" items={workEvidenceItems} />
           <EvidenceAttachmentList label="Evidence (dense)" density="dense" items={workEvidenceItems} />
         </ReadbackPanel>
-        <ReadbackPanel title="Subnav and saved views">
-          <SavedViewToolbar views={workManagementSavedViews} filters={workManagementFilters} />
-          <WorkManagementSubnav items={workManagementSubnavItems} />
-        </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "work-management-route-detail-spec",
+    title: "Work Management route context and detail",
+    group: "Components",
+    description: "Package-backed Work Management dense route context header and selected-row split detail composition.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Dense route context">
           <WorkPageHeader
             title="Owner feedback queue"
@@ -2391,6 +2457,16 @@ const legacyContractStories: LegacyContractStory[] = [
             }
           />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "work-management-backlog-board-spec",
+    title: "Work Management backlog and board",
+    group: "Components",
+    description: "Package-backed Work Management shaped backlog grouping, static inline create, and compact board lanes.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Backlog and compact board">
           <WorkBacklogGroup
             title="Shaped backlog"
@@ -2405,12 +2481,36 @@ const legacyContractStories: LegacyContractStory[] = [
             lanes={workBoardLanes}
           />
         </ReadbackPanel>
+        <ReadbackPanel title="Subnav and saved views">
+          <SavedViewToolbar views={workManagementSavedViews} filters={workManagementFilters} />
+          <WorkManagementSubnav items={workManagementSubnavItems} />
+        </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "work-management-hierarchy-gates-spec",
+    title: "Work Management hierarchy, gates, and evidence",
+    group: "Components",
+    description: "Package-backed Work Management hierarchy, gate pipelines, evidence attachments, and the Work Item inspector.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Hierarchy, gates, and evidence">
           <WorkHierarchy nodes={workHierarchyNodes} edges={workHierarchyEdges} />
           <GatePipeline gates={workGatePipeline} />
           <GatePipelineCompact label="Compact gate scan" gates={workGatePipeline.slice(0, 3)} />
           <EvidenceAttachmentList density="compact" items={workEvidenceItems} />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "work-management-inspector-spec",
+    title: "Work Management evidence and inspector",
+    group: "Components",
+    description: "Package-backed Work Management Work Item inspector with hierarchy, state, relationships, subtasks, and attached evidence context.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Evidence and inspector">
           <WorkItemInspector
             title="AOS-128 Work Item"
@@ -2488,6 +2588,16 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
           />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "knowledge-management-density-collaboration-spec",
+    title: "Knowledge Management density and collaboration",
+    group: "Components",
+    description: "Package-backed static Knowledge Management density variants, metadata rail, inline comments, attachments, and version history.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Density variants">
           <Text>Knowledge Management surfaces accept the same comfortable, compact, or dense density. The same KnowledgePageTree is shown at all three. Only the dense modifier carries distinct package styling today; comfortable and compact record the density on data-density but share the default styling.</Text>
           <KnowledgePageTree label="Knowledge page tree (comfortable)" items={knowledgePageTreeItems} density="comfortable" />
@@ -2505,6 +2615,16 @@ const legacyContractStories: LegacyContractStory[] = [
           <KnowledgeAttachmentList density="dense" items={knowledgeAttachments} />
           <KnowledgeVersionHistory density="dense" versions={knowledgeVersions} />
         </ReadbackPanel>
+      </section>
+    )
+  },
+  {
+    id: "knowledge-management-templates-spec",
+    title: "Knowledge Management templates and results",
+    group: "Components",
+    description: "Package-backed static Knowledge Management template gallery, local search results, and label sets, with static-only publishing boundaries.",
+    render: () => (
+      <section className="alpha-story-stack">
         <ReadbackPanel title="Templates and local results">
           <KnowledgeTemplateGallery density="dense" templates={knowledgeTemplates} />
           <KnowledgeSearchResults density="dense" query="owner inspection" results={knowledgeSearchResults} />

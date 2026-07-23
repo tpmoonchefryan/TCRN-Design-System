@@ -149,8 +149,10 @@ const storybookStaticCssSource = readFileSync("apps/storybook/src/storybook.css"
 const staticRoot = "apps/storybook/storybook-static";
 const productShellComparatorContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
-  storyId: "navigation-shell-spec",
-  page: "components-navigation-shells.html#navigation-shell-spec",
+  // TCRN-DS-STORY-059: the ProductShell contract-proof was split out of navigation-shell-spec
+  // into navigation-product-shell-spec (same navigation-shells category page).
+  storyId: "navigation-product-shell-spec",
+  page: "components-navigation-shells.html#navigation-product-shell-spec",
   scopedSelector: ".tcrn-product-shell-contract-proof .tcrn-product-shell",
   componentSelectors: {
     productLogo: ".tcrn-product-logo",

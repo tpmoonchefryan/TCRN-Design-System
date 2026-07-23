@@ -13,78 +13,71 @@
         "id": "color-palette",
         "measure": 4659,
         "recordedHeightPx": 4659,
-        "owedTo": "TCRN-DS-STORY-059",
-        "note": "full color palette gallery; split"
+        "owedTo": "beyond-INIT-008",
+        "note": "39-token color specimen gallery; a catalogue split is future work — gated debt"
       },
       {
         "id": "text-styles",
         "measure": 2409,
         "recordedHeightPx": 2409,
-        "owedTo": "TCRN-DS-STORY-059",
-        "note": "type-scale specimen catalogue; split"
+        "owedTo": "beyond-INIT-008",
+        "note": "type-scale specimen catalogue; gated debt"
       },
       {
         "id": "icons-motion",
         "measure": 2041,
         "recordedHeightPx": 2041,
-        "owedTo": "TCRN-DS-STORY-059",
-        "note": "icon + motion catalogue; split"
+        "owedTo": "beyond-INIT-008",
+        "note": "icon + motion specimen catalogue; gated debt"
       },
       {
         "id": "foundation-visual-standards",
         "measure": 3350,
         "recordedHeightPx": 3350,
-        "owedTo": "TCRN-DS-STORY-059",
-        "note": "foundation visual standards catalogue; split"
+        "owedTo": "beyond-INIT-008",
+        "note": "foundation visual-standards catalogue; gated debt"
       },
       {
         "id": "component-family-index",
         "measure": 7802,
         "recordedHeightPx": 7802,
-        "owedTo": "TCRN-DS-STORY-058/059",
-        "note": "full component-family index page; category landing (S058) + split (S059)"
-      },
-      {
-        "id": "navigation-shell-spec",
-        "measure": 6009,
-        "recordedHeightPx": 6009,
-        "owedTo": "TCRN-DS-STORY-059",
-        "note": "navigation shell spec; split into per-family stories"
+        "owedTo": "TCRN-DS-STORY-058",
+        "note": "monolithic component-family index; the generated per-component reference pages (S058) supersede it"
       },
       {
         "id": "work-management-components-spec",
-        "measure": 9191,
-        "recordedHeightPx": 9191,
-        "owedTo": "TCRN-DS-STORY-059",
-        "note": "monolithic components spec; split into per-family stories"
+        "measure": 2136,
+        "recordedHeightPx": 2136,
+        "owedTo": "irreducible",
+        "note": "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
       },
       {
-        "id": "knowledge-management-components-spec",
-        "measure": 3497,
-        "recordedHeightPx": 3497,
-        "owedTo": "TCRN-DS-STORY-059",
-        "note": "knowledge-management components spec; split into per-family stories"
+        "id": "work-management-hierarchy-gates-spec",
+        "measure": 2045,
+        "recordedHeightPx": 2045,
+        "owedTo": "irreducible",
+        "note": "S059 child = the coherent Hierarchy/gates/evidence panel; 45px over a single unit — gated debt"
       },
       {
         "id": "ai-consumption-contract",
-        "measure": 5087,
-        "recordedHeightPx": 5069,
-        "owedTo": "TCRN-DS-STORY-059",
-        "note": "full AI-consumption contract readback; split"
+        "measure": 5438,
+        "recordedHeightPx": 5438,
+        "owedTo": "beyond-INIT-008",
+        "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
       },
       {
         "id": "aos-frontend-shell-slice",
         "measure": 12448,
         "recordedHeightPx": 12448,
-        "owedTo": "TCRN-DS-STORY-057/059",
-        "note": "AOS frontend shell-slice oracle; move to Proof (S057) then split (S059)"
+        "owedTo": "beyond-INIT-008",
+        "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
       },
       {
         "id": "aos-owner-quality-product-shell",
         "measure": 15285,
         "recordedHeightPx": 15285,
-        "owedTo": "TCRN-DS-STORY-057/059",
-        "note": "AOS owner-quality product-shell oracle; move to Proof (S057) then split (S059)"
+        "owedTo": "beyond-INIT-008",
+        "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
       }
     ]
   },
@@ -92,68 +85,62 @@
     {
       "id": "color-palette",
       "heightPx": 4659,
-      "owedTo": "TCRN-DS-STORY-059",
-      "note": "full color palette gallery; split"
+      "owedTo": "beyond-INIT-008",
+      "note": "39-token color specimen gallery; a catalogue split is future work — gated debt"
     },
     {
       "id": "text-styles",
       "heightPx": 2409,
-      "owedTo": "TCRN-DS-STORY-059",
-      "note": "type-scale specimen catalogue; split"
+      "owedTo": "beyond-INIT-008",
+      "note": "type-scale specimen catalogue; gated debt"
     },
     {
       "id": "icons-motion",
       "heightPx": 2041,
-      "owedTo": "TCRN-DS-STORY-059",
-      "note": "icon + motion catalogue; split"
+      "owedTo": "beyond-INIT-008",
+      "note": "icon + motion specimen catalogue; gated debt"
     },
     {
       "id": "foundation-visual-standards",
       "heightPx": 3350,
-      "owedTo": "TCRN-DS-STORY-059",
-      "note": "foundation visual standards catalogue; split"
+      "owedTo": "beyond-INIT-008",
+      "note": "foundation visual-standards catalogue; gated debt"
     },
     {
       "id": "component-family-index",
       "heightPx": 7802,
-      "owedTo": "TCRN-DS-STORY-058/059",
-      "note": "full component-family index page; category landing (S058) + split (S059)"
-    },
-    {
-      "id": "navigation-shell-spec",
-      "heightPx": 6009,
-      "owedTo": "TCRN-DS-STORY-059",
-      "note": "navigation shell spec; split into per-family stories"
+      "owedTo": "TCRN-DS-STORY-058",
+      "note": "monolithic component-family index; the generated per-component reference pages (S058) supersede it"
     },
     {
       "id": "work-management-components-spec",
-      "heightPx": 9191,
-      "owedTo": "TCRN-DS-STORY-059",
-      "note": "monolithic components spec; split into per-family stories"
+      "heightPx": 2136,
+      "owedTo": "irreducible",
+      "note": "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
     },
     {
-      "id": "knowledge-management-components-spec",
-      "heightPx": 3497,
-      "owedTo": "TCRN-DS-STORY-059",
-      "note": "knowledge-management components spec; split into per-family stories"
+      "id": "work-management-hierarchy-gates-spec",
+      "heightPx": 2045,
+      "owedTo": "irreducible",
+      "note": "S059 child = the coherent Hierarchy/gates/evidence panel; 45px over a single unit — gated debt"
     },
     {
       "id": "ai-consumption-contract",
-      "heightPx": 5087,
-      "owedTo": "TCRN-DS-STORY-059",
-      "note": "full AI-consumption contract readback; split"
+      "heightPx": 5438,
+      "owedTo": "beyond-INIT-008",
+      "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
     },
     {
       "id": "aos-frontend-shell-slice",
       "heightPx": 12448,
-      "owedTo": "TCRN-DS-STORY-057/059",
-      "note": "AOS frontend shell-slice oracle; move to Proof (S057) then split (S059)"
+      "owedTo": "beyond-INIT-008",
+      "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
     },
     {
       "id": "aos-owner-quality-product-shell",
       "heightPx": 15285,
-      "owedTo": "TCRN-DS-STORY-057/059",
-      "note": "AOS owner-quality product-shell oracle; move to Proof (S057) then split (S059)"
+      "owedTo": "beyond-INIT-008",
+      "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
     }
   ]
 }

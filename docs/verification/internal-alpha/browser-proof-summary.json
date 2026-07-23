@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "e1fc7ae4a86a5e2886f4b328ff6295a94eb0bd034e2be9f9cf7c16330503e79f",
+    "contractPayloadDigest": "73c9892f63b143b2a2236cc32537815a3e38412dcc7efec395a0955e88bbbbc5",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 20,
@@ -138,8 +138,8 @@
       "locale": "zh-CN",
       "gating": true,
       "ok": true,
-      "storyCount": 43,
-      "allowlistedLeakCount": 1121,
+      "storyCount": 55,
+      "allowlistedLeakCount": 1153,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -260,7 +260,27 @@
         },
         {
           "storyId": "navigation-shell-spec",
-          "allowlistedLeakCount": 34,
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "navigation-dense-operations-shell-spec",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "navigation-focused-shells-spec",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "navigation-primitives-spec",
+          "allowlistedLeakCount": 18,
+          "newLeaks": []
+        },
+        {
+          "storyId": "navigation-product-shell-spec",
+          "allowlistedLeakCount": 15,
           "newLeaks": []
         },
         {
@@ -270,12 +290,52 @@
         },
         {
           "storyId": "work-management-components-spec",
-          "allowlistedLeakCount": 206,
+          "allowlistedLeakCount": 65,
+          "newLeaks": []
+        },
+        {
+          "storyId": "work-management-relationships-spec",
+          "allowlistedLeakCount": 9,
+          "newLeaks": []
+        },
+        {
+          "storyId": "work-management-tokens-density-views-spec",
+          "allowlistedLeakCount": 18,
+          "newLeaks": []
+        },
+        {
+          "storyId": "work-management-route-detail-spec",
+          "allowlistedLeakCount": 41,
+          "newLeaks": []
+        },
+        {
+          "storyId": "work-management-backlog-board-spec",
+          "allowlistedLeakCount": 37,
+          "newLeaks": []
+        },
+        {
+          "storyId": "work-management-hierarchy-gates-spec",
+          "allowlistedLeakCount": 39,
+          "newLeaks": []
+        },
+        {
+          "storyId": "work-management-inspector-spec",
+          "allowlistedLeakCount": 20,
           "newLeaks": []
         },
         {
           "storyId": "knowledge-management-components-spec",
-          "allowlistedLeakCount": 74,
+          "allowlistedLeakCount": 35,
+          "newLeaks": []
+        },
+        {
+          "storyId": "knowledge-management-density-collaboration-spec",
+          "allowlistedLeakCount": 21,
+          "newLeaks": []
+        },
+        {
+          "storyId": "knowledge-management-templates-spec",
+          "allowlistedLeakCount": 26,
           "newLeaks": []
         },
         {
@@ -366,8 +426,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 43,
-        "leakCount": 1133,
+        "storyCount": 55,
+        "leakCount": 1180,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -463,7 +523,23 @@
           },
           {
             "storyId": "navigation-shell-spec",
-            "leakCount": 34
+            "leakCount": 1
+          },
+          {
+            "storyId": "navigation-dense-operations-shell-spec",
+            "leakCount": 0
+          },
+          {
+            "storyId": "navigation-focused-shells-spec",
+            "leakCount": 1
+          },
+          {
+            "storyId": "navigation-primitives-spec",
+            "leakCount": 18
+          },
+          {
+            "storyId": "navigation-product-shell-spec",
+            "leakCount": 16
           },
           {
             "storyId": "dialog-spec-usage",
@@ -471,11 +547,43 @@
           },
           {
             "storyId": "work-management-components-spec",
-            "leakCount": 208
+            "leakCount": 67
+          },
+          {
+            "storyId": "work-management-relationships-spec",
+            "leakCount": 11
+          },
+          {
+            "storyId": "work-management-tokens-density-views-spec",
+            "leakCount": 20
+          },
+          {
+            "storyId": "work-management-route-detail-spec",
+            "leakCount": 43
+          },
+          {
+            "storyId": "work-management-backlog-board-spec",
+            "leakCount": 39
+          },
+          {
+            "storyId": "work-management-hierarchy-gates-spec",
+            "leakCount": 41
+          },
+          {
+            "storyId": "work-management-inspector-spec",
+            "leakCount": 22
           },
           {
             "storyId": "knowledge-management-components-spec",
-            "leakCount": 76
+            "leakCount": 37
+          },
+          {
+            "storyId": "knowledge-management-density-collaboration-spec",
+            "leakCount": 22
+          },
+          {
+            "storyId": "knowledge-management-templates-spec",
+            "leakCount": 27
           },
           {
             "storyId": "forms-patterns",
@@ -548,8 +656,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 43,
-        "leakCount": 1137,
+        "storyCount": 55,
+        "leakCount": 1184,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -645,7 +753,23 @@
           },
           {
             "storyId": "navigation-shell-spec",
-            "leakCount": 34
+            "leakCount": 1
+          },
+          {
+            "storyId": "navigation-dense-operations-shell-spec",
+            "leakCount": 0
+          },
+          {
+            "storyId": "navigation-focused-shells-spec",
+            "leakCount": 1
+          },
+          {
+            "storyId": "navigation-primitives-spec",
+            "leakCount": 18
+          },
+          {
+            "storyId": "navigation-product-shell-spec",
+            "leakCount": 16
           },
           {
             "storyId": "dialog-spec-usage",
@@ -653,11 +777,43 @@
           },
           {
             "storyId": "work-management-components-spec",
-            "leakCount": 208
+            "leakCount": 67
+          },
+          {
+            "storyId": "work-management-relationships-spec",
+            "leakCount": 11
+          },
+          {
+            "storyId": "work-management-tokens-density-views-spec",
+            "leakCount": 20
+          },
+          {
+            "storyId": "work-management-route-detail-spec",
+            "leakCount": 43
+          },
+          {
+            "storyId": "work-management-backlog-board-spec",
+            "leakCount": 39
+          },
+          {
+            "storyId": "work-management-hierarchy-gates-spec",
+            "leakCount": 41
+          },
+          {
+            "storyId": "work-management-inspector-spec",
+            "leakCount": 22
           },
           {
             "storyId": "knowledge-management-components-spec",
-            "leakCount": 76
+            "leakCount": 37
+          },
+          {
+            "storyId": "knowledge-management-density-collaboration-spec",
+            "leakCount": 22
+          },
+          {
+            "storyId": "knowledge-management-templates-spec",
+            "leakCount": 27
           },
           {
             "storyId": "forms-patterns",
@@ -730,8 +886,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 43,
-        "leakCount": 2828,
+        "storyCount": 55,
+        "leakCount": 2952,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -827,7 +983,23 @@
           },
           {
             "storyId": "navigation-shell-spec",
-            "leakCount": 282
+            "leakCount": 41
+          },
+          {
+            "storyId": "navigation-dense-operations-shell-spec",
+            "leakCount": 116
+          },
+          {
+            "storyId": "navigation-focused-shells-spec",
+            "leakCount": 62
+          },
+          {
+            "storyId": "navigation-primitives-spec",
+            "leakCount": 74
+          },
+          {
+            "storyId": "navigation-product-shell-spec",
+            "leakCount": 23
           },
           {
             "storyId": "dialog-spec-usage",
@@ -835,11 +1007,43 @@
           },
           {
             "storyId": "work-management-components-spec",
-            "leakCount": 217
+            "leakCount": 69
+          },
+          {
+            "storyId": "work-management-relationships-spec",
+            "leakCount": 15
+          },
+          {
+            "storyId": "work-management-tokens-density-views-spec",
+            "leakCount": 29
+          },
+          {
+            "storyId": "work-management-route-detail-spec",
+            "leakCount": 49
+          },
+          {
+            "storyId": "work-management-backlog-board-spec",
+            "leakCount": 45
+          },
+          {
+            "storyId": "work-management-hierarchy-gates-spec",
+            "leakCount": 47
+          },
+          {
+            "storyId": "work-management-inspector-spec",
+            "leakCount": 29
           },
           {
             "storyId": "knowledge-management-components-spec",
-            "leakCount": 87
+            "leakCount": 46
+          },
+          {
+            "storyId": "knowledge-management-density-collaboration-spec",
+            "leakCount": 31
+          },
+          {
+            "storyId": "knowledge-management-templates-spec",
+            "leakCount": 34
           },
           {
             "storyId": "forms-patterns",
@@ -965,7 +1169,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1049,7 +1253,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1147,7 +1351,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1245,7 +1449,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1329,7 +1533,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1441,7 +1645,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1511,7 +1715,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1598,7 +1802,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1721,7 +1925,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1829,7 +2033,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -1931,7 +2135,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2048,7 +2252,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2171,7 +2375,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2264,7 +2468,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2375,7 +2579,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2520,7 +2724,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2586,7 +2790,11 @@
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "navigation-shell-spec"
+        "navigation-shell-spec",
+        "navigation-dense-operations-shell-spec",
+        "navigation-focused-shells-spec",
+        "navigation-primitives-spec",
+        "navigation-product-shell-spec"
       ],
       "expectedActiveStoryId": "navigation-shell-spec",
       "consoleMessages": [],
@@ -2607,8 +2815,64 @@
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
-          "itemWidth": 236.17,
-          "labelWidth": 236.17,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "navigation-dense-operations-shell-spec",
+          "text": "Dense operations navigation shell",
+          "textLength": 30,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "navigation-focused-shells-spec",
+          "text": "Focused navigation shells",
+          "textLength": 23,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "navigation-primitives-spec",
+          "text": "Navigation component primitives",
+          "textLength": 29,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "navigation-product-shell-spec",
+          "text": "Package-backed ProductShell contract",
+          "textLength": 34,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -2619,7 +2883,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2641,7 +2905,7 @@
           "title": "Proof route is not in this component page",
           "dataDisabledReason": "Proof route is not in this component page",
           "ariaDescribedBy": [
-            "«navigation-shell-spec-Ral3l»"
+            "«navigation-primitives-spec-R5ahp»"
           ],
           "visibleReason": "Proof route is not in this component page",
           "visibleReasonRendered": true,
@@ -2684,7 +2948,31 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 1077,
-          "height": 6009
+          "height": 549
+        },
+        {
+          "id": "navigation-dense-operations-shell-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1931
+        },
+        {
+          "id": "navigation-focused-shells-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1343
+        },
+        {
+          "id": "navigation-primitives-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1540
+        },
+        {
+          "id": "navigation-product-shell-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1000
         }
       ],
       "clipped": [],
@@ -2735,7 +3023,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2783,7 +3071,13 @@
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "work-management-relationships-spec",
+        "work-management-tokens-density-views-spec",
+        "work-management-route-detail-spec",
+        "work-management-backlog-board-spec",
+        "work-management-hierarchy-gates-spec",
+        "work-management-inspector-spec"
       ],
       "expectedActiveStoryId": "work-management-components-spec",
       "consoleMessages": [],
@@ -2804,8 +3098,92 @@
           "route": "work-management-components-spec",
           "text": "Work Management component specs",
           "textLength": 28,
-          "itemWidth": 260.91,
-          "labelWidth": 260.91,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-relationships-spec",
+          "text": "Work Management relationship vocabulary",
+          "textLength": 36,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-tokens-density-views-spec",
+          "text": "Work Management tokens, density, and views",
+          "textLength": 37,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-route-detail-spec",
+          "text": "Work Management route context and detail",
+          "textLength": 35,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-backlog-board-spec",
+          "text": "Work Management backlog and board",
+          "textLength": 29,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-hierarchy-gates-spec",
+          "text": "Work Management hierarchy, gates, and evidence",
+          "textLength": 41,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-inspector-spec",
+          "text": "Work Management evidence and inspector",
+          "textLength": 34,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -2816,7 +3194,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2846,7 +3224,43 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 9191
+          "height": 2136
+        },
+        {
+          "id": "work-management-relationships-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 321
+        },
+        {
+          "id": "work-management-tokens-density-views-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1835
+        },
+        {
+          "id": "work-management-route-detail-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1496
+        },
+        {
+          "id": "work-management-backlog-board-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 996
+        },
+        {
+          "id": "work-management-hierarchy-gates-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 2045
+        },
+        {
+          "id": "work-management-inspector-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 888
         }
       ],
       "clipped": [],
@@ -2864,7 +3278,9 @@
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "knowledge-management-components-spec"
+        "knowledge-management-components-spec",
+        "knowledge-management-density-collaboration-spec",
+        "knowledge-management-templates-spec"
       ],
       "expectedActiveStoryId": "knowledge-management-components-spec",
       "consoleMessages": [],
@@ -2885,8 +3301,36 @@
           "route": "knowledge-management-components-spec",
           "text": "Knowledge Management component specs",
           "textLength": 33,
-          "itemWidth": 297.2,
-          "labelWidth": 297.2,
+          "itemWidth": 324.72,
+          "labelWidth": 324.72,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "knowledge-management-density-collaboration-spec",
+          "text": "Knowledge Management density and collaboration",
+          "textLength": 42,
+          "itemWidth": 324.72,
+          "labelWidth": 324.72,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "knowledge-management-templates-spec",
+          "text": "Knowledge Management templates and results",
+          "textLength": 38,
+          "itemWidth": 324.72,
+          "labelWidth": 324.72,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -2897,7 +3341,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -2927,7 +3371,19 @@
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 3497
+          "height": 1403
+        },
+        {
+          "id": "knowledge-management-density-collaboration-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1628
+        },
+        {
+          "id": "knowledge-management-templates-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 642
         }
       ],
       "clipped": [],
@@ -2993,7 +3449,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -3080,7 +3536,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -3191,7 +3647,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -3314,7 +3770,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -3452,7 +3908,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -3488,7 +3944,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 5087
+          "height": 5438
         },
         {
           "id": "blocked-actions",
@@ -3566,7 +4022,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -3653,7 +4109,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -3746,7 +4202,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -3830,7 +4286,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -3928,7 +4384,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4026,7 +4482,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4110,7 +4566,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4222,7 +4678,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4292,7 +4748,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4379,7 +4835,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4502,7 +4958,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4610,7 +5066,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4712,7 +5168,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4829,7 +5285,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -4952,7 +5408,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5045,7 +5501,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5156,7 +5612,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5301,7 +5757,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5367,7 +5823,11 @@
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "navigation-shell-spec"
+        "navigation-shell-spec",
+        "navigation-dense-operations-shell-spec",
+        "navigation-focused-shells-spec",
+        "navigation-primitives-spec",
+        "navigation-product-shell-spec"
       ],
       "expectedActiveStoryId": "navigation-shell-spec",
       "consoleMessages": [],
@@ -5388,8 +5848,64 @@
           "route": "navigation-shell-spec",
           "text": "Navigation and shell spec",
           "textLength": 22,
-          "itemWidth": 243.16,
-          "labelWidth": 243.16,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "navigation-dense-operations-shell-spec",
+          "text": "Dense operations navigation shell",
+          "textLength": 30,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "navigation-focused-shells-spec",
+          "text": "Focused navigation shells",
+          "textLength": 23,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "navigation-primitives-spec",
+          "text": "Navigation component primitives",
+          "textLength": 29,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "navigation-product-shell-spec",
+          "text": "Package-backed ProductShell contract",
+          "textLength": 34,
+          "itemWidth": 253.28,
+          "labelWidth": 253.28,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -5400,7 +5916,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5422,7 +5938,7 @@
           "title": "Proof route is not in this component page",
           "dataDisabledReason": "Proof route is not in this component page",
           "ariaDescribedBy": [
-            "«navigation-shell-spec-Ral3l»"
+            "«navigation-primitives-spec-R5ahp»"
           ],
           "visibleReason": "Proof route is not in this component page",
           "visibleReasonRendered": true,
@@ -5465,7 +5981,31 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 691,
-          "height": 6625
+          "height": 654
+        },
+        {
+          "id": "navigation-dense-operations-shell-spec",
+          "visible": true,
+          "width": 691,
+          "height": 2149
+        },
+        {
+          "id": "navigation-focused-shells-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1592
+        },
+        {
+          "id": "navigation-primitives-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1768
+        },
+        {
+          "id": "navigation-product-shell-spec",
+          "visible": true,
+          "width": 691,
+          "height": 885
         }
       ],
       "clipped": [],
@@ -5516,7 +6056,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5564,7 +6104,13 @@
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "work-management-relationships-spec",
+        "work-management-tokens-density-views-spec",
+        "work-management-route-detail-spec",
+        "work-management-backlog-board-spec",
+        "work-management-hierarchy-gates-spec",
+        "work-management-inspector-spec"
       ],
       "expectedActiveStoryId": "work-management-components-spec",
       "consoleMessages": [],
@@ -5585,8 +6131,92 @@
           "route": "work-management-components-spec",
           "text": "Work Management component specs",
           "textLength": 28,
-          "itemWidth": 260.91,
-          "labelWidth": 260.91,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-relationships-spec",
+          "text": "Work Management relationship vocabulary",
+          "textLength": 36,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-tokens-density-views-spec",
+          "text": "Work Management tokens, density, and views",
+          "textLength": 37,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-route-detail-spec",
+          "text": "Work Management route context and detail",
+          "textLength": 35,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-backlog-board-spec",
+          "text": "Work Management backlog and board",
+          "textLength": 29,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-hierarchy-gates-spec",
+          "text": "Work Management hierarchy, gates, and evidence",
+          "textLength": 41,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "work-management-inspector-spec",
+          "text": "Work Management evidence and inspector",
+          "textLength": 34,
+          "itemWidth": 317.56,
+          "labelWidth": 317.56,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -5597,7 +6227,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5627,7 +6257,43 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 11217
+          "height": 3049
+        },
+        {
+          "id": "work-management-relationships-spec",
+          "visible": true,
+          "width": 691,
+          "height": 420
+        },
+        {
+          "id": "work-management-tokens-density-views-spec",
+          "visible": true,
+          "width": 691,
+          "height": 2282
+        },
+        {
+          "id": "work-management-route-detail-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1514
+        },
+        {
+          "id": "work-management-backlog-board-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1201
+        },
+        {
+          "id": "work-management-hierarchy-gates-spec",
+          "visible": true,
+          "width": 691,
+          "height": 2161
+        },
+        {
+          "id": "work-management-inspector-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1188
         }
       ],
       "clipped": [],
@@ -5645,7 +6311,9 @@
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "knowledge-management-components-spec"
+        "knowledge-management-components-spec",
+        "knowledge-management-density-collaboration-spec",
+        "knowledge-management-templates-spec"
       ],
       "expectedActiveStoryId": "knowledge-management-components-spec",
       "consoleMessages": [],
@@ -5666,8 +6334,36 @@
           "route": "knowledge-management-components-spec",
           "text": "Knowledge Management component specs",
           "textLength": 33,
-          "itemWidth": 297.2,
-          "labelWidth": 297.2,
+          "itemWidth": 324.72,
+          "labelWidth": 324.72,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "knowledge-management-density-collaboration-spec",
+          "text": "Knowledge Management density and collaboration",
+          "textLength": 42,
+          "itemWidth": 324.72,
+          "labelWidth": 324.72,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "knowledge-management-templates-spec",
+          "text": "Knowledge Management templates and results",
+          "textLength": 38,
+          "itemWidth": 324.72,
+          "labelWidth": 324.72,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -5678,7 +6374,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5708,7 +6404,19 @@
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 3892
+          "height": 1696
+        },
+        {
+          "id": "knowledge-management-density-collaboration-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1695
+        },
+        {
+          "id": "knowledge-management-templates-spec",
+          "visible": true,
+          "width": 691,
+          "height": 712
         }
       ],
       "clipped": [],
@@ -5774,7 +6482,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5861,7 +6569,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5972,7 +6680,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6095,7 +6803,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6233,7 +6941,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6269,7 +6977,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 7269
+          "height": 7936
         },
         {
           "id": "blocked-actions",
@@ -6347,7 +7055,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6434,7 +7142,7 @@
         }
       ],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6498,7 +7206,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6553,7 +7261,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6608,7 +7316,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6663,7 +7371,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6718,7 +7426,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6773,7 +7481,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6828,7 +7536,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6886,7 +7594,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6966,7 +7674,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7045,7 +7753,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7118,7 +7826,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7192,7 +7900,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7272,7 +7980,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7350,7 +8058,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7418,7 +8126,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7506,7 +8214,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7572,7 +8280,11 @@
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "navigation-shell-spec"
+        "navigation-shell-spec",
+        "navigation-dense-operations-shell-spec",
+        "navigation-focused-shells-spec",
+        "navigation-primitives-spec",
+        "navigation-product-shell-spec"
       ],
       "expectedActiveStoryId": "navigation-shell-spec",
       "consoleMessages": [],
@@ -7590,7 +8302,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7612,7 +8324,7 @@
           "title": "Proof route is not in this component page",
           "dataDisabledReason": "Proof route is not in this component page",
           "ariaDescribedBy": [
-            "«navigation-shell-spec-Ral3l»"
+            "«navigation-primitives-spec-R5ahp»"
           ],
           "visibleReason": "Proof route is not in this component page",
           "visibleReasonRendered": true,
@@ -7655,7 +8367,31 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 358,
-          "height": 14155
+          "height": 1716
+        },
+        {
+          "id": "navigation-dense-operations-shell-spec",
+          "visible": true,
+          "width": 358,
+          "height": 5714
+        },
+        {
+          "id": "navigation-focused-shells-spec",
+          "visible": true,
+          "width": 358,
+          "height": 2613
+        },
+        {
+          "id": "navigation-primitives-spec",
+          "visible": true,
+          "width": 358,
+          "height": 3697
+        },
+        {
+          "id": "navigation-product-shell-spec",
+          "visible": true,
+          "width": 358,
+          "height": 1023
         }
       ],
       "clipped": [],
@@ -7691,7 +8427,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7739,7 +8475,13 @@
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "work-management-components-spec"
+        "work-management-components-spec",
+        "work-management-relationships-spec",
+        "work-management-tokens-density-views-spec",
+        "work-management-route-detail-spec",
+        "work-management-backlog-board-spec",
+        "work-management-hierarchy-gates-spec",
+        "work-management-inspector-spec"
       ],
       "expectedActiveStoryId": "work-management-components-spec",
       "consoleMessages": [],
@@ -7757,7 +8499,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7787,7 +8529,43 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 25745
+          "height": 7661
+        },
+        {
+          "id": "work-management-relationships-spec",
+          "visible": true,
+          "width": 358,
+          "height": 723
+        },
+        {
+          "id": "work-management-tokens-density-views-spec",
+          "visible": true,
+          "width": 358,
+          "height": 5041
+        },
+        {
+          "id": "work-management-route-detail-spec",
+          "visible": true,
+          "width": 358,
+          "height": 2787
+        },
+        {
+          "id": "work-management-backlog-board-spec",
+          "visible": true,
+          "width": 358,
+          "height": 2360
+        },
+        {
+          "id": "work-management-hierarchy-gates-spec",
+          "visible": true,
+          "width": 358,
+          "height": 6018
+        },
+        {
+          "id": "work-management-inspector-spec",
+          "visible": true,
+          "width": 358,
+          "height": 2051
         }
       ],
       "clipped": [],
@@ -7805,7 +8583,9 @@
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "knowledge-management-components-spec"
+        "knowledge-management-components-spec",
+        "knowledge-management-density-collaboration-spec",
+        "knowledge-management-templates-spec"
       ],
       "expectedActiveStoryId": "knowledge-management-components-spec",
       "consoleMessages": [],
@@ -7823,7 +8603,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7853,7 +8633,19 @@
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 6655
+          "height": 3567
+        },
+        {
+          "id": "knowledge-management-density-collaboration-spec",
+          "visible": true,
+          "width": 358,
+          "height": 2312
+        },
+        {
+          "id": "knowledge-management-templates-spec",
+          "visible": true,
+          "width": 358,
+          "height": 1076
         }
       ],
       "clipped": [],
@@ -7890,7 +8682,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7962,7 +8754,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8030,7 +8822,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8110,7 +8902,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8191,7 +8983,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8227,7 +9019,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 13548
+          "height": 14372
         },
         {
           "id": "blocked-actions",
@@ -8276,7 +9068,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8348,7 +9140,7 @@
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 43,
+      "docNavItemCount": 55,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,

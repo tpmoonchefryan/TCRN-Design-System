@@ -84,10 +84,22 @@ const expectedContractStoryIds = [
   "button-spec-usage",
   "field-spec-usage",
   "navigation-shell-spec",
+  "navigation-dense-operations-shell-spec",
+  "navigation-focused-shells-spec",
+  "navigation-primitives-spec",
+  "navigation-product-shell-spec",
   "dialog-spec-usage",
   "table-work-index-spec",
   "work-management-components-spec",
+  "work-management-relationships-spec",
+  "work-management-tokens-density-views-spec",
+  "work-management-route-detail-spec",
+  "work-management-backlog-board-spec",
+  "work-management-hierarchy-gates-spec",
+  "work-management-inspector-spec",
   "knowledge-management-components-spec",
+  "knowledge-management-density-collaboration-spec",
+  "knowledge-management-templates-spec",
   "forms-patterns",
   "workbench-patterns",
   "work-management-patterns",
@@ -1368,7 +1380,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, dialog-spec-usage, table-work-index-spec, work-management-components-spec, knowledge-management-components-spec/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-work-index-spec, work-management-components-spec, work-management-relationships-spec, work-management-tokens-density-views-spec, work-management-route-detail-spec, work-management-backlog-board-spec, work-management-hierarchy-gates-spec, work-management-inspector-spec, knowledge-management-components-spec, knowledge-management-density-collaboration-spec, knowledge-management-templates-spec/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, work-management-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
