@@ -843,7 +843,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 7700
+          "height": 7701
         },
         {
           "id": "knowledge-management-components-spec",
@@ -1004,7 +1004,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 1077,
-          "height": 4102
+          "height": 4104
         },
         {
           "id": "readiness-notification-patterns",
@@ -1878,7 +1878,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 9459
+          "height": 9461
         },
         {
           "id": "knowledge-management-components-spec",
@@ -1997,7 +1997,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 691,
-          "height": 4610
+          "height": 4612
         },
         {
           "id": "readiness-notification-patterns",
@@ -2661,7 +2661,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 16326
+          "height": 16292
         },
         {
           "id": "display-primitives-spec",
@@ -2727,7 +2727,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 21536
+          "height": 21544
         },
         {
           "id": "knowledge-management-components-spec",
@@ -2817,7 +2817,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 10348
+          "height": 10356
         },
         {
           "id": "readiness-notification-patterns",

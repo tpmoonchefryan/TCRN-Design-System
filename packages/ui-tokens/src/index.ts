@@ -434,6 +434,13 @@ export const tcrnTokens = [
     description: "Caption and metadata text size."
   },
   {
+    name: "typography.size.meta",
+    variable: "--tcrn-type-size-meta",
+    value: "12px",
+    group: "typography",
+    description: "Dense metadata text: counts, badges, table tool labels, and secondary row detail. One step above caption, one below dense UI text."
+  },
+  {
     name: "typography.size.body",
     variable: "--tcrn-type-size-body",
     value: "13px",
@@ -460,6 +467,20 @@ export const tcrnTokens = [
     value: "28px",
     group: "typography",
     description: "Page title text size for documentation and product shells."
+  },
+  {
+    name: "typography.size.heading.2",
+    variable: "--tcrn-type-size-heading-2",
+    value: "22px",
+    group: "typography",
+    description: "Second-level heading size, between the page title and section role — the component library's h2 step."
+  },
+  {
+    name: "typography.size.heading.3",
+    variable: "--tcrn-type-size-heading-3",
+    value: "16px",
+    group: "typography",
+    description: "Third-level heading size — the component library's h3 step, below the section role."
   },
   {
     name: "typography.line.ui",
