@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react";
 import { forwardRef, useCallback, useEffect, useId, useRef, useState } from "react";
 import { Button, type ButtonProps } from "../Button/index.js";
-import { cx, mergeIds, requiredText } from "../../utils.js";
+import { mergeIds, requiredText } from "../../utils.js";
 
 export type ClipboardCopyState = "idle" | "copying" | "copied" | "failed" | "unsupported";
 
@@ -144,7 +144,7 @@ export const ClipboardCopyButton = forwardRef<HTMLButtonElement, ClipboardCopyBu
       aria-busy={state === "copying" ? true : undefined}
       aria-describedby={describedBy}
       aria-label={accessibleLabel}
-      className={cx("tcrn-clipboard-copy-button", className)}
+      className={className}
       data-clipboard-copy-state={state}
       disabled={isDisabled}
       disabledReason={disabledReason}

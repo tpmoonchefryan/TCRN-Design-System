@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "6fad585b3778738a46e7615b70fac5e3f158ea795b8fdf8ab65737b268208a60",
+    "contractPayloadDigest": "a9e664561964ca5386311793dc77c6df1df6fb258adf50a5f13174c369b1b6a1",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 19,
@@ -265,13 +265,13 @@
           "id": "governance-boundaries",
           "visible": true,
           "width": 1077,
-          "height": 574
+          "height": 576
         },
         {
           "id": "maintainers-routing",
           "visible": true,
           "width": 1077,
-          "height": 523
+          "height": 527
         },
         {
           "id": "contribution-model",
@@ -424,43 +424,43 @@
           "id": "brand-identity",
           "visible": true,
           "width": 1077,
-          "height": 1040
+          "height": 1048
         },
         {
           "id": "color-palette",
           "visible": true,
           "width": 1077,
-          "height": 2349
+          "height": 4659
         },
         {
           "id": "text-styles",
           "visible": true,
           "width": 1077,
-          "height": 2124
+          "height": 2409
         },
         {
           "id": "grid-system",
           "visible": true,
           "width": 1077,
-          "height": 654
+          "height": 650
         },
         {
           "id": "icons-motion",
           "visible": true,
           "width": 1077,
-          "height": 2031
+          "height": 2041
         },
         {
           "id": "global-states",
           "visible": true,
           "width": 1077,
-          "height": 668
+          "height": 654
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
           "width": 1077,
-          "height": 592
+          "height": 596
         }
       ],
       "clipped": [],
@@ -584,25 +584,25 @@
           "id": "tokens-copy-state",
           "visible": true,
           "width": 1077,
-          "height": 433
+          "height": 423
         },
         {
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 1077,
-          "height": 1486
+          "height": 1570
         },
         {
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 1077,
-          "height": 3373
+          "height": 3385
         },
         {
           "id": "copy-guidelines",
           "visible": true,
           "width": 1077,
-          "height": 441
+          "height": 445
         }
       ],
       "clipped": [],
@@ -734,7 +734,7 @@
           "title": "Proof route is not in this component page",
           "dataDisabledReason": "Proof route is not in this component page",
           "ariaDescribedBy": [
-            "«R5ail»"
+            "«navigation-shell-spec-Ral3l»"
           ],
           "visibleReason": "Proof route is not in this component page",
           "visibleReasonRendered": true,
@@ -777,79 +777,79 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 7637
+          "height": 7802
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 1077,
-          "height": 966
+          "height": 1709
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 1077,
-          "height": 1041
+          "height": 1053
         },
         {
           "id": "stamp-spec-usage",
           "visible": true,
           "width": 1077,
-          "height": 610
+          "height": 628
         },
         {
           "id": "button-spec-usage",
           "visible": true,
           "width": 1077,
-          "height": 683
+          "height": 1033
         },
         {
           "id": "field-spec-usage",
           "visible": true,
           "width": 1077,
-          "height": 1185
+          "height": 1743
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 1077,
-          "height": 5868
+          "height": 6009
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 1077,
-          "height": 12200
+          "height": 12448
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 1077,
-          "height": 15277
+          "height": 15285
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
           "width": 1077,
-          "height": 1179
+          "height": 1404
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
           "width": 1077,
-          "height": 1951
+          "height": 1961
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 7702
+          "height": 9191
         },
         {
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 2757
+          "height": 3497
         }
       ],
       "clipped": [],
@@ -992,7 +992,7 @@
           "id": "forms-patterns",
           "visible": true,
           "width": 1077,
-          "height": 245
+          "height": 247
         },
         {
           "id": "workbench-patterns",
@@ -1004,13 +1004,13 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 1077,
-          "height": 4105
+          "height": 4119
         },
         {
           "id": "readiness-notification-patterns",
           "visible": true,
           "width": 1077,
-          "height": 253
+          "height": 245
         },
         {
           "id": "selection-list-patterns",
@@ -1022,7 +1022,7 @@
           "id": "modal-validation-patterns",
           "visible": true,
           "width": 1077,
-          "height": 283
+          "height": 285
         },
         {
           "id": "datagrid-fields-patterns",
@@ -1034,13 +1034,13 @@
           "id": "big-list-search-patterns",
           "visible": true,
           "width": 1077,
-          "height": 283
+          "height": 275
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
           "width": 1077,
-          "height": 465
+          "height": 467
         }
       ],
       "clipped": [],
@@ -1164,13 +1164,13 @@
           "id": "proof-matrix",
           "visible": true,
           "width": 1077,
-          "height": 404
+          "height": 406
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 5047
+          "height": 5069
         },
         {
           "id": "blocked-actions",
@@ -1261,7 +1261,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 1077,
-          "height": 730
+          "height": 734
         }
       ],
       "clipped": [],
@@ -1364,19 +1364,19 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 691,
-          "height": 913
+          "height": 905
         },
         {
           "id": "governance-boundaries",
           "visible": true,
           "width": 691,
-          "height": 708
+          "height": 710
         },
         {
           "id": "maintainers-routing",
           "visible": true,
           "width": 691,
-          "height": 620
+          "height": 624
         },
         {
           "id": "contribution-model",
@@ -1487,43 +1487,43 @@
           "id": "brand-identity",
           "visible": true,
           "width": 691,
-          "height": 1219
+          "height": 1227
         },
         {
           "id": "color-palette",
           "visible": true,
           "width": 691,
-          "height": 2865
+          "height": 6657
         },
         {
           "id": "text-styles",
           "visible": true,
           "width": 691,
-          "height": 2438
+          "height": 2740
         },
         {
           "id": "grid-system",
           "visible": true,
           "width": 691,
-          "height": 798
+          "height": 786
         },
         {
           "id": "icons-motion",
           "visible": true,
           "width": 691,
-          "height": 2685
+          "height": 2695
         },
         {
           "id": "global-states",
           "visible": true,
           "width": 691,
-          "height": 810
+          "height": 788
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
           "width": 691,
-          "height": 693
+          "height": 697
         }
       ],
       "clipped": [],
@@ -1633,25 +1633,25 @@
           "id": "tokens-copy-state",
           "visible": true,
           "width": 691,
-          "height": 465
+          "height": 455
         },
         {
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 691,
-          "height": 1986
+          "height": 2087
         },
         {
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 691,
-          "height": 4495
+          "height": 4507
         },
         {
           "id": "copy-guidelines",
           "visible": true,
           "width": 691,
-          "height": 504
+          "height": 508
         }
       ],
       "clipped": [],
@@ -1769,7 +1769,7 @@
           "title": "Proof route is not in this component page",
           "dataDisabledReason": "Proof route is not in this component page",
           "ariaDescribedBy": [
-            "«R5ail»"
+            "«navigation-shell-spec-Ral3l»"
           ],
           "visibleReason": "Proof route is not in this component page",
           "visibleReasonRendered": true,
@@ -1812,79 +1812,79 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 8468
+          "height": 8668
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 691,
-          "height": 1130
+          "height": 2029
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 691,
-          "height": 1145
+          "height": 1157
         },
         {
           "id": "stamp-spec-usage",
           "visible": true,
           "width": 691,
-          "height": 680
+          "height": 698
         },
         {
           "id": "button-spec-usage",
           "visible": true,
           "width": 691,
-          "height": 731
+          "height": 1115
         },
         {
           "id": "field-spec-usage",
           "visible": true,
           "width": 691,
-          "height": 1289
+          "height": 1847
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 691,
-          "height": 6483
+          "height": 6642
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 15446
+          "height": 15694
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 691,
-          "height": 19179
+          "height": 19187
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
           "width": 691,
-          "height": 1295
+          "height": 1651
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
           "width": 691,
-          "height": 2348
+          "height": 2358
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 9462
+          "height": 11323
         },
         {
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 3135
+          "height": 3892
         }
       ],
       "clipped": [],
@@ -1985,7 +1985,7 @@
           "id": "forms-patterns",
           "visible": true,
           "width": 691,
-          "height": 262
+          "height": 264
         },
         {
           "id": "workbench-patterns",
@@ -1997,13 +1997,13 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 691,
-          "height": 4613
+          "height": 4626
         },
         {
           "id": "readiness-notification-patterns",
           "visible": true,
           "width": 691,
-          "height": 363
+          "height": 347
         },
         {
           "id": "selection-list-patterns",
@@ -2015,7 +2015,7 @@
           "id": "modal-validation-patterns",
           "visible": true,
           "width": 691,
-          "height": 316
+          "height": 318
         },
         {
           "id": "datagrid-fields-patterns",
@@ -2027,13 +2027,13 @@
           "id": "big-list-search-patterns",
           "visible": true,
           "width": 691,
-          "height": 316
+          "height": 308
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
           "width": 691,
-          "height": 674
+          "height": 676
         }
       ],
       "clipped": [],
@@ -2157,13 +2157,13 @@
           "id": "proof-matrix",
           "visible": true,
           "width": 691,
-          "height": 404
+          "height": 406
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 7247
+          "height": 7269
         },
         {
           "id": "blocked-actions",
@@ -2254,7 +2254,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 691,
-          "height": 762
+          "height": 766
         }
       ],
       "clipped": [],
@@ -2328,19 +2328,19 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 358,
-          "height": 1690
+          "height": 1674
         },
         {
           "id": "governance-boundaries",
           "visible": true,
           "width": 358,
-          "height": 1327
+          "height": 1329
         },
         {
           "id": "maintainers-routing",
           "visible": true,
           "width": 358,
-          "height": 1427
+          "height": 1431
         },
         {
           "id": "contribution-model",
@@ -2422,43 +2422,43 @@
           "id": "brand-identity",
           "visible": true,
           "width": 358,
-          "height": 2402
+          "height": 2410
         },
         {
           "id": "color-palette",
           "visible": true,
           "width": 358,
-          "height": 6385
+          "height": 13236
         },
         {
           "id": "text-styles",
           "visible": true,
           "width": 358,
-          "height": 6111
+          "height": 6483
         },
         {
           "id": "grid-system",
           "visible": true,
           "width": 358,
-          "height": 1563
+          "height": 1543
         },
         {
           "id": "icons-motion",
           "visible": true,
           "width": 358,
-          "height": 6474
+          "height": 6484
         },
         {
           "id": "global-states",
           "visible": true,
           "width": 358,
-          "height": 1755
+          "height": 1717
         },
         {
           "id": "copy-creation-rules",
           "visible": true,
           "width": 358,
-          "height": 1423
+          "height": 1427
         }
       ],
       "clipped": [],
@@ -2525,25 +2525,25 @@
           "id": "tokens-copy-state",
           "visible": true,
           "width": 358,
-          "height": 582
+          "height": 572
         },
         {
           "id": "i18n-theme-contract",
           "visible": true,
           "width": 358,
-          "height": 4081
+          "height": 4217
         },
         {
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9882
+          "height": 9728
         },
         {
           "id": "copy-guidelines",
           "visible": true,
           "width": 358,
-          "height": 940
+          "height": 944
         }
       ],
       "clipped": [],
@@ -2618,7 +2618,7 @@
           "title": "Proof route is not in this component page",
           "dataDisabledReason": "Proof route is not in this component page",
           "ariaDescribedBy": [
-            "«R5ail»"
+            "«navigation-shell-spec-Ral3l»"
           ],
           "visibleReason": "Proof route is not in this component page",
           "visibleReasonRendered": true,
@@ -2661,79 +2661,79 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 16289
+          "height": 16596
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 358,
-          "height": 1993
+          "height": 3127
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 358,
-          "height": 2046
+          "height": 2108
         },
         {
           "id": "stamp-spec-usage",
           "visible": true,
           "width": 358,
-          "height": 993
+          "height": 1011
         },
         {
           "id": "button-spec-usage",
           "visible": true,
           "width": 358,
-          "height": 1218
+          "height": 1737
         },
         {
           "id": "field-spec-usage",
           "visible": true,
           "width": 358,
-          "height": 1868
+          "height": 2479
         },
         {
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 358,
-          "height": 13820
+          "height": 14155
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 28187
+          "height": 28303
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 41683
+          "height": 41493
         },
         {
           "id": "dialog-spec-usage",
           "visible": true,
           "width": 358,
-          "height": 2140
+          "height": 2756
         },
         {
           "id": "table-work-index-spec",
           "visible": true,
           "width": 358,
-          "height": 6702
+          "height": 6708
         },
         {
           "id": "work-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 21539
+          "height": 25800
         },
         {
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 5733
+          "height": 6630
         }
       ],
       "clipped": [],
@@ -2805,7 +2805,7 @@
           "id": "forms-patterns",
           "visible": true,
           "width": 358,
-          "height": 408
+          "height": 412
         },
         {
           "id": "workbench-patterns",
@@ -2817,13 +2817,13 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 10358
+          "height": 10386
         },
         {
           "id": "readiness-notification-patterns",
           "visible": true,
           "width": 358,
-          "height": 511
+          "height": 487
         },
         {
           "id": "selection-list-patterns",
@@ -2835,7 +2835,7 @@
           "id": "modal-validation-patterns",
           "visible": true,
           "width": 358,
-          "height": 450
+          "height": 452
         },
         {
           "id": "datagrid-fields-patterns",
@@ -2847,13 +2847,13 @@
           "id": "big-list-search-patterns",
           "visible": true,
           "width": 358,
-          "height": 510
+          "height": 494
         },
         {
           "id": "dashboard-page-templates",
           "visible": true,
           "width": 358,
-          "height": 1033
+          "height": 1035
         }
       ],
       "clipped": [],
@@ -2920,13 +2920,13 @@
           "id": "proof-matrix",
           "visible": true,
           "width": 358,
-          "height": 906
+          "height": 908
         },
         {
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 13526
+          "height": 13548
         },
         {
           "id": "blocked-actions",
@@ -3002,7 +3002,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 358,
-          "height": 1190
+          "height": 1194
         }
       ],
       "clipped": [],

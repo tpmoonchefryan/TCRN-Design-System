@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
+import { createTokenMap, tcrnDarkThemeTokens, tcrnTokens } from "@tcrn/ui-tokens";
 import alphaMeta from "./alpha.stories.js";
 import {
   i18nText,
@@ -28,7 +29,7 @@ import {
   foundationVisualStandards,
   storybookDocShellVisualOracle
 } from "./build/foundation-visual-standards.js";
-import { contractStories, contractStoryGroups } from "./stories.js";
+import { contractStories, contractStoriesByGroup, contractStoryGroups } from "./stories.js";
 import type { ContractStoryGroup } from "./stories.js";
 
 const expectedContractStoryGroups: readonly ContractStoryGroup[] = [
@@ -256,6 +257,33 @@ test("static contract story surface is retained and synthetic", () => {
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
     expectedRootAdapterTitles
   );
+  // Per-story CSF registration gate: every contract story in the registry must have a
+  // matching CSF export in its group's *.stories.tsx adapter, in registry order. This closes
+  // the gap where only the 7 default-meta titles were gated. internal-dev/overlay-family-lab is
+  // intentionally NOT a contract story group, so iterating the registry groups self-excludes it
+  // (see the overlay-family-lab exclusions below at data-internal-dev-surface / Internal/Overlay).
+  const csfAdapterFileByGroup: Record<ContractStoryGroup, string> = {
+    Welcome: "src/alpha.stories.tsx", // NOTE: alpha.stories.tsx IS the Welcome adapter
+    "Style Guide": "src/style-guide.stories.tsx",
+    Foundations: "src/foundations.stories.tsx",
+    Components: "src/components.stories.tsx",
+    Patterns: "src/patterns.stories.tsx",
+    Proof: "src/proof.stories.tsx",
+    "Change Log": "src/change-log.stories.tsx"
+  };
+  for (const group of expectedContractStoryGroups) {
+    const adapterFile = csfAdapterFileByGroup[group];
+    const adapterSource = readStorybookSource(adapterFile);
+    const registeredIds = Array.from(
+      adapterSource.matchAll(/renderContractStory\("([^"]+)"\)/g),
+      (match) => match[1]
+    );
+    assert.deepEqual(
+      registeredIds,
+      contractStoriesByGroup(group).map((story) => story.id),
+      `CSF adapter ${adapterFile} must register every contract story for ${group} in registry order`
+    );
+  }
   assert.deepEqual(pages.map((page) => groupFileName(page.group)), [
     "index.html",
     "style-guide.html",
@@ -652,7 +680,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /\.is-invalid/);
   for (const [sourceName, source] of [
     ["src/alpha-styles.ts", readStorybookSource("src/alpha-styles.ts")],
-    ["src/storybook.css", readStorybookSource("src/storybook.css")]
+    ["src/storybook.css", readStorybookSource("src/storybook.css")],
+    ["src/story-demo-styles.ts", readStorybookSource("src/story-demo-styles.ts")]
   ] as const) {
     for (const [ruleName, pattern] of [
       ["raw-search-control", /(^|\n)[^{\n]*\.tcrn-search-input__control[^{]*\{/],
@@ -836,6 +865,89 @@ test("static contract story surface is retained and synthetic", () => {
   }
 });
 
+test("style guide color index surfaces every color token and type-scale sizes stay token-derived", () => {
+  const tokenValueOf = (variable: string): string => {
+    const token = tcrnTokens.find((candidate) => candidate.variable === variable);
+    assert.ok(token, `design token ${variable} must exist in @tcrn/ui-tokens`);
+    return token.value;
+  };
+
+  // Completeness: the registry-driven "Color token index" panel must render EVERY color token
+  // (identifier + live value) inside the color-palette story, so no color can be silently
+  // omitted and a rename/removal cannot leave a transparent swatch behind (S039). Iterating the
+  // same registry the page iterates keeps this gate true through future token renames.
+  const colorPaletteHtml = readStoryHtml(readGroupPage("Style Guide"), "color-palette");
+  const colorTokens = tcrnTokens.filter((token) => token.group === "color");
+  assert.ok(colorTokens.length >= 39, `expected at least 39 color tokens, found ${colorTokens.length}`);
+  for (const token of colorTokens) {
+    assert.ok(
+      colorPaletteHtml.includes(token.variable),
+      `color token ${token.variable} must render in the Style Guide color-palette swatches`
+    );
+  }
+
+  // Drift: every type-scale size cell and demo specimen must equal its token-derived value, so a
+  // prose-frozen literal that no longer matches the registry is rejected. The expected strings are
+  // themselves derived from the registry, guarding the template reconstruction against byte drift.
+  const textStylesHtml = readStoryHtml(readGroupPage("Style Guide"), "text-styles");
+  const expectedTypeScaleSizes = [
+    `${tokenValueOf("--tcrn-type-size-page")} / ${tokenValueOf("--tcrn-type-line-page")} / ${tokenValueOf("--tcrn-type-weight-strong")}`,
+    `${tokenValueOf("--tcrn-type-size-section")} / ${tokenValueOf("--tcrn-type-line-section")} / ${tokenValueOf("--tcrn-type-weight-strong")}`,
+    `${tokenValueOf("--tcrn-type-size-ui")} / ${tokenValueOf("--tcrn-type-line-ui")} / ${tokenValueOf("--tcrn-type-weight-regular")}`,
+    `${tokenValueOf("--tcrn-type-size-reading")} / ${tokenValueOf("--tcrn-type-line-reading")} / ${tokenValueOf("--tcrn-type-weight-regular")}`,
+    `${tokenValueOf("--tcrn-type-size-body")} / ${tokenValueOf("--tcrn-type-line-body")} / ${tokenValueOf("--tcrn-type-weight-regular")}`,
+    `${tokenValueOf("--tcrn-type-size-control")} / ${tokenValueOf("--tcrn-type-line-control")} / ${tokenValueOf("--tcrn-type-weight-medium")}`,
+    `${tokenValueOf("--tcrn-type-size-caption")} / ${tokenValueOf("--tcrn-type-line-caption")} / ${tokenValueOf("--tcrn-type-weight-medium")}`,
+    `${tokenValueOf("--tcrn-type-size-meta")} / 1.4 / mono`
+  ];
+  for (const size of expectedTypeScaleSizes) {
+    assert.ok(
+      textStylesHtml.includes(size),
+      `type-scale size "${size}" must render from a token-derived template, not a frozen literal`
+    );
+  }
+  const expectedTypeScaleSpecimens = [
+    `Page title / ${tokenValueOf("--tcrn-type-size-page")}`,
+    `Section title / ${tokenValueOf("--tcrn-type-size-section")}`,
+    `Dense UI body / ${tokenValueOf("--tcrn-type-size-ui")} remains the default for operational scanning.`,
+    `Reading body / ${tokenValueOf("--tcrn-type-size-reading")} is reserved for proof-gated explanatory copy.`,
+    `Body copy / ${tokenValueOf("--tcrn-type-size-body")} keeps dense product surfaces readable without becoming tiny.`,
+    `Caption / ${tokenValueOf("--tcrn-type-size-caption")} is reserved for metadata and helper context.`
+  ];
+  for (const specimen of expectedTypeScaleSpecimens) {
+    assert.ok(
+      textStylesHtml.includes(specimen),
+      `type-scale specimen "${specimen}" must render from a token-derived template`
+    );
+  }
+});
+
+test("canvas color and theme-color first-paint mirror the surface-canvas token", () => {
+  const canvasVar = "--tcrn-color-surface-canvas";
+  const canvasLight = createTokenMap()[canvasVar];
+  const canvasDark = tcrnDarkThemeTokens.find((token) => token.variable === canvasVar)?.value;
+  assert.ok(canvasLight, "light surface-canvas token missing");
+  assert.ok(canvasDark, "dark surface-canvas token missing");
+
+  // Real-Storybook preview background must equal the light canvas token.
+  const preview = readStorybookSource(".storybook/preview.ts");
+  assert.match(preview, new RegExp('"TCRN canvas",\\s*value:\\s*"' + escapeRegExp(canvasLight) + '"'));
+  assert.doesNotMatch(preview, /#f4f7fa/i, "stale preview canvas value #f4f7fa must be gone");
+
+  // Static-docs first-paint theme-color meta must equal the light canvas token.
+  const componentsPage = readGroupPage("Components");
+  assert.ok(
+    componentsPage.includes('<meta name="theme-color" content="' + canvasLight + '" data-storybook-theme-color'),
+    "first-paint theme-color meta must equal the light canvas token"
+  );
+  assert.doesNotMatch(componentsPage, /content="#f6f7fb"/i, "stale first-paint theme-color #f6f7fb must be gone");
+
+  // Manual mirror in client-scripts must equal the light/dark canvas tokens.
+  const clientScripts = readStorybookSource("src/build/client-scripts.ts");
+  assert.match(clientScripts, new RegExp('light:\\s*"' + escapeRegExp(canvasLight) + '"'));
+  assert.match(clientScripts, new RegExp('dark:\\s*"' + escapeRegExp(canvasDark) + '"'));
+});
+
 test("storybook AI consumption contract is machine-readable and no-overclaim", () => {
   const contractSource = readFileSync(join(process.cwd(), "storybook-static", "ai-consumption-contract.json"), "utf8");
   const contract = JSON.parse(contractSource);
@@ -904,11 +1016,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(contract.storybookDocShellVisualOracle?.baselineManifestClassification, "owner_declared_original_storybook_doc_shell_standard");
   assert.match(contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "", /Storybook documentation shell/);
   assert.ok(
-	  contract.storybookDocShellVisualOracle?.metricEvidence?.some((item: { metric: string; sha256?: string | null }) => (
+	  contract.storybookDocShellVisualOracle?.metricEvidence?.some((item: { metric: string; signatureBaseline?: string | null }) => (
 	    item.metric === "desktopSidebarWidthPx"
-	    && item.sha256 === "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953"
+	    && item.signatureBaseline === "docs/verification/internal-alpha/visual-signature-baseline.json"
 	  )),
-	  "Storybook doc shell visual oracle must cite hash-backed sidebar evidence"
+	  "Storybook doc shell visual oracle must cite perceptual-signature-backed sidebar evidence"
 	);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 288);
 	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 280);
@@ -1111,7 +1223,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.storybookDocShellControlContract.implementationBoundary, /data-doc-shell='online-docs'/);
   assert.match(contract.storybookDocShellControlContract.implementationBoundary, /ProductShell selectors must not replace the global page shell/);
   assert.match(contract.storybookDocShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
-  assert.match(contract.storybookDocShellControlContract.visualSkin, /storybook-visual-proof\/baseline-manifest\.json/);
+  assert.match(contract.storybookDocShellControlContract.visualSkin, /internal-alpha\/visual-signature-baseline\.json/);
   assert.match(contract.storybookDocShellControlContract.visualSkin, /doc-shell selector authority/);
   assert.match(contract.storybookDocShellControlContract.themeTransition, /one whole-page transition/);
   assert.match(contract.storybookDocShellControlContract.themeTransition, /must not darken as independent sections/);
@@ -1183,7 +1295,12 @@ test("GitHub README exposes the Storybook AI contract without publication overcl
   const readme = readFileSync(join(process.cwd(), "..", "..", "README.md"), "utf8");
   assert.match(readme, /Storybook Contract Docs/);
   assert.match(readme, /AI Consumption Contract/);
-  assert.match(readme, /apps\/storybook\/storybook-static\/ai-consumption-contract\.json/);
+  // The README must point a fresh clone at the tracked contract source (the JSON/llms.txt
+  // are gitignored build outputs), and name where the build outputs land — without pinning
+  // the unbuilt path as if it were present in the repo (TCRN-DS-STORY-043).
+  assert.match(readme, /apps\/storybook\/src\/build\/ai-consumption-contract\.ts/);
+  assert.match(readme, /gitignored, absent from a fresh clone/);
+  assert.match(readme, /apps\/storybook\/storybook-static\//);
   assert.match(readme, /https:\/\/tcrn-design-system-storybook\.vercel\.app\/ai-consumption-contract\.json/);
   assert.match(readme, /llms\.txt/);
   assert.match(readme, /HTML head discovery/);

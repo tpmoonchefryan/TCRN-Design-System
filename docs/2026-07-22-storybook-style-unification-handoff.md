@@ -1,6 +1,6 @@
 # Storybook 风格统一施工手册（TCRN-DS-INIT-006 交接文档）
 
-> **状态:planned——本文档是拆分产物,不是执行许可。任何 Epic 动工前须 Owner 明确点火。**
+> **状态:shipped——INIT-006 七 Epic 已交付并收官(2026-07-23,PR #12–#18 → main,Vercel 生产)。本文档转为历史施工记录。**
 > 执行模型:Opus 4.8(或同级)。本文档自包含:不依赖任何会话上下文,所有断言可用文中命令复现。
 > 仓库:`TCRN-Design-System`(有 GitHub remote,PR 流)。姊妹仓 `TCRN-AOS` 纯本地无 remote(交付=合入本地 main)。
 

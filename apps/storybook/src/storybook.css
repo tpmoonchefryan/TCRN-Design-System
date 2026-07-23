@@ -198,6 +198,7 @@ body {
   box-shadow: var(--tcrn-elevation-focus);
 }
 
+/* Demo layer generated from story-demo-styles.ts — do not hand-edit; run `pnpm demo-styles:sync` */
 .alpha-frame {
   display: grid;
   gap: var(--tcrn-space-4);
@@ -208,34 +209,19 @@ body {
   padding: var(--tcrn-space-5);
 }
 
-.alpha-story-card,
-.tcrn-surface,
-.tcrn-detail-inspector,
-.tcrn-gate-readiness-panel,
-.tcrn-state-view,
-.tcrn-state-surface,
-.tcrn-disclosure-panel,
-.tcrn-popover,
-.tcrn-dialog,
-.tcrn-confirm-dialog,
-.tcrn-detail-drawer,
-.tcrn-action-drawer {
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
-  padding: var(--tcrn-space-3);
-  max-width: 100%;
-  min-width: 0;
-}
-
+/* The shared base-card group (border/radius/panel-bg + the display:grid variant) moved
+   into the package component CSS (tcrnComponentCss) — TCRN-DS-STORY-037 — because every
+   member except .alpha-story-card is a real @tcrn/ui-react component surface. The demo
+   card keeps its own self-contained block here. */
 .alpha-story-card {
   display: grid;
   gap: var(--tcrn-space-3);
-}
-
-.alpha-story-card > h1,
-.alpha-story-card > p {
-  margin: 0;
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-surface);
+  background: var(--tcrn-color-surface-panel);
+  padding: var(--tcrn-space-4);
+  max-width: 100%;
+  min-width: 0;
 }
 
 .tcrn-story-kicker {
@@ -245,29 +231,9 @@ body {
   letter-spacing: 0;
 }
 
-.tcrn-static-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-static-nav a {
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-control);
-  color: var(--tcrn-color-text-primary);
-  padding: var(--tcrn-space-1h) var(--tcrn-space-2h);
-  text-decoration: none;
-}
-
 .tcrn-static-section {
   display: grid;
   gap: var(--tcrn-space-3h);
-}
-
-.tcrn-static-section > h2,
-article > h2,
-article > p {
-  margin: 0;
 }
 
 h1,
@@ -290,32 +256,8 @@ label {
   vertical-align: -0.125em;
 }
 
-
-
-
-[data-tcrn-theme="dark"] .tcrn-button--primary {
-  color: var(--tcrn-color-surface-canvas);
-  font-weight: 700;
-}
-
-
-
-
-
-
-
-.tcrn-highlight-text {
-  display: inline;
-}
-
-.tcrn-highlight-mark {
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-brand-primary-bg);
-  color: var(--tcrn-color-text-primary);
-  font-weight: var(--tcrn-type-weight-medium);
-  padding: 0 var(--tcrn-space-0h);
-}
-
+/* .tcrn-highlight-text / .tcrn-highlight-mark (Typography-emitted) moved into the
+   package component CSS — TCRN-DS-STORY-037. */
 
 .alpha-story-stack {
   display: grid;
@@ -548,8 +490,6 @@ label {
 
 .tcrn-type-scale-demo__page,
 .tcrn-type-scale-demo__section,
-.tcrn-type-scale-demo__dense,
-.tcrn-type-scale-demo__reading,
 .tcrn-type-scale-demo__body,
 .tcrn-type-scale-demo__caption,
 .tcrn-type-scale-demo__code {
@@ -574,16 +514,6 @@ label {
   font-size: var(--tcrn-type-size-body);
   line-height: var(--tcrn-type-line-body);
   font-weight: var(--tcrn-type-weight-regular);
-}
-
-.tcrn-type-scale-demo__dense {
-  color: var(--tcrn-color-text-secondary);
-  font: var(--tcrn-text-body-dense);
-}
-
-.tcrn-type-scale-demo__reading {
-  color: var(--tcrn-color-text-primary);
-  font: var(--tcrn-text-body-reading);
 }
 
 .tcrn-type-scale-demo__caption {
@@ -873,97 +803,9 @@ label {
 
 
 
-.tcrn-state-view {
-  display: grid;
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-state-view h3,
-.tcrn-state-view p {
-  margin: 0;
-}
-
-.tcrn-skeleton,
-.tcrn-skeleton-group {
-  display: block;
-  max-width: 100%;
-}
-
-.tcrn-skeleton {
-  position: relative;
-  overflow: hidden;
-  min-height: 18px;
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-muted);
-}
-
-.tcrn-skeleton::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.62), transparent);
-  animation: tcrn-skeleton-shimmer var(--tcrn-motion-skeleton-loop) infinite;
-}
-
-.tcrn-skeleton--text {
-  width: 100%;
-  height: 1em;
-}
-
-.tcrn-skeleton--rectangular {
-  width: 100%;
-  height: 56px;
-}
-
-.tcrn-skeleton--circular {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--tcrn-radius-pill);
-}
-
-.tcrn-skeleton-group {
-  display: grid;
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-skeleton-group .tcrn-skeleton:last-child {
-  width: 72%;
-}
-
-@keyframes tcrn-skeleton-shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.tcrn-state-surface {
-  display: grid;
-  place-items: center;
-  gap: var(--tcrn-space-2);
-  text-align: center;
-  min-height: 144px;
-  color: var(--tcrn-color-text-secondary);
-}
-
-.tcrn-state-surface__icon {
-  color: var(--tcrn-color-text-muted);
-}
-
-.tcrn-state-surface__title,
-.tcrn-state-surface__description {
-  margin: 0;
-}
-
-.tcrn-state-surface--warning .tcrn-state-surface__title,
-.tcrn-state-surface--warning .tcrn-state-surface__icon {
-  color: var(--tcrn-color-state-warning);
-}
-
-.tcrn-state-surface--danger .tcrn-state-surface__title,
-.tcrn-state-surface--danger .tcrn-state-surface__icon {
-  color: var(--tcrn-color-state-blocked);
-}
+/* Feedback families .tcrn-state-view / .tcrn-skeleton* (+ @keyframes
+   tcrn-skeleton-shimmer) / .tcrn-state-surface* moved into the package component CSS —
+   TCRN-DS-STORY-037. (.tcrn-state-surface__action stays out of scope; it is S036.) */
 
 .tcrn-display-primitive-grid {
   display: grid;
@@ -994,189 +836,45 @@ label {
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-surface-muted);
   padding: 0 var(--tcrn-space-2h);
-  font-family: var(--tcrn-font-family-mono);
+  font-family: var(--tcrn-type-family-mono);
   font-size: var(--tcrn-type-size-meta);
 }
 
-.tcrn-tooltip {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-}
-
-.tcrn-tooltip__content {
-  position: absolute;
-  z-index: var(--tcrn-z-popover);
-  pointer-events: none;
-  width: max-content;
-  max-width: min(260px, calc(100vw - 32px));
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-text-primary);
-  color: var(--tcrn-color-surface-panel);
-  padding: var(--tcrn-space-1h) var(--tcrn-space-2);
-  font-size: var(--tcrn-type-size-meta);
-  line-height: 1.35;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity var(--tcrn-motion-standard), transform var(--tcrn-motion-standard);
-  box-shadow: var(--tcrn-elevation-floating);
-}
-
-.tcrn-tooltip:hover .tcrn-tooltip__content,
-.tcrn-tooltip:focus-within .tcrn-tooltip__content,
+/* Tooltip base, content, the :hover/:focus-within reveal and the four data-placement
+   position rules moved into the package component CSS — TCRN-DS-STORY-037. The docs demo
+   layer keeps ONLY the storybook static-preview hook
+   ([data-storybook-static-tooltip="true"]), which the Tooltip component never emits, so
+   it is presentation chrome. The package rules supply the base placement; these force the
+   revealed state for the static preview. */
 .tcrn-tooltip[data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   opacity: 1;
   transform: translateY(0);
 }
 
-.tcrn-tooltip[data-placement="top"] .tcrn-tooltip__content {
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translate(-50%, 4px);
-}
-
-.tcrn-tooltip[data-placement="top"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="top"]:focus-within .tcrn-tooltip__content,
 .tcrn-tooltip[data-placement="top"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   transform: translate(-50%, 0);
 }
 
-.tcrn-tooltip[data-placement="bottom"] .tcrn-tooltip__content {
-  top: calc(100% + 6px);
-  left: 50%;
-  transform: translate(-50%, -4px);
-}
-
-.tcrn-tooltip[data-placement="bottom"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="bottom"]:focus-within .tcrn-tooltip__content,
 .tcrn-tooltip[data-placement="bottom"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   transform: translate(-50%, 0);
 }
 
-.tcrn-tooltip[data-placement="right"] .tcrn-tooltip__content {
-  top: 50%;
-  left: calc(100% + 8px);
-  transform: translate(-4px, -50%);
-}
-
-.tcrn-tooltip[data-placement="right"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="right"]:focus-within .tcrn-tooltip__content,
 .tcrn-tooltip[data-placement="right"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   transform: translate(0, -50%);
 }
 
-.tcrn-tooltip[data-placement="left"] .tcrn-tooltip__content {
-  top: 50%;
-  right: calc(100% + 8px);
-  transform: translate(4px, -50%);
-}
-
-.tcrn-tooltip[data-placement="left"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="left"]:focus-within .tcrn-tooltip__content,
 .tcrn-tooltip[data-placement="left"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   transform: translate(0, -50%);
 }
 
-.tcrn-collapsible-region {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0.4;
-  transition: grid-template-rows var(--tcrn-motion-emphasis), opacity var(--tcrn-motion-standard);
-}
-
-.tcrn-collapsible-region[data-expanded="true"] {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-.tcrn-collapsible-region[aria-hidden="true"] {
-  visibility: hidden;
-}
-
-.tcrn-collapsible-region__inner {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.tcrn-disclosure-panel {
-  display: grid;
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-disclosure-panel__title {
-  margin: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-skeleton::after {
-    animation: none;
-    opacity: 0;
-  }
-
-  .tcrn-tooltip__content,
-  .tcrn-collapsible-region,
-  .tcrn-field {
-    transition: none;
-  }
-}
-
-@media (forced-colors: active) {
-  .tcrn-field:focus-within,
-  .tcrn-field--error {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
-  }
-}
+/* Layout .tcrn-collapsible-region* / .tcrn-disclosure-panel* and the component
+   reduced-motion + forced-colors handling moved into the package component CSS —
+   TCRN-DS-STORY-037. */
 
 
-
-
-
-.tcrn-field {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  margin-bottom: 10px;
-  border-radius: var(--tcrn-radius-control);
-  background-color: transparent;
-  outline: 1px solid transparent;
-  outline-offset: 2px;
-  transition:
-    background-color 150ms ease-out,
-    outline-color 150ms ease-out;
-}
-
-.tcrn-field:focus-within {
-  background-color: color-mix(in srgb, var(--tcrn-color-surface-muted) 56%, transparent);
-  outline-color: color-mix(in srgb, var(--tcrn-color-border-strong) 66%, transparent);
-}
-
-.tcrn-field--error {
-  background-color: color-mix(in srgb, var(--tcrn-color-state-blocked-bg) 62%, transparent);
-  outline-color: var(--tcrn-color-state-blocked);
-}
-
-.tcrn-field__label {
-  font-weight: 600;
-}
-
-.tcrn-field__hint {
-  color: var(--tcrn-color-text-secondary);
-}
-
-.tcrn-field__error {
-  color: var(--tcrn-color-state-blocked);
-}
-
-.tcrn-input,
-.tcrn-select {
-  min-height: 34px;
-  border: 1px solid var(--tcrn-color-border-strong);
-  border-radius: var(--tcrn-radius-control);
-  max-width: 100%;
-  padding: 0 var(--tcrn-space-2h);
-}
-
+/* Form families .tcrn-field* and .tcrn-input / .tcrn-select moved into the package
+   component CSS — TCRN-DS-STORY-037. .tcrn-input--short is a docs-only demo width (not
+   component-emitted) and stays here; it leans on the package .tcrn-input base. */
 .tcrn-input--short {
   width: min(18ch, 100%);
 }
@@ -1188,7 +886,7 @@ label {
   gap: var(--tcrn-space-3);
   border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-canvas);
+  background: var(--tcrn-color-surface-panel);
   padding: var(--tcrn-space-2h) var(--tcrn-space-3);
   min-width: 0;
 }
@@ -1200,6 +898,11 @@ label {
 
 .tcrn-storybook-component-example .tcrn-top-bar__module {
   color: var(--tcrn-color-text-secondary);
+}
+
+.tcrn-storybook-component-example .tcrn-top-bar__brand,
+.tcrn-storybook-component-example .tcrn-top-bar__module {
+  min-width: 0;
 }
 
 .tcrn-entry-shell-strip {
@@ -1253,75 +956,18 @@ label {
   color: var(--tcrn-color-text-secondary);
 }
 
-.tcrn-breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
-}
-
-.tcrn-breadcrumb__item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-}
-
-.tcrn-breadcrumb__separator {
-  width: 14px;
-  height: 14px;
-  color: var(--tcrn-color-text-muted);
-}
-
-.tcrn-breadcrumb [aria-current="page"] {
-  color: var(--tcrn-color-text-primary);
-  font-weight: 700;
-}
-
-.tcrn-product-launcher,
-.tcrn-product-switcher,
-.tcrn-module-tabs,
-.tcrn-section-tabs,
-.tcrn-segmented-nav,
+/* Navigation families .tcrn-breadcrumb* and the tab layouts (.tcrn-product-launcher,
+   .tcrn-product-switcher, .tcrn-module-tabs, .tcrn-section-tabs, .tcrn-segmented-nav,
+   including their button + selected rules) moved into the package component CSS —
+   TCRN-DS-STORY-037. .tcrn-filter-bar is docs-only demo chrome and stays; it shares the
+   flex layout the tab families use. It is package-owned only via the scoped
+   ".tcrn-table-toolbar .tcrn-filter-bar" rule, so a top-level .tcrn-filter-bar here does
+   not duplicate a package selector. */
 .tcrn-filter-bar {
   display: flex;
   flex-wrap: wrap;
   gap: var(--tcrn-space-1h);
   min-width: 0;
-}
-
-.tcrn-product-launcher button,
-.tcrn-product-switcher button,
-.tcrn-module-tabs button,
-.tcrn-section-tabs button,
-.tcrn-segmented-nav button {
-  min-height: 34px;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 76%, transparent);
-  border-radius: var(--tcrn-radius-control);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 92%, transparent);
-  color: var(--tcrn-color-text-secondary);
-  padding: 0 var(--tcrn-space-2h);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tcrn-color-surface-panel) 72%, transparent);
-}
-
-.tcrn-product-launcher button[data-selected="true"],
-.tcrn-product-switcher button[data-selected="true"],
-.tcrn-module-tabs button[data-selected="true"],
-.tcrn-section-tabs button[data-selected="true"],
-.tcrn-segmented-nav button[data-selected="true"],
-.tcrn-product-launcher button[aria-current="page"],
-.tcrn-product-switcher button[aria-current="page"],
-.tcrn-module-tabs button[aria-current="page"],
-.tcrn-section-tabs button[aria-current="page"],
-.tcrn-segmented-nav button[aria-current="page"] {
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 30%, var(--tcrn-color-border-subtle));
-  background: var(--tcrn-color-surface-panel);
-  color: var(--tcrn-color-text-primary);
-  box-shadow: var(--tcrn-elevation-floating);
 }
 
 .tcrn-nav-component-preview {
@@ -1673,24 +1319,53 @@ label {
   align-items: center;
   gap: var(--tcrn-space-3);
   min-width: 0;
-  border: 1px solid transparent;
-  border-radius: var(--tcrn-radius-control);
+  border: 0;
+  border-radius: 0;
   background: transparent;
   color: var(--tcrn-color-text-primary);
   padding: var(--tcrn-space-1) 0;
   text-decoration: none;
+  /* Only opacity and transform animate; the layout properties (grid-template-columns,
+     gap, left, top, width) snap. Transitioning them reflowed the brand every frame
+     during collapse. The wordmark's reveal/hide is carried by opacity + transform on
+     its copy element, which is GPU-composited and does not thrash layout. */
+  transition:
+    opacity var(--tcrn-motion-emphasis),
+    transform var(--tcrn-motion-emphasis);
 }
 
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
   display: grid;
   gap: var(--tcrn-space-0h);
+  max-width: 220px;
   min-width: 0;
+  opacity: 1;
+  overflow: hidden;
+  transform: translateX(0);
+  visibility: visible;
+  transition:
+    opacity var(--tcrn-motion-emphasis),
+    transform var(--tcrn-motion-emphasis),
+    visibility 0s linear 0s;
+}
+
+.tcrn-doc-brand .tcrn-shell-brand-lockup__copy,
+.tcrn-doc-brand .tcrn-shell-brand-lockup__copy * {
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: normal;
 }
 
 .tcrn-doc-brand .tcrn-shell-brand-lockup__caption {
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--tcrn-color-brand-primary);
   font-size: var(--tcrn-type-size-caption);
   font-weight: 700;
+  line-height: 1.25;
 }
 
 .tcrn-doc-search-results {
@@ -2078,6 +1753,10 @@ label {
 }
 
 .tcrn-knowledge-shell-layout {
+  --tcrn-knowledge-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
+  --tcrn-knowledge-shell-content-gutter: 18px;
+  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-brand-secondary-bg);
+  --tcrn-knowledge-shell-top-surface: var(--tcrn-color-surface-panel);
   display: grid;
   grid-template-areas:
     "topbar topbar"
@@ -2096,22 +1775,22 @@ label {
 .tcrn-knowledge-shell__topbar {
   grid-area: topbar;
   display: grid;
-  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr) minmax(190px, 260px);
+  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr);
   align-items: center;
   gap: 0;
   min-width: 0;
   min-height: 76px;
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-knowledge-shell-top-surface);
   padding: 0;
 }
 
 .tcrn-knowledge-shell__brand {
-  align-self: stretch;
-  border-right: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
+  min-width: 0;
+  border-right: 0;
   border-radius: 0;
-  background: var(--tcrn-color-surface-panel);
-  box-shadow: var(--tcrn-elevation-floating);
-  padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
 }
 
 .tcrn-knowledge-shell__topbar-copy,
@@ -2132,20 +1811,25 @@ label {
 }
 
 .tcrn-knowledge-shell__actions {
+  grid-column: 2;
+  grid-row: 1;
+  z-index: 1;
   align-self: stretch;
+  justify-self: end;
+  width: min(260px, 44%);
   justify-items: stretch;
   align-content: center;
-  border-bottom: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 82%, transparent);
-  background: var(--tcrn-color-surface-panel);
+  background: transparent;
   padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
 }
 
 .tcrn-knowledge-shell__topbar-copy {
+  grid-column: 2;
+  grid-row: 1;
   align-self: stretch;
   align-content: center;
-  border-bottom: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 82%, transparent);
-  background: var(--tcrn-color-surface-panel);
-  padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
+  background: transparent;
+  padding: var(--tcrn-space-2h) clamp(210px, 22vw, 300px) var(--tcrn-space-2h) var(--tcrn-knowledge-shell-content-gutter);
 }
 
 .tcrn-knowledge-shell__actions .tcrn-search-input {
@@ -2158,15 +1842,16 @@ label {
   min-width: 0;
   border: 0;
   border-radius: 0;
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-knowledge-shell-left-surface);
   padding: var(--tcrn-space-3);
 }
 
 .tcrn-knowledge-shell__sidebar {
   grid-area: sidebar;
   align-content: start;
-  border-right: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
-  box-shadow: var(--tcrn-elevation-floating);
+  border-right: 0;
+  background: var(--tcrn-knowledge-shell-left-surface);
+  box-shadow: none;
 }
 
 .tcrn-bookmark-nav__group {
@@ -2219,7 +1904,7 @@ label {
 .tcrn-knowledge-shell__content {
   grid-area: content;
   align-content: start;
-  padding: var(--tcrn-space-4h);
+  padding: var(--tcrn-space-4h) var(--tcrn-space-4h) var(--tcrn-space-4h) var(--tcrn-knowledge-shell-content-gutter);
 }
 
 .tcrn-knowledge-preview {
@@ -2307,9 +1992,9 @@ label {
   display: grid;
   gap: var(--tcrn-space-2h);
   min-width: 0;
-  border: 1px solid rgba(73, 91, 219, 0.16);
+  border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--tcrn-color-surface-muted);
   padding: var(--tcrn-space-3);
 }
 
@@ -2335,7 +2020,7 @@ label {
 .tcrn-dialog-spec-fixture {
   display: grid;
   gap: var(--tcrn-space-3);
-  border: 1px solid rgba(73, 91, 219, 0.18);
+  border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
   background: var(--tcrn-color-surface-muted);
   padding: var(--tcrn-space-3);
@@ -2366,7 +2051,7 @@ label {
 }
 
 .tcrn-dialog-spec-fixture__dialog {
-  border-color: rgba(73, 91, 219, 0.26);
+  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 26%, transparent);
   box-shadow: var(--tcrn-elevation-floating);
 }
 
@@ -2401,21 +2086,19 @@ label {
   display: none;
 }
 
-.tcrn-dialog,
-.tcrn-popover,
+/* Overlay .tcrn-dialog / .tcrn-popover grid + the .tcrn-popover specifics moved into the
+   package component CSS — TCRN-DS-STORY-037. The demo .alpha-overlay-demo__dialog keeps
+   its own grid layout here. */
 .alpha-overlay-demo__dialog {
   display: grid;
   gap: var(--tcrn-space-2h);
 }
 
-.tcrn-popover {
-  z-index: var(--tcrn-z-popover);
-  max-width: 420px;
-  border-color: rgba(38, 156, 174, 0.24);
-  box-shadow: var(--tcrn-elevation-floating);
-}
-
 @media (max-width: 760px) {
+  .alpha-frame {
+    padding: var(--tcrn-space-4);
+  }
+
   .tcrn-shell-demo__topbar,
   .tcrn-shell-hub-menu,
   .tcrn-shell-mega-menu,
@@ -2468,6 +2151,26 @@ label {
     border-bottom: 1px solid var(--tcrn-color-border-subtle);
   }
 
+  .tcrn-knowledge-shell__topbar-copy,
+  .tcrn-knowledge-shell__actions {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .tcrn-knowledge-shell__brand {
+    padding: 0;
+  }
+
+  .tcrn-knowledge-shell__topbar-copy,
+  .tcrn-knowledge-shell__actions {
+    width: auto;
+    padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
+  }
+
+  .tcrn-knowledge-shell__content {
+    padding: var(--tcrn-space-4);
+  }
+
   .tcrn-shell-layer {
     position: static;
     padding: var(--tcrn-space-3);
@@ -2492,10 +2195,6 @@ label {
 }
 
 @media (max-width: 520px) {
-  .alpha-frame {
-    padding: var(--tcrn-space-4);
-  }
-
   .tcrn-storybook-component-example .tcrn-top-bar {
     align-items: flex-start;
     flex-direction: column;
@@ -2528,4 +2227,48 @@ label {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+/* End demo layer generated from story-demo-styles.ts */
+
+/* Track-A-only doc scaffolding — real Storybook preview only; not part of the
+   shared demo layer, kept outside the generated markers so sync leaves it alone. */
+.alpha-story-card > h1,
+.alpha-story-card > p {
+  margin: 0;
+}
+
+.tcrn-static-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tcrn-space-2);
+}
+
+.tcrn-static-nav a {
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-control);
+  color: var(--tcrn-color-text-primary);
+  padding: var(--tcrn-space-1h) var(--tcrn-space-2h);
+  text-decoration: none;
+}
+
+.tcrn-static-section > h2,
+article > h2,
+article > p {
+  margin: 0;
+}
+
+.tcrn-type-scale-demo__dense {
+  color: var(--tcrn-color-text-secondary);
+  font: var(--tcrn-text-body-dense);
+}
+
+.tcrn-type-scale-demo__reading {
+  color: var(--tcrn-color-text-primary);
+  font: var(--tcrn-text-body-reading);
+}
+
+.tcrn-type-scale-demo__dense,
+.tcrn-type-scale-demo__reading {
+  margin: 0;
+  min-width: 0;
 }

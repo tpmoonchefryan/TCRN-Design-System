@@ -1,0 +1,4246 @@
+{
+  "ok": true,
+  "route": "route_tcrn_design_system_component_api_machine_manifest",
+  "generatedFrom": "packages/ui-react/src/index.tsx",
+  "typescriptVersion": "5.8.3",
+  "componentCount": 100,
+  "coverage": {
+    "registryComponentCount": 100,
+    "publicComponentNames": [
+      "ActionDrawer",
+      "Badge",
+      "Breadcrumb",
+      "Button",
+      "Checkbox",
+      "ClipboardCopyButton",
+      "CollapsibleRegion",
+      "ConfirmActionDialog",
+      "DetailDrawer",
+      "DetailInspector",
+      "Dialog",
+      "DisclosurePanel",
+      "Divider",
+      "EmptyState",
+      "EnvironmentBanner",
+      "ErrorState",
+      "EvidenceAttachmentList",
+      "EvidenceStrip",
+      "Field",
+      "FilterBar",
+      "GatePipeline",
+      "GatePipelineCompact",
+      "GateReadinessPanel",
+      "Heading",
+      "Highlight",
+      "Icon",
+      "IconButton",
+      "InlineAlert",
+      "Input",
+      "KeyValueList",
+      "KnowledgeAttachmentList",
+      "KnowledgeDocumentCanvas",
+      "KnowledgeInlineCommentList",
+      "KnowledgeLabelSet",
+      "KnowledgeMetadataRail",
+      "KnowledgePageTree",
+      "KnowledgeSearchResults",
+      "KnowledgeTemplateGallery",
+      "KnowledgeTocRail",
+      "KnowledgeVersionHistory",
+      "LinkButton",
+      "LiveRegion",
+      "MachineToken",
+      "MachineTokenCell",
+      "MetadataRail",
+      "ModuleTabs",
+      "NavGroup",
+      "NavItem",
+      "Pagination",
+      "Popover",
+      "ProductLauncher",
+      "ProductLockup",
+      "ProductLogo",
+      "ProductShell",
+      "ProductShellSearch",
+      "ProductSwitcher",
+      "ReadbackPanel",
+      "RelationshipChip",
+      "SavedViewToolbar",
+      "SearchInput",
+      "SectionTabs",
+      "SegmentedNav",
+      "Select",
+      "ShellBrandLockup",
+      "ShellLocaleMenu",
+      "ShellThemeToggle",
+      "SideNav",
+      "SideNavCollapseButton",
+      "Skeleton",
+      "SkipLink",
+      "Stamp",
+      "StampRule",
+      "StateSurface",
+      "StateView",
+      "StatusBadge",
+      "Surface",
+      "TableShell",
+      "TableToolbar",
+      "TcrnBrandMark",
+      "Text",
+      "Textarea",
+      "Tooltip",
+      "TopBar",
+      "WorkActivityFeed",
+      "WorkBacklogGroup",
+      "WorkBoard",
+      "WorkBoardView",
+      "WorkDetailLayout",
+      "WorkFieldPanel",
+      "WorkHierarchy",
+      "WorkIndex",
+      "WorkInlineCreateStatic",
+      "WorkItemInspector",
+      "WorkItemRow",
+      "WorkList",
+      "WorkManagementSubnav",
+      "WorkPageHeader",
+      "WorkQuickFilters",
+      "WorkSplitView",
+      "WorkViewTabs"
+    ],
+    "manifestComponentNames": [
+      "ActionDrawer",
+      "Badge",
+      "Breadcrumb",
+      "Button",
+      "Checkbox",
+      "ClipboardCopyButton",
+      "CollapsibleRegion",
+      "ConfirmActionDialog",
+      "DetailDrawer",
+      "DetailInspector",
+      "Dialog",
+      "DisclosurePanel",
+      "Divider",
+      "EmptyState",
+      "EnvironmentBanner",
+      "ErrorState",
+      "EvidenceAttachmentList",
+      "EvidenceStrip",
+      "Field",
+      "FilterBar",
+      "GatePipeline",
+      "GatePipelineCompact",
+      "GateReadinessPanel",
+      "Heading",
+      "Highlight",
+      "Icon",
+      "IconButton",
+      "InlineAlert",
+      "Input",
+      "KeyValueList",
+      "KnowledgeAttachmentList",
+      "KnowledgeDocumentCanvas",
+      "KnowledgeInlineCommentList",
+      "KnowledgeLabelSet",
+      "KnowledgeMetadataRail",
+      "KnowledgePageTree",
+      "KnowledgeSearchResults",
+      "KnowledgeTemplateGallery",
+      "KnowledgeTocRail",
+      "KnowledgeVersionHistory",
+      "LinkButton",
+      "LiveRegion",
+      "MachineToken",
+      "MachineTokenCell",
+      "MetadataRail",
+      "ModuleTabs",
+      "NavGroup",
+      "NavItem",
+      "Pagination",
+      "Popover",
+      "ProductLauncher",
+      "ProductLockup",
+      "ProductLogo",
+      "ProductShell",
+      "ProductShellSearch",
+      "ProductSwitcher",
+      "ReadbackPanel",
+      "RelationshipChip",
+      "SavedViewToolbar",
+      "SearchInput",
+      "SectionTabs",
+      "SegmentedNav",
+      "Select",
+      "ShellBrandLockup",
+      "ShellLocaleMenu",
+      "ShellThemeToggle",
+      "SideNav",
+      "SideNavCollapseButton",
+      "Skeleton",
+      "SkipLink",
+      "Stamp",
+      "StampRule",
+      "StateSurface",
+      "StateView",
+      "StatusBadge",
+      "Surface",
+      "TableShell",
+      "TableToolbar",
+      "TcrnBrandMark",
+      "Text",
+      "Textarea",
+      "Tooltip",
+      "TopBar",
+      "WorkActivityFeed",
+      "WorkBacklogGroup",
+      "WorkBoard",
+      "WorkBoardView",
+      "WorkDetailLayout",
+      "WorkFieldPanel",
+      "WorkHierarchy",
+      "WorkIndex",
+      "WorkInlineCreateStatic",
+      "WorkItemInspector",
+      "WorkItemRow",
+      "WorkList",
+      "WorkManagementSubnav",
+      "WorkPageHeader",
+      "WorkQuickFilters",
+      "WorkSplitView",
+      "WorkViewTabs"
+    ],
+    "missingFromManifest": [],
+    "extraNotInRegistry": [],
+    "componentsWithExtractionErrors": []
+  },
+  "noOverclaim": {
+    "packagePublished": false,
+    "productAdoptionClaimed": false,
+    "describesSourceApiOnly": true
+  },
+  "components": {
+    "ActionDrawer": {
+      "name": "ActionDrawer",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "DrawerProps"
+    },
+    "Badge": {
+      "name": "Badge",
+      "kind": "function",
+      "props": [
+        {
+          "name": "tone",
+          "type": "Tone",
+          "required": false,
+          "default": "\"neutral\"",
+          "enumValues": [
+            "danger",
+            "neutral",
+            "positive",
+            "warning"
+          ]
+        }
+      ],
+      "variants": {
+        "tone": [
+          "danger",
+          "neutral",
+          "positive",
+          "warning"
+        ]
+      },
+      "slots": [],
+      "propsType": "BadgeProps"
+    },
+    "Breadcrumb": {
+      "name": "Breadcrumb",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "NavItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ProductLauncherProps"
+    },
+    "Button": {
+      "name": "Button",
+      "kind": "forwardRef",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "Size",
+          "required": false,
+          "default": "\"md\"",
+          "enumValues": [
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\" | \"quiet\" | \"danger\"",
+          "required": false,
+          "default": "\"secondary\"",
+          "enumValues": [
+            "primary",
+            "secondary",
+            "quiet",
+            "danger"
+          ]
+        }
+      ],
+      "variants": {
+        "size": [
+          "sm",
+          "md"
+        ],
+        "variant": [
+          "primary",
+          "secondary",
+          "quiet",
+          "danger"
+        ]
+      },
+      "slots": []
+    },
+    "Checkbox": {
+      "name": "Checkbox",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "CheckboxProps"
+    },
+    "ClipboardCopyButton": {
+      "name": "ClipboardCopyButton",
+      "kind": "forwardRef",
+      "props": [
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "never",
+          "required": false
+        },
+        {
+          "name": "copiedLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Copied\""
+        },
+        {
+          "name": "copyingLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Copying\""
+        },
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "failedLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Copy failed\""
+        },
+        {
+          "name": "idleLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Copy\""
+        },
+        {
+          "name": "onClick",
+          "type": "never",
+          "required": false
+        },
+        {
+          "name": "onCopyStateChange",
+          "type": "(state: ClipboardCopyState) => void",
+          "required": false
+        },
+        {
+          "name": "resetDelayMs",
+          "type": "number",
+          "required": false,
+          "default": "DEFAULT_RESET_DELAY_MS"
+        },
+        {
+          "name": "size",
+          "type": "Size",
+          "required": false,
+          "enumValues": [
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "type",
+          "type": "never",
+          "required": false
+        },
+        {
+          "name": "unsupportedLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Copy unavailable\""
+        },
+        {
+          "name": "value",
+          "type": "never",
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\" | \"quiet\" | \"danger\"",
+          "required": false,
+          "enumValues": [
+            "primary",
+            "secondary",
+            "quiet",
+            "danger"
+          ]
+        }
+      ],
+      "variants": {
+        "size": [
+          "sm",
+          "md"
+        ],
+        "variant": [
+          "primary",
+          "secondary",
+          "quiet",
+          "danger"
+        ]
+      },
+      "slots": []
+    },
+    "CollapsibleRegion": {
+      "name": "CollapsibleRegion",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "CollapsibleRegionProps"
+    },
+    "ConfirmActionDialog": {
+      "name": "ConfirmActionDialog",
+      "kind": "function",
+      "props": [
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "confirmLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ConfirmActionDialogProps"
+    },
+    "DetailDrawer": {
+      "name": "DetailDrawer",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "DrawerProps"
+    },
+    "DetailInspector": {
+      "name": "DetailInspector",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "KeyValueItem[]",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "DetailInspectorProps"
+    },
+    "Dialog": {
+      "name": "Dialog",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "initialFocusRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "DialogProps"
+    },
+    "DisclosurePanel": {
+      "name": "DisclosurePanel",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4",
+          "required": false,
+          "default": "3",
+          "enumValues": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        }
+      ],
+      "variants": {
+        "headingLevel": [
+          2,
+          3,
+          4
+        ]
+      },
+      "slots": [
+        "children",
+        "title"
+      ],
+      "propsType": "DisclosurePanelProps"
+    },
+    "Divider": {
+      "name": "Divider",
+      "kind": "function",
+      "props": [],
+      "variants": {},
+      "slots": [],
+      "propsType": "HTMLAttributes<HTMLHRElement>"
+    },
+    "EmptyState": {
+      "name": "EmptyState",
+      "kind": "function",
+      "props": [
+        {
+          "name": "action",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4",
+          "required": false,
+          "enumValues": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "tone",
+          "type": "\"neutral\" | \"warning\"",
+          "required": false,
+          "default": "\"neutral\"",
+          "enumValues": [
+            "neutral",
+            "warning"
+          ]
+        }
+      ],
+      "variants": {
+        "headingLevel": [
+          2,
+          3,
+          4
+        ],
+        "tone": [
+          "neutral",
+          "warning"
+        ]
+      },
+      "slots": [
+        "action",
+        "description",
+        "icon",
+        "title"
+      ],
+      "propsType": "EmptyStateProps"
+    },
+    "EnvironmentBanner": {
+      "name": "EnvironmentBanner",
+      "kind": "function",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "state",
+          "type": "CopyStateInput",
+          "required": false,
+          "default": "{ state: \"local_only\" }"
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "EnvironmentBannerProps"
+    },
+    "ErrorState": {
+      "name": "ErrorState",
+      "kind": "function",
+      "props": [
+        {
+          "name": "action",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4",
+          "required": false,
+          "enumValues": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "tone",
+          "type": "\"danger\" | \"warning\"",
+          "required": false,
+          "default": "\"danger\"",
+          "enumValues": [
+            "danger",
+            "warning"
+          ]
+        }
+      ],
+      "variants": {
+        "headingLevel": [
+          2,
+          3,
+          4
+        ],
+        "tone": [
+          "danger",
+          "warning"
+        ]
+      },
+      "slots": [
+        "action",
+        "description",
+        "icon",
+        "title"
+      ],
+      "propsType": "ErrorStateProps"
+    },
+    "EvidenceAttachmentList": {
+      "name": "EvidenceAttachmentList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"comfortable\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "EvidenceAttachment[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Evidence attachments\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "EvidenceAttachmentListProps"
+    },
+    "EvidenceStrip": {
+      "name": "EvidenceStrip",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "string[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "{ items: string[] }"
+    },
+    "Field": {
+      "name": "Field",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "hint",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "FieldProps"
+    },
+    "FilterBar": {
+      "name": "FilterBar",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "FilterBarProps"
+    },
+    "GatePipeline": {
+      "name": "GatePipeline",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"comfortable\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "gates",
+          "type": "GatePipelineGate[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Gate pipeline\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "GatePipelineProps"
+    },
+    "GatePipelineCompact": {
+      "name": "GatePipelineCompact",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "gates",
+          "type": "GatePipelineGate[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "GatePipelineProps"
+    },
+    "GateReadinessPanel": {
+      "name": "GateReadinessPanel",
+      "kind": "function",
+      "props": [
+        {
+          "name": "state",
+          "type": "CopyStatePresentation",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "{ state: CopyStatePresentation }"
+    },
+    "Heading": {
+      "name": "Heading",
+      "kind": "function",
+      "props": [
+        {
+          "name": "level",
+          "type": "1 | 2 | 3 | 4",
+          "required": false,
+          "default": "2",
+          "enumValues": [
+            2,
+            3,
+            4,
+            1
+          ]
+        },
+        {
+          "name": "visualLevel",
+          "type": "1 | 2 | 3 | 4",
+          "required": false,
+          "default": "level",
+          "enumValues": [
+            2,
+            3,
+            4,
+            1
+          ]
+        }
+      ],
+      "variants": {
+        "level": [
+          2,
+          3,
+          4,
+          1
+        ],
+        "visualLevel": [
+          2,
+          3,
+          4,
+          1
+        ]
+      },
+      "slots": [],
+      "propsType": "HeadingProps"
+    },
+    "Highlight": {
+      "name": "Highlight",
+      "kind": "function",
+      "props": [
+        {
+          "name": "caseSensitive",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "markClassName",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "HighlightProps"
+    },
+    "Icon": {
+      "name": "Icon",
+      "kind": "function",
+      "props": [
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "required": false,
+          "default": "true"
+        },
+        {
+          "name": "name",
+          "type": "IconName",
+          "required": true,
+          "enumValues": [
+            "x",
+            "alert-triangle",
+            "arrow-left",
+            "arrow-right",
+            "book-open",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "database",
+            "external-link",
+            "globe-2",
+            "history",
+            "home",
+            "info",
+            "layers",
+            "layout-grid",
+            "loader-circle",
+            "menu",
+            "moon",
+            "package",
+            "palette",
+            "panel-left-close",
+            "panel-left-open",
+            "search",
+            "settings",
+            "shield-check",
+            "sun"
+          ]
+        },
+        {
+          "name": "size",
+          "type": "IconSize",
+          "required": false,
+          "default": "\"md\""
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "name": [
+          "x",
+          "alert-triangle",
+          "arrow-left",
+          "arrow-right",
+          "book-open",
+          "check",
+          "chevron-down",
+          "chevron-left",
+          "chevron-right",
+          "database",
+          "external-link",
+          "globe-2",
+          "history",
+          "home",
+          "info",
+          "layers",
+          "layout-grid",
+          "loader-circle",
+          "menu",
+          "moon",
+          "package",
+          "palette",
+          "panel-left-close",
+          "panel-left-open",
+          "search",
+          "settings",
+          "shield-check",
+          "sun"
+        ]
+      },
+      "slots": [],
+      "propsType": "IconProps"
+    },
+    "IconButton": {
+      "name": "IconButton",
+      "kind": "function",
+      "props": [
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "iconName",
+          "type": "IconName",
+          "required": false,
+          "enumValues": [
+            "x",
+            "alert-triangle",
+            "arrow-left",
+            "arrow-right",
+            "book-open",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "database",
+            "external-link",
+            "globe-2",
+            "history",
+            "home",
+            "info",
+            "layers",
+            "layout-grid",
+            "loader-circle",
+            "menu",
+            "moon",
+            "package",
+            "palette",
+            "panel-left-close",
+            "panel-left-open",
+            "search",
+            "settings",
+            "shield-check",
+            "sun"
+          ]
+        },
+        {
+          "name": "size",
+          "type": "Size",
+          "required": false,
+          "enumValues": [
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\" | \"quiet\" | \"danger\"",
+          "required": false,
+          "enumValues": [
+            "primary",
+            "secondary",
+            "quiet",
+            "danger"
+          ]
+        }
+      ],
+      "variants": {
+        "iconName": [
+          "x",
+          "alert-triangle",
+          "arrow-left",
+          "arrow-right",
+          "book-open",
+          "check",
+          "chevron-down",
+          "chevron-left",
+          "chevron-right",
+          "database",
+          "external-link",
+          "globe-2",
+          "history",
+          "home",
+          "info",
+          "layers",
+          "layout-grid",
+          "loader-circle",
+          "menu",
+          "moon",
+          "package",
+          "palette",
+          "panel-left-close",
+          "panel-left-open",
+          "search",
+          "settings",
+          "shield-check",
+          "sun"
+        ],
+        "size": [
+          "sm",
+          "md"
+        ],
+        "variant": [
+          "primary",
+          "secondary",
+          "quiet",
+          "danger"
+        ]
+      },
+      "slots": [
+        "icon"
+      ],
+      "propsType": "IconButtonProps"
+    },
+    "InlineAlert": {
+      "name": "InlineAlert",
+      "kind": "function",
+      "props": [
+        {
+          "name": "tone",
+          "type": "Tone",
+          "required": false,
+          "default": "\"neutral\"",
+          "enumValues": [
+            "danger",
+            "neutral",
+            "positive",
+            "warning"
+          ]
+        }
+      ],
+      "variants": {
+        "tone": [
+          "danger",
+          "neutral",
+          "positive",
+          "warning"
+        ]
+      },
+      "slots": [],
+      "propsType": "InlineAlertProps"
+    },
+    "Input": {
+      "name": "Input",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "InputProps"
+    },
+    "KeyValueList": {
+      "name": "KeyValueList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "KeyValueItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "{ items: KeyValueItem[] }"
+    },
+    "KnowledgeAttachmentList": {
+      "name": "KnowledgeAttachmentList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "KnowledgeAttachment[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Knowledge attachments\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "KnowledgeAttachmentListProps"
+    },
+    "KnowledgeDocumentCanvas": {
+      "name": "KnowledgeDocumentCanvas",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "labels",
+          "type": "string[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "sections",
+          "type": "KnowledgeDocumentSection[]",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "meta",
+        "summary"
+      ],
+      "propsType": "KnowledgeDocumentCanvasProps"
+    },
+    "KnowledgeInlineCommentList": {
+      "name": "KnowledgeInlineCommentList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "comments",
+          "type": "KnowledgeComment[]",
+          "required": true
+        },
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Knowledge comments\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "KnowledgeInlineCommentListProps"
+    },
+    "KnowledgeLabelSet": {
+      "name": "KnowledgeLabelSet",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Knowledge labels\""
+        },
+        {
+          "name": "labels",
+          "type": "string[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "KnowledgeLabelSetProps"
+    },
+    "KnowledgeMetadataRail": {
+      "name": "KnowledgeMetadataRail",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "WorkAction[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "KeyValueItem[]",
+          "required": true
+        },
+        {
+          "name": "labels",
+          "type": "string[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": "\"Knowledge metadata\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "KnowledgeMetadataRailProps"
+    },
+    "KnowledgePageTree": {
+      "name": "KnowledgePageTree",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "KnowledgePageTreeItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Knowledge page tree\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "KnowledgePageTreeProps"
+    },
+    "KnowledgeSearchResults": {
+      "name": "KnowledgeSearchResults",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Knowledge search results\""
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "results",
+          "type": "KnowledgeSearchResult[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "KnowledgeSearchResultsProps"
+    },
+    "KnowledgeTemplateGallery": {
+      "name": "KnowledgeTemplateGallery",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Knowledge templates\""
+        },
+        {
+          "name": "templates",
+          "type": "KnowledgeTemplate[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "KnowledgeTemplateGalleryProps"
+    },
+    "KnowledgeTocRail": {
+      "name": "KnowledgeTocRail",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "KnowledgeTocItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"On this page\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "KnowledgeTocRailProps"
+    },
+    "KnowledgeVersionHistory": {
+      "name": "KnowledgeVersionHistory",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Knowledge version history\""
+        },
+        {
+          "name": "versions",
+          "type": "KnowledgeVersion[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "KnowledgeVersionHistoryProps"
+    },
+    "LinkButton": {
+      "name": "LinkButton",
+      "kind": "function",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\" | \"quiet\"",
+          "required": false,
+          "default": "\"secondary\"",
+          "enumValues": [
+            "primary",
+            "secondary",
+            "quiet"
+          ]
+        }
+      ],
+      "variants": {
+        "variant": [
+          "primary",
+          "secondary",
+          "quiet"
+        ]
+      },
+      "slots": [],
+      "propsType": "LinkButtonProps"
+    },
+    "LiveRegion": {
+      "name": "LiveRegion",
+      "kind": "function",
+      "props": [],
+      "variants": {},
+      "slots": [],
+      "propsType": "HTMLAttributes<HTMLDivElement>"
+    },
+    "MachineToken": {
+      "name": "MachineToken",
+      "kind": "function",
+      "props": [
+        {
+          "name": "copyable",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"comfortable\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "kind",
+          "type": "MachineTokenKind",
+          "required": false,
+          "default": "\"generic\"",
+          "enumValues": [
+            "route",
+            "thread",
+            "commit",
+            "artifact",
+            "work-item",
+            "generic"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ],
+        "kind": [
+          "route",
+          "thread",
+          "commit",
+          "artifact",
+          "work-item",
+          "generic"
+        ]
+      },
+      "slots": [],
+      "propsType": "MachineTokenProps"
+    },
+    "MachineTokenCell": {
+      "name": "MachineTokenCell",
+      "kind": "function",
+      "props": [
+        {
+          "name": "copyable",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "kind",
+          "type": "MachineTokenKind",
+          "required": false,
+          "enumValues": [
+            "route",
+            "thread",
+            "commit",
+            "artifact",
+            "work-item",
+            "generic"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ],
+        "kind": [
+          "route",
+          "thread",
+          "commit",
+          "artifact",
+          "work-item",
+          "generic"
+        ]
+      },
+      "slots": [],
+      "propsType": "MachineTokenProps"
+    },
+    "MetadataRail": {
+      "name": "MetadataRail",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "WorkAction[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "KeyValueItem[]",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": "\"Metadata\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "MetadataRailProps"
+    },
+    "ModuleTabs": {
+      "name": "ModuleTabs",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "NavItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ProductLauncherProps"
+    },
+    "NavGroup": {
+      "name": "NavGroup",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "NavGroupProps"
+    },
+    "NavItem": {
+      "name": "NavItem",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "iconName",
+          "type": "IconName",
+          "required": false,
+          "enumValues": [
+            "x",
+            "alert-triangle",
+            "arrow-left",
+            "arrow-right",
+            "book-open",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "database",
+            "external-link",
+            "globe-2",
+            "history",
+            "home",
+            "info",
+            "layers",
+            "layout-grid",
+            "loader-circle",
+            "menu",
+            "moon",
+            "package",
+            "palette",
+            "panel-left-close",
+            "panel-left-open",
+            "search",
+            "settings",
+            "shield-check",
+            "sun"
+          ]
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        }
+      ],
+      "variants": {
+        "iconName": [
+          "x",
+          "alert-triangle",
+          "arrow-left",
+          "arrow-right",
+          "book-open",
+          "check",
+          "chevron-down",
+          "chevron-left",
+          "chevron-right",
+          "database",
+          "external-link",
+          "globe-2",
+          "history",
+          "home",
+          "info",
+          "layers",
+          "layout-grid",
+          "loader-circle",
+          "menu",
+          "moon",
+          "package",
+          "palette",
+          "panel-left-close",
+          "panel-left-open",
+          "search",
+          "settings",
+          "shield-check",
+          "sun"
+        ]
+      },
+      "slots": [
+        "children"
+      ],
+      "propsType": "NavItemProps"
+    },
+    "Pagination": {
+      "name": "Pagination",
+      "kind": "function",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "{ label: string }"
+    },
+    "Popover": {
+      "name": "Popover",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "initialFocusRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "placement",
+          "type": "PopoverPlacement",
+          "required": false,
+          "default": "\"bottom-start\"",
+          "enumValues": [
+            "bottom-start",
+            "bottom-end",
+            "top-start",
+            "top-end"
+          ]
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        }
+      ],
+      "variants": {
+        "placement": [
+          "bottom-start",
+          "bottom-end",
+          "top-start",
+          "top-end"
+        ]
+      },
+      "slots": [
+        "children"
+      ],
+      "propsType": "PopoverProps"
+    },
+    "ProductLauncher": {
+      "name": "ProductLauncher",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "NavItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ProductLauncherProps"
+    },
+    "ProductLockup": {
+      "name": "ProductLockup",
+      "kind": "function",
+      "props": [
+        {
+          "name": "brandMarkAlt",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "brandMarkSrc",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "productId",
+          "type": "TcrnProductLogoId",
+          "required": false,
+          "enumValues": [
+            "design-system",
+            "aos",
+            "tms"
+          ]
+        },
+        {
+          "name": "suffix",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "suffixClassName",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "productId": [
+          "design-system",
+          "aos",
+          "tms"
+        ]
+      },
+      "slots": [],
+      "propsType": "ProductLockupProps"
+    },
+    "ProductLogo": {
+      "name": "ProductLogo",
+      "kind": "function",
+      "props": [
+        {
+          "name": "brandMarkAlt",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "brandMarkSrc",
+          "type": "string",
+          "required": false,
+          "default": "\"tcrn-brand-mark.svg\""
+        },
+        {
+          "name": "productId",
+          "type": "TcrnProductLogoId",
+          "required": true,
+          "enumValues": [
+            "design-system",
+            "aos",
+            "tms"
+          ]
+        }
+      ],
+      "variants": {
+        "productId": [
+          "design-system",
+          "aos",
+          "tms"
+        ]
+      },
+      "slots": [],
+      "propsType": "ProductLogoProps"
+    },
+    "ProductShell": {
+      "name": "ProductShell",
+      "kind": "function",
+      "props": [
+        {
+          "name": "brandCaption",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "brandHref",
+          "type": "string",
+          "required": false,
+          "default": "\"/\""
+        },
+        {
+          "name": "brandMarkAlt",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "brandMarkSrc",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "brandProductId",
+          "type": "TcrnProductLogoId",
+          "required": false,
+          "enumValues": [
+            "design-system",
+            "aos",
+            "tms"
+          ]
+        },
+        {
+          "name": "brandSuffix",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "collapsed",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "collapsedStorageKey",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "contentId",
+          "type": "string",
+          "required": false,
+          "default": "\"product-shell-content\""
+        },
+        {
+          "name": "contentLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Product shell workspace\""
+        },
+        {
+          "name": "contentRole",
+          "type": "\"main\" | \"region\"",
+          "required": false,
+          "default": "\"region\"",
+          "enumValues": [
+            "main",
+            "region"
+          ]
+        },
+        {
+          "name": "currentLocale",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "currentLocationLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Current location\""
+        },
+        {
+          "name": "currentLocationLabelKey",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "currentRouteLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "currentRouteLabelKey",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "currentTheme",
+          "type": "ShellThemeMode",
+          "required": false,
+          "default": "\"light\"",
+          "enumValues": [
+            "light",
+            "dark"
+          ]
+        },
+        {
+          "name": "localeMenuOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "locales",
+          "type": "readonly ShellLocaleOption[]",
+          "required": true
+        },
+        {
+          "name": "moduleName",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "navGroups",
+          "type": "readonly ProductShellNavGroup[]",
+          "required": true
+        },
+        {
+          "name": "navId",
+          "type": "string",
+          "required": false,
+          "default": "\"tcrn-product-shell-side-nav\""
+        },
+        {
+          "name": "navLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onCollapsedChange",
+          "type": "(collapsed: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "onLocaleChange",
+          "type": "(locale: string) => void",
+          "required": false
+        },
+        {
+          "name": "onLocaleMenuOpenChange",
+          "type": "(open: boolean, reason: ProductShellLocaleMenuChangeReason) => void",
+          "required": false
+        },
+        {
+          "name": "onSearchDismiss",
+          "type": "(reason: ProductShellSearchDismissReason) => void",
+          "required": false
+        },
+        {
+          "name": "onSearchExpandedChange",
+          "type": "(expanded: boolean, reason: ProductShellSearchExpandedChangeReason) => void",
+          "required": false
+        },
+        {
+          "name": "onSearchQueryChange",
+          "type": "(query: string) => void",
+          "required": false
+        },
+        {
+          "name": "onSearchResultActivate",
+          "type": "(result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void",
+          "required": false
+        },
+        {
+          "name": "onThemeChange",
+          "type": "(theme: ShellThemeMode) => void",
+          "required": false
+        },
+        {
+          "name": "productName",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "search",
+          "type": "ProductShellSearchProps",
+          "required": false
+        },
+        {
+          "name": "sideNavCollapseDisabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "skipLinkLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Skip to shell content\""
+        }
+      ],
+      "variants": {
+        "brandProductId": [
+          "design-system",
+          "aos",
+          "tms"
+        ],
+        "contentRole": [
+          "main",
+          "region"
+        ],
+        "currentTheme": [
+          "light",
+          "dark"
+        ]
+      },
+      "slots": [
+        "children"
+      ],
+      "propsType": "ProductShellProps"
+    },
+    "ProductShellSearch": {
+      "name": "ProductShellSearch",
+      "kind": "function",
+      "props": [
+        {
+          "name": "data-product-shell-search-empty-label-key",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "data-product-shell-search-label-key",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "data-product-shell-search-results-label-key",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"No results\""
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "inputProps",
+          "type": "Omit<SearchInputProps, \"type\" | \"placeholder\" | \"shortcut\" | \"value\" | \"defaultValue\" | \"onChange\" | \"onInput\" | \"onFocus\" | \"onBlur\" | \"onKeyDown\">",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Search product shell\""
+        },
+        {
+          "name": "onDismiss",
+          "type": "(reason: ProductShellSearchDismissReason) => void",
+          "required": false
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(expanded: boolean, reason: ProductShellSearchExpandedChangeReason) => void",
+          "required": false
+        },
+        {
+          "name": "onQueryChange",
+          "type": "(query: string) => void",
+          "required": false
+        },
+        {
+          "name": "onResultActivate",
+          "type": "(result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void",
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Search\""
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "required": false,
+          "default": "\"\""
+        },
+        {
+          "name": "results",
+          "type": "readonly ProductShellSearchResult[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "resultsLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Search results\""
+        },
+        {
+          "name": "shortcut",
+          "type": "SearchInputProps[\"shortcut\"]",
+          "required": false,
+          "default": "\"auto\""
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ProductShellSearchProps"
+    },
+    "ProductSwitcher": {
+      "name": "ProductSwitcher",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "NavItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ProductLauncherProps"
+    },
+    "ReadbackPanel": {
+      "name": "ReadbackPanel",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "{ title: string; children: ReactNode }"
+    },
+    "RelationshipChip": {
+      "name": "RelationshipChip",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "relation",
+          "type": "WorkRelationshipType",
+          "required": true,
+          "enumValues": [
+            "blocks",
+            "blocked_by",
+            "depends_on",
+            "relates_to",
+            "duplicates",
+            "supersedes",
+            "split_from",
+            "caused_by",
+            "implements",
+            "verifies",
+            "reviews",
+            "refreshes"
+          ]
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "relation": [
+          "blocks",
+          "blocked_by",
+          "depends_on",
+          "relates_to",
+          "duplicates",
+          "supersedes",
+          "split_from",
+          "caused_by",
+          "implements",
+          "verifies",
+          "reviews",
+          "refreshes"
+        ]
+      },
+      "slots": [],
+      "propsType": "RelationshipChipProps"
+    },
+    "SavedViewToolbar": {
+      "name": "SavedViewToolbar",
+      "kind": "function",
+      "props": [
+        {
+          "name": "filters",
+          "type": "SavedViewToolbarFilter[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Saved Work views\""
+        },
+        {
+          "name": "resetLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Reset view\""
+        },
+        {
+          "name": "views",
+          "type": "WorkManagementSubnavItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "SavedViewToolbarProps"
+    },
+    "SearchInput": {
+      "name": "SearchInput",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "shortcut",
+          "type": "\"auto\" | string | false",
+          "required": false,
+          "default": "false"
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "SearchInputProps"
+    },
+    "SectionTabs": {
+      "name": "SectionTabs",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "NavItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ProductLauncherProps"
+    },
+    "SegmentedNav": {
+      "name": "SegmentedNav",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "NavItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ProductLauncherProps"
+    },
+    "Select": {
+      "name": "Select",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "SelectProps"
+    },
+    "ShellBrandLockup": {
+      "name": "ShellBrandLockup",
+      "kind": "function",
+      "props": [
+        {
+          "name": "brandMarkAlt",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "brandMarkSrc",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "caption",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "productId",
+          "type": "TcrnProductLogoId",
+          "required": false,
+          "enumValues": [
+            "design-system",
+            "aos",
+            "tms"
+          ]
+        },
+        {
+          "name": "suffix",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "suffixClassName",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "productId": [
+          "design-system",
+          "aos",
+          "tms"
+        ]
+      },
+      "slots": [],
+      "propsType": "ShellBrandLockupProps"
+    },
+    "ShellLocaleMenu": {
+      "name": "ShellLocaleMenu",
+      "kind": "function",
+      "props": [
+        {
+          "name": "currentLocale",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Language\""
+        },
+        {
+          "name": "locales",
+          "type": "readonly ShellLocaleOption[]",
+          "required": true
+        },
+        {
+          "name": "menuId",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "onLocaleChange",
+          "type": "(locale: string) => void",
+          "required": false
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean, reason: ProductShellLocaleMenuChangeReason) => void",
+          "required": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "triggerId",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ShellLocaleMenuProps"
+    },
+    "ShellThemeToggle": {
+      "name": "ShellThemeToggle",
+      "kind": "function",
+      "props": [
+        {
+          "name": "currentTheme",
+          "type": "ShellThemeMode",
+          "required": true,
+          "enumValues": [
+            "light",
+            "dark"
+          ]
+        },
+        {
+          "name": "darkLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Switch to dark mode\""
+        },
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "lightLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Switch to light mode\""
+        },
+        {
+          "name": "onThemeChange",
+          "type": "(nextTheme: ShellThemeMode) => void",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "Size",
+          "required": false,
+          "enumValues": [
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\" | \"quiet\" | \"danger\"",
+          "required": false,
+          "enumValues": [
+            "primary",
+            "secondary",
+            "quiet",
+            "danger"
+          ]
+        }
+      ],
+      "variants": {
+        "currentTheme": [
+          "light",
+          "dark"
+        ],
+        "size": [
+          "sm",
+          "md"
+        ],
+        "variant": [
+          "primary",
+          "secondary",
+          "quiet",
+          "danger"
+        ]
+      },
+      "slots": [],
+      "propsType": "ShellThemeToggleProps"
+    },
+    "SideNav": {
+      "name": "SideNav",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "SideNavProps"
+    },
+    "SideNavCollapseButton": {
+      "name": "SideNavCollapseButton",
+      "kind": "function",
+      "props": [
+        {
+          "name": "collapsed",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "collapsedLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Expand side navigation\""
+        },
+        {
+          "name": "controls",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expandedLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Collapse side navigation\""
+        },
+        {
+          "name": "onCollapsedChange",
+          "type": "(collapsed: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "persistedKey",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "Size",
+          "required": false,
+          "enumValues": [
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\" | \"quiet\" | \"danger\"",
+          "required": false,
+          "enumValues": [
+            "primary",
+            "secondary",
+            "quiet",
+            "danger"
+          ]
+        }
+      ],
+      "variants": {
+        "size": [
+          "sm",
+          "md"
+        ],
+        "variant": [
+          "primary",
+          "secondary",
+          "quiet",
+          "danger"
+        ]
+      },
+      "slots": [],
+      "propsType": "SideNavCollapseButtonProps"
+    },
+    "Skeleton": {
+      "name": "Skeleton",
+      "kind": "function",
+      "props": [
+        {
+          "name": "lines",
+          "type": "number",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "variant",
+          "type": "\"text\" | \"rectangular\" | \"circular\"",
+          "required": false,
+          "default": "\"rectangular\"",
+          "enumValues": [
+            "text",
+            "rectangular",
+            "circular"
+          ]
+        }
+      ],
+      "variants": {
+        "variant": [
+          "text",
+          "rectangular",
+          "circular"
+        ]
+      },
+      "slots": [],
+      "propsType": "SkeletonProps"
+    },
+    "SkipLink": {
+      "name": "SkipLink",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "SkipLinkProps"
+    },
+    "Stamp": {
+      "name": "Stamp",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "moment",
+          "type": "StampMoment",
+          "required": true,
+          "enumValues": [
+            "gate-close",
+            "ruling",
+            "release"
+          ]
+        }
+      ],
+      "variants": {
+        "moment": [
+          "gate-close",
+          "ruling",
+          "release"
+        ]
+      },
+      "slots": [
+        "children"
+      ],
+      "propsType": "StampProps"
+    },
+    "StampRule": {
+      "name": "StampRule",
+      "kind": "function",
+      "props": [],
+      "variants": {},
+      "slots": [],
+      "propsType": "HTMLAttributes<HTMLHRElement>"
+    },
+    "StateSurface": {
+      "name": "StateSurface",
+      "kind": "function",
+      "props": [
+        {
+          "name": "action",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4",
+          "required": false,
+          "default": "3",
+          "enumValues": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "tone",
+          "type": "StateSurfaceTone",
+          "required": false,
+          "default": "\"neutral\"",
+          "enumValues": [
+            "danger",
+            "neutral",
+            "positive",
+            "warning"
+          ]
+        }
+      ],
+      "variants": {
+        "headingLevel": [
+          2,
+          3,
+          4
+        ],
+        "tone": [
+          "danger",
+          "neutral",
+          "positive",
+          "warning"
+        ]
+      },
+      "slots": [
+        "action",
+        "description",
+        "icon",
+        "title"
+      ],
+      "propsType": "StateSurfaceProps"
+    },
+    "StateView": {
+      "name": "StateView",
+      "kind": "function",
+      "props": [
+        {
+          "name": "action",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "state",
+          "type": "CopyStateInput",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "action"
+      ],
+      "propsType": "StateViewProps"
+    },
+    "StatusBadge": {
+      "name": "StatusBadge",
+      "kind": "function",
+      "props": [
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "state",
+          "type": "CopyStateInput",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "StatusBadgeProps"
+    },
+    "Surface": {
+      "name": "Surface",
+      "kind": "function",
+      "props": [],
+      "variants": {},
+      "slots": [],
+      "propsType": "HTMLAttributes<HTMLElement>"
+    },
+    "TableShell": {
+      "name": "TableShell",
+      "kind": "function",
+      "props": [
+        {
+          "name": "columns",
+          "type": "TableColumn[]",
+          "required": true
+        },
+        {
+          "name": "emptyState",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "rows",
+          "type": "Array<Record<string, ReactNode>>",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "emptyState",
+        "rows"
+      ],
+      "propsType": "TableShellProps"
+    },
+    "TableToolbar": {
+      "name": "TableToolbar",
+      "kind": "function",
+      "props": [
+        {
+          "name": "allFilterLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"All\""
+        },
+        {
+          "name": "collapseLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "controlsId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "expandLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "filterLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "filterOptions",
+          "type": "TableToolbarFilterOption[]",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "matchCountFormat",
+          "type": "string",
+          "required": false,
+          "default": "\"{shown} / {total}\""
+        },
+        {
+          "name": "searchLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "TableToolbarProps"
+    },
+    "TcrnBrandMark": {
+      "name": "TcrnBrandMark",
+      "kind": "function",
+      "props": [
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "default": "\"TCRN brand mark\""
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": "\"tcrn-brand-mark.svg\""
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "TcrnBrandMarkProps"
+    },
+    "Text": {
+      "name": "Text",
+      "kind": "function",
+      "props": [],
+      "variants": {},
+      "slots": [],
+      "propsType": "HTMLAttributes<HTMLParagraphElement>"
+    },
+    "Textarea": {
+      "name": "Textarea",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "TextareaProps"
+    },
+    "Tooltip": {
+      "name": "Tooltip",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactElement<Record<string, unknown>>",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "placement",
+          "type": "TooltipPlacement",
+          "required": false,
+          "default": "\"top\"",
+          "enumValues": [
+            "top",
+            "right",
+            "bottom",
+            "left"
+          ]
+        }
+      ],
+      "variants": {
+        "placement": [
+          "top",
+          "right",
+          "bottom",
+          "left"
+        ]
+      },
+      "slots": [
+        "children"
+      ],
+      "propsType": "TooltipProps"
+    },
+    "TopBar": {
+      "name": "TopBar",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "brandProps",
+          "type": "HTMLAttributes<HTMLDivElement>",
+          "required": false
+        },
+        {
+          "name": "moduleName",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "productName",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "actions",
+        "moduleName",
+        "productName"
+      ],
+      "propsType": "TopBarProps"
+    },
+    "WorkActivityFeed": {
+      "name": "WorkActivityFeed",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "WorkActivityFeedItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Work activity\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "WorkActivityFeedProps"
+    },
+    "WorkBacklogGroup": {
+      "name": "WorkBacklogGroup",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "WorkAction[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "inlineCreate",
+          "type": "WorkInlineCreateStaticProps",
+          "required": false
+        },
+        {
+          "name": "rows",
+          "type": "WorkItemRowProps[]",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "description"
+      ],
+      "propsType": "WorkBacklogGroupProps"
+    },
+    "WorkBoard": {
+      "name": "WorkBoard",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"comfortable\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Work board\""
+        },
+        {
+          "name": "lanes",
+          "type": "WorkBoardLane[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "WorkBoardProps"
+    },
+    "WorkBoardView": {
+      "name": "WorkBoardView",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "lanes",
+          "type": "WorkBoardLane[]",
+          "required": true
+        },
+        {
+          "name": "toolbar",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "toolbar"
+      ],
+      "propsType": "WorkBoardViewProps"
+    },
+    "WorkDetailLayout": {
+      "name": "WorkDetailLayout",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "WorkAction[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "activity",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "main",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "metadata",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "state",
+          "type": "CopyStateInput",
+          "required": false
+        },
+        {
+          "name": "summary",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "activity",
+        "main",
+        "metadata",
+        "summary"
+      ],
+      "propsType": "WorkDetailLayoutProps"
+    },
+    "WorkFieldPanel": {
+      "name": "WorkFieldPanel",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "KeyValueItem[]",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "WorkFieldPanelProps"
+    },
+    "WorkHierarchy": {
+      "name": "WorkHierarchy",
+      "kind": "function",
+      "props": [
+        {
+          "name": "edges",
+          "type": "WorkHierarchyEdge[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Work hierarchy\""
+        },
+        {
+          "name": "nodes",
+          "type": "WorkHierarchyNode[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "WorkHierarchyProps"
+    },
+    "WorkIndex": {
+      "name": "WorkIndex",
+      "kind": "function",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Work index\""
+        },
+        {
+          "name": "labels",
+          "type": "Partial<WorkIndexLabels>",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "rows",
+          "type": "WorkIndexRow[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "WorkIndexProps"
+    },
+    "WorkInlineCreateStatic": {
+      "name": "WorkInlineCreateStatic",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "hint",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Add work item\""
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "hint"
+      ],
+      "propsType": "WorkInlineCreateStaticProps"
+    },
+    "WorkItemInspector": {
+      "name": "WorkItemInspector",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "WorkItemInspectorAction[]",
+          "required": false
+        },
+        {
+          "name": "details",
+          "type": "KeyValueItem[]",
+          "required": true
+        },
+        {
+          "name": "evidence",
+          "type": "EvidenceAttachment[]",
+          "required": false
+        },
+        {
+          "name": "hierarchy",
+          "type": "KeyValueItem[]",
+          "required": true
+        },
+        {
+          "name": "relationships",
+          "type": "RelationshipChipProps[]",
+          "required": false
+        },
+        {
+          "name": "subtasks",
+          "type": "WorkIndexRow[]",
+          "required": false
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "WorkItemInspectorProps"
+    },
+    "WorkItemRow": {
+      "name": "WorkItemRow",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "fields",
+          "type": "WorkItemRowField[]",
+          "required": false
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "owner",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "priority",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "rank",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "relationships",
+          "type": "RelationshipChipProps[]",
+          "required": false
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "state",
+          "type": "CopyStateInput",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "summary"
+      ],
+      "propsType": "WorkItemRowProps"
+    },
+    "WorkList": {
+      "name": "WorkList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Work list\""
+        },
+        {
+          "name": "rows",
+          "type": "WorkItemRowProps[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "WorkListProps"
+    },
+    "WorkManagementSubnav": {
+      "name": "WorkManagementSubnav",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "WorkManagementSubnavItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Work Management views\""
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "WorkManagementSubnavProps"
+    },
+    "WorkPageHeader": {
+      "name": "WorkPageHeader",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "WorkAction[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "breadcrumbs",
+          "type": "WorkPageHeaderBreadcrumb[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "description",
+        "meta"
+      ],
+      "propsType": "WorkPageHeaderProps"
+    },
+    "WorkQuickFilters": {
+      "name": "WorkQuickFilters",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "filters",
+          "type": "WorkQuickFilter[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Work quick filters\""
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "WorkQuickFiltersProps"
+    },
+    "WorkSplitView": {
+      "name": "WorkSplitView",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "detail",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Work split view\""
+        },
+        {
+          "name": "list",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "detail",
+        "list"
+      ],
+      "propsType": "WorkSplitViewProps"
+    },
+    "WorkViewTabs": {
+      "name": "WorkViewTabs",
+      "kind": "function",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Work views\""
+        },
+        {
+          "name": "tabs",
+          "type": "WorkViewTab[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "WorkViewTabsProps"
+    }
+  }
+}

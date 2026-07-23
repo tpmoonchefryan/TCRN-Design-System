@@ -26,15 +26,17 @@ export interface FoundationVisualStandard {
 
 export const storybookDocShellVisualOracle = {
   id: "original-storybook-doc-shell-v1",
-  baselineManifest: "docs/verification/storybook-visual-proof/baseline-manifest.json",
+  baselineManifest: "docs/verification/internal-alpha/visual-signature-baseline.json",
   oracleRecoveryReceipt:
     "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan",
   baselineManifestClassification: "owner_declared_original_storybook_doc_shell_standard",
   metricSourceDisposition:
     "desktop sidebar, header, search rest, and search expanded metrics are retained only after the owner-approved restoration re-expresses the pre-d1d1291 Storybook documentation shell through current Storybook-owned doc-shell selectors and committed proof receipts.",
-  sourceHead: "generated_by_storybook_visual_proof_receipt",
+  sourceHead: "generated_by_internal_alpha_visual_signature_baseline",
   sourceHeadDisposition:
-    "This oracle is refreshed by the committed Storybook visual-proof receipt for the final implementation basis; reviewers must use the receipt sourceHead/sourceContentDigest and final DS commit SHA rather than treating this static field as a freshness claim.",
+    "This oracle's visual baseline is now the internal-alpha perceptual visual-signature baseline (docs/verification/internal-alpha/visual-signature-baseline.json, tolerance meanAbsolute<=2 / maxCell<=8) enforced by scripts/internal-alpha-browser-proof.mjs; reviewers must use the internal-alpha browser-proof metric readbacks and signature entries plus the final DS commit SHA rather than treating this static field as a freshness claim.",
+  retiredExactPngProofDisposition:
+    "The prior canonicalized_raw_png_exact_v1 exact-PNG visual oracle (docs/verification/storybook-visual-proof/, sourceHead ec57b606) is retired as pre-INIT-001 history, is not part of pnpm verify, and is superseded by the internal-alpha perceptual visual-signature baseline. Per the INIT-002 ruling, unreproducible exact-PNG signatures are not signed in as an oracle.",
   metricRevisionDisposition:
     "Search shell metrics are intentionally revised to 260px rest and 360px focused/expanded by the visual-unification repair so localized placeholder plus Ctrl K fit without clipping.",
   storybookRoute: "index.html#welcome-governance",
@@ -59,33 +61,41 @@ export const storybookDocShellVisualOracle = {
       metric: "desktopSidebarWidthPx",
       value: 360,
       evidencePath:
-        "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953",
-      extraction: "Restored Storybook doc-shell visual-proof geometry: responsive sidebar clamp(280px, 20vw, 360px), maxing at 360px in 2048px baseline and yielding 288px at 1440px smoke proof"
+        "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
+      signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
+      signatureKey: "welcome-governance@desktop-1440x900",
+      comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
+      extraction: "Sidebar geometry (responsive clamp(280px, 20vw, 360px), maxing at 360px and yielding 288px at the 1440px proof viewport) is asserted by the internal-alpha browser-proof sidebar-width metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "desktopTopbarHeightPx",
       value: 96,
       evidencePath:
-        "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953",
-      extraction: "Storybook doc-shell visual-proof geometry: header/control band y=0..95, height=96px"
+        "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
+      signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
+      signatureKey: "welcome-governance@desktop-1440x900",
+      comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
+      extraction: "Header/control band height=96px is asserted by the internal-alpha browser-proof topbar-height metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "searchRestWidthPx",
       value: 260,
       evidencePath:
-        "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-first-story-zh-cn-light__desktop-2048x1024.png",
-      sha256: "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953",
-      extraction: "Storybook doc-shell visual-proof geometry: compact search shell width=260px so localized placeholder and shortcut fit without clipping"
+        "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
+      signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
+      signatureKey: "welcome-governance@desktop-1440x900",
+      comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
+      extraction: "Compact search shell width=260px (localized placeholder and shortcut fit without clipping) is asserted by the internal-alpha browser-proof search-rest metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "searchExpandedWidthPx",
       value: 360,
       evidencePath:
-        "docs/verification/storybook-visual-proof/screenshots/baseline/welcome-search-focus-zh-cn-light__desktop-2048x1024.png",
-      sha256: "8ec91db170d42300eac9739041bd5916b1ae03d715f486868b6b68d1c2819b5b",
-      extraction: "Storybook doc-shell visual-proof focused search state width=360px with one root SearchInput border, package SearchInput internals preserving icon/control/shortcut grid tracks, and no nested input border"
+        "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
+      signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
+      signatureKey: "welcome-governance@desktop-1440x900",
+      comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
+      extraction: "Focused search state width=360px with one root SearchInput border and no nested input border is asserted by the internal-alpha browser-proof search-focused metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     }
   ],
   shellMetrics: {
@@ -126,6 +136,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: [
       "apps/storybook/src/build/foundation-visual-standards.ts",
       "apps/storybook/src/alpha-styles.ts",
+      "apps/storybook/src/story-demo-styles.ts",
       "packages/ui-react/src/components/Navigation/Navigation.tsx"
     ],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#ai-consumption-contract"],
@@ -140,7 +151,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "layout-rhythm",
     label: "Layout and rhythm",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
+    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
     storybookRoutes: ["index.html#welcome-governance", "patterns.html#forms-patterns"],
     authorityLevel: "storybook_visual_oracle",
     readbackFields: ["sidebarWidth", "topbarHeight", "contentStart", "pageHeadPosition", "crossSectionSignature"],
@@ -153,7 +164,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "spacing-density",
     label: "Spacing and density",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx"],
+    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-work-index-spec", "components.html#work-management-components-spec", "components.html#knowledge-management-components-spec"],
     authorityLevel: "package_authority",
     readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "workDensityComponents", "knowledgeDensityComponents"],
@@ -183,7 +194,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "color-elevation-border-radius-focus",
     label: "Color, elevation, border radius, and focus",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
+    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
     storybookRoutes: ["style-guide.html#color-palette", "components.html#navigation-shell-spec"],
     authorityLevel: "package_authority",
     readbackFields: ["surfaceColor", "borderColor", "controlRadius", "themeToggleRadius", "focusOutline", "boxShadow"],
@@ -222,7 +233,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "responsive-mobile",
     label: "Responsive and mobile",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
+    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#aos-owner-quality-product-shell"],
     authorityLevel: "storybook_visual_oracle",
     readbackFields: ["viewport", "searchMaxWidth", "collapsePolicy", "pageOverflow", "tableLocalOverflow"],
