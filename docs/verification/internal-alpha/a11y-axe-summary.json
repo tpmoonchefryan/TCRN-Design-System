@@ -4,36 +4,85 @@
   "sections": [
     {
       "section": "Welcome",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Welcome",
+      "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Style Guide",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Style Guide",
+      "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Foundations",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Foundations",
+      "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Components",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Patterns",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Patterns",
+      "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Proof",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Proof",
+      "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Change Log",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Change Log",
+      "theme": "dark",
       "violationCount": 0,
       "violations": []
     }
