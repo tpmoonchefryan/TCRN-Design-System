@@ -948,12 +948,10 @@ const legacyContractStories: LegacyContractStory[] = [
           </div>
         </ReadbackPanel>
         <ReadbackPanel title="Visual level decoupling">
-          <Text>Heading keeps its semantic level fixed while visualLevel selects the type scale, so document outline order never bends to fit a size. Each specimen below is the same semantic h2 rendered at a different visual level.</Text>
-          <Heading level={2} visualLevel={1}>Visual level 1 on a semantic h2</Heading>
-          <Heading level={2} visualLevel={2}>Visual level 2 on a semantic h2</Heading>
-          <Heading level={2} visualLevel={3}>Visual level 3 on a semantic h2</Heading>
-          <Heading level={2} visualLevel={4}>Visual level 4 on a semantic h2</Heading>
-          <Text>Visual level 4 is unstyled until the .tcrn-heading--4 scale lands in S036; before that it falls back to the base heading size.</Text>
+          <Text>Heading keeps its semantic level fixed while visualLevel selects the type scale, so document outline order never bends to fit a size. Each specimen below is the same semantic h2 rendered at a different visual level; visual level 1 is the page-title display size shown by every story heading above.</Text>
+          <Heading level={2} visualLevel={2}>Level 2</Heading>
+          <Heading level={2} visualLevel={3}>Level 3</Heading>
+          <Heading level={2} visualLevel={4}>Level 4</Heading>
         </ReadbackPanel>
         <div className="tcrn-typography-sample">
           <Heading level={3}>Localized text must wrap without changing scale.</Heading>
