@@ -198,7 +198,17 @@ function startStaticServer(rootDirectory) {
 }
 
 async function collectPageHealth(page) {
-  return await page.evaluate((patterns) => {
+  return await page.evaluate(async (patterns) => {
+    // Settle on font readiness, then two rAFs so any font-swap reflow is applied, before any
+    // layout is read.
+    if (document.fonts && typeof document.fonts.ready?.then === "function") {
+      try {
+        await document.fonts.ready;
+      } catch {
+        // No web fonts / already settled — measure against whatever is loaded.
+      }
+    }
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
     const storyRegions = Array.from(document.querySelectorAll("[data-contract-story-id]")).map((node) => {
       const rect = node.getBoundingClientRect();
       return {
@@ -219,13 +229,31 @@ async function collectPageHealth(page) {
       .join(" ")
       .replace(/\s+/g, " ")
       .trim();
+    // A "clipped" element is one whose text is actually CUT OFF from view. Text is only cut
+    // when the element hides its overflow on the overflowing axis (overflow hidden/clip, or
+    // scroll/auto where content past the edge needs scrolling to see). On an overflow:visible
+    // element, scrollWidth > clientWidth merely means content extends past the padding box and
+    // is STILL FULLY VISIBLE — not clipped. The prior check flagged any scroll/client excess
+    // regardless of overflow, so a flex end-item (the right-flush disclosure chevron) reporting
+    // a few px of horizontal overflow read as a clip; that excess flickers with layout-settle
+    // timing, so under full-`pnpm verify` load (slower settle) it intermittently reddened
+    // clippedButtonText/browserProofSummary. Gating on a clipping overflow value removes the
+    // false positive deterministically without weakening real-clip (ellipsis / fixed-height
+    // cut) detection, which always sets a clipping overflow.
+    const clipsAxis = (value) => value !== "visible";
     const clipped = Array.from(document.querySelectorAll("button, select, .tcrn-badge, .tcrn-heading, h1, h2, h3"))
       .filter((node) => !node.classList.contains("tcrn-sr-only"))
-      .map((node) => ({
-        tag: node.tagName.toLowerCase(),
-        text: visibleText(node).slice(0, 80),
-        clipped: visibleText(node).length > 0 && (node.scrollWidth > node.clientWidth + 1 || node.scrollHeight > node.clientHeight + 1)
-      }))
+      .map((node) => {
+        const style = getComputedStyle(node);
+        const text = visibleText(node);
+        return {
+          tag: node.tagName.toLowerCase(),
+          text: text.slice(0, 80),
+          clipped: text.length > 0
+            && ((clipsAxis(style.overflowX) && node.scrollWidth > node.clientWidth + 1)
+              || (clipsAxis(style.overflowY) && node.scrollHeight > node.clientHeight + 1))
+        };
+      })
       .filter((item) => item.clipped);
     const readbackStateViewGapViolations = Array.from(document.querySelectorAll(".tcrn-readback-panel"))
       .flatMap((panel) => {
@@ -2550,6 +2578,10 @@ console.log(JSON.stringify({
   aiContractTraceabilityOk: aiContractTraceabilityCheck.ok,
   coveredStorybookSections: aiContractTraceabilityCheck.coveredSectionCount,
   coveredStorybookCategories: aiContractTraceabilityCheck.coveredCategoryCount,
+  browserProofSummaryOk: browserProofSummary.ok,
+  storyCoverageManifestOk: storyCoverageManifest.ok,
+  visualBaselineManifestOk: visualBaselineManifest.ok,
+  clippedButtonText: visualBaselineManifest.rejectChecks.clippedButtonText,
   storyHeightBudgetOk: storyHeightBudget.ok,
   storyHeightViolations: storyHeightBudget.unbudgetedViolations.length,
   storyHeightStaleAllowlist: storyHeightBudget.staleAllowlist.length,
