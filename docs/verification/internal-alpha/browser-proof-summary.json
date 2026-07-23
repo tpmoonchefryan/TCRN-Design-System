@@ -277,7 +277,7 @@
           "id": "contribution-model",
           "visible": true,
           "width": 1077,
-          "height": 343
+          "height": 326
         },
         {
           "id": "release-bug-policy",
@@ -813,7 +813,7 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 1077,
-          "height": 5906
+          "height": 5868
         },
         {
           "id": "aos-frontend-shell-slice",
@@ -843,13 +843,13 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 7701
+          "height": 7702
         },
         {
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 2759
+          "height": 2757
         }
       ],
       "clipped": [],
@@ -1004,7 +1004,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 1077,
-          "height": 4104
+          "height": 4105
         },
         {
           "id": "readiness-notification-patterns",
@@ -1848,19 +1848,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 691,
-          "height": 6522
+          "height": 6483
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 15441
+          "height": 15446
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 691,
-          "height": 19173
+          "height": 19179
         },
         {
           "id": "dialog-spec-usage",
@@ -1878,13 +1878,13 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 9461
+          "height": 9462
         },
         {
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 3137
+          "height": 3135
         }
       ],
       "clipped": [],
@@ -1997,7 +1997,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 691,
-          "height": 4612
+          "height": 4613
         },
         {
           "id": "readiness-notification-patterns",
@@ -2346,7 +2346,7 @@
           "id": "contribution-model",
           "visible": true,
           "width": 358,
-          "height": 611
+          "height": 606
         },
         {
           "id": "release-bug-policy",
@@ -2422,7 +2422,7 @@
           "id": "brand-identity",
           "visible": true,
           "width": 358,
-          "height": 2406
+          "height": 2402
         },
         {
           "id": "color-palette",
@@ -2537,7 +2537,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9897
+          "height": 9882
         },
         {
           "id": "copy-guidelines",
@@ -2661,7 +2661,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 16292
+          "height": 16289
         },
         {
           "id": "display-primitives-spec",
@@ -2697,19 +2697,19 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 358,
-          "height": 13943
+          "height": 13820
         },
         {
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 28319
+          "height": 28187
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 41773
+          "height": 41683
         },
         {
           "id": "dialog-spec-usage",
@@ -2727,13 +2727,13 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 21544
+          "height": 21539
         },
         {
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 5742
+          "height": 5733
         }
       ],
       "clipped": [],
@@ -2811,13 +2811,13 @@
           "id": "workbench-patterns",
           "visible": true,
           "width": 358,
-          "height": 787
+          "height": 785
         },
         {
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 10356
+          "height": 10358
         },
         {
           "id": "readiness-notification-patterns",
@@ -2926,7 +2926,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 13534
+          "height": 13526
         },
         {
           "id": "blocked-actions",
@@ -3002,7 +3002,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 358,
-          "height": 1193
+          "height": 1190
         }
       ],
       "clipped": [],
