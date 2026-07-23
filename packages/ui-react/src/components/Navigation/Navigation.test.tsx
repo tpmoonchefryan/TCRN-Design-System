@@ -363,10 +363,10 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-one-suffix \{[\s\S]*font-weight: var\(--tcrn-type-weight-strong\);[\s\S]*white-space: nowrap;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-logo--stacked-suffix \.tcrn-product-logo__line-one \{[\s\S]*flex-direction: column;[\s\S]*align-items: flex-start;[\s\S]*white-space: normal;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-two \{[\s\S]*font-size: var\(--tcrn-type-size-meta\);[\s\S]*line-height: var\(--tcrn-type-line-caption\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-theme-toggle \{[\s\S]*inline-size: 36px;[\s\S]*min-height: 36px;[\s\S]*border-radius: 999px;/);
+  assert.match(tcrnComponentCss, /\.tcrn-shell-theme-toggle \{[\s\S]*inline-size: 36px;[\s\S]*min-height: 36px;[\s\S]*border-radius: var\(--tcrn-radius-pill\);/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 38px;[\s\S]*min-height: 38px;[\s\S]*place-items: center;/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle__icon \{[\s\S]*inline-size: 20px;[\s\S]*place-items: center;/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger \{[\s\S]*min-height: 36px;[\s\S]*border-radius: 999px;[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger \{[\s\S]*min-height: 36px;[\s\S]*border-radius: var\(--tcrn-radius-pill\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input \{[\s\S]*--tcrn-search-input-control-min-inline-size: 9ch;[\s\S]*display: grid;[\s\S]*grid-template-columns: var\(--tcrn-search-input-icon-size\) minmax\(var\(--tcrn-search-input-control-min-inline-size\), 1fr\) max-content;/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input:focus-within \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*outline-offset: 2px;[\s\S]*box-shadow: none;/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*position: static;[\s\S]*color: var\(--tcrn-color-text-secondary\);[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-weight: var\(--tcrn-type-weight-strong\);/);
