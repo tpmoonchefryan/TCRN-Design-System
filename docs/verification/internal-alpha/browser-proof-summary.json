@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "a9e664561964ca5386311793dc77c6df1df6fb258adf50a5f13174c369b1b6a1",
+    "contractPayloadDigest": "5e0a4e7036931e44c76aa6bf0e42bceb83b0383f04b0399109722bca7f6c56e3",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 19,
@@ -86,7 +86,7 @@
     "foundationVisualStandardCategoryCount": 10,
     "consumerVisualStyleContractId": "consumer-visual-style-contract-v1",
     "storybookDocShellVisualOracleId": "original-storybook-doc-shell-v1",
-    "storybookDocShellVisualOracleReceipt": "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan",
+    "storybookDocShellVisualOracleReceipt": "internal DS doc-shell restoration plan (owner-held governance record)",
     "storybookDocShellVisualOracleBaselineClassification": "owner_declared_original_storybook_doc_shell_standard",
     "storybookDocShellVisualOracleMetricEvidenceCount": 4,
     "llmsTraceabilitySectionsPresent": true
@@ -259,7 +259,7 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 1077,
-          "height": 784
+          "height": 820
         },
         {
           "id": "governance-boundaries",
@@ -596,7 +596,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 1077,
-          "height": 3385
+          "height": 3350
         },
         {
           "id": "copy-guidelines",
@@ -783,7 +783,7 @@
           "id": "display-primitives-spec",
           "visible": true,
           "width": 1077,
-          "height": 1709
+          "height": 1692
         },
         {
           "id": "interaction-disclosure-spec",
@@ -801,7 +801,7 @@
           "id": "button-spec-usage",
           "visible": true,
           "width": 1077,
-          "height": 1033
+          "height": 1015
         },
         {
           "id": "field-spec-usage",
@@ -1004,7 +1004,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 1077,
-          "height": 4119
+          "height": 1792
         },
         {
           "id": "readiness-notification-patterns",
@@ -1364,7 +1364,7 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 691,
-          "height": 905
+          "height": 958
         },
         {
           "id": "governance-boundaries",
@@ -1645,7 +1645,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 691,
-          "height": 4507
+          "height": 4367
         },
         {
           "id": "copy-guidelines",
@@ -1836,7 +1836,7 @@
           "id": "button-spec-usage",
           "visible": true,
           "width": 691,
-          "height": 1115
+          "height": 1080
         },
         {
           "id": "field-spec-usage",
@@ -1848,7 +1848,7 @@
           "id": "navigation-shell-spec",
           "visible": true,
           "width": 691,
-          "height": 6642
+          "height": 6625
         },
         {
           "id": "aos-frontend-shell-slice",
@@ -1860,7 +1860,7 @@
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 691,
-          "height": 19187
+          "height": 19082
         },
         {
           "id": "dialog-spec-usage",
@@ -1878,7 +1878,7 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 691,
-          "height": 11323
+          "height": 11217
         },
         {
           "id": "knowledge-management-components-spec",
@@ -1997,7 +1997,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 691,
-          "height": 4626
+          "height": 1957
         },
         {
           "id": "readiness-notification-patterns",
@@ -2328,7 +2328,7 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 358,
-          "height": 1674
+          "height": 1744
         },
         {
           "id": "governance-boundaries",
@@ -2537,7 +2537,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9728
+          "height": 9693
         },
         {
           "id": "copy-guidelines",
@@ -2667,13 +2667,13 @@
           "id": "display-primitives-spec",
           "visible": true,
           "width": 358,
-          "height": 3127
+          "height": 3109
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 358,
-          "height": 2108
+          "height": 2090
         },
         {
           "id": "stamp-spec-usage",
@@ -2685,7 +2685,7 @@
           "id": "button-spec-usage",
           "visible": true,
           "width": 358,
-          "height": 1737
+          "height": 1684
         },
         {
           "id": "field-spec-usage",
@@ -2727,13 +2727,13 @@
           "id": "work-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 25800
+          "height": 25745
         },
         {
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 6630
+          "height": 6655
         }
       ],
       "clipped": [],
@@ -2817,7 +2817,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 10386
+          "height": 3512
         },
         {
           "id": "readiness-notification-patterns",
