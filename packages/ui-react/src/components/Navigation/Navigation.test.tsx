@@ -253,6 +253,32 @@ test("product shell component css keeps motion shorthands valid", () => {
   assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-motion-emphasis\) ease/);
 });
 
+test("product shell component css carries the relocated component families (TCRN-DS-STORY-037)", () => {
+  // The 24 genuine component families were moved out of the docs demo layer into the
+  // package. A future accidental removal (or a revert to doc-only styling) must fail here.
+  assert.match(tcrnComponentCss, /\.tcrn-field\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-tooltip__content\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-popover\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-breadcrumb\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-skeleton\b/);
+  // Representative members across the other relocated families.
+  assert.match(tcrnComponentCss, /\.tcrn-surface\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-state-surface\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-collapsible-region\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-segmented-nav\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-highlight-mark\b/);
+  assert.match(tcrnComponentCss, /@keyframes tcrn-skeleton-shimmer\b/);
+  // The storybook-only static tooltip hook must NOT be shipped in the package; it stays
+  // in the docs demo layer (it is not emitted by the Tooltip component).
+  assert.doesNotMatch(tcrnComponentCss, /data-storybook-static-tooltip/);
+  // .tcrn-filter-bar must not become a top-level package selector, or the shell-fidelity
+  // duplicate-selector gate fires (it stays doc-side; package owns it only scoped).
+  assert.doesNotMatch(tcrnComponentCss, /\n\.tcrn-filter-bar\s*[,{]/);
+  // Guard: relocated rules reference tokens via var(); they must not DEFINE tokens.
+  assert.doesNotMatch(tcrnComponentCss, /--tcrn-color-state-blocked:/);
+  assert.doesNotMatch(tcrnComponentCss, /--tcrn-z-popover:/);
+});
+
 test("product shell component css isolates topbar from docs chrome", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*border: 0;[\s\S]*border-bottom: 1px solid var\(--tcrn-color-border-subtle\);[\s\S]*border-radius: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);[\s\S]*justify-content: stretch;/);

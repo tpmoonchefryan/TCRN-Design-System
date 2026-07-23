@@ -18,40 +18,19 @@ export const demoStoryCss = `.alpha-frame {
   padding: var(--tcrn-space-5);
 }
 
-.alpha-story-card,
-.tcrn-surface,
-.tcrn-detail-inspector,
-.tcrn-gate-readiness-panel,
-.tcrn-state-view,
-.tcrn-state-surface,
-.tcrn-disclosure-panel,
-.tcrn-popover,
-.tcrn-dialog,
-.tcrn-confirm-dialog,
-.tcrn-detail-drawer,
-.tcrn-action-drawer {
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
-  padding: var(--tcrn-space-3);
-  max-width: 100%;
-  min-width: 0;
-}
-
-.tcrn-surface,
-.tcrn-detail-inspector,
-.tcrn-gate-readiness-panel,
-.tcrn-confirm-dialog,
-.tcrn-detail-drawer,
-.tcrn-action-drawer {
-  display: grid;
-  gap: var(--tcrn-space-2h);
-}
-
+/* The shared base-card group (border/radius/panel-bg + the display:grid variant) moved
+   into the package component CSS (tcrnComponentCss) — TCRN-DS-STORY-037 — because every
+   member except .alpha-story-card is a real @tcrn/ui-react component surface. The demo
+   card keeps its own self-contained block here. */
 .alpha-story-card {
   display: grid;
   gap: var(--tcrn-space-3);
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-surface);
+  background: var(--tcrn-color-surface-panel);
   padding: var(--tcrn-space-4);
+  max-width: 100%;
+  min-width: 0;
 }
 
 .tcrn-story-kicker {
@@ -86,18 +65,8 @@ label {
   vertical-align: -0.125em;
 }
 
-.tcrn-highlight-text {
-  display: inline;
-}
-
-.tcrn-highlight-mark {
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-brand-primary-bg);
-  color: var(--tcrn-color-text-primary);
-  font-weight: var(--tcrn-type-weight-medium);
-  padding: 0 var(--tcrn-space-0h);
-}
-
+/* .tcrn-highlight-text / .tcrn-highlight-mark (Typography-emitted) moved into the
+   package component CSS — TCRN-DS-STORY-037. */
 
 .alpha-story-stack {
   display: grid;
@@ -643,97 +612,9 @@ label {
 
 
 
-.tcrn-state-view {
-  display: grid;
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-state-view h3,
-.tcrn-state-view p {
-  margin: 0;
-}
-
-.tcrn-skeleton,
-.tcrn-skeleton-group {
-  display: block;
-  max-width: 100%;
-}
-
-.tcrn-skeleton {
-  position: relative;
-  overflow: hidden;
-  min-height: 18px;
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-muted);
-}
-
-.tcrn-skeleton::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.62), transparent);
-  animation: tcrn-skeleton-shimmer var(--tcrn-motion-skeleton-loop) infinite;
-}
-
-.tcrn-skeleton--text {
-  width: 100%;
-  height: 1em;
-}
-
-.tcrn-skeleton--rectangular {
-  width: 100%;
-  height: 56px;
-}
-
-.tcrn-skeleton--circular {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--tcrn-radius-pill);
-}
-
-.tcrn-skeleton-group {
-  display: grid;
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-skeleton-group .tcrn-skeleton:last-child {
-  width: 72%;
-}
-
-@keyframes tcrn-skeleton-shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.tcrn-state-surface {
-  display: grid;
-  place-items: center;
-  gap: var(--tcrn-space-2);
-  text-align: center;
-  min-height: 144px;
-  color: var(--tcrn-color-text-secondary);
-}
-
-.tcrn-state-surface__icon {
-  color: var(--tcrn-color-text-muted);
-}
-
-.tcrn-state-surface__title,
-.tcrn-state-surface__description {
-  margin: 0;
-}
-
-.tcrn-state-surface--warning .tcrn-state-surface__title,
-.tcrn-state-surface--warning .tcrn-state-surface__icon {
-  color: var(--tcrn-color-state-warning);
-}
-
-.tcrn-state-surface--danger .tcrn-state-surface__title,
-.tcrn-state-surface--danger .tcrn-state-surface__icon {
-  color: var(--tcrn-color-state-blocked);
-}
+/* Feedback families .tcrn-state-view / .tcrn-skeleton* (+ @keyframes
+   tcrn-skeleton-shimmer) / .tcrn-state-surface* moved into the package component CSS —
+   TCRN-DS-STORY-037. (.tcrn-state-surface__action stays out of scope; it is S036.) */
 
 .tcrn-display-primitive-grid {
   display: grid;
@@ -768,185 +649,41 @@ label {
   font-size: var(--tcrn-type-size-meta);
 }
 
-.tcrn-tooltip {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-}
-
-.tcrn-tooltip__content {
-  position: absolute;
-  z-index: var(--tcrn-z-popover);
-  pointer-events: none;
-  width: max-content;
-  max-width: min(260px, calc(100vw - 32px));
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-text-primary);
-  color: var(--tcrn-color-surface-panel);
-  padding: var(--tcrn-space-1h) var(--tcrn-space-2);
-  font-size: var(--tcrn-type-size-meta);
-  line-height: 1.35;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity var(--tcrn-motion-standard), transform var(--tcrn-motion-standard);
-  box-shadow: var(--tcrn-elevation-floating);
-}
-
-.tcrn-tooltip:hover .tcrn-tooltip__content,
-.tcrn-tooltip:focus-within .tcrn-tooltip__content,
+/* Tooltip base, content, the :hover/:focus-within reveal and the four data-placement
+   position rules moved into the package component CSS — TCRN-DS-STORY-037. The docs demo
+   layer keeps ONLY the storybook static-preview hook
+   ([data-storybook-static-tooltip="true"]), which the Tooltip component never emits, so
+   it is presentation chrome. The package rules supply the base placement; these force the
+   revealed state for the static preview. */
 .tcrn-tooltip[data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   opacity: 1;
   transform: translateY(0);
 }
 
-.tcrn-tooltip[data-placement="top"] .tcrn-tooltip__content {
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translate(-50%, 4px);
-}
-
-.tcrn-tooltip[data-placement="top"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="top"]:focus-within .tcrn-tooltip__content,
 .tcrn-tooltip[data-placement="top"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   transform: translate(-50%, 0);
 }
 
-.tcrn-tooltip[data-placement="bottom"] .tcrn-tooltip__content {
-  top: calc(100% + 6px);
-  left: 50%;
-  transform: translate(-50%, -4px);
-}
-
-.tcrn-tooltip[data-placement="bottom"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="bottom"]:focus-within .tcrn-tooltip__content,
 .tcrn-tooltip[data-placement="bottom"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   transform: translate(-50%, 0);
 }
 
-.tcrn-tooltip[data-placement="right"] .tcrn-tooltip__content {
-  top: 50%;
-  left: calc(100% + 8px);
-  transform: translate(-4px, -50%);
-}
-
-.tcrn-tooltip[data-placement="right"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="right"]:focus-within .tcrn-tooltip__content,
 .tcrn-tooltip[data-placement="right"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   transform: translate(0, -50%);
 }
 
-.tcrn-tooltip[data-placement="left"] .tcrn-tooltip__content {
-  top: 50%;
-  right: calc(100% + 8px);
-  transform: translate(4px, -50%);
-}
-
-.tcrn-tooltip[data-placement="left"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="left"]:focus-within .tcrn-tooltip__content,
 .tcrn-tooltip[data-placement="left"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
   transform: translate(0, -50%);
 }
 
-.tcrn-collapsible-region {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0.4;
-  transition: grid-template-rows var(--tcrn-motion-emphasis), opacity var(--tcrn-motion-standard);
-}
-
-.tcrn-collapsible-region[data-expanded="true"] {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-.tcrn-collapsible-region[aria-hidden="true"] {
-  visibility: hidden;
-}
-
-.tcrn-collapsible-region__inner {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.tcrn-disclosure-panel {
-  display: grid;
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-disclosure-panel__title {
-  margin: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-skeleton::after {
-    animation: none;
-    opacity: 0;
-  }
-
-  .tcrn-tooltip__content,
-  .tcrn-collapsible-region,
-  .tcrn-field {
-    transition: none;
-  }
-}
-
-@media (forced-colors: active) {
-  .tcrn-field:focus-within,
-  .tcrn-field--error {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
-  }
-}
+/* Layout .tcrn-collapsible-region* / .tcrn-disclosure-panel* and the component
+   reduced-motion + forced-colors handling moved into the package component CSS —
+   TCRN-DS-STORY-037. */
 
 
-
-
-
-.tcrn-field {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  margin-bottom: 10px;
-  border-radius: var(--tcrn-radius-control);
-  background-color: transparent;
-  outline: 1px solid transparent;
-  outline-offset: 2px;
-  transition:
-    background-color 150ms ease-out,
-    outline-color 150ms ease-out;
-}
-
-.tcrn-field:focus-within {
-  background-color: color-mix(in srgb, var(--tcrn-color-surface-muted) 56%, transparent);
-  outline-color: color-mix(in srgb, var(--tcrn-color-border-strong) 66%, transparent);
-}
-
-.tcrn-field--error {
-  background-color: color-mix(in srgb, var(--tcrn-color-state-blocked-bg) 62%, transparent);
-  outline-color: var(--tcrn-color-state-blocked);
-}
-
-.tcrn-field__label {
-  font-weight: 600;
-}
-
-.tcrn-field__hint {
-  color: var(--tcrn-color-text-secondary);
-}
-
-.tcrn-field__error {
-  color: var(--tcrn-color-state-blocked);
-}
-
-.tcrn-input,
-.tcrn-select {
-  min-height: 34px;
-  border: 1px solid var(--tcrn-color-border-strong);
-  border-radius: var(--tcrn-radius-control);
-  max-width: 100%;
-  padding: 0 var(--tcrn-space-2h);
-}
-
+/* Form families .tcrn-field* and .tcrn-input / .tcrn-select moved into the package
+   component CSS — TCRN-DS-STORY-037. .tcrn-input--short is a docs-only demo width (not
+   component-emitted) and stays here; it leans on the package .tcrn-input base. */
 .tcrn-input--short {
   width: min(18ch, 100%);
 }
@@ -1028,75 +765,18 @@ label {
   color: var(--tcrn-color-text-secondary);
 }
 
-.tcrn-breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
-}
-
-.tcrn-breadcrumb__item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-}
-
-.tcrn-breadcrumb__separator {
-  width: 14px;
-  height: 14px;
-  color: var(--tcrn-color-text-muted);
-}
-
-.tcrn-breadcrumb [aria-current="page"] {
-  color: var(--tcrn-color-text-primary);
-  font-weight: 700;
-}
-
-.tcrn-product-launcher,
-.tcrn-product-switcher,
-.tcrn-module-tabs,
-.tcrn-section-tabs,
-.tcrn-segmented-nav,
+/* Navigation families .tcrn-breadcrumb* and the tab layouts (.tcrn-product-launcher,
+   .tcrn-product-switcher, .tcrn-module-tabs, .tcrn-section-tabs, .tcrn-segmented-nav,
+   including their button + selected rules) moved into the package component CSS —
+   TCRN-DS-STORY-037. .tcrn-filter-bar is docs-only demo chrome and stays; it shares the
+   flex layout the tab families use. It is package-owned only via the scoped
+   ".tcrn-table-toolbar .tcrn-filter-bar" rule, so a top-level .tcrn-filter-bar here does
+   not duplicate a package selector. */
 .tcrn-filter-bar {
   display: flex;
   flex-wrap: wrap;
   gap: var(--tcrn-space-1h);
   min-width: 0;
-}
-
-.tcrn-product-launcher button,
-.tcrn-product-switcher button,
-.tcrn-module-tabs button,
-.tcrn-section-tabs button,
-.tcrn-segmented-nav button {
-  min-height: 34px;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 76%, transparent);
-  border-radius: var(--tcrn-radius-control);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 92%, transparent);
-  color: var(--tcrn-color-text-secondary);
-  padding: 0 var(--tcrn-space-2h);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tcrn-color-surface-panel) 72%, transparent);
-}
-
-.tcrn-product-launcher button[data-selected="true"],
-.tcrn-product-switcher button[data-selected="true"],
-.tcrn-module-tabs button[data-selected="true"],
-.tcrn-section-tabs button[data-selected="true"],
-.tcrn-segmented-nav button[data-selected="true"],
-.tcrn-product-launcher button[aria-current="page"],
-.tcrn-product-switcher button[aria-current="page"],
-.tcrn-module-tabs button[aria-current="page"],
-.tcrn-section-tabs button[aria-current="page"],
-.tcrn-segmented-nav button[aria-current="page"] {
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 30%, var(--tcrn-color-border-subtle));
-  background: var(--tcrn-color-surface-panel);
-  color: var(--tcrn-color-text-primary);
-  box-shadow: var(--tcrn-elevation-floating);
 }
 
 .tcrn-nav-component-preview {
@@ -2215,18 +1895,12 @@ label {
   display: none;
 }
 
-.tcrn-dialog,
-.tcrn-popover,
+/* Overlay .tcrn-dialog / .tcrn-popover grid + the .tcrn-popover specifics moved into the
+   package component CSS — TCRN-DS-STORY-037. The demo .alpha-overlay-demo__dialog keeps
+   its own grid layout here. */
 .alpha-overlay-demo__dialog {
   display: grid;
   gap: var(--tcrn-space-2h);
-}
-
-.tcrn-popover {
-  z-index: var(--tcrn-z-popover);
-  max-width: 420px;
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 24%, transparent);
-  box-shadow: var(--tcrn-elevation-floating);
 }
 
 @media (max-width: 760px) {
