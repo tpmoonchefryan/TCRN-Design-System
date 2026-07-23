@@ -969,7 +969,7 @@ export function ProductShell({
             onCollapsedChange={onCollapsedChange}
           />
         </div>
-          <SideNav id={navId} label={navLabel} className="tcrn-product-shell__nav" data-registered-navigation-only="true">
+          <SideNav id={navId} label={navLabel} data-registered-navigation-only="true">
             {navGroups.map((group) => (
               <NavGroup key={group.id}
                 label={group.label}
@@ -1295,7 +1295,9 @@ export const tcrnComponentCss = `
   font: inherit;
 }
 .tcrn-button,
-.tcrn-link-button {
+.tcrn-link-button,
+.tcrn-button--secondary,
+.tcrn-link-button--secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1320,21 +1322,34 @@ export const tcrnComponentCss = `
 .tcrn-table-toolbar__collapse:active {
   transform: scale(var(--tcrn-motion-press-scale));
 }
-.tcrn-button--primary {
+.tcrn-button--primary,
+.tcrn-link-button--primary {
   background: var(--tcrn-color-brand-primary);
   border-color: var(--tcrn-color-brand-primary);
   color: var(--tcrn-color-text-inverse);
 }
-[data-tcrn-theme="dark"] .tcrn-button--primary {
+[data-tcrn-theme="dark"] .tcrn-button--primary,
+[data-tcrn-theme="dark"] .tcrn-link-button--primary {
   color: var(--tcrn-color-surface-canvas);
 }
-.tcrn-button--quiet {
+.tcrn-button--quiet,
+.tcrn-link-button--quiet {
   border-color: transparent;
   background: transparent;
 }
 .tcrn-button--danger {
   border-color: var(--tcrn-color-state-blocked);
   color: var(--tcrn-color-state-blocked);
+}
+.tcrn-button--md {
+  min-height: 38px;
+  padding: 0 var(--tcrn-space-3);
+}
+.tcrn-button--sm {
+  min-height: 30px;
+  padding: 0 var(--tcrn-space-2);
+  gap: var(--tcrn-space-1h);
+  font-size: var(--tcrn-type-size-meta);
 }
 .tcrn-button[disabled],
 .tcrn-nav-item[aria-disabled="true"] {
@@ -1345,6 +1360,11 @@ export const tcrnComponentCss = `
   inline-size: 38px;
   block-size: 38px;
   padding: 0;
+}
+.tcrn-divider {
+  border: 0;
+  border-top: 1px solid var(--tcrn-color-border-subtle);
+  margin: var(--tcrn-space-3) 0;
 }
 .tcrn-shell-theme-toggle,
 .tcrn-button.tcrn-shell-theme-toggle {
@@ -1448,6 +1468,20 @@ export const tcrnComponentCss = `
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+/* aria-live announcer: visually-hidden by default so status text is spoken by
+   assistive tech without occupying layout (agent-picked announcer disposition). */
+.tcrn-live-region {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 .tcrn-brand-lockup,
 .tcrn-shell-brand-lockup,
@@ -2021,6 +2055,9 @@ export const tcrnComponentCss = `
 .tcrn-shell-locale-menu__option:hover {
   background: var(--tcrn-color-surface-muted);
 }
+.tcrn-shell-locale-menu__name {
+  font: inherit;
+}
 [data-theme-icon="dark"],
 [data-side-nav-icon="expand"] {
   display: none;
@@ -2316,6 +2353,9 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   padding: var(--tcrn-space-3);
   color: var(--tcrn-color-text-secondary);
 }
+.tcrn-table-shell__empty-row {
+  display: block;
+}
 @media (max-width: 520px) {
   .tcrn-table-shell {
     overflow-x: visible;
@@ -2458,6 +2498,12 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   --tcrn-work-density-gap: var(--tcrn-space-1);
   --tcrn-work-density-padding: var(--tcrn-space-2);
   --tcrn-work-density-row-min: 34px;
+}
+.tcrn-work-board-view__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--tcrn-work-density-gap);
+  margin-bottom: var(--tcrn-space-3);
 }
 .tcrn-work-page-header {
   display: grid;
@@ -2630,6 +2676,10 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 .tcrn-work-item-row__field span,
 .tcrn-work-board__card-field span {
   color: var(--tcrn-color-text-secondary);
+}
+.tcrn-work-board__card-meta {
+  color: var(--tcrn-color-text-secondary);
+  font-size: var(--tcrn-type-size-meta);
 }
 .tcrn-work-item-row__relationships {
   grid-column: 1 / -1;
@@ -2936,6 +2986,10 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   min-width: 0;
   margin-right: auto;
 }
+.tcrn-knowledge-document-canvas__meta {
+  color: var(--tcrn-color-text-secondary);
+  font-size: var(--tcrn-type-size-meta);
+}
 .tcrn-knowledge-document-canvas__head .tcrn-heading,
 .tcrn-knowledge-document-canvas__head .tcrn-text,
 .tcrn-knowledge-document-canvas__section .tcrn-heading,
@@ -3237,7 +3291,7 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   }
 }
 
-/* Feedback state surface (.tcrn-state-surface__action is out of scope — S036) */
+/* Feedback state surface */
 .tcrn-state-surface {
   display: grid;
   place-items: center;
@@ -3264,6 +3318,12 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 .tcrn-state-surface--danger .tcrn-state-surface__title,
 .tcrn-state-surface--danger .tcrn-state-surface__icon {
   color: var(--tcrn-color-state-blocked);
+}
+
+.tcrn-state-surface__action {
+  display: flex;
+  gap: var(--tcrn-space-2);
+  margin-top: var(--tcrn-space-2);
 }
 
 /* Overlay tooltip — genuine :hover / :focus-within reveal only. The storybook
@@ -3420,6 +3480,14 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   max-width: 100%;
   padding: 0 var(--tcrn-space-2h);
 }
+/* Textarea is a modifier on .tcrn-input (border/bg/radius/font come from the base);
+   these deltas give it a multi-line box and a vertical resize handle. */
+.tcrn-textarea {
+  min-height: 96px;
+  padding: var(--tcrn-space-2) var(--tcrn-space-3);
+  resize: vertical;
+  line-height: var(--tcrn-type-line-ui);
+}
 
 /* Navigation breadcrumb */
 .tcrn-breadcrumb {
@@ -3449,6 +3517,14 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 .tcrn-breadcrumb [aria-current="page"] {
   color: var(--tcrn-color-text-primary);
   font-weight: 700;
+}
+
+/* Pagination container. Pagination renders an empty nav today; this readies the
+   row layout for page controls without asserting markup S036 does not ship. */
+.tcrn-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--tcrn-space-2);
 }
 
 /* Navigation tab families — .tcrn-filter-bar stays doc-side (already package-owned via
