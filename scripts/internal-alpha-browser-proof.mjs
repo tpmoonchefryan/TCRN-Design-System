@@ -7,6 +7,7 @@ import { chromium } from "@playwright/test";
 import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.mjs";
 import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE } from "./lib/visual-signature.mjs";
 import { storybookId } from "./lib/storybook-id.mjs";
+import { localeInvariantLedger, findLatinLeaks, partitionStoryLeaks } from "./lib/locale-invariant-ledger.mjs";
 import {
   STORY_HEIGHT_BUDGET_PX,
   STORY_HEIGHT_BUDGET_VIEWPORT,
@@ -1721,6 +1722,78 @@ async function collectLocalizedShellChromeCheck(page, check) {
   };
 }
 
+// Systematic English-leak gate (TCRN-DS-STORY-048). The four hand-authored i18n checks
+// above catch only the strings a human pre-listed on four routes; this scan renders every
+// one of the 43 stories on a localized route and flags any run of >=2 Latin words that is
+// neither exempt (localeInvariantLedger.exemptSubtreeSelectors) nor audited debt
+// (translationDebtAllowlist). It loads 7 section pages, not 43 routes: each page carries its
+// whole group's stories, so one expand + walk per page covers every story on that page.
+// Exempt subtrees are hidden (not cloned) so innerText reads the real rendered layout, then
+// restored — cloning a detached node breaks innerText's line-box behaviour.
+async function collectLocaleLeakScan(page, locale, { gating }) {
+  const exemptSelector = localeInvariantLedger.exemptSubtreeSelectors.join(", ");
+  const regionResults = [];
+  for (const section of sectionPages) {
+    await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?locale=${locale}`);
+    await page.waitForSelector(`[data-storybook-locale='${locale}']`);
+    await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+    await expandAllStoriesForContentRead(page);
+    const regionTexts = await page.evaluate((selector) => {
+      const results = [];
+      for (const region of document.querySelectorAll("[data-contract-story-id]")) {
+        const storyId = region.getAttribute("data-contract-story-id");
+        const restored = [];
+        for (const node of region.querySelectorAll(selector)) {
+          restored.push([node, node.style.display]);
+          node.style.display = "none";
+        }
+        const text = region.innerText;
+        for (const [node, previous] of restored) {
+          node.style.display = previous;
+        }
+        results.push({ storyId, text });
+      }
+      return results;
+    }, exemptSelector);
+    for (const { storyId, text } of regionTexts) {
+      regionResults.push({ storyId, leaks: findLatinLeaks(text, localeInvariantLedger.properNouns) });
+    }
+  }
+  if (gating) {
+    const perStory = regionResults.map(({ storyId, leaks }) => partitionStoryLeaks(storyId, leaks));
+    const newLeaks = perStory
+      .filter((story) => story.newLeaks.length > 0)
+      .map((story) => ({ storyId: story.storyId, leaks: story.newLeaks }));
+    return {
+      locale,
+      gating: true,
+      ok: newLeaks.length === 0,
+      storyCount: perStory.length,
+      allowlistedLeakCount: perStory.reduce((total, story) => total + story.allowlistedLeakCount, 0),
+      newLeakCount: newLeaks.reduce((total, story) => total + story.leaks.length, 0),
+      newLeaks,
+      perStory: perStory.map((story) => ({
+        storyId: story.storyId,
+        allowlistedLeakCount: story.allowlistedLeakCount,
+        newLeaks: story.newLeaks
+      }))
+    };
+  }
+  // Recorded report-only: count multi-word Latin runs per story without gating and without
+  // dumping the strings. NOTE fr is Latin-script, so its runs include correctly-translated
+  // French and the count is a trend signal, not a clean untranslated-English measure.
+  const perStory = regionResults.map(({ storyId, leaks }) => ({ storyId, leakCount: leaks.length }));
+  return {
+    locale,
+    gating: false,
+    disposition: "recorded_report_only",
+    ok: true,
+    storyCount: perStory.length,
+    leakCount: perStory.reduce((total, story) => total + story.leakCount, 0),
+    perStory
+  };
+}
+
 const i18nContentChecks = [
   await collectLocalizedTextCheck(storybookPage, {
     locale: "zh-CN",
@@ -1892,6 +1965,23 @@ const localeRouteCheck = {
   globalZhCnIaShellCheck,
   brandMarkLocaleChecks
 };
+// zh-CN gates verify (its .ok flows through storyCoverageManifest.ok); ja/ko/fr are recorded
+// report-only. Promoting them to blocking is an Owner/ledger decision that quadruples the
+// debt surface — and fr is Latin-script, so a Latin-run detector cannot cleanly separate its
+// untranslated English from its correct French, which is a further reason to keep it off the gate.
+const localeLeakScan = {
+  disposition: "zh_cn_gating_ja_ko_fr_recorded_report_only",
+  detector: "runs of >=2 consecutive Latin words on the localized render; proper-noun tokens stripped; exempt subtrees removed before read",
+  exemptSubtreeSelectors: localeInvariantLedger.exemptSubtreeSelectors,
+  zhCn: await collectLocaleLeakScan(storybookPage, "zh-CN", { gating: true }),
+  recorded: {
+    ja: await collectLocaleLeakScan(storybookPage, "ja", { gating: false }),
+    ko: await collectLocaleLeakScan(storybookPage, "ko", { gating: false }),
+    fr: await collectLocaleLeakScan(storybookPage, "fr", { gating: false })
+  }
+};
+localeLeakScan.recorded.fr.latinScriptConfound = true;
+localeLeakScan.recorded.fr.note = "Latin-script target locale: multi-word Latin runs include correctly-translated French, so this count is a trend signal, not a clean untranslated-English measure.";
 const storybookChecks = [];
 for (const story of requiredStories) {
   await storybookPage.goto(`${staticServer.origin}/${staticStoryRoute(story)}`);
@@ -2126,7 +2216,7 @@ const axeSummary = {
   sections: axeSummaries
 };
 const storyCoverageManifest = {
-  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && mobileKnowledgeDocShellLayeringCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeMenuFocusReturnCheck.ok,
+  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && mobileKnowledgeDocShellLayeringCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeLeakScan.zhCn.ok && localeMenuFocusReturnCheck.ok,
   requiredStories,
   sectionPages,
   staticContractSurface: staticSurfacePath,
@@ -2143,6 +2233,7 @@ const storyCoverageManifest = {
   anchorScrollCheck,
   scrollSpyCheck,
   localeRouteCheck,
+  localeLeakScan,
   localeMenuFocusReturnCheck,
   staticSectionChecks,
   coverageDisposition: "full_static_contract_docs_navigation_and_i18n_pages"
@@ -2176,6 +2267,7 @@ const browserProofSummary = {
   viewports,
   aiContractTraceabilityCheck,
   componentStorybookParityReadback,
+  localeLeakScan,
   summaries: browserSummaries
 };
 const { findings: shellFidelityFindings, ...shellFidelity } = fidelityRejectChecks();
@@ -2341,7 +2433,15 @@ console.log(JSON.stringify({
   storyHeightBudgetOk: storyHeightBudget.ok,
   storyHeightViolations: storyHeightBudget.unbudgetedViolations.length,
   storyHeightStaleAllowlist: storyHeightBudget.staleAllowlist.length,
-  storyHeightToleratedDebt: storyHeightBudget.toleratedDebt.length
+  storyHeightToleratedDebt: storyHeightBudget.toleratedDebt.length,
+  localeLeakZhCnOk: localeLeakScan.zhCn.ok,
+  localeLeakZhCnNewLeaks: localeLeakScan.zhCn.newLeakCount,
+  localeLeakZhCnAllowlistedDebt: localeLeakScan.zhCn.allowlistedLeakCount,
+  localeLeakRecorded: {
+    ja: localeLeakScan.recorded.ja.leakCount,
+    ko: localeLeakScan.recorded.ko.leakCount,
+    fr: localeLeakScan.recorded.fr.leakCount
+  }
 }, null, 2));
 
 if (!ok) {
