@@ -70,51 +70,74 @@ export const storyCategoryDefinitions: Record<ContractStoryGroup, readonly Story
   ]
 };
 
-const storyCategoryById: Record<string, string> = {
-  "welcome-governance": "governance-entry",
-  "governance-boundaries": "governance-entry",
-  "maintainers-routing": "routing-contribution",
-  "contribution-model": "routing-contribution",
-  "release-bug-policy": "routing-contribution",
-  "brand-identity": "identity-brand",
-  "color-palette": "identity-brand",
-  "text-styles": "type-layout",
-  "grid-system": "type-layout",
-  "icons-motion": "interaction-copy",
-  "global-states": "interaction-copy",
-  "copy-creation-rules": "interaction-copy",
-  "tokens-copy-state": "tokens-i18n",
-  "i18n-theme-contract": "tokens-i18n",
-  "foundation-visual-standards": "tokens-i18n",
-  "copy-guidelines": "copy-governance",
-  "component-family-index": "component-inventory",
-  "display-primitives-spec": "component-inventory",
-  "interaction-disclosure-spec": "component-inventory",
-  "stamp-spec-usage": "controls-data",
-  "button-spec-usage": "controls-data",
-  "field-spec-usage": "controls-data",
-  "table-work-index-spec": "controls-data",
-  "navigation-shell-spec": "navigation-shells",
-  "aos-frontend-shell-slice": "navigation-shells",
-  "aos-owner-quality-product-shell": "navigation-shells",
-  "dialog-spec-usage": "overlays",
-  "work-management-components-spec": "work-management",
-  "knowledge-management-components-spec": "knowledge-management",
-  "forms-patterns": "forms-workbench",
-  "workbench-patterns": "forms-workbench",
-  "work-management-patterns": "work-management",
-  "readiness-notification-patterns": "feedback-selection",
-  "selection-list-patterns": "feedback-selection",
-  "modal-validation-patterns": "feedback-selection",
-  "datagrid-fields-patterns": "data-pages",
-  "big-list-search-patterns": "data-pages",
-  "dashboard-page-templates": "data-pages",
-  "proof-matrix": "proof-governance",
-  "ai-consumption-contract": "proof-governance",
-  "blocked-actions": "proof-governance",
-  "overlay-focus": "proof-governance",
-  "local-changelog": "governance-records"
-};
+export interface StoryRegistryEntry {
+  id: string;
+  group: ContractStoryGroup;
+  categoryId: string;
+}
+
+// Single ordered source of truth for the section -> category -> story tree.
+// The order MUST equal the kernel concatenation of groups/*.ts (contractStories);
+// the smoke.test tie-gate asserts storyRegistryOrder deep-equals contractStories on
+// {id, group, categoryId}, tying this list to actual page emission so it cannot drift.
+// The four gate trees derive from this one list (so a new story costs one entry here
+// plus its 5-locale title and one CSF export, not four hand edits):
+//   - build/ai-consumption-contract.ts requiredStorybookSectionChecklist + coveredStorybookSections
+//   - scripts/storybook-smoke.mjs requiredStories
+//   - scripts/internal-alpha-browser-proof.mjs requiredStories (via scripts/lib/storybook-id.mjs)
+// storyCategoryById (below) is derived from this list; nothing else may reorder it.
+export const storyRegistryOrder: readonly StoryRegistryEntry[] = [
+  { id: "welcome-governance", group: "Welcome", categoryId: "governance-entry" },
+  { id: "governance-boundaries", group: "Welcome", categoryId: "governance-entry" },
+  { id: "maintainers-routing", group: "Welcome", categoryId: "routing-contribution" },
+  { id: "contribution-model", group: "Welcome", categoryId: "routing-contribution" },
+  { id: "release-bug-policy", group: "Welcome", categoryId: "routing-contribution" },
+  { id: "brand-identity", group: "Style Guide", categoryId: "identity-brand" },
+  { id: "color-palette", group: "Style Guide", categoryId: "identity-brand" },
+  { id: "text-styles", group: "Style Guide", categoryId: "type-layout" },
+  { id: "grid-system", group: "Style Guide", categoryId: "type-layout" },
+  { id: "icons-motion", group: "Style Guide", categoryId: "interaction-copy" },
+  { id: "global-states", group: "Style Guide", categoryId: "interaction-copy" },
+  { id: "copy-creation-rules", group: "Style Guide", categoryId: "interaction-copy" },
+  { id: "tokens-copy-state", group: "Foundations", categoryId: "tokens-i18n" },
+  { id: "i18n-theme-contract", group: "Foundations", categoryId: "tokens-i18n" },
+  { id: "foundation-visual-standards", group: "Foundations", categoryId: "tokens-i18n" },
+  { id: "copy-guidelines", group: "Foundations", categoryId: "copy-governance" },
+  { id: "component-family-index", group: "Components", categoryId: "component-inventory" },
+  { id: "display-primitives-spec", group: "Components", categoryId: "component-inventory" },
+  { id: "interaction-disclosure-spec", group: "Components", categoryId: "component-inventory" },
+  { id: "stamp-spec-usage", group: "Components", categoryId: "controls-data" },
+  { id: "button-spec-usage", group: "Components", categoryId: "controls-data" },
+  { id: "field-spec-usage", group: "Components", categoryId: "controls-data" },
+  { id: "navigation-shell-spec", group: "Components", categoryId: "navigation-shells" },
+  { id: "aos-frontend-shell-slice", group: "Components", categoryId: "navigation-shells" },
+  { id: "aos-owner-quality-product-shell", group: "Components", categoryId: "navigation-shells" },
+  { id: "dialog-spec-usage", group: "Components", categoryId: "overlays" },
+  { id: "table-work-index-spec", group: "Components", categoryId: "controls-data" },
+  { id: "work-management-components-spec", group: "Components", categoryId: "work-management" },
+  { id: "knowledge-management-components-spec", group: "Components", categoryId: "knowledge-management" },
+  { id: "forms-patterns", group: "Patterns", categoryId: "forms-workbench" },
+  { id: "workbench-patterns", group: "Patterns", categoryId: "forms-workbench" },
+  { id: "work-management-patterns", group: "Patterns", categoryId: "work-management" },
+  { id: "readiness-notification-patterns", group: "Patterns", categoryId: "feedback-selection" },
+  { id: "selection-list-patterns", group: "Patterns", categoryId: "feedback-selection" },
+  { id: "modal-validation-patterns", group: "Patterns", categoryId: "feedback-selection" },
+  { id: "datagrid-fields-patterns", group: "Patterns", categoryId: "data-pages" },
+  { id: "big-list-search-patterns", group: "Patterns", categoryId: "data-pages" },
+  { id: "dashboard-page-templates", group: "Patterns", categoryId: "data-pages" },
+  { id: "proof-matrix", group: "Proof", categoryId: "proof-governance" },
+  { id: "ai-consumption-contract", group: "Proof", categoryId: "proof-governance" },
+  { id: "blocked-actions", group: "Proof", categoryId: "proof-governance" },
+  { id: "overlay-focus", group: "Proof", categoryId: "proof-governance" },
+  { id: "local-changelog", group: "Change Log", categoryId: "governance-records" }
+];
+
+// Derived lookup (private): id -> categoryId. Key order here is registry order, but
+// this map is only ever read by key (storyGovernanceFor), never iterated for output,
+// so the order is immaterial. Its content equals the previous hand-written map.
+const storyCategoryById: Record<string, string> = Object.fromEntries(
+  storyRegistryOrder.map((entry): [string, string] => [entry.id, entry.categoryId])
+);
 
 const packageAuthorityByStoryId: Record<string, string> = {
   "aos-frontend-shell-slice": "@tcrn/ui-react ProductShell visual oracle; internal proof scaffold",

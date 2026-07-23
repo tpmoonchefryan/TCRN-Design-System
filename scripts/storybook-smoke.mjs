@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join } from "node:path";
 import { chromium } from "@playwright/test";
+import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 
 const pagesByGroup = {
   Welcome: "index.html",
@@ -13,51 +14,11 @@ const pagesByGroup = {
   "Change Log": "change-log.html"
 };
 const expectedContractStoryGroups = Object.keys(pagesByGroup);
-const requiredStories = [
-  { id: "welcome-governance", group: "Welcome" },
-  { id: "governance-boundaries", group: "Welcome" },
-  { id: "maintainers-routing", group: "Welcome" },
-  { id: "contribution-model", group: "Welcome" },
-  { id: "release-bug-policy", group: "Welcome" },
-  { id: "brand-identity", group: "Style Guide" },
-  { id: "color-palette", group: "Style Guide" },
-  { id: "text-styles", group: "Style Guide" },
-  { id: "grid-system", group: "Style Guide" },
-  { id: "icons-motion", group: "Style Guide" },
-  { id: "global-states", group: "Style Guide" },
-  { id: "copy-creation-rules", group: "Style Guide" },
-  { id: "tokens-copy-state", group: "Foundations" },
-  { id: "i18n-theme-contract", group: "Foundations" },
-  { id: "foundation-visual-standards", group: "Foundations" },
-  { id: "copy-guidelines", group: "Foundations" },
-  { id: "component-family-index", group: "Components" },
-  { id: "display-primitives-spec", group: "Components" },
-  { id: "interaction-disclosure-spec", group: "Components" },
-  { id: "stamp-spec-usage", group: "Components" },
-  { id: "button-spec-usage", group: "Components" },
-  { id: "field-spec-usage", group: "Components" },
-  { id: "navigation-shell-spec", group: "Components" },
-  { id: "aos-frontend-shell-slice", group: "Components" },
-  { id: "aos-owner-quality-product-shell", group: "Components" },
-  { id: "dialog-spec-usage", group: "Components" },
-  { id: "table-work-index-spec", group: "Components" },
-  { id: "work-management-components-spec", group: "Components" },
-  { id: "knowledge-management-components-spec", group: "Components" },
-  { id: "forms-patterns", group: "Patterns" },
-  { id: "workbench-patterns", group: "Patterns" },
-  { id: "work-management-patterns", group: "Patterns" },
-  { id: "readiness-notification-patterns", group: "Patterns" },
-  { id: "selection-list-patterns", group: "Patterns" },
-  { id: "modal-validation-patterns", group: "Patterns" },
-  { id: "datagrid-fields-patterns", group: "Patterns" },
-  { id: "big-list-search-patterns", group: "Patterns" },
-  { id: "dashboard-page-templates", group: "Patterns" },
-  { id: "proof-matrix", group: "Proof" },
-  { id: "ai-consumption-contract", group: "Proof" },
-  { id: "blocked-actions", group: "Proof" },
-  { id: "overlay-focus", group: "Proof" },
-  { id: "local-changelog", group: "Change Log" }
-];
+// Derived from the single registry source (governance.storyRegistryOrder, built to dist).
+// Byte-equal to the former hand list: 43 {id, group} entries in registry order. The
+// smoke.test tie-gate ties storyRegistryOrder to the emitted contractStories so this
+// cannot drift from groups/*.ts (TCRN-DS-STORY-055).
+const requiredStories = storyRegistryOrder.map((entry) => ({ id: entry.id, group: entry.group }));
 const pages = Object.fromEntries(Object.entries(pagesByGroup).map(([group, file]) => [
   group,
   readFileSync(`apps/storybook/storybook-static/${file}`, "utf8")

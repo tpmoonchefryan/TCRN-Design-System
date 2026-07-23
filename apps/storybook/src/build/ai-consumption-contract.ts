@@ -1,10 +1,104 @@
-import { storybookGovernanceChangelogRecords, storybookTopLevelSections } from "../contract-stories/governance.js";
+import {
+  storyCategoryDefinitions,
+  storyRegistryOrder,
+  storybookGovernanceChangelogRecords,
+  storybookTopLevelSections
+} from "../contract-stories/governance.js";
+import type { ContractStoryGroup } from "../contract-stories/types.js";
+import { groupFileName, groupSlug } from "./navigation.js";
 import {
   consumerVisualStyleContract,
   foundationVisualStandards,
   foundationVisualStandardsReadback,
   storybookDocShellVisualOracle
 } from "./foundation-visual-standards.js";
+
+// --- Section -> category -> story trees derived from the single registry source ---
+// (governance.storyRegistryOrder). Structural fields (section, route, requiredStories,
+// categories, sourcePaths) are derived; the hand-authored prose below (consumerChecks,
+// authority, the Change Log CHANGELOG.md source path) is kept per-section with its exact
+// wording and object key order so the built ai-consumption-contract.json stays byte-equal.
+// Derives from governance.js (a leaf) and navigation.js — NOT from kernel/contractStories,
+// which would form a module cycle via story-content.tsx importing this contract.
+const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
+  Welcome: [
+    "read governance and contribution boundaries before treating Storybook as product adoption",
+    "confirm owner review, release, publication, and bug-policy boundaries before claims",
+    "record maintainers/routing expectations before asking a product repo to consume DS"
+  ],
+  "Style Guide": [
+    "compare brand, color, type, grid, icon, motion, global state, and copy rules before visual implementation",
+    "prove motion/effect parity, including duration, easing, opacity, transform, focus treatment, and reduced-motion fallback",
+    "do not treat static state changes as motion compliance"
+  ],
+  Foundations: [
+    "consume semantic tokens, theme variables, locale metadata, and copy-state vocabulary before product copy or CSS",
+    "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, sidebar, focus, motion, or visual-system work",
+    "verify light/dark and supported locale behavior against Storybook before product compliance claims",
+    "block hard-coded copy, ad hoc status language, consumer-local reusable visual-system overrides, and theme-specific behavior forks"
+  ],
+  Components: [
+    "identify every registered primitive, export, variant, prop, slot, and state required by the product surface",
+    "prove product code consumes package-backed components instead of local clones",
+    "prove the same Storybook visual instance, then compare rendered component metrics against Storybook: size, radius, padding, border, background, typography, hover, focus, active, disabled, dark, locale, mobile, and reduced-motion states"
+  ],
+  Patterns: [
+    "consume page, dashboard, workbench, list, form, notification, validation, data-grid, and search composition rules before arranging product screens",
+    "consume Work Management route context, local view tabs, quick filters, dense rows/lists, split detail, backlog groups, board density, gate, evidence, activity, relationship, saved-view, and machine-token patterns before building Initiative/Epic/Story/Work Item surfaces",
+    "prove information hierarchy, density, mobile reflow, empty/loading/error states, and route-level IA match the relevant Storybook pattern",
+    "block proof/status panels from replacing product-first page composition unless the Storybook pattern explicitly requires them"
+  ],
+  Proof: [
+    "read proof matrix, this AI contract, blocked actions, and overlay/focus proof before implementation closeout",
+    "carry required receipts for browser interaction, accessibility, visual parity, no-overclaim, owner-visible preview, and product-owned adoption proof",
+    "do not use Storybook-only evidence as product adoption, acceptance, release, or hosted readiness proof"
+  ],
+  "Change Log": [
+    "read local changelog for recently changed DS contract behavior before using older memory or cached screenshots",
+    "record the consumed Storybook/DS basis when comparing a product repo against the contract",
+    "block stale Storybook baselines from being used as current visual truth"
+  ]
+};
+
+const coveredSectionAuthorityBySection: Record<ContractStoryGroup, string> = {
+  Welcome: "static_contract_storybook_governance",
+  "Style Guide": "static_contract_storybook_governance",
+  Foundations: "static_contract_storybook_governance",
+  Components: "package_backed_components_plus_static_contract_storybook_governance",
+  Patterns: "package_backed_patterns_plus_static_contract_storybook_governance",
+  Proof: "static_proof_contract",
+  "Change Log": "durable_changelog_governance_record"
+};
+
+// Extra hand-authored source paths appended after the derived groups/*.ts + story-content.tsx pair.
+const coveredSectionExtraSourcePaths: Partial<Record<ContractStoryGroup, readonly string[]>> = {
+  "Change Log": ["CHANGELOG.md"]
+};
+
+const requiredStorybookSectionChecklist = storybookTopLevelSections.map((section) => ({
+  section,
+  route: groupFileName(section),
+  requiredStories: storyRegistryOrder.filter((entry) => entry.group === section).map((entry) => entry.id),
+  consumerChecks: [...consumerChecksBySection[section]]
+}));
+
+const coveredStorybookSections = storybookTopLevelSections.map((section) => ({
+  section,
+  route: groupFileName(section),
+  categories: storyCategoryDefinitions[section].map((category) => ({
+    id: category.id,
+    label: category.label,
+    storyIds: storyRegistryOrder
+      .filter((entry) => entry.group === section && entry.categoryId === category.id)
+      .map((entry) => entry.id)
+  })),
+  sourcePaths: [
+    `apps/storybook/src/contract-stories/groups/${groupSlug(section)}.ts`,
+    "apps/storybook/src/contract-stories/story-content.tsx",
+    ...(coveredSectionExtraSourcePaths[section] ?? [])
+  ],
+  authority: coveredSectionAuthorityBySection[section]
+}));
 
 export const aiConsumptionContract = {
   contractVersion: "ai_consumption_contract_v1",
@@ -117,207 +211,8 @@ export const aiConsumptionContract = {
     "requiredProof",
     "noOverclaimBoundaries"
   ],
-  requiredStorybookSectionChecklist: [
-    {
-      section: "Welcome",
-      route: "index.html",
-      requiredStories: [
-        "welcome-governance",
-        "governance-boundaries",
-        "maintainers-routing",
-        "contribution-model",
-        "release-bug-policy"
-      ],
-      consumerChecks: [
-        "read governance and contribution boundaries before treating Storybook as product adoption",
-        "confirm owner review, release, publication, and bug-policy boundaries before claims",
-        "record maintainers/routing expectations before asking a product repo to consume DS"
-      ]
-    },
-    {
-      section: "Style Guide",
-      route: "style-guide.html",
-      requiredStories: [
-        "brand-identity",
-        "color-palette",
-        "text-styles",
-        "grid-system",
-        "icons-motion",
-        "global-states",
-        "copy-creation-rules"
-      ],
-      consumerChecks: [
-        "compare brand, color, type, grid, icon, motion, global state, and copy rules before visual implementation",
-        "prove motion/effect parity, including duration, easing, opacity, transform, focus treatment, and reduced-motion fallback",
-        "do not treat static state changes as motion compliance"
-      ]
-    },
-    {
-      section: "Foundations",
-      route: "foundations.html",
-      requiredStories: [
-        "tokens-copy-state",
-        "i18n-theme-contract",
-        "foundation-visual-standards",
-        "copy-guidelines"
-      ],
-      consumerChecks: [
-        "consume semantic tokens, theme variables, locale metadata, and copy-state vocabulary before product copy or CSS",
-        "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, sidebar, focus, motion, or visual-system work",
-        "verify light/dark and supported locale behavior against Storybook before product compliance claims",
-        "block hard-coded copy, ad hoc status language, consumer-local reusable visual-system overrides, and theme-specific behavior forks"
-      ]
-    },
-    {
-      section: "Components",
-      route: "components.html",
-      requiredStories: [
-        "component-family-index",
-        "display-primitives-spec",
-        "interaction-disclosure-spec",
-        "stamp-spec-usage",
-        "button-spec-usage",
-        "field-spec-usage",
-        "navigation-shell-spec",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell",
-        "dialog-spec-usage",
-        "table-work-index-spec",
-        "work-management-components-spec",
-        "knowledge-management-components-spec"
-      ],
-      consumerChecks: [
-        "identify every registered primitive, export, variant, prop, slot, and state required by the product surface",
-        "prove product code consumes package-backed components instead of local clones",
-        "prove the same Storybook visual instance, then compare rendered component metrics against Storybook: size, radius, padding, border, background, typography, hover, focus, active, disabled, dark, locale, mobile, and reduced-motion states"
-      ]
-    },
-    {
-      section: "Patterns",
-      route: "patterns.html",
-      requiredStories: [
-        "forms-patterns",
-        "workbench-patterns",
-        "work-management-patterns",
-        "readiness-notification-patterns",
-        "selection-list-patterns",
-        "modal-validation-patterns",
-        "datagrid-fields-patterns",
-        "big-list-search-patterns",
-        "dashboard-page-templates"
-      ],
-      consumerChecks: [
-        "consume page, dashboard, workbench, list, form, notification, validation, data-grid, and search composition rules before arranging product screens",
-        "consume Work Management route context, local view tabs, quick filters, dense rows/lists, split detail, backlog groups, board density, gate, evidence, activity, relationship, saved-view, and machine-token patterns before building Initiative/Epic/Story/Work Item surfaces",
-        "prove information hierarchy, density, mobile reflow, empty/loading/error states, and route-level IA match the relevant Storybook pattern",
-        "block proof/status panels from replacing product-first page composition unless the Storybook pattern explicitly requires them"
-      ]
-    },
-    {
-      section: "Proof",
-      route: "proof.html",
-      requiredStories: [
-        "proof-matrix",
-        "ai-consumption-contract",
-        "blocked-actions",
-        "overlay-focus"
-      ],
-      consumerChecks: [
-        "read proof matrix, this AI contract, blocked actions, and overlay/focus proof before implementation closeout",
-        "carry required receipts for browser interaction, accessibility, visual parity, no-overclaim, owner-visible preview, and product-owned adoption proof",
-        "do not use Storybook-only evidence as product adoption, acceptance, release, or hosted readiness proof"
-      ]
-    },
-    {
-      section: "Change Log",
-      route: "change-log.html",
-      requiredStories: [
-        "local-changelog"
-      ],
-      consumerChecks: [
-        "read local changelog for recently changed DS contract behavior before using older memory or cached screenshots",
-        "record the consumed Storybook/DS basis when comparing a product repo against the contract",
-        "block stale Storybook baselines from being used as current visual truth"
-      ]
-    }
-  ],
-  coveredStorybookSections: [
-    {
-      section: "Welcome",
-      route: "index.html",
-      categories: [
-        { id: "governance-entry", label: "Governance entry", storyIds: ["welcome-governance", "governance-boundaries"] },
-        { id: "routing-contribution", label: "Routing and contribution", storyIds: ["maintainers-routing", "contribution-model", "release-bug-policy"] }
-      ],
-      sourcePaths: ["apps/storybook/src/contract-stories/groups/welcome.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
-      authority: "static_contract_storybook_governance"
-    },
-    {
-      section: "Style Guide",
-      route: "style-guide.html",
-      categories: [
-        { id: "identity-brand", label: "Identity and brand", storyIds: ["brand-identity", "color-palette"] },
-        { id: "type-layout", label: "Type and layout", storyIds: ["text-styles", "grid-system"] },
-        { id: "interaction-copy", label: "Interaction and copy", storyIds: ["icons-motion", "global-states", "copy-creation-rules"] }
-      ],
-      sourcePaths: ["apps/storybook/src/contract-stories/groups/style-guide.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
-      authority: "static_contract_storybook_governance"
-    },
-    {
-      section: "Foundations",
-      route: "foundations.html",
-      categories: [
-        { id: "tokens-i18n", label: "Tokens and i18n", storyIds: ["tokens-copy-state", "i18n-theme-contract", "foundation-visual-standards"] },
-        { id: "copy-governance", label: "Copy governance", storyIds: ["copy-guidelines"] }
-      ],
-      sourcePaths: ["apps/storybook/src/contract-stories/groups/foundations.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
-      authority: "static_contract_storybook_governance"
-    },
-    {
-      section: "Components",
-      route: "components.html",
-      categories: [
-        { id: "component-inventory", label: "Component inventory", storyIds: ["component-family-index", "display-primitives-spec", "interaction-disclosure-spec"] },
-        { id: "controls-data", label: "Controls and data", storyIds: ["stamp-spec-usage", "button-spec-usage", "field-spec-usage", "table-work-index-spec"] },
-        { id: "navigation-shells", label: "Navigation and shells", storyIds: ["navigation-shell-spec", "aos-frontend-shell-slice", "aos-owner-quality-product-shell"] },
-        { id: "overlays", label: "Overlays", storyIds: ["dialog-spec-usage"] },
-        { id: "work-management", label: "Work Management", storyIds: ["work-management-components-spec"] },
-        { id: "knowledge-management", label: "Knowledge Management", storyIds: ["knowledge-management-components-spec"] }
-      ],
-      sourcePaths: ["apps/storybook/src/contract-stories/groups/components.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
-      authority: "package_backed_components_plus_static_contract_storybook_governance"
-    },
-    {
-      section: "Patterns",
-      route: "patterns.html",
-      categories: [
-        { id: "forms-workbench", label: "Forms and workbench", storyIds: ["forms-patterns", "workbench-patterns"] },
-        { id: "work-management", label: "Work Management", storyIds: ["work-management-patterns"] },
-        { id: "feedback-selection", label: "Feedback and selection", storyIds: ["readiness-notification-patterns", "selection-list-patterns", "modal-validation-patterns"] },
-        { id: "data-pages", label: "Data and pages", storyIds: ["datagrid-fields-patterns", "big-list-search-patterns", "dashboard-page-templates"] }
-      ],
-      sourcePaths: ["apps/storybook/src/contract-stories/groups/patterns.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
-      authority: "package_backed_patterns_plus_static_contract_storybook_governance"
-    },
-    {
-      section: "Proof",
-      route: "proof.html",
-      categories: [
-        { id: "proof-governance", label: "Proof governance", storyIds: ["proof-matrix", "ai-consumption-contract", "blocked-actions", "overlay-focus"] }
-      ],
-      sourcePaths: ["apps/storybook/src/contract-stories/groups/proof.ts", "apps/storybook/src/contract-stories/story-content.tsx"],
-      authority: "static_proof_contract"
-    },
-    {
-      section: "Change Log",
-      route: "change-log.html",
-      categories: [
-        { id: "governance-records", label: "Governance records", storyIds: ["local-changelog"] }
-      ],
-      sourcePaths: ["apps/storybook/src/contract-stories/groups/change-log.ts", "apps/storybook/src/contract-stories/story-content.tsx", "CHANGELOG.md"],
-      authority: "durable_changelog_governance_record"
-    }
-  ],
+  requiredStorybookSectionChecklist,
+  coveredStorybookSections,
   storybookGovernanceTraceability: {
     topLevelSections: storybookTopLevelSections,
     hierarchy: "section -> category -> story",

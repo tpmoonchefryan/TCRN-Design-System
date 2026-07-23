@@ -22,7 +22,7 @@ import foundationsMeta from "./foundations.stories.js";
 import patternsMeta from "./patterns.stories.js";
 import proofMeta from "./proof.stories.js";
 import styleGuideMeta from "./style-guide.stories.js";
-import { storybookGovernanceChangelogRecords, storyCategoryDefinitions } from "./contract-stories/governance.js";
+import { storybookGovernanceChangelogRecords, storyCategoryDefinitions, storyRegistryOrder } from "./contract-stories/governance.js";
 import {
   consumerVisualStyleContract,
   foundationVisualStandardCategoryIds,
@@ -245,6 +245,19 @@ test("static contract story surface is retained and synthetic", () => {
   assert.deepEqual(contractStoryGroups, expectedContractStoryGroups);
   assert.equal(contractStories.length, expectedContractStoryIds.length);
   assert.deepEqual(contractStories.map((story) => story.id), expectedContractStoryIds);
+  // TCRN-DS-STORY-055 tie-gate: the single registry source (governance.storyRegistryOrder)
+  // that the four gate trees derive from — AI contract requiredStorybookSectionChecklist +
+  // coveredStorybookSections, storybook-smoke requiredStories, and internal-alpha browser-proof
+  // requiredStories — must deep-equal the actually-emitted contractStories on {id, group,
+  // categoryId}. Without this, storyRegistryOrder could silently drift from groups/*.ts order
+  // and every derived tree would misreport while page emission stayed green. Paired with the
+  // independent expectedContractStoryIds oracle (above) and the CSF-adapter order gate (below),
+  // it pins the derivation root to page emission.
+  assert.deepEqual(
+    storyRegistryOrder.map((entry) => ({ id: entry.id, group: entry.group, categoryId: entry.categoryId })),
+    contractStories.map((story) => ({ id: story.id, group: story.group, categoryId: story.categoryId })),
+    "storyRegistryOrder must deep-equal emitted contractStories on {id, group, categoryId}"
+  );
   for (const story of contractStories) {
     assert.ok(story.category.length > 0, `missing category label for ${story.id}`);
     assert.ok(story.categoryId.length > 0, `missing category id for ${story.id}`);

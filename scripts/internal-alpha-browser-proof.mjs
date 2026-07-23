@@ -6,6 +6,8 @@ import { createRequire } from "node:module";
 import { chromium } from "@playwright/test";
 import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.mjs";
 import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE } from "./lib/visual-signature.mjs";
+import { storybookId } from "./lib/storybook-id.mjs";
+import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 
 const require = createRequire(import.meta.url);
 const axePath = require.resolve("axe-core/axe.min.js");
@@ -29,51 +31,16 @@ function collectLocalAbsolutePathHits(label, value) {
     .map(({ name }) => ({ label, rule: name }));
 }
 
-const requiredStories = [
-  { id: "welcome-governance", group: "Welcome", storybookId: "tcrn-design-system-welcome--welcome-governance" },
-  { id: "governance-boundaries", group: "Welcome", storybookId: "tcrn-design-system-welcome--governance-boundaries" },
-  { id: "maintainers-routing", group: "Welcome", storybookId: "tcrn-design-system-welcome--maintainers-routing" },
-  { id: "contribution-model", group: "Welcome", storybookId: "tcrn-design-system-welcome--contribution-model" },
-  { id: "release-bug-policy", group: "Welcome", storybookId: "tcrn-design-system-welcome--release-bug-policy" },
-  { id: "brand-identity", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--brand-identity" },
-  { id: "color-palette", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--color-palette" },
-  { id: "text-styles", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--text-styles" },
-  { id: "grid-system", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--grid-system" },
-  { id: "icons-motion", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--icons-motion" },
-  { id: "global-states", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--global-states" },
-  { id: "copy-creation-rules", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--copy-creation-rules" },
-  { id: "tokens-copy-state", group: "Foundations", storybookId: "tcrn-design-system-foundations--tokens-copy-state" },
-  { id: "i18n-theme-contract", group: "Foundations", storybookId: "tcrn-design-system-foundations--i-18-n-theme-contract" },
-  { id: "foundation-visual-standards", group: "Foundations", storybookId: "tcrn-design-system-foundations--foundation-visual-standards" },
-  { id: "copy-guidelines", group: "Foundations", storybookId: "tcrn-design-system-foundations--copy-guidelines" },
-  { id: "component-family-index", group: "Components", storybookId: "tcrn-design-system-components--component-family-index" },
-  { id: "display-primitives-spec", group: "Components", storybookId: "tcrn-design-system-components--display-primitives-spec" },
-  { id: "interaction-disclosure-spec", group: "Components", storybookId: "tcrn-design-system-components--interaction-disclosure-spec" },
-  { id: "stamp-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--stamp-spec-usage" },
-  { id: "button-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--button-spec-usage" },
-  { id: "field-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--field-spec-usage" },
-  { id: "navigation-shell-spec", group: "Components", storybookId: "tcrn-design-system-components--navigation-shell-spec" },
-  { id: "aos-frontend-shell-slice", group: "Components", storybookId: "tcrn-design-system-components--aos-frontend-shell-slice" },
-  { id: "aos-owner-quality-product-shell", group: "Components", storybookId: "tcrn-design-system-components--aos-owner-quality-product-shell" },
-  { id: "dialog-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--dialog-spec-usage" },
-  { id: "table-work-index-spec", group: "Components", storybookId: "tcrn-design-system-components--table-work-index-spec" },
-  { id: "work-management-components-spec", group: "Components", storybookId: "tcrn-design-system-components--work-management-components-spec" },
-  { id: "knowledge-management-components-spec", group: "Components", storybookId: "tcrn-design-system-components--knowledge-management-components-spec" },
-  { id: "forms-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--forms-patterns" },
-  { id: "workbench-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--workbench-patterns" },
-  { id: "work-management-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--work-management-patterns" },
-  { id: "readiness-notification-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--readiness-notification-patterns" },
-  { id: "selection-list-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--selection-list-patterns" },
-  { id: "modal-validation-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--modal-validation-patterns" },
-  { id: "datagrid-fields-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--datagrid-fields-patterns" },
-  { id: "big-list-search-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--big-list-search-patterns" },
-  { id: "dashboard-page-templates", group: "Patterns", storybookId: "tcrn-design-system-patterns--dashboard-page-templates" },
-  { id: "proof-matrix", group: "Proof", storybookId: "tcrn-design-system-proof--proof-matrix" },
-  { id: "ai-consumption-contract", group: "Proof", storybookId: "tcrn-design-system-proof--ai-consumption-contract" },
-  { id: "blocked-actions", group: "Proof", storybookId: "tcrn-design-system-proof--blocked-actions" },
-  { id: "overlay-focus", group: "Proof", storybookId: "tcrn-design-system-proof--overlay-focus" },
-  { id: "local-changelog", group: "Change Log", storybookId: "tcrn-design-system-change-log--local-changelog" }
-];
+// Derived from the single registry source (governance.storyRegistryOrder, built to dist)
+// plus the Storybook toId helper (scripts/lib/storybook-id.mjs). Byte-equal to the former
+// hand list: 43 {id, group, storybookId} entries in registry order, including the
+// digit-split id tcrn-design-system-foundations--i-18-n-theme-contract. The smoke.test
+// tie-gate keeps storyRegistryOrder honest against the emitted pages (TCRN-DS-STORY-055).
+const requiredStories = storyRegistryOrder.map((entry) => ({
+  id: entry.id,
+  group: entry.group,
+  storybookId: storybookId(entry.group, entry.id)
+}));
 
 const viewports = [
   { name: "desktop-1440x900", width: 1440, height: 900 },
