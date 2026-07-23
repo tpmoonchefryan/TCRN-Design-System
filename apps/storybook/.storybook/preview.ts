@@ -16,6 +16,6 @@ export const parameters = {
   options: { showPanel: true },
   backgrounds: {
     default: "TCRN canvas",
-    values: [{ name: "TCRN canvas", value: "#f4f7fa" }]
+    values: [{ name: "TCRN canvas", value: "#fafaf9" }]
   }
 };

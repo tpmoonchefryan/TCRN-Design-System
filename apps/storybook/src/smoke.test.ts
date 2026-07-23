@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
+import { createTokenMap, tcrnDarkThemeTokens } from "@tcrn/ui-tokens";
 import alphaMeta from "./alpha.stories.js";
 import {
   i18nText,
@@ -834,6 +835,32 @@ test("static contract story surface is retained and synthetic", () => {
     assert.match(html, /<meta name="tcrn-ai-consumption-contract-route" content="proof\.html#ai-consumption-contract" \/>/);
     assert.match(html, /<meta name="tcrn-ai-consumption-contract-required" content="must-read-first" \/>/);
   }
+});
+
+test("canvas color and theme-color first-paint mirror the surface-canvas token", () => {
+  const canvasVar = "--tcrn-color-surface-canvas";
+  const canvasLight = createTokenMap()[canvasVar];
+  const canvasDark = tcrnDarkThemeTokens.find((token) => token.variable === canvasVar)?.value;
+  assert.ok(canvasLight, "light surface-canvas token missing");
+  assert.ok(canvasDark, "dark surface-canvas token missing");
+
+  // Real-Storybook preview background must equal the light canvas token.
+  const preview = readStorybookSource(".storybook/preview.ts");
+  assert.match(preview, new RegExp('"TCRN canvas",\\s*value:\\s*"' + escapeRegExp(canvasLight) + '"'));
+  assert.doesNotMatch(preview, /#f4f7fa/i, "stale preview canvas value #f4f7fa must be gone");
+
+  // Static-docs first-paint theme-color meta must equal the light canvas token.
+  const componentsPage = readGroupPage("Components");
+  assert.ok(
+    componentsPage.includes('<meta name="theme-color" content="' + canvasLight + '" data-storybook-theme-color'),
+    "first-paint theme-color meta must equal the light canvas token"
+  );
+  assert.doesNotMatch(componentsPage, /content="#f6f7fb"/i, "stale first-paint theme-color #f6f7fb must be gone");
+
+  // Manual mirror in client-scripts must equal the light/dark canvas tokens.
+  const clientScripts = readStorybookSource("src/build/client-scripts.ts");
+  assert.match(clientScripts, new RegExp('light:\\s*"' + escapeRegExp(canvasLight) + '"'));
+  assert.match(clientScripts, new RegExp('dark:\\s*"' + escapeRegExp(canvasDark) + '"'));
 });
 
 test("storybook AI consumption contract is machine-readable and no-overclaim", () => {
