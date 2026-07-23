@@ -1,4 +1,20 @@
-# Storybook Visual Proof
+# Storybook Visual Proof — RETIRED / HISTORICAL
+
+> **RETIRED (pre-INIT-001 history).** This directory is the legacy `canonicalized_raw_png_exact_v1`
+> exact-PNG visual baseline (source head `ec57b606`, 134 screenshots). It was **superseded on
+> 2026-07-23 by TCRN-DS-STORY-041 (INIT-007)** with the internal-alpha perceptual
+> **visual-signature** baseline (`docs/verification/internal-alpha/visual-signature-baseline.json`,
+> tolerance `meanAbsolute<=2` / `maxCell<=8`, enforced by `scripts/internal-alpha-browser-proof.mjs`
+> via `pnpm internal-alpha:proof`). Per the INIT-002 ruling, an unreproducible exact-PNG signature
+> is not signed in as an oracle.
+>
+> These bytes are retained as **history only** and are **not part of `pnpm verify`**. The generator
+> `scripts/storybook-visual-proof.mjs` is now a retirement pointer stub and no longer regenerates
+> this receipt. The files are still read by the privacy / no-overclaim scans, which is why the
+> directory is kept rather than deleted. The metrics below reflect the retired baseline and are not
+> a current freshness claim.
+
+---
 
 Mode: `check`
 OK: `true`

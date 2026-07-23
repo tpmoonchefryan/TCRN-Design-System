@@ -40,8 +40,20 @@ function sha256(value) {
 }
 
 function relativeLinkTargets(markdown) {
-  return Array.from(markdown.matchAll(/href="([^"]+)"/g), (match) => match[1])
-    .filter((href) => !href.startsWith("http://") && !href.startsWith("https://") && !href.startsWith("#"));
+  const hrefTargets = Array.from(markdown.matchAll(/href="([^"]+)"/g), (match) => match[1]);
+  // Markdown inline links `[text](target)` are fresh-clone anchors too: a README that
+  // points a reader at an in-repo path (e.g. the tracked ai-consumption-contract.ts
+  // source) must point at a path that exists in a clean, unbuilt clone. Strip an
+  // optional link title and fragment so `[x](path "t")`/`[x](path#frag)` resolve to the
+  // bare path.
+  const markdownTargets = Array.from(markdown.matchAll(/\]\(([^)]+)\)/g), (match) => match[1])
+    .map((target) => target.trim().split(/\s+/)[0].split("#")[0]);
+  return [...hrefTargets, ...markdownTargets]
+    .filter((target) => target
+      && !target.startsWith("http://")
+      && !target.startsWith("https://")
+      && !target.startsWith("#")
+      && !target.startsWith("mailto:"));
 }
 
 function makeReceipt() {

@@ -260,7 +260,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "6fad585b3778738a46e7615b70fac5e3f158ea795b8fdf8ab65737b268208a60",
+    "contractPayloadDigest": "a9e664561964ca5386311793dc77c6df1df6fb258adf50a5f13174c369b1b6a1",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 19,
@@ -651,11 +651,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 267.05,
+          "bottom": 339.52,
           "width": 1077.13,
-          "height": 133.61
+          "height": 206.08
         },
-        "firstStoryTop": 325.36,
+        "firstStoryTop": 430.17,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -790,11 +790,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 267.05,
+          "bottom": 339.52,
           "width": 1077.13,
-          "height": 133.61
+          "height": 206.08
         },
-        "firstStoryTop": 325.36,
+        "firstStoryTop": 430.17,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -923,11 +923,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 267.05,
+          "bottom": 339.52,
           "width": 1077.13,
-          "height": 133.61
+          "height": 206.08
         },
-        "firstStoryTop": 325.36,
+        "firstStoryTop": 430.17,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1056,11 +1056,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 327.05,
+          "bottom": 339.52,
           "width": 1077.13,
-          "height": 193.61
+          "height": 206.08
         },
-        "firstStoryTop": 385.36,
+        "firstStoryTop": 430.17,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1189,11 +1189,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 284.67,
+          "bottom": 339.52,
           "width": 1077.13,
-          "height": 151.23
+          "height": 206.08
         },
-        "firstStoryTop": 342.98,
+        "firstStoryTop": 430.17,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1322,11 +1322,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 267.05,
+          "bottom": 339.52,
           "width": 1077.13,
-          "height": 133.61
+          "height": 206.08
         },
-        "firstStoryTop": 325.36,
+        "firstStoryTop": 430.17,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1455,11 +1455,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 267.05,
+          "bottom": 339.52,
           "width": 1077.13,
-          "height": 133.61
+          "height": 206.08
         },
-        "firstStoryTop": 325.36,
+        "firstStoryTop": 430.17,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1552,7 +1552,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1656,
+        "scrollY": 1814,
         "viewport": {
           "width": 390,
           "height": 844
@@ -1571,17 +1571,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 411.97,
+          "top": 412.39,
           "right": 374,
-          "bottom": 10293.69,
+          "bottom": 10140.83,
           "left": 16,
           "width": 358,
-          "height": 9881.72
+          "height": 9728.44
         },
         "title": {
-          "top": 428.97,
+          "top": 429.39,
           "right": 357,
-          "bottom": 459.28,
+          "bottom": 459.7,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -1778,236 +1778,14 @@
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 },
                 {
-                  "tag": "strong",
+                  "tag": "span",
                   "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "本页内容"
-                },
-                {
-                  "tag": "nav",
-                  "id": "",
-                  "className": "tcrn-doc-on-this-page",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "本页内容 令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "section",
-                  "id": "",
-                  "className": "tcrn-doc-page-head",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-shell",
-                  "role": null,
-                  "docShell": "online-docs",
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
-                }
-              ]
-            },
-            {
-              "label": "current-location-y60",
-              "x": 195,
-              "y": 60,
-              "shellIndex": 1,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "文案治理"
-                },
-                {
-                  "tag": "li",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "文案治理1"
-                },
-                {
-                  "tag": "ol",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "nav",
-                  "id": "",
-                  "className": "tcrn-doc-on-this-page",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "本页内容 令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "section",
-                  "id": "",
-                  "className": "tcrn-doc-page-head",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                }
-              ]
-            },
-            {
-              "label": "search-y125",
-              "x": 195,
-              "y": 125,
-              "shellIndex": 2,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "不声明 AOS/TMS 采用"
                 },
                 {
                   "tag": "section",
@@ -2067,19 +1845,140 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
             {
-              "label": "controls-y178",
+              "label": "current-location-y60",
               "x": 195,
-              "y": 178,
+              "y": 60,
               "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-boundary-strip",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-doc-page-head",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                }
+              ]
+            },
+            {
+              "label": "search-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 2,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "tcrn-doc-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "div",
                   "id": "",
@@ -2169,6 +2068,107 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                }
+              ]
+            },
+            {
+              "label": "controls-y178",
+              "x": 195,
+              "y": 178,
+              "shellIndex": 1,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "article",
+                  "id": "tokens-copy-state",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部证明需"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
                 },
                 {
                   "tag": "html",
@@ -2178,14 +2178,14 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 15.28,
-        "titleClearancePx": 32.28,
+        "articleClearancePx": 15.7,
+        "titleClearancePx": 32.7,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -2197,7 +2197,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1656,
+        "scrollY": 1814,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2216,17 +2216,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 411.97,
+          "top": 412.39,
           "right": 374,
-          "bottom": 10293.69,
+          "bottom": 10140.83,
           "left": 16,
           "width": 358,
-          "height": 9881.72
+          "height": 9728.44
         },
         "title": {
-          "top": 428.97,
+          "top": 429.39,
           "right": 357,
-          "bottom": 459.28,
+          "bottom": 459.7,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -2423,236 +2423,14 @@
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 },
                 {
-                  "tag": "strong",
+                  "tag": "span",
                   "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "本页内容"
-                },
-                {
-                  "tag": "nav",
-                  "id": "",
-                  "className": "tcrn-doc-on-this-page",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "本页内容 令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "section",
-                  "id": "",
-                  "className": "tcrn-doc-page-head",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-shell",
-                  "role": null,
-                  "docShell": "online-docs",
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
-                }
-              ]
-            },
-            {
-              "label": "current-location-y60",
-              "x": 195,
-              "y": 60,
-              "shellIndex": 1,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "文案治理"
-                },
-                {
-                  "tag": "li",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "文案治理1"
-                },
-                {
-                  "tag": "ol",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "nav",
-                  "id": "",
-                  "className": "tcrn-doc-on-this-page",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "本页内容 令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "section",
-                  "id": "",
-                  "className": "tcrn-doc-page-head",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                }
-              ]
-            },
-            {
-              "label": "search-y125",
-              "x": 195,
-              "y": 125,
-              "shellIndex": 2,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "不声明 AOS/TMS 采用"
                 },
                 {
                   "tag": "section",
@@ -2712,19 +2490,140 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
             {
-              "label": "controls-y178",
+              "label": "current-location-y60",
               "x": 195,
-              "y": 178,
+              "y": 60,
               "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-boundary-strip",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-doc-page-head",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                }
+              ]
+            },
+            {
+              "label": "search-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 2,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "tcrn-doc-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "div",
                   "id": "",
@@ -2814,6 +2713,107 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                }
+              ]
+            },
+            {
+              "label": "controls-y178",
+              "x": 195,
+              "y": 178,
+              "shellIndex": 1,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "article",
+                  "id": "tokens-copy-state",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部证明需"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
                 },
                 {
                   "tag": "html",
@@ -2823,14 +2823,14 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 15.28,
-        "titleClearancePx": 32.28,
+        "articleClearancePx": 15.7,
+        "titleClearancePx": 32.7,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -2842,7 +2842,7 @@
       {
         "label": "after-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1656,
+        "scrollY": 1814,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2861,17 +2861,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 411.97,
+          "top": 412.39,
           "right": 374,
-          "bottom": 10293.69,
+          "bottom": 10140.83,
           "left": 16,
           "width": 358,
-          "height": 9881.72
+          "height": 9728.44
         },
         "title": {
-          "top": 428.97,
+          "top": 429.39,
           "right": 357,
-          "bottom": 459.28,
+          "bottom": 459.7,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -3068,236 +3068,14 @@
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 },
                 {
-                  "tag": "strong",
+                  "tag": "span",
                   "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "本页内容"
-                },
-                {
-                  "tag": "nav",
-                  "id": "",
-                  "className": "tcrn-doc-on-this-page",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "本页内容 令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "section",
-                  "id": "",
-                  "className": "tcrn-doc-page-head",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-shell",
-                  "role": null,
-                  "docShell": "online-docs",
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
-                }
-              ]
-            },
-            {
-              "label": "current-location-y60",
-              "x": 195,
-              "y": 60,
-              "shellIndex": 1,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "文案治理"
-                },
-                {
-                  "tag": "li",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "文案治理1"
-                },
-                {
-                  "tag": "ol",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "nav",
-                  "id": "",
-                  "className": "tcrn-doc-on-this-page",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "本页内容 令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "section",
-                  "id": "",
-                  "className": "tcrn-doc-page-head",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                }
-              ]
-            },
-            {
-              "label": "search-y125",
-              "x": 195,
-              "y": 125,
-              "shellIndex": 2,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "不声明 AOS/TMS 采用"
                 },
                 {
                   "tag": "section",
@@ -3357,19 +3135,140 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
             {
-              "label": "controls-y178",
+              "label": "current-location-y60",
               "x": 195,
-              "y": 178,
+              "y": 60,
               "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-boundary-strip",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-doc-page-head",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                }
+              ]
+            },
+            {
+              "label": "search-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 2,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "tcrn-doc-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "div",
                   "id": "",
@@ -3459,6 +3358,107 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                }
+              ]
+            },
+            {
+              "label": "controls-y178",
+              "x": 195,
+              "y": 178,
+              "shellIndex": 1,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "article",
+                  "id": "tokens-copy-state",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部证明需"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
                 },
                 {
                   "tag": "html",
@@ -3468,14 +3468,14 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 15.28,
-        "titleClearancePx": 32.28,
+        "articleClearancePx": 15.7,
+        "titleClearancePx": 32.7,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -3487,7 +3487,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1656,
+        "scrollY": 1814,
         "viewport": {
           "width": 390,
           "height": 844
@@ -3506,17 +3506,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 411.97,
+          "top": 412.39,
           "right": 374,
-          "bottom": 10293.69,
+          "bottom": 10140.83,
           "left": 16,
           "width": 358,
-          "height": 9881.72
+          "height": 9728.44
         },
         "title": {
-          "top": 428.97,
+          "top": 429.39,
           "right": 357,
-          "bottom": 459.28,
+          "bottom": 459.7,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -3713,236 +3713,14 @@
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
                 },
                 {
-                  "tag": "strong",
+                  "tag": "span",
                   "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "本页内容"
-                },
-                {
-                  "tag": "nav",
-                  "id": "",
-                  "className": "tcrn-doc-on-this-page",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "本页内容 令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "section",
-                  "id": "",
-                  "className": "tcrn-doc-page-head",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-shell",
-                  "role": null,
-                  "docShell": "online-docs",
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
-                }
-              ]
-            },
-            {
-              "label": "current-location-y60",
-              "x": 195,
-              "y": 60,
-              "shellIndex": 1,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "文案治理"
-                },
-                {
-                  "tag": "li",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "文案治理1"
-                },
-                {
-                  "tag": "ol",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "nav",
-                  "id": "",
-                  "className": "tcrn-doc-on-this-page",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "本页内容 令牌与 i18n3 文案治理1"
-                },
-                {
-                  "tag": "section",
-                  "id": "",
-                  "className": "tcrn-doc-page-head",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                }
-              ]
-            },
-            {
-              "label": "search-y125",
-              "x": 195,
-              "y": 125,
-              "shellIndex": 2,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "不声明 AOS/TMS 采用"
                 },
                 {
                   "tag": "section",
@@ -4002,19 +3780,140 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
             {
-              "label": "controls-y178",
+              "label": "current-location-y60",
               "x": 195,
-              "y": 178,
+              "y": 60,
               "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-boundary-strip",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下游"
+                },
+                {
+                  "tag": "section",
+                  "id": "",
+                  "className": "tcrn-doc-page-head",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                }
+              ]
+            },
+            {
+              "label": "search-y125",
+              "x": 195,
+              "y": 125,
+              "shellIndex": 2,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "a",
+                  "id": "",
+                  "className": "tcrn-doc-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "div",
                   "id": "",
@@ -4104,6 +4003,107 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                }
+              ]
+            },
+            {
+              "label": "controls-y178",
+              "x": 195,
+              "y": 178,
+              "shellIndex": 1,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "article",
+                  "id": "tokens-copy-state",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部证明需"
+                },
+                {
+                  "tag": "section",
+                  "id": "foundations",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "基础 令牌与文案状态 用于本地 internal-alpha 证明的语义令牌和 fail-closed 文案词汇。 状态词汇本地可用仅本地证明仅示例数据需要外部"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
                 },
                 {
                   "tag": "html",
@@ -4113,14 +4113,14 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 15.28,
-        "titleClearancePx": 32.28,
+        "articleClearancePx": 15.7,
+        "titleClearancePx": 32.7,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -4142,7 +4142,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2859,
+        "scrollY": 3147,
         "viewport": {
           "width": 390,
           "height": 844
@@ -4160,17 +4160,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.05,
+          "top": 412.47,
           "right": 374,
-          "bottom": 6041.92,
+          "bottom": 6891.41,
           "left": 16,
           "width": 358,
-          "height": 5629.88
+          "height": 6478.94
         },
         "title": {
-          "top": 429.05,
+          "top": 429.47,
           "right": 357,
-          "bottom": 459.36,
+          "bottom": 459.78,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -4367,117 +4367,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "span",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "span",
-                  "id": "",
-                  "className": "tcrn-story-disclosure__title",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "button",
-                  "id": "",
-                  "className": "tcrn-story-disclosure",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "h2",
-                  "id": "",
-                  "className": "tcrn-story-disclosure__heading",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "article",
-                  "id": "aos-owner-quality-product-shell",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准 面向下游 AOS 修复的产品优先运营驾驶舱基准。 Skip to operations contentTCRNAOSAI "
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
-                }
-              ]
-            },
-            {
-              "label": "mobile-doc-shell-y60",
-              "x": 195,
-              "y": 60,
-              "shellIndex": 1,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
-                },
-                {
                   "tag": "article",
                   "id": "aos-owner-quality-product-shell",
                   "className": "",
@@ -4545,7 +4434,118 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 1,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-story-disclosure",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框规范与用法"
+                },
+                {
+                  "tag": "h2",
+                  "id": "",
+                  "className": "tcrn-story-disclosure__heading",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框规范与用法"
+                },
+                {
+                  "tag": "article",
+                  "id": "dialog-spec-usage",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框规范与用法 对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。 能力元数据能力状态证明焦点进入仅本地证明已在 Dialog 中实现Tab 包含"
+                },
+                {
+                  "tag": "section",
+                  "id": "components",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 }
               ]
             },
@@ -4599,6 +4599,16 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
+                  "tag": "p",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。"
+                },
+                {
                   "tag": "article",
                   "id": "dialog-spec-usage",
                   "className": "",
@@ -4647,16 +4657,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 }
               ]
             },
@@ -4730,26 +4730,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "span",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于合成工作项的桌面密集扫描和移动端堆叠行。"
-                },
-                {
-                  "tag": "p",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于合成工作项的桌面密集扫描和移动端堆叠行。"
-                },
-                {
                   "tag": "article",
                   "id": "table-work-index-spec",
                   "className": "",
@@ -4768,6 +4748,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
                 }
               ]
             },
@@ -4841,6 +4841,26 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-story-disclosure",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "工作管理组件规范"
+                },
+                {
+                  "tag": "h2",
+                  "id": "",
+                  "className": "tcrn-story-disclosure__heading",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "工作管理组件规范"
+                },
+                {
                   "tag": "article",
                   "id": "work-management-components-spec",
                   "className": "",
@@ -4859,26 +4879,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
                 }
               ]
             },
@@ -4995,8 +4995,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.36,
-        "titleClearancePx": 32.36,
+        "articleClearancePx": 15.78,
+        "titleClearancePx": 32.78,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5008,7 +5008,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2859,
+        "scrollY": 3147,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5026,17 +5026,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.05,
+          "top": 412.47,
           "right": 374,
-          "bottom": 6041.92,
+          "bottom": 6891.41,
           "left": 16,
           "width": 358,
-          "height": 5629.88
+          "height": 6478.94
         },
         "title": {
-          "top": 429.05,
+          "top": 429.47,
           "right": 357,
-          "bottom": 459.36,
+          "bottom": 459.78,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -5233,117 +5233,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "span",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "span",
-                  "id": "",
-                  "className": "tcrn-story-disclosure__title",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "button",
-                  "id": "",
-                  "className": "tcrn-story-disclosure",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "h2",
-                  "id": "",
-                  "className": "tcrn-story-disclosure__heading",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "article",
-                  "id": "aos-owner-quality-product-shell",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准 面向下游 AOS 修复的产品优先运营驾驶舱基准。 Skip to operations contentTCRNAOSAI "
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
-                }
-              ]
-            },
-            {
-              "label": "mobile-doc-shell-y60",
-              "x": 195,
-              "y": 60,
-              "shellIndex": 1,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
-                },
-                {
                   "tag": "article",
                   "id": "aos-owner-quality-product-shell",
                   "className": "",
@@ -5411,7 +5300,118 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 1,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-story-disclosure",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框规范与用法"
+                },
+                {
+                  "tag": "h2",
+                  "id": "",
+                  "className": "tcrn-story-disclosure__heading",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框规范与用法"
+                },
+                {
+                  "tag": "article",
+                  "id": "dialog-spec-usage",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框规范与用法 对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。 能力元数据能力状态证明焦点进入仅本地证明已在 Dialog 中实现Tab 包含"
+                },
+                {
+                  "tag": "section",
+                  "id": "components",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 }
               ]
             },
@@ -5465,6 +5465,16 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
+                  "tag": "p",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。"
+                },
+                {
                   "tag": "article",
                   "id": "dialog-spec-usage",
                   "className": "",
@@ -5513,16 +5523,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 }
               ]
             },
@@ -5596,26 +5596,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "span",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于合成工作项的桌面密集扫描和移动端堆叠行。"
-                },
-                {
-                  "tag": "p",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于合成工作项的桌面密集扫描和移动端堆叠行。"
-                },
-                {
                   "tag": "article",
                   "id": "table-work-index-spec",
                   "className": "",
@@ -5634,6 +5614,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
                 }
               ]
             },
@@ -5707,6 +5707,26 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-story-disclosure",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "工作管理组件规范"
+                },
+                {
+                  "tag": "h2",
+                  "id": "",
+                  "className": "tcrn-story-disclosure__heading",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "工作管理组件规范"
+                },
+                {
                   "tag": "article",
                   "id": "work-management-components-spec",
                   "className": "",
@@ -5725,26 +5745,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
                 }
               ]
             },
@@ -5861,8 +5861,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.36,
-        "titleClearancePx": 32.36,
+        "articleClearancePx": 15.78,
+        "titleClearancePx": 32.78,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5874,7 +5874,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2859,
+        "scrollY": 3147,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5892,17 +5892,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.05,
+          "top": 412.47,
           "right": 374,
-          "bottom": 6041.92,
+          "bottom": 6891.41,
           "left": 16,
           "width": 358,
-          "height": 5629.88
+          "height": 6478.94
         },
         "title": {
-          "top": 429.05,
+          "top": 429.47,
           "right": 357,
-          "bottom": 459.36,
+          "bottom": 459.78,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -6099,117 +6099,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "span",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "span",
-                  "id": "",
-                  "className": "tcrn-story-disclosure__title",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "button",
-                  "id": "",
-                  "className": "tcrn-story-disclosure",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "h2",
-                  "id": "",
-                  "className": "tcrn-story-disclosure__heading",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准"
-                },
-                {
-                  "tag": "article",
-                  "id": "aos-owner-quality-product-shell",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准 面向下游 AOS 修复的产品优先运营驾驶舱基准。 Skip to operations contentTCRNAOSAI "
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
-                }
-              ]
-            },
-            {
-              "label": "mobile-doc-shell-y60",
-              "x": 195,
-              "y": 60,
-              "shellIndex": 1,
-              "storyContentIndex": -1,
-              "shellPaintsAboveStoryContent": true,
-              "storyContentBehindShell": false,
-              "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-global-bar",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
-                },
-                {
-                  "tag": "header",
-                  "id": "",
-                  "className": "tcrn-doc-header",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
-                },
-                {
                   "tag": "article",
                   "id": "aos-owner-quality-product-shell",
                   "className": "",
@@ -6277,7 +6166,118 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-radius-panel: var(--tcrn-radius-surface); --tc"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
+                }
+              ]
+            },
+            {
+              "label": "mobile-doc-shell-y60",
+              "x": 195,
+              "y": 60,
+              "shellIndex": 1,
+              "storyContentIndex": -1,
+              "shellPaintsAboveStoryContent": true,
+              "storyContentBehindShell": false,
+              "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-brand",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-global-bar",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "header",
+                  "id": "",
+                  "className": "tcrn-doc-header",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-story-disclosure",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框规范与用法"
+                },
+                {
+                  "tag": "h2",
+                  "id": "",
+                  "className": "tcrn-story-disclosure__heading",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框规范与用法"
+                },
+                {
+                  "tag": "article",
+                  "id": "dialog-spec-usage",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框规范与用法 对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。 能力元数据能力状态证明焦点进入仅本地证明已在 Dialog 中实现Tab 包含"
+                },
+                {
+                  "tag": "section",
+                  "id": "components",
+                  "className": "tcrn-static-section",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 }
               ]
             },
@@ -6331,6 +6331,16 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
+                  "tag": "p",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。"
+                },
+                {
                   "tag": "article",
                   "id": "dialog-spec-usage",
                   "className": "",
@@ -6379,16 +6389,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 }
               ]
             },
@@ -6462,26 +6462,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "span",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于合成工作项的桌面密集扫描和移动端堆叠行。"
-                },
-                {
-                  "tag": "p",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于合成工作项的桌面密集扫描和移动端堆叠行。"
-                },
-                {
                   "tag": "article",
                   "id": "table-work-index-spec",
                   "className": "",
@@ -6500,6 +6480,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
+                },
+                {
+                  "tag": "main",
+                  "id": "content",
+                  "className": "tcrn-doc-content",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-layout",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
                 }
               ]
             },
@@ -6573,6 +6573,26 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
+                  "tag": "button",
+                  "id": "",
+                  "className": "tcrn-story-disclosure",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "工作管理组件规范"
+                },
+                {
+                  "tag": "h2",
+                  "id": "",
+                  "className": "tcrn-story-disclosure__heading",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "工作管理组件规范"
+                },
+                {
                   "tag": "article",
                   "id": "work-management-components-spec",
                   "className": "",
@@ -6591,26 +6611,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
                 }
               ]
             },
@@ -6727,8 +6727,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.36,
-        "titleClearancePx": 32.36,
+        "articleClearancePx": 15.78,
+        "titleClearancePx": 32.78,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -6748,8 +6748,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 10099,
-      "scrollY": 8753
+      "maxScrollY": 10462,
+      "scrollY": 9080
     }
   },
   "scrollSpyCheck": {
@@ -6759,10 +6759,10 @@
       "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
-      "targetTop": 669,
+      "targetTop": 656,
       "offset": 96,
-      "maxScrollY": 622,
-      "scrollY": 622,
+      "maxScrollY": 805,
+      "scrollY": 805,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }

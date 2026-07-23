@@ -8,7 +8,8 @@ import {
   ShellBrandLockup,
   StatusBadge,
   TcrnBrandMark,
-  Text
+  Text,
+  TopBar
 } from "@tcrn/ui-react";
 import {
   knowledgeNavigationGroups,
@@ -264,13 +265,14 @@ export function CompactToolShellDemo() {
   return (
     <div className="tcrn-shell-demo tcrn-shell-demo--compact" data-shell-pattern="compact-tool-nav" data-storybook-only="compact-shell-prototype" data-component-library-status="deferred">
       <div className="tcrn-compact-shell" data-shell-layer="compact-tool">
-        <header className="tcrn-top-bar tcrn-compact-shell__top-bar" aria-label="Compact tool shell top bar">
-          <div className="tcrn-top-bar__brand tcrn-compact-shell__brand" aria-label="TCRN">
-            <TcrnBrandMark />
-          </div>
-          <div className="tcrn-top-bar__module">Focused tool</div>
-          <div className="tcrn-top-bar__actions"><StatusBadge state={{ state: "local_only" }} /></div>
-        </header>
+        <TopBar
+          aria-label="Compact tool shell top bar"
+          className="tcrn-compact-shell__top-bar"
+          productName={<TcrnBrandMark />}
+          brandProps={{ className: "tcrn-compact-shell__brand", "aria-label": "TCRN" }}
+          moduleName="Focused tool"
+          actions={<StatusBadge state={{ state: "local_only" }} />}
+        />
         <div className="tcrn-compact-shell__body">
           <section className="tcrn-compact-shell__summary" aria-label="Compact tool shell boundary">
             <span>Stable peer views</span>

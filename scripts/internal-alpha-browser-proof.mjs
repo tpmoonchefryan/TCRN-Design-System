@@ -652,7 +652,7 @@ const aiContractTraceabilityCheck = {
     && String(aiContract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "").includes("Storybook documentation shell")
 	    && (aiContract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) => (
 	      item.metric === "searchRestWidthPx"
-	      && item.sha256 === "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953"
+	      && item.signatureBaseline === "docs/verification/internal-alpha/visual-signature-baseline.json"
 	    ))
     && llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")

@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Breadcrumb,
+  Checkbox,
   ClipboardCopyButton,
   componentLibraryDeferredPrototypeNames,
   componentLibraryPublicComponentNames,
@@ -14,6 +15,7 @@ import {
   DetailInspector,
   DisclosurePanel,
   Dialog,
+  Divider,
   EnvironmentBanner,
   EvidenceStrip,
   Field,
@@ -25,11 +27,14 @@ import {
   InlineAlert,
   Input,
   KeyValueList,
+  LinkButton,
+  LiveRegion,
   NavGroup,
   NavItem,
   Pagination,
   ProductLockup,
   Popover,
+  ProductLauncher,
   ProductShell,
   ProductSwitcher,
   ReadbackPanel,
@@ -37,6 +42,7 @@ import {
   SectionTabs,
   SegmentedNav,
   Select,
+  ShellThemeToggle,
   SideNav,
   Skeleton,
   SkipLink,
@@ -102,6 +108,7 @@ import {
   tcrnI18nContract,
   tcrnLocaleMetadata
 } from "@tcrn/ui-copy-state";
+import { tcrnTokens } from "@tcrn/ui-tokens";
 import type { ContractStory, ContractStoryGroup } from "./types.js";
 import type {
   EvidenceAttachment,
@@ -156,12 +163,24 @@ import {
 
 type LegacyContractStory = Omit<ContractStory, "category" | "categoryId" | "sourcePath" | "packageAuthority" | "readiness" | "proofPosture">;
 
+// Live value lookup against the token registry. Throws at module evaluation (build time)
+// so a renamed or removed CSS variable can never silently resolve to an empty/transparent
+// value — the defect a hand-copied swatch or prose-frozen size string would hide (S039).
+function tokenValue(variable: string): string {
+  const token = tcrnTokens.find((candidate) => candidate.variable === variable);
+  if (!token) {
+    throw new Error(`unknown design token ${variable}`);
+  }
+  return token.value;
+}
+
 function TokenSwatch({ label, token, note }: { label: string; token: string; note: string }) {
   return (
     <div className="tcrn-token-swatch">
       <span className="tcrn-token-swatch__color" style={{ background: `var(${token})` }} aria-hidden="true" />
       <strong>{label}</strong>
       <code>{token}</code>
+      <code>{tokenValue(token)}</code>
       <Text>{note}</Text>
     </div>
   );
@@ -778,6 +797,20 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
           />
         </ReadbackPanel>
+        <ReadbackPanel title="Color token index">
+          <Text>Every color token surfaces here by identifier and live value, sourced from the token registry so a rename can never silently drop a swatch.</Text>
+          <div className="tcrn-token-swatch-grid">
+            {tcrnTokens
+              .filter((token) => token.group === "color")
+              .map((token) => (
+                <div key={token.variable} className="tcrn-token-swatch">
+                  <span className="tcrn-token-swatch__color" style={{ background: `var(${token.variable})` }} aria-hidden="true" />
+                  <code>{token.variable}</code>
+                  <code>{token.value}</code>
+                </div>
+              ))}
+          </div>
+        </ReadbackPanel>
         <ReadbackPanel title="Theme parity">
           <Text>Light and dark themes must keep the same semantic token names. A dark override changes values only; it must not fork component behavior or readiness copy.</Text>
         </ReadbackPanel>
@@ -887,25 +920,38 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "usage", label: "Usage" }
             ]}
             rows={[
-              { token: "Page title", size: "28px / 1.3 / 700", usage: "One page title per route or documentation page." },
-              { token: "Section title", size: "18px / 1.25 / 700", usage: "Story titles, major panels, and route sections." },
-              { token: "Dense UI body", size: "13px / 1.35 / 400", usage: "Tables, navigation, controls, and operational scanning remain dense." },
-              { token: "Reading body", size: "14px / 1.45 / 400", usage: "Proof-gated explanatory copy and prose only; not auto-applied to dense UI." },
-              { token: "Body copy", size: "13px / 1.45 / 400", usage: "Rules, descriptions, table cells, and proof notes." },
-              { token: "Control text", size: "13px / 1.2 / 600", usage: "Buttons, tabs, labels, and compact control text." },
-              { token: "Caption", size: "11px / 1.35 / 600", usage: "Metadata, helper text, and evidence strip context." },
-              { token: "Code text", size: "12px / 1.4 / mono", usage: "Token names, ids, commands, and technical readback." }
+              // size strings are single template literals derived from the token registry so a
+              // renamed/removed size, line, or weight token throws via tokenValue instead of
+              // silently freezing a stale prose value (S039). usage prose keeps its translations.
+              { token: "Page title", size: `${tokenValue("--tcrn-type-size-page")} / ${tokenValue("--tcrn-type-line-page")} / ${tokenValue("--tcrn-type-weight-strong")}`, usage: "One page title per route or documentation page." },
+              { token: "Section title", size: `${tokenValue("--tcrn-type-size-section")} / ${tokenValue("--tcrn-type-line-section")} / ${tokenValue("--tcrn-type-weight-strong")}`, usage: "Story titles, major panels, and route sections." },
+              { token: "Dense UI body", size: `${tokenValue("--tcrn-type-size-ui")} / ${tokenValue("--tcrn-type-line-ui")} / ${tokenValue("--tcrn-type-weight-regular")}`, usage: "Tables, navigation, controls, and operational scanning remain dense." },
+              { token: "Reading body", size: `${tokenValue("--tcrn-type-size-reading")} / ${tokenValue("--tcrn-type-line-reading")} / ${tokenValue("--tcrn-type-weight-regular")}`, usage: "Proof-gated explanatory copy and prose only; not auto-applied to dense UI." },
+              { token: "Body copy", size: `${tokenValue("--tcrn-type-size-body")} / ${tokenValue("--tcrn-type-line-body")} / ${tokenValue("--tcrn-type-weight-regular")}`, usage: "Rules, descriptions, table cells, and proof notes." },
+              { token: "Control text", size: `${tokenValue("--tcrn-type-size-control")} / ${tokenValue("--tcrn-type-line-control")} / ${tokenValue("--tcrn-type-weight-medium")}`, usage: "Buttons, tabs, labels, and compact control text." },
+              { token: "Caption", size: `${tokenValue("--tcrn-type-size-caption")} / ${tokenValue("--tcrn-type-line-caption")} / ${tokenValue("--tcrn-type-weight-medium")}`, usage: "Metadata, helper text, and evidence strip context." },
+              // no --tcrn-type-line-meta token; 1.4 line-height and the mono family stay literal.
+              { token: "Code text", size: `${tokenValue("--tcrn-type-size-meta")} / 1.4 / mono`, usage: "Token names, ids, commands, and technical readback." }
             ]}
           />
           <div className="tcrn-type-scale-demo" aria-label="Type scale specimen">
-            <p className="tcrn-type-scale-demo__page">Page title / 28px</p>
-            <p className="tcrn-type-scale-demo__section">Section title / 18px</p>
-            <p className="tcrn-type-scale-demo__dense">Dense UI body / 13px remains the default for operational scanning.</p>
-            <p className="tcrn-type-scale-demo__reading">Reading body / 14px is reserved for proof-gated explanatory copy.</p>
-            <p className="tcrn-type-scale-demo__body">Body copy / 13px keeps dense product surfaces readable without becoming tiny.</p>
-            <p className="tcrn-type-scale-demo__caption">Caption / 11px is reserved for metadata and helper context.</p>
+            {/* each specimen is one template-literal child (single text node) so the localization
+                dictionary lookup on the full string still hits — a `text {expr}` split would leak
+                English on zh-CN/ja/ko/fr and trip the browser localization proof (S039). */}
+            <p className="tcrn-type-scale-demo__page">{`Page title / ${tokenValue("--tcrn-type-size-page")}`}</p>
+            <p className="tcrn-type-scale-demo__section">{`Section title / ${tokenValue("--tcrn-type-size-section")}`}</p>
+            <p className="tcrn-type-scale-demo__dense">{`Dense UI body / ${tokenValue("--tcrn-type-size-ui")} remains the default for operational scanning.`}</p>
+            <p className="tcrn-type-scale-demo__reading">{`Reading body / ${tokenValue("--tcrn-type-size-reading")} is reserved for proof-gated explanatory copy.`}</p>
+            <p className="tcrn-type-scale-demo__body">{`Body copy / ${tokenValue("--tcrn-type-size-body")} keeps dense product surfaces readable without becoming tiny.`}</p>
+            <p className="tcrn-type-scale-demo__caption">{`Caption / ${tokenValue("--tcrn-type-size-caption")} is reserved for metadata and helper context.`}</p>
             <code className="tcrn-type-scale-demo__code">--tcrn-type-family-mono</code>
           </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="Visual level decoupling">
+          <Text>Heading keeps its semantic level fixed while visualLevel selects the type scale, so document outline order never bends to fit a size. Each specimen below is the same semantic h2 rendered at a different visual level; visual level 1 is the page-title display size shown by every story heading above.</Text>
+          <Heading level={2} visualLevel={2}>Level 2</Heading>
+          <Heading level={2} visualLevel={3}>Level 3</Heading>
+          <Heading level={2} visualLevel={4}>Level 4</Heading>
         </ReadbackPanel>
         <div className="tcrn-typography-sample">
           <Heading level={3}>Localized text must wrap without changing scale.</Heading>
@@ -1227,6 +1273,10 @@ const legacyContractStories: LegacyContractStory[] = [
             <Button variant="primary">Inspect tokens</Button>
             <Button disabled disabledReason="Requires product adoption route">Publish theme</Button>
           </div>
+          <Text>The shell theme toggle is a single circular icon-only control that reflects the current mode. Shown here in the dark preview reflecting the dark theme.</Text>
+          <div className="tcrn-action-row">
+            <ShellThemeToggle currentTheme="dark" />
+          </div>
         </section>
         <ReadbackPanel title="Storybook doc shell control contract">
           <Text>
@@ -1539,6 +1589,7 @@ const legacyContractStories: LegacyContractStory[] = [
         <ReadbackPanel title="State surfaces">
           <div className="tcrn-display-primitive-grid">
             <StateSurface title="Proof route needed" description="The owner must route verification before downstream claims." tone="warning" />
+            <StateSurface title="Route confirmed" description="Downstream claims are unblocked because the owning route recorded proof." tone="positive" />
             <EmptyState title="No local rows" description="Clear filters or add a synthetic fixture." />
             <ErrorState
               title="Panel unavailable"
@@ -1546,6 +1597,31 @@ const legacyContractStories: LegacyContractStory[] = [
               action={<Button>Retry locally</Button>}
             />
           </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="Divider">
+          <Text>Dividers separate stacked content groups without adding semantic meaning to the reading order.</Text>
+          <Divider />
+          <Text>Content below the divider stays in the same reading flow.</Text>
+        </ReadbackPanel>
+        <ReadbackPanel title="Live region">
+          <Text>LiveRegion politely announces asynchronous status text to assistive technology without stealing focus.</Text>
+          <LiveRegion>Synthetic status: proof route pending.</LiveRegion>
+        </ReadbackPanel>
+        <ReadbackPanel title="Badge tones">
+          <Text>Badge carries a neutral, positive, warning, or danger tone. All four tones are styled in the package.</Text>
+          <div className="tcrn-status-cloud">
+            <Badge tone="neutral">Neutral</Badge>
+            <Badge tone="positive">Positive</Badge>
+            <Badge tone="warning">Warning</Badge>
+            <Badge tone="danger">Danger</Badge>
+          </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="Inline alert tones">
+          <Text>InlineAlert accepts the same tone vocabulary. Only the warning tone is styled today; neutral, positive, and danger render as the base surface until the tone styling lands in S036/S037.</Text>
+          <InlineAlert tone="neutral">Neutral advisory: no proof route is required for this note.</InlineAlert>
+          <InlineAlert tone="positive">Positive result: the owning route recorded proof and downstream claims are unblocked.</InlineAlert>
+          <InlineAlert tone="warning">Warning: the owner must route verification before downstream claims.</InlineAlert>
+          <InlineAlert tone="danger">Danger: this fixture blocks the action until gates complete.</InlineAlert>
         </ReadbackPanel>
         <InlineAlert tone="warning">
           These primitives do not implement React ErrorBoundary wrappers, telemetry, product error policy, publication, package release, or product adoption.
@@ -1573,6 +1649,12 @@ const legacyContractStories: LegacyContractStory[] = [
             </Tooltip>
             <Tooltip content="Tooltip content is text-only and non-interactive." placement="top">
               <span className="tcrn-inline-proof-token" tabIndex={0}>proof token</span>
+            </Tooltip>
+            <Tooltip content="Bottom placement reveals beneath the trigger." placement="bottom" data-storybook-static-tooltip="true">
+              <Button>Bottom trigger</Button>
+            </Tooltip>
+            <Tooltip content="Left placement reveals to the start of the trigger." placement="left" data-storybook-static-tooltip="true">
+              <Button>Left trigger</Button>
             </Tooltip>
           </div>
           <TableShell
@@ -1683,6 +1765,25 @@ const legacyContractStories: LegacyContractStory[] = [
             <Button variant="danger">Destructive action</Button>
           </div>
         </ReadbackPanel>
+        <ReadbackPanel title="Size">
+          <div className="tcrn-action-row">
+            <Button variant="primary" size="sm">Small action</Button>
+            <Button variant="primary" size="md">Medium action</Button>
+          </div>
+          <Text>
+            Size selects the compact (sm) or default (md) control height. Visual differentiation depends on the .tcrn-button--sm / .tcrn-button--md package styling landed in S036; before that styling both sizes share the base button height.
+          </Text>
+        </ReadbackPanel>
+        <ReadbackPanel title="Link button (anchor)">
+          <div className="tcrn-action-row">
+            <LinkButton href="#button-spec-usage" variant="primary">Primary link</LinkButton>
+            <LinkButton href="#button-spec-usage">Secondary link</LinkButton>
+            <LinkButton href="#button-spec-usage" variant="quiet">Quiet link</LinkButton>
+          </div>
+          <Text>
+            LinkButton renders an anchor styled as a button for navigation actions. Variant fidelity (primary, secondary, quiet) depends on the package styling landed in S036; before that styling the three variants share the base button-shaped appearance.
+          </Text>
+        </ReadbackPanel>
         <ReadbackPanel title="Disabled usage">
           <Text>Visible button labels stay clean; disabled reasons are exposed through title and assistive text.</Text>
           <div className="tcrn-action-row">
@@ -1750,11 +1851,32 @@ const legacyContractStories: LegacyContractStory[] = [
         <Field label="Text input">
           <Input value="Synthetic only" readOnly />
         </Field>
+        <Field label="State (enabled)" hint="Enabled controls stay editable and carry no disabled reason.">
+          <Select
+            defaultValue="proof_required"
+            options={[
+              { value: "local_only", label: "Local proof only" },
+              { value: "proof_required", label: "Proof required" }
+            ]}
+          />
+        </Field>
+        <Field label="Notes (editable)" hint="An enabled Textarea accepts input; the readOnly variant above keeps the same layout.">
+          <Textarea defaultValue="Editable synthetic notes." />
+        </Field>
+        <Field label="Editable text input" hint="An enabled Input is editable; the readOnly Text input above keeps the same appearance.">
+          <Input defaultValue="Editable synthetic value" />
+        </Field>
         <Field label="Short code" hint="Short fields keep measured width for codes, counts, and compact filters.">
           <Input className="tcrn-input--short" placeholder="A-102" maxLength={6} />
         </Field>
         <Field label="Invalid state" hint="Hint text is visible and retained in the DOM." error="Synthetic validation message">
           <Input value="Blocked local fixture" readOnly aria-invalid />
+        </Field>
+        <Field label="Consent">
+          <div className="tcrn-action-row">
+            <Checkbox defaultChecked />
+            <Checkbox disabled disabledReason="Consent unavailable in this synthetic fixture" />
+          </div>
         </Field>
         <ReadbackPanel title="Field width rules">
           <TableShell
@@ -1826,6 +1948,11 @@ const legacyContractStories: LegacyContractStory[] = [
           <CompactToolShellDemo />
         </ReadbackPanel>
         <ReadbackPanel title="Navigation component contracts">
+          <TopBar
+            productName="TCRN Design System"
+            moduleName="Components"
+            actions={<StatusBadge state={{ state: "local_only" }} />}
+          />
           <Breadcrumb
             items={[
               { id: "home", label: "TCRN" },
@@ -1840,6 +1967,14 @@ const legacyContractStories: LegacyContractStory[] = [
                 { id: "design-system", label: "TCRN Design System" }
               ]}
             />
+            <ProductLauncher
+              items={[
+                { id: "aos", label: "TCRN AOS" },
+                { id: "tms", label: "TCRN TMS", selected: true },
+                { id: "design-system", label: "TCRN Design System" }
+              ]}
+            />
+            <Text>Deprecated alias of ProductSwitcher — see ruling. ProductLauncher is code-identical to ProductSwitcher and is retained only for backward compatibility; prefer ProductSwitcher for new surfaces.</Text>
             <div className="tcrn-package-nav-proof" data-package-backed-navigation-proof="true">
               <div className="tcrn-package-nav-proof__skip">
                 <SkipLink href="#navigation-shell-spec">Skip to navigation shell content</SkipLink>
@@ -2054,6 +2189,23 @@ const legacyContractStories: LegacyContractStory[] = [
         <OverlayModeMatrix />
         <DialogSpecFixture />
         <PopoverSpecFixture />
+        <ReadbackPanel title="Popover placement matrix">
+          <Text>Placement selects the anchoring corner. It is recorded on the data-placement attribute; the package does not add positional CSS for placement, so these static specimens document the value rather than a repositioned overlay.</Text>
+          <div className="tcrn-display-primitive-grid">
+            <Popover title="Bottom start" open placement="bottom-start">
+              <Text>Anchors from the bottom-start corner of its trigger.</Text>
+            </Popover>
+            <Popover title="Bottom end" open placement="bottom-end">
+              <Text>Anchors from the bottom-end corner of its trigger.</Text>
+            </Popover>
+            <Popover title="Top start" open placement="top-start">
+              <Text>Anchors from the top-start corner of its trigger.</Text>
+            </Popover>
+            <Popover title="Top end" open placement="top-end">
+              <Text>Anchors from the top-end corner of its trigger.</Text>
+            </Popover>
+          </div>
+        </ReadbackPanel>
         <OverlayStaticModes />
       </section>
     )
@@ -2144,7 +2296,10 @@ const legacyContractStories: LegacyContractStory[] = [
             {workRelationshipTypes.map((relation) => (
               <RelationshipChip key={relation} relation={relation} source="AOS-128" target={`example-${relation}`} />
             ))}
+            <RelationshipChip relation="implements" source="AOS-128" target="AOS-140" href="#relationship-target" />
+            <RelationshipChip relation="blocks" source="AOS-128" target="AOS-141" disabled />
           </div>
+          <Text>A chip with an href renders an anchor for navigation to the related item; a disabled chip records data-disabled and drops the link affordance.</Text>
         </ReadbackPanel>
         <ReadbackPanel title="Machine token containment">
           <Text>MachineToken preserves the full identifier in title, aria-label, and data-full-token while constraining the visible value so it cannot overlap adjacent table cells.</Text>
@@ -2171,9 +2326,25 @@ const legacyContractStories: LegacyContractStory[] = [
                 kind: "Thread",
                 token: <MachineToken token="019eb66e-00d1-7190-81d9-693895b32033" label="Arturo" kind="thread" />,
                 boundary: "Human label plus full thread identifier."
+              },
+              {
+                kind: "Commit",
+                token: <MachineToken token="9f3a1c2e7b6d4f80a1c2" label="commit" kind="commit" />,
+                boundary: "Short commit digest with the full identifier preserved in metadata."
+              },
+              {
+                kind: "Artifact",
+                token: <MachineToken token="artifact://tcrn/ds/build-042" label="artifact" kind="artifact" />,
+                boundary: "Build artifact reference stays scannable in dense cells."
               }
             ]}
           />
+        </ReadbackPanel>
+        <ReadbackPanel title="Density variants">
+          <Text>Work Management surfaces accept a comfortable, compact, or dense density. The same EvidenceAttachmentList is shown at all three. Only the dense modifier carries distinct package styling today; comfortable and compact record the density on data-density until the density scale is filled in S036/S037.</Text>
+          <EvidenceAttachmentList label="Evidence (comfortable)" density="comfortable" items={workEvidenceItems} />
+          <EvidenceAttachmentList label="Evidence (compact)" density="compact" items={workEvidenceItems} />
+          <EvidenceAttachmentList label="Evidence (dense)" density="dense" items={workEvidenceItems} />
         </ReadbackPanel>
         <ReadbackPanel title="Subnav and saved views">
           <SavedViewToolbar views={workManagementSavedViews} filters={workManagementFilters} />
@@ -2315,6 +2486,12 @@ const legacyContractStories: LegacyContractStory[] = [
               { id: "kb-proof", label: "Proof", href: "#kb-proof" }
             ]}
           />
+        </ReadbackPanel>
+        <ReadbackPanel title="Density variants">
+          <Text>Knowledge Management surfaces accept the same comfortable, compact, or dense density. The same KnowledgePageTree is shown at all three. Only the dense modifier carries distinct package styling today; comfortable and compact record the density on data-density until the density scale is filled in S036/S037.</Text>
+          <KnowledgePageTree label="Knowledge page tree (comfortable)" items={knowledgePageTreeItems} density="comfortable" />
+          <KnowledgePageTree label="Knowledge page tree (compact)" items={knowledgePageTreeItems} density="compact" />
+          <KnowledgePageTree label="Knowledge page tree (dense)" items={knowledgePageTreeItems} density="dense" />
         </ReadbackPanel>
         <ReadbackPanel title="Metadata, comments, evidence, and history">
           <KnowledgeMetadataRail

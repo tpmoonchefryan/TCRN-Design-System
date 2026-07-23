@@ -317,7 +317,13 @@ function storyHtml(group: ContractStoryGroup): string {
   return `<section class="tcrn-static-section" id="${groupSlug(group)}" data-story-section="${group}">
   <h2>${i18nText(`group.${group}`)}</h2>
 ${stories.map((story) => {
-  const body = renderToStaticMarkup(story.id === "overlay-focus" ? <DialogSpecFixture /> : story.render());
+  // Each story is rendered in its own renderToStaticMarkup pass, so React's useId counter
+  // restarts per story; without a per-story identifierPrefix, two stories on the same page
+  // can mint the same useId value and collide (e.g. two dialogs sharing an aria-labelledby
+  // target — a serious axe failure). Scope the ids to the story id so they are page-unique.
+  const body = renderToStaticMarkup(story.id === "overlay-focus" ? <DialogSpecFixture /> : story.render(), {
+    identifierPrefix: `${story.id}-`
+  });
   return `  <article id="${story.id}" data-contract-story-id="${story.id}" data-story-id="${story.id}" data-story-group="${story.group}" data-story-category="${escapeHtml(story.category)}" data-story-category-id="${escapeHtml(story.categoryId)}" data-story-source-path="${escapeHtml(story.sourcePath)}" data-story-package-authority="${escapeHtml(story.packageAuthority)}" data-story-readiness="${escapeHtml(story.readiness)}" data-story-proof-posture="${escapeHtml(story.proofPosture)}" data-story-collapsed="true">
   <h2 class="tcrn-story-disclosure__heading"><button type="button" class="tcrn-story-disclosure" aria-expanded="false" aria-controls="${story.id}-region" data-story-disclosure="${story.id}"><span class="tcrn-story-disclosure__title">${i18nText(`story.${story.id}.title`)}</span><span class="tcrn-story-disclosure__chevron" aria-hidden="true">${iconHtml("chevron-right", "tcrn-story-disclosure__chevron-svg", "story-disclosure")}</span></button></h2>
   <p>${i18nText(`story.${story.id}.description`)}</p>
@@ -357,7 +363,7 @@ export function pageHtml(group: ContractStoryGroup): string {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
-  <meta name="theme-color" content="#f6f7fb" data-storybook-theme-color />
+  <meta name="theme-color" content="#fafaf9" data-storybook-theme-color />
   <link rel="icon" href="tcrn-brand-mark.svg" type="image/svg+xml" />
   <link rel="alternate" type="application/json" href="ai-consumption-contract.json" title="TCRN AI consumption contract" data-tcrn-ai-consumption-contract="true" />
   <link rel="help" type="text/plain" href="llms.txt" data-tcrn-ai-consumption-contract-help="true" />

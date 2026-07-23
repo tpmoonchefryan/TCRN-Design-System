@@ -253,6 +253,32 @@ test("product shell component css keeps motion shorthands valid", () => {
   assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-motion-emphasis\) ease/);
 });
 
+test("product shell component css carries the relocated component families (TCRN-DS-STORY-037)", () => {
+  // The 24 genuine component families were moved out of the docs demo layer into the
+  // package. A future accidental removal (or a revert to doc-only styling) must fail here.
+  assert.match(tcrnComponentCss, /\.tcrn-field\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-tooltip__content\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-popover\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-breadcrumb\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-skeleton\b/);
+  // Representative members across the other relocated families.
+  assert.match(tcrnComponentCss, /\.tcrn-surface\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-state-surface\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-collapsible-region\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-segmented-nav\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-highlight-mark\b/);
+  assert.match(tcrnComponentCss, /@keyframes tcrn-skeleton-shimmer\b/);
+  // The storybook-only static tooltip hook must NOT be shipped in the package; it stays
+  // in the docs demo layer (it is not emitted by the Tooltip component).
+  assert.doesNotMatch(tcrnComponentCss, /data-storybook-static-tooltip/);
+  // .tcrn-filter-bar must not become a top-level package selector, or the shell-fidelity
+  // duplicate-selector gate fires (it stays doc-side; package owns it only scoped).
+  assert.doesNotMatch(tcrnComponentCss, /\n\.tcrn-filter-bar\s*[,{]/);
+  // Guard: relocated rules reference tokens via var(); they must not DEFINE tokens.
+  assert.doesNotMatch(tcrnComponentCss, /--tcrn-color-state-blocked:/);
+  assert.doesNotMatch(tcrnComponentCss, /--tcrn-z-popover:/);
+});
+
 test("product shell component css isolates topbar from docs chrome", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*border: 0;[\s\S]*border-bottom: 1px solid var\(--tcrn-color-border-subtle\);[\s\S]*border-radius: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);[\s\S]*justify-content: stretch;/);
@@ -373,7 +399,7 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-search-input__icon \{[\s\S]*grid-column: 1;[\s\S]*inline-size: var\(--tcrn-search-input-icon-size\);/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input \.tcrn-search-input__control \{[\s\S]*appearance: none;[\s\S]*box-sizing: border-box;[\s\S]*grid-column: 2;[\s\S]*width: 100%;[\s\S]*min-height: 0;[\s\S]*min-width: 0;[\s\S]*max-width: none;[\s\S]*padding: 0;[\s\S]*border: 0;[\s\S]*border-radius: 0;[\s\S]*background: transparent;[\s\S]*box-shadow: none;/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*grid-column: 3;/);
-  assert.match(tcrnComponentCss, /\[data-tcrn-theme="dark"\] \.tcrn-button--primary \{[\s\S]*color: var\(--tcrn-color-surface-canvas\);/);
+  assert.match(tcrnComponentCss, /\[data-tcrn-theme="dark"\] \.tcrn-button--primary[^{]*\{[\s\S]*color: var\(--tcrn-color-surface-canvas\);/);
   assert.match(tcrnComponentCss, /\.tcrn-readback-panel \{[\s\S]*display: grid;[\s\S]*gap: var\(--tcrn-space-2\);/);
   assert.match(tcrnComponentCss, /\.tcrn-readback-panel > \.tcrn-heading \+ \* \{[\s\S]*margin-top: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-content-stack \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-5\);[\s\S]*min-width: 0;/);
