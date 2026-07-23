@@ -1269,7 +1269,6 @@ export function Pagination({ label }: { label: string }) {
 
 export const tcrnComponentCss = `
 :root {
-  --tcrn-radius-panel: var(--tcrn-radius-surface);
   --tcrn-motion-product-shell: var(--tcrn-motion-emphasis);
   --tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer);
   --tcrn-color-brand-secondary-readable: #246f80;
