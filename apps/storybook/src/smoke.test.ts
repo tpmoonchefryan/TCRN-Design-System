@@ -84,8 +84,6 @@ const expectedContractStoryIds = [
   "button-spec-usage",
   "field-spec-usage",
   "navigation-shell-spec",
-  "aos-frontend-shell-slice",
-  "aos-owner-quality-product-shell",
   "dialog-spec-usage",
   "table-work-index-spec",
   "work-management-components-spec",
@@ -103,6 +101,8 @@ const expectedContractStoryIds = [
   "ai-consumption-contract",
   "blocked-actions",
   "overlay-focus",
+  "aos-frontend-shell-slice",
+  "aos-owner-quality-product-shell",
   "local-changelog"
 ];
 
@@ -377,7 +377,9 @@ test("static contract story surface is retained and synthetic", () => {
   ]) {
     assertNoLocalAbsolutePathText(`proof receipt ${receiptPath}`, readFileSync(join(process.cwd(), "..", "..", receiptPath), "utf8"));
   }
-  for (const { group, html } of pages.filter((page) => page.group !== "Components")) {
+  // ProductShell renders in two designated homes: Components (navigation-shell-spec comparator +
+  // component examples) and Proof (the AOS visual-instance oracles, moved there by TCRN-DS-STORY-057).
+  for (const { group, html } of pages.filter((page) => page.group !== "Components" && page.group !== "Proof")) {
     assert.doesNotMatch(html, /data-package-backed-product-shell-boundary="side-nav-shell-v1"/, `unexpected ProductShell boundary outside component examples: ${group}`);
     assert.doesNotMatch(html, /data-product-shell-region="side-navigation"/, `unexpected ProductShell side nav outside component examples: ${group}`);
     assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell__sidebar/, `unexpected ProductShell sidebar outside component examples: ${group}`);
@@ -1118,7 +1120,8 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.shellControlVisualParityProof?.motionFields?.join(" ") ?? "", /transitionProperty transitionDuration transitionTimingFunction/);
   assert.match(contract.shellControlVisualParityProof?.reducedMotionExpectation ?? "", /transitions and animations disabled/);
   assert.equal(contract.visualInstanceOracles?.[0]?.id, "aos-frontend-shell-slice");
-  assert.equal(contract.visualInstanceOracles?.[0]?.route, "components.html#aos-frontend-shell-slice");
+  assert.equal(contract.visualInstanceOracles?.[0]?.route, "proof.html#aos-frontend-shell-slice");
+  assert.equal(contract.visualInstanceOracles?.[0]?.supersededBy, "aos-owner-quality-product-shell");
   assert.deepEqual(contract.visualInstanceOracles?.[0]?.primaryIa, ["Cockpit", "Work"]);
   assert.deepEqual(contract.visualInstanceOracles?.[0]?.requiredVariants, [
     "desktop-light-expanded-cockpit-search-results",
@@ -1164,7 +1167,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.visualInstanceOracles?.[0]?.negativeCriteria?.join(" ") ?? "", /no raw API\/debug payload as primary UX/);
   const ownerQualityOracle = contract.visualInstanceOracles?.find((oracle: { id?: string }) => oracle.id === "aos-owner-quality-product-shell");
   assert.equal(ownerQualityOracle?.name, "AosOwnerQualityProductShell");
-  assert.equal(ownerQualityOracle?.route, "components.html#aos-owner-quality-product-shell");
+  assert.equal(ownerQualityOracle?.route, "proof.html#aos-owner-quality-product-shell");
   assert.equal(ownerQualityOracle?.disposition, "owner_quality_candidate_requires_ds_review_before_product_use");
   assert.equal(ownerQualityOracle?.replacesOwnerQualityTarget, "aos-frontend-shell-slice");
   assert.deepEqual(ownerQualityOracle?.primaryIa, ["Operations Cockpit", "Work queue"]);
@@ -1325,7 +1328,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, aos-frontend-shell-slice, aos-owner-quality-product-shell, dialog-spec-usage, table-work-index-spec, work-management-components-spec, knowledge-management-components-spec/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, dialog-spec-usage, table-work-index-spec, work-management-components-spec, knowledge-management-components-spec/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, work-management-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);

@@ -294,7 +294,7 @@ export const aiConsumptionContract = {
   shellControlVisualParityProof: {
     disposition: "executable_required_for_product_shell_consumption",
     packageBackedAuthority: "@tcrn/ui-react/tcrnComponentCss",
-    storybookStandard: "components.html#aos-owner-quality-product-shell",
+    storybookStandard: "proof.html#aos-owner-quality-product-shell",
     comparatorStandard: "components.html#navigation-shell-spec",
     controlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
     compositionRule:
@@ -388,8 +388,9 @@ export const aiConsumptionContract = {
     {
       id: "aos-frontend-shell-slice",
       name: "AosFrontendShellSliceVisualInstance",
-      route: "components.html#aos-frontend-shell-slice",
+      route: "proof.html#aos-frontend-shell-slice",
       disposition: "internal_registered_shell_proof_scaffold_not_owner_quality_target",
+      supersededBy: "aos-owner-quality-product-shell",
       packageMapping: [
         "ProductShell",
         "ProductShellSearch",
@@ -547,7 +548,7 @@ export const aiConsumptionContract = {
     {
       id: "aos-owner-quality-product-shell",
       name: "AosOwnerQualityProductShell",
-      route: "components.html#aos-owner-quality-product-shell",
+      route: "proof.html#aos-owner-quality-product-shell",
       disposition: "owner_quality_candidate_requires_ds_review_before_product_use",
       replacesOwnerQualityTarget: "aos-frontend-shell-slice",
       packageMapping: [

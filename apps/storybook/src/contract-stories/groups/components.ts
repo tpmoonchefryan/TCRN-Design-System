@@ -9,8 +9,6 @@ export const componentsStories: ContractStory[] = [
   selectStory("button-spec-usage"),
   selectStory("field-spec-usage"),
   selectStory("navigation-shell-spec"),
-  selectStory("aos-frontend-shell-slice"),
-  selectStory("aos-owner-quality-product-shell"),
   selectStory("dialog-spec-usage"),
   selectStory("table-work-index-spec"),
   selectStory("work-management-components-spec"),

@@ -67,7 +67,7 @@ const localAbsolutePathDenyPatterns = [
   { name: "mac-temp-path", pattern: /\/var\/folders(?:\/|$)/i },
   { name: "remote-workspace-path", pattern: /\/srv\/tcrn(?:\/|$)/i }
 ];
-const expectedStoryCategoryCount = 19;
+const expectedStoryCategoryCount = 20;
 const expectedStorybookShellNavGroupCount = expectedContractStoryGroups.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
@@ -255,7 +255,7 @@ const productShellComparatorContract = {
 const aosFrontendShellVisualInstanceContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
   storyId: "aos-frontend-shell-slice",
-  page: "components.html#aos-frontend-shell-slice",
+  page: "proof.html#aos-frontend-shell-slice",
   scopedSelector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
@@ -471,7 +471,7 @@ const aosFrontendShellVisualInstanceContract = {
 const aosOwnerQualityProductShellContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
   storyId: "aos-owner-quality-product-shell",
-  page: "components.html#aos-owner-quality-product-shell",
+  page: "proof.html#aos-owner-quality-product-shell",
   scopedSelector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
@@ -1045,8 +1045,10 @@ for (const forbiddenCleanRoomRuntimePattern of [
     missing.push(`forbidden-clean-room-runtime:${forbiddenCleanRoomRuntimePattern.source}`);
   }
 }
+// ProductShell renders in two designated homes: Components (navigation-shell-spec comparator +
+// component examples) and Proof (the AOS visual-instance oracles, moved there by TCRN-DS-STORY-057).
 const nonComponentHtml = Object.entries(pages)
-  .filter(([group]) => group !== "Components")
+  .filter(([group]) => group !== "Components" && group !== "Proof")
   .map(([, html]) => html)
   .join("\n");
 for (const forbiddenGlobalShellMarker of [

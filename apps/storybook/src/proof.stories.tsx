@@ -40,3 +40,13 @@ export const OverlayFocus: Story = {
   name: "Overlay focus contract",
   render: () => renderContractStory("overlay-focus")
 };
+
+export const AosFrontendShellSliceVisualInstance: Story = {
+  name: "AOS frontend shell slice visual instance",
+  render: () => renderContractStory("aos-frontend-shell-slice")
+};
+
+export const AosOwnerQualityProductShell: Story = {
+  name: "AOS owner-quality product shell oracle",
+  render: () => renderContractStory("aos-owner-quality-product-shell")
+};

@@ -138,16 +138,6 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-shell-spec.png"
     },
     {
-      "storyId": "aos-frontend-shell-slice",
-      "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-frontend-shell-slice.png"
-    },
-    {
-      "storyId": "aos-owner-quality-product-shell",
-      "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-owner-quality-product-shell.png"
-    },
-    {
       "storyId": "dialog-spec-usage",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-dialog-spec-usage.png"
@@ -241,6 +231,16 @@
       "storyId": "overlay-focus",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-overlay-focus.png"
+    },
+    {
+      "storyId": "aos-frontend-shell-slice",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-frontend-shell-slice.png"
+    },
+    {
+      "storyId": "aos-owner-quality-product-shell",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-owner-quality-product-shell.png"
     },
     {
       "storyId": "section-change-log",
@@ -388,16 +388,6 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-shell-spec.png"
     },
     {
-      "storyId": "aos-frontend-shell-slice",
-      "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-frontend-shell-slice.png"
-    },
-    {
-      "storyId": "aos-owner-quality-product-shell",
-      "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-owner-quality-product-shell.png"
-    },
-    {
       "storyId": "dialog-spec-usage",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-dialog-spec-usage.png"
@@ -491,6 +481,16 @@
       "storyId": "overlay-focus",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-overlay-focus.png"
+    },
+    {
+      "storyId": "aos-frontend-shell-slice",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-frontend-shell-slice.png"
+    },
+    {
+      "storyId": "aos-owner-quality-product-shell",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-owner-quality-product-shell.png"
     },
     {
       "storyId": "section-change-log",
@@ -638,16 +638,6 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-shell-spec.png"
     },
     {
-      "storyId": "aos-frontend-shell-slice",
-      "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-frontend-shell-slice.png"
-    },
-    {
-      "storyId": "aos-owner-quality-product-shell",
-      "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-owner-quality-product-shell.png"
-    },
-    {
       "storyId": "dialog-spec-usage",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-dialog-spec-usage.png"
@@ -741,6 +731,16 @@
       "storyId": "overlay-focus",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-overlay-focus.png"
+    },
+    {
+      "storyId": "aos-frontend-shell-slice",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-frontend-shell-slice.png"
+    },
+    {
+      "storyId": "aos-owner-quality-product-shell",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-owner-quality-product-shell.png"
     },
     {
       "storyId": "section-change-log",

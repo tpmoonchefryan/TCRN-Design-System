@@ -52,20 +52,6 @@
         "note": "navigation shell spec; split into per-family stories"
       },
       {
-        "id": "aos-frontend-shell-slice",
-        "measure": 12448,
-        "recordedHeightPx": 12448,
-        "owedTo": "TCRN-DS-STORY-057/059",
-        "note": "AOS frontend shell-slice oracle; move to Proof (S057) then split (S059)"
-      },
-      {
-        "id": "aos-owner-quality-product-shell",
-        "measure": 15285,
-        "recordedHeightPx": 15285,
-        "owedTo": "TCRN-DS-STORY-057/059",
-        "note": "AOS owner-quality product-shell oracle; move to Proof (S057) then split (S059)"
-      },
-      {
         "id": "work-management-components-spec",
         "measure": 9191,
         "recordedHeightPx": 9191,
@@ -81,10 +67,24 @@
       },
       {
         "id": "ai-consumption-contract",
-        "measure": 5069,
+        "measure": 5087,
         "recordedHeightPx": 5069,
         "owedTo": "TCRN-DS-STORY-059",
         "note": "full AI-consumption contract readback; split"
+      },
+      {
+        "id": "aos-frontend-shell-slice",
+        "measure": 12448,
+        "recordedHeightPx": 12448,
+        "owedTo": "TCRN-DS-STORY-057/059",
+        "note": "AOS frontend shell-slice oracle; move to Proof (S057) then split (S059)"
+      },
+      {
+        "id": "aos-owner-quality-product-shell",
+        "measure": 15285,
+        "recordedHeightPx": 15285,
+        "owedTo": "TCRN-DS-STORY-057/059",
+        "note": "AOS owner-quality product-shell oracle; move to Proof (S057) then split (S059)"
       }
     ]
   },
@@ -126,18 +126,6 @@
       "note": "navigation shell spec; split into per-family stories"
     },
     {
-      "id": "aos-frontend-shell-slice",
-      "heightPx": 12448,
-      "owedTo": "TCRN-DS-STORY-057/059",
-      "note": "AOS frontend shell-slice oracle; move to Proof (S057) then split (S059)"
-    },
-    {
-      "id": "aos-owner-quality-product-shell",
-      "heightPx": 15285,
-      "owedTo": "TCRN-DS-STORY-057/059",
-      "note": "AOS owner-quality product-shell oracle; move to Proof (S057) then split (S059)"
-    },
-    {
       "id": "work-management-components-spec",
       "heightPx": 9191,
       "owedTo": "TCRN-DS-STORY-059",
@@ -151,9 +139,21 @@
     },
     {
       "id": "ai-consumption-contract",
-      "heightPx": 5069,
+      "heightPx": 5087,
       "owedTo": "TCRN-DS-STORY-059",
       "note": "full AI-consumption contract readback; split"
+    },
+    {
+      "id": "aos-frontend-shell-slice",
+      "heightPx": 12448,
+      "owedTo": "TCRN-DS-STORY-057/059",
+      "note": "AOS frontend shell-slice oracle; move to Proof (S057) then split (S059)"
+    },
+    {
+      "id": "aos-owner-quality-product-shell",
+      "heightPx": 15285,
+      "owedTo": "TCRN-DS-STORY-057/059",
+      "note": "AOS owner-quality product-shell oracle; move to Proof (S057) then split (S059)"
     }
   ]
 }

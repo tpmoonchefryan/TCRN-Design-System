@@ -51,7 +51,7 @@ export const storyCategoryDefinitions: Record<ContractStoryGroup, readonly Story
   Components: [
     { id: "component-inventory", label: "Component inventory", description: "Package-backed inventory, display primitives, and disclosure primitives." },
     { id: "controls-data", label: "Controls and data", description: "Buttons, fields, tables, and dense data primitives." },
-    { id: "navigation-shells", label: "Navigation and shells", description: "Navigation, ProductShell, AOS visual instances, and shell control contracts." },
+    { id: "navigation-shells", label: "Navigation and shells", description: "Navigation, ProductShell, and shell control contracts." },
     { id: "overlays", label: "Overlays", description: "Dialog, drawer, popover, and focus behavior contracts." },
     { id: "work-management", label: "Work Management", description: "Package-backed Work Management components and execution-record containment." },
     { id: "knowledge-management", label: "Knowledge Management", description: "Package-backed static Knowledge components, sanitized references, and no-live publishing boundaries." }
@@ -63,7 +63,8 @@ export const storyCategoryDefinitions: Record<ContractStoryGroup, readonly Story
     { id: "data-pages", label: "Data and pages", description: "Data grid escalation, large-list search, and dashboard page templates." }
   ],
   Proof: [
-    { id: "proof-governance", label: "Proof governance", description: "Proof matrix, AI contract, blocked actions, and focus proof." }
+    { id: "proof-governance", label: "Proof governance", description: "Proof matrix, AI contract, blocked actions, and focus proof." },
+    { id: "proof-visual-instances", label: "Visual instances", description: "Package-backed AOS ProductShell visual instance oracles and the superseded frontend proof scaffold." }
   ],
   "Change Log": [
     { id: "governance-records", label: "Governance records", description: "Durable Storybook and root changelog records." }
@@ -110,8 +111,6 @@ export const storyRegistryOrder: readonly StoryRegistryEntry[] = [
   { id: "button-spec-usage", group: "Components", categoryId: "controls-data" },
   { id: "field-spec-usage", group: "Components", categoryId: "controls-data" },
   { id: "navigation-shell-spec", group: "Components", categoryId: "navigation-shells" },
-  { id: "aos-frontend-shell-slice", group: "Components", categoryId: "navigation-shells" },
-  { id: "aos-owner-quality-product-shell", group: "Components", categoryId: "navigation-shells" },
   { id: "dialog-spec-usage", group: "Components", categoryId: "overlays" },
   { id: "table-work-index-spec", group: "Components", categoryId: "controls-data" },
   { id: "work-management-components-spec", group: "Components", categoryId: "work-management" },
@@ -129,6 +128,8 @@ export const storyRegistryOrder: readonly StoryRegistryEntry[] = [
   { id: "ai-consumption-contract", group: "Proof", categoryId: "proof-governance" },
   { id: "blocked-actions", group: "Proof", categoryId: "proof-governance" },
   { id: "overlay-focus", group: "Proof", categoryId: "proof-governance" },
+  { id: "aos-frontend-shell-slice", group: "Proof", categoryId: "proof-visual-instances" },
+  { id: "aos-owner-quality-product-shell", group: "Proof", categoryId: "proof-visual-instances" },
   { id: "local-changelog", group: "Change Log", categoryId: "governance-records" }
 ];
 

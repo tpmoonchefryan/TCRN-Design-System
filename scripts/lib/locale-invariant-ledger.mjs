@@ -722,6 +722,8 @@ export const localeInvariantLedger = {
       "Work selected route",
     ],
     "aos-owner-quality-product-shell": [
+      "viewport story. The earlier frontend shell slice remains an internal proof scaffold",
+      "retained here as a superseded oracle.",
       "and actionable desktop side",
       "and activity",
       "and activity the first",
@@ -850,7 +852,7 @@ export const localeInvariantLedger = {
       "This named visual instance reframes as an Operations Cockpit owner",
       "topbar horizontal overflow",
       "viewport hierarchy and copy semantics",
-      "viewport story. The earlier frontend shell slice remains an internal proof scaffold.",
+      "viewport story. The earlier frontend shell slice remains an internal proof scaffold, retained here as a superseded oracle.",
       "viewport table headers and state labels",
       "visible local product CSS",
       "work queue and gate evidence",
@@ -1399,6 +1401,7 @@ export const localeInvariantLedger = {
       "overclaim receipts required for this checkpoint.",
     ],
     "ai-consumption-contract": [
+      "Visual instances",
       "accessible collapse",
       "active location preservation",
       "ad hoc status language",
