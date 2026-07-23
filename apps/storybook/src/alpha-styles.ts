@@ -1194,7 +1194,7 @@ h1, h2, h3, p, span, button, label {
 }
 .tcrn-button--primary {
   background: var(--tcrn-color-focus-ring);
-  color: #fff;
+  color: var(--tcrn-color-text-inverse);
   border-color: var(--tcrn-color-focus-ring);
 }
 [data-tcrn-theme="dark"] .tcrn-button--primary {
