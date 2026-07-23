@@ -260,7 +260,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "a9e664561964ca5386311793dc77c6df1df6fb258adf50a5f13174c369b1b6a1",
+    "contractPayloadDigest": "5e0a4e7036931e44c76aa6bf0e42bceb83b0383f04b0399109722bca7f6c56e3",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 19,
@@ -318,7 +318,7 @@
     "foundationVisualStandardCategoryCount": 10,
     "consumerVisualStyleContractId": "consumer-visual-style-contract-v1",
     "storybookDocShellVisualOracleId": "original-storybook-doc-shell-v1",
-    "storybookDocShellVisualOracleReceipt": "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan",
+    "storybookDocShellVisualOracleReceipt": "internal DS doc-shell restoration plan (owner-held governance record)",
     "storybookDocShellVisualOracleBaselineClassification": "owner_declared_original_storybook_doc_shell_standard",
     "storybookDocShellVisualOracleMetricEvidenceCount": 4,
     "llmsTraceabilitySectionsPresent": true
@@ -651,11 +651,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 339.52,
+          "bottom": 288.67,
           "width": 1077.13,
-          "height": 206.08
+          "height": 155.23
         },
-        "firstStoryTop": 430.17,
+        "firstStoryTop": 379.33,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -790,11 +790,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 339.52,
+          "bottom": 288.67,
           "width": 1077.13,
-          "height": 206.08
+          "height": 155.23
         },
-        "firstStoryTop": 430.17,
+        "firstStoryTop": 379.33,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -923,11 +923,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 339.52,
+          "bottom": 288.67,
           "width": 1077.13,
-          "height": 206.08
+          "height": 155.23
         },
-        "firstStoryTop": 430.17,
+        "firstStoryTop": 379.33,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1056,11 +1056,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 339.52,
+          "bottom": 327.05,
           "width": 1077.13,
-          "height": 206.08
+          "height": 193.61
         },
-        "firstStoryTop": 430.17,
+        "firstStoryTop": 417.7,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1189,11 +1189,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 339.52,
+          "bottom": 288.67,
           "width": 1077.13,
-          "height": 206.08
+          "height": 155.23
         },
-        "firstStoryTop": 430.17,
+        "firstStoryTop": 379.33,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1322,11 +1322,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 339.52,
+          "bottom": 288.67,
           "width": 1077.13,
-          "height": 206.08
+          "height": 155.23
         },
-        "firstStoryTop": 430.17,
+        "firstStoryTop": 379.33,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1455,11 +1455,11 @@
           "top": 133.44,
           "left": 325.44,
           "right": 1402.56,
-          "bottom": 339.52,
+          "bottom": 288.67,
           "width": 1077.13,
-          "height": 206.08
+          "height": 155.23
         },
-        "firstStoryTop": 430.17,
+        "firstStoryTop": 379.33,
         "themeToggleRadius": "999px",
         "search": {
           "top": 30,
@@ -1552,7 +1552,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1814,
+        "scrollY": 1745,
         "viewport": {
           "width": 390,
           "height": 844
@@ -1571,17 +1571,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.39,
+          "top": 411.7,
           "right": 374,
-          "bottom": 10140.83,
+          "bottom": 10105.05,
           "left": 16,
           "width": 358,
-          "height": 9728.44
+          "height": 9693.34
         },
         "title": {
-          "top": 429.39,
+          "top": 428.7,
           "right": 357,
-          "bottom": 459.7,
+          "bottom": 459.02,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -1788,6 +1788,26 @@
                   "text": "不声明 AOS/TMS 采用"
                 },
                 {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明 AOS/TMS 采用"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-boundary-strip",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下游"
+                },
+                {
                   "tag": "section",
                   "id": "",
                   "className": "tcrn-doc-page-head",
@@ -1795,7 +1815,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                  "text": "受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下"
                 },
                 {
                   "tag": "main",
@@ -1805,7 +1825,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -1826,26 +1846,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
-                },
-                {
-                  "tag": "html",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -1926,7 +1926,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                  "text": "受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下"
                 },
                 {
                   "tag": "main",
@@ -1936,7 +1936,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -2037,7 +2037,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -2138,7 +2138,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -2184,8 +2184,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.7,
-        "titleClearancePx": 32.7,
+        "articleClearancePx": 15.01,
+        "titleClearancePx": 32.01,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -2197,7 +2197,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1814,
+        "scrollY": 1745,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2216,17 +2216,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.39,
+          "top": 411.7,
           "right": 374,
-          "bottom": 10140.83,
+          "bottom": 10105.05,
           "left": 16,
           "width": 358,
-          "height": 9728.44
+          "height": 9693.34
         },
         "title": {
-          "top": 429.39,
+          "top": 428.7,
           "right": 357,
-          "bottom": 459.7,
+          "bottom": 459.02,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -2433,6 +2433,26 @@
                   "text": "不声明 AOS/TMS 采用"
                 },
                 {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明 AOS/TMS 采用"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-boundary-strip",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下游"
+                },
+                {
                   "tag": "section",
                   "id": "",
                   "className": "tcrn-doc-page-head",
@@ -2440,7 +2460,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                  "text": "受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下"
                 },
                 {
                   "tag": "main",
@@ -2450,7 +2470,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -2471,26 +2491,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
-                },
-                {
-                  "tag": "html",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -2571,7 +2571,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                  "text": "受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下"
                 },
                 {
                   "tag": "main",
@@ -2581,7 +2581,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -2682,7 +2682,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -2783,7 +2783,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -2829,8 +2829,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.7,
-        "titleClearancePx": 32.7,
+        "articleClearancePx": 15.01,
+        "titleClearancePx": 32.01,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -2842,7 +2842,7 @@
       {
         "label": "after-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1814,
+        "scrollY": 1745,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2861,17 +2861,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.39,
+          "top": 411.7,
           "right": 374,
-          "bottom": 10140.83,
+          "bottom": 10105.05,
           "left": 16,
           "width": 358,
-          "height": 9728.44
+          "height": 9693.34
         },
         "title": {
-          "top": 429.39,
+          "top": 428.7,
           "right": 357,
-          "bottom": 459.7,
+          "bottom": 459.02,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -3078,6 +3078,26 @@
                   "text": "不声明 AOS/TMS 采用"
                 },
                 {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明 AOS/TMS 采用"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-boundary-strip",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下游"
+                },
+                {
                   "tag": "section",
                   "id": "",
                   "className": "tcrn-doc-page-head",
@@ -3085,7 +3105,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                  "text": "受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下"
                 },
                 {
                   "tag": "main",
@@ -3095,7 +3115,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -3116,26 +3136,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
-                },
-                {
-                  "tag": "html",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -3216,7 +3216,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                  "text": "受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下"
                 },
                 {
                   "tag": "main",
@@ -3226,7 +3226,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -3327,7 +3327,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -3428,7 +3428,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -3474,8 +3474,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.7,
-        "titleClearancePx": 32.7,
+        "articleClearancePx": 15.01,
+        "titleClearancePx": 32.01,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -3487,7 +3487,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1814,
+        "scrollY": 1745,
         "viewport": {
           "width": 390,
           "height": 844
@@ -3506,17 +3506,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.39,
+          "top": 411.7,
           "right": 374,
-          "bottom": 10140.83,
+          "bottom": 10105.05,
           "left": 16,
           "width": 358,
-          "height": 9728.44
+          "height": 9693.34
         },
         "title": {
-          "top": 429.39,
+          "top": 428.7,
           "right": 357,
-          "bottom": 459.7,
+          "bottom": 459.02,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -3723,6 +3723,26 @@
                   "text": "不声明 AOS/TMS 采用"
                 },
                 {
+                  "tag": "span",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明 AOS/TMS 采用"
+                },
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-boundary-strip",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下游"
+                },
+                {
                   "tag": "section",
                   "id": "",
                   "className": "tcrn-doc-page-head",
@@ -3730,7 +3750,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                  "text": "受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下"
                 },
                 {
                   "tag": "main",
@@ -3740,7 +3760,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -3761,26 +3781,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
-                },
-                {
-                  "tag": "html",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "基础 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -3861,7 +3861,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i18n3 文案治理1 不声明"
+                  "text": "受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Owner、产品和发布验收仍属下"
                 },
                 {
                   "tag": "main",
@@ -3871,7 +3871,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -3972,7 +3972,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -4073,7 +4073,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 令牌与 i"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 基础 本页内容 令牌与 i18n3 文案治理1 不声明包发布 不声明 AOS/TMS 采用 Ow"
                 },
                 {
                   "tag": "div",
@@ -4119,8 +4119,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.7,
-        "titleClearancePx": 32.7,
+        "articleClearancePx": 15.01,
+        "titleClearancePx": 32.01,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -4142,7 +4142,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 3147,
+        "scrollY": 3078,
         "viewport": {
           "width": 390,
           "height": 844
@@ -4160,17 +4160,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.47,
+          "top": 411.78,
           "right": 374,
-          "bottom": 6891.41,
+          "bottom": 6890.72,
           "left": 16,
           "width": 358,
           "height": 6478.94
         },
         "title": {
-          "top": 429.47,
+          "top": 428.78,
           "right": 357,
-          "bottom": 459.78,
+          "bottom": 459.09,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -4394,7 +4394,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4525,7 +4525,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4599,16 +4599,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "p",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。"
-                },
-                {
                   "tag": "article",
                   "id": "dialog-spec-usage",
                   "className": "",
@@ -4636,7 +4626,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4657,6 +4647,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 }
               ]
             },
@@ -4757,7 +4757,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4969,7 +4969,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4995,8 +4995,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.78,
-        "titleClearancePx": 32.78,
+        "articleClearancePx": 15.09,
+        "titleClearancePx": 32.09,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5008,7 +5008,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 3147,
+        "scrollY": 3078,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5026,17 +5026,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.47,
+          "top": 411.78,
           "right": 374,
-          "bottom": 6891.41,
+          "bottom": 6890.72,
           "left": 16,
           "width": 358,
           "height": 6478.94
         },
         "title": {
-          "top": 429.47,
+          "top": 428.78,
           "right": 357,
-          "bottom": 459.78,
+          "bottom": 459.09,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -5260,7 +5260,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5391,7 +5391,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5465,16 +5465,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "p",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。"
-                },
-                {
                   "tag": "article",
                   "id": "dialog-spec-usage",
                   "className": "",
@@ -5502,7 +5492,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5523,6 +5513,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 }
               ]
             },
@@ -5623,7 +5623,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5835,7 +5835,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5861,8 +5861,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.78,
-        "titleClearancePx": 32.78,
+        "articleClearancePx": 15.09,
+        "titleClearancePx": 32.09,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5874,7 +5874,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 3147,
+        "scrollY": 3078,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5892,17 +5892,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.47,
+          "top": 411.78,
           "right": 374,
-          "bottom": 6891.41,
+          "bottom": 6890.72,
           "left": 16,
           "width": 358,
           "height": 6478.94
         },
         "title": {
-          "top": 429.47,
+          "top": 428.78,
           "right": 357,
-          "bottom": 459.78,
+          "bottom": 459.09,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -6126,7 +6126,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6257,7 +6257,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6331,16 +6331,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "p",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。"
-                },
-                {
                   "tag": "article",
                   "id": "dialog-spec-usage",
                   "className": "",
@@ -6368,7 +6358,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6389,6 +6379,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 }
               ]
             },
@@ -6489,7 +6489,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6701,7 +6701,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 稳定的顶层分类保持不变；嵌套分类用于整理密集故事，而不新增顶层栏目。 本页内容 组件清单3"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6727,8 +6727,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.78,
-        "titleClearancePx": 32.78,
+        "articleClearancePx": 15.09,
+        "titleClearancePx": 32.09,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -6748,8 +6748,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 10462,
-      "scrollY": 9080
+      "maxScrollY": 10450,
+      "scrollY": 9067
     }
   },
   "scrollSpyCheck": {
@@ -6761,8 +6761,8 @@
       "activeAriaCurrent": "location",
       "targetTop": 656,
       "offset": 96,
-      "maxScrollY": 805,
-      "scrollY": 805,
+      "maxScrollY": 754,
+      "scrollY": 754,
       "hash": "#readiness-notification-patterns",
       "scrollSpyAvailable": true
     }
