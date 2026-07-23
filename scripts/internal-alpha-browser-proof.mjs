@@ -46,6 +46,7 @@ function collectLocalAbsolutePathHits(label, value) {
 const requiredStories = storyRegistryOrder.map((entry) => ({
   id: entry.id,
   group: entry.group,
+  categoryId: entry.categoryId,
   storybookId: storybookId(entry.group, entry.id)
 }));
 
@@ -64,12 +65,44 @@ const sectionPages = [
   { group: "Change Log", slug: "change-log", file: "change-log.html" }
 ];
 
-function staticStoryRoute(story) {
-  const section = sectionPages.find((page) => page.group === story.group);
-  if (!section) {
-    throw new Error(`missing_static_story_section:${story.group}:${story.id}`);
+// TCRN-DS-STORY-056 page helpers (mirror apps/storybook/src/build/navigation.ts). Category
+// filenames are group-namespaced because categoryId is NOT globally unique.
+const groupSlugFor = (group) => group.toLowerCase().replace(/\s+/g, "-");
+const categorySlug = (categoryId) => categoryId.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const categoryFileName = (group, categoryId) => `${groupSlugFor(group)}-${categorySlug(categoryId)}.html`;
+const categoryFileForStory = (story) => categoryFileName(story.group, story.categoryId);
+
+// Derived CATEGORY pages (one per non-empty category, registry order); story bodies live here
+// now. The section INDEX pages (sectionPages, above) are bounded nav-only shells.
+const categoryPages = (() => {
+  const list = [];
+  const seen = new Set();
+  for (const story of requiredStories) {
+    const key = `${story.group} ${story.categoryId}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    list.push({
+      kind: "category",
+      group: story.group,
+      categoryId: story.categoryId,
+      slug: `${groupSlugFor(story.group)}-${categorySlug(story.categoryId)}`,
+      file: categoryFileName(story.group, story.categoryId),
+      storyIds: requiredStories.filter((entry) => entry.group === story.group && entry.categoryId === story.categoryId).map((entry) => entry.id)
+    });
   }
-  return `apps/storybook/storybook-static/${section.file}#${story.id}`;
+  return list;
+})();
+
+// The full emitted page set: 7 bounded section INDEX pages + every category page. The capture
+// pass walks this so both are proven (index pages: bounded shell; category pages: story bodies).
+const contractPages = [
+  ...sectionPages.map((section) => ({ kind: "index", group: section.group, slug: section.slug, file: section.file, storyIds: [] })),
+  ...categoryPages
+];
+
+// A story's owning page is its CATEGORY page (bodies moved off the section index page).
+function staticStoryRoute(story) {
+  return `apps/storybook/storybook-static/${categoryFileForStory(story)}#${story.id}`;
 }
 
 const forbiddenCopyPatterns = [
@@ -553,12 +586,15 @@ mkdirSync(screenshotDir, { recursive: true });
 assertBuiltSurface(staticSurfacePath);
 assertBuiltSurface(aiContractPath);
 assertBuiltSurface(llmsPath);
-for (const section of sectionPages) {
-  assertBuiltSurface(`apps/storybook/storybook-static/${section.file}`);
+for (const page of contractPages) {
+  assertBuiltSurface(`apps/storybook/storybook-static/${page.file}`);
 }
 
 const expectedCategoryCount = 20;
-const expectedStorybookShellNavGroupCount = sectionPages.length;
+// TCRN-DS-STORY-056 TRAP GUARD: the nav-group count is 7 and MUST stay decoupled from the
+// emitted-page count (7 index + 20 category = 27 pages). Deriving it from a page-list length
+// would silently mis-assert. Pin it to the number of distinct top-level sections.
+const expectedStorybookShellNavGroupCount = new Set(requiredStories.map((story) => story.group)).size;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
   "layout-rhythm",
@@ -692,7 +728,14 @@ let keyboardChecklist;
 let localeMenuFocusReturnCheck;
 
 for (const viewport of viewports) {
-  for (const section of sectionPages) {
+  // TCRN-DS-STORY-056: walk EVERY emitted page. Category pages carry the story bodies; the 7
+  // section index pages are bounded nav-only shells (no [data-contract-story-id]). Both are
+  // captured — category pages via the full story-coverage check, index pages via a bounded
+  // per-page check — so the split is proven, not assumed.
+  for (const contractPage of contractPages) {
+    const section = contractPage;
+    const isCategory = section.kind === "category";
+    const groupFirstStory = requiredStories.find((story) => story.group === section.group);
     const page = await browser.newPage({ viewport, reducedMotion: "reduce" });
     const consoleMessages = [];
     const pageErrors = [];
@@ -706,8 +749,13 @@ for (const viewport of viewports) {
     page.on("requestfailed", (request) => failedRequests.push({ url: request.url(), failure: request.failure()?.errorText ?? "unknown" }));
 
     await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}`);
-    await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
-    if (viewport.name === "desktop-1440x900") {
+    if (isCategory) {
+      await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+    } else {
+      // Bounded index page: no story bodies, so wait for the shell's page-head strip instead.
+      await page.waitForSelector("[data-doc-page-head='governed-section']", { state: "attached" });
+    }
+    if (viewport.name === "desktop-1440x900" && isCategory) {
       // Progressive-disclosure contract: pages open as a compact index (all stories
       // collapsed), a disclosure click expands its story, and hash navigation expands
       // its target. Checked before the capture pass force-expands everything.
@@ -747,8 +795,10 @@ for (const viewport of viewports) {
       }
     });
     const health = await collectPageHealth(page);
-    const sectionStories = requiredStories.filter((story) => story.group === section.group);
-    const screenshotPath = relativeScreenshotPath(`${viewport.name}-section-${section.slug}.png`);
+    const sectionStories = isCategory
+      ? requiredStories.filter((story) => story.group === section.group && story.categoryId === section.categoryId)
+      : [];
+    const screenshotPath = relativeScreenshotPath(`${viewport.name}-page-${section.slug}.png`);
     await setTransientScreenshotChromeHidden(page, true);
     // Section captures are whole-page compositions of stories that are each gated below,
     // so they add no coverage — and their height is unbounded (section-components reaches
@@ -756,10 +806,10 @@ for (const viewport of viewports) {
     // finished painting. Measured: its signature swings mean=34.6 between runs, four times
     // the distance a real one-token colour change produces. Recorded for human inspection,
     // deliberately not gated: a tolerance wide enough to admit it would admit real regressions.
-    const sectionSignature = await captureWithSignature(page, `section-${section.slug}@${viewport.name}`, screenshotPath, { fullPage: true, gated: false });
+    const sectionSignature = await captureWithSignature(page, `page-${section.slug}@${viewport.name}`, screenshotPath, { fullPage: true, gated: false });
     await setTransientScreenshotChromeHidden(page, false);
     visualEntries.push({
-      storyId: `section-${section.slug}`,
+      storyId: `page-${section.slug}`,
       viewport: viewport.name,
       path: screenshotPath,
       visualGate: "not-gated-unbounded-full-page",
@@ -782,12 +832,14 @@ for (const viewport of viewports) {
       });
     }
 
-    if (viewport.name === "desktop-1440x900") {
+    if (viewport.name === "desktop-1440x900" && isCategory) {
       // E6: axe runs in both themes so dark-mode contrast has the same 4.5:1 floor as
       // light. Dark is loaded fresh with ?theme=dark rather than toggled in place — the
       // page's per-panel theme previews only render correctly under the runtime's own
       // theme handling, so an in-place attribute flip would produce false contrast hits.
-      axeSummaries.push({ section: section.group, theme: "light", ...(await runAxe(page)) });
+      // Scoped to category pages (where story bodies render); each category page also carries
+      // the full shell, so the bounded index pages need no separate axe pass.
+      axeSummaries.push({ section: section.group, page: section.file, theme: "light", ...(await runAxe(page)) });
       await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?theme=dark&locale=zh-CN`);
       await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
       // The page ships data-tcrn-theme="light" and a script flips it to dark, which the
@@ -800,7 +852,7 @@ for (const viewport of viewports) {
         }
       });
       await page.waitForTimeout(120);
-      axeSummaries.push({ section: section.group, theme: "dark", ...(await runAxe(page)) });
+      axeSummaries.push({ section: section.group, page: section.file, theme: "dark", ...(await runAxe(page)) });
     }
 
     browserSummaries.push({
@@ -808,8 +860,13 @@ for (const viewport of viewports) {
       browser: "chromium",
       browserVersion,
       url: `/apps/storybook/storybook-static/${section.file}`,
+      pageKind: section.kind,
       expectedSection: section.group,
       expectedStoryIds: sectionStories.map((story) => story.id),
+      // A bounded index page has no visible story body, but its nav still marks the section's
+      // first story active (the scroll-spy no-ops with zero story regions), so the active-nav
+      // assertion targets that story instead of a nonexistent rendered body.
+      expectedActiveStoryId: isCategory ? (sectionStories[0]?.id ?? null) : (groupFirstStory?.id ?? null),
       consoleMessages,
       pageErrors,
       failedRequests,
@@ -824,10 +881,13 @@ await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#components
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-doc-nav-item='component-family-index'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
+// TCRN-DS-STORY-056: a SECTION-slug hash (#components) still resolves to the section INDEX page,
+// which is now a BOUNDED nav-only shell — no story section and no story bodies. The nav still
+// marks the section's first story active (the scroll-spy no-ops with zero story regions).
 const hashRouteCheck = {
   ok: storybookPage.url().endsWith("/components.html")
-    && await storybookPage.locator("[data-story-section='Components']").isVisible()
-    && await storybookPage.locator("[data-story-id='component-family-index']").isVisible()
+    && await storybookPage.locator("[data-story-section='Components']").count() === 0
+    && await storybookPage.locator("[data-story-id='component-family-index']").count() === 0
     && await storybookPage.locator("[data-doc-nav-item='component-family-index'][aria-current='location'][data-doc-nav-item-active='true']").count() === 1
     && await storybookPage.locator("[data-story-id='welcome-governance']").count() === 0,
   source: `${staticSurfacePath}#components`,
@@ -837,8 +897,11 @@ await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#button-spe
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
+// TCRN-DS-STORY-056: a STORY hash (#button-spec-usage) redirects from the section index page to
+// the owning CATEGORY page (button-spec-usage lives in Components/controls-data), preserving the
+// hash — the redirect is what keeps legacy section-anchored deep links working.
 const hashStoryRouteCheck = {
-  ok: storybookPage.url().endsWith("/components.html#button-spec-usage")
+  ok: storybookPage.url().endsWith("/components-controls-data.html#button-spec-usage")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
     && await storybookPage.locator("[data-story-id='button-spec-usage']").isVisible()
     && await storybookPage.locator("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']").count() === 1
@@ -850,6 +913,10 @@ const firstStoryHashShellParityRoutes = sectionPages.map((section) => {
   const firstStory = requiredStories.find((story) => story.group === section.group);
   return {
     ...section,
+    // TCRN-DS-STORY-056: navigate directly to the story's CATEGORY page (where the body lives).
+    // Every group's first story sits on its first category page, and all category pages ship the
+    // identical shell, so the cross-page shell-style parity signature still collapses to one.
+    file: firstStory ? categoryFileForStory(firstStory) : section.file,
     storyId: firstStory?.id ?? null
   };
 });
@@ -1117,7 +1184,7 @@ const firstStoryHashShellParityCheck = {
   readbacks: firstStoryHashShellParityReadbacks
 };
 const mobileHashAnchorPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
-const mobileFoundationHashRoute = `${staticServer.origin}/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards`;
+const mobileFoundationHashRoute = `${staticServer.origin}/apps/storybook/storybook-static/foundations-tokens-i18n.html?theme=light&locale=zh-CN#foundation-visual-standards`;
 const collectMobileHashAnchorMetrics = async (label) => {
   await mobileHashAnchorPage.waitForSelector("[data-storybook-locale='zh-CN']");
   await mobileHashAnchorPage.waitForSelector("[data-active-story-section='Foundations']");
@@ -1323,7 +1390,7 @@ const mobileHashAnchorOcclusionCheck = {
   readbacks: mobileHashAnchorReadbacks
 };
 const mobileKnowledgeDocShellLayeringPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
-const mobileKnowledgeDocShellLayeringRoute = `${staticServer.origin}/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec`;
+const mobileKnowledgeDocShellLayeringRoute = `${staticServer.origin}/apps/storybook/storybook-static/components-knowledge-management.html?theme=dark&locale=zh-CN#knowledge-management-components-spec`;
 const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
   await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-storybook-locale='zh-CN']");
   await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-active-story-section='Components']");
@@ -1528,7 +1595,11 @@ const mobileKnowledgeDocShellLayeringCheck = {
   viewport: { width: 390, height: 844 },
   readbacks: mobileKnowledgeDocShellLayeringReadbacks
 };
-	await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=zh-CN#component-family-index`);
+	// TCRN-DS-STORY-056: same-page anchor-scroll must stay WITHIN one category page. stamp/button/
+	// field/table-work-index-spec all live on components-controls-data.html, so a nav click from the
+	// page's first story to a later one is an in-page scroll (the anchor-scroll script recognises
+	// the same pathname), not a cross-page navigation.
+	await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-controls-data.html?locale=zh-CN#stamp-spec-usage`);
 	await storybookPage.waitForSelector("[data-active-story-section='Components']");
 	await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
 	await storybookPage.evaluate((routeId) => {
@@ -1545,7 +1616,7 @@ await storybookPage.waitForSelector("[data-doc-nav-item='table-work-index-spec']
 await storybookPage.waitForTimeout(150);
 const anchorScrollMetrics = await storybookPage.evaluate(() => {
   const target = document.getElementById("table-work-index-spec");
-  const previous = document.getElementById("dialog-spec-usage");
+  const previous = document.getElementById("field-spec-usage");
   const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
   return {
     url: window.location.href,
@@ -1558,17 +1629,21 @@ const anchorScrollMetrics = await storybookPage.evaluate(() => {
   };
 });
 const anchorScrollCheck = {
-  ok: storybookPage.url().endsWith("/components.html?locale=zh-CN#table-work-index-spec")
+  ok: storybookPage.url().endsWith("/components-controls-data.html?locale=zh-CN#table-work-index-spec")
     && anchorScrollMetrics.activeStoryId === "table-work-index-spec"
     && targetTopMatchesAnchorOffset(anchorScrollMetrics)
     && (anchorScrollMetrics.previousBottom === null || anchorScrollMetrics.previousBottom <= anchorScrollMetrics.targetTop - 12),
   source: "left secondary nav click -> table-work-index-spec",
   metrics: anchorScrollMetrics
 };
-await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns`);
+// TCRN-DS-STORY-056: scroll-spy must observe two stories on ONE page. datagrid-fields-patterns
+// and dashboard-page-templates both live on patterns-data-pages.html, so scrolling the page moves
+// the active nav marker from the first to the last (dashboard, the last story) without a page
+// change; the "at page end -> last story" rule keeps it robust on a short page.
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/patterns-data-pages.html?locale=zh-CN#datagrid-fields-patterns`);
 await storybookPage.waitForSelector("[data-active-story-section='Patterns']");
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
-await storybookPage.waitForSelector("[data-doc-nav-item='readiness-notification-patterns'][aria-current='location'][data-doc-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-doc-nav-item='datagrid-fields-patterns'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(300);
 await storybookPage.evaluate(() => {
   const target = document.getElementById("dashboard-page-templates");
@@ -1604,7 +1679,7 @@ const scrollSpyCheck = {
   ok: scrollSpyMetrics.activeStoryId === "dashboard-page-templates"
     && scrollSpyMetrics.activeAriaCurrent === "location"
     && targetTopMatchesAnchorOffset(scrollSpyMetrics)
-    && scrollSpyMetrics.hash === "#readiness-notification-patterns"
+    && scrollSpyMetrics.hash === "#datagrid-fields-patterns"
     && scrollSpyMetrics.scrollSpyAvailable,
   source: "manual page scroll -> dashboard-page-templates active nav",
   metrics: scrollSpyMetrics
@@ -1733,7 +1808,9 @@ async function collectLocalizedShellChromeCheck(page, check) {
 async function collectLocaleLeakScan(page, locale, { gating }) {
   const exemptSelector = localeInvariantLedger.exemptSubtreeSelectors.join(", ");
   const regionResults = [];
-  for (const section of sectionPages) {
+  // TCRN-DS-STORY-056: story bodies live on the category pages now — walk those (each story body
+  // appears on exactly one category page, so coverage is still every story once).
+  for (const section of categoryPages) {
     await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?locale=${locale}`);
     await page.waitForSelector(`[data-storybook-locale='${locale}']`);
     await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
@@ -1797,15 +1874,18 @@ async function collectLocaleLeakScan(page, locale, { gating }) {
 const i18nContentChecks = [
   await collectLocalizedTextCheck(storybookPage, {
     locale: "zh-CN",
-    route: `${staticSurfacePath}?locale=zh-CN#welcome-governance`,
+    route: `apps/storybook/storybook-static/welcome-governance-entry.html?locale=zh-CN#welcome-governance`,
     section: "Welcome",
     storyId: "welcome-governance",
-    requiredText: ["从这里开始", "阅读路径", "声明边界", "边界地图", "路由目录", "准入", "本地检查点"],
-    forbiddenText: ["Start here", "Reader paths", "Claim boundaries", "Boundary map", "Routing directory", "Admission", "Local checkpoint"]
+    // TCRN-DS-STORY-056: this route is now the governance-entry CATEGORY page (welcome-governance +
+    // governance-boundaries). "路由目录"/"准入" belong to routing-contribution stories on a different
+    // category page; their localization is covered by the all-43-story zh leak gate (S048).
+    requiredText: ["从这里开始", "阅读路径", "声明边界", "边界地图", "本地检查点"],
+    forbiddenText: ["Start here", "Reader paths", "Claim boundaries", "Boundary map", "Local checkpoint"]
   }),
   await collectLocalizedTextCheck(storybookPage, {
     locale: "ja",
-    route: `${staticSurfacePath}?locale=ja#button-spec-usage`,
+    route: `apps/storybook/storybook-static/components-controls-data.html?locale=ja#button-spec-usage`,
     section: "Components",
     storyId: "button-spec-usage",
     requiredText: ["ボタン仕様と使用法", "主要操作", "所有ルートの承認が必要"],
@@ -1813,15 +1893,18 @@ const i18nContentChecks = [
   }),
   await collectLocalizedTextCheck(storybookPage, {
     locale: "zh-CN",
-    route: `apps/storybook/storybook-static/style-guide.html?locale=zh-CN#color-palette`,
+    route: `apps/storybook/storybook-static/style-guide-identity-brand.html?locale=zh-CN#color-palette`,
     section: "Style Guide",
     storyId: "color-palette",
-    requiredText: ["品牌色系", "主品牌色", "副色系", "色彩角色矩阵", "主题一致性", "字体与字号令牌", "字体族契约", "字体授权层级", "页面标题 / 28px", "文本层级与节奏", "布局密度矩阵", "动效样例", "减弱动效兜底", "加载与进度样例", "骨架屏预览", "进度反馈", "交互可感知性矩阵", "状态权威矩阵", "文案流程", "禁止的文案模式"],
-    forbiddenText: ["Brand palette", "Primary brand", "Secondary brand", "Color role matrix", "Theme parity", "Type scale tokens", "Font family contract", "font licensing tiers", "Page title / 28px", "Type hierarchy and rhythm", "Layout density matrix", "Motion examples", "Reduced motion fallback", "Loading and progress examples", "Skeleton preview", "Progress feedback", "Interaction affordance matrix", "State authority matrix", "Copy workflow", "Forbidden copy patterns"]
+    // TCRN-DS-STORY-056: this route is now the identity-brand CATEGORY page (brand-identity +
+    // color-palette). The type / grid / motion / global-state / copy strings belong to Style Guide
+    // stories on other category pages; their localization is covered by the all-43-story leak gate.
+    requiredText: ["品牌色系", "主品牌色", "副色系", "色彩角色矩阵", "主题一致性"],
+    forbiddenText: ["Brand palette", "Primary brand", "Secondary brand", "Color role matrix", "Theme parity"]
   }),
   await collectLocalizedTextCheck(storybookPage, {
     locale: "zh-CN",
-    route: `apps/storybook/storybook-static/change-log.html?theme=light&locale=zh-CN#local-changelog`,
+    route: `apps/storybook/storybook-static/change-log-governance-records.html?theme=light&locale=zh-CN#local-changelog`,
     section: "Change Log",
     storyId: "local-changelog",
     requiredText: ["本地变更日志", "治理变更记录", "Storybook 治理检查点", "源路线", "故事覆盖", "AI 契约摘要", "证明工件", "无过度声明边界", "耐久源记录", "不发布", "本页内容", "治理记录"],
@@ -1882,7 +1965,7 @@ const globalZhCnIaShellCheck = await collectLocalizedShellChromeCheck(storybookP
   ]
 });
 async function collectBrandMarkLocaleCheck(page, locale) {
-  await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/style-guide.html?locale=${locale}#brand-identity`);
+  await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/style-guide-identity-brand.html?locale=${locale}#brand-identity`);
   await page.waitForSelector(`[data-storybook-locale='${locale}']`);
   await page.waitForSelector("[data-story-id='brand-identity']");
   const details = await page.evaluate(() => {
@@ -1943,12 +2026,12 @@ const brandMarkLocaleChecks = [];
 for (const locale of ["zh-CN", "en", "ja", "ko", "fr"]) {
   brandMarkLocaleChecks.push(await collectBrandMarkLocaleCheck(storybookPage, locale));
 }
-await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}?locale=ja#button-spec-usage`);
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-controls-data.html?locale=ja#button-spec-usage`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-storybook-locale='ja']");
 await storybookPage.waitForSelector("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']");
 const localeRouteCheck = {
-  ok: storybookPage.url().endsWith("/components.html?locale=ja#button-spec-usage")
+  ok: storybookPage.url().endsWith("/components-controls-data.html?locale=ja#button-spec-usage")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
     && await storybookPage.locator("[data-story-id='button-spec-usage']").isVisible()
     && await storybookPage.locator("[data-i18n-locale-select]").evaluate((node) => node.value) === "ja"
@@ -1990,7 +2073,7 @@ for (const story of requiredStories) {
   storybookChecks.push({ id: story.id, storybookId: story.storybookId, visible });
 }
 
-await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof.html?locale=en#blocked-actions`);
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-governance.html?locale=en#blocked-actions`);
 await storybookPage.waitForSelector("[data-contract-story-id='blocked-actions']");
 await storybookPage.waitForSelector("#blocked-actions [role='dialog']");
 const staticDialogCapabilities = await storybookPage.locator("#blocked-actions [role='dialog']").evaluate((node) => ({
@@ -2001,7 +2084,7 @@ const staticDialogCapabilities = await storybookPage.locator("#blocked-actions [
   focusReturn: node.getAttribute("data-focus-return")
 }));
 
-await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=en#dialog-spec-usage`);
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-overlays.html?locale=en#dialog-spec-usage`);
 await storybookPage.waitForSelector("[data-contract-story-id='dialog-spec-usage']");
 await storybookPage.locator("#dialog-spec-usage").getByRole("button", { name: "Open confirmation" }).click();
 await storybookPage.waitForSelector("#dialog-spec-usage [data-dialog-fixture-panel]:not([hidden]) [role='dialog']");
@@ -2068,7 +2151,7 @@ keyboardChecklist = {
   ]
 };
 
-await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}?theme=light&locale=zh-CN#welcome-governance`);
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/welcome-governance-entry.html?theme=light&locale=zh-CN#welcome-governance`);
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
 await storybookPage.waitForSelector("#tcrn-doc-locale-trigger");
 await storybookPage.locator("#tcrn-doc-locale-trigger").click();
@@ -2119,7 +2202,14 @@ function hasSameItems(actual, expected) {
 
 const staticSectionChecks = browserSummaries.map((summary) => {
   const visibleStoryIds = summary.storyRegions.filter((story) => story.visible).map((story) => story.id);
-  const expectedCurrentStoryNav = summary.expectedStoryIds[0];
+  // TCRN-DS-STORY-056: a bounded section INDEX page legitimately renders ZERO story sections and
+  // ZERO story bodies (the bodies live on the category pages). Its nav still marks the section's
+  // first story active. So the story-section / visible-body assertions are keyed to the page kind:
+  // index pages expect 0 sections and 0 visible bodies; category pages expect exactly 1 section
+  // whose stories are visible. Everything else (full nav, shell chrome, boundaries) holds on both.
+  const isIndex = summary.pageKind === "index";
+  const expectedStorySectionCount = isIndex ? 0 : 1;
+  const expectedCurrentStoryNav = summary.expectedActiveStoryId ?? summary.expectedStoryIds[0];
   const ok = summary.activeSection === summary.expectedSection
     && summary.shellAuthority === "online-docs"
     && summary.docShellSelectorCount >= 6
@@ -2147,9 +2237,14 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     && summary.localeOptionCount === 5
     && summary.localeSelectVisible
     && summary.currentNav === summary.expectedSection
-    && summary.currentStoryNav === expectedCurrentStoryNav
-    && summary.storySections.length === 1
-    && summary.storySections[0] === summary.expectedSection
+    // TCRN-DS-STORY-056: on a bounded index page the nav marks the section's first story active
+    // (a fixed expectation); on a short category page the scroll-spy legitimately marks whichever
+    // of the category's own stories is in view at rest (often the last), so accept any of them.
+    && (isIndex
+      ? summary.currentStoryNav === expectedCurrentStoryNav
+      : summary.expectedStoryIds.includes(summary.currentStoryNav))
+    && summary.storySections.length === expectedStorySectionCount
+    && (isIndex || summary.storySections[0] === summary.expectedSection)
     && hasSameItems(visibleStoryIds, summary.expectedStoryIds);
   return {
     viewport: summary.viewport,
@@ -2273,7 +2368,7 @@ const browserProofSummary = {
 const { findings: shellFidelityFindings, ...shellFidelity } = fidelityRejectChecks();
 const signatureRegressions = signatureResults.filter((entry) => entry.status === "regression");
 const visualBaselineManifest = {
-  ok: visualEntries.length === requiredStories.length * viewports.length + sectionPages.length * viewports.length + 1,
+  ok: visualEntries.length === requiredStories.length * viewports.length + contractPages.length * viewports.length + 1,
   generatedAt: "stable_internal_alpha_visual_baseline",
   // Six of the seven entries here were the literal `false` — claims wearing the costume
   // of checks, and they travelled into the AI consumption contract that way. The three

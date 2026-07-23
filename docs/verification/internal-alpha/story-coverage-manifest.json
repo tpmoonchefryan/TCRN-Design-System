@@ -4,216 +4,259 @@
     {
       "id": "welcome-governance",
       "group": "Welcome",
+      "categoryId": "governance-entry",
       "storybookId": "tcrn-design-system-welcome--welcome-governance"
     },
     {
       "id": "governance-boundaries",
       "group": "Welcome",
+      "categoryId": "governance-entry",
       "storybookId": "tcrn-design-system-welcome--governance-boundaries"
     },
     {
       "id": "maintainers-routing",
       "group": "Welcome",
+      "categoryId": "routing-contribution",
       "storybookId": "tcrn-design-system-welcome--maintainers-routing"
     },
     {
       "id": "contribution-model",
       "group": "Welcome",
+      "categoryId": "routing-contribution",
       "storybookId": "tcrn-design-system-welcome--contribution-model"
     },
     {
       "id": "release-bug-policy",
       "group": "Welcome",
+      "categoryId": "routing-contribution",
       "storybookId": "tcrn-design-system-welcome--release-bug-policy"
     },
     {
       "id": "brand-identity",
       "group": "Style Guide",
+      "categoryId": "identity-brand",
       "storybookId": "tcrn-design-system-style-guide--brand-identity"
     },
     {
       "id": "color-palette",
       "group": "Style Guide",
+      "categoryId": "identity-brand",
       "storybookId": "tcrn-design-system-style-guide--color-palette"
     },
     {
       "id": "text-styles",
       "group": "Style Guide",
+      "categoryId": "type-layout",
       "storybookId": "tcrn-design-system-style-guide--text-styles"
     },
     {
       "id": "grid-system",
       "group": "Style Guide",
+      "categoryId": "type-layout",
       "storybookId": "tcrn-design-system-style-guide--grid-system"
     },
     {
       "id": "icons-motion",
       "group": "Style Guide",
+      "categoryId": "interaction-copy",
       "storybookId": "tcrn-design-system-style-guide--icons-motion"
     },
     {
       "id": "global-states",
       "group": "Style Guide",
+      "categoryId": "interaction-copy",
       "storybookId": "tcrn-design-system-style-guide--global-states"
     },
     {
       "id": "copy-creation-rules",
       "group": "Style Guide",
+      "categoryId": "interaction-copy",
       "storybookId": "tcrn-design-system-style-guide--copy-creation-rules"
     },
     {
       "id": "tokens-copy-state",
       "group": "Foundations",
+      "categoryId": "tokens-i18n",
       "storybookId": "tcrn-design-system-foundations--tokens-copy-state"
     },
     {
       "id": "i18n-theme-contract",
       "group": "Foundations",
+      "categoryId": "tokens-i18n",
       "storybookId": "tcrn-design-system-foundations--i-18-n-theme-contract"
     },
     {
       "id": "foundation-visual-standards",
       "group": "Foundations",
+      "categoryId": "tokens-i18n",
       "storybookId": "tcrn-design-system-foundations--foundation-visual-standards"
     },
     {
       "id": "copy-guidelines",
       "group": "Foundations",
+      "categoryId": "copy-governance",
       "storybookId": "tcrn-design-system-foundations--copy-guidelines"
     },
     {
       "id": "component-family-index",
       "group": "Components",
+      "categoryId": "component-inventory",
       "storybookId": "tcrn-design-system-components--component-family-index"
     },
     {
       "id": "display-primitives-spec",
       "group": "Components",
+      "categoryId": "component-inventory",
       "storybookId": "tcrn-design-system-components--display-primitives-spec"
     },
     {
       "id": "interaction-disclosure-spec",
       "group": "Components",
+      "categoryId": "component-inventory",
       "storybookId": "tcrn-design-system-components--interaction-disclosure-spec"
     },
     {
       "id": "stamp-spec-usage",
       "group": "Components",
+      "categoryId": "controls-data",
       "storybookId": "tcrn-design-system-components--stamp-spec-usage"
     },
     {
       "id": "button-spec-usage",
       "group": "Components",
+      "categoryId": "controls-data",
       "storybookId": "tcrn-design-system-components--button-spec-usage"
     },
     {
       "id": "field-spec-usage",
       "group": "Components",
+      "categoryId": "controls-data",
       "storybookId": "tcrn-design-system-components--field-spec-usage"
     },
     {
       "id": "navigation-shell-spec",
       "group": "Components",
+      "categoryId": "navigation-shells",
       "storybookId": "tcrn-design-system-components--navigation-shell-spec"
     },
     {
       "id": "dialog-spec-usage",
       "group": "Components",
+      "categoryId": "overlays",
       "storybookId": "tcrn-design-system-components--dialog-spec-usage"
     },
     {
       "id": "table-work-index-spec",
       "group": "Components",
+      "categoryId": "controls-data",
       "storybookId": "tcrn-design-system-components--table-work-index-spec"
     },
     {
       "id": "work-management-components-spec",
       "group": "Components",
+      "categoryId": "work-management",
       "storybookId": "tcrn-design-system-components--work-management-components-spec"
     },
     {
       "id": "knowledge-management-components-spec",
       "group": "Components",
+      "categoryId": "knowledge-management",
       "storybookId": "tcrn-design-system-components--knowledge-management-components-spec"
     },
     {
       "id": "forms-patterns",
       "group": "Patterns",
+      "categoryId": "forms-workbench",
       "storybookId": "tcrn-design-system-patterns--forms-patterns"
     },
     {
       "id": "workbench-patterns",
       "group": "Patterns",
+      "categoryId": "forms-workbench",
       "storybookId": "tcrn-design-system-patterns--workbench-patterns"
     },
     {
       "id": "work-management-patterns",
       "group": "Patterns",
+      "categoryId": "work-management",
       "storybookId": "tcrn-design-system-patterns--work-management-patterns"
     },
     {
       "id": "readiness-notification-patterns",
       "group": "Patterns",
+      "categoryId": "feedback-selection",
       "storybookId": "tcrn-design-system-patterns--readiness-notification-patterns"
     },
     {
       "id": "selection-list-patterns",
       "group": "Patterns",
+      "categoryId": "feedback-selection",
       "storybookId": "tcrn-design-system-patterns--selection-list-patterns"
     },
     {
       "id": "modal-validation-patterns",
       "group": "Patterns",
+      "categoryId": "feedback-selection",
       "storybookId": "tcrn-design-system-patterns--modal-validation-patterns"
     },
     {
       "id": "datagrid-fields-patterns",
       "group": "Patterns",
+      "categoryId": "data-pages",
       "storybookId": "tcrn-design-system-patterns--datagrid-fields-patterns"
     },
     {
       "id": "big-list-search-patterns",
       "group": "Patterns",
+      "categoryId": "data-pages",
       "storybookId": "tcrn-design-system-patterns--big-list-search-patterns"
     },
     {
       "id": "dashboard-page-templates",
       "group": "Patterns",
+      "categoryId": "data-pages",
       "storybookId": "tcrn-design-system-patterns--dashboard-page-templates"
     },
     {
       "id": "proof-matrix",
       "group": "Proof",
+      "categoryId": "proof-governance",
       "storybookId": "tcrn-design-system-proof--proof-matrix"
     },
     {
       "id": "ai-consumption-contract",
       "group": "Proof",
+      "categoryId": "proof-governance",
       "storybookId": "tcrn-design-system-proof--ai-consumption-contract"
     },
     {
       "id": "blocked-actions",
       "group": "Proof",
+      "categoryId": "proof-governance",
       "storybookId": "tcrn-design-system-proof--blocked-actions"
     },
     {
       "id": "overlay-focus",
       "group": "Proof",
+      "categoryId": "proof-governance",
       "storybookId": "tcrn-design-system-proof--overlay-focus"
     },
     {
       "id": "aos-frontend-shell-slice",
       "group": "Proof",
+      "categoryId": "proof-visual-instances",
       "storybookId": "tcrn-design-system-proof--aos-frontend-shell-slice"
     },
     {
       "id": "aos-owner-quality-product-shell",
       "group": "Proof",
+      "categoryId": "proof-visual-instances",
       "storybookId": "tcrn-design-system-proof--aos-owner-quality-product-shell"
     },
     {
       "id": "local-changelog",
       "group": "Change Log",
+      "categoryId": "governance-records",
       "storybookId": "tcrn-design-system-change-log--local-changelog"
     }
   ],
@@ -580,18 +623,18 @@
   "hashStoryRouteCheck": {
     "ok": true,
     "source": "apps/storybook/storybook-static/index.html#button-spec-usage",
-    "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html#button-spec-usage"
+    "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components-controls-data.html#button-spec-usage"
   },
   "firstStoryHashShellParityCheck": {
     "ok": true,
     "routes": [
-      "index.html?theme=light&locale=zh-CN#welcome-governance",
-      "style-guide.html?theme=light&locale=zh-CN#brand-identity",
-      "foundations.html?theme=light&locale=zh-CN#tokens-copy-state",
-      "components.html?theme=light&locale=zh-CN#component-family-index",
-      "patterns.html?theme=light&locale=zh-CN#forms-patterns",
-      "proof.html?theme=light&locale=zh-CN#proof-matrix",
-      "change-log.html?theme=light&locale=zh-CN#local-changelog"
+      "welcome-governance-entry.html?theme=light&locale=zh-CN#welcome-governance",
+      "style-guide-identity-brand.html?theme=light&locale=zh-CN#brand-identity",
+      "foundations-tokens-i18n.html?theme=light&locale=zh-CN#tokens-copy-state",
+      "components-component-inventory.html?theme=light&locale=zh-CN#component-family-index",
+      "patterns-forms-workbench.html?theme=light&locale=zh-CN#forms-patterns",
+      "proof-proof-governance.html?theme=light&locale=zh-CN#proof-matrix",
+      "change-log-governance-records.html?theme=light&locale=zh-CN#local-changelog"
     ],
     "signature": {
       "headerStyles": 1,
@@ -606,7 +649,7 @@
         "group": "Welcome",
         "storyId": "welcome-governance",
         "viewportWidth": 1440,
-        "route": "/apps/storybook/storybook-static/index.html?theme=light&locale=zh-CN#welcome-governance",
+        "route": "/apps/storybook/storybook-static/welcome-governance-entry.html?theme=light&locale=zh-CN#welcome-governance",
         "locale": "zh-CN",
         "activeSection": "Welcome",
         "activeStoryId": "welcome-governance",
@@ -739,7 +782,7 @@
         "group": "Style Guide",
         "storyId": "brand-identity",
         "viewportWidth": 1440,
-        "route": "/apps/storybook/storybook-static/style-guide.html?theme=light&locale=zh-CN#brand-identity",
+        "route": "/apps/storybook/storybook-static/style-guide-identity-brand.html?theme=light&locale=zh-CN#brand-identity",
         "locale": "zh-CN",
         "activeSection": "Style Guide",
         "activeStoryId": "brand-identity",
@@ -878,7 +921,7 @@
         "group": "Foundations",
         "storyId": "tokens-copy-state",
         "viewportWidth": 1440,
-        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#tokens-copy-state",
+        "route": "/apps/storybook/storybook-static/foundations-tokens-i18n.html?theme=light&locale=zh-CN#tokens-copy-state",
         "locale": "zh-CN",
         "activeSection": "Foundations",
         "activeStoryId": "tokens-copy-state",
@@ -1011,7 +1054,7 @@
         "group": "Components",
         "storyId": "component-family-index",
         "viewportWidth": 1440,
-        "route": "/apps/storybook/storybook-static/components.html?theme=light&locale=zh-CN#component-family-index",
+        "route": "/apps/storybook/storybook-static/components-component-inventory.html?theme=light&locale=zh-CN#component-family-index",
         "locale": "zh-CN",
         "activeSection": "Components",
         "activeStoryId": "component-family-index",
@@ -1144,7 +1187,7 @@
         "group": "Patterns",
         "storyId": "forms-patterns",
         "viewportWidth": 1440,
-        "route": "/apps/storybook/storybook-static/patterns.html?theme=light&locale=zh-CN#forms-patterns",
+        "route": "/apps/storybook/storybook-static/patterns-forms-workbench.html?theme=light&locale=zh-CN#forms-patterns",
         "locale": "zh-CN",
         "activeSection": "Patterns",
         "activeStoryId": "forms-patterns",
@@ -1277,7 +1320,7 @@
         "group": "Proof",
         "storyId": "proof-matrix",
         "viewportWidth": 1440,
-        "route": "/apps/storybook/storybook-static/proof.html?theme=light&locale=zh-CN#proof-matrix",
+        "route": "/apps/storybook/storybook-static/proof-proof-governance.html?theme=light&locale=zh-CN#proof-matrix",
         "locale": "zh-CN",
         "activeSection": "Proof",
         "activeStoryId": "proof-matrix",
@@ -1410,7 +1453,7 @@
         "group": "Change Log",
         "storyId": "local-changelog",
         "viewportWidth": 1440,
-        "route": "/apps/storybook/storybook-static/change-log.html?theme=light&locale=zh-CN#local-changelog",
+        "route": "/apps/storybook/storybook-static/change-log-governance-records.html?theme=light&locale=zh-CN#local-changelog",
         "locale": "zh-CN",
         "activeSection": "Change Log",
         "activeStoryId": "local-changelog",
@@ -1551,7 +1594,7 @@
     "readbacks": [
       {
         "label": "after-load",
-        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+        "route": "/apps/storybook/storybook-static/foundations-tokens-i18n.html?theme=light&locale=zh-CN#foundation-visual-standards",
         "scrollY": 1778,
         "viewport": {
           "width": 390,
@@ -2196,7 +2239,7 @@
       },
       {
         "label": "after-700ms",
-        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+        "route": "/apps/storybook/storybook-static/foundations-tokens-i18n.html?theme=light&locale=zh-CN#foundation-visual-standards",
         "scrollY": 1778,
         "viewport": {
           "width": 390,
@@ -2841,7 +2884,7 @@
       },
       {
         "label": "after-1500ms",
-        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+        "route": "/apps/storybook/storybook-static/foundations-tokens-i18n.html?theme=light&locale=zh-CN#foundation-visual-standards",
         "scrollY": 1778,
         "viewport": {
           "width": 390,
@@ -3486,7 +3529,7 @@
       },
       {
         "label": "after-reload-1500ms",
-        "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
+        "route": "/apps/storybook/storybook-static/foundations-tokens-i18n.html?theme=light&locale=zh-CN#foundation-visual-standards",
         "scrollY": 1778,
         "viewport": {
           "width": 390,
@@ -4141,8 +4184,8 @@
     "readbacks": [
       {
         "label": "after-load",
-        "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2885,
+        "route": "/apps/storybook/storybook-static/components-knowledge-management.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+        "scrollY": 0,
         "viewport": {
           "width": 390,
           "height": 844
@@ -4160,17 +4203,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.06,
+          "top": 1963.19,
           "right": 374,
-          "bottom": 6891,
+          "bottom": 8442.13,
           "left": 16,
           "width": 358,
           "height": 6478.94
         },
         "title": {
-          "top": 429.06,
+          "top": 1980.19,
           "right": 357,
-          "bottom": 459.38,
+          "bottom": 2010.5,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -4367,46 +4410,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "article",
-                  "id": "navigation-shell-spec",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "导航与壳层规范 面向密集运营产品、知识库和轻量工具的多导航壳层选择契约。 壳层选择矩阵导航壳层选择应跟随产品信息架构，而不是套用唯一共享布局。界面模式规则边界T"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -4478,66 +4481,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "button",
-                  "id": "",
-                  "className": "tcrn-story-disclosure",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法"
-                },
-                {
-                  "tag": "h2",
-                  "id": "",
-                  "className": "tcrn-story-disclosure__heading",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法"
-                },
-                {
-                  "tag": "article",
-                  "id": "dialog-spec-usage",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法 对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。 能力元数据能力状态证明焦点进入仅本地证明已在 Dialog 中实现Tab 包含"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -4546,6 +4489,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -4599,46 +4562,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "article",
-                  "id": "dialog-spec-usage",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法 对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。 能力元数据能力状态证明焦点进入仅本地证明已在 Dialog 中实现Tab 包含"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -4657,6 +4580,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -4730,44 +4663,34 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "article",
-                  "id": "table-work-index-spec",
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "表格与工作索引规范 用于合成工作项的桌面密集扫描和移动端堆叠行。 表格壳层规则界面桌面行为移动端行为边界TableShell使用可读的密集行、可见表头和包支撑的"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 },
                 {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
+                  "tag": "html",
                   "id": "",
-                  "className": "tcrn-doc-layout",
+                  "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -4841,44 +4764,34 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "button",
+                  "tag": "div",
                   "id": "",
-                  "className": "tcrn-story-disclosure",
+                  "className": "tcrn-doc-shell",
                   "role": null,
-                  "docShell": null,
+                  "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "工作管理组件规范"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "h2",
+                  "tag": "body",
                   "id": "",
-                  "className": "tcrn-story-disclosure__heading",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "工作管理组件规范"
-                },
-                {
-                  "tag": "article",
-                  "id": "work-management-components-spec",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "工作管理组件规范 用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。 Admitted can"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 },
                 {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -4922,66 +4835,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "span",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。"
-                },
-                {
-                  "tag": "p",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。"
-                },
-                {
-                  "tag": "article",
-                  "id": "work-management-components-spec",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "工作管理组件规范 用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。 Admitted can"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -4990,13 +4843,33 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 15.37,
-        "titleClearancePx": 32.37,
+        "articleClearancePx": 1566.5,
+        "titleClearancePx": 1583.5,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5007,8 +4880,8 @@
       },
       {
         "label": "after-700ms",
-        "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2885,
+        "route": "/apps/storybook/storybook-static/components-knowledge-management.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+        "scrollY": 0,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5026,17 +4899,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.06,
+          "top": 1963.19,
           "right": 374,
-          "bottom": 6891,
+          "bottom": 8442.13,
           "left": 16,
           "width": 358,
           "height": 6478.94
         },
         "title": {
-          "top": 429.06,
+          "top": 1980.19,
           "right": 357,
-          "bottom": 459.38,
+          "bottom": 2010.5,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -5233,46 +5106,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "article",
-                  "id": "navigation-shell-spec",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "导航与壳层规范 面向密集运营产品、知识库和轻量工具的多导航壳层选择契约。 壳层选择矩阵导航壳层选择应跟随产品信息架构，而不是套用唯一共享布局。界面模式规则边界T"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -5344,66 +5177,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "button",
-                  "id": "",
-                  "className": "tcrn-story-disclosure",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法"
-                },
-                {
-                  "tag": "h2",
-                  "id": "",
-                  "className": "tcrn-story-disclosure__heading",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法"
-                },
-                {
-                  "tag": "article",
-                  "id": "dialog-spec-usage",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法 对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。 能力元数据能力状态证明焦点进入仅本地证明已在 Dialog 中实现Tab 包含"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -5412,6 +5185,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -5465,46 +5258,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "article",
-                  "id": "dialog-spec-usage",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法 对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。 能力元数据能力状态证明焦点进入仅本地证明已在 Dialog 中实现Tab 包含"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -5523,6 +5276,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -5596,44 +5359,34 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "article",
-                  "id": "table-work-index-spec",
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "表格与工作索引规范 用于合成工作项的桌面密集扫描和移动端堆叠行。 表格壳层规则界面桌面行为移动端行为边界TableShell使用可读的密集行、可见表头和包支撑的"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 },
                 {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
+                  "tag": "html",
                   "id": "",
-                  "className": "tcrn-doc-layout",
+                  "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -5707,44 +5460,34 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "button",
+                  "tag": "div",
                   "id": "",
-                  "className": "tcrn-story-disclosure",
+                  "className": "tcrn-doc-shell",
                   "role": null,
-                  "docShell": null,
+                  "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "工作管理组件规范"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "h2",
+                  "tag": "body",
                   "id": "",
-                  "className": "tcrn-story-disclosure__heading",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "工作管理组件规范"
-                },
-                {
-                  "tag": "article",
-                  "id": "work-management-components-spec",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "工作管理组件规范 用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。 Admitted can"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 },
                 {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -5788,66 +5531,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "span",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。"
-                },
-                {
-                  "tag": "p",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。"
-                },
-                {
-                  "tag": "article",
-                  "id": "work-management-components-spec",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "工作管理组件规范 用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。 Admitted can"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -5856,13 +5539,33 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 15.37,
-        "titleClearancePx": 32.37,
+        "articleClearancePx": 1566.5,
+        "titleClearancePx": 1583.5,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5873,8 +5576,8 @@
       },
       {
         "label": "after-reload-1500ms",
-        "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 2885,
+        "route": "/apps/storybook/storybook-static/components-knowledge-management.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+        "scrollY": 0,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5892,17 +5595,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 412.06,
+          "top": 1963.19,
           "right": 374,
-          "bottom": 6891,
+          "bottom": 8442.13,
           "left": 16,
           "width": 358,
           "height": 6478.94
         },
         "title": {
-          "top": 429.06,
+          "top": 1980.19,
           "right": 357,
-          "bottom": 459.38,
+          "bottom": 2010.5,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -6099,46 +5802,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "article",
-                  "id": "navigation-shell-spec",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "导航与壳层规范 面向密集运营产品、知识库和轻量工具的多导航壳层选择契约。 壳层选择矩阵导航壳层选择应跟随产品信息架构，而不是套用唯一共享布局。界面模式规则边界T"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -6210,66 +5873,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "button",
-                  "id": "",
-                  "className": "tcrn-story-disclosure",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法"
-                },
-                {
-                  "tag": "h2",
-                  "id": "",
-                  "className": "tcrn-story-disclosure__heading",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法"
-                },
-                {
-                  "tag": "article",
-                  "id": "dialog-spec-usage",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法 对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。 能力元数据能力状态证明焦点进入仅本地证明已在 Dialog 中实现Tab 包含"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -6278,6 +5881,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -6331,46 +5954,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "article",
-                  "id": "dialog-spec-usage",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "对话框规范与用法 对话框能力元数据、焦点进入、Escape 关闭和焦点返回边界。 能力元数据能力状态证明焦点进入仅本地证明已在 Dialog 中实现Tab 包含"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -6389,6 +5972,16 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -6462,44 +6055,34 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "article",
-                  "id": "table-work-index-spec",
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-doc-shell",
+                  "role": null,
+                  "docShell": "online-docs",
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "表格与工作索引规范 用于合成工作项的桌面密集扫描和移动端堆叠行。 表格壳层规则界面桌面行为移动端行为边界TableShell使用可读的密集行、可见表头和包支撑的"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 },
                 {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
+                  "tag": "html",
                   "id": "",
-                  "className": "tcrn-doc-layout",
+                  "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -6573,44 +6156,34 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "button",
+                  "tag": "div",
                   "id": "",
-                  "className": "tcrn-story-disclosure",
+                  "className": "tcrn-doc-shell",
                   "role": null,
-                  "docShell": null,
+                  "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "工作管理组件规范"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "h2",
+                  "tag": "body",
                   "id": "",
-                  "className": "tcrn-story-disclosure__heading",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "工作管理组件规范"
-                },
-                {
-                  "tag": "article",
-                  "id": "work-management-components-spec",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "工作管理组件规范 用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。 Admitted can"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
                 },
                 {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             },
@@ -6654,66 +6227,6 @@
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
                 },
                 {
-                  "tag": "span",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。"
-                },
-                {
-                  "tag": "p",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。"
-                },
-                {
-                  "tag": "article",
-                  "id": "work-management-components-spec",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "工作管理组件规范 用于 Initiative、Epic、Story、Work Item、门禁、证据和执行记录界面的包支持工作管理组件。 Admitted can"
-                },
-                {
-                  "tag": "section",
-                  "id": "components",
-                  "className": "tcrn-static-section",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "组件 组件族索引 初始 TCRN 组件族，以及每个组件应扩展到的规范、用法和状态模式。 推荐组件族全部含附加边界11 / 11收起表格展开表格组件族推荐组件范围"
-                },
-                {
-                  "tag": "main",
-                  "id": "content",
-                  "className": "tcrn-doc-content",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
-                },
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-doc-layout",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "当前页书签 欢迎 W 治理入口 2 读者导向与声明边界。 欢迎与治理 治理边界 路由与贡献 3 维护者路由、贡献模型和发布策略。 维护者与路由 贡献模型 发布与"
-                },
-                {
                   "tag": "div",
                   "id": "",
                   "className": "tcrn-doc-shell",
@@ -6722,13 +6235,33 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "组件 - TCRN 设计系统契约故事 :root { --tcrn-motion-product-shell: var(--tcrn-motion-emphas"
                 }
               ]
             }
           ]
         },
-        "articleClearancePx": 15.37,
-        "titleClearancePx": 32.37,
+        "articleClearancePx": 1566.5,
+        "titleClearancePx": 1583.5,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -6743,47 +6276,45 @@
     "ok": true,
     "source": "left secondary nav click -> table-work-index-spec",
     "metrics": {
-      "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html?locale=zh-CN#table-work-index-spec",
+      "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components-controls-data.html?locale=zh-CN#table-work-index-spec",
       "activeStoryId": "table-work-index-spec",
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 10224,
-      "scrollY": 8842
+      "maxScrollY": 2346,
+      "scrollY": 1189
     }
   },
   "scrollSpyCheck": {
     "ok": true,
     "source": "manual page scroll -> dashboard-page-templates active nav",
     "metrics": {
-      "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns",
+      "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/patterns-data-pages.html?locale=zh-CN#datagrid-fields-patterns",
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
       "targetTop": 656,
       "offset": 96,
-      "maxScrollY": 754,
-      "scrollY": 754,
-      "hash": "#readiness-notification-patterns",
+      "maxScrollY": 88,
+      "scrollY": 88,
+      "hash": "#datagrid-fields-patterns",
       "scrollSpyAvailable": true
     }
   },
   "localeRouteCheck": {
     "ok": true,
     "source": "apps/storybook/storybook-static/index.html?locale=ja#button-spec-usage",
-    "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html?locale=ja#button-spec-usage",
+    "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components-controls-data.html?locale=ja#button-spec-usage",
     "i18nContentChecks": [
       {
         "locale": "zh-CN",
-        "route": "apps/storybook/storybook-static/index.html?locale=zh-CN#welcome-governance",
-        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/index.html?locale=zh-CN#welcome-governance",
+        "route": "apps/storybook/storybook-static/welcome-governance-entry.html?locale=zh-CN#welcome-governance",
+        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/welcome-governance-entry.html?locale=zh-CN#welcome-governance",
         "ok": true,
         "requiredText": [
           "从这里开始",
           "阅读路径",
           "声明边界",
           "边界地图",
-          "路由目录",
-          "准入",
           "本地检查点"
         ],
         "forbiddenText": [
@@ -6791,8 +6322,6 @@
           "Reader paths",
           "Claim boundaries",
           "Boundary map",
-          "Routing directory",
-          "Admission",
           "Local checkpoint"
         ],
         "missingRequiredText": [],
@@ -6800,8 +6329,8 @@
       },
       {
         "locale": "ja",
-        "route": "apps/storybook/storybook-static/index.html?locale=ja#button-spec-usage",
-        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components.html?locale=ja#button-spec-usage",
+        "route": "apps/storybook/storybook-static/components-controls-data.html?locale=ja#button-spec-usage",
+        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components-controls-data.html?locale=ja#button-spec-usage",
         "ok": true,
         "requiredText": [
           "ボタン仕様と使用法",
@@ -6818,60 +6347,30 @@
       },
       {
         "locale": "zh-CN",
-        "route": "apps/storybook/storybook-static/style-guide.html?locale=zh-CN#color-palette",
-        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/style-guide.html?locale=zh-CN#color-palette",
+        "route": "apps/storybook/storybook-static/style-guide-identity-brand.html?locale=zh-CN#color-palette",
+        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/style-guide-identity-brand.html?locale=zh-CN#color-palette",
         "ok": true,
         "requiredText": [
           "品牌色系",
           "主品牌色",
           "副色系",
           "色彩角色矩阵",
-          "主题一致性",
-          "字体与字号令牌",
-          "字体族契约",
-          "字体授权层级",
-          "页面标题 / 28px",
-          "文本层级与节奏",
-          "布局密度矩阵",
-          "动效样例",
-          "减弱动效兜底",
-          "加载与进度样例",
-          "骨架屏预览",
-          "进度反馈",
-          "交互可感知性矩阵",
-          "状态权威矩阵",
-          "文案流程",
-          "禁止的文案模式"
+          "主题一致性"
         ],
         "forbiddenText": [
           "Brand palette",
           "Primary brand",
           "Secondary brand",
           "Color role matrix",
-          "Theme parity",
-          "Type scale tokens",
-          "Font family contract",
-          "font licensing tiers",
-          "Page title / 28px",
-          "Type hierarchy and rhythm",
-          "Layout density matrix",
-          "Motion examples",
-          "Reduced motion fallback",
-          "Loading and progress examples",
-          "Skeleton preview",
-          "Progress feedback",
-          "Interaction affordance matrix",
-          "State authority matrix",
-          "Copy workflow",
-          "Forbidden copy patterns"
+          "Theme parity"
         ],
         "missingRequiredText": [],
         "leakedForbiddenText": []
       },
       {
         "locale": "zh-CN",
-        "route": "apps/storybook/storybook-static/change-log.html?theme=light&locale=zh-CN#local-changelog",
-        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/change-log.html?theme=light&locale=zh-CN#local-changelog",
+        "route": "apps/storybook/storybook-static/change-log-governance-records.html?theme=light&locale=zh-CN#local-changelog",
+        "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/change-log-governance-records.html?theme=light&locale=zh-CN#local-changelog",
         "ok": true,
         "requiredText": [
           "本地变更日志",
@@ -6926,8 +6425,8 @@
     ],
     "globalZhCnIaShellCheck": {
       "locale": "zh-CN",
-      "route": "/apps/storybook/storybook-static/index.html?theme=light&locale=zh-CN#welcome-governance",
-      "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/index.html?theme=light&locale=zh-CN#welcome-governance",
+      "route": "/apps/storybook/storybook-static/welcome-governance-entry.html?theme=light&locale=zh-CN#welcome-governance",
+      "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/welcome-governance-entry.html?theme=light&locale=zh-CN#welcome-governance",
       "missingRequiredText": [],
       "leakedForbiddenText": [],
       "accessibilityAttributeLeaks": [],
@@ -7446,6 +6945,11 @@
           "newLeaks": []
         },
         {
+          "storyId": "table-work-index-spec",
+          "allowlistedLeakCount": 2,
+          "newLeaks": []
+        },
+        {
           "storyId": "navigation-shell-spec",
           "allowlistedLeakCount": 34,
           "newLeaks": []
@@ -7453,11 +6957,6 @@
         {
           "storyId": "dialog-spec-usage",
           "allowlistedLeakCount": 23,
-          "newLeaks": []
-        },
-        {
-          "storyId": "table-work-index-spec",
-          "allowlistedLeakCount": 2,
           "newLeaks": []
         },
         {
@@ -7650,16 +7149,16 @@
             "leakCount": 10
           },
           {
+            "storyId": "table-work-index-spec",
+            "leakCount": 2
+          },
+          {
             "storyId": "navigation-shell-spec",
             "leakCount": 34
           },
           {
             "storyId": "dialog-spec-usage",
             "leakCount": 23
-          },
-          {
-            "storyId": "table-work-index-spec",
-            "leakCount": 2
           },
           {
             "storyId": "work-management-components-spec",
@@ -7832,16 +7331,16 @@
             "leakCount": 10
           },
           {
+            "storyId": "table-work-index-spec",
+            "leakCount": 2
+          },
+          {
             "storyId": "navigation-shell-spec",
             "leakCount": 34
           },
           {
             "storyId": "dialog-spec-usage",
             "leakCount": 24
-          },
-          {
-            "storyId": "table-work-index-spec",
-            "leakCount": 2
           },
           {
             "storyId": "work-management-components-spec",
@@ -8014,16 +7513,16 @@
             "leakCount": 58
           },
           {
+            "storyId": "table-work-index-spec",
+            "leakCount": 97
+          },
+          {
             "storyId": "navigation-shell-spec",
             "leakCount": 282
           },
           {
             "storyId": "dialog-spec-usage",
             "leakCount": 71
-          },
-          {
-            "storyId": "table-work-index-spec",
-            "leakCount": 97
           },
           {
             "storyId": "work-management-components-spec",
@@ -8135,7 +7634,259 @@
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
       "docNavCategoryCount": 20,
-      "docNavOpenCategoryCount": 2,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Welcome",
+      "currentNav": "Welcome",
+      "currentStoryNav": "welcome-governance",
+      "expectedCurrentStoryNav": "welcome-governance",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "brand-identity",
+      "expectedCurrentStoryNav": "brand-identity",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Foundations",
+      "url": "/apps/storybook/storybook-static/foundations.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Foundations",
+      "currentNav": "Foundations",
+      "currentStoryNav": "tokens-copy-state",
+      "expectedCurrentStoryNav": "tokens-copy-state",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "expectedCurrentStoryNav": "component-family-index",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "forms-patterns",
+      "expectedCurrentStoryNav": "forms-patterns",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Proof",
+      "url": "/apps/storybook/storybook-static/proof.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Proof",
+      "currentNav": "Proof",
+      "currentStoryNav": "proof-matrix",
+      "expectedCurrentStoryNav": "proof-matrix",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Change Log",
+      "url": "/apps/storybook/storybook-static/change-log.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Change Log",
+      "currentNav": "Change Log",
+      "currentStoryNav": "local-changelog",
+      "expectedCurrentStoryNav": "local-changelog",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Welcome",
+      "url": "/apps/storybook/storybook-static/welcome-governance-entry.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
@@ -8161,14 +7912,54 @@
       ],
       "visibleStoryIds": [
         "welcome-governance",
-        "governance-boundaries",
+        "governance-boundaries"
+      ],
+      "expectedStoryIds": [
+        "welcome-governance",
+        "governance-boundaries"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Welcome",
+      "url": "/apps/storybook/storybook-static/welcome-routing-contribution.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Welcome",
+      "currentNav": "Welcome",
+      "currentStoryNav": "maintainers-routing",
+      "expectedCurrentStoryNav": "maintainers-routing",
+      "storySections": [
+        "Welcome"
+      ],
+      "visibleStoryIds": [
         "maintainers-routing",
         "contribution-model",
         "release-bug-policy"
       ],
       "expectedStoryIds": [
-        "welcome-governance",
-        "governance-boundaries",
         "maintainers-routing",
         "contribution-model",
         "release-bug-policy"
@@ -8177,7 +7968,7 @@
     {
       "viewport": "desktop-1440x900",
       "section": "Style Guide",
-      "url": "/apps/storybook/storybook-static/style-guide.html",
+      "url": "/apps/storybook/storybook-static/style-guide-identity-brand.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8185,7 +7976,7 @@
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
       "docNavCategoryCount": 20,
-      "docNavOpenCategoryCount": 2,
+      "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
@@ -8211,18 +8002,98 @@
       ],
       "visibleStoryIds": [
         "brand-identity",
-        "color-palette",
+        "color-palette"
+      ],
+      "expectedStoryIds": [
+        "brand-identity",
+        "color-palette"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide-type-layout.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "text-styles",
+      "expectedCurrentStoryNav": "text-styles",
+      "storySections": [
+        "Style Guide"
+      ],
+      "visibleStoryIds": [
         "text-styles",
-        "grid-system",
+        "grid-system"
+      ],
+      "expectedStoryIds": [
+        "text-styles",
+        "grid-system"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide-interaction-copy.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "icons-motion",
+      "expectedCurrentStoryNav": "icons-motion",
+      "storySections": [
+        "Style Guide"
+      ],
+      "visibleStoryIds": [
         "icons-motion",
         "global-states",
         "copy-creation-rules"
       ],
       "expectedStoryIds": [
-        "brand-identity",
-        "color-palette",
-        "text-styles",
-        "grid-system",
         "icons-motion",
         "global-states",
         "copy-creation-rules"
@@ -8231,7 +8102,7 @@
     {
       "viewport": "desktop-1440x900",
       "section": "Foundations",
-      "url": "/apps/storybook/storybook-static/foundations.html",
+      "url": "/apps/storybook/storybook-static/foundations-tokens-i18n.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8239,7 +8110,7 @@
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
       "docNavCategoryCount": 20,
-      "docNavOpenCategoryCount": 2,
+      "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
@@ -8266,20 +8137,18 @@
       "visibleStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
-        "foundation-visual-standards",
-        "copy-guidelines"
+        "foundation-visual-standards"
       ],
       "expectedStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
-        "foundation-visual-standards",
-        "copy-guidelines"
+        "foundation-visual-standards"
       ]
     },
     {
       "viewport": "desktop-1440x900",
-      "section": "Components",
-      "url": "/apps/storybook/storybook-static/components.html",
+      "section": "Foundations",
+      "url": "/apps/storybook/storybook-static/foundations-copy-governance.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8287,7 +8156,49 @@
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
       "docNavCategoryCount": 20,
-      "docNavOpenCategoryCount": 2,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Foundations",
+      "currentNav": "Foundations",
+      "currentStoryNav": "copy-guidelines",
+      "expectedCurrentStoryNav": "copy-guidelines",
+      "storySections": [
+        "Foundations"
+      ],
+      "visibleStoryIds": [
+        "copy-guidelines"
+      ],
+      "expectedStoryIds": [
+        "copy-guidelines"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-component-inventory.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
@@ -8314,34 +8225,18 @@
       "visibleStoryIds": [
         "component-family-index",
         "display-primitives-spec",
-        "interaction-disclosure-spec",
-        "stamp-spec-usage",
-        "button-spec-usage",
-        "field-spec-usage",
-        "navigation-shell-spec",
-        "dialog-spec-usage",
-        "table-work-index-spec",
-        "work-management-components-spec",
-        "knowledge-management-components-spec"
+        "interaction-disclosure-spec"
       ],
       "expectedStoryIds": [
         "component-family-index",
         "display-primitives-spec",
-        "interaction-disclosure-spec",
-        "stamp-spec-usage",
-        "button-spec-usage",
-        "field-spec-usage",
-        "navigation-shell-spec",
-        "dialog-spec-usage",
-        "table-work-index-spec",
-        "work-management-components-spec",
-        "knowledge-management-components-spec"
+        "interaction-disclosure-spec"
       ]
     },
     {
       "viewport": "desktop-1440x900",
-      "section": "Patterns",
-      "url": "/apps/storybook/storybook-static/patterns.html",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-controls-data.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8349,7 +8244,223 @@
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
       "docNavCategoryCount": 20,
-      "docNavOpenCategoryCount": 2,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "stamp-spec-usage",
+      "expectedCurrentStoryNav": "stamp-spec-usage",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "stamp-spec-usage",
+        "button-spec-usage",
+        "field-spec-usage",
+        "table-work-index-spec"
+      ],
+      "expectedStoryIds": [
+        "stamp-spec-usage",
+        "button-spec-usage",
+        "field-spec-usage",
+        "table-work-index-spec"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-navigation-shells.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "navigation-shell-spec",
+      "expectedCurrentStoryNav": "navigation-shell-spec",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "navigation-shell-spec"
+      ],
+      "expectedStoryIds": [
+        "navigation-shell-spec"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-overlays.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "dialog-spec-usage",
+      "expectedCurrentStoryNav": "dialog-spec-usage",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "dialog-spec-usage"
+      ],
+      "expectedStoryIds": [
+        "dialog-spec-usage"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-work-management.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "work-management-components-spec",
+      "expectedCurrentStoryNav": "work-management-components-spec",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "work-management-components-spec"
+      ],
+      "expectedStoryIds": [
+        "work-management-components-spec"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-knowledge-management.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "knowledge-management-components-spec",
+      "expectedCurrentStoryNav": "knowledge-management-components-spec",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "knowledge-management-components-spec"
+      ],
+      "expectedStoryIds": [
+        "knowledge-management-components-spec"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-forms-workbench.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
@@ -8375,22 +8486,142 @@
       ],
       "visibleStoryIds": [
         "forms-patterns",
-        "workbench-patterns",
-        "work-management-patterns",
+        "workbench-patterns"
+      ],
+      "expectedStoryIds": [
+        "forms-patterns",
+        "workbench-patterns"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-work-management.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "work-management-patterns",
+      "expectedCurrentStoryNav": "work-management-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
+        "work-management-patterns"
+      ],
+      "expectedStoryIds": [
+        "work-management-patterns"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-feedback-selection.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "readiness-notification-patterns",
+      "expectedCurrentStoryNav": "readiness-notification-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
         "readiness-notification-patterns",
         "selection-list-patterns",
-        "modal-validation-patterns",
+        "modal-validation-patterns"
+      ],
+      "expectedStoryIds": [
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-data-pages.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "datagrid-fields-patterns",
+      "expectedCurrentStoryNav": "datagrid-fields-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
         "datagrid-fields-patterns",
         "big-list-search-patterns",
         "dashboard-page-templates"
       ],
       "expectedStoryIds": [
-        "forms-patterns",
-        "workbench-patterns",
-        "work-management-patterns",
-        "readiness-notification-patterns",
-        "selection-list-patterns",
-        "modal-validation-patterns",
         "datagrid-fields-patterns",
         "big-list-search-patterns",
         "dashboard-page-templates"
@@ -8399,7 +8630,7 @@
     {
       "viewport": "desktop-1440x900",
       "section": "Proof",
-      "url": "/apps/storybook/storybook-static/proof.html",
+      "url": "/apps/storybook/storybook-static/proof-proof-governance.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8407,7 +8638,7 @@
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
       "docNavCategoryCount": 20,
-      "docNavOpenCategoryCount": 2,
+      "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
@@ -8435,15 +8666,55 @@
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell"
+        "overlay-focus"
       ],
       "expectedStoryIds": [
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus",
+        "overlay-focus"
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Proof",
+      "url": "/apps/storybook/storybook-static/proof-proof-visual-instances.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Proof",
+      "currentNav": "Proof",
+      "currentStoryNav": "aos-frontend-shell-slice",
+      "expectedCurrentStoryNav": "aos-frontend-shell-slice",
+      "storySections": [
+        "Proof"
+      ],
+      "visibleStoryIds": [
+        "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell"
+      ],
+      "expectedStoryIds": [
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell"
       ]
@@ -8451,7 +8722,7 @@
     {
       "viewport": "desktop-1440x900",
       "section": "Change Log",
-      "url": "/apps/storybook/storybook-static/change-log.html",
+      "url": "/apps/storybook/storybook-static/change-log-governance-records.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8522,23 +8793,9 @@
       "currentNav": "Welcome",
       "currentStoryNav": "welcome-governance",
       "expectedCurrentStoryNav": "welcome-governance",
-      "storySections": [
-        "Welcome"
-      ],
-      "visibleStoryIds": [
-        "welcome-governance",
-        "governance-boundaries",
-        "maintainers-routing",
-        "contribution-model",
-        "release-bug-policy"
-      ],
-      "expectedStoryIds": [
-        "welcome-governance",
-        "governance-boundaries",
-        "maintainers-routing",
-        "contribution-model",
-        "release-bug-policy"
-      ]
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
     },
     {
       "viewport": "tablet-1024x768",
@@ -8572,23 +8829,409 @@
       "currentNav": "Style Guide",
       "currentStoryNav": "brand-identity",
       "expectedCurrentStoryNav": "brand-identity",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Foundations",
+      "url": "/apps/storybook/storybook-static/foundations.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Foundations",
+      "currentNav": "Foundations",
+      "currentStoryNav": "tokens-copy-state",
+      "expectedCurrentStoryNav": "tokens-copy-state",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "expectedCurrentStoryNav": "component-family-index",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "forms-patterns",
+      "expectedCurrentStoryNav": "forms-patterns",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Proof",
+      "url": "/apps/storybook/storybook-static/proof.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Proof",
+      "currentNav": "Proof",
+      "currentStoryNav": "proof-matrix",
+      "expectedCurrentStoryNav": "proof-matrix",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Change Log",
+      "url": "/apps/storybook/storybook-static/change-log.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Change Log",
+      "currentNav": "Change Log",
+      "currentStoryNav": "local-changelog",
+      "expectedCurrentStoryNav": "local-changelog",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Welcome",
+      "url": "/apps/storybook/storybook-static/welcome-governance-entry.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Welcome",
+      "currentNav": "Welcome",
+      "currentStoryNav": "governance-boundaries",
+      "expectedCurrentStoryNav": "welcome-governance",
+      "storySections": [
+        "Welcome"
+      ],
+      "visibleStoryIds": [
+        "welcome-governance",
+        "governance-boundaries"
+      ],
+      "expectedStoryIds": [
+        "welcome-governance",
+        "governance-boundaries"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Welcome",
+      "url": "/apps/storybook/storybook-static/welcome-routing-contribution.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Welcome",
+      "currentNav": "Welcome",
+      "currentStoryNav": "maintainers-routing",
+      "expectedCurrentStoryNav": "maintainers-routing",
+      "storySections": [
+        "Welcome"
+      ],
+      "visibleStoryIds": [
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ],
+      "expectedStoryIds": [
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide-identity-brand.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "color-palette",
+      "expectedCurrentStoryNav": "brand-identity",
       "storySections": [
         "Style Guide"
       ],
       "visibleStoryIds": [
         "brand-identity",
-        "color-palette",
+        "color-palette"
+      ],
+      "expectedStoryIds": [
+        "brand-identity",
+        "color-palette"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide-type-layout.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "grid-system",
+      "expectedCurrentStoryNav": "text-styles",
+      "storySections": [
+        "Style Guide"
+      ],
+      "visibleStoryIds": [
         "text-styles",
-        "grid-system",
+        "grid-system"
+      ],
+      "expectedStoryIds": [
+        "text-styles",
+        "grid-system"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide-interaction-copy.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "icons-motion",
+      "expectedCurrentStoryNav": "icons-motion",
+      "storySections": [
+        "Style Guide"
+      ],
+      "visibleStoryIds": [
         "icons-motion",
         "global-states",
         "copy-creation-rules"
       ],
       "expectedStoryIds": [
-        "brand-identity",
-        "color-palette",
-        "text-styles",
-        "grid-system",
         "icons-motion",
         "global-states",
         "copy-creation-rules"
@@ -8597,7 +9240,7 @@
     {
       "viewport": "tablet-1024x768",
       "section": "Foundations",
-      "url": "/apps/storybook/storybook-static/foundations.html",
+      "url": "/apps/storybook/storybook-static/foundations-tokens-i18n.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8632,20 +9275,60 @@
       "visibleStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
-        "foundation-visual-standards",
-        "copy-guidelines"
+        "foundation-visual-standards"
       ],
       "expectedStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
-        "foundation-visual-standards",
+        "foundation-visual-standards"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Foundations",
+      "url": "/apps/storybook/storybook-static/foundations-copy-governance.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Foundations",
+      "currentNav": "Foundations",
+      "currentStoryNav": "copy-guidelines",
+      "expectedCurrentStoryNav": "copy-guidelines",
+      "storySections": [
+        "Foundations"
+      ],
+      "visibleStoryIds": [
+        "copy-guidelines"
+      ],
+      "expectedStoryIds": [
         "copy-guidelines"
       ]
     },
     {
       "viewport": "tablet-1024x768",
       "section": "Components",
-      "url": "/apps/storybook/storybook-static/components.html",
+      "url": "/apps/storybook/storybook-static/components-component-inventory.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8680,34 +9363,234 @@
       "visibleStoryIds": [
         "component-family-index",
         "display-primitives-spec",
-        "interaction-disclosure-spec",
-        "stamp-spec-usage",
-        "button-spec-usage",
-        "field-spec-usage",
-        "navigation-shell-spec",
-        "dialog-spec-usage",
-        "table-work-index-spec",
-        "work-management-components-spec",
-        "knowledge-management-components-spec"
+        "interaction-disclosure-spec"
       ],
       "expectedStoryIds": [
         "component-family-index",
         "display-primitives-spec",
-        "interaction-disclosure-spec",
+        "interaction-disclosure-spec"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-controls-data.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "stamp-spec-usage",
+      "expectedCurrentStoryNav": "stamp-spec-usage",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
         "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
-        "navigation-shell-spec",
-        "dialog-spec-usage",
-        "table-work-index-spec",
-        "work-management-components-spec",
+        "table-work-index-spec"
+      ],
+      "expectedStoryIds": [
+        "stamp-spec-usage",
+        "button-spec-usage",
+        "field-spec-usage",
+        "table-work-index-spec"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-navigation-shells.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "navigation-shell-spec",
+      "expectedCurrentStoryNav": "navigation-shell-spec",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "navigation-shell-spec"
+      ],
+      "expectedStoryIds": [
+        "navigation-shell-spec"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-overlays.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "dialog-spec-usage",
+      "expectedCurrentStoryNav": "dialog-spec-usage",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "dialog-spec-usage"
+      ],
+      "expectedStoryIds": [
+        "dialog-spec-usage"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-work-management.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "work-management-components-spec",
+      "expectedCurrentStoryNav": "work-management-components-spec",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "work-management-components-spec"
+      ],
+      "expectedStoryIds": [
+        "work-management-components-spec"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-knowledge-management.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "knowledge-management-components-spec",
+      "expectedCurrentStoryNav": "knowledge-management-components-spec",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "knowledge-management-components-spec"
+      ],
+      "expectedStoryIds": [
         "knowledge-management-components-spec"
       ]
     },
     {
       "viewport": "tablet-1024x768",
       "section": "Patterns",
-      "url": "/apps/storybook/storybook-static/patterns.html",
+      "url": "/apps/storybook/storybook-static/patterns-forms-workbench.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8734,29 +9617,149 @@
       "localeSelectVisible": true,
       "activeSection": "Patterns",
       "currentNav": "Patterns",
-      "currentStoryNav": "forms-patterns",
+      "currentStoryNav": "workbench-patterns",
       "expectedCurrentStoryNav": "forms-patterns",
       "storySections": [
         "Patterns"
       ],
       "visibleStoryIds": [
         "forms-patterns",
-        "workbench-patterns",
-        "work-management-patterns",
+        "workbench-patterns"
+      ],
+      "expectedStoryIds": [
+        "forms-patterns",
+        "workbench-patterns"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-work-management.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "work-management-patterns",
+      "expectedCurrentStoryNav": "work-management-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
+        "work-management-patterns"
+      ],
+      "expectedStoryIds": [
+        "work-management-patterns"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-feedback-selection.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "readiness-notification-patterns",
+      "expectedCurrentStoryNav": "readiness-notification-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
         "readiness-notification-patterns",
         "selection-list-patterns",
-        "modal-validation-patterns",
+        "modal-validation-patterns"
+      ],
+      "expectedStoryIds": [
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-data-pages.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "datagrid-fields-patterns",
+      "expectedCurrentStoryNav": "datagrid-fields-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
         "datagrid-fields-patterns",
         "big-list-search-patterns",
         "dashboard-page-templates"
       ],
       "expectedStoryIds": [
-        "forms-patterns",
-        "workbench-patterns",
-        "work-management-patterns",
-        "readiness-notification-patterns",
-        "selection-list-patterns",
-        "modal-validation-patterns",
         "datagrid-fields-patterns",
         "big-list-search-patterns",
         "dashboard-page-templates"
@@ -8765,7 +9768,7 @@
     {
       "viewport": "tablet-1024x768",
       "section": "Proof",
-      "url": "/apps/storybook/storybook-static/proof.html",
+      "url": "/apps/storybook/storybook-static/proof-proof-governance.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8801,15 +9804,55 @@
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell"
+        "overlay-focus"
       ],
       "expectedStoryIds": [
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus",
+        "overlay-focus"
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "section": "Proof",
+      "url": "/apps/storybook/storybook-static/proof-proof-visual-instances.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Proof",
+      "currentNav": "Proof",
+      "currentStoryNav": "aos-owner-quality-product-shell",
+      "expectedCurrentStoryNav": "aos-frontend-shell-slice",
+      "storySections": [
+        "Proof"
+      ],
+      "visibleStoryIds": [
+        "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell"
+      ],
+      "expectedStoryIds": [
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell"
       ]
@@ -8817,7 +9860,7 @@
     {
       "viewport": "tablet-1024x768",
       "section": "Change Log",
-      "url": "/apps/storybook/storybook-static/change-log.html",
+      "url": "/apps/storybook/storybook-static/change-log-governance-records.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8888,23 +9931,9 @@
       "currentNav": "Welcome",
       "currentStoryNav": "welcome-governance",
       "expectedCurrentStoryNav": "welcome-governance",
-      "storySections": [
-        "Welcome"
-      ],
-      "visibleStoryIds": [
-        "welcome-governance",
-        "governance-boundaries",
-        "maintainers-routing",
-        "contribution-model",
-        "release-bug-policy"
-      ],
-      "expectedStoryIds": [
-        "welcome-governance",
-        "governance-boundaries",
-        "maintainers-routing",
-        "contribution-model",
-        "release-bug-policy"
-      ]
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
     },
     {
       "viewport": "mobile-390x844",
@@ -8938,23 +9967,409 @@
       "currentNav": "Style Guide",
       "currentStoryNav": "brand-identity",
       "expectedCurrentStoryNav": "brand-identity",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Foundations",
+      "url": "/apps/storybook/storybook-static/foundations.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Foundations",
+      "currentNav": "Foundations",
+      "currentStoryNav": "tokens-copy-state",
+      "expectedCurrentStoryNav": "tokens-copy-state",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "expectedCurrentStoryNav": "component-family-index",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "forms-patterns",
+      "expectedCurrentStoryNav": "forms-patterns",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Proof",
+      "url": "/apps/storybook/storybook-static/proof.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Proof",
+      "currentNav": "Proof",
+      "currentStoryNav": "proof-matrix",
+      "expectedCurrentStoryNav": "proof-matrix",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Change Log",
+      "url": "/apps/storybook/storybook-static/change-log.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Change Log",
+      "currentNav": "Change Log",
+      "currentStoryNav": "local-changelog",
+      "expectedCurrentStoryNav": "local-changelog",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Welcome",
+      "url": "/apps/storybook/storybook-static/welcome-governance-entry.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Welcome",
+      "currentNav": "Welcome",
+      "currentStoryNav": "welcome-governance",
+      "expectedCurrentStoryNav": "welcome-governance",
+      "storySections": [
+        "Welcome"
+      ],
+      "visibleStoryIds": [
+        "welcome-governance",
+        "governance-boundaries"
+      ],
+      "expectedStoryIds": [
+        "welcome-governance",
+        "governance-boundaries"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Welcome",
+      "url": "/apps/storybook/storybook-static/welcome-routing-contribution.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Welcome",
+      "currentNav": "Welcome",
+      "currentStoryNav": "maintainers-routing",
+      "expectedCurrentStoryNav": "maintainers-routing",
+      "storySections": [
+        "Welcome"
+      ],
+      "visibleStoryIds": [
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ],
+      "expectedStoryIds": [
+        "maintainers-routing",
+        "contribution-model",
+        "release-bug-policy"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide-identity-brand.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "brand-identity",
+      "expectedCurrentStoryNav": "brand-identity",
       "storySections": [
         "Style Guide"
       ],
       "visibleStoryIds": [
         "brand-identity",
-        "color-palette",
+        "color-palette"
+      ],
+      "expectedStoryIds": [
+        "brand-identity",
+        "color-palette"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide-type-layout.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "text-styles",
+      "expectedCurrentStoryNav": "text-styles",
+      "storySections": [
+        "Style Guide"
+      ],
+      "visibleStoryIds": [
         "text-styles",
-        "grid-system",
+        "grid-system"
+      ],
+      "expectedStoryIds": [
+        "text-styles",
+        "grid-system"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Style Guide",
+      "url": "/apps/storybook/storybook-static/style-guide-interaction-copy.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Style Guide",
+      "currentNav": "Style Guide",
+      "currentStoryNav": "icons-motion",
+      "expectedCurrentStoryNav": "icons-motion",
+      "storySections": [
+        "Style Guide"
+      ],
+      "visibleStoryIds": [
         "icons-motion",
         "global-states",
         "copy-creation-rules"
       ],
       "expectedStoryIds": [
-        "brand-identity",
-        "color-palette",
-        "text-styles",
-        "grid-system",
         "icons-motion",
         "global-states",
         "copy-creation-rules"
@@ -8963,7 +10378,7 @@
     {
       "viewport": "mobile-390x844",
       "section": "Foundations",
-      "url": "/apps/storybook/storybook-static/foundations.html",
+      "url": "/apps/storybook/storybook-static/foundations-tokens-i18n.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -8998,20 +10413,60 @@
       "visibleStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
-        "foundation-visual-standards",
-        "copy-guidelines"
+        "foundation-visual-standards"
       ],
       "expectedStoryIds": [
         "tokens-copy-state",
         "i18n-theme-contract",
-        "foundation-visual-standards",
+        "foundation-visual-standards"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Foundations",
+      "url": "/apps/storybook/storybook-static/foundations-copy-governance.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Foundations",
+      "currentNav": "Foundations",
+      "currentStoryNav": "copy-guidelines",
+      "expectedCurrentStoryNav": "copy-guidelines",
+      "storySections": [
+        "Foundations"
+      ],
+      "visibleStoryIds": [
+        "copy-guidelines"
+      ],
+      "expectedStoryIds": [
         "copy-guidelines"
       ]
     },
     {
       "viewport": "mobile-390x844",
       "section": "Components",
-      "url": "/apps/storybook/storybook-static/components.html",
+      "url": "/apps/storybook/storybook-static/components-component-inventory.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -9046,34 +10501,234 @@
       "visibleStoryIds": [
         "component-family-index",
         "display-primitives-spec",
-        "interaction-disclosure-spec",
-        "stamp-spec-usage",
-        "button-spec-usage",
-        "field-spec-usage",
-        "navigation-shell-spec",
-        "dialog-spec-usage",
-        "table-work-index-spec",
-        "work-management-components-spec",
-        "knowledge-management-components-spec"
+        "interaction-disclosure-spec"
       ],
       "expectedStoryIds": [
         "component-family-index",
         "display-primitives-spec",
-        "interaction-disclosure-spec",
+        "interaction-disclosure-spec"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-controls-data.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "stamp-spec-usage",
+      "expectedCurrentStoryNav": "stamp-spec-usage",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
         "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
-        "navigation-shell-spec",
-        "dialog-spec-usage",
-        "table-work-index-spec",
-        "work-management-components-spec",
+        "table-work-index-spec"
+      ],
+      "expectedStoryIds": [
+        "stamp-spec-usage",
+        "button-spec-usage",
+        "field-spec-usage",
+        "table-work-index-spec"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-navigation-shells.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "navigation-shell-spec",
+      "expectedCurrentStoryNav": "navigation-shell-spec",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "navigation-shell-spec"
+      ],
+      "expectedStoryIds": [
+        "navigation-shell-spec"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-overlays.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "dialog-spec-usage",
+      "expectedCurrentStoryNav": "dialog-spec-usage",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "dialog-spec-usage"
+      ],
+      "expectedStoryIds": [
+        "dialog-spec-usage"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-work-management.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "work-management-components-spec",
+      "expectedCurrentStoryNav": "work-management-components-spec",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "work-management-components-spec"
+      ],
+      "expectedStoryIds": [
+        "work-management-components-spec"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/components-knowledge-management.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "knowledge-management-components-spec",
+      "expectedCurrentStoryNav": "knowledge-management-components-spec",
+      "storySections": [
+        "Components"
+      ],
+      "visibleStoryIds": [
+        "knowledge-management-components-spec"
+      ],
+      "expectedStoryIds": [
         "knowledge-management-components-spec"
       ]
     },
     {
       "viewport": "mobile-390x844",
       "section": "Patterns",
-      "url": "/apps/storybook/storybook-static/patterns.html",
+      "url": "/apps/storybook/storybook-static/patterns-forms-workbench.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -9107,22 +10762,142 @@
       ],
       "visibleStoryIds": [
         "forms-patterns",
-        "workbench-patterns",
-        "work-management-patterns",
+        "workbench-patterns"
+      ],
+      "expectedStoryIds": [
+        "forms-patterns",
+        "workbench-patterns"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-work-management.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "work-management-patterns",
+      "expectedCurrentStoryNav": "work-management-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
+        "work-management-patterns"
+      ],
+      "expectedStoryIds": [
+        "work-management-patterns"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-feedback-selection.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "readiness-notification-patterns",
+      "expectedCurrentStoryNav": "readiness-notification-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
         "readiness-notification-patterns",
         "selection-list-patterns",
-        "modal-validation-patterns",
+        "modal-validation-patterns"
+      ],
+      "expectedStoryIds": [
+        "readiness-notification-patterns",
+        "selection-list-patterns",
+        "modal-validation-patterns"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Patterns",
+      "url": "/apps/storybook/storybook-static/patterns-data-pages.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Patterns",
+      "currentNav": "Patterns",
+      "currentStoryNav": "datagrid-fields-patterns",
+      "expectedCurrentStoryNav": "datagrid-fields-patterns",
+      "storySections": [
+        "Patterns"
+      ],
+      "visibleStoryIds": [
         "datagrid-fields-patterns",
         "big-list-search-patterns",
         "dashboard-page-templates"
       ],
       "expectedStoryIds": [
-        "forms-patterns",
-        "workbench-patterns",
-        "work-management-patterns",
-        "readiness-notification-patterns",
-        "selection-list-patterns",
-        "modal-validation-patterns",
         "datagrid-fields-patterns",
         "big-list-search-patterns",
         "dashboard-page-templates"
@@ -9131,7 +10906,7 @@
     {
       "viewport": "mobile-390x844",
       "section": "Proof",
-      "url": "/apps/storybook/storybook-static/proof.html",
+      "url": "/apps/storybook/storybook-static/proof-proof-governance.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -9167,15 +10942,55 @@
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell"
+        "overlay-focus"
       ],
       "expectedStoryIds": [
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus",
+        "overlay-focus"
+      ]
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Proof",
+      "url": "/apps/storybook/storybook-static/proof-proof-visual-instances.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 43,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Proof",
+      "currentNav": "Proof",
+      "currentStoryNav": "aos-frontend-shell-slice",
+      "expectedCurrentStoryNav": "aos-frontend-shell-slice",
+      "storySections": [
+        "Proof"
+      ],
+      "visibleStoryIds": [
+        "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell"
+      ],
+      "expectedStoryIds": [
         "aos-frontend-shell-slice",
         "aos-owner-quality-product-shell"
       ]
@@ -9183,7 +10998,7 @@
     {
       "viewport": "mobile-390x844",
       "section": "Change Log",
-      "url": "/apps/storybook/storybook-static/change-log.html",
+      "url": "/apps/storybook/storybook-static/change-log-governance-records.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,

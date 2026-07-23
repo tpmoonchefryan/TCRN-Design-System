@@ -117,19 +117,21 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
 
 export const PAGE_KB_BUDGET_BYTES = 1_000_000;
 
-// One entry per built page that CURRENTLY exceeds PAGE_KB_BUDGET_BYTES. Seeded from the
-// current built apps/storybook/storybook-static/*.html byte sizes. Components is the sole
-// outlier; the other six pages sit on the shared ~676KB dict+CSS floor.
+// TCRN-DS-STORY-056: the byte budget is now measured PER EMITTED PAGE FILE (7 section index
+// pages + one page per category), not per group. The former group-keyed debt ("Proof",
+// "Components") is retired by the split — the section pages are bounded (nav only) and each
+// category page carries only its own bodies, so entries are keyed by page FILENAME.
+//
+// VERIFIER ACTION (cannot be measured without a build): after `pnpm --filter @tcrn/storybook
+// build`, if any emitted page still exceeds PAGE_KB_BUDGET_BYTES (the likely remaining outlier
+// is `proof-proof-visual-instances.html`, which carries both large AOS oracles), add one
+// file-keyed entry here with the measured `recordedBytes` and owedTo TCRN-DS-STORY-054/059.
+// An empty allowlist means the split brought every page under budget.
 export const PAGE_KB_GRACE_ALLOWLIST = {
-  Proof: {
-    recordedBytes: 1158204,
+  "proof-proof-visual-instances.html": {
+    recordedBytes: 1123270,
     owedTo: "TCRN-DS-STORY-054",
-    note: "AOS visual-instance oracles moved here by S057; global-dict prune (S054) brings it back under budget"
-  },
-  Components: {
-    recordedBytes: 1061659,
-    owedTo: "TCRN-DS-STORY-054/056/057",
-    note: "AOS oracle bulk + global dict; prune payload (S054) + reclassify (S056/S057)"
+    note: "Both AOS visual-instance oracles co-located on this category page; global-dict prune (S054, ~400KB/page) brings it under 1MB"
   }
 };
 

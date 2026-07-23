@@ -1,13 +1,19 @@
 import { tcrnDefaultLocale, tcrnFallbackLocale, tcrnSupportedLocales } from "@tcrn/ui-copy-state";
 import { contractStories, contractStoryGroups } from "../stories.js";
 import { storybookContentText, storybookLocaleText } from "./i18n.js";
-import { groupFileName, groupSlug } from "./navigation.js";
+import { categoryFileForStory, groupFileName, groupSlug } from "./navigation.js";
 
 export const hashRouteScript = `<script>
 (() => {
   const routes = ${JSON.stringify({
+    // Section-slug -> section INDEX page (unchanged): #components -> components.html.
     ...Object.fromEntries(contractStoryGroups.map((group) => [groupSlug(group), groupFileName(group)])),
-    ...Object.fromEntries(contractStories.map((story) => [story.id, `${groupFileName(story.group)}#${story.id}`]))
+    // Story-id -> its CATEGORY page (TCRN-DS-STORY-056): a legacy deep link such as
+    // components.html#button-spec-usage lands on the components INDEX page, whose
+    // hashRouteScript redirects to components-controls-data.html#button-spec-usage.
+    // Landing directly on the category page is a no-op (currentFile === targetFile), so
+    // there is no redirect loop.
+    ...Object.fromEntries(contractStories.map((story) => [story.id, `${categoryFileForStory(story)}#${story.id}`]))
   })};
   const target = routes[window.location.hash.replace("#", "")];
   const [targetFile, targetHash] = target ? target.split("#") : ["", ""];
