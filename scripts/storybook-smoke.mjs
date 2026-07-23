@@ -1370,7 +1370,7 @@ if (!String(contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "
 }
 if (!(contract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) => (
   item.metric === "desktopSidebarWidthPx"
-  && item.sha256 === "d9b5fdcd59f1baf9819bde3ae35761acde0cfb62ce28a17af2c4acbfd667f953"
+  && item.signatureBaseline === "docs/verification/internal-alpha/visual-signature-baseline.json"
 ))) {
   missing.push("contract.storybookDocShellVisualOracle.metricEvidence.desktopSidebarWidthPx");
 }
