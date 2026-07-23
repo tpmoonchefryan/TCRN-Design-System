@@ -809,7 +809,24 @@ for (const viewport of viewports) {
     }
 
     if (viewport.name === "desktop-1440x900") {
-      axeSummaries.push({ section: section.group, ...(await runAxe(page)) });
+      // E6: axe runs in both themes so dark-mode contrast has the same 4.5:1 floor as
+      // light. Dark is loaded fresh with ?theme=dark rather than toggled in place — the
+      // page's per-panel theme previews only render correctly under the runtime's own
+      // theme handling, so an in-place attribute flip would produce false contrast hits.
+      axeSummaries.push({ section: section.group, theme: "light", ...(await runAxe(page)) });
+      await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?theme=dark&locale=zh-CN`);
+      await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+      // The page ships data-tcrn-theme="light" and a script flips it to dark, which the
+      // header/current-location animate over ~400ms. Kill transitions so axe measures the
+      // settled dark state, not a mid-flip frame — otherwise it reports transient contrast.
+      await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; animation: none !important; }" });
+      await page.evaluate(() => {
+        for (const article of document.querySelectorAll("article[data-story-collapsed]")) {
+          article.setAttribute("data-story-collapsed", "false");
+        }
+      });
+      await page.waitForTimeout(120);
+      axeSummaries.push({ section: section.group, theme: "dark", ...(await runAxe(page)) });
     }
 
     browserSummaries.push({
