@@ -36,6 +36,11 @@ export const InteractionDisclosureSpec: Story = {
   render: () => renderContractStory("interaction-disclosure-spec")
 };
 
+export const StampSpecUsage: Story = {
+  name: "Stamp spec and usage",
+  render: () => renderContractStory("stamp-spec-usage")
+};
+
 export const ButtonSpecUsage: Story = {
   name: "Button spec and usage",
   render: () => renderContractStory("button-spec-usage")
@@ -69,6 +74,11 @@ export const DialogSpecUsage: Story = {
 export const TableWorkIndexSpec: Story = {
   name: "Table and work index spec",
   render: () => renderContractStory("table-work-index-spec")
+};
+
+export const WorkManagementComponentsSpec: Story = {
+  name: "Work Management component specs",
+  render: () => renderContractStory("work-management-components-spec")
 };
 
 export const KnowledgeManagementComponentsSpec: Story = {

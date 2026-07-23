@@ -31,6 +31,11 @@ export const I18nThemeContract: Story = {
   render: () => renderContractStory("i18n-theme-contract")
 };
 
+export const FoundationVisualStandards: Story = {
+  name: "Foundation visual standards",
+  render: () => renderContractStory("foundation-visual-standards")
+};
+
 export const CopyGuidelines: Story = {
   name: "Copy guidelines",
   render: () => renderContractStory("copy-guidelines")

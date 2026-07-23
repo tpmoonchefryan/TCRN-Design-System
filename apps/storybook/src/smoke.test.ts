@@ -29,7 +29,7 @@ import {
   foundationVisualStandards,
   storybookDocShellVisualOracle
 } from "./build/foundation-visual-standards.js";
-import { contractStories, contractStoryGroups } from "./stories.js";
+import { contractStories, contractStoriesByGroup, contractStoryGroups } from "./stories.js";
 import type { ContractStoryGroup } from "./stories.js";
 
 const expectedContractStoryGroups: readonly ContractStoryGroup[] = [
@@ -257,6 +257,33 @@ test("static contract story surface is retained and synthetic", () => {
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
     expectedRootAdapterTitles
   );
+  // Per-story CSF registration gate: every contract story in the registry must have a
+  // matching CSF export in its group's *.stories.tsx adapter, in registry order. This closes
+  // the gap where only the 7 default-meta titles were gated. internal-dev/overlay-family-lab is
+  // intentionally NOT a contract story group, so iterating the registry groups self-excludes it
+  // (see the overlay-family-lab exclusions below at data-internal-dev-surface / Internal/Overlay).
+  const csfAdapterFileByGroup: Record<ContractStoryGroup, string> = {
+    Welcome: "src/alpha.stories.tsx", // NOTE: alpha.stories.tsx IS the Welcome adapter
+    "Style Guide": "src/style-guide.stories.tsx",
+    Foundations: "src/foundations.stories.tsx",
+    Components: "src/components.stories.tsx",
+    Patterns: "src/patterns.stories.tsx",
+    Proof: "src/proof.stories.tsx",
+    "Change Log": "src/change-log.stories.tsx"
+  };
+  for (const group of expectedContractStoryGroups) {
+    const adapterFile = csfAdapterFileByGroup[group];
+    const adapterSource = readStorybookSource(adapterFile);
+    const registeredIds = Array.from(
+      adapterSource.matchAll(/renderContractStory\("([^"]+)"\)/g),
+      (match) => match[1]
+    );
+    assert.deepEqual(
+      registeredIds,
+      contractStoriesByGroup(group).map((story) => story.id),
+      `CSF adapter ${adapterFile} must register every contract story for ${group} in registry order`
+    );
+  }
   assert.deepEqual(pages.map((page) => groupFileName(page.group)), [
     "index.html",
     "style-guide.html",
