@@ -1,6 +1,6 @@
-import { tcrnDefaultLocale, tcrnFallbackLocale, tcrnSupportedLocales } from "@tcrn/ui-copy-state";
+import { tcrnDefaultLocale, tcrnFallbackLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { contractStories, contractStoryGroups } from "../stories.js";
-import { storybookContentText, storybookLocaleText } from "./i18n.js";
+import { storybookLocaleText } from "./i18n.js";
 import { categoryFileForStory, groupFileName, groupSlug } from "./navigation.js";
 
 export const hashRouteScript = `<script>
@@ -166,13 +166,18 @@ export const storybookThemeScript = `<script>
 })();
 </script>`;
 
-export const storybookI18nScript = `<script>
+// TCRN-DS-STORY-054: this script is emitted per page and now takes only the subset of the
+// content-translation dictionary whose English sources actually render on that page (computed
+// in page-template.tsx). The locale dictionary (`storybookLocaleText`, shell/nav/titles) stays
+// WHOLE on every page — it is small and the nav/shell gates read every entry. Only the large
+// content dictionary is pruned, which is where the ~370KB/page payload lived.
+export const storybookI18nScript = (pageContentTranslations: Record<string, Record<TcrnLocale, string>>) => `<script>
 (() => {
   const supportedLocales = ${JSON.stringify(tcrnSupportedLocales)};
   const defaultLocale = ${JSON.stringify(tcrnDefaultLocale)};
   const fallbackLocale = ${JSON.stringify(tcrnFallbackLocale)};
   const translations = ${JSON.stringify(storybookLocaleText)};
-  const contentTranslations = ${JSON.stringify(storybookContentText)};
+  const contentTranslations = ${JSON.stringify(pageContentTranslations)};
   const storageKey = "tcrn-design-system-storybook-locale";
   const contentCanonicalLookup = new Map();
   for (const [source, localized] of Object.entries(contentTranslations)) {

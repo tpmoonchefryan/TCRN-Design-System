@@ -127,13 +127,7 @@ export const PAGE_KB_BUDGET_BYTES = 1_000_000;
 // is `proof-proof-visual-instances.html`, which carries both large AOS oracles), add one
 // file-keyed entry here with the measured `recordedBytes` and owedTo TCRN-DS-STORY-054/059.
 // An empty allowlist means the split brought every page under budget.
-export const PAGE_KB_GRACE_ALLOWLIST = {
-  "proof-proof-visual-instances.html": {
-    recordedBytes: 1123270,
-    owedTo: "TCRN-DS-STORY-054",
-    note: "Both AOS visual-instance oracles co-located on this category page; global-dict prune (S054, ~400KB/page) brings it under 1MB"
-  }
-};
+export const PAGE_KB_GRACE_ALLOWLIST = {};
 
 export const CATEGORY_STORY_COUNT_CAP = 8;
 
