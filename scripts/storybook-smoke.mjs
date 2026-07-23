@@ -799,8 +799,9 @@ const required = [
   "option value=\"ko\"",
   "option value=\"fr\"",
   "data-i18n=\"story.welcome-governance.title\"",
-  "TCRN デザインシステム契約ストーリー",
-  "TCRN 디자인 시스템 계약 스토리",
+  // TCRN-DS-STORY-051: ja/ko shell titles moved to payloadTranslationCoverage (below) — they
+  // ship in the embedded i18n payload for runtime switching but never render on the static en
+  // pages, so keeping them as raw combinedContractText pins would falsely read as rendered text.
   "data-contract-surface=\"tcrn-design-system-storybook\"",
   "data-contract-story-id=\"tokens-copy-state\"",
   "data-contract-story-id=\"foundation-visual-standards\"",
@@ -853,8 +854,9 @@ const required = [
   "name=\"tcrn-ai-consumption-contract\" content=\"ai-consumption-contract.json\"",
   "name=\"tcrn-ai-consumption-contract-route\" content=\"proof.html#ai-consumption-contract\"",
   "name=\"tcrn-ai-consumption-contract-required\" content=\"must-read-first\"",
-  "Light and dark Storybook shell",
-  "Storybook doc shell control contract",
+  // TCRN-DS-STORY-051: "Light and dark Storybook shell" + "Storybook doc shell control contract"
+  // moved to requiredRendered (checked against script-stripped page bytes) so they assert
+  // rendered content, not the embedded dictionary payload.
   "Use one circular icon-only button",
   "one whole-page transition",
   "current locale name in that locale",
@@ -862,13 +864,15 @@ const required = [
   "not as a top-bar human navigation item",
   "Storybook shell controls",
   "single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition",
-  "Theme modes",
+  // TCRN-DS-STORY-051: "Theme modes" moved to requiredRendered (script-stripped assertion).
   "aria-label=\"TCRN brand mark\"",
   "src=\"tcrn-brand-mark.svg\"",
-  "Four large rounded diamond tiles use iris blue, violet-blue, aqua, and slate with tight even gaps.",
-  "Each point uses a white ring with a same-family inner color that differs from the tile fill.",
-  "No red, pink, coral, or orange connector points.",
-  "Product adoption, publication, release readiness, product acceptance, and final MVP acceptance are not claimed.",
+  // TCRN-DS-STORY-051: the three brand-mark description sentences moved to requiredRendered
+  // (script-stripped assertion). The shell.noClaim sentence ("Product adoption, publication,
+  // release readiness, product acceptance, and final MVP acceptance are not claimed.") is
+  // RETIRED — that dictionary key never rendered and is deleted from all five locales; the
+  // no-overclaim boundary is carried by the rendered page-head chips (shell.noPackagePublicationClaim
+  // / shell.noProductAdoptionClaim / shell.acceptanceDownstreamClaim).
   "data-anchor-scroll-controlled=\"true\"",
   "tcrn-shell-layer",
   "data-shell-layer=\"mega-menu\"",
@@ -957,7 +961,39 @@ for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "dup
   required.push(`data-work-relationship="${relation}"`);
 }
 const combinedContractText = `${combinedHtml}\n${JSON.stringify(contract)}\n${llmsTxt}`;
+// TCRN-DS-STORY-051: page bytes inline the entire i18n dictionary inside each page's
+// storybookI18nScript <script> block, so a raw `required` pin can be satisfied by the payload
+// even when the string never renders. Strip <script>/<style> so rendered-content pins assert
+// what is actually in the document, not the embedded dictionary.
+const renderedCombinedText = Object.values(pages)
+  .map((html) => html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ""))
+  .join("\n");
+// Render-intent dictionary-backed literals: these must appear in the stripped (rendered) page
+// bytes, not merely in the embedded payload.
+const requiredRendered = [
+  "Light and dark Storybook shell",
+  "Storybook doc shell control contract",
+  "Theme modes",
+  "Four large rounded diamond tiles use iris blue, violet-blue, aqua, and slate with tight even gaps.",
+  "Each point uses a white ring with a same-family inner color that differs from the tile fill.",
+  "No red, pink, coral, or orange connector points."
+];
+// Payload translation coverage: the ja/ko shell titles legitimately ship inside the embedded
+// i18n payload for runtime locale switching but never render on the static en pages. Assert the
+// translation is present in the payload (raw bytes) — explicitly NOT a rendered-text assertion.
+const payloadTranslationCoverage = [
+  "TCRN デザインシステム契約ストーリー",
+  "TCRN 디자인 시스템 계약 스토리"
+];
 const missing = required.filter((text) => !combinedContractText.includes(text));
+for (const text of requiredRendered.filter((text) => !renderedCombinedText.includes(text))) {
+  missing.push(`unrendered-dictionary-backed-pin:${text}`);
+}
+for (const text of payloadTranslationCoverage.filter((text) => !combinedHtml.includes(text))) {
+  missing.push(`missing-payload-translation:${text}`);
+}
 for (const { label, value } of [
   { label: "generated-static-html", value: combinedHtml },
   { label: "generated-ai-contract-json", value: JSON.stringify(contract) },
