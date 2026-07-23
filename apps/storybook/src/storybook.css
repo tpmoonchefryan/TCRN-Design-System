@@ -290,20 +290,6 @@ label {
   vertical-align: -0.125em;
 }
 
-
-
-
-[data-tcrn-theme="dark"] .tcrn-button--primary {
-  color: var(--tcrn-color-surface-canvas);
-  font-weight: 700;
-}
-
-
-
-
-
-
-
 .tcrn-highlight-text {
   display: inline;
 }
@@ -2307,9 +2293,9 @@ label {
   display: grid;
   gap: var(--tcrn-space-2h);
   min-width: 0;
-  border: 1px solid rgba(73, 91, 219, 0.16);
+  border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--tcrn-color-surface-muted);
   padding: var(--tcrn-space-3);
 }
 
@@ -2335,7 +2321,7 @@ label {
 .tcrn-dialog-spec-fixture {
   display: grid;
   gap: var(--tcrn-space-3);
-  border: 1px solid rgba(73, 91, 219, 0.18);
+  border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
   background: var(--tcrn-color-surface-muted);
   padding: var(--tcrn-space-3);
@@ -2366,7 +2352,7 @@ label {
 }
 
 .tcrn-dialog-spec-fixture__dialog {
-  border-color: rgba(73, 91, 219, 0.26);
+  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 26%, transparent);
   box-shadow: var(--tcrn-elevation-floating);
 }
 
@@ -2411,7 +2397,7 @@ label {
 .tcrn-popover {
   z-index: var(--tcrn-z-popover);
   max-width: 420px;
-  border-color: rgba(38, 156, 174, 0.24);
+  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 24%, transparent);
   box-shadow: var(--tcrn-elevation-floating);
 }
 
