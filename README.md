@@ -48,7 +48,8 @@ The Storybook surface is static and synthetic. It is the shared contract map for
 
 AI and product frontend agents must read the Storybook AI contract before implementation:
 
-- Static artifact: `apps/storybook/storybook-static/ai-consumption-contract.json`
+- Tracked contract source: [ai-consumption-contract.ts](apps/storybook/src/build/ai-consumption-contract.ts) plus [foundation-visual-standards.ts](apps/storybook/src/build/foundation-visual-standards.ts) — read these in a fresh clone.
+- Build outputs (gitignored, absent from a fresh clone): `ai-consumption-contract.json` and `llms.txt` are generated into `apps/storybook/storybook-static/` by the Storybook build; read the tracked `.ts` source above or the hosted artifact below, not the unbuilt paths.
 - Hosted artifact: [ai-consumption-contract.json](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
 - AI-first plain-text entry: [llms.txt](https://tcrn-design-system-storybook.vercel.app/llms.txt)
 - Story route: `proof.html#ai-consumption-contract`

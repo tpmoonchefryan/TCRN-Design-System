@@ -1238,7 +1238,12 @@ test("GitHub README exposes the Storybook AI contract without publication overcl
   const readme = readFileSync(join(process.cwd(), "..", "..", "README.md"), "utf8");
   assert.match(readme, /Storybook Contract Docs/);
   assert.match(readme, /AI Consumption Contract/);
-  assert.match(readme, /apps\/storybook\/storybook-static\/ai-consumption-contract\.json/);
+  // The README must point a fresh clone at the tracked contract source (the JSON/llms.txt
+  // are gitignored build outputs), and name where the build outputs land — without pinning
+  // the unbuilt path as if it were present in the repo (TCRN-DS-STORY-043).
+  assert.match(readme, /apps\/storybook\/src\/build\/ai-consumption-contract\.ts/);
+  assert.match(readme, /gitignored, absent from a fresh clone/);
+  assert.match(readme, /apps\/storybook\/storybook-static\//);
   assert.match(readme, /https:\/\/tcrn-design-system-storybook\.vercel\.app\/ai-consumption-contract\.json/);
   assert.match(readme, /llms\.txt/);
   assert.match(readme, /HTML head discovery/);
