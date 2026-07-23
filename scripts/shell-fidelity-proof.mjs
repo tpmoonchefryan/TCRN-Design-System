@@ -50,9 +50,77 @@ const ALLOWED_RADIUS_LITERALS = ["50%", "0", "inherit"];
 // INIT-006 E7 style gates. The scale is docs/style-scale.md; the gate hard-codes it so
 // a drifted value cannot pass by being merely present.
 const SPACING_SCALE_PX = new Set([2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 32]);
-const COMPONENT_CSS = "packages/ui-react/src/components/Navigation/Navigation.tsx";
-// Infra selectors legitimately shared between the package and the docs stylesheet.
-const DUPLICATE_SELECTOR_WHITELIST = new Set([".tcrn-sr-only", ".tcrn-skip-link"]);
+
+// Package-truth component CSS sources. Every `tcrnComponentCss` rule currently lives in
+// Navigation.tsx (the only `export const *Css` in the package), so this is a one-element
+// list today — but the dup gate reads a LIST so that when a STORY-037-style relocation
+// moves component families into other component sources, they stay covered without a
+// further edit to this gate.
+const COMPONENT_CSS_SOURCES = [
+  "packages/ui-react/src/components/Navigation/Navigation.tsx"
+];
+
+// The doc-only presentation layers the dup gate must scan for re-implementations of
+// package classes. alpha-styles.ts is already in SURFACES for the per-line drift checks,
+// but the duplicate-selector gate is a SEPARATE code path and must read it explicitly:
+// alpha-styles.ts embeds its CSS as the `alphaStoryCss` template literal (Track B, via
+// page-template.tsx block 2), so a docs-side re-implementation can hide in either file.
+const DUPLICATE_DOCS_SURFACES = [
+  "apps/storybook/src/storybook.css",
+  "apps/storybook/src/alpha-styles.ts"
+];
+
+// Selectors legitimately shared between the package and the docs presentation layer.
+// Two kinds live here, and nothing else may be added speculatively — a whitelist entry
+// blinds the gate to that class ("门只保护它读过的字节"), so it must name a class that is
+// genuinely a demo override, never a re-implementation the gate exists to catch:
+//   1. Infra primitives the docs shell reproduces verbatim (.tcrn-sr-only, .tcrn-skip-link).
+//   2. LEGITIMATE demo overrides whose STYLED SUBJECT is a package class but which are
+//      demo-SCOPED (rendered only under a documented demo container) — the key-subject
+//      extractor deliberately flags e.g. `.tcrn-storybook-component-example .tcrn-nav-item`
+//      (key-subject `.tcrn-nav-item`), which is demo scoping, not a parallel component.
+// The authoritative list of what may live doc-side is docs/style-scale.md
+// § "Demo-chrome exemption list". Every entry below is a key-subject the expanded gate
+// flags only because it is scoped under one of those documented demo containers
+// (.tcrn-storybook-component-example, .tcrn-doc-*, .tcrn-compact-shell*,
+// .tcrn-knowledge-shell*, .tcrn-nav-component-preview, .tcrn-package-nav-proof*,
+// .tcrn-form-stack, the tooltip static-preview hook), or — for .tcrn-filter-bar — is
+// documented there as non-duplicating (the package owns it only via the scoped
+// `.tcrn-table-toolbar .tcrn-filter-bar` rule, so a top-level docs `.tcrn-filter-bar`
+// shares the key-subject but not the selector).
+const DUPLICATE_SELECTOR_WHITELIST = new Set([
+  ".tcrn-sr-only",
+  ".tcrn-skip-link",
+  // Demo-scoped overrides of package classes (docs/style-scale.md exemption list):
+  ".tcrn-nav-item",
+  ".tcrn-nav-item__content",
+  ".tcrn-nav-item__label",
+  ".tcrn-nav-item__disabled-reason",
+  ".tcrn-top-bar",
+  ".tcrn-top-bar__actions",
+  ".tcrn-top-bar__brand",
+  ".tcrn-top-bar__module",
+  ".tcrn-search-input",
+  ".tcrn-product-switcher",
+  ".tcrn-module-tabs",
+  ".tcrn-segmented-nav",
+  ".tcrn-field",
+  ".tcrn-brand-wordmark",
+  ".tcrn-brand-wordmark__base",
+  ".tcrn-brand-wordmark__suffix",
+  ".tcrn-product-logo__copy",
+  ".tcrn-tooltip__content",
+  // Doc-shell layout/collapse overrides of the brand lockup and the attached side nav
+  // (scoped under .tcrn-doc-brand / .tcrn-doc-shell[collapsed] / .tcrn-knowledge-shell__brand
+  // / .tcrn-package-nav-proof). The package owns their appearance; docs only position them
+  // and hide the copy on collapse. Their bare re-implementations were removed in INIT-007.
+  ".tcrn-side-nav",
+  ".tcrn-shell-brand-lockup",
+  ".tcrn-shell-brand-lockup__copy",
+  ".tcrn-shell-brand-lockup__caption",
+  // Documented demo-chrome hook — not a duplicate (see comment above):
+  ".tcrn-filter-bar"
+]);
 
 // A line that defines a token (`--tcrn-…: #hex/999px`) or is a comment is not drift:
 // token definitions are the one place literals belong, and comments are prose.
@@ -63,9 +131,39 @@ function isTokenDefinitionOrComment(line) {
   return false;
 }
 
-// Top-level class-selector heads in a stylesheet source (for the duplicate gate).
-function topLevelClassSelectors(text) {
-  return new Set([...text.matchAll(/^(\.[a-z0-9_-]+(?:__[a-z0-9-]+)?(?:--[a-z0-9-]+)?)\s*[,{]/gim)].map((m) => m[1]));
+// Key-subject class extractor for the duplicate gate. The old line-initial `^\.class`
+// scan only ever saw a bare single class at the start of a line, so it was blind to the
+// shapes a docs re-implementation actually takes: dark-scope
+// (`[data-tcrn-theme="dark"] .tcrn-button--primary`), descendant
+// (`.tcrn-storybook-component-example .tcrn-nav-item`), attribute
+// (`.tcrn-nav-item[data-selected="true"]`) and compound (`.tcrn-a.tcrn-b`). Instead we
+// parse every CSS rule prelude (the text before `{`) and record the class of the KEY
+// SUBJECT — the rightmost compound after the final combinator (` `, `>`, `+`, `~`). That
+// is the element a rule actually styles, so a package class is flagged when the rule
+// styles IT, but NOT when the package class is merely ancestor CONTEXT for a demo child
+// (`.tcrn-nav-item .demo-child` → subject `.demo-child`).
+//
+// JSX-parsing mitigation: this runs over Navigation.tsx, a .tsx file. It is safe because
+// (a) the class match is dot-anchored — `\.(tcrn-…)` — and a TSX `className="tcrn-…"`
+// carries no leading dot, and (b) the prelude character class `[^{}();]` resets at every
+// `(` / `)` / `;`, so a leading-dot string inside a call such as `querySelector(".tcrn-x")`
+// is never captured as a rule subject. Verified: parsing the whole Navigation.tsx yields
+// exactly the same subject set as slicing only the `tcrnComponentCss` template body.
+function ruleSubjectClasses(text) {
+  const classes = new Set();
+  for (const m of text.matchAll(/([^{}();]*)\{/g)) {
+    const prelude = m[1];
+    if (/@(media|keyframes|property|supports|font-face|layer|container)/.test(prelude)) continue;
+    for (const sel of prelude.split(",")) {
+      const s = sel.trim();
+      if (!s) continue;
+      // key subject = last compound after the final combinator (space > + ~)
+      const parts = s.split(/\s*[>+~]\s*|\s+/).filter(Boolean);
+      const subject = parts[parts.length - 1] || "";
+      for (const c of subject.matchAll(/\.(tcrn-[a-z0-9_-]+)/gi)) classes.add("." + c[1]);
+    }
+  }
+  return classes;
 }
 
 // A shadow is elevation drift once it blurs; a 1px hairline offset is a drawn edge.
@@ -183,14 +281,22 @@ export function scanShellFidelity() {
     }
   }
 
-  // The docs stylesheet must not re-implement component styles the package owns
-  // (INIT-006 E1): a top-level class selector present in both storybook.css and the
-  // package component CSS is a parallel implementation waiting to drift.
-  const docsSelectors = topLevelClassSelectors(readFileSync(resolve(root, "apps/storybook/src/storybook.css"), "utf8"));
-  const packageSelectors = topLevelClassSelectors(readFileSync(resolve(root, COMPONENT_CSS), "utf8"));
-  for (const selector of docsSelectors) {
-    if (packageSelectors.has(selector) && !DUPLICATE_SELECTOR_WHITELIST.has(selector)) {
-      findings.duplicateSelectors.push({ where: "storybook.css ∩ componentCss", selector });
+  // The docs stylesheets must not re-implement component styles the package owns
+  // (INIT-006 E1 / INIT-007 E12): a rule whose KEY SUBJECT is a package class, present in
+  // either doc stylesheet AND in the package component CSS, is a parallel implementation
+  // waiting to drift — no matter its selector shape (dark-scope, descendant, attribute,
+  // compound). Both doc surfaces are read here; the whitelist admits only the demo-scoped
+  // overrides documented in docs/style-scale.md.
+  const packageSubjects = new Set();
+  for (const src of COMPONENT_CSS_SOURCES) {
+    for (const c of ruleSubjectClasses(readFileSync(resolve(root, src), "utf8"))) packageSubjects.add(c);
+  }
+  for (const docsSurface of DUPLICATE_DOCS_SURFACES) {
+    const docsSubjects = ruleSubjectClasses(readFileSync(resolve(root, docsSurface), "utf8"));
+    for (const selector of docsSubjects) {
+      if (packageSubjects.has(selector) && !DUPLICATE_SELECTOR_WHITELIST.has(selector)) {
+        findings.duplicateSelectors.push({ where: `${docsSurface} ∩ componentCss`, selector });
+      }
     }
   }
 
@@ -213,10 +319,37 @@ export function fidelityRejectChecks() {
   };
 }
 
+// Durable red-proof for the detector itself. INIT-003 recorded a detector that went
+// silently green ("我自己的检测器也曾假绿"); an expanded gate is only trustworthy if it
+// proves, on every run, that it still catches the shapes it was widened to see. These
+// synthetic fixtures run the real `ruleSubjectClasses` and assert the dark-scope,
+// descendant, attribute and compound shapes are caught as package-class duplicates — and
+// that a package class used only as ancestor CONTEXT (subject `.demo-child`) is NOT. If
+// any regresses, the process exits non-zero before the real scan can report a false green.
+export function assertDetectorShapes() {
+  const pkg = ruleSubjectClasses(".tcrn-button--primary{}\n.tcrn-nav-item{}\n.tcrn-widget{}");
+  const cases = [
+    ['[data-tcrn-theme="dark"] .tcrn-button--primary{}', ".tcrn-button--primary", true],
+    ['.tcrn-storybook-component-example .tcrn-nav-item{}', ".tcrn-nav-item", true],
+    ['.tcrn-nav-item[data-selected="true"]{}', ".tcrn-nav-item", true],
+    ['.tcrn-widget.tcrn-nav-item{}', ".tcrn-nav-item", true],
+    ['.tcrn-nav-item .demo-child{}', ".tcrn-nav-item", false] // ancestor-only, must NOT flag
+  ];
+  for (const [css, cls, expect] of cases) {
+    const hit = ruleSubjectClasses(css).has(cls) && pkg.has(cls);
+    if (hit !== expect) {
+      console.error(`shell-fidelity detector self-test FAILED: ${css} (expected subject ${cls} ${expect ? "caught" : "ignored"})`);
+      process.exit(1);
+    }
+  }
+}
+
 // pathToFileURL, not string concatenation: this repository lives under a path with a
 // space in it, so `file://${argv[1]}` never matches the percent-encoded import.meta.url
 // and the entry point silently does nothing.
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // Prove the detector still sees the expanded shapes before trusting the real scan.
+  assertDetectorShapes();
   const { findings, ...checks } = fidelityRejectChecks();
   const failing = Object.entries(checks).filter(([, tripped]) => tripped);
   for (const [name, list] of Object.entries(findings)) {
