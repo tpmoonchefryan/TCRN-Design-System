@@ -72,7 +72,7 @@ The Storybook docs shell supports `light` and `dark` modes through semantic toke
 
 ## Brand And Logo Boundary
 
-The TCRN brand mark and lockups in Storybook are visual-review guidance. Product implementations may use admitted brand assets only, or route a brand component admission before product use. The brand examples in Storybook are not package-backed brand component exports and do not claim final brand acceptance.
+The TCRN brand mark and lockups in Storybook are visual-review guidance. Product implementations may use admitted brand assets only, or route a brand component admission before product use. The brand examples in Storybook are not published brand component exports and do not claim final brand acceptance.
 
 ## Verification Commands
 
