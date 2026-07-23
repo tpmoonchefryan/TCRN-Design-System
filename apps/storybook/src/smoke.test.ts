@@ -791,13 +791,13 @@ test("static contract story surface is retained and synthetic", () => {
   for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "duplicates", "supersedes", "split_from", "caused_by", "implements", "verifies", "reviews", "refreshes"]) {
     assert.match(readGroupPage("Components"), new RegExp(`data-work-relationship="${relation}"`));
   }
-  assert.match(readGroupPage("Components"), /route_tcrn_ds_work_management_patterns_ilya_ds_package_storybook_implementation_after_minerva_initiative_c4865675/);
-  assert.match(readGroupPage("Components"), /Codex Activity is execution and evidence context attached to this Work Item; it is not a replacement for Story or Task \/ Work Item/);
+  assert.match(readGroupPage("Components"), /route_tcrn_ds_work_management_patterns_engineering_ds_package_storybook_implementation_after_ds_initiative_c4865675/);
+  assert.match(readGroupPage("Components"), /Activity log is execution and evidence context attached to this Work Item; it is not a replacement for Story or Task \/ Work Item/);
   assert.match(readGroupPage("Patterns"), /Work Management patterns/);
   assert.match(readGroupPage("Patterns"), /data-work-management-patterns="static-no-live"/);
   assert.match(readGroupPage("Patterns"), /Smallest acceptable human\/business\/workflow result/);
   assert.match(readGroupPage("Patterns"), /Smallest executable ticket\/task unit/);
-  assert.match(readGroupPage("Patterns"), /no API integration, backend persistence, live Codex dispatch, external queue, product adoption, owner acceptance, package publication, or release readiness is claimed/i);
+  assert.match(readGroupPage("Patterns"), /no API integration, backend persistence, live dispatch, external queue, product adoption, owner acceptance, package publication, or release readiness is claimed/i);
   assert.doesNotMatch(readGroupPage("Patterns"), /data-story-id="aos-operations-cockpit-standard"/);
   assert.doesNotMatch(readGroupPage("Patterns"), /data-story-id="aos-docs-readiness-standard"/);
   assert.doesNotMatch(readGroupPage("Patterns"), /data-story-id="aos-product-design-target-set-standard"/);
@@ -854,8 +854,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Change Log"), /Governance changelog records/);
   assert.match(readGroupPage("Change Log"), /data-changelog-localized-readback="true"/);
   assert.match(readGroupPage("Change Log"), /data-changelog-records="governance"/);
-  assert.match(readGroupPage("Change Log"), /route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541/);
-  assert.match(readGroupPage("Change Log"), /data-changelog-route-id="route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541"/);
+  assert.match(readGroupPage("Change Log"), /route_tcrn_ds_storybook_governance_engineering_implementation_after_plan_reviews_success_a1f19b1a_dded541/);
+  assert.match(readGroupPage("Change Log"), /data-changelog-route-id="route_tcrn_ds_storybook_governance_engineering_implementation_after_plan_reviews_success_a1f19b1a_dded541"/);
   assert.match(readGroupPage("Change Log"), /data-changelog-proof-artifact="docs\/verification\/internal-alpha\/browser-proof-summary\.json"/);
   assert.match(readGroupPage("Change Log"), /data-changelog-no-overclaim-boundary="no package publication"/);
   assert.match(readGroupPage("Change Log"), /Storybook governance checkpoint/);
@@ -1220,7 +1220,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.workManagementPatternDisposition, /static Initiative\/Epic\/Story\/Task or Work Item\/Subtask or Evidence Task presentation/);
   assert.match(contract.workManagementPatternDisposition, /compact route context, local view tabs, quick filters, dense Work item rows\/lists/);
   assert.match(contract.workManagementPatternDisposition, /relationship vocabulary, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment/);
-  assert.match(contract.workManagementPatternDisposition, /API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS\/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed/);
+  assert.match(contract.workManagementPatternDisposition, /API integration, backend persistence, live dispatch, external queues, runtime data mutation, AOS\/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed/);
   assert.match(contract.knowledgeManagementPatternDisposition, /static page trees, document canvas, table of contents/);
   assert.match(contract.knowledgeManagementPatternDisposition, /backend publishing, live collaboration, external workspace integration/);
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
@@ -1288,7 +1288,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /consumer-enforcement: Consumer enforcement and reject criteria/);
   assert.match(llms, /Consumer visual style contract: consumer-visual-style-contract-v1/);
   assert.match(llms, /Storybook doc shell visual oracle: original-storybook-doc-shell-v1/);
-  assert.match(llms, /oracle recovery: TCRN Workflow\/vault\/initiatives\/projects\/TCRN-DESIGN-SYSTEM\/active\/storybook-shell-control-stabilization\/50-implementation-plan\.md#storybook-original-shell-restoration-implementation-plan/);
+  assert.match(llms, /oracle recovery: internal DS doc-shell restoration plan \(owner-held governance record\)/);
   assert.match(llms, /baseline classification: owner_declared_original_storybook_doc_shell_standard/);
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);

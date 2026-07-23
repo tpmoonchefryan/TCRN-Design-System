@@ -28,7 +28,7 @@ export const storybookDocShellVisualOracle = {
   id: "original-storybook-doc-shell-v1",
   baselineManifest: "docs/verification/internal-alpha/visual-signature-baseline.json",
   oracleRecoveryReceipt:
-    "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan",
+    "internal DS doc-shell restoration plan (owner-held governance record)",
   baselineManifestClassification: "owner_declared_original_storybook_doc_shell_standard",
   metricSourceDisposition:
     "desktop sidebar, header, search rest, and search expanded metrics are retained only after the owner-approved restoration re-expresses the pre-d1d1291 Storybook documentation shell through current Storybook-owned doc-shell selectors and committed proof receipts.",
@@ -145,7 +145,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     allowedConsumerInputs: ["route IA", "localized labels", "content slots", "DS-defined callbacks"],
     forbiddenConsumerOverrides: ["private shell clones", "package-equivalent local controls", "Storybook-only compliance claims"],
     proofExpectations: ["data-doc-shell online-docs marker", "global ProductShell shell selector count is zero", "doc-shell category navigation is present and scrollable"],
-    missingStandardEscalation: "Return to DS/Elara for standards admission before product or Storybook visual implementation."
+    missingStandardEscalation: "Return to DS for standards admission before product or Storybook visual implementation."
   },
   {
     id: "layout-rhythm",

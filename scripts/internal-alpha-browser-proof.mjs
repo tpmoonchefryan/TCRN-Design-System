@@ -614,7 +614,7 @@ const aiContractTraceabilityCheck = {
     && aiContract.foundationVisualStandardCategories?.length === expectedFoundationStandardCategoryIds.length
     && aiContract.consumerVisualStyleContract?.id === "consumer-visual-style-contract-v1"
     && aiContract.storybookDocShellVisualOracle?.id === "original-storybook-doc-shell-v1"
-    && aiContract.storybookDocShellVisualOracle?.oracleRecoveryReceipt === "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan"
+    && aiContract.storybookDocShellVisualOracle?.oracleRecoveryReceipt === "internal DS doc-shell restoration plan (owner-held governance record)"
     && aiContract.storybookDocShellVisualOracle?.baselineManifestClassification === "owner_declared_original_storybook_doc_shell_standard"
     && String(aiContract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "").includes("Storybook documentation shell")
 	    && (aiContract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) => (
@@ -627,7 +627,7 @@ const aiContractTraceabilityCheck = {
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
     && llmsText.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")
-    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan")
+    && llmsText.includes("oracle recovery: internal DS doc-shell restoration plan (owner-held governance record)")
     && llmsText.includes("baseline classification: owner_declared_original_storybook_doc_shell_standard")
     && llmsText.includes(contractPayloadDigest),
   contractVersion: aiContract.contractVersion,
@@ -653,7 +653,7 @@ const aiContractTraceabilityCheck = {
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
     && llmsText.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")
-    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan")
+    && llmsText.includes("oracle recovery: internal DS doc-shell restoration plan (owner-held governance record)")
     && llmsText.includes("baseline classification: owner_declared_original_storybook_doc_shell_standard")
 };
 

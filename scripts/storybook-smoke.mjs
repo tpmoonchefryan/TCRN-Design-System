@@ -949,7 +949,7 @@ for (const text of [
   "SavedViewToolbar",
   "work_management_static_pattern_receipt",
   "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation",
-  "API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed"
+  "API integration, backend persistence, live dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed"
 ]) {
   required.push(text);
 }
@@ -1320,7 +1320,7 @@ for (const standardId of expectedFoundationStandardCategoryIds) {
 if (contract.storybookDocShellVisualOracle?.id !== "original-storybook-doc-shell-v1") {
   missing.push("contract.storybookDocShellVisualOracle.id");
 }
-if (contract.storybookDocShellVisualOracle?.oracleRecoveryReceipt !== "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan") {
+if (contract.storybookDocShellVisualOracle?.oracleRecoveryReceipt !== "internal DS doc-shell restoration plan (owner-held governance record)") {
   missing.push("contract.storybookDocShellVisualOracle.oracleRecoveryReceipt");
 }
 if (contract.storybookDocShellVisualOracle?.baselineManifestClassification !== "owner_declared_original_storybook_doc_shell_standard") {
@@ -1427,7 +1427,7 @@ if (!llmsTxt.includes("Consumer visual style contract: consumer-visual-style-con
 if (!llmsTxt.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")) {
   missing.push("llms-storybook-doc-shell-visual-oracle");
 }
-if (!llmsTxt.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan")) {
+if (!llmsTxt.includes("oracle recovery: internal DS doc-shell restoration plan (owner-held governance record)")) {
   missing.push("llms-storybook-doc-shell-visual-oracle-recovery");
 }
 if (!llmsTxt.includes("baseline classification: owner_declared_original_storybook_doc_shell_standard")) {
@@ -2615,7 +2615,7 @@ async function runChangelogI18nReadabilityProof() {
           leakedForbiddenText: forbiddenText.filter((text) => bodyText.includes(text)),
           visibleRawRouteLeak: bodyText.includes("route_tcrn_ds_storybook_governance_"),
           recordCount: document.querySelectorAll("[data-changelog-route-id]").length,
-          metadataRoutePreserved: Boolean(document.querySelector("[data-changelog-route-id='route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541']")),
+          metadataRoutePreserved: Boolean(document.querySelector("[data-changelog-route-id='route_tcrn_ds_storybook_governance_engineering_implementation_after_plan_reviews_success_a1f19b1a_dded541']")),
           proofArtifactMetadataCount: document.querySelectorAll("[data-changelog-proof-artifact]").length,
           boundaryMetadataCount: document.querySelectorAll("[data-changelog-no-overclaim-boundary]").length,
           compactNodeReadbacks,
