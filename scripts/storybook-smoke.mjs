@@ -3,6 +3,13 @@ import { createServer } from "node:http";
 import { extname, join } from "node:path";
 import { chromium } from "@playwright/test";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
+import {
+  PAGE_KB_BUDGET_BYTES,
+  PAGE_KB_GRACE_ALLOWLIST,
+  CATEGORY_STORY_COUNT_CAP,
+  CATEGORY_STORY_COUNT_GRACE_ALLOWLIST,
+  evaluateBudget
+} from "./lib/story-budget.mjs";
 
 const pagesByGroup = {
   Welcome: "index.html",
@@ -3346,6 +3353,40 @@ async function main() {
     ok: false,
     failures: [`locale-menu-focus-return-proof-error:${error instanceof Error ? error.message : String(error)}`]
   }));
+  // Page-byte + category-story-count budget gates (TCRN-DS-STORY-052). `pages` and `contract`
+  // are already read at module scope; this is additive. Page-KB arrives red (Components is the
+  // seeded debt); the category cap is a preventive ceiling that is green today. Failures are
+  // pushed into `missing` (which folds into `ok`) so they surface in the existing stdout list,
+  // and asserted explicitly below so the intent stays legible.
+  const pageKbBudget = evaluateBudget({
+    label: "page-bytes",
+    items: Object.entries(pages).map(([group, html]) => ({ id: group, measure: Buffer.byteLength(html, "utf8") })),
+    budget: PAGE_KB_BUDGET_BYTES,
+    allowlist: PAGE_KB_GRACE_ALLOWLIST,
+    recordedKey: "recordedBytes"
+  });
+  const categoryStoryCountBudget = evaluateBudget({
+    label: "category-story-count",
+    items: (contract.coveredStorybookSections ?? []).flatMap((section) =>
+      (section.categories ?? []).map((category) => ({
+        id: `${section.section}/${category.id}`,
+        measure: (category.storyIds ?? []).length
+      }))),
+    budget: CATEGORY_STORY_COUNT_CAP,
+    allowlist: CATEGORY_STORY_COUNT_GRACE_ALLOWLIST
+  });
+  for (const violation of pageKbBudget.unbudgetedViolations) {
+    missing.push(`page-kb-budget:${violation.id}:${violation.measure}>${violation.budget}`);
+  }
+  for (const stale of pageKbBudget.staleAllowlist) {
+    missing.push(`stale-page-kb-allowlist:${stale.id}:${stale.reason}`);
+  }
+  for (const violation of categoryStoryCountBudget.unbudgetedViolations) {
+    missing.push(`category-count-budget:${violation.id}:${violation.measure}>${violation.budget}`);
+  }
+  for (const stale of categoryStoryCountBudget.staleAllowlist) {
+    missing.push(`stale-category-count-allowlist:${stale.id}:${stale.reason}`);
+  }
   const ok = missing.length === 0
     && forbiddenPositiveHits.length === 0
     && storybookPreviewExists
@@ -3355,7 +3396,9 @@ async function main() {
     && changelogI18nReadabilityProof.ok
     && globalStorybookZhCnIaProof.ok
     && crossSectionShellParityProof.ok
-    && localeMenuFocusReturnProof.ok;
+    && localeMenuFocusReturnProof.ok
+    && pageKbBudget.ok
+    && categoryStoryCountBudget.ok;
   console.log(JSON.stringify({
     ok,
     missing,
@@ -3368,7 +3411,9 @@ async function main() {
 	    changelogI18nReadabilityProof,
 	    globalStorybookZhCnIaProof,
 	    crossSectionShellParityProof,
-	    localeMenuFocusReturnProof
+	    localeMenuFocusReturnProof,
+	    pageKbBudget,
+	    categoryStoryCountBudget
 	  }, null, 2));
   if (!ok) {
     process.exit(1);

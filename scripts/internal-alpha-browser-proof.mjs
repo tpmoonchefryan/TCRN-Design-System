@@ -7,6 +7,12 @@ import { chromium } from "@playwright/test";
 import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.mjs";
 import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE } from "./lib/visual-signature.mjs";
 import { storybookId } from "./lib/storybook-id.mjs";
+import {
+  STORY_HEIGHT_BUDGET_PX,
+  STORY_HEIGHT_BUDGET_VIEWPORT,
+  STORY_HEIGHT_GRACE_ALLOWLIST,
+  evaluateBudget
+} from "./lib/story-budget.mjs";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 
 const require = createRequire(import.meta.url);
@@ -2217,8 +2223,38 @@ stableBrowserProofSummary.noLocalAbsolutePathsRetained = localAbsolutePathProof.
 stableBrowserProofSummary.localAbsolutePathProof = localAbsolutePathProof;
 stableBrowserProofSummary.ok = stableBrowserProofSummary.ok && localAbsolutePathProof.ok;
 
+// Story-height budget gate (TCRN-DS-STORY-052): every visible desktop story must render
+// under STORY_HEIGHT_BUDGET_PX unless registered in the grace allowlist, and every allowlist
+// entry must still be over budget with a current recorded height (else it is stale debt to
+// remove). The tolerated-debt list is the split worklist that TCRN-DS-STORY-059 (and
+// -057/-058) burn down. Heights are already collected in storyRegions; this is additive.
+const desktopHeightItems = browserSummaries
+  .filter((summary) => summary.viewport === STORY_HEIGHT_BUDGET_VIEWPORT)
+  .flatMap((summary) => summary.storyRegions
+    .filter((region) => region.visible)
+    .map((region) => ({ id: region.id, measure: region.height })));
+const storyHeightBudget = evaluateBudget({
+  label: "story-height-desktop-px",
+  items: desktopHeightItems,
+  budget: STORY_HEIGHT_BUDGET_PX,
+  allowlist: STORY_HEIGHT_GRACE_ALLOWLIST,
+  recordedKey: "recordedHeightPx"
+});
+
 writeFileSync(join(outputRoot, "story-coverage-manifest.json"), `${JSON.stringify(stableStoryCoverageManifest, null, 2)}\n`);
 writeFileSync(join(outputRoot, "browser-proof-summary.json"), `${JSON.stringify(stableBrowserProofSummary, null, 2)}\n`);
+writeFileSync(join(outputRoot, "story-budget-proof.json"), `${JSON.stringify({
+  ok: storyHeightBudget.ok,
+  budgetPx: STORY_HEIGHT_BUDGET_PX,
+  viewport: STORY_HEIGHT_BUDGET_VIEWPORT,
+  storyHeightBudget,
+  splitWorklist: storyHeightBudget.toleratedDebt.map((entry) => ({
+    id: entry.id,
+    heightPx: entry.measure,
+    owedTo: entry.owedTo,
+    note: entry.note
+  }))
+}, null, 2)}\n`);
 writeFileSync(join(outputRoot, "a11y-axe-summary.json"), `${JSON.stringify({ ok: axeSummary.violationCount === 0, ...axeSummary }, null, 2)}\n`);
 writeFileSync(join(outputRoot, "manual-keyboard-checklist.md"), `# Manual Keyboard Checklist
 
@@ -2255,6 +2291,18 @@ if (shellFidelityTripped.length > 0) {
   }
 }
 
+if (!storyHeightBudget.ok) {
+  console.error(`STORY HEIGHT BUDGET DRIFT: ${storyHeightBudget.unbudgetedViolations.length} new over-budget story(ies), ` +
+    `${storyHeightBudget.staleAllowlist.length} stale allowlist entr(ies) ` +
+    `(budget ${STORY_HEIGHT_BUDGET_PX}px @ ${STORY_HEIGHT_BUDGET_VIEWPORT}):`);
+  for (const violation of storyHeightBudget.unbudgetedViolations) {
+    console.error(`  - new over budget: ${violation.id} = ${violation.measure}px > ${violation.budget}px — split the story or add it to STORY_HEIGHT_GRACE_ALLOWLIST with an owedTo`);
+  }
+  for (const stale of storyHeightBudget.staleAllowlist) {
+    console.error(`  - remove stale entry (${stale.reason}): ${stale.id} — ${stale.note}`);
+  }
+}
+
 const disclosureOk = disclosureChecks.length > 0 && disclosureChecks.every(
   (entry) => entry.collapsedByDefault && entry.clickExpands && entry.clickRestores && entry.hashExpands
 );
@@ -2268,7 +2316,8 @@ const ok = signatureRegressions.length === 0
   && localeMenuFocusReturnCheck.ok
   && capabilityMetadataOk
   && visualBaselineManifest.ok
-  && !visualBaselineManifest.rejectChecks.clippedButtonText;
+  && !visualBaselineManifest.rejectChecks.clippedButtonText
+  && storyHeightBudget.ok;
 
 console.log(JSON.stringify({
   ok,
@@ -2288,7 +2337,11 @@ console.log(JSON.stringify({
   capabilityMetadataOk,
   aiContractTraceabilityOk: aiContractTraceabilityCheck.ok,
   coveredStorybookSections: aiContractTraceabilityCheck.coveredSectionCount,
-  coveredStorybookCategories: aiContractTraceabilityCheck.coveredCategoryCount
+  coveredStorybookCategories: aiContractTraceabilityCheck.coveredCategoryCount,
+  storyHeightBudgetOk: storyHeightBudget.ok,
+  storyHeightViolations: storyHeightBudget.unbudgetedViolations.length,
+  storyHeightStaleAllowlist: storyHeightBudget.staleAllowlist.length,
+  storyHeightToleratedDebt: storyHeightBudget.toleratedDebt.length
 }, null, 2));
 
 if (!ok) {
