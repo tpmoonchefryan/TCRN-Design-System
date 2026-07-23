@@ -1297,7 +1297,8 @@ export const tcrnComponentCss = `
 .tcrn-shell-locale-menu__option {
   font: inherit;
 }
-.tcrn-button {
+.tcrn-button,
+.tcrn-link-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
