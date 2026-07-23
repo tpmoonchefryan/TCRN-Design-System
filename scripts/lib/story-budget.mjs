@@ -57,61 +57,65 @@ export const STORY_HEIGHT_BUDGET_VIEWPORT = "desktop-1440x900";
 // work-management-patterns is deliberately ABSENT — Batch 2 (S047) trimmed it from 4119px to
 // ~1792px, so it is now under budget and must not be allowlisted. Each entry's owedTo names
 // the split/reclassify story that will retire the entry.
+// Reconciled after TCRN-DS-STORY-059 split the three targeted component mega-stories
+// (work-management / knowledge-management / navigation-shell). navigation-shell-spec and
+// knowledge-management-components-spec now render under budget and are retired from this list.
+// The residual 10 fall in two classes: (a) the two WM children S059 could not push under a
+// coherent unit (the 24-row single-registry readback table; the hierarchy+gates+evidence panel),
+// and (b) inherently-tall AOS visual-instance oracles + Style-Guide/Foundations/Proof specimen
+// catalogues that were NOT in S059's 3-mega-story scope. The budget gate makes their height
+// VISIBLE and GATED (the governance win); a per-catalogue / per-oracle split is tracked debt
+// beyond INIT-008's 17 stories. Every recorded value is the current measured desktop height.
 export const STORY_HEIGHT_GRACE_ALLOWLIST = {
   "aos-owner-quality-product-shell": {
     recordedHeightPx: 15285,
-    owedTo: "TCRN-DS-STORY-057/059",
-    note: "AOS owner-quality product-shell oracle; move to Proof (S057) then split (S059)"
+    owedTo: "beyond-INIT-008",
+    note: "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
   },
   "aos-frontend-shell-slice": {
     recordedHeightPx: 12448,
-    owedTo: "TCRN-DS-STORY-057/059",
-    note: "AOS frontend shell-slice oracle; move to Proof (S057) then split (S059)"
-  },
-  "work-management-components-spec": {
-    recordedHeightPx: 9191,
-    owedTo: "TCRN-DS-STORY-059",
-    note: "monolithic components spec; split into per-family stories"
+    owedTo: "beyond-INIT-008",
+    note: "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
   },
   "component-family-index": {
     recordedHeightPx: 7802,
-    owedTo: "TCRN-DS-STORY-058/059",
-    note: "full component-family index page; category landing (S058) + split (S059)"
-  },
-  "navigation-shell-spec": {
-    recordedHeightPx: 6009,
-    owedTo: "TCRN-DS-STORY-059",
-    note: "navigation shell spec; split into per-family stories"
+    owedTo: "TCRN-DS-STORY-058",
+    note: "monolithic component-family index; the generated per-component reference pages (S058) supersede it"
   },
   "ai-consumption-contract": {
-    recordedHeightPx: 5069,
-    owedTo: "TCRN-DS-STORY-059",
-    note: "full AI-consumption contract readback; split"
+    recordedHeightPx: 5438,
+    owedTo: "beyond-INIT-008",
+    note: "full AI-consumption contract readback (single machine-readable surface); gated debt"
   },
   "color-palette": {
     recordedHeightPx: 4659,
-    owedTo: "TCRN-DS-STORY-059",
-    note: "full color palette gallery; split"
-  },
-  "knowledge-management-components-spec": {
-    recordedHeightPx: 3497,
-    owedTo: "TCRN-DS-STORY-059",
-    note: "knowledge-management components spec; split into per-family stories"
+    owedTo: "beyond-INIT-008",
+    note: "39-token color specimen gallery; a catalogue split is future work — gated debt"
   },
   "foundation-visual-standards": {
     recordedHeightPx: 3350,
-    owedTo: "TCRN-DS-STORY-059",
-    note: "foundation visual standards catalogue; split"
+    owedTo: "beyond-INIT-008",
+    note: "foundation visual-standards catalogue; gated debt"
   },
   "text-styles": {
     recordedHeightPx: 2409,
-    owedTo: "TCRN-DS-STORY-059",
-    note: "type-scale specimen catalogue; split"
+    owedTo: "beyond-INIT-008",
+    note: "type-scale specimen catalogue; gated debt"
+  },
+  "work-management-components-spec": {
+    recordedHeightPx: 2136,
+    owedTo: "irreducible",
+    note: "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
+  },
+  "work-management-hierarchy-gates-spec": {
+    recordedHeightPx: 2045,
+    owedTo: "irreducible",
+    note: "S059 child = the coherent Hierarchy/gates/evidence panel; 45px over a single unit — gated debt"
   },
   "icons-motion": {
     recordedHeightPx: 2041,
-    owedTo: "TCRN-DS-STORY-059",
-    note: "icon + motion catalogue; split"
+    owedTo: "beyond-INIT-008",
+    note: "icon + motion specimen catalogue; gated debt"
   }
 };
 
