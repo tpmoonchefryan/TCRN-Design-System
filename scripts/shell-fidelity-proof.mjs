@@ -42,8 +42,30 @@ const FUNCTIONAL_GRADIENT_SELECTORS = [
 // than surface radii: a full circle cannot be expressed as a token step.
 // `0`, `inherit` and the pill/circle shapes are declarations of form, not surface radii:
 // a full circle has no token step, and zero is the absence of a radius rather than a
-// drifted value.
-const ALLOWED_RADIUS_LITERALS = ["50%", "999px", "9999px", "0", "inherit"];
+// drifted value. 999px is no longer allowed here — it belongs to --tcrn-radius-pill
+// (INIT-006 E4), and the pill detector below bans the bare literal.
+const ALLOWED_RADIUS_LITERALS = ["50%", "0", "inherit"];
+
+// INIT-006 E7 style gates. The scale is docs/style-scale.md; the gate hard-codes it so
+// a drifted value cannot pass by being merely present.
+const SPACING_SCALE_PX = new Set([2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 32]);
+const COMPONENT_CSS = "packages/ui-react/src/components/Navigation/Navigation.tsx";
+// Infra selectors legitimately shared between the package and the docs stylesheet.
+const DUPLICATE_SELECTOR_WHITELIST = new Set([".tcrn-sr-only", ".tcrn-skip-link"]);
+
+// A line that defines a token (`--tcrn-…: #hex/999px`) or is a comment is not drift:
+// token definitions are the one place literals belong, and comments are prose.
+function isTokenDefinitionOrComment(line) {
+  const trimmed = line.trim();
+  if (trimmed.startsWith("//") || trimmed.startsWith("/*") || trimmed.startsWith("*")) return true;
+  if (/^--tcrn-[\w-]+\s*:/.test(trimmed)) return true;
+  return false;
+}
+
+// Top-level class-selector heads in a stylesheet source (for the duplicate gate).
+function topLevelClassSelectors(text) {
+  return new Set([...text.matchAll(/^(\.[a-z0-9_-]+(?:__[a-z0-9-]+)?(?:--[a-z0-9-]+)?)\s*[,{]/gim)].map((m) => m[1]));
+}
 
 // A shadow is elevation drift once it blurs; a 1px hairline offset is a drawn edge.
 const MAX_SHADOW_BLUR_PX = 3;
@@ -65,7 +87,10 @@ function owningSelector(lines, index) {
 }
 
 export function scanShellFidelity() {
-  const findings = { decorativeGradients: [], radiusLiterals: [], softCloudShadows: [], reducedMotionKillSwitches: [] };
+  const findings = {
+    decorativeGradients: [], radiusLiterals: [], softCloudShadows: [], reducedMotionKillSwitches: [],
+    hexLiterals: [], fontSizeLiterals: [], spacingLiterals: [], pillLiterals: [], duplicateSelectors: []
+  };
 
   for (const surface of SURFACES) {
     const text = readFileSync(resolve(root, surface), "utf8");
@@ -74,6 +99,37 @@ export function scanShellFidelity() {
     lines.forEach((line, index) => {
       const where = `${surface}:${index + 1}`;
       const selector = owningSelector(lines, index);
+      const exemptOrDef = isTokenDefinitionOrComment(line);
+
+      // Colour must run --tcrn-color-* tokens; a raw hex in a rule is drift (E2/E7).
+      if (!exemptOrDef) {
+        const hex = /#[0-9a-fA-F]{3,8}\b/.exec(line);
+        if (hex) findings.hexLiterals.push({ where, selector, value: hex[0] });
+      }
+
+      // Type runs the --tcrn-type-size-* scale; a literal needs a type-scale-exempt tag (E3/E7).
+      const fontSize = /font-size:\s*(\d+)px\b/.exec(line);
+      if (fontSize && !/type-scale-exempt/.test(line)) {
+        findings.fontSizeLiterals.push({ where, selector, value: `${fontSize[1]}px` });
+      }
+
+      // Pill radius is --tcrn-radius-pill; a bare 999px is drift (E4/E7).
+      if (!exemptOrDef && /\b999px\b/.test(line)) {
+        findings.pillLiterals.push({ where, selector, value: "999px" });
+      }
+
+      // Gap/padding values live on the spacing scale. A px literal outside clamp()/calc()
+      // that is not a scale value is drift (E4/E7). clamp/calc bounds are fluid, exempt.
+      const spacing = /(?:^|[^-\w])(gap|row-gap|column-gap|padding|padding-top|padding-bottom|padding-left|padding-right|padding-block|padding-inline)\s*:\s*([^;{}]+)/.exec(line);
+      // A fluid value (clamp/calc/min/max) carries intentional non-scale bounds, so its
+      // px literals are exempt; a plain gap/padding must land on the spacing scale.
+      if (spacing && !/(?:clamp|calc|min|max)\(/.test(spacing[2])) {
+        for (const m of spacing[2].matchAll(/(\d+)px\b/g)) {
+          if (!SPACING_SCALE_PX.has(Number(m[1]))) {
+            findings.spacingLiterals.push({ where, selector, value: `${m[1]}px` });
+          }
+        }
+      }
 
       if (/(linear|radial|conic)-gradient\(/.test(line)) {
         const functional = FUNCTIONAL_GRADIENT_SELECTORS.some((allowed) => selector.includes(allowed));
@@ -126,6 +182,17 @@ export function scanShellFidelity() {
     }
   }
 
+  // The docs stylesheet must not re-implement component styles the package owns
+  // (INIT-006 E1): a top-level class selector present in both storybook.css and the
+  // package component CSS is a parallel implementation waiting to drift.
+  const docsSelectors = topLevelClassSelectors(readFileSync(resolve(root, "apps/storybook/src/storybook.css"), "utf8"));
+  const packageSelectors = topLevelClassSelectors(readFileSync(resolve(root, COMPONENT_CSS), "utf8"));
+  for (const selector of docsSelectors) {
+    if (packageSelectors.has(selector) && !DUPLICATE_SELECTOR_WHITELIST.has(selector)) {
+      findings.duplicateSelectors.push({ where: "storybook.css ∩ componentCss", selector });
+    }
+  }
+
   return findings;
 }
 
@@ -136,6 +203,11 @@ export function fidelityRejectChecks() {
     radiusDriftAboveContract: findings.radiusLiterals.length > 0,
     softCloudElevation: findings.softCloudShadows.length > 0,
     reducedMotionKillSwitch: findings.reducedMotionKillSwitches.length > 0,
+    hexColourLiteral: findings.hexLiterals.length > 0,
+    fontSizeLiteralOffScale: findings.fontSizeLiterals.length > 0,
+    spacingLiteralOffScale: findings.spacingLiterals.length > 0,
+    pillRadiusLiteral: findings.pillLiterals.length > 0,
+    docsPackageSelectorDuplication: findings.duplicateSelectors.length > 0,
     findings
   };
 }
