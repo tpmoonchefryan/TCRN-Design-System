@@ -123,6 +123,794 @@
     "noPackagePublicationClaimed": true,
     "noProductAdoptionClaimed": true
   },
+  "localeLeakScan": {
+    "disposition": "zh_cn_gating_ja_ko_fr_recorded_report_only",
+    "detector": "runs of >=2 consecutive Latin words on the localized render; proper-noun tokens stripped; exempt subtrees removed before read",
+    "exemptSubtreeSelectors": [
+      "[data-storybook-visual-instance]",
+      "code",
+      "pre",
+      "kbd",
+      "samp",
+      "[data-locale-invariant]"
+    ],
+    "zhCn": {
+      "locale": "zh-CN",
+      "gating": true,
+      "ok": true,
+      "storyCount": 43,
+      "allowlistedLeakCount": 1119,
+      "newLeakCount": 0,
+      "newLeaks": [],
+      "perStory": [
+        {
+          "storyId": "welcome-governance",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "governance-boundaries",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "maintainers-routing",
+          "allowlistedLeakCount": 2,
+          "newLeaks": []
+        },
+        {
+          "storyId": "contribution-model",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "release-bug-policy",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "brand-identity",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "color-palette",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "text-styles",
+          "allowlistedLeakCount": 23,
+          "newLeaks": []
+        },
+        {
+          "storyId": "grid-system",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "icons-motion",
+          "allowlistedLeakCount": 3,
+          "newLeaks": []
+        },
+        {
+          "storyId": "global-states",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "copy-creation-rules",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "tokens-copy-state",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "i18n-theme-contract",
+          "allowlistedLeakCount": 46,
+          "newLeaks": []
+        },
+        {
+          "storyId": "foundation-visual-standards",
+          "allowlistedLeakCount": 146,
+          "newLeaks": []
+        },
+        {
+          "storyId": "copy-guidelines",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "component-family-index",
+          "allowlistedLeakCount": 46,
+          "newLeaks": []
+        },
+        {
+          "storyId": "display-primitives-spec",
+          "allowlistedLeakCount": 22,
+          "newLeaks": []
+        },
+        {
+          "storyId": "interaction-disclosure-spec",
+          "allowlistedLeakCount": 6,
+          "newLeaks": []
+        },
+        {
+          "storyId": "stamp-spec-usage",
+          "allowlistedLeakCount": 29,
+          "newLeaks": []
+        },
+        {
+          "storyId": "button-spec-usage",
+          "allowlistedLeakCount": 14,
+          "newLeaks": []
+        },
+        {
+          "storyId": "field-spec-usage",
+          "allowlistedLeakCount": 10,
+          "newLeaks": []
+        },
+        {
+          "storyId": "navigation-shell-spec",
+          "allowlistedLeakCount": 34,
+          "newLeaks": []
+        },
+        {
+          "storyId": "aos-frontend-shell-slice",
+          "allowlistedLeakCount": 66,
+          "newLeaks": []
+        },
+        {
+          "storyId": "aos-owner-quality-product-shell",
+          "allowlistedLeakCount": 114,
+          "newLeaks": []
+        },
+        {
+          "storyId": "dialog-spec-usage",
+          "allowlistedLeakCount": 23,
+          "newLeaks": []
+        },
+        {
+          "storyId": "table-work-index-spec",
+          "allowlistedLeakCount": 2,
+          "newLeaks": []
+        },
+        {
+          "storyId": "work-management-components-spec",
+          "allowlistedLeakCount": 206,
+          "newLeaks": []
+        },
+        {
+          "storyId": "knowledge-management-components-spec",
+          "allowlistedLeakCount": 74,
+          "newLeaks": []
+        },
+        {
+          "storyId": "forms-patterns",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "workbench-patterns",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "work-management-patterns",
+          "allowlistedLeakCount": 62,
+          "newLeaks": []
+        },
+        {
+          "storyId": "readiness-notification-patterns",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "selection-list-patterns",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "modal-validation-patterns",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "datagrid-fields-patterns",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "big-list-search-patterns",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "dashboard-page-templates",
+          "allowlistedLeakCount": 7,
+          "newLeaks": []
+        },
+        {
+          "storyId": "proof-matrix",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "ai-consumption-contract",
+          "allowlistedLeakCount": 176,
+          "newLeaks": []
+        },
+        {
+          "storyId": "blocked-actions",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "overlay-focus",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "local-changelog",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        }
+      ]
+    },
+    "recorded": {
+      "ja": {
+        "locale": "ja",
+        "gating": false,
+        "disposition": "recorded_report_only",
+        "ok": true,
+        "storyCount": 43,
+        "leakCount": 1131,
+        "perStory": [
+          {
+            "storyId": "welcome-governance",
+            "leakCount": 0
+          },
+          {
+            "storyId": "governance-boundaries",
+            "leakCount": 1
+          },
+          {
+            "storyId": "maintainers-routing",
+            "leakCount": 2
+          },
+          {
+            "storyId": "contribution-model",
+            "leakCount": 1
+          },
+          {
+            "storyId": "release-bug-policy",
+            "leakCount": 1
+          },
+          {
+            "storyId": "brand-identity",
+            "leakCount": 1
+          },
+          {
+            "storyId": "color-palette",
+            "leakCount": 1
+          },
+          {
+            "storyId": "text-styles",
+            "leakCount": 23
+          },
+          {
+            "storyId": "grid-system",
+            "leakCount": 0
+          },
+          {
+            "storyId": "icons-motion",
+            "leakCount": 5
+          },
+          {
+            "storyId": "global-states",
+            "leakCount": 1
+          },
+          {
+            "storyId": "copy-creation-rules",
+            "leakCount": 0
+          },
+          {
+            "storyId": "tokens-copy-state",
+            "leakCount": 0
+          },
+          {
+            "storyId": "i18n-theme-contract",
+            "leakCount": 46
+          },
+          {
+            "storyId": "foundation-visual-standards",
+            "leakCount": 146
+          },
+          {
+            "storyId": "copy-guidelines",
+            "leakCount": 0
+          },
+          {
+            "storyId": "component-family-index",
+            "leakCount": 46
+          },
+          {
+            "storyId": "display-primitives-spec",
+            "leakCount": 22
+          },
+          {
+            "storyId": "interaction-disclosure-spec",
+            "leakCount": 7
+          },
+          {
+            "storyId": "stamp-spec-usage",
+            "leakCount": 29
+          },
+          {
+            "storyId": "button-spec-usage",
+            "leakCount": 14
+          },
+          {
+            "storyId": "field-spec-usage",
+            "leakCount": 10
+          },
+          {
+            "storyId": "navigation-shell-spec",
+            "leakCount": 34
+          },
+          {
+            "storyId": "aos-frontend-shell-slice",
+            "leakCount": 67
+          },
+          {
+            "storyId": "aos-owner-quality-product-shell",
+            "leakCount": 116
+          },
+          {
+            "storyId": "dialog-spec-usage",
+            "leakCount": 23
+          },
+          {
+            "storyId": "table-work-index-spec",
+            "leakCount": 2
+          },
+          {
+            "storyId": "work-management-components-spec",
+            "leakCount": 208
+          },
+          {
+            "storyId": "knowledge-management-components-spec",
+            "leakCount": 76
+          },
+          {
+            "storyId": "forms-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "workbench-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "work-management-patterns",
+            "leakCount": 63
+          },
+          {
+            "storyId": "readiness-notification-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "selection-list-patterns",
+            "leakCount": 1
+          },
+          {
+            "storyId": "modal-validation-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "datagrid-fields-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "big-list-search-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "dashboard-page-templates",
+            "leakCount": 7
+          },
+          {
+            "storyId": "proof-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "ai-consumption-contract",
+            "leakCount": 177
+          },
+          {
+            "storyId": "blocked-actions",
+            "leakCount": 1
+          },
+          {
+            "storyId": "overlay-focus",
+            "leakCount": 0
+          },
+          {
+            "storyId": "local-changelog",
+            "leakCount": 0
+          }
+        ]
+      },
+      "ko": {
+        "locale": "ko",
+        "gating": false,
+        "disposition": "recorded_report_only",
+        "ok": true,
+        "storyCount": 43,
+        "leakCount": 1135,
+        "perStory": [
+          {
+            "storyId": "welcome-governance",
+            "leakCount": 0
+          },
+          {
+            "storyId": "governance-boundaries",
+            "leakCount": 1
+          },
+          {
+            "storyId": "maintainers-routing",
+            "leakCount": 2
+          },
+          {
+            "storyId": "contribution-model",
+            "leakCount": 1
+          },
+          {
+            "storyId": "release-bug-policy",
+            "leakCount": 1
+          },
+          {
+            "storyId": "brand-identity",
+            "leakCount": 1
+          },
+          {
+            "storyId": "color-palette",
+            "leakCount": 1
+          },
+          {
+            "storyId": "text-styles",
+            "leakCount": 23
+          },
+          {
+            "storyId": "grid-system",
+            "leakCount": 0
+          },
+          {
+            "storyId": "icons-motion",
+            "leakCount": 5
+          },
+          {
+            "storyId": "global-states",
+            "leakCount": 3
+          },
+          {
+            "storyId": "copy-creation-rules",
+            "leakCount": 0
+          },
+          {
+            "storyId": "tokens-copy-state",
+            "leakCount": 0
+          },
+          {
+            "storyId": "i18n-theme-contract",
+            "leakCount": 46
+          },
+          {
+            "storyId": "foundation-visual-standards",
+            "leakCount": 146
+          },
+          {
+            "storyId": "copy-guidelines",
+            "leakCount": 0
+          },
+          {
+            "storyId": "component-family-index",
+            "leakCount": 46
+          },
+          {
+            "storyId": "display-primitives-spec",
+            "leakCount": 22
+          },
+          {
+            "storyId": "interaction-disclosure-spec",
+            "leakCount": 7
+          },
+          {
+            "storyId": "stamp-spec-usage",
+            "leakCount": 29
+          },
+          {
+            "storyId": "button-spec-usage",
+            "leakCount": 14
+          },
+          {
+            "storyId": "field-spec-usage",
+            "leakCount": 10
+          },
+          {
+            "storyId": "navigation-shell-spec",
+            "leakCount": 34
+          },
+          {
+            "storyId": "aos-frontend-shell-slice",
+            "leakCount": 67
+          },
+          {
+            "storyId": "aos-owner-quality-product-shell",
+            "leakCount": 116
+          },
+          {
+            "storyId": "dialog-spec-usage",
+            "leakCount": 24
+          },
+          {
+            "storyId": "table-work-index-spec",
+            "leakCount": 2
+          },
+          {
+            "storyId": "work-management-components-spec",
+            "leakCount": 208
+          },
+          {
+            "storyId": "knowledge-management-components-spec",
+            "leakCount": 76
+          },
+          {
+            "storyId": "forms-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "workbench-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "work-management-patterns",
+            "leakCount": 63
+          },
+          {
+            "storyId": "readiness-notification-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "selection-list-patterns",
+            "leakCount": 1
+          },
+          {
+            "storyId": "modal-validation-patterns",
+            "leakCount": 1
+          },
+          {
+            "storyId": "datagrid-fields-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "big-list-search-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "dashboard-page-templates",
+            "leakCount": 7
+          },
+          {
+            "storyId": "proof-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "ai-consumption-contract",
+            "leakCount": 176
+          },
+          {
+            "storyId": "blocked-actions",
+            "leakCount": 1
+          },
+          {
+            "storyId": "overlay-focus",
+            "leakCount": 1
+          },
+          {
+            "storyId": "local-changelog",
+            "leakCount": 0
+          }
+        ]
+      },
+      "fr": {
+        "locale": "fr",
+        "gating": false,
+        "disposition": "recorded_report_only",
+        "ok": true,
+        "storyCount": 43,
+        "leakCount": 2826,
+        "perStory": [
+          {
+            "storyId": "welcome-governance",
+            "leakCount": 48
+          },
+          {
+            "storyId": "governance-boundaries",
+            "leakCount": 29
+          },
+          {
+            "storyId": "maintainers-routing",
+            "leakCount": 31
+          },
+          {
+            "storyId": "contribution-model",
+            "leakCount": 25
+          },
+          {
+            "storyId": "release-bug-policy",
+            "leakCount": 23
+          },
+          {
+            "storyId": "brand-identity",
+            "leakCount": 50
+          },
+          {
+            "storyId": "color-palette",
+            "leakCount": 136
+          },
+          {
+            "storyId": "text-styles",
+            "leakCount": 126
+          },
+          {
+            "storyId": "grid-system",
+            "leakCount": 41
+          },
+          {
+            "storyId": "icons-motion",
+            "leakCount": 112
+          },
+          {
+            "storyId": "global-states",
+            "leakCount": 29
+          },
+          {
+            "storyId": "copy-creation-rules",
+            "leakCount": 32
+          },
+          {
+            "storyId": "tokens-copy-state",
+            "leakCount": 16
+          },
+          {
+            "storyId": "i18n-theme-contract",
+            "leakCount": 88
+          },
+          {
+            "storyId": "foundation-visual-standards",
+            "leakCount": 161
+          },
+          {
+            "storyId": "copy-guidelines",
+            "leakCount": 24
+          },
+          {
+            "storyId": "component-family-index",
+            "leakCount": 118
+          },
+          {
+            "storyId": "display-primitives-spec",
+            "leakCount": 75
+          },
+          {
+            "storyId": "interaction-disclosure-spec",
+            "leakCount": 78
+          },
+          {
+            "storyId": "stamp-spec-usage",
+            "leakCount": 33
+          },
+          {
+            "storyId": "button-spec-usage",
+            "leakCount": 52
+          },
+          {
+            "storyId": "field-spec-usage",
+            "leakCount": 58
+          },
+          {
+            "storyId": "navigation-shell-spec",
+            "leakCount": 282
+          },
+          {
+            "storyId": "aos-frontend-shell-slice",
+            "leakCount": 72
+          },
+          {
+            "storyId": "aos-owner-quality-product-shell",
+            "leakCount": 121
+          },
+          {
+            "storyId": "dialog-spec-usage",
+            "leakCount": 71
+          },
+          {
+            "storyId": "table-work-index-spec",
+            "leakCount": 97
+          },
+          {
+            "storyId": "work-management-components-spec",
+            "leakCount": 217
+          },
+          {
+            "storyId": "knowledge-management-components-spec",
+            "leakCount": 87
+          },
+          {
+            "storyId": "forms-patterns",
+            "leakCount": 12
+          },
+          {
+            "storyId": "workbench-patterns",
+            "leakCount": 16
+          },
+          {
+            "storyId": "work-management-patterns",
+            "leakCount": 69
+          },
+          {
+            "storyId": "readiness-notification-patterns",
+            "leakCount": 15
+          },
+          {
+            "storyId": "selection-list-patterns",
+            "leakCount": 11
+          },
+          {
+            "storyId": "modal-validation-patterns",
+            "leakCount": 9
+          },
+          {
+            "storyId": "datagrid-fields-patterns",
+            "leakCount": 10
+          },
+          {
+            "storyId": "big-list-search-patterns",
+            "leakCount": 14
+          },
+          {
+            "storyId": "dashboard-page-templates",
+            "leakCount": 23
+          },
+          {
+            "storyId": "proof-matrix",
+            "leakCount": 13
+          },
+          {
+            "storyId": "ai-consumption-contract",
+            "leakCount": 241
+          },
+          {
+            "storyId": "blocked-actions",
+            "leakCount": 17
+          },
+          {
+            "storyId": "overlay-focus",
+            "leakCount": 10
+          },
+          {
+            "storyId": "local-changelog",
+            "leakCount": 34
+          }
+        ],
+        "latinScriptConfound": true,
+        "note": "Latin-script target locale: multi-word Latin runs include correctly-translated French, so this count is a trend signal, not a clean untranslated-English measure."
+      }
+    }
+  },
   "summaries": [
     {
       "viewport": "desktop-1440x900",
