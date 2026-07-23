@@ -121,8 +121,13 @@ export const PAGE_KB_BUDGET_BYTES = 1_000_000;
 // current built apps/storybook/storybook-static/*.html byte sizes. Components is the sole
 // outlier; the other six pages sit on the shared ~676KB dict+CSS floor.
 export const PAGE_KB_GRACE_ALLOWLIST = {
+  Proof: {
+    recordedBytes: 1158204,
+    owedTo: "TCRN-DS-STORY-054",
+    note: "AOS visual-instance oracles moved here by S057; global-dict prune (S054) brings it back under budget"
+  },
   Components: {
-    recordedBytes: 1418319,
+    recordedBytes: 1061659,
     owedTo: "TCRN-DS-STORY-054/056/057",
     note: "AOS oracle bulk + global dict; prune payload (S054) + reclassify (S056/S057)"
   }

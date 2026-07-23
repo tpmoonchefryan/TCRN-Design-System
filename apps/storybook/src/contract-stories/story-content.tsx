@@ -2067,7 +2067,7 @@ const legacyContractStories: LegacyContractStory[] = [
   {
     id: "aos-frontend-shell-slice",
     title: "AOS frontend shell slice visual instance",
-    group: "Components",
+    group: "Proof",
     description: "Package-backed first-viewport oracle for the AOS frontend shell slice.",
     render: () => (
       <section className="alpha-story-stack" data-design-system-visual-instance-parity="aos-frontend-shell-slice">
@@ -2117,7 +2117,7 @@ const legacyContractStories: LegacyContractStory[] = [
   {
     id: "aos-owner-quality-product-shell",
     title: "AOS owner-quality product shell oracle",
-    group: "Components",
+    group: "Proof",
     description: "Product-first Operations Cockpit oracle for downstream AOS remediation.",
     render: () => (
       <section className="alpha-story-stack" data-design-system-visual-instance-parity="aos-owner-quality-product-shell">
@@ -2126,7 +2126,7 @@ const legacyContractStories: LegacyContractStory[] = [
           <Text>
             This named Storybook visual instance reframes AOS as an Operations Cockpit owner-inspection surface. It keeps
             ProductShell behavior package-backed while making current work, gates, evidence, decisions, owner actions, service
-            health, and activity the first-viewport story. The earlier AOS frontend shell slice remains an internal proof scaffold.
+            health, and activity the first-viewport story. The earlier AOS frontend shell slice remains an internal proof scaffold, retained here as a superseded oracle.
           </Text>
           <TableShell
             label="AOS owner-quality product shell readback"

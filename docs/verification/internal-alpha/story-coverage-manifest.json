@@ -117,16 +117,6 @@
       "storybookId": "tcrn-design-system-components--navigation-shell-spec"
     },
     {
-      "id": "aos-frontend-shell-slice",
-      "group": "Components",
-      "storybookId": "tcrn-design-system-components--aos-frontend-shell-slice"
-    },
-    {
-      "id": "aos-owner-quality-product-shell",
-      "group": "Components",
-      "storybookId": "tcrn-design-system-components--aos-owner-quality-product-shell"
-    },
-    {
       "id": "dialog-spec-usage",
       "group": "Components",
       "storybookId": "tcrn-design-system-components--dialog-spec-usage"
@@ -212,6 +202,16 @@
       "storybookId": "tcrn-design-system-proof--overlay-focus"
     },
     {
+      "id": "aos-frontend-shell-slice",
+      "group": "Proof",
+      "storybookId": "tcrn-design-system-proof--aos-frontend-shell-slice"
+    },
+    {
+      "id": "aos-owner-quality-product-shell",
+      "group": "Proof",
+      "storybookId": "tcrn-design-system-proof--aos-owner-quality-product-shell"
+    },
+    {
       "id": "local-changelog",
       "group": "Change Log",
       "storybookId": "tcrn-design-system-change-log--local-changelog"
@@ -260,10 +260,10 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "5e0a4e7036931e44c76aa6bf0e42bceb83b0383f04b0399109722bca7f6c56e3",
+    "contractPayloadDigest": "e1fc7ae4a86a5e2886f4b328ff6295a94eb0bd034e2be9f9cf7c16330503e79f",
     "digestVerified": true,
     "coveredSectionCount": 7,
-    "coveredCategoryCount": 19,
+    "coveredCategoryCount": 20,
     "changelogRecordCount": 1,
     "workManagementStaticAuthorityDisposition": "static_contract_authority_explicit_and_smoke_proven",
     "workManagementAdmittedPackageExports": [
@@ -472,16 +472,6 @@
       "visible": true
     },
     {
-      "id": "aos-frontend-shell-slice",
-      "storybookId": "tcrn-design-system-components--aos-frontend-shell-slice",
-      "visible": true
-    },
-    {
-      "id": "aos-owner-quality-product-shell",
-      "storybookId": "tcrn-design-system-components--aos-owner-quality-product-shell",
-      "visible": true
-    },
-    {
       "id": "dialog-spec-usage",
       "storybookId": "tcrn-design-system-components--dialog-spec-usage",
       "visible": true
@@ -567,6 +557,16 @@
       "visible": true
     },
     {
+      "id": "aos-frontend-shell-slice",
+      "storybookId": "tcrn-design-system-proof--aos-frontend-shell-slice",
+      "visible": true
+    },
+    {
+      "id": "aos-owner-quality-product-shell",
+      "storybookId": "tcrn-design-system-proof--aos-owner-quality-product-shell",
+      "visible": true
+    },
+    {
       "id": "local-changelog",
       "storybookId": "tcrn-design-system-change-log--local-changelog",
       "visible": true
@@ -621,14 +621,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 19,
+        "categoryLabelCount": 20,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 19,
+        "expectedCategoryCount": 20,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -754,7 +754,7 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 19,
+        "categoryLabelCount": 20,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
@@ -767,7 +767,7 @@
           "hasRegistryExportText": false,
           "hasAosRegisteredAssetId": false
         },
-        "expectedCategoryCount": 19,
+        "expectedCategoryCount": 20,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -893,14 +893,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 19,
+        "categoryLabelCount": 20,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 19,
+        "expectedCategoryCount": 20,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1026,14 +1026,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 19,
+        "categoryLabelCount": 20,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 19,
+        "expectedCategoryCount": 20,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1159,14 +1159,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 19,
+        "categoryLabelCount": 20,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 19,
+        "expectedCategoryCount": 20,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1292,14 +1292,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 19,
+        "categoryLabelCount": 20,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 19,
+        "expectedCategoryCount": 20,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1425,14 +1425,14 @@
         "noOverclaimBoundaryCount": 1,
         "legacyProductShellGlobalNavCount": 0,
         "navGroupCount": 7,
-        "categoryLabelCount": 19,
+        "categoryLabelCount": 20,
         "docBrandText": "TCRN设计系统组件库",
         "docBrandCaptionText": "组件库",
         "docBrandCaptionLocalized": true,
         "docShellEnglishLeaks": [],
         "ownerVisibleCaptionHits": [],
         "brandIdentityLogoSectionReadback": null,
-        "expectedCategoryCount": 19,
+        "expectedCategoryCount": 20,
         "expectedShellNavGroupCount": 7,
         "expectedGroupCount": 7,
         "header": {
@@ -1552,7 +1552,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1745,
+        "scrollY": 1778,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2197,7 +2197,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1745,
+        "scrollY": 1778,
         "viewport": {
           "width": 390,
           "height": 844
@@ -2842,7 +2842,7 @@
       {
         "label": "after-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1745,
+        "scrollY": 1778,
         "viewport": {
           "width": 390,
           "height": 844
@@ -3487,7 +3487,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
-        "scrollY": 1745,
+        "scrollY": 1778,
         "viewport": {
           "width": 390,
           "height": 844
@@ -4142,7 +4142,7 @@
       {
         "label": "after-load",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 3078,
+        "scrollY": 2885,
         "viewport": {
           "width": 390,
           "height": 844
@@ -4160,17 +4160,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 411.78,
+          "top": 412.06,
           "right": 374,
-          "bottom": 6890.72,
+          "bottom": 6891,
           "left": 16,
           "width": 358,
           "height": 6478.94
         },
         "title": {
-          "top": 428.78,
+          "top": 429.06,
           "right": 357,
-          "bottom": 459.09,
+          "bottom": 459.38,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -4368,13 +4368,13 @@
                 },
                 {
                   "tag": "article",
-                  "id": "aos-owner-quality-product-shell",
+                  "id": "navigation-shell-spec",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准 面向下游 AOS 修复的产品优先运营驾驶舱基准。 Skip to operations contentTCRNAOSAI "
+                  "text": "导航与壳层规范 面向密集运营产品、知识库和轻量工具的多导航壳层选择契约。 壳层选择矩阵导航壳层选择应跟随产品信息架构，而不是套用唯一共享布局。界面模式规则边界T"
                 },
                 {
                   "tag": "section",
@@ -4394,7 +4394,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4525,7 +4525,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4626,7 +4626,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4757,7 +4757,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4969,7 +4969,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -4995,8 +4995,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.09,
-        "titleClearancePx": 32.09,
+        "articleClearancePx": 15.37,
+        "titleClearancePx": 32.37,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5008,7 +5008,7 @@
       {
         "label": "after-700ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 3078,
+        "scrollY": 2885,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5026,17 +5026,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 411.78,
+          "top": 412.06,
           "right": 374,
-          "bottom": 6890.72,
+          "bottom": 6891,
           "left": 16,
           "width": 358,
           "height": 6478.94
         },
         "title": {
-          "top": 428.78,
+          "top": 429.06,
           "right": 357,
-          "bottom": 459.09,
+          "bottom": 459.38,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -5234,13 +5234,13 @@
                 },
                 {
                   "tag": "article",
-                  "id": "aos-owner-quality-product-shell",
+                  "id": "navigation-shell-spec",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准 面向下游 AOS 修复的产品优先运营驾驶舱基准。 Skip to operations contentTCRNAOSAI "
+                  "text": "导航与壳层规范 面向密集运营产品、知识库和轻量工具的多导航壳层选择契约。 壳层选择矩阵导航壳层选择应跟随产品信息架构，而不是套用唯一共享布局。界面模式规则边界T"
                 },
                 {
                   "tag": "section",
@@ -5260,7 +5260,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5391,7 +5391,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5492,7 +5492,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5623,7 +5623,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5835,7 +5835,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -5861,8 +5861,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.09,
-        "titleClearancePx": 32.09,
+        "articleClearancePx": 15.37,
+        "titleClearancePx": 32.37,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -5874,7 +5874,7 @@
       {
         "label": "after-reload-1500ms",
         "route": "/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
-        "scrollY": 3078,
+        "scrollY": 2885,
         "viewport": {
           "width": 390,
           "height": 844
@@ -5892,17 +5892,17 @@
           "height": 396.69
         },
         "article": {
-          "top": 411.78,
+          "top": 412.06,
           "right": 374,
-          "bottom": 6890.72,
+          "bottom": 6891,
           "left": 16,
           "width": 358,
           "height": 6478.94
         },
         "title": {
-          "top": 428.78,
+          "top": 429.06,
           "right": 357,
-          "bottom": 459.09,
+          "bottom": 459.38,
           "left": 33,
           "width": 324,
           "height": 30.31
@@ -6100,13 +6100,13 @@
                 },
                 {
                   "tag": "article",
-                  "id": "aos-owner-quality-product-shell",
+                  "id": "navigation-shell-spec",
                   "className": "",
                   "role": null,
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "AOS owner 质量产品壳层基准 面向下游 AOS 修复的产品优先运营驾驶舱基准。 Skip to operations contentTCRNAOSAI "
+                  "text": "导航与壳层规范 面向密集运营产品、知识库和轻量工具的多导航壳层选择契约。 壳层选择矩阵导航壳层选择应跟随产品信息架构，而不是套用唯一共享布局。界面模式规则边界T"
                 },
                 {
                   "tag": "section",
@@ -6126,7 +6126,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6257,7 +6257,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6358,7 +6358,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6489,7 +6489,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6701,7 +6701,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层3 覆盖层1 工作管理1 知识管理1 不声明"
+                  "text": "TCRN 设计系统契约故事 受治理的 Storybook 栏目 组件 本页内容 组件清单3 控件与数据4 导航与壳层1 覆盖层1 工作管理1 知识管理1 不声明"
                 },
                 {
                   "tag": "div",
@@ -6727,8 +6727,8 @@
             }
           ]
         },
-        "articleClearancePx": 15.09,
-        "titleClearancePx": 32.09,
+        "articleClearancePx": 15.37,
+        "titleClearancePx": 32.37,
         "articleReadableBelowTopbar": true,
         "titleReadableBelowTopbar": true,
         "docShellSelectorCount": 6,
@@ -6748,8 +6748,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 10450,
-      "scrollY": 9067
+      "maxScrollY": 10224,
+      "scrollY": 8842
     }
   },
   "scrollSpyCheck": {
@@ -6950,9 +6950,10 @@
         "反馈与选择",
         "数据与页面",
         "证明治理",
+        "视觉实例",
         "治理记录"
       ],
-      "categoryLabelCount": 19,
+      "categoryLabelCount": 20,
       "categoryDescriptions": [
         "读者导向与声明边界。",
         "维护者路由、贡献模型和发布策略。",
@@ -6963,7 +6964,7 @@
         "产品文案规则、ProductShell 控件和不支持文案边界。",
         "包支持清单、展示原语和披露原语。",
         "按钮、字段、表格和密集数据原语。",
-        "导航、ProductShell、AOS 视觉实例和壳层控件契约。",
+        "导航、ProductShell 和壳层控件契约。",
         "对话框、抽屉、浮层和焦点行为契约。",
         "包支持的工作管理组件和执行记录收纳。",
         "包支持的静态知识组件、已净化参考和无实时发布边界。",
@@ -6972,13 +6973,14 @@
         "就绪、选择、弹窗校验和阻止状态模式。",
         "数据表升级、大列表搜索和仪表盘页面模板。",
         "证明矩阵、AI 契约、阻止操作和焦点证明。",
+        "包支持的 AOS ProductShell 视觉实例基准，以及已被取代的前端证明脚手架。",
         "耐久 Storybook 和根变更日志记录。"
       ],
-      "categoryDescriptionCount": 19,
+      "categoryDescriptionCount": 20,
       "categoryDescriptionEnglishLeaks": [],
       "currentLocationText": "当前位置 欢迎 欢迎与治理",
       "onThisPageAriaLabel": "本页内容",
-      "expectedCategoryCount": 19,
+      "expectedCategoryCount": 20,
       "expectedShellNavGroupCount": 7,
       "bodyScrollWidth": 1440,
       "viewportWidth": 1440,
@@ -7329,7 +7331,7 @@
       "gating": true,
       "ok": true,
       "storyCount": 43,
-      "allowlistedLeakCount": 1119,
+      "allowlistedLeakCount": 1121,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -7449,16 +7451,6 @@
           "newLeaks": []
         },
         {
-          "storyId": "aos-frontend-shell-slice",
-          "allowlistedLeakCount": 66,
-          "newLeaks": []
-        },
-        {
-          "storyId": "aos-owner-quality-product-shell",
-          "allowlistedLeakCount": 114,
-          "newLeaks": []
-        },
-        {
           "storyId": "dialog-spec-usage",
           "allowlistedLeakCount": 23,
           "newLeaks": []
@@ -7530,7 +7522,7 @@
         },
         {
           "storyId": "ai-consumption-contract",
-          "allowlistedLeakCount": 176,
+          "allowlistedLeakCount": 177,
           "newLeaks": []
         },
         {
@@ -7541,6 +7533,16 @@
         {
           "storyId": "overlay-focus",
           "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "aos-frontend-shell-slice",
+          "allowlistedLeakCount": 66,
+          "newLeaks": []
+        },
+        {
+          "storyId": "aos-owner-quality-product-shell",
+          "allowlistedLeakCount": 115,
           "newLeaks": []
         },
         {
@@ -7557,7 +7559,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 43,
-        "leakCount": 1131,
+        "leakCount": 1133,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7652,14 +7654,6 @@
             "leakCount": 34
           },
           {
-            "storyId": "aos-frontend-shell-slice",
-            "leakCount": 67
-          },
-          {
-            "storyId": "aos-owner-quality-product-shell",
-            "leakCount": 116
-          },
-          {
             "storyId": "dialog-spec-usage",
             "leakCount": 23
           },
@@ -7717,7 +7711,7 @@
           },
           {
             "storyId": "ai-consumption-contract",
-            "leakCount": 177
+            "leakCount": 178
           },
           {
             "storyId": "blocked-actions",
@@ -7726,6 +7720,14 @@
           {
             "storyId": "overlay-focus",
             "leakCount": 0
+          },
+          {
+            "storyId": "aos-frontend-shell-slice",
+            "leakCount": 67
+          },
+          {
+            "storyId": "aos-owner-quality-product-shell",
+            "leakCount": 117
           },
           {
             "storyId": "local-changelog",
@@ -7739,7 +7741,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 43,
-        "leakCount": 1135,
+        "leakCount": 1137,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7834,14 +7836,6 @@
             "leakCount": 34
           },
           {
-            "storyId": "aos-frontend-shell-slice",
-            "leakCount": 67
-          },
-          {
-            "storyId": "aos-owner-quality-product-shell",
-            "leakCount": 116
-          },
-          {
             "storyId": "dialog-spec-usage",
             "leakCount": 24
           },
@@ -7899,7 +7893,7 @@
           },
           {
             "storyId": "ai-consumption-contract",
-            "leakCount": 176
+            "leakCount": 177
           },
           {
             "storyId": "blocked-actions",
@@ -7908,6 +7902,14 @@
           {
             "storyId": "overlay-focus",
             "leakCount": 1
+          },
+          {
+            "storyId": "aos-frontend-shell-slice",
+            "leakCount": 67
+          },
+          {
+            "storyId": "aos-owner-quality-product-shell",
+            "leakCount": 117
           },
           {
             "storyId": "local-changelog",
@@ -7921,7 +7923,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 43,
-        "leakCount": 2826,
+        "leakCount": 2828,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -8016,14 +8018,6 @@
             "leakCount": 282
           },
           {
-            "storyId": "aos-frontend-shell-slice",
-            "leakCount": 72
-          },
-          {
-            "storyId": "aos-owner-quality-product-shell",
-            "leakCount": 121
-          },
-          {
             "storyId": "dialog-spec-usage",
             "leakCount": 71
           },
@@ -8081,7 +8075,7 @@
           },
           {
             "storyId": "ai-consumption-contract",
-            "leakCount": 241
+            "leakCount": 242
           },
           {
             "storyId": "blocked-actions",
@@ -8090,6 +8084,14 @@
           {
             "storyId": "overlay-focus",
             "leakCount": 10
+          },
+          {
+            "storyId": "aos-frontend-shell-slice",
+            "leakCount": 72
+          },
+          {
+            "storyId": "aos-owner-quality-product-shell",
+            "leakCount": 122
           },
           {
             "storyId": "local-changelog",
@@ -8132,7 +8134,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 2,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8182,7 +8184,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 2,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8236,7 +8238,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 2,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8284,7 +8286,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 2,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8317,8 +8319,6 @@
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
         "work-management-components-spec",
@@ -8332,8 +8332,6 @@
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
         "work-management-components-spec",
@@ -8350,7 +8348,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 2,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8408,8 +8406,8 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
-      "docNavOpenCategoryCount": 1,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 2,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
@@ -8437,13 +8435,17 @@
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus"
+        "overlay-focus",
+        "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell"
       ],
       "expectedStoryIds": [
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus"
+        "overlay-focus",
+        "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell"
       ]
     },
     {
@@ -8456,7 +8458,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8498,7 +8500,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8548,7 +8550,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8602,7 +8604,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8650,7 +8652,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8683,8 +8685,6 @@
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
         "work-management-components-spec",
@@ -8698,8 +8698,6 @@
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
         "work-management-components-spec",
@@ -8716,7 +8714,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8774,7 +8772,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8803,13 +8801,17 @@
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus"
+        "overlay-focus",
+        "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell"
       ],
       "expectedStoryIds": [
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus"
+        "overlay-focus",
+        "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell"
       ]
     },
     {
@@ -8822,7 +8824,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8864,7 +8866,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8914,7 +8916,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8968,7 +8970,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9016,7 +9018,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9049,8 +9051,6 @@
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
         "work-management-components-spec",
@@ -9064,8 +9064,6 @@
         "button-spec-usage",
         "field-spec-usage",
         "navigation-shell-spec",
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell",
         "dialog-spec-usage",
         "table-work-index-spec",
         "work-management-components-spec",
@@ -9082,7 +9080,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9140,7 +9138,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9169,13 +9167,17 @@
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus"
+        "overlay-focus",
+        "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell"
       ],
       "expectedStoryIds": [
         "proof-matrix",
         "ai-consumption-contract",
         "blocked-actions",
-        "overlay-focus"
+        "overlay-focus",
+        "aos-frontend-shell-slice",
+        "aos-owner-quality-product-shell"
       ]
     },
     {
@@ -9188,7 +9190,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 19,
+      "docNavCategoryCount": 20,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],

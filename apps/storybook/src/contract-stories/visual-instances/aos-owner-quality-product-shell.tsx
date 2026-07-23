@@ -147,7 +147,7 @@ const variants: readonly OwnerQualityVariant[] = [
 
 export const aosOwnerQualityProductShellReadback = {
   storyId: "aos-owner-quality-product-shell",
-  page: "components.html#aos-owner-quality-product-shell",
+  page: "proof.html#aos-owner-quality-product-shell",
   selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"]",
   visualInstanceName: "AosOwnerQualityProductShell",
   ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",

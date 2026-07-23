@@ -234,7 +234,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Responsive and mobile",
     category: "Foundation",
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
-    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#aos-owner-quality-product-shell"],
+    storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#aos-owner-quality-product-shell"],
     authorityLevel: "storybook_visual_oracle",
     readbackFields: ["viewport", "searchMaxWidth", "collapsePolicy", "pageOverflow", "tableLocalOverflow"],
     allowedConsumerInputs: ["mobile content order", "mobile route content", "approved hidden-affordance policy"],

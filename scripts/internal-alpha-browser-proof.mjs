@@ -557,7 +557,7 @@ for (const section of sectionPages) {
   assertBuiltSurface(`apps/storybook/storybook-static/${section.file}`);
 }
 
-const expectedCategoryCount = 19;
+const expectedCategoryCount = 20;
 const expectedStorybookShellNavGroupCount = sectionPages.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
