@@ -1338,6 +1338,29 @@ export const tcrnComponentCss = `
   border-color: transparent;
   background: transparent;
 }
+/* TCRN-DS-STORY-063: the core Button / LinkButton answered neither hover nor keyboard focus in
+   either layer (only .tcrn-button carried press-scale). They now speak the same feedback language
+   as the shell controls — muted-surface hover, a deepened brand fill on the primary variant, the
+   focus-ring outline, and press-scale on both (LinkButton was missing the press it shares). */
+.tcrn-button:not([disabled]):hover,
+.tcrn-link-button:hover {
+  border-color: var(--tcrn-color-border-control);
+  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 72%, var(--tcrn-color-surface-panel));
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-button--primary:not([disabled]):hover,
+.tcrn-link-button--primary:hover {
+  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 88%, var(--tcrn-color-brand-secondary));
+  background: color-mix(in srgb, var(--tcrn-color-brand-primary) 88%, var(--tcrn-color-brand-secondary));
+}
+.tcrn-button:focus-visible,
+.tcrn-link-button:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+.tcrn-link-button:active {
+  transform: scale(var(--tcrn-motion-press-scale));
+}
 .tcrn-button--danger {
   border-color: var(--tcrn-color-state-blocked);
   color: var(--tcrn-color-state-blocked);
@@ -3181,7 +3204,13 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   .tcrn-shell-theme-toggle:active,
   .tcrn-shell-locale-menu__trigger:active,
   .tcrn-table-toolbar__chip:active,
-  .tcrn-table-toolbar__collapse:active {
+  .tcrn-table-toolbar__collapse:active,
+  .tcrn-link-button:active,
+  .tcrn-product-launcher button:active,
+  .tcrn-product-switcher button:active,
+  .tcrn-module-tabs button:active,
+  .tcrn-section-tabs button:active,
+  .tcrn-segmented-nav button:active {
     transform: none;
   }
 }
@@ -3584,6 +3613,64 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
   box-shadow: var(--tcrn-elevation-floating);
+}
+
+/* TCRN-DS-STORY-063: interactive feedback family completion. Every clickable navigation / row /
+   tab / button surface now answers hover + keyboard focus, and the pressable button families
+   answer the press — matching the shell control language (surface-muted hover, focus-ring
+   outline, press-scale). Previously these had no hover and fell to the UA default focus ring
+   outside the product-shell scope. */
+.tcrn-work-management-subnav > a:hover,
+.tcrn-work-view-tabs > a:hover,
+.tcrn-work-quick-filters > a:hover,
+.tcrn-knowledge-page-tree__item > a:hover,
+.tcrn-knowledge-toc-rail nav > a:hover {
+  background: var(--tcrn-color-surface-muted);
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-work-item-row[href]:hover,
+.tcrn-product-launcher button:hover,
+.tcrn-product-switcher button:hover,
+.tcrn-module-tabs button:hover,
+.tcrn-section-tabs button:hover,
+.tcrn-segmented-nav button:hover {
+  border-color: var(--tcrn-color-border-control);
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-work-management-subnav > a:focus-visible,
+.tcrn-work-view-tabs > a:focus-visible,
+.tcrn-work-quick-filters > a:focus-visible,
+.tcrn-work-item-row[href]:focus-visible,
+.tcrn-knowledge-page-tree__item > a:focus-visible,
+.tcrn-knowledge-toc-rail nav > a:focus-visible,
+.tcrn-knowledge-search-results__head a:focus-visible,
+.tcrn-product-launcher button:focus-visible,
+.tcrn-product-switcher button:focus-visible,
+.tcrn-module-tabs button:focus-visible,
+.tcrn-section-tabs button:focus-visible,
+.tcrn-segmented-nav button:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+.tcrn-product-launcher button:active,
+.tcrn-product-switcher button:active,
+.tcrn-module-tabs button:active,
+.tcrn-section-tabs button:active,
+.tcrn-segmented-nav button:active {
+  transform: scale(var(--tcrn-motion-press-scale));
+}
+/* KnowledgeSearchResults head anchor previously had no color/decoration at all — bare UA blue
+   for package consumers. It reads as an inline result link: brand ink + quiet underline that
+   answers hover. */
+.tcrn-knowledge-search-results__head a {
+  color: var(--tcrn-color-brand-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 35%, transparent);
+}
+.tcrn-knowledge-search-results__head a:hover {
+  text-decoration-color: var(--tcrn-color-brand-primary);
 }
 
 /* Overlay dialog + popover grid (.alpha-overlay-demo__dialog stays doc-side) */
