@@ -584,11 +584,11 @@ article[data-story-collapsed="false"] > .tcrn-story-disclosure__heading {
   padding: 0;
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-global-brand .tcrn-doc-brand {
-  /* The 120px rail keeps the 40px mark and the 38px toggle side by side inside the
-     96px header band (15/40/12/38/15), so collapsing never moves anything on the
-     Y axis and nothing straddles the band's bottom divider. */
-  top: calc((var(--tcrn-anchor-scroll-offset) - 40px) / 2);
-  left: 15px;
+  /* TCRN-DS-INC-001: in the 120px collapsed rail the mark is CENTERED (matching the icon nav
+     below), not left-anchored beside the toggle. The 40px mark and 38px toggle stack vertically,
+     both horizontally centered, and the pair is centered in the header band. */
+  top: calc((var(--tcrn-anchor-scroll-offset) - 82px) / 2);
+  left: calc((120px - 40px) / 2);
   width: 40px;
   transform: none;
 }
@@ -606,9 +606,10 @@ article[data-story-collapsed="false"] > .tcrn-story-disclosure__heading {
   visibility: hidden;
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar-toggle-slot {
-  /* Same top as the expanded state — the toggle translates on X only, staying inside
-     the header band beside the mark (15px margin + 40px mark + 12px gap). */
-  left: calc(15px + 40px + 12px);
+  /* TCRN-DS-INC-001: the toggle sits centered directly BELOW the centered mark (mark 40px + 4px
+     gap), so the collapsed rail reads as one centered vertical column: mark, toggle, nav icons. */
+  top: calc((var(--tcrn-anchor-scroll-offset) - 82px) / 2 + 44px);
+  left: calc((120px - 38px) / 2);
   transform: none;
 }
 
