@@ -1748,10 +1748,10 @@
         "article": {
           "top": 411.7,
           "right": 374,
-          "bottom": 10105.05,
+          "bottom": 9052.23,
           "left": 16,
           "width": 358,
-          "height": 9693.34
+          "height": 8640.53
         },
         "title": {
           "top": 428.7,
@@ -2393,10 +2393,10 @@
         "article": {
           "top": 411.7,
           "right": 374,
-          "bottom": 10105.05,
+          "bottom": 9052.23,
           "left": 16,
           "width": 358,
-          "height": 9693.34
+          "height": 8640.53
         },
         "title": {
           "top": 428.7,
@@ -3038,10 +3038,10 @@
         "article": {
           "top": 411.7,
           "right": 374,
-          "bottom": 10105.05,
+          "bottom": 9052.23,
           "left": 16,
           "width": 358,
-          "height": 9693.34
+          "height": 8640.53
         },
         "title": {
           "top": 428.7,
@@ -3683,10 +3683,10 @@
         "article": {
           "top": 411.7,
           "right": 374,
-          "bottom": 10105.05,
+          "bottom": 9052.23,
           "left": 16,
           "width": 358,
-          "height": 9693.34
+          "height": 8640.53
         },
         "title": {
           "top": 428.7,
@@ -4337,10 +4337,10 @@
         "article": {
           "top": 2031.19,
           "right": 374,
-          "bottom": 5520.28,
+          "bottom": 5178.89,
           "left": 16,
           "width": 358,
-          "height": 3489.09
+          "height": 3147.7
         },
         "title": {
           "top": 2048.19,
@@ -5033,10 +5033,10 @@
         "article": {
           "top": 2031.19,
           "right": 374,
-          "bottom": 5520.28,
+          "bottom": 5178.89,
           "left": 16,
           "width": 358,
-          "height": 3489.09
+          "height": 3147.7
         },
         "title": {
           "top": 2048.19,
@@ -5729,10 +5729,10 @@
         "article": {
           "top": 2031.19,
           "right": 374,
-          "bottom": 5520.28,
+          "bottom": 5178.89,
           "left": 16,
           "width": 358,
-          "height": 3489.09
+          "height": 3147.7
         },
         "title": {
           "top": 2048.19,
@@ -6413,8 +6413,8 @@
       "targetTop": 96,
       "previousBottom": 82,
       "offset": 96,
-      "maxScrollY": 2346,
-      "scrollY": 1189
+      "maxScrollY": 2271,
+      "scrollY": 1154
     }
   },
   "scrollSpyCheck": {
@@ -6962,7 +6962,7 @@
       "gating": true,
       "ok": true,
       "storyCount": 60,
-      "allowlistedLeakCount": 1151,
+      "allowlistedLeakCount": 91,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -7003,7 +7003,7 @@
         },
         {
           "storyId": "text-styles",
-          "allowlistedLeakCount": 23,
+          "allowlistedLeakCount": 17,
           "newLeaks": []
         },
         {
@@ -7033,12 +7033,12 @@
         },
         {
           "storyId": "i18n-theme-contract",
-          "allowlistedLeakCount": 46,
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
           "storyId": "foundation-visual-standards",
-          "allowlistedLeakCount": 146,
+          "allowlistedLeakCount": 6,
           "newLeaks": []
         },
         {
@@ -7048,37 +7048,37 @@
         },
         {
           "storyId": "component-family-index",
-          "allowlistedLeakCount": 44,
+          "allowlistedLeakCount": 2,
           "newLeaks": []
         },
         {
           "storyId": "display-primitives-spec",
-          "allowlistedLeakCount": 22,
+          "allowlistedLeakCount": 2,
           "newLeaks": []
         },
         {
           "storyId": "interaction-disclosure-spec",
-          "allowlistedLeakCount": 6,
+          "allowlistedLeakCount": 2,
           "newLeaks": []
         },
         {
           "storyId": "stamp-spec-usage",
-          "allowlistedLeakCount": 29,
+          "allowlistedLeakCount": 2,
           "newLeaks": []
         },
         {
           "storyId": "button-spec-usage",
-          "allowlistedLeakCount": 14,
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
           "storyId": "field-spec-usage",
-          "allowlistedLeakCount": 10,
+          "allowlistedLeakCount": 3,
           "newLeaks": []
         },
         {
           "storyId": "table-work-index-spec",
-          "allowlistedLeakCount": 2,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
@@ -7098,67 +7098,67 @@
         },
         {
           "storyId": "navigation-primitives-spec",
-          "allowlistedLeakCount": 18,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
           "storyId": "navigation-product-shell-spec",
-          "allowlistedLeakCount": 15,
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
           "storyId": "dialog-spec-usage",
-          "allowlistedLeakCount": 23,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
           "storyId": "work-management-components-spec",
-          "allowlistedLeakCount": 65,
+          "allowlistedLeakCount": 4,
           "newLeaks": []
         },
         {
           "storyId": "work-management-relationships-spec",
-          "allowlistedLeakCount": 9,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
           "storyId": "work-management-tokens-density-views-spec",
-          "allowlistedLeakCount": 18,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
           "storyId": "work-management-route-detail-spec",
-          "allowlistedLeakCount": 41,
+          "allowlistedLeakCount": 5,
           "newLeaks": []
         },
         {
           "storyId": "work-management-backlog-board-spec",
-          "allowlistedLeakCount": 37,
+          "allowlistedLeakCount": 6,
           "newLeaks": []
         },
         {
           "storyId": "work-management-hierarchy-gates-spec",
-          "allowlistedLeakCount": 39,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
           "storyId": "work-management-inspector-spec",
-          "allowlistedLeakCount": 20,
+          "allowlistedLeakCount": 2,
           "newLeaks": []
         },
         {
           "storyId": "knowledge-management-components-spec",
-          "allowlistedLeakCount": 35,
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
           "storyId": "knowledge-management-density-collaboration-spec",
-          "allowlistedLeakCount": 21,
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
           "storyId": "knowledge-management-templates-spec",
-          "allowlistedLeakCount": 26,
+          "allowlistedLeakCount": 2,
           "newLeaks": []
         },
         {
@@ -7173,7 +7173,7 @@
         },
         {
           "storyId": "work-management-patterns",
-          "allowlistedLeakCount": 62,
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
@@ -7203,7 +7203,7 @@
         },
         {
           "storyId": "dashboard-page-templates",
-          "allowlistedLeakCount": 7,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
@@ -7213,7 +7213,7 @@
         },
         {
           "storyId": "ai-consumption-contract",
-          "allowlistedLeakCount": 177,
+          "allowlistedLeakCount": 7,
           "newLeaks": []
         },
         {
@@ -7228,12 +7228,12 @@
         },
         {
           "storyId": "aos-frontend-shell-slice",
-          "allowlistedLeakCount": 66,
+          "allowlistedLeakCount": 3,
           "newLeaks": []
         },
         {
           "storyId": "aos-owner-quality-product-shell",
-          "allowlistedLeakCount": 115,
+          "allowlistedLeakCount": 7,
           "newLeaks": []
         },
         {
@@ -7275,7 +7275,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 60,
-        "leakCount": 1178,
+        "leakCount": 117,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7307,7 +7307,7 @@
           },
           {
             "storyId": "text-styles",
-            "leakCount": 23
+            "leakCount": 17
           },
           {
             "storyId": "grid-system",
@@ -7331,11 +7331,11 @@
           },
           {
             "storyId": "i18n-theme-contract",
-            "leakCount": 46
+            "leakCount": 1
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 146
+            "leakCount": 6
           },
           {
             "storyId": "copy-guidelines",
@@ -7343,31 +7343,31 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 44
+            "leakCount": 2
           },
           {
             "storyId": "display-primitives-spec",
-            "leakCount": 22
+            "leakCount": 2
           },
           {
             "storyId": "interaction-disclosure-spec",
-            "leakCount": 7
+            "leakCount": 3
           },
           {
             "storyId": "stamp-spec-usage",
-            "leakCount": 29
+            "leakCount": 2
           },
           {
             "storyId": "button-spec-usage",
-            "leakCount": 14
+            "leakCount": 1
           },
           {
             "storyId": "field-spec-usage",
-            "leakCount": 10
+            "leakCount": 3
           },
           {
             "storyId": "table-work-index-spec",
-            "leakCount": 2
+            "leakCount": 0
           },
           {
             "storyId": "navigation-shell-spec",
@@ -7383,55 +7383,55 @@
           },
           {
             "storyId": "navigation-primitives-spec",
-            "leakCount": 18
+            "leakCount": 0
           },
           {
             "storyId": "navigation-product-shell-spec",
-            "leakCount": 16
+            "leakCount": 2
           },
           {
             "storyId": "dialog-spec-usage",
-            "leakCount": 23
+            "leakCount": 0
           },
           {
             "storyId": "work-management-components-spec",
-            "leakCount": 67
+            "leakCount": 5
           },
           {
             "storyId": "work-management-relationships-spec",
-            "leakCount": 11
+            "leakCount": 2
           },
           {
             "storyId": "work-management-tokens-density-views-spec",
-            "leakCount": 20
+            "leakCount": 2
           },
           {
             "storyId": "work-management-route-detail-spec",
-            "leakCount": 43
+            "leakCount": 7
           },
           {
             "storyId": "work-management-backlog-board-spec",
-            "leakCount": 39
+            "leakCount": 8
           },
           {
             "storyId": "work-management-hierarchy-gates-spec",
-            "leakCount": 41
+            "leakCount": 3
           },
           {
             "storyId": "work-management-inspector-spec",
-            "leakCount": 22
+            "leakCount": 4
           },
           {
             "storyId": "knowledge-management-components-spec",
-            "leakCount": 37
+            "leakCount": 3
           },
           {
             "storyId": "knowledge-management-density-collaboration-spec",
-            "leakCount": 22
+            "leakCount": 2
           },
           {
             "storyId": "knowledge-management-templates-spec",
-            "leakCount": 27
+            "leakCount": 3
           },
           {
             "storyId": "forms-patterns",
@@ -7443,7 +7443,7 @@
           },
           {
             "storyId": "work-management-patterns",
-            "leakCount": 63
+            "leakCount": 2
           },
           {
             "storyId": "readiness-notification-patterns",
@@ -7467,7 +7467,7 @@
           },
           {
             "storyId": "dashboard-page-templates",
-            "leakCount": 7
+            "leakCount": 0
           },
           {
             "storyId": "proof-matrix",
@@ -7475,7 +7475,7 @@
           },
           {
             "storyId": "ai-consumption-contract",
-            "leakCount": 178
+            "leakCount": 8
           },
           {
             "storyId": "blocked-actions",
@@ -7487,11 +7487,11 @@
           },
           {
             "storyId": "aos-frontend-shell-slice",
-            "leakCount": 67
+            "leakCount": 4
           },
           {
             "storyId": "aos-owner-quality-product-shell",
-            "leakCount": 117
+            "leakCount": 8
           },
           {
             "storyId": "local-changelog",
@@ -7525,7 +7525,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 60,
-        "leakCount": 1182,
+        "leakCount": 124,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7557,7 +7557,7 @@
           },
           {
             "storyId": "text-styles",
-            "leakCount": 23
+            "leakCount": 17
           },
           {
             "storyId": "grid-system",
@@ -7581,11 +7581,11 @@
           },
           {
             "storyId": "i18n-theme-contract",
-            "leakCount": 46
+            "leakCount": 1
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 146
+            "leakCount": 8
           },
           {
             "storyId": "copy-guidelines",
@@ -7593,31 +7593,31 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 44
+            "leakCount": 2
           },
           {
             "storyId": "display-primitives-spec",
-            "leakCount": 22
+            "leakCount": 2
           },
           {
             "storyId": "interaction-disclosure-spec",
-            "leakCount": 7
+            "leakCount": 3
           },
           {
             "storyId": "stamp-spec-usage",
-            "leakCount": 29
+            "leakCount": 2
           },
           {
             "storyId": "button-spec-usage",
-            "leakCount": 14
+            "leakCount": 1
           },
           {
             "storyId": "field-spec-usage",
-            "leakCount": 10
+            "leakCount": 3
           },
           {
             "storyId": "table-work-index-spec",
-            "leakCount": 2
+            "leakCount": 0
           },
           {
             "storyId": "navigation-shell-spec",
@@ -7633,55 +7633,55 @@
           },
           {
             "storyId": "navigation-primitives-spec",
-            "leakCount": 18
+            "leakCount": 0
           },
           {
             "storyId": "navigation-product-shell-spec",
-            "leakCount": 16
+            "leakCount": 3
           },
           {
             "storyId": "dialog-spec-usage",
-            "leakCount": 24
+            "leakCount": 1
           },
           {
             "storyId": "work-management-components-spec",
-            "leakCount": 67
+            "leakCount": 5
           },
           {
             "storyId": "work-management-relationships-spec",
-            "leakCount": 11
+            "leakCount": 2
           },
           {
             "storyId": "work-management-tokens-density-views-spec",
-            "leakCount": 20
+            "leakCount": 2
           },
           {
             "storyId": "work-management-route-detail-spec",
-            "leakCount": 43
+            "leakCount": 7
           },
           {
             "storyId": "work-management-backlog-board-spec",
-            "leakCount": 39
+            "leakCount": 8
           },
           {
             "storyId": "work-management-hierarchy-gates-spec",
-            "leakCount": 41
+            "leakCount": 3
           },
           {
             "storyId": "work-management-inspector-spec",
-            "leakCount": 22
+            "leakCount": 4
           },
           {
             "storyId": "knowledge-management-components-spec",
-            "leakCount": 37
+            "leakCount": 3
           },
           {
             "storyId": "knowledge-management-density-collaboration-spec",
-            "leakCount": 22
+            "leakCount": 2
           },
           {
             "storyId": "knowledge-management-templates-spec",
-            "leakCount": 27
+            "leakCount": 3
           },
           {
             "storyId": "forms-patterns",
@@ -7693,7 +7693,7 @@
           },
           {
             "storyId": "work-management-patterns",
-            "leakCount": 63
+            "leakCount": 2
           },
           {
             "storyId": "readiness-notification-patterns",
@@ -7717,7 +7717,7 @@
           },
           {
             "storyId": "dashboard-page-templates",
-            "leakCount": 7
+            "leakCount": 0
           },
           {
             "storyId": "proof-matrix",
@@ -7725,7 +7725,7 @@
           },
           {
             "storyId": "ai-consumption-contract",
-            "leakCount": 177
+            "leakCount": 7
           },
           {
             "storyId": "blocked-actions",
@@ -7737,11 +7737,11 @@
           },
           {
             "storyId": "aos-frontend-shell-slice",
-            "leakCount": 67
+            "leakCount": 4
           },
           {
             "storyId": "aos-owner-quality-product-shell",
-            "leakCount": 117
+            "leakCount": 8
           },
           {
             "storyId": "local-changelog",
@@ -7775,7 +7775,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 60,
-        "leakCount": 2955,
+        "leakCount": 3428,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7807,7 +7807,7 @@
           },
           {
             "storyId": "text-styles",
-            "leakCount": 126
+            "leakCount": 134
           },
           {
             "storyId": "grid-system",
@@ -7831,11 +7831,11 @@
           },
           {
             "storyId": "i18n-theme-contract",
-            "leakCount": 88
+            "leakCount": 114
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 161
+            "leakCount": 210
           },
           {
             "storyId": "copy-guidelines",
@@ -7843,27 +7843,27 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 98
+            "leakCount": 106
           },
           {
             "storyId": "display-primitives-spec",
-            "leakCount": 75
+            "leakCount": 93
           },
           {
             "storyId": "interaction-disclosure-spec",
-            "leakCount": 78
+            "leakCount": 80
           },
           {
             "storyId": "stamp-spec-usage",
-            "leakCount": 33
-          },
-          {
-            "storyId": "button-spec-usage",
             "leakCount": 52
           },
           {
+            "storyId": "button-spec-usage",
+            "leakCount": 56
+          },
+          {
             "storyId": "field-spec-usage",
-            "leakCount": 58
+            "leakCount": 67
           },
           {
             "storyId": "table-work-index-spec",
@@ -7883,19 +7883,19 @@
           },
           {
             "storyId": "navigation-primitives-spec",
-            "leakCount": 74
+            "leakCount": 86
           },
           {
             "storyId": "navigation-product-shell-spec",
-            "leakCount": 23
+            "leakCount": 31
           },
           {
             "storyId": "dialog-spec-usage",
-            "leakCount": 71
+            "leakCount": 84
           },
           {
             "storyId": "work-management-components-spec",
-            "leakCount": 69
+            "leakCount": 107
           },
           {
             "storyId": "work-management-relationships-spec",
@@ -7903,35 +7903,35 @@
           },
           {
             "storyId": "work-management-tokens-density-views-spec",
-            "leakCount": 29
+            "leakCount": 36
           },
           {
             "storyId": "work-management-route-detail-spec",
-            "leakCount": 49
+            "leakCount": 60
           },
           {
             "storyId": "work-management-backlog-board-spec",
-            "leakCount": 45
+            "leakCount": 53
           },
           {
             "storyId": "work-management-hierarchy-gates-spec",
-            "leakCount": 47
+            "leakCount": 56
           },
           {
             "storyId": "work-management-inspector-spec",
-            "leakCount": 29
+            "leakCount": 35
           },
           {
             "storyId": "knowledge-management-components-spec",
-            "leakCount": 46
+            "leakCount": 65
           },
           {
             "storyId": "knowledge-management-density-collaboration-spec",
-            "leakCount": 31
+            "leakCount": 40
           },
           {
             "storyId": "knowledge-management-templates-spec",
-            "leakCount": 34
+            "leakCount": 38
           },
           {
             "storyId": "forms-patterns",
@@ -7943,7 +7943,7 @@
           },
           {
             "storyId": "work-management-patterns",
-            "leakCount": 69
+            "leakCount": 89
           },
           {
             "storyId": "readiness-notification-patterns",
@@ -7967,7 +7967,7 @@
           },
           {
             "storyId": "dashboard-page-templates",
-            "leakCount": 23
+            "leakCount": 27
           },
           {
             "storyId": "proof-matrix",
@@ -7975,7 +7975,7 @@
           },
           {
             "storyId": "ai-consumption-contract",
-            "leakCount": 242
+            "leakCount": 316
           },
           {
             "storyId": "blocked-actions",
@@ -7987,11 +7987,11 @@
           },
           {
             "storyId": "aos-frontend-shell-slice",
-            "leakCount": 72
+            "leakCount": 91
           },
           {
             "storyId": "aos-owner-quality-product-shell",
-            "leakCount": 122
+            "leakCount": 191
           },
           {
             "storyId": "local-changelog",
