@@ -1,0 +1,146 @@
+{
+  "ok": true,
+  "budgetPx": 2000,
+  "viewport": "desktop-1440x900",
+  "storyHeightBudget": {
+    "label": "story-height-desktop-px",
+    "ok": true,
+    "budget": 2000,
+    "unbudgetedViolations": [],
+    "staleAllowlist": [],
+    "toleratedDebt": [
+      {
+        "id": "color-palette",
+        "measure": 4659,
+        "recordedHeightPx": 4659,
+        "owedTo": "beyond-INIT-008",
+        "note": "39-token color specimen gallery; a catalogue split is future work — gated debt"
+      },
+      {
+        "id": "text-styles",
+        "measure": 2409,
+        "recordedHeightPx": 2409,
+        "owedTo": "beyond-INIT-008",
+        "note": "type-scale specimen catalogue; gated debt"
+      },
+      {
+        "id": "icons-motion",
+        "measure": 2041,
+        "recordedHeightPx": 2041,
+        "owedTo": "beyond-INIT-008",
+        "note": "icon + motion specimen catalogue; gated debt"
+      },
+      {
+        "id": "foundation-visual-standards",
+        "measure": 3350,
+        "recordedHeightPx": 3350,
+        "owedTo": "beyond-INIT-008",
+        "note": "foundation visual-standards catalogue; gated debt"
+      },
+      {
+        "id": "component-family-index",
+        "measure": 2957,
+        "recordedHeightPx": 2957,
+        "owedTo": "beyond-INIT-008",
+        "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
+      },
+      {
+        "id": "work-management-components-spec",
+        "measure": 2136,
+        "recordedHeightPx": 2136,
+        "owedTo": "irreducible",
+        "note": "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
+      },
+      {
+        "id": "work-management-hierarchy-gates-spec",
+        "measure": 2045,
+        "recordedHeightPx": 2045,
+        "owedTo": "irreducible",
+        "note": "S059 child = the coherent Hierarchy/gates/evidence panel; 45px over a single unit — gated debt"
+      },
+      {
+        "id": "ai-consumption-contract",
+        "measure": 5438,
+        "recordedHeightPx": 5438,
+        "owedTo": "beyond-INIT-008",
+        "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
+      },
+      {
+        "id": "aos-frontend-shell-slice",
+        "measure": 12448,
+        "recordedHeightPx": 12448,
+        "owedTo": "beyond-INIT-008",
+        "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
+      },
+      {
+        "id": "aos-owner-quality-product-shell",
+        "measure": 15285,
+        "recordedHeightPx": 15285,
+        "owedTo": "beyond-INIT-008",
+        "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
+      }
+    ]
+  },
+  "splitWorklist": [
+    {
+      "id": "color-palette",
+      "heightPx": 4659,
+      "owedTo": "beyond-INIT-008",
+      "note": "39-token color specimen gallery; a catalogue split is future work — gated debt"
+    },
+    {
+      "id": "text-styles",
+      "heightPx": 2409,
+      "owedTo": "beyond-INIT-008",
+      "note": "type-scale specimen catalogue; gated debt"
+    },
+    {
+      "id": "icons-motion",
+      "heightPx": 2041,
+      "owedTo": "beyond-INIT-008",
+      "note": "icon + motion specimen catalogue; gated debt"
+    },
+    {
+      "id": "foundation-visual-standards",
+      "heightPx": 3350,
+      "owedTo": "beyond-INIT-008",
+      "note": "foundation visual-standards catalogue; gated debt"
+    },
+    {
+      "id": "component-family-index",
+      "heightPx": 2957,
+      "owedTo": "beyond-INIT-008",
+      "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
+    },
+    {
+      "id": "work-management-components-spec",
+      "heightPx": 2136,
+      "owedTo": "irreducible",
+      "note": "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
+    },
+    {
+      "id": "work-management-hierarchy-gates-spec",
+      "heightPx": 2045,
+      "owedTo": "irreducible",
+      "note": "S059 child = the coherent Hierarchy/gates/evidence panel; 45px over a single unit — gated debt"
+    },
+    {
+      "id": "ai-consumption-contract",
+      "heightPx": 5438,
+      "owedTo": "beyond-INIT-008",
+      "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
+    },
+    {
+      "id": "aos-frontend-shell-slice",
+      "heightPx": 12448,
+      "owedTo": "beyond-INIT-008",
+      "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
+    },
+    {
+      "id": "aos-owner-quality-product-shell",
+      "heightPx": 15285,
+      "owedTo": "beyond-INIT-008",
+      "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
+    }
+  ]
+}

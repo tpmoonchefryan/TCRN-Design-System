@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
 import {
+  ActionDrawer,
   Button,
   ConfirmActionDialog,
+  DetailDrawer,
   Dialog,
   Heading,
   Icon,
@@ -192,6 +194,22 @@ function OverlayStaticModes() {
           cancelLabel="Close"
           disabled
         />
+      </div>
+      {/* TCRN-DS-STORY-051: renders the package-backed DetailDrawer/ActionDrawer so the
+          "Structural drawers" heading (reusing the existing content-dictionary key) is a real
+          rendered assertion — not a ghost pin satisfied only by the embedded dictionary payload —
+          and backs the "Component library available" claim for these two package exports. */}
+      <div className="tcrn-overlay-static-card" data-structural-drawer-card="true">
+        <Heading level={3}>Structural drawers</Heading>
+        <Text>Complementary side panels for read context and action review. They are non-modal and do not claim focus containment; owner routes wire close, focus, and mutation authority.</Text>
+        <div className="tcrn-overlay-drawer-stage" data-structural-drawer-stage="true">
+          <DetailDrawer title="Detail drawer read context" open>
+            <Text>Package-backed structural drawer for read-oriented context. It stays complementary and non-modal.</Text>
+          </DetailDrawer>
+          <ActionDrawer title="Action drawer review context" open>
+            <Text>Package-backed structural drawer for action review. Owner routes wire close, focus, and mutation authority.</Text>
+          </ActionDrawer>
+        </div>
       </div>
     </section>
   );

@@ -4,84 +4,350 @@
   "sections": [
     {
       "section": "Welcome",
+      "page": "welcome-governance-entry.html",
       "theme": "light",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Welcome",
+      "page": "welcome-governance-entry.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Welcome",
+      "page": "welcome-routing-contribution.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Welcome",
+      "page": "welcome-routing-contribution.html",
       "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Style Guide",
+      "page": "style-guide-identity-brand.html",
       "theme": "light",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Style Guide",
+      "page": "style-guide-identity-brand.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Style Guide",
+      "page": "style-guide-type-layout.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Style Guide",
+      "page": "style-guide-type-layout.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Style Guide",
+      "page": "style-guide-interaction-copy.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Style Guide",
+      "page": "style-guide-interaction-copy.html",
       "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Foundations",
+      "page": "foundations-tokens-i18n.html",
       "theme": "light",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Foundations",
+      "page": "foundations-tokens-i18n.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Foundations",
+      "page": "foundations-copy-governance.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Foundations",
+      "page": "foundations-copy-governance.html",
       "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Components",
+      "page": "components-component-inventory.html",
       "theme": "light",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Components",
+      "page": "components-component-inventory.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-controls-data.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-controls-data.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-navigation-shells.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-navigation-shells.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-overlays.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-overlays.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-work-management.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-work-management.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-knowledge-management.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-knowledge-management.html",
       "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Patterns",
+      "page": "patterns-forms-workbench.html",
       "theme": "light",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Patterns",
+      "page": "patterns-forms-workbench.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Patterns",
+      "page": "patterns-work-management.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Patterns",
+      "page": "patterns-work-management.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Patterns",
+      "page": "patterns-feedback-selection.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Patterns",
+      "page": "patterns-feedback-selection.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Patterns",
+      "page": "patterns-data-pages.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Patterns",
+      "page": "patterns-data-pages.html",
       "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Proof",
+      "page": "proof-proof-governance.html",
       "theme": "light",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Proof",
+      "page": "proof-proof-governance.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Proof",
+      "page": "proof-proof-visual-instances.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Proof",
+      "page": "proof-proof-visual-instances.html",
       "theme": "dark",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Change Log",
+      "page": "change-log-governance-records.html",
       "theme": "light",
       "violationCount": 0,
       "violations": []
     },
     {
       "section": "Change Log",
+      "page": "change-log-governance-records.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-1.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-1.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-2.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-2.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-3.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-3.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-4.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-4.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-5.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-5.html",
       "theme": "dark",
       "violationCount": 0,
       "violations": []

@@ -6,6 +6,16 @@ import { createRequire } from "node:module";
 import { chromium } from "@playwright/test";
 import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.mjs";
 import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE } from "./lib/visual-signature.mjs";
+import { storybookId } from "./lib/storybook-id.mjs";
+import { localeInvariantLedger, findLatinLeaks, partitionStoryLeaks } from "./lib/locale-invariant-ledger.mjs";
+import {
+  STORY_HEIGHT_BUDGET_PX,
+  STORY_HEIGHT_BUDGET_VIEWPORT,
+  STORY_HEIGHT_GRACE_ALLOWLIST,
+  evaluateBudget
+} from "./lib/story-budget.mjs";
+import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
+import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
 
 const require = createRequire(import.meta.url);
 const axePath = require.resolve("axe-core/axe.min.js");
@@ -29,51 +39,17 @@ function collectLocalAbsolutePathHits(label, value) {
     .map(({ name }) => ({ label, rule: name }));
 }
 
-const requiredStories = [
-  { id: "welcome-governance", group: "Welcome", storybookId: "tcrn-design-system-welcome--welcome-governance" },
-  { id: "governance-boundaries", group: "Welcome", storybookId: "tcrn-design-system-welcome--governance-boundaries" },
-  { id: "maintainers-routing", group: "Welcome", storybookId: "tcrn-design-system-welcome--maintainers-routing" },
-  { id: "contribution-model", group: "Welcome", storybookId: "tcrn-design-system-welcome--contribution-model" },
-  { id: "release-bug-policy", group: "Welcome", storybookId: "tcrn-design-system-welcome--release-bug-policy" },
-  { id: "brand-identity", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--brand-identity" },
-  { id: "color-palette", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--color-palette" },
-  { id: "text-styles", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--text-styles" },
-  { id: "grid-system", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--grid-system" },
-  { id: "icons-motion", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--icons-motion" },
-  { id: "global-states", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--global-states" },
-  { id: "copy-creation-rules", group: "Style Guide", storybookId: "tcrn-design-system-style-guide--copy-creation-rules" },
-  { id: "tokens-copy-state", group: "Foundations", storybookId: "tcrn-design-system-foundations--tokens-copy-state" },
-  { id: "i18n-theme-contract", group: "Foundations", storybookId: "tcrn-design-system-foundations--i-18-n-theme-contract" },
-  { id: "foundation-visual-standards", group: "Foundations", storybookId: "tcrn-design-system-foundations--foundation-visual-standards" },
-  { id: "copy-guidelines", group: "Foundations", storybookId: "tcrn-design-system-foundations--copy-guidelines" },
-  { id: "component-family-index", group: "Components", storybookId: "tcrn-design-system-components--component-family-index" },
-  { id: "display-primitives-spec", group: "Components", storybookId: "tcrn-design-system-components--display-primitives-spec" },
-  { id: "interaction-disclosure-spec", group: "Components", storybookId: "tcrn-design-system-components--interaction-disclosure-spec" },
-  { id: "stamp-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--stamp-spec-usage" },
-  { id: "button-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--button-spec-usage" },
-  { id: "field-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--field-spec-usage" },
-  { id: "navigation-shell-spec", group: "Components", storybookId: "tcrn-design-system-components--navigation-shell-spec" },
-  { id: "aos-frontend-shell-slice", group: "Components", storybookId: "tcrn-design-system-components--aos-frontend-shell-slice" },
-  { id: "aos-owner-quality-product-shell", group: "Components", storybookId: "tcrn-design-system-components--aos-owner-quality-product-shell" },
-  { id: "dialog-spec-usage", group: "Components", storybookId: "tcrn-design-system-components--dialog-spec-usage" },
-  { id: "table-work-index-spec", group: "Components", storybookId: "tcrn-design-system-components--table-work-index-spec" },
-  { id: "work-management-components-spec", group: "Components", storybookId: "tcrn-design-system-components--work-management-components-spec" },
-  { id: "knowledge-management-components-spec", group: "Components", storybookId: "tcrn-design-system-components--knowledge-management-components-spec" },
-  { id: "forms-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--forms-patterns" },
-  { id: "workbench-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--workbench-patterns" },
-  { id: "work-management-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--work-management-patterns" },
-  { id: "readiness-notification-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--readiness-notification-patterns" },
-  { id: "selection-list-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--selection-list-patterns" },
-  { id: "modal-validation-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--modal-validation-patterns" },
-  { id: "datagrid-fields-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--datagrid-fields-patterns" },
-  { id: "big-list-search-patterns", group: "Patterns", storybookId: "tcrn-design-system-patterns--big-list-search-patterns" },
-  { id: "dashboard-page-templates", group: "Patterns", storybookId: "tcrn-design-system-patterns--dashboard-page-templates" },
-  { id: "proof-matrix", group: "Proof", storybookId: "tcrn-design-system-proof--proof-matrix" },
-  { id: "ai-consumption-contract", group: "Proof", storybookId: "tcrn-design-system-proof--ai-consumption-contract" },
-  { id: "blocked-actions", group: "Proof", storybookId: "tcrn-design-system-proof--blocked-actions" },
-  { id: "overlay-focus", group: "Proof", storybookId: "tcrn-design-system-proof--overlay-focus" },
-  { id: "local-changelog", group: "Change Log", storybookId: "tcrn-design-system-change-log--local-changelog" }
-];
+// Derived from the single registry source (governance.storyRegistryOrder, built to dist)
+// plus the Storybook toId helper (scripts/lib/storybook-id.mjs). Byte-equal to the former
+// hand list: 43 {id, group, storybookId} entries in registry order, including the
+// digit-split id tcrn-design-system-foundations--i-18-n-theme-contract. The smoke.test
+// tie-gate keeps storyRegistryOrder honest against the emitted pages (TCRN-DS-STORY-055).
+const requiredStories = storyRegistryOrder.map((entry) => ({
+  id: entry.id,
+  group: entry.group,
+  categoryId: entry.categoryId,
+  storybookId: storybookId(entry.group, entry.id)
+}));
 
 const viewports = [
   { name: "desktop-1440x900", width: 1440, height: 900 },
@@ -90,12 +66,58 @@ const sectionPages = [
   { group: "Change Log", slug: "change-log", file: "change-log.html" }
 ];
 
-function staticStoryRoute(story) {
-  const section = sectionPages.find((page) => page.group === story.group);
-  if (!section) {
-    throw new Error(`missing_static_story_section:${story.group}:${story.id}`);
+// TCRN-DS-STORY-056 page helpers (mirror apps/storybook/src/build/navigation.ts). Category
+// filenames are group-namespaced because categoryId is NOT globally unique.
+const groupSlugFor = (group) => group.toLowerCase().replace(/\s+/g, "-");
+const categorySlug = (categoryId) => categoryId.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const categoryFileName = (group, categoryId) => `${groupSlugFor(group)}-${categorySlug(categoryId)}.html`;
+const categoryFileForStory = (story) => categoryFileName(story.group, story.categoryId);
+
+// Derived CATEGORY pages (one per non-empty category, registry order); story bodies live here
+// now. The section INDEX pages (sectionPages, above) are bounded nav-only shells.
+const categoryPages = (() => {
+  const list = [];
+  const seen = new Set();
+  for (const story of requiredStories) {
+    const key = `${story.group} ${story.categoryId}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    list.push({
+      kind: "category",
+      group: story.group,
+      categoryId: story.categoryId,
+      slug: `${groupSlugFor(story.group)}-${categorySlug(story.categoryId)}`,
+      file: categoryFileName(story.group, story.categoryId),
+      storyIds: requiredStories.filter((entry) => entry.group === story.group && entry.categoryId === story.categoryId).map((entry) => entry.id)
+    });
   }
-  return `apps/storybook/storybook-static/${section.file}#${story.id}`;
+  return list;
+})();
+
+// TCRN-DS-STORY-058: the generated per-component API reference pages (from the same shared helper
+// the emitter uses). They carry no story bodies — one data-component-reference-id region per
+// component — so the capture walk, height collection, and zh-CN leak scan branch on kind.
+const referenceContractPages = referencePages().map((page) => ({
+  kind: "reference",
+  group: "Components",
+  slug: page.file.replace(/\.html$/, ""),
+  file: page.file,
+  storyIds: [],
+  componentNames: page.components.map((component) => component.name)
+}));
+
+// The full emitted page set: 7 bounded section INDEX pages + every category page + every generated
+// reference page. The capture pass walks this so all are proven (index pages: bounded shell;
+// category pages: story bodies; reference pages: component API regions).
+const contractPages = [
+  ...sectionPages.map((section) => ({ kind: "index", group: section.group, slug: section.slug, file: section.file, storyIds: [] })),
+  ...categoryPages,
+  ...referenceContractPages
+];
+
+// A story's owning page is its CATEGORY page (bodies moved off the section index page).
+function staticStoryRoute(story) {
+  return `apps/storybook/storybook-static/${categoryFileForStory(story)}#${story.id}`;
 }
 
 const forbiddenCopyPatterns = [
@@ -191,11 +213,32 @@ function startStaticServer(rootDirectory) {
 }
 
 async function collectPageHealth(page) {
-  return await page.evaluate((patterns) => {
+  return await page.evaluate(async (patterns) => {
+    // Settle on font readiness, then two rAFs so any font-swap reflow is applied, before any
+    // layout is read.
+    if (document.fonts && typeof document.fonts.ready?.then === "function") {
+      try {
+        await document.fonts.ready;
+      } catch {
+        // No web fonts / already settled — measure against whatever is loaded.
+      }
+    }
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
     const storyRegions = Array.from(document.querySelectorAll("[data-contract-story-id]")).map((node) => {
       const rect = node.getBoundingClientRect();
       return {
         id: node.getAttribute("data-contract-story-id"),
+        visible: rect.width > 0 && rect.height > 0,
+        width: Math.round(rect.width),
+        height: Math.round(rect.height)
+      };
+    });
+    // TCRN-DS-STORY-058: reference pages carry component API regions instead of story bodies; the
+    // story-height budget gates each region the same way (<=2000px), so measure them in parallel.
+    const referenceRegions = Array.from(document.querySelectorAll("[data-component-reference-id]")).map((node) => {
+      const rect = node.getBoundingClientRect();
+      return {
+        id: node.getAttribute("data-component-reference-id"),
         visible: rect.width > 0 && rect.height > 0,
         width: Math.round(rect.width),
         height: Math.round(rect.height)
@@ -212,13 +255,31 @@ async function collectPageHealth(page) {
       .join(" ")
       .replace(/\s+/g, " ")
       .trim();
+    // A "clipped" element is one whose text is actually CUT OFF from view. Text is only cut
+    // when the element hides its overflow on the overflowing axis (overflow hidden/clip, or
+    // scroll/auto where content past the edge needs scrolling to see). On an overflow:visible
+    // element, scrollWidth > clientWidth merely means content extends past the padding box and
+    // is STILL FULLY VISIBLE — not clipped. The prior check flagged any scroll/client excess
+    // regardless of overflow, so a flex end-item (the right-flush disclosure chevron) reporting
+    // a few px of horizontal overflow read as a clip; that excess flickers with layout-settle
+    // timing, so under full-`pnpm verify` load (slower settle) it intermittently reddened
+    // clippedButtonText/browserProofSummary. Gating on a clipping overflow value removes the
+    // false positive deterministically without weakening real-clip (ellipsis / fixed-height
+    // cut) detection, which always sets a clipping overflow.
+    const clipsAxis = (value) => value !== "visible";
     const clipped = Array.from(document.querySelectorAll("button, select, .tcrn-badge, .tcrn-heading, h1, h2, h3"))
       .filter((node) => !node.classList.contains("tcrn-sr-only"))
-      .map((node) => ({
-        tag: node.tagName.toLowerCase(),
-        text: visibleText(node).slice(0, 80),
-        clipped: visibleText(node).length > 0 && (node.scrollWidth > node.clientWidth + 1 || node.scrollHeight > node.clientHeight + 1)
-      }))
+      .map((node) => {
+        const style = getComputedStyle(node);
+        const text = visibleText(node);
+        return {
+          tag: node.tagName.toLowerCase(),
+          text: text.slice(0, 80),
+          clipped: text.length > 0
+            && ((clipsAxis(style.overflowX) && node.scrollWidth > node.clientWidth + 1)
+              || (clipsAxis(style.overflowY) && node.scrollHeight > node.clientHeight + 1))
+        };
+      })
       .filter((item) => item.clipped);
     const readbackStateViewGapViolations = Array.from(document.querySelectorAll(".tcrn-readback-panel"))
       .flatMap((panel) => {
@@ -433,6 +494,7 @@ async function collectPageHealth(page) {
       viewportWidth: window.innerWidth,
       bodyOverflowX: document.documentElement.scrollWidth > window.innerWidth + 1,
       storyRegions,
+      referenceRegions,
       clipped,
       readbackStateViewGapViolations,
       storyTextRhythmViolations,
@@ -579,12 +641,15 @@ mkdirSync(screenshotDir, { recursive: true });
 assertBuiltSurface(staticSurfacePath);
 assertBuiltSurface(aiContractPath);
 assertBuiltSurface(llmsPath);
-for (const section of sectionPages) {
-  assertBuiltSurface(`apps/storybook/storybook-static/${section.file}`);
+for (const page of contractPages) {
+  assertBuiltSurface(`apps/storybook/storybook-static/${page.file}`);
 }
 
-const expectedCategoryCount = 19;
-const expectedStorybookShellNavGroupCount = sectionPages.length;
+const expectedCategoryCount = 20;
+// TCRN-DS-STORY-056 TRAP GUARD: the nav-group count is 7 and MUST stay decoupled from the
+// emitted-page count (7 index + 20 category = 27 pages). Deriving it from a page-list length
+// would silently mis-assert. Pin it to the number of distinct top-level sections.
+const expectedStorybookShellNavGroupCount = new Set(requiredStories.map((story) => story.group)).size;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
   "layout-rhythm",
@@ -647,7 +712,7 @@ const aiContractTraceabilityCheck = {
     && aiContract.foundationVisualStandardCategories?.length === expectedFoundationStandardCategoryIds.length
     && aiContract.consumerVisualStyleContract?.id === "consumer-visual-style-contract-v1"
     && aiContract.storybookDocShellVisualOracle?.id === "original-storybook-doc-shell-v1"
-    && aiContract.storybookDocShellVisualOracle?.oracleRecoveryReceipt === "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan"
+    && aiContract.storybookDocShellVisualOracle?.oracleRecoveryReceipt === "internal DS doc-shell restoration plan (owner-held governance record)"
     && aiContract.storybookDocShellVisualOracle?.baselineManifestClassification === "owner_declared_original_storybook_doc_shell_standard"
     && String(aiContract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "").includes("Storybook documentation shell")
 	    && (aiContract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) => (
@@ -660,7 +725,7 @@ const aiContractTraceabilityCheck = {
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
     && llmsText.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")
-    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan")
+    && llmsText.includes("oracle recovery: internal DS doc-shell restoration plan (owner-held governance record)")
     && llmsText.includes("baseline classification: owner_declared_original_storybook_doc_shell_standard")
     && llmsText.includes(contractPayloadDigest),
   contractVersion: aiContract.contractVersion,
@@ -686,7 +751,7 @@ const aiContractTraceabilityCheck = {
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
     && llmsText.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")
-    && llmsText.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan")
+    && llmsText.includes("oracle recovery: internal DS doc-shell restoration plan (owner-held governance record)")
     && llmsText.includes("baseline classification: owner_declared_original_storybook_doc_shell_standard")
 };
 
@@ -718,7 +783,14 @@ let keyboardChecklist;
 let localeMenuFocusReturnCheck;
 
 for (const viewport of viewports) {
-  for (const section of sectionPages) {
+  // TCRN-DS-STORY-056: walk EVERY emitted page. Category pages carry the story bodies; the 7
+  // section index pages are bounded nav-only shells (no [data-contract-story-id]). Both are
+  // captured — category pages via the full story-coverage check, index pages via a bounded
+  // per-page check — so the split is proven, not assumed.
+  for (const contractPage of contractPages) {
+    const section = contractPage;
+    const isCategory = section.kind === "category";
+    const groupFirstStory = requiredStories.find((story) => story.group === section.group);
     const page = await browser.newPage({ viewport, reducedMotion: "reduce" });
     const consoleMessages = [];
     const pageErrors = [];
@@ -732,8 +804,17 @@ for (const viewport of viewports) {
     page.on("requestfailed", (request) => failedRequests.push({ url: request.url(), failure: request.failure()?.errorText ?? "unknown" }));
 
     await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}`);
-    await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
-    if (viewport.name === "desktop-1440x900") {
+    if (isCategory) {
+      await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+    } else if (section.kind === "reference") {
+      // TCRN-DS-STORY-058: reference pages have no story bodies — wait for the component API
+      // regions instead (waiting for data-contract-story-id here would hang the walk).
+      await page.waitForSelector("[data-component-reference-id]", { state: "attached" });
+    } else {
+      // Bounded index page: no story bodies, so wait for the shell's page-head strip instead.
+      await page.waitForSelector("[data-doc-page-head='governed-section']", { state: "attached" });
+    }
+    if (viewport.name === "desktop-1440x900" && isCategory) {
       // Progressive-disclosure contract: pages open as a compact index (all stories
       // collapsed), a disclosure click expands its story, and hash navigation expands
       // its target. Checked before the capture pass force-expands everything.
@@ -773,8 +854,10 @@ for (const viewport of viewports) {
       }
     });
     const health = await collectPageHealth(page);
-    const sectionStories = requiredStories.filter((story) => story.group === section.group);
-    const screenshotPath = relativeScreenshotPath(`${viewport.name}-section-${section.slug}.png`);
+    const sectionStories = isCategory
+      ? requiredStories.filter((story) => story.group === section.group && story.categoryId === section.categoryId)
+      : [];
+    const screenshotPath = relativeScreenshotPath(`${viewport.name}-page-${section.slug}.png`);
     await setTransientScreenshotChromeHidden(page, true);
     // Section captures are whole-page compositions of stories that are each gated below,
     // so they add no coverage — and their height is unbounded (section-components reaches
@@ -782,10 +865,10 @@ for (const viewport of viewports) {
     // finished painting. Measured: its signature swings mean=34.6 between runs, four times
     // the distance a real one-token colour change produces. Recorded for human inspection,
     // deliberately not gated: a tolerance wide enough to admit it would admit real regressions.
-    const sectionSignature = await captureWithSignature(page, `section-${section.slug}@${viewport.name}`, screenshotPath, { fullPage: true, gated: false });
+    const sectionSignature = await captureWithSignature(page, `page-${section.slug}@${viewport.name}`, screenshotPath, { fullPage: true, gated: false });
     await setTransientScreenshotChromeHidden(page, false);
     visualEntries.push({
-      storyId: `section-${section.slug}`,
+      storyId: `page-${section.slug}`,
       viewport: viewport.name,
       path: screenshotPath,
       visualGate: "not-gated-unbounded-full-page",
@@ -808,14 +891,21 @@ for (const viewport of viewports) {
       });
     }
 
-    if (viewport.name === "desktop-1440x900") {
+    // TCRN-DS-STORY-058: reference pages carry NEW content (component API tables + the index grid)
+    // whose a11y/contrast is worth the same both-theme axe floor as the story bodies; they wait on
+    // the component regions rather than story bodies for the dark reload.
+    const runsAxe = isCategory || section.kind === "reference";
+    const axeContentSelector = section.kind === "reference" ? "[data-component-reference-id]" : "[data-contract-story-id]";
+    if (viewport.name === "desktop-1440x900" && runsAxe) {
       // E6: axe runs in both themes so dark-mode contrast has the same 4.5:1 floor as
       // light. Dark is loaded fresh with ?theme=dark rather than toggled in place — the
       // page's per-panel theme previews only render correctly under the runtime's own
       // theme handling, so an in-place attribute flip would produce false contrast hits.
-      axeSummaries.push({ section: section.group, theme: "light", ...(await runAxe(page)) });
+      // Scoped to category + reference pages (which carry rendered content); each also carries the
+      // full shell, so the bounded index pages need no separate axe pass.
+      axeSummaries.push({ section: section.group, page: section.file, theme: "light", ...(await runAxe(page)) });
       await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?theme=dark&locale=zh-CN`);
-      await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+      await page.waitForSelector(axeContentSelector, { state: "attached" });
       // The page ships data-tcrn-theme="light" and a script flips it to dark, which the
       // header/current-location animate over ~400ms. Kill transitions so axe measures the
       // settled dark state, not a mid-flip frame — otherwise it reports transient contrast.
@@ -826,7 +916,7 @@ for (const viewport of viewports) {
         }
       });
       await page.waitForTimeout(120);
-      axeSummaries.push({ section: section.group, theme: "dark", ...(await runAxe(page)) });
+      axeSummaries.push({ section: section.group, page: section.file, theme: "dark", ...(await runAxe(page)) });
     }
 
     browserSummaries.push({
@@ -834,8 +924,13 @@ for (const viewport of viewports) {
       browser: "chromium",
       browserVersion,
       url: `/apps/storybook/storybook-static/${section.file}`,
+      pageKind: section.kind,
       expectedSection: section.group,
       expectedStoryIds: sectionStories.map((story) => story.id),
+      // A bounded index page has no visible story body, but its nav still marks the section's
+      // first story active (the scroll-spy no-ops with zero story regions), so the active-nav
+      // assertion targets that story instead of a nonexistent rendered body.
+      expectedActiveStoryId: isCategory ? (sectionStories[0]?.id ?? null) : (groupFirstStory?.id ?? null),
       consoleMessages,
       pageErrors,
       failedRequests,
@@ -850,10 +945,13 @@ await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#components
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-doc-nav-item='component-family-index'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
+// TCRN-DS-STORY-056: a SECTION-slug hash (#components) still resolves to the section INDEX page,
+// which is now a BOUNDED nav-only shell — no story section and no story bodies. The nav still
+// marks the section's first story active (the scroll-spy no-ops with zero story regions).
 const hashRouteCheck = {
   ok: storybookPage.url().endsWith("/components.html")
-    && await storybookPage.locator("[data-story-section='Components']").isVisible()
-    && await storybookPage.locator("[data-story-id='component-family-index']").isVisible()
+    && await storybookPage.locator("[data-story-section='Components']").count() === 0
+    && await storybookPage.locator("[data-story-id='component-family-index']").count() === 0
     && await storybookPage.locator("[data-doc-nav-item='component-family-index'][aria-current='location'][data-doc-nav-item-active='true']").count() === 1
     && await storybookPage.locator("[data-story-id='welcome-governance']").count() === 0,
   source: `${staticSurfacePath}#components`,
@@ -863,8 +961,11 @@ await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#button-spe
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
+// TCRN-DS-STORY-056: a STORY hash (#button-spec-usage) redirects from the section index page to
+// the owning CATEGORY page (button-spec-usage lives in Components/controls-data), preserving the
+// hash — the redirect is what keeps legacy section-anchored deep links working.
 const hashStoryRouteCheck = {
-  ok: storybookPage.url().endsWith("/components.html#button-spec-usage")
+  ok: storybookPage.url().endsWith("/components-controls-data.html#button-spec-usage")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
     && await storybookPage.locator("[data-story-id='button-spec-usage']").isVisible()
     && await storybookPage.locator("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']").count() === 1
@@ -876,6 +977,10 @@ const firstStoryHashShellParityRoutes = sectionPages.map((section) => {
   const firstStory = requiredStories.find((story) => story.group === section.group);
   return {
     ...section,
+    // TCRN-DS-STORY-056: navigate directly to the story's CATEGORY page (where the body lives).
+    // Every group's first story sits on its first category page, and all category pages ship the
+    // identical shell, so the cross-page shell-style parity signature still collapses to one.
+    file: firstStory ? categoryFileForStory(firstStory) : section.file,
     storyId: firstStory?.id ?? null
   };
 });
@@ -1143,7 +1248,7 @@ const firstStoryHashShellParityCheck = {
   readbacks: firstStoryHashShellParityReadbacks
 };
 const mobileHashAnchorPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
-const mobileFoundationHashRoute = `${staticServer.origin}/apps/storybook/storybook-static/foundations.html?theme=light&locale=zh-CN#foundation-visual-standards`;
+const mobileFoundationHashRoute = `${staticServer.origin}/apps/storybook/storybook-static/foundations-tokens-i18n.html?theme=light&locale=zh-CN#foundation-visual-standards`;
 const collectMobileHashAnchorMetrics = async (label) => {
   await mobileHashAnchorPage.waitForSelector("[data-storybook-locale='zh-CN']");
   await mobileHashAnchorPage.waitForSelector("[data-active-story-section='Foundations']");
@@ -1349,7 +1454,7 @@ const mobileHashAnchorOcclusionCheck = {
   readbacks: mobileHashAnchorReadbacks
 };
 const mobileKnowledgeDocShellLayeringPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
-const mobileKnowledgeDocShellLayeringRoute = `${staticServer.origin}/apps/storybook/storybook-static/components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec`;
+const mobileKnowledgeDocShellLayeringRoute = `${staticServer.origin}/apps/storybook/storybook-static/components-knowledge-management.html?theme=dark&locale=zh-CN#knowledge-management-components-spec`;
 const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
   await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-storybook-locale='zh-CN']");
   await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-active-story-section='Components']");
@@ -1554,7 +1659,11 @@ const mobileKnowledgeDocShellLayeringCheck = {
   viewport: { width: 390, height: 844 },
   readbacks: mobileKnowledgeDocShellLayeringReadbacks
 };
-	await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=zh-CN#component-family-index`);
+	// TCRN-DS-STORY-056: same-page anchor-scroll must stay WITHIN one category page. stamp/button/
+	// field/table-work-index-spec all live on components-controls-data.html, so a nav click from the
+	// page's first story to a later one is an in-page scroll (the anchor-scroll script recognises
+	// the same pathname), not a cross-page navigation.
+	await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-controls-data.html?locale=zh-CN#stamp-spec-usage`);
 	await storybookPage.waitForSelector("[data-active-story-section='Components']");
 	await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
 	await storybookPage.evaluate((routeId) => {
@@ -1571,7 +1680,7 @@ await storybookPage.waitForSelector("[data-doc-nav-item='table-work-index-spec']
 await storybookPage.waitForTimeout(150);
 const anchorScrollMetrics = await storybookPage.evaluate(() => {
   const target = document.getElementById("table-work-index-spec");
-  const previous = document.getElementById("dialog-spec-usage");
+  const previous = document.getElementById("field-spec-usage");
   const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
   return {
     url: window.location.href,
@@ -1584,17 +1693,21 @@ const anchorScrollMetrics = await storybookPage.evaluate(() => {
   };
 });
 const anchorScrollCheck = {
-  ok: storybookPage.url().endsWith("/components.html?locale=zh-CN#table-work-index-spec")
+  ok: storybookPage.url().endsWith("/components-controls-data.html?locale=zh-CN#table-work-index-spec")
     && anchorScrollMetrics.activeStoryId === "table-work-index-spec"
     && targetTopMatchesAnchorOffset(anchorScrollMetrics)
     && (anchorScrollMetrics.previousBottom === null || anchorScrollMetrics.previousBottom <= anchorScrollMetrics.targetTop - 12),
   source: "left secondary nav click -> table-work-index-spec",
   metrics: anchorScrollMetrics
 };
-await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/patterns.html?locale=zh-CN#readiness-notification-patterns`);
+// TCRN-DS-STORY-056: scroll-spy must observe two stories on ONE page. datagrid-fields-patterns
+// and dashboard-page-templates both live on patterns-data-pages.html, so scrolling the page moves
+// the active nav marker from the first to the last (dashboard, the last story) without a page
+// change; the "at page end -> last story" rule keeps it robust on a short page.
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/patterns-data-pages.html?locale=zh-CN#datagrid-fields-patterns`);
 await storybookPage.waitForSelector("[data-active-story-section='Patterns']");
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
-await storybookPage.waitForSelector("[data-doc-nav-item='readiness-notification-patterns'][aria-current='location'][data-doc-nav-item-active='true']");
+await storybookPage.waitForSelector("[data-doc-nav-item='datagrid-fields-patterns'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(300);
 await storybookPage.evaluate(() => {
   const target = document.getElementById("dashboard-page-templates");
@@ -1630,7 +1743,7 @@ const scrollSpyCheck = {
   ok: scrollSpyMetrics.activeStoryId === "dashboard-page-templates"
     && scrollSpyMetrics.activeAriaCurrent === "location"
     && targetTopMatchesAnchorOffset(scrollSpyMetrics)
-    && scrollSpyMetrics.hash === "#readiness-notification-patterns"
+    && scrollSpyMetrics.hash === "#datagrid-fields-patterns"
     && scrollSpyMetrics.scrollSpyAvailable,
   source: "manual page scroll -> dashboard-page-templates active nav",
   metrics: scrollSpyMetrics
@@ -1748,18 +1861,124 @@ async function collectLocalizedShellChromeCheck(page, check) {
   };
 }
 
+// Systematic English-leak gate (TCRN-DS-STORY-048). The four hand-authored i18n checks
+// above catch only the strings a human pre-listed on four routes; this scan renders every
+// one of the 43 stories on a localized route and flags any run of >=2 Latin words that is
+// neither exempt (localeInvariantLedger.exemptSubtreeSelectors) nor audited debt
+// (translationDebtAllowlist). It loads 7 section pages, not 43 routes: each page carries its
+// whole group's stories, so one expand + walk per page covers every story on that page.
+// Exempt subtrees are hidden (not cloned) so innerText reads the real rendered layout, then
+// restored — cloning a detached node breaks innerText's line-box behaviour.
+async function collectLocaleLeakScan(page, locale, { gating }) {
+  const exemptSelector = localeInvariantLedger.exemptSubtreeSelectors.join(", ");
+  const regionResults = [];
+  // TCRN-DS-STORY-056: story bodies live on the category pages now — walk those (each story body
+  // appears on exactly one category page, so coverage is still every story once).
+  for (const section of categoryPages) {
+    await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?locale=${locale}`);
+    await page.waitForSelector(`[data-storybook-locale='${locale}']`);
+    await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+    await expandAllStoriesForContentRead(page);
+    const regionTexts = await page.evaluate((selector) => {
+      const results = [];
+      for (const region of document.querySelectorAll("[data-contract-story-id]")) {
+        const storyId = region.getAttribute("data-contract-story-id");
+        const restored = [];
+        for (const node of region.querySelectorAll(selector)) {
+          restored.push([node, node.style.display]);
+          node.style.display = "none";
+        }
+        const text = region.innerText;
+        for (const [node, previous] of restored) {
+          node.style.display = previous;
+        }
+        results.push({ storyId, text });
+      }
+      return results;
+    }, exemptSelector);
+    for (const { storyId, text } of regionTexts) {
+      regionResults.push({ storyId, leaks: findLatinLeaks(text, localeInvariantLedger.properNouns) });
+    }
+  }
+  // TCRN-DS-STORY-058: the reference pages render machine tokens (in <code>, exempt) plus
+  // dictionary-backed chrome. Walk each page's whole [data-reference-page] section (intro + every
+  // component region) on the localized route, so any unswapped English chrome is caught the same
+  // way the S048 gate catches it in stories — closing the leak hole a new page kind would open.
+  for (const section of referenceContractPages) {
+    await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?locale=${locale}`);
+    await page.waitForSelector(`[data-storybook-locale='${locale}']`);
+    await page.waitForSelector("[data-reference-page]", { state: "attached" });
+    const regionTexts = await page.evaluate((selector) => {
+      const results = [];
+      for (const region of document.querySelectorAll("[data-reference-page]")) {
+        const storyId = `reference-page-${region.getAttribute("data-reference-page")}`;
+        const restored = [];
+        for (const node of region.querySelectorAll(selector)) {
+          restored.push([node, node.style.display]);
+          node.style.display = "none";
+        }
+        const text = region.innerText;
+        for (const [node, previous] of restored) {
+          node.style.display = previous;
+        }
+        results.push({ storyId, text });
+      }
+      return results;
+    }, exemptSelector);
+    for (const { storyId, text } of regionTexts) {
+      regionResults.push({ storyId, leaks: findLatinLeaks(text, localeInvariantLedger.properNouns) });
+    }
+  }
+  if (gating) {
+    const perStory = regionResults.map(({ storyId, leaks }) => partitionStoryLeaks(storyId, leaks));
+    const newLeaks = perStory
+      .filter((story) => story.newLeaks.length > 0)
+      .map((story) => ({ storyId: story.storyId, leaks: story.newLeaks }));
+    return {
+      locale,
+      gating: true,
+      ok: newLeaks.length === 0,
+      storyCount: perStory.length,
+      allowlistedLeakCount: perStory.reduce((total, story) => total + story.allowlistedLeakCount, 0),
+      newLeakCount: newLeaks.reduce((total, story) => total + story.leaks.length, 0),
+      newLeaks,
+      perStory: perStory.map((story) => ({
+        storyId: story.storyId,
+        allowlistedLeakCount: story.allowlistedLeakCount,
+        newLeaks: story.newLeaks
+      }))
+    };
+  }
+  // Recorded report-only: count multi-word Latin runs per story without gating and without
+  // dumping the strings. NOTE fr is Latin-script, so its runs include correctly-translated
+  // French and the count is a trend signal, not a clean untranslated-English measure.
+  const perStory = regionResults.map(({ storyId, leaks }) => ({ storyId, leakCount: leaks.length }));
+  return {
+    locale,
+    gating: false,
+    disposition: "recorded_report_only",
+    ok: true,
+    storyCount: perStory.length,
+    leakCount: perStory.reduce((total, story) => total + story.leakCount, 0),
+    perStory
+  };
+}
+
 const i18nContentChecks = [
   await collectLocalizedTextCheck(storybookPage, {
     locale: "zh-CN",
-    route: `${staticSurfacePath}?locale=zh-CN#welcome-governance`,
+    route: `apps/storybook/storybook-static/welcome-governance-entry.html?locale=zh-CN#welcome-governance`,
     section: "Welcome",
     storyId: "welcome-governance",
-    requiredText: ["从这里开始", "阅读路径", "声明边界", "边界地图", "路由目录", "准入", "本地检查点"],
-    forbiddenText: ["Start here", "Reader paths", "Claim boundaries", "Boundary map", "Routing directory", "Admission", "Local checkpoint"]
+    // TCRN-DS-STORY-056: this route is now the governance-entry CATEGORY page (welcome-governance +
+    // governance-boundaries). "路由目录"/"准入" belong to routing-contribution stories on a different
+    // category page; their localization is covered by the all-43-story zh leak gate (S048).
+    requiredText: ["从这里开始", "阅读路径", "声明边界", "边界地图", "本地检查点"],
+    forbiddenText: ["Start here", "Reader paths", "Claim boundaries", "Boundary map", "Local checkpoint"]
   }),
   await collectLocalizedTextCheck(storybookPage, {
     locale: "ja",
-    route: `${staticSurfacePath}?locale=ja#button-spec-usage`,
+    route: `apps/storybook/storybook-static/components-controls-data.html?locale=ja#button-spec-usage`,
     section: "Components",
     storyId: "button-spec-usage",
     requiredText: ["ボタン仕様と使用法", "主要操作", "所有ルートの承認が必要"],
@@ -1767,15 +1986,18 @@ const i18nContentChecks = [
   }),
   await collectLocalizedTextCheck(storybookPage, {
     locale: "zh-CN",
-    route: `apps/storybook/storybook-static/style-guide.html?locale=zh-CN#color-palette`,
+    route: `apps/storybook/storybook-static/style-guide-identity-brand.html?locale=zh-CN#color-palette`,
     section: "Style Guide",
     storyId: "color-palette",
-    requiredText: ["品牌色系", "主品牌色", "副色系", "色彩角色矩阵", "主题一致性", "字体与字号令牌", "字体族契约", "字体授权层级", "页面标题 / 28px", "文本层级与节奏", "布局密度矩阵", "动效样例", "减弱动效兜底", "加载与进度样例", "骨架屏预览", "进度反馈", "交互可感知性矩阵", "状态权威矩阵", "文案流程", "禁止的文案模式"],
-    forbiddenText: ["Brand palette", "Primary brand", "Secondary brand", "Color role matrix", "Theme parity", "Type scale tokens", "Font family contract", "font licensing tiers", "Page title / 28px", "Type hierarchy and rhythm", "Layout density matrix", "Motion examples", "Reduced motion fallback", "Loading and progress examples", "Skeleton preview", "Progress feedback", "Interaction affordance matrix", "State authority matrix", "Copy workflow", "Forbidden copy patterns"]
+    // TCRN-DS-STORY-056: this route is now the identity-brand CATEGORY page (brand-identity +
+    // color-palette). The type / grid / motion / global-state / copy strings belong to Style Guide
+    // stories on other category pages; their localization is covered by the all-43-story leak gate.
+    requiredText: ["品牌色系", "主品牌色", "副色系", "色彩角色矩阵", "主题一致性"],
+    forbiddenText: ["Brand palette", "Primary brand", "Secondary brand", "Color role matrix", "Theme parity"]
   }),
   await collectLocalizedTextCheck(storybookPage, {
     locale: "zh-CN",
-    route: `apps/storybook/storybook-static/change-log.html?theme=light&locale=zh-CN#local-changelog`,
+    route: `apps/storybook/storybook-static/change-log-governance-records.html?theme=light&locale=zh-CN#local-changelog`,
     section: "Change Log",
     storyId: "local-changelog",
     requiredText: ["本地变更日志", "治理变更记录", "Storybook 治理检查点", "源路线", "故事覆盖", "AI 契约摘要", "证明工件", "无过度声明边界", "耐久源记录", "不发布", "本页内容", "治理记录"],
@@ -1836,7 +2058,7 @@ const globalZhCnIaShellCheck = await collectLocalizedShellChromeCheck(storybookP
   ]
 });
 async function collectBrandMarkLocaleCheck(page, locale) {
-  await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/style-guide.html?locale=${locale}#brand-identity`);
+  await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/style-guide-identity-brand.html?locale=${locale}#brand-identity`);
   await page.waitForSelector(`[data-storybook-locale='${locale}']`);
   await page.waitForSelector("[data-story-id='brand-identity']");
   const details = await page.evaluate(() => {
@@ -1897,12 +2119,12 @@ const brandMarkLocaleChecks = [];
 for (const locale of ["zh-CN", "en", "ja", "ko", "fr"]) {
   brandMarkLocaleChecks.push(await collectBrandMarkLocaleCheck(storybookPage, locale));
 }
-await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}?locale=ja#button-spec-usage`);
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-controls-data.html?locale=ja#button-spec-usage`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector("[data-storybook-locale='ja']");
 await storybookPage.waitForSelector("[data-doc-nav-item='button-spec-usage'][aria-current='location'][data-doc-nav-item-active='true']");
 const localeRouteCheck = {
-  ok: storybookPage.url().endsWith("/components.html?locale=ja#button-spec-usage")
+  ok: storybookPage.url().endsWith("/components-controls-data.html?locale=ja#button-spec-usage")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
     && await storybookPage.locator("[data-story-id='button-spec-usage']").isVisible()
     && await storybookPage.locator("[data-i18n-locale-select]").evaluate((node) => node.value) === "ja"
@@ -1919,6 +2141,23 @@ const localeRouteCheck = {
   globalZhCnIaShellCheck,
   brandMarkLocaleChecks
 };
+// zh-CN gates verify (its .ok flows through storyCoverageManifest.ok); ja/ko/fr are recorded
+// report-only. Promoting them to blocking is an Owner/ledger decision that quadruples the
+// debt surface — and fr is Latin-script, so a Latin-run detector cannot cleanly separate its
+// untranslated English from its correct French, which is a further reason to keep it off the gate.
+const localeLeakScan = {
+  disposition: "zh_cn_gating_ja_ko_fr_recorded_report_only",
+  detector: "runs of >=2 consecutive Latin words on the localized render; proper-noun tokens stripped; exempt subtrees removed before read",
+  exemptSubtreeSelectors: localeInvariantLedger.exemptSubtreeSelectors,
+  zhCn: await collectLocaleLeakScan(storybookPage, "zh-CN", { gating: true }),
+  recorded: {
+    ja: await collectLocaleLeakScan(storybookPage, "ja", { gating: false }),
+    ko: await collectLocaleLeakScan(storybookPage, "ko", { gating: false }),
+    fr: await collectLocaleLeakScan(storybookPage, "fr", { gating: false })
+  }
+};
+localeLeakScan.recorded.fr.latinScriptConfound = true;
+localeLeakScan.recorded.fr.note = "Latin-script target locale: multi-word Latin runs include correctly-translated French, so this count is a trend signal, not a clean untranslated-English measure.";
 const storybookChecks = [];
 for (const story of requiredStories) {
   await storybookPage.goto(`${staticServer.origin}/${staticStoryRoute(story)}`);
@@ -1927,7 +2166,30 @@ for (const story of requiredStories) {
   storybookChecks.push({ id: story.id, storybookId: story.storybookId, visible });
 }
 
-await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof.html?locale=en#blocked-actions`);
+// TCRN-DS-STORY-060: functional proof that the doc search surfaces PANELS (not only nav) and that
+// a panel's static anchor resolves. Drive the real search input with a panel's own heading text and
+// confirm a result carries that panel's #anchor and that getElementById finds it.
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-component-inventory.html?locale=en`);
+await storybookPage.waitForSelector("[data-readback-panel-anchor]", { state: "attached" });
+const panelSearchReadback = await storybookPage.evaluate(() => {
+  const panel = document.querySelector(".tcrn-readback-panel[id]");
+  const heading = panel && panel.querySelector(":scope > h2.tcrn-heading, :scope > h3.tcrn-heading, :scope > h4.tcrn-heading");
+  const panelId = panel ? panel.id : "";
+  const query = heading && heading.textContent ? heading.textContent.trim() : "";
+  const input = document.querySelector("[data-doc-search-input]");
+  if (!(input instanceof HTMLInputElement) || !panelId || !query) {
+    return { ok: false, reason: "missing-panel-or-input", panelId, query };
+  }
+  input.value = query;
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  const hrefs = Array.from(document.querySelectorAll("[data-doc-search-result]")).map((node) => node.getAttribute("href"));
+  const matchHref = "#" + panelId;
+  const found = hrefs.includes(matchHref);
+  const anchorResolves = Boolean(document.getElementById(panelId));
+  return { ok: found && anchorResolves, panelId, query, found, anchorResolves, resultCount: hrefs.length };
+});
+
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-governance.html?locale=en#blocked-actions`);
 await storybookPage.waitForSelector("[data-contract-story-id='blocked-actions']");
 await storybookPage.waitForSelector("#blocked-actions [role='dialog']");
 const staticDialogCapabilities = await storybookPage.locator("#blocked-actions [role='dialog']").evaluate((node) => ({
@@ -1938,7 +2200,7 @@ const staticDialogCapabilities = await storybookPage.locator("#blocked-actions [
   focusReturn: node.getAttribute("data-focus-return")
 }));
 
-await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components.html?locale=en#dialog-spec-usage`);
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-overlays.html?locale=en#dialog-spec-usage`);
 await storybookPage.waitForSelector("[data-contract-story-id='dialog-spec-usage']");
 await storybookPage.locator("#dialog-spec-usage").getByRole("button", { name: "Open confirmation" }).click();
 await storybookPage.waitForSelector("#dialog-spec-usage [data-dialog-fixture-panel]:not([hidden]) [role='dialog']");
@@ -2005,7 +2267,7 @@ keyboardChecklist = {
   ]
 };
 
-await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}?theme=light&locale=zh-CN#welcome-governance`);
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/welcome-governance-entry.html?theme=light&locale=zh-CN#welcome-governance`);
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
 await storybookPage.waitForSelector("#tcrn-doc-locale-trigger");
 await storybookPage.locator("#tcrn-doc-locale-trigger").click();
@@ -2056,7 +2318,18 @@ function hasSameItems(actual, expected) {
 
 const staticSectionChecks = browserSummaries.map((summary) => {
   const visibleStoryIds = summary.storyRegions.filter((story) => story.visible).map((story) => story.id);
-  const expectedCurrentStoryNav = summary.expectedStoryIds[0];
+  // TCRN-DS-STORY-056: a bounded section INDEX page legitimately renders ZERO story sections and
+  // ZERO story bodies (the bodies live on the category pages). Its nav still marks the section's
+  // first story active. So the story-section / visible-body assertions are keyed to the page kind:
+  // index pages expect 0 sections and 0 visible bodies; category pages expect exactly 1 section
+  // whose stories are visible. Everything else (full nav, shell chrome, boundaries) holds on both.
+  // TCRN-DS-STORY-058: a reference page is, like a section index page, a bounded SHELL page with
+  // zero story bodies (its content is component API regions, not stories). It renders the same
+  // shell and marks the Components first story (component-family-index) active, so the story-body
+  // expectations follow the index branch.
+  const isIndex = summary.pageKind === "index" || summary.pageKind === "reference";
+  const expectedStorySectionCount = isIndex ? 0 : 1;
+  const expectedCurrentStoryNav = summary.expectedActiveStoryId ?? summary.expectedStoryIds[0];
   const ok = summary.activeSection === summary.expectedSection
     && summary.shellAuthority === "online-docs"
     && summary.docShellSelectorCount >= 6
@@ -2084,9 +2357,14 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     && summary.localeOptionCount === 5
     && summary.localeSelectVisible
     && summary.currentNav === summary.expectedSection
-    && summary.currentStoryNav === expectedCurrentStoryNav
-    && summary.storySections.length === 1
-    && summary.storySections[0] === summary.expectedSection
+    // TCRN-DS-STORY-056: on a bounded index page the nav marks the section's first story active
+    // (a fixed expectation); on a short category page the scroll-spy legitimately marks whichever
+    // of the category's own stories is in view at rest (often the last), so accept any of them.
+    && (isIndex
+      ? summary.currentStoryNav === expectedCurrentStoryNav
+      : summary.expectedStoryIds.includes(summary.currentStoryNav))
+    && summary.storySections.length === expectedStorySectionCount
+    && (isIndex || summary.storySections[0] === summary.expectedSection)
     && hasSameItems(visibleStoryIds, summary.expectedStoryIds);
   return {
     viewport: summary.viewport,
@@ -2153,7 +2431,7 @@ const axeSummary = {
   sections: axeSummaries
 };
 const storyCoverageManifest = {
-  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && mobileKnowledgeDocShellLayeringCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeMenuFocusReturnCheck.ok,
+  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && mobileKnowledgeDocShellLayeringCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeLeakScan.zhCn.ok && localeMenuFocusReturnCheck.ok,
   requiredStories,
   sectionPages,
   staticContractSurface: staticSurfacePath,
@@ -2170,6 +2448,7 @@ const storyCoverageManifest = {
   anchorScrollCheck,
   scrollSpyCheck,
   localeRouteCheck,
+  localeLeakScan,
   localeMenuFocusReturnCheck,
   staticSectionChecks,
   coverageDisposition: "full_static_contract_docs_navigation_and_i18n_pages"
@@ -2203,12 +2482,13 @@ const browserProofSummary = {
   viewports,
   aiContractTraceabilityCheck,
   componentStorybookParityReadback,
+  localeLeakScan,
   summaries: browserSummaries
 };
 const { findings: shellFidelityFindings, ...shellFidelity } = fidelityRejectChecks();
 const signatureRegressions = signatureResults.filter((entry) => entry.status === "regression");
 const visualBaselineManifest = {
-  ok: visualEntries.length === requiredStories.length * viewports.length + sectionPages.length * viewports.length + 1,
+  ok: visualEntries.length === requiredStories.length * viewports.length + contractPages.length * viewports.length + 1,
   generatedAt: "stable_internal_alpha_visual_baseline",
   // Six of the seven entries here were the literal `false` — claims wearing the costume
   // of checks, and they travelled into the AI consumption contract that way. The three
@@ -2250,8 +2530,38 @@ stableBrowserProofSummary.noLocalAbsolutePathsRetained = localAbsolutePathProof.
 stableBrowserProofSummary.localAbsolutePathProof = localAbsolutePathProof;
 stableBrowserProofSummary.ok = stableBrowserProofSummary.ok && localAbsolutePathProof.ok;
 
+// Story-height budget gate (TCRN-DS-STORY-052): every visible desktop story must render
+// under STORY_HEIGHT_BUDGET_PX unless registered in the grace allowlist, and every allowlist
+// entry must still be over budget with a current recorded height (else it is stale debt to
+// remove). The tolerated-debt list is the split worklist that TCRN-DS-STORY-059 (and
+// -057/-058) burn down. Heights are already collected in storyRegions; this is additive.
+const desktopHeightItems = browserSummaries
+  .filter((summary) => summary.viewport === STORY_HEIGHT_BUDGET_VIEWPORT)
+  .flatMap((summary) => [...summary.storyRegions, ...(summary.referenceRegions ?? [])]
+    .filter((region) => region.visible)
+    .map((region) => ({ id: region.id, measure: region.height })));
+const storyHeightBudget = evaluateBudget({
+  label: "story-height-desktop-px",
+  items: desktopHeightItems,
+  budget: STORY_HEIGHT_BUDGET_PX,
+  allowlist: STORY_HEIGHT_GRACE_ALLOWLIST,
+  recordedKey: "recordedHeightPx"
+});
+
 writeFileSync(join(outputRoot, "story-coverage-manifest.json"), `${JSON.stringify(stableStoryCoverageManifest, null, 2)}\n`);
 writeFileSync(join(outputRoot, "browser-proof-summary.json"), `${JSON.stringify(stableBrowserProofSummary, null, 2)}\n`);
+writeFileSync(join(outputRoot, "story-budget-proof.json"), `${JSON.stringify({
+  ok: storyHeightBudget.ok,
+  budgetPx: STORY_HEIGHT_BUDGET_PX,
+  viewport: STORY_HEIGHT_BUDGET_VIEWPORT,
+  storyHeightBudget,
+  splitWorklist: storyHeightBudget.toleratedDebt.map((entry) => ({
+    id: entry.id,
+    heightPx: entry.measure,
+    owedTo: entry.owedTo,
+    note: entry.note
+  }))
+}, null, 2)}\n`);
 writeFileSync(join(outputRoot, "a11y-axe-summary.json"), `${JSON.stringify({ ok: axeSummary.violationCount === 0, ...axeSummary }, null, 2)}\n`);
 writeFileSync(join(outputRoot, "manual-keyboard-checklist.md"), `# Manual Keyboard Checklist
 
@@ -2288,10 +2598,46 @@ if (shellFidelityTripped.length > 0) {
   }
 }
 
+if (!storyHeightBudget.ok) {
+  console.error(`STORY HEIGHT BUDGET DRIFT: ${storyHeightBudget.unbudgetedViolations.length} new over-budget story(ies), ` +
+    `${storyHeightBudget.staleAllowlist.length} stale allowlist entr(ies) ` +
+    `(budget ${STORY_HEIGHT_BUDGET_PX}px @ ${STORY_HEIGHT_BUDGET_VIEWPORT}):`);
+  for (const violation of storyHeightBudget.unbudgetedViolations) {
+    console.error(`  - new over budget: ${violation.id} = ${violation.measure}px > ${violation.budget}px — split the story or add it to STORY_HEIGHT_GRACE_ALLOWLIST with an owedTo`);
+  }
+  for (const stale of storyHeightBudget.staleAllowlist) {
+    console.error(`  - remove stale entry (${stale.reason}): ${stale.id} — ${stale.note}`);
+  }
+}
+
 const disclosureOk = disclosureChecks.length > 0 && disclosureChecks.every(
   (entry) => entry.collapsedByDefault && entry.clickExpands && entry.clickRestores && entry.hashExpands
 );
+
+// Localization policy binding (TCRN-DS-STORY-050). CLAUDE.md and the storybook README carry
+// the written five-locale policy but are read by no other gate, so the prose could silently
+// drift from the code S048's leak scan (localeLeakScan.zhCn) enforces at runtime. Assert the
+// "## Localization" section is present and still points at the artifacts — the five-locale
+// tuple, the exemption ledger path, and this gate's script name. Only these stable tokens are
+// checked (never volatile prose) so the binding does not couple to S046/S047/S049 copy churn.
+const claudeMdLocalizationSection = readFileSync("CLAUDE.md", "utf8")
+  .split(/^## /m)
+  .find((section) => section.startsWith("Localization")) ?? "";
+const localizationPolicyRequiredTokens = ["`zh-CN`", "`en`", "`ja`", "`ko`", "`fr`", "scripts/lib/locale-invariant-ledger.mjs", "internal-alpha:proof"];
+const localizationPolicyBinding = {
+  sectionPresent: claudeMdLocalizationSection.length > 0,
+  missingTokens: localizationPolicyRequiredTokens.filter((token) => !claudeMdLocalizationSection.includes(token))
+};
+localizationPolicyBinding.ok = localizationPolicyBinding.sectionPresent && localizationPolicyBinding.missingTokens.length === 0;
+if (!localizationPolicyBinding.ok) {
+  console.error("localization policy in CLAUDE.md missing/renamed — restore the ## Localization section pointer" +
+    (localizationPolicyBinding.sectionPresent
+      ? ` (missing tokens: ${localizationPolicyBinding.missingTokens.join(", ")})`
+      : " (## Localization section not found)"));
+}
+
 const ok = signatureRegressions.length === 0
+  && localizationPolicyBinding.ok
   && disclosureOk
   && shellFidelityTripped.length === 0
   && browserProofSummary.ok
@@ -2301,7 +2647,9 @@ const ok = signatureRegressions.length === 0
   && localeMenuFocusReturnCheck.ok
   && capabilityMetadataOk
   && visualBaselineManifest.ok
-  && !visualBaselineManifest.rejectChecks.clippedButtonText;
+  && !visualBaselineManifest.rejectChecks.clippedButtonText
+  && storyHeightBudget.ok
+  && panelSearchReadback.ok;
 
 console.log(JSON.stringify({
   ok,
@@ -2311,6 +2659,7 @@ console.log(JSON.stringify({
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
   disclosureOk,
+  localizationPolicyBindingOk: localizationPolicyBinding.ok,
   shellFidelityDrift: shellFidelityTripped.length,
   visualSignatureGated: signatureResults.filter((entry) => entry.gated).length,
   visualSignatureRecordedOnly: signatureResults.filter((entry) => !entry.gated).length,
@@ -2321,7 +2670,24 @@ console.log(JSON.stringify({
   capabilityMetadataOk,
   aiContractTraceabilityOk: aiContractTraceabilityCheck.ok,
   coveredStorybookSections: aiContractTraceabilityCheck.coveredSectionCount,
-  coveredStorybookCategories: aiContractTraceabilityCheck.coveredCategoryCount
+  coveredStorybookCategories: aiContractTraceabilityCheck.coveredCategoryCount,
+  browserProofSummaryOk: browserProofSummary.ok,
+  panelSearchOk: panelSearchReadback.ok,
+  storyCoverageManifestOk: storyCoverageManifest.ok,
+  visualBaselineManifestOk: visualBaselineManifest.ok,
+  clippedButtonText: visualBaselineManifest.rejectChecks.clippedButtonText,
+  storyHeightBudgetOk: storyHeightBudget.ok,
+  storyHeightViolations: storyHeightBudget.unbudgetedViolations.length,
+  storyHeightStaleAllowlist: storyHeightBudget.staleAllowlist.length,
+  storyHeightToleratedDebt: storyHeightBudget.toleratedDebt.length,
+  localeLeakZhCnOk: localeLeakScan.zhCn.ok,
+  localeLeakZhCnNewLeaks: localeLeakScan.zhCn.newLeakCount,
+  localeLeakZhCnAllowlistedDebt: localeLeakScan.zhCn.allowlistedLeakCount,
+  localeLeakRecorded: {
+    ja: localeLeakScan.recorded.ja.leakCount,
+    ko: localeLeakScan.recorded.ko.leakCount,
+    fr: localeLeakScan.recorded.fr.leakCount
+  }
 }, null, 2));
 
 if (!ok) {
