@@ -963,6 +963,14 @@ for (const text of [
   "--tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer)",
   "flex-basis: 260px",
   "flex-basis: 420px",
+  // TCRN-DS-STORY-063: the feedback-family rules must stay in the package stylesheet. These are
+  // CSS-selector markers (never present in the i18n payload), so they can only be satisfied by the
+  // actual component-style block. Runtime hover is proven separately in internal-alpha:proof.
+  ".tcrn-button:focus-visible",
+  ".tcrn-link-button:active",
+  ".tcrn-knowledge-search-results__head a:focus-visible",
+  ".tcrn-segmented-nav button:focus-visible",
+  ".tcrn-segmented-nav button:active",
   ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
   ".tcrn-product-shell[data-theme-switching=\"true\"]::after",
   "tcrn-product-shell-theme-wash",

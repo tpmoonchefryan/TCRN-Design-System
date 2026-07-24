@@ -2189,6 +2189,23 @@ const panelSearchReadback = await storybookPage.evaluate(() => {
   return { ok: found && anchorResolves, panelId, query, found, anchorResolves, resultCount: hrefs.length };
 });
 
+// TCRN-DS-STORY-063: runtime proof that the core Button now ANSWERS hover (previously it had no
+// hover state at all). Playwright's .hover() dispatches real pointer events, so this is a reliable
+// behavioral check (unlike headless :focus-visible). Rest vs hover background must differ.
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-controls-data.html?locale=en`);
+await storybookPage.waitForSelector("[data-contract-story-id='button-spec-usage']", { state: "attached" });
+await storybookPage.evaluate(() => {
+  for (const article of document.querySelectorAll("article[data-story-collapsed]")) article.setAttribute("data-story-collapsed", "false");
+});
+const buttonHoverButton = storybookPage.locator("[data-contract-story-id='button-spec-usage'] .tcrn-button--primary.tcrn-button--md:not(.tcrn-icon-button):not([disabled])").first();
+await buttonHoverButton.waitFor({ state: "visible" });
+const buttonRestBackground = await buttonHoverButton.evaluate((el) => getComputedStyle(el).backgroundColor);
+await buttonHoverButton.hover();
+await storybookPage.waitForTimeout(80);
+const buttonHoverBackground = await buttonHoverButton.evaluate((el) => getComputedStyle(el).backgroundColor);
+await storybookPage.mouse.move(4, 4);
+const buttonFeedbackReadback = { ok: buttonRestBackground !== buttonHoverBackground, restBackground: buttonRestBackground, hoverBackground: buttonHoverBackground };
+
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-governance.html?locale=en#blocked-actions`);
 await storybookPage.waitForSelector("[data-contract-story-id='blocked-actions']");
 await storybookPage.waitForSelector("#blocked-actions [role='dialog']");
@@ -2649,7 +2666,8 @@ const ok = signatureRegressions.length === 0
   && visualBaselineManifest.ok
   && !visualBaselineManifest.rejectChecks.clippedButtonText
   && storyHeightBudget.ok
-  && panelSearchReadback.ok;
+  && panelSearchReadback.ok
+  && buttonFeedbackReadback.ok;
 
 console.log(JSON.stringify({
   ok,
@@ -2673,6 +2691,7 @@ console.log(JSON.stringify({
   coveredStorybookCategories: aiContractTraceabilityCheck.coveredCategoryCount,
   browserProofSummaryOk: browserProofSummary.ok,
   panelSearchOk: panelSearchReadback.ok,
+  buttonFeedbackOk: buttonFeedbackReadback.ok,
   storyCoverageManifestOk: storyCoverageManifest.ok,
   visualBaselineManifestOk: visualBaselineManifest.ok,
   clippedButtonText: visualBaselineManifest.rejectChecks.clippedButtonText,
