@@ -1177,6 +1177,25 @@ label {
   color: var(--tcrn-color-text-primary);
   text-decoration: none;
 }
+/* TCRN-DS-STORY-067: the TMS dense-shell prototype's clickable rows/actions/links (and the
+   knowledge bookmark links) answered neither hover nor keyboard focus. Minimal feedback keeps the
+   interactive semantics honest without changing the prototype's shape. */
+.tcrn-shell-domain-item:hover,
+.tcrn-shell-hub-action:hover,
+.tcrn-shell-task-lane a:hover,
+.tcrn-shell-quick-list a:hover,
+.tcrn-bookmark-nav a:hover {
+  border-color: var(--tcrn-color-border-control);
+  background: var(--tcrn-color-surface-muted);
+}
+.tcrn-shell-domain-item:focus-visible,
+.tcrn-shell-hub-action:focus-visible,
+.tcrn-shell-task-lane a:focus-visible,
+.tcrn-shell-quick-list a:focus-visible,
+.tcrn-bookmark-nav a:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
 
 .tcrn-shell-demo__menu-button {
   display: inline-flex;

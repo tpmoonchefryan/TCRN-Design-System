@@ -952,7 +952,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 60,
-        "leakCount": 3428,
+        "leakCount": 3433,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -992,7 +992,7 @@
           },
           {
             "storyId": "icons-motion",
-            "leakCount": 112
+            "leakCount": 117
           },
           {
             "storyId": "global-states",
@@ -2378,7 +2378,7 @@
           "id": "icons-motion",
           "visible": true,
           "width": 1077,
-          "height": 2041
+          "height": 2076
         },
         {
           "id": "global-states",
@@ -6538,7 +6538,7 @@
           "id": "icons-motion",
           "visible": true,
           "width": 691,
-          "height": 2695
+          "height": 2731
         },
         {
           "id": "global-states",
@@ -10280,7 +10280,7 @@
           "id": "icons-motion",
           "visible": true,
           "width": 358,
-          "height": 6484
+          "height": 6537
         },
         {
           "id": "global-states",

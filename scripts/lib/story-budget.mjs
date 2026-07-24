@@ -113,9 +113,9 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "S059 child = the coherent Hierarchy/gates/evidence panel; 45px over a single unit — gated debt"
   },
   "icons-motion": {
-    recordedHeightPx: 2041,
+    recordedHeightPx: 2076,
     owedTo: "beyond-INIT-008",
-    note: "icon + motion specimen catalogue; gated debt"
+    note: "icon + motion specimen catalogue (incl. the S067 motion-slowdown note); gated debt"
   }
 };
 
