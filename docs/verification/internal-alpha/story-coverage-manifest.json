@@ -7775,7 +7775,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 60,
-        "leakCount": 3428,
+        "leakCount": 3433,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7815,7 +7815,7 @@
           },
           {
             "storyId": "icons-motion",
-            "leakCount": 112
+            "leakCount": 117
           },
           {
             "storyId": "global-states",

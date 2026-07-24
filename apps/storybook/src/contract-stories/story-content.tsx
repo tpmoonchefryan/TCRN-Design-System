@@ -1091,6 +1091,7 @@ const legacyContractStories: LegacyContractStory[] = [
               </span>
             </div>
           </div>
+          <Text>The traveling dots are slowed for legibility; the token durations shown are the real timings.</Text>
           <TableShell
             columns={[
               { key: "token", label: "Motion token" },
