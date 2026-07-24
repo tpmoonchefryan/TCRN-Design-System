@@ -3,9 +3,44 @@
   "disposition": "new_internal_alpha_baselines_created",
   "entries": [
     {
-      "storyId": "section-welcome",
+      "storyId": "page-welcome",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-welcome.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-welcome.png"
+    },
+    {
+      "storyId": "page-style-guide",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-style-guide.png"
+    },
+    {
+      "storyId": "page-foundations",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-foundations.png"
+    },
+    {
+      "storyId": "page-components",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components.png"
+    },
+    {
+      "storyId": "page-patterns",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-patterns.png"
+    },
+    {
+      "storyId": "page-proof",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-proof.png"
+    },
+    {
+      "storyId": "page-change-log",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-change-log.png"
+    },
+    {
+      "storyId": "page-welcome-governance-entry",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-welcome-governance-entry.png"
     },
     {
       "storyId": "welcome-governance",
@@ -16,6 +51,11 @@
       "storyId": "governance-boundaries",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-governance-boundaries.png"
+    },
+    {
+      "storyId": "page-welcome-routing-contribution",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-welcome-routing-contribution.png"
     },
     {
       "storyId": "maintainers-routing",
@@ -33,9 +73,9 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-release-bug-policy.png"
     },
     {
-      "storyId": "section-style-guide",
+      "storyId": "page-style-guide-identity-brand",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-style-guide.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-style-guide-identity-brand.png"
     },
     {
       "storyId": "brand-identity",
@@ -48,6 +88,11 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-color-palette.png"
     },
     {
+      "storyId": "page-style-guide-type-layout",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-style-guide-type-layout.png"
+    },
+    {
       "storyId": "text-styles",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-text-styles.png"
@@ -56,6 +101,11 @@
       "storyId": "grid-system",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-grid-system.png"
+    },
+    {
+      "storyId": "page-style-guide-interaction-copy",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-style-guide-interaction-copy.png"
     },
     {
       "storyId": "icons-motion",
@@ -73,9 +123,9 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-copy-creation-rules.png"
     },
     {
-      "storyId": "section-foundations",
+      "storyId": "page-foundations-tokens-i18n",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-foundations.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-foundations-tokens-i18n.png"
     },
     {
       "storyId": "tokens-copy-state",
@@ -93,14 +143,19 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-foundation-visual-standards.png"
     },
     {
+      "storyId": "page-foundations-copy-governance",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-foundations-copy-governance.png"
+    },
+    {
       "storyId": "copy-guidelines",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-copy-guidelines.png"
     },
     {
-      "storyId": "section-components",
+      "storyId": "page-components-component-inventory",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-components.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-component-inventory.png"
     },
     {
       "storyId": "component-family-index",
@@ -118,6 +173,11 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-interaction-disclosure-spec.png"
     },
     {
+      "storyId": "page-components-controls-data",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-controls-data.png"
+    },
+    {
       "storyId": "stamp-spec-usage",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-stamp-spec-usage.png"
@@ -133,19 +193,44 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-field-spec-usage.png"
     },
     {
+      "storyId": "table-work-index-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-table-work-index-spec.png"
+    },
+    {
+      "storyId": "page-components-navigation-shells",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-navigation-shells.png"
+    },
+    {
       "storyId": "navigation-shell-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-shell-spec.png"
     },
     {
-      "storyId": "aos-frontend-shell-slice",
+      "storyId": "navigation-dense-operations-shell-spec",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-frontend-shell-slice.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-dense-operations-shell-spec.png"
     },
     {
-      "storyId": "aos-owner-quality-product-shell",
+      "storyId": "navigation-focused-shells-spec",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-owner-quality-product-shell.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-focused-shells-spec.png"
+    },
+    {
+      "storyId": "navigation-primitives-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-primitives-spec.png"
+    },
+    {
+      "storyId": "navigation-product-shell-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-product-shell-spec.png"
+    },
+    {
+      "storyId": "page-components-overlays",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-overlays.png"
     },
     {
       "storyId": "dialog-spec-usage",
@@ -153,9 +238,9 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-dialog-spec-usage.png"
     },
     {
-      "storyId": "table-work-index-spec",
+      "storyId": "page-components-work-management",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-table-work-index-spec.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-work-management.png"
     },
     {
       "storyId": "work-management-components-spec",
@@ -163,14 +248,59 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-components-spec.png"
     },
     {
+      "storyId": "work-management-relationships-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-relationships-spec.png"
+    },
+    {
+      "storyId": "work-management-tokens-density-views-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-tokens-density-views-spec.png"
+    },
+    {
+      "storyId": "work-management-route-detail-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-route-detail-spec.png"
+    },
+    {
+      "storyId": "work-management-backlog-board-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-backlog-board-spec.png"
+    },
+    {
+      "storyId": "work-management-hierarchy-gates-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-hierarchy-gates-spec.png"
+    },
+    {
+      "storyId": "work-management-inspector-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-inspector-spec.png"
+    },
+    {
+      "storyId": "page-components-knowledge-management",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-knowledge-management.png"
+    },
+    {
       "storyId": "knowledge-management-components-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-components-spec.png"
     },
     {
-      "storyId": "section-patterns",
+      "storyId": "knowledge-management-density-collaboration-spec",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-patterns.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-density-collaboration-spec.png"
+    },
+    {
+      "storyId": "knowledge-management-templates-spec",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-templates-spec.png"
+    },
+    {
+      "storyId": "page-patterns-forms-workbench",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-patterns-forms-workbench.png"
     },
     {
       "storyId": "forms-patterns",
@@ -183,9 +313,19 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-workbench-patterns.png"
     },
     {
+      "storyId": "page-patterns-work-management",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-patterns-work-management.png"
+    },
+    {
       "storyId": "work-management-patterns",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-patterns.png"
+    },
+    {
+      "storyId": "page-patterns-feedback-selection",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-patterns-feedback-selection.png"
     },
     {
       "storyId": "readiness-notification-patterns",
@@ -203,6 +343,11 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-modal-validation-patterns.png"
     },
     {
+      "storyId": "page-patterns-data-pages",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-patterns-data-pages.png"
+    },
+    {
       "storyId": "datagrid-fields-patterns",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-datagrid-fields-patterns.png"
@@ -218,9 +363,9 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-dashboard-page-templates.png"
     },
     {
-      "storyId": "section-proof",
+      "storyId": "page-proof-proof-governance",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-proof.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-proof-proof-governance.png"
     },
     {
       "storyId": "proof-matrix",
@@ -243,9 +388,24 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-overlay-focus.png"
     },
     {
-      "storyId": "section-change-log",
+      "storyId": "page-proof-proof-visual-instances",
       "viewport": "desktop-1440x900",
-      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-section-change-log.png"
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-proof-proof-visual-instances.png"
+    },
+    {
+      "storyId": "aos-frontend-shell-slice",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-frontend-shell-slice.png"
+    },
+    {
+      "storyId": "aos-owner-quality-product-shell",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-owner-quality-product-shell.png"
+    },
+    {
+      "storyId": "page-change-log-governance-records",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-change-log-governance-records.png"
     },
     {
       "storyId": "local-changelog",
@@ -253,9 +413,69 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-local-changelog.png"
     },
     {
-      "storyId": "section-welcome",
+      "storyId": "page-component-api-reference-1",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-1.png"
+    },
+    {
+      "storyId": "page-component-api-reference-2",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-2.png"
+    },
+    {
+      "storyId": "page-component-api-reference-3",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-3.png"
+    },
+    {
+      "storyId": "page-component-api-reference-4",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-4.png"
+    },
+    {
+      "storyId": "page-component-api-reference-5",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-5.png"
+    },
+    {
+      "storyId": "page-welcome",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-welcome.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-welcome.png"
+    },
+    {
+      "storyId": "page-style-guide",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-style-guide.png"
+    },
+    {
+      "storyId": "page-foundations",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-foundations.png"
+    },
+    {
+      "storyId": "page-components",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components.png"
+    },
+    {
+      "storyId": "page-patterns",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-patterns.png"
+    },
+    {
+      "storyId": "page-proof",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-proof.png"
+    },
+    {
+      "storyId": "page-change-log",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-change-log.png"
+    },
+    {
+      "storyId": "page-welcome-governance-entry",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-welcome-governance-entry.png"
     },
     {
       "storyId": "welcome-governance",
@@ -266,6 +486,11 @@
       "storyId": "governance-boundaries",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-governance-boundaries.png"
+    },
+    {
+      "storyId": "page-welcome-routing-contribution",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-welcome-routing-contribution.png"
     },
     {
       "storyId": "maintainers-routing",
@@ -283,9 +508,9 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-release-bug-policy.png"
     },
     {
-      "storyId": "section-style-guide",
+      "storyId": "page-style-guide-identity-brand",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-style-guide.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-style-guide-identity-brand.png"
     },
     {
       "storyId": "brand-identity",
@@ -298,6 +523,11 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-color-palette.png"
     },
     {
+      "storyId": "page-style-guide-type-layout",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-style-guide-type-layout.png"
+    },
+    {
       "storyId": "text-styles",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-text-styles.png"
@@ -306,6 +536,11 @@
       "storyId": "grid-system",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-grid-system.png"
+    },
+    {
+      "storyId": "page-style-guide-interaction-copy",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-style-guide-interaction-copy.png"
     },
     {
       "storyId": "icons-motion",
@@ -323,9 +558,9 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-copy-creation-rules.png"
     },
     {
-      "storyId": "section-foundations",
+      "storyId": "page-foundations-tokens-i18n",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-foundations.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-foundations-tokens-i18n.png"
     },
     {
       "storyId": "tokens-copy-state",
@@ -343,14 +578,19 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-foundation-visual-standards.png"
     },
     {
+      "storyId": "page-foundations-copy-governance",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-foundations-copy-governance.png"
+    },
+    {
       "storyId": "copy-guidelines",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-copy-guidelines.png"
     },
     {
-      "storyId": "section-components",
+      "storyId": "page-components-component-inventory",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-components.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-component-inventory.png"
     },
     {
       "storyId": "component-family-index",
@@ -368,6 +608,11 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-interaction-disclosure-spec.png"
     },
     {
+      "storyId": "page-components-controls-data",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-controls-data.png"
+    },
+    {
       "storyId": "stamp-spec-usage",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-stamp-spec-usage.png"
@@ -383,19 +628,44 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-field-spec-usage.png"
     },
     {
+      "storyId": "table-work-index-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-table-work-index-spec.png"
+    },
+    {
+      "storyId": "page-components-navigation-shells",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-navigation-shells.png"
+    },
+    {
       "storyId": "navigation-shell-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-shell-spec.png"
     },
     {
-      "storyId": "aos-frontend-shell-slice",
+      "storyId": "navigation-dense-operations-shell-spec",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-frontend-shell-slice.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-dense-operations-shell-spec.png"
     },
     {
-      "storyId": "aos-owner-quality-product-shell",
+      "storyId": "navigation-focused-shells-spec",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-owner-quality-product-shell.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-focused-shells-spec.png"
+    },
+    {
+      "storyId": "navigation-primitives-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-primitives-spec.png"
+    },
+    {
+      "storyId": "navigation-product-shell-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-product-shell-spec.png"
+    },
+    {
+      "storyId": "page-components-overlays",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-overlays.png"
     },
     {
       "storyId": "dialog-spec-usage",
@@ -403,9 +673,9 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-dialog-spec-usage.png"
     },
     {
-      "storyId": "table-work-index-spec",
+      "storyId": "page-components-work-management",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-table-work-index-spec.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-work-management.png"
     },
     {
       "storyId": "work-management-components-spec",
@@ -413,14 +683,59 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-components-spec.png"
     },
     {
+      "storyId": "work-management-relationships-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-relationships-spec.png"
+    },
+    {
+      "storyId": "work-management-tokens-density-views-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-tokens-density-views-spec.png"
+    },
+    {
+      "storyId": "work-management-route-detail-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-route-detail-spec.png"
+    },
+    {
+      "storyId": "work-management-backlog-board-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-backlog-board-spec.png"
+    },
+    {
+      "storyId": "work-management-hierarchy-gates-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-hierarchy-gates-spec.png"
+    },
+    {
+      "storyId": "work-management-inspector-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-inspector-spec.png"
+    },
+    {
+      "storyId": "page-components-knowledge-management",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-knowledge-management.png"
+    },
+    {
       "storyId": "knowledge-management-components-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-components-spec.png"
     },
     {
-      "storyId": "section-patterns",
+      "storyId": "knowledge-management-density-collaboration-spec",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-patterns.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-density-collaboration-spec.png"
+    },
+    {
+      "storyId": "knowledge-management-templates-spec",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-templates-spec.png"
+    },
+    {
+      "storyId": "page-patterns-forms-workbench",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-patterns-forms-workbench.png"
     },
     {
       "storyId": "forms-patterns",
@@ -433,9 +748,19 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-workbench-patterns.png"
     },
     {
+      "storyId": "page-patterns-work-management",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-patterns-work-management.png"
+    },
+    {
       "storyId": "work-management-patterns",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-patterns.png"
+    },
+    {
+      "storyId": "page-patterns-feedback-selection",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-patterns-feedback-selection.png"
     },
     {
       "storyId": "readiness-notification-patterns",
@@ -453,6 +778,11 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-modal-validation-patterns.png"
     },
     {
+      "storyId": "page-patterns-data-pages",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-patterns-data-pages.png"
+    },
+    {
       "storyId": "datagrid-fields-patterns",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-datagrid-fields-patterns.png"
@@ -468,9 +798,9 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-dashboard-page-templates.png"
     },
     {
-      "storyId": "section-proof",
+      "storyId": "page-proof-proof-governance",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-proof.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-proof-proof-governance.png"
     },
     {
       "storyId": "proof-matrix",
@@ -493,9 +823,24 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-overlay-focus.png"
     },
     {
-      "storyId": "section-change-log",
+      "storyId": "page-proof-proof-visual-instances",
       "viewport": "tablet-1024x768",
-      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-section-change-log.png"
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-proof-proof-visual-instances.png"
+    },
+    {
+      "storyId": "aos-frontend-shell-slice",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-frontend-shell-slice.png"
+    },
+    {
+      "storyId": "aos-owner-quality-product-shell",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-owner-quality-product-shell.png"
+    },
+    {
+      "storyId": "page-change-log-governance-records",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-change-log-governance-records.png"
     },
     {
       "storyId": "local-changelog",
@@ -503,9 +848,69 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-local-changelog.png"
     },
     {
-      "storyId": "section-welcome",
+      "storyId": "page-component-api-reference-1",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-1.png"
+    },
+    {
+      "storyId": "page-component-api-reference-2",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-2.png"
+    },
+    {
+      "storyId": "page-component-api-reference-3",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-3.png"
+    },
+    {
+      "storyId": "page-component-api-reference-4",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-4.png"
+    },
+    {
+      "storyId": "page-component-api-reference-5",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-5.png"
+    },
+    {
+      "storyId": "page-welcome",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-welcome.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-welcome.png"
+    },
+    {
+      "storyId": "page-style-guide",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-style-guide.png"
+    },
+    {
+      "storyId": "page-foundations",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-foundations.png"
+    },
+    {
+      "storyId": "page-components",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components.png"
+    },
+    {
+      "storyId": "page-patterns",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-patterns.png"
+    },
+    {
+      "storyId": "page-proof",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-proof.png"
+    },
+    {
+      "storyId": "page-change-log",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-change-log.png"
+    },
+    {
+      "storyId": "page-welcome-governance-entry",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-welcome-governance-entry.png"
     },
     {
       "storyId": "welcome-governance",
@@ -516,6 +921,11 @@
       "storyId": "governance-boundaries",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-governance-boundaries.png"
+    },
+    {
+      "storyId": "page-welcome-routing-contribution",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-welcome-routing-contribution.png"
     },
     {
       "storyId": "maintainers-routing",
@@ -533,9 +943,9 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-release-bug-policy.png"
     },
     {
-      "storyId": "section-style-guide",
+      "storyId": "page-style-guide-identity-brand",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-style-guide.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-style-guide-identity-brand.png"
     },
     {
       "storyId": "brand-identity",
@@ -548,6 +958,11 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-color-palette.png"
     },
     {
+      "storyId": "page-style-guide-type-layout",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-style-guide-type-layout.png"
+    },
+    {
       "storyId": "text-styles",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-text-styles.png"
@@ -556,6 +971,11 @@
       "storyId": "grid-system",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-grid-system.png"
+    },
+    {
+      "storyId": "page-style-guide-interaction-copy",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-style-guide-interaction-copy.png"
     },
     {
       "storyId": "icons-motion",
@@ -573,9 +993,9 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-copy-creation-rules.png"
     },
     {
-      "storyId": "section-foundations",
+      "storyId": "page-foundations-tokens-i18n",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-foundations.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-foundations-tokens-i18n.png"
     },
     {
       "storyId": "tokens-copy-state",
@@ -593,14 +1013,19 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-foundation-visual-standards.png"
     },
     {
+      "storyId": "page-foundations-copy-governance",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-foundations-copy-governance.png"
+    },
+    {
       "storyId": "copy-guidelines",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-copy-guidelines.png"
     },
     {
-      "storyId": "section-components",
+      "storyId": "page-components-component-inventory",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-components.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-component-inventory.png"
     },
     {
       "storyId": "component-family-index",
@@ -618,6 +1043,11 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-interaction-disclosure-spec.png"
     },
     {
+      "storyId": "page-components-controls-data",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-controls-data.png"
+    },
+    {
       "storyId": "stamp-spec-usage",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-stamp-spec-usage.png"
@@ -633,19 +1063,44 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-field-spec-usage.png"
     },
     {
+      "storyId": "table-work-index-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-table-work-index-spec.png"
+    },
+    {
+      "storyId": "page-components-navigation-shells",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-navigation-shells.png"
+    },
+    {
       "storyId": "navigation-shell-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-shell-spec.png"
     },
     {
-      "storyId": "aos-frontend-shell-slice",
+      "storyId": "navigation-dense-operations-shell-spec",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-frontend-shell-slice.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-dense-operations-shell-spec.png"
     },
     {
-      "storyId": "aos-owner-quality-product-shell",
+      "storyId": "navigation-focused-shells-spec",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-owner-quality-product-shell.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-focused-shells-spec.png"
+    },
+    {
+      "storyId": "navigation-primitives-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-primitives-spec.png"
+    },
+    {
+      "storyId": "navigation-product-shell-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-product-shell-spec.png"
+    },
+    {
+      "storyId": "page-components-overlays",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-overlays.png"
     },
     {
       "storyId": "dialog-spec-usage",
@@ -653,9 +1108,9 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-dialog-spec-usage.png"
     },
     {
-      "storyId": "table-work-index-spec",
+      "storyId": "page-components-work-management",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-table-work-index-spec.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-work-management.png"
     },
     {
       "storyId": "work-management-components-spec",
@@ -663,14 +1118,59 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-components-spec.png"
     },
     {
+      "storyId": "work-management-relationships-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-relationships-spec.png"
+    },
+    {
+      "storyId": "work-management-tokens-density-views-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-tokens-density-views-spec.png"
+    },
+    {
+      "storyId": "work-management-route-detail-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-route-detail-spec.png"
+    },
+    {
+      "storyId": "work-management-backlog-board-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-backlog-board-spec.png"
+    },
+    {
+      "storyId": "work-management-hierarchy-gates-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-hierarchy-gates-spec.png"
+    },
+    {
+      "storyId": "work-management-inspector-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-inspector-spec.png"
+    },
+    {
+      "storyId": "page-components-knowledge-management",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-knowledge-management.png"
+    },
+    {
       "storyId": "knowledge-management-components-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-components-spec.png"
     },
     {
-      "storyId": "section-patterns",
+      "storyId": "knowledge-management-density-collaboration-spec",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-patterns.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-density-collaboration-spec.png"
+    },
+    {
+      "storyId": "knowledge-management-templates-spec",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-templates-spec.png"
+    },
+    {
+      "storyId": "page-patterns-forms-workbench",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-patterns-forms-workbench.png"
     },
     {
       "storyId": "forms-patterns",
@@ -683,9 +1183,19 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-workbench-patterns.png"
     },
     {
+      "storyId": "page-patterns-work-management",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-patterns-work-management.png"
+    },
+    {
       "storyId": "work-management-patterns",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-patterns.png"
+    },
+    {
+      "storyId": "page-patterns-feedback-selection",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-patterns-feedback-selection.png"
     },
     {
       "storyId": "readiness-notification-patterns",
@@ -703,6 +1213,11 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-modal-validation-patterns.png"
     },
     {
+      "storyId": "page-patterns-data-pages",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-patterns-data-pages.png"
+    },
+    {
       "storyId": "datagrid-fields-patterns",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-datagrid-fields-patterns.png"
@@ -718,9 +1233,9 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-dashboard-page-templates.png"
     },
     {
-      "storyId": "section-proof",
+      "storyId": "page-proof-proof-governance",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-proof.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-proof-proof-governance.png"
     },
     {
       "storyId": "proof-matrix",
@@ -743,14 +1258,54 @@
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-overlay-focus.png"
     },
     {
-      "storyId": "section-change-log",
+      "storyId": "page-proof-proof-visual-instances",
       "viewport": "mobile-390x844",
-      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-section-change-log.png"
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-proof-proof-visual-instances.png"
+    },
+    {
+      "storyId": "aos-frontend-shell-slice",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-frontend-shell-slice.png"
+    },
+    {
+      "storyId": "aos-owner-quality-product-shell",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-owner-quality-product-shell.png"
+    },
+    {
+      "storyId": "page-change-log-governance-records",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-change-log-governance-records.png"
     },
     {
       "storyId": "local-changelog",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-local-changelog.png"
+    },
+    {
+      "storyId": "page-component-api-reference-1",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-1.png"
+    },
+    {
+      "storyId": "page-component-api-reference-2",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-2.png"
+    },
+    {
+      "storyId": "page-component-api-reference-3",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-3.png"
+    },
+    {
+      "storyId": "page-component-api-reference-4",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-4.png"
+    },
+    {
+      "storyId": "page-component-api-reference-5",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-5.png"
     },
     {
       "storyId": "overlay-focus-open-dialog",

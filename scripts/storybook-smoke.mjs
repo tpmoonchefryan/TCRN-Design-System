@@ -1,7 +1,16 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join } from "node:path";
 import { chromium } from "@playwright/test";
+import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
+import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
+import {
+  PAGE_KB_BUDGET_BYTES,
+  PAGE_KB_GRACE_ALLOWLIST,
+  CATEGORY_STORY_COUNT_CAP,
+  CATEGORY_STORY_COUNT_GRACE_ALLOWLIST,
+  evaluateBudget
+} from "./lib/story-budget.mjs";
 
 const pagesByGroup = {
   Welcome: "index.html",
@@ -13,56 +22,57 @@ const pagesByGroup = {
   "Change Log": "change-log.html"
 };
 const expectedContractStoryGroups = Object.keys(pagesByGroup);
-const requiredStories = [
-  { id: "welcome-governance", group: "Welcome" },
-  { id: "governance-boundaries", group: "Welcome" },
-  { id: "maintainers-routing", group: "Welcome" },
-  { id: "contribution-model", group: "Welcome" },
-  { id: "release-bug-policy", group: "Welcome" },
-  { id: "brand-identity", group: "Style Guide" },
-  { id: "color-palette", group: "Style Guide" },
-  { id: "text-styles", group: "Style Guide" },
-  { id: "grid-system", group: "Style Guide" },
-  { id: "icons-motion", group: "Style Guide" },
-  { id: "global-states", group: "Style Guide" },
-  { id: "copy-creation-rules", group: "Style Guide" },
-  { id: "tokens-copy-state", group: "Foundations" },
-  { id: "i18n-theme-contract", group: "Foundations" },
-  { id: "foundation-visual-standards", group: "Foundations" },
-  { id: "copy-guidelines", group: "Foundations" },
-  { id: "component-family-index", group: "Components" },
-  { id: "display-primitives-spec", group: "Components" },
-  { id: "interaction-disclosure-spec", group: "Components" },
-  { id: "stamp-spec-usage", group: "Components" },
-  { id: "button-spec-usage", group: "Components" },
-  { id: "field-spec-usage", group: "Components" },
-  { id: "navigation-shell-spec", group: "Components" },
-  { id: "aos-frontend-shell-slice", group: "Components" },
-  { id: "aos-owner-quality-product-shell", group: "Components" },
-  { id: "dialog-spec-usage", group: "Components" },
-  { id: "table-work-index-spec", group: "Components" },
-  { id: "work-management-components-spec", group: "Components" },
-  { id: "knowledge-management-components-spec", group: "Components" },
-  { id: "forms-patterns", group: "Patterns" },
-  { id: "workbench-patterns", group: "Patterns" },
-  { id: "work-management-patterns", group: "Patterns" },
-  { id: "readiness-notification-patterns", group: "Patterns" },
-  { id: "selection-list-patterns", group: "Patterns" },
-  { id: "modal-validation-patterns", group: "Patterns" },
-  { id: "datagrid-fields-patterns", group: "Patterns" },
-  { id: "big-list-search-patterns", group: "Patterns" },
-  { id: "dashboard-page-templates", group: "Patterns" },
-  { id: "proof-matrix", group: "Proof" },
-  { id: "ai-consumption-contract", group: "Proof" },
-  { id: "blocked-actions", group: "Proof" },
-  { id: "overlay-focus", group: "Proof" },
-  { id: "local-changelog", group: "Change Log" }
-];
-const pages = Object.fromEntries(Object.entries(pagesByGroup).map(([group, file]) => [
+// Derived from the single registry source (governance.storyRegistryOrder, built to dist).
+// Byte-equal to the former hand list: 43 {id, group} entries in registry order. The
+// smoke.test tie-gate ties storyRegistryOrder to the emitted contractStories so this
+// cannot drift from groups/*.ts (TCRN-DS-STORY-055).
+const requiredStories = storyRegistryOrder.map((entry) => ({ id: entry.id, group: entry.group, categoryId: entry.categoryId }));
+
+// TCRN-DS-STORY-056 page helpers (mirror apps/storybook/src/build/navigation.ts). Category
+// filenames are group-namespaced because categoryId is NOT globally unique.
+const groupSlugFor = (group) => group.toLowerCase().replace(/\s+/g, "-");
+const categorySlug = (categoryId) => categoryId.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const categoryFileName = (group, categoryId) => `${groupSlugFor(group)}-${categorySlug(categoryId)}.html`;
+const categoryFileForStory = (story) => categoryFileName(story.group, story.categoryId);
+
+// Derived page registry: 7 section INDEX pages + one CATEGORY page per non-empty category, in
+// registry (emission) order. Never hand-listed — a new story/category flows in automatically.
+const contractPages = (() => {
+  const list = [];
+  for (const group of expectedContractStoryGroups) {
+    list.push({ kind: "index", group, file: pagesByGroup[group], storyIds: [] });
+    const seen = new Set();
+    for (const story of requiredStories.filter((entry) => entry.group === group)) {
+      if (seen.has(story.categoryId)) continue;
+      seen.add(story.categoryId);
+      list.push({
+        kind: "category",
+        group,
+        categoryId: story.categoryId,
+        file: categoryFileName(group, story.categoryId),
+        storyIds: requiredStories.filter((entry) => entry.group === group && entry.categoryId === story.categoryId).map((entry) => entry.id)
+      });
+    }
+  }
+  // TCRN-DS-STORY-058: the generated per-component API reference pages come from the same shared
+  // helper the emitter uses, so the emitted-page-set gate can never drift from what was written.
+  for (const page of referencePages()) {
+    list.push({ kind: "reference", file: page.file, componentNames: page.components.map((component) => component.name) });
+  }
+  return list;
+})();
+
+const pageHtmlByFile = Object.fromEntries(
+  contractPages.map((page) => [page.file, readFileSync(`apps/storybook/storybook-static/${page.file}`, "utf8")])
+);
+// A group's "page" for the ~content pins is the concatenation of its bounded INDEX page (first,
+// so the structural nav readers below still read the complete index nav) plus every one of its
+// category pages, so every existing story-body pin still resolves.
+const pages = Object.fromEntries(expectedContractStoryGroups.map((group) => [
   group,
-  readFileSync(`apps/storybook/storybook-static/${file}`, "utf8")
+  contractPages.filter((page) => page.group === group).map((page) => pageHtmlByFile[page.file]).join("\n")
 ]));
-const combinedHtml = Object.values(pages).join("\n");
+const combinedHtml = Object.values(pageHtmlByFile).join("\n");
 const readDocShellNavHtml = (html) => {
   const start = html.indexOf('class="tcrn-doc-nav"');
   if (start === -1) {
@@ -99,7 +109,7 @@ const localAbsolutePathDenyPatterns = [
   { name: "mac-temp-path", pattern: /\/var\/folders(?:\/|$)/i },
   { name: "remote-workspace-path", pattern: /\/srv\/tcrn(?:\/|$)/i }
 ];
-const expectedStoryCategoryCount = 19;
+const expectedStoryCategoryCount = 20;
 const expectedStorybookShellNavGroupCount = expectedContractStoryGroups.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
@@ -145,8 +155,10 @@ const storybookStaticCssSource = readFileSync("apps/storybook/src/storybook.css"
 const staticRoot = "apps/storybook/storybook-static";
 const productShellComparatorContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
-  storyId: "navigation-shell-spec",
-  page: "components.html#navigation-shell-spec",
+  // TCRN-DS-STORY-059: the ProductShell contract-proof was split out of navigation-shell-spec
+  // into navigation-product-shell-spec (same navigation-shells category page).
+  storyId: "navigation-product-shell-spec",
+  page: "components-navigation-shells.html#navigation-product-shell-spec",
   scopedSelector: ".tcrn-product-shell-contract-proof .tcrn-product-shell",
   componentSelectors: {
     productLogo: ".tcrn-product-logo",
@@ -287,7 +299,7 @@ const productShellComparatorContract = {
 const aosFrontendShellVisualInstanceContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
   storyId: "aos-frontend-shell-slice",
-  page: "components.html#aos-frontend-shell-slice",
+  page: "proof-proof-visual-instances.html#aos-frontend-shell-slice",
   scopedSelector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
@@ -503,7 +515,7 @@ const aosFrontendShellVisualInstanceContract = {
 const aosOwnerQualityProductShellContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
   storyId: "aos-owner-quality-product-shell",
-  page: "components.html#aos-owner-quality-product-shell",
+  page: "proof-proof-visual-instances.html#aos-owner-quality-product-shell",
   scopedSelector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
@@ -838,8 +850,9 @@ const required = [
   "option value=\"ko\"",
   "option value=\"fr\"",
   "data-i18n=\"story.welcome-governance.title\"",
-  "TCRN デザインシステム契約ストーリー",
-  "TCRN 디자인 시스템 계약 스토리",
+  // TCRN-DS-STORY-051: ja/ko shell titles moved to payloadTranslationCoverage (below) — they
+  // ship in the embedded i18n payload for runtime switching but never render on the static en
+  // pages, so keeping them as raw combinedContractText pins would falsely read as rendered text.
   "data-contract-surface=\"tcrn-design-system-storybook\"",
   "data-contract-story-id=\"tokens-copy-state\"",
   "data-contract-story-id=\"foundation-visual-standards\"",
@@ -892,8 +905,9 @@ const required = [
   "name=\"tcrn-ai-consumption-contract\" content=\"ai-consumption-contract.json\"",
   "name=\"tcrn-ai-consumption-contract-route\" content=\"proof.html#ai-consumption-contract\"",
   "name=\"tcrn-ai-consumption-contract-required\" content=\"must-read-first\"",
-  "Light and dark Storybook shell",
-  "Storybook doc shell control contract",
+  // TCRN-DS-STORY-051: "Light and dark Storybook shell" + "Storybook doc shell control contract"
+  // moved to requiredRendered (checked against script-stripped page bytes) so they assert
+  // rendered content, not the embedded dictionary payload.
   "Use one circular icon-only button",
   "one whole-page transition",
   "current locale name in that locale",
@@ -901,13 +915,15 @@ const required = [
   "not as a top-bar human navigation item",
   "Storybook shell controls",
   "single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition",
-  "Theme modes",
+  // TCRN-DS-STORY-051: "Theme modes" moved to requiredRendered (script-stripped assertion).
   "aria-label=\"TCRN brand mark\"",
   "src=\"tcrn-brand-mark.svg\"",
-  "Four large rounded diamond tiles use iris blue, violet-blue, aqua, and slate with tight even gaps.",
-  "Each point uses a white ring with a same-family inner color that differs from the tile fill.",
-  "No red, pink, coral, or orange connector points.",
-  "Product adoption, publication, release readiness, product acceptance, and final MVP acceptance are not claimed.",
+  // TCRN-DS-STORY-051: the three brand-mark description sentences moved to requiredRendered
+  // (script-stripped assertion). The shell.noClaim sentence ("Product adoption, publication,
+  // release readiness, product acceptance, and final MVP acceptance are not claimed.") is
+  // RETIRED — that dictionary key never rendered and is deleted from all five locales; the
+  // no-overclaim boundary is carried by the rendered page-head chips (shell.noPackagePublicationClaim
+  // / shell.noProductAdoptionClaim / shell.acceptanceDownstreamClaim).
   "data-anchor-scroll-controlled=\"true\"",
   "tcrn-shell-layer",
   "data-shell-layer=\"mega-menu\"",
@@ -988,7 +1004,7 @@ for (const text of [
   "SavedViewToolbar",
   "work_management_static_pattern_receipt",
   "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation",
-  "API integration, backend persistence, live Codex dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed"
+  "API integration, backend persistence, live dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed"
 ]) {
   required.push(text);
 }
@@ -996,7 +1012,39 @@ for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "dup
   required.push(`data-work-relationship="${relation}"`);
 }
 const combinedContractText = `${combinedHtml}\n${JSON.stringify(contract)}\n${llmsTxt}`;
+// TCRN-DS-STORY-051: page bytes inline the entire i18n dictionary inside each page's
+// storybookI18nScript <script> block, so a raw `required` pin can be satisfied by the payload
+// even when the string never renders. Strip <script>/<style> so rendered-content pins assert
+// what is actually in the document, not the embedded dictionary.
+const renderedCombinedText = Object.values(pages)
+  .map((html) => html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ""))
+  .join("\n");
+// Render-intent dictionary-backed literals: these must appear in the stripped (rendered) page
+// bytes, not merely in the embedded payload.
+const requiredRendered = [
+  "Light and dark Storybook shell",
+  "Storybook doc shell control contract",
+  "Theme modes",
+  "Four large rounded diamond tiles use iris blue, violet-blue, aqua, and slate with tight even gaps.",
+  "Each point uses a white ring with a same-family inner color that differs from the tile fill.",
+  "No red, pink, coral, or orange connector points."
+];
+// Payload translation coverage: the ja/ko shell titles legitimately ship inside the embedded
+// i18n payload for runtime locale switching but never render on the static en pages. Assert the
+// translation is present in the payload (raw bytes) — explicitly NOT a rendered-text assertion.
+const payloadTranslationCoverage = [
+  "TCRN デザインシステム契約ストーリー",
+  "TCRN 디자인 시스템 계약 스토리"
+];
 const missing = required.filter((text) => !combinedContractText.includes(text));
+for (const text of requiredRendered.filter((text) => !renderedCombinedText.includes(text))) {
+  missing.push(`unrendered-dictionary-backed-pin:${text}`);
+}
+for (const text of payloadTranslationCoverage.filter((text) => !combinedHtml.includes(text))) {
+  missing.push(`missing-payload-translation:${text}`);
+}
 for (const { label, value } of [
   { label: "generated-static-html", value: combinedHtml },
   { label: "generated-ai-contract-json", value: JSON.stringify(contract) },
@@ -1041,8 +1089,10 @@ for (const forbiddenCleanRoomRuntimePattern of [
     missing.push(`forbidden-clean-room-runtime:${forbiddenCleanRoomRuntimePattern.source}`);
   }
 }
+// ProductShell renders in two designated homes: Components (navigation-shell-spec comparator +
+// component examples) and Proof (the AOS visual-instance oracles, moved there by TCRN-DS-STORY-057).
 const nonComponentHtml = Object.entries(pages)
-  .filter(([group]) => group !== "Components")
+  .filter(([group]) => group !== "Components" && group !== "Proof")
   .map(([, html]) => html)
   .join("\n");
 for (const forbiddenGlobalShellMarker of [
@@ -1359,7 +1409,7 @@ for (const standardId of expectedFoundationStandardCategoryIds) {
 if (contract.storybookDocShellVisualOracle?.id !== "original-storybook-doc-shell-v1") {
   missing.push("contract.storybookDocShellVisualOracle.id");
 }
-if (contract.storybookDocShellVisualOracle?.oracleRecoveryReceipt !== "TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan") {
+if (contract.storybookDocShellVisualOracle?.oracleRecoveryReceipt !== "internal DS doc-shell restoration plan (owner-held governance record)") {
   missing.push("contract.storybookDocShellVisualOracle.oracleRecoveryReceipt");
 }
 if (contract.storybookDocShellVisualOracle?.baselineManifestClassification !== "owner_declared_original_storybook_doc_shell_standard") {
@@ -1466,7 +1516,7 @@ if (!llmsTxt.includes("Consumer visual style contract: consumer-visual-style-con
 if (!llmsTxt.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")) {
   missing.push("llms-storybook-doc-shell-visual-oracle");
 }
-if (!llmsTxt.includes("oracle recovery: TCRN Workflow/vault/initiatives/projects/TCRN-DESIGN-SYSTEM/active/storybook-shell-control-stabilization/50-implementation-plan.md#storybook-original-shell-restoration-implementation-plan")) {
+if (!llmsTxt.includes("oracle recovery: internal DS doc-shell restoration plan (owner-held governance record)")) {
   missing.push("llms-storybook-doc-shell-visual-oracle-recovery");
 }
 if (!llmsTxt.includes("baseline classification: owner_declared_original_storybook_doc_shell_standard")) {
@@ -1539,9 +1589,49 @@ for (const [group, html] of Object.entries(pages)) {
   if (ariaCurrentStoryCount !== 1) {
     missing.push(`doc-shell-current-story-aria-count:${group}:${ariaCurrentStoryCount}`);
   }
+  // TCRN-DS-STORY-056: the group "page" is now the concatenation of its bounded index page plus
+  // one category page per non-empty category. Each category page carries exactly one story
+  // section, so the concatenation carries one per category page.
   const sectionCount = html.match(/data-story-section="/g)?.length ?? 0;
-  if (sectionCount !== 1) {
-    missing.push(`single-section-page:${group}:${sectionCount}`);
+  const expectedSectionCount = contractPages.filter((page) => page.group === group && page.kind === "category").length;
+  if (sectionCount !== expectedSectionCount) {
+    missing.push(`section-page-count:${group}:${sectionCount}!=${expectedSectionCount}`);
+  }
+}
+// TCRN-DS-STORY-056 bounded-page gate: exactly the derived file set is emitted; every section
+// INDEX page carries ZERO story bodies; every category page carries EXACTLY its category's
+// stories; and each index page's hashRouteScript maps every legacy deep link to its category page.
+const emittedHtmlFiles = readdirSync("apps/storybook/storybook-static").filter((file) => file.endsWith(".html"));
+const expectedHtmlFiles = contractPages.map((page) => page.file);
+if ([...emittedHtmlFiles].sort().join(",") !== [...expectedHtmlFiles].sort().join(",")) {
+  missing.push(`emitted-page-set:${[...emittedHtmlFiles].sort().join("|")}`);
+}
+for (const page of contractPages) {
+  const html = pageHtmlByFile[page.file];
+  const bodyIds = Array.from(html.matchAll(/data-contract-story-id="([^"]+)"/g), (match) => match[1]);
+  if (page.kind === "index") {
+    if (bodyIds.length !== 0) {
+      missing.push(`index-page-has-bodies:${page.file}:${bodyIds.length}`);
+    }
+    for (const story of requiredStories.filter((entry) => entry.group === page.group)) {
+      const mapEntry = `"${story.id}":"${categoryFileForStory(story)}#${story.id}"`;
+      if (!html.includes(mapEntry)) {
+        missing.push(`hashroute-map:${page.file}:${story.id}`);
+      }
+    }
+  } else if (page.kind === "reference") {
+    // TCRN-DS-STORY-058: a reference page carries NO story bodies (data-contract-story-id) — it
+    // holds one machine-generated API region (data-component-reference-id) per component, in the
+    // same order the shared helper paginated.
+    if (bodyIds.length !== 0) {
+      missing.push(`reference-page-has-story-bodies:${page.file}:${bodyIds.length}`);
+    }
+    const referenceIds = Array.from(html.matchAll(/data-component-reference-id="([^"]+)"/g), (match) => match[1]);
+    if (referenceIds.join(",") !== page.componentNames.join(",")) {
+      missing.push(`reference-page-components:${page.file}:${referenceIds.join("|")}`);
+    }
+  } else if (bodyIds.join(",") !== page.storyIds.join(",")) {
+    missing.push(`category-page-bodies:${page.file}:${bodyIds.join("|")}`);
   }
 }
 for (const story of requiredStories) {
@@ -2654,7 +2744,7 @@ async function runChangelogI18nReadabilityProof() {
           leakedForbiddenText: forbiddenText.filter((text) => bodyText.includes(text)),
           visibleRawRouteLeak: bodyText.includes("route_tcrn_ds_storybook_governance_"),
           recordCount: document.querySelectorAll("[data-changelog-route-id]").length,
-          metadataRoutePreserved: Boolean(document.querySelector("[data-changelog-route-id='route_tcrn_ds_storybook_governance_ilya_implementation_after_plan_reviews_success_a1f19b1a_dded541']")),
+          metadataRoutePreserved: Boolean(document.querySelector("[data-changelog-route-id='route_tcrn_ds_storybook_governance_engineering_implementation_after_plan_reviews_success_a1f19b1a_dded541']")),
           proofArtifactMetadataCount: document.querySelectorAll("[data-changelog-proof-artifact]").length,
           boundaryMetadataCount: document.querySelectorAll("[data-changelog-no-overclaim-boundary]").length,
           compactNodeReadbacks,
@@ -3349,6 +3439,43 @@ async function main() {
     ok: false,
     failures: [`locale-menu-focus-return-proof-error:${error instanceof Error ? error.message : String(error)}`]
   }));
+  // Page-byte + category-story-count budget gates (TCRN-DS-STORY-052). `pages` and `contract`
+  // are already read at module scope; this is additive. Page-KB arrives red (Components is the
+  // seeded debt); the category cap is a preventive ceiling that is green today. Failures are
+  // pushed into `missing` (which folds into `ok`) so they surface in the existing stdout list,
+  // and asserted explicitly below so the intent stays legible.
+  // TCRN-DS-STORY-056: the byte budget now measures each EMITTED page file (7 index + category
+  // pages), not the per-group concatenation — the whole point of the split is that every emitted
+  // page is bounded. The PAGE_KB_GRACE_ALLOWLIST is now keyed by page FILE.
+  const pageKbBudget = evaluateBudget({
+    label: "page-bytes",
+    items: contractPages.map((page) => ({ id: page.file, measure: Buffer.byteLength(pageHtmlByFile[page.file], "utf8") })),
+    budget: PAGE_KB_BUDGET_BYTES,
+    allowlist: PAGE_KB_GRACE_ALLOWLIST,
+    recordedKey: "recordedBytes"
+  });
+  const categoryStoryCountBudget = evaluateBudget({
+    label: "category-story-count",
+    items: (contract.coveredStorybookSections ?? []).flatMap((section) =>
+      (section.categories ?? []).map((category) => ({
+        id: `${section.section}/${category.id}`,
+        measure: (category.storyIds ?? []).length
+      }))),
+    budget: CATEGORY_STORY_COUNT_CAP,
+    allowlist: CATEGORY_STORY_COUNT_GRACE_ALLOWLIST
+  });
+  for (const violation of pageKbBudget.unbudgetedViolations) {
+    missing.push(`page-kb-budget:${violation.id}:${violation.measure}>${violation.budget}`);
+  }
+  for (const stale of pageKbBudget.staleAllowlist) {
+    missing.push(`stale-page-kb-allowlist:${stale.id}:${stale.reason}`);
+  }
+  for (const violation of categoryStoryCountBudget.unbudgetedViolations) {
+    missing.push(`category-count-budget:${violation.id}:${violation.measure}>${violation.budget}`);
+  }
+  for (const stale of categoryStoryCountBudget.staleAllowlist) {
+    missing.push(`stale-category-count-allowlist:${stale.id}:${stale.reason}`);
+  }
   const ok = missing.length === 0
     && forbiddenPositiveHits.length === 0
     && storybookPreviewExists
@@ -3358,7 +3485,9 @@ async function main() {
     && changelogI18nReadabilityProof.ok
     && globalStorybookZhCnIaProof.ok
     && crossSectionShellParityProof.ok
-    && localeMenuFocusReturnProof.ok;
+    && localeMenuFocusReturnProof.ok
+    && pageKbBudget.ok
+    && categoryStoryCountBudget.ok;
   console.log(JSON.stringify({
     ok,
     missing,
@@ -3371,7 +3500,9 @@ async function main() {
 	    changelogI18nReadabilityProof,
 	    globalStorybookZhCnIaProof,
 	    crossSectionShellParityProof,
-	    localeMenuFocusReturnProof
+	    localeMenuFocusReturnProof,
+	    pageKbBudget,
+	    categoryStoryCountBudget
 	  }, null, 2));
   if (!ok) {
     process.exit(1);

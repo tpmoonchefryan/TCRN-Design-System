@@ -131,7 +131,7 @@ const persistedCockpitRestPolicy = {
 
 export const aosFrontendShellSliceVisualInstanceReadback = {
   storyId: "aos-frontend-shell-slice",
-  page: "components.html#aos-frontend-shell-slice",
+  page: "proof.html#aos-frontend-shell-slice",
   selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"]",
   visualInstanceName: "AosFrontendShellSliceVisualInstance",
   ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
@@ -307,7 +307,7 @@ function workRows(locale: "en" | "zh-CN") {
       story: isZh ? "已注册壳切片" : "Registered shell slice",
       gate: isZh ? "DS 视觉实例" : "DS visual instance",
       evidence: isZh ? "Storybook 奇偶性证明" : "Storybook parity proof",
-      assignment: "Ilya",
+      assignment: "Engineering",
       state: <StatusBadge state={{ state: "proof_required" }} />
     },
     {

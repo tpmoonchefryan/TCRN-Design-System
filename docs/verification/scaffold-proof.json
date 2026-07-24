@@ -62,7 +62,7 @@
     {
       "path": "package.json",
       "exists": true,
-      "sha256": "89faa7dea8bb3f5a280a3fc3d22cf1f7a147c4de516c922efb0e4fa440743de1"
+      "sha256": "4b30985f535c46f1f2986d9e1465293d44e926ccdba4e318ea4f71ae67b2f05a"
     },
     {
       "path": "pnpm-workspace.yaml",
@@ -77,7 +77,7 @@
     {
       "path": "README.md",
       "exists": true,
-      "sha256": "bd02408a876a3ce830471123f2d86958f338ba3aec27875bc0255cbb6d864dd1"
+      "sha256": "3d409644362e8730e53f319e827c36fe61eb4dc834142b4a50653f95f10485e1"
     },
     {
       "path": "CHANGELOG.md",

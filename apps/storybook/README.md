@@ -30,6 +30,17 @@ component stylesheet is `tcrnComponentCss` in
   `src/build/foundation-visual-standards.ts`. The shipped `ai-consumption-contract.json`
   and `llms.txt` are build outputs (gitignored) — read the `.ts` source in a fresh clone.
 
+## Localization
+
+Every visible UI string needs all five locales — `zh-CN`, `en`, `ja`, `ko`, `fr` — in the
+two dictionaries under `src/build/locales/` (`storybook-locale-text.ts` for shell, nav, and
+story titles/descriptions; `storybook-content-text.ts` for in-story copy), or registration
+as locale-invariant (a machine token) in `scripts/lib/locale-invariant-ledger.mjs`. The
+runtime locale swap is an exact-string match, so a string with no entry silently renders
+English on a localized route; the per-story English-leak scan in `pnpm internal-alpha:proof`
+reds the gate on any unregistered English run. See the repo-root `CLAUDE.md` "Localization"
+section for the full policy.
+
 ## Build and check
 
 From this package:

@@ -56,14 +56,24 @@ export const NavigationShellSpec: Story = {
   render: () => renderContractStory("navigation-shell-spec")
 };
 
-export const AosFrontendShellSliceVisualInstance: Story = {
-  name: "AOS frontend shell slice visual instance",
-  render: () => renderContractStory("aos-frontend-shell-slice")
+export const NavigationDenseOperationsShellSpec: Story = {
+  name: "Dense operations navigation shell",
+  render: () => renderContractStory("navigation-dense-operations-shell-spec")
 };
 
-export const AosOwnerQualityProductShell: Story = {
-  name: "AOS owner-quality product shell oracle",
-  render: () => renderContractStory("aos-owner-quality-product-shell")
+export const NavigationFocusedShellsSpec: Story = {
+  name: "Focused navigation shells",
+  render: () => renderContractStory("navigation-focused-shells-spec")
+};
+
+export const NavigationPrimitivesSpec: Story = {
+  name: "Navigation component primitives",
+  render: () => renderContractStory("navigation-primitives-spec")
+};
+
+export const NavigationProductShellSpec: Story = {
+  name: "Package-backed ProductShell contract",
+  render: () => renderContractStory("navigation-product-shell-spec")
 };
 
 export const DialogSpecUsage: Story = {
@@ -81,7 +91,47 @@ export const WorkManagementComponentsSpec: Story = {
   render: () => renderContractStory("work-management-components-spec")
 };
 
+export const WorkManagementRelationshipsSpec: Story = {
+  name: "Work Management relationship vocabulary",
+  render: () => renderContractStory("work-management-relationships-spec")
+};
+
+export const WorkManagementTokensDensityViewsSpec: Story = {
+  name: "Work Management tokens, density, and views",
+  render: () => renderContractStory("work-management-tokens-density-views-spec")
+};
+
+export const WorkManagementRouteDetailSpec: Story = {
+  name: "Work Management route context and detail",
+  render: () => renderContractStory("work-management-route-detail-spec")
+};
+
+export const WorkManagementBacklogBoardSpec: Story = {
+  name: "Work Management backlog and board",
+  render: () => renderContractStory("work-management-backlog-board-spec")
+};
+
+export const WorkManagementHierarchyGatesSpec: Story = {
+  name: "Work Management hierarchy, gates, and evidence",
+  render: () => renderContractStory("work-management-hierarchy-gates-spec")
+};
+
+export const WorkManagementInspectorSpec: Story = {
+  name: "Work Management evidence and inspector",
+  render: () => renderContractStory("work-management-inspector-spec")
+};
+
 export const KnowledgeManagementComponentsSpec: Story = {
   name: "Knowledge Management component specs",
   render: () => renderContractStory("knowledge-management-components-spec")
+};
+
+export const KnowledgeManagementDensityCollaborationSpec: Story = {
+  name: "Knowledge Management density and collaboration",
+  render: () => renderContractStory("knowledge-management-density-collaboration-spec")
+};
+
+export const KnowledgeManagementTemplatesSpec: Story = {
+  name: "Knowledge Management templates and results",
+  render: () => renderContractStory("knowledge-management-templates-spec")
 };
