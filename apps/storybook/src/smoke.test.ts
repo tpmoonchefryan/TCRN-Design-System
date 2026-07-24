@@ -489,7 +489,13 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /data-storybook-content-icon="ai-contract"/);
   assert.doesNotMatch(combinedHtml, /tcrn-doc-ai-contract-link/);
   assert.match(combinedHtml, /event\.key\.toLowerCase\(\) !== "k"/);
-  assert.match(combinedHtml, /readItems\(\)\.filter/);
+  // TCRN-DS-STORY-060: the search index now merges nav + panel + component-reference readers.
+  assert.match(combinedHtml, /\[\.\.\.readItems\(\), \.\.\.readPanelItems\(\), \.\.\.readComponentItems\(\)\]/);
+  assert.match(combinedHtml, /\.tcrn-readback-panel\[id\]/);
+  assert.match(combinedHtml, /data-component-reference-id\]\[id\]/);
+  // Platform-correct shortcut label (both branches present; CI is Linux so the rendered text is Ctrl K).
+  assert.match(combinedHtml, /\/mac\|iphone\|ipad\|ipod\/i\.test/);
+  assert.ok(combinedHtml.includes("⌘ K") && combinedHtml.includes("Ctrl K"));
   assert.match(combinedHtml, /resultsBox\.addEventListener\("mousedown"/);
   assert.match(combinedHtml, /new URL\(result\.href, window\.location\.href\)/);
   assert.match(combinedHtml, /window\.location\.href = targetUrl\.href/);
@@ -1478,6 +1484,15 @@ test("TCRN-DS-STORY-056: pages are bounded — index pages hold no bodies, categ
       const bodyIds = Array.from(categoryHtml.matchAll(/data-contract-story-id="([^"]+)"/g), (match) => match[1]);
       const expectedIds = contractStoriesByGroup(group).filter((story) => story.categoryId === category.id).map((story) => story.id);
       assert.deepEqual(bodyIds, expectedIds, `category page ${categoryFileName(group, category.id)} must contain exactly its category's stories`);
+      // TCRN-DS-STORY-060: every ReadbackPanel on the page must carry a unique, non-empty static
+      // anchor id (fail-closed — if the storyHtml class-string post-pass silently stops matching,
+      // panels lose their deep-link + search anchors and this reds instead of shipping broken).
+      const panelOpenTags = categoryHtml.match(/<section class="[^"]*\btcrn-readback-panel\b[^"]*"[^>]*>/g) ?? [];
+      const panelAnchorIds = panelOpenTags.map((tag) => (tag.match(/ id="([^"]+)" data-readback-panel-anchor="/) ?? [])[1]);
+      for (const [index, tag] of panelOpenTags.entries()) {
+        assert.ok(panelAnchorIds[index], `readback panel is missing an anchor id on ${categoryFileName(group, category.id)}: ${tag.slice(0, 90)}`);
+      }
+      assert.equal(new Set(panelAnchorIds).size, panelAnchorIds.length, `readback panel anchor ids must be unique on ${categoryFileName(group, category.id)}`);
     }
   }
 

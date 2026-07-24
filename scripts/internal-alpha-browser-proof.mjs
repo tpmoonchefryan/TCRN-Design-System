@@ -2166,6 +2166,29 @@ for (const story of requiredStories) {
   storybookChecks.push({ id: story.id, storybookId: story.storybookId, visible });
 }
 
+// TCRN-DS-STORY-060: functional proof that the doc search surfaces PANELS (not only nav) and that
+// a panel's static anchor resolves. Drive the real search input with a panel's own heading text and
+// confirm a result carries that panel's #anchor and that getElementById finds it.
+await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-component-inventory.html?locale=en`);
+await storybookPage.waitForSelector("[data-readback-panel-anchor]", { state: "attached" });
+const panelSearchReadback = await storybookPage.evaluate(() => {
+  const panel = document.querySelector(".tcrn-readback-panel[id]");
+  const heading = panel && panel.querySelector(":scope > h2.tcrn-heading, :scope > h3.tcrn-heading, :scope > h4.tcrn-heading");
+  const panelId = panel ? panel.id : "";
+  const query = heading && heading.textContent ? heading.textContent.trim() : "";
+  const input = document.querySelector("[data-doc-search-input]");
+  if (!(input instanceof HTMLInputElement) || !panelId || !query) {
+    return { ok: false, reason: "missing-panel-or-input", panelId, query };
+  }
+  input.value = query;
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  const hrefs = Array.from(document.querySelectorAll("[data-doc-search-result]")).map((node) => node.getAttribute("href"));
+  const matchHref = "#" + panelId;
+  const found = hrefs.includes(matchHref);
+  const anchorResolves = Boolean(document.getElementById(panelId));
+  return { ok: found && anchorResolves, panelId, query, found, anchorResolves, resultCount: hrefs.length };
+});
+
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-governance.html?locale=en#blocked-actions`);
 await storybookPage.waitForSelector("[data-contract-story-id='blocked-actions']");
 await storybookPage.waitForSelector("#blocked-actions [role='dialog']");
@@ -2625,7 +2648,8 @@ const ok = signatureRegressions.length === 0
   && capabilityMetadataOk
   && visualBaselineManifest.ok
   && !visualBaselineManifest.rejectChecks.clippedButtonText
-  && storyHeightBudget.ok;
+  && storyHeightBudget.ok
+  && panelSearchReadback.ok;
 
 console.log(JSON.stringify({
   ok,
@@ -2648,6 +2672,7 @@ console.log(JSON.stringify({
   coveredStorybookSections: aiContractTraceabilityCheck.coveredSectionCount,
   coveredStorybookCategories: aiContractTraceabilityCheck.coveredCategoryCount,
   browserProofSummaryOk: browserProofSummary.ok,
+  panelSearchOk: panelSearchReadback.ok,
   storyCoverageManifestOk: storyCoverageManifest.ok,
   visualBaselineManifestOk: visualBaselineManifest.ok,
   clippedButtonText: visualBaselineManifest.rejectChecks.clippedButtonText,

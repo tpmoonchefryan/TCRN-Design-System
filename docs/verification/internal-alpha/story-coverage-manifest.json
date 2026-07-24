@@ -855,9 +855,9 @@
         "searchControl": {
           "top": 39.22,
           "left": 1012.09,
-          "right": 1173.63,
+          "right": 1183.77,
           "bottom": 56.77,
-          "width": 161.53,
+          "width": 171.67,
           "height": 17.55
         },
         "searchIcon": {
@@ -870,15 +870,15 @@
         },
         "searchShortcut": {
           "top": 37.58,
-          "left": 1181.63,
+          "left": 1191.77,
           "right": 1226.09,
           "bottom": 58.42,
-          "width": 44.47,
+          "width": 34.33,
           "height": 20.84
         },
         "searchInputGridStyles": {
           "display": "grid",
-          "grid-template-columns": "16px 161.531px 44.4688px",
+          "grid-template-columns": "16px 171.672px 34.3281px",
           "overflow": "visible"
         },
         "searchFitFailures": [],
@@ -994,9 +994,9 @@
         "searchControl": {
           "top": 39.22,
           "left": 1012.09,
-          "right": 1173.63,
+          "right": 1183.77,
           "bottom": 56.77,
-          "width": 161.53,
+          "width": 171.67,
           "height": 17.55
         },
         "searchIcon": {
@@ -1009,15 +1009,15 @@
         },
         "searchShortcut": {
           "top": 37.58,
-          "left": 1181.63,
+          "left": 1191.77,
           "right": 1226.09,
           "bottom": 58.42,
-          "width": 44.47,
+          "width": 34.33,
           "height": 20.84
         },
         "searchInputGridStyles": {
           "display": "grid",
-          "grid-template-columns": "16px 161.531px 44.4688px",
+          "grid-template-columns": "16px 171.672px 34.3281px",
           "overflow": "visible"
         },
         "searchFitFailures": [],
@@ -1127,9 +1127,9 @@
         "searchControl": {
           "top": 39.22,
           "left": 1012.09,
-          "right": 1173.63,
+          "right": 1183.77,
           "bottom": 56.77,
-          "width": 161.53,
+          "width": 171.67,
           "height": 17.55
         },
         "searchIcon": {
@@ -1142,15 +1142,15 @@
         },
         "searchShortcut": {
           "top": 37.58,
-          "left": 1181.63,
+          "left": 1191.77,
           "right": 1226.09,
           "bottom": 58.42,
-          "width": 44.47,
+          "width": 34.33,
           "height": 20.84
         },
         "searchInputGridStyles": {
           "display": "grid",
-          "grid-template-columns": "16px 161.531px 44.4688px",
+          "grid-template-columns": "16px 171.672px 34.3281px",
           "overflow": "visible"
         },
         "searchFitFailures": [],
@@ -1260,9 +1260,9 @@
         "searchControl": {
           "top": 39.22,
           "left": 1012.09,
-          "right": 1173.63,
+          "right": 1183.77,
           "bottom": 56.77,
-          "width": 161.53,
+          "width": 171.67,
           "height": 17.55
         },
         "searchIcon": {
@@ -1275,15 +1275,15 @@
         },
         "searchShortcut": {
           "top": 37.58,
-          "left": 1181.63,
+          "left": 1191.77,
           "right": 1226.09,
           "bottom": 58.42,
-          "width": 44.47,
+          "width": 34.33,
           "height": 20.84
         },
         "searchInputGridStyles": {
           "display": "grid",
-          "grid-template-columns": "16px 161.531px 44.4688px",
+          "grid-template-columns": "16px 171.672px 34.3281px",
           "overflow": "visible"
         },
         "searchFitFailures": [],
@@ -1393,9 +1393,9 @@
         "searchControl": {
           "top": 39.22,
           "left": 1012.09,
-          "right": 1173.63,
+          "right": 1183.77,
           "bottom": 56.77,
-          "width": 161.53,
+          "width": 171.67,
           "height": 17.55
         },
         "searchIcon": {
@@ -1408,15 +1408,15 @@
         },
         "searchShortcut": {
           "top": 37.58,
-          "left": 1181.63,
+          "left": 1191.77,
           "right": 1226.09,
           "bottom": 58.42,
-          "width": 44.47,
+          "width": 34.33,
           "height": 20.84
         },
         "searchInputGridStyles": {
           "display": "grid",
-          "grid-template-columns": "16px 161.531px 44.4688px",
+          "grid-template-columns": "16px 171.672px 34.3281px",
           "overflow": "visible"
         },
         "searchFitFailures": [],
@@ -1526,9 +1526,9 @@
         "searchControl": {
           "top": 39.22,
           "left": 1012.09,
-          "right": 1173.63,
+          "right": 1183.77,
           "bottom": 56.77,
-          "width": 161.53,
+          "width": 171.67,
           "height": 17.55
         },
         "searchIcon": {
@@ -1541,15 +1541,15 @@
         },
         "searchShortcut": {
           "top": 37.58,
-          "left": 1181.63,
+          "left": 1191.77,
           "right": 1226.09,
           "bottom": 58.42,
-          "width": 44.47,
+          "width": 34.33,
           "height": 20.84
         },
         "searchInputGridStyles": {
           "display": "grid",
-          "grid-template-columns": "16px 161.531px 44.4688px",
+          "grid-template-columns": "16px 171.672px 34.3281px",
           "overflow": "visible"
         },
         "searchFitFailures": [],
@@ -1659,9 +1659,9 @@
         "searchControl": {
           "top": 39.22,
           "left": 1012.09,
-          "right": 1173.63,
+          "right": 1183.77,
           "bottom": 56.77,
-          "width": 161.53,
+          "width": 171.67,
           "height": 17.55
         },
         "searchIcon": {
@@ -1674,15 +1674,15 @@
         },
         "searchShortcut": {
           "top": 37.58,
-          "left": 1181.63,
+          "left": 1191.77,
           "right": 1226.09,
           "bottom": 58.42,
-          "width": 44.47,
+          "width": 34.33,
           "height": 20.84
         },
         "searchInputGridStyles": {
           "display": "grid",
-          "grid-template-columns": "16px 161.531px 44.4688px",
+          "grid-template-columns": "16px 171.672px 34.3281px",
           "overflow": "visible"
         },
         "searchFitFailures": [],
@@ -1940,7 +1940,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -1950,7 +1950,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "span",
@@ -2020,7 +2020,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 }
               ]
             },
@@ -2051,7 +2051,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -2061,7 +2061,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "span",
@@ -2131,7 +2131,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 }
               ]
             },
@@ -2172,7 +2172,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -2182,7 +2182,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "h2",
@@ -2232,7 +2232,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "body",
@@ -2242,7 +2242,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 }
               ]
             },
@@ -2273,7 +2273,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -2283,7 +2283,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "article",
@@ -2333,7 +2333,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "body",
@@ -2343,7 +2343,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 },
                 {
                   "tag": "html",
@@ -2585,7 +2585,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -2595,7 +2595,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "span",
@@ -2665,7 +2665,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 }
               ]
             },
@@ -2696,7 +2696,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -2706,7 +2706,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "span",
@@ -2776,7 +2776,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 }
               ]
             },
@@ -2817,7 +2817,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -2827,7 +2827,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "h2",
@@ -2877,7 +2877,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "body",
@@ -2887,7 +2887,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 }
               ]
             },
@@ -2918,7 +2918,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -2928,7 +2928,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "article",
@@ -2978,7 +2978,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "body",
@@ -2988,7 +2988,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 },
                 {
                   "tag": "html",
@@ -3230,7 +3230,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -3240,7 +3240,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "span",
@@ -3310,7 +3310,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 }
               ]
             },
@@ -3341,7 +3341,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -3351,7 +3351,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "span",
@@ -3421,7 +3421,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 }
               ]
             },
@@ -3462,7 +3462,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -3472,7 +3472,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "h2",
@@ -3522,7 +3522,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "body",
@@ -3532,7 +3532,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 }
               ]
             },
@@ -3563,7 +3563,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -3573,7 +3573,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "article",
@@ -3623,7 +3623,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "body",
@@ -3633,7 +3633,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 },
                 {
                   "tag": "html",
@@ -3875,7 +3875,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -3885,7 +3885,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "span",
@@ -3955,7 +3955,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 }
               ]
             },
@@ -3986,7 +3986,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -3996,7 +3996,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "span",
@@ -4066,7 +4066,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 }
               ]
             },
@@ -4107,7 +4107,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -4117,7 +4117,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "h2",
@@ -4167,7 +4167,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "body",
@@ -4177,7 +4177,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 }
               ]
             },
@@ -4208,7 +4208,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "header",
@@ -4218,7 +4218,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "article",
@@ -4268,7 +4268,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Englis"
+                  "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
                 },
                 {
                   "tag": "body",
@@ -4278,7 +4278,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fran"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 },
                 {
                   "tag": "html",
@@ -4529,7 +4529,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -4539,7 +4539,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -4549,7 +4549,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -4559,7 +4559,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -4600,7 +4600,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -4610,7 +4610,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -4620,7 +4620,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -4630,7 +4630,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -4681,7 +4681,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -4691,7 +4691,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -4701,7 +4701,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -4711,7 +4711,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -4772,7 +4772,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 ⌘ K"
                 },
                 {
                   "tag": "div",
@@ -4782,7 +4782,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -4792,7 +4792,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -4802,7 +4802,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -4812,7 +4812,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -4853,7 +4853,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Ctrl K"
+                  "text": "⌘ K"
                 },
                 {
                   "tag": "div",
@@ -4863,7 +4863,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "搜索文档 Ctrl K"
+                  "text": "搜索文档 ⌘ K"
                 },
                 {
                   "tag": "div",
@@ -4873,7 +4873,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 ⌘ K"
                 },
                 {
                   "tag": "div",
@@ -4883,7 +4883,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -4893,7 +4893,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -4903,7 +4903,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -4913,7 +4913,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -4954,7 +4954,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -4964,7 +4964,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -4974,7 +4974,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -4984,7 +4984,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -5225,7 +5225,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -5235,7 +5235,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -5245,7 +5245,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -5255,7 +5255,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -5296,7 +5296,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -5306,7 +5306,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -5316,7 +5316,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -5326,7 +5326,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -5377,7 +5377,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -5387,7 +5387,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -5397,7 +5397,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -5407,7 +5407,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -5468,7 +5468,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 ⌘ K"
                 },
                 {
                   "tag": "div",
@@ -5478,7 +5478,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -5488,7 +5488,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -5498,7 +5498,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -5508,7 +5508,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -5549,7 +5549,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Ctrl K"
+                  "text": "⌘ K"
                 },
                 {
                   "tag": "div",
@@ -5559,7 +5559,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "搜索文档 Ctrl K"
+                  "text": "搜索文档 ⌘ K"
                 },
                 {
                   "tag": "div",
@@ -5569,7 +5569,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 ⌘ K"
                 },
                 {
                   "tag": "div",
@@ -5579,7 +5579,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -5589,7 +5589,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -5599,7 +5599,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -5609,7 +5609,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -5650,7 +5650,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -5660,7 +5660,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -5670,7 +5670,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -5680,7 +5680,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -5921,7 +5921,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -5931,7 +5931,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -5941,7 +5941,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -5951,7 +5951,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -5992,7 +5992,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -6002,7 +6002,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -6012,7 +6012,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -6022,7 +6022,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -6073,7 +6073,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -6083,7 +6083,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -6093,7 +6093,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -6103,7 +6103,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -6164,7 +6164,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 ⌘ K"
                 },
                 {
                   "tag": "div",
@@ -6174,7 +6174,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -6184,7 +6184,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -6194,7 +6194,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -6204,7 +6204,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -6245,7 +6245,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Ctrl K"
+                  "text": "⌘ K"
                 },
                 {
                   "tag": "div",
@@ -6255,7 +6255,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "搜索文档 Ctrl K"
+                  "text": "搜索文档 ⌘ K"
                 },
                 {
                   "tag": "div",
@@ -6265,7 +6265,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "当前位置 组件 知识管理组件规范 搜索文档 Ctrl K"
+                  "text": "当前位置 组件 知识管理组件规范 搜索文档 ⌘ K"
                 },
                 {
                   "tag": "div",
@@ -6275,7 +6275,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -6285,7 +6285,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -6295,7 +6295,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -6305,7 +6305,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",
@@ -6346,7 +6346,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "header",
@@ -6356,7 +6356,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "div",
@@ -6366,7 +6366,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Français 简体中文 Engl"
+                  "text": "TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English"
                 },
                 {
                   "tag": "body",
@@ -6376,7 +6376,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 Ctrl K 简体中文简体中文English日本語한국어Fr"
+                  "text": "Skip to content TCRN设计系统组件库 当前位置 组件 知识管理组件规范 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Franç"
                 },
                 {
                   "tag": "html",

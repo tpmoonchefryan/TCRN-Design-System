@@ -330,6 +330,20 @@ ${tcrnLocaleMetadata.map((metadata) => `                <option value="${metadat
 
 // TCRN-DS-STORY-056: a category page renders ONLY its category's story bodies (still inside
 // the one `data-story-section` wrapper the gates expect). Index pages never call this.
+// TCRN-DS-STORY-060: give every ReadbackPanel a STATIC-html anchor id so it is deep-linkable
+// (before JS) and indexable by the doc search. The id is POSITION-based (`${storyId}--panel-N`),
+// not title-derived: position ids survive the S046/S047 rewording and S049 translation churn that
+// would break slug ids, and the story-id prefix makes them page-unique for free — dissolving the
+// real collision where two different stories both render a panel titled "Negative acceptance
+// criteria" on the shared Proof page. Attribute-only injection; the panel markup is untouched.
+function injectReadbackPanelAnchors(html: string, storyId: string): string {
+  let panelIndex = 0;
+  return html.replace(/<section class="([^"]*\btcrn-readback-panel\b[^"]*)"/g, (_match, className) => {
+    panelIndex += 1;
+    return `<section class="${className}" id="${storyId}--panel-${panelIndex}" data-readback-panel-anchor="${panelIndex}"`;
+  });
+}
+
 function storyHtml(group: ContractStoryGroup, stories: ContractStory[]): string {
   return `<section class="tcrn-static-section" id="${groupSlug(group)}" data-story-section="${group}">
   <h2>${i18nText(`group.${group}`)}</h2>
@@ -338,9 +352,9 @@ ${stories.map((story) => {
   // restarts per story; without a per-story identifierPrefix, two stories on the same page
   // can mint the same useId value and collide (e.g. two dialogs sharing an aria-labelledby
   // target — a serious axe failure). Scope the ids to the story id so they are page-unique.
-  const body = renderToStaticMarkup(story.id === "overlay-focus" ? <DialogSpecFixture /> : story.render(), {
+  const body = injectReadbackPanelAnchors(renderToStaticMarkup(story.id === "overlay-focus" ? <DialogSpecFixture /> : story.render(), {
     identifierPrefix: `${story.id}-`
-  });
+  }), story.id);
   return `  <article id="${story.id}" data-contract-story-id="${story.id}" data-story-id="${story.id}" data-story-group="${story.group}" data-story-category="${escapeHtml(story.category)}" data-story-category-id="${escapeHtml(story.categoryId)}" data-story-source-path="${escapeHtml(story.sourcePath)}" data-story-package-authority="${escapeHtml(story.packageAuthority)}" data-story-readiness="${escapeHtml(story.readiness)}" data-story-proof-posture="${escapeHtml(story.proofPosture)}" data-story-collapsed="true">
   <h2 class="tcrn-story-disclosure__heading"><button type="button" class="tcrn-story-disclosure" aria-expanded="false" aria-controls="${story.id}-region" data-story-disclosure="${story.id}"><span class="tcrn-story-disclosure__title">${i18nText(`story.${story.id}.title`)}</span><span class="tcrn-story-disclosure__chevron" aria-hidden="true">${iconHtml("chevron-right", "tcrn-story-disclosure__chevron-svg", "story-disclosure")}</span></button></h2>
   <p>${i18nText(`story.${story.id}.description`)}</p>
