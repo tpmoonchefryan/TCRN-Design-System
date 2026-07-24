@@ -281,6 +281,76 @@
       "theme": "dark",
       "violationCount": 0,
       "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-1.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-1.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-2.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-2.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-3.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-3.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-4.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-4.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-5.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-5.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
     }
   ]
 }

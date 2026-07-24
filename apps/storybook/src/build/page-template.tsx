@@ -29,6 +29,8 @@ import {
 import { escapeHtml, i18nText, localeText, storybookContentText } from "./i18n.js";
 import { categoryDomId, categoryFileForStory, categoryFileName, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
 import type { ContractPage } from "./navigation.js";
+import { referenceComponentAnchor } from "./reference-pages.js";
+import type { ComponentApiEntry, ReferencePage } from "./reference-pages.js";
 
 const navGroupIcons: Record<ContractStoryGroup, IconName> = {
   Welcome: "home",
@@ -546,7 +548,79 @@ export function categoryPageHtml(group: ContractStoryGroup, categoryId: string, 
   });
 }
 
+// TCRN-DS-STORY-058: a reference page renders the shared shell (Components active, nav state
+// on the component-family-index story) around one API region per component. Every component,
+// prop, type, slot, and variant identifier is a machine token wrapped in <code> (locale-invariant
+// per the ledger), so the pages cost zero per-component translation; only the small set of shared
+// column/section labels is dictionary-backed (reference.* keys).
+function componentReferenceRegionHtml(component: ComponentApiEntry): string {
+  const anchor = referenceComponentAnchor(component.name);
+  const propsType = component.propsType ? `<code>${escapeHtml(component.propsType)}</code>` : "<code>—</code>";
+  const propsBody = component.props.length === 0
+    ? `<p class="tcrn-component-reference__empty">${i18nText("reference.noProps")}</p>`
+    : `<div class="tcrn-reference-table-scroll">
+      <table class="tcrn-reference-table">
+        <thead>
+          <tr>
+            <th scope="col">${i18nText("reference.colProp")}</th>
+            <th scope="col">${i18nText("reference.colType")}</th>
+            <th scope="col">${i18nText("reference.colRequired")}</th>
+            <th scope="col">${i18nText("reference.colSlot")}</th>
+          </tr>
+        </thead>
+        <tbody>
+${component.props.map((prop) => `          <tr>
+            <td><code>${escapeHtml(prop.name)}</code></td>
+            <td><code>${escapeHtml(prop.type)}</code></td>
+            <td><code>${prop.required ? "true" : "false"}</code></td>
+            <td><code>${prop.slot ? "true" : "false"}</code></td>
+          </tr>`).join("\n")}
+        </tbody>
+      </table>
+    </div>`;
+  const variantKeys = Object.keys(component.variants);
+  const variantsBody = variantKeys.length === 0
+    ? ""
+    : `<p class="tcrn-component-reference__facet">${i18nText("reference.variants")}: ${variantKeys.map((axis) =>
+        `<code>${escapeHtml(axis)}</code> (${component.variants[axis].map((value) => `<code>${escapeHtml(String(value))}</code>`).join(", ")})`).join("; ")}</p>`;
+  const slotsBody = component.slots.length === 0
+    ? ""
+    : `<p class="tcrn-component-reference__facet">${i18nText("reference.slots")}: ${component.slots.map((slot) => `<code>${escapeHtml(slot)}</code>`).join(", ")}</p>`;
+  return `      <article class="tcrn-component-reference" data-component-reference-id="${escapeHtml(component.name)}" id="${anchor}">
+        <h2 class="tcrn-heading"><code>${escapeHtml(component.name)}</code></h2>
+        <p class="tcrn-component-reference__meta">${i18nText("reference.propsType")}: ${propsType}</p>
+        ${propsBody}
+        ${variantsBody}
+        ${slotsBody}
+      </article>`;
+}
+
+function referenceBodyHtml(page: ReferencePage): string {
+  return `<section class="alpha-story-stack" data-reference-page="${page.pageIndex}">
+      <p class="tcrn-component-reference__intro">${i18nText("reference.intro")}</p>
+${page.components.map(componentReferenceRegionHtml).join("\n")}
+    </section>`;
+}
+
+export function referencePageHtml(page: ReferencePage): string {
+  const componentsStories = contractStoriesByGroup("Components");
+  const indexStory = componentsStories.find((story) => story.id === "component-family-index") ?? componentsStories[0];
+  if (!indexStory) {
+    throw new Error("missing_component_index_story_for_reference_page");
+  }
+  return renderContractDocument({
+    group: "Components",
+    activeCategoryId: indexStory.categoryId,
+    activeStory: indexStory,
+    pageTitleText: `${localeText("reference.pageTitle")} ${page.pageIndex}`,
+    mainBody: referenceBodyHtml(page)
+  });
+}
+
 export function pageHtml(page: ContractPage): string {
+  if (page.kind === "reference") {
+    return referencePageHtml(page);
+  }
   return page.kind === "index"
     ? sectionIndexHtml(page.group)
     : categoryPageHtml(page.group, page.categoryId, page.categoryLabel);

@@ -153,6 +153,7 @@ import {
   tmsMenuDensityRows
 } from "./content/index.js";
 import { aiConsumptionContract } from "../build/ai-consumption-contract.js";
+import { componentReferenceLocationsFor } from "../build/reference-pages-shared.js";
 import { storybookGovernanceChangelogRecords, storyCategoryFor, storyGovernanceFor } from "./governance.js";
 import {
   consumerVisualStyleContract,
@@ -1488,14 +1489,12 @@ const legacyContractStories: LegacyContractStory[] = [
           </div>
         </ReadbackPanel>
         <ReadbackPanel title="Package-backed component API">
-          <TableToolbar
-            label="Component API table tools"
-            controlsId="component-api-table"
-            searchLabel="Search public exports"
-            searchPlaceholder="Search this table"
-            collapseLabel="Collapse table"
-            expandLabel="Expand table"
-          />
+          {/* TCRN-DS-STORY-058: the flat 100-row public-export table is replaced by a compact
+              links grid into the generated per-component API reference pages. The grid IS the
+              public-export list (each name is a package export from @tcrn/ui-react), so the
+              package-backed parity/source markers stay on this container; component names are
+              machine tokens (<code>, locale-invariant). Reference locations are computed from the
+              same sorted export set the reference pages paginate, via the shared (fs-free) helper. */}
           <div
             id="component-api-table"
             data-component-library-parity="package-backed"
@@ -1504,10 +1503,13 @@ const legacyContractStories: LegacyContractStory[] = [
             data-copy-state-source="@tcrn/ui-copy-state"
           >
             <EvidenceStrip items={["@tcrn/ui-react", "Local proof only"]} />
-            <TableShell
-              columns={[{ key: "exportName", label: "Public export" }]}
-              rows={componentLibraryPublicComponentNames.map((exportName) => ({ exportName }))}
-            />
+            <ul className="tcrn-reference-index">
+              {componentReferenceLocationsFor([...componentLibraryPublicComponentNames].sort()).map((location) => (
+                <li key={location.name} className="tcrn-reference-index__item">
+                  <a href={`${location.file}#${location.anchor}`}><code>{location.name}</code></a>
+                </li>
+              ))}
+            </ul>
           </div>
         </ReadbackPanel>
         <ReadbackPanel title="Package utility exports">
@@ -1534,17 +1536,9 @@ const legacyContractStories: LegacyContractStory[] = [
             })}
           />
         </ReadbackPanel>
-        <ReadbackPanel title="Current local story coverage">
-          <WorkIndex rows={componentStoryRows} />
-        </ReadbackPanel>
-        <DetailInspector
-          title="Story template"
-          items={[
-            { key: "spec", label: "Spec", value: "purpose, anatomy, states, accessibility expectation" },
-            { key: "usage", label: "Usage", value: "props, disabled behavior, empty/error examples, proof notes" },
-            { key: "copy", label: "Copy", value: "localized labels, blocked terms, disabled reasons" }
-          ]}
-        />
+        {/* TCRN-DS-STORY-058: the generic "Current local story coverage" and "Story template"
+            panels are dropped — the per-component reference pages plus the sidebar registry now
+            carry that surface, so keeping them here was duplicated bulk on the index story. */}
         <InlineAlert tone="warning">Navigation shell components are first-class component contracts, not only page patterns.</InlineAlert>
       </section>
     )

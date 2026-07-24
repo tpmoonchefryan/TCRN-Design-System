@@ -413,6 +413,31 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-local-changelog.png"
     },
     {
+      "storyId": "page-component-api-reference-1",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-1.png"
+    },
+    {
+      "storyId": "page-component-api-reference-2",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-2.png"
+    },
+    {
+      "storyId": "page-component-api-reference-3",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-3.png"
+    },
+    {
+      "storyId": "page-component-api-reference-4",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-4.png"
+    },
+    {
+      "storyId": "page-component-api-reference-5",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-5.png"
+    },
+    {
       "storyId": "page-welcome",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-welcome.png"
@@ -823,6 +848,31 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-local-changelog.png"
     },
     {
+      "storyId": "page-component-api-reference-1",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-1.png"
+    },
+    {
+      "storyId": "page-component-api-reference-2",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-2.png"
+    },
+    {
+      "storyId": "page-component-api-reference-3",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-3.png"
+    },
+    {
+      "storyId": "page-component-api-reference-4",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-4.png"
+    },
+    {
+      "storyId": "page-component-api-reference-5",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-5.png"
+    },
+    {
       "storyId": "page-welcome",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-welcome.png"
@@ -1231,6 +1281,31 @@
       "storyId": "local-changelog",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-local-changelog.png"
+    },
+    {
+      "storyId": "page-component-api-reference-1",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-1.png"
+    },
+    {
+      "storyId": "page-component-api-reference-2",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-2.png"
+    },
+    {
+      "storyId": "page-component-api-reference-3",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-3.png"
+    },
+    {
+      "storyId": "page-component-api-reference-4",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-4.png"
+    },
+    {
+      "storyId": "page-component-api-reference-5",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-5.png"
     },
     {
       "storyId": "overlay-focus-open-dialog",

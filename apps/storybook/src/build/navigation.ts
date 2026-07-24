@@ -1,6 +1,8 @@
 import type { ContractStory, ContractStoryGroup } from "../stories.js";
 import { contractStoriesByGroup, contractStoryGroups } from "../stories.js";
 import { storyCategoryDefinitions } from "../contract-stories/governance.js";
+import { referencePages } from "./reference-pages.js";
+import type { ReferencePage } from "./reference-pages.js";
 
 export function groupSlug(group: ContractStoryGroup): string {
   return group.toLowerCase().replace(/\s+/g, "-");
@@ -80,7 +82,11 @@ export interface ContractCategoryPage {
   storyIds: readonly string[];
 }
 
-export type ContractPage = ContractIndexPage | ContractCategoryPage;
+// TCRN-DS-STORY-058: the machine-generated per-component API reference pages are a THIRD
+// page kind, emitted after the section index/category pages. They are NOT story-registry
+// entries (so navHtml never enumerates ~100 components into every page's sidebar) — they are
+// derived from the committed component-api-manifest via the shared reference-pages helper.
+export type ContractPage = ContractIndexPage | ContractCategoryPage | ReferencePage;
 
 export function buildContractPages(): ContractPage[] {
   const pages: ContractPage[] = [];
@@ -98,6 +104,7 @@ export function buildContractPages(): ContractPage[] {
       });
     }
   }
+  pages.push(...referencePages());
   return pages;
 }
 

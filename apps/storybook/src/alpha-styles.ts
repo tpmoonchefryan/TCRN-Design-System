@@ -1377,4 +1377,58 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   }
 }
 
+  /* TCRN-DS-STORY-058: component API reference pages + the index links grid. */
+  .tcrn-reference-index {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--tcrn-space-1);
+  }
+  .tcrn-reference-index__item {
+    margin: 0;
+  }
+  .tcrn-reference-index__item a {
+    display: block;
+    padding: var(--tcrn-space-0h) var(--tcrn-space-1);
+    border-radius: var(--tcrn-radius-control);
+  }
+  .tcrn-component-reference {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tcrn-space-1h);
+    padding: var(--tcrn-space-3);
+    border: 1px solid var(--tcrn-color-border-subtle);
+    border-radius: var(--tcrn-radius-surface);
+    background: var(--tcrn-color-surface-panel);
+    scroll-margin-top: var(--tcrn-anchor-scroll-offset);
+  }
+  .tcrn-component-reference__meta,
+  .tcrn-component-reference__facet,
+  .tcrn-component-reference__empty {
+    color: var(--tcrn-color-text-secondary);
+    margin: 0;
+  }
+  .tcrn-reference-table-scroll {
+    overflow-x: auto;
+  }
+  .tcrn-reference-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .tcrn-reference-table th,
+  .tcrn-reference-table td {
+    text-align: left;
+    padding: var(--tcrn-space-1) var(--tcrn-space-1h);
+    border-bottom: 1px solid var(--tcrn-color-border-subtle);
+    vertical-align: top;
+  }
+  .tcrn-reference-table th {
+    color: var(--tcrn-color-text-secondary);
+  }
+  .tcrn-reference-table td code {
+    overflow-wrap: anywhere;
+  }
+
 `;

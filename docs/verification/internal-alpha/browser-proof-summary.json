@@ -138,8 +138,8 @@
       "locale": "zh-CN",
       "gating": true,
       "ok": true,
-      "storyCount": 55,
-      "allowlistedLeakCount": 1153,
+      "storyCount": 60,
+      "allowlistedLeakCount": 1151,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -225,7 +225,7 @@
         },
         {
           "storyId": "component-family-index",
-          "allowlistedLeakCount": 46,
+          "allowlistedLeakCount": 44,
           "newLeaks": []
         },
         {
@@ -417,6 +417,31 @@
           "storyId": "local-changelog",
           "allowlistedLeakCount": 0,
           "newLeaks": []
+        },
+        {
+          "storyId": "reference-page-1",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "reference-page-2",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "reference-page-3",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "reference-page-4",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "reference-page-5",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
         }
       ]
     },
@@ -426,8 +451,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 55,
-        "leakCount": 1180,
+        "storyCount": 60,
+        "leakCount": 1178,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -495,7 +520,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 46
+            "leakCount": 44
           },
           {
             "storyId": "display-primitives-spec",
@@ -648,6 +673,26 @@
           {
             "storyId": "local-changelog",
             "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-1",
+            "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-2",
+            "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-3",
+            "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-4",
+            "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-5",
+            "leakCount": 0
           }
         ]
       },
@@ -656,8 +701,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 55,
-        "leakCount": 1184,
+        "storyCount": 60,
+        "leakCount": 1182,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -725,7 +770,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 46
+            "leakCount": 44
           },
           {
             "storyId": "display-primitives-spec",
@@ -878,6 +923,26 @@
           {
             "storyId": "local-changelog",
             "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-1",
+            "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-2",
+            "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-3",
+            "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-4",
+            "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-5",
+            "leakCount": 0
           }
         ]
       },
@@ -886,8 +951,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 55,
-        "leakCount": 2952,
+        "storyCount": 60,
+        "leakCount": 2955,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -955,7 +1020,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 118
+            "leakCount": 98
           },
           {
             "storyId": "display-primitives-spec",
@@ -1108,6 +1173,26 @@
           {
             "storyId": "local-changelog",
             "leakCount": 34
+          },
+          {
+            "storyId": "reference-page-1",
+            "leakCount": 5
+          },
+          {
+            "storyId": "reference-page-2",
+            "leakCount": 4
+          },
+          {
+            "storyId": "reference-page-3",
+            "leakCount": 5
+          },
+          {
+            "storyId": "reference-page-4",
+            "leakCount": 5
+          },
+          {
+            "storyId": "reference-page-5",
+            "leakCount": 4
           }
         ],
         "latinScriptConfound": true,
@@ -1193,6 +1278,7 @@
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -1277,6 +1363,7 @@
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -1375,6 +1462,7 @@
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -1473,6 +1561,7 @@
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -1557,6 +1646,7 @@
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -1669,6 +1759,7 @@
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -1739,6 +1830,7 @@
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -1847,6 +1939,7 @@
           "height": 576
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -1970,6 +2063,7 @@
           "height": 385
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -2072,6 +2166,7 @@
           "height": 4659
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -2174,6 +2269,7 @@
           "height": 650
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -2297,6 +2393,7 @@
           "height": 596
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -2420,6 +2517,7 @@
           "height": 3350
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -2501,6 +2599,7 @@
           "height": 445
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -2616,7 +2715,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 7802
+          "height": 2957
         },
         {
           "id": "display-primitives-spec",
@@ -2631,6 +2730,7 @@
           "height": 1053
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -2775,6 +2875,7 @@
           "height": 1961
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -2975,6 +3076,7 @@
           "height": 1000
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -3056,6 +3158,7 @@
           "height": 1480
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -3263,6 +3366,7 @@
           "height": 888
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -3386,6 +3490,7 @@
           "height": 642
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -3488,6 +3593,7 @@
           "height": 442
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -3569,6 +3675,7 @@
           "height": 1792
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -3692,6 +3799,7 @@
           "height": 285
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -3815,6 +3923,7 @@
           "height": 467
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -3959,6 +4068,7 @@
           "height": 229
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -4061,6 +4171,7 @@
           "height": 15285
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -4140,6 +4251,1107 @@
           "visible": true,
           "width": 1077,
           "height": 734
+        }
+      ],
+      "referenceRegions": [],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-1.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "ActionDrawer",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "Badge",
+          "visible": true,
+          "width": 1077,
+          "height": 162
+        },
+        {
+          "id": "Breadcrumb",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "Button",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "Checkbox",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "ClipboardCopyButton",
+          "visible": true,
+          "width": 1077,
+          "height": 575
+        },
+        {
+          "id": "CollapsibleRegion",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        },
+        {
+          "id": "ConfirmActionDialog",
+          "visible": true,
+          "width": 1077,
+          "height": 247
+        },
+        {
+          "id": "DetailDrawer",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "DetailInspector",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        },
+        {
+          "id": "Dialog",
+          "visible": true,
+          "width": 1077,
+          "height": 327
+        },
+        {
+          "id": "DisclosurePanel",
+          "visible": true,
+          "width": 1077,
+          "height": 269
+        },
+        {
+          "id": "Divider",
+          "visible": true,
+          "width": 1077,
+          "height": 100
+        },
+        {
+          "id": "EmptyState",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "EnvironmentBanner",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
+          "id": "ErrorState",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "EvidenceAttachmentList",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "EvidenceStrip",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "Field",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "FilterBar",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-2.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "GatePipeline",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "GatePipelineCompact",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "GateReadinessPanel",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "Heading",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        },
+        {
+          "id": "Highlight",
+          "visible": true,
+          "width": 1077,
+          "height": 220
+        },
+        {
+          "id": "Icon",
+          "visible": true,
+          "width": 1077,
+          "height": 281
+        },
+        {
+          "id": "IconButton",
+          "visible": true,
+          "width": 1077,
+          "height": 361
+        },
+        {
+          "id": "InlineAlert",
+          "visible": true,
+          "width": 1077,
+          "height": 162
+        },
+        {
+          "id": "Input",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "KeyValueList",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "KnowledgeAttachmentList",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeDocumentCanvas",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "KnowledgeInlineCommentList",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeLabelSet",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeMetadataRail",
+          "visible": true,
+          "width": 1077,
+          "height": 272
+        },
+        {
+          "id": "KnowledgePageTree",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeSearchResults",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "KnowledgeTemplateGallery",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeTocRail",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeVersionHistory",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-3.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "LinkButton",
+          "visible": true,
+          "width": 1077,
+          "height": 162
+        },
+        {
+          "id": "LiveRegion",
+          "visible": true,
+          "width": 1077,
+          "height": 100
+        },
+        {
+          "id": "MachineToken",
+          "visible": true,
+          "width": 1077,
+          "height": 272
+        },
+        {
+          "id": "MachineTokenCell",
+          "visible": true,
+          "width": 1077,
+          "height": 272
+        },
+        {
+          "id": "MetadataRail",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "ModuleTabs",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "NavGroup",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "NavItem",
+          "visible": true,
+          "width": 1077,
+          "height": 333
+        },
+        {
+          "id": "Pagination",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "Popover",
+          "visible": true,
+          "width": 1077,
+          "height": 379
+        },
+        {
+          "id": "ProductLauncher",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "ProductLockup",
+          "visible": true,
+          "width": 1077,
+          "height": 272
+        },
+        {
+          "id": "ProductLogo",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "ProductShell",
+          "visible": true,
+          "width": 1077,
+          "height": 1150
+        },
+        {
+          "id": "ProductShellSearch",
+          "visible": true,
+          "width": 1077,
+          "height": 864
+        },
+        {
+          "id": "ProductSwitcher",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "ReadbackPanel",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        },
+        {
+          "id": "RelationshipChip",
+          "visible": true,
+          "width": 1077,
+          "height": 272
+        },
+        {
+          "id": "SavedViewToolbar",
+          "visible": true,
+          "width": 1077,
+          "height": 220
+        },
+        {
+          "id": "SearchInput",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-4.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "SectionTabs",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "SegmentedNav",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "Select",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        },
+        {
+          "id": "ShellBrandLockup",
+          "visible": true,
+          "width": 1077,
+          "height": 299
+        },
+        {
+          "id": "ShellLocaleMenu",
+          "visible": true,
+          "width": 1077,
+          "height": 330
+        },
+        {
+          "id": "ShellThemeToggle",
+          "visible": true,
+          "width": 1077,
+          "height": 327
+        },
+        {
+          "id": "SideNav",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        },
+        {
+          "id": "SideNavCollapseButton",
+          "visible": true,
+          "width": 1077,
+          "height": 382
+        },
+        {
+          "id": "Skeleton",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        },
+        {
+          "id": "SkipLink",
+          "visible": true,
+          "width": 1077,
+          "height": 162
+        },
+        {
+          "id": "Stamp",
+          "visible": true,
+          "width": 1077,
+          "height": 214
+        },
+        {
+          "id": "StampRule",
+          "visible": true,
+          "width": 1077,
+          "height": 100
+        },
+        {
+          "id": "StateSurface",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "StateView",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "StatusBadge",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        },
+        {
+          "id": "Surface",
+          "visible": true,
+          "width": 1077,
+          "height": 100
+        },
+        {
+          "id": "TableShell",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "TableToolbar",
+          "visible": true,
+          "width": 1077,
+          "height": 385
+        },
+        {
+          "id": "TcrnBrandMark",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        },
+        {
+          "id": "Text",
+          "visible": true,
+          "width": 1077,
+          "height": 100
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "Textarea",
+          "visible": true,
+          "width": 1077,
+          "height": 137
+        },
+        {
+          "id": "Tooltip",
+          "visible": true,
+          "width": 1077,
+          "height": 241
+        },
+        {
+          "id": "TopBar",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "WorkActivityFeed",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "WorkBacklogGroup",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "WorkBoard",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "WorkBoardView",
+          "visible": true,
+          "width": 1077,
+          "height": 269
+        },
+        {
+          "id": "WorkDetailLayout",
+          "visible": true,
+          "width": 1077,
+          "height": 379
+        },
+        {
+          "id": "WorkFieldPanel",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "WorkHierarchy",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
+          "id": "WorkIndex",
+          "visible": true,
+          "width": 1077,
+          "height": 220
+        },
+        {
+          "id": "WorkInlineCreateStatic",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "WorkItemInspector",
+          "visible": true,
+          "width": 1077,
+          "height": 330
+        },
+        {
+          "id": "WorkItemRow",
+          "visible": true,
+          "width": 1077,
+          "height": 489
+        },
+        {
+          "id": "WorkList",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "WorkManagementSubnav",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        },
+        {
+          "id": "WorkPageHeader",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "WorkQuickFilters",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "WorkSplitView",
+          "visible": true,
+          "width": 1077,
+          "height": 269
+        },
+        {
+          "id": "WorkViewTabs",
+          "visible": true,
+          "width": 1077,
+          "height": 165
         }
       ],
       "clipped": [],
@@ -4226,6 +5438,7 @@
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -4310,6 +5523,7 @@
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -4408,6 +5622,7 @@
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -4506,6 +5721,7 @@
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -4590,6 +5806,7 @@
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -4702,6 +5919,7 @@
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -4772,6 +5990,7 @@
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -4880,6 +6099,7 @@
           "height": 710
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -5003,6 +6223,7 @@
           "height": 438
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -5105,6 +6326,7 @@
           "height": 6657
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -5207,6 +6429,7 @@
           "height": 786
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -5330,6 +6553,7 @@
           "height": 697
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -5453,6 +6677,7 @@
           "height": 4367
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -5534,6 +6759,7 @@
           "height": 508
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -5649,7 +6875,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 8668
+          "height": 4206
         },
         {
           "id": "display-primitives-spec",
@@ -5664,6 +6890,7 @@
           "height": 1157
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -5808,6 +7035,7 @@
           "height": 2358
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -6008,6 +7236,7 @@
           "height": 885
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -6089,6 +7318,7 @@
           "height": 1796
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -6296,6 +7526,7 @@
           "height": 1188
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -6419,6 +7650,7 @@
           "height": 712
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -6521,6 +7753,7 @@
           "height": 460
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -6602,6 +7835,7 @@
           "height": 1957
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -6725,6 +7959,7 @@
           "height": 318
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -6848,6 +8083,7 @@
           "height": 676
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -6992,6 +8228,7 @@
           "height": 247
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7094,6 +8331,7 @@
           "height": 19065
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7175,6 +8413,1107 @@
           "height": 766
         }
       ],
+      "referenceRegions": [],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-1.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "ActionDrawer",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "Badge",
+          "visible": true,
+          "width": 691,
+          "height": 162
+        },
+        {
+          "id": "Breadcrumb",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "Button",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "Checkbox",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "ClipboardCopyButton",
+          "visible": true,
+          "width": 691,
+          "height": 575
+        },
+        {
+          "id": "CollapsibleRegion",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        },
+        {
+          "id": "ConfirmActionDialog",
+          "visible": true,
+          "width": 691,
+          "height": 247
+        },
+        {
+          "id": "DetailDrawer",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "DetailInspector",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        },
+        {
+          "id": "Dialog",
+          "visible": true,
+          "width": 691,
+          "height": 327
+        },
+        {
+          "id": "DisclosurePanel",
+          "visible": true,
+          "width": 691,
+          "height": 269
+        },
+        {
+          "id": "Divider",
+          "visible": true,
+          "width": 691,
+          "height": 100
+        },
+        {
+          "id": "EmptyState",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "EnvironmentBanner",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
+          "id": "ErrorState",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "EvidenceAttachmentList",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "EvidenceStrip",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "Field",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "FilterBar",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-2.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "GatePipeline",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "GatePipelineCompact",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "GateReadinessPanel",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "Heading",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        },
+        {
+          "id": "Highlight",
+          "visible": true,
+          "width": 691,
+          "height": 220
+        },
+        {
+          "id": "Icon",
+          "visible": true,
+          "width": 691,
+          "height": 300
+        },
+        {
+          "id": "IconButton",
+          "visible": true,
+          "width": 691,
+          "height": 379
+        },
+        {
+          "id": "InlineAlert",
+          "visible": true,
+          "width": 691,
+          "height": 162
+        },
+        {
+          "id": "Input",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "KeyValueList",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "KnowledgeAttachmentList",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeDocumentCanvas",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "KnowledgeInlineCommentList",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeLabelSet",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeMetadataRail",
+          "visible": true,
+          "width": 691,
+          "height": 272
+        },
+        {
+          "id": "KnowledgePageTree",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeSearchResults",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "KnowledgeTemplateGallery",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeTocRail",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeVersionHistory",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-3.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "LinkButton",
+          "visible": true,
+          "width": 691,
+          "height": 162
+        },
+        {
+          "id": "LiveRegion",
+          "visible": true,
+          "width": 691,
+          "height": 100
+        },
+        {
+          "id": "MachineToken",
+          "visible": true,
+          "width": 691,
+          "height": 290
+        },
+        {
+          "id": "MachineTokenCell",
+          "visible": true,
+          "width": 691,
+          "height": 290
+        },
+        {
+          "id": "MetadataRail",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "ModuleTabs",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "NavGroup",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "NavItem",
+          "visible": true,
+          "width": 691,
+          "height": 352
+        },
+        {
+          "id": "Pagination",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "Popover",
+          "visible": true,
+          "width": 691,
+          "height": 379
+        },
+        {
+          "id": "ProductLauncher",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "ProductLockup",
+          "visible": true,
+          "width": 691,
+          "height": 272
+        },
+        {
+          "id": "ProductLogo",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "ProductShell",
+          "visible": true,
+          "width": 691,
+          "height": 1854
+        },
+        {
+          "id": "ProductShellSearch",
+          "visible": true,
+          "width": 691,
+          "height": 1197
+        },
+        {
+          "id": "ProductSwitcher",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "ReadbackPanel",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        },
+        {
+          "id": "RelationshipChip",
+          "visible": true,
+          "width": 691,
+          "height": 290
+        },
+        {
+          "id": "SavedViewToolbar",
+          "visible": true,
+          "width": 691,
+          "height": 220
+        },
+        {
+          "id": "SearchInput",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-4.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "SectionTabs",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "SegmentedNav",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "Select",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        },
+        {
+          "id": "ShellBrandLockup",
+          "visible": true,
+          "width": 691,
+          "height": 299
+        },
+        {
+          "id": "ShellLocaleMenu",
+          "visible": true,
+          "width": 691,
+          "height": 496
+        },
+        {
+          "id": "ShellThemeToggle",
+          "visible": true,
+          "width": 691,
+          "height": 327
+        },
+        {
+          "id": "SideNav",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        },
+        {
+          "id": "SideNavCollapseButton",
+          "visible": true,
+          "width": 691,
+          "height": 382
+        },
+        {
+          "id": "Skeleton",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        },
+        {
+          "id": "SkipLink",
+          "visible": true,
+          "width": 691,
+          "height": 162
+        },
+        {
+          "id": "Stamp",
+          "visible": true,
+          "width": 691,
+          "height": 214
+        },
+        {
+          "id": "StampRule",
+          "visible": true,
+          "width": 691,
+          "height": 100
+        },
+        {
+          "id": "StateSurface",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "StateView",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "StatusBadge",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        },
+        {
+          "id": "Surface",
+          "visible": true,
+          "width": 691,
+          "height": 100
+        },
+        {
+          "id": "TableShell",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "TableToolbar",
+          "visible": true,
+          "width": 691,
+          "height": 385
+        },
+        {
+          "id": "TcrnBrandMark",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        },
+        {
+          "id": "Text",
+          "visible": true,
+          "width": 691,
+          "height": 100
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "Textarea",
+          "visible": true,
+          "width": 691,
+          "height": 137
+        },
+        {
+          "id": "Tooltip",
+          "visible": true,
+          "width": 691,
+          "height": 241
+        },
+        {
+          "id": "TopBar",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "WorkActivityFeed",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "WorkBacklogGroup",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "WorkBoard",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "WorkBoardView",
+          "visible": true,
+          "width": 691,
+          "height": 269
+        },
+        {
+          "id": "WorkDetailLayout",
+          "visible": true,
+          "width": 691,
+          "height": 379
+        },
+        {
+          "id": "WorkFieldPanel",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "WorkHierarchy",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
+          "id": "WorkIndex",
+          "visible": true,
+          "width": 691,
+          "height": 220
+        },
+        {
+          "id": "WorkInlineCreateStatic",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "WorkItemInspector",
+          "visible": true,
+          "width": 691,
+          "height": 330
+        },
+        {
+          "id": "WorkItemRow",
+          "visible": true,
+          "width": 691,
+          "height": 489
+        },
+        {
+          "id": "WorkList",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "WorkManagementSubnav",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        },
+        {
+          "id": "WorkPageHeader",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "WorkQuickFilters",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "WorkSplitView",
+          "visible": true,
+          "width": 691,
+          "height": 269
+        },
+        {
+          "id": "WorkViewTabs",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        }
+      ],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7230,6 +9569,7 @@
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7285,6 +9625,7 @@
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7340,6 +9681,7 @@
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7395,6 +9737,7 @@
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7450,6 +9793,7 @@
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7505,6 +9849,7 @@
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7560,6 +9905,7 @@
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7639,6 +9985,7 @@
           "height": 1329
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7719,6 +10066,7 @@
           "height": 1022
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7792,6 +10140,7 @@
           "height": 13236
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7865,6 +10214,7 @@
           "height": 1543
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -7945,6 +10295,7 @@
           "height": 1427
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8025,6 +10376,7 @@
           "height": 9693
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8091,6 +10443,7 @@
           "height": 944
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8163,7 +10516,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 16596
+          "height": 9998
         },
         {
           "id": "display-primitives-spec",
@@ -8178,6 +10531,7 @@
           "height": 2090
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8265,6 +10619,7 @@
           "height": 6708
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8394,6 +10749,7 @@
           "height": 1023
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8460,6 +10816,7 @@
           "height": 3150
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8568,6 +10925,7 @@
           "height": 2051
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8648,6 +11006,7 @@
           "height": 1076
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8721,6 +11080,7 @@
           "height": 785
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8787,6 +11147,7 @@
           "height": 3512
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8867,6 +11228,7 @@
           "height": 452
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -8947,6 +11309,7 @@
           "height": 1035
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -9034,6 +11397,7 @@
           "height": 318
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -9107,6 +11471,7 @@
           "height": 41493
         }
       ],
+      "referenceRegions": [],
       "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
@@ -9171,6 +11536,892 @@
           "visible": true,
           "width": 358,
           "height": 1194
+        }
+      ],
+      "referenceRegions": [],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-1.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "ActionDrawer",
+          "visible": true,
+          "width": 358,
+          "height": 217
+        },
+        {
+          "id": "Badge",
+          "visible": true,
+          "width": 358,
+          "height": 180
+        },
+        {
+          "id": "Breadcrumb",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "Button",
+          "visible": true,
+          "width": 358,
+          "height": 382
+        },
+        {
+          "id": "Checkbox",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "ClipboardCopyButton",
+          "visible": true,
+          "width": 358,
+          "height": 1222
+        },
+        {
+          "id": "CollapsibleRegion",
+          "visible": true,
+          "width": 358,
+          "height": 189
+        },
+        {
+          "id": "ConfirmActionDialog",
+          "visible": true,
+          "width": 358,
+          "height": 247
+        },
+        {
+          "id": "DetailDrawer",
+          "visible": true,
+          "width": 358,
+          "height": 217
+        },
+        {
+          "id": "DetailInspector",
+          "visible": true,
+          "width": 358,
+          "height": 165
+        },
+        {
+          "id": "Dialog",
+          "visible": true,
+          "width": 358,
+          "height": 474
+        },
+        {
+          "id": "DisclosurePanel",
+          "visible": true,
+          "width": 358,
+          "height": 269
+        },
+        {
+          "id": "Divider",
+          "visible": true,
+          "width": 358,
+          "height": 100
+        },
+        {
+          "id": "EmptyState",
+          "visible": true,
+          "width": 358,
+          "height": 416
+        },
+        {
+          "id": "EnvironmentBanner",
+          "visible": true,
+          "width": 358,
+          "height": 265
+        },
+        {
+          "id": "ErrorState",
+          "visible": true,
+          "width": 358,
+          "height": 416
+        },
+        {
+          "id": "EvidenceAttachmentList",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "EvidenceStrip",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "Field",
+          "visible": true,
+          "width": 358,
+          "height": 244
+        },
+        {
+          "id": "FilterBar",
+          "visible": true,
+          "width": 358,
+          "height": 189
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-2.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "GatePipeline",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "GatePipelineCompact",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "GateReadinessPanel",
+          "visible": true,
+          "width": 358,
+          "height": 173
+        },
+        {
+          "id": "Heading",
+          "visible": true,
+          "width": 358,
+          "height": 226
+        },
+        {
+          "id": "Highlight",
+          "visible": true,
+          "width": 358,
+          "height": 220
+        },
+        {
+          "id": "Icon",
+          "visible": true,
+          "width": 358,
+          "height": 355
+        },
+        {
+          "id": "IconButton",
+          "visible": true,
+          "width": 358,
+          "height": 711
+        },
+        {
+          "id": "InlineAlert",
+          "visible": true,
+          "width": 358,
+          "height": 180
+        },
+        {
+          "id": "Input",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "KeyValueList",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "KnowledgeAttachmentList",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "KnowledgeDocumentCanvas",
+          "visible": true,
+          "width": 358,
+          "height": 434
+        },
+        {
+          "id": "KnowledgeInlineCommentList",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "KnowledgeLabelSet",
+          "visible": true,
+          "width": 358,
+          "height": 217
+        },
+        {
+          "id": "KnowledgeMetadataRail",
+          "visible": true,
+          "width": 358,
+          "height": 272
+        },
+        {
+          "id": "KnowledgePageTree",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "KnowledgeSearchResults",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "KnowledgeTemplateGallery",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "KnowledgeTocRail",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "KnowledgeVersionHistory",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-3.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "LinkButton",
+          "visible": true,
+          "width": 358,
+          "height": 198
+        },
+        {
+          "id": "LiveRegion",
+          "visible": true,
+          "width": 358,
+          "height": 100
+        },
+        {
+          "id": "MachineToken",
+          "visible": true,
+          "width": 358,
+          "height": 346
+        },
+        {
+          "id": "MachineTokenCell",
+          "visible": true,
+          "width": 358,
+          "height": 346
+        },
+        {
+          "id": "MetadataRail",
+          "visible": true,
+          "width": 358,
+          "height": 244
+        },
+        {
+          "id": "ModuleTabs",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "NavGroup",
+          "visible": true,
+          "width": 358,
+          "height": 217
+        },
+        {
+          "id": "NavItem",
+          "visible": true,
+          "width": 358,
+          "height": 408
+        },
+        {
+          "id": "Pagination",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "Popover",
+          "visible": true,
+          "width": 358,
+          "height": 563
+        },
+        {
+          "id": "ProductLauncher",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "ProductLockup",
+          "visible": true,
+          "width": 358,
+          "height": 382
+        },
+        {
+          "id": "ProductLogo",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "ProductShell",
+          "visible": true,
+          "width": 358,
+          "height": 2632
+        },
+        {
+          "id": "ProductShellSearch",
+          "visible": true,
+          "width": 358,
+          "height": 1937
+        },
+        {
+          "id": "ProductSwitcher",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "ReadbackPanel",
+          "visible": true,
+          "width": 358,
+          "height": 208
+        },
+        {
+          "id": "RelationshipChip",
+          "visible": true,
+          "width": 358,
+          "height": 438
+        },
+        {
+          "id": "SavedViewToolbar",
+          "visible": true,
+          "width": 358,
+          "height": 311
+        },
+        {
+          "id": "SearchInput",
+          "visible": true,
+          "width": 358,
+          "height": 219
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-4.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "SectionTabs",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "SegmentedNav",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "Select",
+          "visible": true,
+          "width": 358,
+          "height": 219
+        },
+        {
+          "id": "ShellBrandLockup",
+          "visible": true,
+          "width": 358,
+          "height": 428
+        },
+        {
+          "id": "ShellLocaleMenu",
+          "visible": true,
+          "width": 358,
+          "height": 662
+        },
+        {
+          "id": "ShellThemeToggle",
+          "visible": true,
+          "width": 358,
+          "height": 640
+        },
+        {
+          "id": "SideNav",
+          "visible": true,
+          "width": 358,
+          "height": 189
+        },
+        {
+          "id": "SideNavCollapseButton",
+          "visible": true,
+          "width": 358,
+          "height": 769
+        },
+        {
+          "id": "Skeleton",
+          "visible": true,
+          "width": 358,
+          "height": 244
+        },
+        {
+          "id": "SkipLink",
+          "visible": true,
+          "width": 358,
+          "height": 162
+        },
+        {
+          "id": "Stamp",
+          "visible": true,
+          "width": 358,
+          "height": 214
+        },
+        {
+          "id": "StampRule",
+          "visible": true,
+          "width": 358,
+          "height": 100
+        },
+        {
+          "id": "StateSurface",
+          "visible": true,
+          "width": 358,
+          "height": 416
+        },
+        {
+          "id": "StateView",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "StatusBadge",
+          "visible": true,
+          "width": 358,
+          "height": 219
+        },
+        {
+          "id": "Surface",
+          "visible": true,
+          "width": 358,
+          "height": 100
+        },
+        {
+          "id": "TableShell",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "TableToolbar",
+          "visible": true,
+          "width": 358,
+          "height": 588
+        },
+        {
+          "id": "TcrnBrandMark",
+          "visible": true,
+          "width": 358,
+          "height": 165
+        },
+        {
+          "id": "Text",
+          "visible": true,
+          "width": 358,
+          "height": 118
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "Textarea",
+          "visible": true,
+          "width": 358,
+          "height": 137
+        },
+        {
+          "id": "Tooltip",
+          "visible": true,
+          "width": 358,
+          "height": 314
+        },
+        {
+          "id": "TopBar",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "WorkActivityFeed",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "WorkBacklogGroup",
+          "visible": true,
+          "width": 358,
+          "height": 453
+        },
+        {
+          "id": "WorkBoard",
+          "visible": true,
+          "width": 358,
+          "height": 217
+        },
+        {
+          "id": "WorkBoardView",
+          "visible": true,
+          "width": 358,
+          "height": 269
+        },
+        {
+          "id": "WorkDetailLayout",
+          "visible": true,
+          "width": 358,
+          "height": 379
+        },
+        {
+          "id": "WorkFieldPanel",
+          "visible": true,
+          "width": 358,
+          "height": 217
+        },
+        {
+          "id": "WorkHierarchy",
+          "visible": true,
+          "width": 358,
+          "height": 229
+        },
+        {
+          "id": "WorkIndex",
+          "visible": true,
+          "width": 358,
+          "height": 311
+        },
+        {
+          "id": "WorkInlineCreateStatic",
+          "visible": true,
+          "width": 358,
+          "height": 217
+        },
+        {
+          "id": "WorkItemInspector",
+          "visible": true,
+          "width": 358,
+          "height": 496
+        },
+        {
+          "id": "WorkItemRow",
+          "visible": true,
+          "width": 358,
+          "height": 729
+        },
+        {
+          "id": "WorkList",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "WorkManagementSubnav",
+          "visible": true,
+          "width": 358,
+          "height": 219
+        },
+        {
+          "id": "WorkPageHeader",
+          "visible": true,
+          "width": 358,
+          "height": 453
+        },
+        {
+          "id": "WorkQuickFilters",
+          "visible": true,
+          "width": 358,
+          "height": 235
+        },
+        {
+          "id": "WorkSplitView",
+          "visible": true,
+          "width": 358,
+          "height": 269
+        },
+        {
+          "id": "WorkViewTabs",
+          "visible": true,
+          "width": 358,
+          "height": 165
         }
       ],
       "clipped": [],
