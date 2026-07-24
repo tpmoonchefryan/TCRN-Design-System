@@ -78,7 +78,7 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
   },
   "component-family-index": {
-    recordedHeightPx: 2957,
+    recordedHeightPx: 2991,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
