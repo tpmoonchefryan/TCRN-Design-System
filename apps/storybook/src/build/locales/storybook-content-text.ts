@@ -1801,4 +1801,5 @@ export const storybookContentText: Record<string, Record<TcrnLocale, string>> = 
   "PM Readiness": { "zh-CN": "PM 就绪度", en: "PM Readiness", ja: "PM 準備状況", ko: "PM 준비 상태", fr: "état de préparation PM" },
   "PM checklist": { "zh-CN": "PM 检查清单", en: "PM checklist", ja: "PM チェックリスト", ko: "PM 체크리스트", fr: "liste de contrôle PM" },
   "Package export": { "zh-CN": "包导出", en: "Package export", ja: "パッケージエクスポート", ko: "패키지 익스포트", fr: "export de paquet" },
+  "The traveling dots are slowed for legibility; the token durations shown are the real timings.": { "zh-CN": "示意圆点为便于观察已放慢；上方 token 时长为真实计时值。", en: "The traveling dots are slowed for legibility; the token durations shown are the real timings.", ja: "移動するドットは視認性のために減速しています。表示されている token の継続時間が実際の計時値です。", ko: "이동하는 점은 가독성을 위해 느리게 재생됩니다. 표시된 token 지속 시간이 실제 계측 값입니다.", fr: "Les points en déplacement sont ralentis pour la lisibilité ; les durées de token indiquées sont les valeurs réelles." }
 };

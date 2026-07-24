@@ -25,10 +25,10 @@
       },
       {
         "id": "icons-motion",
-        "measure": 2041,
-        "recordedHeightPx": 2041,
+        "measure": 2076,
+        "recordedHeightPx": 2076,
         "owedTo": "beyond-INIT-008",
-        "note": "icon + motion specimen catalogue; gated debt"
+        "note": "icon + motion specimen catalogue (incl. the S067 motion-slowdown note); gated debt"
       },
       {
         "id": "foundation-visual-standards",
@@ -39,8 +39,8 @@
       },
       {
         "id": "component-family-index",
-        "measure": 2957,
-        "recordedHeightPx": 2957,
+        "measure": 2991,
+        "recordedHeightPx": 2991,
         "owedTo": "beyond-INIT-008",
         "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
       },
@@ -96,9 +96,9 @@
     },
     {
       "id": "icons-motion",
-      "heightPx": 2041,
+      "heightPx": 2076,
       "owedTo": "beyond-INIT-008",
-      "note": "icon + motion specimen catalogue; gated debt"
+      "note": "icon + motion specimen catalogue (incl. the S067 motion-slowdown note); gated debt"
     },
     {
       "id": "foundation-visual-standards",
@@ -108,7 +108,7 @@
     },
     {
       "id": "component-family-index",
-      "heightPx": 2957,
+      "heightPx": 2991,
       "owedTo": "beyond-INIT-008",
       "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
     },

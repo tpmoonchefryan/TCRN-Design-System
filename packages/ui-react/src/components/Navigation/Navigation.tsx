@@ -1316,6 +1316,7 @@ export const tcrnComponentCss = `
    listening. Scale is deliberately subtle and lives on :active (not :hover), so it
    works the same under a finger as under a pointer. */
 .tcrn-button:active,
+.tcrn-nav-item:active,
 .tcrn-shell-theme-toggle:active,
 .tcrn-shell-locale-menu__trigger:active,
 .tcrn-table-toolbar__chip:active,
@@ -1336,6 +1337,29 @@ export const tcrnComponentCss = `
 .tcrn-link-button--quiet {
   border-color: transparent;
   background: transparent;
+}
+/* TCRN-DS-STORY-063: the core Button / LinkButton answered neither hover nor keyboard focus in
+   either layer (only .tcrn-button carried press-scale). They now speak the same feedback language
+   as the shell controls — muted-surface hover, a deepened brand fill on the primary variant, the
+   focus-ring outline, and press-scale on both (LinkButton was missing the press it shares). */
+.tcrn-button:not([disabled]):hover,
+.tcrn-link-button:hover {
+  border-color: var(--tcrn-color-border-control);
+  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 72%, var(--tcrn-color-surface-panel));
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-button--primary:not([disabled]):hover,
+.tcrn-link-button--primary:hover {
+  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 88%, var(--tcrn-color-brand-secondary));
+  background: color-mix(in srgb, var(--tcrn-color-brand-primary) 88%, var(--tcrn-color-brand-secondary));
+}
+.tcrn-button:focus-visible,
+.tcrn-link-button:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+.tcrn-link-button:active {
+  transform: scale(var(--tcrn-motion-press-scale));
 }
 .tcrn-button--danger {
   border-color: var(--tcrn-color-state-blocked);
@@ -1871,6 +1895,12 @@ export const tcrnComponentCss = `
   display: grid;
   gap: var(--tcrn-space-1);
 }
+/* TCRN-DS-STORY-062: NavGroup's selected prop previously emitted data-selected with NO visual
+   rule (a dead API). The containing group of the active item now marks itself the same way the
+   doc-shell section header does — brand text on the group label; the 3px rail stays on the leaf. */
+.tcrn-nav-group[data-selected="true"] > .tcrn-nav-group__label {
+  color: var(--tcrn-color-brand-primary);
+}
 .tcrn-nav-item {
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);
@@ -1889,12 +1919,15 @@ export const tcrnComponentCss = `
 .tcrn-nav-item__content {
   min-width: 0;
 }
+/* TCRN-DS-STORY-062: selection speaks ONE axis. The selected item carries the 3px left-edge
+   brand rail + brand text — no fill, no outline, and zero radius so the rail pins flush to
+   x=0 — matching the doc-shell single-axis selection language the shell standardized on. */
 .tcrn-nav-item[data-selected="true"],
 .tcrn-nav-item[aria-current="page"] {
-  color: var(--tcrn-color-text-primary);
-  background: var(--tcrn-color-brand-primary-bg);
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary), transparent 64%);
-  box-shadow: none;
+  color: var(--tcrn-color-brand-primary);
+  font-weight: var(--tcrn-type-weight-strong);
+  border-radius: 0;
+  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-nav-item:hover {
   background: var(--tcrn-color-surface-muted);
@@ -2398,6 +2431,56 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* TCRN-DS-STORY-064: the four relation tones were dangling classes with zero rules, so all 12
+   relations rendered neutral gray, and the href variant had no chip surface at all (bare text —
+   no fill, no border, no dot). Tones now map to the shared state palette on BOTH the Badge and the
+   link variant; the link variant gains the same pill surface + status dot Badge provides, plus
+   click feedback. */
+.tcrn-relationship-chip--neutral {
+  background: var(--tcrn-color-surface-muted);
+  color: var(--tcrn-color-text-secondary);
+}
+.tcrn-relationship-chip--positive {
+  background: var(--tcrn-color-state-ready-bg);
+  color: var(--tcrn-color-state-ready);
+}
+.tcrn-relationship-chip--warning {
+  background: var(--tcrn-color-state-warning-bg);
+  color: var(--tcrn-color-state-warning);
+}
+.tcrn-relationship-chip--danger {
+  background: var(--tcrn-color-state-blocked-bg);
+  color: var(--tcrn-color-state-blocked);
+}
+a.tcrn-relationship-chip {
+  position: relative;
+  min-height: 24px;
+  padding: var(--tcrn-state-chip-padding);
+  padding-inline-start: calc(var(--tcrn-space-2) + var(--tcrn-state-dot-size) + 4px);
+  border-radius: var(--tcrn-radius-control);
+  font-size: var(--tcrn-type-size-meta);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+a.tcrn-relationship-chip::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: var(--tcrn-space-2);
+  inset-block-start: 50%;
+  inline-size: var(--tcrn-state-dot-size);
+  block-size: var(--tcrn-state-dot-size);
+  margin-block-start: calc(var(--tcrn-state-dot-size) / -2);
+  border-radius: 50%;
+  background: currentColor;
+}
+a.tcrn-relationship-chip:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+a.tcrn-relationship-chip:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
 .tcrn-machine-token {
   display: inline-grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -2569,9 +2652,11 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   text-decoration: none;
   background: var(--tcrn-color-surface-panel);
 }
+/* TCRN-DS-STORY-062: horizontal navigation speaks the bottom axis (aligned with
+   WorkViewTabs/WorkQuickFilters) instead of a fill — one selection language per orientation. */
 .tcrn-work-management-subnav [data-selected="true"] {
   border-color: var(--tcrn-color-border-control);
-  background: var(--tcrn-color-brand-primary-bg);
+  box-shadow: inset 0 -2px 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-saved-view-toolbar {
   display: grid;
@@ -2943,9 +3028,12 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   color: var(--tcrn-color-text-primary);
   text-decoration: none;
 }
+/* TCRN-DS-STORY-062: same single-axis selection as the doc shell — 3px left rail + brand
+   text, no row fill, zero radius on the selected element. */
 .tcrn-knowledge-page-tree__item > [data-selected="true"],
 .tcrn-knowledge-toc-rail nav > [data-selected="true"] {
-  background: var(--tcrn-color-brand-primary-bg);
+  color: var(--tcrn-color-brand-primary);
+  border-radius: 0;
   box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-knowledge-page-tree__item[data-tree-level="2"] > a,
@@ -3166,7 +3254,13 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   .tcrn-shell-theme-toggle:active,
   .tcrn-shell-locale-menu__trigger:active,
   .tcrn-table-toolbar__chip:active,
-  .tcrn-table-toolbar__collapse:active {
+  .tcrn-table-toolbar__collapse:active,
+  .tcrn-link-button:active,
+  .tcrn-product-launcher button:active,
+  .tcrn-product-switcher button:active,
+  .tcrn-module-tabs button:active,
+  .tcrn-section-tabs button:active,
+  .tcrn-segmented-nav button:active {
     transform: none;
   }
 }
@@ -3569,6 +3663,64 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   background: var(--tcrn-color-surface-panel);
   color: var(--tcrn-color-text-primary);
   box-shadow: var(--tcrn-elevation-floating);
+}
+
+/* TCRN-DS-STORY-063: interactive feedback family completion. Every clickable navigation / row /
+   tab / button surface now answers hover + keyboard focus, and the pressable button families
+   answer the press — matching the shell control language (surface-muted hover, focus-ring
+   outline, press-scale). Previously these had no hover and fell to the UA default focus ring
+   outside the product-shell scope. */
+.tcrn-work-management-subnav > a:hover,
+.tcrn-work-view-tabs > a:hover,
+.tcrn-work-quick-filters > a:hover,
+.tcrn-knowledge-page-tree__item > a:hover,
+.tcrn-knowledge-toc-rail nav > a:hover {
+  background: var(--tcrn-color-surface-muted);
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-work-item-row[href]:hover,
+.tcrn-product-launcher button:hover,
+.tcrn-product-switcher button:hover,
+.tcrn-module-tabs button:hover,
+.tcrn-section-tabs button:hover,
+.tcrn-segmented-nav button:hover {
+  border-color: var(--tcrn-color-border-control);
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-work-management-subnav > a:focus-visible,
+.tcrn-work-view-tabs > a:focus-visible,
+.tcrn-work-quick-filters > a:focus-visible,
+.tcrn-work-item-row[href]:focus-visible,
+.tcrn-knowledge-page-tree__item > a:focus-visible,
+.tcrn-knowledge-toc-rail nav > a:focus-visible,
+.tcrn-knowledge-search-results__head a:focus-visible,
+.tcrn-product-launcher button:focus-visible,
+.tcrn-product-switcher button:focus-visible,
+.tcrn-module-tabs button:focus-visible,
+.tcrn-section-tabs button:focus-visible,
+.tcrn-segmented-nav button:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+.tcrn-product-launcher button:active,
+.tcrn-product-switcher button:active,
+.tcrn-module-tabs button:active,
+.tcrn-section-tabs button:active,
+.tcrn-segmented-nav button:active {
+  transform: scale(var(--tcrn-motion-press-scale));
+}
+/* KnowledgeSearchResults head anchor previously had no color/decoration at all — bare UA blue
+   for package consumers. It reads as an inline result link: brand ink + quiet underline that
+   answers hover. */
+.tcrn-knowledge-search-results__head a {
+  color: var(--tcrn-color-brand-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 35%, transparent);
+}
+.tcrn-knowledge-search-results__head a:hover {
+  text-decoration-color: var(--tcrn-color-brand-primary);
 }
 
 /* Overlay dialog + popover grid (.alpha-overlay-demo__dialog stays doc-side) */

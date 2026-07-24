@@ -250,7 +250,11 @@ const productShellComparatorContract = {
       paddingRight: "6px"
     },
     currentLocation: { fontSize: "11px", lineHeight: "14.85px", letterSpacing: "normal" },
-    selectedNavItem: { backgroundRequired: true, fontSize: "13px", lineHeight: "17.55px", boxShadow: "none" },
+    // TCRN-DS-STORY-062: selection speaks the single 3px left-edge brand rail — no fill.
+    // backgroundRequired dropped (rest background is legitimately transparent now). The rail is
+    // pinned by computed serialization under BOTH themes (light brand-primary #17707f, dark
+    // #62c3d2) because the parity checks run in each.
+    selectedNavItem: { fontSize: "13px", fontWeight: "700", lineHeight: "17.55px", boxShadow: ["rgb(23, 112, 127) 3px 0px 0px 0px inset", "rgb(98, 195, 210) 3px 0px 0px 0px inset"] },
     topBar: {
       minHeight: 68,
       borderRadius: "0px",
@@ -959,6 +963,14 @@ for (const text of [
   "--tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer)",
   "flex-basis: 260px",
   "flex-basis: 420px",
+  // TCRN-DS-STORY-063: the feedback-family rules must stay in the package stylesheet. These are
+  // CSS-selector markers (never present in the i18n payload), so they can only be satisfied by the
+  // actual component-style block. Runtime hover is proven separately in internal-alpha:proof.
+  ".tcrn-button:focus-visible",
+  ".tcrn-link-button:active",
+  ".tcrn-knowledge-search-results__head a:focus-visible",
+  ".tcrn-segmented-nav button:focus-visible",
+  ".tcrn-segmented-nav button:active",
   ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
   ".tcrn-product-shell[data-theme-switching=\"true\"]::after",
   "tcrn-product-shell-theme-wash",
@@ -1790,7 +1802,14 @@ function validateMetric({ failures, name, metric, expected }) {
     failures.push(`${name}:font-family:${metric.fontFamily}`);
   }
   for (const property of ["fontSize", "fontWeight", "lineHeight", "letterSpacing", "boxShadow"]) {
-    if (expected[property] !== undefined && metric[property] !== expected[property]) {
+    if (expected[property] === undefined) {
+      continue;
+    }
+    // TCRN-DS-STORY-062: an expected value may be an ARRAY of acceptable serializations for
+    // checks that run under both themes (e.g. the selection rail resolves brand-primary to a
+    // different computed color per theme; both are the same ruled single-axis language).
+    const allowedValues = Array.isArray(expected[property]) ? expected[property] : [expected[property]];
+    if (!allowedValues.includes(metric[property])) {
       failures.push(`${name}:${property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}:${metric[property]}`);
     }
   }

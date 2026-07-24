@@ -6,6 +6,7 @@ import {
   ModuleTabs,
   SearchInput,
   ShellBrandLockup,
+  SideNavCollapseButton,
   StatusBadge,
   TcrnBrandMark,
   Text,
@@ -196,9 +197,7 @@ export function KnowledgeBaseShellDemo() {
             <a className="tcrn-doc-brand tcrn-knowledge-shell__brand" href="#navigation-shell-spec">
               <ShellBrandLockup suffix="Design System" caption="Component library" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
             </a>
-            <button className="tcrn-knowledge-shell__collapse-button" type="button" aria-expanded="true" aria-label="Collapse navigation">
-              <Icon name="chevron-left" />
-            </button>
+            <SideNavCollapseButton collapsed={false} controls="knowledge-shell-sidebar" expandedLabel="Collapse navigation" />
           </div>
           <div className="tcrn-knowledge-shell__topbar-copy">
             <strong>Online documentation shell</strong>
@@ -209,7 +208,7 @@ export function KnowledgeBaseShellDemo() {
             <StatusBadge state={{ state: "local_only" }} />
           </div>
         </header>
-        <aside className="tcrn-knowledge-shell__sidebar tcrn-bookmark-panel tcrn-bookmark-panel--global" aria-label="Knowledge base bookmarks">
+        <aside id="knowledge-shell-sidebar" className="tcrn-knowledge-shell__sidebar tcrn-bookmark-panel tcrn-bookmark-panel--global" aria-label="Knowledge base bookmarks">
           <div className="tcrn-knowledge-shell__sidebar-intro">
             <strong>Current page bookmarks</strong>
             <Text>Documentation uses persistent bookmarks because the reading path is deeper than the active page.</Text>
