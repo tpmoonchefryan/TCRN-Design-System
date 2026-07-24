@@ -219,7 +219,13 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     }
     return contentTranslations[source]?.[locale] ?? contentTranslations[source]?.[fallbackLocale] ?? value;
   };
-  const searchShortcutLabel = () => "Ctrl K";
+  const searchShortcutLabel = () => {
+    // TCRN-DS-STORY-060: show the platform-correct modifier — the Command glyph on Apple
+    // platforms, Ctrl elsewhere. Keyboard shortcut labels are locale-invariant symbols, not
+    // translated copy. (aria-keyshortcuts advertises both Control+K and Meta+K regardless.)
+    const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || "";
+    return /mac|iphone|ipad|ipod/i.test(platform) ? "⌘ K" : "Ctrl K";
+  };
   const applyClientShortcuts = () => {
     for (const node of document.querySelectorAll("[data-shortcut-auto='search']")) {
       node.textContent = searchShortcutLabel();
@@ -648,6 +654,30 @@ export const storybookSearchScript = `<script>
       return { href, label, groupLabel, searchable };
     });
   };
+  // TCRN-DS-STORY-060: also surface the current page's ReadbackPanels (by their static anchor id)
+  // and, on a reference page, its component API regions — so search jumps to a panel/component,
+  // not only to a story. Labels read the RENDERED (localized) heading text so matching follows the
+  // active locale. New attributes only; the nav readers above are untouched.
+  const readPanelItems = () => {
+    return Array.from(document.querySelectorAll(".tcrn-readback-panel[id]")).map((panel) => {
+      const heading = panel.querySelector(":scope > h2.tcrn-heading, :scope > h3.tcrn-heading, :scope > h4.tcrn-heading");
+      const label = heading?.textContent?.trim() ?? "";
+      const story = panel.closest("[data-contract-story-id]");
+      const groupLabel = story?.querySelector(".tcrn-story-disclosure__title")?.textContent?.trim() ?? "";
+      const href = "#" + panel.id;
+      const searchable = [label, groupLabel].filter(Boolean).join(" ");
+      return { href, label, groupLabel, searchable };
+    }).filter((item) => item.label);
+  };
+  const readComponentItems = () => {
+    return Array.from(document.querySelectorAll("[data-component-reference-id][id]")).map((region) => {
+      const label = region.getAttribute("data-component-reference-id") ?? "";
+      const groupLabel = textFor("group.Components");
+      const href = "#" + region.id;
+      const searchable = [label, groupLabel].filter(Boolean).join(" ");
+      return { href, label, groupLabel, searchable };
+    }).filter((item) => item.label);
+  };
   const setResultsVisible = (visible) => {
     if (!(resultsBox instanceof HTMLElement)) {
       return;
@@ -714,7 +744,9 @@ export const storybookSearchScript = `<script>
   const updateResults = () => {
     const normalizedQuery = normalize(input.value);
     results = normalizedQuery
-      ? readItems().filter((item) => normalize(item.searchable).includes(normalizedQuery)).slice(0, maxResults)
+      ? [...readItems(), ...readPanelItems(), ...readComponentItems()]
+          .filter((item) => normalize(item.searchable).includes(normalizedQuery))
+          .slice(0, maxResults)
       : [];
     activeIndex = results.length ? 0 : -1;
     renderResults();
@@ -1086,6 +1118,21 @@ export const activeStoryNavScript = `<script>
       suppressScrollSpyUntil = Date.now() + 250;
       setActiveStoryNav(hashPinnedStoryId);
       return;
+    }
+    // TCRN-DS-STORY-060: a panel deep link (#storyId--panel-N) is not a storyId, so pin the
+    // OWNING story so the breadcrumb/nav stay correct while the browser scrolls to the panel.
+    if (hashId) {
+      const target = document.getElementById(hashId);
+      if (target && target.matches(".tcrn-readback-panel[id]")) {
+        const owningStory = target.closest("[data-contract-story-id]");
+        const owningStoryId = owningStory ? owningStory.getAttribute("data-story-id") : null;
+        if (owningStoryId && storyIds.includes(owningStoryId)) {
+          hashPinnedStoryId = owningStoryId;
+          suppressScrollSpyUntil = Date.now() + 250;
+          setActiveStoryNav(owningStoryId);
+          return;
+        }
+      }
     }
     syncFromScroll();
   };
