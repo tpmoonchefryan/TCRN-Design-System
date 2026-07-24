@@ -1377,6 +1377,27 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   }
 }
 
+  /* Base style for BARE anchors in story bodies. Components style their own anchors, but an
+     unclassed <a> in story content previously fell back to the UA default (pure blue, full
+     underline, purple visited) — visually foreign to the token language. :where() keeps this at
+     element-level specificity so it fills the UA gap without ever out-competing a component rule;
+     anchors that carry a class are excluded entirely. */
+  .story-body :where(a:not([class])) {
+    color: var(--tcrn-color-brand-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    text-decoration-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 35%, transparent);
+    transition: text-decoration-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast);
+  }
+  .story-body :where(a:not([class])):hover {
+    text-decoration-color: var(--tcrn-color-brand-primary);
+  }
+  .story-body :where(a:not([class])):focus-visible {
+    outline: none;
+    box-shadow: var(--tcrn-elevation-focus);
+  }
+
   /* TCRN-DS-STORY-058: component API reference pages + the index links grid. */
   .tcrn-reference-index {
     list-style: none;
@@ -1389,10 +1410,30 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   .tcrn-reference-index__item {
     margin: 0;
   }
+  /* The index links are navigation TILES, not prose links: 100 underlines in a grid read as
+     noise, so the rest state stays quiet (text-primary, no underline) and hover floats the
+     quiet brand background + brand text. Pressable => it answers the press like the button
+     family (press-scale on :active). */
   .tcrn-reference-index__item a {
     display: block;
     padding: var(--tcrn-space-0h) var(--tcrn-space-1);
     border-radius: var(--tcrn-radius-control);
+    border: 1px solid transparent;
+    color: var(--tcrn-color-text-primary);
+    text-decoration: none;
+    transition: background-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast), transform var(--tcrn-motion-instant);
+  }
+  .tcrn-reference-index__item a:hover {
+    background: var(--tcrn-color-brand-primary-bg);
+    color: var(--tcrn-color-brand-primary);
+    border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 25%, transparent);
+  }
+  .tcrn-reference-index__item a:focus-visible {
+    outline: none;
+    box-shadow: var(--tcrn-elevation-focus);
+  }
+  .tcrn-reference-index__item a:active {
+    transform: scale(var(--tcrn-motion-press-scale));
   }
   .tcrn-component-reference {
     display: flex;
