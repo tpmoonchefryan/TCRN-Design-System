@@ -1,10 +1,15 @@
 {
   "ok": true,
   "outputRoot": "apps/storybook/storybook-static",
-  "scannedPages": 27,
+  "scannedPages": 32,
   "pages": [
     "change-log-governance-records.html",
     "change-log.html",
+    "component-api-reference-1.html",
+    "component-api-reference-2.html",
+    "component-api-reference-3.html",
+    "component-api-reference-4.html",
+    "component-api-reference-5.html",
     "components-component-inventory.html",
     "components-controls-data.html",
     "components-knowledge-management.html",

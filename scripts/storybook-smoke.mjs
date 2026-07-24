@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 import { extname, join } from "node:path";
 import { chromium } from "@playwright/test";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
+import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
 import {
   PAGE_KB_BUDGET_BYTES,
   PAGE_KB_GRACE_ALLOWLIST,
@@ -52,6 +53,11 @@ const contractPages = (() => {
         storyIds: requiredStories.filter((entry) => entry.group === group && entry.categoryId === story.categoryId).map((entry) => entry.id)
       });
     }
+  }
+  // TCRN-DS-STORY-058: the generated per-component API reference pages come from the same shared
+  // helper the emitter uses, so the emitted-page-set gate can never drift from what was written.
+  for (const page of referencePages()) {
+    list.push({ kind: "reference", file: page.file, componentNames: page.components.map((component) => component.name) });
   }
   return list;
 })();
@@ -1612,6 +1618,17 @@ for (const page of contractPages) {
       if (!html.includes(mapEntry)) {
         missing.push(`hashroute-map:${page.file}:${story.id}`);
       }
+    }
+  } else if (page.kind === "reference") {
+    // TCRN-DS-STORY-058: a reference page carries NO story bodies (data-contract-story-id) — it
+    // holds one machine-generated API region (data-component-reference-id) per component, in the
+    // same order the shared helper paginated.
+    if (bodyIds.length !== 0) {
+      missing.push(`reference-page-has-story-bodies:${page.file}:${bodyIds.length}`);
+    }
+    const referenceIds = Array.from(html.matchAll(/data-component-reference-id="([^"]+)"/g), (match) => match[1]);
+    if (referenceIds.join(",") !== page.componentNames.join(",")) {
+      missing.push(`reference-page-components:${page.file}:${referenceIds.join("|")}`);
     }
   } else if (bodyIds.join(",") !== page.storyIds.join(",")) {
     missing.push(`category-page-bodies:${page.file}:${bodyIds.join("|")}`);

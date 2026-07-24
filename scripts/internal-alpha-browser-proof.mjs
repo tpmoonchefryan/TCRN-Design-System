@@ -15,6 +15,7 @@ import {
   evaluateBudget
 } from "./lib/story-budget.mjs";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
+import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
 
 const require = createRequire(import.meta.url);
 const axePath = require.resolve("axe-core/axe.min.js");
@@ -93,11 +94,25 @@ const categoryPages = (() => {
   return list;
 })();
 
-// The full emitted page set: 7 bounded section INDEX pages + every category page. The capture
-// pass walks this so both are proven (index pages: bounded shell; category pages: story bodies).
+// TCRN-DS-STORY-058: the generated per-component API reference pages (from the same shared helper
+// the emitter uses). They carry no story bodies — one data-component-reference-id region per
+// component — so the capture walk, height collection, and zh-CN leak scan branch on kind.
+const referenceContractPages = referencePages().map((page) => ({
+  kind: "reference",
+  group: "Components",
+  slug: page.file.replace(/\.html$/, ""),
+  file: page.file,
+  storyIds: [],
+  componentNames: page.components.map((component) => component.name)
+}));
+
+// The full emitted page set: 7 bounded section INDEX pages + every category page + every generated
+// reference page. The capture pass walks this so all are proven (index pages: bounded shell;
+// category pages: story bodies; reference pages: component API regions).
 const contractPages = [
   ...sectionPages.map((section) => ({ kind: "index", group: section.group, slug: section.slug, file: section.file, storyIds: [] })),
-  ...categoryPages
+  ...categoryPages,
+  ...referenceContractPages
 ];
 
 // A story's owning page is its CATEGORY page (bodies moved off the section index page).
@@ -213,6 +228,17 @@ async function collectPageHealth(page) {
       const rect = node.getBoundingClientRect();
       return {
         id: node.getAttribute("data-contract-story-id"),
+        visible: rect.width > 0 && rect.height > 0,
+        width: Math.round(rect.width),
+        height: Math.round(rect.height)
+      };
+    });
+    // TCRN-DS-STORY-058: reference pages carry component API regions instead of story bodies; the
+    // story-height budget gates each region the same way (<=2000px), so measure them in parallel.
+    const referenceRegions = Array.from(document.querySelectorAll("[data-component-reference-id]")).map((node) => {
+      const rect = node.getBoundingClientRect();
+      return {
+        id: node.getAttribute("data-component-reference-id"),
         visible: rect.width > 0 && rect.height > 0,
         width: Math.round(rect.width),
         height: Math.round(rect.height)
@@ -468,6 +494,7 @@ async function collectPageHealth(page) {
       viewportWidth: window.innerWidth,
       bodyOverflowX: document.documentElement.scrollWidth > window.innerWidth + 1,
       storyRegions,
+      referenceRegions,
       clipped,
       readbackStateViewGapViolations,
       storyTextRhythmViolations,
@@ -779,6 +806,10 @@ for (const viewport of viewports) {
     await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}`);
     if (isCategory) {
       await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+    } else if (section.kind === "reference") {
+      // TCRN-DS-STORY-058: reference pages have no story bodies — wait for the component API
+      // regions instead (waiting for data-contract-story-id here would hang the walk).
+      await page.waitForSelector("[data-component-reference-id]", { state: "attached" });
     } else {
       // Bounded index page: no story bodies, so wait for the shell's page-head strip instead.
       await page.waitForSelector("[data-doc-page-head='governed-section']", { state: "attached" });
@@ -860,16 +891,21 @@ for (const viewport of viewports) {
       });
     }
 
-    if (viewport.name === "desktop-1440x900" && isCategory) {
+    // TCRN-DS-STORY-058: reference pages carry NEW content (component API tables + the index grid)
+    // whose a11y/contrast is worth the same both-theme axe floor as the story bodies; they wait on
+    // the component regions rather than story bodies for the dark reload.
+    const runsAxe = isCategory || section.kind === "reference";
+    const axeContentSelector = section.kind === "reference" ? "[data-component-reference-id]" : "[data-contract-story-id]";
+    if (viewport.name === "desktop-1440x900" && runsAxe) {
       // E6: axe runs in both themes so dark-mode contrast has the same 4.5:1 floor as
       // light. Dark is loaded fresh with ?theme=dark rather than toggled in place — the
       // page's per-panel theme previews only render correctly under the runtime's own
       // theme handling, so an in-place attribute flip would produce false contrast hits.
-      // Scoped to category pages (where story bodies render); each category page also carries
-      // the full shell, so the bounded index pages need no separate axe pass.
+      // Scoped to category + reference pages (which carry rendered content); each also carries the
+      // full shell, so the bounded index pages need no separate axe pass.
       axeSummaries.push({ section: section.group, page: section.file, theme: "light", ...(await runAxe(page)) });
       await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?theme=dark&locale=zh-CN`);
-      await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+      await page.waitForSelector(axeContentSelector, { state: "attached" });
       // The page ships data-tcrn-theme="light" and a script flips it to dark, which the
       // header/current-location animate over ~400ms. Kill transitions so axe measures the
       // settled dark state, not a mid-flip frame — otherwise it reports transient contrast.
@@ -1864,6 +1900,35 @@ async function collectLocaleLeakScan(page, locale, { gating }) {
       regionResults.push({ storyId, leaks: findLatinLeaks(text, localeInvariantLedger.properNouns) });
     }
   }
+  // TCRN-DS-STORY-058: the reference pages render machine tokens (in <code>, exempt) plus
+  // dictionary-backed chrome. Walk each page's whole [data-reference-page] section (intro + every
+  // component region) on the localized route, so any unswapped English chrome is caught the same
+  // way the S048 gate catches it in stories — closing the leak hole a new page kind would open.
+  for (const section of referenceContractPages) {
+    await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?locale=${locale}`);
+    await page.waitForSelector(`[data-storybook-locale='${locale}']`);
+    await page.waitForSelector("[data-reference-page]", { state: "attached" });
+    const regionTexts = await page.evaluate((selector) => {
+      const results = [];
+      for (const region of document.querySelectorAll("[data-reference-page]")) {
+        const storyId = `reference-page-${region.getAttribute("data-reference-page")}`;
+        const restored = [];
+        for (const node of region.querySelectorAll(selector)) {
+          restored.push([node, node.style.display]);
+          node.style.display = "none";
+        }
+        const text = region.innerText;
+        for (const [node, previous] of restored) {
+          node.style.display = previous;
+        }
+        results.push({ storyId, text });
+      }
+      return results;
+    }, exemptSelector);
+    for (const { storyId, text } of regionTexts) {
+      regionResults.push({ storyId, leaks: findLatinLeaks(text, localeInvariantLedger.properNouns) });
+    }
+  }
   if (gating) {
     const perStory = regionResults.map(({ storyId, leaks }) => partitionStoryLeaks(storyId, leaks));
     const newLeaks = perStory
@@ -2235,7 +2300,11 @@ const staticSectionChecks = browserSummaries.map((summary) => {
   // first story active. So the story-section / visible-body assertions are keyed to the page kind:
   // index pages expect 0 sections and 0 visible bodies; category pages expect exactly 1 section
   // whose stories are visible. Everything else (full nav, shell chrome, boundaries) holds on both.
-  const isIndex = summary.pageKind === "index";
+  // TCRN-DS-STORY-058: a reference page is, like a section index page, a bounded SHELL page with
+  // zero story bodies (its content is component API regions, not stories). It renders the same
+  // shell and marks the Components first story (component-family-index) active, so the story-body
+  // expectations follow the index branch.
+  const isIndex = summary.pageKind === "index" || summary.pageKind === "reference";
   const expectedStorySectionCount = isIndex ? 0 : 1;
   const expectedCurrentStoryNav = summary.expectedActiveStoryId ?? summary.expectedStoryIds[0];
   const ok = summary.activeSection === summary.expectedSection
@@ -2445,7 +2514,7 @@ stableBrowserProofSummary.ok = stableBrowserProofSummary.ok && localAbsolutePath
 // -057/-058) burn down. Heights are already collected in storyRegions; this is additive.
 const desktopHeightItems = browserSummaries
   .filter((summary) => summary.viewport === STORY_HEIGHT_BUDGET_VIEWPORT)
-  .flatMap((summary) => summary.storyRegions
+  .flatMap((summary) => [...summary.storyRegions, ...(summary.referenceRegions ?? [])]
     .filter((region) => region.visible)
     .map((region) => ({ id: region.id, measure: region.height })));
 const storyHeightBudget = evaluateBudget({

@@ -23,6 +23,7 @@ import patternsMeta from "./patterns.stories.js";
 import proofMeta from "./proof.stories.js";
 import styleGuideMeta from "./style-guide.stories.js";
 import { storybookGovernanceChangelogRecords, storyCategoryDefinitions, storyRegistryOrder } from "./contract-stories/governance.js";
+import { referencePages } from "./build/reference-pages.js";
 import {
   consumerVisualStyleContract,
   foundationVisualStandardCategoryIds,
@@ -1430,7 +1431,12 @@ test("GitHub README exposes the Storybook AI contract without publication overcl
 // deep link resolves through the index page's hashRouteScript route map to its category page.
 test("TCRN-DS-STORY-056: pages are bounded — index pages hold no bodies, category pages hold only their category", () => {
   const staticDir = join(process.cwd(), "storybook-static");
-  const expectedFiles = expectedContractStoryGroups.flatMap((group) => emittedHtmlFilesForGroup(group));
+  // TCRN-DS-STORY-058: the generated per-component API reference pages are emitted after the
+  // section index/category pages, from the same shared helper the emitter uses.
+  const expectedFiles = [
+    ...expectedContractStoryGroups.flatMap((group) => emittedHtmlFilesForGroup(group)),
+    ...referencePages().map((page) => page.file)
+  ];
   // Derivation safety net (S055 discipline): the sum of category-page story ids per group must
   // byte-equal contractStoriesByGroup(group), and total across all pages must equal every story.
   const derivedStoryIds: string[] = [];
@@ -1473,5 +1479,22 @@ test("TCRN-DS-STORY-056: pages are bounded — index pages hold no bodies, categ
       const expectedIds = contractStoriesByGroup(group).filter((story) => story.categoryId === category.id).map((story) => story.id);
       assert.deepEqual(bodyIds, expectedIds, `category page ${categoryFileName(group, category.id)} must contain exactly its category's stories`);
     }
+  }
+
+  // TCRN-DS-STORY-058: each generated reference page holds NO story bodies and exactly its
+  // paginated component API regions (data-component-reference-id), in order.
+  for (const page of referencePages()) {
+    const referenceHtml = readFileSync(join(staticDir, page.file), "utf8");
+    assert.equal(
+      (referenceHtml.match(/data-contract-story-id="/g) ?? []).length,
+      0,
+      `reference page ${page.file} must contain zero story bodies`
+    );
+    const referenceIds = Array.from(referenceHtml.matchAll(/data-component-reference-id="([^"]+)"/g), (match) => match[1]);
+    assert.deepEqual(
+      referenceIds,
+      page.components.map((component) => component.name),
+      `reference page ${page.file} must contain exactly its paginated component regions`
+    );
   }
 });

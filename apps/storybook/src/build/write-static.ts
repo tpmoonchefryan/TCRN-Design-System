@@ -106,7 +106,11 @@ export function writeStorybookStaticBuild(): void {
     const html = pageHtml(page);
     const hits = findForbiddenPositiveClaimHits(html);
     if (hits.length > 0) {
-      const label = page.kind === "category" ? `${page.group}/${page.categoryId}` : page.group;
+      const label = page.kind === "category"
+        ? `${page.group}/${page.categoryId}`
+        : page.kind === "reference"
+          ? page.file
+          : page.group;
       throw new Error(`storybook_forbidden_positive_claims:${label}:${hits.join(",")}`);
     }
     writeFileSync(join(outDir, page.file), html);
