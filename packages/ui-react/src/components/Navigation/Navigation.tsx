@@ -2431,6 +2431,56 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* TCRN-DS-STORY-064: the four relation tones were dangling classes with zero rules, so all 12
+   relations rendered neutral gray, and the href variant had no chip surface at all (bare text —
+   no fill, no border, no dot). Tones now map to the shared state palette on BOTH the Badge and the
+   link variant; the link variant gains the same pill surface + status dot Badge provides, plus
+   click feedback. */
+.tcrn-relationship-chip--neutral {
+  background: var(--tcrn-color-surface-muted);
+  color: var(--tcrn-color-text-secondary);
+}
+.tcrn-relationship-chip--positive {
+  background: var(--tcrn-color-state-ready-bg);
+  color: var(--tcrn-color-state-ready);
+}
+.tcrn-relationship-chip--warning {
+  background: var(--tcrn-color-state-warning-bg);
+  color: var(--tcrn-color-state-warning);
+}
+.tcrn-relationship-chip--danger {
+  background: var(--tcrn-color-state-blocked-bg);
+  color: var(--tcrn-color-state-blocked);
+}
+a.tcrn-relationship-chip {
+  position: relative;
+  min-height: 24px;
+  padding: var(--tcrn-state-chip-padding);
+  padding-inline-start: calc(var(--tcrn-space-2) + var(--tcrn-state-dot-size) + 4px);
+  border-radius: var(--tcrn-radius-control);
+  font-size: var(--tcrn-type-size-meta);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+a.tcrn-relationship-chip::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: var(--tcrn-space-2);
+  inset-block-start: 50%;
+  inline-size: var(--tcrn-state-dot-size);
+  block-size: var(--tcrn-state-dot-size);
+  margin-block-start: calc(var(--tcrn-state-dot-size) / -2);
+  border-radius: 50%;
+  background: currentColor;
+}
+a.tcrn-relationship-chip:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+a.tcrn-relationship-chip:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
 .tcrn-machine-token {
   display: inline-grid;
   grid-template-columns: minmax(0, 1fr) auto;
