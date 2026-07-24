@@ -1478,12 +1478,15 @@ label {
 
 .tcrn-shell-domain-item[data-selected="true"],
 .tcrn-shell-task-lane a[data-selected="true"],
+/* TCRN-DS-STORY-065: the knowledge-base shell demo claims to mirror the active TCRN documentation
+   shell, so its bookmark selection must speak the same single-axis language the doc shell uses —
+   the 3px left-edge brand rail + brand text, no fill, no radius. */
 .tcrn-bookmark-nav__group > a[data-selected="true"],
 .tcrn-bookmark-nav__children a[data-selected="true"] {
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 32%, var(--tcrn-color-border-subtle));
-  background: var(--tcrn-color-surface-panel);
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-brand-primary);
   font-weight: 700;
+  border-radius: 0;
+  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 
 .tcrn-shell-quick-rail {
@@ -1509,6 +1512,13 @@ label {
   --tcrn-knowledge-shell-content-gutter: 18px;
   --tcrn-knowledge-shell-left-surface: var(--tcrn-color-brand-secondary-bg);
   --tcrn-knowledge-shell-top-surface: var(--tcrn-color-surface-panel);
+}
+/* TCRN-DS-STORY-065: the deployed doc shell switches its left surface to the panel color in dark
+   mode; the demo kept a brand-tinted left rail. Mirror the shell so the demo stays faithful. */
+[data-tcrn-theme="dark"] .tcrn-knowledge-shell-layout {
+  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-surface-panel);
+}
+.tcrn-knowledge-shell-layout {
   display: grid;
   grid-template-areas:
     "topbar topbar"
@@ -1611,35 +1621,13 @@ label {
   gap: var(--tcrn-space-1);
 }
 
+/* TCRN-DS-STORY-065: the "tracked" variant no longer paints a gradient fill + gradient capsule +
+   halo ring (the pre-INIT-005 selection language the shell standardized away). The rail comes from
+   the single-axis selection rule above; text sits at normal padding. */
 .tcrn-bookmark-nav--tracked a {
   overflow: hidden;
   border-color: transparent;
   background: transparent;
-  padding-left: var(--tcrn-space-6);
-}
-
-.tcrn-bookmark-nav--tracked .tcrn-bookmark-nav__group > a[data-selected="true"],
-.tcrn-bookmark-nav--tracked .tcrn-bookmark-nav__children a[data-selected="true"] {
-  background: linear-gradient(
-    90deg,
-    var(--tcrn-color-brand-primary-bg) 0%,
-    var(--tcrn-color-brand-primary-bg) 48%,
-    var(--tcrn-color-surface-muted) 100%
-  );
-}
-
-.tcrn-bookmark-nav--tracked .tcrn-bookmark-nav__group > a[data-selected="true"]::before,
-.tcrn-bookmark-nav--tracked .tcrn-bookmark-nav__children a[data-selected="true"]::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 6px;
-  width: 8px;
-  height: 24px;
-  border-radius: var(--tcrn-radius-pill);
-  background: linear-gradient(180deg, var(--tcrn-color-brand-primary), var(--tcrn-color-brand-secondary));
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 78%, transparent);
-  transform: translateY(-50%);
 }
 
 .tcrn-bookmark-nav__children {
@@ -1689,6 +1677,17 @@ label {
   color: var(--tcrn-color-text-primary);
   padding: var(--tcrn-space-3);
   text-decoration: none;
+  transition: background-color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast);
+}
+/* TCRN-DS-STORY-065: the chapter pager mirrors the doc-shell chapter navigation, which answers
+   hover + keyboard focus; the demo pager did neither. */
+.tcrn-knowledge-shell__pager a:hover {
+  border-color: var(--tcrn-color-border-control);
+  background: var(--tcrn-color-surface-muted);
+}
+.tcrn-knowledge-shell__pager a:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
 }
 
 .tcrn-knowledge-shell__pager a:last-child {
@@ -2079,5 +2078,39 @@ label {
 }
 .tcrn-reference-table td code {
   overflow-wrap: anywhere;
+}
+
+/* TCRN-DS-STORY-065: knowledge-shell brand cell + wordmark moved from alpha-styles (Track B
+   only) into the shared demo layer so the real Storybook renders the topbar branding too. */
+.tcrn-knowledge-shell__brand-cell {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  /* TCRN-DS-STORY-065: the collapse control is now the package SideNavCollapseButton (a 38px
+     IconButton), so the reserved column sizes to the real control instead of the old 32px. */
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--tcrn-space-2h);
+  align-items: center;
+  align-self: stretch;
+  background: var(--tcrn-knowledge-shell-left-surface);
+  padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
+}
+
+.tcrn-knowledge-shell__brand .tcrn-shell-brand-lockup {
+  width: 100%;
+}
+.tcrn-knowledge-shell__brand .tcrn-brand-wordmark {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  font-size: var(--tcrn-type-size-heading-3);
+  line-height: 1.05;
+}
+.tcrn-knowledge-shell__brand .tcrn-brand-wordmark__suffix {
+  flex-basis: auto;
+  line-height: 1.06;
+}
+.tcrn-knowledge-shell__brand .tcrn-shell-brand-lockup__caption {
+  white-space: nowrap;
 }
 `;
