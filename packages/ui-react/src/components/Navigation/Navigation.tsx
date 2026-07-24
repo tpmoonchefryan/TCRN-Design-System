@@ -1316,6 +1316,7 @@ export const tcrnComponentCss = `
    listening. Scale is deliberately subtle and lives on :active (not :hover), so it
    works the same under a finger as under a pointer. */
 .tcrn-button:active,
+.tcrn-nav-item:active,
 .tcrn-shell-theme-toggle:active,
 .tcrn-shell-locale-menu__trigger:active,
 .tcrn-table-toolbar__chip:active,
@@ -1871,6 +1872,12 @@ export const tcrnComponentCss = `
   display: grid;
   gap: var(--tcrn-space-1);
 }
+/* TCRN-DS-STORY-062: NavGroup's selected prop previously emitted data-selected with NO visual
+   rule (a dead API). The containing group of the active item now marks itself the same way the
+   doc-shell section header does — brand text on the group label; the 3px rail stays on the leaf. */
+.tcrn-nav-group[data-selected="true"] > .tcrn-nav-group__label {
+  color: var(--tcrn-color-brand-primary);
+}
 .tcrn-nav-item {
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);
@@ -1889,12 +1896,15 @@ export const tcrnComponentCss = `
 .tcrn-nav-item__content {
   min-width: 0;
 }
+/* TCRN-DS-STORY-062: selection speaks ONE axis. The selected item carries the 3px left-edge
+   brand rail + brand text — no fill, no outline, and zero radius so the rail pins flush to
+   x=0 — matching the doc-shell single-axis selection language the shell standardized on. */
 .tcrn-nav-item[data-selected="true"],
 .tcrn-nav-item[aria-current="page"] {
-  color: var(--tcrn-color-text-primary);
-  background: var(--tcrn-color-brand-primary-bg);
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary), transparent 64%);
-  box-shadow: none;
+  color: var(--tcrn-color-brand-primary);
+  font-weight: var(--tcrn-type-weight-strong);
+  border-radius: 0;
+  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-nav-item:hover {
   background: var(--tcrn-color-surface-muted);
@@ -2569,9 +2579,11 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   text-decoration: none;
   background: var(--tcrn-color-surface-panel);
 }
+/* TCRN-DS-STORY-062: horizontal navigation speaks the bottom axis (aligned with
+   WorkViewTabs/WorkQuickFilters) instead of a fill — one selection language per orientation. */
 .tcrn-work-management-subnav [data-selected="true"] {
   border-color: var(--tcrn-color-border-control);
-  background: var(--tcrn-color-brand-primary-bg);
+  box-shadow: inset 0 -2px 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-saved-view-toolbar {
   display: grid;
@@ -2943,9 +2955,12 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   color: var(--tcrn-color-text-primary);
   text-decoration: none;
 }
+/* TCRN-DS-STORY-062: same single-axis selection as the doc shell — 3px left rail + brand
+   text, no row fill, zero radius on the selected element. */
 .tcrn-knowledge-page-tree__item > [data-selected="true"],
 .tcrn-knowledge-toc-rail nav > [data-selected="true"] {
-  background: var(--tcrn-color-brand-primary-bg);
+  color: var(--tcrn-color-brand-primary);
+  border-radius: 0;
   box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
 }
 .tcrn-knowledge-page-tree__item[data-tree-level="2"] > a,
