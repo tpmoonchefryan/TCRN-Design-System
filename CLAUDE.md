@@ -68,6 +68,40 @@ Enforcement: the per-story English-leak scan in `pnpm internal-alpha:proof` rend
 story on the zh-CN route and reds the gate on any unregistered multi-word English run.
 Adding a visible string without its five locales or a ledger entry fails `pnpm verify`.
 
+## Instrument discipline
+
+**Use the code graph for structural questions — after checking it is fresh.** This
+repository is indexed by codegraph and exposed to Claude Code as an MCP server
+(`codegraph-ds` in the platform `.mcp.json`). For "where is X", "who calls X", "what
+breaks if I change X", one `codegraph_explore` call replaces dozens of grep-and-read
+round trips. **Run `codegraph status` first**: a stale index is worse than grep — grep is
+slow and honest, a stale index is fast and confidently wrong, answering today's question
+from a snapshot taken weeks ago without saying so. This repository's index was stale for
+five consecutive Initiatives (35 files indexed against 113 real ones) and nobody noticed,
+because a silent downgrade raises no error. Rebuilt 2026-07-26.
+
+**Host parity is something you say out loud.** If the host you are running under is
+missing an instrument this repository already has, raise it at the start of the work
+instead of quietly falling back to a slower method. Known gap as of 2026-07-26: only
+Claude Code has the code graph wired for this repository.
+
+**Verify "did it reach elsewhere" against the authority.** Whether a branch reached the
+remote: ask the server with `git ls-remote`, never `git log --not --remotes` (under a
+narrow fetch refspec it can never see a newly pushed branch). Compare **full** SHAs — an
+8-character local id against a 7-character server-truncated one reports a difference that
+does not exist.
+
+**Background loads carry their own reclaim.** Storybook servers, watchers and headless
+browsers: put the teardown in the same command or flow, capture the process **group**,
+and verify it is empty when done. Killing the direct child is not enough — a pnpm shim
+chain lets the real binary reparent to init and survive. A daemon the tool registers
+itself (codegraph writes `.codegraph/daemon.pid`) is not a leak; the test is whether
+anything owns the record of it.
+
+Cross-repo conventions — constraint classification and evolution, direction and track
+choices, sourcing and vetting of outside code, delivery cadence — live in the platform
+root's `CLAUDE.md` and `docs/`.
+
 ## House rules
 
 - No-overclaim: do not assert npm/package publication, hosted-doc readiness, product
