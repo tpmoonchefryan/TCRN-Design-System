@@ -4,6 +4,7 @@ import {
   Button,
   Breadcrumb,
   Checkbox,
+  SearchableList,
   ClipboardCopyButton,
   componentLibraryDeferredPrototypeNames,
   componentLibraryPublicComponentNames,
@@ -2763,6 +2764,37 @@ const legacyContractStories: LegacyContractStory[] = [
           rows={patternExpansionRows.slice(0, 1)}
         />
         <InlineAlert tone="warning">Large or remote option sets need search, loading, empty, and keyboard states.</InlineAlert>
+        {/* TCRN-DS-STORY-088: the escalation named above now has a component.
+            Until this shipped the page specified a search list and the package
+            offered only Select, so every product that outgrew Select invented
+            its own menu. All four states the alert demands are shown here. */}
+        {/* Fixture labels are machine tokens rather than prose, so this story
+            carries no untranslated English into a non-English page — the same
+            rule the locale leak scan enforces on every other story. The four
+            states the alert above demands are each shown once. */}
+        <div className="tcrn-guidance-grid">
+          <SearchableList
+            label="TCRN-DS-STORY-088 scope"
+            items={[
+              { id: "all", label: "TCRN-*", meta: "4", pinned: true },
+              { id: "cross", label: "TCRN-CROSS", meta: "v1254" },
+              { id: "ds", label: "TCRN-DS", meta: "v938" },
+              { id: "tms", label: "TCRN-TMS", meta: "v228" },
+              { id: "aos", label: "TCRN-AOS", meta: "v224" },
+              { id: "locked", label: "TCRN-LEGACY", meta: "—", disabled: true }
+            ]}
+            selectedId="all"
+            searchThreshold={4}
+          />
+          <SearchableList label="TCRN-DS-STORY-088 loading" items={[]} loading />
+          <SearchableList label="TCRN-DS-STORY-088 empty" items={[]} />
+          <SearchableList
+            label="TCRN-DS-STORY-088 no-match"
+            items={[{ id: "a", label: "TCRN-A" }, { id: "b", label: "TCRN-B" }]}
+            query="zzz"
+            searchThreshold={1}
+          />
+        </div>
       </section>
     )
   },

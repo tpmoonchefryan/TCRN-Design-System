@@ -813,8 +813,9 @@ article {
   visibility: hidden;
 }
 .tcrn-doc-nav__section[aria-current="page"] {
-  color: var(--tcrn-color-brand-primary);
-  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-text-primary);
+  font-weight: var(--tcrn-type-weight-strong);
+  background: var(--tcrn-selection-fill);
 }
 .tcrn-doc-nav__categories {
   padding-left: 0;
@@ -895,16 +896,21 @@ article {
   font-size: var(--tcrn-type-size-meta);
   line-height: 1.35;
 }
+/* TCRN-DS-STORY-089: the story-level nav item. It marks itself with
+   aria-current="location" rather than data-selected, which is why the first
+   sweep for selection rules missed it: the fourth copy of a grammar that should
+   only ever have had one home. */
 .tcrn-doc-nav__stories a[aria-current="location"],
 .tcrn-doc-nav__stories a[data-doc-nav-item-active="true"] {
-  color: var(--tcrn-color-brand-primary);
-  font-weight: 700;
-  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-text-primary);
+  font-weight: var(--tcrn-type-weight-strong);
+  background: var(--tcrn-selection-fill);
 }
 /* Collapsed, the same bar sits on the same axis and the icon takes the brand colour. */
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section[aria-current="page"] {
-  color: var(--tcrn-color-brand-primary);
-  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-text-primary);
+  font-weight: var(--tcrn-type-weight-strong);
+  background: var(--tcrn-selection-fill);
 }
 .tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
   max-width: 220px;
@@ -957,7 +963,7 @@ article {
 }
 .tcrn-doc-nav__section:hover,
 .tcrn-doc-nav__stories a:hover {
-  background: var(--tcrn-color-surface-muted);
+  background: var(--tcrn-selection-fill-hover);
   color: var(--tcrn-color-text-primary);
 }
 

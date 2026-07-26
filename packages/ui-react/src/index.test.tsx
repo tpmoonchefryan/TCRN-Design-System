@@ -92,6 +92,7 @@ test("component-library metadata names public components, utilities, and deferre
     "NavItem",
     "ProductLauncher",
     "ProductSwitcher",
+    "SearchableList",
     "SkipLink",
     "TcrnBrandMark",
     "ProductLogo",

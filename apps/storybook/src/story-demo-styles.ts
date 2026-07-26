@@ -983,9 +983,7 @@ label {
 
 .tcrn-compact-shell__switcher .tcrn-module-tabs button[data-selected="true"],
 .tcrn-compact-shell__switcher .tcrn-module-tabs button[aria-current="page"] {
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 24%, transparent);
-  background: var(--tcrn-color-surface-panel);
-  box-shadow: var(--tcrn-elevation-floating);
+  background: var(--tcrn-selection-fill);
 }
 
 .tcrn-compact-shell__panel {
@@ -1151,7 +1149,7 @@ label {
 
 .tcrn-doc-search-result:hover,
 .tcrn-doc-search-result[data-selected="true"] {
-  background: var(--tcrn-color-surface-muted);
+  background: var(--tcrn-selection-fill);
 }
 
 .tcrn-doc-search-result span,
@@ -1381,8 +1379,7 @@ label {
 }
 
 .tcrn-shell-hub-action[data-selected="true"] {
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 34%, var(--tcrn-color-border-subtle));
-  background: var(--tcrn-color-surface-panel);
+  border-color: var(--tcrn-selection-edge);
 }
 
 .tcrn-shell-hub-sidecar {
@@ -1500,12 +1497,15 @@ label {
 /* TCRN-DS-STORY-065: the knowledge-base shell demo claims to mirror the active TCRN documentation
    shell, so its bookmark selection must speak the same single-axis language the doc shell uses —
    the 3px left-edge brand rail + brand text, no fill, no radius. */
+/* TCRN-DS-STORY-089 / DS-INC-004: these rules used to be a byte-for-byte copy of
+   the package's NavItem selection style, so the docs shell only looked consistent
+   by coincidence and would have silently fallen behind the package. They now
+   express the package's own selection tokens, which is what "the same visual
+   instance" is supposed to mean. */
 .tcrn-bookmark-nav__group > a[data-selected="true"],
 .tcrn-bookmark-nav__children a[data-selected="true"] {
-  color: var(--tcrn-color-brand-primary);
-  font-weight: 700;
-  border-radius: 0;
-  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-text-primary);
+  background: var(--tcrn-selection-fill);
 }
 
 .tcrn-shell-quick-rail {

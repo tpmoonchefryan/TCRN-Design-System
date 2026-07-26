@@ -92,6 +92,10 @@
   --tcrn-space-4h: 18px;
   --tcrn-space-5: 20px;
   --tcrn-space-6: 32px;
+  --tcrn-selection-fill: rgba(28, 29, 33, 0.06);
+  --tcrn-selection-fill-hover: rgba(28, 29, 33, 0.032);
+  --tcrn-selection-edge: #1c1d21;
+  --tcrn-selection-glide: 220ms cubic-bezier(0.3, 0.8, 0.3, 1);
   --tcrn-radius-control: 4px;
   --tcrn-radius-surface: 6px;
   --tcrn-radius-pill: 999px;
@@ -116,6 +120,9 @@
   --tcrn-container-readable: 1120px;
 }
 [data-tcrn-theme="dark"] {
+  --tcrn-selection-fill: rgba(236, 236, 234, 0.09);
+  --tcrn-selection-fill-hover: rgba(236, 236, 234, 0.05);
+  --tcrn-selection-edge: #ececea;
   --tcrn-color-border-control: #66686e;
   --tcrn-color-text-tertiary: #83858b;
   --tcrn-color-text-inverse: #0e1c20;

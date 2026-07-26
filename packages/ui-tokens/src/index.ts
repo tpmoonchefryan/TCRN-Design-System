@@ -1,5 +1,8 @@
 export type TokenGroup =
   | "color"
+  // Selection is its own group rather than a colour: it names a *state* the
+  // whole system speaks, and two of its four members are not colours at all.
+  | "selection"
   | "typography"
   | "space"
   | "radius"
@@ -679,6 +682,34 @@ export const tcrnTokens = [
     description: "Large layout gap between major regions."
   },
   {
+    name: "selection.fill",
+    variable: "--tcrn-selection-fill",
+    value: "rgba(28, 29, 33, 0.06)",
+    group: "selection",
+    description: "Selected state for surface-bearing controls: ink at low alpha, so selection reads as the control being inked rather than as an added mark."
+  },
+  {
+    name: "selection.fill.hover",
+    variable: "--tcrn-selection-fill-hover",
+    value: "rgba(28, 29, 33, 0.032)",
+    group: "selection",
+    description: "Hover half-step toward selection for the same controls."
+  },
+  {
+    name: "selection.edge",
+    variable: "--tcrn-selection-edge",
+    value: "#1c1d21",
+    group: "selection",
+    description: "Selected state for framed controls: the existing border promoted to ink. Framed things are never given a second mark."
+  },
+  {
+    name: "selection.glide",
+    variable: "--tcrn-selection-glide",
+    value: "220ms cubic-bezier(0.3, 0.8, 0.3, 1)",
+    group: "selection",
+    description: "Segmented-track travel for the selection fill; reduced-motion drops to an instant swap."
+  },
+  {
     name: "radius.control",
     variable: "--tcrn-radius-control",
     value: "4px",
@@ -835,6 +866,9 @@ export const tcrnTokens = [
 ] as const satisfies readonly DesignToken[];
 
 export const tcrnDarkThemeTokens = [
+  { variable: "--tcrn-selection-fill", value: "rgba(236, 236, 234, 0.09)", description: "Dark-mode selected fill; ink is the light text colour here, so the same idea inverts without a second token family." },
+  { variable: "--tcrn-selection-fill-hover", value: "rgba(236, 236, 234, 0.05)", description: "Dark-mode hover half-step toward selection." },
+  { variable: "--tcrn-selection-edge", value: "#ececea", description: "Dark-mode selected border for framed controls." },
   { variable: "--tcrn-color-border-control", value: "#66686e", description: "Dark-mode interactive control boundary; meets 3:1 against dark panel and canvas." },
   { variable: "--tcrn-color-text-tertiary", value: "#83858b", description: "Dark-mode tertiary metadata text." },
   { variable: "--tcrn-color-text-inverse", value: "#0e1c20", description: "Dark-mode text on filled accent surfaces." },

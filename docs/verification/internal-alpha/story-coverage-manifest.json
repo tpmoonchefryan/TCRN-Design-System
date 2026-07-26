@@ -6961,7 +6961,7 @@
       "locale": "zh-CN",
       "gating": true,
       "ok": true,
-      "storyCount": 60,
+      "storyCount": 61,
       "allowlistedLeakCount": 91,
       "newLeakCount": 0,
       "newLeaks": [],
@@ -7265,6 +7265,11 @@
           "storyId": "reference-page-5",
           "allowlistedLeakCount": 0,
           "newLeaks": []
+        },
+        {
+          "storyId": "reference-page-6",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
         }
       ]
     },
@@ -7274,7 +7279,7 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 60,
+        "storyCount": 61,
         "leakCount": 117,
         "perStory": [
           {
@@ -7516,6 +7521,10 @@
           {
             "storyId": "reference-page-5",
             "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-6",
+            "leakCount": 0
           }
         ]
       },
@@ -7524,7 +7533,7 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 60,
+        "storyCount": 61,
         "leakCount": 124,
         "perStory": [
           {
@@ -7766,6 +7775,10 @@
           {
             "storyId": "reference-page-5",
             "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-6",
+            "leakCount": 0
           }
         ]
       },
@@ -7774,8 +7787,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 60,
-        "leakCount": 3433,
+        "storyCount": 61,
+        "leakCount": 3441,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7951,7 +7964,7 @@
           },
           {
             "storyId": "selection-list-patterns",
-            "leakCount": 11
+            "leakCount": 14
           },
           {
             "storyId": "modal-validation-patterns",
@@ -8015,6 +8028,10 @@
           },
           {
             "storyId": "reference-page-5",
+            "leakCount": 5
+          },
+          {
+            "storyId": "reference-page-6",
             "leakCount": 4
           }
         ],
@@ -9354,6 +9371,42 @@
       "viewport": "desktop-1440x900",
       "section": "Components",
       "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "expectedCurrentStoryNav": "component-family-index",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/component-api-reference-6.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,
@@ -10729,6 +10782,42 @@
       "expectedStoryIds": []
     },
     {
+      "viewport": "tablet-1024x768",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/component-api-reference-6.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "expectedCurrentStoryNav": "component-family-index",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
       "viewport": "mobile-390x844",
       "section": "Welcome",
       "url": "/apps/storybook/storybook-static/index.html",
@@ -12038,6 +12127,42 @@
       "viewport": "mobile-390x844",
       "section": "Components",
       "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "ok": true,
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 20,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "activeSection": "Components",
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "expectedCurrentStoryNav": "component-family-index",
+      "storySections": [],
+      "visibleStoryIds": [],
+      "expectedStoryIds": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "section": "Components",
+      "url": "/apps/storybook/storybook-static/component-api-reference-6.html",
       "ok": true,
       "shellAuthority": "online-docs",
       "docShellSelectorCount": 6,

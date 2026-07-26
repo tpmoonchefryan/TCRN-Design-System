@@ -199,6 +199,10 @@
         "exported": true
       },
       {
+        "name": "SearchableList",
+        "exported": true
+      },
+      {
         "name": "WorkBacklogGroup",
         "exported": true
       },
@@ -887,6 +891,15 @@
       },
       {
         "storybookItem": "WorkSplitView",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SearchableList",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",

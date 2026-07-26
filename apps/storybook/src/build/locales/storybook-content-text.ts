@@ -1,6 +1,13 @@
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 
 export const storybookContentText: Record<string, Record<TcrnLocale, string>> = {
+  // TCRN-DS-STORY-088 — SearchableList's built-in state copy. The component
+  // carries these five locales itself; registering them here is what lets the
+  // docs page's runtime swap translate the strings it baked in at build time,
+  // which is the difference between a translated page and audited debt.
+  "Loading options…": { "zh-CN": "正在读取选项…", en: "Loading options…", ja: "選択肢を読み込んでいます…", ko: "선택지를 불러오는 중…", fr: "Chargement des options…" },
+  "There is nothing to choose from.": { "zh-CN": "没有可选项。", en: "There is nothing to choose from.", ja: "選択できる項目がありません。", ko: "선택할 항목이 없습니다.", fr: "Aucune option disponible." },
+  "No option matches \u201Czzz\u201D.": { "zh-CN": "没有匹配「zzz」的选项。", en: "No option matches \u201Czzz\u201D.", ja: "「zzz」に一致する選択肢はありません。", ko: "\"zzz\"과(와) 일치하는 항목이 없습니다.", fr: "Aucune option ne correspond à « zzz »." },
   "Component family table tools": { "zh-CN": "组件族表格工具", en: "Component family table tools", ja: "コンポーネントファミリー表ツール", ko: "컴포넌트 패밀리 표 도구", fr: "Outils du tableau des familles de composants" },
   "Component API table tools": { "zh-CN": "组件 API 表格工具", en: "Component API table tools", ja: "コンポーネント API 表ツール", ko: "컴포넌트 API 표 도구", fr: "Outils du tableau d'API de composants" },
   "Search component families": { "zh-CN": "搜索组件族", en: "Search component families", ja: "コンポーネントファミリーを検索", ko: "컴포넌트 패밀리 검색", fr: "Rechercher des familles de composants" },

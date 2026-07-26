@@ -351,6 +351,20 @@
       "theme": "dark",
       "violationCount": 0,
       "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-6.html",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-6.html",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
     }
   ]
 }

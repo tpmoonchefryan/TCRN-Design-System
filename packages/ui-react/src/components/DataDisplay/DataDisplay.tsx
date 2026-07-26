@@ -1,12 +1,13 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, KeyboardEvent, ReactNode } from "react";
+import { useState } from "react";
 import { resolveTcrnLocale, type CopyStateInput, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { Button } from "../Button/index.js";
 import { ClipboardCopyButton } from "../Clipboard/index.js";
-import { Badge, EvidenceStrip, InlineAlert, StatusBadge, StateView } from "../Feedback/index.js";
+import { Badge, EmptyState, EvidenceStrip, InlineAlert, Skeleton, StatusBadge, StateView } from "../Feedback/index.js";
 import { Heading, Text } from "../Typography/index.js";
 import { Surface } from "../Layout/index.js";
 import { SearchInput } from "../Form/index.js";
-import { cx } from "../../utils.js";
+import { cx, requiredText } from "../../utils.js";
 
 export interface TableColumn {
   key: string;
@@ -1699,5 +1700,304 @@ export function KnowledgeSearchResults({ label = "Knowledge search results", que
         );
       })}
     </section>
+  );
+}
+
+/**
+ * One row of a searchable list.
+ *
+ * `meta` is the trailing slot a machine-readable note goes in — a chain version,
+ * a count, a date. It sits opposite the label rather than after it so a column of
+ * rows stays scannable when the labels are of wildly different lengths.
+ */
+/**
+ * Built-in copy for every supported locale.
+ *
+ * A component that carries its own strings has to carry all of them: an
+ * English-only default renders English inside a zh-CN page, which the locale
+ * leak scan catches and a reader experiences as a half-translated product.
+ */
+interface SearchableListLabels {
+  search: string;
+  loading: string;
+  empty: string;
+  noMatch: (query: string) => string;
+  truncated: (shown: number, total: number) => string;
+  unavailable: string;
+}
+
+/**
+ * Locale for a component that carries its own copy, resolved in the order a
+ * reader would expect: what the caller asked for, else the language the page
+ * declares, else the fallback.
+ *
+ * Reading the document is the middle step because a component with built-in
+ * strings sits inside a page that already states its language; without it, a
+ * caller who forgets the prop silently ships English into a translated page.
+ */
+function resolveDocumentLocale(locale: TcrnLocale | string | undefined): TcrnLocale {
+  if (locale !== undefined) return resolveTcrnLocale(locale);
+  if (typeof document === "undefined") return resolveTcrnLocale(undefined);
+  return resolveTcrnLocale(
+    document.documentElement.getAttribute("data-current-locale")
+    ?? document.documentElement.lang);
+}
+
+const searchableListLabels: Record<TcrnLocale, SearchableListLabels> = {
+  "zh-CN": {
+    search: "检索",
+    loading: "正在读取选项…",
+    empty: "没有可选项。",
+    noMatch: (query) => `没有匹配「${query}」的选项。`,
+    truncated: (shown, total) => `显示 ${shown} / ${total} 项，继续输入以收窄。`,
+    unavailable: "此路线中不可选择该项"
+  },
+  en: {
+    search: "Search",
+    loading: "Loading options…",
+    empty: "There is nothing to choose from.",
+    noMatch: (query) => `No option matches “${query}”.`,
+    truncated: (shown, total) => `Showing ${shown} of ${total}; keep typing to narrow.`,
+    unavailable: "This option is unavailable in this route"
+  },
+  ja: {
+    search: "検索",
+    loading: "選択肢を読み込んでいます…",
+    empty: "選択できる項目がありません。",
+    noMatch: (query) => `「${query}」に一致する選択肢はありません。`,
+    truncated: (shown, total) => `${total} 件中 ${shown} 件を表示。入力を続けて絞り込んでください。`,
+    unavailable: "この経路ではこの項目を選択できません"
+  },
+  ko: {
+    search: "검색",
+    loading: "선택지를 불러오는 중…",
+    empty: "선택할 항목이 없습니다.",
+    noMatch: (query) => `"${query}"과(와) 일치하는 항목이 없습니다.`,
+    truncated: (shown, total) => `${total}개 중 ${shown}개 표시. 계속 입력하여 좁히십시오.`,
+    unavailable: "이 경로에서는 이 항목을 선택할 수 없습니다"
+  },
+  fr: {
+    search: "Rechercher",
+    loading: "Chargement des options…",
+    empty: "Aucune option disponible.",
+    noMatch: (query) => `Aucune option ne correspond à « ${query} ».`,
+    truncated: (shown, total) => `${shown} sur ${total} affichées ; continuez à saisir pour affiner.`,
+    unavailable: "Cette option est indisponible dans cette route"
+  }
+};
+
+export interface SearchableListItem {
+  id: string;
+  label: string;
+  /** Trailing note, typically a machine token or count. */
+  meta?: ReactNode;
+  /** Leading content: an icon, a swatch, a status dot. */
+  lead?: ReactNode;
+  description?: string;
+  /** Renders as a link rather than a button; keeps middle-click and new-tab working. */
+  href?: string;
+  disabled?: boolean;
+  disabledReason?: string;
+  /** Pins the item above the separator, for an "all"/"none" option. */
+  pinned?: boolean;
+}
+
+export interface SearchableListProps {
+  label: string;
+  items: SearchableListItem[];
+  /** Currently chosen item id, if any. */
+  selectedId?: string;
+  onSelect?: (id: string, item: SearchableListItem) => void;
+  /** Controlled query. Leave both undefined to let the component own it. */
+  query?: string;
+  onQueryChange?: (query: string) => void;
+  searchLabel?: string;
+  searchPlaceholder?: string;
+  /**
+   * Item count from which the search field appears.
+   *
+   * A search box over five options is furniture; over fifty it is the only way
+   * in. The threshold is a prop because the honest answer depends on the list.
+   */
+  searchThreshold?: number;
+  /** Shown while items are being fetched — one of the four states this pattern owes. */
+  loading?: boolean;
+  loadingLabel?: string;
+  emptyLabel?: string;
+  /** Shown when a query matches nothing, which is a different empty from "no items". */
+  noMatchLabel?: string;
+  maxVisible?: number;
+  locale?: TcrnLocale;
+}
+
+/**
+ * The searchable list — a selection surface for option sets too large or too
+ * remote for a plain `Select`.
+ *
+ * The Selection and list patterns page has specified this escalation path since
+ * it was written ("large or remote sets need search, loading, empty, and
+ * keyboard states") while the package shipped only `Select`, so every product
+ * that hit the escalation had to invent its own menu. This is that component, and
+ * it owes all four of those states by contract rather than by intention.
+ *
+ * It is deliberately not a combobox: the trigger belongs to the caller, so the
+ * same list can sit in a popover, a sidebar, or a page. What it owns is the part
+ * that keeps being reinvented — filtering, the four states, roving keyboard
+ * focus, and one selection grammar.
+ */
+export function SearchableList({
+  label,
+  items,
+  selectedId,
+  onSelect,
+  query,
+  onQueryChange,
+  searchLabel,
+  searchPlaceholder,
+  searchThreshold = 8,
+  loading = false,
+  loadingLabel,
+  emptyLabel,
+  noMatchLabel,
+  maxVisible,
+  locale
+}: SearchableListProps) {
+  const [ownQuery, setOwnQuery] = useState("");
+  const copy = searchableListLabels[resolveDocumentLocale(locale)];
+  const activeQuery = query ?? ownQuery;
+  const setQuery = (next: string) => {
+    if (onQueryChange) onQueryChange(next);
+    if (query === undefined) setOwnQuery(next);
+  };
+
+  const terms = activeQuery.toLowerCase().split(/\s+/u).filter(Boolean);
+  // Every term must hit, because typing a second word is a person narrowing.
+  const matches = items.filter((item) => {
+    if (terms.length === 0) return true;
+    const haystack = `${item.label}\n${item.description ?? ""}\n${item.id}`.toLowerCase();
+    return terms.every((term) => haystack.includes(term));
+  });
+  const pinned = matches.filter((item) => item.pinned);
+  const rest = matches.filter((item) => !item.pinned);
+  const visibleRest = maxVisible ? rest.slice(0, maxVisible) : rest;
+  const showSearch = items.length >= searchThreshold;
+
+  // Roving focus: the list is one tab stop and arrows move within it, which is
+  // what a listbox owes and what a pile of tabbable links does not give.
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const focusables = Array.from(
+      event.currentTarget.querySelectorAll<HTMLElement>("[data-searchable-list-item]:not([aria-disabled='true'])"));
+    const index = focusables.indexOf(document.activeElement as HTMLElement);
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const next = event.key === "ArrowDown" ? index + 1 : index - 1;
+      focusables[(next + focusables.length) % focusables.length]?.focus();
+    } else if (event.key === "Home" || event.key === "End") {
+      event.preventDefault();
+      (event.key === "Home" ? focusables[0] : focusables[focusables.length - 1])?.focus();
+    }
+  };
+
+  const renderItem = (item: SearchableListItem) => {
+    const selected = item.id === selectedId;
+    const reason = item.disabled
+      ? requiredText(item.disabledReason, copy.unavailable)
+      : undefined;
+    const inner = (
+      <>
+        {item.lead ? <span className="tcrn-searchable-list__lead">{item.lead}</span> : null}
+        <span className="tcrn-searchable-list__label">
+          {item.label}
+          {item.description ? (
+            <span className="tcrn-searchable-list__description">{item.description}</span>
+          ) : null}
+        </span>
+        {item.meta ? <span className="tcrn-searchable-list__meta">{item.meta}</span> : null}
+      </>
+    );
+    const shared = {
+      className: "tcrn-searchable-list__item",
+      "data-searchable-list-item": "true",
+      "data-selected": selected ? "true" : undefined,
+      "aria-current": selected ? ("true" as const) : undefined,
+      "aria-disabled": item.disabled ? ("true" as const) : undefined,
+      title: reason,
+      "data-disabled-reason": reason
+    };
+    // A link when the caller gave a destination, so the row keeps the behaviour
+    // people expect of one; a button when selecting is not navigation.
+    if (item.href && !item.disabled) {
+      return (
+        <a key={item.id} {...shared} href={item.href} onClick={() => onSelect?.(item.id, item)}>
+          {inner}
+        </a>
+      );
+    }
+    return (
+      // The React key stays on the same line as the tag: a line that opens with
+      // `key=` matches the secret scanner's env-assignment pattern.
+      <button key={item.id}
+        {...shared}
+        type="button"
+        disabled={item.disabled}
+        onClick={() => onSelect?.(item.id, item)}
+      >
+        {inner}
+      </button>
+    );
+  };
+
+  return (
+    <div className="tcrn-searchable-list" data-work-management-pattern="searchable-list" aria-label={label}>
+      {showSearch ? (
+        <SearchInput
+          aria-label={searchLabel ?? label}
+          placeholder={searchPlaceholder ?? copy.search}
+          value={activeQuery}
+          onChange={(event) => setQuery(event.currentTarget.value)}
+          data-searchable-list-search="true"
+        />
+      ) : null}
+      {loading ? (
+        <div className="tcrn-searchable-list__state" data-searchable-list-state="loading" aria-live="polite">
+          <Skeleton />
+          <Text>{loadingLabel ?? copy.loading}</Text>
+        </div>
+      ) : items.length === 0 ? (
+        <div className="tcrn-searchable-list__state" data-searchable-list-state="empty">
+          <EmptyState title={emptyLabel ?? copy.empty} />
+        </div>
+      ) : matches.length === 0 ? (
+        // A query that matches nothing is not the same as having nothing, and a
+        // reader who cannot tell will go looking for options that are right there.
+        <div className="tcrn-searchable-list__state" data-searchable-list-state="no-match">
+          <EmptyState title={noMatchLabel ?? copy.noMatch(activeQuery)} />
+        </div>
+      ) : (
+        // A group of links and buttons, not a listbox: role="listbox" obliges
+        // every child to be an option, and an option cannot be a link — so
+        // claiming it would be an ARIA promise the markup breaks, which serves a
+        // screen reader worse than making no claim. Selection is announced per
+        // item with aria-current, and the arrow-key roving below supplies the
+        // keyboard behaviour a listbox would have given.
+        <div
+          className="tcrn-searchable-list__items"
+          role="group"
+          aria-label={label}
+          onKeyDown={onKeyDown}
+        >
+          {pinned.map(renderItem)}
+          {pinned.length > 0 && visibleRest.length > 0 ? (
+            <hr className="tcrn-searchable-list__divider" role="presentation" />
+          ) : null}
+          {visibleRest.map(renderItem)}
+          {visibleRest.length < rest.length ? (
+            <Text className="tcrn-searchable-list__truncation">
+              {copy.truncated(visibleRest.length, rest.length)}
+            </Text>
+          ) : null}
+        </div>
+      )}
+    </div>
   );
 }

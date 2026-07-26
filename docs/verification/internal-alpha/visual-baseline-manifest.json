@@ -235,7 +235,7 @@
       "storyId": "component-family-index",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-component-family-index.png",
-      "signature": "ece9ebedf4fafafafafbfbfafafbfcfbf6f8fcfbf4f1f7faf0edf0f8f2f3f6fafbfdfefbebe6eaf4eae8edf3f0eef2f6f8fafdfcf1eef0f4f0eeeff5f3f2f6fbfdfdfefbe7e1e9f3e9e6e7f0f7f8f8fbfbfbfcfbebe7f2f9f6f5f6faf7f6f7fbfbfbfcfbece7eef8f8f7f7fafbfbfcfcfafafdfcf0eaeff8eeeef0f9f8f7f9fceeededeff9fcfcfcfcfcfcfcfcfcfcfceff3f3eff5efedf4ebeef2eef2eeeef8edf1f4ebf1f0f1f8edf1f4edf5f1eff9efeff4f3f5f5f4f8f4f6faf9fbf9f7f9f1f1f7f9fafbfbfbfbfbfbfbfbfbfbfbf4f1f3f8fcfefefefefefefefefefefdf0f0f1f7fafafafafafbfaf9fafafafbf3f1f5fafaf6f2f2f7fbf8f3f2f3f4f9",
+      "signature": "ece9ebedf4fafafafafbfbfafafbfcfbf6f8fcfbf4f1f7faf0edf0f8f2f3f6fafbfdfefbebe6eaf4eae8edf3f0eef2f6f8fafdfcf1eef0f4f0eeeff5f3f2f6fbfdfdfefbe7e1e9f3e9e6e7f0f7f8f8fbfbfbfcfbebe7f2f9f6f5f6faf7f6f7fbfbfbfcfbece7eef8f8f7f7fafbfbfcfcfafafdfcf0eaeff8eeeef0f9f8f7f9fceeededeff9fcfcfcfcfcfcfcfcfcfcfceff3f3eff5efedf4ebeef2eef2eeeef8ececf3edf6f1ecf4edf3f5edf5f1f2faeeedf1f2f7f7f4f6f3f5f8f4f9f9fafcf1f1f7f9fafbfbfbfbfbfbfbfbfbfbfbf4f1f3f8fcfefefefefefefefefefefdf0f0f1f7fafafafafafbfaf9fafafafbf3f1f5fafaf6f2f2f7fbf8f3f2f3f4f9",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -305,28 +305,28 @@
       "storyId": "navigation-dense-operations-shell-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-dense-operations-shell-spec.png",
-      "signature": "e6e4e4e7edf7faf9f9f9f9f9fbfefefeeef1f5f5eff1f2f3eff1f1f3eef1f1f6faf9fdfdf1f3f4f8f1edf1f8f0f0f4f7f3f7fdfdf4f0f1f5f4f0eff6f1eeeef4f8f7f8faf9f9fbfafbf8f9f9f7f6fcfbf5e7e7f1f5ebf2f4f5ecf8f6f4ecf3fafcfefefef7e9f2f8f5ecf8f6fcfdfefcf9f5f4f5fcfbfcfdfbf6f8fbfaf8f5f7f6edf2f4f8f1eff7f9f8f8f8f3f1f6f9f3e7e9f5faf2f1f3eef5f0f6f5f2fbf9f5eaf7fbf9f3f4f7f2faf1f6f4f4fcf9f8edf3f6f9fafcfcfcfcfcfcfafcfcf9f6e6f0f6f9fbfdfdfdfdfdfcfbfdfdfaf5e9f1f5f9fbfdfdfdfdfdfcfbfdfdfaf7e7eaf6f9fbfdfdfdfdfdfcfbfdfdfaf8f3f6f7f8f9fbfbfbfbfbfaf9fbfaf9",
+      "signature": "e6e4e4e7edf7faf9f9f9f9f9fbfefefeeef1f5f5eff1f2f3eff1f1f3eef1f1f6faf9fdfdf1f3f4f8f1edf1f8f0f0f4f7f3f7fdfdf4f0f1f5f4f0eff6f1eeeef4f8f7f8faf8f7f8f8faf8f9f9f7f6fcfbf5e7e7f1f3e9f0f2f4ecf8f6f4ecf3fafcfefefef7e9f2f8f5ecf8f6fcfdfefcf9f5f4f5fcfbfcfdfbf6f8fbfaf8f5f7f6edf2f4f8f1eff7f9f8f8f8f3f1f6f9f5e0e1edf5f3eff3eef5f0f6f5f2fbf9f5eaf7fbf9f3f4f7f2faf1f6f4f4fcf9f8edf3f6f9fafcfcfcfcfcfcfafcfcf9f6e6f0f6f9fbfdfdfdfdfdfcfbfdfdfaf5e9f1f5f9fbfdfdfdfdfdfcfbfdfdfaf7e7eaf6f9fbfdfdfdfdfdfcfbfdfdfaf8f3f6f7f8f9fbfbfbfbfbfaf9fbfaf9",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "navigation-focused-shells-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-focused-shells-spec.png",
-      "signature": "e1dedde2f4f6f6f6f6f5f7fefefefefee7ebeeedf8fefffefefdfafbfcfbfbf8f2f5f6f6fbfefefefefefdfcf6f6fcfbe3d8dbebf1ebf1f8fdfcfdfdfdfdfdfbe5dce4ebf1e7edf0f3f2f5f8f8f7fcfbece3e5edf6f1f5f5f4f4fbfbfcfcfefbeadee4eef4f6fdfdfdfcfdfdfdfdf6f7eae1e9edf4f2f7fbfbfafbfbfaf4f2f6ece2eceef8fafafafafafafafafafaf9ecebeceef8fafafafafafafafafafaf9ebe2ebeef8fafafafafafafafafafaf9f2edf2f5fafbfbfbfbfbfbfbfbfbfbfbeeecf1f6f6f7f7f7f6f6fafdfdfdfdfdf3f2f8fdfcfbfbfcfdfdfdfdfdfaf4f7f1e7eff8f8edf7f8f8f2fbfdf4fafdfbf9f8f9f9f9f8fafaf9f8f9faf8f9fafa",
+      "signature": "e7e5e5e8f4f6f6f6f6f6f7fdfefefefde6ecf0f0f8fefefefefdfafbfbf9faf6e8e9ecf0f7fcfdfdfdfdfbfaf2f4fbf8e3d9dae8ede6eaf2fcfbfcfdfcfbfdfbe6dbe0e6f3edf3f4f4f4f8f9fafafcfbebdfe1ecf6eef3f2f1f1f9f9f9fafefbeadee2ebf2f0f8fbfafafcfdfcf7f3f6eae3eaedf4f4f7fafafafafaf9f5f4f7ece3eceef8fafafafafafafafafafaf9ebe7eceef8fafafafafafafafafafaf9ece3ebeef8fafafafafafafafafafaf9f1ebeff1f9fafafafafafafafafafaf9ece9f1f8f9f9f9f8f9f8fbfdfdfdfcfdf3f2f7fbfafafbfbfbfbfcfdfdf9f2f7f0e3effaf7f1f8fafaf6fbfcf8fafbf9f5f2f5f8f9f4f9fbf8f4f9faf6f7faf9",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "navigation-primitives-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-primitives-spec.png",
-      "signature": "e1e2e2e3e7f5f6f6f6f6f6f7f6f6f6f9f3eef3f6f5f5fdfffffffffffffffffef0f2fafbfbfdfefefefdfbfbfcfbfbf9edeef0f1f0f3f6f6f6f5f4f5f5f4f3f4f0ecf6f8f9f9f9f9f9f9f9f9f9f9f9f9f2eff5f9f9f9f9f9f9f9f9f9f9f9f9f9f1f0f7f8f8f8f9f9f9f9f9f9f9f9f9f9f0f0f4f5f6f4f6f7f7f7f6f3f7f7f7f8f5fafcfcfcf3e9e9ebf3f7f0f1f2f7fafcfefefefef4e7e7ebeff8ecf2f3f3f9f8f8fbfefef7edeeeef7fbf4f5f5f6fbf7fafefefef7eff2f4fafbf3f3f4f9fcf8f7f9fdfef6eef1f6f7f9f0f5f6f8faf7f9fefefef6eef0f3f5faf5f5f5f7fcf6f9fafafdf8f5f9f9fafcf9f9fcfefdf4f4f3f3f5f7f7f7f8f7f8f8f7f7fbfd",
+      "signature": "e1e3e3e4e7f5f7f7f7f6f7f7f6f6f6f8f3ecf2f6f4f3fdfefefefefefefefefef0f3fafbfbfdfefefefdfcfcfcfbfbf9eef0f1f3f3f5f6f6f6f6f5f5f5f4f4f4ede7f2f6f7f7f7f7f7f7f7f7f7f7f7f8f1ecf3f6f6f6f6f6f6f6f6f6f6f6f6f7f2f1f7f8f8f8f9f9f9f9f9f9f9f9f9f9f1eff4f6f8f7f8f9f9f9f8f6f8f9f9f9f3f9fbfbfbf3eaebedf2f6eef1f1f7f9fcfefefefef3e6e6ebeff8ecf1f3f2f9f8f7fbfefef7eeeeeef6fbf3f4f5f5fbf7f9fefefef7f0f3f5fafaf3f3f4f8fbf7f5f8fdfdf6ecf0f4f5f9eff4f5f6f9f7f9fefefef6eef0f2f5f9f5f5f4f6fcf6f9fafafdf8f4f9f8fafcf9f9fbfefdf4f4f3f4f5f8f7f7f7f7f8f8f8f7fbfd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "navigation-product-shell-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-navigation-product-shell-spec.png",
-      "signature": "e6ebefefeeeff7f6f7f6f3f3f4f5fbf9f1eff7fbf5f5fefef9f4fafafafaf5f8f3eff3fdfcfdfefef4e7f1f4f5f5f3f7f2f5fefef8edededeef1f8fafafaf9fafdfefffef8eae9eae9eaebeaedf1f4fbfefffffef9e6e5e9f0edf1eceefbfdfcfefffffef9f5f5f7fafafafafafbfcfbfefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefefefefbfafafafafafafafafafafa",
+      "signature": "e6ecefeeeeeff7f7f7f6f3f3f4f5fbf9f2f0f8faf5f5fefef9f4fafafbfaf5f7efe8eefafcfdfefef4e7f1f4f5f5f3f7eeecf7f8f8edeeeeeef0f7f9fafaf9fafcfefefef8e9e9eaeaeaebeaeef1f4fbfefffffef9e6e5e9f0edf1eceefbfdfcfefffffef9f5f5f7fafafafafafbfcfbfefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefffffefafafafafafafafafafafafafefefefefbfafafafafafafafafafafa",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -375,14 +375,14 @@
       "storyId": "work-management-route-detail-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-route-detail-spec.png",
-      "signature": "e2e0e3e7e7e6edf6f6f8fdfefefefefde4dee0ebf9fcfcfcfefffffffffffdf7dcedf2f2f3f3f5fdfefcf6f8fbf6f5ecf1f0f5f7f8f8f8faf9fbfdfefdfdfefdebeaeaf7fcfcfcf5f3f6fbf5f4fcfefdf0f2e8eaedf0f2edf0f5fdebe2edf3f9f6f4f0f1f4fcfcefeff4f7f3e7f0f4fafafaf7f7f7f9fbeceff7fcf2e9f2f2f8fcfcfafafafafcf9f9fdfeeedbfafffefefffffffffffffffffffeebdffefffefefffffffffffffffffffeecedfffffefefffffffffffffffffffeeff0fefefdfefffffffffffffffffffef7f0eeedf9fefffffffffffffffffffef3eaeceff8fefffffffffffffffffffef7f3f7f0f7fefefefefefefefefefefef7f7fdfcfc",
+      "signature": "e3e0e4e8e7e7edf6f6f8fdfefefefefde3dddfeaf8fbfbfbfdfffffffffffdf7ddedf3f3f4f3f6fefefcf6f8fbf5f5edf3f2f6f8f8f9f8faf9fbfdfdfdfdfdfcece8e7f5fafafaf4f3f6f9f6f6fcfdfdf5f3e9ebecf0f1eceff4fbe9e1edf3f9f5f2eff0f2fafaedeef2f5f2e7eff4fafaf8f6f6f7f9fbebeff7fcf2e8f1f1f8fcfcfafafafafcf8f8fcfeeedbfafefdfefffffffffffffffffffeebdefefffefefffffffffffffffffffeedeefffffefefffffffffffffffffffeefeffefefdfefffffffffffffffffffef7f0eeeef9fefffffffffffffffffffef3ebecf0f9fefffffffffffffffffffef7f2f6eff7fefefefefefefefefefefef7f6fcfcfc",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "work-management-backlog-board-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-backlog-board-spec.png",
-      "signature": "e3e9edececedf6f7f7f7fbfdfdfbfbf9ebe9ebf3fcfcfdfdfdfdfdfdfdfdfdfdede5edf4f5f6f8f9f9fdfbfbfcfaf5f8f7f3ececebeefbfdfdfceeeff3efeefaf7f3edebecf9fcfdfefdeef1f3edf7fcf4ecf3f6f5f6f7fcfefefdfdfdfcfdfef4f1f4fafafafafcfefefefefefefefef5f2f5f5f6f7f6fbfbf9f9f8fbf9f8faece1e0e5edf3e5e9eef0f4e6e6eaeef6e9dde8e9eef3e1e8eaf1f5e7e9eef1f6ebe3e9e2f1f2e1ebeff2f5dbe8eef0f6f0e0e6edf3f4dfe2f1f3f7e1e2ecf2f7f8f5f7f9fafaf8f8fafafbf8f8f9fafbece7e9f4f9f7fafefefefffffffffffeeee7eaf0f1eeeff7fdfefffffffffffef0edf3f5f3f5f3f6f6fdfefefefefefe",
+      "signature": "e7ecefefeff1f7f7f7f7fafcfdfbfbf7ebe9ebf3fcfcfcfcfcfdfdfefefdfcfceee5edf4f5f5f8f8f9fdfbfbfcf9f4f8f7f3ecebebeffcfdfdfceeeff2eeeefaf7f1eceaebf8fbfcfefdeff1f4eff7fcf4eff5f8f8f9f9fcfefefdfdfdfcfdfef2edf4f8f8f9f8fbfefefefefefefefef0ebf0f1f0f5f2fbfbf5f8f3fbf7f4f9ebdedee2ebf2e5e8eef0f5e6e6eaeff6eadee8e9eef2dfe6eaf1f5e6e8ecf0f6ebe3e9e3f1f2e2ebf0f2f5dde8eef1f6f0e0e6edf2f4e0e1f1f2f7e1e2ecf2f6f8f6f8fafafbf8f9fbfbfbf9f9f9fbfbefebebf5f9f8fbfdfdfefefefefefefdf3eeeef0f1eeeff6fcfefefefefefefdf8f4f6f6f4f6f4f6f6fdfdfdfdfdfdfd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -410,14 +410,14 @@
       "storyId": "knowledge-management-components-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-components-spec.png",
-      "signature": "e6e4e3e6e9ebeff5f6f5f5f6f5f5f6f7ecebeeeff5f4f1f7f9f9f5f1f4f4f4f8f7f4f6fbfdf9f4f6fbfdf9ededededf7f7f3f9fdfef9f2fafdfef9ececedf2fbf8f5f6fbfdfaf4f5fbfdf9edeef0f3fcf8f4f6fcfdfaf4f6fdfdf9edf1f5f5fbf8f4f8fdfdfaf4f9fdfdf9eceef5f5faf7f4f5fbfef9f4f4fcfef9ededf2f4faf9f6f7fcfdfaf5f7fdfdfaf0f0f0f4fceeecebf7fdfdfdfdfdfdfdfbfafafafcf6f1f3f1f1fefefefefefee9e4e5e5f5f8f1f4f2f2fdfefefefefeebedf3f4fbfefdfefdfefefefefefefeeeeaebeffafefffffffffffffffffffeeeeff2f3faf5f4fdfefefefefefefefef9f7f9fafcf6fafdfefefefefefefefefefefefefd",
+      "signature": "e6e4e3e6e9ebeff5f6f5f5f6f5f5f6f7ecebeeeff5f4f1f7f9f9f5f1f4f4f4f8f7f4f6fbfdf9f4f6fbfdf9ededededf7f7f3f9fdfef9f2fafdfef9ececedf2fbf8f5f6fbfdfaf4f5fbfdf9edeef0f3fcf8f4f6fcfdfaf4f6fdfdf9edf1f5f5fbf8f4f8fdfdfaf4f9fdfdf9eceef5f5faf7f4f5fbfef9f4f4fcfef9ededf2f4faf9f6f7fcfdfaf5f7fdfdfaf0f0f0f4fceeeae9f6fcfcfcfcfcfcfcfbfafafafcf2e8ecededf9fafafafafae8e4e5e5f5f8f1f4f2f2fdfefefefefeebedf3f4fbfefdfefdfefefefefefefeeeeaebeffafefffffffffffffffffffeeeeff2f3faf3f1fbfcfcfcfcfcfcfcfcf7f5f7f8faf5f8fbfcfcfcfcfcfcfcfcfbfbfbfcfb",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "knowledge-management-density-collaboration-spec",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-density-collaboration-spec.png",
-      "signature": "e3e1e4e6e7e8e6edf6f6f6f8fcfdfdfdf1eff2f4f4f4f4f4f4f4f3f5fafbfbfbedf2f5f1f3fafafdfffefcfcfdfbfbf8f7fafbfbfbfbfbfcfdfdfcfcfcfcfcfcf6f0f4f1f0fdfffffffffffffffffffef9f4f5f2f4fdfefefefefefefefefefdf6f1f4f1effdfffffffffffffffffffef6f1f4f1f3fcfefefefefefefefefefdf0e9eaf4f7fafdfdfdfdfdfdfdfdfdfcefedf3f4f4f4f4f4eeeff5f6f6f6f6f9f1eef3fbfbfbfbfbfdfefefefefefefdf2f1f5f2f2f9fcfefefefefefefefefdf0edede9f4f7f7f8fdfdfdfdfdfdfdfdf5f4f7fbfbf3f0f4f5f7f8eff4fafbfaf9f7fbfcfbf6f3f4f4f6faf3f8fdfdfdf6edeef4f3f3f0f9fdfdfdfdfdfdfdfd",
+      "signature": "e3e1e4e6e7e8e6edf6f6f6f8fcfdfdfdeee8ecf2f2f2f2f2f2f2f1f2f8f8f8f9eceff1f0f1f8f8fbfdfcfafafbf9f9f6f5f7f8f9f9fafafbfcfbfbfbfbfbfbfbf3ebefefedfbfcfcfcfcfcfcfcfcfcfcf8f3f4f1f4fdfdfdfdfdfdfdfdfdfdfdf4ecf0efecfbfdfdfdfdfdfdfdfdfdfcf6f1f4f1f3fcfefefefefefefefefefdf0e9eaf4f7fafdfdfdfdfdfdfdfdfdfcefedf3f4f4f4f4f4eeeff5f6f6f6f6f9f1eef3fbfbfbfbfbfdfefefefefefefdf2f1f5f2f2f9fcfefefefefefefefefdf0edede9f4f7f7f8fdfdfdfdfdfdfdfdf5f4f7fbfbf3f0f4f5f7f8eff4fafbfaf9f7fbfcfbf6f3f4f4f6faf3f8fdfdfdf6edeef4f3f3f0f9fdfdfdfdfdfdfdfd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -438,7 +438,7 @@
       "storyId": "forms-patterns",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-forms-patterns.png",
-      "signature": "ece9fafefefefefefefefefefefefefdd0cef9fdfdfdfdfffffffffffffffffce5dff7faf9fafbfffffffffffffffffee9e4ebedeaebecfffffffffffffffffff2f0f3f6f5f6f6fffffffffffffffffff3f3f8fcfefefeffffffffffffffffffedeff8fcfefefefffffffffffffffffef1f4f9fcfefefefefefefefefefefefef6f6fbfdfdfdfdfdfafdfdfdfdfdfdfdebe3fcfefefefefee5fdfefefefefefee4d7fcfefefefdfed7fbfefefefefefef2edf6f8f8f8f6feeef4f6f9f7f8f7fdefe9ecf0f0f0ecfde9e9eaf2eff1edfcf2ecf9fbfbfbfafeeceeeefbfafbfafdfbfafcfdfdfdfdfdfafafafdfdfdfdfdfbfafcfefefefefdfafafafdfdfefdfd",
+      "signature": "e8e6f9fdfdfdfdfefefefefefefefefdcfcaf8fdfdfdfdfefefefefefefefefce6e1f5f8f8f8f9fefefefefefefefefeece8eceeecedecfefefefefefefefefef1f1f4f6f6f6f6fefefefefefefefefeedf2f6fcfdfdfdfdfdfdfdfdfdfdfdfde9eff6fdfdfdfdfdfdfdfdfdfdfdfdfdf0f4f8fcfdfdfdfdfdfdfdfdfdfdfdfdf7f7fbfdfdfdfdfdf9fdfdfdfdfdfdfdefe8fcfefefefefee9fdfefefefefefee7dbfcfefefefefedbfcfefefefefefeeee8f6f8f8f9f7fee9f6f7f9f8f9f8fdefe9edf1f1f2eefdeaebecf3f0f2f0fcf2ebf7faf9faf9fdedeeeefaf9faf8fcf8f6fbfdfdfdfcfdf6f7f7fdfcfdfcfdfaf9fcfdfdfdfdfdf9f9f9fdfdfdfdfd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -459,7 +459,7 @@
       "storyId": "work-management-patterns",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-patterns.png",
-      "signature": "e5e2e6eaf6f9f9f8f9f9fbfefefefefef2f5f6f6f6f0f0f3f4f5f2ebf1f5f6f7f9fefefefef5eef4f6f6fbf5f5f9fefdf7f5fafdfdf9f5f5fafdfbf5f5f5f7fbe7e3e7e7eef7fcfcfcfdfdfefefefefef1f8fdfefefefdfcfdfdf9f6f4f5f5f9f2f5e9e9eceeeeedeff3fdefedeff0f9f5f2eef0f2fdfcecf0f6f9f2e1eff0f8faf9f6f6f6f6faeeeef6fdf4eef7f9fbfefffffffffffffffffffef0e6fefffefefffffffffffffffffffef1ebfefffefefffffffffffffffffffeedeefefffefefffffffffffffffffffef4edf1f2fafefffffffffffffffffffef5f0f2f4f9fefffffffffffffffffffef9f7fbf2f7ecebebecebebf0f0f0f0f0f0f0f0f0f4",
+      "signature": "e5e2e6eaf6f9f9f8f9f9fbfefefefefef2f5f6f6f6f0f0f3f4f5f2ebf1f5f6f7f9fefefefef5eef4f6f6fbf5f5f9fefdf7f5fafdfdf9f5f5fafdfbf5f5f5f7fbe7e3e7e7eef7fcfcfcfdfdfefefefefef1f8fdfefefefdfcfdfdf9f6f4f5f5f9f6f5e8e8ecedededeef2fceeedeff0f9f6f1eeeff1fcfcebeff6f8f2e1eff0f8faf9f6f6f6f6faeeeef6fdf4eef7f9fbfefffffffffffffffffffef0e6fefffefefffffffffffffffffffef1ebfefffefefffffffffffffffffffeedeefefffefefffffffffffffffffffef4edf1f2fafefffffffffffffffffffef5f0f2f4f9fefffffffffffffffffffef9f7fbf2f7ecebebecebebf0f0f0f0f0f0f0f0f0f4",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -480,7 +480,7 @@
       "storyId": "selection-list-patterns",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-selection-list-patterns.png",
-      "signature": "ecedebecfdfefefefefefefefefefefdd5d7cfd4fdfdfefefefefefefefefefcdddddadafafafbfefefefefefefefefee3e1e5e5eceaedfefefefefefefefefef0f0f1f2f4f1f4fcfcfcfbfafcfcfcfcf2f5f4f4f5f2f4f6f6f6f5f2f6f6f6f6e6f3f3f3f3ebf0f3f3f4f2e5f3f3f4f4e8f3f3f3f3ecf0f3f3f4f2e6f3f3f4f4f2f4f7f7f7f3f3f4f7f7f6f0f4f4f7f7f1f2fcfdfdf6f1f1fcfdfceff1f2fdfcf1f0fdfdfdf6efeffdfefdefefeffefdf6f5f8f8f8f6f5f6fafafaf7f6f7fafaf0efefefeeefeef3f4f4f4f4f4f4f4f5e7e3e5e3e1e3e1f0f1f1f1f1f1f1f1f1ecebebebe9eaeaf0f1f1f1f1f1f1f1f1f4f2f2f2f2f2f2f6f6f6f6f6f6f6f6f7",
+      "signature": "e0e2dedffcfefefefefefefefefefefde4e1e2e3f0eff3fffffffffffffffffeeff5f5f5f5eff3f6f6f6f5eef6f6f6f7eef4f4f4f4eef2f4f4f4f3ecf4f4f4f5f1f0fdfefef5efedfcfefbefeef0fefdf4f2f2f2f2f2f1f6f6f6f6f6f6f6f6f7eae8e8e8e7e7e6eff1f1f1f1f1f1f1f2f4f7f9f8f4f4f4f4fcfcfcfbf8f9f9f9ebf3f6f6f4f3f3f3fefffffef4fffffde8f2f4f5fdfdfdfdfefffffef9fafafaf1f1fcfefffffffff6f4f4f7fefefefef3f6fffffffffffff5ececf5fefffffef3f5fffff3f7fffffefcfcfef6eeeef7f1f3fffffefffffffefffffff9f3f4faf4f6fffffffffffffefffffefefffffef9fafefefefefefefdfdfdfdfdfdfdfd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -564,14 +564,14 @@
       "storyId": "aos-frontend-shell-slice",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-frontend-shell-slice.png",
-      "signature": "fbfcfdfdfdfdfcf8f0ecebedeef0f3f4ebebecedeff1f4f4f3f3f3f4f6f8f8f9fefefdf9f2eeeef0f4f5f5f4f5f6f8f9fafaf9f6f1edeceff6fafbfbfbfbfbfbfdfdfdf9f2eeebeceff0f1f1f0f1f4f5fafafaf8f4f1f1f2f5f6f5f5f6f7f8f98c8b89898b8b8a898a8a8a8b8b8d8f901d1c1a1c212423211d1b1b1b1c1d1e1f6968686b727678787877777778797979f9f7f3f0eff0f3f4f3f2f1f2f5f7f8f8f5f3eeedeff1f4f6f7f7f7f7f8f9fafa201e1b1b1e1f1e1e1d1d1e1e1e1f2121171615171d212322201e1e1e1e1e1f1feff0f2f3f2f2f3f3f4f4f3f4f5f5f5f5fdfdfdf9f4f1f1f2f5f7f8f8f9f9f9f9f5f5f5f5f4f3f2f2f1f2f3f4f4f4f5f6",
+      "signature": "fbfcfdfdfdfdfcf8f0ecebedeef0f3f4ebebecedeff1f4f4f3f3f3f4f6f8f8f9fefefdf9f2eeeef0f4f5f5f4f5f6f8f9fafaf9f6f1edeceff6fafbfbfbfbfbfbfbfbfbf8f2eeebeceff0f1f1f0f1f4f5fafafaf8f4f1f1f2f5f6f5f5f6f7f8f98d8c8a898b8b8a898a8a8a8b8b8d8f901d1c1a1c212423211d1b1b1b1c1d1e1f6968686b727678787877777778797979f9f7f3f0eff0f3f4f3f2f1f2f5f7f8f8f5f3eeedeff1f4f6f7f7f7f7f8f9fafa23221f1e1f1f1e1e1d1d1e1e1e1f2121171615171d212322201e1e1e1e1e1f1fedeef1f2f2f2f3f3f4f4f3f4f5f5f5f5fdfdfdf9f4f1f1f2f5f7f8f8f9f9f9f9f5f5f5f5f4f3f2f2f1f2f3f4f4f4f5f6",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "aos-owner-quality-product-shell",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-owner-quality-product-shell.png",
-      "signature": "fefefdfaf5f2f3f3f4f4f5f5f5f4f4f4eeeeeff1f3f5f5f5f5f5f5f5f7f7f7f7f5f3f0eff0f2f5f6f5f5f5f6f7f8f8f81d1c1b1c2021201f1d1c1d1e20222424c8c8c8cacdcfcfcecdcccccdcecfd0d01f2021211f1e1d1d1d1d1d1c1b1c1d1dfcfcfcf9f3f0f0f2f4f5f6f5f2f2f2f3f3f3f3f4f4f5f6f7f7f7f6f6f7f7f6f6f7f5f2f2f6f7f7f7f7f7f7f7f8f8f9f929282626282a29272524242628292a2a6f6f6f71767978777675757576777878fefefdfaf5f2f1f2f4f5f5f5f5f5f7f7f4f5f7f6f2f0f0f1f3f5f7f7f6f6f7f7f9f9f8f6f2f0f0f1f3f4f5f6f6f7f7f8fcfcfcfdfdfdfcf7efe9e8e8e8e9ecedf6f6f7f8f8f9f8f5f1eeedeeeff1f3f4",
+      "signature": "fefefdfaf5f2f3f3f4f4f5f5f5f4f4f4eeeeeff1f3f5f5f5f5f5f5f5f7f7f7f7f5f3f0eff0f2f5f6f5f5f5f6f7f8f8f81e1d1b1c2021201f1d1c1d1e20222424c8c8c8cacdcfcfcecdcccccdcecfd0d01f2021211f1e1d1d1d1d1d1c1b1c1d1dfbfbfbf8f3f0f0f2f4f5f6f5f2f2f2f3f3f3f3f4f4f5f6f7f7f7f6f6f7f7f6f6f7f5f2f2f6f7f7f7f7f7f7f7f8f8f9f92b2a2827292a29272524242628292a2a6f6f6f71767978777675757576777878fefefdfaf5f2f1f2f4f5f5f5f5f5f7f7f2f3f5f4f1eff0f1f3f5f7f7f6f6f7f7f9f9f8f6f2f0f0f1f3f4f5f6f6f7f7f8fcfcfcfdfdfdfcf7efe9e8e8e8e9ecedf6f6f7f8f8f9f8f5f1eeedeeeff1f3f4",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -620,6 +620,13 @@
       "storyId": "page-component-api-reference-5",
       "viewport": "desktop-1440x900",
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-5.png",
+      "visualGate": "not-gated-unbounded-full-page",
+      "intentionalDiffDisposition": "new_internal_alpha_baseline"
+    },
+    {
+      "storyId": "page-component-api-reference-6",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-6.png",
       "visualGate": "not-gated-unbounded-full-page",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
@@ -844,7 +851,7 @@
       "storyId": "component-family-index",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-component-family-index.png",
-      "signature": "efedeceeeeedf1f4f5f5f5f6f6f5f5f5fafbfcfbf9f6f6f5f2f1f1f5f6f4f6f8fefefdf8f0e5ecf1edebebf2f5f4f6f8fafafaf9f6f3f6f8f3f1f2f6f6f4f5f6fefefdf7efe4ebf0ebe8e6eff4f6f9fbfcfdfcf8f0e6ecf2f9fbfbfcfcfcfcfcfefefdf9f3ebedf1f7fafcfdfefefefefdfdfcf8f1e8eff4f4f4f4f9fcfdfdfdf9f9f8f7f4eff3f7f4f3f2f5f5f1f1f2eff1f4f9f9f3f1f1f4f5f4eeeef3f9fdebebecf1f3f0eeedf2f4f3edeff7fafceef0f5f9f9f4f2f1f4f5f4f0f2f9fcfdecedeff7f9f5f3f4f7f7f6f0f0f3f8fbf4f4f3f7fafcfcfcfdfdfdfdfdfdfcfcf4f3f2f4f7fafcfcfdfdfdfdfdfdfdfdf6f5f4f5f6f6f4f3f5f6f5f2f1f3f6f8",
+      "signature": "efedeceeeeedf1f4f5f5f5f6f6f5f5f5fafbfcfbf9f6f6f5f2f1f1f5f6f4f6f8fefefdf8f0e5ecf1edebebf2f5f4f6f8fafafaf9f6f3f6f8f3f1f2f6f6f4f5f6fefefdf7efe4ebf0ebe8e6eff4f6f9fbfcfdfcf8f0e6ecf2f9fbfbfcfcfcfcfcfefefdf9f3ebedf1f7fafcfdfefefefefdfdfcf8f1e8eff4f4f4f4f9fcfdfdfdf9f9f8f7f4eff3f7f4f3f2f5f5f1f1f2eff1f4f9f9f3f1f1f4f5f4eeeef3f9fdebebecf1f3f0eeedf2f4f3edeff6fafceef0f3f8f8f4f3f4f9f8f5f1f1f4f9fbecebebf2f5f2efeff8f9f7f3f3f7fafcf4f4f3f7fafcfcfcfdfdfdfdfdfdfcfcf4f3f2f4f7fafcfcfdfdfdfdfdfdfdfdf6f5f4f5f6f6f4f3f5f6f5f2f1f3f6f8",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -914,28 +921,28 @@
       "storyId": "navigation-dense-operations-shell-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-dense-operations-shell-spec.png",
-      "signature": "e8e6e6e6e9ecf0f3f7f8f9f9f9f8fafbf2eef2f1eeebeff0ededf0f1efedf2f6fafafbfaf7f2f4f6f1edebf2f0eef2f5faf9f9faf5edf1f5f2f0eff4f3edf0f4f0f3f9faf9f9f8f8f8f9faf8f7f7f4f3f7f0e8e8ecf6f8f5edf3f7f9f8edf3f6fcfcfdfdfdfdfaf4ebf1f6f6f4edeff4fcfdfffffffefbf4eaebf1f4f6edf0f3faf8f5f5f4f5f8faf9f8f8f8f7f6f6f7f6eee6eff5f7f8f6e8e1e0edf6f9f9f9f7f1e9ebf1f5f8f9f2eaf0f2ebe8f0f0f8f2e9ebf3f6f7f7f5f0f3f5f2f6f7f6f8f0e8f0f5f7fafbfbfcfcfcfcfcfcfcf8f3eceef1f2f4f8fafcfdfdfdfdfcfcf7f2ebebeef4f6f9fbfcfdfdfdfdfcfcf9f5f1f2f3f4f6f8f9fafbfbfbfbfbfb",
+      "signature": "e8e6e6e6e9ecf0f3f7f8f9f9f9f8fafbf2eef2f1eeebeff0ededf0f1efedf2f6fafafbfaf7f2f4f6f1edebf2f0eef2f5faf9f9faf5edf1f5f2f0eff4f3edf0f4f0f3f9faf9f9f8f8f8f9faf8f7f7f4f3f7f0e8e8ecf6f6f3edf3f7f8f6ecf3f6fcfcfdfdfdfdfaf2e9eff5f4f4edeff4fcfdfffffffefbf4eaebf1f4f6edf0f3faf8f5f5f4f5f8faf9f8f8f8f7f6f6f7f6eee6eef4f6f7f6e8e1e0edf6f9f9f9f7f0e7e8eef1f5f7f2eaeef2ebe8f0f0f8f2e9ebf3f6f7f7f5f0f3f5f2f6f7f6f8f0e8f0f5f7fafbfbfcfcfcfcfcfcfcf8f3eceef1f2f4f8fafcfdfdfdfdfcfcf7f2ebebeef4f6f9fbfcfdfdfdfdfcfcf9f5f1f2f3f4f6f8f9fafbfbfbfbfbfb",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "navigation-focused-shells-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-focused-shells-spec.png",
-      "signature": "e8e5e7e5e7e9eff2f3f3f4f3f3f3f3f6f1ebeaebebebedf1f3f5f5f7f6f6f8fcede4ebedeef0ebeef1f8fdf7f1f1f1f7e1e8f4f4f4f7f6f5f7fafaf6f6f5f0efede3e5eaecf0f2eaeceeefefeeeff6faefe5dfe2e6eff5eeeef2f4f5f8fafcfbefe5e0e2e6eef5ece7ebeef7fdfefcfbf0e7e3e8eceeefe8ebf1f9f3efe9eef6f1e7e4eaedf0f7f9fafafafafafaf9faf0e7e2e8edf0f8fafafafafafafaf9faf2ebe9eceff2f8f9f9f9f9f9f9f9f9faf1ebeeeff4f7f6f7f7f7f7f7f7f7f7faf5f2f5f8fafdfcfcfcfcfcfaf6f4f5f8f5efebedf3f7f9f5eef5f9fafbfdfbfaf9fbfcfcfcfdfbf6ececf6fcfdfdfcfafaf9fafafafaf9f8f6f7f9fafafaf9f9",
+      "signature": "e7e5e5e3e6e8eff2f3f3f4f3f3f3f3f6f1ebeaebebebedf1f3f5f5f7f6f6f8fceee5ebededf0e8edf1f8fdf7f1f1f1f7e2e9f4f4f5f8f6f6f7fafbf6f6f6f0efeee3e3e6e8edf1e9ebecedeeeeeef6faf0e5dfe1e5eef4eeeef3f4f5f8fafbfbefe4dfe1e4edf5ebe7ebedf7fdfefcfbf0e7e3e9eceeefe8ebf1f9f3efeaeef6f1e7e3eaedf0f7fafafafafafafaf9faf0e7e3e8edf0f8fafafafafafafaf9faf2ebe8eceff2f8f9f9f9f9f9f9f9f9faf1ecedeff3f6f6f7f7f7f7f7f7f7f7f9f5f2f5f8fafcfcfcfcfcfcfbf7f4f5f8f5efebedf3f7f9f5ecf5fafbfcfdfbfaf9fbfcfcfcfdfbf7eeeff6fcfdfdfcfafaf9fafafafaf9f7f6f6f8f9fafaf9f9",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "navigation-primitives-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-primitives-spec.png",
-      "signature": "e6e4e6e6e6e7e8ebf1f4f6f6f6f6f6faf5ece8ebf2f5f5f1eff5fdfefefefefef7f2eff0edf2eff0f2f7f9f9f9f9f9faf2eeeeeeeeefefeeeff0f1f0f2f4f5f8f1eeeef0f4f9f9fafafafaf9f9f9f9f9f5eff1f5f8f8f9f8f8f8f9f9f9f9f9faf5eff0f1f2f4f6f6f6f7f7f7f7f8f8f9f6f5fafbfaf4ecebebf0f5f1f0f3f4f8fbfcfefffcf4e6e4e4ecf3e8e4e4f0f9fbfafbfbfbf7eeeceef3f8f5f5f6f9fbfaf9fbfefdf6ecebeaedf4ececeef3f9f9f5f9fefdf6ebebf2f9f7edeff3f7fbfafafafcfbf7efeff1f3f5efeff4f8fbf9f5fafdfcf6edebebf0f7f2f1f3fafcfafafcfefdf8f0efeff4faf9f9f8fafcf1ecededededeff1f6f9f9f9fafafcfd",
+      "signature": "e6e3e4e4e4e5e6e8eff4f6f6f6f6f6faf4ebe7ebf2f5f5f1eff5fdfefefefefef7f2efece9f0f0f0f4f8fafafafafafbf2eeeeeeeeefefeff0f0f1f0f2f4f5f7f1eae6eaeff4f5f5f5f5f5f5f5f5f5f7f4eef1f5f7f8f8f8f8f8f8f9f9f9f9faf4edeef1f3f5f8f9f9f9f9f9f9fafafaf6f5f9faf9f5eeedeef2f5f1f1f4f5f8fbfcfefffcf4e6e4e4ecf3e9e5e4f0f8fbfbfbfbfaf6eeecedf2f8f5f5f6f9fcfaf9fbfefdf7edecebeef4ededeff4f9f8f5f8fdfcf7ededf2f9f8eeeff3f7fbfaf8f8fafaf7eeeef0f2f5eeeef2f7fbfaf7fafdfcf6edebebf0f7f2f2f4fafcfafafcfefdf8f0eef0f5faf8f8f8fafbf1ecedecececeef1f5f8f9f9f9f9fbfd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "navigation-product-shell-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-navigation-product-shell-spec.png",
-      "signature": "e4f0eeecedf2f6f5f6f8f9f5f6f5f0f2f6f4f4f5f6f7fdfdfcfdfefefefefefef6ece9edf5faf9f0effafcfcfcfcf9fbf5ebedf2f7f8f2f4f1f6f8f8f8f7f3f9f9f5fcfffeeedce8eff4f4f4f4f4f5fafefdfefffef6f1f4f7f9f9f9f9f9fafafefffffffffefcf4e9e8e8e9e9ecf7fbfefffffffffffdf4e8e7e7eaeef4f7fbfefffffffffffdf6ebe8e9ebf2fdfdfbfefffffffffffdf5e4e1e1effbfefefcfefffffffffffdf5e7e4e4ecfbfefefbfefffffffffffdf9f8f8f8f8f9f9f9fafefffffffffffdfafafafafafafafafafefffffffffffdfafafafafafafafafafefffffffffffdfafafafafafafafafafefefefefefefdfafafafafafafafafa",
+      "signature": "e4f0eeecedf2f6f5f6f8f9f5f6f5f0f2f6f4f4f5f6f7fdfdfcfdfefefefefefef6ece9edf5faf9f0effafcfcfcfcf9fbf4e0e2e8f1f7f2f4f1f6f8f8f8f7f3f9f9f1f7fafaeddce8eff4f4f4f4f4f5fafefdfefffef6f1f4f7f9f9f9f9f9fafafefffffffffefcf4e9e8e8e9e9ecf7fbfefffffffffffdf4e8e7e7eaeef4f7fbfefffffffffffdf6ebe8e9ebf2fdfdfbfefffffffffffdf5e4e1e1effbfefefcfefffffffffffdf5e7e4e4ecfbfefefbfefffffffffffdf9f8f8f8f8f9f9f9fafefffffffffffdfafafafafafafafafafefffffffffffdfafafafafafafafafafefffffffffffdfafafafafafafafafafefefefefefefdfafafafafafafafafa",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -984,14 +991,14 @@
       "storyId": "work-management-route-detail-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-route-detail-spec.png",
-      "signature": "e8e5e3e4e7e9eae9e9eaeef3f3f4f4faeae2dfdeeaf1f6fcfdfdfdfdfdfdfcfaf7f4f3f7fcfdfcfcfcfdfdfcfdfdfdfce3f0efeff0f7f8f7f8fbfbf7f7f7f2f2f3efefe4e2eaf4f9f8f9f9fbfcfdfdfdf2f3f5e9e4e9f0f0e9e5e6ebeff2f8fcf5f1f0ececf0f0edf2f2ebeef5f8fafcfbfbf9f4f2f4f6f4f4f2e5edf2eef4fafdfdfcfbfafafaf7f6ebddf2fbfefefdfefffffffffffffefbe7d1f2fdfffefefefffffffffffffefbe7e7f9fefffefefefffffffffffffefbeaecfafefefefdfefffffffffffffffcf7efefeae7f0fafefffffffffffffefcece9eaebedf2f9fefffffffffffffffdf7f2f7f8f3f3f9fefffffffffffffefcf5f4fbfdfdfdfd",
+      "signature": "e7e3e1e2e6e8e9e8e8e9eef3f3f4f5faeae0dfdde6ebf2fcfdfdfdfdfdfdfafaf7f4f3f7fbfcfcfcfcfdfcfcfdfdfdfce6f1f2f2f3f9f8f7f8fbfbf7f8f7f2f2f1eae9dedde7f1f7f7f8f9fbfcfdfdfdf6f6f5eae6ebf1f0e8e6e8ecf0f2f8fcf6f1efeaeaeeeeedf1f1e7ecf5f9fafcfcfbf9f1f0f4f6f5f5f3e7edf2ecf3fafdfdfcf9f8f8f9f7f6ecdff2fbfefefdfefffffffffffffefbe7d0f2fdfffefefefffffffffffffefbe8e7f9fefffefefefffffffffffffefbeaebf9fefefefdfefffffffffffffffcf6eeeeeae8f1fafefffffffffffffefcede9eaebedf2f9fefffffffffffffffdf7f3f7f7f4f4f9fefffffffffffffefcf5f5fbfdfdfdfc",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "work-management-backlog-board-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-backlog-board-spec.png",
-      "signature": "e5e0dfe0e2e2e1e3e5f1f6f5f5f5f5f8f1e8eaeaebf1fdfefefefefefdfefdfceaf5f4f2f2f8f8f7f8fafaf6f6f6f3f3fcf8f7f5eff0f1f0f1f3f0e9e7eef8fcfbf8f7f6f0f0f1f2f9fbefe6e9eff9fdf9f4f2f5f7f7f7f7f8f7f6f4f4fafdfdf5eeedf0f7fafafafbfafafbfdfefefef5eeeeeff5f7f7f9fbf9f8f3f8fdfbfcf4e7e4ebf7f6e4ebf8fbf8eae8edf8fbf4e4e0e4ecf3e1e2e9f0f5e5e3e6eff8f2e0d9e2e8f1dedce5f0f4e7e6e7ecf8f3e2e3dfeaf3e0e8eef0f2dce7eef2f8f7eae4e6eff6e9e3e4edf6eae5e6eff9f4eeeeeef0f9fbfbfbfcfcfcfcfcfcfcf2e6e4e7ecf2f2f5f3f2f7fcfdfefefef4edebf4f2f5f3f2f5f3f3f6f4f5fafd",
+      "signature": "e7e3e2e2e4e4e4e6e7f2f5f6f6f5f5f8f3eceeeeeef3fcfdfdfdfdfdfdfdfcfce9f5f4f1f2f7f8f7f8faf9f5f6f6f2f3fcf8f7f5eff1f1f0f1f4f0e9e7edf8fcfbf7f5f4eeeeefeff8fbf0e7eaf1f9fdf9f3f1f4f6f7f7f6f7f7f6f6f8fcfdfdf5ecebeff7fafafafafafafbfdfefefef6ededeff5f6f2f6fcf8f7f0f4fcfafbf4e7e6ecf5f5e6eaf7f9f7eae8edf6fbf4e4e0e4ebf3dddee6f0f5e6e4e6eff8f2e1dae1e7f2e0dee7f0f4e5e4e6ebf7f3e2e3dfe9f2dee6edeef2dce7edf1f8f7ebe6e8f1f7ebe6e7eff7ece7e8f0f9f2eaeaeaedf8fbfbfbfcfcfcfcfcfcfcf7f2f0f2f2f4f2f5f3f2f7fafbfdfdfdf9f5f3f6f3f6f4f3f5f4f4f6f6f6fcfd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1019,14 +1026,14 @@
       "storyId": "knowledge-management-components-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-components-spec.png",
-      "signature": "e2dddbdcdbdee1e0e2e4eef4f6f6f6f6eee6e9ececeae6edf4f5f3eff2f4f5f8fafafbfcfcfdfbfafbfbf7edeef1f6f9fafafafcfdfdfbfbfcfcf9efecf0f7fbf7f3f2f9fcfbf7f6f7f7f6efedf0f8fbfaf7f6f6f8faf6f5f6faf8eeebeef3fafafafafafbfcfaf9fbfbf7ebecf1f6fafaf8f7f8f9fbf8f7f8f9f8efedf0f6faf8f4f6f8fafbf8f6f7f8f7ebe8e8eff9fbfbfbfbfcfcfbfbfbfbf9f1eeedf1f8f7f5f6f6f8fafbfbf7efeceeeff3fafdf9f3eff1f4f1eff0f2e9e5eef4f6fafcfdfdfdfdfdfdfdfdf8efedf0f1f1f7fbfefffffffffffffef8ebf0f5f6f6f9fbfcfafcfdfefefefefbf7f4f5f7fafbfbf8f7fbfdfefefefefefefefefefefefd",
+      "signature": "e2dddbdcdbdee1e0e2e4eef4f6f6f6f6eee6e9ececeae6edf4f5f3eff2f4f5f8fafafbfcfcfdfbfafbfbf7edeef1f6f9fafafafcfdfdfbfbfcfcf9efecf0f7fbf7f3f2f9fcfbf7f6f7f7f6efedf0f8fbfaf7f6f6f8faf6f5f6faf8eeebeef3fafafafafafbfcfaf9fbfbf7ebecf1f6fafaf8f7f8f9fbf8f7f8f9f8efedf0f6faf8f4f6f8fafbf8f6f7f8f7ebe8e8eff9fbfbfbfbfcfcfbfbfbfbf9f1eeedf1f8f4efecedf1f5f7f7f6efeceeeff3fafdf9f3eff1f4f1eff0f2e9e5eef4f6fafcfdfdfdfdfdfdfdfdf8efedf0f1f1f7fbfefffffffffffffef8ebf0f5f6f6f9fbfbfafbfdfefefefefbf7f4f5f7fafbfbf7f6f8fbfcfcfcfcfcfcfcfcfcfcfcfc",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "knowledge-management-density-collaboration-spec",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-density-collaboration-spec.png",
-      "signature": "e3dfdee2e1e4e5e5e6e5e4e8f2f5f5f8f0e8e7ecf0f0f0f0f0f0f0f0f0f1f4f9f8f3f0f1f2eeecf1fbfefefefefefefdf8f9fbfcfcfcfbfbfcfdfdfdfcfcfbf9faf6f3f3f3eeedf1fbfefffefefefdfcf9f4f1f4f5f3f1f6fdfefffffffffefdf9f4f0f0f0eae8eefbfefffffffffefefaf7f4f6f6f3f1f6fdfefefefefefefdf0e5e2e4e5eef2f1f6fbfdfdfdfdfdfdf5eff1f3f4f4f4f4efeaebf2f5f6f7faf4eceef1f7fcfdfdfefefefefefefefdf3edecf0f0ededeff6f9fdfefefefefdf6f5f4f4f3f1f3f5f6f7f6f7f8f9f9fbf9f9fafbfaf5edecf1fafaf7f6f8fbfcfcfcfbfcfbf6eeeceff6fcfafafcfcfdf8f1ebeaeef2f2f3f3efeef5fcfdfdfd",
+      "signature": "e3dfdee2e1e4e5e5e6e5e4e8f2f5f5f8f0e8e7ecf0f0f0f0f0f0f0f0f0f1f4f9f6eee9eaedebeaeef8fafbfbfbfbfbfcf8f9fbfcfcfcfbfbfcfdfdfdfcfcfbf9faf6f3f3f3eeedf1fbfefffefefefdfcf8f3eff1f4f2f0f5fcfdfdfdfdfdfdfdf6f1ebecede8e7edfafdfdfdfdfdfdfdfaf7f4f6f6f3f1f6fdfefefefefefefdf0e5e2e4e5eef2f1f6fbfdfdfdfdfdfdf5eff1f3f4f4f4f4efeaebf2f5f6f7faf4eceef1f7fcfdfdfefefefefefefefdf3edecf0f0ededeff6f9fdfefefefefdf6f5f4f4f3f1f3f5f6f7f6f7f8f9f9fbf9f9fafbfaf5edecf1fafaf7f6f8fbfcfcfcfbfcfbf6eeeceff6fcfafafcfcfdf8f1ebeaeef2f2f3f3efeef5fcfdfdfd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1047,7 +1054,7 @@
       "storyId": "forms-patterns",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-forms-patterns.png",
-      "signature": "f4f7f6fafefefefefefefefefefefefdd0c7c4d3fefefefefefefefffffffff7e6e4e0e9fafcfafcfbfcfdfffffffffee8e3e1e4e2e8e4e6e6e5f3fffffffffff9f9fafcfcfdfdfdfdfcfdfffffffffff3f0ebf7eefdfffffffffffffffffffff3eeeaf7edfdfffffffffffffffffffff9f8f9fcfcfdfefefdfcfefefefefefefaf4f3fcfdfefefdf8f8fdfefefefefdfac5c5f7fefefefee4c7fdfefefefefefbf7f6fafafafbfef9f8fafafbfcfbfdfceaece7e9eeeafdf4eaeae8eaeee6fdfbe8ebe9e8eaeaf7f4e5e9e9e9e9eafdfbebfcfcfcfcfcfdf3e7fdfbfcfbfcfdfcfcfdfdfdfdfdfdfcfbfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfd",
+      "signature": "edf3f2f8fefefefefefefefefefefefdd0bfbccdfefefefefefefefffffffff7e9eae7edf6f8f6f8f7f8fbfffffffffeebe7e5e8e6ece7e9e9e8f4fffffffffff9f8fafbfbfcfcfcfcfcfcfdfdfdfdfdf3ebecf9effdfefefefefefefefefefdf3e9e9f8edfdfefefefefefefefefefdf9f7f8fbfbfcfcfcfbfbfcfcfcfcfcfcfaf6f6fcfdfefefdfaf9fdfefefefefdfaceccf8fefefefee8d1fdfefefefefefbeeeefafbfbfcfef5eefbfcfcfcfcfdfbeaece9eaeeebfdf4ebeaeaecf0e8fdfbeaeceae9ecebf8f4e6eaeaeaebebfdfbebf9f8f8f8f8fcf4e8f8f6f8f7f8fdfcf8fdfdfdfdfdfdfaf7fdfdfdfdfdfdfcfcfdfdfdfdfdfcfcfcfdfdfdfdfdfc",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1068,7 +1075,7 @@
       "storyId": "work-management-patterns",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-patterns.png",
-      "signature": "eae9e8eaecedf2f7f7f8f7f7f8f7f8f9f3f0f5f6f6f1ebeff2f2f0eaeaf1f4f8fbfdfefefcf5eaecf1f5fafafafafbfbf8f5f5fbfcf8f2f3f3f3f5f2f3f4f6f9f7f7f6f7f7f7f9fbfcfdfdfdfcfcfdfddfd3d0d8e6eff8fcfdfdfdfdfdfdfdfdf6f5f7efeceff5f8f6f6f5f2f1f2f8fbf1f3f4eae8ecf0eceae6e3ecf6f9fbfcf8f5f3ebebf3f6f3f3f0e2e9efe6eff9fbf9f8f3f0f0f3f4f5f4f4f9fcfefefdfefffffffffffffefae4cceffcfffefefefffffffffffffef9e8e3f7fefffefefefffffffffffffefbf5f2f7f9fafbfcfefffffffffffffefbf2efeff0f0f4f9fefffffffffffffefcf8f3f8f8f1f2f7ebe6e6e6e8e9eae9e9e9e9e8e8e9edf1",
+      "signature": "eae9e8eaecedf2f7f7f8f7f7f8f7f8f9f3f0f5f6f6f1ebeff2f2f0eaeaf1f4f8fbfdfefefcf5eaecf1f5fafafafafbfbf8f5f5fbfcf8f2f3f3f3f5f2f3f4f6f9f7f7f6f7f7f7f9fbfcfdfdfdfcfcfdfddfd3d0d8e6eff8fcfdfdfdfdfdfdfdfdf7f5f6edebeef3f7f5f6f5f2f1f2f8fbf6f6f4eae8ecf0ebe8e6e3ecf6f9fbfcf8f5f2ebebf2f5f3f3f0e2e9efe6eff9fbf9f8f3f0f0f3f4f5f4f4f9fcfefefdfefffffffffffffefae4cceffcfffefefefffffffffffffef9e8e3f7fefffefefefffffffffffffefbf5f2f7f9fafbfcfefffffffffffffefbf2efeff0f0f4f9fefffffffffffffefcf8f3f8f8f1f2f7ebe6e6e6e8e9eae9e9e9e9e8e8e9edf1",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1089,7 +1096,7 @@
       "storyId": "selection-list-patterns",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-selection-list-patterns.png",
-      "signature": "f8f8f9f8f8f8fdfefefefefefefefefdd7ced8cfd7d1fcfefefefefffffffff8e0d6dadcd3d6fafcfcfcfdfffffffffde5e0dfdddee5dfe6e3e2f4fffffffffefbf9fbfbfbfbfcfcfafcfdfefefefefef5f2f3f3f3f2f2f3f3f3f3f2f3f3f3f5eadcf2f2f2e9cdf2f2f2f2cef1f2f2f4f2f0f2f3f3f1eff1f2f2f2eff1f2f2f4f9f6f7fdfdfaf5f6f6f8fcf6f6f8f8fcf8e6e8fefff9eae9e5e9fde8e9eae7fdfdfefefffffefefefefefdf5fefefefefcfcfcfcfcfcfcfcfcfcfbfbfcfcfcfcf5f2f2f2f2f2f2f2f2f1f1f2f4f4f4f6ecdbdad8dadadbdbdbd7d9e6efefeff2f0ebecececececebebeaecedefefeff1fbfafafafafafafafafafafafafafafb",
+      "signature": "e3dce2dddedef5fbfbfbfcfefefefefcf1eef0f0f0eff1f4f4f4f6f8fafafafbedebf2f4f4ece4f1f3f3f0e4eef3f3f5f9f7f8fdfefbf7f7f7f7faf4f6f7f8fcede4e3e3e3e4e4e3e4e2e2e9f0f0f0f3f4f2f5f6f6f6f6f5f3f2f3f3f3f3f3f5e8e3f3f5f5f5f5f6f7f6f6f6f6f6f6f7f7f4f6f9fbfbfbfcfffffffffffffffef5eef5fdfffffffffdfdfefffffffffef5edf3fffffffffef7f5f9fffffffffef7f0f6fefffffffffffffffffffffffefdfdfdfefefefefdfafbfbfbfbfbfbfbfcfcfcfcfcfcfcfbf6f7fafafafafaf9fafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafa",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1173,14 +1180,14 @@
       "storyId": "aos-frontend-shell-slice",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-frontend-shell-slice.png",
-      "signature": "fcfcfcfdfdfbf8f5f2efeceaeceef0f0ededededededececedf0f3f6f8f9fbfbfdfdfdfdfcfaf6f2efefefeff2f5f7f7f9f9f9f9f9f7f5f2f0efeeeef1f4f7f7fcfcfcfdfdf9f3ede9e8e7e7eaedf0f0fafafafaf9f8f7f5f4f4f5f5f5f6f7f7d0d0d0d0d0d1d1d2d2d1d1d1d3d5d6d6191917151416191d1f212325262627271c1c1b19171a1e2226282a2b2c2b2b2bf9f9f6f3f0efefeeeeeeeeeff0f1f3f3f6f6f2ede9e9ebedeff0f2f3f3f3f3f31f1f1d1b191a1d1f21222323242424241919171514161b1f2121202021212121eeeef0f1f3f3f4f4f4f4f4f5f5f6f6f6f9f9f9f9f9f8f5f3f1f0efeeeff1f2f2f9f9f9f9f9f7f5f2f1efeeedeeeff0f0",
+      "signature": "fcfcfcfdfdfbf8f5f2efeceaeceef0f0ededededededececedf0f3f6f8f9fbfbfdfdfdfdfcfaf6f2efefefeff2f5f7f7f9f9f9f9f9f7f5f2f0efeeeef1f4f7f7fcfcfcfcfcf8f2ede9e8e7e7eaedf0f0fafafafaf9f8f7f5f4f4f5f5f5f6f7f7d1d1d1d1d1d1d2d2d2d2d1d1d3d5d6d6191917151416191d1f212325262627271c1c1b19171a1e2226282a2b2c2b2b2bf9f9f6f3f0efefeeeeeeeeeff0f1f3f3f6f6f2ede9e9ebedeff0f2f3f3f3f3f31f1f1d1b191a1d1f21222323242424241919171514161b1f2121202021212121ededeef0f1f2f3f4f4f4f4f5f5f6f6f6f9f9f9f9f9f8f5f3f1f0efeeeff1f2f2f9f9f9f9f9f7f5f2f1efeeedeeeff0f0",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "aos-owner-quality-product-shell",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-owner-quality-product-shell.png",
-      "signature": "fdfdfdfdfdfbf9f7f6f6f7f7f6f5f5f5efeff0f0f0f1f2f3f4f3f3f4f5f6f6f6f5f5f3f1efeff0f0f1f2f3f4f4f5f5f51e1e1c1a191919191a1a1a1a1c1d1e1ec3c3c3c4c4c5c6c7c7c7c6c7c8c9caca1d1d1f202222212120201f1f20212222fcfcfcfcfcfbfaf8f7f7f8f8f7f7f7f7efefeff0f1f2f3f4f4f4f4f4f5f6f6f6f5f5f3f1eff0f3f5f6f6f7f7f7f7f7f71c1c1a191718191b1c1c1c1c1d1d1e1ef4f4f4f4f4f3f2f0f1f3f5f7f7f7f7f7f9f9f9f9f9f7f5f3f1f0efeeeff0f1f1fdfdfdfdfdfbf9f7f6f6f6f6f6f6f5f5eeeeeeefeff0f1f2f3f3f3f4f5f6f7f7fefefefefffffffffffffffffefefefefefefefefefefefefefefefefefefefe",
+      "signature": "fdfdfdfdfdfbf9f7f6f6f7f7f6f5f5f5efeff0f0f0f1f2f3f4f3f3f4f5f6f6f6f5f5f3f1efeff0f0f1f2f3f4f4f5f5f51e1e1c1a191919191a1a1a1a1c1d1e1ec3c3c3c4c4c5c6c7c7c7c6c7c8c9caca1d1d1f202222212120201f1f20212222fcfcfcfcfcfbfaf8f7f7f8f8f7f7f7f7efefeff0f1f2f3f4f4f4f4f4f5f6f6f6f5f5f3f1eff0f3f5f6f6f7f7f7f7f7f71c1c1a191718191b1c1c1c1c1d1d1e1ef2f2f2f2f3f2f1f0f0f3f5f7f7f7f7f7f9f9f9f9f9f7f5f3f1f0efeeeff0f1f1fdfdfdfdfdfbf9f7f6f6f6f6f6f6f5f5eeeeeeefeff0f1f2f3f3f3f4f5f6f7f7fefefefefffffffffffffffffefefefefefefefefefefefefefefefefefefefe",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1229,6 +1236,13 @@
       "storyId": "page-component-api-reference-5",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-5.png",
+      "visualGate": "not-gated-unbounded-full-page",
+      "intentionalDiffDisposition": "new_internal_alpha_baseline"
+    },
+    {
+      "storyId": "page-component-api-reference-6",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-6.png",
       "visualGate": "not-gated-unbounded-full-page",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
@@ -1453,21 +1467,21 @@
       "storyId": "component-family-index",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-component-family-index.png",
-      "signature": "f2f2f1f0eff0f1f2f3f5f6f7f8f9fafaf4f4f3f3f2f3f4f6f7f7f8f9f9fafafafafaf9f9f8f5f2eeebebebeceff3f6f6f8f8f8f8f8f5f2efeeeff0f1f3f6f8f8f3f3f3f2f1f0f0f0f0f1f1f2f4f6f8f8fafafaf9f9f6f2efededededf0f3f6f6fbfbfbfafaf7f2eeececebeceff3f6f6fbfbfbfafaf7f3efececececf0f3f6f6f3f3f1f0efefefeff0f1f3f5f7f9fafaefefeeeeeef0f4f7fafbfdfefefefefeedededecebecedeef1f4f7fafbfcfcfcefefeeeeedf0f3f7f9fbfdfefefefefef0f0f1f2f3f5f8fbfcfdfefefefefefeedededececeff3f6f9fafcfdfdfdfdfdf7f7f6f5f4f4f4f3f4f4f4f5f6f7f9f9f6f6f6f5f4f4f4f4f3f3f3f3f5f7f8f8",
+      "signature": "f2f2f2f1f0f0f1f2f3f4f5f6f7f8f9f9f3f3f2f1f1f1f3f4f5f6f7f8f9f9fafaf9f9f9f9f8f6f2eeecececedf0f3f6f6f9f9f8f8f7f5f2efedeeeff0f3f5f7f7f3f3f2f1efefeeededeeeff0f2f5f7f7f9f9f9f9f8f5f2eeedededeef1f4f6f6fafafafaf9f6f2eeececebeceff3f6f6fafafaf9f9f7f3efedededeef1f4f6f6f3f3f2f0eeeeedecedeff1f4f6f8f9f9efefefeeeff1f4f8fafbfdfefefefefeededecebebecedeff1f4f7fafbfcfcfcefefeeeeedf0f3f6f9fbfcfefefefefef0f0f1f2f3f5f8fbfcfdfefefefefefeedededececeff2f6f8fafcfdfdfdfdfdf7f7f7f6f5f5f4f4f4f4f5f5f6f8f9f9f7f7f7f6f6f5f5f4f4f4f4f5f6f8f9f9",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "display-primitives-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-display-primitives-spec.png",
-      "signature": "f1ece8e9e8e7e7e6e7e9ebeff5f8fbfcf4f0ebe9e7e7e8e7ebf2f7fafafbfcfcf3ede7e5e9edf0f0f1f1f4f6f7f8fafbfcfcfdfdfdfcfbfaf9f9f9fafbfcfdfcf4f4f2edf1f6fafdfefefefefefefefefdfdfdfdfdfdfdfbf8f2f0ece9e8ecf2faf8f6f6f6f6f6f6f6f6f6f7f7f7f9fbfcfdfcfbfaf9f8f8f8f8f8f9fbfcfdfcfbf9f6f1f0efeff0efeeeeeff1f6f9fbfcfcfcfcfbfafafafafafafbfcfcfcfcf9f8f7f9fbfcfcfdfdfdfdfdfdfdfdfdf9f6f4f5f8fafbfcfcfcfcfcfcfdfdfcf1e9e2e5e6ebf4f8f9f9f9f9fafcfdfcf3ece6e7e6e7e9f2f7f8f9fafafcfcfcf2ebe4e0dfe0e2e2e3e3e4e6eaeff4f7f1eeeaeaeaeaeaebebeaebeceef0f3f5",
+      "signature": "f1ece8e9e8e7e7e6e7e9ebeff5f8fbfcf4f0ebe9e7e7e8e7ebf2f7fafafbfcfcf3ede7e5e8edf0f0f1f1f4f6f7f8fafbfcfcfdfdfdfcfbfaf9f9f9fafbfcfdfcf4f4f2edf1f6fafdfefefefefefefefefdfdfdfdfdfdfdfbf8f2f0ece9e8ecf2faf8f6f6f6f6f6f6f6f6f6f7f7f7f9fbfcfdfcfbfaf9f9f8f8f8f9f9fbfcfdfcfbf9f6f1efefeeefeeededeef1f6f9fbfcfcfcfcfbfafafafafafafbfcfcfcfcf9f8f7f9fbfcfcfdfdfdfdfdfdfdfdfdf9f6f4f5f8fafbfcfcfcfcfcfcfdfdfcf1e9e2e5e6eaf4f7f8f8f8f8f9fcfdfcf3ece6e7e6e7e9f2f7f8f9fafafcfcfcf2ece4e0dfe0e2e2e3e3e5e7eaeff4f7f1edeaeae9e9eaeaeaeaebeceef0f3f5",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "interaction-disclosure-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-interaction-disclosure-spec.png",
-      "signature": "ece8e6e9e9eaeaeaeaeae9ebf0f8fcfdfaf5f0efefefeff0efeff1f3f4f7fafce8edeee6eaf1f8fdffffffffffffffffdbd6d3d5dbe7f8f2efeeeeeeeef0f3f5e4dfdbdadadadbe3e7e9eef2f2f2f6f9f9f6f1eaeff4f4f0eeeff0f1f2f9fcfcfcfaf5eef3f7f7f3f1f3f3f4f6fbfdfdfcfcfdfdfdfdfaf9fafcfcfcfdfdfdfdf9efe7e9eff5fcfcfcfcfcfdfdfdfdfdfaf4ede8e8e8e6e7e8e8e8ecf2fafdfcfaf9f8f8f7f7f7f7f8f8f8f8f9fafbfcfcfbf9f6fafbf6f2f1f5f5f5f6fafcfcfcfbf8f6fafcf7f2f0f1f1f4fafcfdfdfcfcfcfcfdfcfaf7f7fafbfcfdfdfdfdfcfbf8f3f6f8f5edeaeef6fbfefefdfdede1d7d9d9d9d9d8d9dbdadde3ebf0f3",
+      "signature": "ece8e6e9eaeaeaeaeaeaeaebf0f8fcfdfaf4f0f0efefeff0f0eff1f3f5f7fafce8edeee5eaf0f8fdffffffffffffffffdad6d3d4dbe7f8f2efeeeeeeeeeff2f5e5e1dedddcdddde5e9eaeff1f1f2f6f9f9f6f1eaeff4f5f0eeeff0f1f2f9fcfcfcf9f4edf2f6f7f2f1f2f3f4f6fbfdfdfcfcfdfdfdfdfaf9fafcfcfcfdfdfdfdf9eee5e7eef5fcfcfcfcfdfdfdfdfdfdfaf4ede7e7e8e6e7e8e7e8ebf1fafdfcfaf9f8f8f7f7f7f7f8f8f8f8f9fafbfcfcfbf9f6fafbf6f2f2f5f6f6f7fafcfcfcfbf8f6fafcf8f2f0f2f1f4fafcfdfdfcfcfcfcfdfcfaf7f7fafbfcfcfdfdfdfcfbf8f3f6f8f5edeaeef6fbfefefdfdede1d7d9d9d9d9d9d9dadadde3ebf0f3",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1523,28 +1537,28 @@
       "storyId": "navigation-dense-operations-shell-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-dense-operations-shell-spec.png",
-      "signature": "ececebebeaeaeaeaebeef0f3f6f9fbfbfcfcfcfcfcf8f4f0ededecedf1f4f8f8fafafaf9f9f7f4f1f0f0f0f2f5f8fafaf8f8f8f8f8f7f5f3f2f3f4f5f8fbfdfdf6f6f2eeebeaecedeff2f5f8f9fafafafbfbf8f5f2f1f1f2f2f3f3f5f7fafcfce3e3e4e6e8ebeff2f5f6f7f8fafbfbfbfcfcfaf7f5f4f4f5f6f8fafcfcfcfcfcfcfcf9f5f2f0eeedeef2f6f9fafcfdfdf7f7f5f3f0f0f2f3f5f6f7f8f8f9f9f9fbfbf7f3efedececedf0f3f6f8f9fbfbfbfbf8f5f2efece8e9eef3f7f8fafbfbfbfbf8f5f2eeeae7e8edf2f6f8fafbfbfbfbf9f6f4f3f3f4f5f6f8f9fafbfbfbfbfbf9f6f3f3f3f3f4f6f8f9fafbfbfbfbfbf8f5f2f2f4f6f8f9fafbfbfbfbfb",
+      "signature": "eeededededecececedf0f2f5f7f9fbfbfcfcfcfcfcf8f3eeebebeaebeff3f7f7fafafafafaf8f4f1f0f0f1f2f5f8fafaf9f9f9f9f9f8f6f4f3f5f6f8fafbfdfdf6f6f3efecebecedeff2f5f8f9fafafafafaf7f3efefeff0f0f0f0f1f5f8fbfbe3e3e5e7e8ebeff2f5f6f7f8f9fafbfbfdfdfaf7f4f4f4f5f6f8fbfcfcfdfdfdfcfcf9f5f1efeeedeff3f7fafbfcfdfdf6f6f4f0edeeeff1f3f4f6f7f8f9fafafbfbf7f3efeeeeeff0f2f5f7f8fafbfbfbfbf8f5f2efebe8e9eef3f7f8fafbfbfbfbf8f5f3efebe8e8edf3f6f8fafbfbfbfbf9f7f5f4f4f4f5f6f7f9f9fafbfbfbfbf9f6f4f4f4f4f5f7f9fafafbfbfbfbfbf8f5f2f3f5f7f8f9fafbfbfbfbfb",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "navigation-focused-shells-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-focused-shells-spec.png",
-      "signature": "f2f1efeeeeeeeff1f3f3f3f3f5f8fbfaf4eee7e6e9ebecedededededeeeef3f8f2f3f3f2f1f2f4f5f6f9f9f6f3f7fafae8ecece4e9f0f7fcfefeffffffffffffeae8e7e9eaeff6f5f4f4f3f2f2efeff2f5f1e9e4e1e2e5eaecedededededf2f7f5f0e9e5e5e6e9ebecedededededf2f6f9f8f4f0efefeff1f3f5f6f7f8f7f9fafaf9f5efedeff2f3f4f4f7f9fafafbfbfbfaf7f4eeebebf0f1eff0f4f8f9fbfbf9f8f4efeeeeeff0f4fafbfcfbfafafbf8f1eae9eaebebeff4fafbfcfcfcfcfcfbfbfaf8fbfbf8f6f6f8fbfcfdfdfcfcf7f6f1eae7e8e8eaedf0f3f6f8f9fafbfbf9f7f6ece9f2f7fafbfcfcfcf9fafbfaf9f7f7f5f4f5f6f8fbfcfcfbfafafb",
+      "signature": "f2f1efeeeeeeeff2f3f3f3f4f6f9fbfaf5eee8e7e9ebecedededeeeeeeeef3f8f2f3f3f2f2f3f4f5f7f9f9f7f4f8fafbe9ecece5e9f0f7fcfefeffffffffffffebe8e7e8eaeff6f5f4f3f2f2f1eeeff2f5f1eae4e2e3e5eaecedededededf2f7f5f0e9e5e5e7e9ebecedededededf2f6f9f7f4f1efeff0f2f4f5f6f7f7f7f8faf9f8f5efeeeff2f3f4f4f7f9fafafbfbfbfaf7f4eeebecf0f2eff0f4f8f9fbfbf9f8f4eeededeeeff3fafbfcfcfafafbf8f1eaeaebecebeff4fafbfcfcfcfcfcfbfbfaf7fbfbf8f7f7f8fbfdfdfdfdfcf7f6f1eae8e8e8ebeef1f3f6f8f9fafbfaf9f7f7edebf3f7fbfdfdfdfcfafafbfbf9f8f8f5f4f4f6f8fafbfbfbf9fafb",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "navigation-primitives-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-primitives-spec.png",
-      "signature": "e8e6e4e6e6e7e8eaebecededeef4f8f9f8f7f4f1ededeff5f8fafbfcfcfcfcfcf5f2efeceae9eaeaebedeef1f5f7f9faf5f2efefeeeef0f3f6f7f8f9f9f9f9faf9f9f9f9f9f9f9fafafbfbfbfcfcfcfdebebeceef2f6f9fcfdfcfcfcfdfefefefdfdfdfdfdf9f3ebe7e8e7e9eef6fafafcfcfcfcfcfaf6f1eff0f1f3f7fafcfcfafaf9f7f7f7f6f3f1f2f2f3f5f9fcfcfbfaf8f4f5f4f4efecedeeeff3f9fcfcfbfafaf9faf8f3edeaebedf0f5f9fcfcfbfbf9f8faf9f4efededeef2f7fbfdfcf9f8f7f4f6f7f7f5f4f5f6f7fafcfdfdfaf9f8f6f7f8f7f6f5f7f9fafbfcfdfdfafaf8f6f7f8f8f7f8fafbfcfdfdfdfdf5f1edeeeeefededececededeff5f8f9",
+      "signature": "e8e6e4e5e6e7e7eaebecededeef4f8f9f8f7f3f0ececeff4f8fafbfcfcfdfdfdf5f3efeceaeaebebecedeff1f5f7fafaf5f2efedebeceef1f3f5f6f7f7f7f8faf8f8f8f8f8f9fafafbfbfcfcfcfcfdfdebebeceef2f6f9fcfdfcfcfcfdfefefefdfdfdfdfdf9f3ebe7e8e6e8eef6fafafcfcfcfcfcfaf6f1eff0f1f3f7fafcfcfafaf9f7f7f7f6f3f1f2f2f3f5f9fcfcfbfaf8f4f5f4f4efecedeeeff3f9fcfcfbfafaf9faf8f3edeaebedf0f5f9fcfcfbfbf9f8faf9f4efededeef2f7fbfdfcf9f8f7f4f6f7f7f5f4f5f6f7fafcfdfdfaf9f8f6f7f8f8f6f6f7f9fafbfcfdfdfafaf8f6f7f8f8f7f8fafbfcfdfdfdfdf5f1eeeeefefeeedededeeeef0f5f8f9",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "navigation-product-shell-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-navigation-product-shell-spec.png",
-      "signature": "fdfcfcfcfcfdfdfcf9f4f4f0edebf1f8f3edeaeceeeeedededededeeeef3fafcfdf8f3f9f8f8f8fbfdfffffffffffffefef5eff1eeedefedf1fcfefffffffffefaf0edebebf6fffffffffffffffffffefefcfbfbfdfefefefefefefefefefefefeebdae0f3fbfefefefefefefdfdfefef9f6f3f3f3f4f6f6f6f6f6f5f3f3f8fdebedeeeff3f6f6f6f6f6f6f6f6f6fafdf6f4f2f2f4f5f4f4f4f4f4f7fcfbfafbfbf5ebe5e6eaf2f3f3f4f4f5f7fdfcfbfbf6ece8e7e6e5e6e6e5e7e6e7f6fbfbfbf7ede8eaf0f1f2f2f1f2f3f6fcfcfbfbf8f0e6e4e5e4e5e7edeef5fefefcfbfbf8efe3e1e2e0e1e4f0fbfffffefcfbfbfaf8f6f6f6f5f6f6f6f9fbfbfbfbfb",
+      "signature": "faf9f9f8f9fbfcfcfaf6f6f3efebeff6f6f1eeefeff0eeefeeededeeeef2f9fcfbf9f7fafafbfbfefffffffffffffffefeefe3eae5e4e5e5ebfbfefffffffffefdf3eae5e4eef5f6f6f6f6f6f6f6f9fdfefbf9f9fcfefffffffffffffffffefefef0e4e8f4fbfdfefefefefefdfdfefef4f4f4f4f4f5f8f8f8f8f8f6f3f3f8fde6ebf0f0f4f7f7f7f7f7f7f7f7f8fafdf6f3efebedeeefefefefeef4fdfcfbfbfbf5eae4e5e8f2f2f2f3f3f3f3fbfcfbfbf7efebeae9e9e8e8e7e9eaeaf8fcfbfbf8eeeaecf1f3f3f4f2f3f5f7fdfcfbfbf8efe2dfe1e0e0e4eff0f6fefefcfbfbf8efe3e1e1dfe0e3eaf9fffffefcfbfcfbfbfbfbfbfbfbfbfbfbfbfbfbfbfc",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1593,14 +1607,14 @@
       "storyId": "work-management-route-detail-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-route-detail-spec.png",
-      "signature": "eceae8e9ebecececedeff0f1f4f7fbfdf2eae3e3e4e5e4e4e5e6e6e7ebf6fbfbf8f4f0efeff0f2f3f4f4f4f4f4f4f7fafefefefefefefefefffffffffffffffff0f0f1f2f5f7fafcfcfbfafbfcfdfefefaf9f8f8f9f9f8f7f4f0efeeedecf1f6f1ece6e3e2e4e7f0f6f8fbfdfdfcfcfbf7f2ece8e8edf7f9fafafafbfbfcfdfdf5f1ebe7e6e8edf5f9fafbfcfcfcfdfdf7f5eee2dfe4ebf5fbfcfdfdfdfdfcfcf8f7efe1dcdee4e6e8e8e8ebf1f6fafaf8f8f2e7e8edf2f4f6f6f7f7f8fafbfcf9f8f3e9ebf0f4f5f6f6f6f6f7f9fbfbfafaf8f6f5f5f5f6f6f6f5f5f7f9fbfbfcfcfbf9f6f7fbf7f3f1f4f8fafbfcfdfbfaf7f4f5f7fbfbfbfafafafbfcfdfd",
+      "signature": "e9e7e5e6e7e8e9e9eaedeef0f3f6fafcf2e8dfe0e1e1e0e0e1e3e2e4e9f5fbfbf9f5f2f1f1f2f5f6f7f7f7f7f7f7f9fbfefefefefeffffffffffffffffffffffebebecedf3f8fbfdfdfcfbfcfdfdfefefdfdfcfcfbfbfbfbf9f7f6f6f6f6f6f7f6f1ebe7e6e8edf5f9fafbfbfbf9f9faf6f2edeceaedf5f8f9fafafafbfcfcfcf5f0e9e3e2e6ecf4f8f9fafbfbfbfcfcf8f7f2e9e8ebf0f6fafafafbfbfcfcfdf7f7f2eae6e7e9ebedededeef2f6f9faf8f7f1e3e3e8edf2f4f5f5f6f7f9fbfcf9f9f6f0f1f4f7f8f8f8f8f9f9fbfbfcfaf8f6f5f5f5f5f5f5f6f4f4f6f8fafbfcfcfbf9f7f7faf7f3f1f5f8fbfcfcfdfbf8f5f1f3f7fcfdfdfdfdfdfdfdfdfd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "work-management-backlog-board-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-backlog-board-spec.png",
-      "signature": "e9e5e2e3e4e6eaebecedececedf0f5f9f7efe5dfdedfe1e7eef3f3f6fafcfdfdfefefefefefefefefffffffffffffffff9f9f7f2f6fafdfefefefdfdfefffffff1f1f1f1f3f6f8f9f9f9f8f8f8f3f2f3f8f3ededececedeef0f5f5f6f6f6f8faf8f0e7e2e2e3e3ecf4fbfcfbf8f7f9fcf6f1e8dfdbdce0e5e7e8e8eaedf2f7faf9f6f1ecebebedf1f2f3f3f3f3f5f8faf7f1e9e1e0e1e4e5e6e7eaedf0f3f7faf9f6f2ecebececedeff2f3f4f5f6f9fbf7f2ece8e7e8e8e9eaebecedf0f3f7fafaf8f4f1efefeff0f1f1f5f7f8f9fafcf8f3efedeceef6f8f9fafafafafafafbf6f0eae9e6e7edf1f2f2f3f5f7f7f9fafaf6f3f2f2f4fafcfdfdfdfdfdfdfdfd",
+      "signature": "e8e3dfe0e1e4e9eaeaebeaeaebeef4f8f7ede2dbdadadbe4ecf3f4f7fafcfdfdfefefefefefefefefffffffffffffffffafaf9f7f9fbfdfefefdfdfdfefefffff1f1f1f1f3f5f7f7f7f7f6f7f7f4f4f4f9f3ecebeaeaeeeef0f5f6f6f6f6f9fbf9f2e9e5e6e7e6eef5fcfdfcf9f7f9fcf6f1e8dedcdde1e7eaebebeceef2f7faf9f7f2eceaeaebeff0f2f3f4f5f6f9faf7f1e8dfdedfe2e2e2e3e5e8eef3f7faf9f7f1eae8e8e8e9ecf1f3f4f5f6f9fbf7f1e9e2e2e2e2e4e8edeeeff1f4f8fafaf8f2ebeae9e9ebeceef2f5f6f7f9fcfbf8f5f3f2f3f7f7f9fefefffffefefdf9f4efeeecedf0f4f6f5f6f8fbfcfdfdfbf9f6f4f2f3fafdfefefffffefefefd",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1628,14 +1642,14 @@
       "storyId": "knowledge-management-components-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-components-spec.png",
-      "signature": "eae8e6e6e6e6e7e8e9e9eaebeceef2f6fafaf8f7f6f6f4f3f2f2f3f4f7fafcfcfaf9f6f1eff0f3f1f0f0f2f3f5f8fbfbfaf9f7f4f3f4f6f6f5f5f5f6f8fbfcfcfdfdfdfdfefefefefeffffffffffffffdedddcdee1e6eef2f3f3f3f3f3f6f8fafbfbfbfafaf9f7f5f5f5f5f7f9fbfdfcfcfcfbfbfbf8f4eeecedf0f3f8fbfdfdfcfcfcfcfbf9f5f0eff1f2f4f8fbfcfcfafaf8f5f6f6f3efededeff2f7fafdfcfaf9f8f6f6f6f5f3f3f3f4f5f9fbfcfcfafaf8f4f3f4f5f5f4f5f5f6f7fafcfcf7f1edefeeeeeeedeeeff4f8fbfcfdfdf9f8f5f3f2f2f2f2f2f0eceaecf3f7f7f3f0edebeaebebedeeededeff4f7fafbf5efe9e8e7eaf0f7fbfcfdfdfdfdfdfd",
+      "signature": "eae8e6e6e6e6e7e8e9e9eaebeceef2f6fafaf8f7f6f6f4f3f2f2f3f4f7fafcfcfaf9f6f1eff0f3f1f0f0f2f3f5f8fbfbfaf9f7f4f3f4f6f6f5f5f5f6f8fbfcfcfdfdfdfdfefefefefeffffffffffffffdedddcdee1e6eef2f3f3f3f3f3f6f8fafbfbfbfafaf9f7f5f5f5f5f7f9fbfdfcfcfcfbfbfbf8f4eeecedf0f3f8fbfdfdfcfcfcfcfbf9f5f0eff1f2f4f8fbfcfcfafaf8f5f6f6f3efededeff2f7fafdfcfaf9f8f6f6f6f5f3f3f3f4f5f9fbfcfcfafaf8f4f3f4f5f5f4f5f5f6f7fafcfcf6f0ebebeae9e9e9eaecf2f7fafbfcfcf9f8f5f3f2f2f2f2f2f0eceaecf3f7f7f3f0edebeaebebedeeededeff4f7fafbf3eee7e2e2e5ecf3f7f7f8f8f9fafafb",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "knowledge-management-density-collaboration-spec",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-density-collaboration-spec.png",
-      "signature": "e7e3dedededfe0dedddedfe4ecf5fbfcf7efe7e5e4e4e5e6e7e8e7e7e9f1f7fafefefefefefefefefffffffffffffffffbfafafafbfcfdfefefdfcfdfefefffff0f0f0eff1f3f6f7f7f6f6f6f5f0eff0fbf8f6f9fafafafbfbfbfbfbfbfcfcfcfcfbf8f4f3f3f4f9faf9f5f2f3f8fbfcf4e8e0e5edf3f4f3f4f4f4f5f6f7f9fbf9f7f1e6ecf1f2f3f3f4f4f4f5f8fafbfaf7f2edeef1f1f0f4fafcfcfdfdfdfdf8f2eae4e2e3e5ecf0f3f4f5f7fbfdfdfbfaf8f6f6f7f6f6f5f5f5f6f8fafcfcfcfcfcfcfcfaf7f4f2f2f2f4f7fbfdfdfbfbfaf7f8f9f9f7f7fafafbfcfdfdfdfbfaf9f8fafaf9f5f4f4f4f7fbfcfdfdfbf8f2ece9e6e2e3e5eaf0f3f4f9fbfc",
+      "signature": "e7e3dedededfe0dedddedfe4ecf5fbfcf7efe7e5e4e4e5e6e7e8e7e7e9f1f7fafefefefefefefefefffffffffffffffffbfafafafbfcfdfefefdfcfdfefefffff0f0f0eff1f3f6f7f7f6f6f6f5f0eff0faf7f3f0eeeeeeeff1f5f5f5f6f8fafbfcfbf8f4f3f3f4f9faf9f5f2f3f8fbfcf4e8e0e5edf3f4f3f4f4f4f5f6f7f9fbf9f7f1e6ecf1f2f3f3f4f4f4f5f8fafbfaf7f2edeef1f1f0f4fafcfcfdfdfdfdf8f2eae4e2e3e5ecf0f3f4f5f7fbfdfdfbfaf8f6f6f7f6f6f5f5f5f6f8fafcfcfcfcfcfcfcfaf7f4f2f2f2f4f7fbfdfdfbfbfaf7f8f9f9f7f7fafafbfcfdfdfdfbfaf9f8fafaf9f5f4f4f4f7fbfcfdfdfbf8f2ece9e6e2e3e5eaf0f3f4f9fbfc",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1656,7 +1670,7 @@
       "storyId": "forms-patterns",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-forms-patterns.png",
-      "signature": "f0e7e8e9e8e3ebfbfefefefefefefdfceee4e4dfdee0e5f7fafafafcf9fafafdf5e6e4e4e2e8f0f1eef0f0f2eff0f0fcfcf8f8f9fafafefefefefefffffffffef8eae7f6ede8f1f9ebeefcfffffffffefcf9f8fafafafbfcfcfcfdfdfdfdfdfefce6d1dad7d3eafefefefefefefffefdfdf6f2f4f3f4f5f6f7f6f7f7f7fefefdfaf8f6f6f6f6f6f5f6f6f7f6f6fafbfbfafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafa",
+      "signature": "f4edeef0f0ebf0fcfefefefefefefdfdecdcdbd3d0d3dcf8fefefefefefefdfdf4e4e3e3e1e8f1f3f0f2f2f4f1f2f2fcfcf9f8f9f9f7fefefefefefffffffffef8dbd1f2e2ddecf3e0ebfefffffffefdfcf9f9fbfdfdfdfdfdfdfdfdfdfdfdfdfcf3e9eeebe7f5fefffffffffffffefdfcefe5e9e7e8f0f6f7f7f7f7f8fefefdfbf5f0f1f2f1f1f0f2f1f4f2f2fbfcfbfafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafa",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1677,7 +1691,7 @@
       "storyId": "work-management-patterns",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-patterns.png",
-      "signature": "f4f2f1f1f2f2f2f3f5f9fbfcfcfcfcfcf9f8f6f1f5f7f7f4f4f5f6f9fcfdfdfdf8f6f4eff3f6f6f4f4f7f7f8f9fbfdfcf9f8f6f2f5f7f6f3f3f4f6f9fbfcfdfdf9f9f9f8f9fafcfdfefefefefeffffffeaeaebeef1f3f4f4f4f4f4f4f4f2f2f3ece6e0dfdedfe1e6eaedeff2f5f9fcfceae4dedfdfe3eaedeeeeedeef1f7faf9f2efecebeaecf0f4f7f8fafbfbfbfcfcf3ede7e3e5e9ebedefeff1f4f6fbfdfcf4f1ece7e4e6ecf5fafbfbfcfcfcfcfcf5f4eee2dddfe4e8eaeaebecf0f5f9f9f7f6f1e7e6e9ecf0f2f3f4f5f6f8fafbf9f8f5f1eeededecebe9e8eaeff6fafafcfcfaf9f7f7f9f6f4f3f7f9fbfbfcfcf3f1efeeededeeededeeeeeeeff1f3f4",
+      "signature": "f4f2f1f1f2f2f2f3f5f9fbfcfcfcfcfcf9f8f6f1f5f7f7f4f4f5f6f9fcfdfdfdf8f6f4eff3f6f6f4f4f7f7f8f9fbfdfcf9f8f6f2f5f7f6f3f3f4f6f9fbfcfdfdf9f9f9f8f9fafcfdfefefefefeffffffeaeaebeef1f3f4f4f4f4f4f4f4f2f2f3ece6e0dfdedfe1e6eaedeff2f5f9fcfceee9e3e0dfe2eaedeeededeef1f6f8f8f4f1edebe9eaeef2f5f7f8f9f9f9fafbf3ede7e3e5e9ebedefeff1f4f6fbfdfcf4f1ece7e4e6ecf5fafbfbfcfcfcfcfcf5f4eee2dddfe4e8eaeaebecf0f5f9f9f7f6f1e7e6e9ecf0f2f3f4f5f6f8fafbf9f8f5f1eeededecebe9e8eaeff6fafafcfcfaf9f7f7f9f6f4f3f7f9fbfbfcfcf3f1efeeededeeededeeeeeeeff1f3f4",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1698,14 +1712,14 @@
       "storyId": "selection-list-patterns",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-selection-list-patterns.png",
-      "signature": "f7f1f0f1f2f5f1eff3f0f1f3fbfefdfdead5d1d4d7ddd8d0d7cdd1daf4fffdfdf4dfe1dddde3e2e8e0e4e9e5e0e3e8faf9eeefeef0f2fefffffffffffffffffefdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdf6e7f0fdfef1f1f5f3f3fffffffffdfdfcf7fafefffafafbfafbfffffffffdfdf9f1f1fcfef6f6f7f7f5f5f6f7fdfdfbf5ededf8fbf2f2f4f3f1f2f2f3fafbfafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafa",
+      "signature": "fdfdfdfdfdfdfefdf9f3f3eeeae8f0f8fdf6ecf1fbfcf2f2f4f3f5fcfdfdfdfcfdf9f4f4fafcf7f8f8f8f7f7f8f9fcfdfcfcfdfcfdfcf8fbfdfdfdfdfdfdfdfcf3e6dde1dfdfe0dfe3ecececedeceff6f5ece8eff3f5f5f5f5f5f5f5f5f5f6f8fbf3edeef2f5f7fcfefefefefefefefefbf2eceff1f5fffffffffffffffffffefcf6f2f2f4f9fdfefefefefefefefefef8f5f4f4f4f4f4f4f4f4f4f4f4f4f5f8fbfbfafafbfdfefefefefefefefefdfdfdf9ece3e6e5dfdfe3e5e3e3e4f1fbfdfcfcfcfdfdfdfdfdfdfdfdfdfdfdfcfcfbfafafbfbfbfbfbfbfbfbfbfbfbfbfbfdfefdf4ede9ebebe9e9f0f0f8fefefdfcfcfdfdfdfdfdfdfdfdfdfdfdfdfcfc",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "modal-validation-patterns",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-modal-validation-patterns.png",
-      "signature": "e9c7c2c8cac5bfc7cdbfc2ceeefbfafdf4e2e2e8e7e7e6e9ececedeeeeeff6fefcf9f9fafafafbfdfdfdfdfdfdfdfdfdfdf4e1ebfcfdeceeebecf8fffffffefdfdfdfbfcfefefcfcfcfcfdfefefffefdfdf1e4e2f8fdeceff0efeef0eff7fefdfdfdfcfcfefdebf5fdfdfdfdfdfefefdfbfbfcfcfcfcfcfcfcfcfcfcfcfcfbfbfafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafa",
+      "signature": "f1e2e3e5e7e1e0e6ebe3e5eaf9fefcfdeee2dfe1e2e1dce1e0dbdee5f3fafcfef3dfe0e5e7e4eaf7f9f9f9fafafbfcfefdfcfcfcfcfcfcfdfefefefefefefefdfdf7eaf1fdfef1f3f1f2fafffffffefdfdfdfcfcfefefdfdfdfdfefefefffefdfdedd7d7f5fde7e8e8e8e6eae7f3fefdfdfefffffffef1fafffffffffffffefdfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafa",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1782,14 +1796,14 @@
       "storyId": "aos-frontend-shell-slice",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-frontend-shell-slice.png",
-      "signature": "f6f6f6f6f6f6f5f5f5f4f4f4f3f3f3f3f5f5f5f5f5f4f4f3f3f2f2f1f1f1f1f1efefefefeff0f0f1f2f2f3f4f4f4f4f4f7f7f7f7f7f7f7f8f8f8f8f9f9f9f9f9efefefefeff0f1f2f3f4f5f6f7f7f7f7f5f5f5f5f6f6f7f7f7f8f8f9f9f9f9f9ebebebebebececedeeeeefeff0f0f0f0727272726f6b66625d59544f4d4d4d4d2f2f2f2f2e2d2d2c2b2a292928282828fdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdebebebebecedeff0f2f4f5f7f7f7f7f7252525252525242423232222212121212b2b2b2b2a2929282726262524242424efefefefeff1f2f4f5f7f8f9fafafafafefefefefefefefefefefefefefefefefafafafafafafafafbfbfbfbfbfbfbfb",
+      "signature": "f6f6f6f6f6f6f5f5f5f4f4f4f3f3f3f3f5f5f5f5f5f4f4f3f3f2f2f1f1f1f1f1efefefefeff0f0f1f2f2f3f4f4f4f4f4f7f7f7f7f7f7f7f8f8f8f8f9f9f9f9f9eeeeeeeeeff0f1f2f3f4f5f6f7f7f7f7f5f5f5f5f6f6f7f7f7f8f8f9f9f9f9f9ebebebebebececedeeeeefeff0f0f0f0727272726f6b66625d59544f4d4d4d4d2f2f2f2f2e2d2d2c2b2a292928282828fdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdebebebebecedeff0f2f4f5f7f7f7f7f7252525252525242423232222212121212b2b2b2b2a2929282726262524242424eaeaeaeaebedeef0f2f3f5f6f7f7f7f7fefefefefefefefefefefefefefefefefafafafafafafafafbfbfbfbfbfbfbfb",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
       "storyId": "aos-owner-quality-product-shell",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-owner-quality-product-shell.png",
-      "signature": "f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6efefefefefeff0f0f1f1f2f2f3f3f3f3f6f6f6f6f6f6f6f6f6f6f6f5f5f5f5f522222222222222222323232323232323e9e9e9e9eaeaebebececedeeeeeeeeee25252525252525252525262626262626f5f5f5f5f5f5f5f5f5f4f4f4f4f4f4f4f0f0f0f0f0f1f1f1f2f2f3f3f3f3f3f3fcfcfcfcfcfdfdfdfdfdfdfdfdfdfdfd20202020201f1f1f1f1f1f1f1f1f1f1ff0f0f0f0f0f1f2f3f3f4f5f5f6f6f6f6fefefefefefefefefefefefefefefefef7f7f7f7f7f7f7f7f8f8f8f8f8f8f8f8edededededeeeeefeff0f1f1f2f2f2f2fefefefefefefefefefefefefefefefef8f8f8f8f8f8f8f8f9f9f9f9f9f9f9f9",
+      "signature": "f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6efefefefefeff0f0f1f1f2f2f3f3f3f3f6f6f6f6f6f6f6f6f6f6f6f5f5f5f5f522222222222222222323232323232323e9e9e9e9eaeaebebececedeeeeeeeeee25252525252525252525262626262626f5f5f5f5f5f5f5f5f5f4f4f4f4f4f4f4f0f0f0f0f0f1f1f1f2f2f3f3f3f3f3f3fcfcfcfcfcfdfdfdfdfdfdfdfdfdfdfd20202020201f1f1f1f1f1f1f1f1f1f1feeeeeeeeeff0f0f1f2f3f3f4f4f4f4f4fefefefefefefefefefefefefefefefef7f7f7f7f7f7f7f7f8f8f8f8f8f8f8f8edededededeeeeefeff0f1f1f2f2f2f2fefefefefefefefefefefefefefefefef8f8f8f8f8f8f8f8f9f9f9f9f9f9f9f9",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
     {
@@ -1838,6 +1852,13 @@
       "storyId": "page-component-api-reference-5",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-5.png",
+      "visualGate": "not-gated-unbounded-full-page",
+      "intentionalDiffDisposition": "new_internal_alpha_baseline"
+    },
+    {
+      "storyId": "page-component-api-reference-6",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-6.png",
       "visualGate": "not-gated-unbounded-full-page",
       "intentionalDiffDisposition": "new_internal_alpha_baseline"
     },
