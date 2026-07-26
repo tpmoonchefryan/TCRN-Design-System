@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 100,
+  "componentCount": 101,
   "coverage": {
-    "registryComponentCount": 100,
+    "registryComponentCount": 101,
     "publicComponentNames": [
       "ActionDrawer",
       "Badge",
@@ -67,6 +67,7 @@
       "RelationshipChip",
       "SavedViewToolbar",
       "SearchInput",
+      "SearchableList",
       "SectionTabs",
       "SegmentedNav",
       "Select",
@@ -169,6 +170,7 @@
       "RelationshipChip",
       "SavedViewToolbar",
       "SearchInput",
+      "SearchableList",
       "SectionTabs",
       "SegmentedNav",
       "Select",
@@ -2775,6 +2777,107 @@
       "variants": {},
       "slots": [],
       "propsType": "SearchInputProps"
+    },
+    "SearchableList": {
+      "name": "SearchableList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "items",
+          "type": "SearchableListItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "loadingLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale",
+          "required": false,
+          "enumValues": [
+            "fr",
+            "zh-CN",
+            "en",
+            "ja",
+            "ko"
+          ]
+        },
+        {
+          "name": "maxVisible",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "noMatchLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "onQueryChange",
+          "type": "(query: string) => void",
+          "required": false
+        },
+        {
+          "name": "onSelect",
+          "type": "(id: string, item: SearchableListItem) => void",
+          "required": false
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "searchLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "searchThreshold",
+          "type": "number",
+          "required": false,
+          "default": "8"
+        },
+        {
+          "name": "selectedId",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "locale": [
+          "fr",
+          "zh-CN",
+          "en",
+          "ja",
+          "ko"
+        ]
+      },
+      "slots": [],
+      "propsType": "SearchableListProps"
     },
     "SectionTabs": {
       "name": "SectionTabs",

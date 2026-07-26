@@ -48,6 +48,7 @@ export const componentLibraryPublicComponentNames = [
   "WorkItemRow",
   "WorkList",
   "WorkSplitView",
+  "SearchableList",
   "WorkBacklogGroup",
   "WorkInlineCreateStatic",
   "WorkBoard",

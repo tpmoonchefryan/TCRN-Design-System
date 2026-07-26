@@ -250,11 +250,19 @@ const productShellComparatorContract = {
       paddingRight: "6px"
     },
     currentLocation: { fontSize: "11px", lineHeight: "14.85px", letterSpacing: "normal" },
-    // TCRN-DS-STORY-062: selection speaks the single 3px left-edge brand rail — no fill.
-    // backgroundRequired dropped (rest background is legitimately transparent now). The rail is
-    // pinned by computed serialization under BOTH themes (light brand-primary #17707f, dark
-    // #62c3d2) because the parity checks run in each.
-    selectedNavItem: { fontSize: "13px", fontWeight: "700", lineHeight: "17.55px", boxShadow: ["rgb(23, 112, 127) 3px 0px 0px 0px inset", "rgb(98, 195, 210) 3px 0px 0px 0px inset"] },
+    // TCRN-DS-STORY-087: selection is ink. The 3px brand rail this comparator used
+    // to pin (DS-STORY-062) is retired: it was one of two competing grammars, and
+    // its brand colour also collided with the meaning colour now carries alone —
+    // actionability and focus. What is pinned instead is the inked surface, under
+    // BOTH themes, because the parity checks run in each and the ink is the text
+    // colour at low alpha rather than a separate palette entry.
+    selectedNavItem: {
+      fontSize: "13px",
+      fontWeight: "700",
+      lineHeight: "17.55px",
+      boxShadow: ["none"],
+      backgroundColor: ["rgba(28, 29, 33, 0.06)", "rgba(236, 236, 234, 0.09)"]
+    },
     topBar: {
       minHeight: 68,
       borderRadius: "0px",
@@ -991,6 +999,7 @@ for (const text of [
   "WorkItemRow",
   "WorkList",
   "WorkSplitView",
+  "SearchableList",
   "WorkBacklogGroup",
   "WorkBoard",
   "WorkBoardView",
@@ -1771,9 +1780,6 @@ function validateMetric({ failures, name, metric, expected }) {
   if (expected.borderWidth !== undefined && metric.borderWidth !== expected.borderWidth) {
     failures.push(`${name}:border-width:${metric.borderWidth}`);
   }
-  if (expected.backgroundColor !== undefined && metric.backgroundColor !== expected.backgroundColor) {
-    failures.push(`${name}:background:${metric.backgroundColor}`);
-  }
   if (expected.display !== undefined && metric.display !== expected.display) {
     failures.push(`${name}:display:${metric.display}`);
   }
@@ -1801,7 +1807,11 @@ function validateMetric({ failures, name, metric, expected }) {
   if (expected.fontFamilyIncludes !== undefined && !String(metric.fontFamily).includes(expected.fontFamilyIncludes)) {
     failures.push(`${name}:font-family:${metric.fontFamily}`);
   }
-  for (const property of ["fontSize", "fontWeight", "lineHeight", "letterSpacing", "boxShadow"]) {
+  // backgroundColor joined this list in TCRN-DS-STORY-087: the selection ink is
+  // the text colour at low alpha, so it serializes differently per theme exactly
+  // like the rail it replaced, and the strict single-value check it used to have
+  // could only ever pin one of the two themes.
+  for (const property of ["fontSize", "fontWeight", "lineHeight", "letterSpacing", "boxShadow", "backgroundColor"]) {
     if (expected[property] === undefined) {
       continue;
     }

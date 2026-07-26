@@ -1854,7 +1854,7 @@ export const tcrnComponentCss = `
 }
 .tcrn-product-shell-search__result:hover,
 .tcrn-product-shell-search__result[data-selected="true"] {
-  background: var(--tcrn-color-surface-muted);
+  background: var(--tcrn-selection-fill);
 }
 .tcrn-product-shell-search__result span,
 .tcrn-product-shell-search__empty {
@@ -1929,7 +1929,7 @@ export const tcrnComponentCss = `
    rule (a dead API). The containing group of the active item now marks itself the same way the
    doc-shell section header does — brand text on the group label; the 3px rail stays on the leaf. */
 .tcrn-nav-group[data-selected="true"] > .tcrn-nav-group__label {
-  color: var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-text-primary);
 }
 .tcrn-nav-item {
   display: grid;
@@ -1952,12 +1952,14 @@ export const tcrnComponentCss = `
 /* TCRN-DS-STORY-062: selection speaks ONE axis. The selected item carries the 3px left-edge
    brand rail + brand text — no fill, no outline, and zero radius so the rail pins flush to
    x=0 — matching the doc-shell single-axis selection language the shell standardized on. */
+/* Same grammar, vertical. The item keeps its own radius rather than squaring off
+   for an axis that no longer exists, and weight is safe here because a sidebar
+   item sits in a fixed-width column where a bolder label cannot reflow the row. */
 .tcrn-nav-item[data-selected="true"],
 .tcrn-nav-item[aria-current="page"] {
-  color: var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-text-primary);
   font-weight: var(--tcrn-type-weight-strong);
-  border-radius: 0;
-  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+  background: var(--tcrn-selection-fill);
 }
 .tcrn-nav-item:hover {
   background: var(--tcrn-color-surface-muted);
@@ -2663,11 +2665,21 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-work-page-header__actions {
   grid-column: 1 / -1;
 }
+/* TCRN-DS-STORY-087 — the segmented track.
+   A row of tabs is one control, so it carries one frame; the items inside it are
+   frameless and selection inks the item's own surface. This replaces the
+   per-item bordered pill, which put a frame around every option and then had to
+   add a second mark on top of it to say which one was chosen. */
 .tcrn-work-management-subnav {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--tcrn-space-2);
+  gap: var(--tcrn-space-0h);
+  padding: var(--tcrn-space-0h);
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-surface);
+  background: var(--tcrn-color-surface-panel);
+  max-width: 100%;
 }
 .tcrn-work-management-subnav > a,
 .tcrn-work-management-subnav > span {
@@ -2676,28 +2688,36 @@ a.tcrn-relationship-chip:focus-visible {
   gap: var(--tcrn-space-2);
   min-height: 32px;
   padding: var(--tcrn-space-1) var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid transparent;
   border-radius: var(--tcrn-radius-control);
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-text-secondary);
   text-decoration: none;
-  background: var(--tcrn-color-surface-panel);
-}
-/* TCRN-DS-STORY-062: horizontal navigation speaks the bottom axis (aligned with
-   WorkViewTabs/WorkQuickFilters) instead of a fill — one selection language per orientation. */
-.tcrn-work-management-subnav [data-selected="true"] {
-  border-color: var(--tcrn-color-border-control);
-  box-shadow: inset 0 -2px 0 var(--tcrn-color-brand-primary);
+  background: transparent;
+  white-space: nowrap;
 }
 .tcrn-saved-view-toolbar {
   display: grid;
   gap: var(--tcrn-space-3);
 }
-.tcrn-work-view-tabs,
+.tcrn-work-view-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tcrn-space-0h);
+  padding: var(--tcrn-space-0h);
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-surface);
+  background: var(--tcrn-color-surface-panel);
+  max-width: 100%;
+}
+/* Quick filters wrap across lines by design, so they get no track — a frame that
+   wraps is not a frame. The item grammar is the same either way, which is the
+   point of inking the item rather than decorating the container. */
 .tcrn-work-quick-filters {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--tcrn-work-density-gap);
+  gap: var(--tcrn-space-0h);
 }
 .tcrn-work-view-tabs > a,
 .tcrn-work-view-tabs > span,
@@ -2708,17 +2728,94 @@ a.tcrn-relationship-chip:focus-visible {
   gap: var(--tcrn-space-2);
   min-width: 0;
   min-height: var(--tcrn-work-density-row-min);
-  padding: var(--tcrn-space-0h) var(--tcrn-space-2);
-  border: 1px solid var(--tcrn-color-border-subtle);
+  padding: var(--tcrn-space-0h) var(--tcrn-space-2h);
+  border: 1px solid transparent;
   border-radius: var(--tcrn-radius-control);
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-text-secondary);
   text-decoration: none;
-  background: var(--tcrn-color-surface-panel);
+  background: transparent;
+  white-space: nowrap;
 }
+/* TCRN-DS-STORY-087 — "selection is ink".
+   One rule for every surface-bearing item in the system: the item's own surface
+   takes ink, and nothing is added on top of it. This replaced two competing
+   grammars (a vertical left axis in brand colour, a horizontal bottom axis) that
+   read as two different products when placed on the same page — DS-INC-003.
+   Brand colour leaves selection entirely and stays with actionability and focus,
+   so colour means "you can act" and structure means "this is the state". */
+.tcrn-work-management-subnav [data-selected="true"],
 .tcrn-work-view-tabs [data-selected="true"],
 .tcrn-work-quick-filters [data-selected="true"] {
-  border-color: var(--tcrn-color-border-control);
-  box-shadow: inset 0 -2px 0 var(--tcrn-color-brand-primary);
+  background: var(--tcrn-selection-fill);
+  color: var(--tcrn-color-text-primary);
+}
+/* TCRN-DS-STORY-088 — SearchableList.
+   Frameless rows inside one framed panel, so selection inks the row: the same
+   grammar the rest of the system speaks, applied to a surface that did not
+   exist until now. */
+.tcrn-searchable-list {
+  display: grid;
+  gap: var(--tcrn-space-2);
+  min-width: 0;
+}
+.tcrn-searchable-list__items {
+  display: grid;
+  gap: var(--tcrn-space-0h);
+  max-height: 18rem;
+  overflow-y: auto;
+  min-width: 0;
+}
+.tcrn-searchable-list__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+  width: 100%;
+  min-height: 34px;
+  padding: var(--tcrn-space-1) var(--tcrn-space-2h);
+  border: 1px solid transparent;
+  border-radius: var(--tcrn-radius-control);
+  background: transparent;
+  color: var(--tcrn-color-text-primary);
+  text-align: start;
+  text-decoration: none;
+  font: inherit;
+  cursor: pointer;
+}
+.tcrn-searchable-list__item:hover {
+  background: var(--tcrn-selection-fill-hover);
+}
+.tcrn-searchable-list__item[data-selected="true"] {
+  background: var(--tcrn-selection-fill);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-searchable-list__item[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.64;
+}
+.tcrn-searchable-list__label {
+  display: grid;
+  min-width: 0;
+}
+.tcrn-searchable-list__description,
+.tcrn-searchable-list__meta {
+  color: var(--tcrn-color-text-secondary);
+  font-size: var(--tcrn-type-size-meta);
+}
+.tcrn-searchable-list__meta {
+  white-space: nowrap;
+}
+.tcrn-searchable-list__divider {
+  border: 0;
+  border-top: 1px solid var(--tcrn-color-border-subtle);
+  margin: var(--tcrn-space-1) var(--tcrn-space-1h);
+}
+.tcrn-searchable-list__truncation {
+  padding: var(--tcrn-space-1) var(--tcrn-space-2h);
+}
+.tcrn-searchable-list__state {
+  display: grid;
+  gap: var(--tcrn-space-2);
 }
 .tcrn-work-quick-filters__value {
   color: var(--tcrn-color-text-secondary);
@@ -2753,9 +2850,11 @@ a.tcrn-relationship-chip:focus-visible {
   padding: var(--tcrn-space-1) var(--tcrn-space-2);
   font-size: var(--tcrn-type-size-ui);
 }
+/* The framed half of the grammar. A row already has a border, so selection
+   promotes that border to ink rather than drawing a second mark inside it —
+   which is exactly what produced the double frame consumers reported. */
 .tcrn-work-item-row[data-selected="true"] {
-  border-color: var(--tcrn-color-border-control);
-  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+  border-color: var(--tcrn-selection-edge);
 }
 .tcrn-work-item-row__id,
 .tcrn-work-item-row__summary,
@@ -3062,9 +3161,9 @@ a.tcrn-relationship-chip:focus-visible {
    text, no row fill, zero radius on the selected element. */
 .tcrn-knowledge-page-tree__item > [data-selected="true"],
 .tcrn-knowledge-toc-rail nav > [data-selected="true"] {
-  color: var(--tcrn-color-brand-primary);
-  border-radius: 0;
-  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-text-primary);
+  font-weight: var(--tcrn-type-weight-strong);
+  background: var(--tcrn-selection-fill);
 }
 .tcrn-knowledge-page-tree__item[data-tree-level="2"] > a,
 .tcrn-knowledge-page-tree__item[data-tree-level="2"] > span {
@@ -3654,15 +3753,23 @@ a.tcrn-relationship-chip:focus-visible {
 /* Navigation tab families — .tcrn-filter-bar stays doc-side (already package-owned via
    the scoped .tcrn-table-toolbar .tcrn-filter-bar rule; introducing a top-level
    .tcrn-filter-bar here would trip the shell-fidelity duplicate-selector gate). */
+/* The same segmented track, for the button-based selectors. These previously
+   said "selected" with a brand-tinted border plus a floating shadow — a lift,
+   which competed with the shell's real elevation language. */
 .tcrn-product-launcher,
 .tcrn-product-switcher,
 .tcrn-module-tabs,
 .tcrn-section-tabs,
 .tcrn-segmented-nav {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
-  gap: var(--tcrn-space-1h);
+  gap: var(--tcrn-space-0h);
+  padding: var(--tcrn-space-0h);
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-surface);
+  background: var(--tcrn-color-surface-panel);
   min-width: 0;
+  max-width: 100%;
 }
 
 .tcrn-product-launcher button,
@@ -3671,12 +3778,12 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-section-tabs button,
 .tcrn-segmented-nav button {
   min-height: 34px;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 76%, transparent);
+  border: 1px solid transparent;
   border-radius: var(--tcrn-radius-control);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 92%, transparent);
+  background: transparent;
   color: var(--tcrn-color-text-secondary);
   padding: 0 var(--tcrn-space-2h);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tcrn-color-surface-panel) 72%, transparent);
+  white-space: nowrap;
 }
 
 .tcrn-product-launcher button[data-selected="true"],
@@ -3689,10 +3796,8 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-module-tabs button[aria-current="page"],
 .tcrn-section-tabs button[aria-current="page"],
 .tcrn-segmented-nav button[aria-current="page"] {
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 30%, var(--tcrn-color-border-subtle));
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-selection-fill);
   color: var(--tcrn-color-text-primary);
-  box-shadow: var(--tcrn-elevation-floating);
 }
 
 /* TCRN-DS-STORY-063: interactive feedback family completion. Every clickable navigation / row /
@@ -3700,20 +3805,22 @@ a.tcrn-relationship-chip:focus-visible {
    answer the press — matching the shell control language (surface-muted hover, focus-ring
    outline, press-scale). Previously these had no hover and fell to the UA default focus ring
    outside the product-shell scope. */
+/* Hover is half a step toward selection in the same material, so the two states
+   read as one scale rather than as two unrelated effects. */
 .tcrn-work-management-subnav > a:hover,
 .tcrn-work-view-tabs > a:hover,
 .tcrn-work-quick-filters > a:hover,
-.tcrn-knowledge-page-tree__item > a:hover,
-.tcrn-knowledge-toc-rail nav > a:hover {
-  background: var(--tcrn-color-surface-muted);
-  color: var(--tcrn-color-text-primary);
-}
-.tcrn-work-item-row[href]:hover,
 .tcrn-product-launcher button:hover,
 .tcrn-product-switcher button:hover,
 .tcrn-module-tabs button:hover,
 .tcrn-section-tabs button:hover,
-.tcrn-segmented-nav button:hover {
+.tcrn-segmented-nav button:hover,
+.tcrn-knowledge-page-tree__item > a:hover,
+.tcrn-knowledge-toc-rail nav > a:hover {
+  background: var(--tcrn-selection-fill-hover);
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-work-item-row[href]:hover {
   border-color: var(--tcrn-color-border-control);
   color: var(--tcrn-color-text-primary);
 }

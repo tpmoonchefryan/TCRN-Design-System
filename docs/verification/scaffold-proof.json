@@ -62,7 +62,7 @@
     {
       "path": "package.json",
       "exists": true,
-      "sha256": "4b30985f535c46f1f2986d9e1465293d44e926ccdba4e318ea4f71ae67b2f05a"
+      "sha256": "fcd0e10bd0e12584f6a1a99e7f8192a5934a0bdcd927a637597a30ddb9e44ff7"
     },
     {
       "path": "pnpm-workspace.yaml",
@@ -107,7 +107,7 @@
     {
       "path": "packages/ui-tokens/src/index.ts",
       "exists": true,
-      "sha256": "dff67f2ace35d6db91f040a32f9d279a62d9828d6078d5905bb62c2c1f723fac"
+      "sha256": "5b3e22acb21115b4e30db5a6b478b050eb01ab29361b209ca6ace0c705050733"
     },
     {
       "path": "packages/ui-copy-state/src/index.ts",
@@ -117,7 +117,7 @@
     {
       "path": "packages/ui-react/src/index.tsx",
       "exists": true,
-      "sha256": "d822f55c51a1c928a2f002796d0df957207aa2a6d3f0953e380978a4af297411"
+      "sha256": "8cd068bf209b64b5799c421c344beb4e3d83e8c590d9a3614ec869f2a93739a9"
     },
     {
       "path": "apps/storybook/src/stories.tsx",
