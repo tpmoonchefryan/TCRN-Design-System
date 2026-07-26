@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { act, useState } from "react";
+import { act, useState, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   ModuleTabs,
@@ -333,6 +333,50 @@ test("product shell lets consumers omit shell search when the product has no glo
   assert.match(html, /data-shell-control="theme-toggle"/);
   assert.match(html, /data-locale-menu-toggle/);
   assert.match(html, /Owner-quality content without global search/);
+});
+
+test("product shell hosts product-owned header actions without moving its own utilities", () => {
+  const shell = (headerActions?: ReactNode) => renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN AOS"
+      moduleName="Operations Cockpit"
+      brandProductId="aos"
+      currentRouteLabel="Work items"
+      navLabel="AOS operations navigation"
+      currentLocale="en"
+      locales={[{ locale: "en", nativeName: "English" }]}
+      navGroups={[
+        {
+          id: "delivery",
+          label: "Delivery",
+          selected: true,
+          items: [{ id: "work", label: "Work items", href: "/work", iconName: "home", selected: true }]
+        }
+      ]}
+      {...(headerActions ? { headerActions } : {})}
+    >
+      <section>Shell content</section>
+    </ProductShell>
+  );
+
+  const withActions = shell(<span data-product-control="workspace-switcher">cross-project</span>);
+  assert.match(withActions, /data-product-shell-region="header-actions"/);
+  assert.match(withActions, /data-product-shell-header-actions="present"/);
+  assert.match(withActions, /data-product-control="workspace-switcher"/);
+
+  // The shell's own utilities must stay rightmost, so a product adding controls
+  // never shifts the theme and locale affordances users navigate by position.
+  const actionsAt = withActions.indexOf('data-product-shell-region="header-actions"');
+  const themeAt = withActions.indexOf('data-shell-control="theme-toggle"');
+  const localeAt = withActions.indexOf("data-locale-menu-toggle");
+  assert.ok(actionsAt > 0 && actionsAt < themeAt && themeAt < localeAt);
+
+  // Purely additive: omitting the prop renders the row exactly as before.
+  const withoutActions = shell();
+  assert.doesNotMatch(withoutActions, /data-product-shell-region="header-actions"/);
+  assert.match(withoutActions, /data-product-shell-header-actions="absent"/);
+
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell__header-actions \{[\s\S]*display: flex;[\s\S]*align-items: center;/);
 });
 
 test("product shell can disable side-nav collapse with a truthful package-backed reason", () => {
