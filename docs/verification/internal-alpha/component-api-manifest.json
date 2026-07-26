@@ -2408,6 +2408,12 @@
           ]
         },
         {
+          "name": "headerActions",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
           "name": "localeMenuOpen",
           "type": "boolean",
           "required": false,
@@ -2517,7 +2523,8 @@
         ]
       },
       "slots": [
-        "children"
+        "children",
+        "headerActions"
       ],
       "propsType": "ProductShellProps"
     },

@@ -850,6 +850,19 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   currentTheme?: ShellThemeMode;
   localeMenuOpen?: boolean;
   search?: ProductShellSearchProps;
+  /**
+   * Product-owned controls for the shell's utility row, rendered between the
+   * search field and the shell's own theme and locale utilities.
+   *
+   * The shell composes its utility row itself, so a product that needs a control
+   * there — a workspace switcher, a data-freshness indicator — previously had
+   * nowhere to put it and had to push it into page content, where it scrolls away
+   * and repeats on every route. Shell utilities stay rightmost so their position
+   * does not move as products add controls.
+   *
+   * Purely additive: omitting it renders the utility row exactly as before.
+   */
+  headerActions?: ReactNode;
   sideNavCollapseDisabledReason?: string;
   onCollapsedChange?: (collapsed: boolean) => void;
   onThemeChange?: (theme: ShellThemeMode) => void;
@@ -889,6 +902,7 @@ export function ProductShell({
   currentTheme = "light",
   localeMenuOpen = false,
   search,
+  headerActions,
   sideNavCollapseDisabledReason,
   onCollapsedChange,
   onThemeChange,
@@ -942,6 +956,7 @@ export function ProductShell({
       data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"
       data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"
       data-product-shell-semantic-api={mergedSearch ? "collapse-theme-locale-search" : "collapse-theme-locale"}
+      data-product-shell-header-actions={headerActions ? "present" : "absent"}
     >
       <SkipLink href={`#${contentId}`}>{skipLinkLabel}</SkipLink>
       <aside className="tcrn-product-shell__sidebar" data-product-shell-region="side-navigation">
@@ -1013,6 +1028,14 @@ export function ProductShell({
               <strong>{currentRouteLabel}</strong>
             </div>
             {mergedSearch ? <ProductShellSearch {...mergedSearch} /> : null}
+            {headerActions ? (
+              <div
+                className="tcrn-product-shell__header-actions"
+                data-product-shell-region="header-actions"
+              >
+                {headerActions}
+              </div>
+            ) : null}
             <ShellThemeToggle currentTheme={currentTheme} onThemeChange={onThemeChange} />
             <ShellLocaleMenu
               locales={locales}
@@ -1751,6 +1774,13 @@ export const tcrnComponentCss = `
   min-width: 0;
 }
 .tcrn-product-shell__utility-row > * {
+  min-width: 0;
+}
+.tcrn-product-shell__header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tcrn-space-2);
   min-width: 0;
 }
 .tcrn-product-shell__current-location {
