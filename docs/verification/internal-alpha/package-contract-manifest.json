@@ -1534,7 +1534,7 @@
       "typePath": "packages/ui-tokens/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "053aecda2211f0c50602fe1d6df2b92c89ef6cea96d06906f0f869a37ef1901b"
+      "manifestSha256": "4904bf4d984ab65127bb68863970d8399722ede5354ea3f1484d524184b3342c"
     },
     {
       "name": "@tcrn/ui-copy-state",
@@ -1544,7 +1544,7 @@
       "typePath": "packages/ui-copy-state/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "5e985bf252dae84c4674a5b83a11f284a9a8716fc1e1732526e47c8a4e0f94fc"
+      "manifestSha256": "8a55d343d1227866c90bafc373d13da06daa09a59f0618170c0dd6c062cc001d"
     },
     {
       "name": "@tcrn/ui-react",
@@ -1554,7 +1554,7 @@
       "typePath": "packages/ui-react/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "a06e81e8f63e4f2e1ae2d728051a55e1a938fda75f83a723e30ce103844d3172"
+      "manifestSha256": "a8cbad658c9c4df4cb96f245974e68e9f06d562817c812a98ccaedc8da27d7ec"
     }
   ],
   "exactDependencyChecks": [
