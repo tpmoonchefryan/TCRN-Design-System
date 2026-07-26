@@ -2,6 +2,46 @@
 
 ## Unreleased
 
+### Selection is one grammar (TCRN-DS-INIT-013)
+
+Selection is ink. A control that has a surface takes ink on that surface; a control
+that has a frame promotes that frame to ink. Nothing is added on top of either.
+
+**Two grammars had grown up separately.** Vertical navigation marked selection with
+a brand-coloured 3px left axis; the horizontal tab family used a brand-coloured 2px
+bottom axis inside a per-item bordered pill. Each was internally consistent, and
+together on one page they read as two products. Colour now leaves selection
+altogether and stays with actionability and focus, so colour means "you can act on
+this" and structure means "this is the state".
+
+**Horizontal tab families are segmented tracks.** The row is one control carrying
+one frame; the items inside are frameless. Framing every option and then adding a
+second mark to say which was chosen is what made the old pill grammar need a mark
+at all. Quick filters, which wrap by design, get no track — the item grammar holds
+either way, which is the point of inking the item rather than decorating the box.
+
+**The docs shell was copying the package, not consuming it** — twice, under two
+different attribute names, which is why the first sweep found only one of them.
+Both now express the package's tokens, so the shell cannot look right by
+coincidence while the package moves underneath it.
+
+**A style rule cannot be held by review**, because the next copy looks like correct
+code in a diff. `scripts/selection-grammar-proof.mjs` reads every selection rule in
+the package stylesheet and both docs layers and fails on an axis, a brand colour,
+or a lift. It was mutation-tested against a deliberately reintroduced rail before
+being wired into `tokens:proof`.
+
+### SearchableList (TCRN-DS-STORY-088)
+
+The Selection and list patterns page has specified this escalation since it was
+written — "large or remote option sets need search, loading, empty, and keyboard
+states" — while the package shipped only `Select`, so every product that outgrew
+`Select` invented its own menu. The component now exists and owes those four states
+by contract. It carries copy for all five locales, takes real callbacks rather than
+being another closed surface, and is a group of links and buttons rather than a
+listbox: a listbox obliges every child to be an `option`, and an `option` cannot be
+a link.
+
 ### Storybook fidelity — A-tier repair (TCRN-DS-INIT-003)
 
 The docs surface now shows the language it documents, and its self-checks report
