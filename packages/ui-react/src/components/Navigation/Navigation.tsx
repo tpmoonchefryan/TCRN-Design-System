@@ -1949,12 +1949,13 @@ export const tcrnComponentCss = `
 .tcrn-nav-item__content {
   min-width: 0;
 }
-/* TCRN-DS-STORY-062: selection speaks ONE axis. The selected item carries the 3px left-edge
-   brand rail + brand text — no fill, no outline, and zero radius so the rail pins flush to
-   x=0 — matching the doc-shell single-axis selection language the shell standardized on. */
-/* Same grammar, vertical. The item keeps its own radius rather than squaring off
-   for an axis that no longer exists, and weight is safe here because a sidebar
-   item sits in a fixed-width column where a bolder label cannot reflow the row. */
+/* TCRN-DS-STORY-062 → STORY-087: selection used to speak one axis — a 3px left-edge brand
+   rail, brand text, zero radius. It now speaks ink. The rail is gone; this sentence is kept
+   only to say so, because the original wording survived the change that deleted the rule it
+   described and read as truth for three commits.
+   The item keeps its own radius rather than squaring off for an axis that no
+   longer exists, and weight is safe here because a sidebar item sits in a
+   fixed-width column where a bolder label cannot reflow the row. */
 .tcrn-nav-item[data-selected="true"],
 .tcrn-nav-item[aria-current="page"] {
   color: var(--tcrn-color-text-primary);
@@ -2176,10 +2177,17 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   outline: 2px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
 }
+/* TCRN-DS-STORY-087 — "selection is ink", applied to a chip that carries a frame.
+   This chip and WorkQuickFilters are both exported filter chips with the same
+   "this filter is chosen" meaning, and they carried two different grammars until
+   now: this one painted brand, that one inked. One grammar does not mean one
+   declaration — ink takes over whatever structural layer the control already
+   has. The quick filter sits in a frameless track and so takes fill; this chip
+   owns a visible border and so takes the edge. Nothing is added on top in
+   either case, and brand colour stays with actionability. */
 .tcrn-table-toolbar__chip[aria-pressed="true"] {
-  border-color: var(--tcrn-color-brand-primary);
-  color: var(--tcrn-color-brand-primary);
-  background: color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 42%, transparent);
+  border-color: var(--tcrn-selection-edge);
+  color: var(--tcrn-color-text-primary);
 }
 .tcrn-table-toolbar__count {
   margin-inline-start: auto;

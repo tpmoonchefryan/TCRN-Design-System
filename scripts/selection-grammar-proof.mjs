@@ -33,7 +33,17 @@ const SOURCES = [
 
 // Selectors that mark "this one is chosen". aria-current="location" is included
 // because omitting it is precisely how copy #4 survived the first sweep.
-const SELECTION_SELECTOR = /\[data-selected|\[aria-current|\[data-doc-nav-item-active/;
+//
+// TCRN-DS-INC-005: this list was attribute-selectors-only, and copies #5 and #6
+// were not attributes — a pressed filter chip (`[aria-pressed="true"]`) and a
+// modifier class (`--active`). Both painted brand while this gate reported zero
+// findings, so the gate that exists to stop a fifth copy could not see the fifth
+// copy. A marker only counts here if it means "this option is the chosen one":
+// `[data-active]` on the doc theme-transition wash means "this crossfade is
+// running", and widening far enough to catch that would stop the gate meaning
+// what its name says.
+const SELECTION_SELECTOR =
+  /\[data-selected|\[aria-current|\[aria-pressed|\[aria-selected|\[data-doc-nav-item-active|--(?:active|selected)\b/;
 
 // Bodies that paint selection the old way. `inset` covers both the 3px left axis
 // and the 2px bottom axis; brand colour is banned in selection because colour now
