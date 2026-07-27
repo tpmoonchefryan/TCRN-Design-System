@@ -559,10 +559,14 @@ label {
     color var(--tcrn-motion-standard);
 }
 
+/* TCRN-DS-STORY-087 — "selection is ink". This chip marks which state of the
+   transition the record is in right now, which is exactly the "this is the
+   state" the grammar reserves structure for, so it takes the selection edge
+   rather than brand paint. It keeps its own surface: the chip is framed and
+   surface-bearing, and ink promotes the frame instead of adding a layer. */
 .tcrn-loading-status__chip--active {
-  border-color: var(--tcrn-color-brand-primary);
+  border-color: var(--tcrn-selection-edge);
   color: var(--tcrn-color-text-primary);
-  background: var(--tcrn-color-brand-primary-bg);
 }
 
 .tcrn-loading-status__arrow {
@@ -1494,9 +1498,11 @@ label {
 
 .tcrn-shell-domain-item[data-selected="true"],
 .tcrn-shell-task-lane a[data-selected="true"],
-/* TCRN-DS-STORY-065: the knowledge-base shell demo claims to mirror the active TCRN documentation
-   shell, so its bookmark selection must speak the same single-axis language the doc shell uses —
-   the 3px left-edge brand rail + brand text, no fill, no radius. */
+/* TCRN-DS-STORY-065 → STORY-087: the knowledge-base shell demo claims to mirror the active TCRN
+   documentation shell, so its bookmark selection must speak whatever language the doc shell speaks.
+   That language is now ink, not the 3px left-edge brand rail this comment used to describe — the
+   rail was deleted in the "selection is one grammar" change and this sentence was left standing
+   above the rule that replaced it. */
 /* TCRN-DS-STORY-089 / DS-INC-004: these rules used to be a byte-for-byte copy of
    the package's NavItem selection style, so the docs shell only looked consistent
    by coincidence and would have silently fallen behind the package. They now
@@ -1641,8 +1647,8 @@ label {
 }
 
 /* TCRN-DS-STORY-065: the "tracked" variant no longer paints a gradient fill + gradient capsule +
-   halo ring (the pre-INIT-005 selection language the shell standardized away). The rail comes from
-   the single-axis selection rule above; text sits at normal padding. */
+   halo ring (the pre-INIT-005 selection language the shell standardized away). Selection comes from
+   the ink rule above — a fill, not the rail this comment used to name; text sits at normal padding. */
 .tcrn-bookmark-nav--tracked a {
   overflow: hidden;
   border-color: transparent;
