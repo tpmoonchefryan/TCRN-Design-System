@@ -7,7 +7,7 @@ an adoption, and starting on the current visual language costs nothing extra.
 
 ## What you are adopting
 
-Three packages, all at 2.0.0:
+Three packages, all at 3.0.0:
 
 | Package | What it gives you |
 | --- | --- |

@@ -3,7 +3,7 @@
 Semantic design tokens for TCRN UI surfaces. CSS variables are the canonical
 runtime contract; generated framework adapters are deferred.
 
-Version `1.0.0` is prepared under Apache License 2.0 as part of the accepted
+Version `3.0.0` is prepared under Apache License 2.0 as part of the accepted
 TCRN Design System public package baseline.
 
 ## Theme contract

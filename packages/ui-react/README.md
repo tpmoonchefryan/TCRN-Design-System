@@ -5,7 +5,7 @@ fixtures. Components accept normalized display props only and do not fetch data,
 mutate state outside the component tree, decide product truth, or import product
 APIs.
 
-Version `1.0.0` is prepared under Apache License 2.0 as part of the accepted
+Version `3.0.0` is prepared under Apache License 2.0 as part of the accepted
 TCRN Design System public package baseline.
 
 ## Component Library Public API

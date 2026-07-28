@@ -7,16 +7,16 @@ Status: passed
 ## Readback
 
 - Workspace root: `TCRN-Design-System`
-- Release baseline version: `1.0.0`
+- Release baseline version (frozen at the 1.0.0 baseline observation; current versions live in CHANGELOG.md): `1.0.0`
 - License: `Apache-2.0`
 - Hosted docs config: `vercel_static_contract_docs`
 - Public repository: `https://github.com/tpmoonchefryan/TCRN-Design-System`
 - Public repository visibility: `public`
 - Clean-history repository recreated: true
 - Legacy public repository deleted before recreate: true
-- GitHub Release: `v1.0.0`
-- GitHub Release URL: `https://github.com/tpmoonchefryan/TCRN-Design-System/releases/tag/v1.0.0`
-- GitHub Release target: `57b1c417efe4c011daa538158b347075d122b72b`
+- GitHub Release observed at baseline: `v1.0.0`
+- GitHub Release URL observed at baseline: `https://github.com/tpmoonchefryan/TCRN-Design-System/releases/tag/v1.0.0`
+- GitHub Release target observed at baseline: `57b1c417efe4c011daa538158b347075d122b72b`
 - GitHub Release draft/prerelease: false/false
 - Vercel deployment observed: false
 - Vercel latest known state: `not_claimed_no_github_deployment_for_selected_basis`
