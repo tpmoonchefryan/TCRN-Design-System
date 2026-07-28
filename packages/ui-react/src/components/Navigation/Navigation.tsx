@@ -34,6 +34,19 @@ interface ShellChromeLabels {
   language: string;
   collapseSideNav: string;
   expandSideNav: string;
+  /**
+   * The mobile navigation control, which is a different control from the two
+   * above and says a different thing.
+   *
+   * `collapseSideNav`/`expandSideNav` narrow the desktop rail to icons — the
+   * destinations stay on screen. Below the mobile breakpoint the rail is not a
+   * rail, and the same control would be a no-op, so it is hidden there; this
+   * one shows and hides the navigation itself. Reusing either label would tell
+   * a screen-reader user the rail is about to narrow when it is about to
+   * disappear.
+   */
+  showNavigation: string;
+  hideNavigation: string;
   breadcrumb: string;
   searchShell: string;
   searchPlaceholder: string;
@@ -75,6 +88,8 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     language: "语言",
     collapseSideNav: "收起侧边导航",
     expandSideNav: "展开侧边导航",
+    showNavigation: "显示导航",
+    hideNavigation: "隐藏导航",
     breadcrumb: "面包屑导航",
     searchShell: "检索产品外壳",
     searchPlaceholder: "检索",
@@ -100,6 +115,8 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     language: "Language",
     collapseSideNav: "Collapse side navigation",
     expandSideNav: "Expand side navigation",
+    showNavigation: "Show navigation",
+    hideNavigation: "Hide navigation",
     breadcrumb: "Breadcrumb",
     searchShell: "Search product shell",
     searchPlaceholder: "Search",
@@ -125,6 +142,8 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     language: "言語",
     collapseSideNav: "サイドナビゲーションを折りたたむ",
     expandSideNav: "サイドナビゲーションを展開する",
+    showNavigation: "ナビゲーションを表示する",
+    hideNavigation: "ナビゲーションを隠す",
     breadcrumb: "パンくずリスト",
     searchShell: "製品シェルを検索",
     searchPlaceholder: "検索",
@@ -150,6 +169,8 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     language: "언어",
     collapseSideNav: "사이드 내비게이션 접기",
     expandSideNav: "사이드 내비게이션 펼치기",
+    showNavigation: "내비게이션 표시",
+    hideNavigation: "내비게이션 숨기기",
     breadcrumb: "이동 경로",
     searchShell: "제품 셸 검색",
     searchPlaceholder: "검색",
@@ -175,6 +196,8 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     language: "Langue",
     collapseSideNav: "Replier la navigation latérale",
     expandSideNav: "Déplier la navigation latérale",
+    showNavigation: "Afficher la navigation",
+    hideNavigation: "Masquer la navigation",
     breadcrumb: "Fil d’Ariane",
     searchShell: "Rechercher dans la coque produit",
     searchPlaceholder: "Rechercher",
@@ -753,6 +776,63 @@ export function SideNavCollapseButton({
   );
 }
 
+export interface MobileNavToggleProps extends Omit<IconButtonProps, "ariaLabel" | "icon" | "iconName" | "children"> {
+  expanded: boolean;
+  controls: string;
+  /** Which language the two built-in labels are said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
+  onExpandedChange?: (expanded: boolean) => void;
+}
+
+/**
+ * Show or hide the navigation, below the mobile breakpoint only.
+ *
+ * A separate control from `SideNavCollapseButton` on purpose. That one narrows
+ * the desktop rail to icons and stays hidden here, because a width collapse in
+ * a full-width stacked layout is a control that does nothing — which the
+ * responsive standard forbids. This one shows and hides the navigation itself,
+ * which is a different question, and the one nobody had answered: the shell had
+ * two destinations when the rail's mobile policy was written and has eleven now,
+ * so "no width-collapse affordance" had quietly come to mean "no way to put the
+ * navigation away at all".
+ *
+ * The glyph is a menu, not a chevron pair: a chevron says a thing will move, and
+ * on this viewport the navigation appears and disappears.
+ */
+export function MobileNavToggle({
+  expanded,
+  controls,
+  locale,
+  onExpandedChange,
+  className,
+  onClick,
+  ...props
+}: MobileNavToggleProps) {
+  // Icon-only, so this label is the whole accessible name.
+  const label = expanded ? chromeLabels(locale).hideNavigation : chromeLabels(locale).showNavigation;
+  const handleClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (!event.defaultPrevented) onExpandedChange?.(!expanded);
+  };
+  return (
+    <IconButton
+      {...props}
+      onClick={handleClick}
+      ariaLabel={label}
+      title={label}
+      aria-controls={controls}
+      aria-expanded={expanded ? "true" : "false"}
+      className={cx("tcrn-shell-mobile-nav-toggle", className)}
+      data-shell-control="mobile-nav-toggle"
+      data-package-backed-shell-control="mobile-nav-toggle"
+      data-mobile-nav-toggle="true"
+      data-mobile-nav-expanded={String(expanded)}
+      data-mobile-nav-semantic-api="onExpandedChange"
+      icon={<Icon name="menu" />}
+    />
+  );
+}
+
 export interface ProductLauncherProps {
   items: NavItem[];
   /**
@@ -1203,6 +1283,20 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
    */
   headerActions?: ReactNode;
   sideNavCollapseDisabledReason?: string;
+  /**
+   * Whether the navigation is showing, below the mobile breakpoint.
+   *
+   * Deliberately NOT `collapsed`. That one narrows the desktop rail, is
+   * persisted, and is serialized into product links — reusing it here would let
+   * a phone tap rewrite a desktop preference and carry it across routes. This
+   * is a transient view state: it starts closed on every mobile page load,
+   * which is also why the closed state is the CSS default and needs no
+   * client-side media query to arrive at (a server render would otherwise emit
+   * the open nav and collapse it after hydration, which is the flash this
+   * platform has already paid for once).
+   */
+  mobileNavExpanded?: boolean;
+  onMobileNavExpandedChange?: (expanded: boolean) => void;
   onCollapsedChange?: (collapsed: boolean) => void;
   onThemeChange?: (theme: ShellThemeMode) => void;
   onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
@@ -1243,6 +1337,8 @@ export function ProductShell({
   search,
   headerActions,
   sideNavCollapseDisabledReason,
+  mobileNavExpanded = false,
+  onMobileNavExpandedChange,
   onCollapsedChange,
   onThemeChange,
   onLocaleMenuOpenChange,
@@ -1307,6 +1403,7 @@ export function ProductShell({
       data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"
       data-product-shell-semantic-api={mergedSearch ? "collapse-theme-locale-search" : "collapse-theme-locale"}
       data-product-shell-header-actions={headerActions ? "present" : "absent"}
+      data-mobile-nav-expanded={mobileNavExpanded ? "true" : "false"}
     >
       <SkipLink href={`#${contentId}`}>{resolvedSkipLinkLabel}</SkipLink>
       <aside className="tcrn-product-shell__sidebar" data-product-shell-region="side-navigation">
@@ -1340,6 +1437,12 @@ export function ProductShell({
             disabledReason={sideNavCollapseDisabledReason}
             persistedKey={collapsedStorageKey}
             onCollapsedChange={onCollapsedChange}
+          />
+          <MobileNavToggle
+            expanded={mobileNavExpanded}
+            controls={navId}
+            locale={currentLocale}
+            onExpandedChange={onMobileNavExpandedChange}
           />
         </div>
           <SideNav id={navId} label={navLabel} data-registered-navigation-only="true">
@@ -1509,6 +1612,11 @@ export function useProductShellController({
   const [locale, setLocaleState] = useState(
     () => readStoredLocale(localeStorageKey, initialLocale, requestPreferences?.locale));
   const [localeMenuOpen, setLocaleMenuOpenState] = useState(false);
+  // Transient by construction: no storage key, no initial* input, no cookie.
+  // Every mobile page load starts with the navigation put away, which is what
+  // lets the closed state be the CSS default and the server render be correct
+  // before any script runs.
+  const [mobileNavExpanded, setMobileNavExpandedState] = useState(false);
   const [searchQuery, setSearchQueryState] = useState("");
   const [searchExpanded, setSearchExpandedState] = useState(false);
 
@@ -1629,7 +1737,9 @@ export function useProductShellController({
     currentTheme: theme,
     currentLocale: locale,
     localeMenuOpen,
+    mobileNavExpanded,
     navId,
+    onMobileNavExpandedChange: setMobileNavExpandedState,
     onCollapsedChange: setCollapsed,
     onThemeChange: setTheme,
     onLocaleMenuOpenChange: setLocaleMenuOpen,
@@ -1654,6 +1764,8 @@ export function useProductShellController({
     setLocaleMenuOpen,
     openLocaleMenu,
     closeLocaleMenu,
+    mobileNavExpanded,
+    setMobileNavExpanded: setMobileNavExpandedState,
     searchQuery,
     setSearchQuery,
     searchExpanded,
@@ -1669,7 +1781,8 @@ export function useProductShellController({
       collapsed,
       currentTheme: theme,
       currentLocale: locale,
-      localeMenuOpen
+      localeMenuOpen,
+      mobileNavExpanded
     }
   };
 }
@@ -2043,6 +2156,19 @@ export const tcrnComponentCss = `
   min-block-size: 38px;
   min-height: 38px;
   display: inline-grid;
+  place-items: center;
+  padding: 0;
+  color: var(--tcrn-color-brand-primary);
+}
+/*
+ * Mobile-only, and hidden by default rather than shown by default: above the
+ * breakpoint the navigation is always on screen, so a show/hide control there
+ * would be the no-op the responsive standard forbids — the same reason its
+ * width-collapse sibling is hidden below the breakpoint. Each control exists
+ * exactly where it does something.
+ */
+.tcrn-shell-mobile-nav-toggle {
+  display: none;
   place-items: center;
   padding: 0;
   color: var(--tcrn-color-brand-primary);
@@ -3970,16 +4096,23 @@ a.tcrn-relationship-chip:focus-visible {
     grid-template-columns: 1fr;
     align-items: stretch;
   }
+  /*
+   * Lever 2 of the mobile fold budget. Each of these used to take a full row of
+   * its own, which spent 130px of a 760px screen on three controls before the
+   * page said anything. They sit on one line and wrap only when they must.
+   */
   .tcrn-product-shell__utility-row {
-    justify-content: stretch;
-    align-items: stretch;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--tcrn-space-2);
   }
   .tcrn-product-shell__current-location,
   .tcrn-shell-locale-menu {
-    flex: 1 1 100%;
+    flex: 0 1 auto;
     margin-right: 0;
     max-width: none;
-    width: 100%;
+    width: auto;
   }
   .tcrn-product-shell-search,
   .tcrn-product-shell-search[data-search-expanded="true"] {
@@ -3989,8 +4122,45 @@ a.tcrn-relationship-chip:focus-visible {
     width: 320px;
     max-width: 320px;
   }
+  /*
+   * The width-collapse control stays hidden here, and that ruling has not
+   * changed: narrowing a rail to 92px means nothing in a full-width stacked
+   * layout, and a control that does nothing is what the responsive standard
+   * forbids. What was never ruled on — because the shell had two destinations
+   * when this rule was written and has eleven now — is whether the navigation
+   * can be put away at all. That is the control below, and it is a different one.
+   */
   .tcrn-product-shell__sidebar-header .tcrn-shell-side-nav-toggle {
     display: none;
+  }
+  .tcrn-shell-mobile-nav-toggle {
+    display: inline-flex;
+    /* Sole route to the whole IA on the one viewport where it is touched. */
+    min-width: 44px;
+    min-height: 44px;
+  }
+  /*
+   * Lever 1. display:none rather than a transform: it takes the eleven links
+   * out of the tab order and out of the accessibility tree, which a translated
+   * or merely invisible panel does not. Closed is the CSS default, so a server
+   * render emits the closed nav with no script and no correction after
+   * hydration — the attribute only ever turns it on.
+   */
+  .tcrn-product-shell__sidebar .tcrn-side-nav {
+    display: none;
+  }
+  .tcrn-product-shell[data-mobile-nav-expanded="true"] .tcrn-product-shell__sidebar .tcrn-side-nav {
+    display: grid;
+  }
+  /*
+   * The header carries the only navigation control on this viewport, so it has
+   * to survive the scroll that the shorter page now invites. Without this it
+   * leaves after 79px and the reader has no way back to the navigation at all.
+   */
+  .tcrn-product-shell__sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
   }
   .tcrn-work-board,
   .tcrn-work-hierarchy__levels,
@@ -4014,15 +4184,26 @@ a.tcrn-relationship-chip:focus-visible {
   .tcrn-work-quick-filters > a,
   .tcrn-work-quick-filters > span {
     /*
-     * A 160px basis, not a 160px ceiling: with a fixed basis a no-wrap label
-     * that needs more — a CJK filter name with a count did, at 213px — shrank
-     * to the shared column and bled its text into a horizontal scroll on a
-     * 375px viewport. Basis auto lets the chip take its own width first; the
-     * min keeps short chips filling out the row grid the basis was there for.
+     * Lever 3. These wrapped into four and three rows, spending 380px of the
+     * fold on chrome before the first work item. One scrolling row each: the
+     * chips keep their own width (a CJK filter name with a count needs 213px
+     * and shrinking it bled the text out of the chip), and the overflow is the
+     * row's, not the page's.
+     *
+     * Supersedes the wrap-based sizing that fixed that bleed — same property,
+     * different mechanism, and the no-page-overflow property it was protecting
+     * still holds because the scroll is contained here.
      */
-    flex: 1 1 auto;
-    min-width: 160px;
+    flex: 0 0 auto;
     max-width: 100%;
+  }
+  .tcrn-work-view-tabs,
+  .tcrn-work-quick-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    /* Momentum on touch, and the row keeps its own scrollbar off the page. */
+    -webkit-overflow-scrolling: touch;
   }
   .tcrn-shell-locale-menu__trigger {
     width: 100%;

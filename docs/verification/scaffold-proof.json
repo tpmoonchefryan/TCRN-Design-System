@@ -62,7 +62,7 @@
     {
       "path": "package.json",
       "exists": true,
-      "sha256": "fcd0e10bd0e12584f6a1a99e7f8192a5934a0bdcd927a637597a30ddb9e44ff7"
+      "sha256": "fb3f0e359c68edf103f3a34850a44a67afdd11b6ba0ee0b28a1794d21bda5068"
     },
     {
       "path": "pnpm-workspace.yaml",
