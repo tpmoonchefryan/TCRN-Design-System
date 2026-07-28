@@ -4306,6 +4306,68 @@
       }
     ]
   },
+  "breakpointOverflowCheck": {
+    "ok": true,
+    "route": "components-work-management.html?theme=light&locale=zh-CN",
+    "rule": "responsive-mobile forbids page-level horizontal overflow; asserted at the breakpoint seam, not only inside each posture",
+    "readbacks": [
+      {
+        "width": 759,
+        "ok": true,
+        "viewportWidth": 759,
+        "scrollWidth": 759,
+        "overflow": 0,
+        "widest": []
+      },
+      {
+        "width": 761,
+        "ok": true,
+        "viewportWidth": 761,
+        "scrollWidth": 761,
+        "overflow": 0,
+        "widest": []
+      },
+      {
+        "width": 770,
+        "ok": true,
+        "viewportWidth": 770,
+        "scrollWidth": 770,
+        "overflow": 0,
+        "widest": []
+      },
+      {
+        "width": 800,
+        "ok": true,
+        "viewportWidth": 800,
+        "scrollWidth": 800,
+        "overflow": 0,
+        "widest": []
+      }
+    ]
+  },
+  "railReachabilityCheck": {
+    "ok": true,
+    "route": "proof-proof-visual-instances.html?theme=light&locale=en",
+    "rule": "every navigation destination is reachable, including where the rail is taller than the window",
+    "readbacks": [
+      {
+        "viewport": "landscape-812x375",
+        "ok": true,
+        "navItemCount": 11,
+        "railScrollable": true,
+        "lastItemTop": 21168,
+        "reachable": true
+      },
+      {
+        "viewport": "desktop-1440x900",
+        "ok": true,
+        "navItemCount": 11,
+        "railScrollable": false,
+        "lastItemTop": 13554,
+        "reachable": true
+      }
+    ]
+  },
   "mobileKnowledgeDocShellLayeringCheck": {
     "ok": true,
     "route": "components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
