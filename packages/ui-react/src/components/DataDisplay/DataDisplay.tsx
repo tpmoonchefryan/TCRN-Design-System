@@ -896,9 +896,21 @@ export interface WorkViewTabsProps {
   locale?: TcrnLocale | string;
 }
 
+/**
+ * tabIndex 0 here and on WorkQuickFilters below.
+ *
+ * Below the mobile breakpoint each of these becomes a single horizontally
+ * scrolling strip, and a scroll container whose items are static text has no
+ * way to be scrolled from a keyboard — axe calls it
+ * scrollable-region-focusable, impact serious, and it is a real WCAG 2.1.1
+ * failure rather than a lint. Unconditional rather than mobile-only, because
+ * the render cannot know the viewport, and a redundant stop on a labelled
+ * group costs a keyboard user one press while its absence costs them the
+ * content (TCRN-AOS-INC-029). Same treatment TableShell already carries.
+ */
 export function WorkViewTabs({ label, tabs, locale }: WorkViewTabsProps) {
   return (
-    <nav className="tcrn-work-view-tabs" aria-label={label ?? patternLabels(locale).workViewTabs} data-work-management-pattern="work-view-tabs">
+    <nav className="tcrn-work-view-tabs" aria-label={label ?? patternLabels(locale).workViewTabs} data-work-management-pattern="work-view-tabs" tabIndex={0}>
       {tabs.map((tab) => {
         const content = (
           <>
@@ -944,7 +956,7 @@ export interface WorkQuickFiltersProps {
 
 export function WorkQuickFilters({ label, filters, density = "compact", locale }: WorkQuickFiltersProps) {
   return (
-    <section className={cx("tcrn-work-quick-filters", `tcrn-work-quick-filters--${density}`)} aria-label={label ?? patternLabels(locale).workQuickFilters} data-work-management-pattern="work-quick-filters" data-density={density}>
+    <section className={cx("tcrn-work-quick-filters", `tcrn-work-quick-filters--${density}`)} aria-label={label ?? patternLabels(locale).workQuickFilters} data-work-management-pattern="work-quick-filters" data-density={density} tabIndex={0}>
       {filters.map((filter) => {
         const content = (
           <>

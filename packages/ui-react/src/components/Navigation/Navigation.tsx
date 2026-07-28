@@ -2352,7 +2352,7 @@ export const tcrnComponentCss = `
 .tcrn-product-shell__sidebar {
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   gap: var(--tcrn-space-5);
@@ -2360,6 +2360,18 @@ export const tcrnComponentCss = `
   padding: var(--tcrn-space-4);
   border-right: 1px solid var(--tcrn-color-border-subtle);
   background: var(--tcrn-color-surface-panel);
+  /*
+   * The rail is exactly one viewport tall and sticky, so navigation taller than
+   * the viewport used to paint outside its own box with nothing to scroll: the
+   * page scrolled, the sticky rail did not, and the items past the fold were
+   * unreachable at any scroll position. Measured on a rotated 375x760 phone —
+   * 812x375 is above the mobile breakpoint, so it takes this path — where the
+   * last three destinations could not be reached at all (TCRN-AOS-INC-026).
+   * dvh for the same family of reason: vh ignores the browser chrome that
+   * appears and disappears on a phone.
+   */
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .tcrn-product-shell__sidebar-header {
   display: grid;
@@ -3562,6 +3574,32 @@ a.tcrn-relationship-chip:focus-visible {
   grid-template-columns: minmax(96px, 0.16fr) minmax(160px, 1fr) minmax(192px, 0.72fr);
   gap: var(--tcrn-space-2);
   padding: var(--tcrn-space-2) var(--tcrn-space-3);
+}
+/*
+ * A row stacks when ITS OWN container cannot hold its columns, not when the
+ * viewport crosses a number.
+ *
+ * The three floors plus their gaps need 464px. The mobile block stacks the row
+ * below a 760px viewport, which sounds like the same thing and is not: on a
+ * shell with a 280px rail, a 761px viewport leaves the row 441px — 23px short
+ * of its own floor, and the row overflowed the page by exactly that. Measured
+ * 16px at 761 and 7px at 770, gone at 780; the responsive standard forbids
+ * page-level horizontal overflow and nothing was asserting it (TCRN-AOS-INC-028).
+ *
+ * A viewport query cannot see the rail, so it cannot answer this question for a
+ * consumer whose rail is a different width — and a second consumer arrives with
+ * a different shell. The container can answer it for all of them.
+ */
+.tcrn-work-list,
+[data-work-list] {
+  container: tcrn-work-row / inline-size;
+}
+@container tcrn-work-row (max-width: 464px) {
+  .tcrn-work-item-row,
+  .tcrn-work-item-row--compact,
+  .tcrn-work-item-row--dense {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .tcrn-work-item-row--dense {
   grid-template-columns: minmax(92px, 0.14fr) minmax(180px, 1fr) minmax(172px, 0.62fr);

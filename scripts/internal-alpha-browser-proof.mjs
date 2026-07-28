@@ -896,14 +896,22 @@ for (const viewport of viewports) {
     // the component regions rather than story bodies for the dark reload.
     const runsAxe = isCategory || section.kind === "reference";
     const axeContentSelector = section.kind === "reference" ? "[data-component-reference-id]" : "[data-contract-story-id]";
-    if (viewport.name === "desktop-1440x900" && runsAxe) {
+    // Desktop and mobile, not desktop alone. The mobile posture is a different
+    // rendering — different layout, and since TCRN-AOS-MIN-006 a control that
+    // exists only there — and it had never been scanned: the one gate that
+    // could have caught a mobile accessibility defect was pinned to the one
+    // viewport where the mobile code does not run (TCRN-AOS-INC-028). Tablet is
+    // left out deliberately: it renders the desktop posture, so a third pass
+    // buys coverage of nothing new for a third of the runtime.
+    const axeViewport = viewport.name === "desktop-1440x900" || viewport.name === "mobile-390x844";
+    if (axeViewport && runsAxe) {
       // E6: axe runs in both themes so dark-mode contrast has the same 4.5:1 floor as
       // light. Dark is loaded fresh with ?theme=dark rather than toggled in place — the
       // page's per-panel theme previews only render correctly under the runtime's own
       // theme handling, so an in-place attribute flip would produce false contrast hits.
       // Scoped to category + reference pages (which carry rendered content); each also carries the
       // full shell, so the bounded index pages need no separate axe pass.
-      axeSummaries.push({ section: section.group, page: section.file, theme: "light", ...(await runAxe(page)) });
+      axeSummaries.push({ section: section.group, page: section.file, viewport: viewport.name, theme: "light", ...(await runAxe(page)) });
       await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?theme=dark&locale=zh-CN`);
       await page.waitForSelector(axeContentSelector, { state: "attached" });
       // The page ships data-tcrn-theme="light" and a script flips it to dark, which the
@@ -916,7 +924,7 @@ for (const viewport of viewports) {
         }
       });
       await page.waitForTimeout(120);
-      axeSummaries.push({ section: section.group, page: section.file, theme: "dark", ...(await runAxe(page)) });
+      axeSummaries.push({ section: section.group, page: section.file, viewport: viewport.name, theme: "dark", ...(await runAxe(page)) });
     }
 
     browserSummaries.push({
@@ -1452,6 +1460,125 @@ const mobileHashAnchorOcclusionCheck = {
   route: "foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
   viewport: { width: 390, height: 844 },
   readbacks: mobileHashAnchorReadbacks
+};
+
+/**
+ * No page-level horizontal overflow on either side of the mobile breakpoint.
+ *
+ * The responsive standard names page-level horizontal overflow a forbidden
+ * consumer override, and the screenshot matrix asserts it at 1440, 1024 and
+ * 390 — three widths that are all comfortably inside a posture. The defect
+ * lives at the seam: at 761, the first pixel of the desktop posture, a shell
+ * with a rail leaves the work row 441px against its own 464px floor, and the
+ * page overflowed by exactly the difference. The rule had no execution point
+ * where it could fail (TCRN-AOS-INC-028).
+ *
+ * Two pixels either side of 760 plus the width where the measured overflow was
+ * worst. Cheap — one page, no screenshots — and it is the only check that
+ * looks at the boundary rather than at the middle of a range.
+ */
+const breakpointBoundaryWidths = [759, 761, 770, 800];
+const breakpointOverflowReadbacks = [];
+for (const width of breakpointBoundaryWidths) {
+  const boundaryPage = await browser.newPage({ viewport: { width, height: 900 } });
+  try {
+    await boundaryPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-work-management.html?theme=light&locale=zh-CN`);
+    await boundaryPage.waitForSelector("[data-contract-story-id]", { state: "attached" });
+    await expandAllStoriesForContentRead(boundaryPage);
+    const readback = await boundaryPage.evaluate(() => {
+      const html = document.documentElement;
+      const body = document.body;
+      const viewportWidth = Math.max(html.clientWidth, body.clientWidth);
+      const scrollWidth = Math.max(html.scrollWidth, body.scrollWidth);
+      const overflow = Math.max(0, scrollWidth - viewportWidth);
+      const widest = [];
+      if (overflow > 1) {
+        for (const element of document.querySelectorAll("*")) {
+          const rect = element.getBoundingClientRect();
+          if (rect.width > 0 && rect.right > viewportWidth + 1) {
+            const parent = element.parentElement;
+            const parentOverflows = parent ? parent.getBoundingClientRect().right > viewportWidth + 1 : false;
+            if (!parentOverflows) widest.push((element.className || "").toString().slice(0, 60) || element.tagName);
+          }
+          if (widest.length >= 4) break;
+        }
+      }
+      return { viewportWidth, scrollWidth, overflow, widest };
+    });
+    breakpointOverflowReadbacks.push({ width, ok: readback.overflow <= 1, ...readback });
+  } finally {
+    await boundaryPage.close();
+  }
+}
+/**
+ * Every navigation destination is reachable, including where the rail is
+ * taller than the window.
+ *
+ * The rail is one viewport tall and sticky. With navigation taller than the
+ * viewport and nothing to scroll, the items past the fold painted outside the
+ * rail's own box and could not be reached at any page scroll position — the
+ * page scrolled, the sticky rail did not. It showed up on a rotated phone
+ * (812x375 is above the mobile breakpoint, so it takes the desktop path) where
+ * the last three destinations were simply unavailable (TCRN-AOS-INC-026).
+ *
+ * Asserted the way a reader would find out: scroll the rail, then ask whether
+ * the last item is inside both the rail and the window. A landscape viewport
+ * is included precisely because the breakpoint only looks at width, so this is
+ * the shape no width-based check can see.
+ */
+const railReachabilityViewports = [
+  { name: "landscape-812x375", width: 812, height: 375 },
+  { name: "desktop-1440x900", width: 1440, height: 900 }
+];
+const railReachabilityReadbacks = [];
+for (const viewport of railReachabilityViewports) {
+  const railPage = await browser.newPage({ viewport: { width: viewport.width, height: viewport.height } });
+  try {
+    await railPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-visual-instances.html?theme=light&locale=en`);
+    await railPage.waitForSelector("[data-storybook-visual-instance]", { state: "attached" });
+    await expandAllStoriesForContentRead(railPage);
+    const readback = await railPage.evaluate(async () => {
+      // The visual-instance attribute and the shell class sit on the SAME
+      // element, so a descendant selector finds nothing. Named, not first:
+      // the first shell on this page is the two-item frontend-shell-slice
+      // oracle, whose rail can never be taller than a window — a check that
+      // measured it would be measuring something that cannot fail.
+      const shell = document.querySelector('[data-storybook-visual-instance="aos-owner-quality-product-shell"].tcrn-product-shell');
+      const rail = shell?.querySelector(".tcrn-product-shell__sidebar");
+      const items = rail ? [...rail.querySelectorAll(".tcrn-nav-item")] : [];
+      if (!rail || items.length === 0) return { navItemCount: items.length, reachable: false, reason: "rail-or-items-missing" };
+      // The rail must actually be the production-scale one, or this check is
+      // green for the same reason it would be green on an empty page.
+      if (items.length < 11) return { navItemCount: items.length, reachable: false, reason: "rail-below-production-ia-scale" };
+      const last = items[items.length - 1];
+      rail.scrollTop = rail.scrollHeight;
+      await new Promise((resolve) => setTimeout(resolve, 120));
+      const itemRect = last.getBoundingClientRect();
+      const railRect = rail.getBoundingClientRect();
+      return {
+        navItemCount: items.length,
+        railScrollable: rail.scrollHeight > rail.clientHeight + 1,
+        lastItemTop: Math.round(itemRect.top),
+        reachable: itemRect.top >= railRect.top - 1 && itemRect.bottom <= railRect.bottom + 1
+      };
+    });
+    railReachabilityReadbacks.push({ viewport: viewport.name, ok: readback.reachable, ...readback });
+  } finally {
+    await railPage.close();
+  }
+}
+const railReachabilityCheck = {
+  ok: railReachabilityReadbacks.every((item) => item.ok),
+  route: "proof-proof-visual-instances.html?theme=light&locale=en",
+  rule: "every navigation destination is reachable, including where the rail is taller than the window",
+  readbacks: railReachabilityReadbacks
+};
+
+const breakpointOverflowCheck = {
+  ok: breakpointOverflowReadbacks.every((item) => item.ok),
+  route: "components-work-management.html?theme=light&locale=zh-CN",
+  rule: "responsive-mobile forbids page-level horizontal overflow; asserted at the breakpoint seam, not only inside each posture",
+  readbacks: breakpointOverflowReadbacks
 };
 const mobileKnowledgeDocShellLayeringPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
 const mobileKnowledgeDocShellLayeringRoute = `${staticServer.origin}/apps/storybook/storybook-static/components-knowledge-management.html?theme=dark&locale=zh-CN#knowledge-management-components-spec`;
@@ -2448,7 +2575,7 @@ const axeSummary = {
   sections: axeSummaries
 };
 const storyCoverageManifest = {
-  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && mobileKnowledgeDocShellLayeringCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeLeakScan.zhCn.ok && localeMenuFocusReturnCheck.ok,
+  ok: storybookChecks.every((check) => check.visible) && staticSectionChecks.every((check) => check.ok) && hashRouteCheck.ok && hashStoryRouteCheck.ok && firstStoryHashShellParityCheck.ok && mobileHashAnchorOcclusionCheck.ok && breakpointOverflowCheck.ok && railReachabilityCheck.ok && mobileKnowledgeDocShellLayeringCheck.ok && anchorScrollCheck.ok && scrollSpyCheck.ok && localeRouteCheck.ok && localeLeakScan.zhCn.ok && localeMenuFocusReturnCheck.ok,
   requiredStories,
   sectionPages,
   staticContractSurface: staticSurfacePath,
@@ -2461,6 +2588,8 @@ const storyCoverageManifest = {
   hashStoryRouteCheck,
   firstStoryHashShellParityCheck,
   mobileHashAnchorOcclusionCheck,
+  breakpointOverflowCheck,
+  railReachabilityCheck,
   mobileKnowledgeDocShellLayeringCheck,
   anchorScrollCheck,
   scrollSpyCheck,
