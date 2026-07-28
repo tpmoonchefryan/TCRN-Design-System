@@ -1980,9 +1980,14 @@ const legacyContractStories: LegacyContractStory[] = [
             moduleName="Components"
             actions={<StatusBadge state={{ state: "local_only" }} />}
           />
+          {/* The ancestor crumb carries an href and the current page does not:
+              that pairing is the contract, and it is what makes this component
+              a way back rather than a label. A story showing every crumb inert
+              taught consumers the version that leaves the browser's own back
+              button as the only exit. */}
           <Breadcrumb
             items={[
-              { id: "home", label: "TCRN" },
+              { id: "home", label: "TCRN", href: "index.html" },
               { id: "components", label: "Components", selected: true }
             ]}
           />

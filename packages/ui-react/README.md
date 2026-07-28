@@ -73,3 +73,13 @@ semantic callbacks directly: `onCollapsedChange`, `onThemeChange`,
 `onSearchExpandedChange`, `onSearchDismiss`, and `onSearchResultActivate`.
 Wrapper-level event delegation around rendered shell controls is not a
 package-backed substitute for those APIs.
+
+A server-rendered product passes the request's `Cookie` header as
+`requestCookieHeader`. The controller writes each stored preference to both a
+cookie and the client store, and reads whichever store can answer where it runs,
+so the render that produces the first paint already carries the reader's theme,
+locale, and collapse state instead of correcting to them after hydration. A
+client-only product omits the prop and behaves as before. An explicit URL query
+still outranks a stored preference: only the product knows its own URL
+vocabulary, so it resolves that itself and passes the winner as `initialTheme` or
+`initialLocale`.

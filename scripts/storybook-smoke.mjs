@@ -1146,6 +1146,28 @@ if (brandIdentityStoryHtml.includes("Registered product logos")) {
 if (brandIdentityStoryHtml.includes("ProductLogo / tcrnProductLogoRegistry")) {
   missing.push("brand-identity:product-logo-registry-table-primary-surface");
 }
+
+// The breadcrumb story is where consumers read the way-back contract, so the shipped
+// page has to show the linked/inert pairing rather than describe it. Asserting the
+// rendered trail rather than the story source is the point: the source could keep the
+// href while the component stopped emitting the anchor, and the reader would be copying
+// a pattern that no longer works.
+const navigationPrimitivesStoryHtml = readStoryHtml(pages["Components"], "navigation-primitives-spec");
+const renderedTrail = /<nav class="tcrn-breadcrumb"[^>]*>([\s\S]*?)<\/nav>/.exec(navigationPrimitivesStoryHtml);
+if (!renderedTrail) {
+  missing.push("navigation-reversibility:breadcrumb-not-rendered");
+} else {
+  if (!/<a\s[^>]*href="/.test(renderedTrail[1])) {
+    missing.push("navigation-reversibility:no-linked-ancestor-crumb");
+  }
+  if (!/aria-current="page"/.test(renderedTrail[1])) {
+    missing.push("navigation-reversibility:no-inert-current-crumb");
+  }
+  // An all-linked trail would teach a self-link on the page the reader is already on.
+  if (/aria-current="page"[^>]*>\s*<a\s/.test(renderedTrail[1])) {
+    missing.push("navigation-reversibility:current-crumb-is-a-link");
+  }
+}
 for (const [sourceName, source] of [
   ["alpha-styles.ts", storybookAlphaStylesSource],
   ["storybook.css", storybookStaticCssSource]
@@ -1210,11 +1232,21 @@ if (shellControlVisualParityProof?.searchMotionTimeline?.transitionProperties?.j
 if (!String(shellControlVisualParityProof?.ownerQualitySideNavCollapsePolicy ?? "").includes("actionable")) {
   missing.push("contract.shellControlVisualParityProof.ownerQualitySideNavCollapsePolicy");
 }
-if (!contract.productLogoRegistry?.some?.((logo) => logo.productId === "aos" && logo.assetId === "tcrn-aos-two-line" && logo.lineTwo === "AI Operation System")) {
-  missing.push("contract.productLogoRegistry:aos");
-}
-if (!contract.productLogoRegistry?.some?.((logo) => logo.productId === "tms" && logo.assetId === "tcrn-tms-two-line" && logo.lineTwo === "Talent Management System")) {
-  missing.push("contract.productLogoRegistry:tms");
+// The published tagline is a five-locale object, not a string. Checking only the
+// English member is what let the contract describe a translated field as one
+// English value; a consumer reading it would render English on four routes.
+const expectedTaglines = {
+  aos: { assetId: "tcrn-aos-two-line", en: "AI Operation System", "zh-CN": "AI 运营系统" },
+  tms: { assetId: "tcrn-tms-two-line", en: "Talent Management System", "zh-CN": "人才管理系统" }
+};
+for (const [productId, expected] of Object.entries(expectedTaglines)) {
+  const logo = contract.productLogoRegistry?.find?.((entry) => entry.productId === productId);
+  const localesPresent = logo?.lineTwo && typeof logo.lineTwo === "object"
+    && ["en", "fr", "ja", "ko", "zh-CN"].every((locale) => typeof logo.lineTwo[locale] === "string");
+  if (!logo || logo.assetId !== expected.assetId || !localesPresent
+    || logo.lineTwo.en !== expected.en || logo.lineTwo["zh-CN"] !== expected["zh-CN"]) {
+    missing.push(`contract.productLogoRegistry:${productId}`);
+  }
 }
 const aosVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "aos-frontend-shell-slice");
 if (!aosVisualInstanceOracle) {

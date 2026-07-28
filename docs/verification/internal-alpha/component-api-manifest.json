@@ -283,13 +283,23 @@
       "props": [
         {
           "name": "items",
-          "type": "NavItem[]",
+          "type": "BreadcrumbItem[]",
           "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {},
       "slots": [],
-      "propsType": "ProductLauncherProps"
+      "propsType": "BreadcrumbProps"
     },
     "Button": {
       "name": "Button",
@@ -368,14 +378,12 @@
         {
           "name": "copiedLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Copied\""
+          "required": false
         },
         {
           "name": "copyingLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Copying\""
+          "required": false
         },
         {
           "name": "disabledReason",
@@ -385,14 +393,17 @@
         {
           "name": "failedLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Copy failed\""
+          "required": false
         },
         {
           "name": "idleLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Copy\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "onClick",
@@ -432,8 +443,7 @@
         {
           "name": "unsupportedLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Copy unavailable\""
+          "required": false
         },
         {
           "name": "value",
@@ -853,8 +863,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Evidence attachments\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -958,8 +972,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Gate pipeline\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -994,6 +1012,11 @@
         {
           "name": "label",
           "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
           "required": false
         }
       ],
@@ -1391,8 +1414,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Knowledge attachments\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -1485,8 +1512,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Knowledge comments\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -1517,13 +1548,17 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Knowledge labels\""
+          "required": false
         },
         {
           "name": "labels",
           "type": "string[]",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -1569,10 +1604,14 @@
           "default": "[]"
         },
         {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
           "name": "title",
           "type": "string",
-          "required": false,
-          "default": "\"Knowledge metadata\""
+          "required": false
         }
       ],
       "variants": {
@@ -1608,8 +1647,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Knowledge page tree\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -1640,8 +1683,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Knowledge search results\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "query",
@@ -1682,8 +1729,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Knowledge templates\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "templates",
@@ -1724,8 +1775,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"On this page\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -1756,8 +1811,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Knowledge version history\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "versions",
@@ -1831,6 +1890,11 @@
           ]
         },
         {
+          "name": "href",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "kind",
           "type": "MachineTokenKind",
           "required": false,
@@ -1891,6 +1955,11 @@
             "compact",
             "dense"
           ]
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false
         },
         {
           "name": "kind",
@@ -1961,10 +2030,14 @@
           "required": true
         },
         {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
           "name": "title",
           "type": "string",
-          "required": false,
-          "default": "\"Metadata\""
+          "required": false
         }
       ],
       "variants": {
@@ -1985,6 +2058,11 @@
           "name": "items",
           "type": "NavItem[]",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {},
@@ -2074,6 +2152,11 @@
             "shield-check",
             "sun"
           ]
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "selected",
@@ -2207,6 +2290,11 @@
           "name": "items",
           "type": "NavItem[]",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {},
@@ -2224,6 +2312,11 @@
         },
         {
           "name": "brandMarkSrc",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
           "type": "string",
           "required": false
         },
@@ -2272,6 +2365,11 @@
           "type": "string",
           "required": false,
           "default": "\"tcrn-brand-mark.svg\""
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false
         },
         {
           "name": "productId",
@@ -2360,8 +2458,7 @@
         {
           "name": "contentLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Product shell workspace\""
+          "required": false
         },
         {
           "name": "contentRole",
@@ -2381,8 +2478,7 @@
         {
           "name": "currentLocationLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Current location\""
+          "required": false
         },
         {
           "name": "currentLocationLabelKey",
@@ -2505,8 +2601,7 @@
         {
           "name": "skipLinkLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Skip to shell content\""
+          "required": false
         }
       ],
       "variants": {
@@ -2552,8 +2647,7 @@
         {
           "name": "emptyLabel",
           "type": "string",
-          "required": false,
-          "default": "\"No results\""
+          "required": false
         },
         {
           "name": "expanded",
@@ -2569,8 +2663,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Search product shell\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "onDismiss",
@@ -2595,8 +2693,7 @@
         {
           "name": "placeholder",
           "type": "string",
-          "required": false,
-          "default": "\"Search\""
+          "required": false
         },
         {
           "name": "query",
@@ -2613,8 +2710,7 @@
         {
           "name": "resultsLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Search results\""
+          "required": false
         },
         {
           "name": "shortcut",
@@ -2635,6 +2731,11 @@
           "name": "items",
           "type": "NavItem[]",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {},
@@ -2676,6 +2777,11 @@
         {
           "name": "href",
           "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
           "required": false
         },
         {
@@ -2739,14 +2845,17 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Saved Work views\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "resetLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Reset view\""
+          "required": false
         },
         {
           "name": "views",
@@ -2887,6 +2996,11 @@
           "name": "items",
           "type": "NavItem[]",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {},
@@ -2901,6 +3015,11 @@
           "name": "items",
           "type": "NavItem[]",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {},
@@ -2942,6 +3061,11 @@
         },
         {
           "name": "caption",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
           "type": "string",
           "required": false
         },
@@ -2988,8 +3112,7 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Language\""
+          "required": false
         },
         {
           "name": "locales",
@@ -3043,8 +3166,7 @@
         {
           "name": "darkLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Switch to dark mode\""
+          "required": false
         },
         {
           "name": "disabledReason",
@@ -3054,8 +3176,12 @@
         {
           "name": "lightLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Switch to light mode\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "onThemeChange",
@@ -3136,8 +3262,7 @@
         {
           "name": "collapsedLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Expand side navigation\""
+          "required": false
         },
         {
           "name": "controls",
@@ -3152,8 +3277,12 @@
         {
           "name": "expandedLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Collapse side navigation\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "onCollapsedChange",
@@ -3464,8 +3593,7 @@
         {
           "name": "allFilterLabel",
           "type": "string",
-          "required": false,
-          "default": "\"All\""
+          "required": false
         },
         {
           "name": "collapseLabel",
@@ -3498,6 +3626,11 @@
           "required": true
         },
         {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
           "name": "matchCountFormat",
           "type": "string",
           "required": false,
@@ -3525,8 +3658,12 @@
         {
           "name": "alt",
           "type": "string",
-          "required": false,
-          "default": "\"TCRN brand mark\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "src",
@@ -3661,8 +3798,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Work activity\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -3708,6 +3849,11 @@
           "required": false
         },
         {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
           "name": "rows",
           "type": "WorkItemRowProps[]",
           "required": true
@@ -3748,13 +3894,17 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Work board\""
+          "required": false
         },
         {
           "name": "lanes",
           "type": "WorkBoardLane[]",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -3791,6 +3941,11 @@
           "name": "lanes",
           "type": "WorkBoardLane[]",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "toolbar",
@@ -3837,6 +3992,11 @@
             "compact",
             "dense"
           ]
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "main",
@@ -3930,8 +4090,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Work hierarchy\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "nodes",
@@ -3950,8 +4114,7 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Work index\""
+          "required": false
         },
         {
           "name": "labels",
@@ -3991,8 +4154,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Add work item\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {},
@@ -4024,6 +4191,11 @@
           "name": "hierarchy",
           "type": "KeyValueItem[]",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "relationships",
@@ -4078,6 +4250,11 @@
           "name": "id",
           "type": "string",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "owner",
@@ -4151,8 +4328,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Work list\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "rows",
@@ -4182,8 +4363,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Work Management views\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {},
@@ -4271,8 +4456,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Work quick filters\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -4309,14 +4498,18 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Work split view\""
+          "required": false
         },
         {
           "name": "list",
           "type": "ReactNode",
           "required": true,
           "slot": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         }
       ],
       "variants": {
@@ -4339,8 +4532,12 @@
         {
           "name": "label",
           "type": "string",
-          "required": false,
-          "default": "\"Work views\""
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "tabs",

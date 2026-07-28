@@ -150,9 +150,6 @@ export const localeInvariantLedger = {
     "navigation-focused-shells-spec": [
       "Design System",
     ],
-    "navigation-product-shell-spec": [
-      "AI Operation System",
-    ],
     "navigation-shell-spec": [
       "Design System",
     ],

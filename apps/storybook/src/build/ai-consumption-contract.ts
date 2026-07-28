@@ -5,6 +5,7 @@ import {
   storybookTopLevelSections
 } from "../contract-stories/governance.js";
 import type { ContractStoryGroup } from "../contract-stories/types.js";
+import { tcrnProductLogoRegistry, type TcrnProductLogoId } from "@tcrn/ui-react";
 import { groupFileName, groupSlug } from "./navigation.js";
 import {
   consumerVisualStyleContract,
@@ -99,6 +100,32 @@ const coveredStorybookSections = storybookTopLevelSections.map((section) => ({
   ],
   authority: coveredSectionAuthorityBySection[section]
 }));
+
+// --- The published product lockups, derived from the package registry ---
+// These fields were hand-copied here, which is how the contract came to publish
+// `lineTwo: "AI Operation System"` as if the tagline were one string. It is five —
+// a consumer reading this contract needs to know the tagline is translated, and
+// which five values it can render. Deriving it means the next tagline change cannot
+// leave the readback describing the previous one.
+const productLogoIds: readonly TcrnProductLogoId[] = ["design-system", "aos", "tms"];
+const publishedProductLogoRegistry = productLogoIds.map((productId) => {
+  const asset = tcrnProductLogoRegistry[productId];
+  return {
+    productId,
+    assetId: asset.assetId,
+    lineOne: asset.lineOne,
+    lineOneBase: asset.lineOneBase,
+    lineOneSuffix: asset.lineOneSuffix,
+    suffixClassName: asset.suffixClassName,
+    // The wordmark is a name and stays Latin; the tagline is copy and carries all
+    // five locales. A consumer that renders `lineTwo` must pick by reader locale.
+    lineTwo: { ...asset.lineTwo },
+    stackSuffix: asset.stackSuffix,
+    alt: asset.alt,
+    packageExport: "ProductLogo",
+    taglineLocaleSelector: "tcrnProductTagline(productId, locale)"
+  };
+});
 
 export const aiConsumptionContract = {
   contractVersion: "ai_consumption_contract_v1",
@@ -809,6 +836,8 @@ export const aiConsumptionContract = {
     "use_product_shell_semantic_control_api",
     "prove_locale_popup_dismissal_and_focus_return",
     "prove_side_navigation_collapse_state",
+    "offer_an_in_product_way_back_from_drilled_down_routes",
+    "transport_locale_and_theme_in_a_server_readable_store",
     "use_work_management_patterns_for_static_work_surfaces",
     "use_knowledge_management_patterns_for_static_knowledge_surfaces",
     "block_unregistered_modules_from_primary_navigation",
@@ -829,6 +858,8 @@ export const aiConsumptionContract = {
     "storybook_doc_shell_visual_oracle_receipt",
     "locale_popup_dismissal_receipt",
     "side_navigation_collapse_receipt",
+    "navigation_reversibility_receipt",
+    "server_rendered_preference_receipt",
     "work_management_static_pattern_receipt",
     "knowledge_management_static_pattern_receipt",
     "registered_navigation_receipt",
@@ -839,6 +870,30 @@ export const aiConsumptionContract = {
     "product_adoption_route_receipt"
   ],
   supportedThemeModes: ["light", "dark"],
+  // A consumer reported every page flashing English light-mode before settling
+  // into their chosen locale and theme. The contract required the controls, the
+  // five locales, and both theme modes, and said nothing about when the choice
+  // has to be known — so a product could satisfy every clause and still render
+  // its first paint in the default, because the preference lived in
+  // localStorage, which the server cannot read.
+  //
+  // The rule is about arrival time, not storage. A preference the server cannot
+  // see is a preference the first paint cannot honour, and no amount of
+  // client-side correction removes the flash; it only shortens it.
+  preferenceTransport: {
+    disposition: "server_readable_transport_required_for_server_rendered_products",
+    governedPreferences: ["locale", "theme", "sideNavigationCollapsed"],
+    precedence: ["explicit_url_query", "server_readable_store", "product_default"],
+    precedenceRule:
+      "An explicit query parameter outranks a stored preference so a shared link lands on what the sender saw; the stored preference outranks the product default so a returning reader does not have to re-choose. A product that reads only one of the two cannot serve both cases.",
+    serverReadableStores: ["cookie", "request_header", "server_side_session"],
+    clientOnlyStores: ["localStorage", "sessionStorage", "indexeddb"],
+    clientOnlyStoreRule:
+      "A client-only store may cache a preference but must not be its only home in a server-rendered product: the server cannot read it, so the first paint uses the default and corrects itself after hydration. That correction is visible, and it is visible on every navigation, not only the first.",
+    requiredProof:
+      "Fetch a route with the preference set in the server-readable store and no query parameter, and assert the preference is present in the first response body — not merely in the DOM after hydration. A proof that inspects the settled page cannot distinguish a correct first paint from a corrected one.",
+    productAcceptanceClaim: false
+  },
   forbiddenBrandAssets: [
     "tcrn-aos-wordmark-geometric-dark.png",
     "tcrn-aos-wordmark-geometric-dark-preview.png",
@@ -848,50 +903,13 @@ export const aiConsumptionContract = {
     "aos-favicon.png",
     "favicon.ico"
   ],
-  productLogoRegistry: [
-    {
-      productId: "design-system",
-      assetId: "tcrn-design-system-two-line",
-      lineOne: "TCRN Design System",
-      lineOneBase: "TCRN",
-      lineOneSuffix: "Design System",
-      suffixClassName: "tcrn-brand-wordmark__suffix--design-system",
-      lineTwo: "Component Library",
-      stackSuffix: true,
-      alt: "TCRN Design System",
-      packageExport: "ProductLogo"
-    },
-    {
-      productId: "aos",
-      assetId: "tcrn-aos-two-line",
-      lineOne: "TCRN AOS",
-      lineOneBase: "TCRN",
-      lineOneSuffix: "AOS",
-      suffixClassName: "tcrn-brand-wordmark__suffix--aos",
-      lineTwo: "AI Operation System",
-      stackSuffix: false,
-      alt: "TCRN AOS AI Operation System",
-      packageExport: "ProductLogo"
-    },
-    {
-      productId: "tms",
-      assetId: "tcrn-tms-two-line",
-      lineOne: "TCRN TMS",
-      lineOneBase: "TCRN",
-      lineOneSuffix: "TMS",
-      suffixClassName: "tcrn-brand-wordmark__suffix--tms",
-      lineTwo: "Talent Management System",
-      stackSuffix: false,
-      alt: "TCRN TMS Talent Management System",
-      packageExport: "ProductLogo"
-    }
-  ],
+  productLogoRegistry: publishedProductLogoRegistry,
   brandSurfaceDisposition:
     "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity and must preserve the product-specific suffix color hierarchy used by package ProductLockup. TCRN stays regular weight as the mother-brand base; product suffixes carry the accent weight/color, and long suffixes such as Design System must stack under TCRN instead of running inline. ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Work Management surfaces including RelationshipChip, MachineToken, MachineTokenCell, WorkManagementSubnav, WorkPageHeader, WorkViewTabs, WorkQuickFilters, WorkItemRow, WorkList, WorkSplitView, WorkBacklogGroup, WorkInlineCreateStatic, WorkBoard, WorkBoardView, WorkDetailLayout, MetadataRail, WorkFieldPanel, WorkActivityFeed, WorkHierarchy, GatePipeline, GatePipelineCompact, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar, plus static Knowledge Management surfaces including KnowledgePageTree, KnowledgeDocumentCanvas, KnowledgeTocRail, KnowledgeInlineCommentList, KnowledgeMetadataRail, KnowledgeAttachmentList, KnowledgeLabelSet, KnowledgeVersionHistory, KnowledgeTemplateGallery, and KnowledgeSearchResults, instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate.",
+    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Work Management surfaces including RelationshipChip, MachineToken, MachineTokenCell, WorkManagementSubnav, WorkPageHeader, WorkViewTabs, WorkQuickFilters, WorkItemRow, WorkList, WorkSplitView, WorkBacklogGroup, WorkInlineCreateStatic, WorkBoard, WorkBoardView, WorkDetailLayout, MetadataRail, WorkFieldPanel, WorkActivityFeed, WorkHierarchy, GatePipeline, GatePipelineCompact, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar, plus static Knowledge Management surfaces including KnowledgePageTree, KnowledgeDocumentCanvas, KnowledgeTocRail, KnowledgeInlineCommentList, KnowledgeMetadataRail, KnowledgeAttachmentList, KnowledgeLabelSet, KnowledgeVersionHistory, KnowledgeTemplateGallery, and KnowledgeSearchResults, instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate. A server-rendered product passes the request's Cookie header to useProductShellController as requestCookieHeader so the shell's stored preferences are readable during the render that produces the first paint; the controller writes each preference to both a cookie and the client store, so a product must not hand-roll its own preference parsing or persistence to work around a client-only store.",
   workManagementPatternDisposition:
     "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation, compact route context, local view tabs, quick filters, dense Work item rows/lists, split detail, backlog groups, static create affordances, compact board view, metadata rails, field panels, activity feed, relationship vocabulary, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
   knowledgeManagementPatternDisposition:
@@ -925,6 +943,8 @@ export const aiConsumptionContract = {
       "Product shells must use registered package-backed ProductLogo assets with product-specific suffix color hierarchy or route logo admission before product use; generic icons, free-form suffix/caption identity, text-only substitutes, and deprecated AOS wordmark images are not accepted brand marks.",
     registeredNavigation:
       "Product shells must not surface unregistered or planned modules as primary navigation, registered module cards, or active product IA before an owning route admits them.",
+    navigationReversibility:
+      "A route a reader can only arrive at by drilling down must offer an in-product way back to its parent. The browser's back button does not satisfy this: it is not the product's, it does not survive a deep link or a refresh, and a reader who arrived by a shared URL has no history to go back through. The accepted affordance is a Breadcrumb whose ancestor crumbs carry href and whose current crumb does not — an all-inert trail is a location label, not a way back, and it is what a consumer shipped when the component offered no href at all. A primary navigation entry pointing at the parent list does not count: it discards the scope the reader arrived with, so it starts them over rather than taking them back. Proof must assert the anchor inside the trail on a route addressed by record identity, not the presence of the trail element.",
     primitiveConsumption:
       "Product frontends must consume registered package-backed primitives from @tcrn/ui-react, including ProductShell/useProductShellController for side-nav shell effects and semantic control callbacks, and ProductShellSearch only when a real product topbar/global search capability is present. Products must not create reusable local clones for shell, navigation, search, theme, locale, status, readback, table, or disclosure behaviors without a DS admission route.",
     shellEffectBoundary:

@@ -633,7 +633,16 @@ export const storybookContentText: Record<string, Record<TcrnLocale, string>> = 
   "Component status": { "zh-CN": "组件状态", en: "Component status", ja: "コンポーネント状態", ko: "컴포넌트 상태", fr: "Statut du composant" },
   "Component library available": { "zh-CN": "已入组件库", en: "Component library available", ja: "コンポーネントライブラリで利用可能", ko: "컴포넌트 라이브러리 사용 가능", fr: "Disponible dans la bibliothèque de composants" },
   "Component library": { "zh-CN": "组件库", en: "Component library", ja: "コンポーネントライブラリ", ko: "컴포넌트 라이브러리", fr: "Bibliothèque de composants" },
+  // The three registered product taglines. `Component Library` was registered here
+  // and translated on every route; its two siblings were not, and sat in the
+  // ledger's translation-debt allowlist instead — which is why the brand block of
+  // every rendered AOS and TMS shell stayed English while the page around it
+  // translated. The package now carries all five locales per tagline
+  // (tcrnProductTagline); these entries are what lets the docs app's exact-string
+  // runtime swap reach the copy it baked in at the default locale.
   "Component Library": { "zh-CN": "组件库", en: "Component Library", ja: "コンポーネントライブラリ", ko: "컴포넌트 라이브러리", fr: "Bibliothèque de composants" },
+  "AI Operation System": { "zh-CN": "AI 运营系统", en: "AI Operation System", ja: "AI オペレーションシステム", ko: "AI 운영 시스템", fr: "Système d'exploitation IA" },
+  "Talent Management System": { "zh-CN": "人才管理系统", en: "Talent Management System", ja: "タレントマネジメントシステム", ko: "인재 관리 시스템", fr: "Système de gestion des talents" },
   "Component library available; not brand marks": { "zh-CN": "已入组件库；不作为品牌标识", en: "Component library available; not brand marks", ja: "コンポーネントライブラリで利用可能。ブランドマークではありません", ko: "컴포넌트 라이브러리 사용 가능; 브랜드 마크 아님", fr: "Disponible dans la bibliothèque ; pas des marques" },
   "Component library available; full shells remain prototypes": { "zh-CN": "已入组件库；完整壳层仍为原型", en: "Component library available; full shells remain prototypes", ja: "コンポーネントライブラリで利用可能。完全なシェルはまだプロトタイプです", ko: "컴포넌트 라이브러리 사용 가능; 전체 셸은 아직 프로토타입", fr: "Disponible dans la bibliothèque ; les shells complets restent des prototypes" },
   "Component library available; no tab-containment claim": { "zh-CN": "已入组件库；不声明 Tab 循环包含", en: "Component library available; no tab-containment claim", ja: "コンポーネントライブラリで利用可能。Tab 封じ込めは主張しません", ko: "컴포넌트 라이브러리 사용 가능; Tab 포함 주장 없음", fr: "Disponible dans la bibliothèque ; aucune revendication de confinement Tab" },

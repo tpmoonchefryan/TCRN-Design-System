@@ -342,6 +342,25 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       option.setAttribute("aria-current", isSelected ? "true" : "false");
     }
   };
+  const updateProductLogoAccessibleNames = () => {
+    // ProductLogo composes its accessible name as wordmark + tagline. A composed
+    // string can never be a dictionary key, so the exact-string swap above cannot
+    // touch it: the visible brand read 组件库 while a screen reader still heard
+    // "Component Library". Recompose it from the parts already rendered on the
+    // page — after translateContentTree, the tagline text node is in the reader's
+    // language, and a visual-instance subtree it deliberately skipped is still
+    // consistent with itself.
+    for (const logo of document.querySelectorAll("[data-registered-product-logo][data-product-id]")) {
+      const wordmark = logo.querySelector(".tcrn-product-logo__line-one");
+      const tagline = logo.querySelector(".tcrn-product-logo__line-two");
+      const wordmarkText = (wordmark?.getAttribute("aria-label") ?? wordmark?.textContent ?? "").trim();
+      const taglineText = (tagline?.textContent ?? "").trim();
+      if (!wordmarkText || !taglineText) {
+        continue;
+      }
+      logo.setAttribute("aria-label", wordmarkText + " " + taglineText);
+    }
+  };
   const updateThemeButtonLabels = (locale) => {
     for (const option of document.querySelectorAll("[data-storybook-theme-option][data-theme-label-key]")) {
       const label = textFor(locale, option.getAttribute("data-theme-label-key"));
@@ -367,6 +386,8 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       node.setAttribute("title", textFor(resolvedLocale, node.getAttribute("data-i18n-title")));
     }
     translateContentTree(resolvedLocale);
+    // Must follow translateContentTree: it reads the tagline the swap just wrote.
+    updateProductLogoAccessibleNames();
     applyClientShortcuts();
     for (const toggle of document.querySelectorAll("[data-doc-sidebar-toggle]")) {
       toggle.setAttribute("data-expanded-label", textFor(resolvedLocale, "shell.collapseNavigationLabel"));
