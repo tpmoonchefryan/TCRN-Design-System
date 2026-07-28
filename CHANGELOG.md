@@ -1,6 +1,163 @@
 # Changelog
 
-## Unreleased
+## 3.0.0
+
+### The mobile shell has a disposition (TCRN-AOS-STORY-108, TCRN-AOS-INC-025)
+
+Breaking: below the mobile breakpoint the side navigation is closed by default and
+opens from a toggle. A consumer upgrading without changing a line will see a
+different phone layout, and visual baselines taken at mobile widths will move.
+
+On a 375px phone the consuming work queue put 1,469px of chrome above its first work
+item, 684px of it navigation, and no control anywhere could shrink it. That was a
+rule outliving its premise rather than an oversight. The mobile block hides the
+width-collapse control and is right to — narrowing a rail to 92px inside a full-width
+stacked layout is a control that does nothing. What that never said, and was read as
+saying for four weeks, is that the navigation cannot be put away at all. Two different
+controls; only the first had ever been ruled on. The rule was written when this
+system's shell fixture had two destinations, and the consumer reached eleven.
+
+So the fixture went first, to four groups and eleven destinations. **A shell oracle at
+a scale no consumer uses cannot fail the way a consumer fails**, and that is the whole
+reason 684px of navigation shipped above every page with a green baseline.
+
+`MobileNavToggle` uses `display: none` rather than a transform, so the links leave the
+tab order and not merely the screen — measured 0 of 11 reachable when closed, 11 of 11
+when open and on desktop. Closed is the CSS default, so a server render emits the
+closed nav with no script and no correction afterwards. The state is transient and
+deliberately **not** `collapsed`: that one is persisted and serialized into every
+product link, so a phone tap must not be able to rewrite a desktop preference. A
+consumer that wants the rail open on a phone passes `mobileNavExpanded` — the prop is
+controlled, so the toggle then reflects whatever the consumer holds.
+
+Two further mobile layouts changed with it: the utility row puts three controls on one
+line instead of a row each (130px to 51px), and the tab and quick-filter families each
+become one horizontally scrolling row instead of wrapping to four and three. First work
+item: 1,469px to 520px at 375x760, inside the fold for the first time. Desktop and
+tablet are unmoved.
+
+### Work rows stack by their own container (TCRN-AOS-INC-028)
+
+Breaking at one band: a shell with a 280px rail viewed between roughly 760px and 780px
+now stacks its work rows into a single column where it previously laid out three and
+overflowed the page.
+
+The row's three column floors plus gaps need 464px. A 761px viewport minus a 280px rail
+leaves the row 441px, and the page overflowed by exactly that difference — 16px at 761,
+7px at 770, gone by 780. The mobile block already stacked the row, but keyed to a
+viewport number that cannot see the rail, so it could not answer the question for any
+consumer whose rail is a different width. A container query answers it for all of them.
+
+### Four capabilities cross into this package (TCRN-AOS-STORY-107)
+
+A governed deliberation settled where the line between this system and a consumer runs.
+Four capabilities sat on the consumer's side of it only because the props did not exist
+here.
+
+`WorkBoardCard` takes an `href`, rendered as a stretched link over the card rather than
+an anchor around it, because a card can also carry relationship chips and an anchor
+inside an anchor is not a document. Everything the card's API lets a consumer fill sits
+above the stretched surface. Its `owner` became optional: a governed chain record has an
+acting writer per event, not a standing owner per item, so requiring one forced the first
+consumer to invent a value.
+
+`SearchInput` takes `fill`. `WorkSplitView` decides its own breakpoint with a container
+query and takes `detailPopulated` for the one bit only a consumer knows — it had been
+reached into through three of its class names, keyed to a viewport width that was only
+correct for one shell. Its mounting requirement is stated on the component: give it a
+parent with a definite inline size, because a size container contributes no intrinsic
+width and a shrink-to-fit parent has nothing to measure.
+
+Quick-filter chips take their natural width on mobile; a fixed 160px basis had let a
+no-wrap label needing 213px shrink below its own text.
+
+### A preference reaches the server (TCRN-AOS-STORY-105, TCRN-AOS-INC-017)
+
+The flash on every navigation had a single cause: the preference lived in `localStorage`,
+which the server cannot read, so server-rendered HTML always carried the defaults and the
+client corrected them after hydration. This repository is where that pattern came from —
+`useProductShellController` read `window.localStorage` in its state initializers, and the
+AI contract declined to rule on preference transport. **A reference implementation plus a
+declined rule is how a consumer inherits a defect without anyone deciding it should.**
+
+The controller now accepts the request's parsed preferences through `requestPreferences`,
+and a preference change writes both stores. Neither store contains the other —
+`localStorage` alone leaves the server blind, a cookie alone is lost to a privacy setting
+that clears cookies but keeps site storage — so the read states which wins. The shell
+takes parsed values, not the request's whole `Cookie` header.
+
+Locale was the one preference read through raw. `readStoredTheme` narrows to dark/light
+and `readStoredBoolean` to a boolean, but locale went through `readStoredString` and the
+stored value reached state unchanged — and that value becomes `<html lang>` and the
+dictionary index, from a cookie anyone can write. It now resolves where the store is read
+and at the setter too, so no consumer has to remember to.
+
+### The rail is reachable and the seam is measured (TCRN-AOS-INC-026, TCRN-AOS-INC-029)
+
+The sidebar is one viewport tall and sticky, and had nothing to scroll. With navigation
+taller than the window its items painted outside their own box and could not be reached
+at any page scroll position — the page scrolled, the sticky rail did not. It shows on a
+rotated phone, because 812x375 is above the mobile breakpoint and takes the desktop path:
+the last three destinations were simply unavailable. The rail gets its own scroll, and
+`100dvh` stops `vh` from ignoring the browser chrome that comes and goes on a phone.
+
+Both of those were invisible for the same reason, and that is the third change. The
+screenshot matrix asserts no page overflow at 1440, 1024 and 390 — three widths
+comfortably inside a posture, none at the seam between two. The accessibility pass ran at
+1440 only, which is the one viewport where the mobile code does not run. Two checks now
+cover what neither did: one reads four widths across the breakpoint and takes no
+screenshots, and one scrolls the rail and asks whether the last item is inside it, at a
+landscape viewport, bound to the production-scale oracle and refusing to pass below eleven
+destinations. The accessibility pass runs at both desktop and mobile, in both themes, and
+every summary records which viewport it came from.
+
+**It found a defect on its first run, from the commit immediately before it.** The
+scrolling tab and filter rows introduced above are scroll containers whose items are
+static text, so a keyboard user could not scroll them. Both take `tabIndex={0}`, the
+treatment `TableShell` already carried. One commit between opening a gate and it catching
+something is the plainest measure of what its absence had been costing.
+
+### Selection's own gate could not see two of its copies (TCRN-DS-INC-005)
+
+The selection-grammar proof was added so a fifth copy of the old grammar could not pass
+review. Two copies survived it and the gate reported `ok` on both: its selector test was
+attribute-selectors-only, and neither survivor was an attribute — a pressed filter chip
+(`aria-pressed="true"`) and a modifier class (`--active`). Both still painted brand.
+Measured before and after, the gate returned `findings: []` either way, so the thing built
+to stop copy five was blind to copy five. Widened to `aria-pressed`, `aria-selected`, and
+`--active`/`--selected`; 21 selection rules scanned becomes 24. `[data-active]` stays
+deliberately excluded — on the doc theme-transition wash it means "this crossfade is
+running", not "this option is chosen".
+
+`demo-styles-sync --check` was a second false green: it compares against the built
+`dist/story-demo-styles.js` rather than the edited source, so it reported in sync while
+the docs layer still painted brand. It is a real gate carrying an undeclared
+prerequisite.
+
+### Two documents that could lie without anything noticing (TCRN-DS-INC-006)
+
+`tcrnComponentCss` is a template literal, so a backtick inside a CSS comment ends it, and
+the compiler then reports a syntax error on the comment line rather than on the stylesheet
+that just lost most of itself. It happened four times in this window.
+`scripts/css-template-integrity-proof.mjs` walks the literal, checks brace depth and
+unescaped backticks, and names the truncation directly. Mutation-tested: one injected
+backtick takes the stylesheet from 85,975 bytes to 66,766, and the gate says so.
+
+This changelog was the other one. Two releases were cut without moving the `## Unreleased`
+heading, so the section a reader is told is unreleased held everything that went out under
+2.0.0 and 2.1.0, and neither version had a section of its own. This file was not
+unread — the privacy scan walks the whole tree and reads every byte of it — but nothing
+compared what it says about releases against the releases themselves, and **a document
+can be scanned thoroughly and still lie**. The sections below 3.0.0 are that history,
+put back where git says it belongs.
+`scripts/changelog-release-sections-proof.mjs` now asks git rather than the document: no
+entry may sit under Unreleased if a tag already contains the commit that added it, every
+tag from 2.0.0 onward must have a section, and work ahead of the newest tag must be written
+down somewhere. Its floor is 2.0.0 and is stated in the script: v1.0.1 through v1.0.5 were
+cut before this repository wrote per-version sections at all, and inventing five changelogs
+from memory would be a worse defect than the one being fixed.
+
+## 2.1.0
 
 ### Selection is one grammar (TCRN-DS-INIT-013)
 
@@ -75,6 +232,8 @@ removed, two live ones moved to the colour-neutral variants already translated.
 The brand mark's description keeps its v1 colour names on purpose: the mark is a
 frozen brand asset, changed through brand admission rather than a design-system
 revision.
+
+## 2.0.0
 
 ### Visual language v2 — direction A+B (TCRN-DS-INIT-001)
 

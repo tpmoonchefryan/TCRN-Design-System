@@ -38,6 +38,23 @@ const packageNames = [
   "@tcrn/ui-react"
 ];
 
+/**
+ * A frozen observation, not a description of the repository now.
+ *
+ * Every field here carries a `readbackSource` naming how it was observed, and
+ * `targetCommitish` pins the exact commit — this is the record of what was true when
+ * the 1.0.0 release baseline was established, which is why `releaseBaselineVersion`
+ * says baseline. It must NOT be re-pointed at each new release: moving it would
+ * falsify the record rather than update it, and the readback that produced it cannot
+ * be re-run retroactively.
+ *
+ * What it must do instead is read as frozen. It did not: the markdown rendered
+ * `- GitHub Release: v1.0.0` with nothing marking it as a past observation, so after
+ * two further releases the receipt appeared to state, in the present tense, that this
+ * repository's release is v1.0.0 (TCRN-DS-INC-007). The labels below now say which
+ * moment they describe. Current release state belongs in CHANGELOG.md and the GitHub
+ * Releases list, which are the surfaces that move.
+ */
 const publicReleaseState = {
   repository: {
     url: "https://github.com/tpmoonchefryan/TCRN-Design-System",
@@ -159,16 +176,16 @@ Status: ${ok ? "passed" : "failed"}
 ## Readback
 
 - Workspace root: \`TCRN-Design-System\`
-- Release baseline version: \`1.0.0\`
+- Release baseline version (frozen at the 1.0.0 baseline observation; current versions live in CHANGELOG.md): \`1.0.0\`
 - License: \`Apache-2.0\`
 - Hosted docs config: \`vercel_static_contract_docs\`
 - Public repository: \`${publicReleaseState.repository.url}\`
 - Public repository visibility: \`${publicReleaseState.repository.visibility}\`
 - Clean-history repository recreated: ${publicReleaseState.repository.cleanHistoryRecreated}
 - Legacy public repository deleted before recreate: ${publicReleaseState.repository.legacyPublicRepositoryDeletedBeforeRecreate}
-- GitHub Release: \`${publicReleaseState.githubRelease.tagName}\`
-- GitHub Release URL: \`${publicReleaseState.githubRelease.url}\`
-- GitHub Release target: \`${publicReleaseState.githubRelease.targetCommitish}\`
+- GitHub Release observed at baseline: \`${publicReleaseState.githubRelease.tagName}\`
+- GitHub Release URL observed at baseline: \`${publicReleaseState.githubRelease.url}\`
+- GitHub Release target observed at baseline: \`${publicReleaseState.githubRelease.targetCommitish}\`
 - GitHub Release draft/prerelease: ${publicReleaseState.githubRelease.isDraft}/${publicReleaseState.githubRelease.isPrerelease}
 - Vercel deployment observed: ${publicReleaseState.hostedDocsDeployment.vercelDeploymentObserved}
 - Vercel latest known state: \`${publicReleaseState.hostedDocsDeployment.latestKnownDeploymentState}\`

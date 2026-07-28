@@ -15,7 +15,7 @@
     "component-api:manifest": "node scripts/component-api-manifest.mjs",
     "internal-alpha:proof": "pnpm internal-alpha:contracts && pnpm internal-alpha:browser-proof && node scripts/internal-alpha-hardening-proof.mjs",
     "pack:smoke": "node scripts/pack-smoke.mjs",
-    "scaffold:proof": "node scripts/scaffold-proof.mjs",
+    "scaffold:proof": "node scripts/scaffold-proof.mjs && node scripts/changelog-release-sections-proof.mjs && node scripts/version-surface-proof.mjs",
     "public-output:scan": "node scripts/public-output-scan.mjs",
     "internal-vocab:scan": "node --test scripts/internal-vocabulary-scan.test.mjs && node scripts/internal-vocabulary-scan.mjs",
     "scan": "node scripts/no-private-input-scan.mjs",

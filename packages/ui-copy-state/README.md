@@ -4,7 +4,7 @@ Typed display-state presenters and no-overclaim helpers over normalized
 product-provided inputs. This package renders display language; it does not
 decide whether a product claim is true.
 
-Version `1.0.0` is prepared under Apache License 2.0 as part of the accepted
+Version `3.0.0` is prepared under Apache License 2.0 as part of the accepted
 TCRN Design System public package baseline.
 
 ## I18n contract
