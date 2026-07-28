@@ -169,6 +169,11 @@ function skipLinkHtml(): string {
 function docBrandHtml(): string {
   return renderToStaticMarkup(
     <a className="tcrn-doc-brand" href="index.html" data-doc-brand-link="true">
+      {/* No `locale` here on purpose: these pages are built once at the default
+          locale and translated in the browser by exact-string match, so the
+          tagline travels through the content dictionary like the rest of the doc
+          shell's copy. A build-time locale prop would be a no-op on four of five
+          routes. Product shells that render per locale pass it instead. */}
       <ShellBrandLockup
         productId="design-system"
         brandMarkSrc="tcrn-brand-mark.svg"

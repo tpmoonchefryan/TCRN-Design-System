@@ -7,7 +7,7 @@ import { Badge, EmptyState, EvidenceStrip, InlineAlert, Skeleton, StatusBadge, S
 import { Heading, Text } from "../Typography/index.js";
 import { Surface } from "../Layout/index.js";
 import { SearchInput } from "../Form/index.js";
-import { cx, requiredText } from "../../utils.js";
+import { cx, requiredText, resolveDocumentLocale } from "../../utils.js";
 
 export interface TableColumn {
   key: string;
@@ -144,11 +144,12 @@ function resolveWorkIndexLabels(locale: TcrnLocale | string | undefined, labels:
   return { ...workIndexLabels[resolvedLocale], ...labels };
 }
 
-export function WorkIndex({ rows, label = "Work index", locale, labels }: WorkIndexProps) {
+export function WorkIndex({ rows, label, locale, labels }: WorkIndexProps) {
   const copy = resolveWorkIndexLabels(locale, labels);
+  const resolvedLabel = label ?? patternLabels(locale).workIndex;
   return (
     <TableShell
-      label={label}
+      label={resolvedLabel}
       columns={[
         { key: "title", label: copy.title },
         { key: "state", label: copy.state },
@@ -193,6 +194,8 @@ export interface TableToolbarProps {
   matchCountFormat?: string;
   collapseLabel?: string;
   expandLabel?: string;
+  /** Which language the built-in "all" chip is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
 /* A dense table's tools: text search, optional key-based filter chips, a live match
@@ -209,11 +212,15 @@ export function TableToolbar({
   searchPlaceholder,
   filterLabel,
   filterOptions,
-  allFilterLabel = "All",
+  allFilterLabel,
   matchCountFormat = "{shown} / {total}",
   collapseLabel,
-  expandLabel
+  expandLabel,
+  locale
 }: TableToolbarProps) {
+  // Visible chip text sitting beside consumer-supplied filter labels, so an
+  // English default put one untranslated word in an otherwise translated row.
+  const resolvedAllFilterLabel = allFilterLabel ?? patternLabels(locale).allFilter;
   return (
     <div role="group" className="tcrn-table-toolbar" aria-label={label} data-table-toolbar="true" data-table-toolbar-target={controlsId}>
       <SearchInput
@@ -225,7 +232,7 @@ export function TableToolbar({
       {filterOptions && filterOptions.length > 0 ? (
         <FilterBar label={filterLabel ?? label}>
           <button type="button" className="tcrn-table-toolbar__chip" aria-pressed="true" data-table-toolbar-filter="">
-            {allFilterLabel}
+            {resolvedAllFilterLabel}
           </button>
           {filterOptions.map((option) => (
             <button key={option.id}
@@ -507,20 +514,112 @@ export const knowledgeManagementPatternRegistry: WorkManagementPatternRegistryIt
   }
 ];
 
-const relationshipLabels: Record<WorkRelationshipType, string> = {
-  blocks: "blocks",
-  blocked_by: "blocked by",
-  depends_on: "depends on",
-  relates_to: "relates to",
-  duplicates: "duplicates",
-  supersedes: "supersedes",
-  split_from: "split from",
-  caused_by: "caused by",
-  implements: "implements",
-  verifies: "verifies",
-  reviews: "reviews",
-  refreshes: "refreshes"
+/**
+ * Relationship verbs in every supported locale.
+ *
+ * These twelve were English-only literals, and a consumer reported them
+ * rendering untranslated on ja, ko, fr, and zh-CN routes. `RelationshipChip`
+ * had no locale parameter at all, so there was no way for a caller to get them
+ * right — the only thing a downstream product could do was stop using the
+ * component and hand-roll the chip, which is how a design system loses a
+ * consumer. A component that carries its own strings has to carry all of them.
+ *
+ * The verb is also the accessible name (`aria-label` reads "AOS-1 blocks
+ * AOS-2"), so leaving these English left screen-reader users with a sentence in
+ * a language the page does not claim.
+ */
+const relationshipLabels: Record<TcrnLocale, Record<WorkRelationshipType, string>> = {
+  "zh-CN": {
+    blocks: "阻塞",
+    blocked_by: "被阻塞于",
+    depends_on: "依赖",
+    relates_to: "关联",
+    duplicates: "重复于",
+    supersedes: "取代",
+    split_from: "拆分自",
+    caused_by: "起因于",
+    implements: "实现",
+    verifies: "验证",
+    reviews: "评审",
+    refreshes: "刷新"
+  },
+  en: {
+    blocks: "blocks",
+    blocked_by: "blocked by",
+    depends_on: "depends on",
+    relates_to: "relates to",
+    duplicates: "duplicates",
+    supersedes: "supersedes",
+    split_from: "split from",
+    caused_by: "caused by",
+    implements: "implements",
+    verifies: "verifies",
+    reviews: "reviews",
+    refreshes: "refreshes"
+  },
+  ja: {
+    blocks: "をブロック",
+    blocked_by: "にブロックされる",
+    depends_on: "に依存",
+    relates_to: "に関連",
+    duplicates: "と重複",
+    supersedes: "を置き換え",
+    split_from: "から分割",
+    caused_by: "が原因",
+    implements: "を実装",
+    verifies: "を検証",
+    reviews: "をレビュー",
+    refreshes: "を更新"
+  },
+  ko: {
+    blocks: "차단함",
+    blocked_by: "차단됨",
+    depends_on: "의존함",
+    relates_to: "관련됨",
+    duplicates: "중복됨",
+    supersedes: "대체함",
+    split_from: "분할됨",
+    caused_by: "원인",
+    implements: "구현함",
+    verifies: "검증함",
+    reviews: "검토함",
+    refreshes: "갱신함"
+  },
+  fr: {
+    blocks: "bloque",
+    blocked_by: "bloqué par",
+    depends_on: "dépend de",
+    relates_to: "lié à",
+    duplicates: "duplique",
+    supersedes: "remplace",
+    split_from: "issu de",
+    caused_by: "causé par",
+    implements: "implémente",
+    verifies: "vérifie",
+    reviews: "révise",
+    refreshes: "actualise"
+  }
 };
+
+/**
+ * A relationship verb in the reader's language, for callers that render one
+ * outside a chip.
+ *
+ * The table above already had all five locales; what it did not have was a way
+ * out of this module. A consumer listing relationships in a summary row — a
+ * `KeyValue` label, a table cell — had no route to the translated verb except
+ * to render a whole `RelationshipChip` where the layout wanted plain text, so it
+ * rendered `row.relation` and shipped `blocks` to four localized routes. Same
+ * shape as the badge defect: the package holds the locales, the API does not
+ * expose them, and the consumer's only reachable option is the wrong one.
+ *
+ * Exporting the accessor rather than the table keeps one copy of the strings and
+ * keeps `resolveDocumentLocale` on the boundary, so a caller passing a widened
+ * `string` from a URL query gets the same narrowing the components get.
+ */
+export function workRelationshipLabel(relation: WorkRelationshipType, locale?: TcrnLocale | string): string {
+  return relationshipLabels[resolveDocumentLocale(locale)][relation];
+}
 
 const relationshipTone: Record<WorkRelationshipType, "neutral" | "positive" | "warning" | "danger"> = {
   blocks: "warning",
@@ -543,10 +642,11 @@ export interface RelationshipChipProps {
   href?: string;
   source?: string;
   disabled?: boolean;
+  locale?: TcrnLocale | string;
 }
 
-export function RelationshipChip({ relation, target, href, source, disabled = false }: RelationshipChipProps) {
-  const label = relationshipLabels[relation];
+export function RelationshipChip({ relation, target, href, source, disabled = false, locale }: RelationshipChipProps) {
+  const label = workRelationshipLabel(relation, locale);
   const title = source ? `${source} ${label} ${target}` : `${label} ${target}`;
   const content = (
     <>
@@ -590,10 +690,27 @@ export interface MachineTokenProps {
   kind?: MachineTokenKind;
   copyable?: boolean;
   density?: WorkDensity;
+  /**
+   * Where this identifier lives, when the product knows.
+   *
+   * A machine token is almost always a reference to a record, and a reference
+   * the reader cannot follow makes them the router: a consumer reported seeing
+   * `minutes:4fdc3f1caf4adfb2374090f7` on screen with no way to reach the
+   * minutes, leaving copy-and-hunt as the only path. Copyability was offered as
+   * the affordance and it answers a different question — it helps you move the
+   * string somewhere else, not see what it names.
+   *
+   * Optional because not every token is addressable. Omitting it renders
+   * exactly what it rendered before, so a caller who has no route is not forced
+   * to invent one — the honest state for an identifier with no page is a
+   * non-link, not a link that 404s.
+   */
+  href?: string;
 }
 
-export function MachineToken({ token, label, kind = "generic", copyable = false, density = "comfortable" }: MachineTokenProps) {
+export function MachineToken({ token, label, kind = "generic", copyable = false, density = "comfortable", href }: MachineTokenProps) {
   const accessibleLabel = label ? `${label}: ${token}` : token;
+  const value = <code className="tcrn-machine-token__value">{token}</code>;
   return (
     <span
       className={cx("tcrn-machine-token", density === "compact" && "tcrn-machine-token--compact")}
@@ -604,7 +721,11 @@ export function MachineToken({ token, label, kind = "generic", copyable = false,
       aria-label={accessibleLabel}
     >
       {label ? <span className="tcrn-machine-token__label">{label}</span> : null}
-      <code className="tcrn-machine-token__value">{token}</code>
+      {href ? (
+        <a className="tcrn-machine-token__link" href={href} aria-label={accessibleLabel}>
+          {value}
+        </a>
+      ) : value}
       {copyable ? (
         <ClipboardCopyButton
           text={token}
@@ -639,11 +760,17 @@ export interface WorkManagementSubnavItem {
 export interface WorkManagementSubnavProps {
   label?: string;
   items: WorkManagementSubnavItem[];
+  /** Which language the built-in label is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function WorkManagementSubnav({ label = "Work Management views", items }: WorkManagementSubnavProps) {
+export function WorkManagementSubnav({ label, items, locale }: WorkManagementSubnavProps) {
+  // The label here is the nav's accessible name and nothing else, so an English
+  // default was invisible on screen and audible only to a screen-reader user on a
+  // translated page — the reader least able to work around it.
+  const resolvedLabel = label ?? patternLabels(locale).workManagementSubnav;
   return (
-    <nav className="tcrn-work-management-subnav" aria-label={label} data-work-management-pattern="subnav">
+    <nav className="tcrn-work-management-subnav" aria-label={resolvedLabel} data-work-management-pattern="subnav">
       {items.map((item) => {
         const content = (
           <>
@@ -679,20 +806,27 @@ export interface SavedViewToolbarProps {
   views: WorkManagementSubnavItem[];
   filters: SavedViewToolbarFilter[];
   resetLabel?: string;
+  /** Which language the built-in labels are said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function SavedViewToolbar({ label = "Saved Work views", views, filters, resetLabel = "Reset view" }: SavedViewToolbarProps) {
+export function SavedViewToolbar({ label, views, filters, resetLabel, locale }: SavedViewToolbarProps) {
+  const labels = patternLabels(locale);
+  const resolvedLabel = label ?? labels.savedViewToolbar;
+  // The two derived names are composed from whatever label the consumer passed, so
+  // they are built per locale rather than concatenated with an English word: a
+  // Chinese label with " tabs" welded on is neither language.
   return (
-    <section className="tcrn-saved-view-toolbar" aria-label={label} data-work-management-pattern="saved-view-toolbar">
-      <WorkManagementSubnav label={`${label} tabs`} items={views} />
-      <FilterBar label={`${label} filters`}>
+    <section className="tcrn-saved-view-toolbar" aria-label={resolvedLabel} data-work-management-pattern="saved-view-toolbar">
+      <WorkManagementSubnav label={labels.savedViewToolbarTabs(resolvedLabel)} items={views} locale={locale} />
+      <FilterBar label={labels.savedViewToolbarFilters(resolvedLabel)}>
         {filters.map((filter) => (
           <Badge key={filter.id} title={`${filter.label}: ${filter.value}`}>
             {filter.label}: {filter.value}
           </Badge>
         ))}
         <Button type="button" variant="quiet" size="sm" disabled disabledReason="Static Storybook fixture; product route owns saved view changes">
-          {resetLabel}
+          {resetLabel ?? labels.savedViewReset}
         </Button>
       </FilterBar>
     </section>
@@ -758,11 +892,13 @@ export type WorkViewTab = WorkManagementSubnavItem;
 export interface WorkViewTabsProps {
   label?: string;
   tabs: WorkViewTab[];
+  /** Which language the built-in label is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function WorkViewTabs({ label = "Work views", tabs }: WorkViewTabsProps) {
+export function WorkViewTabs({ label, tabs, locale }: WorkViewTabsProps) {
   return (
-    <nav className="tcrn-work-view-tabs" aria-label={label} data-work-management-pattern="work-view-tabs">
+    <nav className="tcrn-work-view-tabs" aria-label={label ?? patternLabels(locale).workViewTabs} data-work-management-pattern="work-view-tabs">
       {tabs.map((tab) => {
         const content = (
           <>
@@ -802,11 +938,13 @@ export interface WorkQuickFiltersProps {
   label?: string;
   filters: WorkQuickFilter[];
   density?: WorkDensity;
+  /** Which language the built-in label is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function WorkQuickFilters({ label = "Work quick filters", filters, density = "compact" }: WorkQuickFiltersProps) {
+export function WorkQuickFilters({ label, filters, density = "compact", locale }: WorkQuickFiltersProps) {
   return (
-    <section className={cx("tcrn-work-quick-filters", `tcrn-work-quick-filters--${density}`)} aria-label={label} data-work-management-pattern="work-quick-filters" data-density={density}>
+    <section className={cx("tcrn-work-quick-filters", `tcrn-work-quick-filters--${density}`)} aria-label={label ?? patternLabels(locale).workQuickFilters} data-work-management-pattern="work-quick-filters" data-density={density}>
       {filters.map((filter) => {
         const content = (
           <>
@@ -851,9 +989,10 @@ export interface WorkItemRowProps {
   fields?: WorkItemRowField[];
   relationships?: RelationshipChipProps[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-function WorkItemRowBody({ id, title, state, owner, rank, priority, summary, fields = [], relationships = [], density = "compact" }: WorkItemRowProps) {
+function WorkItemRowBody({ id, title, state, owner, rank, priority, summary, fields = [], relationships = [], density = "compact", locale }: WorkItemRowProps) {
   return (
     <>
       <div className="tcrn-work-item-row__id">
@@ -865,7 +1004,7 @@ function WorkItemRowBody({ id, title, state, owner, rank, priority, summary, fie
         {summary ? <Text>{summary}</Text> : null}
       </div>
       <div className="tcrn-work-item-row__meta">
-        <StatusBadge state={state} />
+        <StatusBadge state={state} locale={locale} />
         {priority ? <Badge>{priority}</Badge> : null}
         <Badge>{owner}</Badge>
         {fields.map((field) => (
@@ -876,9 +1015,11 @@ function WorkItemRowBody({ id, title, state, owner, rank, priority, summary, fie
         ))}
       </div>
       {relationships.length ? (
-        <div className="tcrn-work-item-row__relationships" aria-label={`${title} relationships`}>
+        // Composed per locale: the title is the consumer's own, so concatenating an
+        // English word onto it produces a group name in neither language.
+        <div className="tcrn-work-item-row__relationships" aria-label={patternLabels(locale).relationshipsOf(title)}>
           {relationships.map((relationship, index) => (
-            <RelationshipChip key={`${relationship.relation}-${relationship.target}-${index}`} {...relationship} source={id} />
+            <RelationshipChip key={`${relationship.relation}-${relationship.target}-${index}`} locale={locale} {...relationship} source={id} />
           ))}
         </div>
       ) : null}
@@ -907,13 +1048,26 @@ export interface WorkListProps {
   label?: string;
   rows: WorkItemRowProps[];
   density?: WorkDensity;
+  /**
+   * Locale for the copy these rows carry themselves — readiness labels and
+   * relationship verbs.
+   *
+   * Threaded through every composite that renders a `StatusBadge` or a
+   * `RelationshipChip` internally, because without it a consumer on a translated
+   * page had exactly one way to get a translated badge: pass `state.label`. That
+   * is the override that replaces the package's own five-locale table with a
+   * caller-supplied string — so the API made the wrong thing the only thing, and
+   * a consumer duly shipped `label: isZh ? "需要评审" : "Review required"` into
+   * five locales. Setting `locale` and omitting `label` is now the shorter path.
+   */
+  locale?: TcrnLocale | string;
 }
 
-export function WorkList({ label = "Work list", rows, density = "compact" }: WorkListProps) {
+export function WorkList({ label, rows, density = "compact", locale }: WorkListProps) {
   return (
-    <section className={cx("tcrn-work-list", `tcrn-work-list--${density}`)} aria-label={label} data-work-management-pattern="work-list" data-density={density}>
+    <section className={cx("tcrn-work-list", `tcrn-work-list--${density}`)} aria-label={label ?? patternLabels(locale).workList} data-work-management-pattern="work-list" data-density={density}>
       {rows.map((row) => (
-        <WorkItemRow key={row.id} {...row} density={row.density ?? density} />
+        <WorkItemRow key={row.id} locale={locale} {...row} density={row.density ?? density} />
       ))}
     </section>
   );
@@ -924,11 +1078,19 @@ export interface WorkSplitViewProps {
   list: ReactNode;
   detail: ReactNode;
   density?: WorkDensity;
+  /**
+   * Which language the built-in label is said in; defaults to the page's own.
+   *
+   * This component renders only the two regions it is given, so the label is its
+   * entire contribution to the accessibility tree — the one string here that a
+   * screen-reader user hears and a sighted user never sees.
+   */
+  locale?: TcrnLocale | string;
 }
 
-export function WorkSplitView({ label = "Work split view", list, detail, density = "compact" }: WorkSplitViewProps) {
+export function WorkSplitView({ label, list, detail, density = "compact", locale }: WorkSplitViewProps) {
   return (
-    <section className={cx("tcrn-work-split-view", `tcrn-work-split-view--${density}`)} aria-label={label} data-work-management-pattern="work-split-view" data-density={density}>
+    <section className={cx("tcrn-work-split-view", `tcrn-work-split-view--${density}`)} aria-label={label ?? patternLabels(locale).workSplitView} data-work-management-pattern="work-split-view" data-density={density}>
       <div className="tcrn-work-split-view__list">{list}</div>
       <div className="tcrn-work-split-view__detail">{detail}</div>
     </section>
@@ -939,13 +1101,18 @@ export interface WorkInlineCreateStaticProps {
   label?: string;
   disabledReason: string;
   hint?: ReactNode;
+  /** Which language the built-in label is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function WorkInlineCreateStatic({ label = "Add work item", disabledReason, hint }: WorkInlineCreateStaticProps) {
+export function WorkInlineCreateStatic({ label, disabledReason, hint, locale }: WorkInlineCreateStaticProps) {
+  // Visible button text, so the English default read as an untranslated control
+  // rather than as a missing one.
+  const resolvedLabel = label ?? patternLabels(locale).workInlineCreate;
   return (
     <div className="tcrn-work-inline-create-static" data-work-management-pattern="work-inline-create-static">
       <Button type="button" size="sm" disabled disabledReason={disabledReason}>
-        {label}
+        {resolvedLabel}
       </Button>
       {hint ? <Text>{hint}</Text> : null}
     </div>
@@ -959,9 +1126,10 @@ export interface WorkBacklogGroupProps {
   actions?: WorkAction[];
   inlineCreate?: WorkInlineCreateStaticProps;
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function WorkBacklogGroup({ title, description, rows, actions = [], inlineCreate, density = "compact" }: WorkBacklogGroupProps) {
+export function WorkBacklogGroup({ title, description, rows, actions = [], inlineCreate, density = "compact", locale }: WorkBacklogGroupProps) {
   return (
     <section className={cx("tcrn-work-backlog-group", `tcrn-work-backlog-group--${density}`)} aria-label={title} data-work-management-pattern="work-backlog-group" data-density={density}>
       <div className="tcrn-work-backlog-group__head">
@@ -980,7 +1148,7 @@ export function WorkBacklogGroup({ title, description, rows, actions = [], inlin
           </div>
         ) : null}
       </div>
-      <WorkList label={`${title} rows`} rows={rows} density={density} />
+      <WorkList label={`${title} rows`} rows={rows} density={density} locale={locale} />
       {inlineCreate ? <WorkInlineCreateStatic {...inlineCreate} /> : null}
     </section>
   );
@@ -1008,24 +1176,26 @@ export interface WorkBoardProps {
   label?: string;
   lanes: WorkBoardLane[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function WorkBoard({ label = "Work board", lanes, density = "comfortable" }: WorkBoardProps) {
+export function WorkBoard({ label, lanes, density = "comfortable", locale }: WorkBoardProps) {
+  const labels = patternLabels(locale);
   return (
-    <section className={cx("tcrn-work-board", `tcrn-work-board--${density}`)} aria-label={label} data-work-management-pattern="work-board" data-density={density}>
+    <section className={cx("tcrn-work-board", `tcrn-work-board--${density}`)} aria-label={label ?? labels.workBoard} data-work-management-pattern="work-board" data-density={density}>
       {lanes.map((lane) => (
         <Surface key={lane.id} className="tcrn-work-board__lane" data-work-board-lane={lane.id}>
           <div className="tcrn-work-board__lane-head">
             <Heading level={3}>{lane.title}</Heading>
             <Badge>{lane.cards.length}</Badge>
-            {lane.state ? <StatusBadge state={lane.state} /> : null}
+            {lane.state ? <StatusBadge state={lane.state} locale={locale} /> : null}
           </div>
           <div className="tcrn-work-board__cards">
             {lane.cards.map((card) => (
               <article key={card.id} className="tcrn-work-board__card" aria-label={card.title}>
                 <div className="tcrn-work-board__card-head">
                   <MachineTokenCell token={card.id} kind="work-item" density={density} />
-                  <StatusBadge state={card.state} />
+                  <StatusBadge state={card.state} locale={locale} />
                   {card.priority ? <Badge>{card.priority}</Badge> : null}
                 </div>
                 <strong>{card.title}</strong>
@@ -1042,9 +1212,15 @@ export function WorkBoard({ label = "Work board", lanes, density = "comfortable"
                   </div>
                 ) : null}
                 {card.relationships?.length ? (
-                  <div className="tcrn-work-board__relations" aria-label={`${card.title} relationships`}>
+                  <div
+                    className="tcrn-work-board__relations"
+                    // Composed per locale rather than by concatenation: the card
+                    // title is the consumer's, so welding " relationships" onto it
+                    // yields a name in neither language on a translated page.
+                    aria-label={labels.relationshipsOf(card.title)}
+                  >
                     {card.relationships.map((relationship, index) => (
-                      <RelationshipChip key={`${relationship.relation}-${relationship.target}-${index}`} {...relationship} source={card.id} />
+                      <RelationshipChip key={`${relationship.relation}-${relationship.target}-${index}`} locale={locale} {...relationship} source={card.id} />
                     ))}
                   </div>
                 ) : null}
@@ -1087,15 +1263,34 @@ export interface WorkHierarchyEdge {
   relation: WorkRelationshipType;
 }
 
+interface WorkHierarchyLabels {
+  from: string;
+  relationship: string;
+  to: string;
+  parent: string;
+}
+
+const workHierarchyLabels: Record<TcrnLocale, WorkHierarchyLabels> = {
+  "zh-CN": { from: "来源", relationship: "关系", to: "目标", parent: "父项" },
+  en: { from: "From", relationship: "Relationship", to: "To", parent: "Parent" },
+  ja: { from: "起点", relationship: "関係", to: "終点", parent: "親" },
+  ko: { from: "출발", relationship: "관계", to: "도착", parent: "상위" },
+  fr: { from: "Depuis", relationship: "Relation", to: "Vers", parent: "Parent" }
+};
+
 export interface WorkHierarchyProps {
   label?: string;
   nodes: WorkHierarchyNode[];
   edges: WorkHierarchyEdge[];
+  locale?: TcrnLocale | string;
 }
 
-export function WorkHierarchy({ label = "Work hierarchy", nodes, edges }: WorkHierarchyProps) {
+export function WorkHierarchy({ label, nodes, edges, locale }: WorkHierarchyProps) {
+  const copy = workHierarchyLabels[resolveDocumentLocale(locale)];
+  const labels = patternLabels(locale);
+  const resolvedLabel = label ?? labels.workHierarchy;
   return (
-    <section className="tcrn-work-hierarchy" aria-label={label} data-work-management-pattern="work-hierarchy">
+    <section className="tcrn-work-hierarchy" aria-label={resolvedLabel} data-work-management-pattern="work-hierarchy">
       <div className="tcrn-work-hierarchy__levels">
         {nodes.map((node) => (
           <Surface key={node.id} className="tcrn-work-hierarchy__node" data-work-hierarchy-level={node.level}>
@@ -1103,21 +1298,23 @@ export function WorkHierarchy({ label = "Work hierarchy", nodes, edges }: WorkHi
             <Heading level={3}>{node.title}</Heading>
             <Text>{node.level}</Text>
             {node.owner ? <Badge>{node.owner}</Badge> : null}
-            {node.state ? <StatusBadge state={node.state} /> : null}
-            {node.parentId ? <Text>Parent: {node.parentId}</Text> : null}
+            {node.state ? <StatusBadge state={node.state} locale={locale} /> : null}
+            {node.parentId ? <Text>{copy.parent}: {node.parentId}</Text> : null}
           </Surface>
         ))}
       </div>
+      {/* Composed per locale from whatever label was resolved above, so the
+          fallback table's name is in the same language as the section's. */}
       <TableShell
-        label={`${label} relationship fallback`}
+        label={labels.relationshipFallbackOf(resolvedLabel)}
         columns={[
-          { key: "from", label: "From" },
-          { key: "relationship", label: "Relationship" },
-          { key: "to", label: "To" }
+          { key: "from", label: copy.from },
+          { key: "relationship", label: copy.relationship },
+          { key: "to", label: copy.to }
         ]}
         rows={edges.map((edge) => ({
           from: <MachineToken token={edge.from} kind="work-item" />,
-          relationship: <RelationshipChip relation={edge.relation} target={edge.to} source={edge.from} />,
+          relationship: <RelationshipChip relation={edge.relation} target={edge.to} source={edge.from} locale={locale} />,
           to: <MachineToken token={edge.to} kind="work-item" />
         }))}
       />
@@ -1134,33 +1331,109 @@ export interface GatePipelineGate {
   nextAction?: string;
 }
 
+/**
+ * Column headers, the empty-cell text, and the standing caveat, in every
+ * supported locale.
+ *
+ * The five column labels and the two sentences below it were English literals
+ * with no way for a caller to override them, so every consumer of this
+ * component shipped an English table into a translated page. "Next action" was
+ * the one a consumer reported; it was never alone.
+ */
+interface GatePipelineLabels {
+  title: string;
+  gate: string;
+  state: string;
+  owner: string;
+  evidence: string;
+  next: string;
+  noClaim: string;
+  caveat: string;
+}
+
+const gatePipelineLabels: Record<TcrnLocale, GatePipelineLabels> = {
+  "zh-CN": {
+    title: "门禁流水线",
+    gate: "门禁",
+    state: "状态",
+    owner: "Owner",
+    evidence: "证据",
+    next: "下一步动作",
+    noClaim: "无下游声明",
+    caveat: "门禁流水线只负责呈现；就绪状态与 owner 交接仍由路线自身持有。"
+  },
+  en: {
+    title: "Gate pipeline",
+    gate: "Gate",
+    state: "State",
+    owner: "Owner",
+    evidence: "Evidence",
+    next: "Next action",
+    noClaim: "No downstream claim",
+    caveat: "GatePipeline is presentation-only; readiness and owner handoff remain route-owned."
+  },
+  ja: {
+    title: "ゲートパイプライン",
+    gate: "ゲート",
+    state: "状態",
+    owner: "オーナー",
+    evidence: "証拠",
+    next: "次の操作",
+    noClaim: "下流の主張なし",
+    caveat: "ゲートパイプラインは表示専用です。準備状況とオーナー引き継ぎはルート側が保持します。"
+  },
+  ko: {
+    title: "게이트 파이프라인",
+    gate: "게이트",
+    state: "상태",
+    owner: "오너",
+    evidence: "증거",
+    next: "다음 작업",
+    noClaim: "하위 주장 없음",
+    caveat: "게이트 파이프라인은 표시 전용입니다. 준비 상태와 오너 인계는 경로가 보유합니다."
+  },
+  fr: {
+    title: "Pipeline de portes",
+    gate: "Porte",
+    state: "État",
+    owner: "Propriétaire",
+    evidence: "Preuve",
+    next: "Action suivante",
+    noClaim: "Aucune revendication en aval",
+    caveat: "Le pipeline de portes est purement présentationnel ; la préparation et le transfert au propriétaire restent portés par la route."
+  }
+};
+
 export interface GatePipelineProps {
   label?: string;
   gates: GatePipelineGate[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function GatePipeline({ label = "Gate pipeline", gates, density = "comfortable" }: GatePipelineProps) {
+export function GatePipeline({ label, gates, density = "comfortable", locale }: GatePipelineProps) {
+  const copy = gatePipelineLabels[resolveDocumentLocale(locale)];
+  const heading = label ?? copy.title;
   return (
-    <section className={cx("tcrn-gate-pipeline", `tcrn-gate-pipeline--${density}`)} aria-label={label} data-work-management-pattern="gate-pipeline" data-density={density}>
+    <section className={cx("tcrn-gate-pipeline", `tcrn-gate-pipeline--${density}`)} aria-label={heading} data-work-management-pattern="gate-pipeline" data-density={density}>
       <TableShell
-        label={label}
+        label={heading}
         columns={[
-          { key: "gate", label: "Gate" },
-          { key: "state", label: "State" },
-          { key: "owner", label: "Owner" },
-          { key: "evidence", label: "Evidence" },
-          { key: "next", label: "Next action" }
+          { key: "gate", label: copy.gate },
+          { key: "state", label: copy.state },
+          { key: "owner", label: copy.owner },
+          { key: "evidence", label: copy.evidence },
+          { key: "next", label: copy.next }
         ]}
         rows={gates.map((gate) => ({
           gate: gate.label,
-          state: <StatusBadge state={gate.state} />,
+          state: <StatusBadge state={gate.state} locale={locale} />,
           owner: gate.owner,
           evidence: <EvidenceStrip items={gate.evidence} />,
-          next: gate.nextAction ?? "No downstream claim"
+          next: gate.nextAction ?? copy.noClaim
         }))}
       />
-      <InlineAlert tone="warning">GatePipeline is presentation-only; readiness and owner handoff remain route-owned.</InlineAlert>
+      <InlineAlert tone="warning">{copy.caveat}</InlineAlert>
     </section>
   );
 }
@@ -1179,28 +1452,46 @@ export interface EvidenceAttachment {
   state?: CopyStateInput;
 }
 
+interface AttachmentTableLabels {
+  type: string;
+  label: string;
+  reference: string;
+  state: string;
+}
+
+const attachmentTableLabels: Record<TcrnLocale, AttachmentTableLabels> = {
+  "zh-CN": { type: "类型", label: "名称", reference: "引用", state: "状态" },
+  en: { type: "Type", label: "Label", reference: "Reference", state: "State" },
+  ja: { type: "種別", label: "名称", reference: "参照", state: "状態" },
+  ko: { type: "종류", label: "이름", reference: "참조", state: "상태" },
+  fr: { type: "Type", label: "Libellé", reference: "Référence", state: "État" }
+};
+
 export interface EvidenceAttachmentListProps {
   label?: string;
   items: EvidenceAttachment[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function EvidenceAttachmentList({ label = "Evidence attachments", items, density = "comfortable" }: EvidenceAttachmentListProps) {
+export function EvidenceAttachmentList({ label, items, density = "comfortable", locale }: EvidenceAttachmentListProps) {
+  const copy = attachmentTableLabels[resolveDocumentLocale(locale)];
+  const resolvedLabel = label ?? patternLabels(locale).evidenceAttachments;
   return (
-    <section className={cx("tcrn-evidence-attachment-list", `tcrn-evidence-attachment-list--${density}`)} aria-label={label} data-work-management-pattern="evidence-attachment-list" data-density={density}>
+    <section className={cx("tcrn-evidence-attachment-list", `tcrn-evidence-attachment-list--${density}`)} aria-label={resolvedLabel} data-work-management-pattern="evidence-attachment-list" data-density={density}>
       <TableShell
-        label={label}
+        label={resolvedLabel}
         columns={[
-          { key: "type", label: "Type" },
-          { key: "label", label: "Label" },
-          { key: "reference", label: "Reference" },
-          { key: "state", label: "State" }
+          { key: "type", label: copy.type },
+          { key: "label", label: copy.label },
+          { key: "reference", label: copy.reference },
+          { key: "state", label: copy.state }
         ]}
         rows={items.map((item) => ({
           type: item.type,
           label: item.label,
           reference: <MachineTokenCell token={item.reference} label={item.id} kind={item.type === "commit" ? "commit" : item.type === "artifact_dir" ? "artifact" : "generic"} density={density} />,
-          state: item.state ? <StatusBadge state={item.state} /> : <StatusBadge state={{ state: "local_only" }} />
+          state: item.state ? <StatusBadge state={item.state} locale={locale} /> : <StatusBadge state={{ state: "local_only" }} locale={locale} />
         }))}
       />
     </section>
@@ -1227,12 +1518,16 @@ export interface MetadataRailProps {
   items: KeyValueItem[];
   actions?: WorkAction[];
   density?: WorkDensity;
+  /** Which language the built-in title is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function MetadataRail({ title = "Metadata", items, actions = [], density = "compact" }: MetadataRailProps) {
+export function MetadataRail({ title, items, actions = [], density = "compact", locale }: MetadataRailProps) {
+  // Visible panel heading.
+  const resolvedTitle = title ?? patternLabels(locale).metadata;
   return (
     <aside className={cx("tcrn-metadata-rail", `tcrn-metadata-rail--${density}`)} data-work-management-pattern="metadata-rail" data-density={density}>
-      <WorkFieldPanel title={title} items={items} density={density} />
+      <WorkFieldPanel title={resolvedTitle} items={items} density={density} />
       {actions.length ? (
         <div className="tcrn-metadata-rail__actions">
           {actions.map((action) => (
@@ -1260,21 +1555,25 @@ export interface WorkActivityFeedProps {
   label?: string;
   items: WorkActivityFeedItem[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function WorkActivityFeed({ label = "Work activity", items, density = "compact" }: WorkActivityFeedProps) {
+export function WorkActivityFeed({ label, items, density = "compact", locale }: WorkActivityFeedProps) {
+  const labels = patternLabels(locale);
   return (
-    <section className={cx("tcrn-work-activity-feed", `tcrn-work-activity-feed--${density}`)} aria-label={label} data-work-management-pattern="work-activity-feed" data-density={density}>
+    <section className={cx("tcrn-work-activity-feed", `tcrn-work-activity-feed--${density}`)} aria-label={label ?? labels.workActivity} data-work-management-pattern="work-activity-feed" data-density={density}>
       {items.map((item) => (
         <article key={item.id} className="tcrn-work-activity-feed__item">
           <div className="tcrn-work-activity-feed__head">
             <strong>{item.actor}</strong>
             <span>{item.action}</span>
             {item.timestamp ? <time>{item.timestamp}</time> : null}
-            {item.state ? <StatusBadge state={item.state} /> : null}
+            {item.state ? <StatusBadge state={item.state} locale={locale} /> : null}
           </div>
           {item.summary ? <Text>{item.summary}</Text> : null}
-          {item.evidence?.length ? <EvidenceAttachmentList label={`${item.id} evidence`} items={item.evidence} density={density} /> : null}
+          {/* Composed per locale. The id is a machine token and stays as it is;
+              the word describing it is the part that has to be translated. */}
+          {item.evidence?.length ? <EvidenceAttachmentList label={labels.evidenceOf(item.id)} items={item.evidence} density={density} locale={locale} /> : null}
         </article>
       ))}
     </section>
@@ -1290,9 +1589,10 @@ export interface WorkDetailLayoutProps {
   activity?: ReactNode;
   actions?: WorkAction[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function WorkDetailLayout({ title, summary, state, main, metadata, activity, actions = [], density = "compact" }: WorkDetailLayoutProps) {
+export function WorkDetailLayout({ title, summary, state, main, metadata, activity, actions = [], density = "compact", locale }: WorkDetailLayoutProps) {
   return (
     <section className={cx("tcrn-work-detail-layout", `tcrn-work-detail-layout--${density}`)} aria-label={title} data-work-management-pattern="work-detail-layout" data-density={density}>
       <div className="tcrn-work-detail-layout__head">
@@ -1300,7 +1600,7 @@ export function WorkDetailLayout({ title, summary, state, main, metadata, activi
           <Heading level={2}>{title}</Heading>
           {summary ? <Text>{summary}</Text> : null}
         </div>
-        {state ? <StatusBadge state={state} /> : null}
+        {state ? <StatusBadge state={state} locale={locale} /> : null}
       </div>
       <div className="tcrn-work-detail-layout__grid">
         <div className="tcrn-work-detail-layout__main">{main}</div>
@@ -1326,6 +1626,21 @@ export interface WorkItemInspectorAction {
   disabledReason: string;
 }
 
+interface WorkItemInspectorLabels {
+  hierarchy: string;
+  details: string;
+  relationships: string;
+  subtasks: string;
+}
+
+const workItemInspectorLabels: Record<TcrnLocale, WorkItemInspectorLabels> = {
+  "zh-CN": { hierarchy: "层级", details: "详情", relationships: "关系", subtasks: "子任务与证据任务" },
+  en: { hierarchy: "Hierarchy", details: "Details", relationships: "Relationships", subtasks: "Subtasks and evidence tasks" },
+  ja: { hierarchy: "階層", details: "詳細", relationships: "関係", subtasks: "サブタスクと証拠タスク" },
+  ko: { hierarchy: "계층", details: "세부", relationships: "관계", subtasks: "하위 작업 및 증거 작업" },
+  fr: { hierarchy: "Hiérarchie", details: "Détails", relationships: "Relations", subtasks: "Sous-tâches et tâches de preuve" }
+};
+
 export interface WorkItemInspectorProps {
   title: string;
   summary: string;
@@ -1335,9 +1650,11 @@ export interface WorkItemInspectorProps {
   subtasks?: WorkIndexRow[];
   evidence?: EvidenceAttachment[];
   actions?: WorkItemInspectorAction[];
+  locale?: TcrnLocale | string;
 }
 
-export function WorkItemInspector({ title, summary, hierarchy, details, relationships, subtasks, evidence, actions }: WorkItemInspectorProps) {
+export function WorkItemInspector({ title, summary, hierarchy, details, relationships, subtasks, evidence, actions, locale }: WorkItemInspectorProps) {
+  const copy = workItemInspectorLabels[resolveDocumentLocale(locale)];
   return (
     <Surface className="tcrn-work-item-inspector" data-work-management-pattern="work-item-inspector">
       <div className="tcrn-work-item-inspector__head">
@@ -1345,27 +1662,27 @@ export function WorkItemInspector({ title, summary, hierarchy, details, relation
           <Heading level={3}>{title}</Heading>
           <Text>{summary}</Text>
         </div>
-        <StatusBadge state={{ state: "fixture_only" }} />
+        <StatusBadge state={{ state: "fixture_only" }} locale={locale} />
       </div>
       <div className="tcrn-work-item-inspector__grid">
-        <section aria-label="Hierarchy">
-          <Heading level={3}>Hierarchy</Heading>
+        <section aria-label={copy.hierarchy}>
+          <Heading level={3}>{copy.hierarchy}</Heading>
           <KeyValueList items={hierarchy} />
         </section>
-        <section aria-label="Details">
-          <Heading level={3}>Details</Heading>
+        <section aria-label={copy.details}>
+          <Heading level={3}>{copy.details}</Heading>
           <KeyValueList items={details} />
         </section>
       </div>
       {relationships?.length ? (
-        <section className="tcrn-work-item-inspector__relationships" aria-label="Relationships">
+        <section className="tcrn-work-item-inspector__relationships" aria-label={copy.relationships}>
           {relationships.map((relationship, index) => (
-            <RelationshipChip key={`${relationship.relation}-${relationship.target}-${index}`} {...relationship} />
+            <RelationshipChip key={`${relationship.relation}-${relationship.target}-${index}`} locale={locale} {...relationship} />
           ))}
         </section>
       ) : null}
-      {subtasks?.length ? <WorkIndex label="Subtasks and evidence tasks" rows={subtasks} /> : null}
-      {evidence?.length ? <EvidenceAttachmentList label={`${title} evidence attachments`} items={evidence} /> : null}
+      {subtasks?.length ? <WorkIndex label={copy.subtasks} rows={subtasks} locale={locale} /> : null}
+      {evidence?.length ? <EvidenceAttachmentList label={`${title} evidence attachments`} items={evidence} locale={locale} /> : null}
       {actions?.length ? (
         <div className="tcrn-work-item-inspector__actions">
           {actions.map((action) => (
@@ -1393,9 +1710,10 @@ export interface KnowledgePageTreeProps {
   label?: string;
   items: KnowledgePageTreeItem[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-function KnowledgePageTreeItems({ items }: { items: KnowledgePageTreeItem[] }) {
+function KnowledgePageTreeItems({ items, locale }: { items: KnowledgePageTreeItem[]; locale?: TcrnLocale | string }) {
   return (
     <ul className="tcrn-knowledge-page-tree__list">
       {items.map((item) => {
@@ -1403,7 +1721,7 @@ function KnowledgePageTreeItems({ items }: { items: KnowledgePageTreeItem[] }) {
         const content = (
           <>
             <span className="tcrn-knowledge-page-tree__title">{item.title}</span>
-            {item.state ? <StatusBadge state={item.state} /> : null}
+            {item.state ? <StatusBadge state={item.state} locale={locale} /> : null}
           </>
         );
         return (
@@ -1415,7 +1733,7 @@ function KnowledgePageTreeItems({ items }: { items: KnowledgePageTreeItem[] }) {
             ) : (
               <span data-selected={item.current || undefined}>{content}</span>
             )}
-            {item.children?.length ? <KnowledgePageTreeItems items={item.children.map((child) => ({ ...child, level: (child.level ?? level + 1) }))} /> : null}
+            {item.children?.length ? <KnowledgePageTreeItems items={item.children.map((child) => ({ ...child, level: (child.level ?? level + 1) }))} locale={locale} /> : null}
           </li>
         );
       })}
@@ -1423,10 +1741,10 @@ function KnowledgePageTreeItems({ items }: { items: KnowledgePageTreeItem[] }) {
   );
 }
 
-export function KnowledgePageTree({ label = "Knowledge page tree", items, density = "compact" }: KnowledgePageTreeProps) {
+export function KnowledgePageTree({ label, items, density = "compact", locale }: KnowledgePageTreeProps) {
   return (
-    <nav className={cx("tcrn-knowledge-page-tree", `tcrn-knowledge-page-tree--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-page-tree" data-density={density}>
-      <KnowledgePageTreeItems items={items} />
+    <nav className={cx("tcrn-knowledge-page-tree", `tcrn-knowledge-page-tree--${density}`)} aria-label={label ?? patternLabels(locale).knowledgePageTree} data-knowledge-management-pattern="knowledge-page-tree" data-density={density}>
+      <KnowledgePageTreeItems items={items} locale={locale} />
     </nav>
   );
 }
@@ -1435,11 +1753,13 @@ export interface KnowledgeLabelSetProps {
   labels: string[];
   label?: string;
   density?: WorkDensity;
+  /** Which language the built-in label is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function KnowledgeLabelSet({ labels, label = "Knowledge labels", density = "compact" }: KnowledgeLabelSetProps) {
+export function KnowledgeLabelSet({ labels, label, density = "compact", locale }: KnowledgeLabelSetProps) {
   return (
-    <div className={cx("tcrn-knowledge-label-set", `tcrn-knowledge-label-set--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-label-set" data-density={density}>
+    <div className={cx("tcrn-knowledge-label-set", `tcrn-knowledge-label-set--${density}`)} aria-label={label ?? patternLabels(locale).knowledgeLabelSet} data-knowledge-management-pattern="knowledge-label-set" data-density={density}>
       {labels.map((item) => (
         <Badge key={item}>{item}</Badge>
       ))}
@@ -1496,12 +1816,17 @@ export interface KnowledgeTocRailProps {
   label?: string;
   items: KnowledgeTocItem[];
   density?: WorkDensity;
+  /** Which language the built-in label is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function KnowledgeTocRail({ label = "On this page", items, density = "compact" }: KnowledgeTocRailProps) {
+export function KnowledgeTocRail({ label, items, density = "compact", locale }: KnowledgeTocRailProps) {
+  // Both the visible heading and the accessible name, so one resolution serves
+  // both and they cannot drift into different languages.
+  const resolvedLabel = label ?? patternLabels(locale).knowledgeTocRail;
   return (
-    <aside className={cx("tcrn-knowledge-toc-rail", `tcrn-knowledge-toc-rail--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-toc-rail" data-density={density}>
-      <Heading level={3}>{label}</Heading>
+    <aside className={cx("tcrn-knowledge-toc-rail", `tcrn-knowledge-toc-rail--${density}`)} aria-label={resolvedLabel} data-knowledge-management-pattern="knowledge-toc-rail" data-density={density}>
+      <Heading level={3}>{resolvedLabel}</Heading>
       <nav>
         {items.map((item) =>
           item.href ? (
@@ -1527,17 +1852,18 @@ export interface KnowledgeInlineCommentListProps {
   label?: string;
   comments: KnowledgeComment[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function KnowledgeInlineCommentList({ label = "Knowledge comments", comments, density = "compact" }: KnowledgeInlineCommentListProps) {
+export function KnowledgeInlineCommentList({ label, comments, density = "compact", locale }: KnowledgeInlineCommentListProps) {
   return (
-    <section className={cx("tcrn-knowledge-inline-comment-list", `tcrn-knowledge-inline-comment-list--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-inline-comment-list" data-density={density}>
+    <section className={cx("tcrn-knowledge-inline-comment-list", `tcrn-knowledge-inline-comment-list--${density}`)} aria-label={label ?? patternLabels(locale).knowledgeComments} data-knowledge-management-pattern="knowledge-inline-comment-list" data-density={density}>
       {comments.map((comment) => (
         <article key={comment.id} className="tcrn-knowledge-inline-comment-list__item">
           <div className="tcrn-knowledge-inline-comment-list__head">
             <strong>{comment.author}</strong>
             {comment.timestamp ? <time>{comment.timestamp}</time> : null}
-            {comment.state ? <StatusBadge state={comment.state} /> : null}
+            {comment.state ? <StatusBadge state={comment.state} locale={locale} /> : null}
           </div>
           <Text>{comment.body}</Text>
         </article>
@@ -1552,13 +1878,18 @@ export interface KnowledgeMetadataRailProps {
   labels?: string[];
   actions?: WorkAction[];
   density?: WorkDensity;
+  /** Which language the built-in title is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function KnowledgeMetadataRail({ title = "Knowledge metadata", items, labels = [], actions = [], density = "compact" }: KnowledgeMetadataRailProps) {
+export function KnowledgeMetadataRail({ title, items, labels = [], actions = [], density = "compact", locale }: KnowledgeMetadataRailProps) {
   return (
     <aside className={cx("tcrn-knowledge-metadata-rail", `tcrn-knowledge-metadata-rail--${density}`)} data-knowledge-management-pattern="knowledge-metadata-rail" data-density={density}>
-      <WorkFieldPanel title={title} items={items} density={density} />
-      {labels.length ? <KnowledgeLabelSet labels={labels} density={density} /> : null}
+      <WorkFieldPanel title={title ?? patternLabels(locale).knowledgeMetadata} items={items} density={density} />
+      {/* Forwarded, not omitted: the nested set resolves its own default, and
+          without this it would resolve against the document while its parent
+          resolves against the prop — two locales in one rail. */}
+      {labels.length ? <KnowledgeLabelSet labels={labels} density={density} locale={locale} /> : null}
       {actions.length ? (
         <div className="tcrn-knowledge-metadata-rail__actions">
           {actions.map((action) => (
@@ -1584,22 +1915,25 @@ export interface KnowledgeAttachmentListProps {
   label?: string;
   items: KnowledgeAttachment[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function KnowledgeAttachmentList({ label = "Knowledge attachments", items, density = "compact" }: KnowledgeAttachmentListProps) {
+export function KnowledgeAttachmentList({ label, items, density = "compact", locale }: KnowledgeAttachmentListProps) {
+  const copy = attachmentTableLabels[resolveDocumentLocale(locale)];
+  const resolvedLabel = label ?? patternLabels(locale).knowledgeAttachments;
   return (
-    <section className={cx("tcrn-knowledge-attachment-list", `tcrn-knowledge-attachment-list--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-attachment-list" data-density={density}>
+    <section className={cx("tcrn-knowledge-attachment-list", `tcrn-knowledge-attachment-list--${density}`)} aria-label={resolvedLabel} data-knowledge-management-pattern="knowledge-attachment-list" data-density={density}>
       <TableShell
-        label={label}
+        label={resolvedLabel}
         columns={[
-          { key: "label", label: "Label" },
-          { key: "reference", label: "Reference" },
-          { key: "state", label: "State" }
+          { key: "label", label: copy.label },
+          { key: "reference", label: copy.reference },
+          { key: "state", label: copy.state }
         ]}
         rows={items.map((item) => ({
           label: item.label,
           reference: <MachineTokenCell token={item.reference} label={item.id} kind={item.type === "commit" ? "commit" : item.type === "artifact_dir" ? "artifact" : "generic"} density={density} />,
-          state: item.state ? <StatusBadge state={item.state} /> : <StatusBadge state={{ state: "fixture_only" }} />
+          state: item.state ? <StatusBadge state={item.state} locale={locale} /> : <StatusBadge state={{ state: "fixture_only" }} locale={locale} />
         }))}
       />
     </section>
@@ -1618,23 +1952,37 @@ export interface KnowledgeVersionHistoryProps {
   label?: string;
   versions: KnowledgeVersion[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function KnowledgeVersionHistory({ label = "Knowledge version history", versions, density = "compact" }: KnowledgeVersionHistoryProps) {
+export function KnowledgeVersionHistory({ label, versions, density = "compact", locale }: KnowledgeVersionHistoryProps) {
   return (
-    <section className={cx("tcrn-knowledge-version-history", `tcrn-knowledge-version-history--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-version-history" data-density={density}>
+    <section className={cx("tcrn-knowledge-version-history", `tcrn-knowledge-version-history--${density}`)} aria-label={label ?? patternLabels(locale).knowledgeVersionHistory} data-knowledge-management-pattern="knowledge-version-history" data-density={density}>
       {versions.map((version) => (
         <article key={version.id} className="tcrn-knowledge-version-history__item">
           <MachineTokenCell token={version.id} kind="generic" density={density} />
           <strong>{version.title}</strong>
           <span>{version.author}</span>
           {version.timestamp ? <time>{version.timestamp}</time> : null}
-          {version.state ? <StatusBadge state={version.state} /> : null}
+          {version.state ? <StatusBadge state={version.state} locale={locale} /> : null}
         </article>
       ))}
     </section>
   );
 }
+
+interface KnowledgeTemplateGalleryLabels {
+  use: string;
+  disabledReason: string;
+}
+
+const knowledgeTemplateGalleryLabels: Record<TcrnLocale, KnowledgeTemplateGalleryLabels> = {
+  "zh-CN": { use: "使用模板", disabledReason: "静态设计系统模板样例；创建动作由产品路线自身持有" },
+  en: { use: "Use template", disabledReason: "Static Design System template fixture; product route owns creation" },
+  ja: { use: "テンプレートを使用", disabledReason: "静的なデザインシステムのテンプレート例です。作成はプロダクト側のルートが保持します" },
+  ko: { use: "템플릿 사용", disabledReason: "정적 디자인 시스템 템플릿 예시입니다. 생성은 제품 경로가 보유합니다" },
+  fr: { use: "Utiliser le modèle", disabledReason: "Exemple de modèle statique du design system ; la création appartient à la route produit" }
+};
 
 export interface KnowledgeTemplate {
   id: string;
@@ -1647,24 +1995,38 @@ export interface KnowledgeTemplateGalleryProps {
   label?: string;
   templates: KnowledgeTemplate[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function KnowledgeTemplateGallery({ label = "Knowledge templates", templates, density = "compact" }: KnowledgeTemplateGalleryProps) {
+export function KnowledgeTemplateGallery({ label, templates, density = "compact", locale }: KnowledgeTemplateGalleryProps) {
+  const copy = knowledgeTemplateGalleryLabels[resolveDocumentLocale(locale)];
   return (
-    <section className={cx("tcrn-knowledge-template-gallery", `tcrn-knowledge-template-gallery--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-template-gallery" data-density={density}>
+    <section className={cx("tcrn-knowledge-template-gallery", `tcrn-knowledge-template-gallery--${density}`)} aria-label={label ?? patternLabels(locale).knowledgeTemplates} data-knowledge-management-pattern="knowledge-template-gallery" data-density={density}>
       {templates.map((template) => (
         <Surface key={template.id} className="tcrn-knowledge-template-gallery__card">
           <Heading level={3}>{template.title}</Heading>
           <Text>{template.description}</Text>
-          {template.state ? <StatusBadge state={template.state} /> : null}
-          <Button type="button" size="sm" disabled disabledReason="Static Design System template fixture; product route owns creation">
-            Use template
+          {template.state ? <StatusBadge state={template.state} locale={locale} /> : null}
+          <Button type="button" size="sm" disabled disabledReason={copy.disabledReason}>
+            {copy.use}
           </Button>
         </Surface>
       ))}
     </section>
   );
 }
+
+interface KnowledgeSearchResultsLabels {
+  scope: (query: string) => string;
+}
+
+const knowledgeSearchResultsLabels: Record<TcrnLocale, KnowledgeSearchResultsLabels> = {
+  "zh-CN": { scope: (query) => `「${query}」的静态本地结果；未接入产品级检索或外部索引。` },
+  en: { scope: (query) => `Static local results for ${query}; no product-wide search or external index is wired.` },
+  ja: { scope: (query) => `「${query}」の静的なローカル結果です。製品全体の検索や外部インデックスは接続されていません。` },
+  ko: { scope: (query) => `"${query}"의 정적 로컬 결과입니다. 제품 전체 검색이나 외부 인덱스는 연결되지 않았습니다.` },
+  fr: { scope: (query) => `Résultats locaux statiques pour ${query} ; aucune recherche à l’échelle du produit ni index externe n’est raccordé.` }
+};
 
 export interface KnowledgeSearchResult {
   id: string;
@@ -1680,22 +2042,28 @@ export interface KnowledgeSearchResultsProps {
   query?: string;
   results: KnowledgeSearchResult[];
   density?: WorkDensity;
+  locale?: TcrnLocale | string;
 }
 
-export function KnowledgeSearchResults({ label = "Knowledge search results", query, results, density = "compact" }: KnowledgeSearchResultsProps) {
+export function KnowledgeSearchResults({ label, query, results, density = "compact", locale }: KnowledgeSearchResultsProps) {
+  const copy = knowledgeSearchResultsLabels[resolveDocumentLocale(locale)];
   return (
-    <section className={cx("tcrn-knowledge-search-results", `tcrn-knowledge-search-results--${density}`)} aria-label={label} data-knowledge-management-pattern="knowledge-search-results" data-density={density} data-search-capability="static-local-fixture">
-      {query ? <Text>Static local results for {query}; no product-wide search or external index is wired.</Text> : null}
+    <section className={cx("tcrn-knowledge-search-results", `tcrn-knowledge-search-results--${density}`)} aria-label={label ?? patternLabels(locale).knowledgeSearchResults} data-knowledge-management-pattern="knowledge-search-results" data-density={density} data-search-capability="static-local-fixture">
+      {query ? <Text>{copy.scope(query)}</Text> : null}
       {results.map((result) => {
         const title = result.href ? <a href={result.href}>{result.title}</a> : <span>{result.title}</span>;
         return (
           <article key={result.id} className="tcrn-knowledge-search-results__item">
             <div className="tcrn-knowledge-search-results__head">
               <strong>{title}</strong>
-              {result.state ? <StatusBadge state={result.state} /> : null}
+              {result.state ? <StatusBadge state={result.state} locale={locale} /> : null}
             </div>
             <Text>{result.excerpt}</Text>
-            {result.labels?.length ? <KnowledgeLabelSet labels={result.labels} density={density} /> : null}
+            {/* Forwarded for the same reason as in `KnowledgeMetadataRail`: the
+                nested set resolves its own default, so omitting this leaves it
+                resolving against the document while its parent resolves against
+                the prop — two languages in one result. */}
+            {result.labels?.length ? <KnowledgeLabelSet labels={result.labels} density={density} locale={locale} /> : null}
           </article>
         );
       })}
@@ -1726,22 +2094,9 @@ interface SearchableListLabels {
   unavailable: string;
 }
 
-/**
- * Locale for a component that carries its own copy, resolved in the order a
- * reader would expect: what the caller asked for, else the language the page
- * declares, else the fallback.
- *
- * Reading the document is the middle step because a component with built-in
- * strings sits inside a page that already states its language; without it, a
- * caller who forgets the prop silently ships English into a translated page.
- */
-function resolveDocumentLocale(locale: TcrnLocale | string | undefined): TcrnLocale {
-  if (locale !== undefined) return resolveTcrnLocale(locale);
-  if (typeof document === "undefined") return resolveTcrnLocale(undefined);
-  return resolveTcrnLocale(
-    document.documentElement.getAttribute("data-current-locale")
-    ?? document.documentElement.lang);
-}
+// `resolveDocumentLocale` moved to `../../utils.js` when Clipboard and Navigation
+// needed the same three-step resolution. Three private copies of one resolver is
+// how they drift into answering the same question differently.
 
 const searchableListLabels: Record<TcrnLocale, SearchableListLabels> = {
   "zh-CN": {
@@ -1785,6 +2140,232 @@ const searchableListLabels: Record<TcrnLocale, SearchableListLabels> = {
     unavailable: "Cette option est indisponible dans cette route"
   }
 };
+
+/**
+ * Default labels for the Work and Knowledge components that carry their own.
+ *
+ * Each of these was a single English literal in a parameter default. A consumer
+ * that passes the prop is fine, but a consumer that relies on the default — which
+ * is what a default is for — put English into a translated page, and for the
+ * aria-label-only components (`WorkManagementSubnav`, `WorkViewTabs`,
+ * `WorkQuickFilters`, `KnowledgeLabelSet`) it was invisible on screen and audible
+ * to exactly the reader least able to work around it.
+ *
+ * Resolved through `resolveDocumentLocale`, so a page that declares its language
+ * gets these translated without every call site being edited.
+ */
+interface WorkPatternLabels {
+  workManagementSubnav: string;
+  savedViewToolbar: string;
+  savedViewToolbarTabs: (label: string) => string;
+  savedViewToolbarFilters: (label: string) => string;
+  savedViewReset: string;
+  workViewTabs: string;
+  workQuickFilters: string;
+  workInlineCreate: string;
+  metadata: string;
+  knowledgeMetadata: string;
+  knowledgeTocRail: string;
+  knowledgeLabelSet: string;
+  allFilter: string;
+  workIndex: string;
+  workList: string;
+  workSplitView: string;
+  workBoard: string;
+  workHierarchy: string;
+  evidenceAttachments: string;
+  workActivity: string;
+  knowledgePageTree: string;
+  knowledgeComments: string;
+  knowledgeAttachments: string;
+  knowledgeVersionHistory: string;
+  knowledgeTemplates: string;
+  knowledgeSearchResults: string;
+  /**
+   * The four names this file composes from a value it did not author.
+   *
+   * Each was built by welding an English word onto a title, an id, or the
+   * consumer's own `label` — so a Chinese label produced `已保存的工作视图 tabs`,
+   * a string in neither language, and one an exact-string swap layer downstream
+   * can never match. Composing per locale is the only arrangement where the
+   * result is in one language regardless of what was passed in.
+   */
+  relationshipsOf: (title: string) => string;
+  relationshipFallbackOf: (label: string) => string;
+  evidenceOf: (id: string) => string;
+}
+
+const workPatternLabels: Record<TcrnLocale, WorkPatternLabels> = {
+  "zh-CN": {
+    workManagementSubnav: "工作管理视图",
+    savedViewToolbar: "已保存的工作视图",
+    // Composed rather than stored: the two derived names have to follow whatever
+    // `label` the consumer passed, and a composed string is exactly what an
+    // exact-string translation layer cannot reach.
+    savedViewToolbarTabs: (label) => `${label}标签`,
+    savedViewToolbarFilters: (label) => `${label}过滤`,
+    savedViewReset: "重置视图",
+    workViewTabs: "工作视图",
+    workQuickFilters: "工作快捷过滤",
+    workInlineCreate: "添加工作项",
+    metadata: "元数据",
+    knowledgeMetadata: "知识元数据",
+    knowledgeTocRail: "本页目录",
+    knowledgeLabelSet: "知识标签",
+    allFilter: "全部",
+    workIndex: "工作项索引",
+    workList: "工作项列表",
+    workSplitView: "工作项分栏视图",
+    workBoard: "工作看板",
+    workHierarchy: "工作层级",
+    evidenceAttachments: "证据附件",
+    workActivity: "工作动态",
+    knowledgePageTree: "知识页面树",
+    knowledgeComments: "知识评注",
+    knowledgeAttachments: "知识附件",
+    knowledgeVersionHistory: "知识版本历史",
+    knowledgeTemplates: "知识模板",
+    knowledgeSearchResults: "知识检索结果",
+    relationshipsOf: (title) => `${title}的关联`,
+    relationshipFallbackOf: (label) => `${label}关联回退表`,
+    evidenceOf: (id) => `${id}的证据`
+  },
+  en: {
+    workManagementSubnav: "Work Management views",
+    savedViewToolbar: "Saved Work views",
+    savedViewToolbarTabs: (label) => `${label} tabs`,
+    savedViewToolbarFilters: (label) => `${label} filters`,
+    savedViewReset: "Reset view",
+    workViewTabs: "Work views",
+    workQuickFilters: "Work quick filters",
+    workInlineCreate: "Add work item",
+    metadata: "Metadata",
+    knowledgeMetadata: "Knowledge metadata",
+    knowledgeTocRail: "On this page",
+    knowledgeLabelSet: "Knowledge labels",
+    allFilter: "All",
+    workIndex: "Work index",
+    workList: "Work list",
+    workSplitView: "Work split view",
+    workBoard: "Work board",
+    workHierarchy: "Work hierarchy",
+    evidenceAttachments: "Evidence attachments",
+    workActivity: "Work activity",
+    knowledgePageTree: "Knowledge page tree",
+    knowledgeComments: "Knowledge comments",
+    knowledgeAttachments: "Knowledge attachments",
+    knowledgeVersionHistory: "Knowledge version history",
+    knowledgeTemplates: "Knowledge templates",
+    knowledgeSearchResults: "Knowledge search results",
+    relationshipsOf: (title) => `${title} relationships`,
+    relationshipFallbackOf: (label) => `${label} relationship fallback`,
+    evidenceOf: (id) => `${id} evidence`
+  },
+  ja: {
+    workManagementSubnav: "作業管理ビュー",
+    savedViewToolbar: "保存した作業ビュー",
+    savedViewToolbarTabs: (label) => `${label}のタブ`,
+    savedViewToolbarFilters: (label) => `${label}のフィルター`,
+    savedViewReset: "ビューをリセット",
+    workViewTabs: "作業ビュー",
+    workQuickFilters: "作業クイックフィルター",
+    workInlineCreate: "作業項目を追加",
+    metadata: "メタデータ",
+    knowledgeMetadata: "ナレッジのメタデータ",
+    knowledgeTocRail: "このページの目次",
+    knowledgeLabelSet: "ナレッジラベル",
+    allFilter: "すべて",
+    workIndex: "作業項目インデックス",
+    workList: "作業項目リスト",
+    workSplitView: "作業項目の分割ビュー",
+    workBoard: "作業ボード",
+    workHierarchy: "作業の階層",
+    evidenceAttachments: "証跡の添付",
+    workActivity: "作業アクティビティ",
+    knowledgePageTree: "ナレッジのページツリー",
+    knowledgeComments: "ナレッジのコメント",
+    knowledgeAttachments: "ナレッジの添付",
+    knowledgeVersionHistory: "ナレッジのバージョン履歴",
+    knowledgeTemplates: "ナレッジのテンプレート",
+    knowledgeSearchResults: "ナレッジの検索結果",
+    relationshipsOf: (title) => `${title}の関連`,
+    relationshipFallbackOf: (label) => `${label}の関連フォールバック表`,
+    evidenceOf: (id) => `${id}の証跡`
+  },
+  ko: {
+    workManagementSubnav: "작업 관리 보기",
+    savedViewToolbar: "저장된 작업 보기",
+    savedViewToolbarTabs: (label) => `${label} 탭`,
+    savedViewToolbarFilters: (label) => `${label} 필터`,
+    savedViewReset: "보기 초기화",
+    workViewTabs: "작업 보기",
+    workQuickFilters: "작업 빠른 필터",
+    workInlineCreate: "작업 항목 추가",
+    metadata: "메타데이터",
+    knowledgeMetadata: "지식 메타데이터",
+    knowledgeTocRail: "이 페이지 목차",
+    knowledgeLabelSet: "지식 레이블",
+    allFilter: "전체",
+    workIndex: "작업 항목 색인",
+    workList: "작업 항목 목록",
+    workSplitView: "작업 항목 분할 보기",
+    workBoard: "작업 보드",
+    workHierarchy: "작업 계층",
+    evidenceAttachments: "증거 첨부",
+    workActivity: "작업 활동",
+    knowledgePageTree: "지식 페이지 트리",
+    knowledgeComments: "지식 댓글",
+    knowledgeAttachments: "지식 첨부",
+    knowledgeVersionHistory: "지식 버전 기록",
+    knowledgeTemplates: "지식 템플릿",
+    knowledgeSearchResults: "지식 검색 결과",
+    relationshipsOf: (title) => `${title} 관계`,
+    relationshipFallbackOf: (label) => `${label} 관계 대체 표`,
+    evidenceOf: (id) => `${id} 증거`
+  },
+  fr: {
+    workManagementSubnav: "Vues de gestion du travail",
+    savedViewToolbar: "Vues de travail enregistrées",
+    savedViewToolbarTabs: (label) => `Onglets : ${label}`,
+    savedViewToolbarFilters: (label) => `Filtres : ${label}`,
+    savedViewReset: "Réinitialiser la vue",
+    workViewTabs: "Vues de travail",
+    workQuickFilters: "Filtres rapides du travail",
+    workInlineCreate: "Ajouter un élément de travail",
+    metadata: "Métadonnées",
+    knowledgeMetadata: "Métadonnées de connaissance",
+    knowledgeTocRail: "Sur cette page",
+    knowledgeLabelSet: "Étiquettes de connaissance",
+    allFilter: "Tous",
+    workIndex: "Index du travail",
+    workList: "Liste de travail",
+    workSplitView: "Vue divisée du travail",
+    workBoard: "Tableau de travail",
+    workHierarchy: "Hiérarchie du travail",
+    evidenceAttachments: "Pièces jointes de preuve",
+    workActivity: "Activité du travail",
+    knowledgePageTree: "Arborescence des pages de connaissance",
+    knowledgeComments: "Commentaires de connaissance",
+    knowledgeAttachments: "Pièces jointes de connaissance",
+    knowledgeVersionHistory: "Historique des versions de connaissance",
+    knowledgeTemplates: "Modèles de connaissance",
+    knowledgeSearchResults: "Résultats de recherche de connaissance",
+    relationshipsOf: (title) => `Relations : ${title}`,
+    relationshipFallbackOf: (label) => `Tableau de secours des relations : ${label}`,
+    evidenceOf: (id) => `Preuves : ${id}`
+  }
+};
+
+/**
+ * The default labels for the reader's language.
+ *
+ * Called from render, never during module evaluation, which is why the components
+ * above may reference a table declared below them — the same arrangement
+ * `searchableListLabels` already relies on.
+ */
+function patternLabels(locale: TcrnLocale | string | undefined): WorkPatternLabels {
+  return workPatternLabels[resolveDocumentLocale(locale)];
+}
 
 export interface SearchableListItem {
   id: string;

@@ -436,3 +436,181 @@ test("TableToolbar declares its host-wiring contract", () => {
   assert.match(html, /data-table-toolbar-collapse-label="collapse"/);
   assert.match(html, /data-table-toolbar-collapse-label="expand"/);
 });
+
+test("components that carry their own labels say them in the reader's language", () => {
+  // Each of these labels was an English literal in a parameter default. A consumer
+  // that passes the prop was always fine; a consumer that relied on the default —
+  // which is what a default is for — shipped English into a translated page. For
+  // the four that are accessible names only, it was invisible on screen and
+  // audible to exactly the reader least able to work around it, which is why
+  // rendering and reading back is the only check that settles it.
+  const zh = renderToStaticMarkup(
+    <>
+      <WorkManagementSubnav locale="zh-CN" items={[{ id: "queue", label: "队列", href: "/queue" }]} />
+      <WorkViewTabs locale="zh-CN" tabs={[{ id: "all", label: "全部", href: "/all" }]} />
+      <WorkQuickFilters locale="zh-CN" filters={[{ id: "mine", label: "我的", href: "/mine" }]} />
+      <WorkInlineCreateStatic locale="zh-CN" disabledReason="静态示例" />
+      <MetadataRail locale="zh-CN" items={[{ key: "owner", label: "owner", value: "governance" }]} />
+      <KnowledgeTocRail locale="zh-CN" items={[{ id: "intro", label: "简介" }]} />
+      <KnowledgeMetadataRail locale="zh-CN" items={[{ key: "basis", label: "basis", value: "d385428" }]} labels={["策略"]} />
+      <KnowledgeLabelSet locale="zh-CN" labels={["策略"]} />
+      <TableToolbar
+        locale="zh-CN"
+        label="表格工具"
+        controlsId="zh-table"
+        searchLabel="检索行"
+        filterOptions={[{ id: "caveat", label: "有注意事项" }]}
+      />
+    </>
+  );
+  assert.match(zh, /aria-label="工作管理视图"/);
+  assert.match(zh, /aria-label="工作视图"/);
+  assert.match(zh, /aria-label="工作快捷过滤"/);
+  assert.match(zh, />添加工作项</);
+  assert.match(zh, />元数据</);
+  assert.match(zh, /aria-label="本页目录"/);
+  assert.match(zh, />本页目录</);
+  assert.match(zh, />知识元数据</);
+  assert.match(zh, /aria-label="知识标签"/);
+  assert.match(zh, />全部</);
+  // No English default survives anywhere in the zh render, including the ones that
+  // only ever appear in an attribute.
+  for (const englishDefault of [
+    "Work Management views", "Work views", "Work quick filters", "Add work item",
+    ">Metadata<", "On this page", "Knowledge metadata", "Knowledge labels"
+  ]) {
+    assert.equal(zh.includes(englishDefault), false, `${englishDefault} is not shipped into a zh-CN page`);
+  }
+
+  // A composed accessible name follows the label it is composed from, in the same
+  // language. Welding an English " tabs" onto a Chinese label yields a string that
+  // is neither language, and the swap layer downstream can never reach it.
+  const zhToolbar = renderToStaticMarkup(
+    <SavedViewToolbar
+      locale="zh-CN"
+      views={[{ id: "open", label: "进行中", href: "/open" }]}
+      filters={[{ id: "owner", label: "owner", value: "governance" }]}
+    />
+  );
+  assert.match(zhToolbar, /aria-label="已保存的工作视图"/);
+  assert.match(zhToolbar, /aria-label="已保存的工作视图标签"/);
+  assert.match(zhToolbar, /aria-label="已保存的工作视图过滤"/);
+  assert.match(zhToolbar, />重置视图</);
+  assert.equal(zhToolbar.includes(" tabs"), false, "the composed name does not weld an English word onto a Chinese label");
+  assert.equal(zhToolbar.includes(" filters"), false, "the composed name does not weld an English word onto a Chinese label");
+
+  // ja and fr, so the table is proved to hold five locales rather than two.
+  const ja = renderToStaticMarkup(<KnowledgeTocRail locale="ja" items={[{ id: "intro", label: "はじめに" }]} />);
+  assert.match(ja, /aria-label="このページの目次"/);
+  const fr = renderToStaticMarkup(<MetadataRail locale="fr" items={[{ key: "owner", label: "owner", value: "governance" }]} />);
+  assert.match(fr, />Métadonnées</);
+  const ko = renderToStaticMarkup(<WorkInlineCreateStatic locale="ko" disabledReason="정적 목업" />);
+  assert.match(ko, />작업 항목 추가</);
+
+  // An unknown locale, and no locale at all, resolve to English rather than
+  // throwing or losing the label: a consumer that never passes one keeps today's
+  // behaviour instead of rendering an empty control.
+  const fallback = renderToStaticMarkup(
+    <>
+      <MetadataRail items={[{ key: "owner", label: "owner", value: "governance" }]} />
+      <KnowledgeTocRail locale="de" items={[{ id: "intro", label: "Intro" }]} />
+    </>
+  );
+  assert.match(fallback, />Metadata</);
+  assert.match(fallback, /aria-label="On this page"/);
+});
+
+test("the remaining work and knowledge patterns say their own labels in the reader's language", () => {
+  // The thirteen defaults left over from the first pass. Every one of these is an
+  // accessible name only — invisible on screen, so nothing about a zh-CN page
+  // looked wrong while all thirteen were announcing English to the one reader who
+  // depends on them.
+  const zh = renderToStaticMarkup(
+    <>
+      <WorkIndex locale="zh-CN" rows={[{ id: "W-1", title: "示例", state: { state: "local_only" }, owner: "governance" }]} />
+      <WorkList locale="zh-CN" rows={[{ id: "W-1", title: "示例", state: { state: "local_only" }, owner: "governance" }]} />
+      <WorkSplitView locale="zh-CN" list={<div>列表</div>} detail={<div>详情</div>} />
+      <WorkHierarchy locale="zh-CN" nodes={[{ id: "W-1", level: "Story", title: "示例" }]} edges={[]} />
+      <EvidenceAttachmentList locale="zh-CN" items={[{ id: "E-1", type: "commit", label: "证据", reference: "sha256:abc" }]} />
+      <WorkActivityFeed locale="zh-CN" items={[{ id: "A-1", actor: "governance", action: "记录" }]} />
+      <KnowledgePageTree locale="zh-CN" items={[{ id: "P-1", title: "页面" }]} />
+      <KnowledgeInlineCommentList locale="zh-CN" comments={[{ id: "C-1", author: "governance", body: "评注" }]} />
+      <KnowledgeAttachmentList locale="zh-CN" items={[{ id: "K-1", label: "附件", reference: "sha256:def" }]} />
+      <KnowledgeVersionHistory locale="zh-CN" versions={[{ id: "V-1", title: "草稿", author: "governance" }]} />
+      <KnowledgeTemplateGallery locale="zh-CN" templates={[{ id: "T-1", title: "模板", description: "静态模板" }]} />
+      <KnowledgeSearchResults locale="zh-CN" results={[{ id: "R-1", title: "结果", excerpt: "摘要", labels: ["策略"] }]} />
+    </>
+  );
+  for (const name of [
+    "工作项索引", "工作项列表", "工作项分栏视图", "工作层级", "证据附件", "工作动态",
+    "知识页面树", "知识评注", "知识附件", "知识版本历史", "知识模板", "知识检索结果"
+  ]) {
+    assert.match(zh, new RegExp(`aria-label="${name}"`), `${name} is the zh-CN name`);
+  }
+  for (const englishDefault of [
+    "Work index", "Work list", "Work split view", "Work hierarchy", "Evidence attachments",
+    "Work activity", "Knowledge page tree", "Knowledge comments", "Knowledge attachments",
+    "Knowledge version history", "Knowledge templates", "Knowledge search results"
+  ]) {
+    assert.equal(zh.includes(englishDefault), false, `${englishDefault} is not shipped into a zh-CN page`);
+  }
+
+  // A nested set that resolves its own default has to be handed the parent's
+  // locale, or one result carries two languages. This was already the bug in
+  // KnowledgeMetadataRail; KnowledgeSearchResults had it too.
+  assert.match(zh, /aria-label="知识标签"/);
+  assert.equal(zh.includes("Knowledge labels"), false, "the nested label set follows its parent's locale");
+
+  // The three names composed from a value the consumer supplied. The id inside the
+  // evidence name is a machine token and stays as it is; the word describing it is
+  // the part that has to move.
+  const zhComposed = renderToStaticMarkup(
+    <>
+      <WorkBoard
+        locale="zh-CN"
+        lanes={[{
+          id: "L-1",
+          title: "进行中",
+          cards: [{
+            id: "W-1",
+            title: "示例卡片",
+            state: { state: "local_only" },
+            owner: "governance",
+            relationships: [{ relation: "blocks", target: "W-2" }]
+          }]
+        }]}
+      />
+      <WorkHierarchy locale="zh-CN" nodes={[{ id: "W-1", level: "Story", title: "示例" }]} edges={[]} />
+      <WorkActivityFeed
+        locale="zh-CN"
+        items={[{
+          id: "A-1",
+          actor: "governance",
+          action: "记录",
+          evidence: [{ id: "E-1", type: "commit", label: "证据", reference: "sha256:abc" }]
+        }]}
+      />
+    </>
+  );
+  assert.match(zhComposed, /aria-label="示例卡片的关联"/);
+  assert.match(zhComposed, /aria-label="工作层级关联回退表"/);
+  assert.match(zhComposed, /aria-label="A-1的证据"/);
+  for (const welded of [" relationships", " relationship fallback", " evidence"]) {
+    assert.equal(zhComposed.includes(welded), false, `${welded} is not welded onto a Chinese value`);
+  }
+
+  // Two more locales, so the additions are proved to hold five rather than two.
+  const ja = renderToStaticMarkup(<WorkSplitView locale="ja" list={<div>一覧</div>} detail={<div>詳細</div>} />);
+  assert.match(ja, /aria-label="作業項目の分割ビュー"/);
+  const fr = renderToStaticMarkup(<KnowledgeTemplateGallery locale="fr" templates={[{ id: "T-1", title: "Modèle", description: "Modèle statique" }]} />);
+  assert.match(fr, /aria-label="Modèles de connaissance"/);
+  const ko = renderToStaticMarkup(<WorkActivityFeed locale="ko" items={[{ id: "A-1", actor: "governance", action: "기록" }]} />);
+  assert.match(ko, /aria-label="작업 활동"/);
+
+  // A caller's own label still wins over the built-in, and no locale at all keeps
+  // today's English rather than an empty name.
+  const explicit = renderToStaticMarkup(<WorkList locale="zh-CN" label="调用方自己的名字" rows={[{ id: "W-1", title: "示例", state: { state: "local_only" }, owner: "governance" }]} />);
+  assert.match(explicit, /aria-label="调用方自己的名字"/);
+  const noLocale = renderToStaticMarkup(<WorkSplitView list={<div>list</div>} detail={<div>detail</div>} />);
+  assert.match(noLocale, /aria-label="Work split view"/);
+});

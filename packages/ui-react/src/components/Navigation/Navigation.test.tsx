@@ -4,10 +4,14 @@ import { act, useState, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   ModuleTabs,
+  SectionTabs,
   SegmentedNav,
   Breadcrumb,
+  ProductLauncher,
+  ProductSwitcher,
   ProductShell,
   ProductShellSearch,
+  ShellBrandLockup,
   ShellLocaleMenu,
   ShellThemeToggle,
   SideNavCollapseButton,
@@ -17,8 +21,10 @@ import {
   NavItem,
   ProductLogo,
   ProductLockup,
+  TcrnBrandMark,
   tcrnComponentCss,
   tcrnProductLogoRegistry,
+  tcrnProductTagline,
   useProductShellController,
   type ShellThemeMode
 } from "./Navigation.js";
@@ -47,6 +53,48 @@ test("breadcrumb separates route segments without concatenating labels", () => {
   assert.match(html, /class="[^"]*tcrn-breadcrumb__separator/);
   assert.match(html, /aria-current="page">Components</);
   assert.doesNotMatch(html, /TCRNComponents/);
+});
+
+// The href is the whole capability, and until this test existed it was unasserted:
+// every breadcrumb check in this repository read the nav element, the separator, or
+// the aria-current span, so `Breadcrumb` could have gone back to rendering inert
+// spans and the full gate suite would have stayed green. That is the shape of the
+// defect a consumer reported — a trail that says where you are and offers no way to
+// leave — surviving as a component that passes its own tests.
+test("breadcrumb ancestors are links and the current page is not", () => {
+  const html = renderToStaticMarkup(
+    <Breadcrumb
+      items={[
+        { id: "projects", label: "Design System", href: "/work-items?project=ds" },
+        { id: "epic", label: "EPIC-030", href: "/work-items/TCRN-AOS-EPIC-030" },
+        { id: "story", label: "STORY-104", selected: true }
+      ]}
+    />
+  );
+  assert.match(html, /<a href="\/work-items\?project=ds">Design System<\/a>/);
+  assert.match(html, /<a href="\/work-items\/TCRN-AOS-EPIC-030">EPIC-030<\/a>/);
+  // The crumb the reader is standing on stays inert with aria-current, which is what
+  // tells a screen-reader user which end of the trail they are at. A link here would
+  // be a link to the page they are already on.
+  assert.match(html, /<span aria-current="page">STORY-104<\/span>/);
+  assert.equal((html.match(/<a href=/g) ?? []).length, 2);
+
+  // `selected` outranks `href`, so a consumer that supplies both — the natural
+  // mistake when the trail is built by mapping over ancestors — still gets an inert
+  // current crumb rather than a self-link.
+  const bothHtml = renderToStaticMarkup(
+    <Breadcrumb items={[{ id: "here", label: "Here", href: "/here", selected: true }]} />
+  );
+  assert.doesNotMatch(bothHtml, /<a href=/);
+  assert.match(bothHtml, /aria-current="page">Here</);
+
+  // A trail with no hrefs at all is still legal markup — the component cannot know
+  // whether a route has ancestors — so the rule that a drilled-down route must carry
+  // them is enforced where the route is known: the consumer's own way-back gate.
+  const inertHtml = renderToStaticMarkup(
+    <Breadcrumb items={[{ id: "a", label: "A" }, { id: "b", label: "B", selected: true }]} />
+  );
+  assert.doesNotMatch(inertHtml, /<a href=/);
 });
 
 test("side navigation primitives render package-backed hierarchy and disabled reasons", () => {
@@ -93,10 +141,30 @@ test("registered product logos expose exact DS AOS and TMS lockups", () => {
   assert.equal(tcrnProductLogoRegistry["design-system"].stackSuffix, true);
   assert.equal(tcrnProductLogoRegistry.aos.lineOne, "TCRN AOS");
   assert.equal(tcrnProductLogoRegistry.aos.stackSuffix, false);
-  assert.equal(tcrnProductLogoRegistry.aos.lineTwo, "AI Operation System");
   assert.equal(tcrnProductLogoRegistry.tms.lineOne, "TCRN TMS");
   assert.equal(tcrnProductLogoRegistry.tms.stackSuffix, false);
-  assert.equal(tcrnProductLogoRegistry.tms.lineTwo, "Talent Management System");
+
+  // The wordmark is a name and the tagline is copy, so they are asserted
+  // differently on purpose: `lineOne` is one Latin string in every locale, while
+  // `lineTwo` must carry all five. Checking only the English member would leave
+  // the same hole the old single-string shape had — it read as complete.
+  for (const productId of ["design-system", "aos", "tms"] as const) {
+    assert.deepEqual(
+      Object.keys(tcrnProductLogoRegistry[productId].lineTwo).sort(),
+      ["en", "fr", "ja", "ko", "zh-CN"],
+      `${productId} tagline must carry all five locales`
+    );
+  }
+  assert.equal(tcrnProductLogoRegistry.aos.lineTwo.en, "AI Operation System");
+  assert.equal(tcrnProductLogoRegistry.aos.lineTwo["zh-CN"], "AI 运营系统");
+  assert.equal(tcrnProductLogoRegistry.tms.lineTwo.en, "Talent Management System");
+  assert.equal(tcrnProductLogoRegistry.tms.lineTwo.ja, "タレントマネジメントシステム");
+  assert.equal(tcrnProductTagline("aos", "ja"), "AI オペレーションシステム");
+  // An unknown or absent locale resolves to the fallback rather than throwing:
+  // a consumer that never passes one keeps today's English instead of losing the
+  // line altogether.
+  assert.equal(tcrnProductTagline("aos"), "AI Operation System");
+  assert.equal(tcrnProductTagline("aos", "de"), "AI Operation System");
 
   const html = renderToStaticMarkup(
     <>
@@ -120,6 +188,24 @@ test("registered product logos expose exact DS AOS and TMS lockups", () => {
   assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--design-system">Design System</);
   assert.match(html, />Talent Management System</);
   assert.doesNotMatch(html, /Rebuild workspace/);
+
+  // The same three lockups on a ja route. The wordmarks are unchanged and the
+  // taglines are not — including the accessible name, so a screen-reader user
+  // hears the brand the way a sighted reader sees it.
+  const jaHtml = renderToStaticMarkup(
+    <>
+      <ProductLogo productId="design-system" locale="ja" />
+      <ProductLogo productId="aos" locale="ja" />
+      <ProductLogo productId="tms" locale="ja" />
+    </>
+  );
+  assert.match(jaHtml, /class="tcrn-product-logo__line-two">コンポーネントライブラリ</);
+  assert.match(jaHtml, /class="tcrn-product-logo__line-two">AI オペレーションシステム</);
+  assert.match(jaHtml, /class="tcrn-product-logo__line-two">タレントマネジメントシステム</);
+  assert.match(jaHtml, /aria-label="TCRN AOS AI オペレーションシステム"/);
+  assert.match(jaHtml, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--aos">AOS</);
+  assert.doesNotMatch(jaHtml, />AI Operation System</);
+  assert.doesNotMatch(jaHtml, />Talent Management System</);
 
   const longSuffixLockupHtml = renderToStaticMarkup(<ProductLockup suffix="Design System" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />);
   assert.match(longSuffixLockupHtml, /tcrn-brand-lockup--long-name/);
@@ -196,7 +282,12 @@ test("product shell renders package-backed side-nav shell and effect boundary", 
   assert.match(html, /data-product-logo-asset-id="tcrn-aos-two-line"/);
   assert.match(html, /class="tcrn-product-logo__line-one-base">TCRN</);
   assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--aos">AOS</);
-  assert.match(html, />AI Operation System</);
+  // This fixture is a zh-CN shell, so the brand tagline must be Chinese. The
+  // assertion here used to require English and passed — that is what the defect
+  // looked like from inside the proof: the shell knew the reader's locale for its
+  // own utility row and resolved the brand block without it.
+  assert.match(html, /class="tcrn-product-logo__line-two">AI 运营系统</);
+  assert.doesNotMatch(html, />AI Operation System</);
   assert.doesNotMatch(html, /AOS Rebuild Workspace|Rebuild workspace/);
   assert.doesNotMatch(html, /tcrn-top-bar__brand/);
   assert.doesNotMatch(html, /tcrn-top-bar__module/);
@@ -754,4 +845,174 @@ test("product shell controller returns ready prop bundles for registered shell c
   } finally {
     await harness.cleanup();
   }
+});
+
+test("shell chrome says its own words in the reader's language", () => {
+  // The shell's most load-bearing strings, and the ones with the least visible
+  // evidence that they were wrong: three of these controls are icon-only, so the
+  // label is the entire accessible name, and the skip link is the first thing a
+  // keyboard user reaches on any page in the product.
+  const zh = renderToStaticMarkup(
+    <>
+      <ShellThemeToggle locale="zh-CN" currentTheme="light" />
+      <ShellLocaleMenu currentLocale="zh-CN" locales={[{ locale: "zh-CN", nativeName: "简体中文" }]} />
+      <SideNavCollapseButton locale="zh-CN" collapsed={false} controls="nav" />
+      <Breadcrumb locale="zh-CN" items={[{ id: "root", label: "TCRN" }]} />
+      <ProductShellSearch locale="zh-CN" />
+      <ProductLauncher locale="zh-CN" items={[{ id: "aos", label: "AOS" }]} />
+      <ProductSwitcher locale="zh-CN" items={[{ id: "tms", label: "TMS" }]} />
+      <ModuleTabs locale="zh-CN" items={[{ id: "overview", label: "概览" }]} />
+      <SectionTabs locale="zh-CN" items={[{ id: "detail", label: "详情" }]} />
+      <TcrnBrandMark locale="zh-CN" />
+      <NavItem locale="zh-CN" disabled>受限模块</NavItem>
+      <ShellBrandLockup locale="zh-CN" />
+    </>
+  );
+  for (const name of [
+    "切换到夜间模式", "语言", "收起侧边导航", "面包屑导航", "检索产品外壳", "检索结果",
+    "产品启动器", "产品切换器", "模块分区", "分区导航", "TCRN 品牌标识"
+  ]) {
+    assert.match(zh, new RegExp(`(aria-label|title|alt)="${name}"`), `${name} is the zh-CN name`);
+  }
+  assert.match(zh, /placeholder="检索"/);
+  assert.match(zh, />没有结果</);
+  assert.match(zh, />该导航项在此路由下不可用</);
+  assert.match(zh, />产品</);
+  assert.match(zh, />产品外壳</);
+  for (const englishDefault of [
+    "Switch to dark mode", "Collapse side navigation", "Breadcrumb", "Search product shell",
+    "Search results", "No results", "Product launcher", "Product switcher", "Module sections",
+    "Section navigation", "TCRN brand mark", "Navigation item unavailable in this route",
+    'placeholder="Search"', ">Language<", ">Product<", ">Product shell<"
+  ]) {
+    assert.equal(zh.includes(englishDefault), false, `${englishDefault} is not shipped into a zh-CN page`);
+  }
+
+  // The locale menu takes no `locale` prop: `currentLocale` already *is* the
+  // language its trigger should speak, so a consumer who wired the menu at all has
+  // already supplied the answer. This was the sharpest case of the defect — the one
+  // control whose job is to change language could not say so in the reader's
+  // language.
+  const jaMenu = renderToStaticMarkup(<ShellLocaleMenu currentLocale="ja" locales={[{ locale: "ja", nativeName: "日本語" }]} />);
+  assert.match(jaMenu, /aria-label="言語"/);
+  assert.equal(jaMenu.includes('aria-label="Language"'), false, "the locale menu speaks the locale it is set to");
+
+  // The shell resolves from the `currentLocale` it already requires, and hands it
+  // to every child that resolves a default of its own — the nested-locale bug is
+  // the shell rendering in one language while its own controls answer in another.
+  const zhShell = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN AOS"
+      moduleName="运营驾驶舱"
+      currentRouteLabel="驾驶舱"
+      navLabel="AOS 模块导航"
+      currentLocale="zh-CN"
+      locales={[{ locale: "zh-CN", nativeName: "简体中文" }]}
+      navGroups={[{
+        id: "registered",
+        label: "已登记入口",
+        items: [{ id: "restricted", label: "受限模块", href: "/restricted", disabled: true }]
+      }]}
+      search={{}}
+    >
+      <div>内容</div>
+    </ProductShell>
+  );
+  assert.match(zhShell, />跳到外壳内容</);
+  assert.match(zhShell, /aria-label="产品外壳工作区"/);
+  assert.match(zhShell, />当前位置</);
+  // Composed per locale: welding " home" or " shell controls" onto a name the
+  // consumer supplied yields a string in neither language.
+  assert.match(zhShell, /aria-label="TCRN AOS首页"/);
+  assert.match(zhShell, /aria-label="运营驾驶舱外壳控件"/);
+  // Forwarded to the four children that carry defaults of their own. The theme
+  // toggle names the mode it would switch *to*, and the shell defaults to light.
+  assert.match(zhShell, /aria-label="切换到夜间模式"/);
+  assert.match(zhShell, /aria-label="收起侧边导航"/);
+  assert.match(zhShell, /aria-label="检索产品外壳"/);
+  assert.match(zhShell, />该导航项在此路由下不可用</);
+  for (const englishDefault of [
+    "Skip to shell content", "Product shell workspace", ">Current location<", " home\"",
+    " shell controls\"", "Switch to dark mode", "Collapse side navigation",
+    "Search product shell", "Navigation item unavailable in this route"
+  ]) {
+    assert.equal(zhShell.includes(englishDefault), false, `${englishDefault} is not shipped into a zh-CN shell`);
+  }
+
+  // A consumer's own value on `search` still wins over the forwarded locale.
+  const explicitSearchLocale = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN AOS"
+      moduleName="Cockpit"
+      currentRouteLabel="Cockpit"
+      navLabel="Modules"
+      currentLocale="zh-CN"
+      locales={[{ locale: "zh-CN", nativeName: "简体中文" }]}
+      navGroups={[]}
+      search={{ locale: "ja" }}
+    >
+      <div>content</div>
+    </ProductShell>
+  );
+  assert.match(explicitSearchLocale, /aria-label="製品シェルを検索"/);
+
+  // Two more locales, and no locale at all keeps today's English.
+  assert.match(renderToStaticMarkup(<ShellThemeToggle locale="fr" currentTheme="dark" />), /aria-label="Passer en mode clair"/);
+  assert.match(renderToStaticMarkup(<Breadcrumb locale="ko" items={[{ id: "root", label: "TCRN" }]} />), /aria-label="이동 경로"/);
+  assert.match(renderToStaticMarkup(<Breadcrumb items={[{ id: "root", label: "TCRN" }]} />), /aria-label="Breadcrumb"/);
+  // And a caller's own label still wins over the built-in.
+  assert.match(
+    renderToStaticMarkup(<Breadcrumb locale="zh-CN" label="调用方自己的名字" items={[{ id: "root", label: "TCRN" }]} />),
+    /aria-label="调用方自己的名字"/
+  );
+});
+
+/**
+ * The controller's stored preferences have to be readable during the render that
+ * produces the first paint.
+ *
+ * This runs under `renderToStaticMarkup` with no `window` and no `document`, which
+ * is the server. Before this, the only store the controller read was
+ * `window.localStorage`, so on this path every stored preference was invisible and
+ * the shell rendered its default — the English light-mode flash a consumer
+ * reported, produced here rather than in their code. They worked around it by
+ * reading cookies themselves; the workaround is the evidence, so the assertion is
+ * that the shell now needs no such workaround.
+ */
+test("product shell controller reads preferences from the request cookie during server render", () => {
+  const readings: Array<Record<string, unknown>> = [];
+
+  function ServerControllerFixture({ cookie }: { cookie?: string }) {
+    const controller = useProductShellController({
+      collapsedStorageKey: "tcrn-side-nav-collapsed",
+      themeStorageKey: "tcrn-theme",
+      localeStorageKey: "tcrn-locale",
+      requestCookieHeader: cookie
+    });
+    readings.push({
+      collapsed: controller.collapsed,
+      theme: controller.theme,
+      locale: controller.locale
+    });
+    return <span>{`${controller.theme}/${controller.locale}/${controller.collapsed}`}</span>;
+  }
+
+  const withCookie = renderToStaticMarkup(
+    <ServerControllerFixture cookie="tcrn-theme=dark; tcrn-locale=zh-CN; tcrn-side-nav-collapsed=true" />
+  );
+  assert.match(withCookie, /dark\/zh-CN\/true/);
+  assert.deepEqual(readings[0], { collapsed: true, theme: "dark", locale: "zh-CN" });
+
+  // No cookie is not a preference: the product's defaults still stand, so a
+  // client-only consumer that never passes the header is unaffected.
+  const withoutCookie = renderToStaticMarkup(<ServerControllerFixture />);
+  assert.match(withoutCookie, /light\/en\/false/);
+
+  // A cookie naming a preference the shell does not govern changes nothing, and one
+  // whose value cannot be percent-decoded is discarded rather than thrown out of the
+  // render — a cookie header is attacker-reachable input.
+  const unrelated = renderToStaticMarkup(
+    <ServerControllerFixture cookie="unrelated=dark; tcrn-locale=%E0%A4%A; tcrn-theme=dark" />
+  );
+  assert.match(unrelated, /dark\/en\/false/);
 });

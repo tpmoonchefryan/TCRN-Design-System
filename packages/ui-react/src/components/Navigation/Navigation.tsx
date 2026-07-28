@@ -12,7 +12,194 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { IconButton, type IconButtonProps } from "../Button/index.js";
 import { SearchInput, type SearchInputProps } from "../Form/index.js";
 import { Icon, type IconName } from "../Icon/index.js";
-import { cx, mergeIds, requiredText } from "../../utils.js";
+import { resolveTcrnLocale, type TcrnLocale } from "@tcrn/ui-copy-state";
+import { cx, mergeIds, requiredText, resolveDocumentLocale } from "../../utils.js";
+
+/**
+ * The shell's own words about itself, in every supported locale.
+ *
+ * Every one of these was an English literal in a parameter default, and they are
+ * the shell's most load-bearing strings: the skip link is the first thing a
+ * keyboard user reaches on any page, and the theme, collapse and locale controls
+ * are icon-only, so their labels are the *entire* accessible name — a
+ * screen-reader user on a translated page had nothing else to go on.
+ *
+ * `ShellLocaleMenu`'s trigger label is the sharpest case: the one control whose
+ * job is to change language was the control that could not say so in the reader's
+ * language.
+ */
+interface ShellChromeLabels {
+  switchToLight: string;
+  switchToDark: string;
+  language: string;
+  collapseSideNav: string;
+  expandSideNav: string;
+  breadcrumb: string;
+  searchShell: string;
+  searchPlaceholder: string;
+  searchResults: string;
+  searchEmpty: string;
+  currentLocation: string;
+  shellWorkspace: string;
+  skipToContent: string;
+  /**
+   * The five with no prop behind them at all.
+   *
+   * A bad default at least lets a consumer pass the right string; these were
+   * literals inline in the JSX, so a product shipping a ja route had no way to
+   * reach them short of forking the component. Two are the only accessible name
+   * their nav has.
+   */
+  brandMarkAlt: string;
+  navItemUnavailable: string;
+  moduleSections: string;
+  sectionNavigation: string;
+  productLauncher: string;
+  productSwitcher: string;
+  /** The visible fallbacks in the two lockups that have no `productId`. */
+  productSuffix: string;
+  productShellCaption: string;
+  /**
+   * Two names composed from a value the consumer supplied. Concatenating an
+   * English word onto a translated product or module name yields a string in
+   * neither language, so the composition is per locale.
+   */
+  brandHomeOf: (productName: string) => string;
+  shellControlsOf: (moduleName: string) => string;
+}
+
+const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
+  "zh-CN": {
+    switchToLight: "切换到日间模式",
+    switchToDark: "切换到夜间模式",
+    language: "语言",
+    collapseSideNav: "收起侧边导航",
+    expandSideNav: "展开侧边导航",
+    breadcrumb: "面包屑导航",
+    searchShell: "检索产品外壳",
+    searchPlaceholder: "检索",
+    searchResults: "检索结果",
+    searchEmpty: "没有结果",
+    currentLocation: "当前位置",
+    shellWorkspace: "产品外壳工作区",
+    skipToContent: "跳到外壳内容",
+    brandMarkAlt: "TCRN 品牌标识",
+    navItemUnavailable: "该导航项在此路由下不可用",
+    moduleSections: "模块分区",
+    sectionNavigation: "分区导航",
+    productLauncher: "产品启动器",
+    productSwitcher: "产品切换器",
+    productSuffix: "产品",
+    productShellCaption: "产品外壳",
+    brandHomeOf: (productName) => `${productName}首页`,
+    shellControlsOf: (moduleName) => `${moduleName}外壳控件`
+  },
+  en: {
+    switchToLight: "Switch to light mode",
+    switchToDark: "Switch to dark mode",
+    language: "Language",
+    collapseSideNav: "Collapse side navigation",
+    expandSideNav: "Expand side navigation",
+    breadcrumb: "Breadcrumb",
+    searchShell: "Search product shell",
+    searchPlaceholder: "Search",
+    searchResults: "Search results",
+    searchEmpty: "No results",
+    currentLocation: "Current location",
+    shellWorkspace: "Product shell workspace",
+    skipToContent: "Skip to shell content",
+    brandMarkAlt: "TCRN brand mark",
+    navItemUnavailable: "Navigation item unavailable in this route",
+    moduleSections: "Module sections",
+    sectionNavigation: "Section navigation",
+    productLauncher: "Product launcher",
+    productSwitcher: "Product switcher",
+    productSuffix: "Product",
+    productShellCaption: "Product shell",
+    brandHomeOf: (productName) => `${productName} home`,
+    shellControlsOf: (moduleName) => `${moduleName} shell controls`
+  },
+  ja: {
+    switchToLight: "ライトモードに切り替え",
+    switchToDark: "ダークモードに切り替え",
+    language: "言語",
+    collapseSideNav: "サイドナビゲーションを折りたたむ",
+    expandSideNav: "サイドナビゲーションを展開する",
+    breadcrumb: "パンくずリスト",
+    searchShell: "製品シェルを検索",
+    searchPlaceholder: "検索",
+    searchResults: "検索結果",
+    searchEmpty: "結果はありません",
+    currentLocation: "現在の位置",
+    shellWorkspace: "製品シェルのワークスペース",
+    skipToContent: "シェルの本文へスキップ",
+    brandMarkAlt: "TCRN のブランドマーク",
+    navItemUnavailable: "このルートではこのナビゲーション項目を使用できません",
+    moduleSections: "モジュールのセクション",
+    sectionNavigation: "セクションのナビゲーション",
+    productLauncher: "製品ランチャー",
+    productSwitcher: "製品の切り替え",
+    productSuffix: "製品",
+    productShellCaption: "製品シェル",
+    brandHomeOf: (productName) => `${productName}のホーム`,
+    shellControlsOf: (moduleName) => `${moduleName}のシェル操作`
+  },
+  ko: {
+    switchToLight: "라이트 모드로 전환",
+    switchToDark: "다크 모드로 전환",
+    language: "언어",
+    collapseSideNav: "사이드 내비게이션 접기",
+    expandSideNav: "사이드 내비게이션 펼치기",
+    breadcrumb: "이동 경로",
+    searchShell: "제품 셸 검색",
+    searchPlaceholder: "검색",
+    searchResults: "검색 결과",
+    searchEmpty: "결과 없음",
+    currentLocation: "현재 위치",
+    shellWorkspace: "제품 셸 작업 공간",
+    skipToContent: "셸 본문으로 이동",
+    brandMarkAlt: "TCRN 브랜드 마크",
+    navItemUnavailable: "이 경로에서는 이 내비게이션 항목을 사용할 수 없습니다",
+    moduleSections: "모듈 섹션",
+    sectionNavigation: "섹션 내비게이션",
+    productLauncher: "제품 실행기",
+    productSwitcher: "제품 전환기",
+    productSuffix: "제품",
+    productShellCaption: "제품 셸",
+    brandHomeOf: (productName) => `${productName} 홈`,
+    shellControlsOf: (moduleName) => `${moduleName} 셸 컨트롤`
+  },
+  fr: {
+    switchToLight: "Passer en mode clair",
+    switchToDark: "Passer en mode sombre",
+    language: "Langue",
+    collapseSideNav: "Replier la navigation latérale",
+    expandSideNav: "Déplier la navigation latérale",
+    breadcrumb: "Fil d’Ariane",
+    searchShell: "Rechercher dans la coque produit",
+    searchPlaceholder: "Rechercher",
+    searchResults: "Résultats de recherche",
+    searchEmpty: "Aucun résultat",
+    currentLocation: "Emplacement actuel",
+    shellWorkspace: "Espace de travail de la coque produit",
+    skipToContent: "Aller au contenu de la coque",
+    brandMarkAlt: "Marque TCRN",
+    navItemUnavailable: "Élément de navigation indisponible sur cette route",
+    moduleSections: "Sections du module",
+    sectionNavigation: "Navigation des sections",
+    productLauncher: "Lanceur de produits",
+    productSwitcher: "Sélecteur de produit",
+    productSuffix: "Produit",
+    productShellCaption: "Coque produit",
+    brandHomeOf: (productName) => `Accueil : ${productName}`,
+    shellControlsOf: (moduleName) => `Commandes de la coque : ${moduleName}`
+  }
+};
+
+/** The shell chrome labels for the reader's language. */
+function chromeLabels(locale: TcrnLocale | string | undefined): ShellChromeLabels {
+  return shellChromeLabels[resolveDocumentLocale(locale)];
+}
 
 export interface NavItem {
   id: string;
@@ -40,10 +227,15 @@ export function TopBar({ productName, moduleName, actions, brandProps, className
 export interface TcrnBrandMarkProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt"> {
   src?: string;
   alt?: string;
+  /** Which language the built-in alt text is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function TcrnBrandMark({ src = "tcrn-brand-mark.svg", alt = "TCRN brand mark", className, ...props }: TcrnBrandMarkProps) {
-  const accessibleName = requiredText(alt, "TCRN brand mark");
+export function TcrnBrandMark({ src = "tcrn-brand-mark.svg", alt, locale, className, ...props }: TcrnBrandMarkProps) {
+  // The mark is an image, so this alt text is its whole contribution to the
+  // accessibility tree — and this component is mounted by every lockup on every
+  // page, which made one English literal the most widely rendered of them all.
+  const accessibleName = requiredText(alt, chromeLabels(locale).brandMarkAlt);
   return (
     <img
       {...props}
@@ -59,6 +251,21 @@ export function TcrnBrandMark({ src = "tcrn-brand-mark.svg", alt = "TCRN brand m
   );
 }
 
+/**
+ * The registered product lockups.
+ *
+ * `lineOne` is the wordmark and stays Latin in every locale — it is the product's
+ * name, and a translated name is a different product. `lineTwo` is a descriptive
+ * tagline, which is copy: it says what the product *is*, and a reader who cannot
+ * read it learns nothing from it. So the taglines carry all five locales while
+ * the wordmarks carry none, and the distinction is the point — "brand identity"
+ * covered both here, so `AI Operation System` and `Talent Management System`
+ * rendered in English on every localized route of every consuming product, in the
+ * one component every page mounts.
+ *
+ * `alt` combines the two and follows the tagline, because a screen-reader user on
+ * a ja route should hear the shell's brand the way a sighted reader sees it.
+ */
 export const tcrnProductLogoRegistry = {
   "design-system": {
     productId: "design-system",
@@ -67,7 +274,13 @@ export const tcrnProductLogoRegistry = {
     lineOneBase: "TCRN",
     lineOneSuffix: "Design System",
     suffixClassName: "tcrn-brand-wordmark__suffix--design-system",
-    lineTwo: "Component Library",
+    lineTwo: {
+      "zh-CN": "组件库",
+      en: "Component Library",
+      ja: "コンポーネントライブラリ",
+      ko: "컴포넌트 라이브러리",
+      fr: "Bibliothèque de composants"
+    },
     stackSuffix: true,
     alt: "TCRN Design System"
   },
@@ -78,9 +291,15 @@ export const tcrnProductLogoRegistry = {
     lineOneBase: "TCRN",
     lineOneSuffix: "AOS",
     suffixClassName: "tcrn-brand-wordmark__suffix--aos",
-    lineTwo: "AI Operation System",
+    lineTwo: {
+      "zh-CN": "AI 运营系统",
+      en: "AI Operation System",
+      ja: "AI オペレーションシステム",
+      ko: "AI 운영 시스템",
+      fr: "Système d'exploitation IA"
+    },
     stackSuffix: false,
-    alt: "TCRN AOS AI Operation System"
+    alt: "TCRN AOS"
   },
   tms: {
     productId: "tms",
@@ -89,9 +308,15 @@ export const tcrnProductLogoRegistry = {
     lineOneBase: "TCRN",
     lineOneSuffix: "TMS",
     suffixClassName: "tcrn-brand-wordmark__suffix--tms",
-    lineTwo: "Talent Management System",
+    lineTwo: {
+      "zh-CN": "人才管理系统",
+      en: "Talent Management System",
+      ja: "タレントマネジメントシステム",
+      ko: "인재 관리 시스템",
+      fr: "Système de gestion des talents"
+    },
     stackSuffix: false,
-    alt: "TCRN TMS Talent Management System"
+    alt: "TCRN TMS"
   }
 } as const;
 
@@ -107,38 +332,56 @@ function shouldStackProductSuffix(productSuffix: string) {
   return productSuffix.length > 8 || productSuffix.includes(" ") || cjkCount >= 4;
 }
 
+/** The registered tagline for `productId`, in the reader's language. */
+export function tcrnProductTagline(productId: TcrnProductLogoId, locale?: string): string {
+  return tcrnProductLogoRegistry[productId].lineTwo[resolveTcrnLocale(locale)];
+}
+
 export interface ProductLogoProps extends HTMLAttributes<HTMLDivElement> {
   productId: TcrnProductLogoId;
   brandMarkSrc?: string;
   brandMarkAlt?: string;
+  /**
+   * Which language the tagline is said in. Defaults to the fallback locale, so a
+   * consumer that never passes it keeps today's English rather than losing the
+   * line — but a localized shell must pass it or the brand block is the one part
+   * of the page that stays English.
+   */
+  locale?: string;
 }
 
 export function ProductLogo({
   productId,
   brandMarkSrc = "tcrn-brand-mark.svg",
   brandMarkAlt,
+  locale,
   className,
   ...props
 }: ProductLogoProps) {
   const asset = getTcrnProductLogoAsset(productId);
+  const tagline = tcrnProductTagline(productId, locale);
+  // The accessible name says the wordmark and the tagline together, so a
+  // screen-reader user hears what a sighted reader sees — including the
+  // translation, which is why it is composed here rather than stored.
+  const accessibleName = `${asset.lineOne} ${tagline}`;
 
   return (
     <div
       {...props}
       className={cx("tcrn-product-logo", asset.stackSuffix && "tcrn-product-logo--stacked-suffix", className)}
-      aria-label={asset.alt}
+      aria-label={accessibleName}
       data-component-source="@tcrn/ui-react"
       data-registered-product-logo="@tcrn/ui-react/ProductLogo"
       data-product-id={asset.productId}
       data-product-logo-asset-id={asset.assetId}
     >
-      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt ?? asset.alt} />
+      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt ?? accessibleName} />
       <span className="tcrn-product-logo__copy" aria-hidden="true">
         <span className="tcrn-product-logo__line-one" aria-label={asset.lineOne}>
           <span className="tcrn-product-logo__line-one-base">{asset.lineOneBase}</span>
           <span className={cx("tcrn-product-logo__line-one-suffix", asset.suffixClassName)}>{asset.lineOneSuffix}</span>
         </span>
-        <span className="tcrn-product-logo__line-two">{asset.lineTwo}</span>
+        <span className="tcrn-product-logo__line-two">{tagline}</span>
       </span>
     </div>
   );
@@ -150,13 +393,16 @@ export interface ProductLockupProps extends HTMLAttributes<HTMLDivElement> {
   brandMarkSrc?: string;
   brandMarkAlt?: string;
   productId?: TcrnProductLogoId;
+  /** Passed to `ProductLogo` when `productId` is given; ignored otherwise. */
+  locale?: string;
 }
 
-export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, className, ...props }: ProductLockupProps) {
+export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, locale, className, ...props }: ProductLockupProps) {
   if (productId) {
     return (
       <ProductLogo
         {...props}
+        locale={locale}
         productId={productId}
         brandMarkSrc={brandMarkSrc}
         brandMarkAlt={brandMarkAlt}
@@ -165,7 +411,9 @@ export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMark
     );
   }
 
-  const productSuffix = requiredText(suffix, "Product");
+  // Reached only without a `productId`, where there is no registered lockup to
+  // read a name from — so this visible fallback is the product's whole name.
+  const productSuffix = requiredText(suffix, chromeLabels(locale).productSuffix);
   const isLongSuffix = shouldStackProductSuffix(productSuffix);
 
   return (
@@ -176,7 +424,7 @@ export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMark
       data-brand-lockup="product"
       data-package-backed-brand-lockup="product"
     >
-      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} />
+      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} />
       <span className="tcrn-brand-wordmark">
         <span className="tcrn-brand-wordmark__base">TCRN</span>
         <span className={cx("tcrn-brand-wordmark__suffix", suffixClassName)}>{productSuffix}</span>
@@ -189,11 +437,12 @@ export interface ShellBrandLockupProps extends ProductLockupProps {
   caption?: string;
 }
 
-export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, className, ...props }: ShellBrandLockupProps) {
+export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, locale, className, ...props }: ShellBrandLockupProps) {
   if (productId) {
     return (
       <ProductLogo
         {...props}
+        locale={locale}
         productId={productId}
         brandMarkSrc={brandMarkSrc}
         brandMarkAlt={brandMarkAlt}
@@ -201,6 +450,10 @@ export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSr
       />
     );
   }
+
+  // Two visible fallbacks and the mark's alt text, all reached only on the
+  // no-`productId` path.
+  const chrome = chromeLabels(locale);
 
   return (
     <div
@@ -210,13 +463,13 @@ export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSr
       data-brand-lockup="shell"
       data-package-backed-brand-lockup="shell"
     >
-      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} />
+      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} />
       <span className="tcrn-shell-brand-lockup__copy">
         <span className="tcrn-brand-wordmark">
           <span className="tcrn-brand-wordmark__base">TCRN</span>
-          <span className={cx("tcrn-brand-wordmark__suffix", suffixClassName)}>{requiredText(suffix, "Product")}</span>
+          <span className={cx("tcrn-brand-wordmark__suffix", suffixClassName)}>{requiredText(suffix, chrome.productSuffix)}</span>
         </span>
-        <span className="tcrn-shell-brand-lockup__caption">{requiredText(caption, "Product shell")}</span>
+        <span className="tcrn-shell-brand-lockup__caption">{requiredText(caption, chrome.productShellCaption)}</span>
       </span>
     </div>
   );
@@ -231,18 +484,26 @@ export interface ShellThemeToggleProps extends Omit<IconButtonProps, "ariaLabel"
   currentTheme: ShellThemeMode;
   lightLabel?: string;
   darkLabel?: string;
+  /** Which language the two built-in labels are said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
   onThemeChange?: (nextTheme: ShellThemeMode) => void;
 }
 
 export function ShellThemeToggle({
   currentTheme,
-  lightLabel = "Switch to light mode",
-  darkLabel = "Switch to dark mode",
+  lightLabel,
+  darkLabel,
+  locale,
   onThemeChange,
   className,
   onClick,
   ...props
 }: ShellThemeToggleProps) {
+  // Icon-only, so this label is the entire accessible name — there is no visible
+  // text a reader could fall back on when it is in the wrong language.
+  const labels = chromeLabels(locale);
+  const resolvedLightLabel = lightLabel ?? labels.switchToLight;
+  const resolvedDarkLabel = darkLabel ?? labels.switchToDark;
   const normalizedTheme = currentTheme === "dark" ? "dark" : "light";
   const nextTheme: ShellThemeMode = normalizedTheme === "dark" ? "light" : "dark";
   const handleClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
@@ -256,8 +517,8 @@ export function ShellThemeToggle({
     <IconButton
       {...props}
       onClick={handleClick}
-      ariaLabel={normalizedTheme === "dark" ? lightLabel : darkLabel}
-      title={normalizedTheme === "dark" ? lightLabel : darkLabel}
+      ariaLabel={normalizedTheme === "dark" ? resolvedLightLabel : resolvedDarkLabel}
+      title={normalizedTheme === "dark" ? resolvedLightLabel : resolvedDarkLabel}
       className={cx("tcrn-shell-theme-toggle", className)}
       data-shell-control="theme-toggle"
       data-package-backed-shell-control="theme-toggle"
@@ -298,7 +559,11 @@ export interface ShellLocaleMenuProps extends HTMLAttributes<HTMLDivElement> {
 export function ShellLocaleMenu({
   locales,
   currentLocale,
-  label = "Language",
+  // The one control whose job is to change language was the one that could not
+  // say so in the reader's language. It needs no `locale` prop: `currentLocale`
+  // already *is* the language this menu should speak, so a consumer who wires the
+  // menu at all has already supplied the answer.
+  label,
   open = false,
   menuId,
   triggerId,
@@ -309,6 +574,7 @@ export function ShellLocaleMenu({
 }: ShellLocaleMenuProps) {
   const current = locales.find((entry) => entry.locale === currentLocale) ?? locales[0];
   const currentName = requiredText(current?.nativeName, currentLocale);
+  const resolvedLabel = label ?? chromeLabels(currentLocale).language;
   const generatedMenuId = useId();
   const resolvedMenuId = menuId ?? generatedMenuId;
   const rootRef = useRef<HTMLDivElement>(null);
@@ -374,8 +640,8 @@ export function ShellLocaleMenu({
         aria-haspopup="listbox"
         aria-expanded={open ? "true" : "false"}
         aria-controls={resolvedMenuId}
-        aria-label={label}
-        title={label}
+        aria-label={resolvedLabel}
+        title={resolvedLabel}
       >
         <Icon name="globe-2" />
         <span className="tcrn-shell-locale-menu__current" data-locale-current data-locale-current-name>{currentName}</span>
@@ -408,6 +674,8 @@ export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, "ariaL
   controls: string;
   expandedLabel?: string;
   collapsedLabel?: string;
+  /** Which language the two built-in labels are said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
   disabledReason?: string;
   persistedKey?: string;
   onCollapsedChange?: (collapsed: boolean) => void;
@@ -416,8 +684,9 @@ export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, "ariaL
 export function SideNavCollapseButton({
   collapsed,
   controls,
-  expandedLabel = "Collapse side navigation",
-  collapsedLabel = "Expand side navigation",
+  expandedLabel,
+  collapsedLabel,
+  locale,
   disabledReason,
   persistedKey,
   onCollapsedChange,
@@ -427,7 +696,10 @@ export function SideNavCollapseButton({
   ...props
 }: SideNavCollapseButtonProps) {
   const disabled = props.disabled ?? Boolean(disabledReason);
-  const label = disabledReason ?? (collapsed ? collapsedLabel : expandedLabel);
+  // Icon-only, like the theme toggle: the label is the whole accessible name.
+  const chrome = chromeLabels(locale);
+  const label = disabledReason
+    ?? (collapsed ? collapsedLabel ?? chrome.expandSideNav : expandedLabel ?? chrome.collapseSideNav);
   const handleClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
     onClick?.(event);
     if (!disabled && !event.defaultPrevented) {
@@ -483,6 +755,14 @@ export function SideNavCollapseButton({
 
 export interface ProductLauncherProps {
   items: NavItem[];
+  /**
+   * Which language the built-in nav label is said in; defaults to the page's own.
+   *
+   * These five navs render only their items, so the label is the entire name
+   * their landmark has — and it was a literal in the JSX with no prop behind it,
+   * so a localized consumer could not override it either.
+   */
+  locale?: TcrnLocale | string;
 }
 
 function LauncherItems({ items }: ProductLauncherProps) {
@@ -497,50 +777,94 @@ function LauncherItems({ items }: ProductLauncherProps) {
   );
 }
 
-export function ProductLauncher({ items }: ProductLauncherProps) {
+export function ProductLauncher({ items, locale }: ProductLauncherProps) {
   return (
-    <nav className="tcrn-product-launcher" aria-label="Product launcher">
+    <nav className="tcrn-product-launcher" aria-label={chromeLabels(locale).productLauncher}>
       <LauncherItems items={items} />
     </nav>
   );
 }
 
-export function ProductSwitcher({ items }: ProductLauncherProps) {
+export function ProductSwitcher({ items, locale }: ProductLauncherProps) {
   return (
-    <nav className="tcrn-product-switcher" aria-label="Product switcher">
+    <nav className="tcrn-product-switcher" aria-label={chromeLabels(locale).productSwitcher}>
       <LauncherItems items={items} />
     </nav>
   );
 }
 
-export function Breadcrumb({ items }: ProductLauncherProps) {
+/**
+ * One crumb. `NavItem` plus the ancestor's address.
+ *
+ * Breadcrumb takes its own item type rather than gaining an `href` on the shared
+ * `NavItem`: five other components read that type (ProductLauncher,
+ * ProductSwitcher, ModuleTabs, SectionTabs, SegmentedNav) and none of them wants
+ * a link. Widening the shared type to fix one component would have offered an
+ * href on five surfaces that ignore it, which is a worse contract than a
+ * slightly larger type surface.
+ */
+export interface BreadcrumbItem extends NavItem {
+  /**
+   * Where this ancestor lives. Omit for the current page — the last crumb is
+   * where the reader already is, so a link to it is a link to nowhere.
+   */
+  href?: string;
+}
+
+export interface BreadcrumbProps {
+  items: BreadcrumbItem[];
+  /** Accessible name for the trail. Omit it and the reader's language is used. */
+  label?: string;
+  /** Which language the built-in label is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
+}
+
+/**
+ * The ancestor trail, and the product's way back.
+ *
+ * Every crumb used to render as an inert `<span>`, which made the component
+ * decorative: it told you where you were and offered no way to leave. A
+ * consumer reported that the only way back from a drilled-down page was the
+ * browser's own back button — true of every page in their product, because this
+ * was the component they were using for the job.
+ *
+ * A crumb with an `href` is now a link. The current page is still inert, which
+ * is the point: `aria-current="page"` plus no link is what tells a screen-reader
+ * user which end of the trail they are standing on.
+ */
+export function Breadcrumb({ items, label, locale }: BreadcrumbProps) {
   return (
-    <nav className="tcrn-breadcrumb" aria-label="Breadcrumb">
+    <nav className="tcrn-breadcrumb" aria-label={label ?? chromeLabels(locale).breadcrumb}>
       {items.map((item, index) => (
         <span key={item.id} className="tcrn-breadcrumb__item">
           {index > 0 ? <Icon name="chevron-right" className="tcrn-breadcrumb__separator" /> : null}
-          <span aria-current={item.selected ? "page" : undefined}>{item.label}</span>
+          {item.href && !item.selected ? (
+            <a href={item.href}>{item.label}</a>
+          ) : (
+            <span aria-current={item.selected ? "page" : undefined}>{item.label}</span>
+          )}
         </span>
       ))}
     </nav>
   );
 }
 
-export function ModuleTabs({ items }: ProductLauncherProps) {
-  return <TabList items={items} className="tcrn-module-tabs" />;
+export function ModuleTabs({ items, locale }: ProductLauncherProps) {
+  return <TabList items={items} locale={locale} className="tcrn-module-tabs" />;
 }
 
-export function SectionTabs({ items }: ProductLauncherProps) {
-  return <TabList items={items} className="tcrn-section-tabs" />;
+export function SectionTabs({ items, locale }: ProductLauncherProps) {
+  return <TabList items={items} locale={locale} className="tcrn-section-tabs" />;
 }
 
-export function SegmentedNav({ items }: ProductLauncherProps) {
-  return <TabList items={items} className="tcrn-segmented-nav" />;
+export function SegmentedNav({ items, locale }: ProductLauncherProps) {
+  return <TabList items={items} locale={locale} className="tcrn-segmented-nav" />;
 }
 
-function TabList({ items, className }: ProductLauncherProps & { className: string }) {
+function TabList({ items, locale, className }: ProductLauncherProps & { className: string }) {
+  const chrome = chromeLabels(locale);
   return (
-    <nav className={className} aria-label={className === "tcrn-module-tabs" ? "Module sections" : "Section navigation"} data-tab-semantics="segmented-navigation">
+    <nav className={className} aria-label={className === "tcrn-module-tabs" ? chrome.moduleSections : chrome.sectionNavigation} data-tab-semantics="segmented-navigation">
       {items.map((item) => (
         <button key={item.id} type="button" aria-current={item.selected ? "page" : undefined} data-selected={item.selected ? "true" : undefined}>
           {item.label}
@@ -587,12 +911,16 @@ export interface NavItemProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElemen
   selected?: boolean;
   disabled?: boolean;
   disabledReason?: string;
+  /** Which language the built-in disabled reason is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
   iconName?: IconName;
   children: ReactNode;
 }
 
-export function NavItem({ selected = false, disabled = false, disabledReason, iconName, className, children, href = "#", ...props }: NavItemProps) {
-  const normalizedReason = disabled ? requiredText(disabledReason, "Navigation item unavailable in this route") : undefined;
+export function NavItem({ selected = false, disabled = false, disabledReason, locale, iconName, className, children, href = "#", ...props }: NavItemProps) {
+  // Rendered visibly, in the `title`, and as the item's description — so when it
+  // falls back it says one English sentence in three places at once.
+  const normalizedReason = disabled ? requiredText(disabledReason, chromeLabels(locale).navItemUnavailable) : undefined;
   const disabledReasonId = useId();
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
   return (
@@ -648,6 +976,8 @@ export interface ProductShellSearchResult {
 export interface ProductShellSearchProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "results"> {
   label?: string;
   placeholder?: string;
+  /** Which language the four built-in strings are said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
   shortcut?: SearchInputProps["shortcut"];
   query?: string;
   expanded?: boolean;
@@ -665,14 +995,15 @@ export interface ProductShellSearchProps extends Omit<HTMLAttributes<HTMLDivElem
 }
 
 export function ProductShellSearch({
-  label = "Search product shell",
-  placeholder = "Search",
+  label,
+  placeholder,
+  locale,
   shortcut = "auto",
   query = "",
   expanded = false,
   results = [],
-  resultsLabel = "Search results",
-  emptyLabel = "No results",
+  resultsLabel,
+  emptyLabel,
   onQueryChange,
   onExpandedChange,
   onDismiss,
@@ -685,6 +1016,14 @@ export function ProductShellSearch({
   const rootRef = useRef<HTMLDivElement>(null);
   const isExpanded = expanded;
   const hasResults = results.length > 0;
+  // The placeholder and the empty-state line are the two visible ones here; the
+  // other two are the names a screen-reader user hears for the field and its
+  // result list.
+  const chrome = chromeLabels(locale);
+  const resolvedLabel = label ?? chrome.searchShell;
+  const resolvedPlaceholder = placeholder ?? chrome.searchPlaceholder;
+  const resolvedResultsLabel = resultsLabel ?? chrome.searchResults;
+  const resolvedEmptyLabel = emptyLabel ?? chrome.searchEmpty;
 
   const requestExpandedChange = useCallback((nextExpanded: boolean, reason: ProductShellSearchExpandedChangeReason) => {
     onExpandedChange?.(nextExpanded, reason);
@@ -759,12 +1098,12 @@ export function ProductShellSearch({
       <SearchInput
         {...inputProps}
         role="combobox"
-        aria-label={label}
+        aria-label={resolvedLabel}
         aria-controls={resultsId}
         aria-expanded={isExpanded ? "true" : "false"}
         aria-haspopup="listbox"
         aria-autocomplete="list"
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         shortcut={shortcut}
         value={query}
         readOnly={inputProps?.readOnly ?? !onQueryChange}
@@ -777,7 +1116,7 @@ export function ProductShellSearch({
         id={resultsId}
         className="tcrn-product-shell-search__results"
         role="listbox"
-        aria-label={resultsLabel}
+        aria-label={resolvedResultsLabel}
         data-product-shell-search-results
         hidden={!isExpanded || !hasResults}
       >
@@ -797,7 +1136,7 @@ export function ProductShellSearch({
             {result.meta ? <span>{result.meta}</span> : null}
           </a>
         )) : (
-          <span className="tcrn-product-shell-search__empty">{emptyLabel}</span>
+          <span className="tcrn-product-shell-search__empty">{resolvedEmptyLabel}</span>
         )}
       </div>
     </div>
@@ -890,7 +1229,7 @@ export function ProductShell({
   brandMarkAlt,
   currentRouteLabel,
   currentRouteLabelKey,
-  currentLocationLabel = "Current location",
+  currentLocationLabel,
   currentLocationLabelKey,
   navLabel,
   navGroups,
@@ -914,13 +1253,24 @@ export function ProductShell({
   onSearchResultActivate,
   contentId = "product-shell-content",
   contentRole = "region",
-  contentLabel = "Product shell workspace",
+  contentLabel,
   navId = "tcrn-product-shell-side-nav",
-  skipLinkLabel = "Skip to shell content",
+  skipLinkLabel,
   className,
   ...props
 }: ProductShellProps) {
   const ContentElement = contentRole === "main" ? "main" : "section";
+  // Like `ShellLocaleMenu`, this needs no `locale` prop: `currentLocale` is
+  // required here, so the shell already knows the reader's language and a second
+  // way to say it could only disagree with the first.
+  //
+  // The skip link is the load-bearing one. It is the first thing a keyboard user
+  // reaches on any page in the product, and it was in English on every localized
+  // route of every consumer.
+  const chrome = chromeLabels(currentLocale);
+  const resolvedCurrentLocationLabel = currentLocationLabel ?? chrome.currentLocation;
+  const resolvedContentLabel = contentLabel ?? chrome.shellWorkspace;
+  const resolvedSkipLinkLabel = skipLinkLabel ?? chrome.skipToContent;
   const mergedSearch: ProductShellSearchProps | undefined = search
     ? {
         ...search,
@@ -958,18 +1308,24 @@ export function ProductShell({
       data-product-shell-semantic-api={mergedSearch ? "collapse-theme-locale-search" : "collapse-theme-locale"}
       data-product-shell-header-actions={headerActions ? "present" : "absent"}
     >
-      <SkipLink href={`#${contentId}`}>{skipLinkLabel}</SkipLink>
+      <SkipLink href={`#${contentId}`}>{resolvedSkipLinkLabel}</SkipLink>
       <aside className="tcrn-product-shell__sidebar" data-product-shell-region="side-navigation">
         <div className="tcrn-product-shell__sidebar-header">
           <a
             className="tcrn-product-shell__brand"
             href={brandHref}
-            aria-label={`${productName} home`}
+            // Composed per locale: the product name is the consumer's own, so
+            // welding " home" onto it produces a link name in neither language.
+            aria-label={chrome.brandHomeOf(productName)}
             data-registered-brand-lockup="@tcrn/ui-react/ShellBrandLockup"
             data-registered-product-logo="@tcrn/ui-react/ProductLogo"
           >
             <ShellBrandLockup
               productId={brandProductId}
+              // The shell already knows the reader's locale for its own utility
+              // row; the brand block was the one part of it still resolved
+              // without that knowledge.
+              locale={currentLocale}
               suffix={brandSuffix}
               caption={brandCaption}
               brandMarkSrc={brandMarkSrc}
@@ -980,6 +1336,7 @@ export function ProductShell({
           <SideNavCollapseButton
             collapsed={collapsed}
             controls={navId}
+            locale={currentLocale}
             disabledReason={sideNavCollapseDisabledReason}
             persistedKey={collapsedStorageKey}
             onCollapsedChange={onCollapsedChange}
@@ -1006,6 +1363,7 @@ export function ProductShell({
                     selected={item.selected}
                     disabled={item.disabled}
                     disabledReason={item.disabledReason}
+                    locale={currentLocale}
                     data-product-shell-route={item.id}
                     data-product-shell-route-label-key={item.labelKey}
                   >
@@ -1017,17 +1375,22 @@ export function ProductShell({
           </SideNav>
       </aside>
       <div className="tcrn-product-shell__workspace">
-        <header className="tcrn-top-bar" aria-label={`${moduleName} shell controls`} data-product-shell-region="topbar">
+        {/* Composed per locale, for the same reason as the brand link above. */}
+        <header className="tcrn-top-bar" aria-label={chrome.shellControlsOf(moduleName)} data-product-shell-region="topbar">
           <div className="tcrn-product-shell__utility-row" data-product-shell-region="utility-row">
             <div
               className="tcrn-product-shell__current-location"
               data-product-shell-current-location-label-key={currentLocationLabelKey}
               data-product-shell-current-route-label-key={currentRouteLabelKey}
             >
-              <span>{currentLocationLabel}</span>
+              <span>{resolvedCurrentLocationLabel}</span>
               <strong>{currentRouteLabel}</strong>
             </div>
-            {mergedSearch ? <ProductShellSearch {...mergedSearch} /> : null}
+            {/* `locale` forwarded, and placed before the spread so a consumer who
+                sets it on `search` still wins. Omitting it is the nested-locale
+                bug: the search field would resolve against the document while the
+                shell around it resolves against `currentLocale`. */}
+            {mergedSearch ? <ProductShellSearch locale={currentLocale} {...mergedSearch} /> : null}
             {headerActions ? (
               <div
                 className="tcrn-product-shell__header-actions"
@@ -1036,7 +1399,7 @@ export function ProductShell({
                 {headerActions}
               </div>
             ) : null}
-            <ShellThemeToggle currentTheme={currentTheme} onThemeChange={onThemeChange} />
+            <ShellThemeToggle currentTheme={currentTheme} locale={currentLocale} onThemeChange={onThemeChange} />
             <ShellLocaleMenu
               locales={locales}
               currentLocale={currentLocale}
@@ -1050,7 +1413,7 @@ export function ProductShell({
           id={contentId}
           className="tcrn-product-shell__main"
           data-product-shell-region="content"
-          aria-label={contentLabel}
+          aria-label={resolvedContentLabel}
         >
           {children}
         </ContentElement>
@@ -1067,6 +1430,24 @@ export interface ProductShellControllerConfig {
   collapsedStorageKey?: string;
   themeStorageKey?: string;
   localeStorageKey?: string;
+  /**
+   * The request's `Cookie` header, for a server-rendered product.
+   *
+   * There is no `document` on the server, so without this the shell's stored
+   * preferences are unreadable exactly where reading them matters — during the
+   * render that produces the first paint. Passing it is what lets the first bytes
+   * already carry the reader's theme and locale instead of correcting to them after
+   * hydration; a client-only product omits it and loses nothing.
+   *
+   * A query parameter still outranks this. The product resolves that itself and
+   * passes the winner as `initialTheme`/`initialLocale`, because only the product
+   * knows its own URL vocabulary.
+   */
+  // Explicitly `| undefined`: a request with no Cookie header is the ordinary
+  // first-visit case, not a caller who forgot the argument. A consumer compiled
+  // with `exactOptionalPropertyTypes` would otherwise have to spread the prop
+  // conditionally to say the one thing it most often needs to say.
+  requestCookieHeader?: string | undefined;
   searchRecords?: readonly ProductShellSearchResult[];
   searchLimit?: number;
   onCollapsedChange?: (collapsed: boolean) => void;
@@ -1087,6 +1468,7 @@ export function useProductShellController({
   collapsedStorageKey,
   themeStorageKey,
   localeStorageKey,
+  requestCookieHeader,
   searchRecords = [],
   searchLimit = 8,
   onCollapsedChange,
@@ -1098,9 +1480,12 @@ export function useProductShellController({
   onSearchDismiss,
   onSearchResultActivate
 }: ProductShellControllerConfig = {}) {
-  const [collapsed, setCollapsedState] = useState(() => readStoredBoolean(collapsedStorageKey, initialCollapsed));
-  const [theme, setThemeState] = useState<ShellThemeMode>(() => readStoredTheme(themeStorageKey, initialTheme));
-  const [locale, setLocaleState] = useState(() => readStoredString(localeStorageKey, initialLocale));
+  const [collapsed, setCollapsedState] = useState(
+    () => readStoredBoolean(collapsedStorageKey, initialCollapsed, requestCookieHeader));
+  const [theme, setThemeState] = useState<ShellThemeMode>(
+    () => readStoredTheme(themeStorageKey, initialTheme, requestCookieHeader));
+  const [locale, setLocaleState] = useState(
+    () => readStoredLocale(localeStorageKey, initialLocale, requestCookieHeader));
   const [localeMenuOpen, setLocaleMenuOpenState] = useState(false);
   const [searchQuery, setSearchQueryState] = useState("");
   const [searchExpanded, setSearchExpandedState] = useState(false);
@@ -1128,10 +1513,15 @@ export function useProductShellController({
     update();
   }, [onThemeChange, themeStorageKey]);
 
+  // The setter narrows too, not only the reader. A locale reaches this function
+  // from a menu today, but the signature is public and the value ends up in
+  // `<html lang>` and the dictionary index either way, so the boundary is the
+  // function rather than any one of its callers.
   const setLocale = useCallback((nextLocale: string) => {
-    setLocaleState(nextLocale);
-    writeStoredString(localeStorageKey, nextLocale);
-    onLocaleChange?.(nextLocale);
+    const resolvedLocale = resolveTcrnLocale(nextLocale);
+    setLocaleState(resolvedLocale);
+    writeStoredString(localeStorageKey, resolvedLocale);
+    onLocaleChange?.(resolvedLocale);
   }, [localeStorageKey, onLocaleChange]);
 
   const setLocaleMenuOpen = useCallback((nextOpen: boolean, reason: ProductShellLocaleMenuChangeReason = "controller") => {
@@ -1262,29 +1652,126 @@ export function useProductShellController({
   };
 }
 
-function readStoredBoolean(key: string | undefined, fallback: boolean): boolean {
-  if (!key || typeof window === "undefined") return fallback;
-  const value = window.localStorage.getItem(key);
+/**
+ * How long a stored preference outlives the session it was chosen in.
+ *
+ * A session cookie would be cleared on browser close, and the flash the consumer
+ * reported would come back on the next visit — the same defect, just less often,
+ * which is the hardest kind to notice. A year is long enough that a returning
+ * reader never re-chooses and short enough to expire on an abandoned device.
+ */
+const preferenceCookieMaxAgeSeconds = 60 * 60 * 24 * 365;
+
+/**
+ * A preference, from whichever store can answer where this runs.
+ *
+ * This used to read `window.localStorage` and nothing else, which made the shell's
+ * own persistence unusable by a server-rendered product: the server cannot read
+ * that store, so the first paint went out in the default and corrected itself after
+ * hydration. A consumer reported exactly that — every page flashing English
+ * light-mode before settling — and worked around it by reading cookies themselves
+ * and passing the result in through `initialTheme`/`initialLocale`, leaving the
+ * shell's `themeStorageKey`/`localeStorageKey` unused. That workaround is the
+ * evidence the defect was here: the reference implementation was the thing teaching
+ * the shape.
+ *
+ * `localStorage` wins where both can answer because it is the store the browser
+ * cannot drop on its own — a cookie can expire or be cleared by a privacy setting
+ * while site storage stays, and in that case the cookie's absence is not a choice
+ * the reader made. On the server there is only the cookie.
+ */
+function readStoredPreference(key: string | undefined, requestCookieHeader?: string): string | null {
+  if (!key) return null;
+  if (typeof window !== "undefined") {
+    const fromBrowserStore = window.localStorage.getItem(key);
+    if (fromBrowserStore !== null) return fromBrowserStore;
+  }
+  return readCookiePreference(key, requestCookieHeader ?? readDocumentCookieHeader());
+}
+
+function readStoredBoolean(key: string | undefined, fallback: boolean, requestCookieHeader?: string): boolean {
+  const value = readStoredPreference(key, requestCookieHeader);
   return value === null ? fallback : value === "true";
 }
 
-function readStoredTheme(key: string | undefined, fallback: ShellThemeMode): ShellThemeMode {
-  const value = readStoredString(key, fallback);
+function readStoredTheme(
+  key: string | undefined,
+  fallback: ShellThemeMode,
+  requestCookieHeader?: string
+): ShellThemeMode {
+  const value = readStoredString(key, fallback, requestCookieHeader);
   return value === "dark" ? "dark" : "light";
 }
 
-function readStoredString(key: string | undefined, fallback: string): string {
-  if (!key || typeof window === "undefined") return fallback;
-  return window.localStorage.getItem(key) ?? fallback;
+function readStoredString(key: string | undefined, fallback: string, requestCookieHeader?: string): string {
+  return readStoredPreference(key, requestCookieHeader) ?? fallback;
+}
+
+/**
+ * Locale is the one preference whose stored value is attacker-writable and lands
+ * somewhere that matters: it becomes `<html lang>` and the dictionary index. The
+ * theme and collapsed readers each narrow to their own domain (`dark`/`light`,
+ * `true`/`false`); this one was reading the raw string through, so a consumer that
+ * did not re-resolve it downstream would inherit whatever the cookie said. Narrow
+ * here instead, where the store is read, so no consumer has to remember to.
+ */
+function readStoredLocale(key: string | undefined, fallback: string, requestCookieHeader?: string): TcrnLocale {
+  return resolveTcrnLocale(readStoredString(key, fallback, requestCookieHeader));
 }
 
 function writeStoredBoolean(key: string | undefined, value: boolean) {
   writeStoredString(key, String(value));
 }
 
+/**
+ * Both stores, because writing only one is the defect in either direction.
+ *
+ * `localStorage` alone leaves the server blind, which is where the flash came from.
+ * A cookie alone is lost to a privacy setting that keeps site storage but clears
+ * cookies. Neither contains the other, so a change writes both and
+ * `readStoredPreference` states which wins.
+ */
 function writeStoredString(key: string | undefined, value: string) {
   if (!key || typeof window === "undefined") return;
   window.localStorage.setItem(key, value);
+  writeCookiePreference(key, value);
+}
+
+function readDocumentCookieHeader(): string {
+  if (typeof document === "undefined") return "";
+  return document.cookie;
+}
+
+function readCookiePreference(name: string, header: string): string | null {
+  if (!header) return null;
+  for (const pair of header.split(";")) {
+    const separator = pair.indexOf("=");
+    if (separator < 0) continue;
+    if (pair.slice(0, separator).trim() !== name) continue;
+    // A cookie header is attacker-reachable input and a malformed percent-escape
+    // throws out of `decodeURIComponent`. A preference that cannot be decoded is no
+    // preference — not an exception thrown while rendering the shell.
+    try {
+      return decodeURIComponent(pair.slice(separator + 1).trim());
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+/**
+ * `SameSite=Lax`, no `Secure`: this is a display preference, not a credential.
+ *
+ * `Lax` still keeps the cookie off cross-site subrequests. Omitting `Secure` is what
+ * lets the same path work on a plain-HTTP local service, where a `Secure` cookie is
+ * silently dropped — which would leave the flash in place on exactly the host where
+ * products are developed and their gates run.
+ */
+function writeCookiePreference(name: string, value: string) {
+  if (typeof document === "undefined") return;
+  document.cookie =
+    `${name}=${encodeURIComponent(value)}; path=/; max-age=${preferenceCookieMaxAgeSeconds}; samesite=lax`;
 }
 
 export function Pagination({ label }: { label: string }) {
@@ -2549,6 +3036,27 @@ a.tcrn-relationship-chip:focus-visible {
   overflow-wrap: anywhere;
   word-break: break-word;
 }
+/* A traversable machine token (MachineToken href). Same inline-record-link ink as
+   the Knowledge result anchor: brand colour with a quiet underline that answers
+   hover, so a token that leads somewhere is distinguishable from one that does
+   not without changing the monospace shape of the value itself. */
+.tcrn-machine-token__link {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--tcrn-color-brand-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 35%, transparent);
+}
+.tcrn-machine-token__link:hover {
+  text-decoration-color: var(--tcrn-color-brand-primary);
+}
+.tcrn-machine-token__link .tcrn-machine-token__value {
+  color: inherit;
+}
 .tcrn-machine-token__copy {
   min-height: 28px;
   padding: var(--tcrn-space-0h) var(--tcrn-space-2);
@@ -3748,6 +4256,21 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-breadcrumb [aria-current="page"] {
   color: var(--tcrn-color-text-primary);
   font-weight: 700;
+}
+
+/* An ancestor crumb is now a link (it previously rendered as an inert span, so
+   there was nothing to style). Quiet by default and underlined on hover: the
+   trail is chrome, and a row of permanently underlined links competes with the
+   page title it sits above. */
+.tcrn-breadcrumb a {
+  color: inherit;
+  text-decoration: none;
+}
+.tcrn-breadcrumb a:hover {
+  color: var(--tcrn-color-brand-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 
 /* Pagination container. Pagination renders an empty nav today; this readies the

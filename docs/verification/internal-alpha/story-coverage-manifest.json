@@ -375,7 +375,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "73c9892f63b143b2a2236cc32537815a3e38412dcc7efec395a0955e88bbbbc5",
+    "contractPayloadDigest": "d4e4b536f22f1ccff9e9b7bf9add1f61ef42ba522f43150b2ad13fd0914ead17",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 20,
@@ -6962,7 +6962,7 @@
       "gating": true,
       "ok": true,
       "storyCount": 61,
-      "allowlistedLeakCount": 91,
+      "allowlistedLeakCount": 90,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -7103,7 +7103,7 @@
         },
         {
           "storyId": "navigation-product-shell-spec",
-          "allowlistedLeakCount": 1,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
@@ -7280,7 +7280,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 117,
+        "leakCount": 116,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7392,7 +7392,7 @@
           },
           {
             "storyId": "navigation-product-shell-spec",
-            "leakCount": 2
+            "leakCount": 1
           },
           {
             "storyId": "dialog-spec-usage",
@@ -7534,7 +7534,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 124,
+        "leakCount": 123,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7646,7 +7646,7 @@
           },
           {
             "storyId": "navigation-product-shell-spec",
-            "leakCount": 3
+            "leakCount": 2
           },
           {
             "storyId": "dialog-spec-usage",

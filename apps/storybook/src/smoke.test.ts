@@ -138,6 +138,8 @@ const expectedAiRequiredBeforeProductFrontendImplementation = [
   "use_product_shell_semantic_control_api",
   "prove_locale_popup_dismissal_and_focus_return",
   "prove_side_navigation_collapse_state",
+  "offer_an_in_product_way_back_from_drilled_down_routes",
+  "transport_locale_and_theme_in_a_server_readable_store",
   "use_work_management_patterns_for_static_work_surfaces",
   "use_knowledge_management_patterns_for_static_knowledge_surfaces",
   "block_unregistered_modules_from_primary_navigation",
@@ -159,6 +161,8 @@ const expectedAiRequiredProof = [
   "storybook_doc_shell_visual_oracle_receipt",
   "locale_popup_dismissal_receipt",
   "side_navigation_collapse_receipt",
+  "navigation_reversibility_receipt",
+  "server_rendered_preference_receipt",
   "work_management_static_pattern_receipt",
   "knowledge_management_static_pattern_receipt",
   "registered_navigation_receipt",
@@ -1289,7 +1293,18 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Patterns")?.consumerChecks.join(" ") ?? "", /information hierarchy, density, mobile reflow/);
   assert.deepEqual(contract.supportedThemeModes, ["light", "dark"]);
   assert.match(contract.productLogoRegistry?.map((logo: { assetId: string }) => logo.assetId).join(" ") ?? "", /tcrn-aos-two-line/);
-  assert.match(contract.productLogoRegistry?.map((logo: { lineTwo: string }) => logo.lineTwo).join(" ") ?? "", /AI Operation System/);
+  // The tagline the contract publishes is copy in five locales, so a consumer can
+  // pick by reader locale. Asserting the whole object is what stops it silently
+  // collapsing back to one English string.
+  const aosLogo = contract.productLogoRegistry?.find((logo: { productId: string }) => logo.productId === "aos");
+  assert.deepEqual(aosLogo?.lineTwo, {
+    "zh-CN": "AI 运营系统",
+    en: "AI Operation System",
+    ja: "AI オペレーションシステム",
+    ko: "AI 운영 시스템",
+    fr: "Système d'exploitation IA"
+  });
+  assert.equal(aosLogo?.taglineLocaleSelector, "tcrnProductTagline(productId, locale)");
   assert.equal(contract.productLogoRegistry?.find((logo: { productId: string }) => logo.productId === "design-system")?.stackSuffix, true);
   assert.match(contract.brandSurfaceDisposition, /ProductLogo and tcrnProductLogoRegistry are registered @tcrn\/ui-react exports/);
   assert.match(contract.brandSurfaceDisposition, /TCRN stays regular weight/);
@@ -1317,6 +1332,29 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.workManagementPatternDisposition, /API integration, backend persistence, live dispatch, external queues, runtime data mutation, AOS\/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed/);
   assert.match(contract.knowledgeManagementPatternDisposition, /static page trees, document canvas, table of contents/);
   assert.match(contract.knowledgeManagementPatternDisposition, /backend publishing, live collaboration, external workspace integration/);
+  // The preference-transport block landed for a reported first-paint flash and then
+  // sat unasserted: nothing in this repository read it, so its clauses could have
+  // been softened or dropped and every gate would have stayed green. Structure and
+  // prose both, because either alone is removable without the other noticing.
+  assert.equal(contract.preferenceTransport.disposition, "server_readable_transport_required_for_server_rendered_products");
+  assert.deepEqual(contract.preferenceTransport.governedPreferences, ["locale", "theme", "sideNavigationCollapsed"]);
+  assert.deepEqual(contract.preferenceTransport.precedence, ["explicit_url_query", "server_readable_store", "product_default"]);
+  assert.deepEqual(contract.preferenceTransport.serverReadableStores, ["cookie", "request_header", "server_side_session"]);
+  assert.deepEqual(contract.preferenceTransport.clientOnlyStores, ["localStorage", "sessionStorage", "indexeddb"]);
+  assert.equal(contract.preferenceTransport.productAcceptanceClaim, false);
+  assert.match(contract.preferenceTransport.precedenceRule, /shared link lands on what the sender saw/);
+  assert.match(contract.preferenceTransport.clientOnlyStoreRule, /must not be its only home in a server-rendered product/);
+  assert.match(contract.preferenceTransport.clientOnlyStoreRule, /visible on every navigation, not only the first/);
+  // The proof clause is the one that decides whether a gate can be satisfied by
+  // inspecting the settled page, which is exactly the check that cannot tell a
+  // correct first paint from a corrected one.
+  assert.match(contract.preferenceTransport.requiredProof, /present in the first response body/);
+  assert.match(contract.preferenceTransport.requiredProof, /not merely in the DOM after hydration/);
+  // The shell now supplies the server-readable read itself, so a consumer no longer
+  // has to hand-roll cookie parsing to avoid the flash. Naming the prop in the
+  // consumption disposition is what makes that the documented route rather than a
+  // capability a reader has to find in the source.
+  assert.match(contract.componentConsumptionDisposition, /requestCookieHeader/);
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
   assert.ok(contract.requiredProof.includes("work_management_static_pattern_receipt"));
   assert.match(contract.storybookDocShellAuthorityDisposition, /original Storybook-owned doc shell composition/);
@@ -1344,6 +1382,13 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.productShellHardeningRules.sideNavigation, /prove both expanded and collapsed states/);
   assert.match(contract.productShellHardeningRules.brandSurface, /registered package-backed ProductLogo assets/);
   assert.match(contract.productShellHardeningRules.registeredNavigation, /must not surface unregistered or planned modules/);
+  // Four clauses because four separate readings of "there is a way back" were the
+  // defect: the browser button, a bare trail with no links, the nav rail's parent
+  // entry, and a proof that asserts the trail element instead of the anchor.
+  assert.match(contract.productShellHardeningRules.navigationReversibility, /browser's back button does not satisfy this/);
+  assert.match(contract.productShellHardeningRules.navigationReversibility, /ancestor crumbs carry href/);
+  assert.match(contract.productShellHardeningRules.navigationReversibility, /primary navigation entry pointing at the parent list does not count/);
+  assert.match(contract.productShellHardeningRules.navigationReversibility, /assert the anchor inside the trail/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /registered package-backed primitives from @tcrn\/ui-react/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShell\/useProductShellController/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShellSearch only when a real product topbar\/global search capability is present/);
