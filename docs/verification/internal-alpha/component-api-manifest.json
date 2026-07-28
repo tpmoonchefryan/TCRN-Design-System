@@ -213,7 +213,9 @@
       "WorkViewTabs"
     ],
     "missingFromManifest": [],
-    "extraNotInRegistry": [],
+    "extraNotInRegistry": [
+      "MobileNavToggle"
+    ],
     "componentsWithExtractionErrors": []
   },
   "noOverclaim": {
@@ -2523,6 +2525,12 @@
           "required": true
         },
         {
+          "name": "mobileNavExpanded",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
           "name": "moduleName",
           "type": "string",
           "required": true
@@ -2556,6 +2564,11 @@
         {
           "name": "onLocaleMenuOpenChange",
           "type": "(open: boolean, reason: ProductShellLocaleMenuChangeReason) => void",
+          "required": false
+        },
+        {
+          "name": "onMobileNavExpandedChange",
+          "type": "(expanded: boolean) => void",
           "required": false
         },
         {

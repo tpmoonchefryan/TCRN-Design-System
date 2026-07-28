@@ -11,6 +11,7 @@ import {
   TableShell,
   Text,
   WorkIndex,
+  type IconName,
   type ProductShellNavGroup,
   type ProductShellSearchResult,
   type WorkIndexRow
@@ -184,7 +185,12 @@ export const aosOwnerQualityProductShellReadback = {
     brandProductId: "aos",
     productLogoAssetId: "tcrn-aos-two-line",
     navLabel: "AOS operations navigation",
-    primaryIa: ["Operations Cockpit", "Work queue"],
+    // Eleven destinations in four groups: the consuming product's real IA, not
+    // a two-item sample. A shell oracle at a scale no consumer uses cannot fail
+    // the way a consumer fails, which is how the mobile posture shipped a
+    // 684px navigation above every page with a green baseline (TCRN-AOS-INC-028).
+    primaryIa: ["Global", "Delivery", "Knowledge", "Governance"],
+    navDestinationCount: 11,
     contentRole: "region"
   },
   variants: variants.map((variant) => variant.id),
@@ -215,6 +221,27 @@ export const aosOwnerQualityProductShellReadback = {
     "desktop owner-quality side navigation collapse and expand visual states",
     "mobile owner-quality side navigation collapse affordance hidden by DS policy"
   ],
+  /**
+   * What the hidden mobile collapse affordance does and does not mean.
+   *
+   * Recorded here rather than in `supportedStates` because that array renders as
+   * visible readback prose and is untranslated audited debt — adding to it grows
+   * the debt, and the ruling does not need a new rendered sentence to be true.
+   *
+   * The hidden control is the WIDTH collapse: narrowing a rail to 92px in a
+   * full-width stacked layout does nothing, which the responsive standard
+   * forbids, and that premise still holds. What it never meant — and was read as
+   * meaning from 2026-07-01, when this fixture had two destinations, until
+   * 2026-07-28 — is that the navigation cannot be put away at all. Those are two
+   * controls; the second one now exists and starts closed (TCRN-AOS-MIN-006).
+   */
+  mobileNavigationDisposition: {
+    hiddenAffordance: "width-collapse",
+    hiddenAffordanceReason: "a width collapse is a no-op in a full-width stacked layout",
+    showHideAffordance: "present",
+    showHideDefault: "closed",
+    rescopedBy: "TCRN-AOS-MIN-006"
+  },
   ownerQualityAcceptanceCriteria: [
     "first viewport reads as AOS Operations Cockpit with registered TCRN AOS product identity in the side brand lockup",
     "exactly one primary H1 per rendered fixture",
@@ -304,28 +331,64 @@ function labels(locale: OwnerQualityVariant["locale"]) {
   };
 }
 
+/**
+ * Production information-architecture scale: four groups, eleven destinations.
+ *
+ * This fixture carried one group of two until 2026-07-28, and that is the whole
+ * reason the mobile posture shipped a defect nobody could see. The rule that
+ * hides the width-collapse control on mobile was written against this fixture
+ * on 2026-07-01, when two destinations stacked to about a hundred pixels and an
+ * always-open nav cost nothing. The consumer reached eleven on 2026-07-26 and
+ * the same posture put 684px of navigation above every page — but the baseline
+ * that would have shown it was still rendering two items.
+ *
+ * So the count is load-bearing, not decoration: a shell oracle at a scale no
+ * consumer uses cannot fail the way a consumer fails. Mirrors the consuming
+ * product's real IA (TCRN-AOS-MIN-006, TCRN-AOS-INC-028).
+ */
 function navGroups(variant: OwnerQualityVariant): ProductShellNavGroup[] {
   const copy = labels(variant.locale);
+  const zh = variant.locale === "zh-CN";
+  const item = (id: string, label: string, href: string, iconName: IconName) => ({
+    id,
+    label,
+    href,
+    iconName,
+    selected: variant.route === id
+  });
   return [
     {
-      id: `${variant.id}-primary`,
-      label: variant.locale === "zh-CN" ? "运营模块" : "Operations modules",
+      id: `${variant.id}-global`,
+      label: zh ? "全局" : "Global",
       selected: true,
       items: [
-        {
-          id: "cockpit",
-          label: copy.cockpit,
-          href: "/cockpit",
-          iconName: "home",
-          selected: variant.route === "cockpit"
-        },
-        {
-          id: "work",
-          label: copy.work,
-          href: "/work",
-          iconName: "database",
-          selected: variant.route === "work"
-        }
+        item("cockpit", copy.cockpit, "/cockpit", "home"),
+        item("inbox", zh ? "收件箱" : "Inbox", "/inbox", "layers"),
+        item("dashboard", zh ? "仪表盘" : "Dashboard", "/dashboard", "layout-grid")
+      ]
+    },
+    {
+      id: `${variant.id}-delivery`,
+      label: zh ? "交付" : "Delivery",
+      items: [
+        item("projects", zh ? "项目" : "Projects", "/projects", "package"),
+        item("work", copy.work, "/work", "database"),
+        item("board", zh ? "看板" : "Board", "/board", "layout-grid"),
+        item("release-trains", zh ? "发布列车" : "Release trains", "/release-trains", "history")
+      ]
+    },
+    {
+      id: `${variant.id}-knowledge`,
+      label: zh ? "知识" : "Knowledge",
+      items: [item("knowledge", zh ? "知识库" : "Knowledge base", "/knowledge", "book-open")]
+    },
+    {
+      id: `${variant.id}-governance`,
+      label: zh ? "治理" : "Governance",
+      items: [
+        item("deliberations", zh ? "审议" : "Deliberations", "/deliberations", "globe-2"),
+        item("audit", zh ? "审计" : "Audit", "/audit", "shield-check"),
+        item("snapshots", zh ? "快照健康" : "Snapshot health", "/snapshots", "history")
       ]
     }
   ];

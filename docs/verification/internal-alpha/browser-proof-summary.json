@@ -4892,7 +4892,7 @@
           "id": "ProductShell",
           "visible": true,
           "width": 1077,
-          "height": 1178
+          "height": 1233
         },
         {
           "id": "ProductShellSearch",
@@ -9158,7 +9158,7 @@
           "id": "ProductShell",
           "visible": true,
           "width": 691,
-          "height": 1900
+          "height": 1992
         },
         {
           "id": "ProductShellSearch",
@@ -11133,13 +11133,13 @@
           "id": "work-management-route-detail-spec",
           "visible": true,
           "width": 358,
-          "height": 2751
+          "height": 2457
         },
         {
           "id": "work-management-backlog-board-spec",
           "visible": true,
           "width": 358,
-          "height": 2324
+          "height": 1986
         },
         {
           "id": "work-management-hierarchy-gates-spec",
@@ -11691,13 +11691,13 @@
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 28303
+          "height": 27297
         },
         {
           "id": "aos-owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 41493
+          "height": 40084
         }
       ],
       "referenceRegions": [],
@@ -12260,7 +12260,7 @@
           "id": "ProductShell",
           "visible": true,
           "width": 358,
-          "height": 2697
+          "height": 2844
         },
         {
           "id": "ProductShellSearch",
