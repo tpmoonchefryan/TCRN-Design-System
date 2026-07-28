@@ -12,7 +12,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { IconButton, type IconButtonProps } from "../Button/index.js";
 import { SearchInput, type SearchInputProps } from "../Form/index.js";
 import { Icon, type IconName } from "../Icon/index.js";
-import { resolveTcrnLocale, type TcrnLocale } from "@tcrn/ui-copy-state";
+import { resolveTcrnLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { cx, mergeIds, requiredText, resolveDocumentLocale } from "../../utils.js";
 
 /**
@@ -1422,6 +1422,21 @@ export function ProductShell({
   );
 }
 
+/**
+ * The three preferences a request may carry, already parsed and narrowed.
+ *
+ * Each field is either a value in its own domain or absent. Absent means "the
+ * request did not state this preference", so the controller's `initial*` fallback
+ * stands — which is why garbage narrows to `undefined` here rather than to a
+ * default: a cookie that cannot be trusted must not outrank the product's own
+ * fallback.
+ */
+export interface ProductShellRequestPreferences {
+  collapsed?: boolean | undefined;
+  theme?: ShellThemeMode | undefined;
+  locale?: TcrnLocale | undefined;
+}
+
 export interface ProductShellControllerConfig {
   initialCollapsed?: boolean;
   initialTheme?: ShellThemeMode;
@@ -1431,23 +1446,30 @@ export interface ProductShellControllerConfig {
   themeStorageKey?: string;
   localeStorageKey?: string;
   /**
-   * The request's `Cookie` header, for a server-rendered product.
+   * The request's stored preferences, for a server-rendered product.
    *
    * There is no `document` on the server, so without this the shell's stored
    * preferences are unreadable exactly where reading them matters — during the
-   * render that produces the first paint. Passing it is what lets the first bytes
+   * render that produces the first paint. Passing them is what lets the first bytes
    * already carry the reader's theme and locale instead of correcting to them after
-   * hydration; a client-only product omits it and loses nothing.
+   * hydration; a client-only product omits this and loses nothing.
+   *
+   * Parsed values, deliberately not the raw `Cookie` header. An earlier shape of
+   * this prop took the whole header, which handed the design system every cookie
+   * the consumer's requests carry — including any future session credential — when
+   * all it may hold is three display preferences. `readPreferenceCookieValues`
+   * does the narrowing on the consumer's server, so what crosses the package
+   * boundary is exactly the three values this controller governs.
    *
    * A query parameter still outranks this. The product resolves that itself and
    * passes the winner as `initialTheme`/`initialLocale`, because only the product
    * knows its own URL vocabulary.
    */
-  // Explicitly `| undefined`: a request with no Cookie header is the ordinary
+  // Explicitly `| undefined`: a request with no preference cookies is the ordinary
   // first-visit case, not a caller who forgot the argument. A consumer compiled
   // with `exactOptionalPropertyTypes` would otherwise have to spread the prop
   // conditionally to say the one thing it most often needs to say.
-  requestCookieHeader?: string | undefined;
+  requestPreferences?: ProductShellRequestPreferences | undefined;
   searchRecords?: readonly ProductShellSearchResult[];
   searchLimit?: number;
   onCollapsedChange?: (collapsed: boolean) => void;
@@ -1468,7 +1490,7 @@ export function useProductShellController({
   collapsedStorageKey,
   themeStorageKey,
   localeStorageKey,
-  requestCookieHeader,
+  requestPreferences,
   searchRecords = [],
   searchLimit = 8,
   onCollapsedChange,
@@ -1481,11 +1503,11 @@ export function useProductShellController({
   onSearchResultActivate
 }: ProductShellControllerConfig = {}) {
   const [collapsed, setCollapsedState] = useState(
-    () => readStoredBoolean(collapsedStorageKey, initialCollapsed, requestCookieHeader));
+    () => readStoredBoolean(collapsedStorageKey, initialCollapsed, requestPreferences?.collapsed));
   const [theme, setThemeState] = useState<ShellThemeMode>(
-    () => readStoredTheme(themeStorageKey, initialTheme, requestCookieHeader));
+    () => readStoredTheme(themeStorageKey, initialTheme, requestPreferences?.theme));
   const [locale, setLocaleState] = useState(
-    () => readStoredLocale(localeStorageKey, initialLocale, requestCookieHeader));
+    () => readStoredLocale(localeStorageKey, initialLocale, requestPreferences?.locale));
   const [localeMenuOpen, setLocaleMenuOpenState] = useState(false);
   const [searchQuery, setSearchQueryState] = useState("");
   const [searchExpanded, setSearchExpandedState] = useState(false);
@@ -1680,43 +1702,75 @@ const preferenceCookieMaxAgeSeconds = 60 * 60 * 24 * 365;
  * while site storage stays, and in that case the cookie's absence is not a choice
  * the reader made. On the server there is only the cookie.
  */
-function readStoredPreference(key: string | undefined, requestCookieHeader?: string): string | null {
+function readStoredPreference(key: string | undefined): string | null {
   if (!key) return null;
   if (typeof window !== "undefined") {
     const fromBrowserStore = window.localStorage.getItem(key);
     if (fromBrowserStore !== null) return fromBrowserStore;
   }
-  return readCookiePreference(key, requestCookieHeader ?? readDocumentCookieHeader());
+  return readCookiePreference(key, readDocumentCookieHeader());
 }
 
-function readStoredBoolean(key: string | undefined, fallback: boolean, requestCookieHeader?: string): boolean {
-  const value = readStoredPreference(key, requestCookieHeader);
-  return value === null ? fallback : value === "true";
+function readStoredBoolean(key: string | undefined, fallback: boolean, requestValue?: boolean): boolean {
+  const value = readStoredPreference(key);
+  if (value !== null) return value === "true";
+  return requestValue ?? fallback;
 }
 
 function readStoredTheme(
   key: string | undefined,
   fallback: ShellThemeMode,
-  requestCookieHeader?: string
+  requestValue?: ShellThemeMode
 ): ShellThemeMode {
-  const value = readStoredString(key, fallback, requestCookieHeader);
-  return value === "dark" ? "dark" : "light";
-}
-
-function readStoredString(key: string | undefined, fallback: string, requestCookieHeader?: string): string {
-  return readStoredPreference(key, requestCookieHeader) ?? fallback;
+  const value = readStoredPreference(key);
+  if (value !== null) return value === "dark" ? "dark" : "light";
+  return requestValue ?? fallback;
 }
 
 /**
  * Locale is the one preference whose stored value is attacker-writable and lands
  * somewhere that matters: it becomes `<html lang>` and the dictionary index. The
  * theme and collapsed readers each narrow to their own domain (`dark`/`light`,
- * `true`/`false`); this one was reading the raw string through, so a consumer that
- * did not re-resolve it downstream would inherit whatever the cookie said. Narrow
- * here instead, where the store is read, so no consumer has to remember to.
+ * `true`/`false`); this one narrows through the locale contract, so a consumer
+ * that does not re-resolve it downstream inherits a supported locale regardless
+ * of what the store said.
  */
-function readStoredLocale(key: string | undefined, fallback: string, requestCookieHeader?: string): TcrnLocale {
-  return resolveTcrnLocale(readStoredString(key, fallback, requestCookieHeader));
+function readStoredLocale(key: string | undefined, fallback: string, requestValue?: TcrnLocale): TcrnLocale {
+  const value = readStoredPreference(key);
+  if (value !== null) return resolveTcrnLocale(value);
+  return requestValue ?? resolveTcrnLocale(fallback);
+}
+
+/**
+ * The server-side half of preference transport: the raw `Cookie` header goes in,
+ * three narrowed values come out, and nothing else crosses into the shell.
+ *
+ * Narrowing to `undefined` rather than to a default is deliberate: an absent or
+ * garbage cookie means "the request stated no preference", and the product's own
+ * `initial*` fallback must win. `resolveTcrnLocale` would coerce garbage to a
+ * real locale and silently outrank that fallback, so membership is checked
+ * instead. A consumer calls this once in its request handler and passes the
+ * result as `requestPreferences`.
+ */
+export function readPreferenceCookieValues(
+  cookieHeader: string | undefined,
+  keys: {
+    collapsedKey?: string | undefined;
+    themeKey?: string | undefined;
+    localeKey?: string | undefined;
+  }
+): ProductShellRequestPreferences {
+  const header = cookieHeader ?? "";
+  const collapsedValue = keys.collapsedKey ? readCookiePreference(keys.collapsedKey, header) : null;
+  const themeValue = keys.themeKey ? readCookiePreference(keys.themeKey, header) : null;
+  const localeValue = keys.localeKey ? readCookiePreference(keys.localeKey, header) : null;
+  return {
+    collapsed: collapsedValue === "true" ? true : collapsedValue === "false" ? false : undefined,
+    theme: themeValue === "dark" || themeValue === "light" ? themeValue : undefined,
+    locale: localeValue !== null && (tcrnSupportedLocales as readonly string[]).includes(localeValue)
+      ? (localeValue as TcrnLocale)
+      : undefined
+  };
 }
 
 function writeStoredBoolean(key: string | undefined, value: boolean) {
@@ -1761,17 +1815,22 @@ function readCookiePreference(name: string, header: string): string | null {
 }
 
 /**
- * `SameSite=Lax`, no `Secure`: this is a display preference, not a credential.
+ * `SameSite=Lax`, and `Secure` follows the page's own protocol.
  *
- * `Lax` still keeps the cookie off cross-site subrequests. Omitting `Secure` is what
- * lets the same path work on a plain-HTTP local service, where a `Secure` cookie is
- * silently dropped — which would leave the flash in place on exactly the host where
- * products are developed and their gates run.
+ * `Lax` keeps the cookie off cross-site subrequests. `Secure` is set whenever the
+ * page itself was served over HTTPS — "never set it, because the plain-HTTP local
+ * service would drop it" was a false choice between the two hosts: on HTTPS an
+ * unmarked preference cookie can be read and rewritten by an on-path attacker,
+ * and rewriting the locale rewrites a server-side render branch. Conditioning on
+ * the protocol serves both hosts, and deliberately not `HttpOnly`: the client
+ * half of this store is read from `document.cookie` by design.
  */
 function writeCookiePreference(name: string, value: string) {
   if (typeof document === "undefined") return;
+  const secure =
+    typeof location !== "undefined" && location.protocol === "https:" ? "; secure" : "";
   document.cookie =
-    `${name}=${encodeURIComponent(value)}; path=/; max-age=${preferenceCookieMaxAgeSeconds}; samesite=lax`;
+    `${name}=${encodeURIComponent(value)}; path=/; max-age=${preferenceCookieMaxAgeSeconds}; samesite=lax${secure}`;
 }
 
 export function Pagination({ label }: { label: string }) {
@@ -2474,6 +2533,10 @@ export const tcrnComponentCss = `
   border: 1px solid var(--tcrn-color-border-control);
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-surface-panel);
+}
+/* The fill prop: the wrapper takes its container's full inline size. */
+.tcrn-search-input--fill {
+  inline-size: 100%;
 }
 .tcrn-search-input__icon {
   display: inline-flex;
@@ -3252,6 +3315,19 @@ a.tcrn-relationship-chip:focus-visible {
   background: transparent;
   white-space: nowrap;
 }
+/*
+ * A wrapping row lays chips out by line-breaking, so letting a chip shrink
+ * below its own no-wrap text does not save the line — it just lets the text
+ * bleed past the chip and drag a horizontal scroll into whatever column holds
+ * the row, which is how a four-chip filter bar overflowed a 375px viewport.
+ * Natural width plus the wrap the row already has; max-width caps the one
+ * pathological label longer than the column itself.
+ */
+.tcrn-work-quick-filters > a,
+.tcrn-work-quick-filters > span {
+  flex-shrink: 0;
+  max-width: 100%;
+}
 /* TCRN-DS-STORY-087 — "selection is ink".
    One rule for every surface-bearing item in the system: the item's own surface
    takes ink, and nothing is added on top of it. This replaced two competing
@@ -3425,6 +3501,30 @@ a.tcrn-relationship-chip:focus-visible {
   display: grid;
   gap: var(--tcrn-work-density-gap);
 }
+/*
+ * The frame is the size container; the section is the grid. An element cannot
+ * answer a container query about itself, and it is the section's own columns
+ * that must change when space runs out — so the component wraps itself and the
+ * breakpoint becomes true wherever the split view is mounted. The first
+ * consumer approximated this with a viewport media query that was only correct
+ * for its own shell width; a second consumer with a different shell would have
+ * needed a different number.
+ */
+.tcrn-work-split-view-frame {
+  container: tcrn-work-split-view / inline-size;
+  min-width: 0;
+  /*
+   * inline-size containment means this box contributes no intrinsic width, so
+   * a parent that sizes to its content would measure it at zero and the whole
+   * split view would vanish silently. width 100% gives it back a definite size
+   * wherever the parent has one to give — block flow, a grid track, a flex
+   * item. A parent that is itself shrink-to-fit (inline-block, float, an auto
+   * track) has no width to resolve against, and the component's own
+   * documentation states that requirement rather than leaving it to be
+   * discovered as a blank region.
+   */
+  width: 100%;
+}
 .tcrn-work-split-view {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
@@ -3434,6 +3534,24 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-work-split-view__list,
 .tcrn-work-split-view__detail {
   min-width: 0;
+}
+/* 780px of actual container: below it the 280px detail column starves the list. */
+@container tcrn-work-split-view (max-width: 780px) {
+  .tcrn-work-split-view {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /*
+   * Stacked, the one bit the consumer supplies decides the detail region's
+   * fate: absent a selection it is an empty box pushing the list down, and
+   * with one it is what the reader chose, so it leads. Without the attribute
+   * both regions render in source order, which is the pre-admission layout.
+   */
+  .tcrn-work-split-view[data-detail-populated="false"] .tcrn-work-split-view__detail {
+    display: none;
+  }
+  .tcrn-work-split-view[data-detail-populated="true"] .tcrn-work-split-view__detail {
+    order: -1;
+  }
 }
 .tcrn-work-backlog-group,
 .tcrn-work-field-panel,
@@ -3518,6 +3636,51 @@ a.tcrn-relationship-chip:focus-visible {
   border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-surface-muted);
+  /* The stretched card link below positions against the card itself. */
+  position: relative;
+}
+/*
+ * A card with an href is one click target, delivered as a stretched link rather
+ * than an <a> around the card: the card can also carry relationship chips, and
+ * an anchor inside an anchor is not a document. The chips row raises itself
+ * above the stretched surface so both stay clickable.
+ */
+.tcrn-work-board__card-link {
+  color: inherit;
+  text-decoration: none;
+}
+.tcrn-work-board__card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--tcrn-radius-panel);
+}
+.tcrn-work-board__card:has(.tcrn-work-board__card-link):hover {
+  border-color: var(--tcrn-color-border-strong);
+}
+.tcrn-work-board__card-link:hover,
+.tcrn-work-board__card-link:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+.tcrn-work-board__card-link:focus-visible::after {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+/*
+ * Everything the card's own API lets a consumer fill sits above the stretched
+ * link. Relations render chips that are links in their own right, and meta and
+ * fields are public ReactNode slots — a consumer may put a button, a link, or
+ * selectable text in either, and a stretched surface over the whole card would
+ * swallow all three without any diagnostic. The card stays one click target
+ * everywhere the consumer put nothing of its own.
+ */
+.tcrn-work-board__relations,
+.tcrn-work-board__card-meta,
+.tcrn-work-board__card-fields {
+  position: relative;
+  z-index: 1;
 }
 .tcrn-work-board__card > strong {
   min-width: 0;
@@ -3850,7 +4013,16 @@ a.tcrn-relationship-chip:focus-visible {
   .tcrn-work-view-tabs > span,
   .tcrn-work-quick-filters > a,
   .tcrn-work-quick-filters > span {
-    flex: 1 1 160px;
+    /*
+     * A 160px basis, not a 160px ceiling: with a fixed basis a no-wrap label
+     * that needs more — a CJK filter name with a count did, at 213px — shrank
+     * to the shared column and bled its text into a horizontal scroll on a
+     * 375px viewport. Basis auto lets the chip take its own width first; the
+     * min keeps short chips filling out the row grid the basis was there for.
+     */
+    flex: 1 1 auto;
+    min-width: 160px;
+    max-width: 100%;
   }
   .tcrn-shell-locale-menu__trigger {
     width: 100%;
