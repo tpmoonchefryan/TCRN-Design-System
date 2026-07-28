@@ -74,8 +74,11 @@ semantic callbacks directly: `onCollapsedChange`, `onThemeChange`,
 Wrapper-level event delegation around rendered shell controls is not a
 package-backed substitute for those APIs.
 
-A server-rendered product passes the request's `Cookie` header as
-`requestCookieHeader`. The controller writes each stored preference to both a
+A server-rendered product parses the request's `Cookie` header with the exported
+`readPreferenceCookieValues` and passes the three narrowed values as
+`requestPreferences`. The raw header stays outside the package: it carries every
+cookie the product's requests hold, and the shell governs only theme, locale, and
+collapse. The controller writes each stored preference to both a
 cookie and the client store, and reads whichever store can answer where it runs,
 so the render that produces the first paint already carries the reader's theme,
 locale, and collapse state instead of correcting to them after hydration. A

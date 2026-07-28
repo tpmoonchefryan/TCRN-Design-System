@@ -1079,6 +1079,19 @@ export interface WorkSplitViewProps {
   detail: ReactNode;
   density?: WorkDensity;
   /**
+   * Whether the detail region currently holds a selection.
+   *
+   * The wide layout shows both regions either way. The stacked layout — which
+   * this component now enters on its own when its container is narrow — uses
+   * this to choose between hiding an empty detail and leading with a populated
+   * one. The first consumer implemented exactly that choice by styling this
+   * component's class names from outside, keyed to a viewport width that was
+   * only correct for its own shell; the container query makes the breakpoint
+   * true wherever the split view is mounted, and this prop carries the one bit
+   * only the consumer knows.
+   */
+  detailPopulated?: boolean | undefined;
+  /**
    * Which language the built-in label is said in; defaults to the page's own.
    *
    * This component renders only the two regions it is given, so the label is its
@@ -1088,12 +1101,33 @@ export interface WorkSplitViewProps {
   locale?: TcrnLocale | string;
 }
 
-export function WorkSplitView({ label, list, detail, density = "compact", locale }: WorkSplitViewProps) {
+/**
+ * Two regions side by side, stacking when its own container runs out of room.
+ *
+ * MOUNTING REQUIREMENT: give this component a parent with a definite inline
+ * size — block flow, a grid track, a flex item, anything that is not
+ * shrink-to-fit. It establishes a size container to decide its own breakpoint,
+ * and a size container contributes no intrinsic width, so a parent that sizes
+ * to its content (inline-block, float, an `auto` grid track) has nothing to
+ * measure and the component renders at zero width.
+ */
+export function WorkSplitView({ label, list, detail, density = "compact", detailPopulated, locale }: WorkSplitViewProps) {
   return (
-    <section className={cx("tcrn-work-split-view", `tcrn-work-split-view--${density}`)} aria-label={label ?? patternLabels(locale).workSplitView} data-work-management-pattern="work-split-view" data-density={density}>
-      <div className="tcrn-work-split-view__list">{list}</div>
-      <div className="tcrn-work-split-view__detail">{detail}</div>
-    </section>
+    // The frame exists because an element cannot answer a container query about
+    // itself: the section's own grid has to change when space runs out, so the
+    // size container must be one level up.
+    <div className="tcrn-work-split-view-frame">
+      <section
+        className={cx("tcrn-work-split-view", `tcrn-work-split-view--${density}`)}
+        aria-label={label ?? patternLabels(locale).workSplitView}
+        data-work-management-pattern="work-split-view"
+        data-density={density}
+        data-detail-populated={detailPopulated === undefined ? undefined : String(detailPopulated)}
+      >
+        <div className="tcrn-work-split-view__list">{list}</div>
+        <div className="tcrn-work-split-view__detail">{detail}</div>
+      </section>
+    </div>
   );
 }
 
@@ -1158,7 +1192,20 @@ export interface WorkBoardCard {
   id: string;
   title: string;
   state: CopyStateInput;
-  owner: string;
+  /**
+   * Optional since the board-card admission: a governed chain record has an
+   * acting writer per event, not a standing owner per item, so requiring one
+   * forced the first consumer to invent a value or clone the card locally.
+   */
+  owner?: string;
+  /**
+   * Where the card leads. Rendered as a stretched link over the whole card —
+   * nested interactive regions (relationship chips) stay above it — so the
+   * card is the click target without the markup nesting anchors inside anchors.
+   * Without it the card stays inert, which is what every card was before the
+   * first consumer needed a board you can navigate.
+   */
+  href?: string;
   meta?: ReactNode;
   priority?: string;
   fields?: WorkItemRowField[];
@@ -1192,14 +1239,18 @@ export function WorkBoard({ label, lanes, density = "comfortable", locale }: Wor
           </div>
           <div className="tcrn-work-board__cards">
             {lane.cards.map((card) => (
-              <article key={card.id} className="tcrn-work-board__card" aria-label={card.title}>
+              <article key={card.id} className="tcrn-work-board__card" aria-label={card.title} data-card-href={card.href ? "true" : undefined}>
                 <div className="tcrn-work-board__card-head">
                   <MachineTokenCell token={card.id} kind="work-item" density={density} />
                   <StatusBadge state={card.state} locale={locale} />
                   {card.priority ? <Badge>{card.priority}</Badge> : null}
                 </div>
-                <strong>{card.title}</strong>
-                <Text>{card.owner}</Text>
+                {card.href ? (
+                  <strong><a className="tcrn-work-board__card-link" href={card.href}>{card.title}</a></strong>
+                ) : (
+                  <strong>{card.title}</strong>
+                )}
+                {card.owner ? <Text>{card.owner}</Text> : null}
                 {card.meta ? <div className="tcrn-work-board__card-meta">{card.meta}</div> : null}
                 {card.fields?.length ? (
                   <div className="tcrn-work-board__card-fields">

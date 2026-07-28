@@ -1354,7 +1354,14 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   // has to hand-roll cookie parsing to avoid the flash. Naming the prop in the
   // consumption disposition is what makes that the documented route rather than a
   // capability a reader has to find in the source.
-  assert.match(contract.componentConsumptionDisposition, /requestCookieHeader/);
+  assert.match(contract.componentConsumptionDisposition, /readPreferenceCookieValues/);
+  assert.match(contract.componentConsumptionDisposition, /requestPreferences/);
+  // The retired shape must not survive in the document consumers are told to
+  // read. It did survive its own removal once: the prop was deleted from the
+  // config while this assertion held the sentence that names it in place, so
+  // the contract kept instructing consumers to hand the whole Cookie header to
+  // the design system and the gate reported that as correct.
+  assert.doesNotMatch(contract.componentConsumptionDisposition, /requestCookieHeader/);
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
   assert.ok(contract.requiredProof.includes("work_management_static_pattern_receipt"));
   assert.match(contract.storybookDocShellAuthorityDisposition, /original Storybook-owned doc shell composition/);

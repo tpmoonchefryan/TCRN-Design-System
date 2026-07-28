@@ -147,16 +147,25 @@ export function Checkbox({ className, disabled, disabledReason, title, ...props 
 export interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   shortcut?: "auto" | string | false;
   disabledReason?: string;
+  /**
+   * Let the control take its container's full inline size.
+   *
+   * The wrapper span owns the width, and `className` reaches the inner input, so
+   * before this a consumer that needed a full-width search had no prop to say it
+   * with — the first one solved it by styling `.tcrn-search-input` from outside,
+   * which is a consumer reaching into this component's class names.
+   */
+  fill?: boolean;
 }
 
-export function SearchInput({ className, shortcut = false, disabled, disabledReason, title, ...props }: SearchInputProps) {
+export function SearchInput({ className, shortcut = false, fill = false, disabled, disabledReason, title, ...props }: SearchInputProps) {
   const shortcutLabel = shortcut === false ? undefined : shortcut === "auto" ? "Ctrl K" : shortcut;
   const ariaKeyShortcuts = props["aria-keyshortcuts"] ?? (shortcutLabel ? "Control+K Meta+K" : undefined);
   const normalizedReason = disabled ? requiredText(disabledReason, "Search unavailable in this route") : undefined;
   const disabledReasonId = useId();
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
   return (
-    <span className="tcrn-search-input" data-search-input="true" data-shortcut-visible={shortcutLabel ? "true" : undefined}>
+    <span className={cx("tcrn-search-input", fill && "tcrn-search-input--fill")} data-search-input="true" data-shortcut-visible={shortcutLabel ? "true" : undefined}>
       <span className="tcrn-search-input__icon" aria-hidden="true">
         <Icon name="search" />
       </span>

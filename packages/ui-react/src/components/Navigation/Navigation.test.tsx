@@ -25,6 +25,7 @@ import {
   tcrnComponentCss,
   tcrnProductLogoRegistry,
   tcrnProductTagline,
+  readPreferenceCookieValues,
   useProductShellController,
   type ShellThemeMode
 } from "./Navigation.js";
@@ -981,13 +982,22 @@ test("shell chrome says its own words in the reader's language", () => {
  */
 test("product shell controller reads preferences from the request cookie during server render", () => {
   const readings: Array<Record<string, unknown>> = [];
+  const cookieKeys = {
+    collapsedKey: "tcrn-side-nav-collapsed",
+    themeKey: "tcrn-theme",
+    localeKey: "tcrn-locale"
+  };
 
   function ServerControllerFixture({ cookie }: { cookie?: string }) {
     const controller = useProductShellController({
       collapsedStorageKey: "tcrn-side-nav-collapsed",
       themeStorageKey: "tcrn-theme",
       localeStorageKey: "tcrn-locale",
-      requestCookieHeader: cookie
+      // The parse happens on the consumer's server; only three narrowed values
+      // cross the package boundary. The raw header stays outside on purpose —
+      // an earlier shape of this prop took the whole header, which would have
+      // handed the shell every cookie the consumer's requests carry.
+      requestPreferences: readPreferenceCookieValues(cookie, cookieKeys)
     });
     readings.push({
       collapsed: controller.collapsed,
@@ -1004,7 +1014,7 @@ test("product shell controller reads preferences from the request cookie during 
   assert.deepEqual(readings[0], { collapsed: true, theme: "dark", locale: "zh-CN" });
 
   // No cookie is not a preference: the product's defaults still stand, so a
-  // client-only consumer that never passes the header is unaffected.
+  // client-only consumer that never passes preferences is unaffected.
   const withoutCookie = renderToStaticMarkup(<ServerControllerFixture />);
   assert.match(withoutCookie, /light\/en\/false/);
 
@@ -1015,4 +1025,16 @@ test("product shell controller reads preferences from the request cookie during 
     <ServerControllerFixture cookie="unrelated=dark; tcrn-locale=%E0%A4%A; tcrn-theme=dark" />
   );
   assert.match(unrelated, /dark\/en\/false/);
+
+  // The parser narrows to undefined, never to a default: garbage must not outrank
+  // the product's own fallback, and an off-contract locale is garbage even when it
+  // is a real language tag.
+  assert.deepEqual(
+    readPreferenceCookieValues("tcrn-theme=blue; tcrn-locale=de-DE; tcrn-side-nav-collapsed=yes", cookieKeys),
+    { collapsed: undefined, theme: undefined, locale: undefined }
+  );
+  assert.deepEqual(
+    readPreferenceCookieValues(undefined, cookieKeys),
+    { collapsed: undefined, theme: undefined, locale: undefined }
+  );
 });

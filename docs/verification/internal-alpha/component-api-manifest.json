@@ -2877,6 +2877,12 @@
           "required": false
         },
         {
+          "name": "fill",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
           "name": "shortcut",
           "type": "\"auto\" | string | false",
           "required": false,
@@ -4494,6 +4500,11 @@
           "type": "ReactNode",
           "required": true,
           "slot": true
+        },
+        {
+          "name": "detailPopulated",
+          "type": "boolean | undefined",
+          "required": false
         },
         {
           "name": "label",
