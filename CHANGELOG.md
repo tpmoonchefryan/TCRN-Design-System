@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased
+
+### The agent entry states where this partition's governance truth lives (TCRN-AOS-STORY-136)
+
+Documentation only — no package, token, component or rendered output changes, so
+nothing a consumer installs moves.
+
+`CLAUDE.md` and `AGENTS.md` gain a row naming this repository's governance
+partition, the host that holds it, and the command that answers the question.
+The row exists because the AOS partition's truth moved off the development
+machine to a VM, and a reader of this repository had no way to tell whether that
+had happened here too. It has not: this partition's chain is still local, and the
+row says so with a command rather than a sentence.
+
+The row is not prose. A gate in the consuming repository
+(`pnpm doc-topology:proof` in TCRN-AOS) reads every registered platform document
+and compares its location claim against the partition roster and the engine's own
+answer, so a claim here that stops being true turns that gate red rather than
+sitting on the page. That is the whole point: the previous version of this
+statement lived only as prose, went stale when the topology changed, and was
+then quoted as current fact twice.
+
 ## 3.0.0
 
 ### The mobile shell has a disposition (TCRN-AOS-STORY-108, TCRN-AOS-INC-025)
