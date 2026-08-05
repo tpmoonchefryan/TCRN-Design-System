@@ -104,27 +104,23 @@ root's `CLAUDE.md` and `docs/`.
 
 ## Where this repository's governance chain lives
 
-**The platform's four governed partitions are no longer all on one machine** (since
-2026-07-29). This repository's partition is one of the three still hosted locally, so the
-ordinary local engine invocation applies here and no remote ceremony is involved — but
-that is now a fact to check rather than assume:
+**This repository's chain now lives on the AOS host (the VM), not locally** (relocated
+2026-08-03, TCRN-CROSS-INIT-017). The local copy under `.tcrn-workspace/TCRN-Design-System/`
+is a read-only archive. Write to the chain through the AOS ceremony
+(`TCRN-AOS/deploy/aos-local-client/ceremony.mjs --partition TCRN-Design-System`), which
+drives the VM engine over SSH — never by invoking a local engine directly:
 
 <!-- TOPOLOGY-CLAIMS:BEGIN -->
 
 | 分区 | home | 真值地址 | 复核命令 |
 | --- | --- | --- | --- |
-| `TCRN-Design-System` | `local` | `.tcrn-workspace/TCRN-Design-System/workspace` | `node ~/.tcrn-workflow/tcrn-workflow/scripts/tcrn-workflow.mjs status --workspace .tcrn-workspace/TCRN-Design-System/workspace` |
+| `TCRN-Design-System` | `vm` | `/srv/tcrn/governance/tcrn-workspace/TCRN-Design-System/workspace` | `ssh tcrn-platform-dev "node /srv/tcrn/engine/tcrn-workflow/scripts/tcrn-workflow.mjs status --workspace /srv/tcrn/governance/tcrn-workspace/TCRN-Design-System/workspace"` |
 
 <!-- TOPOLOGY-CLAIMS:END -->
 
-Addresses are relative to the platform root. Two things follow: **do not copy a recipe
-from `TCRN-AOS`** — its chain moved to another host and its ceremony wrapper exists for
-that reason, so applying it here drives the wrong machine; and if a future ruling relocates
-this partition too, this block is one of the places a machine predicate requires to be
-updated in the same change (`pnpm --dir TCRN-AOS doc-topology:proof`). The full four-partition
-picture, the ceremony path, the backup direction and the "only the engine may write a
-control tree — SSH is not an exemption" rule are in the platform root's `CLAUDE.md`,
-section 三.
+Addresses are absolute VM paths. This block is machine-checked (`pnpm --dir TCRN-AOS doc-topology:proof`).
+The full five-partition picture, the ceremony path, the fallback shadow chains, and the
+"only the engine may write a control tree" rule are in the platform root's `CLAUDE.md`.
 
 ## House rules
 
