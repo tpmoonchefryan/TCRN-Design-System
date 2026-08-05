@@ -114,7 +114,7 @@ drives the VM engine over SSH — never by invoking a local engine directly:
 
 | 分区 | home | 真值地址 | 复核命令 |
 | --- | --- | --- | --- |
-| `TCRN-Design-System` | `vm` | `/srv/tcrn/governance/tcrn-workspace/TCRN-Design-System/workspace` | `ssh tcrn-platform-dev "node /srv/tcrn/engine/tcrn-workflow/scripts/tcrn-workflow.mjs status --workspace /srv/tcrn/governance/tcrn-workspace/TCRN-Design-System/workspace"` |
+| `TCRN-Design-System` | `vm` | `/srv/tcrn/governance/tcrn-workspace/TCRN-Design-System/workspace` | `读走 MCP 只读面: tcrn_remote_read_status(partition=TCRN-Design-System) · 真值地址 /srv/tcrn/governance/tcrn-workspace/TCRN-Design-System/workspace` |
 
 <!-- TOPOLOGY-CLAIMS:END -->
 
