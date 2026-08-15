@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { act, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Button, ClipboardCopyButton, Text, type ClipboardCopyState } from "../index.js";
+import { Button, ClipboardCopyButton, LineNumberedEditor, Text, type ClipboardCopyState } from "../index.js";
 import { createDomInteractionHarness } from "./dom-harness.js";
 
 interface HarnessFixtureProps {
@@ -75,6 +75,25 @@ test("DOM interaction harness mounts ui-react primitives and supports portal foc
     assert.equal(harness.document.querySelector("[data-dom-harness-panel='true']"), null);
     assert.match(harness.document.body.textContent ?? "", /Harness closed/);
     assert.equal(harness.document.activeElement, trigger);
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("line-numbered editor keeps its gutter aligned with textarea scroll", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    await harness.render(<LineNumberedEditor defaultValue={["one", "two", "three"].join("\n")} />);
+    const textarea = harness.document.querySelector(".tcrn-line-numbered-editor__control");
+    const gutter = harness.document.querySelector(".tcrn-line-numbered-editor__gutter");
+    assert.ok(textarea instanceof harness.window.HTMLTextAreaElement);
+    assert.ok(gutter instanceof harness.window.HTMLOListElement);
+
+    textarea.scrollTop = 24;
+    await act(async () => {
+      textarea.dispatchEvent(new harness.window.Event("scroll", { bubbles: true }));
+    });
+    assert.equal(gutter.scrollTop, 24);
   } finally {
     await harness.cleanup();
   }

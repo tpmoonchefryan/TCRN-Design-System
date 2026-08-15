@@ -371,6 +371,25 @@ test("product shell component css carries the relocated component families (TCRN
   assert.doesNotMatch(tcrnComponentCss, /--tcrn-z-popover:/);
 });
 
+test("component-loop CSS ships independent roots for every returned construct", () => {
+  for (const root of [
+    "tcrn-switch",
+    "tcrn-stat-card",
+    "tcrn-setting-row",
+    "tcrn-field-provenance",
+    "tcrn-line-numbered-editor",
+    "tcrn-app-status-bar",
+    "tcrn-definition-list",
+    "tcrn-lock-hint"
+  ]) {
+    assert.match(tcrnComponentCss, new RegExp(`\\.${root}\\b`), `${root} has a package CSS root`);
+  }
+  assert.match(tcrnComponentCss, /\.tcrn-line-numbered-editor__gutter[\s\S]*overflow: hidden;/);
+  assert.match(tcrnComponentCss, /\.tcrn-line-numbered-editor__gutter li\[data-editor-line-finding="true"\]/);
+  assert.match(tcrnComponentCss, /\.tcrn-setting-row__modified[\s\S]*border-radius: 50%;/);
+  assert.match(tcrnComponentCss, /\.tcrn-definition-list__item[\s\S]*grid-template-columns:/);
+});
+
 test("product shell component css isolates topbar from docs chrome", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*border: 0;[\s\S]*border-bottom: 1px solid var\(--tcrn-color-border-subtle\);[\s\S]*border-radius: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);[\s\S]*justify-content: stretch;/);

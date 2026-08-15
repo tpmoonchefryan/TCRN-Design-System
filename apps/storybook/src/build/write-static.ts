@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { findForbiddenPositiveClaimHits } from "@tcrn/ui-copy-state";
 import { contractStories } from "../stories.js";
 import { aiConsumptionContract } from "./ai-consumption-contract.js";
+import { DESIGN_AUTHORITY_ARTIFACT, designAuthorityContract } from "./design-authority.js";
 import { contractPages } from "./navigation.js";
 import { pageHtml } from "./page-template.js";
 
@@ -94,6 +95,10 @@ export function writeStorybookStaticBuild(): void {
   };
   writeFileSync(join(outDir, "ai-consumption-contract.json"), stableJson(aiConsumptionContractWithDigest));
   writtenFiles.push("ai-consumption-contract.json");
+  // STORY-283: a consumer names this address as its design authority and reads the
+  // version from here, so the address stays stable while the version follows the build.
+  writeFileSync(join(outDir, DESIGN_AUTHORITY_ARTIFACT), stableJson(designAuthorityContract()));
+  writtenFiles.push(DESIGN_AUTHORITY_ARTIFACT);
   writeFileSync(join(outDir, "llms.txt"), llmsTxt(aiConsumptionContractWithDigest));
   writtenFiles.push("llms.txt");
   writeFileSync(join(outDir, "robots.txt"), robotsTxt(aiConsumptionContractWithDigest));

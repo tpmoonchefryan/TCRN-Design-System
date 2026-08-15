@@ -12,3 +12,7 @@ claude_chats
 
 # Generated visual proof artifacts; regenerate locally with pnpm internal-alpha:browser-proof.
 docs/verification/internal-alpha/screenshots/
+
+# Host adapter configuration, installed per machine. Holds local absolute paths.
+.claude/
+.codex/

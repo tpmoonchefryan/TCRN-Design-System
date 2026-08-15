@@ -39,10 +39,17 @@
       },
       {
         "id": "component-family-index",
-        "measure": 2991,
-        "recordedHeightPx": 2991,
+        "measure": 3048,
+        "recordedHeightPx": 3048,
         "owedTo": "beyond-INIT-008",
         "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
+      },
+      {
+        "id": "display-primitives-spec",
+        "measure": 2330,
+        "recordedHeightPx": 2330,
+        "owedTo": "INIT-029/S254",
+        "note": "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
       },
       {
         "id": "work-management-components-spec",
@@ -50,13 +57,6 @@
         "recordedHeightPx": 2136,
         "owedTo": "irreducible",
         "note": "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
-      },
-      {
-        "id": "work-management-hierarchy-gates-spec",
-        "measure": 2045,
-        "recordedHeightPx": 2045,
-        "owedTo": "irreducible",
-        "note": "S059 child = the coherent Hierarchy/gates/evidence panel; 45px over a single unit — gated debt"
       },
       {
         "id": "ai-consumption-contract",
@@ -108,21 +108,21 @@
     },
     {
       "id": "component-family-index",
-      "heightPx": 2991,
+      "heightPx": 3048,
       "owedTo": "beyond-INIT-008",
       "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
+    },
+    {
+      "id": "display-primitives-spec",
+      "heightPx": 2330,
+      "owedTo": "INIT-029/S254",
+      "note": "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
     },
     {
       "id": "work-management-components-spec",
       "heightPx": 2136,
       "owedTo": "irreducible",
       "note": "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
-    },
-    {
-      "id": "work-management-hierarchy-gates-spec",
-      "heightPx": 2045,
-      "owedTo": "irreducible",
-      "note": "S059 child = the coherent Hierarchy/gates/evidence panel; 45px over a single unit — gated debt"
     },
     {
       "id": "ai-consumption-contract",

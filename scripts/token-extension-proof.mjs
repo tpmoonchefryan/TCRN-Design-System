@@ -34,6 +34,7 @@ const EXTENSION_TOKENS = [
   "--tcrn-color-brand-secondary-readable",
   "--tcrn-brand-accent-aos",
   "--tcrn-brand-accent-tms",
+  "--tcrn-brand-accent-workflow",
   "--tcrn-brand-accent-design-system-1",
   "--tcrn-brand-accent-design-system-2",
   "--tcrn-brand-accent-design-system-3",

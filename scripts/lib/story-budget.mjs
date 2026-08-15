@@ -78,9 +78,14 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
   },
   "component-family-index": {
-    recordedHeightPx: 2991,
+    recordedHeightPx: 3048,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
+  },
+  "display-primitives-spec": {
+    recordedHeightPx: 2330,
+    owedTo: "INIT-029/S254",
+    note: "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
   },
   "ai-consumption-contract": {
     recordedHeightPx: 5438,
@@ -106,11 +111,6 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     recordedHeightPx: 2136,
     owedTo: "irreducible",
     note: "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
-  },
-  "work-management-hierarchy-gates-spec": {
-    recordedHeightPx: 2045,
-    owedTo: "irreducible",
-    note: "S059 child = the coherent Hierarchy/gates/evidence panel; 45px over a single unit — gated debt"
   },
   "icons-motion": {
     recordedHeightPx: 2076,

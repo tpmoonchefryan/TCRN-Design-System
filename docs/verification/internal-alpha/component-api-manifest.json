@@ -3,11 +3,12 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 101,
+  "componentCount": 109,
   "coverage": {
-    "registryComponentCount": 101,
+    "registryComponentCount": 109,
     "publicComponentNames": [
       "ActionDrawer",
+      "AppStatusBar",
       "Badge",
       "Breadcrumb",
       "Button",
@@ -15,6 +16,7 @@
       "ClipboardCopyButton",
       "CollapsibleRegion",
       "ConfirmActionDialog",
+      "DefinitionList",
       "DetailDrawer",
       "DetailInspector",
       "Dialog",
@@ -26,6 +28,7 @@
       "EvidenceAttachmentList",
       "EvidenceStrip",
       "Field",
+      "FieldProvenance",
       "FilterBar",
       "GatePipeline",
       "GatePipelineCompact",
@@ -47,8 +50,10 @@
       "KnowledgeTemplateGallery",
       "KnowledgeTocRail",
       "KnowledgeVersionHistory",
+      "LineNumberedEditor",
       "LinkButton",
       "LiveRegion",
+      "LockHint",
       "MachineToken",
       "MachineTokenCell",
       "MetadataRail",
@@ -71,6 +76,7 @@
       "SectionTabs",
       "SegmentedNav",
       "Select",
+      "SettingRow",
       "ShellBrandLockup",
       "ShellLocaleMenu",
       "ShellThemeToggle",
@@ -80,10 +86,12 @@
       "SkipLink",
       "Stamp",
       "StampRule",
+      "StatCard",
       "StateSurface",
       "StateView",
       "StatusBadge",
       "Surface",
+      "Switch",
       "TableShell",
       "TableToolbar",
       "TcrnBrandMark",
@@ -111,6 +119,7 @@
     ],
     "manifestComponentNames": [
       "ActionDrawer",
+      "AppStatusBar",
       "Badge",
       "Breadcrumb",
       "Button",
@@ -118,6 +127,7 @@
       "ClipboardCopyButton",
       "CollapsibleRegion",
       "ConfirmActionDialog",
+      "DefinitionList",
       "DetailDrawer",
       "DetailInspector",
       "Dialog",
@@ -129,6 +139,7 @@
       "EvidenceAttachmentList",
       "EvidenceStrip",
       "Field",
+      "FieldProvenance",
       "FilterBar",
       "GatePipeline",
       "GatePipelineCompact",
@@ -150,8 +161,10 @@
       "KnowledgeTemplateGallery",
       "KnowledgeTocRail",
       "KnowledgeVersionHistory",
+      "LineNumberedEditor",
       "LinkButton",
       "LiveRegion",
+      "LockHint",
       "MachineToken",
       "MachineTokenCell",
       "MetadataRail",
@@ -174,6 +187,7 @@
       "SectionTabs",
       "SegmentedNav",
       "Select",
+      "SettingRow",
       "ShellBrandLockup",
       "ShellLocaleMenu",
       "ShellThemeToggle",
@@ -183,10 +197,12 @@
       "SkipLink",
       "Stamp",
       "StampRule",
+      "StatCard",
       "StateSurface",
       "StateView",
       "StatusBadge",
       "Surface",
+      "Switch",
       "TableShell",
       "TableToolbar",
       "TcrnBrandMark",
@@ -250,6 +266,37 @@
         "children"
       ],
       "propsType": "DrawerProps"
+    },
+    "AppStatusBar": {
+      "name": "AppStatusBar",
+      "kind": "function",
+      "props": [
+        {
+          "name": "action",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "command",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "state",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "action",
+        "command",
+        "state"
+      ],
+      "propsType": "AppStatusBarProps"
     },
     "Badge": {
       "name": "Badge",
@@ -533,6 +580,26 @@
       "variants": {},
       "slots": [],
       "propsType": "ConfirmActionDialogProps"
+    },
+    "DefinitionList": {
+      "name": "DefinitionList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "dense",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "items",
+          "type": "DefinitionListItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "DefinitionListProps"
     },
     "DetailDrawer": {
       "name": "DetailDrawer",
@@ -928,6 +995,43 @@
         "children"
       ],
       "propsType": "FieldProps"
+    },
+    "FieldProvenance": {
+      "name": "FieldProvenance",
+      "kind": "function",
+      "props": [
+        {
+          "name": "action",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "overridden",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "source",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "value",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "action",
+        "source",
+        "value"
+      ],
+      "propsType": "FieldProvenanceProps"
     },
     "FilterBar": {
       "name": "FilterBar",
@@ -1836,6 +1940,37 @@
       "slots": [],
       "propsType": "KnowledgeVersionHistoryProps"
     },
+    "LineNumberedEditor": {
+      "name": "LineNumberedEditor",
+      "kind": "function",
+      "props": [
+        {
+          "name": "findings",
+          "type": "LineNumberedEditorFinding[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "lines",
+          "type": "string[]",
+          "required": false
+        },
+        {
+          "name": "showLineNumbers",
+          "type": "boolean",
+          "required": false,
+          "default": "true"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "LineNumberedEditorProps"
+    },
     "LinkButton": {
       "name": "LinkButton",
       "kind": "function",
@@ -1869,6 +2004,31 @@
       "variants": {},
       "slots": [],
       "propsType": "HTMLAttributes<HTMLDivElement>"
+    },
+    "LockHint": {
+      "name": "LockHint",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "default": "\"🔒\"",
+          "slot": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children",
+        "icon"
+      ],
+      "propsType": "LockHintProps"
     },
     "MachineToken": {
       "name": "MachineToken",
@@ -2329,7 +2489,8 @@
           "enumValues": [
             "design-system",
             "aos",
-            "tms"
+            "tms",
+            "workflow"
           ]
         },
         {
@@ -2347,7 +2508,8 @@
         "productId": [
           "design-system",
           "aos",
-          "tms"
+          "tms",
+          "workflow"
         ]
       },
       "slots": [],
@@ -2380,7 +2542,8 @@
           "enumValues": [
             "design-system",
             "aos",
-            "tms"
+            "tms",
+            "workflow"
           ]
         }
       ],
@@ -2388,7 +2551,8 @@
         "productId": [
           "design-system",
           "aos",
-          "tms"
+          "tms",
+          "workflow"
         ]
       },
       "slots": [],
@@ -2426,7 +2590,8 @@
           "enumValues": [
             "design-system",
             "aos",
-            "tms"
+            "tms",
+            "workflow"
           ]
         },
         {
@@ -2621,7 +2786,8 @@
         "brandProductId": [
           "design-system",
           "aos",
-          "tms"
+          "tms",
+          "workflow"
         ],
         "contentRole": [
           "main",
@@ -3064,6 +3230,61 @@
       "slots": [],
       "propsType": "SelectProps"
     },
+    "SettingRow": {
+      "name": "SettingRow",
+      "kind": "function",
+      "props": [
+        {
+          "name": "control",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "modified",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "onReset",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "resetLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Reset\""
+        },
+        {
+          "name": "settingKey",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "control",
+        "description",
+        "label",
+        "settingKey"
+      ],
+      "propsType": "SettingRowProps"
+    },
     "ShellBrandLockup": {
       "name": "ShellBrandLockup",
       "kind": "function",
@@ -3095,7 +3316,8 @@
           "enumValues": [
             "design-system",
             "aos",
-            "tms"
+            "tms",
+            "workflow"
           ]
         },
         {
@@ -3113,7 +3335,8 @@
         "productId": [
           "design-system",
           "aos",
-          "tms"
+          "tms",
+          "workflow"
         ]
       },
       "slots": [],
@@ -3439,6 +3662,56 @@
       "slots": [],
       "propsType": "HTMLAttributes<HTMLHRElement>"
     },
+    "StatCard": {
+      "name": "StatCard",
+      "kind": "function",
+      "props": [
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "note",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "tone",
+          "type": "StatCardTone",
+          "required": false,
+          "default": "\"neutral\"",
+          "enumValues": [
+            "danger",
+            "neutral",
+            "positive",
+            "warning"
+          ]
+        },
+        {
+          "name": "value",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {
+        "tone": [
+          "danger",
+          "neutral",
+          "positive",
+          "warning"
+        ]
+      },
+      "slots": [
+        "label",
+        "note",
+        "value"
+      ],
+      "propsType": "StatCardProps"
+    },
     "StateSurface": {
       "name": "StateSurface",
       "kind": "function",
@@ -3570,6 +3843,35 @@
       "variants": {},
       "slots": [],
       "propsType": "HTMLAttributes<HTMLElement>"
+    },
+    "Switch": {
+      "name": "Switch",
+      "kind": "function",
+      "props": [
+        {
+          "name": "controlClassName",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "description",
+        "label"
+      ],
+      "propsType": "SwitchProps"
     },
     "TableShell": {
       "name": "TableShell",

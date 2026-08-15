@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import {
+  AppStatusBar,
   Badge,
   Button,
   Breadcrumb,
@@ -14,12 +15,14 @@ import {
   CollapsibleRegion,
   DetailDrawer,
   DetailInspector,
+  DefinitionList,
   DisclosurePanel,
   Dialog,
   Divider,
   EnvironmentBanner,
   EvidenceStrip,
   Field,
+  FieldProvenance,
   FilterBar,
   GateReadinessPanel,
   Heading,
@@ -29,7 +32,9 @@ import {
   Input,
   KeyValueList,
   LinkButton,
+  LineNumberedEditor,
   LiveRegion,
+  LockHint,
   NavGroup,
   NavItem,
   Pagination,
@@ -43,6 +48,7 @@ import {
   SectionTabs,
   SegmentedNav,
   Select,
+  SettingRow,
   ShellThemeToggle,
   SideNav,
   Skeleton,
@@ -51,6 +57,7 @@ import {
   ErrorState,
   StateSurface,
   StateView,
+  StatCard,
   Stamp,
   StampRule,
   StatusBadge,
@@ -63,6 +70,7 @@ import {
   TcrnBrandMark,
   tcrnIconNames,
   Tooltip,
+  Switch,
   EvidenceAttachmentList,
   GatePipeline,
   GatePipelineCompact,
@@ -1619,6 +1627,45 @@ const legacyContractStories: LegacyContractStory[] = [
           <InlineAlert tone="positive">Positive result: the owning route recorded proof and downstream claims are unblocked.</InlineAlert>
           <InlineAlert tone="warning">Warning: the owner must route verification before downstream claims.</InlineAlert>
           <InlineAlert tone="danger">Danger: this fixture blocks the action until gates complete.</InlineAlert>
+        </ReadbackPanel>
+        <ReadbackPanel title="Returned component constructs">
+          <Text>
+            These package constructs cover compact controls, values, editable text, provenance, and route status. Each example shows the public class contract and a meaningful state; product wiring remains with the consuming surface.
+          </Text>
+          <div className="tcrn-display-primitive-grid">
+            <Switch label="Compact density" description="Use the smaller row rhythm" defaultChecked />
+            <StatCard label="Visible items" value="24" note="Current filtered set" tone="positive" />
+            <StatCard label="Needs attention" value="3" note="Review before continuing" tone="warning" />
+            <SettingRow
+              label="Display mode"
+              settingKey="display.mode"
+              description="The current presentation preference"
+              modified
+              resetLabel="Restore"
+              onReset={() => undefined}
+              control={<Select aria-label="Display mode" options={[{ value: "comfortable", label: "Comfortable" }, { value: "compact", label: "Compact" }]} />}
+            />
+            <FieldProvenance
+              value="Inherited value"
+              source="Default"
+              overridden
+              action={<Button variant="secondary">Restore field</Button>}
+            />
+            <LineNumberedEditor
+              value={["const route = 'local';", "return route;"].join("\n")}
+              readOnly
+              findings={[{ line: 2, label: "Review return path", tone: "warning" }]}
+            />
+            <AppStatusBar command="local" state="Ready" action={<Button variant="quiet">View details</Button>} />
+            <DefinitionList
+              dense
+              items={[
+                { key: "term", term: "Term", definition: "A named concept with a reader-facing definition." },
+                { key: "state", term: "State", definition: "The current presentation state of the example." }
+              ]}
+            />
+            <LockHint>Editing is unavailable until this route is unlocked.</LockHint>
+          </div>
         </ReadbackPanel>
         <InlineAlert tone="warning">
           These primitives do not implement React ErrorBoundary wrappers, telemetry, product error policy, publication, package release, or product adoption.

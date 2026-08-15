@@ -1,5 +1,5 @@
-import type { InputHTMLAttributes, ReactElement, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
-import { Children, cloneElement, isValidElement, useId } from "react";
+import type { HTMLAttributes, InputHTMLAttributes, ReactElement, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { Children, cloneElement, isValidElement, useId, useRef } from "react";
 import { Icon } from "../Icon/index.js";
 import { childPropsOf, cx, mergeIds, requiredText } from "../../utils.js";
 
@@ -185,6 +185,192 @@ export function SearchInput({ className, shortcut = false, fill = false, disable
           {shortcutLabel}
         </kbd>
       ) : null}
+    </span>
+  );
+}
+
+export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+  label: ReactNode;
+  description?: ReactNode;
+  controlClassName?: string;
+}
+
+export function Switch({ label, description, className, controlClassName, disabled, ...props }: SwitchProps) {
+  const descriptionId = useId();
+  const describedBy = mergeIds(props["aria-describedby"], description ? descriptionId : undefined);
+  const selected = props.checked ?? props.defaultChecked ?? false;
+  return (
+    <label className={cx("tcrn-switch", disabled && "tcrn-switch--disabled", className)} data-switch-state={selected ? "on" : "off"}>
+      <input
+        {...props}
+        type="checkbox"
+        role="switch"
+        disabled={disabled}
+        aria-describedby={describedBy}
+        className={cx("tcrn-switch__control", controlClassName)}
+      />
+      <span className="tcrn-switch__label">{label}</span>
+      {description ? <span id={descriptionId} className="tcrn-switch__description">{description}</span> : null}
+    </label>
+  );
+}
+
+export interface SettingRowProps extends HTMLAttributes<HTMLDivElement> {
+  label: ReactNode;
+  description?: ReactNode;
+  control: ReactNode;
+  settingKey?: ReactNode;
+  modified?: boolean;
+  resetLabel?: string;
+  onReset?: () => void;
+}
+
+export function SettingRow({
+  label,
+  description,
+  control,
+  settingKey,
+  modified = false,
+  resetLabel = "Reset",
+  onReset,
+  className,
+  ...props
+}: SettingRowProps) {
+  return (
+    <div
+      {...props}
+      className={cx("tcrn-setting-row", modified && "tcrn-setting-row--modified", className)}
+      data-setting-row="true"
+      data-modified={modified ? "true" : "false"}
+    >
+      <div className="tcrn-setting-row__label">
+        {settingKey ? <code className="tcrn-setting-row__key">{settingKey}</code> : null}
+        <span className="tcrn-setting-row__name">{label}</span>
+        {description ? <span className="tcrn-setting-row__description">{description}</span> : null}
+      </div>
+      <div className="tcrn-setting-row__control">{control}</div>
+      {modified ? (
+        <div className="tcrn-setting-row__tools">
+          <span className="tcrn-setting-row__modified" role="img" title="Modified" aria-label="Modified" aria-hidden={onReset ? undefined : true} />
+          {onReset ? (
+            <button type="button" className="tcrn-setting-row__reset" onClick={onReset}>
+              {resetLabel}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export interface FieldProvenanceProps extends HTMLAttributes<HTMLDivElement> {
+  value: ReactNode;
+  source: ReactNode;
+  action?: ReactNode;
+  overridden?: boolean;
+}
+
+export function FieldProvenance({ value, source, action, overridden = false, className, ...props }: FieldProvenanceProps) {
+  return (
+    <div
+      {...props}
+      className={cx("tcrn-field-provenance", overridden && "tcrn-field-provenance--overridden", className)}
+      data-provenance-state={overridden ? "overridden" : "default"}
+    >
+      <span className="tcrn-field-provenance__value">{value}</span>
+      <span className="tcrn-field-provenance__source">{source}</span>
+      {action ? <span className="tcrn-field-provenance__action">{action}</span> : null}
+    </div>
+  );
+}
+
+export interface LineNumberedEditorFinding {
+  line: number;
+  label: ReactNode;
+  tone?: "warning" | "danger" | "neutral";
+}
+
+export interface LineNumberedEditorProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "value"> {
+  value?: string;
+  lines?: string[];
+  findings?: LineNumberedEditorFinding[];
+  showLineNumbers?: boolean;
+}
+
+export function LineNumberedEditor({
+  value,
+  defaultValue,
+  lines,
+  findings = [],
+  showLineNumbers = true,
+  className,
+  onScroll,
+  ...props
+}: LineNumberedEditorProps) {
+  const gutterRef = useRef<HTMLOListElement>(null);
+  const sourceLines = lines ?? String(value ?? defaultValue ?? "").split("\n");
+  const lineCount = Math.max(sourceLines.length, 1);
+  const findingsByLine = new Map(findings.map((finding) => [finding.line, finding]));
+  const handleScroll: NonNullable<TextareaHTMLAttributes<HTMLTextAreaElement>["onScroll"]> = (event) => {
+    if (gutterRef.current) {
+      gutterRef.current.scrollTop = event.currentTarget.scrollTop;
+    }
+    onScroll?.(event);
+  };
+
+  return (
+    <div className={cx("tcrn-line-numbered-editor", className)} data-line-numbered-editor="true">
+      {showLineNumbers ? (
+        <ol ref={gutterRef} className="tcrn-line-numbered-editor__gutter" aria-hidden="true">
+          {Array.from({ length: lineCount }, (_, index) => {
+            const line = index + 1;
+            const finding = findingsByLine.get(line);
+            return (
+              <li key={line}
+                className={cx(finding && "tcrn-line-numbered-editor__line--finding", finding && `tcrn-line-numbered-editor__line--${finding.tone ?? "warning"}`)}
+                data-editor-line={line}
+                data-editor-line-finding={finding ? "true" : undefined}
+              >
+                {line}
+              </li>
+            );
+          })}
+        </ol>
+      ) : null}
+      <div className="tcrn-line-numbered-editor__content">
+        <textarea
+          {...props}
+          value={value}
+          defaultValue={value === undefined ? defaultValue : undefined}
+          onScroll={handleScroll}
+          className={cx("tcrn-input", "tcrn-line-numbered-editor__control")}
+          aria-label={props["aria-label"] ?? "Editor"}
+        />
+        {findings.length > 0 ? (
+          <ul className="tcrn-line-numbered-editor__findings" aria-label="Editor findings">
+            {findings.map((finding) => (
+              <li key={`${finding.line}-${String(finding.label)}`} className={cx(`tcrn-line-numbered-editor__finding--${finding.tone ?? "warning"}`)} data-editor-finding-line={finding.line}>
+                <span className="tcrn-line-numbered-editor__finding-line">Line {finding.line}</span>
+                <span>{finding.label}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+export interface LockHintProps extends HTMLAttributes<HTMLSpanElement> {
+  children?: ReactNode;
+  icon?: ReactNode;
+}
+
+export function LockHint({ children, icon = "🔒", className, ...props }: LockHintProps) {
+  return (
+    <span {...props} className={cx("tcrn-lock-hint", className)} data-lock-hint="true" role="note">
+      <span className="tcrn-lock-hint__icon" aria-hidden="true">{icon}</span>
+      <span className="tcrn-lock-hint__text">{children}</span>
     </span>
   );
 }

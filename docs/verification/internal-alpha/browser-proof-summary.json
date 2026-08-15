@@ -965,7 +965,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 3441,
+        "leakCount": 3470,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -1037,7 +1037,7 @@
           },
           {
             "storyId": "display-primitives-spec",
-            "leakCount": 93
+            "leakCount": 122
           },
           {
             "storyId": "interaction-disclosure-spec",
@@ -2732,13 +2732,13 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 2991
+          "height": 3048
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 1077,
-          "height": 1692
+          "height": 2330
         },
         {
           "id": "interaction-disclosure-spec",
@@ -3350,7 +3350,7 @@
           "id": "work-management-relationships-spec",
           "visible": true,
           "width": 1077,
-          "height": 321
+          "height": 289
         },
         {
           "id": "work-management-tokens-density-views-spec",
@@ -3368,19 +3368,19 @@
           "id": "work-management-backlog-board-spec",
           "visible": true,
           "width": 1077,
-          "height": 1008
+          "height": 976
         },
         {
           "id": "work-management-hierarchy-gates-spec",
           "visible": true,
           "width": 1077,
-          "height": 2045
+          "height": 1981
         },
         {
           "id": "work-management-inspector-spec",
           "visible": true,
           "width": 1077,
-          "height": 888
+          "height": 887
         }
       ],
       "referenceRegions": [],
@@ -4377,6 +4377,12 @@
           "height": 217
         },
         {
+          "id": "AppStatusBar",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
           "id": "Badge",
           "visible": true,
           "width": 1077,
@@ -4417,6 +4423,12 @@
           "visible": true,
           "width": 1077,
           "height": 247
+        },
+        {
+          "id": "DefinitionList",
+          "visible": true,
+          "width": 1077,
+          "height": 165
         },
         {
           "id": "DetailDrawer",
@@ -4477,18 +4489,6 @@
           "visible": true,
           "width": 1077,
           "height": 137
-        },
-        {
-          "id": "Field",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
-        {
-          "id": "FilterBar",
-          "visible": true,
-          "width": 1077,
-          "height": 189
         }
       ],
       "clipped": [],
@@ -4591,6 +4591,24 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "Field",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "FieldProvenance",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "FilterBar",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        },
+        {
           "id": "GatePipeline",
           "visible": true,
           "width": 1077,
@@ -4691,24 +4709,6 @@
           "visible": true,
           "width": 1077,
           "height": 272
-        },
-        {
-          "id": "KnowledgeTemplateGallery",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
-        {
-          "id": "KnowledgeTocRail",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
-        {
-          "id": "KnowledgeVersionHistory",
-          "visible": true,
-          "width": 1077,
-          "height": 244
         }
       ],
       "clipped": [],
@@ -4811,6 +4811,30 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "KnowledgeTemplateGallery",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "KnowledgeTocRail",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "KnowledgeVersionHistory",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "LineNumberedEditor",
+          "visible": true,
+          "width": 1077,
+          "height": 220
+        },
+        {
           "id": "LinkButton",
           "visible": true,
           "width": 1077,
@@ -4821,6 +4845,12 @@
           "visible": true,
           "width": 1077,
           "height": 100
+        },
+        {
+          "id": "LockHint",
+          "visible": true,
+          "width": 1077,
+          "height": 189
         },
         {
           "id": "MachineToken",
@@ -4899,36 +4929,6 @@
           "visible": true,
           "width": 1077,
           "height": 911
-        },
-        {
-          "id": "ProductSwitcher",
-          "visible": true,
-          "width": 1077,
-          "height": 165
-        },
-        {
-          "id": "ReadbackPanel",
-          "visible": true,
-          "width": 1077,
-          "height": 189
-        },
-        {
-          "id": "RelationshipChip",
-          "visible": true,
-          "width": 1077,
-          "height": 299
-        },
-        {
-          "id": "SavedViewToolbar",
-          "visible": true,
-          "width": 1077,
-          "height": 247
-        },
-        {
-          "id": "SearchInput",
-          "visible": true,
-          "width": 1077,
-          "height": 192
         }
       ],
       "clipped": [],
@@ -5031,6 +5031,36 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ProductSwitcher",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        },
+        {
+          "id": "ReadbackPanel",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        },
+        {
+          "id": "RelationshipChip",
+          "visible": true,
+          "width": 1077,
+          "height": 299
+        },
+        {
+          "id": "SavedViewToolbar",
+          "visible": true,
+          "width": 1077,
+          "height": 247
+        },
+        {
+          "id": "SearchInput",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
           "id": "SearchableList",
           "visible": true,
           "width": 1077,
@@ -5053,6 +5083,12 @@
           "visible": true,
           "width": 1077,
           "height": 165
+        },
+        {
+          "id": "SettingRow",
+          "visible": true,
+          "width": 1077,
+          "height": 327
         },
         {
           "id": "ShellBrandLockup",
@@ -5109,46 +5145,10 @@
           "height": 100
         },
         {
-          "id": "StateSurface",
+          "id": "StatCard",
           "visible": true,
           "width": 1077,
-          "height": 324
-        },
-        {
-          "id": "StateView",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
-        {
-          "id": "StatusBadge",
-          "visible": true,
-          "width": 1077,
-          "height": 165
-        },
-        {
-          "id": "Surface",
-          "visible": true,
-          "width": 1077,
-          "height": 100
-        },
-        {
-          "id": "TableShell",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
-        {
-          "id": "TableToolbar",
-          "visible": true,
-          "width": 1077,
-          "height": 412
-        },
-        {
-          "id": "TcrnBrandMark",
-          "visible": true,
-          "width": 1077,
-          "height": 192
+          "height": 269
         }
       ],
       "clipped": [],
@@ -5251,6 +5251,54 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "StateSurface",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "StateView",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "StatusBadge",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        },
+        {
+          "id": "Surface",
+          "visible": true,
+          "width": 1077,
+          "height": 100
+        },
+        {
+          "id": "Switch",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
+          "id": "TableShell",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "TableToolbar",
+          "visible": true,
+          "width": 1077,
+          "height": 412
+        },
+        {
+          "id": "TcrnBrandMark",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
           "id": "Text",
           "visible": true,
           "width": 1077,
@@ -5321,54 +5369,6 @@
           "visible": true,
           "width": 1077,
           "height": 220
-        },
-        {
-          "id": "WorkInlineCreateStatic",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
-        {
-          "id": "WorkItemInspector",
-          "visible": true,
-          "width": 1077,
-          "height": 357
-        },
-        {
-          "id": "WorkItemRow",
-          "visible": true,
-          "width": 1077,
-          "height": 517
-        },
-        {
-          "id": "WorkList",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
-        {
-          "id": "WorkManagementSubnav",
-          "visible": true,
-          "width": 1077,
-          "height": 192
-        },
-        {
-          "id": "WorkPageHeader",
-          "visible": true,
-          "width": 1077,
-          "height": 324
-        },
-        {
-          "id": "WorkQuickFilters",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
-        {
-          "id": "WorkSplitView",
-          "visible": true,
-          "width": 1077,
-          "height": 324
         }
       ],
       "clipped": [],
@@ -5470,6 +5470,54 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "WorkInlineCreateStatic",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "WorkItemInspector",
+          "visible": true,
+          "width": 1077,
+          "height": 357
+        },
+        {
+          "id": "WorkItemRow",
+          "visible": true,
+          "width": 1077,
+          "height": 517
+        },
+        {
+          "id": "WorkList",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "WorkManagementSubnav",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
+          "id": "WorkPageHeader",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "WorkQuickFilters",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "WorkSplitView",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
         {
           "id": "WorkViewTabs",
           "visible": true,
@@ -6673,7 +6721,7 @@
           "id": "copy-creation-rules",
           "visible": true,
           "width": 691,
-          "height": 697
+          "height": 665
         }
       ],
       "referenceRegions": [],
@@ -6879,7 +6927,7 @@
           "id": "copy-guidelines",
           "visible": true,
           "width": 691,
-          "height": 508
+          "height": 476
         }
       ],
       "referenceRegions": [],
@@ -6998,13 +7046,13 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 4274
+          "height": 4359
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 691,
-          "height": 2029
+          "height": 2795
         },
         {
           "id": "interaction-disclosure-spec",
@@ -7616,7 +7664,7 @@
           "id": "work-management-relationships-spec",
           "visible": true,
           "width": 691,
-          "height": 420
+          "height": 388
         },
         {
           "id": "work-management-tokens-density-views-spec",
@@ -7634,13 +7682,13 @@
           "id": "work-management-backlog-board-spec",
           "visible": true,
           "width": 691,
-          "height": 1213
+          "height": 1189
         },
         {
           "id": "work-management-hierarchy-gates-spec",
           "visible": true,
           "width": 691,
-          "height": 2161
+          "height": 2137
         },
         {
           "id": "work-management-inspector-spec",
@@ -8336,7 +8384,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 7936
+          "height": 7904
         },
         {
           "id": "blocked-actions",
@@ -8445,7 +8493,7 @@
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 15694
+          "height": 15374
         },
         {
           "id": "aos-owner-quality-product-shell",
@@ -8533,7 +8581,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 691,
-          "height": 766
+          "height": 734
         }
       ],
       "referenceRegions": [],
@@ -8643,6 +8691,12 @@
           "height": 217
         },
         {
+          "id": "AppStatusBar",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
           "id": "Badge",
           "visible": true,
           "width": 691,
@@ -8683,6 +8737,12 @@
           "visible": true,
           "width": 691,
           "height": 247
+        },
+        {
+          "id": "DefinitionList",
+          "visible": true,
+          "width": 691,
+          "height": 165
         },
         {
           "id": "DetailDrawer",
@@ -8743,18 +8803,6 @@
           "visible": true,
           "width": 691,
           "height": 137
-        },
-        {
-          "id": "Field",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
-        {
-          "id": "FilterBar",
-          "visible": true,
-          "width": 691,
-          "height": 189
         }
       ],
       "clipped": [],
@@ -8857,6 +8905,24 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "Field",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "FieldProvenance",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "FilterBar",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        },
+        {
           "id": "GatePipeline",
           "visible": true,
           "width": 691,
@@ -8957,24 +9023,6 @@
           "visible": true,
           "width": 691,
           "height": 272
-        },
-        {
-          "id": "KnowledgeTemplateGallery",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
-        {
-          "id": "KnowledgeTocRail",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
-        {
-          "id": "KnowledgeVersionHistory",
-          "visible": true,
-          "width": 691,
-          "height": 244
         }
       ],
       "clipped": [],
@@ -9077,6 +9125,30 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "KnowledgeTemplateGallery",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "KnowledgeTocRail",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "KnowledgeVersionHistory",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "LineNumberedEditor",
+          "visible": true,
+          "width": 691,
+          "height": 220
+        },
+        {
           "id": "LinkButton",
           "visible": true,
           "width": 691,
@@ -9087,6 +9159,12 @@
           "visible": true,
           "width": 691,
           "height": 100
+        },
+        {
+          "id": "LockHint",
+          "visible": true,
+          "width": 691,
+          "height": 189
         },
         {
           "id": "MachineToken",
@@ -9165,36 +9243,6 @@
           "visible": true,
           "width": 691,
           "height": 1262
-        },
-        {
-          "id": "ProductSwitcher",
-          "visible": true,
-          "width": 691,
-          "height": 165
-        },
-        {
-          "id": "ReadbackPanel",
-          "visible": true,
-          "width": 691,
-          "height": 189
-        },
-        {
-          "id": "RelationshipChip",
-          "visible": true,
-          "width": 691,
-          "height": 318
-        },
-        {
-          "id": "SavedViewToolbar",
-          "visible": true,
-          "width": 691,
-          "height": 247
-        },
-        {
-          "id": "SearchInput",
-          "visible": true,
-          "width": 691,
-          "height": 192
         }
       ],
       "clipped": [],
@@ -9297,6 +9345,36 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ProductSwitcher",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        },
+        {
+          "id": "ReadbackPanel",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        },
+        {
+          "id": "RelationshipChip",
+          "visible": true,
+          "width": 691,
+          "height": 318
+        },
+        {
+          "id": "SavedViewToolbar",
+          "visible": true,
+          "width": 691,
+          "height": 247
+        },
+        {
+          "id": "SearchInput",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
           "id": "SearchableList",
           "visible": true,
           "width": 691,
@@ -9319,6 +9397,12 @@
           "visible": true,
           "width": 691,
           "height": 165
+        },
+        {
+          "id": "SettingRow",
+          "visible": true,
+          "width": 691,
+          "height": 327
         },
         {
           "id": "ShellBrandLockup",
@@ -9375,46 +9459,10 @@
           "height": 100
         },
         {
-          "id": "StateSurface",
+          "id": "StatCard",
           "visible": true,
           "width": 691,
-          "height": 324
-        },
-        {
-          "id": "StateView",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
-        {
-          "id": "StatusBadge",
-          "visible": true,
-          "width": 691,
-          "height": 165
-        },
-        {
-          "id": "Surface",
-          "visible": true,
-          "width": 691,
-          "height": 100
-        },
-        {
-          "id": "TableShell",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
-        {
-          "id": "TableToolbar",
-          "visible": true,
-          "width": 691,
-          "height": 412
-        },
-        {
-          "id": "TcrnBrandMark",
-          "visible": true,
-          "width": 691,
-          "height": 192
+          "height": 269
         }
       ],
       "clipped": [],
@@ -9517,6 +9565,54 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "StateSurface",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "StateView",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "StatusBadge",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        },
+        {
+          "id": "Surface",
+          "visible": true,
+          "width": 691,
+          "height": 100
+        },
+        {
+          "id": "Switch",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
+          "id": "TableShell",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "TableToolbar",
+          "visible": true,
+          "width": 691,
+          "height": 412
+        },
+        {
+          "id": "TcrnBrandMark",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
           "id": "Text",
           "visible": true,
           "width": 691,
@@ -9587,54 +9683,6 @@
           "visible": true,
           "width": 691,
           "height": 220
-        },
-        {
-          "id": "WorkInlineCreateStatic",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
-        {
-          "id": "WorkItemInspector",
-          "visible": true,
-          "width": 691,
-          "height": 357
-        },
-        {
-          "id": "WorkItemRow",
-          "visible": true,
-          "width": 691,
-          "height": 517
-        },
-        {
-          "id": "WorkList",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
-        {
-          "id": "WorkManagementSubnav",
-          "visible": true,
-          "width": 691,
-          "height": 192
-        },
-        {
-          "id": "WorkPageHeader",
-          "visible": true,
-          "width": 691,
-          "height": 324
-        },
-        {
-          "id": "WorkQuickFilters",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
-        {
-          "id": "WorkSplitView",
-          "visible": true,
-          "width": 691,
-          "height": 324
         }
       ],
       "clipped": [],
@@ -9736,6 +9784,54 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "WorkInlineCreateStatic",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "WorkItemInspector",
+          "visible": true,
+          "width": 691,
+          "height": 357
+        },
+        {
+          "id": "WorkItemRow",
+          "visible": true,
+          "width": 691,
+          "height": 517
+        },
+        {
+          "id": "WorkList",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "WorkManagementSubnav",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
+          "id": "WorkPageHeader",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "WorkQuickFilters",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "WorkSplitView",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
         {
           "id": "WorkViewTabs",
           "visible": true,
@@ -10366,7 +10462,7 @@
           "id": "color-palette",
           "visible": true,
           "width": 358,
-          "height": 13236
+          "height": 13204
         }
       ],
       "referenceRegions": [],
@@ -10602,7 +10698,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9693
+          "height": 9711
         }
       ],
       "referenceRegions": [],
@@ -10745,19 +10841,19 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 10227
+          "height": 10455
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 358,
-          "height": 3109
+          "height": 4209
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 358,
-          "height": 2090
+          "height": 2058
         }
       ],
       "referenceRegions": [],
@@ -11133,13 +11229,13 @@
           "id": "work-management-route-detail-spec",
           "visible": true,
           "width": 358,
-          "height": 2457
+          "height": 2393
         },
         {
           "id": "work-management-backlog-board-spec",
           "visible": true,
           "width": 358,
-          "height": 1986
+          "height": 1918
         },
         {
           "id": "work-management-hierarchy-gates-spec",
@@ -11232,7 +11328,7 @@
           "id": "knowledge-management-templates-spec",
           "visible": true,
           "width": 358,
-          "height": 1076
+          "height": 1018
         }
       ],
       "referenceRegions": [],
@@ -11306,7 +11402,7 @@
           "id": "workbench-patterns",
           "visible": true,
           "width": 358,
-          "height": 785
+          "height": 753
         }
       ],
       "referenceRegions": [],
@@ -11373,7 +11469,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 3512
+          "height": 3448
         }
       ],
       "referenceRegions": [],
@@ -11523,7 +11619,7 @@
           "id": "datagrid-fields-patterns",
           "visible": true,
           "width": 358,
-          "height": 402
+          "height": 370
         },
         {
           "id": "big-list-search-patterns",
@@ -11611,7 +11707,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 14372
+          "height": 14340
         },
         {
           "id": "blocked-actions",
@@ -11691,7 +11787,7 @@
           "id": "aos-frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 27297
+          "height": 27073
         },
         {
           "id": "aos-owner-quality-product-shell",
@@ -11831,6 +11927,12 @@
           "height": 217
         },
         {
+          "id": "AppStatusBar",
+          "visible": true,
+          "width": 358,
+          "height": 217
+        },
+        {
           "id": "Badge",
           "visible": true,
           "width": 358,
@@ -11871,6 +11973,12 @@
           "visible": true,
           "width": 358,
           "height": 247
+        },
+        {
+          "id": "DefinitionList",
+          "visible": true,
+          "width": 358,
+          "height": 219
         },
         {
           "id": "DetailDrawer",
@@ -11931,18 +12039,6 @@
           "visible": true,
           "width": 358,
           "height": 137
-        },
-        {
-          "id": "Field",
-          "visible": true,
-          "width": 358,
-          "height": 244
-        },
-        {
-          "id": "FilterBar",
-          "visible": true,
-          "width": 358,
-          "height": 189
         }
       ],
       "clipped": [],
@@ -12001,6 +12097,24 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Field",
+          "visible": true,
+          "width": 358,
+          "height": 244
+        },
+        {
+          "id": "FieldProvenance",
+          "visible": true,
+          "width": 358,
+          "height": 244
+        },
+        {
+          "id": "FilterBar",
+          "visible": true,
+          "width": 358,
+          "height": 189
+        },
         {
           "id": "GatePipeline",
           "visible": true,
@@ -12102,24 +12216,6 @@
           "visible": true,
           "width": 358,
           "height": 382
-        },
-        {
-          "id": "KnowledgeTemplateGallery",
-          "visible": true,
-          "width": 358,
-          "height": 336
-        },
-        {
-          "id": "KnowledgeTocRail",
-          "visible": true,
-          "width": 358,
-          "height": 336
-        },
-        {
-          "id": "KnowledgeVersionHistory",
-          "visible": true,
-          "width": 358,
-          "height": 336
         }
       ],
       "clipped": [],
@@ -12179,6 +12275,30 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "KnowledgeTemplateGallery",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "KnowledgeTocRail",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "KnowledgeVersionHistory",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "LineNumberedEditor",
+          "visible": true,
+          "width": 358,
+          "height": 311
+        },
+        {
           "id": "LinkButton",
           "visible": true,
           "width": 358,
@@ -12189,6 +12309,12 @@
           "visible": true,
           "width": 358,
           "height": 100
+        },
+        {
+          "id": "LockHint",
+          "visible": true,
+          "width": 358,
+          "height": 189
         },
         {
           "id": "MachineToken",
@@ -12248,13 +12374,13 @@
           "id": "ProductLockup",
           "visible": true,
           "width": 358,
-          "height": 428
+          "height": 447
         },
         {
           "id": "ProductLogo",
           "visible": true,
           "width": 358,
-          "height": 336
+          "height": 354
         },
         {
           "id": "ProductShell",
@@ -12267,36 +12393,6 @@
           "visible": true,
           "width": 358,
           "height": 2039
-        },
-        {
-          "id": "ProductSwitcher",
-          "visible": true,
-          "width": 358,
-          "height": 219
-        },
-        {
-          "id": "ReadbackPanel",
-          "visible": true,
-          "width": 358,
-          "height": 208
-        },
-        {
-          "id": "RelationshipChip",
-          "visible": true,
-          "width": 358,
-          "height": 484
-        },
-        {
-          "id": "SavedViewToolbar",
-          "visible": true,
-          "width": 358,
-          "height": 357
-        },
-        {
-          "id": "SearchInput",
-          "visible": true,
-          "width": 358,
-          "height": 265
         }
       ],
       "clipped": [],
@@ -12356,6 +12452,36 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ProductSwitcher",
+          "visible": true,
+          "width": 358,
+          "height": 219
+        },
+        {
+          "id": "ReadbackPanel",
+          "visible": true,
+          "width": 358,
+          "height": 208
+        },
+        {
+          "id": "RelationshipChip",
+          "visible": true,
+          "width": 358,
+          "height": 484
+        },
+        {
+          "id": "SavedViewToolbar",
+          "visible": true,
+          "width": 358,
+          "height": 357
+        },
+        {
+          "id": "SearchInput",
+          "visible": true,
+          "width": 358,
+          "height": 265
+        },
+        {
           "id": "SearchableList",
           "visible": true,
           "width": 358,
@@ -12380,10 +12506,16 @@
           "height": 219
         },
         {
+          "id": "SettingRow",
+          "visible": true,
+          "width": 358,
+          "height": 327
+        },
+        {
           "id": "ShellBrandLockup",
           "visible": true,
           "width": 358,
-          "height": 474
+          "height": 493
         },
         {
           "id": "ShellLocaleMenu",
@@ -12434,46 +12566,10 @@
           "height": 100
         },
         {
-          "id": "StateSurface",
+          "id": "StatCard",
           "visible": true,
           "width": 358,
-          "height": 416
-        },
-        {
-          "id": "StateView",
-          "visible": true,
-          "width": 358,
-          "height": 336
-        },
-        {
-          "id": "StatusBadge",
-          "visible": true,
-          "width": 358,
-          "height": 219
-        },
-        {
-          "id": "Surface",
-          "visible": true,
-          "width": 358,
-          "height": 100
-        },
-        {
-          "id": "TableShell",
-          "visible": true,
-          "width": 358,
-          "height": 336
-        },
-        {
-          "id": "TableToolbar",
-          "visible": true,
-          "width": 358,
-          "height": 634
-        },
-        {
-          "id": "TcrnBrandMark",
-          "visible": true,
-          "width": 358,
-          "height": 265
+          "height": 287
         }
       ],
       "clipped": [],
@@ -12532,6 +12628,54 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "StateSurface",
+          "visible": true,
+          "width": 358,
+          "height": 416
+        },
+        {
+          "id": "StateView",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "StatusBadge",
+          "visible": true,
+          "width": 358,
+          "height": 219
+        },
+        {
+          "id": "Surface",
+          "visible": true,
+          "width": 358,
+          "height": 100
+        },
+        {
+          "id": "Switch",
+          "visible": true,
+          "width": 358,
+          "height": 290
+        },
+        {
+          "id": "TableShell",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "TableToolbar",
+          "visible": true,
+          "width": 358,
+          "height": 634
+        },
+        {
+          "id": "TcrnBrandMark",
+          "visible": true,
+          "width": 358,
+          "height": 265
+        },
         {
           "id": "Text",
           "visible": true,
@@ -12603,54 +12747,6 @@
           "visible": true,
           "width": 358,
           "height": 311
-        },
-        {
-          "id": "WorkInlineCreateStatic",
-          "visible": true,
-          "width": 358,
-          "height": 317
-        },
-        {
-          "id": "WorkItemInspector",
-          "visible": true,
-          "width": 358,
-          "height": 542
-        },
-        {
-          "id": "WorkItemRow",
-          "visible": true,
-          "width": 358,
-          "height": 775
-        },
-        {
-          "id": "WorkList",
-          "visible": true,
-          "width": 358,
-          "height": 336
-        },
-        {
-          "id": "WorkManagementSubnav",
-          "visible": true,
-          "width": 358,
-          "height": 265
-        },
-        {
-          "id": "WorkPageHeader",
-          "visible": true,
-          "width": 358,
-          "height": 453
-        },
-        {
-          "id": "WorkQuickFilters",
-          "visible": true,
-          "width": 358,
-          "height": 336
-        },
-        {
-          "id": "WorkSplitView",
-          "visible": true,
-          "width": 358,
-          "height": 416
         }
       ],
       "clipped": [],
@@ -12709,6 +12805,54 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "WorkInlineCreateStatic",
+          "visible": true,
+          "width": 358,
+          "height": 317
+        },
+        {
+          "id": "WorkItemInspector",
+          "visible": true,
+          "width": 358,
+          "height": 542
+        },
+        {
+          "id": "WorkItemRow",
+          "visible": true,
+          "width": 358,
+          "height": 775
+        },
+        {
+          "id": "WorkList",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "WorkManagementSubnav",
+          "visible": true,
+          "width": 358,
+          "height": 265
+        },
+        {
+          "id": "WorkPageHeader",
+          "visible": true,
+          "width": 358,
+          "height": 453
+        },
+        {
+          "id": "WorkQuickFilters",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "WorkSplitView",
+          "visible": true,
+          "width": 358,
+          "height": 416
+        },
         {
           "id": "WorkViewTabs",
           "visible": true,
