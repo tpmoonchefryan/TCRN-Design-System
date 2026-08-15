@@ -92,7 +92,7 @@
     {
       "path": "vercel.json",
       "exists": true,
-      "sha256": "0253bf6c0addd8ce39b24684363b7fff0dbbe6e392023b9d93ac8b7a8b41e65d"
+      "sha256": "7afbb8de60ff997cd0b6f1933cc90ab95cedd007f634de0ade37966ff5e9ed5c"
     },
     {
       "path": "docs/release-prep-v1.0.0.md",
@@ -117,7 +117,7 @@
     {
       "path": "packages/ui-react/src/index.tsx",
       "exists": true,
-      "sha256": "8cd068bf209b64b5799c421c344beb4e3d83e8c590d9a3614ec869f2a93739a9"
+      "sha256": "7209bd23cbaee488d6d5f683f5ff7e60aa13e708e395dd49eca7dc607a771103"
     },
     {
       "path": "apps/storybook/src/stories.tsx",

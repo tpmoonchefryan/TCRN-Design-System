@@ -1,4 +1,4 @@
-import type { CSSProperties, KeyboardEvent, ReactNode } from "react";
+import type { CSSProperties, HTMLAttributes, KeyboardEvent, ReactNode } from "react";
 import { useState } from "react";
 import { resolveTcrnLocale, type CopyStateInput, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { Button } from "../Button/index.js";
@@ -79,6 +79,54 @@ export function KeyValueList({ items }: { items: KeyValueItem[] }) {
         <div key={item.key}>
           <dt>{item.label}</dt>
           <dd>{item.value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+export type StatCardTone = "neutral" | "positive" | "warning" | "danger";
+
+export interface StatCardProps extends HTMLAttributes<HTMLElement> {
+  label: ReactNode;
+  value: ReactNode;
+  note?: ReactNode;
+  tone?: StatCardTone;
+}
+
+export function StatCard({ label, value, note, tone = "neutral", className, ...props }: StatCardProps) {
+  return (
+    <article
+      {...props}
+      className={cx("tcrn-stat-card", `tcrn-stat-card--${tone}`, className)}
+      data-stat-card="true"
+      data-stat-tone={tone}
+    >
+      <span className="tcrn-stat-card__label">{label}</span>
+      <strong className="tcrn-stat-card__value">{value}</strong>
+      {note ? <span className="tcrn-stat-card__note">{note}</span> : null}
+    </article>
+  );
+}
+
+export interface DefinitionListItem {
+  key: string;
+  term: ReactNode;
+  definition: ReactNode;
+}
+
+export interface DefinitionListProps extends HTMLAttributes<HTMLDListElement> {
+  items: DefinitionListItem[];
+  dense?: boolean;
+}
+
+export function DefinitionList({ items, dense = false, className, ...props }: DefinitionListProps) {
+  return (
+    <dl {...props} className={cx("tcrn-definition-list", dense && "tcrn-definition-list--dense", className)} data-definition-list="true">
+      {items.map((item) => (
+        <div key={item.key} className="tcrn-definition-list__item">
+          <dt className="tcrn-definition-list__term">{item.term}</dt>
+          <dd className="tcrn-definition-list__definition">{item.definition}</dd>
         </div>
       ))}
     </dl>

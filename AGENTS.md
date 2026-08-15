@@ -104,8 +104,9 @@ root's `AGENTS.md` and `docs/`.
 
 ## Where this repository's governance chain lives
 
-**This repository's chain is local again** (INIT-020 S199, 2026-08-08). The VM copy under
-`/srv/tcrn/governance/tcrn-workspace/TCRN-Design-System/workspace` is a vacated archive.
+**This repository's chain is local again** (INIT-020 S199, 2026-08-08). An earlier copy
+on another host was vacated and is now an archive; its address is recorded on the
+governance chain rather than in this public repository.
 Use the local installed engine for ordinary reads and writes:
 
 <!-- TOPOLOGY-CLAIMS:BEGIN -->

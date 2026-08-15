@@ -4355,7 +4355,7 @@
         "ok": true,
         "navItemCount": 11,
         "railScrollable": true,
-        "lastItemTop": 21168,
+        "lastItemTop": 21395,
         "reachable": true
       },
       {
@@ -7850,7 +7850,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 3441,
+        "leakCount": 3470,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7922,7 +7922,7 @@
           },
           {
             "storyId": "display-primitives-spec",
-            "leakCount": 93
+            "leakCount": 122
           },
           {
             "storyId": "interaction-disclosure-spec",

@@ -1,7 +1,19 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Field, Input, Textarea, Select, Checkbox, SearchInput } from "./Form.js";
+import {
+  Checkbox,
+  Field,
+  FieldProvenance,
+  Input,
+  LineNumberedEditor,
+  LockHint,
+  SearchInput,
+  Select,
+  SettingRow,
+  Switch,
+  Textarea
+} from "./Form.js";
 
 test("core primitives render normalized class names and accessibility attributes", () => {
   const html = renderToStaticMarkup(
@@ -81,4 +93,40 @@ test("search input exposes visual affordance without shortcut metadata by defaul
   assert.doesNotMatch(noShortcut, /data-shortcut-visible="true"/);
   assert.doesNotMatch(noShortcut, /data-shortcut-auto="search"/);
   assert.doesNotMatch(noShortcut, /aria-keyshortcuts=/);
+});
+
+test("component-loop form constructs expose their state and recovery surfaces", () => {
+  const html = renderToStaticMarkup(
+    <>
+      <Switch label="Use compact view" description="Reduces row spacing" defaultChecked />
+      <SettingRow
+        label="Theme"
+        settingKey="appearance.theme"
+        description="The preferred visual mode"
+        modified
+        resetLabel="Restore"
+        onReset={() => undefined}
+        control={<Select options={[{ value: "light", label: "Light" }]} />}
+      />
+      <FieldProvenance value="Compact" source="Inherited" overridden action={<button type="button">Restore field</button>} />
+      <LineNumberedEditor
+        value={["const value = true;", "return value;"].join("\n")}
+        readOnly
+        findings={[{ line: 2, label: "Check return path", tone: "warning" }]}
+      />
+      <LockHint>Available after the route is unlocked.</LockHint>
+    </>
+  );
+
+  assert.match(html, /role="switch"/);
+  assert.match(html, /data-switch-state="on"/);
+  assert.match(html, /data-setting-row="true" data-modified="true"/);
+  assert.match(html, /class="tcrn-setting-row__modified"/);
+  assert.match(html, />Restore<\/button>/);
+  assert.match(html, /data-provenance-state="overridden"/);
+  assert.match(html, /tcrn-field-provenance__source/);
+  assert.match(html, /data-line-numbered-editor="true"/);
+  assert.match(html, /data-editor-line="2" data-editor-line-finding="true"/);
+  assert.match(html, /data-editor-finding-line="2"/);
+  assert.match(html, /data-lock-hint="true" role="note"/);
 });

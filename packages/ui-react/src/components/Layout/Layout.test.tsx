@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { CollapsibleRegion, DisclosurePanel, Divider, Surface } from "./Layout.js";
+import { AppStatusBar, CollapsibleRegion, DisclosurePanel, Divider, Surface } from "./Layout.js";
 
 test("layout primitives include surfaces and dividers", () => {
   const html = renderToStaticMarkup(
@@ -57,4 +57,16 @@ test("disclosure panel is a controlled region and not an accordion claim", () =>
   assert.match(html, /Route details/);
   assert.match(html, /Static proof details/);
   assert.doesNotMatch(html, /data-accordion/);
+});
+
+test("app status bar exposes command, state, and optional action slots", () => {
+  const html = renderToStaticMarkup(
+    <AppStatusBar command="local" state="Ready" action={<button type="button">Details</button>} />
+  );
+
+  assert.match(html, /data-app-status-bar="true"/);
+  assert.match(html, /role="status"/);
+  assert.match(html, /class="tcrn-app-status-bar__command">local<\/span>/);
+  assert.match(html, /class="tcrn-app-status-bar__state">Ready<\/span>/);
+  assert.match(html, /class="tcrn-app-status-bar__action"><button/);
 });

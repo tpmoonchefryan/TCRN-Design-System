@@ -156,7 +156,20 @@ function scopeComponentCss(css: string, scope: string): string {
   return output.join("\n");
 }
 
-const staticStoryComponentCss = scopeComponentCss(tcrnComponentCss, ".story-body");
+// The package export stays readable for consumers and source-level proof. Static
+// pages carry it twice (global and scoped); compacting only the emitted copy keeps
+// the public docs under the page budget without changing selectors or declarations.
+function compactCss(css: string): string {
+  return css
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s*([{},;>+~])\s*/g, "$1")
+    .replace(/:\s+/g, ":")
+    .replace(/;}/g, "}")
+    .trim();
+}
+
+const staticStoryComponentCss = compactCss(scopeComponentCss(tcrnComponentCss, ".story-body"));
 
 function skipLinkHtml(): string {
   return renderToStaticMarkup(

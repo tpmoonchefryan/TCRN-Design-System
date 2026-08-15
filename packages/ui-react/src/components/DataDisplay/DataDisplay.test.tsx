@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
+  DefinitionList,
   EvidenceAttachmentList,
   GatePipeline,
   GatePipelineCompact,
@@ -20,6 +21,7 @@ import {
   MetadataRail,
   RelationshipChip,
   SavedViewToolbar,
+  StatCard,
   TableShell,
   TableToolbar,
   WorkBoard,
@@ -45,6 +47,29 @@ import {
 } from "./DataDisplay.js";
 import { EnvironmentBanner } from "../Feedback/index.js";
 import { TopBar } from "../Navigation/index.js";
+
+test("stat cards and definition lists preserve their distinct display semantics", () => {
+  const html = renderToStaticMarkup(
+    <>
+      <StatCard label="Open routes" value="12" note="Across the selected set" tone="positive" />
+      <DefinitionList
+        dense
+        items={[
+          { key: "term", term: "Readback", definition: "A recorded explanation of the current value." },
+          { key: "scope", term: "Scope", definition: "The smallest surface covered by the route." }
+        ]}
+      />
+    </>
+  );
+
+  assert.match(html, /data-stat-card="true" data-stat-tone="positive"/);
+  assert.match(html, /class="tcrn-stat-card__value">12<\/strong>/);
+  assert.match(html, /data-definition-list="true"/);
+  assert.match(html, /class="tcrn-definition-list tcrn-definition-list--dense"/);
+  assert.match(html, /<dt class="tcrn-definition-list__term">Readback<\/dt>/);
+  assert.match(html, /<dd class="tcrn-definition-list__definition">A recorded explanation/);
+  assert.doesNotMatch(html, /tcrn-key-value-list/);
+});
 
 test("composed shell and workbench patterns render synthetic rows", () => {
   const html = renderToStaticMarkup(

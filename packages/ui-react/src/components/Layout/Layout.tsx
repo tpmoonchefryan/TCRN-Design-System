@@ -10,6 +10,22 @@ export function Divider(props: HTMLAttributes<HTMLHRElement>) {
   return <hr {...props} className={cx("tcrn-divider", props.className)} />;
 }
 
+export interface AppStatusBarProps extends HTMLAttributes<HTMLElement> {
+  state: ReactNode;
+  command?: ReactNode;
+  action?: ReactNode;
+}
+
+export function AppStatusBar({ state, command, action, className, role, ...props }: AppStatusBarProps) {
+  return (
+    <div {...props} className={cx("tcrn-app-status-bar", className)} role={role ?? "status"} data-app-status-bar="true">
+      {command ? <span className="tcrn-app-status-bar__command">{command}</span> : null}
+      <span className="tcrn-app-status-bar__state">{state}</span>
+      {action ? <span className="tcrn-app-status-bar__action">{action}</span> : null}
+    </div>
+  );
+}
+
 export interface CollapsibleRegionProps extends HTMLAttributes<HTMLDivElement> {
   expanded: boolean;
   children: ReactNode;

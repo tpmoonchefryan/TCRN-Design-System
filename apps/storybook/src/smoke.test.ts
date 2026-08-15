@@ -1058,6 +1058,38 @@ test("canvas color and theme-color first-paint mirror the surface-canvas token",
   assert.match(clientScripts, new RegExp('dark:\\s*"' + escapeRegExp(canvasDark) + '"'));
 });
 
+test("STORY-283 the design-authority contract reports this build's own version and token bytes", () => {
+  // A consumer names this Storybook's URL as its design authority and reads the version
+  // from this file. Everything asserted here is local bytes, so it is red-or-green; the
+  // one thing that cannot be checked from inside this repository — whether the deployed
+  // response carries its CORS header — is the consumer's yellow, not our red.
+  const contract = JSON.parse(readFileSync(join(process.cwd(), "storybook-static", "tcrn-design-authority.json"), "utf8"));
+  assert.equal(contract.schemaVersion, "tcrn.design-authority.v1");
+  assert.equal(contract.name, "TCRN Design System");
+
+  // The version comes from the published token package rather than being written into
+  // the contract, so the file cannot claim a version this build did not produce.
+  const tokensPackage = JSON.parse(readFileSync(join(process.cwd(), "..", "..", "packages", "ui-tokens", "package.json"), "utf8"));
+  assert.equal(contract.version, tokensPackage.version);
+  assert.match(contract.version, /^\d+\.\d+\.\d+/u);
+
+  // The digest is of the token stylesheet this build actually carries. A consumer can
+  // compare it against its own vendored copy; this assertion is what stops the file
+  // from reporting a digest of something else.
+  const tokensCss = readFileSync(join(process.cwd(), "..", "..", "packages", "ui-tokens", "src", "tokens.css"), "utf8");
+  assert.equal(contract.tokensDigest, sha256(tokensCss));
+  assert.match(contract.tokensDigest, /^[0-9a-f]{64}$/u);
+
+  // The deploy config has to route the CORS header at the path the build writes, or the
+  // artifact exists and no browser can read it. Both halves are local text, so this is
+  // checkable here even though the deployed response is not.
+  const vercel = JSON.parse(readFileSync(join(process.cwd(), "..", "..", "vercel.json"), "utf8"));
+  const rule = (vercel.headers ?? []).find((entry: { source: string }) => entry.source === "/tcrn-design-authority.json");
+  assert.ok(rule, "the deploy config must route a header rule at the artifact's path");
+  assert.ok(rule.headers.some((header: { key: string; value: string }) => header.key === "Access-Control-Allow-Origin" && header.value === "*"),
+    "the consumer is a browser on another origin");
+});
+
 test("storybook AI consumption contract is machine-readable and no-overclaim", () => {
   const contractSource = readFileSync(join(process.cwd(), "storybook-static", "ai-consumption-contract.json"), "utf8");
   const contract = JSON.parse(contractSource);
