@@ -113,7 +113,7 @@ Use the local installed engine for ordinary reads and writes:
 
 | 分区 | home | 真值地址 | 复核命令 |
 | --- | --- | --- | --- |
-| `TCRN-Design-System` | `local` | `../.tcrn-workspace/TCRN-Design-System/workspace` | `本机引擎只读: status --workspace ../.tcrn-workspace/TCRN-Design-System/workspace · 真值地址 ../.tcrn-workspace/TCRN-Design-System/workspace` |
+| `TCRN-Design-System` | `local` | `.tcrn-workspace/TCRN-Design-System/workspace` | `本机引擎只读: status --workspace .tcrn-workspace/TCRN-Design-System/workspace · 真值地址 .tcrn-workspace/TCRN-Design-System/workspace` |
 
 <!-- TOPOLOGY-CLAIMS:END -->
 
