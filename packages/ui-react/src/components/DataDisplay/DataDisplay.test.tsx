@@ -2,7 +2,12 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
+  Avatar,
+  Card,
   DefinitionList,
+  Progress,
+  Stepper,
+  avatarInitials,
   EvidenceAttachmentList,
   GatePipeline,
   GatePipelineCompact,
@@ -638,4 +643,77 @@ test("the remaining work and knowledge patterns say their own labels in the read
   assert.match(explicit, /aria-label="调用方自己的名字"/);
   const noLocale = renderToStaticMarkup(<WorkSplitView list={<div>list</div>} detail={<div>detail</div>} />);
   assert.match(noLocale, /aria-label="Work split view"/);
+});
+
+
+// TCRN-DS-STORY-092. Every assertion below reads a BEHAVIOUR, not a class name.
+// A test that only asserts `class="tcrn-card"` stays green when the component is
+// replaced by an empty div wearing that class — which is exactly how Breadcrumb's
+// missing href survived a full suite (see Navigation.test.tsx).
+
+test("STORY-092 an interactive card is reachable by keyboard and a plain one is not", () => {
+  const interactive = renderToStaticMarkup(<Card interactive>body</Card>);
+  const plain = renderToStaticMarkup(<Card>body</Card>);
+  assert.match(interactive, /tabindex="0"/);
+  assert.doesNotMatch(plain, /tabindex=/, "a non-interactive card must not enter the tab order");
+  // The consumer keeps ownership of a supplied tabIndex rather than having it overwritten.
+  assert.match(renderToStaticMarkup(<Card interactive tabIndex={-1}>body</Card>), /tabindex="-1"/);
+});
+
+test("STORY-092 an avatar without a picture still carries the name, and says it once", () => {
+  const withoutImage = renderToStaticMarkup(<Avatar name="Ada Lovelace" />);
+  assert.match(withoutImage, /role="img"/);
+  assert.match(withoutImage, /aria-label="Ada Lovelace"/);
+  assert.match(withoutImage, />AL</, "initials are the fallback, not an empty circle");
+  const withImage = renderToStaticMarkup(<Avatar name="Ada Lovelace" src="/a.png" />);
+  // The wrapper already announces the name; a non-empty alt would read it twice.
+  assert.match(withImage, /alt=""/);
+  assert.equal((withImage.match(/Ada Lovelace/g) ?? []).length, 1);
+});
+
+test("STORY-092 initials take the first and last word, not the first two", () => {
+  // A column of these is scanned, and the middle name is the part nobody uses.
+  assert.equal(avatarInitials("Ada Lovelace King"), "AK");
+  assert.equal(avatarInitials("Ada"), "A");
+  assert.equal(avatarInitials("   "), "");
+});
+
+test("STORY-092 an indeterminate progress bar reports no value at all", () => {
+  const determinate = renderToStaticMarkup(<Progress label="Upload" value={40} />);
+  assert.match(determinate, /role="progressbar"/);
+  assert.match(determinate, /aria-valuenow="40"/);
+  assert.match(determinate, /aria-valuemax="100"/);
+  const indeterminate = renderToStaticMarkup(<Progress label="Upload" />);
+  // Rendering 0% for "extent unknown" is a claim, and it is the wrong one.
+  assert.doesNotMatch(indeterminate, /aria-valuenow=/);
+  assert.match(indeterminate, /role="progressbar"/);
+});
+
+test("STORY-092 progress clamps a value outside its range instead of overflowing", () => {
+  assert.match(renderToStaticMarkup(<Progress label="x" value={140} />), /aria-valuenow="100"/);
+  assert.match(renderToStaticMarkup(<Progress label="x" value={-5} />), /aria-valuenow="0"/);
+});
+
+test("STORY-092 the current step is announced, and completion is a separate fact from position", () => {
+  const html = renderToStaticMarkup(
+    <Stepper
+      label="Setup"
+      currentId="two"
+      steps={[
+        { id: "one", label: "Choose", complete: true },
+        { id: "two", label: "Confirm" },
+        { id: "three", label: "Done" }
+      ]}
+    />
+  );
+  assert.match(html, /aria-current="step"/);
+  assert.equal((html.match(/aria-current="step"/g) ?? []).length, 1, "exactly one step is current");
+  assert.match(html, /data-step-state="complete"/);
+  assert.match(html, /data-step-state="upcoming"/);
+  // A reader who jumped back leaves a completed step after the current one, so
+  // "complete" cannot be derived from position.
+  const jumped = renderToStaticMarkup(
+    <Stepper label="Setup" currentId="one" steps={[{ id: "one", label: "A" }, { id: "two", label: "B", complete: true }]} />
+  );
+  assert.match(jumped, /data-step-state="complete"/);
 });

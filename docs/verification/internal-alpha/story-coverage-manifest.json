@@ -7850,7 +7850,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 3470,
+        "leakCount": 3469,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -8086,7 +8086,7 @@
           },
           {
             "storyId": "reference-page-4",
-            "leakCount": 5
+            "leakCount": 4
           },
           {
             "storyId": "reference-page-5",

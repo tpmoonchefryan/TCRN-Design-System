@@ -167,6 +167,22 @@
         "exported": true
       },
       {
+        "name": "Card",
+        "exported": true
+      },
+      {
+        "name": "Avatar",
+        "exported": true
+      },
+      {
+        "name": "Progress",
+        "exported": true
+      },
+      {
+        "name": "Stepper",
+        "exported": true
+      },
+      {
         "name": "DefinitionList",
         "exported": true
       },
@@ -851,6 +867,42 @@
       },
       {
         "storybookItem": "KeyValueList",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Card",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Avatar",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Progress",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Stepper",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
