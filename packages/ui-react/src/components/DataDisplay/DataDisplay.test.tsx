@@ -4,6 +4,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import {
   Avatar,
   Card,
+  DataGrid,
+  Tree,
   DefinitionList,
   Progress,
   Stepper,
@@ -716,4 +718,41 @@ test("STORY-092 the current step is announced, and completion is a separate fact
     <Stepper label="Setup" currentId="one" steps={[{ id: "one", label: "A" }, { id: "two", label: "B", complete: true }]} />
   );
   assert.match(jumped, /data-step-state="complete"/);
+});
+
+
+test("STORY-092 a tree reports position in the hierarchy, not just indentation", () => {
+  const html = renderToStaticMarkup(
+    <Tree label="Pages" expandedIds={["a"]} selectedId="a1"
+      nodes={[
+        { id: "a", label: "A", children: [{ id: "a1", label: "A1" }, { id: "a2", label: "A2" }] },
+        { id: "b", label: "B" }
+      ]} />
+  );
+  assert.match(html, /role="tree"/);
+  assert.match(html, /role="group"/);
+  // Indentation is visual only; these are the facts a reader who cannot see it needs.
+  assert.match(html, /aria-level="1"[^>]*aria-setsize="2"[^>]*aria-posinset="1"/);
+  assert.match(html, /aria-level="2"/);
+  assert.match(html, /aria-expanded="true"/);
+  assert.match(html, /aria-selected="true"/);
+  // A leaf has no aria-expanded at all: "collapsed" would be a claim about children
+  // it does not have.
+  assert.equal((html.match(/aria-expanded=/g) ?? []).length, 1);
+});
+
+test("STORY-092 a data grid declares its sort in aria-sort, not in an arrow glyph", () => {
+  const html = renderToStaticMarkup(
+    <DataGrid label="Rows" sortColumnId="name" sortDirection="ascending" onSort={() => {}}
+      columns={[{ id: "name", header: "Name", sortable: true }, { id: "note", header: "Note" }]}
+      rows={[{ id: "r1", cells: ["a", "b"] }]} />
+  );
+  assert.match(html, /role="grid"/);
+  assert.match(html, /aria-rowcount="2"/);
+  assert.match(html, /aria-colcount="2"/);
+  assert.match(html, /aria-sort="ascending"/);
+  // A non-sortable column carries no aria-sort at all rather than "none", which
+  // would announce it as sortable-but-unsorted.
+  assert.equal((html.match(/aria-sort=/g) ?? []).length, 1);
+  assert.match(html, /role="gridcell"/);
 });

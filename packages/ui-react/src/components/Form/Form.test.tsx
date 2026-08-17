@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   RadioGroup,
+  DatePicker,
   Checkbox,
   Field,
   FieldProvenance,
@@ -174,4 +175,15 @@ test("STORY-092 a disabled group disables every option through the fieldset", ()
   // One disabled attribute on the fieldset does what N on the inputs would, and
   // stays correct when an option is added.
   assert.match(html, /<fieldset[^>]*disabled=""/);
+});
+
+
+test("STORY-092 a date picker keeps the machine format in the value and the reader's on screen", () => {
+  const html = renderToStaticMarkup(<DatePicker value="2026-08-18" min="2026-01-01" max="2026-12-31" readOnly />);
+  assert.match(html, /type="date"/);
+  // ISO in the value regardless of what the reader sees, so a product never parses
+  // a localised string. That split is what the native control gives for free.
+  assert.match(html, /value="2026-08-18"/);
+  assert.match(html, /min="2026-01-01"/);
+  assert.match(html, /max="2026-12-31"/);
 });

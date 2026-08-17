@@ -273,6 +273,34 @@ export function RadioGroup({ legend, name, options, value, defaultValue, onChang
   );
 }
 
+/**
+ * A date, entered as a date.
+ *
+ * This wraps `<input type="date">` rather than building a calendar grid, and the
+ * restraint is the design. The native control brings the platform's own picker,
+ * its locale-correct display format, its keyboard handling and its screen-reader
+ * announcements — all of which a hand-built grid has to reimplement and usually
+ * reimplements worse. A custom calendar earns its place only when a product needs
+ * ranges, multi-select or disabled days, and none of the consumers here does.
+ *
+ * The value is always ISO `YYYY-MM-DD` regardless of what the reader sees, so a
+ * product never parses a localised string. That split — machine format in the
+ * value, reader's format on screen — is what the native control gives for free
+ * and what products most often get wrong on their own.
+ */
+export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+  /** ISO `YYYY-MM-DD`. The displayed format is the reader's, not this one. */
+  value?: string;
+  /** Earliest selectable date, ISO. */
+  min?: string;
+  /** Latest selectable date, ISO. */
+  max?: string;
+}
+
+export function DatePicker({ className, ...props }: DatePickerProps) {
+  return <input {...props} type="date" className={cx("tcrn-date-picker", className)} data-date-picker="true" />;
+}
+
 export interface SettingRowProps extends HTMLAttributes<HTMLDivElement> {
   label: ReactNode;
   description?: ReactNode;

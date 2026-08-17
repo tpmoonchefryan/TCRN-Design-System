@@ -167,6 +167,18 @@
         "exported": true
       },
       {
+        "name": "DatePicker",
+        "exported": true
+      },
+      {
+        "name": "Tree",
+        "exported": true
+      },
+      {
+        "name": "DataGrid",
+        "exported": true
+      },
+      {
         "name": "Menu",
         "exported": true
       },
@@ -883,6 +895,33 @@
       },
       {
         "storybookItem": "KeyValueList",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "DatePicker",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Tree",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "DataGrid",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
