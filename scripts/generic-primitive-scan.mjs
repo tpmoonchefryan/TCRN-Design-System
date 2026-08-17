@@ -42,14 +42,21 @@ export const DOMAIN_PREFIXES = Object.freeze(["Work", "Knowledge", "Gate", "Evid
 /**
  * The components that were already here when the rule became enforceable.
  *
- * Frozen on 2026-08-18. Twenty-five of these are live imports in the consuming
+ * Frozen on 2026-08-18, then thirty-two minus one: GateReadinessPanel left by the
+ * route the gate's own message prescribes — "describe its props without the entity
+ * and rename it". Its props were `{ state: CopyStatePresentation }` and its body a
+ * Surface/Heading/Text/StatusBadge composition; the domain lived entirely in the
+ * name, so it is now StatusSummaryPanel and no longer a domain component at all.
+ * Nothing was deleted and no consumer lost a capability.
+ *
+ * Twenty-five of the remainder are live imports in the consuming
  * product; extraction is cross-repository work sequenced after this gate, tracked by
  * TCRN-DS-INIT-012. Removing a name from this list is how extraction reports
  * progress — the gate then refuses it coming back.
  */
 export const REGISTERED_DOMAIN_DEBT = Object.freeze([
   "EvidenceAttachmentList", "EvidenceStrip",
-  "GatePipeline", "GatePipelineCompact", "GateReadinessPanel",
+  "GatePipeline", "GatePipelineCompact",
   "KnowledgeAttachmentList", "KnowledgeDocumentCanvas", "KnowledgeInlineCommentList",
   "KnowledgeLabelSet", "KnowledgeMetadataRail", "KnowledgePageTree",
   "KnowledgeSearchResults", "KnowledgeTemplateGallery", "KnowledgeTocRail",

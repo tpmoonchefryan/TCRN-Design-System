@@ -36,7 +36,6 @@
       "FilterBar",
       "GatePipeline",
       "GatePipelineCompact",
-      "GateReadinessPanel",
       "Heading",
       "Highlight",
       "Icon",
@@ -98,6 +97,7 @@
       "StateSurface",
       "StateView",
       "StatusBadge",
+      "StatusSummaryPanel",
       "Stepper",
       "Surface",
       "Switch",
@@ -159,7 +159,6 @@
       "FilterBar",
       "GatePipeline",
       "GatePipelineCompact",
-      "GateReadinessPanel",
       "Heading",
       "Highlight",
       "Icon",
@@ -221,6 +220,7 @@
       "StateSurface",
       "StateView",
       "StatusBadge",
+      "StatusSummaryPanel",
       "Stepper",
       "Surface",
       "Switch",
@@ -1300,20 +1300,6 @@
       },
       "slots": [],
       "propsType": "GatePipelineProps"
-    },
-    "GateReadinessPanel": {
-      "name": "GateReadinessPanel",
-      "kind": "function",
-      "props": [
-        {
-          "name": "state",
-          "type": "CopyStatePresentation",
-          "required": true
-        }
-      ],
-      "variants": {},
-      "slots": [],
-      "propsType": "{ state: CopyStatePresentation }"
     },
     "Heading": {
       "name": "Heading",
@@ -4186,6 +4172,20 @@
       "variants": {},
       "slots": [],
       "propsType": "StatusBadgeProps"
+    },
+    "StatusSummaryPanel": {
+      "name": "StatusSummaryPanel",
+      "kind": "function",
+      "props": [
+        {
+          "name": "state",
+          "type": "CopyStatePresentation",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "{ state: CopyStatePresentation }"
     },
     "Stepper": {
       "name": "Stepper",

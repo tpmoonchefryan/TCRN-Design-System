@@ -4429,12 +4429,12 @@ a.tcrn-relationship-chip:focus-visible {
    "Demo-chrome exemption list"). */
 
 /* Base surface card — Layout .tcrn-surface / .tcrn-disclosure-panel, Feedback
-   .tcrn-state-view / .tcrn-state-surface / .tcrn-gate-readiness-panel, DataDisplay
+   .tcrn-state-view / .tcrn-state-surface / .tcrn-status-summary-panel, DataDisplay
    .tcrn-detail-inspector, Overlay .tcrn-popover / .tcrn-dialog / .tcrn-confirm-dialog /
    .tcrn-detail-drawer / .tcrn-action-drawer. */
 .tcrn-surface,
 .tcrn-detail-inspector,
-.tcrn-gate-readiness-panel,
+.tcrn-status-summary-panel,
 .tcrn-state-view,
 .tcrn-state-surface,
 .tcrn-disclosure-panel,
@@ -4453,7 +4453,7 @@ a.tcrn-relationship-chip:focus-visible {
 
 .tcrn-surface,
 .tcrn-detail-inspector,
-.tcrn-gate-readiness-panel,
+.tcrn-status-summary-panel,
 .tcrn-confirm-dialog,
 .tcrn-detail-drawer,
 .tcrn-action-drawer {

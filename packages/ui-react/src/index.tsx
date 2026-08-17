@@ -28,7 +28,7 @@ export const componentLibraryPublicComponentNames = [
   "LiveRegion",
   "Skeleton",
   "EnvironmentBanner",
-  "GateReadinessPanel",
+  "StatusSummaryPanel",
   "EvidenceStrip",
   "ReadbackPanel",
   "Text",

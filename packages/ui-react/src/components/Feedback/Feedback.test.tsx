@@ -1,14 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { EmptyState, EnvironmentBanner, ErrorState, Skeleton, StateSurface, StatusBadge, StateView, GateReadinessPanel, Toast } from "./Feedback.js";
+import { EmptyState, EnvironmentBanner, ErrorState, Skeleton, StateSurface, StatusBadge, StateView, StatusSummaryPanel, Toast } from "./Feedback.js";
 import { presentCopyState } from "@tcrn/ui-copy-state";
 
 test("stateful components fail closed without product acceptance claims", () => {
   const badge = renderToStaticMarkup(<StatusBadge state={{ state: "future_live" }} />);
   assert.match(badge, /data-state="unknown"/);
 
-  const panel = renderToStaticMarkup(<GateReadinessPanel state={presentCopyState({ state: "proof_required" })} />);
+  const panel = renderToStaticMarkup(<StatusSummaryPanel state={presentCopyState({ state: "proof_required" })} />);
   assert.match(panel, /Proof required/);
   assert.doesNotMatch(panel.toLowerCase(), /product accepted|final mvp accepted|release ready/);
 });
