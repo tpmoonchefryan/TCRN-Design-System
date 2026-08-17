@@ -3,15 +3,17 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 109,
+  "componentCount": 113,
   "coverage": {
-    "registryComponentCount": 109,
+    "registryComponentCount": 113,
     "publicComponentNames": [
       "ActionDrawer",
       "AppStatusBar",
+      "Avatar",
       "Badge",
       "Breadcrumb",
       "Button",
+      "Card",
       "Checkbox",
       "ClipboardCopyButton",
       "CollapsibleRegion",
@@ -68,6 +70,7 @@
       "ProductShell",
       "ProductShellSearch",
       "ProductSwitcher",
+      "Progress",
       "ReadbackPanel",
       "RelationshipChip",
       "SavedViewToolbar",
@@ -90,6 +93,7 @@
       "StateSurface",
       "StateView",
       "StatusBadge",
+      "Stepper",
       "Surface",
       "Switch",
       "TableShell",
@@ -120,9 +124,11 @@
     "manifestComponentNames": [
       "ActionDrawer",
       "AppStatusBar",
+      "Avatar",
       "Badge",
       "Breadcrumb",
       "Button",
+      "Card",
       "Checkbox",
       "ClipboardCopyButton",
       "CollapsibleRegion",
@@ -179,6 +185,7 @@
       "ProductShell",
       "ProductShellSearch",
       "ProductSwitcher",
+      "Progress",
       "ReadbackPanel",
       "RelationshipChip",
       "SavedViewToolbar",
@@ -201,6 +208,7 @@
       "StateSurface",
       "StateView",
       "StatusBadge",
+      "Stepper",
       "Surface",
       "Switch",
       "TableShell",
@@ -297,6 +305,42 @@
         "state"
       ],
       "propsType": "AppStatusBarProps"
+    },
+    "Avatar": {
+      "name": "Avatar",
+      "kind": "function",
+      "props": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "size",
+          "type": "AvatarSize",
+          "required": false,
+          "default": "\"medium\"",
+          "enumValues": [
+            "small",
+            "medium",
+            "large"
+          ]
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "size": [
+          "small",
+          "medium",
+          "large"
+        ]
+      },
+      "slots": [],
+      "propsType": "AvatarProps"
     },
     "Badge": {
       "name": "Badge",
@@ -395,6 +439,38 @@
         ]
       },
       "slots": []
+    },
+    "Card": {
+      "name": "Card",
+      "kind": "function",
+      "props": [
+        {
+          "name": "interactive",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "tone",
+          "type": "CardTone",
+          "required": false,
+          "default": "\"neutral\"",
+          "enumValues": [
+            "quiet",
+            "neutral",
+            "raised"
+          ]
+        }
+      ],
+      "variants": {
+        "tone": [
+          "quiet",
+          "neutral",
+          "raised"
+        ]
+      },
+      "slots": [],
+      "propsType": "CardProps"
     },
     "Checkbox": {
       "name": "Checkbox",
@@ -2921,6 +2997,31 @@
       "slots": [],
       "propsType": "ProductLauncherProps"
     },
+    "Progress": {
+      "name": "Progress",
+      "kind": "function",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "default": "100"
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ProgressProps"
+    },
     "ReadbackPanel": {
       "name": "ReadbackPanel",
       "kind": "function",
@@ -3835,6 +3936,30 @@
       "variants": {},
       "slots": [],
       "propsType": "StatusBadgeProps"
+    },
+    "Stepper": {
+      "name": "Stepper",
+      "kind": "function",
+      "props": [
+        {
+          "name": "currentId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "steps",
+          "type": "StepperStep[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "StepperProps"
     },
     "Surface": {
       "name": "Surface",

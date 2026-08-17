@@ -109,6 +109,176 @@ export function StatCard({ label, value, note, tone = "neutral", className, ...p
   );
 }
 
+/**
+ * A bounded block of related content.
+ *
+ * `Card` is the plainest thing in this file and it earns its place by what it
+ * refuses: no title prop, no actions prop, no footer prop. Every product that
+ * wanted those found a different arrangement of them, and a card that ships one
+ * arrangement makes the other products fight it. What is genuinely shared is the
+ * surface, the padding rhythm, and the interactive affordance — so those are what
+ * this owns, and the content is the consumer's.
+ */
+export type CardTone = "neutral" | "raised" | "quiet";
+
+export interface CardProps extends HTMLAttributes<HTMLElement> {
+  tone?: CardTone;
+  /** Renders the card as a single activation target. Supply a handler with it. */
+  interactive?: boolean;
+}
+
+export function Card({ tone = "neutral", interactive = false, className, children, ...props }: CardProps) {
+  return (
+    <article
+      {...props}
+      className={cx("tcrn-card", `tcrn-card--${tone}`, interactive && "tcrn-card--interactive", className)}
+      data-card="true"
+      data-card-tone={tone}
+      tabIndex={interactive ? (props.tabIndex ?? 0) : props.tabIndex}
+    >
+      {children}
+    </article>
+  );
+}
+
+/**
+ * A person or entity, shown as an image when there is one and as initials when
+ * there is not.
+ *
+ * The fallback is the whole point. A product that has no picture for someone
+ * still has to render something, and the alternative every consumer reaches for
+ * — an empty circle — loses the one piece of information they do have. Initials
+ * are derived here rather than asked for, because a consumer computing them is a
+ * consumer computing them differently.
+ */
+export type AvatarSize = "small" | "medium" | "large";
+
+export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
+  /** The name this stands for. Required: it is the accessible name and the initials. */
+  name: string;
+  src?: string;
+  size?: AvatarSize;
+}
+
+export function avatarInitials(name: string): string {
+  const words = name.trim().split(/\s+/u).filter(Boolean);
+  if (words.length === 0) return "";
+  // First and last, not first-two: "Ada Lovelace King" reads as AK to a reader
+  // scanning a column of them, and the middle name is the part nobody uses.
+  const first = [...words[0]][0] ?? "";
+  const last = words.length > 1 ? [...words[words.length - 1]][0] ?? "" : "";
+  return `${first}${last}`.toUpperCase();
+}
+
+export function Avatar({ name, src, size = "medium", className, ...props }: AvatarProps) {
+  const initials = avatarInitials(name);
+  return (
+    <span
+      {...props}
+      className={cx("tcrn-avatar", `tcrn-avatar--${size}`, className)}
+      data-avatar="true"
+      data-avatar-size={size}
+      role="img"
+      aria-label={name}
+    >
+      {src ? (
+        // The alt is empty on purpose: the wrapper already carries the name, and a
+        // second announcement of it is the name read twice.
+        <img className="tcrn-avatar__image" src={src} alt="" />
+      ) : (
+        <span aria-hidden="true" className="tcrn-avatar__initials">{initials}</span>
+      )}
+    </span>
+  );
+}
+
+/**
+ * How far along something is.
+ *
+ * Two shapes, one component. A determinate bar carries `value` and reports it
+ * through `aria-valuenow`; an indeterminate one omits `value` and reports
+ * nothing but its role, which is what tells a screen reader "in progress, extent
+ * unknown" rather than "0%". Products routinely render 0% for the unknown case,
+ * and 0% is a claim.
+ */
+export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
+  /** Omit for an indeterminate bar. */
+  value?: number;
+  max?: number;
+  /** Accessible name. A bar with no label is a bar nobody can ask about. */
+  label: string;
+}
+
+export function Progress({ value, max = 100, label, className, ...props }: ProgressProps) {
+  const determinate = typeof value === "number" && Number.isFinite(value);
+  const clamped = determinate ? Math.min(Math.max(value, 0), max) : undefined;
+  return (
+    <div
+      {...props}
+      className={cx("tcrn-progress", determinate ? "tcrn-progress--determinate" : "tcrn-progress--indeterminate", className)}
+      data-progress="true"
+      data-progress-state={determinate ? "determinate" : "indeterminate"}
+      role="progressbar"
+      aria-label={label}
+      aria-valuemin={determinate ? 0 : undefined}
+      aria-valuemax={determinate ? max : undefined}
+      aria-valuenow={clamped}
+    >
+      <span
+        className="tcrn-progress__fill"
+        style={determinate ? { inlineSize: `${(clamped as number / max) * 100}%` } : undefined}
+      />
+    </div>
+  );
+}
+
+/**
+ * An ordered set of steps with one of them current.
+ *
+ * `aria-current="step"` is the part that is easy to leave out and impossible to
+ * work around: without it the trail renders correctly and tells a screen-reader
+ * user nothing about where they are in it. Completed steps are marked in data
+ * rather than by position, because a product that lets a reader jump back needs
+ * "done" and "before the current one" to be different facts.
+ */
+export interface StepperStep {
+  id: string;
+  label: ReactNode;
+  description?: ReactNode;
+  complete?: boolean;
+}
+
+export interface StepperProps extends HTMLAttributes<HTMLElement> {
+  steps: StepperStep[];
+  /** The `id` of the step the reader is on. */
+  currentId: string;
+  /** Accessible name for the sequence. */
+  label: string;
+}
+
+export function Stepper({ steps, currentId, label, className, ...props }: StepperProps) {
+  return (
+    <nav {...props} className={cx("tcrn-stepper", className)} data-stepper="true" aria-label={label}>
+      <ol className="tcrn-stepper__list">
+        {steps.map((step, index) => {
+          const current = step.id === currentId;
+          return (
+            <li key={step.id}
+              className={cx("tcrn-stepper__step", current && "tcrn-stepper__step--current", step.complete && "tcrn-stepper__step--complete")}
+              data-step-state={current ? "current" : step.complete ? "complete" : "upcoming"}
+              aria-current={current ? "step" : undefined}
+            >
+              <span className="tcrn-stepper__marker" aria-hidden="true">{index + 1}</span>
+              <span className="tcrn-stepper__label">{step.label}</span>
+              {step.description ? <span className="tcrn-stepper__description">{step.description}</span> : null}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
 export interface DefinitionListItem {
   key: string;
   term: ReactNode;
