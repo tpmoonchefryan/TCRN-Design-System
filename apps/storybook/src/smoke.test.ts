@@ -696,12 +696,12 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readRenderedGroupPage("Components"), /Current location may scroll into view and highlight, but must not reorder sections/);
   assert.match(readRenderedGroupPage("Components"), /Control\/Command\+K shortcut labels belong only to navigation or shell search with a real focus target and result behavior/);
   assert.match(readRenderedGroupPage("Components"), /Shell selection matrix/);
-  assert.match(readRenderedGroupPage("Components"), /TMS dense operations shell/);
+  assert.match(readRenderedGroupPage("Components"), /Dense operations shell/);
   assert.match(readRenderedGroupPage("Components"), /Knowledge base bookmark shell/);
   assert.match(readGroupPage("Components"), /tcrn-shell-mega-menu/);
   assert.match(readGroupPage("Components"), /tcrn-shell-layer/);
   assert.match(readGroupPage("Components"), /data-shell-layer="mega-menu"/);
-  assert.match(readGroupPage("Components"), /data-tms-menu-density-standard="adaptive"/);
+  assert.match(readGroupPage("Components"), /data-dense-menu-density-standard="adaptive"/);
   assert.match(readGroupPage("Components"), /data-menu-layer="low-secondary"/);
   assert.match(readGroupPage("Components"), /data-menu-layout="hub"/);
   assert.match(readGroupPage("Components"), /data-menu-density="hub"/);

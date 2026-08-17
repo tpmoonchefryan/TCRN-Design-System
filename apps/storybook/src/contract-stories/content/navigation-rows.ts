@@ -13,13 +13,13 @@ export const navigationComponentRows = [
 ];
 
 export const navigationStrategyRows = [
-  { surface: "TMS dense operations", pattern: "Top bar, menu button, compact search, and expanded mega menu", rule: "Use when a product has 10+ primary navigation items or 30+ secondary directories.", boundary: "The expanded menu must show grouped primary areas and their secondary options together." },
+  { surface: "Dense operations", pattern: "Top bar, menu button, compact search, and expanded mega menu", rule: "Use when a product has 10+ primary navigation items or 30+ secondary directories.", boundary: "The expanded menu must show grouped primary areas and their secondary options together." },
   { surface: "Design System knowledge base", pattern: "High-contrast collapsible side navigation with multi-level bookmark links", rule: "Use for documentation, standards, governance, and proof receipts.", boundary: "The side navigation follows scroll position, supports collapse, and does not replace page headings." },
   { surface: "Focused tool surface", pattern: "Top bar with local segmented navigation", rule: "Use for a narrow tool with five or fewer peer views.", boundary: "Segmented navigation must not pretend to be product-wide navigation." },
   { surface: "Mobile or narrow product shell", pattern: "Top bar, drawer menu, and compact search", rule: "Use when primary navigation cannot fit without wrapping or crowding.", boundary: "The drawer preserves the same grouping, search, focus, and close behavior." }
 ];
 
-export type TmsNavigationItem = {
+export type DenseShellNavigationItem = {
   id: string;
   label: string;
   description: string;
@@ -27,25 +27,25 @@ export type TmsNavigationItem = {
   selected: boolean;
 };
 
-export type TmsNavigationGroup = {
+export type DenseShellNavigationGroup = {
   title: string;
-  items: TmsNavigationItem[];
+  items: DenseShellNavigationItem[];
 };
 
-export type TmsTaskLane = {
+export type DenseShellTaskLane = {
   title: string;
   iconName: IconName;
   items: string[];
 };
 
-export type TmsHubAction = {
+export type DenseShellHubAction = {
   label: string;
   description: string;
   iconName: IconName;
   meta: string;
 };
 
-export const tmsMenuDensityRows = [
+export const denseShellMenuDensityRows = [
   {
     density: "Hub",
     trigger: "Use when the selected primary area has 3-8 secondary routes and no overflow.",
@@ -66,7 +66,7 @@ export const tmsMenuDensityRows = [
   }
 ];
 
-export const tmsNavigationGroups: TmsNavigationGroup[] = [
+export const denseShellNavigationGroups: DenseShellNavigationGroup[] = [
   {
     title: "Operations",
     items: [
@@ -101,13 +101,13 @@ export const tmsNavigationGroups: TmsNavigationGroup[] = [
   }
 ];
 
-export const tmsTaskLanes: TmsTaskLane[] = [
+export const denseShellTaskLanes: DenseShellTaskLane[] = [
   { title: "Daily operations", iconName: "check", items: ["Creators", "Channels", "Availability", "Campaign requests"] },
   { title: "Review and exceptions", iconName: "alert-triangle", items: ["Agreements", "Risk flags", "Blocked handoffs", "Owner routing"] },
   { title: "Records and proof", iconName: "database", items: ["Profiles", "Evidence queue", "Audit trail", "SLA watch"] }
 ];
 
-export const tmsHubActions: TmsHubAction[] = [
+export const denseShellHubActions: DenseShellHubAction[] = [
   { label: "Creators", description: "Open the current creator roster and pending profile checks.", iconName: "database", meta: "Daily route" },
   { label: "Availability", description: "Review schedule windows before campaign assignment.", iconName: "check", meta: "Capacity check" },
   { label: "Campaign requests", description: "Route incoming requests without leaving the selected area.", iconName: "package", meta: "Intake" },
@@ -116,18 +116,18 @@ export const tmsHubActions: TmsHubAction[] = [
   { label: "Risk flags", description: "Scan unresolved exceptions before handoff.", iconName: "alert-triangle", meta: "Exception" }
 ];
 
-export const tmsQuickLinks: Array<{ label: string; meta: string }> = [
+export const denseShellQuickLinks: Array<{ label: string; meta: string }> = [
   { label: "Ready for review", meta: "Pinned view" },
   { label: "Deliverables", meta: "Common route" },
   { label: "Settings", meta: "System route" },
   { label: "Permissions", meta: "Governance route" }
 ];
 
-export const tmsPrimaryNavCount = tmsNavigationGroups.reduce((count, group) => count + group.items.length, 0);
+export const denseShellPrimaryNavCount = denseShellNavigationGroups.reduce((count, group) => count + group.items.length, 0);
 
-export const tmsHubSecondaryRouteCount = tmsHubActions.length;
+export const denseShellHubSecondaryRouteCount = denseShellHubActions.length;
 
-export const tmsSecondaryDirectoryGroupCount = tmsTaskLanes.length + 1;
+export const denseShellSecondaryDirectoryGroupCount = denseShellTaskLanes.length + 1;
 
 export const knowledgeNavigationGroups = [
   {

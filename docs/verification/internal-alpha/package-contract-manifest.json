@@ -527,7 +527,7 @@
     ],
     "deferredPrototypeChecks": [
       {
-        "name": "TmsDenseShellDemo",
+        "name": "DenseOperationsShellDemo",
         "exported": false,
         "packageBacked": false,
         "disposition": "storybook_only_prototype"
@@ -1708,7 +1708,7 @@
         "requiredRepair": "none"
       },
       {
-        "storybookItem": "TmsDenseShellDemo",
+        "storybookItem": "DenseOperationsShellDemo",
         "classification": "storybook_only_prototype",
         "packageSourcePath": null,
         "publicExportPath": null,

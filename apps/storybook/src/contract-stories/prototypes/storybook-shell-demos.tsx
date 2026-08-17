@@ -14,20 +14,20 @@ import {
 } from "@tcrn/ui-react";
 import {
   knowledgeNavigationGroups,
-  tmsHubActions,
-  tmsHubSecondaryRouteCount,
-  tmsNavigationGroups,
-  tmsPrimaryNavCount,
-  tmsQuickLinks,
-  tmsSecondaryDirectoryGroupCount,
-  tmsTaskLanes
+  denseShellHubActions,
+  denseShellHubSecondaryRouteCount,
+  denseShellNavigationGroups,
+  denseShellPrimaryNavCount,
+  denseShellQuickLinks,
+  denseShellSecondaryDirectoryGroupCount,
+  denseShellTaskLanes
 } from "../content/index.js";
 
 // storybook_only: dense shell IA is retained as synthetic docs/proof content, not package component source.
-export function TmsDenseShellDemo() {
-  const selectedArea = tmsNavigationGroups.flatMap((group) => group.items).find((item) => item.selected) ?? tmsNavigationGroups[0].items[0];
+export function DenseOperationsShellDemo() {
+  const selectedArea = denseShellNavigationGroups.flatMap((group) => group.items).find((item) => item.selected) ?? denseShellNavigationGroups[0].items[0];
   return (
-    <div className="tcrn-shell-density-stack" data-tms-menu-density-standard="adaptive">
+    <div className="tcrn-shell-density-stack" data-dense-menu-density-standard="adaptive">
       <div
         className="tcrn-shell-demo tcrn-shell-demo--dense tcrn-shell-demo--hub"
         data-shell-pattern="dense-product-nav"
@@ -40,27 +40,27 @@ export function TmsDenseShellDemo() {
           <IconButton
             ariaLabel="Open compact operations hub"
             aria-expanded="true"
-            aria-controls="tms-shell-hub-menu"
+            aria-controls="dense-shell-hub-menu"
             className="tcrn-shell-demo__menu-button"
             data-icon-only-menu="true"
             iconName="menu"
             type="button"
           />
-          <ShellBrandLockup suffix="TMS" caption="Operations workspace" suffixClassName="tcrn-brand-wordmark__suffix--tms" />
+          <ShellBrandLockup suffix="Ops" caption="Operations workspace" />
           <SearchInput className="tcrn-search-input--compact" placeholder="Search menu" shortcut="auto" />
           <StatusBadge state={{ state: "local_only" }} />
         </div>
         <div className="tcrn-shell-layer" data-shell-layer="mega-menu" data-menu-layer="low-secondary">
           <div
-            id="tms-shell-hub-menu"
+            id="dense-shell-hub-menu"
             className="tcrn-shell-hub-menu"
             data-menu-expanded="true"
             data-menu-layout="hub"
             data-menu-density="hub"
             data-density-trigger="3-to-8-secondary-routes"
-            data-secondary-route-count={tmsHubSecondaryRouteCount}
+            data-secondary-route-count={denseShellHubSecondaryRouteCount}
             role="region"
-            aria-label="Compact TMS navigation hub"
+            aria-label="Compact navigation hub"
           >
             <section className="tcrn-shell-hub-summary" aria-label="Selected low-density operations area">
               <span>Low secondary density</span>
@@ -68,7 +68,7 @@ export function TmsDenseShellDemo() {
               <p>When the selected area has only a handful of secondary routes, use a visual hub before falling back to command-center density.</p>
             </section>
             <div className="tcrn-shell-hub-actions" data-directory-layout="hub-tiles">
-              {tmsHubActions.map((action, actionIndex) => (
+              {denseShellHubActions.map((action, actionIndex) => (
                 <a key={action.label} href="#navigation-shell-spec" className="tcrn-shell-hub-action" data-selected={actionIndex === 0 ? "true" : undefined}>
                   <Icon name={action.iconName} />
                   <span>
@@ -109,7 +109,7 @@ export function TmsDenseShellDemo() {
             iconName="menu"
             type="button"
           />
-          <ShellBrandLockup suffix="TMS" caption="Operations workspace" suffixClassName="tcrn-brand-wordmark__suffix--tms" />
+          <ShellBrandLockup suffix="Ops" caption="Operations workspace" />
           <SearchInput className="tcrn-search-input--compact" placeholder="Search menu" shortcut="auto" />
           <StatusBadge state={{ state: "local_only" }} />
         </div>
@@ -121,13 +121,13 @@ export function TmsDenseShellDemo() {
             data-menu-layout="command-center"
             data-menu-density="command-center"
             data-primary-nav-capacity="10-plus"
-            data-primary-nav-count={tmsPrimaryNavCount}
-            data-secondary-directory-groups={tmsSecondaryDirectoryGroupCount}
+            data-primary-nav-count={denseShellPrimaryNavCount}
+            data-secondary-directory-groups={denseShellSecondaryDirectoryGroupCount}
             role="region"
-            aria-label="Expanded TMS navigation menu"
+            aria-label="Expanded navigation menu"
           >
-            <nav className="tcrn-shell-domain-nav" aria-label="Primary navigation" data-primary-nav-count={tmsPrimaryNavCount}>
-              {tmsNavigationGroups.map((domain) => (
+            <nav className="tcrn-shell-domain-nav" aria-label="Primary navigation" data-primary-nav-count={denseShellPrimaryNavCount}>
+              {denseShellNavigationGroups.map((domain) => (
                 <section key={domain.title} className="tcrn-shell-domain-group" aria-label={domain.title}>
                   <strong>{domain.title}</strong>
                   <div className="tcrn-shell-domain-list">
@@ -151,7 +151,7 @@ export function TmsDenseShellDemo() {
                 <p>This command-center layer groups 10+ primary routes by business domain, then exposes task lanes and quick entries without turning the menu into a flat directory.</p>
               </div>
               <div className="tcrn-shell-task-lanes" data-directory-layout="task-lanes">
-                {tmsTaskLanes.map((lane, laneIndex) => (
+                {denseShellTaskLanes.map((lane, laneIndex) => (
                   <section key={lane.title} className="tcrn-shell-task-lane" aria-label={lane.title}>
                     <div className="tcrn-shell-task-lane__title">
                       <Icon name={lane.iconName} />
@@ -170,7 +170,7 @@ export function TmsDenseShellDemo() {
               <strong>Quick entries</strong>
               <p>Pinned, recent, and governance routes stay separate from the main IA.</p>
               <div className="tcrn-shell-quick-list">
-                {tmsQuickLinks.map((item) => (
+                {denseShellQuickLinks.map((item) => (
                   <a key={item.label} href="#navigation-shell-spec">
                     <span>{item.label}</span>
                     <small>{item.meta}</small>

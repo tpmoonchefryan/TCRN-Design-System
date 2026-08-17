@@ -79,7 +79,7 @@ test("no deferred prototype is exported from the package", () => {
   );
 
   assert.deepEqual(leaked, []);
-  assert.ok(declaredPrototypes.includes("TmsDenseShellDemo"));
+  assert.ok(declaredPrototypes.includes("DenseOperationsShellDemo"));
   assert.ok(declaredPrototypes.includes("KnowledgeBaseShellDemo"));
   assert.ok(declaredPrototypes.includes("CompactToolShellDemo"));
 });

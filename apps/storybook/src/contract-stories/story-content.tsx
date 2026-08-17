@@ -139,7 +139,7 @@ import {
   CompactToolShellDemo,
   KnowledgeBaseShellDemo,
   StorybookEntryShellStrip,
-  TmsDenseShellDemo
+  DenseOperationsShellDemo
 } from "./prototypes/storybook-shell-demos.js";
 import {
   AosFrontendShellSliceVisualInstance,
@@ -159,7 +159,7 @@ import {
   storybookOnlyPrototypeRows,
   styleGuideRows,
   tableShellRuleRows,
-  tmsMenuDensityRows
+  denseShellMenuDensityRows
 } from "./content/index.js";
 import { aiConsumptionContract } from "../build/ai-consumption-contract.js";
 import { componentReferenceLocationsFor } from "../build/reference-pages-shared.js";
@@ -1980,7 +1980,7 @@ const legacyContractStories: LegacyContractStory[] = [
     description: "Top navigation surface for large operational products with a menu button, compact search, and grouped primary and secondary options.",
     render: () => (
       <section className="alpha-story-stack">
-        <ReadbackPanel title="TMS dense operations shell">
+        <ReadbackPanel title="Dense operations shell">
           <Text>Large operational products need a top navigation surface with a menu button, compact search, and an expanded menu that exposes grouped primary and secondary options together.</Text>
           <TableShell
             columns={[
@@ -1989,9 +1989,9 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "pattern", label: "Pattern" },
               { key: "boundary", label: "Boundary" }
             ]}
-            rows={tmsMenuDensityRows}
+            rows={denseShellMenuDensityRows}
           />
-          <TmsDenseShellDemo />
+          <DenseOperationsShellDemo />
         </ReadbackPanel>
       </section>
     )
