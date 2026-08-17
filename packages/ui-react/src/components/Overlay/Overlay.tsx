@@ -131,6 +131,13 @@ export function Popover({ title, open, children, className, placement = "bottom-
   );
 }
 
+/**
+ * What the browser will move focus to. One list so the trap and any future
+ * focus-entry logic cannot disagree about what counts as focusable.
+ */
+const FOCUSABLE_SELECTOR =
+  'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
 export interface DialogProps {
   title: string;
   open: boolean;
@@ -159,6 +166,37 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
       if (event.key === "Escape") {
         onOpenChange?.(false);
         window.setTimeout(() => triggerRef?.current?.focus(), 0);
+        return;
+      }
+      // Tab containment. `aria-modal` tells assistive technology the rest of the page
+      // is inert; it does not stop the browser moving focus there. Without this a
+      // keyboard user tabs out of the dialog into a page the screen reader has already
+      // been told to ignore, and has no way to know where they went. This component
+      // declared the gap honestly as `not-implemented` rather than pretend it away.
+      if (event.key !== "Tab") return;
+      const root = dialogRef.current;
+      if (!root) return;
+      const focusable = [...root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)]
+        .filter((node) => !node.hasAttribute("disabled") && node.getAttribute("aria-hidden") !== "true");
+      if (focusable.length === 0) {
+        event.preventDefault();
+        root.focus();
+        return;
+      }
+      const first = focusable[0] as HTMLElement;
+      const last = focusable[focusable.length - 1] as HTMLElement;
+      const active = document.activeElement;
+      // Focus on the dialog itself counts as before the first element, so the very
+      // first Tab lands inside rather than outside.
+      if (event.shiftKey && (active === first || active === root)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      } else if (!root.contains(active)) {
+        event.preventDefault();
+        first.focus();
       }
     };
     document.addEventListener("keydown", onKeyDown);
@@ -185,7 +223,7 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
       aria-labelledby={titleId}
       className={cx("tcrn-dialog", className)}
       data-focus-entry="implemented"
-      data-tab-containment="not-implemented"
+      data-tab-containment="implemented"
       data-escape-close={supportsEscapeClose ? "implemented" : "requires-on-open-change"}
       data-focus-return={supportsFocusReturn ? "implemented" : "requires-trigger-ref"}
       tabIndex={-1}

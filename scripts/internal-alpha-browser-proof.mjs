@@ -2389,12 +2389,12 @@ const focusedAfterEscape = await storybookPage.evaluate(() => ({
 const focusedAfterOpenEvidence = `${focusedAfterOpen.tag}:${focusedAfterOpen.text}`;
 const focusedAfterEscapeEvidence = `${focusedAfterEscape.tag}:${focusedAfterEscape.text}`;
 const capabilityMetadataOk = interactiveDialogCapabilities.focusEntry === "implemented"
-  && interactiveDialogCapabilities.tabContainment === "not-implemented"
+  && interactiveDialogCapabilities.tabContainment === "implemented"
   && interactiveDialogCapabilities.focusTrap === null
   && interactiveDialogCapabilities.escapeClose === "implemented"
   && interactiveDialogCapabilities.focusReturn === "implemented"
   && staticDialogCapabilities.focusEntry === "implemented"
-  && staticDialogCapabilities.tabContainment === "not-implemented"
+  && staticDialogCapabilities.tabContainment === "implemented"
   && staticDialogCapabilities.focusTrap === null
   && staticDialogCapabilities.escapeClose === "requires-on-open-change"
   && staticDialogCapabilities.focusReturn === "requires-trigger-ref";

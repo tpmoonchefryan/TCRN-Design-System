@@ -77,7 +77,7 @@ test("dialog capability metadata is gated on provided close and return support",
     </Dialog>
   );
   assert.match(interactive, /data-focus-entry="implemented"/);
-  assert.match(interactive, /data-tab-containment="not-implemented"/);
+  assert.match(interactive, /data-tab-containment="implemented"/);
   assert.match(interactive, /data-escape-close="implemented"/);
   assert.match(interactive, /data-focus-return="implemented"/);
   assert.doesNotMatch(interactive, /data-focus-trap="implemented"/);
@@ -123,4 +123,29 @@ test("tooltip preserves existing described-by ids", () => {
   );
 
   assert.match(html, /aria-describedby="existing-id [^"]+"/);
+});
+
+
+// TCRN-DS-STORY-092 batch 3. The declaration flipped, so this asserts the thing the
+// declaration now claims. `aria-modal` tells assistive technology the rest of the
+// page is inert; it does not stop the browser moving focus there, and a keyboard
+// user who tabs out lands in a page their screen reader was told to ignore.
+test("STORY-092 a dialog declares tab containment only because it implements it", () => {
+  const interactive = renderToStaticMarkup(
+    <Dialog title="Modal" open onOpenChange={() => undefined} triggerRef={{ current: null }}>
+      <button type="button">One</button>
+      <button type="button">Two</button>
+    </Dialog>
+  );
+  assert.match(interactive, /data-tab-containment="implemented"/);
+  // The trap is a runtime behaviour and cannot be read out of static markup, so the
+  // structural half is asserted here and the browser proof exercises the keys.
+  assert.match(interactive, /aria-modal="true"/);
+  assert.match(interactive, /tabindex="-1"/);
+  // A popover is not a modal and still says so, which is what keeps this pair of
+  // declarations meaningful rather than decorative.
+  const popover = renderToStaticMarkup(
+    <Popover title="P" open onOpenChange={() => undefined} triggerRef={{ current: null }}>body</Popover>
+  );
+  assert.match(popover, /data-tab-containment="not-implemented"/);
 });
