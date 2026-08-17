@@ -375,7 +375,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "f1a3d10cbae881b8631ad6aace61eaf7b8aa0b0f3faa17fcf26ed0df297e7481",
+    "contractPayloadDigest": "ea4abd690b433fcf6264e6ad9d54faa97e0dfd1f30f9c6026272c85c20d28706",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 20,
@@ -4399,10 +4399,10 @@
         "article": {
           "top": 2031.19,
           "right": 374,
-          "bottom": 5178.89,
+          "bottom": 5146.7,
           "left": 16,
           "width": 358,
-          "height": 3147.7
+          "height": 3115.52
         },
         "title": {
           "top": 2048.19,
@@ -5095,10 +5095,10 @@
         "article": {
           "top": 2031.19,
           "right": 374,
-          "bottom": 5178.89,
+          "bottom": 5146.7,
           "left": 16,
           "width": 358,
-          "height": 3147.7
+          "height": 3115.52
         },
         "title": {
           "top": 2048.19,
@@ -5791,10 +5791,10 @@
         "article": {
           "top": 2031.19,
           "right": 374,
-          "bottom": 5178.89,
+          "bottom": 5146.7,
           "left": 16,
           "width": 358,
-          "height": 3147.7
+          "height": 3115.52
         },
         "title": {
           "top": 2048.19,

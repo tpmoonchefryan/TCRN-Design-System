@@ -59,7 +59,7 @@ export const REGISTERED_DOMAIN_DEBT = Object.freeze([
   "GatePipeline", "GatePipelineCompact",
   "KnowledgeAttachmentList", "KnowledgeDocumentCanvas", "KnowledgeInlineCommentList",
   "KnowledgeLabelSet", "KnowledgeMetadataRail", "KnowledgePageTree",
-  "KnowledgeSearchResults", "KnowledgeTemplateGallery", "KnowledgeTocRail",
+  "KnowledgeSearchResults", "KnowledgeTocRail",
   "KnowledgeVersionHistory",
   "WorkActivityFeed", "WorkBacklogGroup", "WorkBoard", "WorkBoardView",
   "WorkDetailLayout", "WorkFieldPanel", "WorkHierarchy", "WorkIndex",

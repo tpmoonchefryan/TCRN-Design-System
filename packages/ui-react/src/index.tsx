@@ -90,7 +90,7 @@ export const componentLibraryPublicComponentNames = [
   "KnowledgeAttachmentList",
   "KnowledgeLabelSet",
   "KnowledgeVersionHistory",
-  "KnowledgeTemplateGallery",
+  "TemplateGallery",
   "KnowledgeSearchResults",
   "Breadcrumb",
   "ModuleTabs",

@@ -4071,7 +4071,7 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-knowledge-attachment-list,
 .tcrn-knowledge-label-set,
 .tcrn-knowledge-version-history,
-.tcrn-knowledge-template-gallery,
+.tcrn-template-gallery,
 .tcrn-knowledge-search-results {
   min-width: 0;
 }
@@ -4146,7 +4146,7 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-knowledge-metadata-rail,
 .tcrn-knowledge-attachment-list,
 .tcrn-knowledge-version-history,
-.tcrn-knowledge-template-gallery,
+.tcrn-template-gallery,
 .tcrn-knowledge-search-results {
   display: grid;
   gap: var(--tcrn-space-2);
@@ -4174,8 +4174,8 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-knowledge-document-canvas__section .tcrn-heading,
 .tcrn-knowledge-document-canvas__section .tcrn-text,
 .tcrn-knowledge-inline-comment-list__item .tcrn-text,
-.tcrn-knowledge-template-gallery__card .tcrn-heading,
-.tcrn-knowledge-template-gallery__card .tcrn-text,
+.tcrn-template-gallery__card .tcrn-heading,
+.tcrn-template-gallery__card .tcrn-text,
 .tcrn-knowledge-search-results__item .tcrn-text,
 .tcrn-knowledge-toc-rail .tcrn-heading {
   margin: 0;
@@ -4201,10 +4201,10 @@ a.tcrn-relationship-chip:focus-visible {
   display: grid;
   gap: var(--tcrn-space-1);
 }
-.tcrn-knowledge-template-gallery {
+.tcrn-template-gallery {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
-.tcrn-knowledge-template-gallery__card {
+.tcrn-template-gallery__card {
   display: grid;
   gap: var(--tcrn-space-2);
   min-width: 0;

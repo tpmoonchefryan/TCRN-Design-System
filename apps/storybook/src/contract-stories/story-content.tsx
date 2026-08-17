@@ -83,7 +83,7 @@ import {
   KnowledgeMetadataRail,
   KnowledgePageTree,
   KnowledgeSearchResults,
-  KnowledgeTemplateGallery,
+  TemplateGallery,
   KnowledgeTocRail,
   KnowledgeVersionHistory,
   MetadataRail,
@@ -2674,7 +2674,7 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="Templates and local results">
-          <KnowledgeTemplateGallery density="dense" templates={knowledgeTemplates} />
+          <TemplateGallery density="dense" templates={knowledgeTemplates} />
           <KnowledgeSearchResults density="dense" query="owner inspection" results={knowledgeSearchResults} />
           <KnowledgeLabelSet labels={["TCRN-owned", "static", "sanitized-reference"]} density="dense" />
         </ReadbackPanel>
