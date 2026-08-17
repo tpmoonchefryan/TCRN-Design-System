@@ -48,6 +48,8 @@ test("component-library metadata names public components, utilities, and deferre
     "CollapsibleRegion",
     "DisclosurePanel",
     "KeyValueList",
+    "RadioGroup",
+    "Tabs",
     "Card",
     "Avatar",
     "Progress",

@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
+  RadioGroup,
   Checkbox,
   Field,
   FieldProvenance,
@@ -129,4 +130,48 @@ test("component-loop form constructs expose their state and recovery surfaces", 
   assert.match(html, /data-editor-line="2" data-editor-line-finding="true"/);
   assert.match(html, /data-editor-finding-line="2"/);
   assert.match(html, /data-lock-hint="true" role="note"/);
+});
+
+
+// TCRN-DS-STORY-092 batch 2. The assertions read the accessibility contract, not
+// the class list: a radio group that renders the right classes and the wrong
+// elements is the failure mode this component exists to remove.
+
+test("STORY-092 a radio group is a fieldset with a legend, so the question is announced before the answers", () => {
+  const html = renderToStaticMarkup(
+    <RadioGroup
+      legend="Delivery speed"
+      name="speed"
+      defaultValue="standard"
+      options={[
+        { value: "standard", label: "Standard" },
+        { value: "express", label: "Express", description: "Arrives tomorrow" }
+      ]}
+    />
+  );
+  assert.match(html, /<fieldset[^>]*>/);
+  assert.match(html, /<legend[^>]*>Delivery speed<\/legend>/);
+  // Native radios, not a div wearing role="radiogroup": the browser gives arrow-key
+  // roving to these for free, and a hand-rolled group loses it.
+  assert.equal((html.match(/type="radio"/g) ?? []).length, 2);
+  assert.match(html, /name="speed"/);
+  assert.match(html, /checked=""/);
+});
+
+test("STORY-092 a radio description is associated, not merely adjacent", () => {
+  const html = renderToStaticMarkup(
+    <RadioGroup legend="Q" name="q" options={[{ value: "a", label: "A", description: "why a" }]} />
+  );
+  const described = /aria-describedby="([^"]+)"/.exec(html);
+  assert.ok(described, "an option with a description must point at it");
+  assert.match(html, new RegExp(`id="${described[1]}"[^>]*>why a<`));
+});
+
+test("STORY-092 a disabled group disables every option through the fieldset", () => {
+  const html = renderToStaticMarkup(
+    <RadioGroup legend="Q" name="q" disabled options={[{ value: "a", label: "A" }]} />
+  );
+  // One disabled attribute on the fieldset does what N on the inputs would, and
+  // stays correct when an option is added.
+  assert.match(html, /<fieldset[^>]*disabled=""/);
 });

@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 113,
+  "componentCount": 115,
   "coverage": {
-    "registryComponentCount": 113,
+    "registryComponentCount": 115,
     "publicComponentNames": [
       "ActionDrawer",
       "AppStatusBar",
@@ -71,6 +71,7 @@
       "ProductShellSearch",
       "ProductSwitcher",
       "Progress",
+      "RadioGroup",
       "ReadbackPanel",
       "RelationshipChip",
       "SavedViewToolbar",
@@ -98,6 +99,7 @@
       "Switch",
       "TableShell",
       "TableToolbar",
+      "Tabs",
       "TcrnBrandMark",
       "Text",
       "Textarea",
@@ -186,6 +188,7 @@
       "ProductShellSearch",
       "ProductSwitcher",
       "Progress",
+      "RadioGroup",
       "ReadbackPanel",
       "RelationshipChip",
       "SavedViewToolbar",
@@ -213,6 +216,7 @@
       "Switch",
       "TableShell",
       "TableToolbar",
+      "Tabs",
       "TcrnBrandMark",
       "Text",
       "Textarea",
@@ -3022,6 +3026,53 @@
       "slots": [],
       "propsType": "ProgressProps"
     },
+    "RadioGroup": {
+      "name": "RadioGroup",
+      "kind": "function",
+      "props": [
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "legend",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onChange",
+          "type": "(value: string) => void",
+          "required": false
+        },
+        {
+          "name": "options",
+          "type": "RadioOption[]",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "legend"
+      ],
+      "propsType": "RadioGroupProps"
+    },
     "ReadbackPanel": {
       "name": "ReadbackPanel",
       "kind": "function",
@@ -4096,6 +4147,43 @@
       "variants": {},
       "slots": [],
       "propsType": "TableToolbarProps"
+    },
+    "Tabs": {
+      "name": "Tabs",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "items",
+          "type": "TabItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onSelect",
+          "type": "(id: string) => void",
+          "required": true
+        },
+        {
+          "name": "selectedId",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "TabsProps"
     },
     "TcrnBrandMark": {
       "name": "TcrnBrandMark",

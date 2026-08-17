@@ -215,6 +215,64 @@ export function Switch({ label, description, className, controlClassName, disabl
   );
 }
 
+/**
+ * One choice from a small set, where seeing all the options is the point.
+ *
+ * A radio group is a `<fieldset>` with a `<legend>`, not a div with a label:
+ * that pairing is what makes a screen reader announce the question before the
+ * answers, and it is the part hand-rolled groups leave out. Products that build
+ * their own reach for `role="radiogroup"` on a div, which announces the group but
+ * loses the native arrow-key roving that the browser gives radios for free.
+ *
+ * `name` is required. Two groups on one page sharing a name silently become one
+ * group, and the second question starts clearing the first answer.
+ */
+export interface RadioOption {
+  value: string;
+  label: ReactNode;
+  description?: ReactNode;
+  disabled?: boolean;
+}
+
+export interface RadioGroupProps extends Omit<HTMLAttributes<HTMLFieldSetElement>, "onChange"> {
+  /** The question. Rendered as the group's legend. */
+  legend: ReactNode;
+  /** Shared form name. Required: two groups sharing one name are one group. */
+  name: string;
+  options: RadioOption[];
+  value?: string;
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
+}
+
+export function RadioGroup({ legend, name, options, value, defaultValue, onChange, disabled, className, ...props }: RadioGroupProps) {
+  const groupId = useId();
+  return (
+    <fieldset {...props} className={cx("tcrn-radio-group", className)} data-radio-group="true" disabled={disabled}>
+      <legend className="tcrn-radio-group__legend">{legend}</legend>
+      {options.map((option) => {
+        const descriptionId = `${groupId}-${option.value}`;
+        return (
+          <label key={option.value} className="tcrn-radio-group__option" data-option-disabled={option.disabled ? "true" : undefined}>
+            <input type="radio" className="tcrn-radio-group__control"
+              name={name}
+              value={option.value}
+              disabled={option.disabled}
+              aria-describedby={option.description ? descriptionId : undefined}
+              {...(value === undefined
+                ? { defaultChecked: defaultValue === option.value }
+                : { checked: value === option.value, onChange: () => onChange?.(option.value) })}
+            />
+            <span className="tcrn-radio-group__label">{option.label}</span>
+            {option.description ? <span id={descriptionId} className="tcrn-radio-group__description">{option.description}</span> : null}
+          </label>
+        );
+      })}
+    </fieldset>
+  );
+}
+
 export interface SettingRowProps extends HTMLAttributes<HTMLDivElement> {
   label: ReactNode;
   description?: ReactNode;

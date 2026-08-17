@@ -950,6 +950,83 @@ export function Breadcrumb({ items, label, locale }: BreadcrumbProps) {
   );
 }
 
+/**
+ * The ARIA tab pattern, with the keyboard behaviour that makes it one.
+ *
+ * This repository already had three tab-shaped components — ModuleTabs,
+ * SectionTabs, SegmentedNav — and none of them is this. They render buttons with
+ * `aria-current`, which is correct for navigation that changes the page. A tab
+ * does not change the page: it swaps a panel, and the contract for that is
+ * `role="tablist"` / `role="tab"` / `role="tabpanel"` plus `aria-controls` and
+ * `aria-selected`. Announcing "2 of 4 selected" instead of "link, current page"
+ * is the whole difference to a screen reader.
+ *
+ * The keyboard half is what hand-rolled tabs drop. Arrow keys move between tabs,
+ * Home and End jump to the ends, and only the selected tab is in the tab order —
+ * `tabIndex={-1}` on the rest. Without that, tabbing through a four-tab strip
+ * costs four stops before reaching the content the tabs exist to reveal.
+ */
+export interface TabItem {
+  id: string;
+  label: ReactNode;
+  disabled?: boolean;
+}
+
+export interface TabsProps {
+  items: TabItem[];
+  /** The `id` of the selected tab. */
+  selectedId: string;
+  onSelect: (id: string) => void;
+  /** Accessible name for the tab strip. */
+  label: string;
+  /** Rendered inside the panel for the selected tab. */
+  children?: ReactNode;
+}
+
+export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps) {
+  const enabled = items.filter((item) => !item.disabled);
+  const move = (delta: number) => {
+    if (enabled.length === 0) return;
+    const at = enabled.findIndex((item) => item.id === selectedId);
+    // Wrapping is the documented behaviour: a reader holding ArrowRight expects to
+    // come round rather than to stop at a wall with no feedback.
+    const next = enabled[(((at < 0 ? 0 : at) + delta) % enabled.length + enabled.length) % enabled.length];
+    if (next) onSelect(next.id);
+  };
+  const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") { event.preventDefault(); move(1); }
+    else if (event.key === "ArrowLeft" || event.key === "ArrowUp") { event.preventDefault(); move(-1); }
+    else if (event.key === "Home") { event.preventDefault(); if (enabled[0]) onSelect(enabled[0].id); }
+    else if (event.key === "End") { event.preventDefault(); const last = enabled[enabled.length - 1]; if (last) onSelect(last.id); }
+  };
+  return (
+    <div className="tcrn-tabs" data-tabs="true">
+      <div className="tcrn-tabs__list" role="tablist" aria-label={label} onKeyDown={onKeyDown}>
+        {items.map((item) => {
+          const selected = item.id === selectedId;
+          return (
+            <button key={item.id} type="button"
+              id={`tcrn-tab-${item.id}`}
+              role="tab"
+              className={cx("tcrn-tabs__tab", selected && "tcrn-tabs__tab--selected")}
+              aria-selected={selected}
+              aria-controls={`tcrn-tabpanel-${item.id}`}
+              disabled={item.disabled}
+              tabIndex={selected ? 0 : -1}
+              onClick={() => onSelect(item.id)}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+      <div className="tcrn-tabs__panel" role="tabpanel" id={`tcrn-tabpanel-${selectedId}`} aria-labelledby={`tcrn-tab-${selectedId}`} tabIndex={0}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export function ModuleTabs({ items, locale }: ProductLauncherProps) {
   return <TabList items={items} locale={locale} className="tcrn-module-tabs" />;
 }
@@ -5296,4 +5373,34 @@ a.tcrn-relationship-chip:focus-visible {
   color: var(--tcrn-color-on-accent);
 }
 .tcrn-stepper__description { grid-column: 2; font-size: var(--tcrn-font-size-xs); }
+
+.tcrn-radio-group { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--tcrn-space-2); }
+.tcrn-radio-group__legend { padding: 0; font-weight: 600; }
+.tcrn-radio-group__option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+}
+.tcrn-radio-group__description { grid-column: 2; font-size: var(--tcrn-font-size-xs); color: var(--tcrn-color-text-secondary); }
+.tcrn-radio-group__option[data-option-disabled="true"] { color: var(--tcrn-color-text-disabled); }
+
+.tcrn-tabs__list {
+  display: flex;
+  gap: var(--tcrn-space-1);
+  border-block-end: 1px solid var(--tcrn-color-border-subtle);
+}
+.tcrn-tabs__tab {
+  padding: var(--tcrn-space-2) var(--tcrn-space-3);
+  border: 0;
+  background: none;
+  color: var(--tcrn-color-text-secondary);
+  cursor: pointer;
+  border-block-end: 2px solid transparent;
+}
+.tcrn-tabs__tab--selected { color: var(--tcrn-color-text-primary); border-block-end-color: var(--tcrn-color-accent); font-weight: 600; }
+.tcrn-tabs__tab:focus-visible { outline: 2px solid var(--tcrn-color-focus-ring); outline-offset: -2px; }
+.tcrn-tabs__tab:disabled { color: var(--tcrn-color-text-disabled); cursor: not-allowed; }
+.tcrn-tabs__panel { padding-block-start: var(--tcrn-space-3); }
+.tcrn-tabs__panel:focus-visible { outline: 2px solid var(--tcrn-color-focus-ring); outline-offset: 2px; }
 `;

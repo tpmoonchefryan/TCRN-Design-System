@@ -167,6 +167,14 @@
         "exported": true
       },
       {
+        "name": "RadioGroup",
+        "exported": true
+      },
+      {
+        "name": "Tabs",
+        "exported": true
+      },
+      {
         "name": "Card",
         "exported": true
       },
@@ -867,6 +875,24 @@
       },
       {
         "storybookItem": "KeyValueList",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "RadioGroup",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "Tabs",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
