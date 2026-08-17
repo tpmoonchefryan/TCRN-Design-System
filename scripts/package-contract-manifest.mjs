@@ -60,6 +60,8 @@ const publicUiReactComponentExports = [
   "CollapsibleRegion",
   "DisclosurePanel",
   "KeyValueList",
+  "Menu",
+  "Toast",
   "RadioGroup",
   "Tabs",
   "Card",
