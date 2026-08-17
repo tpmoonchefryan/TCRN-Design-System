@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 117,
+  "componentCount": 120,
   "coverage": {
-    "registryComponentCount": 117,
+    "registryComponentCount": 120,
     "publicComponentNames": [
       "ActionDrawer",
       "AppStatusBar",
@@ -18,6 +18,8 @@
       "ClipboardCopyButton",
       "CollapsibleRegion",
       "ConfirmActionDialog",
+      "DataGrid",
+      "DatePicker",
       "DefinitionList",
       "DetailDrawer",
       "DetailInspector",
@@ -107,6 +109,7 @@
       "Toast",
       "Tooltip",
       "TopBar",
+      "Tree",
       "WorkActivityFeed",
       "WorkBacklogGroup",
       "WorkBoard",
@@ -137,6 +140,8 @@
       "ClipboardCopyButton",
       "CollapsibleRegion",
       "ConfirmActionDialog",
+      "DataGrid",
+      "DatePicker",
       "DefinitionList",
       "DetailDrawer",
       "DetailInspector",
@@ -226,6 +231,7 @@
       "Toast",
       "Tooltip",
       "TopBar",
+      "Tree",
       "WorkActivityFeed",
       "WorkBacklogGroup",
       "WorkBoard",
@@ -664,6 +670,81 @@
       "variants": {},
       "slots": [],
       "propsType": "ConfirmActionDialogProps"
+    },
+    "DataGrid": {
+      "name": "DataGrid",
+      "kind": "function",
+      "props": [
+        {
+          "name": "columns",
+          "type": "DataGridColumn[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onSort",
+          "type": "(columnId: string) => void",
+          "required": false
+        },
+        {
+          "name": "rows",
+          "type": "{ id: string; cells: ReactNode[] }[]",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "sortColumnId",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "sortDirection",
+          "type": "DataGridSortDirection",
+          "required": false,
+          "enumValues": [
+            "ascending",
+            "descending"
+          ]
+        }
+      ],
+      "variants": {
+        "sortDirection": [
+          "ascending",
+          "descending"
+        ]
+      },
+      "slots": [
+        "rows"
+      ],
+      "propsType": "DataGridProps"
+    },
+    "DatePicker": {
+      "name": "DatePicker",
+      "kind": "function",
+      "props": [
+        {
+          "name": "max",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "min",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "DatePickerProps"
     },
     "DefinitionList": {
       "name": "DefinitionList",
@@ -4384,6 +4465,46 @@
         "productName"
       ],
       "propsType": "TopBarProps"
+    },
+    "Tree": {
+      "name": "Tree",
+      "kind": "function",
+      "props": [
+        {
+          "name": "expandedIds",
+          "type": "readonly string[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "nodes",
+          "type": "TreeNode[]",
+          "required": true
+        },
+        {
+          "name": "onSelect",
+          "type": "(id: string) => void",
+          "required": false
+        },
+        {
+          "name": "onToggle",
+          "type": "(id: string) => void",
+          "required": false
+        },
+        {
+          "name": "selectedId",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "TreeProps"
     },
     "WorkActivityFeed": {
       "name": "WorkActivityFeed",

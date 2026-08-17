@@ -2,6 +2,7 @@ import type { CSSProperties, HTMLAttributes, KeyboardEvent, ReactNode } from "re
 import { useState } from "react";
 import { resolveTcrnLocale, type CopyStateInput, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { Button } from "../Button/index.js";
+import { Icon } from "../Icon/index.js";
 import { ClipboardCopyButton } from "../Clipboard/index.js";
 import { Badge, EmptyState, EvidenceStrip, InlineAlert, Skeleton, StatusBadge, StateView } from "../Feedback/index.js";
 import { Heading, Text } from "../Typography/index.js";
@@ -276,6 +277,156 @@ export function Stepper({ steps, currentId, label, className, ...props }: Steppe
         })}
       </ol>
     </nav>
+  );
+}
+
+/**
+ * A hierarchy the reader can walk.
+ *
+ * `role="tree"` with `aria-level`, `aria-expanded` and `aria-setsize` is what
+ * turns nested lists into something a screen reader can report position in —
+ * "3 of 7, level 2, collapsed" rather than a run of links whose indentation is
+ * visual only. Products that render nested `<ul>`s get the shape and lose the
+ * position, which is the information a reader who cannot see the indentation
+ * most needs.
+ *
+ * Expansion is the consumer's state, not this component's. A tree that owns it
+ * cannot be driven from a URL, and every product here wants deep-linking into a
+ * node.
+ */
+export interface TreeNode {
+  id: string;
+  label: ReactNode;
+  children?: TreeNode[];
+}
+
+export interface TreeProps extends Omit<HTMLAttributes<HTMLUListElement>, "onSelect" | "onToggle"> {
+  nodes: TreeNode[];
+  /** Accessible name for the hierarchy. */
+  label: string;
+  expandedIds?: readonly string[];
+  selectedId?: string;
+  onToggle?: (id: string) => void;
+  onSelect?: (id: string) => void;
+}
+
+function TreeLevel({ nodes, level, expandedIds, selectedId, onToggle, onSelect }: {
+  nodes: TreeNode[];
+  level: number;
+  expandedIds: readonly string[];
+  selectedId?: string;
+  onToggle?: (id: string) => void;
+  onSelect?: (id: string) => void;
+}) {
+  return (
+    <>
+      {nodes.map((node, index) => {
+        const hasChildren = Boolean(node.children && node.children.length > 0);
+        const expanded = expandedIds.includes(node.id);
+        return (
+          <li key={node.id} role="treeitem"
+            className="tcrn-tree__item"
+            aria-level={level}
+            aria-setsize={nodes.length}
+            aria-posinset={index + 1}
+            aria-expanded={hasChildren ? expanded : undefined}
+            aria-selected={node.id === selectedId ? true : undefined}
+            data-tree-level={level}
+          >
+            <span className="tcrn-tree__row">
+              {hasChildren ? (
+                <button type="button" className="tcrn-tree__toggle" aria-hidden="true" tabIndex={-1} onClick={() => onToggle?.(node.id)}>
+                  <Icon name={expanded ? "chevron-down" : "chevron-right"} />
+                </button>
+              ) : (
+                <span className="tcrn-tree__toggle tcrn-tree__toggle--leaf" aria-hidden="true" />
+              )}
+              <button type="button" className="tcrn-tree__label" onClick={() => onSelect?.(node.id)}>{node.label}</button>
+            </span>
+            {hasChildren && expanded ? (
+              <ul role="group" className="tcrn-tree__group">
+                <TreeLevel nodes={node.children as TreeNode[]} level={level + 1} expandedIds={expandedIds} selectedId={selectedId} onToggle={onToggle} onSelect={onSelect} />
+              </ul>
+            ) : null}
+          </li>
+        );
+      })}
+    </>
+  );
+}
+
+export function Tree({ nodes, label, expandedIds = [], selectedId, onToggle, onSelect, className, ...props }: TreeProps) {
+  return (
+    <ul {...props} role="tree" aria-label={label} className={cx("tcrn-tree", className)} data-tree="true">
+      <TreeLevel nodes={nodes} level={1} expandedIds={expandedIds} selectedId={selectedId} onToggle={onToggle} onSelect={onSelect} />
+    </ul>
+  );
+}
+
+/**
+ * A table whose cells the reader can move through.
+ *
+ * `TableShell` already renders tabular data and is the right thing for most of
+ * it. This is the other case: a grid the reader navigates cell by cell, which
+ * needs `role="grid"` and `aria-rowcount`/`aria-colcount` so a screen reader can
+ * say where in the grid focus is. Sorting is declared through `aria-sort` on the
+ * header rather than by an icon alone, because an arrow glyph announces nothing.
+ *
+ * Sort state is the consumer's, for the same reason the tree's expansion is:
+ * products drive it from the URL.
+ */
+export interface DataGridColumn {
+  id: string;
+  header: ReactNode;
+  sortable?: boolean;
+}
+
+export type DataGridSortDirection = "ascending" | "descending";
+
+export interface DataGridProps extends HTMLAttributes<HTMLTableElement> {
+  columns: DataGridColumn[];
+  rows: { id: string; cells: ReactNode[] }[];
+  /** Accessible name for the grid. */
+  label: string;
+  sortColumnId?: string;
+  sortDirection?: DataGridSortDirection;
+  onSort?: (columnId: string) => void;
+}
+
+export function DataGrid({ columns, rows, label, sortColumnId, sortDirection, onSort, className, ...props }: DataGridProps) {
+  return (
+    <table {...props} role="grid"
+      aria-label={label}
+      aria-rowcount={rows.length + 1}
+      aria-colcount={columns.length}
+      className={cx("tcrn-data-grid", className)}
+      data-data-grid="true"
+    >
+      <thead>
+        <tr role="row">
+          {columns.map((column) => (
+            <th key={column.id} role="columnheader" scope="col"
+              aria-sort={column.sortable ? (column.id === sortColumnId ? sortDirection ?? "none" : "none") : undefined}
+            >
+              {column.sortable && onSort ? (
+                <button type="button" className="tcrn-data-grid__sort" onClick={() => onSort(column.id)}>{column.header}</button>
+              ) : (
+                column.header
+              )}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr key={row.id} role="row">
+            {row.cells.map((cell, index) => (
+              <td key={columns[index]?.id ?? index} role="gridcell">{cell}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
 
