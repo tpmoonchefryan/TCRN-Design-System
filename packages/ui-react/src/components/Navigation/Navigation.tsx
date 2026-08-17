@@ -1027,24 +1027,40 @@ export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps
   );
 }
 
-export function ModuleTabs({ items, locale }: ProductLauncherProps) {
-  return <TabList items={items} locale={locale} className="tcrn-module-tabs" />;
+export function ModuleTabs({ items, locale, onSelect }: SelectableNavProps) {
+  return <TabList items={items} locale={locale} onSelect={onSelect} className="tcrn-module-tabs" />;
 }
 
-export function SectionTabs({ items, locale }: ProductLauncherProps) {
-  return <TabList items={items} locale={locale} className="tcrn-section-tabs" />;
+export function SectionTabs({ items, locale, onSelect }: SelectableNavProps) {
+  return <TabList items={items} locale={locale} onSelect={onSelect} className="tcrn-section-tabs" />;
 }
 
-export function SegmentedNav({ items, locale }: ProductLauncherProps) {
-  return <TabList items={items} locale={locale} className="tcrn-segmented-nav" />;
+export function SegmentedNav({ items, locale, onSelect }: SelectableNavProps) {
+  return <TabList items={items} locale={locale} onSelect={onSelect} className="tcrn-segmented-nav" />;
 }
 
-function TabList({ items, locale, className }: ProductLauncherProps & { className: string }) {
+/**
+ * The five navs above share `ProductLauncherProps`, and only three of them
+ * select anything — so the handler goes on its own type rather than the shared
+ * one, the same call Breadcrumb made when it needed an href. Widening the shared
+ * type would offer an `onSelect` to ProductLauncher and ProductSwitcher, which
+ * do not select.
+ */
+export interface SelectableNavProps extends ProductLauncherProps {
+  /** Called with the item's `id`. Omit for a nav the consumer wires another way. */
+  onSelect?: (id: string) => void;
+}
+
+function TabList({ items, locale, className, onSelect }: SelectableNavProps & { className: string }) {
   const chrome = chromeLabels(locale);
   return (
     <nav className={className} aria-label={className === "tcrn-module-tabs" ? chrome.moduleSections : chrome.sectionNavigation} data-tab-semantics="segmented-navigation">
       {items.map((item) => (
-        <button key={item.id} type="button" aria-current={item.selected ? "page" : undefined} data-selected={item.selected ? "true" : undefined}>
+        <button key={item.id} type="button"
+          aria-current={item.selected ? "page" : undefined}
+          data-selected={item.selected ? "true" : undefined}
+          onClick={onSelect ? () => onSelect(item.id) : undefined}
+        >
           {item.label}
         </button>
       ))}
