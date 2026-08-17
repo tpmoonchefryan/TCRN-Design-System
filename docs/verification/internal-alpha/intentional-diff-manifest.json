@@ -443,6 +443,11 @@
       "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-6.png"
     },
     {
+      "storyId": "page-component-api-reference-7",
+      "viewport": "desktop-1440x900",
+      "path": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-7.png"
+    },
+    {
       "storyId": "page-welcome",
       "viewport": "tablet-1024x768",
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-welcome.png"
@@ -883,6 +888,11 @@
       "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-6.png"
     },
     {
+      "storyId": "page-component-api-reference-7",
+      "viewport": "tablet-1024x768",
+      "path": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-7.png"
+    },
+    {
       "storyId": "page-welcome",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-welcome.png"
@@ -1321,6 +1331,11 @@
       "storyId": "page-component-api-reference-6",
       "viewport": "mobile-390x844",
       "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-6.png"
+    },
+    {
+      "storyId": "page-component-api-reference-7",
+      "viewport": "mobile-390x844",
+      "path": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-7.png"
     },
     {
       "storyId": "overlay-focus-open-dialog",

@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 120,
+  "componentCount": 121,
   "coverage": {
-    "registryComponentCount": 120,
+    "registryComponentCount": 121,
     "publicComponentNames": [
       "ActionDrawer",
       "AppStatusBar",
@@ -62,6 +62,7 @@
       "MachineTokenCell",
       "Menu",
       "MetadataRail",
+      "MobileNavToggle",
       "ModuleTabs",
       "NavGroup",
       "NavItem",
@@ -184,6 +185,7 @@
       "MachineTokenCell",
       "Menu",
       "MetadataRail",
+      "MobileNavToggle",
       "ModuleTabs",
       "NavGroup",
       "NavItem",
@@ -251,9 +253,7 @@
       "WorkViewTabs"
     ],
     "missingFromManifest": [],
-    "extraNotInRegistry": [
-      "MobileNavToggle"
-    ],
+    "extraNotInRegistry": [],
     "componentsWithExtractionErrors": []
   },
   "noOverclaim": {
@@ -2410,6 +2410,71 @@
       },
       "slots": [],
       "propsType": "MetadataRailProps"
+    },
+    "MobileNavToggle": {
+      "name": "MobileNavToggle",
+      "kind": "function",
+      "props": [
+        {
+          "name": "controls",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(expanded: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "Size",
+          "required": false,
+          "enumValues": [
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\" | \"quiet\" | \"danger\"",
+          "required": false,
+          "enumValues": [
+            "primary",
+            "secondary",
+            "quiet",
+            "danger"
+          ]
+        }
+      ],
+      "variants": {
+        "size": [
+          "sm",
+          "md"
+        ],
+        "variant": [
+          "primary",
+          "secondary",
+          "quiet",
+          "danger"
+        ]
+      },
+      "slots": [],
+      "propsType": "MobileNavToggleProps"
     },
     "ModuleTabs": {
       "name": "ModuleTabs",

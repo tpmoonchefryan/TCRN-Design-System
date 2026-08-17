@@ -19,145 +19,19 @@ const exactDependencyManifests = [
   "packages/ui-react/package.json"
 ];
 
-const publicUiReactComponentExports = [
-  "Button",
-  "Icon",
-  "IconButton",
-  "LinkButton",
-  "ClipboardCopyButton",
-  "Field",
-  "Input",
-  "Textarea",
-  "SearchInput",
-  "Select",
-  "Checkbox",
-  "Switch",
-  "SettingRow",
-  "FieldProvenance",
-  "LineNumberedEditor",
-  "LockHint",
-  "Badge",
-  "Stamp",
-  "StampRule",
-  "StatusBadge",
-  "StateView",
-  "InlineAlert",
-  "LiveRegion",
-  "Skeleton",
-  "StateSurface",
-  "EmptyState",
-  "ErrorState",
-  "EnvironmentBanner",
-  "GateReadinessPanel",
-  "EvidenceStrip",
-  "ReadbackPanel",
-  "Text",
-  "Heading",
-  "Highlight",
-  "Surface",
-  "Divider",
-  "AppStatusBar",
-  "CollapsibleRegion",
-  "DisclosurePanel",
-  "KeyValueList",
-  "DatePicker",
-  "Tree",
-  "DataGrid",
-  "Menu",
-  "Toast",
-  "RadioGroup",
-  "Tabs",
-  "Card",
-  "Avatar",
-  "Progress",
-  "Stepper",
-  "DefinitionList",
-  "StatCard",
-  "FilterBar",
-  "TableShell",
-  "TableToolbar",
-  "WorkIndex",
-  "RelationshipChip",
-  "MachineToken",
-  "MachineTokenCell",
-  "WorkManagementSubnav",
-  "WorkPageHeader",
-  "WorkViewTabs",
-  "WorkQuickFilters",
-  "WorkItemRow",
-  "WorkList",
-  "WorkSplitView",
-  "SearchableList",
-  "WorkBacklogGroup",
-  "WorkInlineCreateStatic",
-  "WorkBoard",
-  "WorkBoardView",
-  "WorkHierarchy",
-  "GatePipeline",
-  "GatePipelineCompact",
-  "EvidenceAttachmentList",
-  "WorkDetailLayout",
-  "MetadataRail",
-  "WorkFieldPanel",
-  "WorkActivityFeed",
-  "WorkItemInspector",
-  "SavedViewToolbar",
-  "KnowledgePageTree",
-  "KnowledgeDocumentCanvas",
-  "KnowledgeTocRail",
-  "KnowledgeInlineCommentList",
-  "KnowledgeMetadataRail",
-  "KnowledgeAttachmentList",
-  "KnowledgeLabelSet",
-  "KnowledgeVersionHistory",
-  "KnowledgeTemplateGallery",
-  "KnowledgeSearchResults",
-  "DetailInspector",
-  "Breadcrumb",
-  "ModuleTabs",
-  "SectionTabs",
-  "SegmentedNav",
-  "Pagination",
-  "TopBar",
-  "SideNav",
-  "NavGroup",
-  "NavItem",
-  "ProductLauncher",
-  "ProductSwitcher",
-  "SkipLink",
-  "TcrnBrandMark",
-  "ProductLockup",
-  "ProductLogo",
-  "ShellBrandLockup",
-  "ShellThemeToggle",
-  "ShellLocaleMenu",
-  "SideNavCollapseButton",
-  "ProductShell",
-  "ProductShellSearch",
-  "DetailDrawer",
-  "ActionDrawer",
-  "Tooltip",
-  "Popover",
-  "Dialog",
-  "ConfirmActionDialog"
-];
-
-const publicUiReactUtilityExports = [
-  "tcrnIconNames",
-  "tcrnComponentCss",
-  "useProductShellController",
-  "tcrnProductLogoRegistry",
-  "getTcrnProductLogoAsset",
-  "workManagementPatternRegistry",
-  "knowledgeManagementPatternRegistry",
-  "workRelationshipTypes"
-];
-
-const deferredStorybookPrototypeNames = [
-  "TmsDenseShellDemo",
-  "KnowledgeBaseShellDemo",
-  "CompactToolShellDemo"
-];
+// TCRN-DS-INC-008 — the public surface is written once, in the package.
+//
+// This file used to carry its own verbatim copy of the component, utility and
+// prototype names, and `packageMetadataMatchesSource` compared that copy against
+// the package's own declaration. Two hand-kept lists agreeing with each other is
+// not a contract check: adding four primitives meant editing three rosters
+// (index.tsx, index.test.tsx, here), and NONE of the three was ever compared
+// against what the package actually exports. `MobileNavToggle` had been exported
+// with a public props interface and named by no roster at all.
+//
+// So the copies are gone. The package's own declaration is the single written
+// roster — a deliberate-change tripwire, class A in the platform's gate-reference
+// inventory — and what it is checked against is the real export surface, below.
 
 const allowedLicenseGroups = new Set([
   "0BSD",
@@ -261,29 +135,53 @@ const unknownLicenseGroups = licenseSummary.filter((entry) => !allowedLicenseGro
 
 const uiReactModule = await import(pathToFileURL(join(process.cwd(), "packages/ui-react/dist/index.js")).href);
 const uiReactManifest = readJson("packages/ui-react/package.json");
-const publicComponentExportChecks = publicUiReactComponentExports.map((name) => ({
+const declaredComponentNames = uiReactModule.componentLibraryPublicComponentNames ?? [];
+const declaredUtilityNames = uiReactModule.componentLibraryPublicUtilityNames ?? [];
+const declaredPrototypeNames = uiReactModule.componentLibraryDeferredPrototypeNames ?? [];
+
+// What the package ACTUALLY exports under a component-shaped name. This is the
+// side that cannot be edited by hand, and comparing the declaration against it is
+// the only version of this check that can fail for a real reason.
+const actualComponentExports = Object.keys(uiReactModule)
+  .filter((name) => /^[A-Z]/u.test(name))
+  .filter((name) => !declaredUtilityNames.includes(name) && !declaredPrototypeNames.includes(name))
+  .sort();
+
+const publicComponentExportChecks = declaredComponentNames.map((name) => ({
   name,
   exported: Object.prototype.hasOwnProperty.call(uiReactModule, name)
 }));
-const publicUtilityExportChecks = publicUiReactUtilityExports.map((name) => ({
+const publicUtilityExportChecks = declaredUtilityNames.map((name) => ({
   name,
   exported: Object.prototype.hasOwnProperty.call(uiReactModule, name)
 }));
-const deferredPrototypeChecks = deferredStorybookPrototypeNames.map((name) => ({
+const deferredPrototypeChecks = declaredPrototypeNames.map((name) => ({
   name,
+  // A deferred prototype that IS exported is the failure this entry exists to
+  // catch: it would be shipped public API under a name the roster calls a
+  // storybook-only sketch.
   exported: Object.prototype.hasOwnProperty.call(uiReactModule, name),
   packageBacked: false,
   disposition: "storybook_only_prototype"
 }));
+
+// Named rather than counted: "the roster and the exports disagree" costs a search,
+// and a gate that costs a search is a gate people stop running.
+const undeclaredComponentExports = actualComponentExports
+  .filter((name) => !declaredComponentNames.includes(name));
+const declaredButNotExported = [...declaredComponentNames]
+  .filter((name) => !Object.prototype.hasOwnProperty.call(uiReactModule, name))
+  .sort();
+const exportedPrototypes = declaredPrototypeNames
+  .filter((name) => Object.prototype.hasOwnProperty.call(uiReactModule, name));
+
 const packageMetadataMatchesSource = Array.isArray(uiReactModule.componentLibraryPublicComponentNames)
-  && publicUiReactComponentExports.length === uiReactModule.componentLibraryPublicComponentNames.length
-  && publicUiReactComponentExports.every((name) => uiReactModule.componentLibraryPublicComponentNames.includes(name))
   && Array.isArray(uiReactModule.componentLibraryPublicUtilityNames)
-  && publicUiReactUtilityExports.length === uiReactModule.componentLibraryPublicUtilityNames.length
-  && publicUiReactUtilityExports.every((name) => uiReactModule.componentLibraryPublicUtilityNames.includes(name))
   && Array.isArray(uiReactModule.componentLibraryDeferredPrototypeNames)
-  && deferredStorybookPrototypeNames.length === uiReactModule.componentLibraryDeferredPrototypeNames.length
-  && deferredStorybookPrototypeNames.every((name) => uiReactModule.componentLibraryDeferredPrototypeNames.includes(name));
+  && undeclaredComponentExports.length === 0
+  && declaredButNotExported.length === 0
+  && exportedPrototypes.length === 0
+  && declaredUtilityNames.every((name) => Object.prototype.hasOwnProperty.call(uiReactModule, name));
 
 const storybookSources = walkTextSources("apps/storybook/src");
 const storybookBodies = storybookSources.map((path) => ({ path, body: readFileSync(path, "utf8") }));
@@ -449,6 +347,11 @@ console.log(JSON.stringify({
   publicComponentExportCount: publicComponentExportChecks.length,
   publicUtilityExportCount: publicUtilityExportChecks.length,
   deferredPrototypeCount: deferredPrototypeChecks.length,
+  // Named, not counted. A count tells a reader the surface disagrees; these tell
+  // them which name to go look at.
+  undeclaredComponentExports,
+  declaredButNotExported,
+  exportedPrototypes,
   iconNameCount: iconLibraryContract.iconNameCount,
   storybookDeepImportHits: deepImportHits.length,
   storybookDirectLucideImports: iconLibraryContract.storybookDirectLucideImports.length,
