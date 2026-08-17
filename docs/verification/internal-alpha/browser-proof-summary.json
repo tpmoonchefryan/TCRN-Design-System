@@ -4904,7 +4904,7 @@
           "id": "ModuleTabs",
           "visible": true,
           "width": 1077,
-          "height": 165
+          "height": 192
         },
         {
           "id": "NavGroup",
@@ -5112,13 +5112,13 @@
           "id": "SectionTabs",
           "visible": true,
           "width": 1077,
-          "height": 165
+          "height": 192
         },
         {
           "id": "SegmentedNav",
           "visible": true,
           "width": 1077,
-          "height": 165
+          "height": 192
         },
         {
           "id": "Select",
@@ -9284,7 +9284,7 @@
           "id": "ModuleTabs",
           "visible": true,
           "width": 691,
-          "height": 165
+          "height": 192
         },
         {
           "id": "NavGroup",
@@ -9492,13 +9492,13 @@
           "id": "SectionTabs",
           "visible": true,
           "width": 691,
-          "height": 165
+          "height": 192
         },
         {
           "id": "SegmentedNav",
           "visible": true,
           "width": 691,
-          "height": 165
+          "height": 192
         },
         {
           "id": "Select",
@@ -12500,7 +12500,7 @@
           "id": "ModuleTabs",
           "visible": true,
           "width": 358,
-          "height": 219
+          "height": 265
         },
         {
           "id": "NavGroup",
@@ -12665,13 +12665,13 @@
           "id": "SectionTabs",
           "visible": true,
           "width": 358,
-          "height": 219
+          "height": 265
         },
         {
           "id": "SegmentedNav",
           "visible": true,
           "width": 358,
-          "height": 219
+          "height": 265
         },
         {
           "id": "Select",
