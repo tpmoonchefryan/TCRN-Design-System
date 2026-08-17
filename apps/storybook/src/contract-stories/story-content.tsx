@@ -24,7 +24,7 @@ import {
   Field,
   FieldProvenance,
   FilterBar,
-  GateReadinessPanel,
+  StatusSummaryPanel,
   Heading,
   Highlight,
   Icon,
@@ -3088,7 +3088,7 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <EnvironmentBanner label="Private local scaffold" />
-        <GateReadinessPanel state={presentCopyState({ state: "blocked" })} />
+        <StatusSummaryPanel state={presentCopyState({ state: "blocked" })} />
         <ConfirmActionDialog
           title="Publication is not routed"
           message="Package publication, GitHub remote creation, and product adoption are blocked in this scaffold route."

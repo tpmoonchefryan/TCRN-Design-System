@@ -186,10 +186,10 @@ export function EnvironmentBanner({ label, state = { state: "local_only" }, loca
   );
 }
 
-export function GateReadinessPanel({ state }: { state: CopyStatePresentation }) {
+export function StatusSummaryPanel({ state }: { state: CopyStatePresentation }) {
   const safeLabel = sanitizeCopyStateLabel(state.label, presentCopyState({ state: state.state }).label);
   return (
-    <Surface className="tcrn-gate-readiness-panel" data-state={state.state}>
+    <Surface className="tcrn-status-summary-panel" data-state={state.state}>
       <Heading level={3}>{safeLabel}</Heading>
       <Text>{state.description}</Text>
       <StatusBadge state={{ state: state.state }} />

@@ -123,7 +123,7 @@
         "exported": true
       },
       {
-        "name": "GateReadinessPanel",
+        "name": "StatusSummaryPanel",
         "exported": true
       },
       {
@@ -808,7 +808,7 @@
         "requiredRepair": "none"
       },
       {
-        "storybookItem": "GateReadinessPanel",
+        "storybookItem": "StatusSummaryPanel",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
