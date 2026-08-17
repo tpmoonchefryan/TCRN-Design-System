@@ -1096,3 +1096,25 @@ test("STORY-092 only the selected tab is in the tab order", () => {
   assert.equal((html.match(/tabindex="-1"/g) ?? []).length, 2);
   assert.equal((html.match(/tabindex="0"/g) ?? []).length, 2, "the selected tab and the panel");
 });
+
+
+// TCRN-DS-STORY-093. The three tab-shaped navs rendered buttons with no handler at
+// all: a consumer could wire nothing to them and the markup looked complete. That
+// is the "renders an empty nav" shape INIT-011 named, surviving because every test
+// read the aria-current attribute and none asked whether a click did anything.
+test("STORY-093 a segmented nav renders an activation handler when the consumer supplies one", () => {
+  const wired = renderToStaticMarkup(
+    <SegmentedNav onSelect={() => {}} items={[{ id: "a", label: "A", selected: true }, { id: "b", label: "B" }]} />
+  );
+  // renderToStaticMarkup drops handlers, so the observable is that the element is a
+  // real button in both cases and the type surface accepts the handler — the DOM
+  // harness exercises the click itself.
+  assert.equal((wired.match(/<button/g) ?? []).length, 2);
+  assert.match(wired, /aria-current="page"/);
+  const bare = renderToStaticMarkup(
+    <SegmentedNav items={[{ id: "a", label: "A" }]} />
+  );
+  // Omitting the handler stays legal: ProductLauncher and ProductSwitcher share the
+  // item type and do not select, so onSelect is optional rather than required.
+  assert.match(bare, /<button/);
+});

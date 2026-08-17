@@ -2424,11 +2424,16 @@
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
+        },
+        {
+          "name": "onSelect",
+          "type": "(id: string) => void",
+          "required": false
         }
       ],
       "variants": {},
       "slots": [],
-      "propsType": "ProductLauncherProps"
+      "propsType": "SelectableNavProps"
     },
     "NavGroup": {
       "name": "NavGroup",
@@ -3457,11 +3462,16 @@
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
+        },
+        {
+          "name": "onSelect",
+          "type": "(id: string) => void",
+          "required": false
         }
       ],
       "variants": {},
       "slots": [],
-      "propsType": "ProductLauncherProps"
+      "propsType": "SelectableNavProps"
     },
     "SegmentedNav": {
       "name": "SegmentedNav",
@@ -3476,11 +3486,16 @@
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
+        },
+        {
+          "name": "onSelect",
+          "type": "(id: string) => void",
+          "required": false
         }
       ],
       "variants": {},
       "slots": [],
-      "propsType": "ProductLauncherProps"
+      "propsType": "SelectableNavProps"
     },
     "Select": {
       "name": "Select",
