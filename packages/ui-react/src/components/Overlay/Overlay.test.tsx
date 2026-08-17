@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DetailDrawer, Popover, Dialog, ConfirmActionDialog, Tooltip } from "./Overlay.js";
+import { DetailDrawer, Popover, Dialog, ConfirmActionDialog, Tooltip, Menu } from "./Overlay.js";
 
 test("overlay primitives separate structural drawers from scoped dialog capabilities", () => {
   const html = renderToStaticMarkup(
@@ -148,4 +148,35 @@ test("STORY-092 a dialog declares tab containment only because it implements it"
     <Popover title="P" open onOpenChange={() => undefined} triggerRef={{ current: null }}>body</Popover>
   );
   assert.match(popover, /data-tab-containment="not-implemented"/);
+});
+
+
+test("STORY-092 a menu announces a command list, not a pile of buttons", () => {
+  const html = renderToStaticMarkup(
+    <Menu label="Row actions" open items={[
+      { id: "edit", label: "Edit" },
+      { id: "delete", label: "Delete" },
+      { id: "archive", label: "Archive", disabled: true }
+    ]} />
+  );
+  assert.match(html, /role="menu"/);
+  assert.match(html, /aria-label="Row actions"/);
+  assert.equal((html.match(/role="menuitem"/g) ?? []).length, 3);
+  // Tab leaves the menu instead of walking it: exactly one item is in the tab order
+  // and the arrows move between them.
+  assert.equal((html.match(/tabindex="0"/g) ?? []).length, 1);
+  assert.equal((html.match(/tabindex="-1"/g) ?? []).length, 2);
+});
+
+test("STORY-092 a closed menu renders nothing at all", () => {
+  // Not `hidden`, not display:none — a menu left in the tree is a menu a screen
+  // reader can still walk into.
+  assert.equal(renderToStaticMarkup(<Menu label="x" open={false} items={[{ id: "a", label: "A" }]} />), "");
+});
+
+test("STORY-092 the first enabled item is active, so a disabled first item is skipped", () => {
+  const html = renderToStaticMarkup(
+    <Menu label="x" open items={[{ id: "a", label: "A", disabled: true }, { id: "b", label: "B" }]} />
+  );
+  assert.match(html, /data-menu-item-active="true"[^>]*>B</);
 });

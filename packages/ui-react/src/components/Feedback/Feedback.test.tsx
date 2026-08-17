@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { EmptyState, EnvironmentBanner, ErrorState, Skeleton, StateSurface, StatusBadge, StateView, GateReadinessPanel } from "./Feedback.js";
+import { EmptyState, EnvironmentBanner, ErrorState, Skeleton, StateSurface, StatusBadge, StateView, GateReadinessPanel, Toast } from "./Feedback.js";
 import { presentCopyState } from "@tcrn/ui-copy-state";
 
 test("stateful components fail closed without product acceptance claims", () => {
@@ -85,4 +85,26 @@ test("state surface primitives stay presentation-only", () => {
   assert.match(error, /data-state-surface-kind="error"/);
   assert.match(error, /data-tone="danger"/);
   assert.doesNotMatch(error, /ErrorBoundary/);
+});
+
+
+test("STORY-092 only a danger toast interrupts, so urgency still means something", () => {
+  const polite = renderToStaticMarkup(<Toast>Saved</Toast>);
+  assert.match(polite, /role="status"/);
+  assert.match(polite, /aria-live="polite"/);
+  const urgent = renderToStaticMarkup(<Toast tone="danger">Failed</Toast>);
+  assert.match(urgent, /role="alert"/);
+  assert.match(urgent, /aria-live="assertive"/);
+  // A product where every toast is assertive has made none of them urgent.
+  for (const tone of ["neutral", "positive", "warning"] as const) {
+    assert.match(renderToStaticMarkup(<Toast tone={tone}>m</Toast>), /aria-live="polite"/);
+  }
+});
+
+test("STORY-092 a toast renders a dismiss control only when it can actually dismiss", () => {
+  // An inert X is worse than no X: it says the message can be taken away and then
+  // does not take it away.
+  assert.doesNotMatch(renderToStaticMarkup(<Toast dismissLabel="Close">m</Toast>), /<button/);
+  assert.doesNotMatch(renderToStaticMarkup(<Toast onDismiss={() => {}}>m</Toast>), /<button/);
+  assert.match(renderToStaticMarkup(<Toast dismissLabel="Close" onDismiss={() => {}}>m</Toast>), /aria-label="Close"/);
 });

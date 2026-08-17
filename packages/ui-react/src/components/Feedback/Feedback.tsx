@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
+import { Icon } from "../Icon/index.js";
 import {
   presentCopyState,
   sanitizeCopyStateLabel,
@@ -92,6 +93,48 @@ export function InlineAlert({ tone = "neutral", className, ...props }: InlineAle
 
 export function LiveRegion({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return <div aria-live="polite" {...props} className={cx("tcrn-live-region", className)} />;
+}
+
+/**
+ * A transient message that arrives without the reader asking.
+ *
+ * The politeness level is the whole design, and it is not a style choice.
+ * `polite` waits for the screen reader to finish its current sentence; `assertive`
+ * interrupts. A product that makes every toast assertive has made none of them
+ * urgent, so the tone chooses the level: only `danger` interrupts.
+ *
+ * Toast does not own dismissal timing. A component that auto-dismisses on a timer
+ * takes the message away from readers who need longer, and the timing that suits
+ * one product is wrong for the next — the consumer owns it and passes `onDismiss`.
+ */
+export type ToastTone = "neutral" | "positive" | "warning" | "danger";
+
+export interface ToastProps extends HTMLAttributes<HTMLDivElement> {
+  tone?: ToastTone;
+  /** Rendered as the dismiss control's accessible name. Omit for a toast that stays. */
+  dismissLabel?: string;
+  onDismiss?: () => void;
+}
+
+export function Toast({ tone = "neutral", dismissLabel, onDismiss, className, children, ...props }: ToastProps) {
+  const urgent = tone === "danger";
+  return (
+    <div
+      {...props}
+      className={cx("tcrn-toast", `tcrn-toast--${tone}`, className)}
+      data-toast="true"
+      data-toast-tone={tone}
+      role={urgent ? "alert" : "status"}
+      aria-live={urgent ? "assertive" : "polite"}
+    >
+      <span className="tcrn-toast__message">{children}</span>
+      {onDismiss && dismissLabel ? (
+        <button type="button" className="tcrn-toast__dismiss" onClick={onDismiss} aria-label={dismissLabel}>
+          <Icon name="x" />
+        </button>
+      ) : null}
+    </div>
+  );
 }
 
 export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {

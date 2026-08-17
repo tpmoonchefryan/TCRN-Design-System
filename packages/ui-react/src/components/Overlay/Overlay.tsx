@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactElement, ReactNode, RefObject } from "react";
-import { cloneElement, useEffect, useId, useRef } from "react";
+import { cloneElement, useEffect, useId, useRef, useState } from "react";
 import { Heading, Text } from "../Typography/index.js";
 import { Button } from "../Button/index.js";
 import { childPropsOf, cx, mergeIds, requiredText } from "../../utils.js";
@@ -231,6 +231,92 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
       <Heading id={titleId} level={3}>{title}</Heading>
       {children}
     </section>
+  );
+}
+
+/**
+ * A list of commands, opened from a trigger.
+ *
+ * A menu is not a listbox and not a set of tabs: its items DO something rather
+ * than select something, which is why the roles are `menu` and `menuitem` and why
+ * activating one closes the menu. Products that render a popover full of buttons
+ * get the visuals and lose the announcement — a screen reader says "button" N
+ * times with no notion of the group or of how many.
+ *
+ * Focus roves with the arrow keys and only one item is ever in the tab order, so
+ * Tab leaves the menu rather than walking through it. Escape closes and returns
+ * focus to the trigger, because a menu that closes and drops focus to the body
+ * leaves a keyboard user at the top of the page.
+ */
+export interface MenuItemDescriptor {
+  id: string;
+  label: ReactNode;
+  disabled?: boolean;
+  onSelect?: () => void;
+}
+
+export interface MenuProps {
+  items: MenuItemDescriptor[];
+  open: boolean;
+  /** Accessible name for the command list. */
+  label: string;
+  onOpenChange?: (open: boolean) => void;
+  triggerRef?: RefObject<HTMLElement | null>;
+}
+
+export function Menu({ items, open, label, onOpenChange, triggerRef }: MenuProps) {
+  const listRef = useRef<HTMLDivElement>(null);
+  const enabled = items.filter((item) => !item.disabled);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const current = activeId ?? enabled[0]?.id ?? null;
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onOpenChange?.(false);
+        window.setTimeout(() => triggerRef?.current?.focus(), 0);
+        return;
+      }
+      if (enabled.length === 0) return;
+      const at = enabled.findIndex((item) => item.id === current);
+      const step = (delta: number) => {
+        event.preventDefault();
+        const next = enabled[(((at < 0 ? 0 : at) + delta) % enabled.length + enabled.length) % enabled.length];
+        if (next) setActiveId(next.id);
+      };
+      if (event.key === "ArrowDown") step(1);
+      else if (event.key === "ArrowUp") step(-1);
+      else if (event.key === "Home") { event.preventDefault(); setActiveId(enabled[0]?.id ?? null); }
+      else if (event.key === "End") { event.preventDefault(); setActiveId(enabled[enabled.length - 1]?.id ?? null); }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [current, enabled, onOpenChange, open, triggerRef]);
+
+  if (!open) return null;
+
+  return (
+    <div ref={listRef} role="menu" aria-label={label} className="tcrn-menu" data-menu="true">
+      {items.map((item) => (
+        <button key={item.id} type="button"
+          role="menuitem"
+          className={cx("tcrn-menu__item", item.id === current && "tcrn-menu__item--active")}
+          disabled={item.disabled}
+          tabIndex={item.id === current ? 0 : -1}
+          data-menu-item-active={item.id === current ? "true" : undefined}
+          onClick={() => {
+            item.onSelect?.();
+            // A command menu closes on activation: leaving it open after the command
+            // ran is what makes readers press the same item twice.
+            onOpenChange?.(false);
+          }}
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>
   );
 }
 

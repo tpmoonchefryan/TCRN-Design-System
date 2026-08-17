@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 115,
+  "componentCount": 117,
   "coverage": {
-    "registryComponentCount": 115,
+    "registryComponentCount": 117,
     "publicComponentNames": [
       "ActionDrawer",
       "AppStatusBar",
@@ -58,6 +58,7 @@
       "LockHint",
       "MachineToken",
       "MachineTokenCell",
+      "Menu",
       "MetadataRail",
       "ModuleTabs",
       "NavGroup",
@@ -103,6 +104,7 @@
       "TcrnBrandMark",
       "Text",
       "Textarea",
+      "Toast",
       "Tooltip",
       "TopBar",
       "WorkActivityFeed",
@@ -175,6 +177,7 @@
       "LockHint",
       "MachineToken",
       "MachineTokenCell",
+      "Menu",
       "MetadataRail",
       "ModuleTabs",
       "NavGroup",
@@ -220,6 +223,7 @@
       "TcrnBrandMark",
       "Text",
       "Textarea",
+      "Toast",
       "Tooltip",
       "TopBar",
       "WorkActivityFeed",
@@ -2245,6 +2249,40 @@
       "slots": [],
       "propsType": "MachineTokenProps"
     },
+    "Menu": {
+      "name": "Menu",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "MenuItemDescriptor[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "MenuProps"
+    },
     "MetadataRail": {
       "name": "MetadataRail",
       "kind": "function",
@@ -4231,6 +4269,44 @@
       "variants": {},
       "slots": [],
       "propsType": "TextareaProps"
+    },
+    "Toast": {
+      "name": "Toast",
+      "kind": "function",
+      "props": [
+        {
+          "name": "dismissLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "onDismiss",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "tone",
+          "type": "ToastTone",
+          "required": false,
+          "default": "\"neutral\"",
+          "enumValues": [
+            "danger",
+            "neutral",
+            "positive",
+            "warning"
+          ]
+        }
+      ],
+      "variants": {
+        "tone": [
+          "danger",
+          "neutral",
+          "positive",
+          "warning"
+        ]
+      },
+      "slots": [],
+      "propsType": "ToastProps"
     },
     "Tooltip": {
       "name": "Tooltip",
