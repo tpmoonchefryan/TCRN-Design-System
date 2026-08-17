@@ -138,7 +138,7 @@ export const componentLibraryPublicUtilityNames = [
 export type ComponentLibraryPublicUtilityName = (typeof componentLibraryPublicUtilityNames)[number];
 
 export const componentLibraryDeferredPrototypeNames = [
-  "TmsDenseShellDemo",
+  "DenseOperationsShellDemo",
   "KnowledgeBaseShellDemo",
   "CompactToolShellDemo"
 ] as const;

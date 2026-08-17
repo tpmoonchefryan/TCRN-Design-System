@@ -28,7 +28,7 @@ export const componentFamilyRows = [
 ];
 
 export const storybookOnlyPrototypeRows = [
-  { helper: "TmsDenseShellDemo", scope: "Dense product shell IA comparison", status: "Storybook prototype; full shell deferred" },
+  { helper: "DenseOperationsShellDemo", scope: "Dense product shell IA comparison", status: "Storybook prototype; full shell deferred" },
   { helper: "KnowledgeBaseShellDemo", scope: "Documentation shell IA comparison", status: "Storybook prototype; full shell deferred" },
   { helper: "CompactToolShellDemo", scope: "Focused tool shell comparison", status: "Storybook prototype; shell framework deferred" }
 ];
