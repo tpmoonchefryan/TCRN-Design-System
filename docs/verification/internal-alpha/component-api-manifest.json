@@ -50,7 +50,6 @@
       "KnowledgeMetadataRail",
       "KnowledgePageTree",
       "KnowledgeSearchResults",
-      "KnowledgeTemplateGallery",
       "KnowledgeTocRail",
       "KnowledgeVersionHistory",
       "LineNumberedEditor",
@@ -105,6 +104,7 @@
       "TableToolbar",
       "Tabs",
       "TcrnBrandMark",
+      "TemplateGallery",
       "Text",
       "Textarea",
       "Toast",
@@ -173,7 +173,6 @@
       "KnowledgeMetadataRail",
       "KnowledgePageTree",
       "KnowledgeSearchResults",
-      "KnowledgeTemplateGallery",
       "KnowledgeTocRail",
       "KnowledgeVersionHistory",
       "LineNumberedEditor",
@@ -228,6 +227,7 @@
       "TableToolbar",
       "Tabs",
       "TcrnBrandMark",
+      "TemplateGallery",
       "Text",
       "Textarea",
       "Toast",
@@ -1967,47 +1967,6 @@
       },
       "slots": [],
       "propsType": "KnowledgeSearchResultsProps"
-    },
-    "KnowledgeTemplateGallery": {
-      "name": "KnowledgeTemplateGallery",
-      "kind": "function",
-      "props": [
-        {
-          "name": "density",
-          "type": "WorkDensity",
-          "required": false,
-          "default": "\"compact\"",
-          "enumValues": [
-            "comfortable",
-            "compact",
-            "dense"
-          ]
-        },
-        {
-          "name": "label",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "locale",
-          "type": "TcrnLocale | string",
-          "required": false
-        },
-        {
-          "name": "templates",
-          "type": "KnowledgeTemplate[]",
-          "required": true
-        }
-      ],
-      "variants": {
-        "density": [
-          "comfortable",
-          "compact",
-          "dense"
-        ]
-      },
-      "slots": [],
-      "propsType": "KnowledgeTemplateGalleryProps"
     },
     "KnowledgeTocRail": {
       "name": "KnowledgeTocRail",
@@ -4408,6 +4367,47 @@
       "variants": {},
       "slots": [],
       "propsType": "TcrnBrandMarkProps"
+    },
+    "TemplateGallery": {
+      "name": "TemplateGallery",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "WorkDensity",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "templates",
+          "type": "TemplateCard[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "TemplateGalleryProps"
     },
     "Text": {
       "name": "Text",

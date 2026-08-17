@@ -28,7 +28,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "f1a3d10cbae881b8631ad6aace61eaf7b8aa0b0f3faa17fcf26ed0df297e7481",
+    "contractPayloadDigest": "ea4abd690b433fcf6264e6ad9d54faa97e0dfd1f30f9c6026272c85c20d28706",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 20,
@@ -4662,12 +4662,6 @@
           "height": 244
         },
         {
-          "id": "GateReadinessPanel",
-          "visible": true,
-          "width": 1077,
-          "height": 137
-        },
-        {
           "id": "Heading",
           "visible": true,
           "width": 1077,
@@ -4723,6 +4717,12 @@
         },
         {
           "id": "KnowledgeInlineCommentList",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "KnowledgeLabelSet",
           "visible": true,
           "width": 1077,
           "height": 244
@@ -4827,12 +4827,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "KnowledgeLabelSet",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
         {
           "id": "KnowledgeMetadataRail",
           "visible": true,
@@ -4946,6 +4940,12 @@
           "visible": true,
           "width": 1077,
           "height": 137
+        },
+        {
+          "id": "Popover",
+          "visible": true,
+          "width": 1077,
+          "height": 379
         }
       ],
       "clipped": [],
@@ -5047,12 +5047,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "Popover",
-          "visible": true,
-          "width": 1077,
-          "height": 379
-        },
         {
           "id": "ProductLauncher",
           "visible": true,
@@ -5166,6 +5160,12 @@
           "visible": true,
           "width": 1077,
           "height": 330
+        },
+        {
+          "id": "ShellThemeToggle",
+          "visible": true,
+          "width": 1077,
+          "height": 354
         }
       ],
       "clipped": [],
@@ -5268,12 +5268,6 @@
       "storyRegions": [],
       "referenceRegions": [
         {
-          "id": "ShellThemeToggle",
-          "visible": true,
-          "width": 1077,
-          "height": 354
-        },
-        {
           "id": "SideNav",
           "visible": true,
           "width": 1077,
@@ -5332,6 +5326,12 @@
           "visible": true,
           "width": 1077,
           "height": 165
+        },
+        {
+          "id": "StatusSummaryPanel",
+          "visible": true,
+          "width": 1077,
+          "height": 137
         },
         {
           "id": "Stepper",
@@ -7235,7 +7235,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 4474
+          "height": 4438
         },
         {
           "id": "display-primitives-spec",
@@ -9148,12 +9148,6 @@
           "height": 244
         },
         {
-          "id": "GateReadinessPanel",
-          "visible": true,
-          "width": 691,
-          "height": 137
-        },
-        {
           "id": "Heading",
           "visible": true,
           "width": 691,
@@ -9209,6 +9203,12 @@
         },
         {
           "id": "KnowledgeInlineCommentList",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "KnowledgeLabelSet",
           "visible": true,
           "width": 691,
           "height": 244
@@ -9313,12 +9313,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "KnowledgeLabelSet",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
         {
           "id": "KnowledgeMetadataRail",
           "visible": true,
@@ -9432,6 +9426,12 @@
           "visible": true,
           "width": 691,
           "height": 137
+        },
+        {
+          "id": "Popover",
+          "visible": true,
+          "width": 691,
+          "height": 379
         }
       ],
       "clipped": [],
@@ -9533,12 +9533,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "Popover",
-          "visible": true,
-          "width": 691,
-          "height": 379
-        },
         {
           "id": "ProductLauncher",
           "visible": true,
@@ -9652,6 +9646,12 @@
           "visible": true,
           "width": 691,
           "height": 496
+        },
+        {
+          "id": "ShellThemeToggle",
+          "visible": true,
+          "width": 691,
+          "height": 354
         }
       ],
       "clipped": [],
@@ -9754,12 +9754,6 @@
       "storyRegions": [],
       "referenceRegions": [
         {
-          "id": "ShellThemeToggle",
-          "visible": true,
-          "width": 691,
-          "height": 354
-        },
-        {
           "id": "SideNav",
           "visible": true,
           "width": 691,
@@ -9818,6 +9812,12 @@
           "visible": true,
           "width": 691,
           "height": 165
+        },
+        {
+          "id": "StatusSummaryPanel",
+          "visible": true,
+          "width": 691,
+          "height": 137
         },
         {
           "id": "Stepper",
@@ -11202,7 +11202,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 10814
+          "height": 10779
         },
         {
           "id": "display-primitives-spec",
@@ -11677,7 +11677,7 @@
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 3567
+          "height": 3534
         },
         {
           "id": "knowledge-management-density-collaboration-spec",
@@ -12513,12 +12513,6 @@
           "height": 336
         },
         {
-          "id": "GateReadinessPanel",
-          "visible": true,
-          "width": 358,
-          "height": 173
-        },
-        {
           "id": "Heading",
           "visible": true,
           "width": 358,
@@ -12574,6 +12568,12 @@
         },
         {
           "id": "KnowledgeInlineCommentList",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "KnowledgeLabelSet",
           "visible": true,
           "width": 358,
           "height": 336
@@ -12635,12 +12635,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "KnowledgeLabelSet",
-          "visible": true,
-          "width": 358,
-          "height": 336
-        },
         {
           "id": "KnowledgeMetadataRail",
           "visible": true,
@@ -12754,6 +12748,12 @@
           "visible": true,
           "width": 358,
           "height": 137
+        },
+        {
+          "id": "Popover",
+          "visible": true,
+          "width": 358,
+          "height": 563
         }
       ],
       "clipped": [],
@@ -12812,12 +12812,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "Popover",
-          "visible": true,
-          "width": 358,
-          "height": 563
-        },
         {
           "id": "ProductLauncher",
           "visible": true,
@@ -12931,6 +12925,12 @@
           "visible": true,
           "width": 358,
           "height": 662
+        },
+        {
+          "id": "ShellThemeToggle",
+          "visible": true,
+          "width": 358,
+          "height": 705
         }
       ],
       "clipped": [],
@@ -12990,12 +12990,6 @@
       "storyRegions": [],
       "referenceRegions": [
         {
-          "id": "ShellThemeToggle",
-          "visible": true,
-          "width": 358,
-          "height": 705
-        },
-        {
           "id": "SideNav",
           "visible": true,
           "width": 358,
@@ -13054,6 +13048,12 @@
           "visible": true,
           "width": 358,
           "height": 219
+        },
+        {
+          "id": "StatusSummaryPanel",
+          "visible": true,
+          "width": 358,
+          "height": 173
         },
         {
           "id": "Stepper",

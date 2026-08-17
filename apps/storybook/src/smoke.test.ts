@@ -883,7 +883,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /KnowledgeAttachmentList/);
   assert.match(readGroupPage("Components"), /KnowledgeLabelSet/);
   assert.match(readGroupPage("Components"), /KnowledgeVersionHistory/);
-  assert.match(readGroupPage("Components"), /KnowledgeTemplateGallery/);
+  assert.match(readGroupPage("Components"), /TemplateGallery/);
   assert.match(readGroupPage("Components"), /KnowledgeSearchResults/);
   for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "duplicates", "supersedes", "split_from", "caused_by", "implements", "verifies", "reviews", "refreshes"]) {
     assert.match(readGroupPage("Components"), new RegExp(`data-work-relationship="${relation}"`));
@@ -1352,7 +1352,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.componentConsumptionDisposition, /WorkItemRow, WorkList, WorkSplitView, WorkBacklogGroup/);
   assert.match(contract.componentConsumptionDisposition, /WorkDetailLayout, MetadataRail, WorkFieldPanel, WorkActivityFeed/);
   assert.match(contract.componentConsumptionDisposition, /KnowledgePageTree, KnowledgeDocumentCanvas, KnowledgeTocRail/);
-  assert.match(contract.componentConsumptionDisposition, /KnowledgeVersionHistory, KnowledgeTemplateGallery, and KnowledgeSearchResults/);
+  assert.match(contract.componentConsumptionDisposition, /KnowledgeVersionHistory, TemplateGallery, and KnowledgeSearchResults/);
   assert.match(contract.componentConsumptionDisposition, /useProductShellController/);
   assert.match(contract.componentConsumptionDisposition, /ProductShell semantic callbacks/);
   assert.match(contract.componentConsumptionDisposition, /productShellControlProps/);

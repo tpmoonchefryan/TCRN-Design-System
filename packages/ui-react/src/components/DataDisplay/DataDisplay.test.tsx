@@ -20,7 +20,7 @@ import {
   KnowledgeMetadataRail,
   KnowledgePageTree,
   KnowledgeSearchResults,
-  KnowledgeTemplateGallery,
+  TemplateGallery,
   KnowledgeTocRail,
   KnowledgeVersionHistory,
   MachineToken,
@@ -203,7 +203,7 @@ test("knowledge management registry admits static DS candidates 42 through 51", 
     "47-knowledge-attachment-list",
     "48-knowledge-label-set",
     "49-knowledge-version-history",
-    "50-knowledge-template-gallery",
+    "50-template-gallery",
     "51-knowledge-search-results"
   ]);
   assert.match(knowledgeManagementPatternRegistry.map((item) => item.componentName).join(" "), /KnowledgeDocumentCanvas/);
@@ -245,7 +245,7 @@ test("knowledge management components render static no-live surfaces", () => {
       <KnowledgeAttachmentList items={[{ id: "evd", label: "Evidence", reference: "artifact:kb-static", state: { state: "local_only" } }]} />
       <KnowledgeLabelSet labels={["policy", "draft"]} />
       <KnowledgeVersionHistory versions={[{ id: "v1", title: "Draft", author: "Ilya", state: { state: "fixture_only" } }]} />
-      <KnowledgeTemplateGallery templates={[{ id: "template", title: "Runbook", description: "Static template only.", state: { state: "not_claimed" } }]} />
+      <TemplateGallery templates={[{ id: "template", title: "Runbook", description: "Static template only.", state: { state: "not_claimed" } }]} />
       <KnowledgeSearchResults
         query="inspection"
         results={[{ id: "result", title: "Owner inspection guide", excerpt: "Static local result only.", labels: ["runbook"] }]}
@@ -261,7 +261,7 @@ test("knowledge management components render static no-live surfaces", () => {
   assert.match(html, /data-knowledge-management-pattern="knowledge-attachment-list"/);
   assert.match(html, /data-knowledge-management-pattern="knowledge-label-set"/);
   assert.match(html, /data-knowledge-management-pattern="knowledge-version-history"/);
-  assert.match(html, /data-knowledge-management-pattern="knowledge-template-gallery"/);
+  assert.match(html, /data-knowledge-management-pattern="template-gallery"/);
   assert.match(html, /data-knowledge-management-pattern="knowledge-search-results"/);
   assert.match(html, /data-search-capability="static-local-fixture"/);
   assert.doesNotMatch(html, /Confluence|Jira|Atlassian|atlaskit/i);
@@ -569,7 +569,7 @@ test("the remaining work and knowledge patterns say their own labels in the read
       <KnowledgeInlineCommentList locale="zh-CN" comments={[{ id: "C-1", author: "governance", body: "评注" }]} />
       <KnowledgeAttachmentList locale="zh-CN" items={[{ id: "K-1", label: "附件", reference: "sha256:def" }]} />
       <KnowledgeVersionHistory locale="zh-CN" versions={[{ id: "V-1", title: "草稿", author: "governance" }]} />
-      <KnowledgeTemplateGallery locale="zh-CN" templates={[{ id: "T-1", title: "模板", description: "静态模板" }]} />
+      <TemplateGallery locale="zh-CN" templates={[{ id: "T-1", title: "模板", description: "静态模板" }]} />
       <KnowledgeSearchResults locale="zh-CN" results={[{ id: "R-1", title: "结果", excerpt: "摘要", labels: ["策略"] }]} />
     </>
   );
@@ -634,7 +634,7 @@ test("the remaining work and knowledge patterns say their own labels in the read
   // Two more locales, so the additions are proved to hold five rather than two.
   const ja = renderToStaticMarkup(<WorkSplitView locale="ja" list={<div>一覧</div>} detail={<div>詳細</div>} />);
   assert.match(ja, /aria-label="作業項目の分割ビュー"/);
-  const fr = renderToStaticMarkup(<KnowledgeTemplateGallery locale="fr" templates={[{ id: "T-1", title: "Modèle", description: "Modèle statique" }]} />);
+  const fr = renderToStaticMarkup(<TemplateGallery locale="fr" templates={[{ id: "T-1", title: "Modèle", description: "Modèle statique" }]} />);
   assert.match(fr, /aria-label="Modèles de connaissance"/);
   const ko = renderToStaticMarkup(<WorkActivityFeed locale="ko" items={[{ id: "A-1", actor: "governance", action: "기록" }]} />);
   assert.match(ko, /aria-label="작업 활동"/);

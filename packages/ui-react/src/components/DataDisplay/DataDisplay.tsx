@@ -870,8 +870,8 @@ export const knowledgeManagementPatternRegistry: WorkManagementPatternRegistryIt
     purpose: "Static version list that does not imply live publishing or collaborative editing."
   },
   {
-    candidateId: "50-knowledge-template-gallery",
-    componentName: "KnowledgeTemplateGallery",
+    candidateId: "50-template-gallery",
+    componentName: "TemplateGallery",
     level: "composite",
     purpose: "Template cards for owner-reviewed Knowledge drafting without backend create flow."
   },
@@ -2403,12 +2403,12 @@ export function KnowledgeVersionHistory({ label, versions, density = "compact", 
   );
 }
 
-interface KnowledgeTemplateGalleryLabels {
+interface TemplateGalleryLabels {
   use: string;
   disabledReason: string;
 }
 
-const knowledgeTemplateGalleryLabels: Record<TcrnLocale, KnowledgeTemplateGalleryLabels> = {
+const templateGalleryLabels: Record<TcrnLocale, TemplateGalleryLabels> = {
   "zh-CN": { use: "使用模板", disabledReason: "静态设计系统模板样例；创建动作由产品路线自身持有" },
   en: { use: "Use template", disabledReason: "Static Design System template fixture; product route owns creation" },
   ja: { use: "テンプレートを使用", disabledReason: "静的なデザインシステムのテンプレート例です。作成はプロダクト側のルートが保持します" },
@@ -2416,26 +2416,26 @@ const knowledgeTemplateGalleryLabels: Record<TcrnLocale, KnowledgeTemplateGaller
   fr: { use: "Utiliser le modèle", disabledReason: "Exemple de modèle statique du design system ; la création appartient à la route produit" }
 };
 
-export interface KnowledgeTemplate {
+export interface TemplateCard {
   id: string;
   title: string;
   description: ReactNode;
   state?: CopyStateInput;
 }
 
-export interface KnowledgeTemplateGalleryProps {
+export interface TemplateGalleryProps {
   label?: string;
-  templates: KnowledgeTemplate[];
+  templates: TemplateCard[];
   density?: WorkDensity;
   locale?: TcrnLocale | string;
 }
 
-export function KnowledgeTemplateGallery({ label, templates, density = "compact", locale }: KnowledgeTemplateGalleryProps) {
-  const copy = knowledgeTemplateGalleryLabels[resolveDocumentLocale(locale)];
+export function TemplateGallery({ label, templates, density = "compact", locale }: TemplateGalleryProps) {
+  const copy = templateGalleryLabels[resolveDocumentLocale(locale)];
   return (
-    <section className={cx("tcrn-knowledge-template-gallery", `tcrn-knowledge-template-gallery--${density}`)} aria-label={label ?? patternLabels(locale).knowledgeTemplates} data-knowledge-management-pattern="knowledge-template-gallery" data-density={density}>
+    <section className={cx("tcrn-template-gallery", `tcrn-template-gallery--${density}`)} aria-label={label ?? patternLabels(locale).knowledgeTemplates} data-knowledge-management-pattern="template-gallery" data-density={density}>
       {templates.map((template) => (
-        <Surface key={template.id} className="tcrn-knowledge-template-gallery__card">
+        <Surface key={template.id} className="tcrn-template-gallery__card">
           <Heading level={3}>{template.title}</Heading>
           <Text>{template.description}</Text>
           {template.state ? <StatusBadge state={template.state} locale={locale} /> : null}

@@ -571,7 +571,7 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-work-item-row--dense \{[\s\S]*grid-template-columns: minmax\(92px, 0\.14fr\)/);
   assert.match(tcrnComponentCss, /\.tcrn-work-page-header--dense,[\s\S]*\.tcrn-work-activity-feed--dense \{[\s\S]*--tcrn-work-density-row-min: 34px;/);
   assert.match(tcrnComponentCss, /\.tcrn-knowledge-page-tree,[\s\S]*\.tcrn-knowledge-search-results \{[\s\S]*min-width: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-knowledge-template-gallery \{[\s\S]*grid-template-columns: repeat\(auto-fit, minmax\(180px, 1fr\)\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-template-gallery \{[\s\S]*grid-template-columns: repeat\(auto-fit, minmax\(180px, 1fr\)\);/);
 });
 
 test("product shell search stays hidden when compact at rest", () => {
