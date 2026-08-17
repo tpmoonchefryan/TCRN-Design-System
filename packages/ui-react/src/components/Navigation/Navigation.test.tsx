@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { act, useState, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
+  Tabs,
   ModuleTabs,
   SectionTabs,
   SegmentedNav,
@@ -1061,4 +1062,37 @@ test("product shell controller reads preferences from the request cookie during 
     readPreferenceCookieValues(undefined, cookieKeys),
     { collapsed: undefined, theme: undefined, locale: undefined }
   );
+});
+
+
+// TCRN-DS-STORY-092 batch 2. This repository already had three tab-shaped
+// components and none of them implements the ARIA tab pattern; these assertions
+// are what separates this one from those.
+
+test("STORY-092 tabs carry the tab pattern's roles and wiring, not aria-current", () => {
+  const html = renderToStaticMarkup(
+    <Tabs label="Sections" selectedId="two" onSelect={() => {}}
+      items={[{ id: "one", label: "One" }, { id: "two", label: "Two" }]}>
+      panel body
+    </Tabs>
+  );
+  assert.match(html, /role="tablist"/);
+  assert.equal((html.match(/role="tab"/g) ?? []).length, 2);
+  assert.match(html, /role="tabpanel"/);
+  // A tab swaps a panel; it does not change the page. aria-current would announce
+  // "current page", which is the wrong fact.
+  assert.doesNotMatch(html, /aria-current/);
+  assert.match(html, /aria-selected="true"[^>]*aria-controls="tcrn-tabpanel-two"|aria-controls="tcrn-tabpanel-two"/);
+  assert.match(html, /id="tcrn-tabpanel-two"[^>]*aria-labelledby="tcrn-tab-two"/);
+});
+
+test("STORY-092 only the selected tab is in the tab order", () => {
+  const html = renderToStaticMarkup(
+    <Tabs label="Sections" selectedId="one" onSelect={() => {}}
+      items={[{ id: "one", label: "One" }, { id: "two", label: "Two" }, { id: "three", label: "Three" }]} />
+  );
+  // Without the roving tabindex, tabbing past a three-tab strip costs three stops
+  // before reaching the content the tabs exist to reveal.
+  assert.equal((html.match(/tabindex="-1"/g) ?? []).length, 2);
+  assert.equal((html.match(/tabindex="0"/g) ?? []).length, 2, "the selected tab and the panel");
 });
