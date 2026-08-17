@@ -111,6 +111,7 @@ export const componentLibraryPublicComponentNames = [
   "ShellThemeToggle",
   "ShellLocaleMenu",
   "SideNavCollapseButton",
+  "MobileNavToggle",
   "ProductShell",
   "ProductShellSearch",
   "DetailDrawer",

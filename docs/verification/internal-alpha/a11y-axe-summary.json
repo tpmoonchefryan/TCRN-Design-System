@@ -419,6 +419,22 @@
       "violations": []
     },
     {
+      "section": "Components",
+      "page": "component-api-reference-7.html",
+      "viewport": "desktop-1440x900",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-7.html",
+      "viewport": "desktop-1440x900",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
       "section": "Welcome",
       "page": "welcome-governance-entry.html",
       "viewport": "mobile-390x844",
@@ -829,6 +845,22 @@
     {
       "section": "Components",
       "page": "component-api-reference-6.html",
+      "viewport": "mobile-390x844",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-7.html",
+      "viewport": "mobile-390x844",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-7.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
