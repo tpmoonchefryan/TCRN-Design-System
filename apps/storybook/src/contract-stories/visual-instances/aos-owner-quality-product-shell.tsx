@@ -2,7 +2,6 @@ import {
   Badge,
   DisclosurePanel,
   EnvironmentBanner,
-  EvidenceStrip,
   Heading,
   KeyValueList,
   ProductShell,
@@ -10,12 +9,15 @@ import {
   Surface,
   TableShell,
   Text,
-  WorkIndex,
   type IconName,
   type ProductShellNavGroup,
-  type ProductShellSearchResult,
-  type WorkIndexRow
+  type ProductShellSearchResult
 } from "@tcrn/ui-react";
+import {
+  EvidenceStrip,
+  WorkIndex,
+  type WorkIndexRow
+} from "@tcrn/ui-domain";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 
 type OwnerQualityRoute = "cockpit" | "work";

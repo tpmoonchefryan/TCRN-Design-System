@@ -2,7 +2,6 @@ import {
   Badge,
   DisclosurePanel,
   EnvironmentBanner,
-  EvidenceStrip,
   Heading,
   InlineAlert,
   KeyValueList,
@@ -14,6 +13,9 @@ import {
   type ProductShellNavGroup,
   type ProductShellSearchResult
 } from "@tcrn/ui-react";
+import {
+  EvidenceStrip
+} from "@tcrn/ui-domain";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 
 type AosVisualInstanceRoute = "cockpit" | "work";

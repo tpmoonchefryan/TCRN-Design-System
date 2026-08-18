@@ -7,7 +7,6 @@ import {
   ConfirmActionDialog,
   DetailDrawer,
   Dialog,
-  EvidenceStrip,
   Heading,
   InlineAlert,
   Popover,
@@ -15,6 +14,9 @@ import {
   Surface,
   Text
 } from "@tcrn/ui-react";
+import {
+  EvidenceStrip
+} from "@tcrn/ui-domain";
 import { overlayFamilyLabCopy } from "./overlay-family-lab-copy.js";
 import {
   overlayFamilyNoOverclaimMarkers,
