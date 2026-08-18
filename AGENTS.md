@@ -138,5 +138,18 @@ The full five-partition picture, the local engine path, the fallback shadow chai
 - Do not commit an owner email, author-email trailers, or local machine paths — the
   privacy scan (`pnpm scan`) fails closed on them.
 
+- **A change to `tcrnComponentCss` owes the portal a snapshot refresh, and this side
+  triggers it.** The platform portal ships a byte-for-byte snapshot of that export,
+  and the refresh is triggered here rather than downstream: whoever lands the visual
+  change is the one who can see the drift at the time it happens. The downstream
+  engine repository judges only whether its own snapshot and its inline copy agree —
+  "has the Design System moved on" is reported there as an observation and can no
+  longer turn that repository red, because a sibling's working tree is not a
+  reference a gate may be judged against. Refresh with the two scripts in
+  `tcrn-workflow` (`generate-ds-component-css-snapshot.mjs`, then
+  `embed-ds-component-css-snapshot.mjs`); never hand-write either file. The rule and
+  its reasoning are in the platform's `docs/design-authority-convention.md` 第四层
+  (`TCRN-CROSS-INC-223`).
+
 The Claude entrypoint `CLAUDE.md` imports this file; see also `apps/storybook/README.md`
 (the docs app).
