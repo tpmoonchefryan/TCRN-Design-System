@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { EnvironmentBanner, TopBar, WorkIndex } from "@tcrn/ui-react";
+import { EnvironmentBanner, TopBar } from "@tcrn/ui-react";
+import { WorkIndex } from "@tcrn/ui-domain";
 
 export function renderSyntheticTmsPilot(): string {
   return renderToStaticMarkup(

@@ -197,16 +197,6 @@ export function StatusSummaryPanel({ state }: { state: CopyStatePresentation }) 
   );
 }
 
-export function EvidenceStrip({ items }: { items: string[] }) {
-  return (
-    <div className="tcrn-evidence-strip">
-      {items.map((item) => (
-        <Badge key={item}>{item}</Badge>
-      ))}
-    </div>
-  );
-}
-
 export function ReadbackPanel({ title, children }: { title: string; children: ReactNode }) {
   return (
     <Surface className="tcrn-readback-panel">

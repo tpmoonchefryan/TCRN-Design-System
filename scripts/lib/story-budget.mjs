@@ -84,7 +84,10 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 3105 -> 3281 (TCRN-DS-INIT-012): the public utility roster went from eight
     // entries to twelve when the CSS partition shipped its two sheets and two
     // helpers, and this story renders that roster as a table.
-    recordedHeightPx: 3281,
+    // 3281 -> 2978: the same story renders the public component roster, which lost
+    // thirty-five names when the domain components moved to @tcrn/ui-domain. This
+    // is the first time the number has gone DOWN, and that is the point of INIT-012.
+    recordedHeightPx: 2978,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
