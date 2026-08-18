@@ -1080,7 +1080,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"comfortable\"",
           "enumValues": [
@@ -1226,7 +1226,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"comfortable\"",
           "enumValues": [
@@ -1267,7 +1267,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "enumValues": [
             "comfortable",
@@ -1654,7 +1654,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -1695,7 +1695,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -1757,7 +1757,7 @@
         },
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -1793,7 +1793,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -1840,7 +1840,7 @@
         },
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -1887,7 +1887,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -1928,7 +1928,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -1974,7 +1974,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -2015,7 +2015,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -2152,7 +2152,7 @@
         },
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"comfortable\"",
           "enumValues": [
@@ -2220,7 +2220,7 @@
         },
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "enumValues": [
             "comfortable",
@@ -2321,7 +2321,7 @@
         },
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -4374,7 +4374,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -4592,7 +4592,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -4639,7 +4639,7 @@
         },
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -4693,7 +4693,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"comfortable\"",
           "enumValues": [
@@ -4734,7 +4734,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -4795,7 +4795,7 @@
         },
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -4859,7 +4859,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -5039,7 +5039,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "enumValues": [
             "comfortable",
@@ -5127,7 +5127,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -5204,7 +5204,7 @@
         },
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -5250,7 +5250,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [
@@ -5291,7 +5291,7 @@
       "props": [
         {
           "name": "density",
-          "type": "WorkDensity",
+          "type": "Density",
           "required": false,
           "default": "\"compact\"",
           "enumValues": [

@@ -98,7 +98,6 @@ export type {
   WorkBoardLane,
   WorkBoardProps,
   WorkBoardViewProps,
-  WorkDensity,
   WorkDetailLayoutProps,
   WorkFieldPanelProps,
   WorkHierarchyEdge,

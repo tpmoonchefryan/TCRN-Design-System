@@ -664,7 +664,7 @@ export const workRelationshipTypes = [
 export type WorkRelationshipType = (typeof workRelationshipTypes)[number];
 
 export type WorkManagementPatternLevel = "primitive" | "pattern" | "composite";
-export type WorkDensity = "comfortable" | "compact" | "dense";
+export type Density = "comfortable" | "compact" | "dense";
 
 export interface WorkManagementPatternRegistryItem {
   candidateId: string;
@@ -1058,7 +1058,7 @@ export interface MachineTokenProps {
   label?: string;
   kind?: MachineTokenKind;
   copyable?: boolean;
-  density?: WorkDensity;
+  density?: Density;
   /**
    * Where this identifier lives, when the product knows.
    *
@@ -1220,7 +1220,7 @@ export interface WorkPageHeaderProps {
   breadcrumbs?: WorkPageHeaderBreadcrumb[];
   meta?: ReactNode;
   actions?: WorkAction[];
-  density?: WorkDensity;
+  density?: Density;
 }
 
 export function WorkPageHeader({ title, description, breadcrumbs = [], meta, actions = [], density = "compact" }: WorkPageHeaderProps) {
@@ -1318,7 +1318,7 @@ export interface WorkQuickFilter {
 export interface WorkQuickFiltersProps {
   label?: string;
   filters: WorkQuickFilter[];
-  density?: WorkDensity;
+  density?: Density;
   /** Which language the built-in label is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
 }
@@ -1369,7 +1369,7 @@ export interface WorkItemRowProps {
   summary?: ReactNode;
   fields?: WorkItemRowField[];
   relationships?: RelationshipChipProps[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -1428,7 +1428,7 @@ export function WorkItemRow(props: WorkItemRowProps) {
 export interface WorkListProps {
   label?: string;
   rows: WorkItemRowProps[];
-  density?: WorkDensity;
+  density?: Density;
   /**
    * Locale for the copy these rows carry themselves — readiness labels and
    * relationship verbs.
@@ -1458,7 +1458,7 @@ export interface WorkSplitViewProps {
   label?: string;
   list: ReactNode;
   detail: ReactNode;
-  density?: WorkDensity;
+  density?: Density;
   /**
    * Whether the detail region currently holds a selection.
    *
@@ -1540,7 +1540,7 @@ export interface WorkBacklogGroupProps {
   rows: WorkItemRowProps[];
   actions?: WorkAction[];
   inlineCreate?: WorkInlineCreateStaticProps;
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -1603,7 +1603,7 @@ export interface WorkBoardLane {
 export interface WorkBoardProps {
   label?: string;
   lanes: WorkBoardLane[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -1839,7 +1839,7 @@ const gatePipelineLabels: Record<TcrnLocale, GatePipelineLabels> = {
 export interface GatePipelineProps {
   label?: string;
   gates: GatePipelineGate[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -1902,7 +1902,7 @@ const attachmentTableLabels: Record<TcrnLocale, AttachmentTableLabels> = {
 export interface EvidenceAttachmentListProps {
   label?: string;
   items: EvidenceAttachment[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -1933,7 +1933,7 @@ export function EvidenceAttachmentList({ label, items, density = "comfortable", 
 export interface WorkFieldPanelProps {
   title: string;
   items: KeyValueItem[];
-  density?: WorkDensity;
+  density?: Density;
 }
 
 export function WorkFieldPanel({ title, items, density = "compact" }: WorkFieldPanelProps) {
@@ -1949,7 +1949,7 @@ export interface MetadataRailProps {
   title?: string;
   items: KeyValueItem[];
   actions?: WorkAction[];
-  density?: WorkDensity;
+  density?: Density;
   /** Which language the built-in title is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
 }
@@ -1986,7 +1986,7 @@ export interface WorkActivityFeedItem {
 export interface WorkActivityFeedProps {
   label?: string;
   items: WorkActivityFeedItem[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -2020,7 +2020,7 @@ export interface WorkDetailLayoutProps {
   metadata: ReactNode;
   activity?: ReactNode;
   actions?: WorkAction[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -2141,7 +2141,7 @@ export interface KnowledgePageTreeItem {
 export interface KnowledgePageTreeProps {
   label?: string;
   items: KnowledgePageTreeItem[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -2184,7 +2184,7 @@ export function KnowledgePageTree({ label, items, density = "compact", locale }:
 export interface KnowledgeLabelSetProps {
   labels: string[];
   label?: string;
-  density?: WorkDensity;
+  density?: Density;
   /** Which language the built-in label is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
 }
@@ -2211,7 +2211,7 @@ export interface KnowledgeDocumentCanvasProps {
   labels?: string[];
   meta?: ReactNode;
   sections: KnowledgeDocumentSection[];
-  density?: WorkDensity;
+  density?: Density;
 }
 
 export function KnowledgeDocumentCanvas({ title, summary, labels = [], meta, sections, density = "compact" }: KnowledgeDocumentCanvasProps) {
@@ -2247,7 +2247,7 @@ export interface KnowledgeTocItem {
 export interface KnowledgeTocRailProps {
   label?: string;
   items: KnowledgeTocItem[];
-  density?: WorkDensity;
+  density?: Density;
   /** Which language the built-in label is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
 }
@@ -2283,7 +2283,7 @@ export interface KnowledgeComment {
 export interface KnowledgeInlineCommentListProps {
   label?: string;
   comments: KnowledgeComment[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -2309,7 +2309,7 @@ export interface KnowledgeMetadataRailProps {
   items: KeyValueItem[];
   labels?: string[];
   actions?: WorkAction[];
-  density?: WorkDensity;
+  density?: Density;
   /** Which language the built-in title is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
 }
@@ -2346,7 +2346,7 @@ export interface KnowledgeAttachment {
 export interface KnowledgeAttachmentListProps {
   label?: string;
   items: KnowledgeAttachment[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -2383,7 +2383,7 @@ export interface KnowledgeVersion {
 export interface KnowledgeVersionHistoryProps {
   label?: string;
   versions: KnowledgeVersion[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -2426,7 +2426,7 @@ export interface TemplateCard {
 export interface TemplateGalleryProps {
   label?: string;
   templates: TemplateCard[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
@@ -2473,7 +2473,7 @@ export interface KnowledgeSearchResultsProps {
   label?: string;
   query?: string;
   results: KnowledgeSearchResult[];
-  density?: WorkDensity;
+  density?: Density;
   locale?: TcrnLocale | string;
 }
 
