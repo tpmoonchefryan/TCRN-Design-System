@@ -117,7 +117,7 @@
     {
       "path": "packages/ui-react/src/index.tsx",
       "exists": true,
-      "sha256": "c4f582f383bfde3608fd8062c7d8e44c561f206c52f153971f1bc04369ad7cfd"
+      "sha256": "74d6e7b0e7857b7660a620658702f251241fbf7edf3e1e38421846110e01a8b3"
     },
     {
       "path": "apps/storybook/src/stories.tsx",
@@ -127,7 +127,7 @@
     {
       "path": "examples/tms-react-pilot/src/index.tsx",
       "exists": true,
-      "sha256": "c86802d5d60a494332b467f9a7076018c0ced4b51bb88e2a69b93546f9f2e5ca"
+      "sha256": "23bc45b6e397ca8a82077e64c0f6f2553ebc319aca0ae8aa30fa5a4c3fdbc231"
     },
     {
       "path": "examples/aos-token-copy-state-pilot/src/index.ts",

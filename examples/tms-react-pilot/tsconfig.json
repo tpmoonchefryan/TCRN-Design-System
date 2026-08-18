@@ -7,8 +7,18 @@
     "rootDir": "src"
   },
   "references": [
-    { "path": "../../packages/ui-copy-state" },
-    { "path": "../../packages/ui-react" }
+    {
+      "path": "../../packages/ui-copy-state"
+    },
+    {
+      "path": "../../packages/ui-react"
+    },
+    {
+      "path": "../../packages/ui-domain"
+    }
   ],
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
 }

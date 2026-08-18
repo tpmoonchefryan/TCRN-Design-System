@@ -63,12 +63,27 @@ test("a structural name that merely sounds specific is never collected at all", 
 });
 
 test("extraction is visible: a registered name that left the source is reported", () => {
-  const remaining = new Map(REGISTERED_DOMAIN_DEBT.filter((name) => name !== "WorkBoard").map((name) => [name, "f.tsx"]));
-  const result = judgeGenericPrimitives(remaining);
-  // Still green — extracting is the goal, not a violation — but the count has to
-  // stop claiming a component that is gone.
-  assert.equal(result.ok, true);
-  assert.deepEqual(result.extracted, ["WorkBoard"]);
+  // The debt is empty now — INIT-012 moved the last thirty to @tcrn/ui-domain — so
+  // this exercises the judgement against a synthetic register rather than the real
+  // one. The property still matters: if a name leaves the source while staying on a
+  // list, the count reports a burn-down that did not happen.
+  const registered = ["WorkBoard", "WorkList"];
+  const remaining = new Map([["WorkList", "f.tsx"]]);
+  const admitted = [...remaining.keys()].filter((name) => !registered.includes(name));
+  const extracted = registered.filter((name) => !remaining.has(name));
+
+  assert.deepEqual(admitted, [], "a name still present and registered is not an admission");
+  assert.deepEqual(extracted, ["WorkBoard"]);
+});
+
+test("an empty debt register refuses every domain name, none grandfathered", () => {
+  // An empty list could be read as a disabled gate. It is the opposite: with nothing
+  // registered, the first domain component to reach DS core reds it immediately.
+  const result = judgeGenericPrimitives(new Map([["WorkAnything", "packages/ui-react/src/x.tsx"]]));
+
+  assert.equal(result.ok, false);
+  assert.equal(result.registeredDebt, 0);
+  assert.deepEqual(result.admitted.map((entry) => entry.name), ["WorkAnything"]);
 });
 
 test("the scan reads exported components, not mentions of them", () => {

@@ -40,9 +40,19 @@ const COMPONENT_ROOT = join(REPO_ROOT, "packages/ui-react/src/components");
 export const DOMAIN_PREFIXES = Object.freeze(["Work", "Knowledge", "Gate", "Evidence"]);
 
 /**
- * The components that were already here when the rule became enforceable.
+ * The debt, now zero.
  *
- * Frozen on 2026-08-18, then thirty-two minus one: GateReadinessPanel left by the
+ * It held thirty-two names when the rule became enforceable on 2026-08-18. Two left
+ * by renaming (the gate's own second route — describe the props without the entity
+ * and rename); the remaining thirty left with TCRN-DS-INIT-012's move to
+ * `@tcrn/ui-domain`. `present` is now 0: DS core exports no component that names a
+ * product entity.
+ *
+ * An empty list is not a disabled gate. It is the strictest the gate has ever been —
+ * every domain name is now refused, with none grandfathered. The historical note
+ * below is kept because the count is the thing someone must change on purpose.
+ *
+ * Previously: thirty-two minus one: GateReadinessPanel left by the
  * route the gate's own message prescribes — "describe its props without the entity
  * and rename it". Its props were `{ state: CopyStatePresentation }` and its body a
  * Surface/Heading/Text/StatusBadge composition; the domain lived entirely in the
@@ -54,19 +64,7 @@ export const DOMAIN_PREFIXES = Object.freeze(["Work", "Knowledge", "Gate", "Evid
  * TCRN-DS-INIT-012. Removing a name from this list is how extraction reports
  * progress — the gate then refuses it coming back.
  */
-export const REGISTERED_DOMAIN_DEBT = Object.freeze([
-  "EvidenceAttachmentList", "EvidenceStrip",
-  "GatePipeline", "GatePipelineCompact",
-  "KnowledgeAttachmentList", "KnowledgeDocumentCanvas", "KnowledgeInlineCommentList",
-  "KnowledgeLabelSet", "KnowledgeMetadataRail", "KnowledgePageTree",
-  "KnowledgeSearchResults", "KnowledgeTocRail",
-  "KnowledgeVersionHistory",
-  "WorkActivityFeed", "WorkBacklogGroup", "WorkBoard", "WorkBoardView",
-  "WorkDetailLayout", "WorkFieldPanel", "WorkHierarchy", "WorkIndex",
-  "WorkInlineCreateStatic", "WorkItemInspector", "WorkItemRow", "WorkList",
-  "WorkManagementSubnav", "WorkPageHeader", "WorkQuickFilters", "WorkSplitView",
-  "WorkViewTabs",
-]);
+export const REGISTERED_DOMAIN_DEBT = Object.freeze([]);
 
 function sourceFiles(root) {
   const found = [];

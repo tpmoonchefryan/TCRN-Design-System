@@ -16,9 +16,9 @@
 // thirty-five components, four utilities and sixty-three types — measured from the
 // source, not assembled by hand.
 //
-// Stage two moves the implementations here and shrinks `@tcrn/ui-react`'s roster
-// by the same names. `pnpm generic:scan`'s registered debt is the counter: it goes
-// to zero when stage two lands.
+// Stage three landed: the implementations live in `./components.tsx` and core's
+// roster shrank by the same names. `pnpm generic:scan`'s registered debt is the
+// counter, and it is now zero.
 
 export {
   EvidenceAttachmentList,
@@ -60,7 +60,7 @@ export {
   knowledgeManagementPatternRegistry,
   workRelationshipTypes,
   workRelationshipLabel
-} from "@tcrn/ui-react";
+} from "./components.js";
 
 export type {
   EvidenceAttachment,
@@ -125,7 +125,7 @@ export type {
   WorkSplitViewProps,
   WorkViewTab,
   WorkViewTabsProps
-} from "@tcrn/ui-react";
+} from "./components.js";
 
 /** Every component name this package owns. The domain surface, enumerated. */
 export const domainComponentNames = [
