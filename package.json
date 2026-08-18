@@ -6,7 +6,7 @@
   "type": "module",
   "packageManager": "pnpm@10.12.1",
   "scripts": {
-    "build": "pnpm --filter @tcrn/ui-tokens build && pnpm --filter @tcrn/ui-copy-state build && pnpm --filter @tcrn/ui-react build && pnpm --filter @tcrn/tms-react-pilot build && pnpm --filter @tcrn/aos-token-copy-state-pilot build && pnpm --filter @tcrn/design-system-storybook build",
+    "build": "pnpm --filter @tcrn/ui-tokens build && pnpm --filter @tcrn/ui-copy-state build && pnpm --filter @tcrn/ui-react build && pnpm --filter @tcrn/ui-domain build && pnpm --filter @tcrn/tms-react-pilot build && pnpm --filter @tcrn/aos-token-copy-state-pilot build && pnpm --filter @tcrn/design-system-storybook build",
     "clean": "node scripts/clean.mjs",
     "exports:check": "node scripts/check-exports.mjs",
     "dist:hygiene": "node scripts/dist-hygiene-proof.mjs",
