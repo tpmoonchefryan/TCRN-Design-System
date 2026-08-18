@@ -523,6 +523,22 @@
       {
         "name": "useProductShellController",
         "exported": true
+      },
+      {
+        "name": "tcrnCoreComponentCss",
+        "exported": true
+      },
+      {
+        "name": "tcrnDomainComponentCss",
+        "exported": true
+      },
+      {
+        "name": "partitionComponentCss",
+        "exported": true
+      },
+      {
+        "name": "isDomainSelector",
+        "exported": true
       }
     ],
     "deferredPrototypeChecks": [
@@ -1700,6 +1716,42 @@
       },
       {
         "storybookItem": "useProductShellController",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "tcrnCoreComponentCss",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "tcrnDomainComponentCss",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "partitionComponentCss",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "isDomainSelector",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
