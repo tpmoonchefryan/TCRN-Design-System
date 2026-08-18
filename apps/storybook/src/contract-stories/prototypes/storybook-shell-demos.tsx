@@ -1,5 +1,4 @@
 import {
-  EvidenceStrip,
   Heading,
   Icon,
   IconButton,
@@ -12,6 +11,9 @@ import {
   Text,
   TopBar
 } from "@tcrn/ui-react";
+import {
+  EvidenceStrip
+} from "@tcrn/ui-domain";
 import {
   knowledgeNavigationGroups,
   denseShellHubActions,

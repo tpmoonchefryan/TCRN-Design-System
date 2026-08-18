@@ -20,7 +20,6 @@ import {
   Dialog,
   Divider,
   EnvironmentBanner,
-  EvidenceStrip,
   Field,
   FieldProvenance,
   FilterBar,
@@ -71,6 +70,10 @@ import {
   tcrnIconNames,
   Tooltip,
   Switch,
+  TemplateGallery
+} from "@tcrn/ui-react";
+import {
+  EvidenceStrip,
   EvidenceAttachmentList,
   GatePipeline,
   GatePipelineCompact,
@@ -83,7 +86,6 @@ import {
   KnowledgeMetadataRail,
   KnowledgePageTree,
   KnowledgeSearchResults,
-  TemplateGallery,
   KnowledgeTocRail,
   KnowledgeVersionHistory,
   MetadataRail,
@@ -109,7 +111,7 @@ import {
   knowledgeManagementPatternRegistry,
   workManagementPatternRegistry,
   workRelationshipTypes
-} from "@tcrn/ui-react";
+} from "@tcrn/ui-domain";
 import {
   presentCopyState,
   tcrnDefaultLocale,
@@ -127,7 +129,7 @@ import type {
   WorkHierarchyEdge,
   WorkHierarchyNode,
   WorkItemRowProps
-} from "@tcrn/ui-react";
+} from "@tcrn/ui-domain";
 import {
   DialogSpecFixture,
   OverlayFocusFixture,

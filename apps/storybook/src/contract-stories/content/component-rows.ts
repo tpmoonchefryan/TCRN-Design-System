@@ -1,4 +1,6 @@
-import type { WorkIndexRow } from "@tcrn/ui-react";
+import type {
+  WorkIndexRow
+} from "@tcrn/ui-domain";
 
 export const componentStoryRows: WorkIndexRow[] = [
   { id: "button", title: "Button and clipboard action", state: { state: "local_only" }, owner: "ui-react" },
