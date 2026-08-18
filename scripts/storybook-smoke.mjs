@@ -1014,7 +1014,7 @@ for (const text of [
   "KnowledgeAttachmentList",
   "KnowledgeLabelSet",
   "KnowledgeVersionHistory",
-  "KnowledgeTemplateGallery",
+  "TemplateGallery",
   "KnowledgeSearchResults",
   "WorkActivityFeed",
   "WorkHierarchy",

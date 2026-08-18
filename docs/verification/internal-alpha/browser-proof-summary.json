@@ -2749,7 +2749,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 3105
+          "height": 3281
         },
         {
           "id": "display-primitives-spec",
@@ -4846,12 +4846,6 @@
           "height": 272
         },
         {
-          "id": "KnowledgeTemplateGallery",
-          "visible": true,
-          "width": 1077,
-          "height": 244
-        },
-        {
           "id": "KnowledgeTocRail",
           "visible": true,
           "width": 1077,
@@ -4946,6 +4940,12 @@
           "visible": true,
           "width": 1077,
           "height": 379
+        },
+        {
+          "id": "ProductLauncher",
+          "visible": true,
+          "width": 1077,
+          "height": 165
         }
       ],
       "clipped": [],
@@ -5047,12 +5047,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "ProductLauncher",
-          "visible": true,
-          "width": 1077,
-          "height": 165
-        },
         {
           "id": "ProductLockup",
           "visible": true,
@@ -5166,6 +5160,12 @@
           "visible": true,
           "width": 1077,
           "height": 354
+        },
+        {
+          "id": "SideNav",
+          "visible": true,
+          "width": 1077,
+          "height": 189
         }
       ],
       "clipped": [],
@@ -5268,12 +5268,6 @@
       "storyRegions": [],
       "referenceRegions": [
         {
-          "id": "SideNav",
-          "visible": true,
-          "width": 1077,
-          "height": 189
-        },
-        {
           "id": "SideNavCollapseButton",
           "visible": true,
           "width": 1077,
@@ -5374,6 +5368,12 @@
           "visible": true,
           "width": 1077,
           "height": 192
+        },
+        {
+          "id": "TemplateGallery",
+          "visible": true,
+          "width": 1077,
+          "height": 244
         },
         {
           "id": "Text",
@@ -7235,7 +7235,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 4438
+          "height": 4614
         },
         {
           "id": "display-primitives-spec",
@@ -9332,12 +9332,6 @@
           "height": 272
         },
         {
-          "id": "KnowledgeTemplateGallery",
-          "visible": true,
-          "width": 691,
-          "height": 244
-        },
-        {
           "id": "KnowledgeTocRail",
           "visible": true,
           "width": 691,
@@ -9432,6 +9426,12 @@
           "visible": true,
           "width": 691,
           "height": 379
+        },
+        {
+          "id": "ProductLauncher",
+          "visible": true,
+          "width": 691,
+          "height": 165
         }
       ],
       "clipped": [],
@@ -9533,12 +9533,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "ProductLauncher",
-          "visible": true,
-          "width": 691,
-          "height": 165
-        },
         {
           "id": "ProductLockup",
           "visible": true,
@@ -9652,6 +9646,12 @@
           "visible": true,
           "width": 691,
           "height": 354
+        },
+        {
+          "id": "SideNav",
+          "visible": true,
+          "width": 691,
+          "height": 189
         }
       ],
       "clipped": [],
@@ -9754,12 +9754,6 @@
       "storyRegions": [],
       "referenceRegions": [
         {
-          "id": "SideNav",
-          "visible": true,
-          "width": 691,
-          "height": 189
-        },
-        {
           "id": "SideNavCollapseButton",
           "visible": true,
           "width": 691,
@@ -9860,6 +9854,12 @@
           "visible": true,
           "width": 691,
           "height": 192
+        },
+        {
+          "id": "TemplateGallery",
+          "visible": true,
+          "width": 691,
+          "height": 244
         },
         {
           "id": "Text",
@@ -11202,7 +11202,7 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 10779
+          "height": 11068
         },
         {
           "id": "display-primitives-spec",
@@ -12654,12 +12654,6 @@
           "height": 382
         },
         {
-          "id": "KnowledgeTemplateGallery",
-          "visible": true,
-          "width": 358,
-          "height": 336
-        },
-        {
           "id": "KnowledgeTocRail",
           "visible": true,
           "width": 358,
@@ -12754,6 +12748,12 @@
           "visible": true,
           "width": 358,
           "height": 563
+        },
+        {
+          "id": "ProductLauncher",
+          "visible": true,
+          "width": 358,
+          "height": 219
         }
       ],
       "clipped": [],
@@ -12812,12 +12812,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "ProductLauncher",
-          "visible": true,
-          "width": 358,
-          "height": 219
-        },
         {
           "id": "ProductLockup",
           "visible": true,
@@ -12931,6 +12925,12 @@
           "visible": true,
           "width": 358,
           "height": 705
+        },
+        {
+          "id": "SideNav",
+          "visible": true,
+          "width": 358,
+          "height": 189
         }
       ],
       "clipped": [],
@@ -12989,12 +12989,6 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
-        {
-          "id": "SideNav",
-          "visible": true,
-          "width": 358,
-          "height": 189
-        },
         {
           "id": "SideNavCollapseButton",
           "visible": true,
@@ -13096,6 +13090,12 @@
           "visible": true,
           "width": 358,
           "height": 265
+        },
+        {
+          "id": "TemplateGallery",
+          "visible": true,
+          "width": 358,
+          "height": 336
         },
         {
           "id": "Text",

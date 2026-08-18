@@ -132,7 +132,11 @@ export const componentLibraryPublicUtilityNames = [
   "workManagementPatternRegistry",
   "knowledgeManagementPatternRegistry",
   "workRelationshipTypes",
-  "useProductShellController"
+  "useProductShellController",
+  "tcrnCoreComponentCss",
+  "tcrnDomainComponentCss",
+  "partitionComponentCss",
+  "isDomainSelector"
 ] as const;
 
 export type ComponentLibraryPublicUtilityName = (typeof componentLibraryPublicUtilityNames)[number];
@@ -152,6 +156,14 @@ export * from "./components/Typography/index.js";
 export * from "./components/Form/index.js";
 export * from "./components/Feedback/index.js";
 export * from "./components/Navigation/index.js";
+// The prefix lists stay internal to the partition module: a consumer needs the two
+// sheets and, at most, the classifier — not the tables the classifier reads.
+export {
+  isDomainSelector,
+  partitionComponentCss,
+  tcrnCoreComponentCss,
+  tcrnDomainComponentCss
+} from "./components/Navigation/component-css-partition.js";
 export * from "./components/Layout/index.js";
 export * from "./components/DataDisplay/index.js";
 export * from "./components/Overlay/index.js";
