@@ -539,6 +539,37 @@ export interface FilterBarProps {
   children: ReactNode;
 }
 
+/**
+ * The two default labels a GENERIC component needs.
+ *
+ * TCRN-DS-INIT-012. `TableToolbar` and `TemplateGallery` used to read these from
+ * `workPatternLabels`, the Work Management vocabulary table. Owner ruled that table
+ * to the domain package (minutes:61d607f6d80769f24781fb26), and core may not depend
+ * on domain — so the two strings core still needs live here, copied verbatim so no
+ * rendered or announced text changes.
+ *
+ * `templateGallery` keeps the wording it had as KnowledgeTemplateGallery. Changing
+ * it is a copy decision with five locales behind it, and bundling a copy change
+ * into a package split is how a visual regression gets attributed to the wrong
+ * commit.
+ */
+interface GenericPatternLabels {
+  allFilter: string;
+  templateGallery: string;
+}
+
+const genericPatternLabels: Record<TcrnLocale, GenericPatternLabels> = {
+  "zh-CN": { allFilter: "全部", templateGallery: "知识模板" },
+  en: { allFilter: "All", templateGallery: "Knowledge templates" },
+  ja: { allFilter: "すべて", templateGallery: "ナレッジのテンプレート" },
+  ko: { allFilter: "전체", templateGallery: "지식 템플릿" },
+  fr: { allFilter: "Tous", templateGallery: "Modèles de connaissance" }
+};
+
+function genericLabels(locale: TcrnLocale | string | undefined): GenericPatternLabels {
+  return genericPatternLabels[resolveDocumentLocale(locale)];
+}
+
 export function FilterBar({ label, children }: FilterBarProps) {
   return (
     <section className="tcrn-filter-bar" aria-label={label}>
@@ -589,7 +620,7 @@ export function TableToolbar({
 }: TableToolbarProps) {
   // Visible chip text sitting beside consumer-supplied filter labels, so an
   // English default put one untranslated word in an otherwise translated row.
-  const resolvedAllFilterLabel = allFilterLabel ?? patternLabels(locale).allFilter;
+  const resolvedAllFilterLabel = allFilterLabel ?? genericLabels(locale).allFilter;
   return (
     <div role="group" className="tcrn-table-toolbar" aria-label={label} data-table-toolbar="true" data-table-toolbar-target={controlsId}>
       <SearchInput
@@ -2433,7 +2464,7 @@ export interface TemplateGalleryProps {
 export function TemplateGallery({ label, templates, density = "compact", locale }: TemplateGalleryProps) {
   const copy = templateGalleryLabels[resolveDocumentLocale(locale)];
   return (
-    <section className={cx("tcrn-template-gallery", `tcrn-template-gallery--${density}`)} aria-label={label ?? patternLabels(locale).knowledgeTemplates} data-knowledge-management-pattern="template-gallery" data-density={density}>
+    <section className={cx("tcrn-template-gallery", `tcrn-template-gallery--${density}`)} aria-label={label ?? genericLabels(locale).templateGallery} data-knowledge-management-pattern="template-gallery" data-density={density}>
       {templates.map((template) => (
         <Surface key={template.id} className="tcrn-template-gallery__card">
           <Heading level={3}>{template.title}</Heading>
