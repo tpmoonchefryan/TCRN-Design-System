@@ -21,6 +21,12 @@ for brief in ../TCRN-Design-System/docs/dispatch/2026-08-22-de-productization/br
 done
 ```
 
+**2026-08-22 命名裁定后的刷新**：Owner 定下命名名册（`docs/2026-08-22-naming-roster.md`）后，
+`TCRN-DS-STORY-098`／`-103`／`-104` 三份的 `storyScope` 已按链上 rev 2／3／2 重新回读，
+其余九份未变；十二份重跑验证器仍为 12/12。三份的裁定内容已逐条核对在位：
+098 的四个功能槽名、103 的关系词汇删除与 `NavStripItem`／`GraphNode`、104 的 `RelationGraph`
+与「只统一类型、保留三件」。
+
 2026-08-22 的实测结果为 12/12 `DISPATCH_BRIEF_READY`，文件指针检查已启用且 `unjudgedCommands=0`。本次用直接 Node 入口复核；`pnpm --dir tcrn-workflow dispatch:validate` 在本机 Corepack 的 pnpm 版本检查处拒绝，未改动任何 package-manager 声明。
 
 ## 边界
