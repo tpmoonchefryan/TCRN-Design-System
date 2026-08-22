@@ -2336,7 +2336,7 @@ const legacyContractStories: LegacyContractStory[] = [
             rows={tableShellRuleRows}
           />
         </ReadbackPanel>
-        <div className="tcrn-spec-grid">
+        <div className="tcrn-spec-grid tcrn-spec-grid--record-index">
           <ReadbackPanel title="Record index scanning">
             <Text>Use RecordTable for finite synthetic queues that need compact status and owner scanning.</Text>
             <RecordTable label="Component story record index" rows={componentStoryRows} />

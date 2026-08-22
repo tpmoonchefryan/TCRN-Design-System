@@ -377,6 +377,19 @@ label {
   min-width: 0;
 }
 
+/* The record-index panel carries two status chips per row. Reserve the wider
+   half for that scan surface so the chips stay on one line after the badge's
+   geometry is corrected; the paired empty-state panel remains readable. */
+.tcrn-spec-grid--record-index {
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+}
+
+@media (max-width: 760px) {
+  .tcrn-spec-grid--record-index {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .tcrn-guidance-list {
   display: grid;
   gap: var(--tcrn-space-2);
