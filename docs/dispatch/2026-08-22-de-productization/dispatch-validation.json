@@ -1,8 +1,9 @@
 {
-  "generatedAt": "2026-08-22T08:39:15.785Z",
+  "generatedAt": "2026-08-22T10:40:00.000Z",
   "validator": "tcrn-workflow/scripts/dispatch-readiness-compliance.mjs",
   "resultCount": 12,
   "readyCount": 12,
+  "note": "098/103/104 三份于 Owner 命名裁定后按链上 rev 2/3/2 重新回读 storyScope 并重跑验证器；其余九份未变。",
   "results": [
     {
       "story": "TCRN-DS-INC-010",
