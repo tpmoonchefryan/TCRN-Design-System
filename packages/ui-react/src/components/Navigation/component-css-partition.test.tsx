@@ -22,14 +22,19 @@ import {
 const withoutComments = (text: string): string => text.replace(/\/\*[\s\S]*?\*\//gu, "");
 
 function selectorsOf(css: string): string[] {
-  return topLevelBlocks(css)
-    .flatMap((block) =>
-      withoutComments(block.slice(0, block.indexOf("{")))
-        .split(",")
-        .map((entry) => entry.trim())
-    )
-    .filter((entry) => entry.length > 0)
-    .sort();
+  const selectors: string[] = [];
+  for (const block of topLevelBlocks(css)) {
+    const braceAt = block.indexOf("{");
+    if (braceAt < 0) continue;
+    const head = withoutComments(block.slice(0, braceAt));
+    const closeAt = block.lastIndexOf("}");
+    if (head.trimStart().startsWith("@")) {
+      selectors.push(...selectorsOf(block.slice(braceAt + 1, closeAt)));
+      continue;
+    }
+    selectors.push(...head.split(",").map((entry) => entry.trim()).filter((entry) => entry.length > 0));
+  }
+  return selectors.sort();
 }
 
 test("every selector in the sheet lands in exactly one half", () => {
@@ -78,6 +83,36 @@ test("blocks spanning both sides are split, with the body duplicated verbatim", 
   // could disagree would reintroduce a cascade question the split exists to avoid.
   assert.match(result.core, /color: red;/u);
   assert.match(result.domain, /color: red;/u);
+});
+
+test("nested at-rules partition domain selectors instead of hiding them in core", () => {
+  const result = partitionComponentCss([
+    "@container tcrn-work-row (max-width: 464px) {",
+    "  .tcrn-work-item-row { color: red; }",
+    "}",
+  ].join("\n"));
+
+  assert.doesNotMatch(result.core, /\.tcrn-work-item-row/u);
+  assert.match(result.domain, /@container tcrn-work-row/u);
+  assert.match(result.domain, /\.tcrn-work-item-row/u);
+  assert.match(result.domain, /color: red;/u);
+});
+
+test("mixed selectors nested in an at-rule split into two complete wrappers", () => {
+  const result = partitionComponentCss([
+    "@media (min-width: 1px) {",
+    "  .tcrn-work-list,",
+    "  .tcrn-module-tabs { color: red; }",
+    "}",
+  ].join("\n"));
+
+  assert.equal(result.splitBlockCount, 1);
+  assert.match(result.core, /@media \(min-width: 1px\)/u);
+  assert.match(result.core, /\.tcrn-module-tabs/u);
+  assert.doesNotMatch(result.core, /\.tcrn-work-list/u);
+  assert.match(result.domain, /@media \(min-width: 1px\)/u);
+  assert.match(result.domain, /\.tcrn-work-list/u);
+  assert.doesNotMatch(result.domain, /\.tcrn-module-tabs/u);
 });
 
 test("the real sheet splits exactly the blocks that span both sides", () => {
@@ -130,6 +165,11 @@ test("the combined sheet is untouched", () => {
   // must see exactly what they saw before the split existed.
   assert.ok(tcrnComponentCss.includes(".tcrn-work-list"));
   assert.ok(tcrnComponentCss.includes(".tcrn-module-tabs"));
+});
+
+test("the known nested work-row rule is registered in domain only", () => {
+  assert.doesNotMatch(tcrnCoreComponentCss, /\.tcrn-work-item-row/u);
+  assert.match(tcrnDomainComponentCss, /\.tcrn-work-item-row/u);
 });
 
 function srgbToLinear(channel: number): number {

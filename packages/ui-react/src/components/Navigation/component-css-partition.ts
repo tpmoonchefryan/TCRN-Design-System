@@ -54,9 +54,20 @@ function withoutComments(text: string): string {
   return text.replace(/\/\*[\s\S]*?\*\//gu, "");
 }
 
+interface BlockSlice {
+  readonly text: string;
+  readonly start: number;
+  readonly end: number;
+}
+
+interface BlockSlices {
+  readonly blocks: BlockSlice[];
+  readonly trailing: string;
+}
+
 /** Top-level blocks, in source order. Brace-balanced so nested at-rules stay whole. */
-export function topLevelBlocks(css: string): string[] {
-  const blocks: string[] = [];
+function topLevelBlockSlices(css: string): BlockSlices {
+  const blocks: BlockSlice[] = [];
   let depth = 0;
   let start = 0;
   for (let index = 0; index < css.length; index += 1) {
@@ -65,12 +76,17 @@ export function topLevelBlocks(css: string): string[] {
     else if (character === "}") {
       depth -= 1;
       if (depth === 0) {
-        blocks.push(css.slice(start, index + 1));
+        blocks.push({ text: css.slice(start, index + 1), start, end: index + 1 });
         start = index + 1;
       }
     }
   }
-  return blocks;
+  return { blocks, trailing: css.slice(start) };
+}
+
+/** Top-level blocks, in source order. */
+export function topLevelBlocks(css: string): string[] {
+  return topLevelBlockSlices(css).blocks.map((block) => block.text);
 }
 
 /**
@@ -110,37 +126,66 @@ export interface CssPartition {
 /**
  * Partition one stylesheet into a generic half and a domain half.
  *
- * Twelve blocks in the current sheet carry a selector list that spans both — a
+ * Five blocks in the current sheet carry a selector list that spans both — a
  * shared hover, focus-visible or dense treatment applied across nav-like surfaces
  * where some are domain and some are not. Those are SPLIT, not assigned: the
  * selector list is divided and the identical declaration body appears in each
  * half. Assigning such a block whole would either drop styling from one side or
  * carry a domain selector into core, and both are silent visual defects.
  *
+ * At-rules are partitioned recursively. A nested domain rule therefore cannot hide
+ * inside a generic `@media` or `@container` wrapper and leak into the core sheet.
  * Order is preserved within each half, so the only cascade question is between
  * halves. Concatenating core before domain is safe here because, after the split,
  * no core rule selects a domain element except through these duplicated bodies —
  * which are byte-identical on both sides and therefore cannot disagree.
  */
 export function partitionComponentCss(css: string): CssPartition {
+  const result = partitionBlocks(topLevelBlockSlices(css).blocks.map((block) => block.text));
+  return { core: result.core.join(""), domain: result.domain.join(""), splitBlockCount: result.splitBlockCount };
+}
+
+interface PartitionBlocksResult {
+  readonly core: string[];
+  readonly domain: string[];
+  readonly splitBlockCount: number;
+}
+
+function partitionBlocks(blocks: string[]): PartitionBlocksResult {
   const core: string[] = [];
   const domain: string[] = [];
   let splitBlockCount = 0;
 
-  for (const block of topLevelBlocks(css)) {
+  for (const block of blocks) {
     const braceAt = block.indexOf("{");
+    if (braceAt < 0) {
+      core.push(block);
+      continue;
+    }
     const head = block.slice(0, braceAt);
-    const body = block.slice(braceAt);
+    const closeAt = block.lastIndexOf("}");
+    const body = block.slice(braceAt, closeAt + 1);
+    const inner = block.slice(braceAt + 1, closeAt);
     const selectors = withoutComments(head)
       .split(",")
       .map((entry) => entry.trim())
       .filter((entry) => entry.length > 0);
 
-    if (selectors.length === 0) {
-      // An at-rule such as `@media` has no comma-separated selector list at this
-      // level; it stays with core and its nested domain rules travel with it. The
-      // gate below is what would catch that becoming untrue.
-      core.push(block);
+    if (withoutComments(head).trimStart().startsWith("@")) {
+      const nested = topLevelBlockSlices(inner);
+      if (nested.blocks.length === 0) {
+        // Declaration at-rules such as @font-face and @property have no selector
+        // to classify, so they remain in the generic sheet.
+        core.push(block);
+        continue;
+      }
+      const nestedResult = partitionBlocks(nested.blocks.map((entry) => entry.text));
+      splitBlockCount += nestedResult.splitBlockCount;
+      const wrap = (content: string): string => `${block.slice(0, braceAt + 1)}${content}${block.slice(closeAt)}`;
+      const coreInner = `${nestedResult.core.join("")}${nested.trailing}`;
+      const domainInner = `${nestedResult.domain.join("")}${nested.trailing}`;
+      if (nestedResult.core.length > 0) core.push(wrap(coreInner));
+      if (nestedResult.domain.length > 0) domain.push(wrap(domainInner));
       continue;
     }
 
@@ -156,7 +201,7 @@ export function partitionComponentCss(css: string): CssPartition {
     }
   }
 
-  return { core: core.join(""), domain: domain.join(""), splitBlockCount };
+  return { core, domain, splitBlockCount };
 }
 
 const partition = partitionComponentCss(tcrnComponentCss);
