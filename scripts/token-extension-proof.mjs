@@ -56,7 +56,10 @@ const LOCAL_VARS = [
   "--tcrn-search-input-control-min-inline-size",
   "--tcrn-density-gap",
   "--tcrn-density-padding",
-  "--tcrn-density-row-min"
+  "--tcrn-density-row-min",
+  // NavItem receives this data-owned depth from its consumer and uses it only to
+  // derive the nested item's inline inset.
+  "--tcrn-nav-item-depth"
 ];
 
 function componentCss(source) {

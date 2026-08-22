@@ -255,11 +255,13 @@ const productShellComparatorContract = {
     // its brand colour also collided with the meaning colour now carries alone —
     // actionability and focus. What is pinned instead is the inked surface, under
     // BOTH themes, because the parity checks run in each and the ink is the text
-    // colour at low alpha rather than a separate palette entry.
+    // colour at low alpha rather than a separate palette entry. TCRN-DS-INC-016
+    // also makes the package nav item use the shared meta type scale and compact
+    // row density, so the comparator records that package truth here.
     selectedNavItem: {
-      fontSize: "13px",
+      fontSize: "12px",
       fontWeight: "700",
-      lineHeight: "17.55px",
+      lineHeight: "16.2px",
       boxShadow: ["none"],
       backgroundColor: ["rgba(28, 29, 33, 0.06)", "rgba(236, 236, 234, 0.09)"]
     },

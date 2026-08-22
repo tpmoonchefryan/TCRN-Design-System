@@ -6,6 +6,7 @@ import type {
   ImgHTMLAttributes,
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
+  CSSProperties,
   ReactNode
 } from "react";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
@@ -1108,15 +1109,19 @@ export interface NavItemProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElemen
   /** Which language the built-in disabled reason is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
   iconName?: IconName;
+  /** Data-owned nesting depth used to derive the item's visual inset. */
+  depth?: number;
   children: ReactNode;
 }
 
-export function NavItem({ selected = false, disabled = false, disabledReason, locale, iconName, className, children, href = "#", ...props }: NavItemProps) {
+export function NavItem({ selected = false, disabled = false, disabledReason, locale, iconName, depth = 0, className, style, children, href = "#", ...props }: NavItemProps) {
   // Rendered visibly, in the `title`, and as the item's description — so when it
   // falls back it says one English sentence in three places at once.
   const normalizedReason = disabled ? requiredText(disabledReason, chromeLabels(locale).navItemUnavailable) : undefined;
   const disabledReasonId = useId();
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
+  const resolvedDepth = Number.isInteger(depth) && depth >= 0 ? depth : 0;
+  const navStyle = { ...style, "--tcrn-nav-item-depth": resolvedDepth } as CSSProperties;
   return (
     <a
       {...props}
@@ -1129,8 +1134,10 @@ export function NavItem({ selected = false, disabled = false, disabledReason, lo
       tabIndex={disabled ? -1 : props.tabIndex}
       title={normalizedReason ?? props.title}
       className={cx("tcrn-nav-item", className)}
+      style={navStyle}
       data-navigation-primitive="nav-item"
       data-nav-item-has-icon={iconName ? "true" : "false"}
+      data-nav-depth={resolvedDepth}
     >
       {iconName ? <Icon name={iconName} /> : null}
       <span className="tcrn-nav-item__content">
@@ -1346,6 +1353,7 @@ export interface ProductShellNavItem {
   selected?: boolean;
   disabled?: boolean;
   disabledReason?: string;
+  depth?: number;
 }
 
 export interface ProductShellNavGroup {
@@ -1580,6 +1588,7 @@ export function ProductShell({
                     selected={item.selected}
                     disabled={item.disabled}
                     disabledReason={item.disabledReason}
+                    depth={item.depth}
                     locale={currentLocale}
                     data-product-shell-route={item.id}
                     data-product-shell-route-label-key={item.labelKey}
@@ -2532,7 +2541,7 @@ export const tcrnComponentCss = `
   min-width: 0;
   padding: var(--tcrn-space-4);
   border-right: 1px solid var(--tcrn-color-border-subtle);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-brand-secondary-bg);
   /*
    * The rail is exactly one viewport tall and sticky, so navigation taller than
    * the viewport used to paint outside its own box with nothing to scroll: the
@@ -2545,6 +2554,9 @@ export const tcrnComponentCss = `
    */
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+.tcrn-product-shell__sidebar .tcrn-brand-wordmark__suffix--aos {
+  color: var(--tcrn-color-brand-primary);
 }
 .tcrn-product-shell__sidebar-header {
   display: grid;
@@ -2789,15 +2801,17 @@ export const tcrnComponentCss = `
   color: var(--tcrn-color-text-primary);
 }
 .tcrn-nav-item {
+  --tcrn-nav-item-depth: 0;
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);
   align-items: center;
   gap: var(--tcrn-space-2);
-  min-height: 38px;
-  padding: var(--tcrn-space-2);
+  min-height: calc(var(--tcrn-space-6) - var(--tcrn-space-0h));
+  padding: var(--tcrn-space-1) var(--tcrn-space-2h) var(--tcrn-space-1) calc(var(--tcrn-space-6) + (var(--tcrn-nav-item-depth) * var(--tcrn-space-3)));
   border: 1px solid transparent;
   border-radius: var(--tcrn-radius-control);
   color: var(--tcrn-color-text-secondary);
+  font-size: var(--tcrn-type-size-meta);
   text-decoration: none;
 }
 .tcrn-nav-item[data-nav-item-has-icon="false"] {
