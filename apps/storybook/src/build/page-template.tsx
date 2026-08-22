@@ -163,7 +163,10 @@ function compactCss(css: string): string {
   return css
     .replace(/\/\*[\s\S]*?\*\//g, "")
     .replace(/\s+/g, " ")
-    .replace(/\s*([{},;>+~])\s*/g, "$1")
+    // Keep the whitespace around `+` inside calc(), where CSS requires it for
+    // additive operators. Selector `+` combinators are still valid with their
+    // surrounding whitespace, so they do not need this byte-saving pass.
+    .replace(/\s*([{},;>~])\s*/g, "$1")
     .replace(/:\s+/g, ":")
     .replace(/;}/g, "}")
     .trim();
