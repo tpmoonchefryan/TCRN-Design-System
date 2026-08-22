@@ -462,16 +462,8 @@ export interface FilterBarProps {
 /**
  * The two default labels a GENERIC component needs.
  *
- * TCRN-DS-INIT-012. `TableToolbar` and `TemplateGallery` used to read these from
- * `workPatternLabels`, the Work Management vocabulary table. Owner ruled that table
- * to the domain package (minutes:61d607f6d80769f24781fb26), and core may not depend
- * on domain — so the two strings core still needs live here, copied verbatim so no
- * rendered or announced text changes.
- *
- * `templateGallery` keeps the wording it had as KnowledgeTemplateGallery. Changing
- * it is a copy decision with five locales behind it, and bundling a copy change
- * into a package split is how a visual regression gets attributed to the wrong
- * commit.
+ * TableToolbar and TemplateGallery keep their small built-in label set here so
+ * the core data-display primitives do not depend on a product vocabulary table.
  */
 interface GenericPatternLabels {
   allFilter: string;
@@ -479,11 +471,11 @@ interface GenericPatternLabels {
 }
 
 const genericPatternLabels: Record<TcrnLocale, GenericPatternLabels> = {
-  "zh-CN": { allFilter: "全部", templateGallery: "知识模板" },
-  en: { allFilter: "All", templateGallery: "Knowledge templates" },
-  ja: { allFilter: "すべて", templateGallery: "ナレッジのテンプレート" },
-  ko: { allFilter: "전체", templateGallery: "지식 템플릿" },
-  fr: { allFilter: "Tous", templateGallery: "Modèles de connaissance" }
+  "zh-CN": { allFilter: "全部", templateGallery: "模板" },
+  en: { allFilter: "All", templateGallery: "Templates" },
+  ja: { allFilter: "すべて", templateGallery: "テンプレート" },
+  ko: { allFilter: "전체", templateGallery: "템플릿" },
+  fr: { allFilter: "Tous", templateGallery: "Modèles" }
 };
 
 function genericLabels(locale: TcrnLocale | string | undefined): GenericPatternLabels {
@@ -636,7 +628,7 @@ export interface TemplateGalleryProps {
 export function TemplateGallery({ label, templates, density = "compact", locale }: TemplateGalleryProps) {
   const copy = templateGalleryLabels[resolveDocumentLocale(locale)];
   return (
-    <section className={cx("tcrn-template-gallery", `tcrn-template-gallery--${density}`)} aria-label={label ?? genericLabels(locale).templateGallery} data-knowledge-management-pattern="template-gallery" data-density={density}>
+    <section className={cx("tcrn-template-gallery", `tcrn-template-gallery--${density}`)} aria-label={label ?? genericLabels(locale).templateGallery} data-pattern="template-gallery" data-density={density}>
       {templates.map((template) => (
         <Surface key={template.id} className="tcrn-template-gallery__card">
           <Heading level={3}>{template.title}</Heading>
@@ -708,13 +700,12 @@ export const searchableListLabels: Record<TcrnLocale, SearchableListLabels> = {
 };
 
 /**
- * Default labels for the Work and Knowledge components that carry their own.
+ * Default labels for data-display components that carry their own.
  *
  * Each of these was a single English literal in a parameter default. A consumer
  * that passes the prop is fine, but a consumer that relies on the default — which
  * is what a default is for — put English into a translated page, and for the
- * aria-label-only components (`WorkManagementSubnav`, `WorkViewTabs`,
- * `WorkQuickFilters`, `KnowledgeLabelSet`) it was invisible on screen and audible
+ * aria-label-only components it was invisible on screen and audible
  * to exactly the reader least able to work around it.
  *
  * Resolved through `resolveDocumentLocale`, so a page that declares its language
@@ -882,7 +873,7 @@ export function SearchableList({
   };
 
   return (
-    <div className="tcrn-searchable-list" data-work-management-pattern="searchable-list" aria-label={label}>
+    <div className="tcrn-searchable-list" data-pattern="searchable-list" aria-label={label}>
       {showSearch ? (
         <SearchInput
           aria-label={searchLabel ?? label}

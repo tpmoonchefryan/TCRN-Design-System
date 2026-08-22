@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+### De-productized functional display surface (2026-08-22)
+
+The former `@tcrn/ui-domain` surface has been merged into `@tcrn/ui-react` under
+functional names. `AttachmentList`, `MetadataRail`, and `RecordTable` are the
+single implementations for their merged behaviors; `RecordInspector` composes
+the existing `DetailInspector`, and `StagePipeline` accepts caller-owned
+supporting references. The closed relationship vocabulary and the three
+product-named CSS partition utilities were removed from the public surface.
+
+This does not overturn `TCRN-TMS-MIN-008`: the earlier extraction protected an
+active consumer, while the current repository measurement found no product
+consumer and the former example was the only in-repository consumer. That
+premise is no longer true, so the package was retired and its exports moved to
+core. The batch remains pending Owner acceptance; no publication or adoption is
+claimed.
+
 ### The agent entry states where this partition's governance truth lives (TCRN-AOS-STORY-136)
 
 Documentation only — no package, token, component or rendered output changes, so

@@ -109,7 +109,7 @@ const localAbsolutePathDenyPatterns = [
   { name: "mac-temp-path", pattern: /\/var\/folders(?:\/|$)/i },
   { name: "remote-workspace-path", pattern: /\/srv\/tcrn(?:\/|$)/i }
 ];
-const expectedStoryCategoryCount = 20;
+const expectedStoryCategoryCount = 21;
 const expectedStorybookShellNavGroupCount = expectedContractStoryGroups.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
@@ -310,9 +310,9 @@ const productShellComparatorContract = {
 };
 const aosFrontendShellVisualInstanceContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
-  storyId: "aos-frontend-shell-slice",
-  page: "proof-proof-visual-instances.html#aos-frontend-shell-slice",
-  scopedSelector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"]",
+  storyId: "frontend-shell-slice",
+  page: "proof-proof-visual-instances.html#frontend-shell-slice",
+  scopedSelector: "[data-storybook-visual-instance=\"frontend-shell-slice\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
   expectedControlMetrics: {
@@ -338,7 +338,7 @@ const aosFrontendShellVisualInstanceContract = {
     }
   },
   motionProof: productShellComparatorContract.motionProof,
-  visualInstanceName: "AosFrontendShellSliceVisualInstance",
+  visualInstanceName: "FrontendShellSliceVisualInstance",
   packageMapping: [
     "ProductShell",
     "ProductShellSearch",
@@ -347,7 +347,7 @@ const aosFrontendShellVisualInstanceContract = {
     "InlineAlert",
     "ReadbackPanel",
     "KeyValueList",
-    "EvidenceStrip",
+    "ReferenceList",
     "TableShell",
     "StatusBadge",
     "DisclosurePanel"
@@ -363,7 +363,7 @@ const aosFrontendShellVisualInstanceContract = {
   variantFixtures: [
     {
       id: "desktop-light-expanded-cockpit-search-results",
-      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"]",
+      selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -381,7 +381,7 @@ const aosFrontendShellVisualInstanceContract = {
     },
     {
       id: "desktop-light-expanded-cockpit-search-rest",
-      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-rest\"]",
+      selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-rest\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -399,7 +399,7 @@ const aosFrontendShellVisualInstanceContract = {
     },
     {
       id: "desktop-dark-expanded-cockpit",
-      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"]",
+      selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -417,7 +417,7 @@ const aosFrontendShellVisualInstanceContract = {
     },
     {
       id: "desktop-light-collapsed-work",
-      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-collapsed-work\"]",
+      selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-collapsed-work\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -435,7 +435,7 @@ const aosFrontendShellVisualInstanceContract = {
     },
     {
       id: "mobile-dark-work-stacked",
-      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"mobile-dark-work-stacked\"]",
+      selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"mobile-dark-work-stacked\"]",
       viewport: { width: 390, height: 844 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -453,7 +453,7 @@ const aosFrontendShellVisualInstanceContract = {
     },
     {
       id: "reduced-motion",
-      selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"reduced-motion\"]",
+      selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"reduced-motion\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "reduce",
       expectedState: {
@@ -497,13 +497,19 @@ const aosFrontendShellVisualInstanceContract = {
   ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
   slots: ["brand lockup", "attached side navigation", "topbar", "search", "content", "secondary disclosure"],
   requiredContentSelectors: {
-    dummyCockpit: "[data-aos-dummy-cockpit=\"true\"]",
-    workEntry: "[data-aos-work-module-entry=\"work-module\"]",
-    rawSecondaryDisclosure: "[data-raw-json-disclosure=\"secondary\"]",
-    registeredBoundary: "[data-aos-registered-module-boundary=\"cockpit-work-only\"]",
-    notAccepted: "[data-product-acceptance=\"not-claimed\"]",
-    notReleaseReady: "[data-release-readiness=\"not-claimed\"]",
-    noLiveDispatch: "[data-live-dispatch=\"not-enabled\"]"
+    common: {
+      registeredBoundary: "[data-aos-registered-module-boundary=\"cockpit-work-only\"]",
+      notAccepted: "[data-product-acceptance=\"not-claimed\"]",
+      notReleaseReady: "[data-release-readiness=\"not-claimed\"]",
+      noLiveDispatch: "[data-live-dispatch=\"not-enabled\"]"
+    },
+    cockpit: {
+      dummyCockpit: "[data-aos-dummy-cockpit=\"true\"]"
+    },
+    work: {
+      workEntry: "[data-aos-work-module-entry=\"work-module\"]",
+      rawSecondaryDisclosure: "[data-raw-json-disclosure=\"secondary\"]"
+    }
   },
   forbiddenText: [
     "Conference",
@@ -526,9 +532,9 @@ const aosFrontendShellVisualInstanceContract = {
 };
 const aosOwnerQualityProductShellContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
-  storyId: "aos-owner-quality-product-shell",
-  page: "proof-proof-visual-instances.html#aos-owner-quality-product-shell",
-  scopedSelector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"]",
+  storyId: "owner-quality-product-shell",
+  page: "proof-proof-visual-instances.html#owner-quality-product-shell",
+  scopedSelector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
   expectedControlMetrics: {
@@ -566,7 +572,7 @@ const aosOwnerQualityProductShellContract = {
     controls: ["searchWrapper", "searchInput", "localeTrigger", "themeToggle"],
     containers: ["topBar", "shell", "viewport"]
   },
-  visualInstanceName: "AosOwnerQualityProductShell",
+  visualInstanceName: "OwnerQualityShellOracle",
   packageMapping: [
     "ProductShell",
     "ProductShellSearch",
@@ -574,12 +580,12 @@ const aosOwnerQualityProductShellContract = {
     "ProductLogo",
     "tcrnProductLogoRegistry",
     "Surface",
-    "WorkIndex",
+    "RecordTable",
     "TableShell",
     "KeyValueList",
     "StatusBadge",
     "Badge",
-    "EvidenceStrip",
+    "ReferenceList",
     "EnvironmentBanner",
     "DisclosurePanel",
     "Heading",
@@ -599,7 +605,7 @@ const aosOwnerQualityProductShellContract = {
   variantFixtures: [
     {
       id: "desktop-light-operations-cockpit",
-      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]",
+      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -617,7 +623,7 @@ const aosOwnerQualityProductShellContract = {
     },
     {
       id: "desktop-light-operations-cockpit-collapsed",
-      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"]",
+      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -635,7 +641,7 @@ const aosOwnerQualityProductShellContract = {
     },
     {
       id: "desktop-dark-operations-cockpit",
-      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit\"]",
+      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -653,7 +659,7 @@ const aosOwnerQualityProductShellContract = {
     },
     {
       id: "desktop-dark-operations-cockpit-collapsed",
-      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"]",
+      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -671,7 +677,7 @@ const aosOwnerQualityProductShellContract = {
     },
     {
       id: "desktop-light-work-queue",
-      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue\"]",
+      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -689,7 +695,7 @@ const aosOwnerQualityProductShellContract = {
     },
     {
       id: "desktop-light-work-queue-collapsed",
-      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"]",
+      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -707,7 +713,7 @@ const aosOwnerQualityProductShellContract = {
     },
     {
       id: "mobile-dark-zh-cn-work-queue",
-      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"mobile-dark-zh-cn-work-queue\"]",
+      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"mobile-dark-zh-cn-work-queue\"]",
       viewport: { width: 390, height: 844 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -727,7 +733,7 @@ const aosOwnerQualityProductShellContract = {
     },
     {
       id: "desktop-light-operations-search-results",
-      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-search-results\"]",
+      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-search-results\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
@@ -745,7 +751,7 @@ const aosOwnerQualityProductShellContract = {
     },
     {
       id: "reduced-motion",
-      selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"reduced-motion\"]",
+      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"reduced-motion\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "reduce",
       expectedState: {
@@ -876,14 +882,14 @@ const required = [
   "data-contract-story-id=\"brand-identity\"",
   "data-contract-story-id=\"color-palette\"",
   "data-contract-story-id=\"dashboard-page-templates\"",
-  "data-contract-story-id=\"aos-frontend-shell-slice\"",
-  "data-contract-story-id=\"aos-owner-quality-product-shell\"",
+  "data-contract-story-id=\"frontend-shell-slice\"",
+  "data-contract-story-id=\"owner-quality-product-shell\"",
   "data-registered-product-logo=\"@tcrn/ui-react/ProductLogo\"",
   "data-product-id=\"aos\"",
   "data-product-logo-asset-id=\"tcrn-aos-two-line\"",
   "AI Operation System",
-  "data-storybook-visual-instance=\"aos-frontend-shell-slice\"",
-  "data-visual-instance-name=\"AosFrontendShellSliceVisualInstance\"",
+  "data-storybook-visual-instance=\"frontend-shell-slice\"",
+  "data-visual-instance-name=\"FrontendShellSliceVisualInstance\"",
   "data-visual-instance-disposition=\"ds_oracle_review_required_before_owner_admission\"",
   "data-visual-instance-primary-ia=\"cockpit-work-only\"",
   "data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"",
@@ -896,8 +902,8 @@ const required = [
   "data-visual-instance-search=\"results\"",
   "data-visual-instance-reduced-motion=\"true\"",
   "data-aos-visual-instance-oracle=\"true\"",
-  "data-storybook-visual-instance=\"aos-owner-quality-product-shell\"",
-  "data-visual-instance-name=\"AosOwnerQualityProductShell\"",
+  "data-storybook-visual-instance=\"owner-quality-product-shell\"",
+  "data-visual-instance-name=\"OwnerQualityShellOracle\"",
   "data-visual-instance-owner-quality=\"product-first\"",
   "data-owner-quality-product-shell-oracle=\"true\"",
   "data-visual-instance-variant=\"desktop-light-operations-cockpit\"",
@@ -976,7 +982,7 @@ for (const text of [
   // actual component-style block. Runtime hover is proven separately in internal-alpha:proof.
   ".tcrn-button:focus-visible",
   ".tcrn-link-button:active",
-  ".tcrn-knowledge-search-results__head a:focus-visible",
+  ".tcrn-search-result-list__head a:focus-visible",
   ".tcrn-segmented-nav button:focus-visible",
   ".tcrn-segmented-nav button:active",
   ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
@@ -987,50 +993,46 @@ for (const text of [
   required.push(text);
 }
 for (const text of [
-  "data-work-management-contract=\"package-backed-static\"",
-  "data-work-management-patterns=\"static-no-live\"",
+  "data-functional-components-contract=\"package-backed-static\"",
+  "data-records-and-boards-patterns=\"static-no-live\"",
   "RelationshipChip",
   "MachineToken",
   "MachineTokenCell",
-  "WorkManagementSubnav",
-  "WorkPageHeader",
-  "WorkViewTabs",
-  "WorkQuickFilters",
-  "WorkItemRow",
-  "WorkList",
-  "WorkSplitView",
+  "SubNav",
+  "PageHeader",
+  "ViewTabs",
+  "QuickFilters",
+  "RecordRow",
+  "RecordTable",
+  "SplitView",
   "SearchableList",
-  "WorkBacklogGroup",
-  "WorkBoard",
-  "WorkBoardView",
-  "WorkDetailLayout",
+  "RowGroup",
+  "LaneBoard",
+  "DetailLayout",
   "MetadataRail",
-  "WorkFieldPanel",
-  "KnowledgePageTree",
-  "KnowledgeDocumentCanvas",
-  "KnowledgeTocRail",
-  "KnowledgeInlineCommentList",
-  "KnowledgeMetadataRail",
-  "KnowledgeAttachmentList",
-  "KnowledgeLabelSet",
-  "KnowledgeVersionHistory",
+  "DetailInspector",
+  "TreeNav",
+  "DocumentCanvas",
+  "TocRail",
+  "InlineCommentList",
+  "AttachmentList",
+  "LabelSet",
+  "VersionHistory",
   "TemplateGallery",
-  "KnowledgeSearchResults",
-  "WorkActivityFeed",
-  "WorkHierarchy",
-  "GatePipeline",
-  "GatePipelineCompact",
-  "EvidenceAttachmentList",
-  "WorkItemInspector",
+  "SearchResultList",
+  "ActivityFeed",
+  "RelationGraph",
+  "StagePipeline",
+  "RecordInspector",
   "SavedViewToolbar",
-  "work_management_static_pattern_receipt",
-  "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation",
-  "API integration, backend persistence, live dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed"
+  "functional_display_static_pattern_receipt",
+  "Functional display package exports cover static records, stages, relations, documents, and machine-token presentation",
+  "API integration, backend persistence, live dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, and package publication are not claimed"
 ]) {
   required.push(text);
 }
 for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "duplicates", "supersedes", "split_from", "caused_by", "implements", "verifies", "reviews", "refreshes"]) {
-  required.push(`data-work-relationship="${relation}"`);
+  required.push(`data-relationship="${relation}"`);
 }
 const combinedContractText = `${combinedHtml}\n${JSON.stringify(contract)}\n${llmsTxt}`;
 // TCRN-DS-STORY-051: page bytes inline the entire i18n dictionary inside each page's
@@ -1071,8 +1073,8 @@ for (const { label, value } of [
   { label: "generated-ai-contract-json", value: JSON.stringify(contract) },
   { label: "generated-llms-txt", value: llmsTxt },
   { label: "generated-robots-txt", value: robotsTxt },
-  { label: "work-management-story-source", value: readFileSync("apps/storybook/src/contract-stories/story-content.tsx", "utf8") },
-  { label: "work-management-package-test-fixture", value: readFileSync("packages/ui-react/src/components/DataDisplay/DataDisplay.test.tsx", "utf8") },
+  { label: "functional-display-story-source", value: readFileSync("apps/storybook/src/contract-stories/story-content.tsx", "utf8") },
+  { label: "functional-display-package-test-fixture", value: readFileSync("packages/ui-react/src/components/DataDisplay/DataDisplay.test.tsx", "utf8") },
   { label: "visual-proof-baseline-manifest", value: readFileSync("docs/verification/storybook-visual-proof/baseline-manifest.json", "utf8") },
   { label: "visual-proof-check-receipt", value: readFileSync("docs/verification/storybook-visual-proof/check-receipt.json", "utf8") },
   { label: "visual-proof-update-receipt", value: readFileSync("docs/verification/storybook-visual-proof/update-receipt.json", "utf8") },
@@ -1248,9 +1250,9 @@ for (const [productId, expected] of Object.entries(expectedTaglines)) {
     missing.push(`contract.productLogoRegistry:${productId}`);
   }
 }
-const aosVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "aos-frontend-shell-slice");
+const aosVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "frontend-shell-slice");
 if (!aosVisualInstanceOracle) {
-  missing.push("contract.visualInstanceOracles:aos-frontend-shell-slice");
+  missing.push("contract.visualInstanceOracles:frontend-shell-slice");
 } else {
   for (const requiredField of [
     "route",
@@ -1287,9 +1289,9 @@ if (!aosVisualInstanceOracle) {
     missing.push("contract.visualInstanceOracles.aos.persistedCockpitRestPolicy.outsideMatrixMarker");
   }
 }
-const ownerQualityVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "aos-owner-quality-product-shell");
+const ownerQualityVisualInstanceOracle = contract.visualInstanceOracles?.find?.((entry) => entry.id === "owner-quality-product-shell");
 if (!ownerQualityVisualInstanceOracle) {
-  missing.push("contract.visualInstanceOracles:aos-owner-quality-product-shell");
+  missing.push("contract.visualInstanceOracles:owner-quality-product-shell");
 } else {
   for (const requiredField of [
     "route",
@@ -1311,7 +1313,7 @@ if (!ownerQualityVisualInstanceOracle) {
       missing.push(`contract.visualInstanceOracles.ownerQuality.${requiredField}`);
     }
   }
-  if (ownerQualityVisualInstanceOracle.replacesOwnerQualityTarget !== "aos-frontend-shell-slice") {
+  if (ownerQualityVisualInstanceOracle.replacesOwnerQualityTarget !== "frontend-shell-slice") {
     missing.push("contract.visualInstanceOracles.ownerQuality.replacesOwnerQualityTarget");
   }
   for (const variant of aosOwnerQualityProductShellContract.variants) {
@@ -1324,16 +1326,16 @@ if (!ownerQualityVisualInstanceOracle) {
       missing.push(`contract.visualInstanceOracles.ownerQuality.packageMapping:${packageName}`);
     }
   }
-  if (!ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("AOS Operations Cockpit")) {
+  if (!ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("first viewport reads as a product shell")) {
     missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualityAcceptanceCriteria");
   }
-  if (!ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("registered TCRN AOS product identity")) {
-    missing.push("contract.visualInstanceOracles.ownerQuality.registeredTcrnAosIdentityCriteria");
+  if (!ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("registered product identity")) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.registeredProductIdentityCriteria");
   }
-  if (ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("AOS Rebuild Workspace")) {
-    missing.push("contract.visualInstanceOracles.ownerQuality.staleAosRebuildWorkspaceCriteria");
+  if (ownerQualityVisualInstanceOracle.ownerQualityAcceptanceCriteria?.join(" ")?.includes("Rebuild Workspace")) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.staleProductWorkspaceCriteria");
   }
-  if (!ownerQualityVisualInstanceOracle.rejectCriteria?.join(" ")?.includes("Dummy Cockpit")) {
+  if (!ownerQualityVisualInstanceOracle.rejectCriteria?.join(" ")?.includes("placeholder shell")) {
     missing.push("contract.visualInstanceOracles.ownerQuality.rejectCriteria");
   }
   if (ownerQualityVisualInstanceOracle.ownerVisualAdmissionBoundary !== aosOwnerQualityProductShellContract.ownerVisualAdmissionBoundary) {
@@ -1426,11 +1428,11 @@ if (!contract.changelogGovernance?.records?.length) {
 if (!contract.changelogGovernance?.requiredFields?.includes?.("proofArtifacts")) {
   missing.push("contract.changelogGovernance.requiredFields.proofArtifacts");
 }
-if (contract.workManagementStaticAuthority?.disposition !== "static_contract_authority_explicit_and_smoke_proven") {
-  missing.push("contract.workManagementStaticAuthority.disposition");
+if (contract.functionalDisplayStaticAuthority?.disposition !== "static_contract_authority_explicit_and_smoke_proven") {
+  missing.push("contract.functionalDisplayStaticAuthority.disposition");
 }
-if (!String(contract.workManagementStaticAuthority?.managerRuntimeCoverageDisposition ?? "").includes("static contract story ids are the authoritative")) {
-  missing.push("contract.workManagementStaticAuthority.managerRuntimeCoverageDisposition");
+if (!String(contract.functionalDisplayStaticAuthority?.managerRuntimeCoverageDisposition ?? "").includes("static contract story ids are the authoritative")) {
+  missing.push("contract.functionalDisplayStaticAuthority.managerRuntimeCoverageDisposition");
 }
 if (contract.foundationVisualStandards?.registryId !== "foundation-visual-standards-v1") {
   missing.push("contract.foundationVisualStandards.registryId");
@@ -1522,11 +1524,11 @@ if (!String(contract.visualFitControlContract?.sidebar?.rule ?? "").includes("or
 if (!String(contract.visualFitControlContract?.tablesAndContainers?.rule ?? "").includes("package-emitted column/min-width variables")) {
   missing.push("contract.visualFitControlContract.tablesAndContainers.rule");
 }
-if (!String(contract.visualFitControlContract?.workLayoutDensity?.authority ?? "").includes("Work Management exports")) {
+if (!String(contract.visualFitControlContract?.workLayoutDensity?.authority ?? "").includes("Functional display exports")) {
   missing.push("contract.visualFitControlContract.workLayoutDensity.authority");
 }
-if (!contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("WorkItemRow")
-  || !contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("WorkDetailLayout")
+if (!contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("RecordRow")
+  || !contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("DetailLayout")
   || !contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes?.("MachineTokenCell")) {
   missing.push("contract.visualFitControlContract.workLayoutDensity.packageExports");
 }
@@ -1536,7 +1538,7 @@ if (contract.consumerVisualStyleContract?.id !== "consumer-visual-style-contract
 if (!contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.includes?.("consumer-local ProductShell/search/theme/locale/sidebar clones")) {
   missing.push("contract.consumerVisualStyleContract.forbiddenConsumerOverrides.productShellClones");
 }
-if (!String(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.join(" ") ?? "").includes("consumer-local Work page header")) {
+if (!String(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.join(" ") ?? "").includes("consumer-local page header")) {
   missing.push("contract.consumerVisualStyleContract.forbiddenConsumerOverrides.workLayoutClones");
 }
 if (!contract.consumerVisualStyleContract?.requiredReadbackFields?.includes?.("foundationVisualStandards")) {
@@ -1557,8 +1559,8 @@ if (!llmsTxt.includes("Covered Storybook section/category/story hierarchy:")) {
 if (!llmsTxt.includes("Changelog governance:")) {
   missing.push("llms-changelog-governance");
 }
-if (!llmsTxt.includes("Work Management authority: static_contract_authority_explicit_and_smoke_proven")) {
-  missing.push("llms-work-management-static-authority");
+if (!llmsTxt.includes("Functional display authority: static_contract_authority_explicit_and_smoke_proven")) {
+  missing.push("llms-functional-display-static-authority");
 }
 if (!llmsTxt.includes("Foundation visual standards: foundation-visual-standards-v1")) {
   missing.push("llms-foundation-visual-standards");
@@ -2210,8 +2212,16 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
     for (const [name, selector] of Object.entries(contract.componentSelectors)) {
       await measure(name, selector);
     }
+    const contentMode = shell.getAttribute("data-visual-instance-content");
+    const declaredContentSelectors = contract.requiredContentSelectors ?? {};
+    const requiredContentSelectors = declaredContentSelectors.common || declaredContentSelectors[contentMode]
+      ? {
+          ...(declaredContentSelectors.common ?? {}),
+          ...(declaredContentSelectors[contentMode] ?? {})
+        }
+      : declaredContentSelectors;
     const requiredContent = {};
-    for (const [name, selector] of Object.entries(contract.requiredContentSelectors ?? {})) {
+    for (const [name, selector] of Object.entries(requiredContentSelectors)) {
       requiredContent[name] = shell.matches(selector) || Boolean(shell.querySelector(selector));
     }
     const topBar = shell.querySelector(".tcrn-top-bar");
@@ -2750,7 +2760,7 @@ async function runChangelogI18nReadabilityProof() {
     "Routing and contribution",
     "Identity and brand",
     "Type and layout",
-    "Work Management",
+    "Functional display",
     "Proof governance",
     "Governance records"
   ];
@@ -2898,7 +2908,7 @@ async function runGlobalStorybookZhCnIaProof() {
     "Component inventory",
     "Controls and data",
     "Navigation and shells",
-    "Work Management",
+    "Functional display",
     "Forms and workbench",
     "Feedback and selection",
     "Data and pages",
@@ -3044,7 +3054,7 @@ async function runCrossSectionShellParityProof() {
     "Global states",
     "Copy creation rules",
     "Component family index",
-    "Work Management",
+    "Functional display",
     "AI consumption contract",
     "Local changelog"
   ];
@@ -3481,7 +3491,7 @@ async function main() {
   }));
   const ownerQualityProductShellProof = await runProductShellComparatorProof(aosOwnerQualityProductShellContract).catch((error) => ({
     ok: false,
-    failures: [`aos-owner-quality-product-shell-proof-error:${error instanceof Error ? error.message : String(error)}`],
+    failures: [`owner-quality-product-shell-proof-error:${error instanceof Error ? error.message : String(error)}`],
     contract: aosOwnerQualityProductShellContract
   }));
   const changelogI18nReadabilityProof = await runChangelogI18nReadabilityProof().catch((error) => ({

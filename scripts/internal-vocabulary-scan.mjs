@@ -19,7 +19,7 @@ import { pathToFileURL } from "node:url";
 // gate-design hole where a pinned string can stop rendering without a gate noticing.
 //
 // FIXTURE-EXEMPTION LEDGER (domainDataExemptions below): four tokens are the
-// Work-Management sample hierarchy (story-content.tsx:390-395) that
+// functional sample hierarchy (story-content.tsx) that
 // MachineTokenCell / WorkItemInspector legitimately render as *domain data*, not
 // as internal references. They match the INIT-/EPIC-/STORY- rules but are exempt
 // by EXACT literal (never by prefix) so the real INIT-008 / STORY-053 still fire.
@@ -48,10 +48,10 @@ const patterns = [
 
 // Registered fixture domain-data — exempt by exact matched literal only.
 const domainDataExemptions = new Set([
-  "INIT-WM", // Work-Management sample initiative (story-content.tsx:390-395)
-  "EPIC-CAPABILITY", // WM sample epic
-  "EPIC-WORKSTREAM", // WM sample epic
-  "STORY-WM-03" // WM sample story
+  "INIT-WM", // functional sample initiative
+  "EPIC-CAPABILITY", // sample epic
+  "EPIC-WORKSTREAM", // sample epic
+  "STORY-WM-03" // sample story
 ]);
 
 export function extractVisibleText(html) {

@@ -645,7 +645,7 @@ for (const page of contractPages) {
   assertBuiltSurface(`apps/storybook/storybook-static/${page.file}`);
 }
 
-const expectedCategoryCount = 20;
+const expectedCategoryCount = 21;
 // TCRN-DS-STORY-056 TRAP GUARD: the nav-group count is 7 and MUST stay decoupled from the
 // emitted-page count (7 index + 20 category = 27 pages). Deriving it from a page-list length
 // would silently mis-assert. Pin it to the number of distinct top-level sections.
@@ -702,10 +702,10 @@ const aiContractTraceabilityCheck = {
     && aiContract.coveredStorybookSections?.reduce((total, section) => total + section.categories.length, 0) === expectedCategoryCount
     && aiContract.changelogGovernance?.records?.length > 0
     && aiContract.changelogGovernance?.requiredFields?.includes("proofArtifacts")
-    && aiContract.workManagementStaticAuthority?.disposition === "static_contract_authority_explicit_and_smoke_proven"
-    && (aiContract.workManagementStaticAuthority?.admittedPackageExports ?? []).includes("WorkItemRow")
-    && (aiContract.workManagementStaticAuthority?.admittedPackageExports ?? []).includes("WorkDetailLayout")
-    && (aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? []).includes("WorkQuickFilters")
+    && aiContract.functionalDisplayStaticAuthority?.disposition === "static_contract_authority_explicit_and_smoke_proven"
+    && (aiContract.functionalDisplayStaticAuthority?.admittedPackageExports ?? []).includes("RecordRow")
+    && (aiContract.functionalDisplayStaticAuthority?.admittedPackageExports ?? []).includes("DetailLayout")
+    && (aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? []).includes("QuickFilters")
     && (aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? []).includes("MachineTokenCell")
     && aiContract.foundationVisualStandards?.registryId === "foundation-visual-standards-v1"
     && JSON.stringify(aiContract.foundationVisualStandards?.categoryIds ?? []) === JSON.stringify(expectedFoundationStandardCategoryIds)
@@ -721,7 +721,7 @@ const aiContractTraceabilityCheck = {
 	    ))
     && llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
-    && llmsText.includes("Work Management authority:")
+    && llmsText.includes("Functional display authority:")
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
     && llmsText.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")
@@ -734,8 +734,8 @@ const aiContractTraceabilityCheck = {
   coveredSectionCount: aiContract.coveredStorybookSections?.length ?? 0,
   coveredCategoryCount: aiContract.coveredStorybookSections?.reduce((total, section) => total + section.categories.length, 0) ?? 0,
   changelogRecordCount: aiContract.changelogGovernance?.records?.length ?? 0,
-  workManagementStaticAuthorityDisposition: aiContract.workManagementStaticAuthority?.disposition ?? null,
-  workManagementAdmittedPackageExports: aiContract.workManagementStaticAuthority?.admittedPackageExports ?? [],
+  functionalDisplayStaticAuthorityDisposition: aiContract.functionalDisplayStaticAuthority?.disposition ?? null,
+  functionalDisplayAdmittedPackageExports: aiContract.functionalDisplayStaticAuthority?.admittedPackageExports ?? [],
   workLayoutDensityPackageExports: aiContract.visualFitControlContract?.workLayoutDensity?.packageExports ?? [],
   foundationVisualStandardsRegistryId: aiContract.foundationVisualStandards?.registryId ?? null,
   foundationVisualStandardCategoryIds: aiContract.foundationVisualStandards?.categoryIds ?? [],
@@ -747,7 +747,7 @@ const aiContractTraceabilityCheck = {
   storybookDocShellVisualOracleMetricEvidenceCount: aiContract.storybookDocShellVisualOracle?.metricEvidence?.length ?? 0,
   llmsTraceabilitySectionsPresent: llmsText.includes("Covered Storybook section/category/story hierarchy:")
     && llmsText.includes("Changelog governance:")
-    && llmsText.includes("Work Management authority:")
+    && llmsText.includes("Functional display authority:")
     && llmsText.includes("Foundation visual standards: foundation-visual-standards-v1")
     && llmsText.includes("Consumer visual style contract: consumer-visual-style-contract-v1")
     && llmsText.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")
@@ -1001,7 +1001,7 @@ const forbiddenZhCnProductShellText = [
   "Global states",
   "Copy creation rules",
   "Component family index",
-  "Work Management",
+  "Records and boards",
   "AI consumption contract",
   "Local changelog"
 ];
@@ -1482,7 +1482,7 @@ const breakpointOverflowReadbacks = [];
 for (const width of breakpointBoundaryWidths) {
   const boundaryPage = await browser.newPage({ viewport: { width, height: 900 } });
   try {
-    await boundaryPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-work-management.html?theme=light&locale=zh-CN`);
+    await boundaryPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-records-and-boards.html?theme=light&locale=zh-CN`);
     await boundaryPage.waitForSelector("[data-contract-story-id]", { state: "attached" });
     await expandAllStoriesForContentRead(boundaryPage);
     const readback = await boundaryPage.evaluate(() => {
@@ -1543,7 +1543,7 @@ for (const viewport of railReachabilityViewports) {
       // the first shell on this page is the two-item frontend-shell-slice
       // oracle, whose rail can never be taller than a window — a check that
       // measured it would be measuring something that cannot fail.
-      const shell = document.querySelector('[data-storybook-visual-instance="aos-owner-quality-product-shell"].tcrn-product-shell');
+      const shell = document.querySelector('[data-storybook-visual-instance="owner-quality-product-shell"].tcrn-product-shell');
       const rail = shell?.querySelector(".tcrn-product-shell__sidebar");
       const items = rail ? [...rail.querySelectorAll(".tcrn-nav-item")] : [];
       if (!rail || items.length === 0) return { navItemCount: items.length, reachable: false, reason: "rail-or-items-missing" };
@@ -1576,16 +1576,16 @@ const railReachabilityCheck = {
 
 const breakpointOverflowCheck = {
   ok: breakpointOverflowReadbacks.every((item) => item.ok),
-  route: "components-work-management.html?theme=light&locale=zh-CN",
+  route: "components-records-and-boards.html?theme=light&locale=zh-CN",
   rule: "responsive-mobile forbids page-level horizontal overflow; asserted at the breakpoint seam, not only inside each posture",
   readbacks: breakpointOverflowReadbacks
 };
 const mobileKnowledgeDocShellLayeringPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
-const mobileKnowledgeDocShellLayeringRoute = `${staticServer.origin}/apps/storybook/storybook-static/components-knowledge-management.html?theme=dark&locale=zh-CN#knowledge-management-components-spec`;
+const mobileKnowledgeDocShellLayeringRoute = `${staticServer.origin}/apps/storybook/storybook-static/components-documents-and-collaboration.html?theme=dark&locale=zh-CN#documents-and-collaboration-components-spec`;
 const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
   await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-storybook-locale='zh-CN']");
   await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-active-story-section='Components']");
-  await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-doc-nav-item='knowledge-management-components-spec'][aria-current='location'][data-doc-nav-item-active='true']");
+  await mobileKnowledgeDocShellLayeringPage.waitForSelector("[data-doc-nav-item='documents-and-collaboration-components-spec'][aria-current='location'][data-doc-nav-item-active='true']");
   const metrics = await mobileKnowledgeDocShellLayeringPage.evaluate((phaseLabel) => {
     const rectFor = (selector) => {
       const node = document.querySelector(selector);
@@ -1702,8 +1702,8 @@ const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
     });
     const html = document.documentElement;
     const body = document.body;
-    const article = rectFor("#knowledge-management-components-spec");
-    const title = rectFor("#knowledge-management-components-spec > h2");
+    const article = rectFor("#documents-and-collaboration-components-spec");
+    const title = rectFor("#documents-and-collaboration-components-spec > h2");
     const minimumClearancePx = 8;
     return {
       label: phaseLabel,
@@ -1746,7 +1746,7 @@ const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
   if (metrics.locale !== "zh-CN") failures.push(`locale:${metrics.locale}`);
   if (metrics.shellAuthority !== "online-docs") failures.push(`doc-shell-authority:${metrics.shellAuthority}`);
   if (metrics.anchorScrollControlled !== "true") failures.push(`anchor-scroll-controlled:${metrics.anchorScrollControlled}`);
-  if (metrics.activeStoryId !== "knowledge-management-components-spec") failures.push(`active-story:${metrics.activeStoryId}`);
+  if (metrics.activeStoryId !== "documents-and-collaboration-components-spec") failures.push(`active-story:${metrics.activeStoryId}`);
   if (!metrics.articleReadableBelowTopbar) failures.push(`article-clearance:${metrics.articleClearancePx}`);
   if (!metrics.titleReadableBelowTopbar) failures.push(`title-clearance:${metrics.titleClearancePx}`);
   for (const [name, layer] of Object.entries(metrics.mobileTopbarLayering ?? {})) {
@@ -1782,12 +1782,12 @@ mobileKnowledgeDocShellLayeringReadbacks.push(await collectMobileKnowledgeDocShe
 await mobileKnowledgeDocShellLayeringPage.close();
 const mobileKnowledgeDocShellLayeringCheck = {
   ok: mobileKnowledgeDocShellLayeringReadbacks.every((item) => item.ok),
-  route: "components.html?theme=dark&locale=zh-CN#knowledge-management-components-spec",
+  route: "components.html?theme=dark&locale=zh-CN#documents-and-collaboration-components-spec",
   viewport: { width: 390, height: 844 },
   readbacks: mobileKnowledgeDocShellLayeringReadbacks
 };
 	// TCRN-DS-STORY-056: same-page anchor-scroll must stay WITHIN one category page. stamp/button/
-	// field/table-work-index-spec all live on components-controls-data.html, so a nav click from the
+	// field/table-record-index-spec all live on components-controls-data.html, so a nav click from the
 	// page's first story to a later one is an in-page scroll (the anchor-scroll script recognises
 	// the same pathname), not a cross-page navigation.
 	await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-controls-data.html?locale=zh-CN#stamp-spec-usage`);
@@ -1800,13 +1800,13 @@ const mobileKnowledgeDocShellLayeringCheck = {
 	  if (category instanceof HTMLElement && category.getAttribute("data-doc-nav-category-open") !== "true" && toggle instanceof HTMLElement) {
 	    toggle.click();
 	  }
-	}, "table-work-index-spec");
-	await storybookPage.locator("[data-doc-nav-item='table-work-index-spec']").waitFor({ state: "visible" });
-await storybookPage.locator("[data-doc-nav-item='table-work-index-spec']").evaluate((link) => link.click());
-await storybookPage.waitForSelector("[data-doc-nav-item='table-work-index-spec'][aria-current='location'][data-doc-nav-item-active='true']");
+  }, "table-record-index-spec");
+await storybookPage.locator("[data-doc-nav-item='table-record-index-spec']").waitFor({ state: "visible" });
+await storybookPage.locator("[data-doc-nav-item='table-record-index-spec']").evaluate((link) => link.click());
+await storybookPage.waitForSelector("[data-doc-nav-item='table-record-index-spec'][aria-current='location'][data-doc-nav-item-active='true']");
 await storybookPage.waitForTimeout(150);
 const anchorScrollMetrics = await storybookPage.evaluate(() => {
-  const target = document.getElementById("table-work-index-spec");
+  const target = document.getElementById("table-record-index-spec");
   const previous = document.getElementById("field-spec-usage");
   const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
   return {
@@ -1820,11 +1820,11 @@ const anchorScrollMetrics = await storybookPage.evaluate(() => {
   };
 });
 const anchorScrollCheck = {
-  ok: storybookPage.url().endsWith("/components-controls-data.html?locale=zh-CN#table-work-index-spec")
-    && anchorScrollMetrics.activeStoryId === "table-work-index-spec"
+  ok: storybookPage.url().endsWith("/components-controls-data.html?locale=zh-CN#table-record-index-spec")
+    && anchorScrollMetrics.activeStoryId === "table-record-index-spec"
     && targetTopMatchesAnchorOffset(anchorScrollMetrics)
     && (anchorScrollMetrics.previousBottom === null || anchorScrollMetrics.previousBottom <= anchorScrollMetrics.targetTop - 12),
-  source: "left secondary nav click -> table-work-index-spec",
+  source: "left secondary nav click -> table-record-index-spec",
   metrics: anchorScrollMetrics
 };
 // TCRN-DS-STORY-056: scroll-spy must observe two stories on ONE page. datagrid-fields-patterns
@@ -1846,6 +1846,10 @@ await storybookPage.evaluate(() => {
   const offset = Number.isFinite(parsedOffset) ? parsedOffset : 22;
   const nextTop = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
   window.scrollTo({ top: nextTop, left: 0, behavior: "auto" });
+  // A short category page can clamp directly to its maximum scroll position;
+  // ask the registered scroll-spy to settle that terminal state explicitly so
+  // the proof does not depend on a browser scheduling a second scroll event.
+  window.tcrnStorybookScrollSpy?.sync();
 });
 await storybookPage.waitForFunction(() => {
   const active = document.querySelector("[data-doc-nav-item][data-doc-nav-item-active='true']");
@@ -2128,7 +2132,7 @@ const i18nContentChecks = [
     section: "Change Log",
     storyId: "local-changelog",
     requiredText: ["本地变更日志", "治理变更记录", "Storybook 治理检查点", "源路线", "故事覆盖", "AI 契约摘要", "证明工件", "无过度声明边界", "耐久源记录", "不发布", "本页内容", "治理记录"],
-	    forbiddenText: ["Governance changelog records", "Date", "Source route", "Story ids", "AI contract digest readback", "Proof artifacts and boundaries", "Proof artifacts", "No-overclaim boundaries", "durable source record", "AI contract digest verified by smoke", "proof receipts required", "no publication", "Current location", "On this page", "Documentation sections", "Welcome and governance", "Maintainers and routing", "Contribution model", "Icons and motion", "Global states", "Copy creation rules", "Component family index", "AI consumption contract", "Local changelog", "Governance entry", "Routing and contribution", "Identity and brand", "Type and layout", "Work Management", "Proof governance", "Governance records"]
+	    forbiddenText: ["Governance changelog records", "Date", "Source route", "Story ids", "AI contract digest readback", "Proof artifacts and boundaries", "Proof artifacts", "No-overclaim boundaries", "durable source record", "AI contract digest verified by smoke", "proof receipts required", "no publication", "Current location", "On this page", "Documentation sections", "Welcome and governance", "Maintainers and routing", "Contribution model", "Icons and motion", "Global states", "Copy creation rules", "Component family index", "AI consumption contract", "Local changelog", "Governance entry", "Routing and contribution", "Identity and brand", "Type and layout", "Records and boards", "Proof governance", "Governance records"]
 	  })
 ];
 const globalZhCnIaShellCheck = await collectLocalizedShellChromeCheck(storybookPage, {
@@ -2176,7 +2180,7 @@ const globalZhCnIaShellCheck = await collectLocalizedShellChromeCheck(storybookP
     "Component inventory",
     "Controls and data",
     "Navigation and shells",
-    "Work Management",
+    "Records and boards",
     "Forms and workbench",
     "Feedback and selection",
     "Data and pages",

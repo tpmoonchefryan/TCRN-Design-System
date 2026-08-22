@@ -11,14 +11,14 @@
     "toleratedDebt": [
       {
         "id": "color-palette",
-        "measure": 4659,
+        "measure": 4635,
         "recordedHeightPx": 4659,
         "owedTo": "beyond-INIT-008",
         "note": "39-token color specimen gallery; a catalogue split is future work — gated debt"
       },
       {
         "id": "text-styles",
-        "measure": 2409,
+        "measure": 2389,
         "recordedHeightPx": 2409,
         "owedTo": "beyond-INIT-008",
         "note": "type-scale specimen catalogue; gated debt"
@@ -32,50 +32,43 @@
       },
       {
         "id": "foundation-visual-standards",
-        "measure": 3350,
-        "recordedHeightPx": 3350,
+        "measure": 3287,
+        "recordedHeightPx": 3304,
         "owedTo": "beyond-INIT-008",
         "note": "foundation visual-standards catalogue; gated debt"
       },
       {
         "id": "component-family-index",
-        "measure": 2978,
-        "recordedHeightPx": 2978,
+        "measure": 2631,
+        "recordedHeightPx": 2631,
         "owedTo": "beyond-INIT-008",
         "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
       },
       {
         "id": "display-primitives-spec",
-        "measure": 2330,
+        "measure": 2318,
         "recordedHeightPx": 2330,
         "owedTo": "INIT-029/S254",
         "note": "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
       },
       {
-        "id": "work-management-components-spec",
-        "measure": 2136,
-        "recordedHeightPx": 2136,
-        "owedTo": "irreducible",
-        "note": "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
-      },
-      {
         "id": "ai-consumption-contract",
-        "measure": 5438,
+        "measure": 5391,
         "recordedHeightPx": 5438,
         "owedTo": "beyond-INIT-008",
         "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
       },
       {
-        "id": "aos-frontend-shell-slice",
-        "measure": 12448,
-        "recordedHeightPx": 12448,
+        "id": "frontend-shell-slice",
+        "measure": 8806,
+        "recordedHeightPx": 8806,
         "owedTo": "beyond-INIT-008",
         "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
       },
       {
-        "id": "aos-owner-quality-product-shell",
-        "measure": 15285,
-        "recordedHeightPx": 15285,
+        "id": "owner-quality-product-shell",
+        "measure": 14943,
+        "recordedHeightPx": 14943,
         "owedTo": "beyond-INIT-008",
         "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
       }
@@ -84,13 +77,13 @@
   "splitWorklist": [
     {
       "id": "color-palette",
-      "heightPx": 4659,
+      "heightPx": 4635,
       "owedTo": "beyond-INIT-008",
       "note": "39-token color specimen gallery; a catalogue split is future work — gated debt"
     },
     {
       "id": "text-styles",
-      "heightPx": 2409,
+      "heightPx": 2389,
       "owedTo": "beyond-INIT-008",
       "note": "type-scale specimen catalogue; gated debt"
     },
@@ -102,43 +95,37 @@
     },
     {
       "id": "foundation-visual-standards",
-      "heightPx": 3350,
+      "heightPx": 3287,
       "owedTo": "beyond-INIT-008",
       "note": "foundation visual-standards catalogue; gated debt"
     },
     {
       "id": "component-family-index",
-      "heightPx": 2978,
+      "heightPx": 2631,
       "owedTo": "beyond-INIT-008",
       "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
     },
     {
       "id": "display-primitives-spec",
-      "heightPx": 2330,
+      "heightPx": 2318,
       "owedTo": "INIT-029/S254",
       "note": "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
     },
     {
-      "id": "work-management-components-spec",
-      "heightPx": 2136,
-      "owedTo": "irreducible",
-      "note": "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
-    },
-    {
       "id": "ai-consumption-contract",
-      "heightPx": 5438,
+      "heightPx": 5391,
       "owedTo": "beyond-INIT-008",
       "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
     },
     {
-      "id": "aos-frontend-shell-slice",
-      "heightPx": 12448,
+      "id": "frontend-shell-slice",
+      "heightPx": 8806,
       "owedTo": "beyond-INIT-008",
       "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
     },
     {
-      "id": "aos-owner-quality-product-shell",
-      "heightPx": 15285,
+      "id": "owner-quality-product-shell",
+      "heightPx": 14943,
       "owedTo": "beyond-INIT-008",
       "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
     }

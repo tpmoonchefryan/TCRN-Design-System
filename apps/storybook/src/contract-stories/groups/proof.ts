@@ -6,6 +6,6 @@ export const proofStories: ContractStory[] = [
   selectStory("ai-consumption-contract"),
   selectStory("blocked-actions"),
   selectStory("overlay-focus"),
-  selectStory("aos-frontend-shell-slice"),
-  selectStory("aos-owner-quality-product-shell")
+  selectStory("frontend-shell-slice"),
+  selectStory("owner-quality-product-shell")
 ];

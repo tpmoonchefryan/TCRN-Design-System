@@ -586,9 +586,9 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-section-grid \{[\s\S]*grid-template-columns: minmax\(0, 1\.45fr\) minmax\(280px, 0\.75fr\);/);
   assert.match(tcrnComponentCss, /\.tcrn-table-shell__head,[\s\S]*\.tcrn-table-shell__row \{[\s\S]*grid-template-columns: var\([\s\S]*--tcrn-table-shell-columns/);
   assert.match(tcrnComponentCss, /\.tcrn-table-shell__head span,[\s\S]*\.tcrn-table-shell__cell \{[\s\S]*overflow-wrap: anywhere;/);
-  assert.match(tcrnComponentCss, /\.tcrn-work-item-row--dense \{[\s\S]*grid-template-columns: minmax\(92px, 0\.14fr\)/);
-  assert.match(tcrnComponentCss, /\.tcrn-work-page-header--dense,[\s\S]*\.tcrn-work-activity-feed--dense \{[\s\S]*--tcrn-work-density-row-min: 34px;/);
-  assert.match(tcrnComponentCss, /\.tcrn-knowledge-page-tree,[\s\S]*\.tcrn-knowledge-search-results \{[\s\S]*min-width: 0;/);
+  assert.match(tcrnComponentCss, /\.tcrn-record-row--dense \{[\s\S]*grid-template-columns: minmax\(92px, 0\.14fr\)/);
+  assert.match(tcrnComponentCss, /\.tcrn-page-header--dense,[\s\S]*\.tcrn-activity-feed--dense \{[\s\S]*--tcrn-density-row-min: 34px;/);
+  assert.match(tcrnComponentCss, /\.tcrn-tree-nav,[\s\S]*\.tcrn-search-result-list \{[\s\S]*min-width: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-template-gallery \{[\s\S]*grid-template-columns: repeat\(auto-fit, minmax\(180px, 1fr\)\);/);
 });
 

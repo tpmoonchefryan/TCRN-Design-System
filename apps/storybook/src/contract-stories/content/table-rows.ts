@@ -6,10 +6,10 @@ export const tableShellRuleRows = [
     boundary: "Do not render unlabeled text blocks or claim remote counts from local examples."
   },
   {
-    surface: "WorkIndex",
+    surface: "RecordTable",
     desktop: "Use for finite review queues where status and owner scanning matter.",
     mobile: "Preserve source order and show the same labels before each value.",
-    boundary: "Do not treat WorkIndex as DataGrid, virtualized search, or bulk editing."
+    boundary: "Do not treat RecordTable as DataGrid, virtualized search, or bulk editing."
   },
   {
     surface: "Empty state",
@@ -39,7 +39,7 @@ export const tableShellRuleRows = [
     surface: "Bulk selection",
     desktop: "Batch selection requires selected counts, all/none boundaries, and keyboard behavior.",
     mobile: "Show selected state per row; do not rely on color alone.",
-    boundary: "WorkIndex does not include bulk selection by default."
+    boundary: "RecordTable does not include bulk selection by default."
   }
 ];
 
@@ -70,7 +70,7 @@ export const dataGridEscalationRows = [
   },
   {
     capability: "Bulk operations",
-    tableShell: "Do not keep WorkIndex",
+    tableShell: "Do not keep RecordTable",
     escalation: "Use a selection list or DataGrid with batch-action proof.",
     proof: "Selected count, all/none behavior, disabled reasons, and undo or confirmation."
   }

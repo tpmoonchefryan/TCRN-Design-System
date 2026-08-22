@@ -180,7 +180,7 @@
     },
     {
       "section": "Components",
-      "page": "components-work-management.html",
+      "page": "components-records-and-boards.html",
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
@@ -188,7 +188,7 @@
     },
     {
       "section": "Components",
-      "page": "components-work-management.html",
+      "page": "components-records-and-boards.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
@@ -196,7 +196,7 @@
     },
     {
       "section": "Components",
-      "page": "components-knowledge-management.html",
+      "page": "components-hierarchy-and-relations.html",
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
@@ -204,7 +204,39 @@
     },
     {
       "section": "Components",
-      "page": "components-knowledge-management.html",
+      "page": "components-hierarchy-and-relations.html",
+      "viewport": "desktop-1440x900",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-detail-and-inspection.html",
+      "viewport": "desktop-1440x900",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-detail-and-inspection.html",
+      "viewport": "desktop-1440x900",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-documents-and-collaboration.html",
+      "viewport": "desktop-1440x900",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-documents-and-collaboration.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
@@ -228,7 +260,7 @@
     },
     {
       "section": "Patterns",
-      "page": "patterns-work-management.html",
+      "page": "patterns-data-pages.html",
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
@@ -236,7 +268,7 @@
     },
     {
       "section": "Patterns",
-      "page": "patterns-work-management.html",
+      "page": "patterns-data-pages.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
@@ -253,22 +285,6 @@
     {
       "section": "Patterns",
       "page": "patterns-feedback-selection.html",
-      "viewport": "desktop-1440x900",
-      "theme": "dark",
-      "violationCount": 0,
-      "violations": []
-    },
-    {
-      "section": "Patterns",
-      "page": "patterns-data-pages.html",
-      "viewport": "desktop-1440x900",
-      "theme": "light",
-      "violationCount": 0,
-      "violations": []
-    },
-    {
-      "section": "Patterns",
-      "page": "patterns-data-pages.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
@@ -397,6 +413,22 @@
     {
       "section": "Components",
       "page": "component-api-reference-5.html",
+      "viewport": "desktop-1440x900",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-6.html",
+      "viewport": "desktop-1440x900",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-6.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
@@ -580,7 +612,7 @@
     },
     {
       "section": "Components",
-      "page": "components-work-management.html",
+      "page": "components-records-and-boards.html",
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
@@ -588,7 +620,7 @@
     },
     {
       "section": "Components",
-      "page": "components-work-management.html",
+      "page": "components-records-and-boards.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
@@ -596,7 +628,7 @@
     },
     {
       "section": "Components",
-      "page": "components-knowledge-management.html",
+      "page": "components-hierarchy-and-relations.html",
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
@@ -604,7 +636,39 @@
     },
     {
       "section": "Components",
-      "page": "components-knowledge-management.html",
+      "page": "components-hierarchy-and-relations.html",
+      "viewport": "mobile-390x844",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-detail-and-inspection.html",
+      "viewport": "mobile-390x844",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-detail-and-inspection.html",
+      "viewport": "mobile-390x844",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-documents-and-collaboration.html",
+      "viewport": "mobile-390x844",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "components-documents-and-collaboration.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
@@ -628,7 +692,7 @@
     },
     {
       "section": "Patterns",
-      "page": "patterns-work-management.html",
+      "page": "patterns-data-pages.html",
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
@@ -636,7 +700,7 @@
     },
     {
       "section": "Patterns",
-      "page": "patterns-work-management.html",
+      "page": "patterns-data-pages.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
@@ -653,22 +717,6 @@
     {
       "section": "Patterns",
       "page": "patterns-feedback-selection.html",
-      "viewport": "mobile-390x844",
-      "theme": "dark",
-      "violationCount": 0,
-      "violations": []
-    },
-    {
-      "section": "Patterns",
-      "page": "patterns-data-pages.html",
-      "viewport": "mobile-390x844",
-      "theme": "light",
-      "violationCount": 0,
-      "violations": []
-    },
-    {
-      "section": "Patterns",
-      "page": "patterns-data-pages.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
@@ -797,6 +845,22 @@
     {
       "section": "Components",
       "page": "component-api-reference-5.html",
+      "viewport": "mobile-390x844",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-6.html",
+      "viewport": "mobile-390x844",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "section": "Components",
+      "page": "component-api-reference-6.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,

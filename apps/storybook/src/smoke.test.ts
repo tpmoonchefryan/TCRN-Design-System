@@ -90,20 +90,20 @@ const expectedContractStoryIds = [
   "navigation-primitives-spec",
   "navigation-product-shell-spec",
   "dialog-spec-usage",
-  "table-work-index-spec",
-  "work-management-components-spec",
-  "work-management-relationships-spec",
-  "work-management-tokens-density-views-spec",
-  "work-management-route-detail-spec",
-  "work-management-backlog-board-spec",
-  "work-management-hierarchy-gates-spec",
-  "work-management-inspector-spec",
-  "knowledge-management-components-spec",
-  "knowledge-management-density-collaboration-spec",
-  "knowledge-management-templates-spec",
+  "table-record-index-spec",
+  "records-and-boards-components-spec",
+  "hierarchy-and-relations-spec",
+  "detail-and-inspection-density-spec",
+  "detail-and-inspection-route-spec",
+  "records-and-boards-backlog-spec",
+  "hierarchy-and-relations-stages-spec",
+  "detail-and-inspection-inspector-spec",
+  "documents-and-collaboration-components-spec",
+  "documents-and-collaboration-density-spec",
+  "documents-and-collaboration-templates-spec",
   "forms-patterns",
   "workbench-patterns",
-  "work-management-patterns",
+  "records-and-boards-patterns",
   "readiness-notification-patterns",
   "selection-list-patterns",
   "modal-validation-patterns",
@@ -114,8 +114,8 @@ const expectedContractStoryIds = [
   "ai-consumption-contract",
   "blocked-actions",
   "overlay-focus",
-  "aos-frontend-shell-slice",
-  "aos-owner-quality-product-shell",
+  "frontend-shell-slice",
+  "owner-quality-product-shell",
   "local-changelog"
 ];
 
@@ -140,8 +140,8 @@ const expectedAiRequiredBeforeProductFrontendImplementation = [
   "prove_side_navigation_collapse_state",
   "offer_an_in_product_way_back_from_drilled_down_routes",
   "transport_locale_and_theme_in_a_server_readable_store",
-  "use_work_management_patterns_for_static_work_surfaces",
-  "use_knowledge_management_patterns_for_static_knowledge_surfaces",
+  "use_records_and_boards_patterns_for_static_record_surfaces",
+  "use_documents_and_collaboration_patterns_for_static_document_surfaces",
   "block_unregistered_modules_from_primary_navigation",
   "prove_browser_interactions_not_static_markers",
   "prove_product_adoption_before_ds_compliance_claim"
@@ -163,8 +163,8 @@ const expectedAiRequiredProof = [
   "side_navigation_collapse_receipt",
   "navigation_reversibility_receipt",
   "server_rendered_preference_receipt",
-  "work_management_static_pattern_receipt",
-  "knowledge_management_static_pattern_receipt",
+  "functional_display_static_pattern_receipt",
+  "documents_and_collaboration_static_pattern_receipt",
   "registered_navigation_receipt",
   "browser_interaction_receipt",
   "storybook_section_coverage_receipt",
@@ -411,8 +411,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /data-storybook-product-shell-skin="confirmed-storybook-visual-v1"/);
   assert.doesNotMatch(combinedHtml, /Atlassian|Jira|jira-like|issue-style|WorkIssueRow|IssueRow|Kanban|Scrum/i);
   assertNoLocalAbsolutePathText("generated static Storybook HTML", combinedHtml);
-  assertNoLocalAbsolutePathText("Work Management story source", readStorybookSource("src/contract-stories/story-content.tsx"));
-  assertNoLocalAbsolutePathText("Work Management package test fixture", readStorybookSource("../../packages/ui-react/src/components/DataDisplay/DataDisplay.test.tsx"));
+  assertNoLocalAbsolutePathText("functional display story source", readStorybookSource("src/contract-stories/story-content.tsx"));
+  assertNoLocalAbsolutePathText("functional display package test fixture", readStorybookSource("../../packages/ui-react/src/components/DataDisplay/DataDisplay.test.tsx"));
   for (const receiptPath of [
     "docs/verification/storybook-visual-proof/baseline-manifest.json",
     "docs/verification/storybook-visual-proof/check-receipt.json",
@@ -848,50 +848,50 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readRenderedGroupPage("Components"), /Virtual scrolling/);
   assert.match(readRenderedGroupPage("Components"), /Column resize or frozen columns/);
   assert.match(readRenderedGroupPage("Components"), /Selected count, all\/none behavior, disabled reasons, and undo or confirmation/);
-  assert.match(readRenderedGroupPage("Components"), /Work Management component specs/);
-  assert.match(readGroupPage("Components"), /data-work-management-contract="package-backed-static"/);
+  assert.match(readRenderedGroupPage("Components"), /Records and boards components/);
+  assert.match(readGroupPage("Components"), /data-functional-components-contract="package-backed-static"/);
   assert.match(readGroupPage("Components"), /RelationshipChip/);
   assert.match(readGroupPage("Components"), /MachineToken/);
   assert.match(readGroupPage("Components"), /MachineTokenCell/);
-  assert.match(readGroupPage("Components"), /WorkManagementSubnav/);
-  assert.match(readGroupPage("Components"), /WorkPageHeader/);
-  assert.match(readGroupPage("Components"), /WorkViewTabs/);
-  assert.match(readGroupPage("Components"), /WorkQuickFilters/);
-  assert.match(readGroupPage("Components"), /WorkItemRow/);
-  assert.match(readGroupPage("Components"), /WorkList/);
-  assert.match(readGroupPage("Components"), /WorkSplitView/);
-  assert.match(readGroupPage("Components"), /WorkBacklogGroup/);
-  assert.match(readGroupPage("Components"), /WorkBoard/);
-  assert.match(readGroupPage("Components"), /WorkBoardView/);
-  assert.match(readGroupPage("Components"), /WorkDetailLayout/);
+  assert.match(readGroupPage("Components"), /SubNav/);
+  assert.match(readGroupPage("Components"), /PageHeader/);
+  assert.match(readGroupPage("Components"), /ViewTabs/);
+  assert.match(readGroupPage("Components"), /QuickFilters/);
+  assert.match(readGroupPage("Components"), /RecordRow/);
+  assert.match(readGroupPage("Components"), /RecordTable/);
+  assert.match(readGroupPage("Components"), /SplitView/);
+  assert.match(readGroupPage("Components"), /RowGroup/);
+  assert.match(readGroupPage("Components"), /LaneBoard/);
+  assert.match(readGroupPage("Components"), /LaneBoard/);
+  assert.match(readGroupPage("Components"), /DetailLayout/);
   assert.match(readGroupPage("Components"), /MetadataRail/);
-  assert.match(readGroupPage("Components"), /WorkFieldPanel/);
-  assert.match(readGroupPage("Components"), /WorkActivityFeed/);
-  assert.match(readGroupPage("Components"), /WorkHierarchy/);
-  assert.match(readGroupPage("Components"), /GatePipeline/);
-  assert.match(readGroupPage("Components"), /GatePipelineCompact/);
-  assert.match(readGroupPage("Components"), /EvidenceAttachmentList/);
-  assert.match(readGroupPage("Components"), /WorkItemInspector/);
+  assert.match(readGroupPage("Components"), /DetailInspector/);
+  assert.match(readGroupPage("Components"), /ActivityFeed/);
+  assert.match(readGroupPage("Components"), /RelationGraph/);
+  assert.match(readGroupPage("Components"), /StagePipeline/);
+  assert.match(readGroupPage("Components"), /StagePipeline/);
+  assert.match(readGroupPage("Components"), /AttachmentList/);
+  assert.match(readGroupPage("Components"), /RecordInspector/);
   assert.match(readGroupPage("Components"), /SavedViewToolbar/);
-  assert.match(readRenderedGroupPage("Components"), /Knowledge Management component specs/);
-  assert.match(readGroupPage("Components"), /data-knowledge-management-contract="package-backed-static"/);
-  assert.match(readGroupPage("Components"), /KnowledgePageTree/);
-  assert.match(readGroupPage("Components"), /KnowledgeDocumentCanvas/);
-  assert.match(readGroupPage("Components"), /KnowledgeTocRail/);
-  assert.match(readGroupPage("Components"), /KnowledgeInlineCommentList/);
-  assert.match(readGroupPage("Components"), /KnowledgeMetadataRail/);
-  assert.match(readGroupPage("Components"), /KnowledgeAttachmentList/);
-  assert.match(readGroupPage("Components"), /KnowledgeLabelSet/);
-  assert.match(readGroupPage("Components"), /KnowledgeVersionHistory/);
+  assert.match(readRenderedGroupPage("Components"), /Documents and collaboration components/);
+  assert.match(readGroupPage("Components"), /data-functional-components-contract="package-backed-static"/);
+  assert.match(readGroupPage("Components"), /TreeNav/);
+  assert.match(readGroupPage("Components"), /DocumentCanvas/);
+  assert.match(readGroupPage("Components"), /TocRail/);
+  assert.match(readGroupPage("Components"), /InlineCommentList/);
+  assert.match(readGroupPage("Components"), /MetadataRail/);
+  assert.match(readGroupPage("Components"), /AttachmentList/);
+  assert.match(readGroupPage("Components"), /LabelSet/);
+  assert.match(readGroupPage("Components"), /VersionHistory/);
   assert.match(readGroupPage("Components"), /TemplateGallery/);
-  assert.match(readGroupPage("Components"), /KnowledgeSearchResults/);
+  assert.match(readGroupPage("Components"), /SearchResultList/);
   for (const relation of ["blocks", "blocked_by", "depends_on", "relates_to", "duplicates", "supersedes", "split_from", "caused_by", "implements", "verifies", "reviews", "refreshes"]) {
-    assert.match(readGroupPage("Components"), new RegExp(`data-work-relationship="${relation}"`));
+    assert.match(readGroupPage("Components"), new RegExp(`data-relationship="${relation}"`));
   }
-  assert.match(readGroupPage("Components"), /route_tcrn_ds_work_management_patterns_engineering_ds_package_storybook_implementation_after_ds_initiative_c4865675/);
-  assert.match(readGroupPage("Components"), /Activity log is execution and evidence context attached to this Work Item; it is not a replacement for Story or Task \/ Work Item/);
-  assert.match(readRenderedGroupPage("Patterns"), /Work Management patterns/);
-  assert.match(readGroupPage("Patterns"), /data-work-management-patterns="static-no-live"/);
+  assert.match(readGroupPage("Components"), /route_tcrn_ds_functional_display_patterns_engineering_package_storybook_implementation_c4865675/);
+  assert.match(readGroupPage("Components"), /Activity log is execution and evidence context attached to this record; it is not a replacement for Story or Task \/ record/);
+  assert.match(readRenderedGroupPage("Patterns"), /Records and boards patterns/);
+  assert.match(readGroupPage("Patterns"), /data-records-and-boards-patterns="static-no-live"/);
   assert.match(readGroupPage("Patterns"), /Smallest acceptable human\/business\/workflow result/);
   assert.match(readGroupPage("Patterns"), /Smallest executable ticket\/task unit/);
   assert.match(readGroupPage("Patterns"), /no API integration, backend persistence, live dispatch, external queue, product adoption, owner acceptance, package publication, or release readiness is claimed/i);
@@ -1132,11 +1132,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.changelogGovernance?.storybookStory ?? "", /change-log\.html#local-changelog/);
   assert.ok(contract.changelogGovernance?.requiredFields?.includes("proofArtifacts"));
   assert.match(contract.changelogGovernance?.digestAlignmentProof ?? "", /contractPayloadDigest/);
-  assert.equal(contract.workManagementStaticAuthority?.disposition, "static_contract_authority_explicit_and_smoke_proven");
-  assert.match(contract.workManagementStaticAuthority?.componentStory ?? "", /work-management-components-spec/);
-  assert.match(contract.workManagementStaticAuthority?.patternStory ?? "", /work-management-patterns/);
-  assert.match(contract.workManagementStaticAuthority?.managerRuntimeCoverageDisposition ?? "", /static contract story ids are the authoritative/);
-  assert.match(contract.workManagementStaticAuthority?.noOverclaimBoundary ?? "", /initiative completion/);
+  assert.equal(contract.functionalDisplayStaticAuthority?.disposition, "static_contract_authority_explicit_and_smoke_proven");
+  assert.match(contract.functionalDisplayStaticAuthority?.componentStory ?? "", /records-and-boards-components-spec/);
+  assert.match(contract.functionalDisplayStaticAuthority?.patternStory ?? "", /records-and-boards-patterns/);
+  assert.match(contract.functionalDisplayStaticAuthority?.managerRuntimeCoverageDisposition ?? "", /static contract story ids are the authoritative/);
+  assert.match(contract.functionalDisplayStaticAuthority?.noOverclaimBoundary ?? "", /initiative completion/);
   assert.equal(contract.foundationVisualStandards?.registryId, "foundation-visual-standards-v1");
   assert.equal(contract.foundationVisualStandards?.storybookRoute, "foundations.html#foundation-visual-standards");
   assert.deepEqual(contract.foundationVisualStandards?.categoryIds, foundationVisualStandardCategoryIds);
@@ -1181,22 +1181,22 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.visualFitControlContract?.productLockups?.rule ?? "", /suffix accents are package-owned/);
   assert.match(contract.visualFitControlContract?.sidebar?.rule ?? "", /orphan visual lane/);
   assert.match(contract.visualFitControlContract?.tablesAndContainers?.rule ?? "", /package-emitted column\/min-width variables/);
-  assert.match(contract.visualFitControlContract?.workLayoutDensity?.authority ?? "", /Work Management exports/);
-  assert.ok(contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes("WorkItemRow"));
-  assert.ok(contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes("WorkDetailLayout"));
+  assert.match(contract.visualFitControlContract?.workLayoutDensity?.authority ?? "", /Functional display exports/);
+  assert.ok(contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes("RecordRow"));
+  assert.ok(contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes("DetailLayout"));
   assert.match(contract.visualFitControlContract?.workLayoutDensity?.rule ?? "", /admitted package exports/);
-  assert.match(contract.visualFitControlContract?.knowledgeLayoutDensity?.authority ?? "", /Knowledge Management exports/);
-  assert.ok(contract.visualFitControlContract?.knowledgeLayoutDensity?.packageExports?.includes("KnowledgePageTree"));
-  assert.ok(contract.visualFitControlContract?.knowledgeLayoutDensity?.packageExports?.includes("KnowledgeDocumentCanvas"));
+  assert.match(contract.visualFitControlContract?.knowledgeLayoutDensity?.authority ?? "", /Documents and collaboration exports/);
+  assert.ok(contract.visualFitControlContract?.knowledgeLayoutDensity?.packageExports?.includes("TreeNav"));
+  assert.ok(contract.visualFitControlContract?.knowledgeLayoutDensity?.packageExports?.includes("DocumentCanvas"));
   assert.match(contract.visualFitControlContract?.knowledgeLayoutDensity?.rule ?? "", /backend publishing/);
   assert.equal(contract.consumerVisualStyleContract?.id, consumerVisualStyleContract.id);
   assert.match(contract.consumerVisualStyleContract?.disposition ?? "", /fail_closed/);
   assert.ok(contract.consumerVisualStyleContract?.allowedConsumerInputs?.includes("product data"));
   assert.ok(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.includes("consumer-local ProductShell/search/theme/locale/sidebar clones"));
-  assert.match(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.join(" ") ?? "", /consumer-local Work page header/);
+  assert.match(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.join(" ") ?? "", /consumer-local page header/);
   assert.ok(contract.consumerVisualStyleContract?.requiredReadbackFields?.includes("foundationVisualStandards"));
   assert.match(contract.consumerVisualStyleContract?.rejectCriteria?.join(" ") ?? "", /claims DS compliance/);
-  assert.match(contract.consumerVisualStyleContract?.rejectCriteria?.join(" ") ?? "", /reusable Work module rows/);
+  assert.match(contract.consumerVisualStyleContract?.rejectCriteria?.join(" ") ?? "", /reusable record rows/);
   assert.deepEqual(contract.visualEquivalenceLevels, [
     "same_package_version",
     "same_exported_component",
@@ -1214,9 +1214,9 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.shellControlVisualParityProof?.focusFields?.join(" ") ?? "", /outlineWidth outlineStyle outlineColor outlineOffset boxShadow/);
   assert.match(contract.shellControlVisualParityProof?.motionFields?.join(" ") ?? "", /transitionProperty transitionDuration transitionTimingFunction/);
   assert.match(contract.shellControlVisualParityProof?.reducedMotionExpectation ?? "", /transitions and animations disabled/);
-  assert.equal(contract.visualInstanceOracles?.[0]?.id, "aos-frontend-shell-slice");
-  assert.equal(contract.visualInstanceOracles?.[0]?.route, "proof.html#aos-frontend-shell-slice");
-  assert.equal(contract.visualInstanceOracles?.[0]?.supersededBy, "aos-owner-quality-product-shell");
+  assert.equal(contract.visualInstanceOracles?.[0]?.id, "frontend-shell-slice");
+  assert.equal(contract.visualInstanceOracles?.[0]?.route, "proof.html#frontend-shell-slice");
+  assert.equal(contract.visualInstanceOracles?.[0]?.supersededBy, "owner-quality-product-shell");
   assert.deepEqual(contract.visualInstanceOracles?.[0]?.primaryIa, ["Cockpit", "Work"]);
   assert.deepEqual(contract.visualInstanceOracles?.[0]?.requiredVariants, [
     "desktop-light-expanded-cockpit-search-results",
@@ -1229,11 +1229,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.length, 6);
   assert.equal(
     contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[0]?.selector,
-    "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"]"
+    "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"]"
   );
   assert.equal(
     contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.selector,
-    "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-rest\"]"
+    "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-rest\"]"
   );
   assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.expectedState?.search, "rest");
   assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.expectedState?.searchExpanded, false);
@@ -1260,11 +1260,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   );
   assert.match(contract.visualInstanceOracles?.[0]?.packageMapping?.join(" ") ?? "", /ProductShell ProductShellSearch useProductShellController/);
   assert.match(contract.visualInstanceOracles?.[0]?.negativeCriteria?.join(" ") ?? "", /no raw API\/debug payload as primary UX/);
-  const ownerQualityOracle = contract.visualInstanceOracles?.find((oracle: { id?: string }) => oracle.id === "aos-owner-quality-product-shell");
-  assert.equal(ownerQualityOracle?.name, "AosOwnerQualityProductShell");
-  assert.equal(ownerQualityOracle?.route, "proof.html#aos-owner-quality-product-shell");
+  const ownerQualityOracle = contract.visualInstanceOracles?.find((oracle: { id?: string }) => oracle.id === "owner-quality-product-shell");
+  assert.equal(ownerQualityOracle?.name, "OwnerQualityShellOracle");
+  assert.equal(ownerQualityOracle?.route, "proof.html#owner-quality-product-shell");
   assert.equal(ownerQualityOracle?.disposition, "owner_quality_candidate_requires_ds_review_before_product_use");
-  assert.equal(ownerQualityOracle?.replacesOwnerQualityTarget, "aos-frontend-shell-slice");
+  assert.equal(ownerQualityOracle?.replacesOwnerQualityTarget, "frontend-shell-slice");
   assert.deepEqual(ownerQualityOracle?.primaryIa, ["Operations Cockpit", "Work queue"]);
   assert.deepEqual(ownerQualityOracle?.requiredVariants, [
     "desktop-light-operations-cockpit",
@@ -1280,7 +1280,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.length, 9);
   assert.equal(
     ownerQualityOracle?.requiredVariantFixtures?.[0]?.selector,
-    "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]"
+    "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]"
   );
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[0]?.expectedState?.search, "rest");
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[0]?.expectedState?.searchExpanded, false);
@@ -1299,14 +1299,14 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[8]?.expectedState?.reducedMotion, true);
   assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /ProductShell ProductShellSearch useProductShellController/);
   assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /ProductLogo tcrnProductLogoRegistry/);
-  assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /Surface WorkIndex TableShell KeyValueList/);
-  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /AOS Operations Cockpit/);
-  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /registered TCRN AOS product identity/);
+  assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /Surface RecordTable TableShell KeyValueList/);
+  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /first viewport reads as a product shell/);
+  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /registered product identity/);
   assert.doesNotMatch(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /AOS Rebuild Workspace/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /exactly one primary H1/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /zh-CN owner-quality fixtures localize/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /topbar controls stay within/);
-  assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /Dummy Cockpit/);
+  assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /placeholder shell/);
   assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /implementation\/proof\/debug terminology/);
   assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /root\/topbar horizontal overflow/);
   assert.match(ownerQualityOracle?.delegatedSubOracles?.join(" ") ?? "", /actionable desktop side-nav collapse\/expand behavior/);
@@ -1348,22 +1348,22 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.componentConsumptionDisposition, /ProductShell, TopBar, SideNav/);
   assert.match(contract.componentConsumptionDisposition, /ProductShellSearch is required only when the product exposes a real topbar\/global search surface/);
   assert.match(contract.componentConsumptionDisposition, /must be omitted rather than rendered as an inert placeholder/);
-  assert.match(contract.componentConsumptionDisposition, /RelationshipChip, MachineToken, MachineTokenCell, WorkManagementSubnav, WorkPageHeader/);
-  assert.match(contract.componentConsumptionDisposition, /WorkItemRow, WorkList, WorkSplitView, WorkBacklogGroup/);
-  assert.match(contract.componentConsumptionDisposition, /WorkDetailLayout, MetadataRail, WorkFieldPanel, WorkActivityFeed/);
-  assert.match(contract.componentConsumptionDisposition, /KnowledgePageTree, KnowledgeDocumentCanvas, KnowledgeTocRail/);
-  assert.match(contract.componentConsumptionDisposition, /KnowledgeVersionHistory, TemplateGallery, and KnowledgeSearchResults/);
+  assert.match(contract.componentConsumptionDisposition, /RelationshipChip, MachineToken, MachineTokenCell, SubNav, PageHeader/);
+  assert.match(contract.componentConsumptionDisposition, /RecordRow, RecordTable, SplitView, RowGroup/);
+  assert.match(contract.componentConsumptionDisposition, /DetailLayout, MetadataRail, DetailInspector, ActivityFeed/);
+  assert.match(contract.componentConsumptionDisposition, /TreeNav, DocumentCanvas, TocRail/);
+  assert.match(contract.componentConsumptionDisposition, /VersionHistory, TemplateGallery, and SearchResultList/);
   assert.match(contract.componentConsumptionDisposition, /useProductShellController/);
   assert.match(contract.componentConsumptionDisposition, /ProductShell semantic callbacks/);
   assert.match(contract.componentConsumptionDisposition, /productShellControlProps/);
   assert.match(contract.componentConsumptionDisposition, /when search is present, onSearchQueryChange/);
   assert.match(contract.componentConsumptionDisposition, /onSearchResultActivate/);
-  assert.match(contract.workManagementPatternDisposition, /static Initiative\/Epic\/Story\/Task or Work Item\/Subtask or Evidence Task presentation/);
-  assert.match(contract.workManagementPatternDisposition, /compact route context, local view tabs, quick filters, dense Work item rows\/lists/);
-  assert.match(contract.workManagementPatternDisposition, /relationship vocabulary, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment/);
-  assert.match(contract.workManagementPatternDisposition, /API integration, backend persistence, live dispatch, external queues, runtime data mutation, AOS\/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed/);
-  assert.match(contract.knowledgeManagementPatternDisposition, /static page trees, document canvas, table of contents/);
-  assert.match(contract.knowledgeManagementPatternDisposition, /backend publishing, live collaboration, external workspace integration/);
+  assert.match(contract.recordsAndBoardsPatternDisposition, /static records, stages, relations, documents, and machine-token presentation/);
+  assert.match(contract.recordsAndBoardsPatternDisposition, /compact route context, local view tabs, quick filters, dense rows and lists/);
+  assert.match(contract.recordsAndBoardsPatternDisposition, /relation chips, stage pipelines, attachment lists, saved-view controls, record inspection, and machine-token containment/);
+  assert.match(contract.recordsAndBoardsPatternDisposition, /API integration, backend persistence, live dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, and package publication are not claimed/);
+  assert.match(contract.documentsAndCollaborationPatternDisposition, /static page trees, document canvas, table of contents/);
+  assert.match(contract.documentsAndCollaborationPatternDisposition, /backend publishing, live collaboration, external workspace integration/);
   // The preference-transport block landed for a reported first-paint flash and then
   // sat unasserted: nothing in this repository read it, so its clauses could have
   // been softened or dropped and every gate would have stayed green. Structure and
@@ -1395,7 +1395,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   // the design system and the gate reported that as correct.
   assert.doesNotMatch(contract.componentConsumptionDisposition, /requestCookieHeader/);
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
-  assert.ok(contract.requiredProof.includes("work_management_static_pattern_receipt"));
+  assert.ok(contract.requiredProof.includes("functional_display_static_pattern_receipt"));
   assert.match(contract.storybookDocShellAuthorityDisposition, /original Storybook-owned doc shell composition/);
   assert.match(contract.storybookDocShellAuthorityDisposition, /data-doc-shell='online-docs'/);
   assert.match(contract.storybookDocShellAuthorityDisposition, /ProductShell remains documented and package-backed for component examples/);
@@ -1460,7 +1460,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Required Storybook sections:/);
   assert.match(llms, /Covered Storybook section\/category\/story hierarchy:/);
   assert.match(llms, /Changelog governance: change-log\.html#local-changelog/);
-  assert.match(llms, /Work Management authority: static_contract_authority_explicit_and_smoke_proven/);
+  assert.match(llms, /Functional display authority: static_contract_authority_explicit_and_smoke_proven/);
   assert.match(llms, /Foundation visual standards: foundation-visual-standards-v1/);
   assert.match(llms, /Foundation visual standard category details:/);
   assert.match(llms, /consumer-enforcement: Consumer enforcement and reject criteria/);
@@ -1471,8 +1471,8 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-work-index-spec, work-management-components-spec, work-management-relationships-spec, work-management-tokens-density-views-spec, work-management-route-detail-spec, work-management-backlog-board-spec, work-management-hierarchy-gates-spec, work-management-inspector-spec, knowledge-management-components-spec, knowledge-management-density-collaboration-spec, knowledge-management-templates-spec/);
-  assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, work-management-patterns, readiness-notification-patterns/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec/);
+  assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, records-and-boards-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
   const robots = readFileSync(join(process.cwd(), "storybook-static", "robots.txt"), "utf8");

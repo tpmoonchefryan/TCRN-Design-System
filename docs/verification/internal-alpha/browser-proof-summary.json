@@ -28,46 +28,46 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "ea4abd690b433fcf6264e6ad9d54faa97e0dfd1f30f9c6026272c85c20d28706",
+    "contractPayloadDigest": "56c7491ff81b5309acd8c8732938732693be23ec641b5acc7ab04093af9336fc",
     "digestVerified": true,
     "coveredSectionCount": 7,
-    "coveredCategoryCount": 20,
+    "coveredCategoryCount": 21,
     "changelogRecordCount": 1,
-    "workManagementStaticAuthorityDisposition": "static_contract_authority_explicit_and_smoke_proven",
-    "workManagementAdmittedPackageExports": [
-      "WorkPageHeader",
-      "WorkViewTabs",
-      "WorkQuickFilters",
-      "WorkItemRow",
-      "WorkList",
-      "WorkSplitView",
-      "WorkBacklogGroup",
-      "WorkInlineCreateStatic",
-      "WorkBoard",
-      "WorkBoardView",
-      "WorkDetailLayout",
+    "functionalDisplayStaticAuthorityDisposition": "static_contract_authority_explicit_and_smoke_proven",
+    "functionalDisplayAdmittedPackageExports": [
+      "PageHeader",
+      "ViewTabs",
+      "QuickFilters",
+      "RecordRow",
+      "RecordTable",
+      "SplitView",
+      "RowGroup",
+      "InlineCreate",
+      "LaneBoard",
+      "LaneBoard",
+      "DetailLayout",
       "MetadataRail",
-      "WorkFieldPanel",
-      "WorkActivityFeed",
-      "GatePipelineCompact",
-      "EvidenceAttachmentList",
+      "DetailInspector",
+      "ActivityFeed",
+      "StagePipeline",
+      "AttachmentList",
       "MachineTokenCell"
     ],
     "workLayoutDensityPackageExports": [
-      "WorkPageHeader",
-      "WorkViewTabs",
-      "WorkQuickFilters",
-      "WorkItemRow",
-      "WorkList",
-      "WorkSplitView",
-      "WorkBacklogGroup",
-      "WorkInlineCreateStatic",
-      "WorkBoardView",
-      "WorkDetailLayout",
+      "PageHeader",
+      "ViewTabs",
+      "QuickFilters",
+      "RecordRow",
+      "RecordTable",
+      "SplitView",
+      "RowGroup",
+      "InlineCreate",
+      "LaneBoard",
+      "DetailLayout",
       "MetadataRail",
-      "WorkFieldPanel",
-      "WorkActivityFeed",
-      "GatePipelineCompact",
+      "DetailInspector",
+      "ActivityFeed",
+      "StagePipeline",
       "MachineTokenCell"
     ],
     "foundationVisualStandardsRegistryId": "foundation-visual-standards-v1",
@@ -138,8 +138,8 @@
       "locale": "zh-CN",
       "gating": true,
       "ok": true,
-      "storyCount": 60,
-      "allowlistedLeakCount": 90,
+      "storyCount": 61,
+      "allowlistedLeakCount": 122,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -215,7 +215,7 @@
         },
         {
           "storyId": "foundation-visual-standards",
-          "allowlistedLeakCount": 6,
+          "allowlistedLeakCount": 37,
           "newLeaks": []
         },
         {
@@ -225,7 +225,7 @@
         },
         {
           "storyId": "component-family-index",
-          "allowlistedLeakCount": 2,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
@@ -254,8 +254,8 @@
           "newLeaks": []
         },
         {
-          "storyId": "table-work-index-spec",
-          "allowlistedLeakCount": 0,
+          "storyId": "table-record-index-spec",
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
@@ -289,53 +289,53 @@
           "newLeaks": []
         },
         {
-          "storyId": "work-management-components-spec",
+          "storyId": "records-and-boards-components-spec",
+          "allowlistedLeakCount": 13,
+          "newLeaks": []
+        },
+        {
+          "storyId": "records-and-boards-backlog-spec",
+          "allowlistedLeakCount": 2,
+          "newLeaks": []
+        },
+        {
+          "storyId": "hierarchy-and-relations-spec",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "hierarchy-and-relations-stages-spec",
+          "allowlistedLeakCount": 2,
+          "newLeaks": []
+        },
+        {
+          "storyId": "detail-and-inspection-density-spec",
           "allowlistedLeakCount": 4,
           "newLeaks": []
         },
         {
-          "storyId": "work-management-relationships-spec",
-          "allowlistedLeakCount": 0,
+          "storyId": "detail-and-inspection-route-spec",
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
-          "storyId": "work-management-tokens-density-views-spec",
-          "allowlistedLeakCount": 0,
+          "storyId": "detail-and-inspection-inspector-spec",
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
-          "storyId": "work-management-route-detail-spec",
+          "storyId": "documents-and-collaboration-components-spec",
+          "allowlistedLeakCount": 3,
+          "newLeaks": []
+        },
+        {
+          "storyId": "documents-and-collaboration-density-spec",
           "allowlistedLeakCount": 5,
           "newLeaks": []
         },
         {
-          "storyId": "work-management-backlog-board-spec",
-          "allowlistedLeakCount": 6,
-          "newLeaks": []
-        },
-        {
-          "storyId": "work-management-hierarchy-gates-spec",
-          "allowlistedLeakCount": 0,
-          "newLeaks": []
-        },
-        {
-          "storyId": "work-management-inspector-spec",
-          "allowlistedLeakCount": 2,
-          "newLeaks": []
-        },
-        {
-          "storyId": "knowledge-management-components-spec",
-          "allowlistedLeakCount": 1,
-          "newLeaks": []
-        },
-        {
-          "storyId": "knowledge-management-density-collaboration-spec",
-          "allowlistedLeakCount": 1,
-          "newLeaks": []
-        },
-        {
-          "storyId": "knowledge-management-templates-spec",
-          "allowlistedLeakCount": 2,
+          "storyId": "documents-and-collaboration-templates-spec",
+          "allowlistedLeakCount": 8,
           "newLeaks": []
         },
         {
@@ -349,23 +349,8 @@
           "newLeaks": []
         },
         {
-          "storyId": "work-management-patterns",
-          "allowlistedLeakCount": 1,
-          "newLeaks": []
-        },
-        {
-          "storyId": "readiness-notification-patterns",
-          "allowlistedLeakCount": 0,
-          "newLeaks": []
-        },
-        {
-          "storyId": "selection-list-patterns",
-          "allowlistedLeakCount": 1,
-          "newLeaks": []
-        },
-        {
-          "storyId": "modal-validation-patterns",
-          "allowlistedLeakCount": 0,
+          "storyId": "records-and-boards-patterns",
+          "allowlistedLeakCount": 2,
           "newLeaks": []
         },
         {
@@ -384,13 +369,28 @@
           "newLeaks": []
         },
         {
+          "storyId": "readiness-notification-patterns",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "selection-list-patterns",
+          "allowlistedLeakCount": 1,
+          "newLeaks": []
+        },
+        {
+          "storyId": "modal-validation-patterns",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
           "storyId": "proof-matrix",
           "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
           "storyId": "ai-consumption-contract",
-          "allowlistedLeakCount": 7,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
@@ -404,13 +404,13 @@
           "newLeaks": []
         },
         {
-          "storyId": "aos-frontend-shell-slice",
-          "allowlistedLeakCount": 3,
+          "storyId": "frontend-shell-slice",
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
-          "storyId": "aos-owner-quality-product-shell",
-          "allowlistedLeakCount": 7,
+          "storyId": "owner-quality-product-shell",
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
@@ -442,6 +442,11 @@
           "storyId": "reference-page-5",
           "allowlistedLeakCount": 0,
           "newLeaks": []
+        },
+        {
+          "storyId": "reference-page-6",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
         }
       ]
     },
@@ -451,8 +456,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 60,
-        "leakCount": 116,
+        "storyCount": 61,
+        "leakCount": 126,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -512,7 +517,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 6
+            "leakCount": 37
           },
           {
             "storyId": "copy-guidelines",
@@ -520,7 +525,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 2
+            "leakCount": 0
           },
           {
             "storyId": "display-primitives-spec",
@@ -543,8 +548,8 @@
             "leakCount": 3
           },
           {
-            "storyId": "table-work-index-spec",
-            "leakCount": 0
+            "storyId": "table-record-index-spec",
+            "leakCount": 1
           },
           {
             "storyId": "navigation-shell-spec",
@@ -571,44 +576,44 @@
             "leakCount": 0
           },
           {
-            "storyId": "work-management-components-spec",
-            "leakCount": 5
+            "storyId": "records-and-boards-components-spec",
+            "leakCount": 13
           },
           {
-            "storyId": "work-management-relationships-spec",
+            "storyId": "records-and-boards-backlog-spec",
             "leakCount": 2
           },
           {
-            "storyId": "work-management-tokens-density-views-spec",
+            "storyId": "hierarchy-and-relations-spec",
+            "leakCount": 0
+          },
+          {
+            "storyId": "hierarchy-and-relations-stages-spec",
             "leakCount": 2
           },
           {
-            "storyId": "work-management-route-detail-spec",
-            "leakCount": 7
-          },
-          {
-            "storyId": "work-management-backlog-board-spec",
-            "leakCount": 8
-          },
-          {
-            "storyId": "work-management-hierarchy-gates-spec",
-            "leakCount": 3
-          },
-          {
-            "storyId": "work-management-inspector-spec",
+            "storyId": "detail-and-inspection-density-spec",
             "leakCount": 4
           },
           {
-            "storyId": "knowledge-management-components-spec",
+            "storyId": "detail-and-inspection-route-spec",
+            "leakCount": 1
+          },
+          {
+            "storyId": "detail-and-inspection-inspector-spec",
+            "leakCount": 1
+          },
+          {
+            "storyId": "documents-and-collaboration-components-spec",
             "leakCount": 3
           },
           {
-            "storyId": "knowledge-management-density-collaboration-spec",
-            "leakCount": 2
+            "storyId": "documents-and-collaboration-density-spec",
+            "leakCount": 5
           },
           {
-            "storyId": "knowledge-management-templates-spec",
-            "leakCount": 3
+            "storyId": "documents-and-collaboration-templates-spec",
+            "leakCount": 8
           },
           {
             "storyId": "forms-patterns",
@@ -619,20 +624,8 @@
             "leakCount": 0
           },
           {
-            "storyId": "work-management-patterns",
+            "storyId": "records-and-boards-patterns",
             "leakCount": 2
-          },
-          {
-            "storyId": "readiness-notification-patterns",
-            "leakCount": 0
-          },
-          {
-            "storyId": "selection-list-patterns",
-            "leakCount": 1
-          },
-          {
-            "storyId": "modal-validation-patterns",
-            "leakCount": 0
           },
           {
             "storyId": "datagrid-fields-patterns",
@@ -647,12 +640,24 @@
             "leakCount": 0
           },
           {
+            "storyId": "readiness-notification-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "selection-list-patterns",
+            "leakCount": 1
+          },
+          {
+            "storyId": "modal-validation-patterns",
+            "leakCount": 0
+          },
+          {
             "storyId": "proof-matrix",
             "leakCount": 0
           },
           {
             "storyId": "ai-consumption-contract",
-            "leakCount": 8
+            "leakCount": 0
           },
           {
             "storyId": "blocked-actions",
@@ -663,12 +668,12 @@
             "leakCount": 0
           },
           {
-            "storyId": "aos-frontend-shell-slice",
-            "leakCount": 4
+            "storyId": "frontend-shell-slice",
+            "leakCount": 0
           },
           {
-            "storyId": "aos-owner-quality-product-shell",
-            "leakCount": 8
+            "storyId": "owner-quality-product-shell",
+            "leakCount": 0
           },
           {
             "storyId": "local-changelog",
@@ -692,6 +697,10 @@
           },
           {
             "storyId": "reference-page-5",
+            "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-6",
             "leakCount": 0
           }
         ]
@@ -701,8 +710,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 60,
-        "leakCount": 123,
+        "storyCount": 61,
+        "leakCount": 134,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -762,7 +771,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 8
+            "leakCount": 39
           },
           {
             "storyId": "copy-guidelines",
@@ -770,7 +779,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 2
+            "leakCount": 0
           },
           {
             "storyId": "display-primitives-spec",
@@ -793,8 +802,8 @@
             "leakCount": 3
           },
           {
-            "storyId": "table-work-index-spec",
-            "leakCount": 0
+            "storyId": "table-record-index-spec",
+            "leakCount": 1
           },
           {
             "storyId": "navigation-shell-spec",
@@ -821,44 +830,44 @@
             "leakCount": 1
           },
           {
-            "storyId": "work-management-components-spec",
-            "leakCount": 5
+            "storyId": "records-and-boards-components-spec",
+            "leakCount": 13
           },
           {
-            "storyId": "work-management-relationships-spec",
+            "storyId": "records-and-boards-backlog-spec",
             "leakCount": 2
           },
           {
-            "storyId": "work-management-tokens-density-views-spec",
+            "storyId": "hierarchy-and-relations-spec",
+            "leakCount": 0
+          },
+          {
+            "storyId": "hierarchy-and-relations-stages-spec",
             "leakCount": 2
           },
           {
-            "storyId": "work-management-route-detail-spec",
-            "leakCount": 7
-          },
-          {
-            "storyId": "work-management-backlog-board-spec",
-            "leakCount": 8
-          },
-          {
-            "storyId": "work-management-hierarchy-gates-spec",
-            "leakCount": 3
-          },
-          {
-            "storyId": "work-management-inspector-spec",
+            "storyId": "detail-and-inspection-density-spec",
             "leakCount": 4
           },
           {
-            "storyId": "knowledge-management-components-spec",
+            "storyId": "detail-and-inspection-route-spec",
+            "leakCount": 1
+          },
+          {
+            "storyId": "detail-and-inspection-inspector-spec",
+            "leakCount": 1
+          },
+          {
+            "storyId": "documents-and-collaboration-components-spec",
             "leakCount": 3
           },
           {
-            "storyId": "knowledge-management-density-collaboration-spec",
-            "leakCount": 2
+            "storyId": "documents-and-collaboration-density-spec",
+            "leakCount": 5
           },
           {
-            "storyId": "knowledge-management-templates-spec",
-            "leakCount": 3
+            "storyId": "documents-and-collaboration-templates-spec",
+            "leakCount": 8
           },
           {
             "storyId": "forms-patterns",
@@ -869,20 +878,8 @@
             "leakCount": 0
           },
           {
-            "storyId": "work-management-patterns",
+            "storyId": "records-and-boards-patterns",
             "leakCount": 2
-          },
-          {
-            "storyId": "readiness-notification-patterns",
-            "leakCount": 0
-          },
-          {
-            "storyId": "selection-list-patterns",
-            "leakCount": 1
-          },
-          {
-            "storyId": "modal-validation-patterns",
-            "leakCount": 1
           },
           {
             "storyId": "datagrid-fields-patterns",
@@ -897,12 +894,24 @@
             "leakCount": 0
           },
           {
+            "storyId": "readiness-notification-patterns",
+            "leakCount": 0
+          },
+          {
+            "storyId": "selection-list-patterns",
+            "leakCount": 1
+          },
+          {
+            "storyId": "modal-validation-patterns",
+            "leakCount": 1
+          },
+          {
             "storyId": "proof-matrix",
             "leakCount": 0
           },
           {
             "storyId": "ai-consumption-contract",
-            "leakCount": 7
+            "leakCount": 0
           },
           {
             "storyId": "blocked-actions",
@@ -913,12 +922,12 @@
             "leakCount": 1
           },
           {
-            "storyId": "aos-frontend-shell-slice",
-            "leakCount": 4
+            "storyId": "frontend-shell-slice",
+            "leakCount": 0
           },
           {
-            "storyId": "aos-owner-quality-product-shell",
-            "leakCount": 8
+            "storyId": "owner-quality-product-shell",
+            "leakCount": 0
           },
           {
             "storyId": "local-changelog",
@@ -943,6 +952,10 @@
           {
             "storyId": "reference-page-5",
             "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-6",
+            "leakCount": 0
           }
         ]
       },
@@ -951,8 +964,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 60,
-        "leakCount": 3467,
+        "storyCount": 61,
+        "leakCount": 2725,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -1012,7 +1025,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 210
+            "leakCount": 194
           },
           {
             "storyId": "copy-guidelines",
@@ -1020,7 +1033,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 106
+            "leakCount": 90
           },
           {
             "storyId": "display-primitives-spec",
@@ -1043,8 +1056,8 @@
             "leakCount": 67
           },
           {
-            "storyId": "table-work-index-spec",
-            "leakCount": 97
+            "storyId": "table-record-index-spec",
+            "leakCount": 103
           },
           {
             "storyId": "navigation-shell-spec",
@@ -1071,43 +1084,43 @@
             "leakCount": 84
           },
           {
-            "storyId": "work-management-components-spec",
-            "leakCount": 107
+            "storyId": "records-and-boards-components-spec",
+            "leakCount": 26
           },
           {
-            "storyId": "work-management-relationships-spec",
-            "leakCount": 15
+            "storyId": "records-and-boards-backlog-spec",
+            "leakCount": 52
           },
           {
-            "storyId": "work-management-tokens-density-views-spec",
-            "leakCount": 36
+            "storyId": "hierarchy-and-relations-spec",
+            "leakCount": 11
           },
           {
-            "storyId": "work-management-route-detail-spec",
-            "leakCount": 60
-          },
-          {
-            "storyId": "work-management-backlog-board-spec",
-            "leakCount": 54
-          },
-          {
-            "storyId": "work-management-hierarchy-gates-spec",
+            "storyId": "hierarchy-and-relations-stages-spec",
             "leakCount": 56
           },
           {
-            "storyId": "work-management-inspector-spec",
+            "storyId": "detail-and-inspection-density-spec",
+            "leakCount": 30
+          },
+          {
+            "storyId": "detail-and-inspection-route-spec",
+            "leakCount": 60
+          },
+          {
+            "storyId": "detail-and-inspection-inspector-spec",
+            "leakCount": 36
+          },
+          {
+            "storyId": "documents-and-collaboration-components-spec",
             "leakCount": 35
           },
           {
-            "storyId": "knowledge-management-components-spec",
-            "leakCount": 65
+            "storyId": "documents-and-collaboration-density-spec",
+            "leakCount": 35
           },
           {
-            "storyId": "knowledge-management-density-collaboration-spec",
-            "leakCount": 40
-          },
-          {
-            "storyId": "knowledge-management-templates-spec",
+            "storyId": "documents-and-collaboration-templates-spec",
             "leakCount": 38
           },
           {
@@ -1116,23 +1129,11 @@
           },
           {
             "storyId": "workbench-patterns",
-            "leakCount": 16
-          },
-          {
-            "storyId": "work-management-patterns",
-            "leakCount": 89
-          },
-          {
-            "storyId": "readiness-notification-patterns",
             "leakCount": 15
           },
           {
-            "storyId": "selection-list-patterns",
-            "leakCount": 14
-          },
-          {
-            "storyId": "modal-validation-patterns",
-            "leakCount": 9
+            "storyId": "records-and-boards-patterns",
+            "leakCount": 89
           },
           {
             "storyId": "datagrid-fields-patterns",
@@ -1147,12 +1148,24 @@
             "leakCount": 27
           },
           {
+            "storyId": "readiness-notification-patterns",
+            "leakCount": 15
+          },
+          {
+            "storyId": "selection-list-patterns",
+            "leakCount": 14
+          },
+          {
+            "storyId": "modal-validation-patterns",
+            "leakCount": 9
+          },
+          {
             "storyId": "proof-matrix",
             "leakCount": 13
           },
           {
             "storyId": "ai-consumption-contract",
-            "leakCount": 316
+            "leakCount": 2
           },
           {
             "storyId": "blocked-actions",
@@ -1163,12 +1176,12 @@
             "leakCount": 10
           },
           {
-            "storyId": "aos-frontend-shell-slice",
-            "leakCount": 91
+            "storyId": "frontend-shell-slice",
+            "leakCount": 2
           },
           {
-            "storyId": "aos-owner-quality-product-shell",
-            "leakCount": 191
+            "storyId": "owner-quality-product-shell",
+            "leakCount": 2
           },
           {
             "storyId": "local-changelog",
@@ -1176,7 +1189,7 @@
           },
           {
             "storyId": "reference-page-1",
-            "leakCount": 5
+            "leakCount": 4
           },
           {
             "storyId": "reference-page-2",
@@ -1184,14 +1197,18 @@
           },
           {
             "storyId": "reference-page-3",
-            "leakCount": 4
-          },
-          {
-            "storyId": "reference-page-4",
             "leakCount": 5
           },
           {
+            "storyId": "reference-page-4",
+            "leakCount": 4
+          },
+          {
             "storyId": "reference-page-5",
+            "leakCount": 5
+          },
+          {
+            "storyId": "reference-page-6",
             "leakCount": 5
           }
         ],
@@ -1219,7 +1236,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1304,7 +1321,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1389,7 +1406,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1488,7 +1505,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1587,7 +1604,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1672,7 +1689,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1785,7 +1802,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1859,7 +1876,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -1930,7 +1947,7 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 1077,
-          "height": 820
+          "height": 808
         },
         {
           "id": "governance-boundaries",
@@ -1969,7 +1986,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -2092,7 +2109,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -2163,7 +2180,7 @@
           "id": "color-palette",
           "visible": true,
           "width": 1077,
-          "height": 4659
+          "height": 4635
         }
       ],
       "referenceRegions": [],
@@ -2195,7 +2212,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -2260,7 +2277,7 @@
           "id": "text-styles",
           "visible": true,
           "width": 1077,
-          "height": 2409
+          "height": 2389
         },
         {
           "id": "grid-system",
@@ -2299,7 +2316,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -2423,7 +2440,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -2514,7 +2531,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 1077,
-          "height": 3350
+          "height": 3287
         }
       ],
       "referenceRegions": [],
@@ -2545,7 +2562,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -2629,7 +2646,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -2715,19 +2732,19 @@
           "id": "component-family-index",
           "visible": true,
           "width": 1077,
-          "height": 2978
+          "height": 2631
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 1077,
-          "height": 2330
+          "height": 2318
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 1077,
-          "height": 1053
+          "height": 1041
         }
       ],
       "referenceRegions": [],
@@ -2749,7 +2766,7 @@
         "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
-        "table-work-index-spec"
+        "table-record-index-spec"
       ],
       "expectedActiveStoryId": "stamp-spec-usage",
       "consoleMessages": [],
@@ -2761,7 +2778,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -2809,9 +2826,9 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
+          "route": "table-record-index-spec",
+          "text": "Table and record index spec",
+          "textLength": 23,
           "itemWidth": 236.17,
           "labelWidth": 236.17,
           "labelHeight": 30,
@@ -2869,10 +2886,10 @@
           "height": 1743
         },
         {
-          "id": "table-work-index-spec",
+          "id": "table-record-index-spec",
           "visible": true,
           "width": 1077,
-          "height": 1961
+          "height": 1939
         }
       ],
       "referenceRegions": [],
@@ -2907,7 +2924,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -3104,7 +3121,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -3170,19 +3187,14 @@
       "viewport": "desktop-1440x900",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/components-work-management.html",
+      "url": "/apps/storybook/storybook-static/components-records-and-boards.html",
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "work-management-components-spec",
-        "work-management-relationships-spec",
-        "work-management-tokens-density-views-spec",
-        "work-management-route-detail-spec",
-        "work-management-backlog-board-spec",
-        "work-management-hierarchy-gates-spec",
-        "work-management-inspector-spec"
+        "records-and-boards-components-spec",
+        "records-and-boards-backlog-spec"
       ],
-      "expectedActiveStoryId": "work-management-components-spec",
+      "expectedActiveStoryId": "records-and-boards-components-spec",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -3192,17 +3204,17 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
         {
-          "route": "work-management-components-spec",
-          "text": "Work Management component specs",
-          "textLength": 28,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
+          "route": "records-and-boards-components-spec",
+          "text": "Records and boards components",
+          "textLength": 26,
+          "itemWidth": 260.14,
+          "labelWidth": 260.14,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -3212,81 +3224,11 @@
           "ok": true
         },
         {
-          "route": "work-management-relationships-spec",
-          "text": "Work Management relationship vocabulary",
-          "textLength": 36,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-tokens-density-views-spec",
-          "text": "Work Management tokens, density, and views",
-          "textLength": 37,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-route-detail-spec",
-          "text": "Work Management route context and detail",
-          "textLength": 35,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-backlog-board-spec",
-          "text": "Work Management backlog and board",
-          "textLength": 29,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-hierarchy-gates-spec",
-          "text": "Work Management hierarchy, gates, and evidence",
-          "textLength": 41,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-inspector-spec",
-          "text": "Work Management evidence and inspector",
-          "textLength": 34,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
+          "route": "records-and-boards-backlog-spec",
+          "text": "Records and boards: backlog and lanes",
+          "textLength": 32,
+          "itemWidth": 260.14,
+          "labelWidth": 260.14,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -3318,52 +3260,22 @@
         "Components"
       ],
       "currentNav": "Components",
-      "currentStoryNav": "work-management-components-spec",
+      "currentStoryNav": "records-and-boards-components-spec",
       "bodyScrollWidth": 1440,
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "work-management-components-spec",
+          "id": "records-and-boards-components-spec",
           "visible": true,
           "width": 1077,
-          "height": 2136
+          "height": 513
         },
         {
-          "id": "work-management-relationships-spec",
+          "id": "records-and-boards-backlog-spec",
           "visible": true,
           "width": 1077,
-          "height": 289
-        },
-        {
-          "id": "work-management-tokens-density-views-spec",
-          "visible": true,
-          "width": 1077,
-          "height": 1835
-        },
-        {
-          "id": "work-management-route-detail-spec",
-          "visible": true,
-          "width": 1077,
-          "height": 1502
-        },
-        {
-          "id": "work-management-backlog-board-spec",
-          "visible": true,
-          "width": 1077,
-          "height": 976
-        },
-        {
-          "id": "work-management-hierarchy-gates-spec",
-          "visible": true,
-          "width": 1077,
-          "height": 1981
-        },
-        {
-          "id": "work-management-inspector-spec",
-          "visible": true,
-          "width": 1077,
-          "height": 887
+          "height": 1038
         }
       ],
       "referenceRegions": [],
@@ -3378,15 +3290,14 @@
       "viewport": "desktop-1440x900",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/components-knowledge-management.html",
+      "url": "/apps/storybook/storybook-static/components-hierarchy-and-relations.html",
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "knowledge-management-components-spec",
-        "knowledge-management-density-collaboration-spec",
-        "knowledge-management-templates-spec"
+        "hierarchy-and-relations-spec",
+        "hierarchy-and-relations-stages-spec"
       ],
-      "expectedActiveStoryId": "knowledge-management-components-spec",
+      "expectedActiveStoryId": "hierarchy-and-relations-spec",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -3396,17 +3307,17 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
         {
-          "route": "knowledge-management-components-spec",
-          "text": "Knowledge Management component specs",
-          "textLength": 33,
-          "itemWidth": 324.72,
-          "labelWidth": 324.72,
+          "route": "hierarchy-and-relations-spec",
+          "text": "Hierarchy and relations",
+          "textLength": 21,
+          "itemWidth": 296.22,
+          "labelWidth": 296.22,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -3416,25 +3327,11 @@
           "ok": true
         },
         {
-          "route": "knowledge-management-density-collaboration-spec",
-          "text": "Knowledge Management density and collaboration",
-          "textLength": 42,
-          "itemWidth": 324.72,
-          "labelWidth": 324.72,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "knowledge-management-templates-spec",
-          "text": "Knowledge Management templates and results",
-          "textLength": 38,
-          "itemWidth": 324.72,
-          "labelWidth": 324.72,
+          "route": "hierarchy-and-relations-stages-spec",
+          "text": "Hierarchy and relations: stages and references",
+          "textLength": 41,
+          "itemWidth": 296.22,
+          "labelWidth": 296.22,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -3466,25 +3363,267 @@
         "Components"
       ],
       "currentNav": "Components",
-      "currentStoryNav": "knowledge-management-components-spec",
+      "currentStoryNav": "hierarchy-and-relations-spec",
       "bodyScrollWidth": 1440,
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "knowledge-management-components-spec",
+          "id": "hierarchy-and-relations-spec",
           "visible": true,
           "width": 1077,
-          "height": 1403
+          "height": 289
         },
         {
-          "id": "knowledge-management-density-collaboration-spec",
+          "id": "hierarchy-and-relations-stages-spec",
           "visible": true,
           "width": 1077,
-          "height": 1628
+          "height": 1854
+        }
+      ],
+      "referenceRegions": [],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/components-detail-and-inspection.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "detail-and-inspection-density-spec",
+        "detail-and-inspection-route-spec",
+        "detail-and-inspection-inspector-spec"
+      ],
+      "expectedActiveStoryId": "detail-and-inspection-density-spec",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "detail-and-inspection-density-spec",
+          "text": "Detail and inspection: density and views",
+          "textLength": 35,
+          "itemWidth": 279.2,
+          "labelWidth": 279.2,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
         },
         {
-          "id": "knowledge-management-templates-spec",
+          "route": "detail-and-inspection-route-spec",
+          "text": "Detail and inspection: route context",
+          "textLength": 32,
+          "itemWidth": 279.2,
+          "labelWidth": 279.2,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "detail-and-inspection-inspector-spec",
+          "text": "Detail and inspection: record inspector",
+          "textLength": 35,
+          "itemWidth": 279.2,
+          "labelWidth": 279.2,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "detail-and-inspection-density-spec",
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "detail-and-inspection-density-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1804
+        },
+        {
+          "id": "detail-and-inspection-route-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1514
+        },
+        {
+          "id": "detail-and-inspection-inspector-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 878
+        }
+      ],
+      "referenceRegions": [],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/components-documents-and-collaboration.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "documents-and-collaboration-components-spec",
+        "documents-and-collaboration-density-spec",
+        "documents-and-collaboration-templates-spec"
+      ],
+      "expectedActiveStoryId": "documents-and-collaboration-components-spec",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "documents-and-collaboration-components-spec",
+          "text": "Documents and collaboration components",
+          "textLength": 35,
+          "itemWidth": 336.91,
+          "labelWidth": 336.91,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "documents-and-collaboration-density-spec",
+          "text": "Documents and collaboration: density and comments",
+          "textLength": 44,
+          "itemWidth": 336.91,
+          "labelWidth": 336.91,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "documents-and-collaboration-templates-spec",
+          "text": "Documents and collaboration: templates and results",
+          "textLength": 45,
+          "itemWidth": 336.91,
+          "labelWidth": 336.91,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "documents-and-collaboration-components-spec",
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "documents-and-collaboration-components-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 994
+        },
+        {
+          "id": "documents-and-collaboration-density-spec",
+          "visible": true,
+          "width": 1077,
+          "height": 1668
+        },
+        {
+          "id": "documents-and-collaboration-templates-spec",
           "visible": true,
           "width": 1077,
           "height": 642
@@ -3519,7 +3658,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -3590,7 +3729,7 @@
           "id": "workbench-patterns",
           "visible": true,
           "width": 1077,
-          "height": 442
+          "height": 379
         }
       ],
       "referenceRegions": [],
@@ -3605,13 +3744,16 @@
       "viewport": "desktop-1440x900",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/patterns-work-management.html",
+      "url": "/apps/storybook/storybook-static/patterns-data-pages.html",
       "pageKind": "category",
       "expectedSection": "Patterns",
       "expectedStoryIds": [
-        "work-management-patterns"
+        "records-and-boards-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates"
       ],
-      "expectedActiveStoryId": "work-management-patterns",
+      "expectedActiveStoryId": "records-and-boards-patterns",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -3621,15 +3763,57 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
         {
-          "route": "work-management-patterns",
-          "text": "Work Management patterns",
-          "textLength": 22,
+          "route": "records-and-boards-patterns",
+          "text": "Records and boards patterns",
+          "textLength": 24,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "datagrid-fields-patterns",
+          "text": "Datagrid field patterns",
+          "textLength": 21,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "big-list-search-patterns",
+          "text": "Big list search patterns",
+          "textLength": 21,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "dashboard-page-templates",
+          "text": "Dashboard and page templates",
+          "textLength": 25,
           "itemWidth": 236.17,
           "labelWidth": 236.17,
           "labelHeight": 30,
@@ -3663,16 +3847,34 @@
         "Patterns"
       ],
       "currentNav": "Patterns",
-      "currentStoryNav": "work-management-patterns",
+      "currentStoryNav": "records-and-boards-patterns",
       "bodyScrollWidth": 1440,
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "work-management-patterns",
+          "id": "records-and-boards-patterns",
           "visible": true,
           "width": 1077,
-          "height": 1792
+          "height": 1740
+        },
+        {
+          "id": "datagrid-fields-patterns",
+          "visible": true,
+          "width": 1077,
+          "height": 226
+        },
+        {
+          "id": "big-list-search-patterns",
+          "visible": true,
+          "width": 1077,
+          "height": 275
+        },
+        {
+          "id": "dashboard-page-templates",
+          "visible": true,
+          "width": 1077,
+          "height": 432
         }
       ],
       "referenceRegions": [],
@@ -3705,7 +3907,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -3811,130 +4013,6 @@
       "viewport": "desktop-1440x900",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/patterns-data-pages.html",
-      "pageKind": "category",
-      "expectedSection": "Patterns",
-      "expectedStoryIds": [
-        "datagrid-fields-patterns",
-        "big-list-search-patterns",
-        "dashboard-page-templates"
-      ],
-      "expectedActiveStoryId": "datagrid-fields-patterns",
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Patterns - TCRN Design System Contract Stories",
-      "shellAuthority": "online-docs",
-      "docShellSelectorCount": 6,
-      "globalProductShellShellSelectorCount": 0,
-      "docShellSidebarVisible": true,
-      "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
-      "docNavOpenCategoryCount": 1,
-      "activeStoryHiddenByCategory": false,
-      "categoryAriaFailures": [],
-      "sidebarNoIconLabelReadbacks": [
-        {
-          "route": "datagrid-fields-patterns",
-          "text": "Datagrid field patterns",
-          "textLength": 21,
-          "itemWidth": 236.17,
-          "labelWidth": 236.17,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "big-list-search-patterns",
-          "text": "Big list search patterns",
-          "textLength": 21,
-          "itemWidth": 236.17,
-          "labelWidth": 236.17,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "dashboard-page-templates",
-          "text": "Dashboard and page templates",
-          "textLength": 25,
-          "itemWidth": 236.17,
-          "labelWidth": 236.17,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        }
-      ],
-      "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
-      "docCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "onThisPageCount": 1,
-      "mandatoryBoundaryVisible": true,
-      "noOverclaimBoundaryVisible": true,
-      "governanceBoundaryStripVisible": true,
-      "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Patterns",
-      "storySections": [
-        "Patterns"
-      ],
-      "currentNav": "Patterns",
-      "currentStoryNav": "datagrid-fields-patterns",
-      "bodyScrollWidth": 1440,
-      "viewportWidth": 1440,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "datagrid-fields-patterns",
-          "visible": true,
-          "width": 1077,
-          "height": 238
-        },
-        {
-          "id": "big-list-search-patterns",
-          "visible": true,
-          "width": 1077,
-          "height": 275
-        },
-        {
-          "id": "dashboard-page-templates",
-          "visible": true,
-          "width": 1077,
-          "height": 467
-        }
-      ],
-      "referenceRegions": [],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "desktop-1440x900",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
       "url": "/apps/storybook/storybook-static/proof-proof-governance.html",
       "pageKind": "category",
       "expectedSection": "Proof",
@@ -3954,7 +4032,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -4053,7 +4131,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 1077,
-          "height": 5438
+          "height": 5391
         },
         {
           "id": "blocked-actions",
@@ -4084,10 +4162,10 @@
       "pageKind": "category",
       "expectedSection": "Proof",
       "expectedStoryIds": [
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell"
+        "frontend-shell-slice",
+        "owner-quality-product-shell"
       ],
-      "expectedActiveStoryId": "aos-frontend-shell-slice",
+      "expectedActiveStoryId": "frontend-shell-slice",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -4097,17 +4175,17 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
         {
-          "route": "aos-frontend-shell-slice",
-          "text": "AOS frontend shell slice visual instance",
-          "textLength": 35,
-          "itemWidth": 271.17,
-          "labelWidth": 271.17,
+          "route": "frontend-shell-slice",
+          "text": "Frontend shell slice visual instance",
+          "textLength": 32,
+          "itemWidth": 244.39,
+          "labelWidth": 244.39,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -4117,11 +4195,11 @@
           "ok": true
         },
         {
-          "route": "aos-owner-quality-product-shell",
-          "text": "AOS owner-quality product shell oracle",
-          "textLength": 34,
-          "itemWidth": 271.17,
-          "labelWidth": 271.17,
+          "route": "owner-quality-product-shell",
+          "text": "Owner-quality shell oracle",
+          "textLength": 24,
+          "itemWidth": 244.39,
+          "labelWidth": 244.39,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -4153,22 +4231,22 @@
         "Proof"
       ],
       "currentNav": "Proof",
-      "currentStoryNav": "aos-frontend-shell-slice",
+      "currentStoryNav": "frontend-shell-slice",
       "bodyScrollWidth": 1440,
       "viewportWidth": 1440,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "aos-frontend-shell-slice",
+          "id": "frontend-shell-slice",
           "visible": true,
           "width": 1077,
-          "height": 12448
+          "height": 8806
         },
         {
-          "id": "aos-owner-quality-product-shell",
+          "id": "owner-quality-product-shell",
           "visible": true,
           "width": 1077,
-          "height": 15285
+          "height": 14943
         }
       ],
       "referenceRegions": [],
@@ -4199,7 +4277,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -4250,7 +4328,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 1077,
-          "height": 734
+          "height": 723
         }
       ],
       "referenceRegions": [],
@@ -4279,7 +4357,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -4360,10 +4438,22 @@
           "height": 217
         },
         {
+          "id": "ActivityFeed",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
           "id": "AppStatusBar",
           "visible": true,
           "width": 1077,
           "height": 217
+        },
+        {
+          "id": "AttachmentList",
+          "visible": true,
+          "width": 1077,
+          "height": 244
         },
         {
           "id": "Avatar",
@@ -4450,28 +4540,16 @@
           "height": 165
         },
         {
+          "id": "DetailLayout",
+          "visible": true,
+          "width": 1077,
+          "height": 406
+        },
+        {
           "id": "Dialog",
           "visible": true,
           "width": 1077,
           "height": 327
-        },
-        {
-          "id": "DisclosurePanel",
-          "visible": true,
-          "width": 1077,
-          "height": 269
-        },
-        {
-          "id": "Divider",
-          "visible": true,
-          "width": 1077,
-          "height": 100
-        },
-        {
-          "id": "EmptyState",
-          "visible": true,
-          "width": 1077,
-          "height": 324
         }
       ],
       "clipped": [],
@@ -4499,7 +4577,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -4573,6 +4651,30 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "DisclosurePanel",
+          "visible": true,
+          "width": 1077,
+          "height": 269
+        },
+        {
+          "id": "Divider",
+          "visible": true,
+          "width": 1077,
+          "height": 100
+        },
+        {
+          "id": "DocumentCanvas",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "EmptyState",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
         {
           "id": "EnvironmentBanner",
           "visible": true,
@@ -4634,6 +4736,18 @@
           "height": 162
         },
         {
+          "id": "InlineCommentList",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "InlineCreate",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
           "id": "Input",
           "visible": true,
           "width": 1077,
@@ -4646,52 +4760,16 @@
           "height": 137
         },
         {
-          "id": "LineNumberedEditor",
+          "id": "LabelSet",
           "visible": true,
           "width": 1077,
-          "height": 220
+          "height": 244
         },
         {
-          "id": "LinkButton",
+          "id": "LaneBoard",
           "visible": true,
           "width": 1077,
-          "height": 162
-        },
-        {
-          "id": "LiveRegion",
-          "visible": true,
-          "width": 1077,
-          "height": 100
-        },
-        {
-          "id": "LockHint",
-          "visible": true,
-          "width": 1077,
-          "height": 189
-        },
-        {
-          "id": "Menu",
-          "visible": true,
-          "width": 1077,
-          "height": 247
-        },
-        {
-          "id": "MobileNavToggle",
-          "visible": true,
-          "width": 1077,
-          "height": 327
-        },
-        {
-          "id": "ModuleTabs",
-          "visible": true,
-          "width": 1077,
-          "height": 192
-        },
-        {
-          "id": "NavGroup",
-          "visible": true,
-          "width": 1077,
-          "height": 217
+          "height": 296
         }
       ],
       "clipped": [],
@@ -4719,7 +4797,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -4794,10 +4872,82 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "LineNumberedEditor",
+          "visible": true,
+          "width": 1077,
+          "height": 220
+        },
+        {
+          "id": "LinkButton",
+          "visible": true,
+          "width": 1077,
+          "height": 162
+        },
+        {
+          "id": "LiveRegion",
+          "visible": true,
+          "width": 1077,
+          "height": 100
+        },
+        {
+          "id": "LockHint",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        },
+        {
+          "id": "MachineToken",
+          "visible": true,
+          "width": 1077,
+          "height": 299
+        },
+        {
+          "id": "MachineTokenCell",
+          "visible": true,
+          "width": 1077,
+          "height": 299
+        },
+        {
+          "id": "Menu",
+          "visible": true,
+          "width": 1077,
+          "height": 247
+        },
+        {
+          "id": "MetadataRail",
+          "visible": true,
+          "width": 1077,
+          "height": 299
+        },
+        {
+          "id": "MobileNavToggle",
+          "visible": true,
+          "width": 1077,
+          "height": 327
+        },
+        {
+          "id": "ModuleTabs",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
+          "id": "NavGroup",
+          "visible": true,
+          "width": 1077,
+          "height": 217
+        },
+        {
           "id": "NavItem",
           "visible": true,
           "width": 1077,
           "height": 361
+        },
+        {
+          "id": "PageHeader",
+          "visible": true,
+          "width": 1077,
+          "height": 324
         },
         {
           "id": "Pagination",
@@ -4840,78 +4990,6 @@
           "visible": true,
           "width": 1077,
           "height": 911
-        },
-        {
-          "id": "ProductSwitcher",
-          "visible": true,
-          "width": 1077,
-          "height": 165
-        },
-        {
-          "id": "Progress",
-          "visible": true,
-          "width": 1077,
-          "height": 192
-        },
-        {
-          "id": "RadioGroup",
-          "visible": true,
-          "width": 1077,
-          "height": 327
-        },
-        {
-          "id": "ReadbackPanel",
-          "visible": true,
-          "width": 1077,
-          "height": 189
-        },
-        {
-          "id": "SearchInput",
-          "visible": true,
-          "width": 1077,
-          "height": 192
-        },
-        {
-          "id": "SearchableList",
-          "visible": true,
-          "width": 1077,
-          "height": 547
-        },
-        {
-          "id": "SectionTabs",
-          "visible": true,
-          "width": 1077,
-          "height": 192
-        },
-        {
-          "id": "SegmentedNav",
-          "visible": true,
-          "width": 1077,
-          "height": 192
-        },
-        {
-          "id": "Select",
-          "visible": true,
-          "width": 1077,
-          "height": 165
-        },
-        {
-          "id": "SettingRow",
-          "visible": true,
-          "width": 1077,
-          "height": 327
-        },
-        {
-          "id": "ShellBrandLockup",
-          "visible": true,
-          "width": 1077,
-          "height": 327
-        },
-        {
-          "id": "ShellLocaleMenu",
-          "visible": true,
-          "width": 1077,
-          "height": 330
         }
       ],
       "clipped": [],
@@ -4939,7 +5017,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -5014,6 +5092,232 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ProductSwitcher",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        },
+        {
+          "id": "Progress",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
+          "id": "QuickFilters",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "RadioGroup",
+          "visible": true,
+          "width": 1077,
+          "height": 327
+        },
+        {
+          "id": "ReadbackPanel",
+          "visible": true,
+          "width": 1077,
+          "height": 189
+        },
+        {
+          "id": "RecordInspector",
+          "visible": true,
+          "width": 1077,
+          "height": 357
+        },
+        {
+          "id": "RecordRow",
+          "visible": true,
+          "width": 1077,
+          "height": 517
+        },
+        {
+          "id": "RecordTable",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "RelationGraph",
+          "visible": true,
+          "width": 1077,
+          "height": 220
+        },
+        {
+          "id": "RelationshipChip",
+          "visible": true,
+          "width": 1077,
+          "height": 327
+        },
+        {
+          "id": "RowGroup",
+          "visible": true,
+          "width": 1077,
+          "height": 351
+        },
+        {
+          "id": "SavedViewToolbar",
+          "visible": true,
+          "width": 1077,
+          "height": 247
+        },
+        {
+          "id": "SearchInput",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
+          "id": "SearchResultList",
+          "visible": true,
+          "width": 1077,
+          "height": 272
+        },
+        {
+          "id": "SearchableList",
+          "visible": true,
+          "width": 1077,
+          "height": 547
+        },
+        {
+          "id": "SectionTabs",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
+          "id": "SegmentedNav",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
+          "id": "Select",
+          "visible": true,
+          "width": 1077,
+          "height": 165
+        },
+        {
+          "id": "SettingRow",
+          "visible": true,
+          "width": 1077,
+          "height": 327
+        },
+        {
+          "id": "ShellBrandLockup",
+          "visible": true,
+          "width": 1077,
+          "height": 327
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 236.17,
+          "labelWidth": 236.17,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1440,
+      "viewportWidth": 1440,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "ShellLocaleMenu",
+          "visible": true,
+          "width": 1077,
+          "height": 330
+        },
+        {
           "id": "ShellThemeToggle",
           "visible": true,
           "width": 1077,
@@ -5042,6 +5346,18 @@
           "visible": true,
           "width": 1077,
           "height": 162
+        },
+        {
+          "id": "SplitView",
+          "visible": true,
+          "width": 1077,
+          "height": 324
+        },
+        {
+          "id": "StagePipeline",
+          "visible": true,
+          "width": 1077,
+          "height": 244
         },
         {
           "id": "Stamp",
@@ -5092,6 +5408,12 @@
           "height": 192
         },
         {
+          "id": "SubNav",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
           "id": "Surface",
           "visible": true,
           "width": 1077,
@@ -5108,30 +5430,6 @@
           "visible": true,
           "width": 1077,
           "height": 244
-        },
-        {
-          "id": "TableToolbar",
-          "visible": true,
-          "width": 1077,
-          "height": 412
-        },
-        {
-          "id": "Tabs",
-          "visible": true,
-          "width": 1077,
-          "height": 272
-        },
-        {
-          "id": "TcrnBrandMark",
-          "visible": true,
-          "width": 1077,
-          "height": 192
-        },
-        {
-          "id": "TemplateGallery",
-          "visible": true,
-          "width": 1077,
-          "height": 244
         }
       ],
       "clipped": [],
@@ -5145,7 +5443,7 @@
       "viewport": "desktop-1440x900",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "url": "/apps/storybook/storybook-static/component-api-reference-6.html",
       "pageKind": "reference",
       "expectedSection": "Components",
       "expectedStoryIds": [],
@@ -5159,7 +5457,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -5234,6 +5532,30 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "TableToolbar",
+          "visible": true,
+          "width": 1077,
+          "height": 412
+        },
+        {
+          "id": "Tabs",
+          "visible": true,
+          "width": 1077,
+          "height": 272
+        },
+        {
+          "id": "TcrnBrandMark",
+          "visible": true,
+          "width": 1077,
+          "height": 192
+        },
+        {
+          "id": "TemplateGallery",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
           "id": "Text",
           "visible": true,
           "width": 1077,
@@ -5252,6 +5574,12 @@
           "height": 217
         },
         {
+          "id": "TocRail",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
           "id": "Tooltip",
           "visible": true,
           "width": 1077,
@@ -5268,6 +5596,24 @@
           "visible": true,
           "width": 1077,
           "height": 275
+        },
+        {
+          "id": "TreeNav",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "VersionHistory",
+          "visible": true,
+          "width": 1077,
+          "height": 244
+        },
+        {
+          "id": "ViewTabs",
+          "visible": true,
+          "width": 1077,
+          "height": 192
         }
       ],
       "clipped": [],
@@ -5295,7 +5641,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -5380,7 +5726,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -5465,7 +5811,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -5564,7 +5910,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -5663,7 +6009,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -5748,7 +6094,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -5861,7 +6207,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -5935,7 +6281,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -6006,7 +6352,7 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 691,
-          "height": 958
+          "height": 946
         },
         {
           "id": "governance-boundaries",
@@ -6045,7 +6391,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -6168,7 +6514,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -6239,7 +6585,7 @@
           "id": "color-palette",
           "visible": true,
           "width": 691,
-          "height": 6657
+          "height": 6633
         }
       ],
       "referenceRegions": [],
@@ -6271,7 +6617,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -6336,7 +6682,7 @@
           "id": "text-styles",
           "visible": true,
           "width": 691,
-          "height": 2740
+          "height": 2721
         },
         {
           "id": "grid-system",
@@ -6375,7 +6721,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -6499,7 +6845,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -6590,7 +6936,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 691,
-          "height": 4367
+          "height": 4305
         }
       ],
       "referenceRegions": [],
@@ -6621,7 +6967,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -6705,7 +7051,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -6791,19 +7137,19 @@
           "id": "component-family-index",
           "visible": true,
           "width": 691,
-          "height": 4140
+          "height": 3830
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 691,
-          "height": 2795
+          "height": 2775
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 691,
-          "height": 1157
+          "height": 1113
         }
       ],
       "referenceRegions": [],
@@ -6825,7 +7171,7 @@
         "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
-        "table-work-index-spec"
+        "table-record-index-spec"
       ],
       "expectedActiveStoryId": "stamp-spec-usage",
       "consoleMessages": [],
@@ -6837,7 +7183,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -6885,9 +7231,9 @@
           "ok": true
         },
         {
-          "route": "table-work-index-spec",
-          "text": "Table and work index spec",
-          "textLength": 21,
+          "route": "table-record-index-spec",
+          "text": "Table and record index spec",
+          "textLength": 23,
           "itemWidth": 243.16,
           "labelWidth": 243.16,
           "labelHeight": 30,
@@ -6945,10 +7291,10 @@
           "height": 1847
         },
         {
-          "id": "table-work-index-spec",
+          "id": "table-record-index-spec",
           "visible": true,
           "width": 691,
-          "height": 2358
+          "height": 2337
         }
       ],
       "referenceRegions": [],
@@ -6983,7 +7329,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -7180,7 +7526,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -7246,19 +7592,14 @@
       "viewport": "tablet-1024x768",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/components-work-management.html",
+      "url": "/apps/storybook/storybook-static/components-records-and-boards.html",
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "work-management-components-spec",
-        "work-management-relationships-spec",
-        "work-management-tokens-density-views-spec",
-        "work-management-route-detail-spec",
-        "work-management-backlog-board-spec",
-        "work-management-hierarchy-gates-spec",
-        "work-management-inspector-spec"
+        "records-and-boards-components-spec",
+        "records-and-boards-backlog-spec"
       ],
-      "expectedActiveStoryId": "work-management-components-spec",
+      "expectedActiveStoryId": "records-and-boards-components-spec",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -7268,17 +7609,17 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
         {
-          "route": "work-management-components-spec",
-          "text": "Work Management component specs",
-          "textLength": 28,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
+          "route": "records-and-boards-components-spec",
+          "text": "Records and boards components",
+          "textLength": 26,
+          "itemWidth": 260.14,
+          "labelWidth": 260.14,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -7288,81 +7629,11 @@
           "ok": true
         },
         {
-          "route": "work-management-relationships-spec",
-          "text": "Work Management relationship vocabulary",
-          "textLength": 36,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-tokens-density-views-spec",
-          "text": "Work Management tokens, density, and views",
-          "textLength": 37,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-route-detail-spec",
-          "text": "Work Management route context and detail",
-          "textLength": 35,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-backlog-board-spec",
-          "text": "Work Management backlog and board",
-          "textLength": 29,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-hierarchy-gates-spec",
-          "text": "Work Management hierarchy, gates, and evidence",
-          "textLength": 41,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "work-management-inspector-spec",
-          "text": "Work Management evidence and inspector",
-          "textLength": 34,
-          "itemWidth": 317.56,
-          "labelWidth": 317.56,
+          "route": "records-and-boards-backlog-spec",
+          "text": "Records and boards: backlog and lanes",
+          "textLength": 32,
+          "itemWidth": 260.14,
+          "labelWidth": 260.14,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -7394,52 +7665,22 @@
         "Components"
       ],
       "currentNav": "Components",
-      "currentStoryNav": "work-management-components-spec",
+      "currentStoryNav": "records-and-boards-components-spec",
       "bodyScrollWidth": 1024,
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "work-management-components-spec",
+          "id": "records-and-boards-components-spec",
           "visible": true,
           "width": 691,
-          "height": 3049
+          "height": 584
         },
         {
-          "id": "work-management-relationships-spec",
+          "id": "records-and-boards-backlog-spec",
           "visible": true,
           "width": 691,
-          "height": 388
-        },
-        {
-          "id": "work-management-tokens-density-views-spec",
-          "visible": true,
-          "width": 691,
-          "height": 2282
-        },
-        {
-          "id": "work-management-route-detail-spec",
-          "visible": true,
-          "width": 691,
-          "height": 1520
-        },
-        {
-          "id": "work-management-backlog-board-spec",
-          "visible": true,
-          "width": 691,
-          "height": 1189
-        },
-        {
-          "id": "work-management-hierarchy-gates-spec",
-          "visible": true,
-          "width": 691,
-          "height": 2137
-        },
-        {
-          "id": "work-management-inspector-spec",
-          "visible": true,
-          "width": 691,
-          "height": 1011
+          "height": 1360
         }
       ],
       "referenceRegions": [],
@@ -7454,15 +7695,14 @@
       "viewport": "tablet-1024x768",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/components-knowledge-management.html",
+      "url": "/apps/storybook/storybook-static/components-hierarchy-and-relations.html",
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "knowledge-management-components-spec",
-        "knowledge-management-density-collaboration-spec",
-        "knowledge-management-templates-spec"
+        "hierarchy-and-relations-spec",
+        "hierarchy-and-relations-stages-spec"
       ],
-      "expectedActiveStoryId": "knowledge-management-components-spec",
+      "expectedActiveStoryId": "hierarchy-and-relations-spec",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -7472,17 +7712,17 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
         {
-          "route": "knowledge-management-components-spec",
-          "text": "Knowledge Management component specs",
-          "textLength": 33,
-          "itemWidth": 324.72,
-          "labelWidth": 324.72,
+          "route": "hierarchy-and-relations-spec",
+          "text": "Hierarchy and relations",
+          "textLength": 21,
+          "itemWidth": 296.22,
+          "labelWidth": 296.22,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -7492,25 +7732,11 @@
           "ok": true
         },
         {
-          "route": "knowledge-management-density-collaboration-spec",
-          "text": "Knowledge Management density and collaboration",
-          "textLength": 42,
-          "itemWidth": 324.72,
-          "labelWidth": 324.72,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "knowledge-management-templates-spec",
-          "text": "Knowledge Management templates and results",
-          "textLength": 38,
-          "itemWidth": 324.72,
-          "labelWidth": 324.72,
+          "route": "hierarchy-and-relations-stages-spec",
+          "text": "Hierarchy and relations: stages and references",
+          "textLength": 41,
+          "itemWidth": 296.22,
+          "labelWidth": 296.22,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -7542,28 +7768,270 @@
         "Components"
       ],
       "currentNav": "Components",
-      "currentStoryNav": "knowledge-management-components-spec",
+      "currentStoryNav": "hierarchy-and-relations-spec",
       "bodyScrollWidth": 1024,
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "knowledge-management-components-spec",
+          "id": "hierarchy-and-relations-spec",
           "visible": true,
           "width": 691,
-          "height": 1696
+          "height": 371
         },
         {
-          "id": "knowledge-management-density-collaboration-spec",
+          "id": "hierarchy-and-relations-stages-spec",
           "visible": true,
           "width": 691,
-          "height": 1695
+          "height": 1973
+        }
+      ],
+      "referenceRegions": [],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/components-detail-and-inspection.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "detail-and-inspection-density-spec",
+        "detail-and-inspection-route-spec",
+        "detail-and-inspection-inspector-spec"
+      ],
+      "expectedActiveStoryId": "detail-and-inspection-density-spec",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "detail-and-inspection-density-spec",
+          "text": "Detail and inspection: density and views",
+          "textLength": 35,
+          "itemWidth": 279.2,
+          "labelWidth": 279.2,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
         },
         {
-          "id": "knowledge-management-templates-spec",
+          "route": "detail-and-inspection-route-spec",
+          "text": "Detail and inspection: route context",
+          "textLength": 32,
+          "itemWidth": 279.2,
+          "labelWidth": 279.2,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "detail-and-inspection-inspector-spec",
+          "text": "Detail and inspection: record inspector",
+          "textLength": 35,
+          "itemWidth": 279.2,
+          "labelWidth": 279.2,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "detail-and-inspection-density-spec",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "detail-and-inspection-density-spec",
           "visible": true,
           "width": 691,
-          "height": 712
+          "height": 2186
+        },
+        {
+          "id": "detail-and-inspection-route-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1532
+        },
+        {
+          "id": "detail-and-inspection-inspector-spec",
+          "visible": true,
+          "width": 691,
+          "height": 949
+        }
+      ],
+      "referenceRegions": [],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/components-documents-and-collaboration.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "documents-and-collaboration-components-spec",
+        "documents-and-collaboration-density-spec",
+        "documents-and-collaboration-templates-spec"
+      ],
+      "expectedActiveStoryId": "documents-and-collaboration-components-spec",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "documents-and-collaboration-components-spec",
+          "text": "Documents and collaboration components",
+          "textLength": 35,
+          "itemWidth": 336.91,
+          "labelWidth": 336.91,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "documents-and-collaboration-density-spec",
+          "text": "Documents and collaboration: density and comments",
+          "textLength": 44,
+          "itemWidth": 336.91,
+          "labelWidth": 336.91,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "documents-and-collaboration-templates-spec",
+          "text": "Documents and collaboration: templates and results",
+          "textLength": 45,
+          "itemWidth": 336.91,
+          "labelWidth": 336.91,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "documents-and-collaboration-components-spec",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "documents-and-collaboration-components-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1089
+        },
+        {
+          "id": "documents-and-collaboration-density-spec",
+          "visible": true,
+          "width": 691,
+          "height": 1718
+        },
+        {
+          "id": "documents-and-collaboration-templates-spec",
+          "visible": true,
+          "width": 691,
+          "height": 695
         }
       ],
       "referenceRegions": [],
@@ -7595,7 +8063,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -7666,7 +8134,7 @@
           "id": "workbench-patterns",
           "visible": true,
           "width": 691,
-          "height": 460
+          "height": 397
         }
       ],
       "referenceRegions": [],
@@ -7681,13 +8149,16 @@
       "viewport": "tablet-1024x768",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/patterns-work-management.html",
+      "url": "/apps/storybook/storybook-static/patterns-data-pages.html",
       "pageKind": "category",
       "expectedSection": "Patterns",
       "expectedStoryIds": [
-        "work-management-patterns"
+        "records-and-boards-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates"
       ],
-      "expectedActiveStoryId": "work-management-patterns",
+      "expectedActiveStoryId": "records-and-boards-patterns",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -7697,15 +8168,57 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
         {
-          "route": "work-management-patterns",
-          "text": "Work Management patterns",
-          "textLength": 22,
+          "route": "records-and-boards-patterns",
+          "text": "Records and boards patterns",
+          "textLength": 24,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "datagrid-fields-patterns",
+          "text": "Datagrid field patterns",
+          "textLength": 21,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "big-list-search-patterns",
+          "text": "Big list search patterns",
+          "textLength": 21,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "dashboard-page-templates",
+          "text": "Dashboard and page templates",
+          "textLength": 25,
           "itemWidth": 243.16,
           "labelWidth": 243.16,
           "labelHeight": 30,
@@ -7739,16 +8252,34 @@
         "Patterns"
       ],
       "currentNav": "Patterns",
-      "currentStoryNav": "work-management-patterns",
+      "currentStoryNav": "records-and-boards-patterns",
       "bodyScrollWidth": 1024,
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "work-management-patterns",
+          "id": "records-and-boards-patterns",
           "visible": true,
           "width": 691,
-          "height": 1957
+          "height": 1887
+        },
+        {
+          "id": "datagrid-fields-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 241
+        },
+        {
+          "id": "big-list-search-patterns",
+          "visible": true,
+          "width": 691,
+          "height": 308
+        },
+        {
+          "id": "dashboard-page-templates",
+          "visible": true,
+          "width": 691,
+          "height": 571
         }
       ],
       "referenceRegions": [],
@@ -7781,7 +8312,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -7887,130 +8418,6 @@
       "viewport": "tablet-1024x768",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/patterns-data-pages.html",
-      "pageKind": "category",
-      "expectedSection": "Patterns",
-      "expectedStoryIds": [
-        "datagrid-fields-patterns",
-        "big-list-search-patterns",
-        "dashboard-page-templates"
-      ],
-      "expectedActiveStoryId": "datagrid-fields-patterns",
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Patterns - TCRN Design System Contract Stories",
-      "shellAuthority": "online-docs",
-      "docShellSelectorCount": 6,
-      "globalProductShellShellSelectorCount": 0,
-      "docShellSidebarVisible": true,
-      "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
-      "docNavOpenCategoryCount": 1,
-      "activeStoryHiddenByCategory": false,
-      "categoryAriaFailures": [],
-      "sidebarNoIconLabelReadbacks": [
-        {
-          "route": "datagrid-fields-patterns",
-          "text": "Datagrid field patterns",
-          "textLength": 21,
-          "itemWidth": 243.16,
-          "labelWidth": 243.16,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "big-list-search-patterns",
-          "text": "Big list search patterns",
-          "textLength": 21,
-          "itemWidth": 243.16,
-          "labelWidth": 243.16,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        },
-        {
-          "route": "dashboard-page-templates",
-          "text": "Dashboard and page templates",
-          "textLength": 25,
-          "itemWidth": 243.16,
-          "labelWidth": 243.16,
-          "labelHeight": 30,
-          "lineHeight": 16.2,
-          "lineCount": 2,
-          "overflowWrap": "normal",
-          "wordBreak": "normal",
-          "hasNoIconContract": true,
-          "ok": true
-        }
-      ],
-      "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
-      "docCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "onThisPageCount": 1,
-      "mandatoryBoundaryVisible": true,
-      "noOverclaimBoundaryVisible": true,
-      "governanceBoundaryStripVisible": true,
-      "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Patterns",
-      "storySections": [
-        "Patterns"
-      ],
-      "currentNav": "Patterns",
-      "currentStoryNav": "datagrid-fields-patterns",
-      "bodyScrollWidth": 1024,
-      "viewportWidth": 1024,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "datagrid-fields-patterns",
-          "visible": true,
-          "width": 691,
-          "height": 253
-        },
-        {
-          "id": "big-list-search-patterns",
-          "visible": true,
-          "width": 691,
-          "height": 308
-        },
-        {
-          "id": "dashboard-page-templates",
-          "visible": true,
-          "width": 691,
-          "height": 676
-        }
-      ],
-      "referenceRegions": [],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "tablet-1024x768",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
       "url": "/apps/storybook/storybook-static/proof-proof-governance.html",
       "pageKind": "category",
       "expectedSection": "Proof",
@@ -8030,7 +8437,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8129,7 +8536,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 7904
+          "height": 7734
         },
         {
           "id": "blocked-actions",
@@ -8160,10 +8567,10 @@
       "pageKind": "category",
       "expectedSection": "Proof",
       "expectedStoryIds": [
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell"
+        "frontend-shell-slice",
+        "owner-quality-product-shell"
       ],
-      "expectedActiveStoryId": "aos-frontend-shell-slice",
+      "expectedActiveStoryId": "frontend-shell-slice",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -8173,17 +8580,17 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadbacks": [
         {
-          "route": "aos-frontend-shell-slice",
-          "text": "AOS frontend shell slice visual instance",
-          "textLength": 35,
-          "itemWidth": 272.23,
-          "labelWidth": 272.23,
+          "route": "frontend-shell-slice",
+          "text": "Frontend shell slice visual instance",
+          "textLength": 32,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -8193,11 +8600,11 @@
           "ok": true
         },
         {
-          "route": "aos-owner-quality-product-shell",
-          "text": "AOS owner-quality product shell oracle",
-          "textLength": 34,
-          "itemWidth": 272.23,
-          "labelWidth": 272.23,
+          "route": "owner-quality-product-shell",
+          "text": "Owner-quality shell oracle",
+          "textLength": 24,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
           "labelHeight": 30,
           "lineHeight": 16.2,
           "lineCount": 2,
@@ -8229,22 +8636,22 @@
         "Proof"
       ],
       "currentNav": "Proof",
-      "currentStoryNav": "aos-owner-quality-product-shell",
+      "currentStoryNav": "owner-quality-product-shell",
       "bodyScrollWidth": 1024,
       "viewportWidth": 1024,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "aos-frontend-shell-slice",
+          "id": "frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 15374
+          "height": 11080
         },
         {
-          "id": "aos-owner-quality-product-shell",
+          "id": "owner-quality-product-shell",
           "visible": true,
           "width": 691,
-          "height": 19065
+          "height": 18555
         }
       ],
       "referenceRegions": [],
@@ -8275,7 +8682,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8326,7 +8733,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 691,
-          "height": 734
+          "height": 723
         }
       ],
       "referenceRegions": [],
@@ -8355,7 +8762,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8436,10 +8843,22 @@
           "height": 217
         },
         {
+          "id": "ActivityFeed",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
           "id": "AppStatusBar",
           "visible": true,
           "width": 691,
           "height": 217
+        },
+        {
+          "id": "AttachmentList",
+          "visible": true,
+          "width": 691,
+          "height": 244
         },
         {
           "id": "Avatar",
@@ -8526,28 +8945,16 @@
           "height": 165
         },
         {
+          "id": "DetailLayout",
+          "visible": true,
+          "width": 691,
+          "height": 406
+        },
+        {
           "id": "Dialog",
           "visible": true,
           "width": 691,
           "height": 327
-        },
-        {
-          "id": "DisclosurePanel",
-          "visible": true,
-          "width": 691,
-          "height": 269
-        },
-        {
-          "id": "Divider",
-          "visible": true,
-          "width": 691,
-          "height": 100
-        },
-        {
-          "id": "EmptyState",
-          "visible": true,
-          "width": 691,
-          "height": 324
         }
       ],
       "clipped": [],
@@ -8575,7 +8982,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8649,6 +9056,30 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "DisclosurePanel",
+          "visible": true,
+          "width": 691,
+          "height": 269
+        },
+        {
+          "id": "Divider",
+          "visible": true,
+          "width": 691,
+          "height": 100
+        },
+        {
+          "id": "DocumentCanvas",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "EmptyState",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
         {
           "id": "EnvironmentBanner",
           "visible": true,
@@ -8710,6 +9141,18 @@
           "height": 162
         },
         {
+          "id": "InlineCommentList",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "InlineCreate",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
           "id": "Input",
           "visible": true,
           "width": 691,
@@ -8722,52 +9165,16 @@
           "height": 137
         },
         {
-          "id": "LineNumberedEditor",
+          "id": "LabelSet",
           "visible": true,
           "width": 691,
-          "height": 220
+          "height": 244
         },
         {
-          "id": "LinkButton",
+          "id": "LaneBoard",
           "visible": true,
           "width": 691,
-          "height": 162
-        },
-        {
-          "id": "LiveRegion",
-          "visible": true,
-          "width": 691,
-          "height": 100
-        },
-        {
-          "id": "LockHint",
-          "visible": true,
-          "width": 691,
-          "height": 189
-        },
-        {
-          "id": "Menu",
-          "visible": true,
-          "width": 691,
-          "height": 247
-        },
-        {
-          "id": "MobileNavToggle",
-          "visible": true,
-          "width": 691,
-          "height": 327
-        },
-        {
-          "id": "ModuleTabs",
-          "visible": true,
-          "width": 691,
-          "height": 192
-        },
-        {
-          "id": "NavGroup",
-          "visible": true,
-          "width": 691,
-          "height": 217
+          "height": 296
         }
       ],
       "clipped": [],
@@ -8795,7 +9202,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -8870,10 +9277,82 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "LineNumberedEditor",
+          "visible": true,
+          "width": 691,
+          "height": 220
+        },
+        {
+          "id": "LinkButton",
+          "visible": true,
+          "width": 691,
+          "height": 162
+        },
+        {
+          "id": "LiveRegion",
+          "visible": true,
+          "width": 691,
+          "height": 100
+        },
+        {
+          "id": "LockHint",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        },
+        {
+          "id": "MachineToken",
+          "visible": true,
+          "width": 691,
+          "height": 318
+        },
+        {
+          "id": "MachineTokenCell",
+          "visible": true,
+          "width": 691,
+          "height": 318
+        },
+        {
+          "id": "Menu",
+          "visible": true,
+          "width": 691,
+          "height": 247
+        },
+        {
+          "id": "MetadataRail",
+          "visible": true,
+          "width": 691,
+          "height": 299
+        },
+        {
+          "id": "MobileNavToggle",
+          "visible": true,
+          "width": 691,
+          "height": 327
+        },
+        {
+          "id": "ModuleTabs",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
+          "id": "NavGroup",
+          "visible": true,
+          "width": 691,
+          "height": 217
+        },
+        {
           "id": "NavItem",
           "visible": true,
           "width": 691,
           "height": 379
+        },
+        {
+          "id": "PageHeader",
+          "visible": true,
+          "width": 691,
+          "height": 324
         },
         {
           "id": "Pagination",
@@ -8916,78 +9395,6 @@
           "visible": true,
           "width": 691,
           "height": 1262
-        },
-        {
-          "id": "ProductSwitcher",
-          "visible": true,
-          "width": 691,
-          "height": 165
-        },
-        {
-          "id": "Progress",
-          "visible": true,
-          "width": 691,
-          "height": 192
-        },
-        {
-          "id": "RadioGroup",
-          "visible": true,
-          "width": 691,
-          "height": 327
-        },
-        {
-          "id": "ReadbackPanel",
-          "visible": true,
-          "width": 691,
-          "height": 189
-        },
-        {
-          "id": "SearchInput",
-          "visible": true,
-          "width": 691,
-          "height": 192
-        },
-        {
-          "id": "SearchableList",
-          "visible": true,
-          "width": 691,
-          "height": 547
-        },
-        {
-          "id": "SectionTabs",
-          "visible": true,
-          "width": 691,
-          "height": 192
-        },
-        {
-          "id": "SegmentedNav",
-          "visible": true,
-          "width": 691,
-          "height": 192
-        },
-        {
-          "id": "Select",
-          "visible": true,
-          "width": 691,
-          "height": 165
-        },
-        {
-          "id": "SettingRow",
-          "visible": true,
-          "width": 691,
-          "height": 327
-        },
-        {
-          "id": "ShellBrandLockup",
-          "visible": true,
-          "width": 691,
-          "height": 327
-        },
-        {
-          "id": "ShellLocaleMenu",
-          "visible": true,
-          "width": 691,
-          "height": 496
         }
       ],
       "clipped": [],
@@ -9015,7 +9422,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9090,6 +9497,232 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ProductSwitcher",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        },
+        {
+          "id": "Progress",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
+          "id": "QuickFilters",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "RadioGroup",
+          "visible": true,
+          "width": 691,
+          "height": 327
+        },
+        {
+          "id": "ReadbackPanel",
+          "visible": true,
+          "width": 691,
+          "height": 189
+        },
+        {
+          "id": "RecordInspector",
+          "visible": true,
+          "width": 691,
+          "height": 357
+        },
+        {
+          "id": "RecordRow",
+          "visible": true,
+          "width": 691,
+          "height": 517
+        },
+        {
+          "id": "RecordTable",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "RelationGraph",
+          "visible": true,
+          "width": 691,
+          "height": 220
+        },
+        {
+          "id": "RelationshipChip",
+          "visible": true,
+          "width": 691,
+          "height": 327
+        },
+        {
+          "id": "RowGroup",
+          "visible": true,
+          "width": 691,
+          "height": 351
+        },
+        {
+          "id": "SavedViewToolbar",
+          "visible": true,
+          "width": 691,
+          "height": 247
+        },
+        {
+          "id": "SearchInput",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
+          "id": "SearchResultList",
+          "visible": true,
+          "width": 691,
+          "height": 272
+        },
+        {
+          "id": "SearchableList",
+          "visible": true,
+          "width": 691,
+          "height": 547
+        },
+        {
+          "id": "SectionTabs",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
+          "id": "SegmentedNav",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
+          "id": "Select",
+          "visible": true,
+          "width": 691,
+          "height": 165
+        },
+        {
+          "id": "SettingRow",
+          "visible": true,
+          "width": 691,
+          "height": 327
+        },
+        {
+          "id": "ShellBrandLockup",
+          "visible": true,
+          "width": 691,
+          "height": 327
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "itemWidth": 243.16,
+          "labelWidth": 243.16,
+          "labelHeight": 30,
+          "lineHeight": 16.2,
+          "lineCount": 2,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 1024,
+      "viewportWidth": 1024,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
+        {
+          "id": "ShellLocaleMenu",
+          "visible": true,
+          "width": 691,
+          "height": 496
+        },
+        {
           "id": "ShellThemeToggle",
           "visible": true,
           "width": 691,
@@ -9118,6 +9751,18 @@
           "visible": true,
           "width": 691,
           "height": 162
+        },
+        {
+          "id": "SplitView",
+          "visible": true,
+          "width": 691,
+          "height": 324
+        },
+        {
+          "id": "StagePipeline",
+          "visible": true,
+          "width": 691,
+          "height": 244
         },
         {
           "id": "Stamp",
@@ -9168,6 +9813,12 @@
           "height": 192
         },
         {
+          "id": "SubNav",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
           "id": "Surface",
           "visible": true,
           "width": 691,
@@ -9184,30 +9835,6 @@
           "visible": true,
           "width": 691,
           "height": 244
-        },
-        {
-          "id": "TableToolbar",
-          "visible": true,
-          "width": 691,
-          "height": 412
-        },
-        {
-          "id": "Tabs",
-          "visible": true,
-          "width": 691,
-          "height": 272
-        },
-        {
-          "id": "TcrnBrandMark",
-          "visible": true,
-          "width": 691,
-          "height": 192
-        },
-        {
-          "id": "TemplateGallery",
-          "visible": true,
-          "width": 691,
-          "height": 244
         }
       ],
       "clipped": [],
@@ -9221,7 +9848,7 @@
       "viewport": "tablet-1024x768",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "url": "/apps/storybook/storybook-static/component-api-reference-6.html",
       "pageKind": "reference",
       "expectedSection": "Components",
       "expectedStoryIds": [],
@@ -9235,7 +9862,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9310,6 +9937,30 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "TableToolbar",
+          "visible": true,
+          "width": 691,
+          "height": 412
+        },
+        {
+          "id": "Tabs",
+          "visible": true,
+          "width": 691,
+          "height": 272
+        },
+        {
+          "id": "TcrnBrandMark",
+          "visible": true,
+          "width": 691,
+          "height": 192
+        },
+        {
+          "id": "TemplateGallery",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
           "id": "Text",
           "visible": true,
           "width": 691,
@@ -9328,6 +9979,12 @@
           "height": 217
         },
         {
+          "id": "TocRail",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
           "id": "Tooltip",
           "visible": true,
           "width": 691,
@@ -9344,6 +10001,24 @@
           "visible": true,
           "width": 691,
           "height": 275
+        },
+        {
+          "id": "TreeNav",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "VersionHistory",
+          "visible": true,
+          "width": 691,
+          "height": 244
+        },
+        {
+          "id": "ViewTabs",
+          "visible": true,
+          "width": 691,
+          "height": 192
         }
       ],
       "clipped": [],
@@ -9371,7 +10046,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9427,7 +10102,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9483,7 +10158,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9539,7 +10214,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9595,7 +10270,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9651,7 +10326,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9707,7 +10382,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9766,7 +10441,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9808,7 +10483,7 @@
           "id": "welcome-governance",
           "visible": true,
           "width": 358,
-          "height": 1744
+          "height": 1724
         },
         {
           "id": "governance-boundaries",
@@ -9847,7 +10522,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9927,7 +10602,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -9963,13 +10638,13 @@
           "id": "brand-identity",
           "visible": true,
           "width": 358,
-          "height": 2410
+          "height": 2382
         },
         {
           "id": "color-palette",
           "visible": true,
           "width": 358,
-          "height": 13204
+          "height": 13164
         }
       ],
       "referenceRegions": [],
@@ -10001,7 +10676,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10037,7 +10712,7 @@
           "id": "text-styles",
           "visible": true,
           "width": 358,
-          "height": 6483
+          "height": 6456
         },
         {
           "id": "grid-system",
@@ -10076,7 +10751,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10124,7 +10799,7 @@
           "id": "copy-creation-rules",
           "visible": true,
           "width": 358,
-          "height": 1427
+          "height": 1411
         }
       ],
       "referenceRegions": [],
@@ -10157,7 +10832,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10205,7 +10880,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9711
+          "height": 9614
         }
       ],
       "referenceRegions": [],
@@ -10236,7 +10911,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10272,7 +10947,7 @@
           "id": "copy-guidelines",
           "visible": true,
           "width": 358,
-          "height": 944
+          "height": 928
         }
       ],
       "referenceRegions": [],
@@ -10305,7 +10980,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10348,19 +11023,19 @@
           "id": "component-family-index",
           "visible": true,
           "width": 358,
-          "height": 9833
+          "height": 9865
         },
         {
           "id": "display-primitives-spec",
           "visible": true,
           "width": 358,
-          "height": 4209
+          "height": 4173
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 358,
-          "height": 2058
+          "height": 2030
         }
       ],
       "referenceRegions": [],
@@ -10382,7 +11057,7 @@
         "stamp-spec-usage",
         "button-spec-usage",
         "field-spec-usage",
-        "table-work-index-spec"
+        "table-record-index-spec"
       ],
       "expectedActiveStoryId": "stamp-spec-usage",
       "consoleMessages": [],
@@ -10394,7 +11069,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10445,10 +11120,10 @@
           "height": 2479
         },
         {
-          "id": "table-work-index-spec",
+          "id": "table-record-index-spec",
           "visible": true,
           "width": 358,
-          "height": 6708
+          "height": 5866
         }
       ],
       "referenceRegions": [],
@@ -10483,7 +11158,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10566,7 +11241,7 @@
           "id": "navigation-focused-shells-spec",
           "visible": true,
           "width": 358,
-          "height": 2609
+          "height": 2589
         },
         {
           "id": "navigation-primitives-spec",
@@ -10609,7 +11284,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10660,19 +11335,14 @@
       "viewport": "mobile-390x844",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/components-work-management.html",
+      "url": "/apps/storybook/storybook-static/components-records-and-boards.html",
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "work-management-components-spec",
-        "work-management-relationships-spec",
-        "work-management-tokens-density-views-spec",
-        "work-management-route-detail-spec",
-        "work-management-backlog-board-spec",
-        "work-management-hierarchy-gates-spec",
-        "work-management-inspector-spec"
+        "records-and-boards-components-spec",
+        "records-and-boards-backlog-spec"
       ],
-      "expectedActiveStoryId": "work-management-components-spec",
+      "expectedActiveStoryId": "records-and-boards-components-spec",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -10682,7 +11352,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10709,52 +11379,22 @@
         "Components"
       ],
       "currentNav": "Components",
-      "currentStoryNav": "work-management-components-spec",
+      "currentStoryNav": "records-and-boards-components-spec",
       "bodyScrollWidth": 390,
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "work-management-components-spec",
+          "id": "records-and-boards-components-spec",
           "visible": true,
           "width": 358,
-          "height": 7661
+          "height": 1435
         },
         {
-          "id": "work-management-relationships-spec",
+          "id": "records-and-boards-backlog-spec",
           "visible": true,
           "width": 358,
-          "height": 723
-        },
-        {
-          "id": "work-management-tokens-density-views-spec",
-          "visible": true,
-          "width": 358,
-          "height": 5041
-        },
-        {
-          "id": "work-management-route-detail-spec",
-          "visible": true,
-          "width": 358,
-          "height": 2349
-        },
-        {
-          "id": "work-management-backlog-board-spec",
-          "visible": true,
-          "width": 358,
-          "height": 1918
-        },
-        {
-          "id": "work-management-hierarchy-gates-spec",
-          "visible": true,
-          "width": 358,
-          "height": 6018
-        },
-        {
-          "id": "work-management-inspector-spec",
-          "visible": true,
-          "width": 358,
-          "height": 2019
+          "height": 2064
         }
       ],
       "referenceRegions": [],
@@ -10769,15 +11409,14 @@
       "viewport": "mobile-390x844",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/components-knowledge-management.html",
+      "url": "/apps/storybook/storybook-static/components-hierarchy-and-relations.html",
       "pageKind": "category",
       "expectedSection": "Components",
       "expectedStoryIds": [
-        "knowledge-management-components-spec",
-        "knowledge-management-density-collaboration-spec",
-        "knowledge-management-templates-spec"
+        "hierarchy-and-relations-spec",
+        "hierarchy-and-relations-stages-spec"
       ],
-      "expectedActiveStoryId": "knowledge-management-components-spec",
+      "expectedActiveStoryId": "hierarchy-and-relations-spec",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -10787,7 +11426,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10814,28 +11453,184 @@
         "Components"
       ],
       "currentNav": "Components",
-      "currentStoryNav": "knowledge-management-components-spec",
+      "currentStoryNav": "hierarchy-and-relations-spec",
       "bodyScrollWidth": 390,
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "knowledge-management-components-spec",
+          "id": "hierarchy-and-relations-spec",
           "visible": true,
           "width": 358,
-          "height": 3510
+          "height": 679
         },
         {
-          "id": "knowledge-management-density-collaboration-spec",
+          "id": "hierarchy-and-relations-stages-spec",
           "visible": true,
           "width": 358,
-          "height": 2240
+          "height": 5912
+        }
+      ],
+      "referenceRegions": [],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/components-detail-and-inspection.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "detail-and-inspection-density-spec",
+        "detail-and-inspection-route-spec",
+        "detail-and-inspection-inspector-spec"
+      ],
+      "expectedActiveStoryId": "detail-and-inspection-density-spec",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "detail-and-inspection-density-spec",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "detail-and-inspection-density-spec",
+          "visible": true,
+          "width": 358,
+          "height": 4912
         },
         {
-          "id": "knowledge-management-templates-spec",
+          "id": "detail-and-inspection-route-spec",
           "visible": true,
           "width": 358,
-          "height": 1018
+          "height": 2340
+        },
+        {
+          "id": "detail-and-inspection-inspector-spec",
+          "visible": true,
+          "width": 358,
+          "height": 1863
+        }
+      ],
+      "referenceRegions": [],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/components-documents-and-collaboration.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "documents-and-collaboration-components-spec",
+        "documents-and-collaboration-density-spec",
+        "documents-and-collaboration-templates-spec"
+      ],
+      "expectedActiveStoryId": "documents-and-collaboration-components-spec",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "documents-and-collaboration-components-spec",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [
+        {
+          "id": "documents-and-collaboration-components-spec",
+          "visible": true,
+          "width": 358,
+          "height": 1802
+        },
+        {
+          "id": "documents-and-collaboration-density-spec",
+          "visible": true,
+          "width": 358,
+          "height": 2334
+        },
+        {
+          "id": "documents-and-collaboration-templates-spec",
+          "visible": true,
+          "width": 358,
+          "height": 983
         }
       ],
       "referenceRegions": [],
@@ -10867,7 +11662,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10909,7 +11704,7 @@
           "id": "workbench-patterns",
           "visible": true,
           "width": 358,
-          "height": 753
+          "height": 575
         }
       ],
       "referenceRegions": [],
@@ -10924,13 +11719,16 @@
       "viewport": "mobile-390x844",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/patterns-work-management.html",
+      "url": "/apps/storybook/storybook-static/patterns-data-pages.html",
       "pageKind": "category",
       "expectedSection": "Patterns",
       "expectedStoryIds": [
-        "work-management-patterns"
+        "records-and-boards-patterns",
+        "datagrid-fields-patterns",
+        "big-list-search-patterns",
+        "dashboard-page-templates"
       ],
-      "expectedActiveStoryId": "work-management-patterns",
+      "expectedActiveStoryId": "records-and-boards-patterns",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -10940,7 +11738,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -10967,16 +11765,34 @@
         "Patterns"
       ],
       "currentNav": "Patterns",
-      "currentStoryNav": "work-management-patterns",
+      "currentStoryNav": "records-and-boards-patterns",
       "bodyScrollWidth": 390,
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "work-management-patterns",
+          "id": "records-and-boards-patterns",
           "visible": true,
           "width": 358,
-          "height": 3404
+          "height": 3383
+        },
+        {
+          "id": "datagrid-fields-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 358
+        },
+        {
+          "id": "big-list-search-patterns",
+          "visible": true,
+          "width": 358,
+          "height": 494
+        },
+        {
+          "id": "dashboard-page-templates",
+          "visible": true,
+          "width": 358,
+          "height": 929
         }
       ],
       "referenceRegions": [],
@@ -11009,7 +11825,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -11072,87 +11888,6 @@
       "viewport": "mobile-390x844",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/patterns-data-pages.html",
-      "pageKind": "category",
-      "expectedSection": "Patterns",
-      "expectedStoryIds": [
-        "datagrid-fields-patterns",
-        "big-list-search-patterns",
-        "dashboard-page-templates"
-      ],
-      "expectedActiveStoryId": "datagrid-fields-patterns",
-      "consoleMessages": [],
-      "pageErrors": [],
-      "failedRequests": [],
-      "title": "Patterns - TCRN Design System Contract Stories",
-      "shellAuthority": "online-docs",
-      "docShellSelectorCount": 6,
-      "globalProductShellShellSelectorCount": 0,
-      "docShellSidebarVisible": true,
-      "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
-      "docNavOpenCategoryCount": 1,
-      "activeStoryHiddenByCategory": false,
-      "categoryAriaFailures": [],
-      "sidebarNoIconLabelReadbacks": [],
-      "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
-      "docCurrentStoryCount": 1,
-      "docChapterPagerCount": 1,
-      "onThisPageCount": 1,
-      "mandatoryBoundaryVisible": true,
-      "noOverclaimBoundaryVisible": true,
-      "governanceBoundaryStripVisible": true,
-      "governanceStoryMetadataMissing": [],
-      "shellHeaderLayoutGap": 0,
-      "sidebarLeft": 0,
-      "storybookLocale": "en",
-      "localeOptionCount": 5,
-      "localeSelectVisible": true,
-      "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [],
-      "activeSection": "Patterns",
-      "storySections": [
-        "Patterns"
-      ],
-      "currentNav": "Patterns",
-      "currentStoryNav": "datagrid-fields-patterns",
-      "bodyScrollWidth": 390,
-      "viewportWidth": 390,
-      "bodyOverflowX": false,
-      "storyRegions": [
-        {
-          "id": "datagrid-fields-patterns",
-          "visible": true,
-          "width": 358,
-          "height": 370
-        },
-        {
-          "id": "big-list-search-patterns",
-          "visible": true,
-          "width": 358,
-          "height": 494
-        },
-        {
-          "id": "dashboard-page-templates",
-          "visible": true,
-          "width": 358,
-          "height": 1035
-        }
-      ],
-      "referenceRegions": [],
-      "clipped": [],
-      "readbackStateViewGapViolations": [],
-      "storyTextRhythmViolations": [],
-      "readbackHeadingGapViolations": [],
-      "forbiddenHits": [],
-      "rootVisible": true
-    },
-    {
-      "viewport": "mobile-390x844",
-      "browser": "chromium",
-      "browserVersion": "149.0.7827.55",
       "url": "/apps/storybook/storybook-static/proof-proof-governance.html",
       "pageKind": "category",
       "expectedSection": "Proof",
@@ -11172,7 +11907,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -11214,7 +11949,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 14340
+          "height": 14207
         },
         {
           "id": "blocked-actions",
@@ -11245,10 +11980,10 @@
       "pageKind": "category",
       "expectedSection": "Proof",
       "expectedStoryIds": [
-        "aos-frontend-shell-slice",
-        "aos-owner-quality-product-shell"
+        "frontend-shell-slice",
+        "owner-quality-product-shell"
       ],
-      "expectedActiveStoryId": "aos-frontend-shell-slice",
+      "expectedActiveStoryId": "frontend-shell-slice",
       "consoleMessages": [],
       "pageErrors": [],
       "failedRequests": [],
@@ -11258,7 +11993,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -11285,22 +12020,22 @@
         "Proof"
       ],
       "currentNav": "Proof",
-      "currentStoryNav": "aos-frontend-shell-slice",
+      "currentStoryNav": "frontend-shell-slice",
       "bodyScrollWidth": 390,
       "viewportWidth": 390,
       "bodyOverflowX": false,
       "storyRegions": [
         {
-          "id": "aos-frontend-shell-slice",
+          "id": "frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 27073
+          "height": 18792
         },
         {
-          "id": "aos-owner-quality-product-shell",
+          "id": "owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 40084
+          "height": 37282
         }
       ],
       "referenceRegions": [],
@@ -11331,7 +12066,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -11367,7 +12102,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 358,
-          "height": 1194
+          "height": 1168
         }
       ],
       "referenceRegions": [],
@@ -11396,7 +12131,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -11434,10 +12169,22 @@
           "height": 217
         },
         {
+          "id": "ActivityFeed",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
           "id": "AppStatusBar",
           "visible": true,
           "width": 358,
           "height": 217
+        },
+        {
+          "id": "AttachmentList",
+          "visible": true,
+          "width": 358,
+          "height": 336
         },
         {
           "id": "Avatar",
@@ -11524,28 +12271,16 @@
           "height": 165
         },
         {
+          "id": "DetailLayout",
+          "visible": true,
+          "width": 358,
+          "height": 554
+        },
+        {
           "id": "Dialog",
           "visible": true,
           "width": 358,
           "height": 474
-        },
-        {
-          "id": "DisclosurePanel",
-          "visible": true,
-          "width": 358,
-          "height": 269
-        },
-        {
-          "id": "Divider",
-          "visible": true,
-          "width": 358,
-          "height": 100
-        },
-        {
-          "id": "EmptyState",
-          "visible": true,
-          "width": 358,
-          "height": 416
         }
       ],
       "clipped": [],
@@ -11573,7 +12308,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -11604,6 +12339,30 @@
       "bodyOverflowX": false,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "DisclosurePanel",
+          "visible": true,
+          "width": 358,
+          "height": 269
+        },
+        {
+          "id": "Divider",
+          "visible": true,
+          "width": 358,
+          "height": 100
+        },
+        {
+          "id": "DocumentCanvas",
+          "visible": true,
+          "width": 358,
+          "height": 416
+        },
+        {
+          "id": "EmptyState",
+          "visible": true,
+          "width": 358,
+          "height": 416
+        },
         {
           "id": "EnvironmentBanner",
           "visible": true,
@@ -11665,6 +12424,18 @@
           "height": 180
         },
         {
+          "id": "InlineCommentList",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "InlineCreate",
+          "visible": true,
+          "width": 358,
+          "height": 317
+        },
+        {
           "id": "Input",
           "visible": true,
           "width": 358,
@@ -11677,52 +12448,16 @@
           "height": 137
         },
         {
-          "id": "LineNumberedEditor",
+          "id": "LabelSet",
           "visible": true,
           "width": 358,
-          "height": 311
+          "height": 336
         },
         {
-          "id": "LinkButton",
+          "id": "LaneBoard",
           "visible": true,
           "width": 358,
-          "height": 198
-        },
-        {
-          "id": "LiveRegion",
-          "visible": true,
-          "width": 358,
-          "height": 100
-        },
-        {
-          "id": "LockHint",
-          "visible": true,
-          "width": 358,
-          "height": 189
-        },
-        {
-          "id": "Menu",
-          "visible": true,
-          "width": 358,
-          "height": 357
-        },
-        {
-          "id": "MobileNavToggle",
-          "visible": true,
-          "width": 358,
-          "height": 640
-        },
-        {
-          "id": "ModuleTabs",
-          "visible": true,
-          "width": 358,
-          "height": 265
-        },
-        {
-          "id": "NavGroup",
-          "visible": true,
-          "width": 358,
-          "height": 217
+          "height": 407
         }
       ],
       "clipped": [],
@@ -11750,7 +12485,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -11782,10 +12517,82 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "LineNumberedEditor",
+          "visible": true,
+          "width": 358,
+          "height": 311
+        },
+        {
+          "id": "LinkButton",
+          "visible": true,
+          "width": 358,
+          "height": 198
+        },
+        {
+          "id": "LiveRegion",
+          "visible": true,
+          "width": 358,
+          "height": 100
+        },
+        {
+          "id": "LockHint",
+          "visible": true,
+          "width": 358,
+          "height": 189
+        },
+        {
+          "id": "MachineToken",
+          "visible": true,
+          "width": 358,
+          "height": 373
+        },
+        {
+          "id": "MachineTokenCell",
+          "visible": true,
+          "width": 358,
+          "height": 373
+        },
+        {
+          "id": "Menu",
+          "visible": true,
+          "width": 358,
+          "height": 357
+        },
+        {
+          "id": "MetadataRail",
+          "visible": true,
+          "width": 358,
+          "height": 428
+        },
+        {
+          "id": "MobileNavToggle",
+          "visible": true,
+          "width": 358,
+          "height": 640
+        },
+        {
+          "id": "ModuleTabs",
+          "visible": true,
+          "width": 358,
+          "height": 265
+        },
+        {
+          "id": "NavGroup",
+          "visible": true,
+          "width": 358,
+          "height": 217
+        },
+        {
           "id": "NavItem",
           "visible": true,
           "width": 358,
           "height": 545
+        },
+        {
+          "id": "PageHeader",
+          "visible": true,
+          "width": 358,
+          "height": 434
         },
         {
           "id": "Pagination",
@@ -11828,7 +12635,64 @@
           "visible": true,
           "width": 358,
           "height": 2039
-        },
+        }
+      ],
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "url": "/apps/storybook/storybook-static/component-api-reference-4.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadbacks": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "shellHeaderLayoutGap": 0,
+      "sidebarLeft": 0,
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "bodyOverflowX": false,
+      "storyRegions": [],
+      "referenceRegions": [
         {
           "id": "ProductSwitcher",
           "visible": true,
@@ -11840,6 +12704,12 @@
           "visible": true,
           "width": 358,
           "height": 192
+        },
+        {
+          "id": "QuickFilters",
+          "visible": true,
+          "width": 358,
+          "height": 336
         },
         {
           "id": "RadioGroup",
@@ -11854,10 +12724,58 @@
           "height": 208
         },
         {
+          "id": "RecordInspector",
+          "visible": true,
+          "width": 358,
+          "height": 542
+        },
+        {
+          "id": "RecordRow",
+          "visible": true,
+          "width": 358,
+          "height": 775
+        },
+        {
+          "id": "RecordTable",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "RelationGraph",
+          "visible": true,
+          "width": 358,
+          "height": 311
+        },
+        {
+          "id": "RelationshipChip",
+          "visible": true,
+          "width": 358,
+          "height": 493
+        },
+        {
+          "id": "RowGroup",
+          "visible": true,
+          "width": 358,
+          "height": 499
+        },
+        {
+          "id": "SavedViewToolbar",
+          "visible": true,
+          "width": 358,
+          "height": 357
+        },
+        {
           "id": "SearchInput",
           "visible": true,
           "width": 358,
           "height": 265
+        },
+        {
+          "id": "SearchResultList",
+          "visible": true,
+          "width": 358,
+          "height": 382
         },
         {
           "id": "SearchableList",
@@ -11894,12 +12812,6 @@
           "visible": true,
           "width": 358,
           "height": 493
-        },
-        {
-          "id": "ShellLocaleMenu",
-          "visible": true,
-          "width": 358,
-          "height": 662
         }
       ],
       "clipped": [],
@@ -11913,7 +12825,7 @@
       "viewport": "mobile-390x844",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/component-api-reference-4.html",
+      "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
       "pageKind": "reference",
       "expectedSection": "Components",
       "expectedStoryIds": [],
@@ -11927,7 +12839,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -11959,6 +12871,12 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ShellLocaleMenu",
+          "visible": true,
+          "width": 358,
+          "height": 662
+        },
+        {
           "id": "ShellThemeToggle",
           "visible": true,
           "width": 358,
@@ -11987,6 +12905,18 @@
           "visible": true,
           "width": 358,
           "height": 162
+        },
+        {
+          "id": "SplitView",
+          "visible": true,
+          "width": 358,
+          "height": 416
+        },
+        {
+          "id": "StagePipeline",
+          "visible": true,
+          "width": 358,
+          "height": 336
         },
         {
           "id": "Stamp",
@@ -12037,6 +12967,12 @@
           "height": 192
         },
         {
+          "id": "SubNav",
+          "visible": true,
+          "width": 358,
+          "height": 265
+        },
+        {
           "id": "Surface",
           "visible": true,
           "width": 358,
@@ -12053,30 +12989,6 @@
           "visible": true,
           "width": 358,
           "height": 336
-        },
-        {
-          "id": "TableToolbar",
-          "visible": true,
-          "width": 358,
-          "height": 634
-        },
-        {
-          "id": "Tabs",
-          "visible": true,
-          "width": 358,
-          "height": 363
-        },
-        {
-          "id": "TcrnBrandMark",
-          "visible": true,
-          "width": 358,
-          "height": 265
-        },
-        {
-          "id": "TemplateGallery",
-          "visible": true,
-          "width": 358,
-          "height": 336
         }
       ],
       "clipped": [],
@@ -12090,7 +13002,7 @@
       "viewport": "mobile-390x844",
       "browser": "chromium",
       "browserVersion": "149.0.7827.55",
-      "url": "/apps/storybook/storybook-static/component-api-reference-5.html",
+      "url": "/apps/storybook/storybook-static/component-api-reference-6.html",
       "pageKind": "reference",
       "expectedSection": "Components",
       "expectedStoryIds": [],
@@ -12104,7 +13016,7 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 20,
+      "docNavCategoryCount": 21,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
@@ -12136,6 +13048,30 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "TableToolbar",
+          "visible": true,
+          "width": 358,
+          "height": 634
+        },
+        {
+          "id": "Tabs",
+          "visible": true,
+          "width": 358,
+          "height": 363
+        },
+        {
+          "id": "TcrnBrandMark",
+          "visible": true,
+          "width": 358,
+          "height": 265
+        },
+        {
+          "id": "TemplateGallery",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
           "id": "Text",
           "visible": true,
           "width": 358,
@@ -12154,6 +13090,12 @@
           "height": 235
         },
         {
+          "id": "TocRail",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
           "id": "Tooltip",
           "visible": true,
           "width": 358,
@@ -12170,6 +13112,24 @@
           "visible": true,
           "width": 358,
           "height": 404
+        },
+        {
+          "id": "TreeNav",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "VersionHistory",
+          "visible": true,
+          "width": 358,
+          "height": 336
+        },
+        {
+          "id": "ViewTabs",
+          "visible": true,
+          "width": 358,
+          "height": 265
         }
       ],
       "clipped": [],

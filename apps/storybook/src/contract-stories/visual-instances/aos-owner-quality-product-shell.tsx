@@ -5,6 +5,7 @@ import {
   Heading,
   KeyValueList,
   ProductShell,
+  RecordTable,
   StatusBadge,
   Surface,
   TableShell,
@@ -12,13 +13,13 @@ import {
   type IconName,
   type ProductShellNavGroup,
   type ProductShellSearchResult
+  ,type RecordRowProps
 } from "@tcrn/ui-react";
-import {
-  EvidenceStrip,
-  WorkIndex,
-  type WorkIndexRow
-} from "@tcrn/ui-domain";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
+
+function ReferenceList({ items }: { items: string[] }) {
+  return <div className="tcrn-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
+}
 
 type OwnerQualityRoute = "cockpit" | "work";
 type OwnerQualitySearchMode = "rest" | "results";
@@ -148,11 +149,11 @@ const variants: readonly OwnerQualityVariant[] = [
   }
 ] as const;
 
-export const aosOwnerQualityProductShellReadback = {
-  storyId: "aos-owner-quality-product-shell",
-  page: "proof.html#aos-owner-quality-product-shell",
-  selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"]",
-  visualInstanceName: "AosOwnerQualityProductShell",
+export const ownerQualityShellOracleReadback = {
+  storyId: "owner-quality-product-shell",
+  page: "proof.html#owner-quality-product-shell",
+  selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"]",
+  visualInstanceName: "OwnerQualityShellOracle",
   ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
   disposition: "owner_quality_candidate_requires_ds_review_before_product_use",
   packageMapping: {
@@ -163,22 +164,22 @@ export const aosOwnerQualityProductShellReadback = {
     productLogoRegistry: "tcrnProductLogoRegistry",
     content: [
       "Surface",
-      "WorkIndex",
+      "RecordTable",
       "TableShell",
       "KeyValueList",
       "StatusBadge",
-      "EvidenceStrip",
+      "ReferenceList",
       "EnvironmentBanner",
       "DisclosurePanel"
     ]
   },
   slots: [
-    "registered AOS product logo lockup",
+    "registered product logo lockup",
     "attached ProductShell side navigation",
     "compact topbar controls",
     "ProductShellSearch rest/results surface",
-    "product-first operations cockpit",
-    "work queue and gate evidence",
+    "product-first route context",
+    "record queue and stage references",
     "secondary developer detail disclosure"
   ],
   props: {
@@ -198,7 +199,7 @@ export const aosOwnerQualityProductShellReadback = {
   variants: variants.map((variant) => variant.id),
   variantFixtures: variants.map((variant) => ({
     id: variant.id,
-    selector: `[data-storybook-visual-instance="aos-owner-quality-product-shell"][data-visual-instance-variant="${variant.id}"]`,
+    selector: `[data-storybook-visual-instance="owner-quality-product-shell"][data-visual-instance-variant="${variant.id}"]`,
     theme: variant.theme,
     locale: variant.locale,
     collapsed: variant.collapsed,
@@ -245,24 +246,24 @@ export const aosOwnerQualityProductShellReadback = {
     rescopedBy: "TCRN-AOS-MIN-006"
   },
   ownerQualityAcceptanceCriteria: [
-    "first viewport reads as AOS Operations Cockpit with registered TCRN AOS product identity in the side brand lockup",
+    "first viewport reads as a product shell with registered product identity in the side brand lockup",
     "exactly one primary H1 per rendered fixture",
-    "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
+    "product content leads with current records, stages, references, decisions, owner actions, service health, and activity",
     "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
     "ProductShell topbar controls stay within the fixture root and viewport without horizontal clipping",
     "ProductShellSearch expand/collapse motion samples intermediate widths over the DS 320ms search timeline",
     "read-only and no-live-dispatch boundaries are visible but low-prominence",
     "developer proof/API/readback details are secondary disclosure",
-    "Cockpit and Work are meaningful product modules rather than placeholder labels"
+    "primary modules are meaningful functional destinations rather than placeholder labels"
   ],
   rejectCriteria: [
-    "first viewport headline is AOS frontend shell, Frontend shell slice, Local structural slice only, or Dummy Cockpit",
+    "first viewport headline is a frontend shell slice, local structural slice, placeholder shell, or generic dummy label",
     "implementation/proof/debug terminology dominates the first viewport",
     "no-overclaim copy becomes the primary product story",
-    "Runtime/Stories/Gates/Audit events verification metrics lead the hierarchy",
+    "runtime, audit, or verification metrics lead the hierarchy",
     "ProductShell topbar, search, locale, or theme controls are cropped or create root/topbar horizontal overflow",
     "visible local product CSS/effects or Storybook-only prototype classes appear",
-    "owner/product/release/live-dispatch/final-Cockpit readiness is claimed"
+    "owner/product/release/live-dispatch readiness is claimed"
   ],
   delegatedSubOracles: [
     "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and actionable desktop side-nav collapse/expand behavior for this owner-quality oracle.",
@@ -272,9 +273,9 @@ export const aosOwnerQualityProductShellReadback = {
   ],
   negativeCriteria: [
     "no proof-scaffold headline as Level 1 content",
-    "no Dummy Cockpit or structural-placeholder first viewport",
+    "no placeholder shell or structural-placeholder first viewport",
     "no primary raw API/debug/readback payload",
-    "no deprecated AOS wordmark assets",
+    "no deprecated product wordmark assets",
     "no unregistered primary IA",
     "no owner/product/release/live-dispatch readiness claim"
   ]
@@ -422,7 +423,7 @@ function searchResults(variant: OwnerQualityVariant): ProductShellSearchResult[]
   ];
 }
 
-function queueRows(locale: OwnerQualityVariant["locale"]): WorkIndexRow[] {
+function queueRows(locale: OwnerQualityVariant["locale"]): RecordRowProps[] {
   const isZh = locale === "zh-CN";
   return [
     {
@@ -514,12 +515,12 @@ function OperationsContent({ variant }: { variant: OwnerQualityVariant }) {
             ? (variant.locale === "zh-CN" ? "按 owner、门禁和下一步查看当前工作。" : "Scan current work by owner, gate, and next action.")
             : copy.primaryDescription}
         </Text>
-        <EvidenceStrip items={[copy.boundary, copy.noDispatch]} />
+        <ReferenceList items={[copy.boundary, copy.noDispatch]} />
       </Surface>
       <div className="tcrn-product-shell-section-grid" data-package-owned-section-rhythm="work-gates">
         <Surface data-owner-quality-work-queue="true" aria-label={`${copy.workTitle}: ${variant.id}`}>
           <Heading level={2}>{copy.workTitle}</Heading>
-          <WorkIndex rows={queueRows(variant.locale)} label={copy.workTitle} locale={variant.locale} />
+          <RecordTable rows={queueRows(variant.locale)} label={`${copy.workTitle} records: ${variant.id}`} locale={variant.locale} />
         </Surface>
         <Surface data-owner-quality-gates="true" aria-label={`${copy.gateTitle}: ${variant.id}`}>
           <Heading level={2}>{copy.gateTitle}</Heading>
@@ -529,7 +530,7 @@ function OperationsContent({ variant }: { variant: OwnerQualityVariant }) {
               { key: "gate", label: variant.locale === "zh-CN" ? "门禁" : "Gate" },
               { key: "evidence", label: variant.locale === "zh-CN" ? "证据" : "Evidence" },
               { key: "decision", label: variant.locale === "zh-CN" ? "决策" : "Decision" },
-              { key: "owner", label: "Owner" },
+              { key: "owner", label: variant.locale === "zh-CN" ? "负责人" : "Owner" },
               { key: "state", label: variant.locale === "zh-CN" ? "状态" : "State" }
             ]}
             rows={gateRows(variant.locale)}
@@ -604,8 +605,8 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
         resultsLabel: copy.searchResultsLabel,
         emptyLabel: copy.emptyLabel
       }}
-      data-storybook-visual-instance="aos-owner-quality-product-shell"
-      data-visual-instance-name="AosOwnerQualityProductShell"
+      data-storybook-visual-instance="owner-quality-product-shell"
+      data-visual-instance-name="OwnerQualityShellOracle"
       data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
       data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
       data-visual-instance-owner-quality="product-first"
@@ -634,9 +635,9 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
   );
 }
 
-export function AosOwnerQualityProductShell() {
+export function OwnerQualityShellOracle() {
   return (
-    <div data-visual-instance-fixture-matrix="aos-owner-quality-product-shell">
+    <div data-visual-instance-fixture-matrix="owner-quality-product-shell">
       {variants.map((variant) => (
         <section key={variant.id} data-visual-instance-fixture={variant.id} aria-labelledby={`${variant.id}-owner-quality-heading`}>
           <OwnerQualityVariantFixture variant={variant} />

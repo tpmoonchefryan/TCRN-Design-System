@@ -54,9 +54,9 @@ const LOCAL_VARS = [
   "--tcrn-search-input-padding-inline",
   "--tcrn-search-input-column-gap",
   "--tcrn-search-input-control-min-inline-size",
-  "--tcrn-work-density-gap",
-  "--tcrn-work-density-padding",
-  "--tcrn-work-density-row-min"
+  "--tcrn-density-gap",
+  "--tcrn-density-padding",
+  "--tcrn-density-row-min"
 ];
 
 function componentCss(source) {

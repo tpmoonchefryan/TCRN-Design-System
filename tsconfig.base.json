@@ -14,9 +14,6 @@
       "@tcrn/ui-copy-state": [
         "packages/ui-copy-state/src/index.ts"
       ],
-      "@tcrn/ui-domain": [
-        "packages/ui-domain/src/index.ts"
-      ],
       "@tcrn/ui-react": [
         "packages/ui-react/src/index.tsx"
       ],

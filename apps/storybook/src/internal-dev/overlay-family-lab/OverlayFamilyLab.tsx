@@ -14,15 +14,16 @@ import {
   Surface,
   Text
 } from "@tcrn/ui-react";
-import {
-  EvidenceStrip
-} from "@tcrn/ui-domain";
 import { overlayFamilyLabCopy } from "./overlay-family-lab-copy.js";
 import {
   overlayFamilyNoOverclaimMarkers,
   overlayFamilyScenarios,
   type OverlayFamilyScenario
 } from "./overlay-family-lab-model.js";
+
+function ReferenceList({ items }: { items: string[] }) {
+  return <div className="tcrn-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
+}
 
 const layoutStyle: CSSProperties = {
   display: "grid",
@@ -274,7 +275,7 @@ export function OverlayFamilyLab() {
         <Heading level={1}>{overlayFamilyLabCopy.title}</Heading>
         <Text>{overlayFamilyLabCopy.description}</Text>
         <InlineAlert tone="warning">{overlayFamilyLabCopy.boundary}</InlineAlert>
-        <EvidenceStrip
+        <ReferenceList
           items={[
             "public @tcrn/ui-react imports only",
             "contract docs excluded",

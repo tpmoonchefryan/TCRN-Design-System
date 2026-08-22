@@ -53,18 +53,19 @@ export const storyCategoryDefinitions: Record<ContractStoryGroup, readonly Story
     { id: "controls-data", label: "Controls and data", description: "Buttons, fields, tables, and dense data primitives." },
     { id: "navigation-shells", label: "Navigation and shells", description: "Navigation, ProductShell, and shell control contracts." },
     { id: "overlays", label: "Overlays", description: "Dialog, drawer, popover, and focus behavior contracts." },
-    { id: "work-management", label: "Work Management", description: "Package-backed Work Management components and execution-record containment." },
-    { id: "knowledge-management", label: "Knowledge Management", description: "Package-backed static Knowledge components, sanitized references, and no-live publishing boundaries." }
+    { id: "records-and-boards", label: "Records and boards", description: "Rows, groups, tables, and lane-based record arrangement." },
+    { id: "hierarchy-and-relations", label: "Hierarchy and relations", description: "Graphs, relationships, and stage references between records." },
+    { id: "detail-and-inspection", label: "Detail and inspection", description: "Record detail, metadata, density, and inspection surfaces." },
+    { id: "documents-and-collaboration", label: "Documents and collaboration", description: "Documents, page navigation, comments, attachments, and versions." }
   ],
   Patterns: [
     { id: "forms-workbench", label: "Forms and workbench", description: "Form, workbench, and local filtering patterns." },
-    { id: "work-management", label: "Work Management", description: "Work hierarchy, board, gate, evidence, and saved-view composition." },
     { id: "feedback-selection", label: "Feedback and selection", description: "Readiness, selection, modal validation, and blocked-state patterns." },
     { id: "data-pages", label: "Data and pages", description: "Data grid escalation, large-list search, and dashboard page templates." }
   ],
   Proof: [
     { id: "proof-governance", label: "Proof governance", description: "Proof matrix, AI contract, blocked actions, and focus proof." },
-    { id: "proof-visual-instances", label: "Visual instances", description: "Package-backed AOS ProductShell visual instance oracles and the superseded frontend proof scaffold." }
+    { id: "proof-visual-instances", label: "Visual instances", description: "Package-backed ProductShell visual instance oracles and the superseded frontend proof scaffold." }
   ],
   "Change Log": [
     { id: "governance-records", label: "Governance records", description: "Durable Storybook and root changelog records." }
@@ -116,20 +117,20 @@ export const storyRegistryOrder: readonly StoryRegistryEntry[] = [
   { id: "navigation-primitives-spec", group: "Components", categoryId: "navigation-shells" },
   { id: "navigation-product-shell-spec", group: "Components", categoryId: "navigation-shells" },
   { id: "dialog-spec-usage", group: "Components", categoryId: "overlays" },
-  { id: "table-work-index-spec", group: "Components", categoryId: "controls-data" },
-  { id: "work-management-components-spec", group: "Components", categoryId: "work-management" },
-  { id: "work-management-relationships-spec", group: "Components", categoryId: "work-management" },
-  { id: "work-management-tokens-density-views-spec", group: "Components", categoryId: "work-management" },
-  { id: "work-management-route-detail-spec", group: "Components", categoryId: "work-management" },
-  { id: "work-management-backlog-board-spec", group: "Components", categoryId: "work-management" },
-  { id: "work-management-hierarchy-gates-spec", group: "Components", categoryId: "work-management" },
-  { id: "work-management-inspector-spec", group: "Components", categoryId: "work-management" },
-  { id: "knowledge-management-components-spec", group: "Components", categoryId: "knowledge-management" },
-  { id: "knowledge-management-density-collaboration-spec", group: "Components", categoryId: "knowledge-management" },
-  { id: "knowledge-management-templates-spec", group: "Components", categoryId: "knowledge-management" },
+  { id: "table-record-index-spec", group: "Components", categoryId: "controls-data" },
+  { id: "records-and-boards-components-spec", group: "Components", categoryId: "records-and-boards" },
+  { id: "hierarchy-and-relations-spec", group: "Components", categoryId: "hierarchy-and-relations" },
+  { id: "detail-and-inspection-density-spec", group: "Components", categoryId: "detail-and-inspection" },
+  { id: "detail-and-inspection-route-spec", group: "Components", categoryId: "detail-and-inspection" },
+  { id: "records-and-boards-backlog-spec", group: "Components", categoryId: "records-and-boards" },
+  { id: "hierarchy-and-relations-stages-spec", group: "Components", categoryId: "hierarchy-and-relations" },
+  { id: "detail-and-inspection-inspector-spec", group: "Components", categoryId: "detail-and-inspection" },
+  { id: "documents-and-collaboration-components-spec", group: "Components", categoryId: "documents-and-collaboration" },
+  { id: "documents-and-collaboration-density-spec", group: "Components", categoryId: "documents-and-collaboration" },
+  { id: "documents-and-collaboration-templates-spec", group: "Components", categoryId: "documents-and-collaboration" },
   { id: "forms-patterns", group: "Patterns", categoryId: "forms-workbench" },
   { id: "workbench-patterns", group: "Patterns", categoryId: "forms-workbench" },
-  { id: "work-management-patterns", group: "Patterns", categoryId: "work-management" },
+  { id: "records-and-boards-patterns", group: "Patterns", categoryId: "data-pages" },
   { id: "readiness-notification-patterns", group: "Patterns", categoryId: "feedback-selection" },
   { id: "selection-list-patterns", group: "Patterns", categoryId: "feedback-selection" },
   { id: "modal-validation-patterns", group: "Patterns", categoryId: "feedback-selection" },
@@ -140,8 +141,8 @@ export const storyRegistryOrder: readonly StoryRegistryEntry[] = [
   { id: "ai-consumption-contract", group: "Proof", categoryId: "proof-governance" },
   { id: "blocked-actions", group: "Proof", categoryId: "proof-governance" },
   { id: "overlay-focus", group: "Proof", categoryId: "proof-governance" },
-  { id: "aos-frontend-shell-slice", group: "Proof", categoryId: "proof-visual-instances" },
-  { id: "aos-owner-quality-product-shell", group: "Proof", categoryId: "proof-visual-instances" },
+  { id: "frontend-shell-slice", group: "Proof", categoryId: "proof-visual-instances" },
+  { id: "owner-quality-product-shell", group: "Proof", categoryId: "proof-visual-instances" },
   { id: "local-changelog", group: "Change Log", categoryId: "governance-records" }
 ];
 
@@ -153,11 +154,11 @@ const storyCategoryById: Record<string, string> = Object.fromEntries(
 );
 
 const packageAuthorityByStoryId: Record<string, string> = {
-  "aos-frontend-shell-slice": "@tcrn/ui-react ProductShell visual oracle; internal proof scaffold",
-  "aos-owner-quality-product-shell": "@tcrn/ui-react ProductShell owner-quality visual oracle",
-  "work-management-components-spec": "@tcrn/ui-react Work Management package exports",
-  "knowledge-management-components-spec": "@tcrn/ui-react Knowledge Management package exports",
-  "work-management-patterns": "@tcrn/ui-react Work Management package exports",
+  "frontend-shell-slice": "@tcrn/ui-react ProductShell visual oracle; internal proof scaffold",
+  "owner-quality-product-shell": "@tcrn/ui-react ProductShell owner-quality visual oracle",
+  "records-and-boards-components-spec": "@tcrn/ui-react functional display package exports",
+  "documents-and-collaboration-components-spec": "@tcrn/ui-react documents and collaboration package exports",
+  "records-and-boards-patterns": "@tcrn/ui-react functional display package exports",
   "ai-consumption-contract": "Storybook static AI contract plus package-backed proof surfaces",
   "foundation-visual-standards": "Storybook static foundation visual standards registry plus ProductShell oracle",
   "local-changelog": "Durable Storybook governance changelog source"
@@ -223,14 +224,14 @@ export const storybookGovernanceChangelogRecords: readonly StorybookGovernanceCh
       "button-spec-usage",
       "field-spec-usage",
       "navigation-shell-spec",
-      "aos-frontend-shell-slice",
-      "aos-owner-quality-product-shell",
+      "frontend-shell-slice",
+      "owner-quality-product-shell",
       "dialog-spec-usage",
-      "table-work-index-spec",
-      "work-management-components-spec",
+      "table-record-index-spec",
+      "records-and-boards-components-spec",
       "forms-patterns",
       "workbench-patterns",
-      "work-management-patterns",
+      "records-and-boards-patterns",
       "readiness-notification-patterns",
       "selection-list-patterns",
       "modal-validation-patterns",

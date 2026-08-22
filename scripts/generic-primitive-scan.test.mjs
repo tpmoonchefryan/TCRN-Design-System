@@ -12,6 +12,7 @@ import {
   DOMAIN_PREFIXES,
   REGISTERED_DOMAIN_DEBT,
   domainComponents,
+  domainNameHints,
   judgeGenericPrimitives,
 } from "./generic-primitive-scan.mjs";
 
@@ -45,25 +46,47 @@ test("REDS on each of the four prefixes, so none of them is decorative", () => {
 });
 
 test("a structural name that merely sounds specific is never collected at all", () => {
-  // The rule is "names a thing the product tracks", not "sounds domain-ish". A
-  // library full of Panels and Rails is still generic; one that knows what a Work
-  // Item is, is not. The distinction lives in the collector's pattern, so that is
-  // what this exercises — judgeGenericPrimitives only ever sees names the collector
-  // already decided are domain names.
+  // The rule is "props carry a thing the product tracks", not "sounds domain-ish".
   const source = [
-    "export function ProductShell() {}",
-    "export function StatusBadge() {}",
-    "export function TableToolbar() {}",
-    "export function MetadataRail() {}",
-    "export function RelationshipChip() {}",
-    "export function WorkItemRow() {}",
+    "interface GenericProps { title: string }",
+    "interface WorkItem { id: string }",
+    "export function ProductShell({ title }: GenericProps) {}",
+    "export function StatusBadge({ title }: GenericProps) {}",
+    "export function TableToolbar({ title }: GenericProps) {}",
+    "export function MetadataRail({ title }: GenericProps) {}",
+    "export function RelationshipChip({ title }: GenericProps) {}",
+    "export function WorkItemRow({ item }: { item: WorkItem }) {}",
   ].join("\n");
   const found = domainComponents(undefined, (path) => (String(path).endsWith("DataDisplay.tsx") ? source : ""));
-  assert.deepEqual([...found.keys()], ["WorkItemRow"], "only the one naming a tracked entity");
+  assert.deepEqual([...found.keys()], ["WorkItemRow"], "only the one whose props carry a tracked entity");
+});
+
+test("a generic component with a domain prefix is a hint, not an admission", () => {
+  const source = [
+    "interface WorkGenericProps { title: string }",
+    "export function WorkGeneric({ title }: WorkGenericProps) {}",
+  ].join("\n");
+  const read = (path) => (String(path).endsWith("DataDisplay.tsx") ? source : "");
+  assert.deepEqual([...domainComponents(undefined, read).keys()], []);
+  assert.deepEqual([...domainNameHints(undefined, read).keys()], ["WorkGeneric"]);
+  assert.equal(judgeGenericPrimitives(domainComponents(undefined, read), domainNameHints(undefined, read)).ok, true);
+});
+
+test("renaming a component cannot bypass a domain entity in its props", () => {
+  const source = [
+    "interface WorkItem { id: string }",
+    "export function ActivityFeed({ item }: { item: WorkItem }) {}",
+  ].join("\n");
+  const read = (path) => (String(path).endsWith("DataDisplay.tsx") ? source : "");
+  const found = domainComponents(undefined, read);
+  const result = judgeGenericPrimitives(found, domainNameHints(undefined, read));
+  assert.equal(result.ok, false);
+  assert.deepEqual(result.admitted.map((entry) => entry.name), ["ActivityFeed"]);
+  assert.deepEqual(result.admitted[0].evidence, ["WorkItem"]);
 });
 
 test("extraction is visible: a registered name that left the source is reported", () => {
-  // The debt is empty now — INIT-012 moved the last thirty to @tcrn/ui-domain — so
+  // The debt is empty now — the functional display surface moved into core — so
   // this exercises the judgement against a synthetic register rather than the real
   // one. The property still matters: if a name leaves the source while staying on a
   // list, the count reports a burn-down that did not happen.
