@@ -1,0 +1,33 @@
+{
+  "story": "TCRN-DS-INC-014",
+  "workId": "work:df31c450f27357fdbbb36d64",
+  "decidedBy": "Owner 2026-08-22 · docs/2026-08-22-post-batch-incidents-handoff.md",
+  "generatedAt": "2026-08-22T14:10:48.000Z",
+  "generatedBy": "agent:fable",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；机检车道止于门全绿，外观车道止于 pending-owner-acceptance。",
+    "不跨仓改动：DS 的改动落 DS 仓、AOS 的落 AOS 仓，任一仓不得伸手进另一仓的树。",
+    "不推送、不打 tag、不部署、不发布——各自是独立停止点。",
+    "不要把这一步做成「跑一次 install 看它挂不挂」就算完：判据 3 要求它红过一次再变绿，否则无法区分检查通过与检查没执行。"
+  ],
+  "filePointers": [
+    "package.json",
+    "pnpm-lock.yaml",
+    "vercel.json"
+  ],
+  "verificationCommands": [
+    "pnpm install --frozen-lockfile",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与 TCRN-Design-System 分区 attestations，并回读回执。",
+    "机检车道止于门全绿；外观相关的判据停在 pending-owner-acceptance，不自判 done。"
+  ],
+  "effectiveEvidenceCommands": [
+    "故意让某个 workspace 包的 package.json 与锁文件不一致，跑 verify 应判红并点名该包；还原后转绿。",
+    "该步位于 verify 链首，早于任何构建——`git show HEAD:package.json` 可读出顺序。"
+  ],
+  "storyScope": "## Goal\n\n为谁:DS 的维护者,以及任何依赖 Storybook 发布面的消费方(含 AI 消费方)。\n目的锚:Vercel 部署自 2026-08-18 12:59 起连红四天、十一个提交,无人看见 ——\n因为 `pnpm verify` 全绿与部署红可以长期并存:**verify 链里没有任何一步做过 frozen-lockfile 安装**。\n符合性判据:verify 链含一步以 `--frozen-lockfile` 安装,锁文件与任一 workspace 包的 package.json\n不一致时立即判红。判定人:Owner,2026-08-22。\n\n## Requirements\n\n现象与证据(2026-08-22 用 git worktree 复现 Vercel 的干净检出,逐提交实测):\n\n- 失败信息:`ERR_PNPM_OUTDATED_LOCKFILE — pnpm-lock.yaml is not up to date with\n  <ROOT>/packages/ui-domain/package.json`,四条依赖未入锁\n  (`react@>=19`、`react-dom@>=19`、`@tcrn/ui-copy-state@workspace:*`、`@tcrn/ui-react@workspace:*`);\n- `0e702e2` 干净检出:`pnpm install --frozen-lockfile` **exit=1**,`public-docs:vercel-build` exit=1,\n  连 `@tcrn/ui-tokens` 都没建成 —— **安装阶段就挂,构建链一步没跑到**;\n- `b29f15f` 干净检出:两者皆 **exit=0**;\n- 锁文件里**根本没有 `packages/ui-domain:` 段**,而该包声明了 2 个 dependencies + 2 个 peerDependencies;\n- 该 package.json 只被两个提交碰过:`e287265`(建包)与 `b29f15f`(删包);\n- 抽查 `e287265..origin/main` 的六个提交,五个 Vercel `failure`、一个 `pending`。\n\n本地长期无感的原因:`pnpm install` 不带 `--frozen-lockfile` 时会默默把锁文件补上再继续,\n而 `vercel.json` 的 `installCommand` 是 `pnpm install --frozen-lockfile`(CI 里本来也默认为真)。\n\n修复项:①verify 链增加一步以 `--frozen-lockfile` 安装(或等价的锁文件一致性检查),\n位置在链首,早于任何构建;②该步要能在锁文件与任一 workspace 包不一致时判红,而不是只看根 package.json。\n修复落点:`package.json` 的 verify 链与新增的检查脚本。\n\n**顺带记一笔,不在本单修复范围**:`public-docs:vercel-build` 与根 `build` 两条链**都从未包含\n`@tcrn/ui-domain`**。那是同一次疏漏的另一半,随该包删除一并消失;但它说明新增 workspace 包时,\n构建链与锁文件两处都要跟,而两处当时都没跟。\n\n## Acceptance Criteria\n\n1. GIVEN 任一 workspace 包的 package.json 增删依赖而锁文件未更新,WHEN 跑 verify,THEN 判红并点名该包。\n2. GIVEN 该步,WHEN 置于链首,THEN 它在任何构建之前失败,不浪费后续步骤。\n3. GIVEN 故意让锁文件与某个包不一致,WHEN 跑该步,THEN 判红;还原后转绿 —— 门要红过一次。\n4. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n一个只在 CI 才执行的约束,如果本地链从不执行它,那么本地绿就不构成任何关于 CI 的证据。\n这条链已经为同一形态付过代价 —— 四天、十一个提交、无人看见。\n\n## Preconditions\n\nDS `pnpm verify` 全绿;`b29f15f` 已推送并使部署转绿(该修复本身不属本单,本单防的是下一次)。\n\n## Assumptions\n\n假定 `--frozen-lockfile` 安装在本地是可接受的耗时。若明显拖慢日常链,\n可退为一个只比对锁文件与各 package.json 的轻量检查 —— 但必须仍能抓住判据 1 的情形。\n\n## Use Cases & Examples\n\n将来有人给某个 workspace 包加一条依赖、本地 `pnpm install` 顺手把锁文件改了却没提交,\n或者改了 package.json 没跑 install。今天这两种都会让部署静默红下去。\n\n## Feature Toggle & Setting\n\n无。门无开关。\n\n## Permissions\n\n无特殊权限。机检车道。\n\n## Implementation Notes\n\n不要把这一步做成\"跑一次 install 看它挂不挂\"就算完 —— 判据 3 要求它红过一次再变绿,\n否则无法区分\"检查通过\"与\"检查没执行\"。"
+}
