@@ -1,0 +1,43 @@
+{
+  "story": "TCRN-DS-INC-010",
+  "workId": "work:4b3ba6d32cda490df37fc520",
+  "decidedBy": "Owner 2026-08-22 handoff",
+  "generatedAt": "2026-08-22T08:38:00.286Z",
+  "generatedBy": "agent:codex",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；本批状态最多推进到 pending-owner-acceptance，发布面和视觉基线仍归 Owner 亲眼验收。",
+    "不 push、不打 tag、不部署、不发布 npm/Storybook；本地 HEAD、HTTP/HTML、浏览器和真实发布位证据分开记录，不得互相冒充。",
+    "不得改动 AOS、TMS 或 workflow 兄弟仓源码；跨仓引用只作只读参考，发现未登记消费方先停手呈报。",
+    "按 Design System 仓约束使用 token 与既有样式契约；不手改生成 token/CSS 区块，不以 raw px/hex/radius 绕过门。",
+    "视觉工作必须保留单行安全带、262 张基线的有意差异记录和 Owner review 边界；静态 HTML/HTTP 不能冒充真浏览器或 hosted 发布证明。"
+  ],
+  "filePointers": [
+    "apps/storybook/src/build/page-template.tsx",
+    "apps/storybook/src/alpha-styles.ts",
+    "apps/storybook/src/storybook.css",
+    "packages/ui-react/src/components/Navigation/Navigation.tsx",
+    "scripts/storybook-smoke.mjs",
+    "package.json"
+  ],
+  "verificationCommands": [
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm storybook:smoke",
+    "pnpm internal-alpha:proof",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与该分区 attestations，禁止手写控制树。",
+    "最终提交之后重放本单 effectiveEvidenceCommands，证据只写仓库 docs/verification 或本批报告，公开记录不得嵌入本机路径、凭据或未经脱敏原始输出。",
+    "机检完成后仅经引擎推进 active→pending-owner-acceptance；Owner 判定人、视觉/发布面和外部发布停止点未满足前严禁 done。",
+    "完成推进后用 status、完整 work-list 与本单 work-show 回读，确认 scope 未被覆盖、状态和证据归属与实际执行者一致。"
+  ],
+  "effectiveEvidenceCommands": [
+    "最终 HEAD：运行 pnpm verify，确认文档模板使用的 tcrn-* 类与样式定义逐项对账，并保留故意删除一条时的红腿。",
+    "浏览器位置：运行 pnpm internal-alpha:proof，量栏目页链接色、重复 h2 与前后翻页器的真实浏览器结果。",
+    "Owner acceptance/publication：未证——归 Owner 视觉验收与独立发布停止点。"
+  ],
+  "storyScope": "## Goal\n\n为谁:任何打开 TCRN Design System Storybook 的人 —— 它是 DS 自己的发布面,也是 Owner 指定的设计权威源。\n目的锚:七个栏目落地页的正文没有任何样式,渲染成浏览器默认的裸嵌套列表与 rgb(0,0,238) 蓝色下划线链接;\n而读者进入每一章时第一眼看到的正是这七页。符合性判据:文档外壳用到的类在样式表里都有定义,\n栏目落地页读起来像产品而不是未加工的目录转储。判定人:Owner,2026-08-22 看图指出。\n\n## Requirements\n\n现象与证据(2026-08-22 实测,量的是 storybook-static 构建产物):\n①`tcrn-doc-category-index` 全家七个类在三份样式表(alpha-styles、storybook.css、@tcrn/ui-react 组件表)\n里**一条定义都没有**,浏览器实测链接色 `rgb(0, 0, 238)`、`text-decoration: underline` —— 即默认样式;\n②同一页出现两个 `<h2>欢迎</h2>`,一个来自 `pageHeadHtml`,一个来自 `sectionIndexBodyHtml`;\n③`tcrn-doc-chapter-pager__link--previous` 无定义(29 页命中),而 `--next` 有,故翻页器只有一半有样式;\n④`tcrn-doc-nav__section-icon-svg` 无定义(224 次 / 32 页)、`tcrn-story-disclosure__title` 与\n`__chevron-svg` 无定义(各 55 次 / 20 页)、`tcrn-component-reference__intro` 无定义(5 页)、\n`tcrn-eyebrow` 无定义。\n复核命令:对 `apps/storybook/storybook-static/*.html` 收集 `class` 里的 `tcrn-*`,\n逐个到 `src/alpha-styles.ts` + `src/storybook.css` + `tcrnComponentCss` 里查定义。\n\n修复项:①给 `tcrn-doc-category-index` 全家上样式,链接用 DS 刚补的 `.tcrn-link` 基元而不是自造;\n②去掉重复标题(页头与正文二选一);③补 `--previous` 与 `__placeholder`;④补其余四类;\n⑤加一道门,断言文档模板用到的每个类都在样式表里有定义 —— 没有门,下一个类还会这样漏。\n修复落点:`apps/storybook/src/build/page-template.tsx`、`src/alpha-styles.ts`,与新门。\n\n## Acceptance Criteria\n\n1. GIVEN 七个栏目落地页任意一个,WHEN 量正文链接的计算样式,THEN 不再是 `rgb(0,0,238)` 默认色。\n2. GIVEN 同一页,WHEN 数 `<h2>` 且文本等于栏目名,THEN 只出现一次。\n3. GIVEN 任一章节页,WHEN 看翻页器,THEN 上一章与下一章两侧样式对称。\n4. GIVEN 文档模板用到的任一 `tcrn-*` 类,WHEN 跑新门,THEN 在样式表里查得到定义;故意删一条则判红。\n5. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\nStorybook 是 DS 的发布面。本地这份仓是开发源码,消费方(含 AI 消费方)取的是发布出去的那份 ——\n所以发布面的未产品化不是内部瑕疵,是权威源本身在向所有消费方展示一个未完成的样子。\n栏目页化出自 INIT-008 且已 done;本条按平台规矩以 Incident 而非重开旧单的方式记。\n\n## Preconditions\n\nDS `pnpm verify` 全绿;`.tcrn-link` 基元已随 TCRN-DS-STORY-095 进入 core,可直接复用。\n\n## Assumptions\n\n假定七个栏目页共用同一套样式即可,不需要逐页定制 —— 它们由同一个 `sectionIndexBodyHtml` 生成。\n\n## Use Cases & Examples\n\n一个人点开「组件」章,今天看到的是一串蓝色下划线的裸序号列表;补完后应当看到一组可扫读的分类卡片,\n每类带故事数,与左侧导航的信息层级一致。\n\n## Feature Toggle & Setting\n\n无。\n\n## Permissions\n\n无特殊权限。Storybook 属 DS 的机检车道,但外观归 Owner 亲眼判 —— 门全绿后仍待 Owner 看。\n\n## Implementation Notes\n\n不要自造链接样式:`.tcrn-link` 与 `.tcrn-link--quiet` 刚刚为此进的 core,栏目页正是它的用例。\n第五项那道门是本条里唯一防复发的东西 —— 前四项都是补当下这一批,门才管下一批。"
+}

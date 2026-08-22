@@ -1,0 +1,44 @@
+{
+  "story": "TCRN-DS-STORY-100",
+  "workId": "work:fecd569f395c40c6a7a09c01",
+  "decidedBy": "Owner 2026-08-22 handoff",
+  "generatedAt": "2026-08-22T08:38:00.286Z",
+  "generatedBy": "agent:codex",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；本批状态最多推进到 pending-owner-acceptance，发布面和视觉基线仍归 Owner 亲眼验收。",
+    "不 push、不打 tag、不部署、不发布 npm/Storybook；本地 HEAD、HTTP/HTML、浏览器和真实发布位证据分开记录，不得互相冒充。",
+    "不得改动 AOS、TMS 或 workflow 兄弟仓源码；跨仓引用只作只读参考，发现未登记消费方先停手呈报。",
+    "按 Design System 仓约束使用 token 与既有样式契约；不手改生成 token/CSS 区块，不以 raw px/hex/radius 绕过门。",
+    "视觉工作必须保留单行安全带、262 张基线的有意差异记录和 Owner review 边界；静态 HTML/HTTP 不能冒充真浏览器或 hosted 发布证明。"
+  ],
+  "filePointers": [
+    "apps/storybook/src/contract-stories/groups/components.ts",
+    "apps/storybook/src/contract-stories/groups/patterns.ts",
+    "apps/storybook/src/contract-stories/governance.ts",
+    "apps/storybook/src/build/locales/storybook-locale-text.ts",
+    "apps/storybook/src/build/locales/storybook-content-text.ts",
+    "package.json",
+    "scripts/storybook-smoke.mjs"
+  ],
+  "verificationCommands": [
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm storybook:smoke",
+    "pnpm public-output:scan",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与该分区 attestations，禁止手写控制树。",
+    "最终提交之后重放本单 effectiveEvidenceCommands，证据只写仓库 docs/verification 或本批报告，公开记录不得嵌入本机路径、凭据或未经脱敏原始输出。",
+    "机检完成后仅经引擎推进 active→pending-owner-acceptance；Owner 判定人、视觉/发布面和外部发布停止点未满足前严禁 done。",
+    "完成推进后用 status、完整 work-list 与本单 work-show 回读，确认 scope 未被覆盖、状态和证据归属与实际执行者一致。"
+  ],
+  "effectiveEvidenceCommands": [
+    "最终 HEAD：运行 pnpm verify，确认发布面命名门先在 fixture 红腿中命中产品名，再在清理后绿。",
+    "发布产物：对 apps/storybook/storybook-static 运行仓内现有 smoke/scan，核对分类 id、故事 id 与五语标签，不以手写结果表代替命令输出。",
+    "Owner acceptance/publication：未证——归 Owner 发布面与视觉验收；不推断 hosted 发布已发生。"
+  ],
+  "storyScope": "## Goal\n\n为谁:任何将来往 DS 发布面加分类或故事的人。目的锚:前两条子单补的是当下这十三个,\n而没有门就会有第十四个 —— 这正是 INIT-012 立通用性门时给出的同一个理由。\n符合性判据:发布面的分类 id、故事 id 与其五语标签都不得含产品名或某产品的域语汇,由门执行。\n判定人:Owner。\n\n## Requirements\n\n现象与证据:今天没有任何机器判据看着发布面的命名。组件面有 `generic:scan`(INIT-012 的\nTCRN-DS-STORY-094)拒绝第三十三个领域组件,而分类与故事名不在它的管辖内 ——\n所以 core 已经零业务实体命名,发布面却仍有十三个产品形态的故事和三个产品域分类。\n\n修复项:①建发布面命名门,收集分类 id、故事 id 与五语标签,对产品名册(aos/tms/workflow)\n与产品域语汇(work/knowledge/gate/evidence 等)判定;②接入 `pnpm verify`;\n③把当下不合规的登记为冻结债务而非直接删 —— 与 `generic:scan` 同一形态:\n删掉正在被引用的东西不是变通用,是变坏。\n修复落点:新门脚本与其测试。\n\n## Acceptance Criteria\n\n1. GIVEN 一个新加的 `aos-*` 故事,WHEN 跑门,THEN 判红并点名其 id。\n2. GIVEN 一个新加的 `work-management` 分类,WHEN 跑门,THEN 判红。\n3. GIVEN 五语标签里出现产品名而 id 没有,WHEN 跑门,THEN 同样判红 —— 标签也是发布面。\n4. GIVEN 债务册里的名字已离开发布面,WHEN 跑门,THEN 报告已清理而非让计数虚高。\n5. GIVEN 债务册为空,WHEN 跑门,THEN 仍然执行 —— 空册不是关掉的门,须有判据断言此点。\n6. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\nINIT-012 的经验写在 STORY-094 里:规则一直存在而三十二个领域组件已进 DS 核心,\n无人能指出它被打破的那一刻 —— 散文规则不拦住下一次提交。发布面今天正处在同一个位置。\n\n## Preconditions\n\nDS `pnpm verify` 全绿;前两条子单可与本单并行,门先立、债务后清是 STORY-094 已验证过的次序。\n\n## Assumptions\n\n假定产品域语汇的名册需要人工维护且会扩。若将来出现不以现有词命名的产品形态,\n那是名册要扩,而扩名册本身会让门判红一次,正是它该有的行为。\n\n## Use Cases & Examples\n\n半年后有人为某产品的新需求加一章。门当场告诉他:按功能命名,或者说明为什么这个功能只有一个产品需要。\n\n## Feature Toggle & Setting\n\n无。门无开关 —— 可永久关闭的门等于没有门。\n\n## Permissions\n\n无特殊权限。机检车道。\n\n## Implementation Notes\n\n不要跨仓引用 AOS 的 `gate:ds-adoption` 代码,可参考其做法。\n门要先红一次再变绿:故意加一个 `aos-` 前缀的假故事确认判据 1 抓得住,再移除。"
+}

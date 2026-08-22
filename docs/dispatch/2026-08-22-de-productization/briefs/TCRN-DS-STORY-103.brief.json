@@ -1,0 +1,41 @@
+{
+  "story": "TCRN-DS-STORY-103",
+  "workId": "work:d21adfdb417394e4e1c90ccc",
+  "decidedBy": "Owner 2026-08-22 handoff",
+  "generatedAt": "2026-08-22T08:38:00.286Z",
+  "generatedBy": "agent:codex",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；本批状态最多推进到 pending-owner-acceptance，发布面和视觉基线仍归 Owner 亲眼验收。",
+    "不 push、不打 tag、不部署、不发布 npm/Storybook；本地 HEAD、HTTP/HTML、浏览器和真实发布位证据分开记录，不得互相冒充。",
+    "不得改动 AOS、TMS 或 workflow 兄弟仓源码；跨仓引用只作只读参考，发现未登记消费方先停手呈报。",
+    "按 Design System 仓约束使用 token 与既有样式契约；不手改生成 token/CSS 区块，不以 raw px/hex/radius 绕过门。"
+  ],
+  "filePointers": [
+    "packages/ui-domain/src/components.tsx",
+    "packages/ui-domain/src/index.ts",
+    "packages/ui-domain/src/components.test.tsx",
+    "packages/ui-react/src/index.tsx",
+    "examples/tms-react-pilot/src/index.tsx",
+    "CHANGELOG.md"
+  ],
+  "verificationCommands": [
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm exports:check",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与该分区 attestations，禁止手写控制树。",
+    "最终提交之后重放本单 effectiveEvidenceCommands，证据只写仓库 docs/verification 或本批报告，公开记录不得嵌入本机路径、凭据或未经脱敏原始输出。",
+    "机检完成后仅经引擎推进 active→pending-owner-acceptance；Owner 判定人、视觉/发布面和外部发布停止点未满足前严禁 done。",
+    "完成推进后用 status、完整 work-list 与本单 work-show 回读，确认 scope 未被覆盖、状态和证据归属与实际执行者一致。"
+  ],
+  "effectiveEvidenceCommands": [
+    "最终 HEAD：运行 pnpm typecheck，确认旧类型名无残留引用且四个 WorkAction 使用点共用一个新类型。",
+    "最终 HEAD：运行 pnpm exports:check 与 pnpm verify，确认关系芯片接受调用方开放描述、阶段流水线不绑定治理词。",
+    "Owner acceptance/publication：未证——归 Owner 对公开类型命名与词汇迁移的验收。"
+  ],
+  "storyScope": "## Goal\n\n为谁:三个产品的实施者。目的锚:类型层同样带产品前缀,而多数是通用概念穿了产品的名字 ——\n这使得「props 是否提及产品业务概念」这条判据在类型这一层是循环的。符合性判据:\n公开类型按其实质命名,只有真正属于某产品业务词汇的才保留领域名。判定人:Owner。\n\n## Requirements\n\n现象与证据:乙组 26 个组件之所以「props 含产品实体类型」,是因为那些类型自己带前缀。逐个看实质:\n- 通用概念穿产品名:`WorkAction`(一个动作,出现在 `MetadataRail`/`KnowledgeMetadataRail`/\n  `WorkDetailLayout`/`WorkPageHeader` 四处)、`KnowledgeVersion`(一个版本)、\n  `KnowledgeComment`(一条评论)、`KnowledgeSearchResult`(一条检索结果)、\n  `KnowledgeDocumentSection`(一个文档小节)、`KnowledgeTocItem`(一个目录项)、\n  `KnowledgePageTreeItem`(一个树节点)、`WorkActivityFeedItem`(一条活动)、\n  `WorkViewTab`(一个页签)、`WorkQuickFilter`(一个筛选)、`WorkIndexRow`/`WorkItemRowField`\n  (一行/一个字段)、`WorkBoardLane`(一条泳道)、`WorkHierarchyNode`/`Edge`(节点与边);\n- `EvidenceAttachment` 与 `KnowledgeAttachment` 是同一个「附件」的两个名字(随 STORY-102 合并);\n- 曾列为待裁的两处,**Owner 2026-08-22 已裁「通用」**:\n  ①`GatePipelineGate` 实测是 `{id, label, state, owner, evidence[], nextAction?}` ——\n  一个带状态、负责人与下一步的阶段,没有一处是治理专有;`state` 取的是\n  `@tcrn/ui-copy-state` 的就绪度词汇,那是 DS 自己的平台词汇而非某产品的。故通用化为阶段流水线,\n  `evidence` 按其实质改为「支撑引用」。TMS 可用它做入职流程,workflow 可用它做发布流程。\n  ②`WorkRelationshipType` 是十二值闭合联合,连同五语文案表 `relationshipLabels` 与色调表\n  `relationshipTone`。通用化的形态是:**芯片收调用方给的关系描述,而不是闭合联合** ——\n  这与案③同形:AOS 保留它的七个工作状态词、DS 提供徽章;同理消费方保留十二个关系词、DS 提供芯片。\n  十二值词汇本身连同其五语文案移出公开 API;由于实测无任何消费方引用,\n  它以 Storybook 夹具的形态保留(明确标注为某产品的词汇示例,不属公开面),而不是删掉了事。\n\n修复项:①按实质重命名公开类型;②保留旧名为 deprecated 别名一个发布周期,或直接改 ——\n由于实测无任何产品消费方(AOS/TMS/workflow 全零),倾向直接改并在 CHANGELOG 记明;\n③把两个候选的判断写成呈报项。修复落点:类型定义与其导出。\n\n## Acceptance Criteria\n\n1. GIVEN 任一公开类型名,WHEN 读它,THEN 或者描述其实质,或者是 Owner 明示保留的产品词汇。\n2. GIVEN `WorkAction` 的四个使用点,WHEN 改名后,THEN 四处引用同一个新类型,不出现分叉。\n3. GIVEN `RelationshipChip`,WHEN 传入一个不在原十二值内的关系描述,THEN 正常渲染 ——\n   词汇表不再闭合在 DS 里;且原十二值的五语文案不再出现在公开 API。\n   GIVEN 阶段流水线,WHEN 传入一组与治理无关的阶段(如入职、发布),THEN 正常渲染。\n4. GIVEN 类型改名,WHEN 跑 `pnpm typecheck`,THEN 无残留旧名引用。\n5. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n不改类型,组件改名就是表面工作:`ActivityFeed` 收 `WorkActivityFeedItem`,\n另一个产品照样知道这不是给它的。判据要停止循环,必须一路到底。\n\n## Preconditions\n\n`TCRN-DS-STORY-101` 与 `-102` 已落地。\n\n## Assumptions\n\n假定无消费方因此可直接改名。该假定由实测支持(三个产品仓零引用),\n但 DS 自己的 Storybook 与 `examples/tms-react-pilot` 要同批更新。\n\n## Use Cases & Examples\n\nTMS 要渲染一组操作按钮。今天它要引 `WorkAction` —— 一个按名字属于别人的类型。\n\n## Feature Toggle & Setting\n\n无。\n\n## Permissions\n\n两个候选的去留归 Owner。其余属机检车道。\n\n## Implementation Notes\n\n不要为了让 `pnpm typecheck` 变绿而保留一层 `export type WorkAction = ActionDescriptor` 的空转别名 ——\n那会让下一个人以为两个名字都是对的。要么保留并明确标注 deprecated 与移除日期,要么直接改干净。"
+}
