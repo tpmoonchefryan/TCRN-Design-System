@@ -8,14 +8,6 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-frontend-shell-slice.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-aos-owner-quality-product-shell.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-big-list-search-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -60,11 +52,35 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-detail-and-inspection-density-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-detail-and-inspection-inspector-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-detail-and-inspection-route-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-dialog-spec-usage.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-display-primitives-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-documents-and-collaboration-components-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-documents-and-collaboration-density-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-documents-and-collaboration-templates-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -80,6 +96,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-frontend-shell-slice.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-global-states.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -92,6 +112,14 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-hierarchy-and-relations-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-hierarchy-and-relations-stages-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-i18n-theme-contract.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -101,18 +129,6 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-interaction-disclosure-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-components-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-density-collaboration-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-knowledge-management-templates-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -156,6 +172,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-owner-quality-product-shell.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-change-log-governance-records.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -184,6 +204,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-component-api-reference-6.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-component-inventory.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -192,7 +216,15 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-knowledge-management.png",
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-detail-and-inspection.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-documents-and-collaboration.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-hierarchy-and-relations.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -204,7 +236,7 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-work-management.png",
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-records-and-boards.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -233,10 +265,6 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-patterns-forms-workbench.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-patterns-work-management.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -292,6 +320,18 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-records-and-boards-backlog-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-records-and-boards-components-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-records-and-boards-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-release-bug-policy.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -304,7 +344,7 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-table-work-index-spec.png",
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-table-record-index-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -320,51 +360,11 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-backlog-board-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-components-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-hierarchy-gates-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-inspector-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-patterns.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-relationships-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-route-detail-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-work-management-tokens-density-views-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-workbench-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-ai-consumption-contract.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-frontend-shell-slice.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-aos-owner-quality-product-shell.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -412,11 +412,35 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-detail-and-inspection-density-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-detail-and-inspection-inspector-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-detail-and-inspection-route-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-dialog-spec-usage.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-display-primitives-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-documents-and-collaboration-components-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-documents-and-collaboration-density-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-documents-and-collaboration-templates-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -432,6 +456,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-frontend-shell-slice.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-global-states.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -444,6 +472,14 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-hierarchy-and-relations-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-hierarchy-and-relations-stages-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-i18n-theme-contract.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -453,18 +489,6 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-interaction-disclosure-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-components-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-density-collaboration-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-knowledge-management-templates-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -504,6 +528,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-owner-quality-product-shell.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-change-log-governance-records.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -532,6 +560,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-component-api-reference-6.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-component-inventory.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -540,7 +572,15 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-knowledge-management.png",
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-detail-and-inspection.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-documents-and-collaboration.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-hierarchy-and-relations.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -552,7 +592,7 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-work-management.png",
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-records-and-boards.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -581,10 +621,6 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-patterns-forms-workbench.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-patterns-work-management.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -640,6 +676,18 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-records-and-boards-backlog-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-records-and-boards-components-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-records-and-boards-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-release-bug-policy.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -652,7 +700,7 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-table-work-index-spec.png",
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-table-record-index-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -668,51 +716,11 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-backlog-board-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-components-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-hierarchy-gates-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-inspector-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-patterns.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-relationships-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-route-detail-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-work-management-tokens-density-views-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-workbench-patterns.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-ai-consumption-contract.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-frontend-shell-slice.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-aos-owner-quality-product-shell.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -760,11 +768,35 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-detail-and-inspection-density-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-detail-and-inspection-inspector-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-detail-and-inspection-route-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-dialog-spec-usage.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-display-primitives-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-documents-and-collaboration-components-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-documents-and-collaboration-density-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-documents-and-collaboration-templates-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -780,6 +812,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-frontend-shell-slice.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-global-states.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -792,6 +828,14 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-hierarchy-and-relations-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-hierarchy-and-relations-stages-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-i18n-theme-contract.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -801,18 +845,6 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-interaction-disclosure-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-components-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-density-collaboration-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-knowledge-management-templates-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -852,6 +884,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-owner-quality-product-shell.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-change-log-governance-records.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -880,6 +916,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-component-api-reference-6.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-component-inventory.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -888,7 +928,15 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-knowledge-management.png",
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-detail-and-inspection.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-documents-and-collaboration.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-hierarchy-and-relations.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -900,7 +948,7 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-work-management.png",
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-records-and-boards.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -929,10 +977,6 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-patterns-forms-workbench.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-patterns-work-management.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -988,6 +1032,18 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-records-and-boards-backlog-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-records-and-boards-components-spec.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-records-and-boards-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-release-bug-policy.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -1000,7 +1056,7 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-table-work-index-spec.png",
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-table-record-index-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -1013,38 +1069,6 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-welcome-governance.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-backlog-board-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-components-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-hierarchy-gates-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-inspector-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-patterns.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-relationships-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-route-detail-spec.png",
-      "reason": "binary_visual_receipt_not_text_scanned"
-    },
-    {
-      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-work-management-tokens-density-views-spec.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -1759,13 +1783,6 @@
       "rule": "positive-overclaim",
       "matchSha256": "982e17d1ecdad7cabe0faf1752196d88ef99e7119bb62c73484dd160ee5cd097",
       "matchLength": 16,
-      "matchDisposition": "redacted_positive_overclaim_phrase"
-    },
-    {
-      "file": "packages/ui-domain/src/components.test.tsx",
-      "rule": "positive-overclaim",
-      "matchSha256": "d04da660c8b61c3f524eeb0ad99158c3a1a8c886d0d727e094c293e633c35c22",
-      "matchLength": 13,
       "matchDisposition": "redacted_positive_overclaim_phrase"
     },
     {

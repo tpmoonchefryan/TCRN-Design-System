@@ -12,10 +12,9 @@ export function groupFileName(group: ContractStoryGroup): string {
   return group === "Welcome" ? "index.html" : `${groupSlug(group)}.html`;
 }
 
-// categoryId is NOT globally unique ("work-management" is in both Components and Patterns;
-// "governance-*" collide across sections), so a category page filename MUST be namespaced by
-// its group. groupSlug + categorySlug guarantees a unique file per (group, categoryId), e.g.
-// components-work-management.html vs patterns-work-management.html.
+// categoryId is NOT globally unique ("forms-workbench" is in one section while other
+// governance ids recur), so a category page filename MUST be namespaced by its group.
+// groupSlug + categorySlug guarantees a unique file per (group, categoryId).
 export function categorySlug(categoryId: string): string {
   return categoryId.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }

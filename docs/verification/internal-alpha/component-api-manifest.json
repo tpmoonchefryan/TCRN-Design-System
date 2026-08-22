@@ -3,12 +3,14 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 86,
+  "componentCount": 114,
   "coverage": {
-    "registryComponentCount": 86,
+    "registryComponentCount": 114,
     "publicComponentNames": [
       "ActionDrawer",
+      "ActivityFeed",
       "AppStatusBar",
+      "AttachmentList",
       "Avatar",
       "Badge",
       "Breadcrumb",
@@ -23,9 +25,11 @@
       "DefinitionList",
       "DetailDrawer",
       "DetailInspector",
+      "DetailLayout",
       "Dialog",
       "DisclosurePanel",
       "Divider",
+      "DocumentCanvas",
       "EmptyState",
       "EnvironmentBanner",
       "ErrorState",
@@ -37,17 +41,25 @@
       "Icon",
       "IconButton",
       "InlineAlert",
+      "InlineCommentList",
+      "InlineCreate",
       "Input",
       "KeyValueList",
+      "LabelSet",
+      "LaneBoard",
       "LineNumberedEditor",
       "LinkButton",
       "LiveRegion",
       "LockHint",
+      "MachineToken",
+      "MachineTokenCell",
       "Menu",
+      "MetadataRail",
       "MobileNavToggle",
       "ModuleTabs",
       "NavGroup",
       "NavItem",
+      "PageHeader",
       "Pagination",
       "Popover",
       "ProductLauncher",
@@ -57,9 +69,18 @@
       "ProductShellSearch",
       "ProductSwitcher",
       "Progress",
+      "QuickFilters",
       "RadioGroup",
       "ReadbackPanel",
+      "RecordInspector",
+      "RecordRow",
+      "RecordTable",
+      "RelationGraph",
+      "RelationshipChip",
+      "RowGroup",
+      "SavedViewToolbar",
       "SearchInput",
+      "SearchResultList",
       "SearchableList",
       "SectionTabs",
       "SegmentedNav",
@@ -72,6 +93,8 @@
       "SideNavCollapseButton",
       "Skeleton",
       "SkipLink",
+      "SplitView",
+      "StagePipeline",
       "Stamp",
       "StampRule",
       "StatCard",
@@ -80,6 +103,7 @@
       "StatusBadge",
       "StatusSummaryPanel",
       "Stepper",
+      "SubNav",
       "Surface",
       "Switch",
       "TableShell",
@@ -90,13 +114,19 @@
       "Text",
       "Textarea",
       "Toast",
+      "TocRail",
       "Tooltip",
       "TopBar",
-      "Tree"
+      "Tree",
+      "TreeNav",
+      "VersionHistory",
+      "ViewTabs"
     ],
     "manifestComponentNames": [
       "ActionDrawer",
+      "ActivityFeed",
       "AppStatusBar",
+      "AttachmentList",
       "Avatar",
       "Badge",
       "Breadcrumb",
@@ -111,9 +141,11 @@
       "DefinitionList",
       "DetailDrawer",
       "DetailInspector",
+      "DetailLayout",
       "Dialog",
       "DisclosurePanel",
       "Divider",
+      "DocumentCanvas",
       "EmptyState",
       "EnvironmentBanner",
       "ErrorState",
@@ -125,17 +157,25 @@
       "Icon",
       "IconButton",
       "InlineAlert",
+      "InlineCommentList",
+      "InlineCreate",
       "Input",
       "KeyValueList",
+      "LabelSet",
+      "LaneBoard",
       "LineNumberedEditor",
       "LinkButton",
       "LiveRegion",
       "LockHint",
+      "MachineToken",
+      "MachineTokenCell",
       "Menu",
+      "MetadataRail",
       "MobileNavToggle",
       "ModuleTabs",
       "NavGroup",
       "NavItem",
+      "PageHeader",
       "Pagination",
       "Popover",
       "ProductLauncher",
@@ -145,9 +185,18 @@
       "ProductShellSearch",
       "ProductSwitcher",
       "Progress",
+      "QuickFilters",
       "RadioGroup",
       "ReadbackPanel",
+      "RecordInspector",
+      "RecordRow",
+      "RecordTable",
+      "RelationGraph",
+      "RelationshipChip",
+      "RowGroup",
+      "SavedViewToolbar",
       "SearchInput",
+      "SearchResultList",
       "SearchableList",
       "SectionTabs",
       "SegmentedNav",
@@ -160,6 +209,8 @@
       "SideNavCollapseButton",
       "Skeleton",
       "SkipLink",
+      "SplitView",
+      "StagePipeline",
       "Stamp",
       "StampRule",
       "StatCard",
@@ -168,6 +219,7 @@
       "StatusBadge",
       "StatusSummaryPanel",
       "Stepper",
+      "SubNav",
       "Surface",
       "Switch",
       "TableShell",
@@ -178,9 +230,13 @@
       "Text",
       "Textarea",
       "Toast",
+      "TocRail",
       "Tooltip",
       "TopBar",
-      "Tree"
+      "Tree",
+      "TreeNav",
+      "VersionHistory",
+      "ViewTabs"
     ],
     "missingFromManifest": [],
     "extraNotInRegistry": [],
@@ -219,6 +275,47 @@
       ],
       "propsType": "DrawerProps"
     },
+    "ActivityFeed": {
+      "name": "ActivityFeed",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "ActivityItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "ActivityFeedProps"
+    },
     "AppStatusBar": {
       "name": "AppStatusBar",
       "kind": "function",
@@ -249,6 +346,47 @@
         "state"
       ],
       "propsType": "AppStatusBarProps"
+    },
+    "AttachmentList": {
+      "name": "AttachmentList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "AttachmentItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "AttachmentListProps"
     },
     "Avatar": {
       "name": "Avatar",
@@ -742,6 +880,82 @@
       "slots": [],
       "propsType": "DetailInspectorProps"
     },
+    "DetailLayout": {
+      "name": "DetailLayout",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "ActionDescriptor[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "activity",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "main",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "metadata",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "state",
+          "type": "CopyStateInput",
+          "required": false
+        },
+        {
+          "name": "summary",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "activity",
+        "main",
+        "metadata",
+        "summary"
+      ],
+      "propsType": "DetailLayoutProps"
+    },
     "Dialog": {
       "name": "Dialog",
       "kind": "function",
@@ -842,6 +1056,63 @@
       "variants": {},
       "slots": [],
       "propsType": "HTMLAttributes<HTMLHRElement>"
+    },
+    "DocumentCanvas": {
+      "name": "DocumentCanvas",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "labels",
+          "type": "string[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "sections",
+          "type": "DocumentSection[]",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "meta",
+        "summary"
+      ],
+      "propsType": "DocumentCanvasProps"
     },
     "EmptyState": {
       "name": "EmptyState",
@@ -1414,6 +1685,79 @@
       "slots": [],
       "propsType": "InlineAlertProps"
     },
+    "InlineCommentList": {
+      "name": "InlineCommentList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "comments",
+          "type": "CommentEntry[]",
+          "required": true
+        },
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "InlineCommentListProps"
+    },
+    "InlineCreate": {
+      "name": "InlineCreate",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "hint",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "hint"
+      ],
+      "propsType": "InlineCreateProps"
+    },
     "Input": {
       "name": "Input",
       "kind": "function",
@@ -1441,6 +1785,96 @@
       "variants": {},
       "slots": [],
       "propsType": "{ items: KeyValueItem[] }"
+    },
+    "LabelSet": {
+      "name": "LabelSet",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "labels",
+          "type": "string[]",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "LabelSetProps"
+    },
+    "LaneBoard": {
+      "name": "LaneBoard",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"comfortable\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "lanes",
+          "type": "BoardLane[]",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "toolbar",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "toolbar"
+      ],
+      "propsType": "LaneBoardProps"
     },
     "LineNumberedEditor": {
       "name": "LineNumberedEditor",
@@ -1532,6 +1966,141 @@
       ],
       "propsType": "LockHintProps"
     },
+    "MachineToken": {
+      "name": "MachineToken",
+      "kind": "function",
+      "props": [
+        {
+          "name": "copyable",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"comfortable\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "kind",
+          "type": "MachineTokenKind",
+          "required": false,
+          "default": "\"generic\"",
+          "enumValues": [
+            "route",
+            "thread",
+            "commit",
+            "artifact",
+            "record",
+            "generic"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ],
+        "kind": [
+          "route",
+          "thread",
+          "commit",
+          "artifact",
+          "record",
+          "generic"
+        ]
+      },
+      "slots": [],
+      "propsType": "MachineTokenProps"
+    },
+    "MachineTokenCell": {
+      "name": "MachineTokenCell",
+      "kind": "function",
+      "props": [
+        {
+          "name": "copyable",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "kind",
+          "type": "MachineTokenKind",
+          "required": false,
+          "enumValues": [
+            "route",
+            "thread",
+            "commit",
+            "artifact",
+            "record",
+            "generic"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ],
+        "kind": [
+          "route",
+          "thread",
+          "commit",
+          "artifact",
+          "record",
+          "generic"
+        ]
+      },
+      "slots": [],
+      "propsType": "MachineTokenProps"
+    },
     "Menu": {
       "name": "Menu",
       "kind": "function",
@@ -1565,6 +2134,59 @@
       "variants": {},
       "slots": [],
       "propsType": "MenuProps"
+    },
+    "MetadataRail": {
+      "name": "MetadataRail",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "ActionDescriptor[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "KeyValueItem[]",
+          "required": true
+        },
+        {
+          "name": "labels",
+          "type": "string[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "MetadataRailProps"
     },
     "MobileNavToggle": {
       "name": "MobileNavToggle",
@@ -1787,6 +2409,64 @@
         "children"
       ],
       "propsType": "NavItemProps"
+    },
+    "PageHeader": {
+      "name": "PageHeader",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "ActionDescriptor[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "breadcrumbs",
+          "type": "PageHeaderBreadcrumb[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "description",
+        "meta"
+      ],
+      "propsType": "PageHeaderProps"
     },
     "Pagination": {
       "name": "Pagination",
@@ -2395,6 +3075,47 @@
       "slots": [],
       "propsType": "ProgressProps"
     },
+    "QuickFilters": {
+      "name": "QuickFilters",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "filters",
+          "type": "NavStripItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "QuickFiltersProps"
+    },
     "RadioGroup": {
       "name": "RadioGroup",
       "kind": "function",
@@ -2464,6 +3185,371 @@
       ],
       "propsType": "{ title: string; children: ReactNode }"
     },
+    "RecordInspector": {
+      "name": "RecordInspector",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "RecordInspectorAction[]",
+          "required": false
+        },
+        {
+          "name": "attachments",
+          "type": "AttachmentItem[]",
+          "required": false
+        },
+        {
+          "name": "details",
+          "type": "KeyValueItem[]",
+          "required": true
+        },
+        {
+          "name": "hierarchy",
+          "type": "KeyValueItem[]",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "relationships",
+          "type": "RelationshipChipProps[]",
+          "required": false
+        },
+        {
+          "name": "subtasks",
+          "type": "RecordRowProps[]",
+          "required": false
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "RecordInspectorProps"
+    },
+    "RecordRow": {
+      "name": "RecordRow",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "fields",
+          "type": "RecordField[]",
+          "required": false
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "owner",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "priority",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "rank",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "relationships",
+          "type": "RelationshipChipProps[]",
+          "required": false
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "state",
+          "type": "CopyStateInput",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "summary"
+      ],
+      "propsType": "RecordRowProps"
+    },
+    "RecordTable": {
+      "name": "RecordTable",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "rows",
+          "type": "RecordRowProps[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "RecordTableProps"
+    },
+    "RelationGraph": {
+      "name": "RelationGraph",
+      "kind": "function",
+      "props": [
+        {
+          "name": "edges",
+          "type": "GraphEdge[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "nodes",
+          "type": "GraphNode[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "RelationGraphProps"
+    },
+    "RelationshipChip": {
+      "name": "RelationshipChip",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "relation",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tone",
+          "type": "RelationshipTone",
+          "required": false,
+          "default": "\"neutral\"",
+          "enumValues": [
+            "danger",
+            "neutral",
+            "positive",
+            "warning"
+          ]
+        }
+      ],
+      "variants": {
+        "tone": [
+          "danger",
+          "neutral",
+          "positive",
+          "warning"
+        ]
+      },
+      "slots": [],
+      "propsType": "RelationshipChipProps"
+    },
+    "RowGroup": {
+      "name": "RowGroup",
+      "kind": "function",
+      "props": [
+        {
+          "name": "actions",
+          "type": "ActionDescriptor[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "inlineCreate",
+          "type": "InlineCreateProps",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "rows",
+          "type": "RecordRowProps[]",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "description"
+      ],
+      "propsType": "RowGroupProps"
+    },
+    "SavedViewToolbar": {
+      "name": "SavedViewToolbar",
+      "kind": "function",
+      "props": [
+        {
+          "name": "filters",
+          "type": "SavedViewToolbarFilter[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "resetLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "views",
+          "type": "NavStripItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "SavedViewToolbarProps"
+    },
     "SearchInput": {
       "name": "SearchInput",
       "kind": "function",
@@ -2489,6 +3575,52 @@
       "variants": {},
       "slots": [],
       "propsType": "SearchInputProps"
+    },
+    "SearchResultList": {
+      "name": "SearchResultList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "results",
+          "type": "SearchResultItem[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "SearchResultListProps"
     },
     "SearchableList": {
       "name": "SearchableList",
@@ -3049,6 +4181,103 @@
       ],
       "propsType": "SkipLinkProps"
     },
+    "SplitView": {
+      "name": "SplitView",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "detail",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "detailPopulated",
+          "type": "boolean | undefined",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "list",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [
+        "detail",
+        "list"
+      ],
+      "propsType": "SplitViewProps"
+    },
+    "StagePipeline": {
+      "name": "StagePipeline",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"comfortable\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "stages",
+          "type": "PipelineStage[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "StagePipelineProps"
+    },
     "Stamp": {
       "name": "Stamp",
       "kind": "function",
@@ -3301,6 +4530,30 @@
       "variants": {},
       "slots": [],
       "propsType": "StepperProps"
+    },
+    "SubNav": {
+      "name": "SubNav",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "NavStripItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "SubNavProps"
     },
     "Surface": {
       "name": "Surface",
@@ -3601,6 +4854,47 @@
       "slots": [],
       "propsType": "ToastProps"
     },
+    "TocRail": {
+      "name": "TocRail",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "TocItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "TocRailProps"
+    },
     "Tooltip": {
       "name": "Tooltip",
       "kind": "function",
@@ -3717,6 +5011,112 @@
       "variants": {},
       "slots": [],
       "propsType": "TreeProps"
+    },
+    "TreeNav": {
+      "name": "TreeNav",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "items",
+          "type": "TreeNavItem[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "TreeNavProps"
+    },
+    "VersionHistory": {
+      "name": "VersionHistory",
+      "kind": "function",
+      "props": [
+        {
+          "name": "density",
+          "type": "Density",
+          "required": false,
+          "default": "\"compact\"",
+          "enumValues": [
+            "comfortable",
+            "compact",
+            "dense"
+          ]
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "versions",
+          "type": "VersionEntry[]",
+          "required": true
+        }
+      ],
+      "variants": {
+        "density": [
+          "comfortable",
+          "compact",
+          "dense"
+        ]
+      },
+      "slots": [],
+      "propsType": "VersionHistoryProps"
+    },
+    "ViewTabs": {
+      "name": "ViewTabs",
+      "kind": "function",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "tabs",
+          "type": "NavStripItem[]",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ViewTabsProps"
     }
   }
 }

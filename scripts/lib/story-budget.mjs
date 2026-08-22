@@ -54,26 +54,26 @@ export const STORY_HEIGHT_BUDGET_VIEWPORT = "desktop-1440x900";
 
 // One entry per story that CURRENTLY renders > STORY_HEIGHT_BUDGET_PX on desktop. Seeded
 // from the current browser-proof-summary.json desktop heights (11 violators). Note:
-// work-management-patterns is deliberately ABSENT — Batch 2 (S047) trimmed it from 4119px to
+// records-and-boards-patterns is deliberately ABSENT — Batch 2 (S047) trimmed it from 4119px to
 // ~1792px, so it is now under budget and must not be allowlisted. Each entry's owedTo names
 // the split/reclassify story that will retire the entry.
 // Reconciled after TCRN-DS-STORY-059 split the three targeted component mega-stories
-// (work-management / knowledge-management / navigation-shell). navigation-shell-spec and
-// knowledge-management-components-spec now render under budget and are retired from this list.
-// The residual 10 fall in two classes: (a) the two WM children S059 could not push under a
-// coherent unit (the 24-row single-registry readback table; the hierarchy+gates+evidence panel),
-// and (b) inherently-tall AOS visual-instance oracles + Style-Guide/Foundations/Proof specimen
+// (records-and-boards / documents-and-collaboration / navigation-shell). navigation-shell-spec
+// and documents-and-collaboration-components-spec now render under budget and are retired.
+// The residual 10 fall in two classes: (a) the two functional-display children S059 could not push under a
+// coherent unit (the 24-row single-registry readback table; the hierarchy+stages+references panel),
+// and (b) inherently-tall visual-instance oracles + Style-Guide/Foundations/Proof specimen
 // catalogues that were NOT in S059's 3-mega-story scope. The budget gate makes their height
 // VISIBLE and GATED (the governance win); a per-catalogue / per-oracle split is tracked debt
 // beyond INIT-008's 17 stories. Every recorded value is the current measured desktop height.
 export const STORY_HEIGHT_GRACE_ALLOWLIST = {
-  "aos-owner-quality-product-shell": {
-    recordedHeightPx: 15285,
+  "owner-quality-product-shell": {
+    recordedHeightPx: 14943,
     owedTo: "beyond-INIT-008",
     note: "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
   },
-  "aos-frontend-shell-slice": {
-    recordedHeightPx: 12448,
+  "frontend-shell-slice": {
+    recordedHeightPx: 8806,
     owedTo: "beyond-INIT-008",
     note: "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
   },
@@ -84,10 +84,10 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 3105 -> 3281 (TCRN-DS-INIT-012): the public utility roster went from eight
     // entries to twelve when the CSS partition shipped its two sheets and two
     // helpers, and this story renders that roster as a table.
-    // 3281 -> 2978: the same story renders the public component roster, which lost
-    // thirty-five names when the domain components moved to @tcrn/ui-domain. This
-    // is the first time the number has gone DOWN, and that is the point of INIT-012.
-    recordedHeightPx: 2978,
+    // 3281 -> 2978: the same story renders the public component roster after the
+    // functional data-display patterns were merged into core. This is the first
+    // time the number has gone DOWN, and that is the point of INIT-012.
+    recordedHeightPx: 2631,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
@@ -107,7 +107,7 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "39-token color specimen gallery; a catalogue split is future work — gated debt"
   },
   "foundation-visual-standards": {
-    recordedHeightPx: 3350,
+    recordedHeightPx: 3304,
     owedTo: "beyond-INIT-008",
     note: "foundation visual-standards catalogue; gated debt"
   },
@@ -115,11 +115,6 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     recordedHeightPx: 2409,
     owedTo: "beyond-INIT-008",
     note: "type-scale specimen catalogue; gated debt"
-  },
-  "work-management-components-spec": {
-    recordedHeightPx: 2136,
-    owedTo: "irreducible",
-    note: "S059 reduced this from 9191px to the bare 24-row Admitted-candidates registry table (one TableShell over workManagementPatternRegistry). It is the WM authority readback (cited by the AI contract + smoke.test); splitting the rows would break the single-registry-readback semantic. Held at 2136px."
   },
   "icons-motion": {
     recordedHeightPx: 2076,
@@ -140,13 +135,7 @@ export const PAGE_KB_BUDGET_BYTES = 1_000_000;
 // is `proof-proof-visual-instances.html`, which carries both large AOS oracles), add one
 // file-keyed entry here with the measured `recordedBytes` and owedTo TCRN-DS-STORY-054/059.
 // An empty allowlist means the split brought every page under budget.
-export const PAGE_KB_GRACE_ALLOWLIST = {
-  "proof-proof-visual-instances.html": {
-    recordedBytes: 1_018_137,
-    owedTo: "TCRN-DS-STORY-054/059",
-    note: "The Badge truncation wrapper keeps its full accessible label in the visual-instance oracle; the page remains tracked acceptance debt until the proof catalogue is split."
-  }
-};
+export const PAGE_KB_GRACE_ALLOWLIST = {};
 
 export const CATEGORY_STORY_COUNT_CAP = 8;
 

@@ -4,7 +4,7 @@ import { selectStory } from "../story-content.js";
 export const patternsStories: ContractStory[] = [
   selectStory("forms-patterns"),
   selectStory("workbench-patterns"),
-  selectStory("work-management-patterns"),
+  selectStory("records-and-boards-patterns"),
   selectStory("readiness-notification-patterns"),
   selectStory("selection-list-patterns"),
   selectStory("modal-validation-patterns"),

@@ -13,22 +13,23 @@ import {
   type ProductShellNavGroup,
   type ProductShellSearchResult
 } from "@tcrn/ui-react";
-import {
-  EvidenceStrip
-} from "@tcrn/ui-domain";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 
-type AosVisualInstanceRoute = "cockpit" | "work";
-type AosVisualInstanceSearchMode = "results" | "rest";
+function ReferenceList({ items }: { items: string[] }) {
+  return <div className="tcrn-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
+}
 
-type AosVisualInstanceVariant = {
+type ShellVisualInstanceRoute = "cockpit" | "work";
+type ShellVisualInstanceSearchMode = "results" | "rest";
+
+type ShellVisualInstanceVariant = {
   id: string;
   label: string;
   theme: "light" | "dark";
   locale: "en" | "zh-CN";
   collapsed: boolean;
-  route: AosVisualInstanceRoute;
-  searchMode: AosVisualInstanceSearchMode;
+  route: ShellVisualInstanceRoute;
+  searchMode: ShellVisualInstanceSearchMode;
   viewport: "desktop" | "mobile";
   reducedMotion: boolean;
   contentMode: "cockpit" | "work";
@@ -36,7 +37,7 @@ type AosVisualInstanceVariant = {
 
 const aosDefaultLocale = "en" as const;
 
-const variants: readonly AosVisualInstanceVariant[] = [
+const variants: readonly ShellVisualInstanceVariant[] = [
   {
     id: "desktop-light-expanded-cockpit-search-results",
     label: "Desktop light, expanded Cockpit with search results",
@@ -131,11 +132,11 @@ const persistedCockpitRestPolicy = {
   outsideMatrixMarkerForbiddenForOwnerReview: "aos-route-state-outside-accepted-oracle-matrix"
 } as const;
 
-export const aosFrontendShellSliceVisualInstanceReadback = {
-  storyId: "aos-frontend-shell-slice",
-  page: "proof.html#aos-frontend-shell-slice",
-  selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"]",
-  visualInstanceName: "AosFrontendShellSliceVisualInstance",
+export const frontendShellSliceVisualInstanceReadback = {
+  storyId: "frontend-shell-slice",
+  page: "proof.html#frontend-shell-slice",
+  selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"]",
+  visualInstanceName: "FrontendShellSliceVisualInstance",
   ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
   packageMapping: {
     shell: "ProductShell",
@@ -148,7 +149,7 @@ export const aosFrontendShellSliceVisualInstanceReadback = {
       "InlineAlert",
       "ReadbackPanel",
       "KeyValueList",
-      "EvidenceStrip",
+      "ReferenceList",
       "TableShell",
       "StatusBadge",
       "DisclosurePanel"
@@ -174,7 +175,7 @@ export const aosFrontendShellSliceVisualInstanceReadback = {
   variants: variants.map((variant) => variant.id),
   variantFixtures: variants.map((variant) => ({
     id: variant.id,
-    selector: `[data-storybook-visual-instance="aos-frontend-shell-slice"][data-visual-instance-variant="${variant.id}"]`,
+    selector: `[data-storybook-visual-instance="frontend-shell-slice"][data-visual-instance-variant="${variant.id}"]`,
     theme: variant.theme,
     locale: variant.locale,
     collapsed: variant.collapsed,
@@ -247,7 +248,7 @@ function routeLabels(locale: "en" | "zh-CN") {
   };
 }
 
-function buildNavGroups(variant: AosVisualInstanceVariant): ProductShellNavGroup[] {
+function buildNavGroups(variant: ShellVisualInstanceVariant): ProductShellNavGroup[] {
   const labels = routeLabels(variant.locale);
   return [
     {
@@ -274,7 +275,7 @@ function buildNavGroups(variant: AosVisualInstanceVariant): ProductShellNavGroup
   ];
 }
 
-function buildSearchResults(variant: AosVisualInstanceVariant): ProductShellSearchResult[] {
+function buildSearchResults(variant: ShellVisualInstanceVariant): ProductShellSearchResult[] {
   const labels = routeLabels(variant.locale);
   return [
     {
@@ -324,7 +325,7 @@ function workRows(locale: "en" | "zh-CN") {
   ];
 }
 
-function CockpitContent({ variant }: { variant: AosVisualInstanceVariant }) {
+function CockpitContent({ variant }: { variant: ShellVisualInstanceVariant }) {
   const isZh = variant.locale === "zh-CN";
   return (
     <>
@@ -352,7 +353,7 @@ function CockpitContent({ variant }: { variant: AosVisualInstanceVariant }) {
             { key: "auditEvents", label: isZh ? "审计事件" : "Audit events", value: isZh ? "仅合成" : "synthetic only" }
           ]}
         />
-        <EvidenceStrip items={isZh ? ["已注册 DS 表面", "ProductShell 边界", "仅 Cockpit + Work"] : ["registered DS surfaces", "ProductShell boundary", "Cockpit + Work only"]} />
+        <ReferenceList items={isZh ? ["已注册 DS 表面", "ProductShell 边界", "仅 Cockpit + Work"] : ["registered DS surfaces", "ProductShell boundary", "Cockpit + Work only"]} />
       </ReadbackPanel>
       <section
         id={`${variant.id}-cockpit`}
@@ -370,14 +371,14 @@ function CockpitContent({ variant }: { variant: AosVisualInstanceVariant }) {
               { key: "release", label: isZh ? "发布就绪" : "Release readiness", value: isZh ? "未声明" : "not claimed" }
             ]}
           />
-          <EvidenceStrip items={isZh ? ["本地样例", "仅 Dummy Cockpit", "无实时派发"] : ["local fixture", "dummy Cockpit only", "no live dispatch"]} />
+          <ReferenceList items={isZh ? ["本地样例", "仅 Dummy Cockpit", "无实时派发"] : ["local fixture", "dummy Cockpit only", "no live dispatch"]} />
         </ReadbackPanel>
       </section>
     </>
   );
 }
 
-function WorkContent({ variant }: { variant: AosVisualInstanceVariant }) {
+function WorkContent({ variant }: { variant: ShellVisualInstanceVariant }) {
   const isZh = variant.locale === "zh-CN";
   return (
     <section
@@ -416,7 +417,7 @@ function WorkContent({ variant }: { variant: AosVisualInstanceVariant }) {
             { key: "readback", label: isZh ? "读回计数" : "Readback counts", value: isZh ? "有限本地计数" : "finite local counts" }
           ]}
         />
-        <EvidenceStrip items={["/api/health", "/api/readback", "/api/policy"]} />
+        <ReferenceList items={["/api/health", "/api/readback", "/api/policy"]} />
         <DisclosurePanel expanded={false} title={isZh ? "技术 API 载荷" : "Technical API payload"} data-raw-json-disclosure="secondary">
           <pre hidden data-api-summary>{JSON.stringify({ ok: true, source: "fixture-safe-readback" }, null, 2)}</pre>
         </DisclosurePanel>
@@ -425,7 +426,7 @@ function WorkContent({ variant }: { variant: AosVisualInstanceVariant }) {
   );
 }
 
-function BoundaryContent({ variant }: { variant: AosVisualInstanceVariant }) {
+function BoundaryContent({ variant }: { variant: ShellVisualInstanceVariant }) {
   const isZh = variant.locale === "zh-CN";
   return (
     <section
@@ -448,7 +449,7 @@ function BoundaryContent({ variant }: { variant: AosVisualInstanceVariant }) {
   );
 }
 
-function AosFrontendShellVariantFixture({ variant }: { variant: AosVisualInstanceVariant }) {
+function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstanceVariant }) {
   const labels = routeLabels(variant.locale);
   const isSearchResults = variant.searchMode === "results";
   const query = variant.searchMode === "results" ? (variant.route === "work" ? labels.work : labels.cockpit) : "";
@@ -483,8 +484,8 @@ function AosFrontendShellVariantFixture({ variant }: { variant: AosVisualInstanc
         resultsLabel: labels.searchResultsLabel,
         emptyLabel: labels.emptyLabel
       }}
-      data-storybook-visual-instance="aos-frontend-shell-slice"
-      data-visual-instance-name="AosFrontendShellSliceVisualInstance"
+      data-storybook-visual-instance="frontend-shell-slice"
+      data-visual-instance-name="FrontendShellSliceVisualInstance"
       data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
       data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
       data-visual-instance-slots="brand side-nav topbar search content secondary-disclosure"
@@ -506,15 +507,14 @@ function AosFrontendShellVariantFixture({ variant }: { variant: AosVisualInstanc
       data-aos-visual-instance-oracle="true"
     >
       {variant.contentMode === "cockpit" ? <CockpitContent variant={variant} /> : <WorkContent variant={variant} />}
-      {variant.contentMode === "cockpit" ? <WorkContent variant={variant} /> : <CockpitContent variant={variant} />}
       <BoundaryContent variant={variant} />
     </ProductShell>
   );
 }
 
-export function AosFrontendShellSliceVisualInstance() {
+export function FrontendShellSliceVisualInstance() {
   return (
-    <div data-visual-instance-fixture-matrix="aos-frontend-shell-slice">
+    <div data-visual-instance-fixture-matrix="frontend-shell-slice">
       {variants.map((variant) => (
         <section key={variant.id} data-visual-instance-fixture={variant.id} aria-labelledby={`${variant.id}-fixture-heading`}>
           <ReadbackPanel title={variant.label}>
@@ -531,7 +531,7 @@ export function AosFrontendShellSliceVisualInstance() {
               ]}
             />
           </ReadbackPanel>
-          <AosFrontendShellVariantFixture variant={variant} />
+          <FrontendShellVariantFixture variant={variant} />
         </section>
       ))}
     </div>

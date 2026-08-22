@@ -7,8 +7,7 @@
     "@tcrn/ui-copy-state": "workspace:*",
     "@tcrn/ui-react": "workspace:*",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "@tcrn/ui-domain": "workspace:*"
+    "react-dom": "19.1.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

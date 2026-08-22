@@ -390,18 +390,17 @@ function sectionIndexBodyHtml(group: ContractStoryGroup): string {
   const stories = contractStoriesByGroup(group);
   const categories = storyCategoriesForGroup(group, stories);
   return `<section class="tcrn-static-section tcrn-static-section--category-index" id="${groupSlug(group)}" data-doc-category-index="${group}">
-  <h2>${i18nText(`group.${group}`)}</h2>
   <ol class="tcrn-doc-category-index">
 ${categories.map((category) => {
   const categoryLabel = localeText(category.label);
   return `    <li class="tcrn-doc-category-index__category" data-doc-category-index-item="${escapeHtml(category.id)}">
-      <a class="tcrn-doc-category-index__link" href="${categoryFileName(group, category.id)}" data-doc-category-link="${escapeHtml(category.id)}">
+      <a class="tcrn-link tcrn-doc-category-index__link" href="${categoryFileName(group, category.id)}" data-doc-category-link="${escapeHtml(category.id)}">
         <span class="tcrn-doc-category-index__label" data-i18n="${escapeHtml(category.label)}">${escapeHtml(categoryLabel)}</span>
         <span class="tcrn-doc-category-index__count" aria-label="${category.stories.length} ${escapeHtml(localeText("shell.storiesCountLabel"))}">${category.stories.length}</span>
       </a>
       <span class="tcrn-sr-only" data-i18n="${escapeHtml(category.description)}">${escapeHtml(localeText(category.description))}</span>
       <ol class="tcrn-doc-category-index__stories">
-${category.stories.map((story) => `        <li><a class="tcrn-doc-category-index__story" href="${categoryFileForStory(story)}#${story.id}" data-doc-category-story-link="${story.id}">${i18nText(`story.${story.id}.title`)}</a></li>`).join("\n")}
+${category.stories.map((story) => `        <li><a class="tcrn-link tcrn-doc-category-index__story" href="${categoryFileForStory(story)}#${story.id}" data-doc-category-story-link="${story.id}">${i18nText(`story.${story.id}.title`)}</a></li>`).join("\n")}
       </ol>
     </li>`;
 }).join("\n")}

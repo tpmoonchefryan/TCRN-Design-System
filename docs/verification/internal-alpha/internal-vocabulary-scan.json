@@ -1,7 +1,7 @@
 {
   "ok": true,
   "outputRoot": "apps/storybook/storybook-static",
-  "scannedPages": 32,
+  "scannedPages": 34,
   "pages": [
     "change-log-governance-records.html",
     "change-log.html",
@@ -10,12 +10,15 @@
     "component-api-reference-3.html",
     "component-api-reference-4.html",
     "component-api-reference-5.html",
+    "component-api-reference-6.html",
     "components-component-inventory.html",
     "components-controls-data.html",
-    "components-knowledge-management.html",
+    "components-detail-and-inspection.html",
+    "components-documents-and-collaboration.html",
+    "components-hierarchy-and-relations.html",
     "components-navigation-shells.html",
     "components-overlays.html",
-    "components-work-management.html",
+    "components-records-and-boards.html",
     "components.html",
     "foundations-copy-governance.html",
     "foundations-tokens-i18n.html",
@@ -24,7 +27,6 @@
     "patterns-data-pages.html",
     "patterns-feedback-selection.html",
     "patterns-forms-workbench.html",
-    "patterns-work-management.html",
     "patterns.html",
     "proof-proof-governance.html",
     "proof-proof-visual-instances.html",
@@ -99,35 +101,49 @@
   "claim": "forbidden internal vocabulary is absent from rendered visible text; registered fixture domain-data tokens are classified separately",
   "exemptedDomainDataHits": [
     {
-      "page": "components-work-management.html",
-      "rule": "epic-id",
-      "matchSha256": "6d1c178bdd33235550c434daf31506704486445dc175bc21453914c1eacc1ddf",
-      "matchLength": 15,
-      "count": 1
-    },
-    {
-      "page": "components-work-management.html",
-      "rule": "epic-id",
-      "matchSha256": "934de1cb3cef538b8f2b449cb421e22d18bd090cab1c6bba6bc3ab7fab78ce35",
-      "matchLength": 15,
-      "count": 1
-    },
-    {
-      "page": "components-work-management.html",
-      "rule": "initiative-id",
-      "matchSha256": "e0e32bb24541dd800c7290e5f4dd8d6275ab89e4b90ac98a30ab8975e6573902",
-      "matchLength": 7,
-      "count": 1
-    },
-    {
-      "page": "components-work-management.html",
+      "page": "components-detail-and-inspection.html",
       "rule": "story-id",
       "matchSha256": "8b94f6683d00224e9c8b7432192e2f40e3ff92d7111038945dec26636d603162",
       "matchLength": 11,
       "count": 1
     },
     {
-      "page": "patterns-work-management.html",
+      "page": "components-hierarchy-and-relations.html",
+      "rule": "epic-id",
+      "matchSha256": "6d1c178bdd33235550c434daf31506704486445dc175bc21453914c1eacc1ddf",
+      "matchLength": 15,
+      "count": 1
+    },
+    {
+      "page": "components-hierarchy-and-relations.html",
+      "rule": "epic-id",
+      "matchSha256": "934de1cb3cef538b8f2b449cb421e22d18bd090cab1c6bba6bc3ab7fab78ce35",
+      "matchLength": 15,
+      "count": 1
+    },
+    {
+      "page": "components-hierarchy-and-relations.html",
+      "rule": "initiative-id",
+      "matchSha256": "e0e32bb24541dd800c7290e5f4dd8d6275ab89e4b90ac98a30ab8975e6573902",
+      "matchLength": 7,
+      "count": 1
+    },
+    {
+      "page": "components-hierarchy-and-relations.html",
+      "rule": "story-id",
+      "matchSha256": "8b94f6683d00224e9c8b7432192e2f40e3ff92d7111038945dec26636d603162",
+      "matchLength": 11,
+      "count": 1
+    },
+    {
+      "page": "components-records-and-boards.html",
+      "rule": "story-id",
+      "matchSha256": "8b94f6683d00224e9c8b7432192e2f40e3ff92d7111038945dec26636d603162",
+      "matchLength": 11,
+      "count": 1
+    },
+    {
+      "page": "patterns-data-pages.html",
       "rule": "story-id",
       "matchSha256": "8b94f6683d00224e9c8b7432192e2f40e3ff92d7111038945dec26636d603162",
       "matchLength": 11,

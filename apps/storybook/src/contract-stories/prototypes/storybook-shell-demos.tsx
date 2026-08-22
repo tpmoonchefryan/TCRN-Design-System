@@ -1,4 +1,5 @@
 import {
+  Badge,
   Heading,
   Icon,
   IconButton,
@@ -12,9 +13,6 @@ import {
   TopBar
 } from "@tcrn/ui-react";
 import {
-  EvidenceStrip
-} from "@tcrn/ui-domain";
-import {
   knowledgeNavigationGroups,
   denseShellHubActions,
   denseShellHubSecondaryRouteCount,
@@ -24,6 +22,10 @@ import {
   denseShellSecondaryDirectoryGroupCount,
   denseShellTaskLanes
 } from "../content/index.js";
+
+function ReferenceList({ items }: { items: string[] }) {
+  return <div className="tcrn-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
+}
 
 // storybook_only: dense shell IA is retained as synthetic docs/proof content, not package component source.
 export function DenseOperationsShellDemo() {
@@ -240,7 +242,7 @@ export function KnowledgeBaseShellDemo() {
             <div className="tcrn-knowledge-preview__panel">
               <Heading level={4}>{selectedGroup.label}</Heading>
               <Text>Selected section and subsection remain visible while readers move through nested documentation.</Text>
-              <EvidenceStrip items={["scroll-aware", "multi-level", "documentation-first"]} />
+              <ReferenceList items={["scroll-aware", "multi-level", "documentation-first"]} />
             </div>
           </div>
           <nav className="tcrn-knowledge-shell__pager" aria-label="Knowledge base shell chapter navigation">

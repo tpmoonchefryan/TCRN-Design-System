@@ -41,12 +41,12 @@ export const OverlayFocus: Story = {
   render: () => renderContractStory("overlay-focus")
 };
 
-export const AosFrontendShellSliceVisualInstance: Story = {
-  name: "AOS frontend shell slice visual instance",
-  render: () => renderContractStory("aos-frontend-shell-slice")
+export const FrontendShellSliceVisualInstance: Story = {
+  name: "Frontend shell slice visual instance",
+  render: () => renderContractStory("frontend-shell-slice")
 };
 
-export const AosOwnerQualityProductShell: Story = {
-  name: "AOS owner-quality product shell oracle",
-  render: () => renderContractStory("aos-owner-quality-product-shell")
+export const OwnerQualityProductShell: Story = {
+  name: "Owner-quality product shell oracle",
+  render: () => renderContractStory("owner-quality-product-shell")
 };

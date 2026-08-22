@@ -81,57 +81,57 @@ export const DialogSpecUsage: Story = {
   render: () => renderContractStory("dialog-spec-usage")
 };
 
-export const TableWorkIndexSpec: Story = {
-  name: "Table and work index spec",
-  render: () => renderContractStory("table-work-index-spec")
+export const TableRecordTableSpec: Story = {
+  name: "Table and record index spec",
+  render: () => renderContractStory("table-record-index-spec")
 };
 
-export const WorkManagementComponentsSpec: Story = {
-  name: "Work Management component specs",
-  render: () => renderContractStory("work-management-components-spec")
+export const RecordsAndBoardsComponentsSpec: Story = {
+  name: "Records and boards components",
+  render: () => renderContractStory("records-and-boards-components-spec")
 };
 
-export const WorkManagementRelationshipsSpec: Story = {
-  name: "Work Management relationship vocabulary",
-  render: () => renderContractStory("work-management-relationships-spec")
+export const HierarchyAndRelationsSpec: Story = {
+  name: "Hierarchy and relations",
+  render: () => renderContractStory("hierarchy-and-relations-spec")
 };
 
-export const WorkManagementTokensDensityViewsSpec: Story = {
-  name: "Work Management tokens, density, and views",
-  render: () => renderContractStory("work-management-tokens-density-views-spec")
+export const DetailAndInspectionDensitySpec: Story = {
+  name: "Detail and inspection: density and views",
+  render: () => renderContractStory("detail-and-inspection-density-spec")
 };
 
-export const WorkManagementRouteDetailSpec: Story = {
-  name: "Work Management route context and detail",
-  render: () => renderContractStory("work-management-route-detail-spec")
+export const DetailAndInspectionRouteSpec: Story = {
+  name: "Detail and inspection: route context",
+  render: () => renderContractStory("detail-and-inspection-route-spec")
 };
 
-export const WorkManagementBacklogBoardSpec: Story = {
-  name: "Work Management backlog and board",
-  render: () => renderContractStory("work-management-backlog-board-spec")
+export const RecordsAndBoardsBacklogSpec: Story = {
+  name: "Records and boards: backlog and lanes",
+  render: () => renderContractStory("records-and-boards-backlog-spec")
 };
 
-export const WorkManagementHierarchyGatesSpec: Story = {
-  name: "Work Management hierarchy, gates, and evidence",
-  render: () => renderContractStory("work-management-hierarchy-gates-spec")
+export const HierarchyAndRelationsStagesSpec: Story = {
+  name: "Hierarchy and relations: stages and references",
+  render: () => renderContractStory("hierarchy-and-relations-stages-spec")
 };
 
-export const WorkManagementInspectorSpec: Story = {
-  name: "Work Management evidence and inspector",
-  render: () => renderContractStory("work-management-inspector-spec")
+export const DetailAndInspectionInspectorSpec: Story = {
+  name: "Detail and inspection: record inspector",
+  render: () => renderContractStory("detail-and-inspection-inspector-spec")
 };
 
-export const KnowledgeManagementComponentsSpec: Story = {
-  name: "Knowledge Management component specs",
-  render: () => renderContractStory("knowledge-management-components-spec")
+export const DocumentsAndCollaborationComponentsSpec: Story = {
+  name: "Documents and collaboration components",
+  render: () => renderContractStory("documents-and-collaboration-components-spec")
 };
 
-export const KnowledgeManagementDensityCollaborationSpec: Story = {
-  name: "Knowledge Management density and collaboration",
-  render: () => renderContractStory("knowledge-management-density-collaboration-spec")
+export const DocumentsAndCollaborationDensitySpec: Story = {
+  name: "Documents and collaboration: density and comments",
+  render: () => renderContractStory("documents-and-collaboration-density-spec")
 };
 
-export const KnowledgeManagementTemplatesSpec: Story = {
-  name: "Knowledge Management templates and results",
-  render: () => renderContractStory("knowledge-management-templates-spec")
+export const DocumentsAndCollaborationTemplatesSpec: Story = {
+  name: "Documents and collaboration: templates and results",
+  render: () => renderContractStory("documents-and-collaboration-templates-spec")
 };

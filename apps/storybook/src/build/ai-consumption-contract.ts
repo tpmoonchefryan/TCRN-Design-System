@@ -45,7 +45,7 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
   ],
   Patterns: [
     "consume page, dashboard, workbench, list, form, notification, validation, data-grid, and search composition rules before arranging product screens",
-    "consume Work Management route context, local view tabs, quick filters, dense rows/lists, split detail, backlog groups, board density, gate, evidence, activity, relationship, saved-view, and machine-token patterns before building Initiative/Epic/Story/Work Item surfaces",
+    "consume Records and boards route context, local view tabs, quick filters, dense rows/lists, split detail, row groups, lane-board density, stages, references, activity, relationships, saved-view, and machine-token patterns before building record surfaces",
     "prove information hierarchy, density, mobile reflow, empty/loading/error states, and route-level IA match the relevant Storybook pattern",
     "block proof/status panels from replacing product-first page composition unless the Storybook pattern explicitly requires them"
   ],
@@ -138,7 +138,7 @@ export const aiConsumptionContract = {
   ownerVisualAdmissionDisposition: "owner_review_required",
   visualFitControlContract: {
     storybookGlobalShellAuthority: "original_storybook_doc_shell",
-    packagePrimitiveAuthority: ["SearchInput", "ProductLockup", "TableShell", "Work Management layout/density exports", "Knowledge Management static exports"],
+    packagePrimitiveAuthority: ["SearchInput", "ProductLockup", "TableShell", "Records and boards layout/density exports", "Documents and collaboration static exports"],
     search: {
       storybookRestWidthPx: 260,
       storybookExpandedWidthPx: 360,
@@ -158,45 +158,45 @@ export const aiConsumptionContract = {
       rule: "Tables use package-emitted column/min-width variables and local overflow; Storybook must not clone row, head, or cell layout."
     },
     workLayoutDensity: {
-      authority: "@tcrn/ui-react Work Management exports",
-      storybookRoutes: ["components.html#work-management-components-spec", "patterns.html#work-management-patterns"],
+      authority: "@tcrn/ui-react Functional display exports for records and boards",
+      storybookRoutes: ["components.html#records-and-boards-components-spec", "patterns.html#records-and-boards-patterns"],
       packageExports: [
-        "WorkPageHeader",
-        "WorkViewTabs",
-        "WorkQuickFilters",
-        "WorkItemRow",
-        "WorkList",
-        "WorkSplitView",
-        "WorkBacklogGroup",
-        "WorkInlineCreateStatic",
-        "WorkBoardView",
-        "WorkDetailLayout",
+        "PageHeader",
+        "ViewTabs",
+        "QuickFilters",
+        "RecordRow",
+        "RecordTable",
+        "SplitView",
+        "RowGroup",
+        "InlineCreate",
+        "LaneBoard",
+        "DetailLayout",
         "MetadataRail",
-        "WorkFieldPanel",
-        "WorkActivityFeed",
-        "GatePipelineCompact",
+        "DetailInspector",
+        "ActivityFeed",
+        "StagePipeline",
         "MachineTokenCell"
       ],
       rule:
-        "Product Work routes must consume admitted package exports for route context, local tabs, quick filters, dense rows/lists, backlog groups, board density, split detail, metadata rails, field panels, activity, compact gates/evidence, and dense machine-token cells instead of local reusable clones."
+        "Record routes must consume admitted package exports for route context, local tabs, quick filters, dense rows/lists, row groups, lane-board density, split detail, metadata rails, detail inspection, activity, stages and references, and dense machine-token cells instead of local reusable clones."
     },
     knowledgeLayoutDensity: {
-      authority: "@tcrn/ui-react Knowledge Management exports",
-      storybookRoutes: ["components.html#knowledge-management-components-spec"],
+      authority: "@tcrn/ui-react Documents and collaboration exports",
+      storybookRoutes: ["components.html#documents-and-collaboration-components-spec"],
       packageExports: [
-        "KnowledgePageTree",
-        "KnowledgeDocumentCanvas",
-        "KnowledgeTocRail",
-        "KnowledgeInlineCommentList",
-        "KnowledgeMetadataRail",
-        "KnowledgeAttachmentList",
-        "KnowledgeLabelSet",
-        "KnowledgeVersionHistory",
+        "TreeNav",
+        "DocumentCanvas",
+        "TocRail",
+        "InlineCommentList",
+        "MetadataRail",
+        "AttachmentList",
+        "LabelSet",
+        "VersionHistory",
         "TemplateGallery",
-        "KnowledgeSearchResults"
+        "SearchResultList"
       ],
       rule:
-        "Product Knowledge routes must consume admitted package exports for page trees, document canvas, local table of contents, inline comments, metadata, attachments, labels, version history, templates, and static local results. backend publishing, live collaboration, external workspace integration, and global search remain unclaimed unless downstream product routes prove them."
+        "Document routes must consume admitted package exports for page trees, document canvas, local table of contents, inline comments, metadata, attachments, labels, version history, templates, and static local results. backend publishing, live collaboration, external workspace integration, and global search remain unclaimed unless downstream product routes prove them."
     }
   },
   discovery: {
@@ -256,55 +256,55 @@ export const aiConsumptionContract = {
     digestAlignmentProof: "storybook smoke verifies contractPayloadDigest and changelog record/readback fields",
     requiredFields: ["date", "routeId", "plannedCommit", "affectedStoryIds", "aiContractDigestReadback", "proofArtifacts", "noOverclaimBoundaries"]
   },
-  workManagementStaticAuthority: {
+  functionalDisplayStaticAuthority: {
     disposition: "static_contract_authority_explicit_and_smoke_proven",
-    componentStory: "components.html#work-management-components-spec",
-    patternStory: "patterns.html#work-management-patterns",
+    componentStory: "components.html#records-and-boards-components-spec",
+    patternStory: "patterns.html#records-and-boards-patterns",
     admittedPackageExports: [
-      "WorkPageHeader",
-      "WorkViewTabs",
-      "WorkQuickFilters",
-      "WorkItemRow",
-      "WorkList",
-      "WorkSplitView",
-      "WorkBacklogGroup",
-      "WorkInlineCreateStatic",
-      "WorkBoard",
-      "WorkBoardView",
-      "WorkDetailLayout",
+      "PageHeader",
+      "ViewTabs",
+      "QuickFilters",
+      "RecordRow",
+      "RecordTable",
+      "SplitView",
+      "RowGroup",
+      "InlineCreate",
+      "LaneBoard",
+      "LaneBoard",
+      "DetailLayout",
       "MetadataRail",
-      "WorkFieldPanel",
-      "WorkActivityFeed",
-      "GatePipelineCompact",
-      "EvidenceAttachmentList",
+      "DetailInspector",
+      "ActivityFeed",
+      "StagePipeline",
+      "AttachmentList",
       "MachineTokenCell"
     ],
     managerRuntimeCoverageDisposition:
-      "CSF adapters expose the Components and Patterns top-level Storybook pages while static contract story ids are the authoritative Work Management story coverage for this local checkpoint.",
+      "CSF adapters expose the Components and Patterns top-level Storybook pages while static contract story ids are the authoritative Records and boards story coverage for this local checkpoint.",
     smokeCoverage:
-      "storybook smoke and internal-alpha browser proof fail if Work Management story ids, package-backed markers, relationship vocabulary, or no-live boundaries disappear.",
+      "storybook smoke and internal-alpha browser proof fail if Records and boards story ids, package-backed markers, relationship vocabulary, or no-live boundaries disappear.",
     noOverclaimBoundary:
-      "Work Management Storybook examples do not claim API integration, backend persistence, live dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, package publication, or initiative completion."
+      "Records and boards Storybook examples do not claim API integration, backend persistence, live dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, package publication, or initiative completion."
   },
-  knowledgeManagementStaticAuthority: {
+  documentsAndCollaborationStaticAuthority: {
     disposition: "static_contract_authority_explicit_and_smoke_proven",
-    componentStory: "components.html#knowledge-management-components-spec",
+    componentStory: "components.html#documents-and-collaboration-components-spec",
     admittedPackageExports: [
-      "KnowledgePageTree",
-      "KnowledgeDocumentCanvas",
-      "KnowledgeTocRail",
-      "KnowledgeInlineCommentList",
-      "KnowledgeMetadataRail",
-      "KnowledgeAttachmentList",
-      "KnowledgeLabelSet",
-      "KnowledgeVersionHistory",
+      "TreeNav",
+      "DocumentCanvas",
+      "TocRail",
+      "InlineCommentList",
+      "MetadataRail",
+      "AttachmentList",
+      "LabelSet",
+      "VersionHistory",
       "TemplateGallery",
-      "KnowledgeSearchResults"
+      "SearchResultList"
     ],
     smokeCoverage:
-      "storybook smoke and package tests fail if Knowledge Management story ids, package-backed markers, static local result boundaries, or sanitized evidence posture disappear.",
+      "storybook smoke and package tests fail if Documents and collaboration story ids, package-backed markers, static local result boundaries, or sanitized evidence posture disappear.",
     noOverclaimBoundary:
-      "Knowledge Management Storybook examples do not claim backend publishing, live collaboration, external workspace integration, product adoption, owner acceptance, release readiness, package publication, or initiative completion."
+      "Documents and collaboration Storybook examples do not claim backend publishing, live collaboration, external workspace integration, product adoption, owner acceptance, release readiness, package publication, or initiative completion."
   },
   foundationVisualStandards: foundationVisualStandardsReadback,
   foundationVisualStandardCategories: foundationVisualStandards,
@@ -321,7 +321,7 @@ export const aiConsumptionContract = {
   shellControlVisualParityProof: {
     disposition: "executable_required_for_product_shell_consumption",
     packageBackedAuthority: "@tcrn/ui-react/tcrnComponentCss",
-    storybookStandard: "proof.html#aos-owner-quality-product-shell",
+    storybookStandard: "proof.html#owner-quality-product-shell",
     comparatorStandard: "components.html#navigation-shell-spec",
     controlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
     compositionRule:
@@ -343,7 +343,7 @@ export const aiConsumptionContract = {
         "ProductShellSearch expand/collapse must expose sampled intermediate widths and must not jump directly between rest and expanded endpoints."
     },
     ownerQualitySideNavCollapsePolicy:
-      "The aos-owner-quality-product-shell oracle admits desktop expanded and collapsed owner-quality variants. Desktop side-nav collapse must be actionable by click/keyboard and preserve active route/nav state; mobile uses an explicit DS-approved hidden collapse affordance policy until mobile collapsed variants are admitted.",
+      "The owner-quality-product-shell oracle admits desktop expanded and collapsed owner-quality variants. Desktop side-nav collapse must be actionable by click/keyboard and preserve active route/nav state; mobile uses an explicit DS-approved hidden collapse affordance policy until mobile collapsed variants are admitted.",
     measuredControls: [
       "productLogo",
       "themeToggle",
@@ -413,11 +413,11 @@ export const aiConsumptionContract = {
   },
   visualInstanceOracles: [
     {
-      id: "aos-frontend-shell-slice",
+      id: "frontend-shell-slice",
       name: "AosFrontendShellSliceVisualInstance",
-      route: "proof.html#aos-frontend-shell-slice",
+      route: "proof.html#frontend-shell-slice",
       disposition: "internal_registered_shell_proof_scaffold_not_owner_quality_target",
-      supersededBy: "aos-owner-quality-product-shell",
+      supersededBy: "owner-quality-product-shell",
       packageMapping: [
         "ProductShell",
         "ProductShellSearch",
@@ -426,7 +426,7 @@ export const aiConsumptionContract = {
         "InlineAlert",
         "ReadbackPanel",
         "KeyValueList",
-        "EvidenceStrip",
+        "ReferenceList",
         "TableShell",
         "StatusBadge",
         "DisclosurePanel"
@@ -443,7 +443,7 @@ export const aiConsumptionContract = {
       requiredVariantFixtures: [
         {
           id: "desktop-light-expanded-cockpit-search-results",
-          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"]",
+          selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -459,7 +459,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "desktop-light-expanded-cockpit-search-rest",
-          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-rest\"]",
+          selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-rest\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -475,7 +475,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "desktop-dark-expanded-cockpit",
-          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"]",
+          selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"]",
           expectedState: {
             theme: "dark",
             locale: "en",
@@ -491,7 +491,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "desktop-light-collapsed-work",
-          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-collapsed-work\"]",
+          selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-collapsed-work\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -507,7 +507,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "mobile-dark-work-stacked",
-          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"mobile-dark-work-stacked\"]",
+          selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"mobile-dark-work-stacked\"]",
           expectedState: {
             theme: "dark",
             locale: "zh-CN",
@@ -523,7 +523,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "reduced-motion",
-          selector: "[data-storybook-visual-instance=\"aos-frontend-shell-slice\"][data-visual-instance-variant=\"reduced-motion\"]",
+          selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"reduced-motion\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -573,11 +573,11 @@ export const aiConsumptionContract = {
       ]
     },
     {
-      id: "aos-owner-quality-product-shell",
-      name: "AosOwnerQualityProductShell",
-      route: "proof.html#aos-owner-quality-product-shell",
+      id: "owner-quality-product-shell",
+      name: "OwnerQualityShellOracle",
+      route: "proof.html#owner-quality-product-shell",
       disposition: "owner_quality_candidate_requires_ds_review_before_product_use",
-      replacesOwnerQualityTarget: "aos-frontend-shell-slice",
+      replacesOwnerQualityTarget: "frontend-shell-slice",
       packageMapping: [
         "ProductShell",
         "ProductShellSearch",
@@ -585,12 +585,12 @@ export const aiConsumptionContract = {
         "ProductLogo",
         "tcrnProductLogoRegistry",
         "Surface",
-        "WorkIndex",
+        "RecordTable",
         "TableShell",
         "KeyValueList",
         "StatusBadge",
         "Badge",
-        "EvidenceStrip",
+        "ReferenceList",
         "EnvironmentBanner",
         "DisclosurePanel",
         "Heading",
@@ -611,7 +611,7 @@ export const aiConsumptionContract = {
       requiredVariantFixtures: [
         {
           id: "desktop-light-operations-cockpit",
-          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]",
+          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -627,7 +627,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "desktop-light-operations-cockpit-collapsed",
-          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"]",
+          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -643,7 +643,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "desktop-dark-operations-cockpit",
-          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit\"]",
+          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit\"]",
           expectedState: {
             theme: "dark",
             locale: "en",
@@ -659,7 +659,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "desktop-dark-operations-cockpit-collapsed",
-          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"]",
+          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"]",
           expectedState: {
             theme: "dark",
             locale: "en",
@@ -675,7 +675,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "desktop-light-work-queue",
-          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue\"]",
+          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -691,7 +691,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "desktop-light-work-queue-collapsed",
-          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"]",
+          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -707,7 +707,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "mobile-dark-zh-cn-work-queue",
-          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"mobile-dark-zh-cn-work-queue\"]",
+          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"mobile-dark-zh-cn-work-queue\"]",
           expectedState: {
             theme: "dark",
             locale: "zh-CN",
@@ -725,7 +725,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "desktop-light-operations-search-results",
-          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-search-results\"]",
+          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-search-results\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -741,7 +741,7 @@ export const aiConsumptionContract = {
         },
         {
           id: "reduced-motion",
-          selector: "[data-storybook-visual-instance=\"aos-owner-quality-product-shell\"][data-visual-instance-variant=\"reduced-motion\"]",
+          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"reduced-motion\"]",
           expectedState: {
             theme: "light",
             locale: "en",
@@ -757,35 +757,35 @@ export const aiConsumptionContract = {
         }
       ],
       slots: [
-        "registered AOS product logo lockup",
+        "registered product logo lockup",
         "attached ProductShell side navigation",
         "compact topbar controls",
         "ProductShellSearch rest/results surface",
-        "product-first operations cockpit",
-        "work queue and gate evidence",
+        "product-first route context",
+        "record queue and stage references",
         "secondary developer detail disclosure"
       ],
       ownerQualityAcceptanceCriteria: [
-        "first viewport reads as AOS Operations Cockpit with registered TCRN AOS product identity in the side brand lockup",
+        "first viewport reads as a product shell with registered product identity in the side brand lockup",
         "exactly one primary H1 per rendered fixture",
-        "product content leads with current work, gates, evidence, decisions, owner actions, service health, and activity",
+        "product content leads with current records, stages, references, decisions, owner actions, service health, and activity",
         "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
         "ProductShell topbar controls stay within the fixture root and viewport without horizontal clipping",
         "desktop owner-quality routes render actionable expanded and collapsed side-navigation states",
         "mobile owner-quality routes hide the collapse affordance by DS policy instead of exposing a clickable no-op",
         "read-only and no-live-dispatch boundaries are visible but low-prominence",
         "developer proof/API/readback details are secondary disclosure",
-        "Cockpit and Work are meaningful product modules rather than placeholder labels"
+        "primary modules are meaningful functional destinations rather than placeholder labels"
       ],
       rejectCriteria: [
-        "first viewport headline is AOS frontend shell, Frontend shell slice, Local structural slice only, or Dummy Cockpit",
+        "first viewport headline is a frontend shell slice, local structural slice, placeholder shell, or generic dummy label",
         "implementation/proof/debug terminology dominates the first viewport",
         "no-overclaim copy becomes the primary product story",
-        "Runtime/Stories/Gates/Audit events verification metrics lead the hierarchy",
+        "runtime, audit, or verification metrics lead the hierarchy",
         "ProductShell topbar, search, locale, or theme controls are cropped or create root/topbar horizontal overflow",
         "side-navigation collapse appears enabled but leaves owner-quality routes expanded or outside the admitted variant matrix",
         "visible local product CSS/effects or Storybook-only prototype classes appear",
-        "owner/product/release/live-dispatch/final-Cockpit readiness is claimed"
+        "owner/product/release/live-dispatch readiness is claimed"
       ],
       ownerQualitySideNavPolicy: {
         admittedCollapsedVariants: [
@@ -809,9 +809,9 @@ export const aiConsumptionContract = {
       ownerVisualAdmissionBoundary: "internal_ds_oracle_review_required_before_owner_visual_admission",
       negativeCriteria: [
         "no proof-scaffold headline as Level 1 content",
-        "no Dummy Cockpit or structural-placeholder first viewport",
+        "no placeholder shell or structural-placeholder first viewport",
         "no primary raw API/debug/readback payload",
-        "no deprecated AOS wordmark assets",
+        "no deprecated product wordmark assets",
         "no unregistered primary IA",
         "no owner/product/release/live-dispatch readiness claim"
       ]
@@ -838,8 +838,8 @@ export const aiConsumptionContract = {
     "prove_side_navigation_collapse_state",
     "offer_an_in_product_way_back_from_drilled_down_routes",
     "transport_locale_and_theme_in_a_server_readable_store",
-    "use_work_management_patterns_for_static_work_surfaces",
-    "use_knowledge_management_patterns_for_static_knowledge_surfaces",
+    "use_records_and_boards_patterns_for_static_record_surfaces",
+    "use_documents_and_collaboration_patterns_for_static_document_surfaces",
     "block_unregistered_modules_from_primary_navigation",
     "prove_browser_interactions_not_static_markers",
     "prove_product_adoption_before_ds_compliance_claim"
@@ -860,8 +860,8 @@ export const aiConsumptionContract = {
     "side_navigation_collapse_receipt",
     "navigation_reversibility_receipt",
     "server_rendered_preference_receipt",
-    "work_management_static_pattern_receipt",
-    "knowledge_management_static_pattern_receipt",
+    "functional_display_static_pattern_receipt",
+    "documents_and_collaboration_static_pattern_receipt",
     "registered_navigation_receipt",
     "browser_interaction_receipt",
     "storybook_section_coverage_receipt",
@@ -904,16 +904,24 @@ export const aiConsumptionContract = {
     "favicon.ico"
   ],
   productLogoRegistry: publishedProductLogoRegistry,
+  brandAssetSource: {
+    url: "https://tcrn-design-system-storybook.vercel.app/tcrn-brand-mark.svg",
+    mimeType: "image/svg+xml",
+    assetId: "tcrn-brand-mark",
+    sourceBoundary: "apps/storybook/assets is development input; consumers fetch the published Storybook asset URL.",
+    verificationCommand: "curl --fail --silent --show-error --location --head 'https://tcrn-design-system-storybook.vercel.app/tcrn-brand-mark.svg'",
+    sha256: "5f28f17c599c63a05a51c81be03f9ef7845299af1940ebe6aef61f7af47fc25b"
+  },
   brandSurfaceDisposition:
     "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity and must preserve the product-specific suffix color hierarchy used by package ProductLockup. TCRN stays regular weight as the mother-brand base; product suffixes carry the accent weight/color, and long suffixes such as Design System must stack under TCRN instead of running inline. ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Work Management surfaces including RelationshipChip, MachineToken, MachineTokenCell, WorkManagementSubnav, WorkPageHeader, WorkViewTabs, WorkQuickFilters, WorkItemRow, WorkList, WorkSplitView, WorkBacklogGroup, WorkInlineCreateStatic, WorkBoard, WorkBoardView, WorkDetailLayout, MetadataRail, WorkFieldPanel, WorkActivityFeed, WorkHierarchy, GatePipeline, GatePipelineCompact, EvidenceAttachmentList, WorkItemInspector, and SavedViewToolbar, plus static Knowledge Management surfaces including KnowledgePageTree, KnowledgeDocumentCanvas, KnowledgeTocRail, KnowledgeInlineCommentList, KnowledgeMetadataRail, KnowledgeAttachmentList, KnowledgeLabelSet, KnowledgeVersionHistory, TemplateGallery, and KnowledgeSearchResults, instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate. A server-rendered product parses the request's Cookie header with the exported readPreferenceCookieValues and passes the three narrowed values to useProductShellController as requestPreferences, so the shell's stored preferences are readable during the render that produces the first paint; the raw Cookie header must not cross the package boundary, because it carries every cookie the product's requests hold while the shell governs only theme, locale, and side-nav collapse. The controller writes each preference to both a cookie and the client store, so a product must not hand-roll its own preference parsing or persistence to work around a client-only store.",
-  workManagementPatternDisposition:
-    "Work Management package exports cover static Initiative/Epic/Story/Task or Work Item/Subtask or Evidence Task presentation, compact route context, local view tabs, quick filters, dense Work item rows/lists, split detail, backlog groups, static create affordances, compact board view, metadata rails, field panels, activity feed, relationship vocabulary, gate pipelines, evidence attachments, saved view toolbar patterns, work item inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live dispatch, external queues, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
-  knowledgeManagementPatternDisposition:
-    "Knowledge Management package exports cover static page trees, document canvas, table of contents, inline comments, metadata rails, attachment lists, labels, version history, templates, and local result lists. They are local Storybook contract patterns only: backend publishing, live collaboration, external workspace integration, runtime data mutation, AOS/TMS product adoption, owner acceptance, release readiness, and package publication are not claimed.",
+    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Records and boards surfaces including RelationshipChip, MachineToken, MachineTokenCell, SubNav, PageHeader, ViewTabs, QuickFilters, RecordRow, RecordTable, SplitView, RowGroup, InlineCreate, LaneBoard, DetailLayout, MetadataRail, DetailInspector, ActivityFeed, RelationGraph, StagePipeline, AttachmentList, RecordInspector, and SavedViewToolbar, plus static Documents and collaboration surfaces including TreeNav, DocumentCanvas, TocRail, InlineCommentList, MetadataRail, AttachmentList, LabelSet, VersionHistory, TemplateGallery, and SearchResultList, instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate. A server-rendered product parses the request's Cookie header with the exported readPreferenceCookieValues and passes the three narrowed values to useProductShellController as requestPreferences, so the shell's stored preferences are readable during the render that produces the first paint; the raw Cookie header must not cross the package boundary, because it carries every cookie the product's requests hold while the shell governs only theme, locale, and side-nav collapse. The controller writes each preference to both a cookie and the client store, so a product must not hand-roll its own preference parsing or persistence to work around a client-only store.",
+  recordsAndBoardsPatternDisposition:
+    "Functional display package exports cover static records, stages, relations, documents, and machine-token presentation, compact route context, local view tabs, quick filters, dense rows and lists, split detail, row groups, static create affordances, lane-board density, metadata rails, activity feeds, relation chips, stage pipelines, attachment lists, saved-view controls, record inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, and package publication are not claimed.",
+  documentsAndCollaborationPatternDisposition:
+    "Documents and collaboration package exports cover static page trees, document canvas, table of contents, inline comments, metadata rails, attachment lists, labels, version history, templates, and local result lists. They are local Storybook contract patterns only: backend publishing, live collaboration, external workspace integration, runtime data mutation, product adoption, owner acceptance, release readiness, and package publication are not claimed.",
   storybookDocShellAuthorityDisposition:
     "The Storybook documentation frontend must render the original Storybook-owned doc shell composition. Global Storybook pages use data-doc-shell='online-docs', tcrn-doc-header, tcrn-doc-global-bar, tcrn-doc-sidebar, tcrn-doc-nav, category navigation, and package-backed control primitives such as SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, and ShellBrandLockup. ProductShell remains documented and package-backed for component examples, AOS visual instances, and product consumer rules, but it is not the global Storybook shell authority.",
   tokenConsumptionDisposition:

@@ -54,7 +54,7 @@ ${sectionChecklist}
 Covered Storybook section/category/story hierarchy:
 ${sectionCoverage}
 Changelog governance: ${contract.changelogGovernance.storybookStory}; records require ${contract.changelogGovernance.requiredFields.join(", ")}; digest proof: ${contract.changelogGovernance.digestAlignmentProof}
-Work Management authority: ${contract.workManagementStaticAuthority.disposition}; stories: ${contract.workManagementStaticAuthority.componentStory}, ${contract.workManagementStaticAuthority.patternStory}; boundary: ${contract.workManagementStaticAuthority.noOverclaimBoundary}
+Functional display authority: ${contract.functionalDisplayStaticAuthority.disposition}; stories: ${contract.functionalDisplayStaticAuthority.componentStory}, ${contract.functionalDisplayStaticAuthority.patternStory}; boundary: ${contract.functionalDisplayStaticAuthority.noOverclaimBoundary}
 Foundation visual standards: ${contract.foundationVisualStandards.registryId}; route: ${contract.foundationVisualStandards.storybookRoute}; categories: ${contract.foundationVisualStandards.categoryIds.join(", ")}
 Foundation visual standard category details:
 ${foundationStandards}

@@ -15,9 +15,6 @@
     },
     {
       "path": "../../packages/ui-react"
-    },
-    {
-      "path": "../../packages/ui-domain"
     }
   ],
   "include": [

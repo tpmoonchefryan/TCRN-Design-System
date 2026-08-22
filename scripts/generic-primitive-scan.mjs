@@ -1,27 +1,9 @@
 #!/usr/bin/env node
 // SPDX-License-Identifier: Apache-2.0
-// TCRN-DS-STORY-094 — the generality rule, made machine-decidable.
-//
-//   node scripts/generic-primitive-scan.mjs
-//
-// Owner's rule (TCRN-TMS-MIN-008): a component belongs in the Design System if and
-// only if its props can be described without naming any single product's business
-// concept. That was prose, and prose does not stop the next commit — forty domain
-// components reached DS core while the rule existed and nobody could point at the
-// moment it was broken.
-//
-// This gate does not remove them. INIT-012 ruled extraction rather than deletion,
-// because DS's only live consumer imports twenty-five of the thirty-two, and a
-// library that deletes what its consumer imports has not become generic, it has
-// become broken. So the existing surface is a REGISTERED DEBT: named, counted, and
-// frozen. What the gate refuses is a thirty-third.
-//
-// The debt list is the reference and it is version-controlled, which is class A in
-// the platform's gate-reference inventory: change it and the gate goes red until
-// someone states the new number on purpose. That is the shape the convention wants
-// — a deliberate-change tripwire, not a moving baseline.
+// TCRN-DS-STORY-101 — the generality rule, made machine-decidable from props.
 
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import ts from "typescript";
+import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -29,41 +11,13 @@ const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const COMPONENT_ROOT = join(REPO_ROOT, "packages/ui-react/src/components");
 
 /**
- * Business-concept prefixes. Deliberately narrow: these four name entities in the
- * governed product domain, and a generic library has no reason to know any of them.
- *
- * Not included, and the omissions are the interesting part: `Product*` (a shell is a
- * generic frame), `Status`/`State` (every product has states), `Table`/`Nav`/`Panel`
- * (structure, not domain). A prefix earns a place here by naming a THING THE PRODUCT
- * TRACKS, not by sounding specific.
+ * These prefixes remain useful as a naming smell, but they are not the rule.
+ * A component belongs in core or outside it according to the entities its props
+ * carry, not according to the name somebody happened to give it.
  */
 export const DOMAIN_PREFIXES = Object.freeze(["Work", "Knowledge", "Gate", "Evidence"]);
 
-/**
- * The debt, now zero.
- *
- * It held thirty-two names when the rule became enforceable on 2026-08-18. Two left
- * by renaming (the gate's own second route — describe the props without the entity
- * and rename); the remaining thirty left with TCRN-DS-INIT-012's move to
- * `@tcrn/ui-domain`. `present` is now 0: DS core exports no component that names a
- * product entity.
- *
- * An empty list is not a disabled gate. It is the strictest the gate has ever been —
- * every domain name is now refused, with none grandfathered. The historical note
- * below is kept because the count is the thing someone must change on purpose.
- *
- * Previously: thirty-two minus one: GateReadinessPanel left by the
- * route the gate's own message prescribes — "describe its props without the entity
- * and rename it". Its props were `{ state: CopyStatePresentation }` and its body a
- * Surface/Heading/Text/StatusBadge composition; the domain lived entirely in the
- * name, so it is now StatusSummaryPanel and no longer a domain component at all.
- * Nothing was deleted and no consumer lost a capability.
- *
- * Twenty-five of the remainder are live imports in the consuming
- * product; extraction is cross-repository work sequenced after this gate, tracked by
- * TCRN-DS-INIT-012. Removing a name from this list is how extraction reports
- * progress — the gate then refuses it coming back.
- */
+/** The domain debt is deliberately empty: an empty register is still a live gate. */
 export const REGISTERED_DOMAIN_DEBT = Object.freeze([]);
 
 function sourceFiles(root) {
@@ -71,7 +25,10 @@ function sourceFiles(root) {
   const walk = (directory) => {
     for (const entry of readdirSync(directory, { withFileTypes: true })) {
       const path = join(directory, entry.name);
-      if (entry.isDirectory()) { walk(path); continue; }
+      if (entry.isDirectory()) {
+        walk(path);
+        continue;
+      }
       if (!entry.name.endsWith(".tsx") && !entry.name.endsWith(".ts")) continue;
       if (entry.name.includes(".test.")) continue;
       found.push(path);
@@ -81,47 +38,175 @@ function sourceFiles(root) {
   return found.sort();
 }
 
-/** Exported component names that name a product entity. */
-export function domainComponents(root = COMPONENT_ROOT, read = readFileSync) {
-  const pattern = new RegExp(`^export function ((?:${DOMAIN_PREFIXES.join("|")})[A-Z]\\w*)`, "gmu");
-  const found = new Map();
-  for (const path of sourceFiles(root)) {
-    const text = String(read(path, "utf8"));
-    for (const match of text.matchAll(pattern)) {
-      found.set(match[1], path.slice(REPO_ROOT.length + 1));
-    }
-  }
-  return found;
+function isDomainPrefixName(name) {
+  return DOMAIN_PREFIXES.some((prefix) => name.startsWith(prefix) && /^[A-Z]/u.test(name.slice(prefix.length)));
 }
 
-export function judgeGenericPrimitives(found = domainComponents()) {
+function nodeText(node, sourceFile) {
+  return node ? node.getText(sourceFile) : "";
+}
+
+function declarationBody(declaration) {
+  if (ts.isInterfaceDeclaration(declaration)) return declaration.members;
+  if (ts.isTypeAliasDeclaration(declaration)) return declaration.type;
+  return declaration;
+}
+
+function declarationName(declaration) {
+  return declaration.name?.text ?? "";
+}
+
+function collectDeclarations(sourceFile) {
+  const declarations = new Map();
+  for (const statement of sourceFile.statements) {
+    if (ts.isInterfaceDeclaration(statement) || ts.isTypeAliasDeclaration(statement)) {
+      declarations.set(declarationName(statement), statement);
+    }
+  }
+  return declarations;
+}
+
+function typeReferences(node, sourceFile) {
+  const references = new Set();
+  if (!node) return references;
+  const visit = (current) => {
+    if (Array.isArray(current)) {
+      current.forEach(visit);
+      return;
+    }
+    if (ts.isIdentifier(current)) references.add(current.text);
+    ts.forEachChild(current, visit);
+  };
+  visit(node);
+  return references;
+}
+
+function propertyNames(node, sourceFile) {
+  const names = new Set();
+  if (!node) return names;
+  const visit = (current) => {
+    if (Array.isArray(current)) {
+      current.forEach(visit);
+      return;
+    }
+    if (ts.isPropertySignature(current) && current.name) {
+      names.add(nodeText(current.name, sourceFile).replace(/["']/gu, ""));
+    }
+    ts.forEachChild(current, visit);
+  };
+  visit(node);
+  return names;
+}
+
+function looksLikeEntityProperty(name) {
+  return /^(?:work|knowledge|gate|evidence)[A-Z_]/u.test(name);
+}
+
+function resolveDomainReferences(node, declarations, sourceFile, seen = new Set()) {
+  const evidence = new Set();
+  if (!node) return evidence;
+  for (const name of typeReferences(node, sourceFile)) {
+    const declaration = declarations.get(name);
+    if (!declaration) {
+      if (isDomainPrefixName(name)) evidence.add(name);
+      continue;
+    }
+    if (seen.has(name)) continue;
+    seen.add(name);
+    // Props wrappers are not entities merely because somebody prefixed the
+    // wrapper. Inspect their fields and referenced types instead.
+    if (isDomainPrefixName(name) && !/(?:Props|Options|Attributes)$/u.test(name)) {
+      evidence.add(name);
+    }
+    for (const nested of resolveDomainReferences(declarationBody(declaration), declarations, sourceFile, seen)) {
+      evidence.add(nested);
+    }
+  }
+  for (const name of propertyNames(node, sourceFile)) {
+    if (looksLikeEntityProperty(name)) evidence.add(name);
+  }
+  return evidence;
+}
+
+function exportedFunctions(sourceFile) {
+  return sourceFile.statements.filter((statement) => {
+    if (!ts.isFunctionDeclaration(statement) || !statement.name) return false;
+    return statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword);
+  });
+}
+
+function inspectComponents(root = COMPONENT_ROOT, read = readFileSync) {
+  const substantive = new Map();
+  const hints = new Map();
+  for (const path of sourceFiles(root)) {
+    const text = String(read(path, "utf8"));
+    const sourceFile = ts.createSourceFile(path, text, ts.ScriptTarget.Latest, true, path.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
+    const declarations = collectDeclarations(sourceFile);
+    for (const functionDeclaration of exportedFunctions(sourceFile)) {
+      const name = functionDeclaration.name.text;
+      const parameter = functionDeclaration.parameters[0];
+      const propsNode = parameter?.type;
+      const evidence = resolveDomainReferences(propsNode, declarations, sourceFile);
+      const file = path.slice(REPO_ROOT.length + 1);
+      const metadata = { file, props: nodeText(propsNode, sourceFile), evidence: [...evidence].sort() };
+      if (evidence.size > 0) substantive.set(name, metadata);
+      if (isDomainPrefixName(name) && evidence.size === 0) hints.set(name, metadata);
+    }
+  }
+  return { substantive, hints };
+}
+
+/** Exported components whose props name or carry a product business entity. */
+export function domainComponents(root = COMPONENT_ROOT, read = readFileSync) {
+  return inspectComponents(root, read).substantive;
+}
+
+/** Prefix hits that are only naming smells, never domain admissions. */
+export function domainNameHints(root = COMPONENT_ROOT, read = readFileSync) {
+  return inspectComponents(root, read).hints;
+}
+
+function metadataFile(value) {
+  return typeof value === "string" ? value : value?.file ?? "unknown";
+}
+
+function metadataEvidence(value, name) {
+  if (typeof value === "string") return [name];
+  return value?.evidence?.length ? value.evidence : [name];
+}
+
+export function judgeGenericPrimitives(found = domainComponents(), hints = domainNameHints()) {
   const registered = new Set(REGISTERED_DOMAIN_DEBT);
   const admitted = [...found.keys()].filter((name) => !registered.has(name)).sort();
-  // A name that left the source but stayed on the list is extraction that happened
-  // without the list being updated. It is not a failure, but it must be visible, or
-  // the debt count stops meaning anything.
   const extracted = [...registered].filter((name) => !found.has(name)).sort();
+  const nameHints = [...hints.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([name, value]) => ({ name, file: metadataFile(value) }));
   return {
-    schemaVersion: "tcrn.ds.generic-primitive-scan.v1",
+    schemaVersion: "tcrn.ds.generic-primitive-scan.v2",
     ok: admitted.length === 0,
     reasonCode: admitted.length === 0 ? "GENERIC_PRIMITIVE_RULE_HELD" : "DOMAIN_COMPONENT_ADMITTED",
     prefixes: [...DOMAIN_PREFIXES],
     registeredDebt: REGISTERED_DOMAIN_DEBT.length,
     present: found.size,
-    admitted: admitted.map((name) => ({ name, file: found.get(name) })),
+    admitted: admitted.map((name) => ({ name, file: metadataFile(found.get(name)), evidence: metadataEvidence(found.get(name), name) })),
     extracted,
+    nameHints
   };
 }
 
 if (process.argv[1]?.endsWith("generic-primitive-scan.mjs")) {
   const result = judgeGenericPrimitives();
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+  for (const entry of result.nameHints) {
+    process.stderr.write(`  DOMAIN NAME HINT: ${entry.name} (${entry.file}); props are generic\n`);
+  }
   for (const entry of result.admitted) {
-    process.stderr.write(`  DOMAIN COMPONENT ADMITTED: ${entry.name} (${entry.file})\n`);
+    process.stderr.write(`  DOMAIN COMPONENT ADMITTED: ${entry.name} (${entry.file}) via ${entry.evidence.join(", ")}\n`);
   }
   if (result.admitted.length > 0) {
-    process.stderr.write("A component naming a product entity does not belong in the Design System.\n");
-    process.stderr.write("Build it in the product, or describe its props without the entity and rename it.\n");
+    process.stderr.write("A component whose props carry a product entity does not belong in the Design System.\n");
+    process.stderr.write("A name prefix is only a warning; changing the name cannot bypass the props rule.\n");
+    process.exitCode = 1;
   }
-  if (!result.ok) process.exitCode = 1;
 }

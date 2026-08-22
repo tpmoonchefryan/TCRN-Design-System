@@ -165,12 +165,12 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Spacing and density",
     category: "Foundation",
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx"],
-    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-work-index-spec", "components.html#work-management-components-spec", "components.html#knowledge-management-components-spec"],
+    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-record-index-spec", "components.html#records-and-boards-components-spec", "components.html#documents-and-collaboration-components-spec"],
     authorityLevel: "package_authority",
-    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "workDensityComponents", "knowledgeDensityComponents"],
-    allowedConsumerInputs: ["content-specific row data", "table columns", "local filters", "documented Work density props", "documented Knowledge static content props"],
-    forbiddenConsumerOverrides: ["ad hoc dense card padding", "global table overflow rules", "page-level horizontal scrollers", "consumer-local Work row/list/backlog/detail density systems", "consumer-local Knowledge tree/document/comment/template systems"],
-    proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment", "WorkItemRow/WorkList/WorkDetailLayout examples fit without overlarge card regression", "KnowledgePageTree/KnowledgeDocumentCanvas/KnowledgeTocRail examples fit without vendor-asset leakage"],
+    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "recordsDensityComponents", "documentsDensityComponents"],
+    allowedConsumerInputs: ["content-specific row data", "table columns", "local filters", "documented functional display density props", "documented documents and collaboration static content props"],
+    forbiddenConsumerOverrides: ["ad hoc dense card padding", "global table overflow rules", "page-level horizontal scrollers", "consumer-local row/list/group/detail density systems", "consumer-local tree/document/comment/template systems"],
+    proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment", "RecordRow/RecordTable/DetailLayout examples fit without overlarge card regression", "TreeNav/DocumentCanvas/TocRail examples fit without vendor-asset leakage"],
     missingStandardEscalation: "Skip product-specific reusable pattern work and list the missing DS primitive/pattern."
   },
   {
@@ -208,12 +208,12 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Component composition",
     category: "Foundation",
     sourcePaths: ["packages/ui-react/src/index.tsx", "apps/storybook/src/contract-stories/story-content.tsx"],
-    storybookRoutes: ["components.html#component-family-index", "components.html#navigation-shell-spec", "components.html#work-management-components-spec", "patterns.html#work-management-patterns"],
+    storybookRoutes: ["components.html#component-family-index", "components.html#navigation-shell-spec", "components.html#records-and-boards-components-spec", "patterns.html#records-and-boards-patterns"],
     authorityLevel: "package_authority",
-    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy", "workLayoutDensityRegistry"],
+    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy", "functionalDisplayDensityRegistry"],
     allowedConsumerInputs: ["IA/data", "locale data", "content slots", "documented callbacks"],
-    forbiddenConsumerOverrides: ["local reusable clones", "Storybook-only prototype imports", "package-looking selectors outside DS", "consumer-local Work page header/filter/list/backlog/board/detail/activity systems"],
-    proofExpectations: ["package import receipt", "component identity markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace", "Work layout and density components exported by @tcrn/ui-react"],
+    forbiddenConsumerOverrides: ["local reusable clones", "Storybook-only prototype imports", "package-looking selectors outside DS", "consumer-local page-header/filter/list/group/board/detail/activity systems"],
+    proofExpectations: ["package import receipt", "component identity markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace", "functional display layout and density components exported by @tcrn/ui-react"],
     missingStandardEscalation: "Return a needed DS component/pattern list instead of building product-local shared UI."
   },
   {
@@ -234,7 +234,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Responsive and mobile",
     category: "Foundation",
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
-    storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#aos-owner-quality-product-shell"],
+    storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#owner-quality-product-shell"],
     authorityLevel: "storybook_visual_oracle",
     readbackFields: ["viewport", "searchMaxWidth", "collapsePolicy", "pageOverflow", "tableLocalOverflow"],
     allowedConsumerInputs: ["mobile content order", "mobile route content", "approved hidden-affordance policy"],
@@ -268,7 +268,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     authorityLevel: "consumer_contract",
     readbackFields: ["allowedInputs", "forbiddenOverrides", "rejectCriteria", "missingStandardEscalation", "routeOwner"],
     allowedConsumerInputs: ["product data", "IA labels", "copy keys", "documented DS props", "callbacks"],
-    forbiddenConsumerOverrides: ["consumer-local shared spacing", "consumer-local typography", "shell-control geometry", "package-equivalent styles", "consumer-local Work layout/density components"],
+    forbiddenConsumerOverrides: ["consumer-local shared spacing", "consumer-local typography", "shell-control geometry", "package-equivalent styles", "consumer-local functional display layout/density components"],
     proofExpectations: ["consumer contract present in AI JSON", "local style clone reject criteria present", "llms first-read alignment"],
     missingStandardEscalation: "Route a DS standards admission request before product-local framework/style work."
   }
@@ -292,7 +292,7 @@ export const consumerVisualStyleContract = {
     "consumer-local type ramps",
     "consumer-local shell-control geometry",
     "consumer-local ProductShell/search/theme/locale/sidebar clones",
-    "consumer-local Work page header, route tabs, quick filters, item rows, lists, backlog groups, board density, detail rails, field panels, activity feeds, and evidence/gate layout clones",
+    "consumer-local page header, route tabs, quick filters, record rows, lists, groups, board density, detail rails, activity feeds, and reference layout clones",
     "Storybook-only compliance claims",
     "package-equivalent visual systems outside @tcrn/ui-react"
   ],
@@ -307,7 +307,7 @@ export const consumerVisualStyleContract = {
   rejectCriteria: [
     "A product claims DS compliance without naming a foundation standard id and Storybook route.",
     "A product fixes shared typography, spacing, shell-control geometry, or ProductShell visual behavior locally instead of routing DS standards admission.",
-    "A product builds reusable Work module rows, filters, backlog groups, board cards, detail rails, or activity feeds locally instead of consuming admitted Work Management package exports.",
+    "A product builds reusable record rows, filters, groups, board cards, detail rails, or activity feeds locally instead of consuming admitted functional display package exports.",
     "A proof compares only endpoints or markers and omits computed style, motion, i18n, overflow, and browser interaction metrics.",
     "Storybook surfaces hide mandatory owner-review/no-overclaim/proof posture inside optional disclosure."
   ]
