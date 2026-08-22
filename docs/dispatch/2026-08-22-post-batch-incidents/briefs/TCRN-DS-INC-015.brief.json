@@ -1,8 +1,8 @@
 {
   "story": "TCRN-DS-INC-015",
   "workId": "work:acd298e2db9150094c14da84",
-  "decidedBy": "Owner 2026-08-22 · docs/2026-08-22-post-batch-incidents-handoff.md",
-  "generatedAt": "2026-08-22T14:10:48.000Z",
+  "decidedBy": "Owner 2026-08-22 · 判据 2 于 rev 3 改写（写单人自劾：原判据量错了元素）",
+  "generatedAt": "2026-08-22T15:24:03.000Z",
   "generatedBy": "agent:fable",
   "repositoryRoot": "../TCRN-Design-System",
   "redLineBoundaries": [
@@ -10,14 +10,17 @@
     "不把测试、构建或本地静态/浏览器证据自判为 done；机检车道止于门全绿，外观车道止于 pending-owner-acceptance。",
     "不跨仓改动：DS 的改动落 DS 仓、AOS 的落 AOS 仓，任一仓不得伸手进另一仓的树。",
     "不推送、不打 tag、不部署、不发布——各自是独立停止点。",
-    "缺陷一的根因未确认。查明之前不要动手改——基于猜测的修复会让它从看得见的坏变成看不见的坏。",
-    "缺陷一与 TCRN-DS-INC-013 不是同一处：那个是折行时的纵向锚点，这个是横向留位。"
+    "缺陷一与 TCRN-DS-INC-013 不是同一处：那个是折行时的纵向锚点，这个是横向留位。",
+    "缺陷一（徽章圆点压字）已修复并上线，本轮不要再动它：根因是 compactCss 压掉了 calc 里 `+` 两侧的空白。",
+    "缺陷二不许靠给文案块加 overflow:hidden 了事——那只是把溢出换成截断，读者看到的仍是半个字标。",
+    "几何门的判据 2 已改写：量的是品牌锁定块内文案块的 clientWidth 对 scrollWidth，不是量图的宽高。原判据量错了元素，是写单人的错，不是实现的错。"
   ],
   "filePointers": [
     "apps/storybook/src/alpha-styles.ts",
     "apps/storybook/src/story-demo-styles.ts",
     "apps/storybook/src/build/page-template.tsx",
-    "package.json"
+    "package.json",
+    "scripts/geometry-proof.mjs"
   ],
   "verificationCommands": [
     "pnpm typecheck",
@@ -31,9 +34,9 @@
     "机检车道止于门全绿；外观相关的判据停在 pending-owner-acceptance，不自判 done。"
   ],
   "effectiveEvidenceCommands": [
-    "在真浏览器里量 `.tcrn-badge` 的 `padding-inline-start`，应为 18px 且文字左沿不小于圆点右沿。",
-    "在真浏览器里量演示外壳（含收起态）的品牌标 `getBoundingClientRect()`，应非零。",
-    "新几何门各红过一次的记录：故意把 padding-inline-start 改 0、故意让品牌标父容器塌零，两次都应判红。"
+    "在真浏览器里展开全部折叠区后，量每个已布局的品牌锁定块内文案块：clientWidth 不小于 scrollWidth，或该文案块在收起态被明确隐藏。",
+    "线上实测基线（2026-08-22，components-navigation-shells.html）：两个收起态锁定块容器 52px、文案块可见 2px 而 scrollWidth 分别为 93px 与 129px；健康的容器 170px/543px、文案块 120px/132px。",
+    "几何门须自带红→绿：注入挤扁的文案块应判红，还原后转绿——与现有 badge/brand 两组同形。"
   ],
-  "storyScope": "## Goal\n\n为谁:任何打开 DS Storybook 的人 —— 它是 DS 的发布面与 Owner 指定的设计权威源。\n目的锚:线上有两处几何缺陷 —— 状态徽章的圆点压在文字上、演示外壳里的品牌标塌成 0×0 ——\n而现有的门一个都看不见它们:类都在、值都对,坏在**计算出来的结果**。\n符合性判据:两处修复,且有一道门能看见渲染几何而不只是看见类名。判定人:Owner,2026-08-22 看图指出。\n\n## Requirements\n\n### 缺陷一:徽章圆点压字(根因未查到,如实记)\n\n现象:线上 `components-navigation-shells.html` 的 `.tcrn-badge` 计算出\n`padding: 3px 8px 3px 0px` —— 左内边距 **0px**。而规则写的是\n`padding-inline-start: calc(var(--tcrn-space-2) + var(--tcrn-state-dot-size) + 4px)` = 18px,\n那 18px 正是给绝对定位的 `::before` 圆点留的位。留位没了,点压在文字上,文字也贴着左沿。\n\n**已排除的(逐项实测,2026-08-22):**\n\n- **不是 DS 组件表的问题**:同样的标记 + 同样的 `tcrnComponentCss`,在只含 tokens 与该表的\n  最小页面里算出 `padding: 3px 8px 3px 18px`、文字距左 18px、点在 8px —— 正常;\n- **不是变量失效**:元素上 `--tcrn-space-2: 8px`、`--tcrn-state-dot-size: 6px`、\n  `--tcrn-state-chip-padding: 3px 8px 3px 6px`,全部解析;\n- **不是 calc 无效**:把同一段 calc 写成内联样式 → 18px 生效;写死 18px → 生效;\n- **不是选择器没命中**:CSSOM 遍历三张表(504/455/502 条规则,全部可读、无 adoptedStyleSheets)\n  命中该元素的共 5 条,其中 `.tcrn-badge` 与 `.story-body .tcrn-badge` 两条都设 18px,\n  **没有任何一条清零 padding**;其余三条是 `*{box-sizing}`、\n  `h1,h2,h3,p,span,button,label{overflow-wrap}`、`*,::before,::after{animation-*!important}`;\n- **不是上下文之外的问题**:把该元素克隆到 `document.body` 根部 → 18px;原地 → 0px。\n\n**剩余方向**:规则在、值对、变量通、内联能用、脱离上下文就正常 —— 正常层叠下不该发生。\n要用 DevTools 的「computed → matched rules」面板落到实际胜出的那条声明上。\n**本单不给未经验证的猜测。**\n\n### 缺陷二:演示外壳的品牌标塌成 0×0\n\n线上六个品牌标里 **五个** CSS 尺寸为 `38px`(`--tcrn-brand-mark-size: 38px`)而实际渲染 **0×0**,\n且其父元素(`.tcrn-shell-brand-lockup`、`.tcrn-top-bar__brand`)同样是 **0×0**。\n演示外壳的收起态没有给品牌区尺寸,38px 的图塞进零宽容器,视觉上表现为被截断。\n\n### 缺陷三:没有门看得见几何\n\n前两处都不是「类缺定义」——`gate:ds-adoption` 那类断言查的正是类有没有定义,所以看不见。\n262→268 张视觉截图也没红:本批 14 处差异被判定为有意,这两处混在其中。\n**一道只看类名的门,对计算值失真是盲的。**\n\n修复项:①查明并修复缺陷一;②给收起态的品牌区尺寸;③加一道渲染几何门 ——\n在真浏览器里对若干关键件断言计算值(徽章的圆点与文字不重叠、品牌标非零尺寸),\n而不只是断言类名存在。修复落点:`apps/storybook/src/alpha-styles.ts`、\n`story-demo-styles.ts` 与新门。\n\n## Acceptance Criteria\n\n1. GIVEN 线上任一页的 `.tcrn-badge`,WHEN 量计算样式,THEN `padding-inline-start` 为 18px,\n   且文字左沿不小于圆点右沿。\n2. GIVEN 任一演示外壳(含收起态),WHEN 量品牌标,THEN 渲染尺寸非零。\n3. GIVEN 新门,WHEN 故意把徽章的 `padding-inline-start` 改为 0,THEN 判红;还原后转绿 —— 门要红过一次。\n4. GIVEN 新门,WHEN 故意让某个品牌标的父容器塌成零宽,THEN 判红。\n5. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n发布面是消费方(含 AI 消费方)唯一看得到的东西。一处让状态读不出来的几何失真,\n比一处缺失的样式更坏 —— 后者一眼可见,前者要盯着看才发现,而门两者都看不见。\n\n## Preconditions\n\nDS `pnpm verify` 全绿(`b29f15f`);Vercel 部署已转绿并可访问。\n`TCRN-DS-INC-013` 的 `--wrap` 圆点修复已落地,与本单的缺陷一**不是同一处** ——\n那一处修的是折行时点的纵向锚点,本处坏的是横向留位。\n\n## Assumptions\n\n假定缺陷一在 Storybook 页面上下文内。该假定由「克隆到 body 根部即正常」支持,\n但**根因未确认**,若查明后发现它其实来自组件表的某种交互,那是新的事实,按新事实处置。\n\n## Use Cases & Examples\n\n一个读者打开导航壳层那一章,看到三个徽章的圆点叠在文字第一个字上,以及一个只露出半边的品牌标。\n他对这套设计系统的第一印象由此形成。\n\n## Feature Toggle & Setting\n\n无。\n\n## Permissions\n\n无特殊权限。几何门属机检车道;外观归 Owner 亲眼判。\n\n## Implementation Notes\n\n判据 3、4 是本单的要害:新门必须各红过一次。一道从未红过的几何门,\n与本单要修的「看不见」是同一种状态。\n不要把缺陷一当作缺陷二的同一个成因去修 —— 两者的实测证据不同,一个是横向留位,一个是父容器塌陷。"
+  "storyScope": "## Goal\n\n为谁:任何打开 DS Storybook 的人 —— 它是 DS 的发布面与 Owner 指定的设计权威源。\n目的锚:线上有两处几何缺陷 —— 状态徽章的圆点压在文字上、演示外壳里的品牌标塌成 0×0 ——\n而现有的门一个都看不见它们:类都在、值都对,坏在**计算出来的结果**。\n符合性判据:两处修复,且有一道门能看见渲染几何而不只是看见类名。判定人:Owner,2026-08-22 看图指出。\n\n## Requirements\n\n### 缺陷一:徽章圆点压字(根因未查到,如实记)\n\n现象:线上 `components-navigation-shells.html` 的 `.tcrn-badge` 计算出\n`padding: 3px 8px 3px 0px` —— 左内边距 **0px**。而规则写的是\n`padding-inline-start: calc(var(--tcrn-space-2) + var(--tcrn-state-dot-size) + 4px)` = 18px,\n那 18px 正是给绝对定位的 `::before` 圆点留的位。留位没了,点压在文字上,文字也贴着左沿。\n\n**已排除的(逐项实测,2026-08-22):**\n\n- **不是 DS 组件表的问题**:同样的标记 + 同样的 `tcrnComponentCss`,在只含 tokens 与该表的\n  最小页面里算出 `padding: 3px 8px 3px 18px`、文字距左 18px、点在 8px —— 正常;\n- **不是变量失效**:元素上 `--tcrn-space-2: 8px`、`--tcrn-state-dot-size: 6px`、\n  `--tcrn-state-chip-padding: 3px 8px 3px 6px`,全部解析;\n- **不是 calc 无效**:把同一段 calc 写成内联样式 → 18px 生效;写死 18px → 生效;\n- **不是选择器没命中**:CSSOM 遍历三张表(504/455/502 条规则,全部可读、无 adoptedStyleSheets)\n  命中该元素的共 5 条,其中 `.tcrn-badge` 与 `.story-body .tcrn-badge` 两条都设 18px,\n  **没有任何一条清零 padding**;其余三条是 `*{box-sizing}`、\n  `h1,h2,h3,p,span,button,label{overflow-wrap}`、`*,::before,::after{animation-*!important}`;\n- **不是上下文之外的问题**:把该元素克隆到 `document.body` 根部 → 18px;原地 → 0px。\n\n**剩余方向**:规则在、值对、变量通、内联能用、脱离上下文就正常 —— 正常层叠下不该发生。\n要用 DevTools 的「computed → matched rules」面板落到实际胜出的那条声明上。\n**本单不给未经验证的猜测。**\n\n### 缺陷二:品牌锁定块在收起态被挤扁(原记为「塌成 0×0」,该描述不准确)\n\n**首次记录的描述不准确,2026-08-22 更正**:当时量到六个品牌标里五个 0×0,\n但展开折叠区后复测,那五个是在 `display:none` 的折叠区内 —— 不是坏的。\n\n真正的缺陷是:收起态的品牌锁定块容器只有 **52px**(图 38 + 间距),\n留给文案块 **2px**,而文案需要 **93px / 129px**,且 `overflow: visible` —— 字形溢出到容器外,\n视觉上表现为图右侧几个碎点。图本身始终是 38px,所以「量图的尺寸」这个判据看不见它。\n\n修法方向:收起态要么把文案块明确隐藏,要么让容器按内容定宽。**不要靠给文案块加\n`overflow: hidden` 了事** —— 那只是把溢出换成截断,读者看到的仍是半个字标。\n\n### 缺陷三:没有门看得见几何\n\n前两处都不是「类缺定义」——`gate:ds-adoption` 那类断言查的正是类有没有定义,所以看不见。\n262→268 张视觉截图也没红:本批 14 处差异被判定为有意,这两处混在其中。\n**一道只看类名的门,对计算值失真是盲的。**\n\n修复项:①查明并修复缺陷一;②给收起态的品牌区尺寸;③加一道渲染几何门 ——\n在真浏览器里对若干关键件断言计算值(徽章的圆点与文字不重叠、品牌标非零尺寸),\n而不只是断言类名存在。修复落点:`apps/storybook/src/alpha-styles.ts`、\n`story-demo-styles.ts` 与新门。\n\n## Acceptance Criteria\n\n1. GIVEN 线上任一页的 `.tcrn-badge`,WHEN 量计算样式,THEN `padding-inline-start` 为 18px,\n   且文字左沿不小于圆点右沿。\n2. ~~GIVEN 任一演示外壳(含收起态),WHEN 量品牌标,THEN 渲染尺寸非零。~~\n   **本条判据写窄了,2026-08-22 由写单人自劾并改写。** 量「品牌标渲染尺寸非零」量的是\n   `.tcrn-brand-mark` 这张图,而真正坏的从来不是图 —— 是它右边的字标被挤扁后溢出。\n   门照这条写,图 38px、父 52px 都非零,于是判绿,而截图里字标仍碎成几个点。\n\n   **改写后**:GIVEN 任一演示外壳(含收起态),WHEN 量品牌锁定块内的文案块,\n   THEN 其 `clientWidth` 不小于 `scrollWidth`(即不被挤压后溢出),或该文案块在收起态被明确隐藏。\n\n   实测(2026-08-22,线上 `components-navigation-shells.html` 展开全部折叠区后):\n   两个锁定块容器宽 **52px**(图 38 + 间距),留给文案块 **2px**,\n   而文案块 `scrollWidth` 分别为 **93px** 与 **129px**,`overflow: visible` —— 字形直接溢出到容器外。\n   健康的锁定块容器宽 170px / 543px、文案块 120px / 132px。\n3. GIVEN 新门,WHEN 故意把徽章的 `padding-inline-start` 改为 0,THEN 判红;还原后转绿 —— 门要红过一次。\n4. GIVEN 新门,WHEN 故意让某个品牌标的父容器塌成零宽,THEN 判红。\n5. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n发布面是消费方(含 AI 消费方)唯一看得到的东西。一处让状态读不出来的几何失真,\n比一处缺失的样式更坏 —— 后者一眼可见,前者要盯着看才发现,而门两者都看不见。\n\n## Preconditions\n\nDS `pnpm verify` 全绿(`b29f15f`);Vercel 部署已转绿并可访问。\n`TCRN-DS-INC-013` 的 `--wrap` 圆点修复已落地,与本单的缺陷一**不是同一处** ——\n那一处修的是折行时点的纵向锚点,本处坏的是横向留位。\n\n## Assumptions\n\n假定缺陷一在 Storybook 页面上下文内。该假定由「克隆到 body 根部即正常」支持,\n但**根因未确认**,若查明后发现它其实来自组件表的某种交互,那是新的事实,按新事实处置。\n\n## Use Cases & Examples\n\n一个读者打开导航壳层那一章,看到三个徽章的圆点叠在文字第一个字上,以及一个只露出半边的品牌标。\n他对这套设计系统的第一印象由此形成。\n\n## Feature Toggle & Setting\n\n无。\n\n## Permissions\n\n无特殊权限。几何门属机检车道;外观归 Owner 亲眼判。\n\n## Implementation Notes\n\n判据 3、4 是本单的要害:新门必须各红过一次。一道从未红过的几何门,\n与本单要修的「看不见」是同一种状态。\n不要把缺陷一当作缺陷二的同一个成因去修 —— 两者的实测证据不同,一个是横向留位,一个是父容器塌陷。"
 }
