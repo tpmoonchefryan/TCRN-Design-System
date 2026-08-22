@@ -1,0 +1,42 @@
+{
+  "story": "TCRN-DS-INC-016",
+  "workId": "work:353ee6170ffa41191c8b0a0b",
+  "decidedBy": "Owner 2026-08-23 · docs/2026-08-23-shell-parity-handoff.md",
+  "generatedAt": "2026-08-22T16:15:23.000Z",
+  "generatedBy": "agent:fable",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；三条都改观感或看着观感，止于 pending-owner-acceptance。",
+    "不推送、不打 tag、不部署、不发布——各自是独立停止点。",
+    "方向不许自己调换：哪一侧算「对」是逐项比对得出的，写在单的 Assumptions 里。若认为某项应反过来，停下来呈报，不要就地改另一侧。",
+    "视觉基线会动，差异要逐项是有意的且经记录，不许为让基线绿而绕过。",
+    "不要动选中态：两侧已一致（rgba(28,29,33,0.06) + 700，边框皆透明），是 INIT-013「着墨」裁定的正确传导。",
+    "密度不是把 38 改成 30 就完事：包件的 NavItem 有 gap:8px 的图标位而文档外壳没有，缩到 30px 时要确认图标位仍站得住，或明确裁定该位在密集档取消。",
+    "层级缩进要由数据驱动（组件依嵌套层级得出），不是让调用方手写 padding。",
+    "染色面要用既有令牌，不新造颜色；#e3eff1 是明档值，暗档取对应令牌。"
+  ],
+  "filePointers": [
+    "packages/ui-react/src/components/Navigation/Navigation.tsx",
+    "packages/ui-react/src/components/Navigation/Navigation.test.tsx",
+    "apps/storybook/src/alpha-styles.ts"
+  ],
+  "verificationCommands": [
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm test",
+    "pnpm internal-alpha:proof",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与 TCRN-Design-System 分区 attestations，并回读回执。",
+    "三条都归 Owner 亲眼判，停在 pending-owner-acceptance，不自判 done。"
+  ],
+  "effectiveEvidenceCommands": [
+    "在真浏览器里量 .tcrn-side-nav 的背景，应为染色面而非 rgba(0,0,0,0)。",
+    "量 .tcrn-nav-item 的 min-height 与 font-size，应与文档外壳同侧（30px / 12px）。",
+    "构造二级、三级导航项，量起始内边距应随层级递增。",
+    "比对基线（2026-08-23 线上实测）：文档外壳侧栏 rgb(227,239,241)；导航项 min-height:30px、12px、padding:4px 10px 4px 32px。"
+  ],
+  "storyScope": "## Goal\n\n为谁:三个产品 —— 它们消费的是包件,不是文档外壳。目的锚:全量角色比对(2026-08-23,线上实测)\n发现包件在两个角色上**落后于** DS 自己的文档外壳,而那两处正是文档外壳读起来更整体的原因。\n符合性判据:两处补齐,且产品拿到的侧边导航与 DS 自己用的那套在这两项上一致。判定人:Owner。\n\n## Requirements\n\n现象与证据(线上 `components-navigation-shells.html`,展开全部折叠区后逐项量计算值):\n\n| 角色 | 文档外壳(`tcrn-doc-*`) | 包件(`@tcrn/ui-react`) |\n| --- | --- | --- |\n| 侧栏面 | `background: rgb(227, 239, 241)` 淡青染色面 | `rgba(0,0,0,0)` 透明 |\n| 导航项 | `min-height: 30px`、`font-size: 12px`、`padding: 4px 10px 4px 32px`(末值是层级缩进) | `min-height: 38px`、`font-size: 13px`、`padding: 8px`、无缩进 |\n\n**染色面**让侧栏读成一体而不是浮在画布上;**30px 行高加 32px 层级缩进**让嵌套深度一眼可见。\n包件两样都没有,于是同样的信息在产品里读起来更松散、层级更平。\n\n修复项:①`SideNav` 取染色面(用既有令牌,不新造颜色);②`NavItem` 的密度与层级缩进对齐文档外壳的做法 ——\n**层级缩进要由数据驱动(嵌套层级)而不是调用方手写 padding**。\n修复落点:core 组件表的 `.tcrn-side-nav` 与 `.tcrn-nav-item`。\n\n## Acceptance Criteria\n\n1. GIVEN 包件的 `SideNav`,WHEN 量其背景,THEN 为染色面而非透明,且取自既有令牌。\n2. GIVEN 包件的 `NavItem`,WHEN 量其 `min-height` 与 `font-size`,THEN 与文档外壳同侧的值一致。\n3. GIVEN 一个二级或三级导航项,WHEN 量其起始内边距,THEN 随层级递增,且该递增由组件依数据得出。\n4. GIVEN 改动后,WHEN 跑视觉基线,THEN 差异逐项是有意的且经记录。\n5. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\nDS 的文档外壳是它自己每天在用的东西,因此比它发布给产品的那套更早收敛。\n这不是文档外壳\"越界\",是包件没有把已经验证过的做法收回来。产品拿到的应当是**已经用熟的那一套**。\n\n## Preconditions\n\nDS `pnpm verify` 全绿;`TCRN-DS-INC-015` 的两处几何缺陷已修复并上线。\n\n## Assumptions\n\n假定染色面在暗档同样成立。文档外壳的 `#e3eff1` 是明档值,暗档要取对应令牌而非直接沿用 ——\n判据 1 要求\"取自既有令牌\"正是为此。\n\n## Use Cases & Examples\n\nAOS 的侧边导航今天是透明面、38px 平铺行。补齐后它读起来会和 DS 自己的文档一样:\n面是一体的,层级一眼可见。\n\n## Feature Toggle & Setting\n\n无。\n\n## Permissions\n\n无特殊权限。外观归 Owner 亲眼判。\n\n## Implementation Notes\n\n密度那条不要简单把 38 改成 30 就完事:包件的 `NavItem` 有 `gap: 8px` 的图标位,\n文档外壳没有。缩到 30px 时要确认图标位仍站得住,或明确裁定该位在密集档取消。"
+}

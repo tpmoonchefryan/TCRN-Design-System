@@ -1,0 +1,37 @@
+{
+  "story": "TCRN-DS-INC-018",
+  "workId": "work:4cb82e7e82c8167787e289f9",
+  "decidedBy": "Owner 2026-08-23 · docs/2026-08-23-shell-parity-handoff.md",
+  "generatedAt": "2026-08-22T16:15:23.000Z",
+  "generatedBy": "agent:fable",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；三条都改观感或看着观感，止于 pending-owner-acceptance。",
+    "不推送、不打 tag、不部署、不发布——各自是独立停止点。",
+    "方向不许自己调换：哪一侧算「对」是逐项比对得出的，写在单的 Assumptions 里。若认为某项应反过来，停下来呈报，不要就地改另一侧。",
+    "视觉基线会动，差异要逐项是有意的且经记录，不许为让基线绿而绕过。",
+    "不要动选中态：两侧已一致（rgba(28,29,33,0.06) + 700，边框皆透明），是 INIT-013「着墨」裁定的正确传导。",
+    "门要在九处分叉尚未修复时先红一次，再由 016/017 把它修绿。一道一上来就绿的一致性门，证明不了它看得见分叉。",
+    "例外要带理由且是机器读的字段，与 TCRN-CROSS-INC-246 取的第①条同形；空例外表时门仍须执行。"
+  ],
+  "filePointers": [
+    "scripts/geometry-proof.mjs",
+    "package.json"
+  ],
+  "verificationCommands": [
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与 TCRN-Design-System 分区 attestations，并回读回执。",
+    "三条都归 Owner 亲眼判，停在 pending-owner-acceptance，不自判 done。"
+  ],
+  "effectiveEvidenceCommands": [
+    "故意改动一侧某个关键属性，门应判红、点名该角色、并指出哪一侧与另一侧不同。",
+    "登记一条带理由的例外后该角色不判红，且例外在报告里可见。",
+    "首次接入时门为红（九处分叉在），016/017 落地后转绿——两个状态都要留下运行记录。"
+  ],
+  "storyScope": "## Goal\n\n为谁:DS 的维护者。目的锚:文档外壳与包件在九个角色上分头演进 —— 两处包件落后、七处文档外壳落后 ——\n而**没有任何东西在看着这件事**;它被发现,是因为 Owner 让做了一次全量比对,不是因为有门。\n符合性判据:存在一道门,对同一角色在两侧的关键属性求一致,分叉即判红。判定人:Owner。\n\n## Requirements\n\n现象与证据(2026-08-23 全量比对,十五个角色):\n\n- **完全一致 4 处**:选中态(两侧同为 `rgba(28,29,33,0.06)` + 700,边框皆透明)、收起控件、主题控件、\n  以及包件侧无对应件的三项;\n- **包件落后 2 处**:侧栏染色面、导航项密度与层级缩进(`TCRN-DS-INC-016`);\n- **文档外壳落后 7 处**:画布底、顶栏节奏、分组间距、分组标题字级、面包屑字级、搜索框、语言控件\n  (`TCRN-DS-INC-017`)。\n\n比对本身是一次性的人工动作。**修完这九处,下一次分叉仍然没有东西会说话。**\n\n修复项:建角色一致性门 —— 声明一张角色映射表(角色名 → 文档外壳选择器 + 包件选择器),\n在真浏览器里对每个角色求若干关键计算属性(背景、边框、圆角、内边距、间距、字号、字重、最小高)的一致,\n不一致即判红并**指出方向**(哪一侧落后)。\n允许显式例外,但例外要带理由且是机器读的字段 —— 与 `TCRN-CROSS-INC-246` 取的第①条同一形态。\n修复落点:新门脚本与其测试,接入 `pnpm verify`。\n\n## Acceptance Criteria\n\n1. GIVEN 角色映射表里的任一角色,WHEN 两侧关键属性一致,THEN 判绿。\n2. GIVEN 故意改动一侧的某个关键属性,WHEN 跑门,THEN 判红、点名该角色、并指出哪一侧与另一侧不同。\n3. GIVEN 一个有意的差异,WHEN 登记为带理由的例外,THEN 不判红,且例外在报告里可见。\n4. GIVEN 例外表为空,WHEN 跑门,THEN 仍然执行 —— 空表不是关掉的门,须有判据断言此点。\n5. GIVEN 门,WHEN 首次接入,THEN 先红一次(此刻九处分叉尚在),修完 016/017 后转绿。\n6. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n这条链已经反复付过同一种代价:规则存在而无人执行,直到有人恰好去看。\n`generic:scan` 是这样立的,`geometry-proof` 是这样立的。文档外壳与包件的一致性是同一形态的下一个 ——\n它今天靠\"Owner 让比对一次\"发现,而那不是机制。\n\n## Preconditions\n\nDS `pnpm verify` 全绿;`geometry-proof.mjs` 已存在,可作为在真浏览器里取计算值的参考实现。\n\n## Assumptions\n\n假定九个角色的映射是当前的全部。不假定它是完备的 —— 正因如此,判据 3 的例外机制与\n映射表本身都要可扩,新增角色时门会因缺项而提示,而不是静默漏过。\n\n## Use Cases & Examples\n\n半年后有人调了包件导航项的行高。今天这会让产品与文档悄悄分叉,直到某次有人并排看两张截图;\n有门之后它当场判红,并说明是包件动了。\n\n## Feature Toggle & Setting\n\n无。门无开关。\n\n## Permissions\n\n无特殊权限。机检车道。例外的认定归 Owner。\n\n## Implementation Notes\n\n判据 5 是本单的要害:门要在**九处分叉尚未修复时先红一次**,再由 016/017 把它修绿。\n一道一上来就绿的一致性门,证明不了它看得见分叉。"
+}
