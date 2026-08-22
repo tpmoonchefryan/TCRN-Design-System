@@ -1280,7 +1280,9 @@ label {
   --tcrn-brand-mark-size: 52px;
   --tcrn-brand-mark-filter: drop-shadow(0 1px 2px rgba(28, 29, 33, 0.10));
   display: grid;
-  grid-template-columns: 52px minmax(0, 1fr);
+  /* The lockup is one grid item; give the whole item the available track so its
+     copy can size to its content instead of inheriting a mark-only 52px track. */
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: var(--tcrn-space-3);
   min-width: 0;
@@ -2324,7 +2326,9 @@ label {
   display: grid;
   /* TCRN-DS-STORY-065: the collapse control is now the package SideNavCollapseButton (a 38px
      IconButton), so the reserved column sizes to the real control instead of the old 32px. */
-  grid-template-columns: minmax(0, 1fr) auto;
+  /* This cell owns the lockup and the collapse control. Let the lockup claim its
+     max-content width so a long wordmark is never squeezed into the mark track. */
+  grid-template-columns: max-content auto;
   gap: var(--tcrn-space-2h);
   align-items: center;
   align-self: stretch;

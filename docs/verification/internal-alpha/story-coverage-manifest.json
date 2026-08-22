@@ -2139,11 +2139,21 @@
               "label": "search-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 2,
+              "shellIndex": 0,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "a",
                   "id": "",
@@ -2233,16 +2243,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 }
               ]
             },
@@ -2784,11 +2784,21 @@
               "label": "search-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 2,
+              "shellIndex": 0,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "a",
                   "id": "",
@@ -2878,16 +2888,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 }
               ]
             },
@@ -3429,11 +3429,21 @@
               "label": "search-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 2,
+              "shellIndex": 0,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "a",
                   "id": "",
@@ -3523,16 +3533,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 }
               ]
             },
@@ -4074,11 +4074,21 @@
               "label": "search-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 2,
+              "shellIndex": 0,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "a",
                   "id": "",
@@ -4168,16 +4178,6 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 English 日"
-                },
-                {
-                  "tag": "body",
-                  "id": "",
-                  "className": "",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "Skip to content TCRN设计系统组件库 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Françai"
                 }
               ]
             },
@@ -4710,11 +4710,21 @@
               "label": "mobile-doc-shell-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 2,
+              "shellIndex": 0,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "a",
                   "id": "",
@@ -5406,11 +5416,21 @@
               "label": "mobile-doc-shell-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 2,
+              "shellIndex": 0,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "a",
                   "id": "",
@@ -6102,11 +6122,21 @@
               "label": "mobile-doc-shell-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 2,
+              "shellIndex": 0,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
+                {
+                  "tag": "div",
+                  "id": "",
+                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "TCRN设计系统组件库"
+                },
                 {
                   "tag": "a",
                   "id": "",

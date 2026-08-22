@@ -6,6 +6,7 @@ import { chromium } from "@playwright/test";
 const staticRoot = resolve("apps/storybook/storybook-static");
 const badgeRoute = "/components-navigation-shells.html#navigation-dense-operations-shell-spec";
 const brandRoute = "/proof-proof-visual-instances.html#owner-quality-product-shell";
+const copyRoute = "/components-navigation-shells.html#navigation-dense-operations-shell-spec";
 const badgeStory = "navigation-dense-operations-shell-spec";
 const brandStory = "owner-quality-product-shell";
 const collapsedVariant = "desktop-light-operations-cockpit-collapsed";
@@ -137,6 +138,61 @@ async function measureBrands(page) {
   }, { storyId: brandStory, variant: collapsedVariant });
 }
 
+async function expandAllStories(page) {
+  await page.evaluate(() => {
+    for (const article of document.querySelectorAll("article[data-story-collapsed]")) {
+      article.setAttribute("data-story-collapsed", "false");
+      article.querySelector("[data-story-disclosure]")?.setAttribute("aria-expanded", "true");
+    }
+  });
+  await settle(page);
+}
+
+async function measureBrandCopies(page) {
+  return page.evaluate(() => {
+    const copies = [...document.querySelectorAll(".tcrn-shell-brand-lockup__copy, .tcrn-product-logo__copy")];
+    const details = copies.map((copy) => {
+      const style = getComputedStyle(copy);
+      const box = copy.getBoundingClientRect();
+      const collapsedAncestor = copy.closest(
+        '.tcrn-doc-shell[data-sidebar-collapsed="true"], .tcrn-product-shell[data-product-shell-collapsed="true"]'
+      );
+      const explicitHidden = Boolean(
+        collapsedAncestor
+        && (
+          style.display === "none"
+          || style.visibility === "hidden"
+          || style.clipPath !== "none"
+          || (style.position === "absolute" && style.overflow === "hidden" && box.width <= 1 && box.height <= 1)
+        )
+      );
+      const laidOut = copy.getClientRects().length > 0 && (box.width > 0 || box.height > 0 || copy.scrollWidth > 0);
+      return {
+        className: copy.className,
+        storyId: copy.closest("article[data-story-id]")?.getAttribute("data-story-id") ?? null,
+        collapsed: Boolean(collapsedAncestor),
+        laidOut,
+        clientWidth: copy.clientWidth,
+        scrollWidth: copy.scrollWidth,
+        width: Number(box.width.toFixed(2)),
+        height: Number(box.height.toFixed(2)),
+        display: style.display,
+        visibility: style.visibility,
+        overflow: style.overflow,
+        explicitHidden,
+        ok: !laidOut || explicitHidden || copy.clientWidth >= copy.scrollWidth
+      };
+    });
+    const laidOut = details.filter((detail) => detail.laidOut);
+    return {
+      count: details.length,
+      laidOutCount: laidOut.length,
+      copies: details,
+      ok: details.length > 0 && details.every((detail) => detail.ok)
+    };
+  });
+}
+
 async function addMutation(page, cssText) {
   await page.evaluate((text) => {
     const style = document.createElement("style");
@@ -177,16 +233,28 @@ async function main() {
     await removeMutation(page);
     const brandRestored = await measureBrands(page);
 
+    await page.goto(`${server.origin}${copyRoute}`);
+    await settle(page);
+    await expandAllStories(page);
+    const copyBaseline = await measureBrandCopies(page);
+    await addMutation(page, ".tcrn-shell-brand-lockup__copy, .tcrn-product-logo__copy { inline-size: 2px !important; max-width: 2px !important; visibility: visible !important; opacity: 1 !important; }");
+    const copyBroken = await measureBrandCopies(page);
+    await removeMutation(page);
+    const copyRestored = await measureBrandCopies(page);
+
     result = {
       schemaVersion: "tcrn.ds.geometry-proof.v1",
       ok: badgeBaseline.ok && !badgeBroken.ok && badgeRestored.ok
-        && brandBaseline.ok && !brandBroken.ok && brandRestored.ok,
+        && brandBaseline.ok && !brandBroken.ok && brandRestored.ok
+        && copyBaseline.ok && !copyBroken.ok && copyRestored.ok,
       redThenGreen: {
         badge: { red: !badgeBroken.ok, green: badgeRestored.ok },
-        brand: { red: !brandBroken.ok, green: brandRestored.ok }
+        brand: { red: !brandBroken.ok, green: brandRestored.ok },
+        copy: { red: !copyBroken.ok, green: copyRestored.ok }
       },
       badge: { baseline: badgeBaseline, broken: badgeBroken, restored: badgeRestored },
-      brand: { baseline: brandBaseline, broken: brandBroken, restored: brandRestored }
+      brand: { baseline: brandBaseline, broken: brandBroken, restored: brandRestored },
+      copy: { baseline: copyBaseline, broken: copyBroken, restored: copyRestored }
     };
   } finally {
     await page.close();
