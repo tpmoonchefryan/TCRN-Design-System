@@ -1796,11 +1796,36 @@
           "name": "label",
           "type": "string",
           "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "nextHref",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "prevHref",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "shown",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "total",
+          "type": "number",
+          "required": false
         }
       ],
       "variants": {},
       "slots": [],
-      "propsType": "{ label: string }"
+      "propsType": "PaginationProps"
     },
     "Popover": {
       "name": "Popover",

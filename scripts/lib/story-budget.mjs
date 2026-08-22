@@ -140,7 +140,13 @@ export const PAGE_KB_BUDGET_BYTES = 1_000_000;
 // is `proof-proof-visual-instances.html`, which carries both large AOS oracles), add one
 // file-keyed entry here with the measured `recordedBytes` and owedTo TCRN-DS-STORY-054/059.
 // An empty allowlist means the split brought every page under budget.
-export const PAGE_KB_GRACE_ALLOWLIST = {};
+export const PAGE_KB_GRACE_ALLOWLIST = {
+  "proof-proof-visual-instances.html": {
+    recordedBytes: 1_018_137,
+    owedTo: "TCRN-DS-STORY-054/059",
+    note: "The Badge truncation wrapper keeps its full accessible label in the visual-instance oracle; the page remains tracked acceptance debt until the proof catalogue is split."
+  }
+};
 
 export const CATEGORY_STORY_COUNT_CAP = 8;
 

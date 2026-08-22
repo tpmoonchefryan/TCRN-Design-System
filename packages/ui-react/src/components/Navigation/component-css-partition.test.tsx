@@ -131,3 +131,41 @@ test("the combined sheet is untouched", () => {
   assert.ok(tcrnComponentCss.includes(".tcrn-work-list"));
   assert.ok(tcrnComponentCss.includes(".tcrn-module-tabs"));
 });
+
+function srgbToLinear(channel: number): number {
+  const value = channel / 255;
+  return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+}
+
+function luminance(hex: string): number {
+  const value = Number.parseInt(hex.slice(1), 16);
+  return 0.2126 * srgbToLinear((value >> 16) & 255)
+    + 0.7152 * srgbToLinear((value >> 8) & 255)
+    + 0.0722 * srgbToLinear(value & 255);
+}
+
+function contrastRatio(foreground: string, background: string): number {
+  const [light, dark] = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
+  return (light + 0.05) / (dark + 0.05);
+}
+
+function mixWithTransparent(foreground: string, background: string, weight: number): string {
+  const channels = [0, 2, 4].map((offset) => {
+    const foregroundChannel = Number.parseInt(foreground.slice(1 + offset, 3 + offset), 16);
+    const backgroundChannel = Number.parseInt(background.slice(1 + offset, 3 + offset), 16);
+    return Math.round(foregroundChannel * weight + backgroundChannel * (1 - weight));
+  });
+  return `#${channels.map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+}
+
+test("record-link ink keeps the four measured contrast assertions in the gate", () => {
+  assert.match(tcrnCoreComponentCss, /\.tcrn-link\s*\{/u);
+  assert.match(
+    tcrnCoreComponentCss,
+    /text-decoration-color:\s*color-mix\(in srgb, var\(--tcrn-color-brand-primary\) 70%, transparent\)/u,
+  );
+  assert.ok(Math.abs(contrastRatio("#17707f", "#1c1d21") - 2.94) < 0.01);
+  assert.ok(Math.abs(contrastRatio("#62c3d2", "#ececea") - 1.73) < 0.01);
+  assert.ok(Math.abs(contrastRatio(mixWithTransparent("#17707f", "#ffffff", 0.7), "#ffffff") - 3.14) < 0.01);
+  assert.ok(Math.abs(contrastRatio(mixWithTransparent("#62c3d2", "#18191c", 0.7), "#18191c") - 4.83) < 0.01);
+});

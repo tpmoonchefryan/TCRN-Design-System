@@ -2060,8 +2060,62 @@ function writeCookiePreference(name: string, value: string) {
     `${name}=${encodeURIComponent(value)}; path=/; max-age=${preferenceCookieMaxAgeSeconds}; samesite=lax${secure}`;
 }
 
-export function Pagination({ label }: { label: string }) {
-  return <nav className="tcrn-pagination" aria-label={label} />;
+interface PaginationLabels {
+  previous: string;
+  next: string;
+  range: (shown: number, total: number) => ReactNode;
+}
+
+const paginationLabels: Record<TcrnLocale, PaginationLabels> = {
+  "zh-CN": {
+    previous: "上一页",
+    next: "下一页",
+    range: (shown, total) => <>显示 <b>{shown}</b> 条，共 <b>{total}</b> 条</>,
+  },
+  en: {
+    previous: "Previous",
+    next: "Next",
+    range: (shown, total) => <>Showing <b>{shown}</b> of <b>{total}</b></>,
+  },
+  ja: {
+    previous: "前へ",
+    next: "次へ",
+    range: (shown, total) => <><b>{total}</b> 件中 <b>{shown}</b> 件を表示</>,
+  },
+  ko: {
+    previous: "이전",
+    next: "다음",
+    range: (shown, total) => <><b>{total}</b>개 중 <b>{shown}</b>개 표시</>,
+  },
+  fr: {
+    previous: "Précédent",
+    next: "Suivant",
+    range: (shown, total) => <><b>{shown}</b> sur <b>{total}</b></>,
+  },
+};
+
+export interface PaginationProps {
+  label: string;
+  shown?: number;
+  total?: number;
+  nextHref?: string;
+  prevHref?: string;
+  locale?: TcrnLocale | string;
+}
+
+export function Pagination({ label, shown, total, nextHref, prevHref, locale }: PaginationProps) {
+  // A missing count is not a count of zero. Without product data the component must not
+  // manufacture a range, and a complete page must not leave an inert navigation landmark.
+  if (typeof shown !== "number" || typeof total !== "number" || shown >= total) return null;
+
+  const copy = paginationLabels[resolveDocumentLocale(locale)];
+  return (
+    <nav className="tcrn-pagination" aria-label={label}>
+      <span className="tcrn-pagination__range">{copy.range(shown, total)}</span>
+      {prevHref ? <a className="tcrn-link tcrn-pagination__prev" href={prevHref}>{copy.previous}</a> : null}
+      {nextHref ? <a className="tcrn-link tcrn-pagination__next" href={nextHref}>{copy.next}</a> : null}
+    </nav>
+  );
 }
 
 export const tcrnComponentCss = `
@@ -3080,11 +3134,26 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   font-size: var(--tcrn-type-size-meta);
   line-height: 1.25;
   font-weight: var(--tcrn-type-weight-strong);
-  white-space: normal;
-  overflow-wrap: anywhere;
-  text-align: center;
+  white-space: nowrap;
   background: var(--tcrn-color-surface-muted);
   color: var(--tcrn-color-text-secondary);
+}
+.tcrn-badge__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Free-form labels may opt into the old wrapping behavior explicitly. Status labels
+   stay on one line so a table row remains a constant-height scanning surface. */
+.tcrn-badge--wrap {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.tcrn-badge--wrap .tcrn-badge__label {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
 }
 /* The dot is positioned rather than laid out. As a flex item it contributed its own
    min-content width, which left the anonymous text item unable to shrink and clipped
@@ -4777,11 +4846,14 @@ a.tcrn-relationship-chip:focus-visible {
 /* An ancestor crumb is now a link (it previously rendered as an inert span, so
    there was nothing to style). Quiet by default and underlined on hover: the
    trail is chrome, and a row of permanently underlined links competes with the
-   page title it sits above. */
+   page title it sits above. The named quiet primitive keeps the same declarations
+   available to other chrome positions without importing domain selectors. */
+.tcrn-link--quiet,
 .tcrn-breadcrumb a {
   color: inherit;
   text-decoration: none;
 }
+.tcrn-link--quiet:hover,
 .tcrn-breadcrumb a:hover {
   color: var(--tcrn-color-brand-primary);
   text-decoration: underline;
@@ -4789,12 +4861,45 @@ a.tcrn-relationship-chip:focus-visible {
   text-underline-offset: 0.2em;
 }
 
-/* Pagination container. Pagination renders an empty nav today; this readies the
-   row layout for page controls without asserting markup S036 does not ship. */
+/* A record link cannot rely on colour alone: the brand ink is only 2.94:1 against
+   primary text in light mode and 1.73:1 in dark mode. The always-visible underline
+   is therefore part of the semantic treatment, with a 70% mix that measures 3.14:1
+   and 4.83:1 against the two panel surfaces. */
+.tcrn-link {
+  color: var(--tcrn-color-brand-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 70%, transparent);
+}
+.tcrn-link:hover {
+  text-decoration-color: var(--tcrn-color-brand-primary);
+}
+.tcrn-link:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--tcrn-radius-control);
+}
+
+/* Pagination container. The component supplies only a truthful range and links from
+   consumer-provided cursor data; it never invents page numbers. */
 .tcrn-pagination {
   display: flex;
   align-items: center;
   gap: var(--tcrn-space-2);
+}
+.tcrn-pagination__range {
+  color: var(--tcrn-color-text-secondary);
+  font-size: var(--tcrn-type-size-meta);
+  font-variant-numeric: tabular-nums;
+}
+.tcrn-pagination__range b {
+  color: var(--tcrn-color-text-primary);
+  font-weight: var(--tcrn-type-weight-medium);
+}
+.tcrn-pagination__next {
+  margin-inline-start: auto;
+  font-size: var(--tcrn-type-size-meta);
 }
 
 /* Navigation tab families — .tcrn-filter-bar stays doc-side (already package-owned via

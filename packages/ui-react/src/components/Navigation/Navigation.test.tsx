@@ -7,6 +7,7 @@ import {
   ModuleTabs,
   SectionTabs,
   SegmentedNav,
+  Pagination,
   Breadcrumb,
   ProductLauncher,
   ProductSwitcher,
@@ -55,6 +56,23 @@ test("breadcrumb separates route segments without concatenating labels", () => {
   assert.match(html, /class="[^"]*tcrn-breadcrumb__separator/);
   assert.match(html, /aria-current="page">Components</);
   assert.doesNotMatch(html, /TCRNComponents/);
+});
+
+test("pagination only renders a truthful cursor range", () => {
+  assert.equal(renderToStaticMarkup(<Pagination label="分页" />), "");
+  assert.equal(renderToStaticMarkup(<Pagination label="分页" shown={10} total={10} nextHref="/next" />), "");
+
+  const html = renderToStaticMarkup(
+    <Pagination label="分页" shown={50} total={137} prevHref="/prev" nextHref="/next" locale="zh-CN" />,
+  );
+  assert.match(html, /class="tcrn-pagination"/);
+  assert.match(html, /显示 <b>50<\/b> 条，共 <b>137<\/b> 条/);
+  assert.match(html, /class="tcrn-link tcrn-pagination__prev" href="\/prev">上一页<\/a>/);
+  assert.match(html, /class="tcrn-link tcrn-pagination__next" href="\/next">下一页<\/a>/);
+  assert.doesNotMatch(html, /pageCount|第\s*\d+\s*页/u);
+
+  const noNext = renderToStaticMarkup(<Pagination label="Pagination" shown={1} total={2} />);
+  assert.doesNotMatch(noNext, /tcrn-pagination__next/);
 });
 
 // The href is the whole capability, and until this test existed it was unasserted:

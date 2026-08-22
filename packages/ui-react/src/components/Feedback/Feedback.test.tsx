@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { EmptyState, EnvironmentBanner, ErrorState, Skeleton, StateSurface, StatusBadge, StateView, StatusSummaryPanel, Toast } from "./Feedback.js";
+import { Badge, EmptyState, EnvironmentBanner, ErrorState, Skeleton, StateSurface, StatusBadge, StateView, StatusSummaryPanel, Toast } from "./Feedback.js";
 import { presentCopyState } from "@tcrn/ui-copy-state";
 
 test("stateful components fail closed without product acceptance claims", () => {
@@ -11,6 +11,17 @@ test("stateful components fail closed without product acceptance claims", () => 
   const panel = renderToStaticMarkup(<StatusSummaryPanel state={presentCopyState({ state: "proof_required" })} />);
   assert.match(panel, /Proof required/);
   assert.doesNotMatch(panel.toLowerCase(), /product accepted|final mvp accepted|release ready/);
+});
+
+test("badges keep a single-line label and expose the full text", () => {
+  const badge = renderToStaticMarkup(<Badge>pending acceptance</Badge>);
+  assert.match(badge, /class="tcrn-badge tcrn-badge--neutral"/);
+  assert.match(badge, /class="tcrn-badge__label">pending acceptance<\/span>/);
+  assert.match(badge, /title="pending acceptance"/);
+  assert.match(badge, /aria-label="pending acceptance"/);
+
+  const wrapped = renderToStaticMarkup(<Badge className="tcrn-badge--wrap">free-form label</Badge>);
+  assert.match(wrapped, /tcrn-badge--wrap/);
 });
 
 test("state labels reject caller-provided forbidden positive claims", () => {
