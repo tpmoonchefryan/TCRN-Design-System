@@ -2889,7 +2889,7 @@
           "id": "table-record-index-spec",
           "visible": true,
           "width": 1077,
-          "height": 1939
+          "height": 1905
         }
       ],
       "referenceRegions": [],
@@ -3372,13 +3372,13 @@
           "id": "hierarchy-and-relations-spec",
           "visible": true,
           "width": 1077,
-          "height": 289
+          "height": 321
         },
         {
           "id": "hierarchy-and-relations-stages-spec",
           "visible": true,
           "width": 1077,
-          "height": 1854
+          "height": 1902
         }
       ],
       "referenceRegions": [],
@@ -7149,7 +7149,7 @@
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 691,
-          "height": 1113
+          "height": 1137
         }
       ],
       "referenceRegions": [],
@@ -7294,7 +7294,7 @@
           "id": "table-record-index-spec",
           "visible": true,
           "width": 691,
-          "height": 2337
+          "height": 2448
         }
       ],
       "referenceRegions": [],
@@ -7680,7 +7680,7 @@
           "id": "records-and-boards-backlog-spec",
           "visible": true,
           "width": 691,
-          "height": 1360
+          "height": 1392
         }
       ],
       "referenceRegions": [],
@@ -7777,7 +7777,7 @@
           "id": "hierarchy-and-relations-spec",
           "visible": true,
           "width": 691,
-          "height": 371
+          "height": 403
         },
         {
           "id": "hierarchy-and-relations-stages-spec",
@@ -8134,7 +8134,7 @@
           "id": "workbench-patterns",
           "visible": true,
           "width": 691,
-          "height": 397
+          "height": 461
         }
       ],
       "referenceRegions": [],
@@ -8536,7 +8536,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 691,
-          "height": 7734
+          "height": 7758
         },
         {
           "id": "blocked-actions",
@@ -8645,13 +8645,13 @@
           "id": "frontend-shell-slice",
           "visible": true,
           "width": 691,
-          "height": 11080
+          "height": 11176
         },
         {
           "id": "owner-quality-product-shell",
           "visible": true,
           "width": 691,
-          "height": 18555
+          "height": 18566
         }
       ],
       "referenceRegions": [],
@@ -8733,7 +8733,7 @@
           "id": "local-changelog",
           "visible": true,
           "width": 691,
-          "height": 723
+          "height": 747
         }
       ],
       "referenceRegions": [],
@@ -10644,7 +10644,7 @@
           "id": "color-palette",
           "visible": true,
           "width": 358,
-          "height": 13164
+          "height": 13188
         }
       ],
       "referenceRegions": [],
@@ -10880,7 +10880,7 @@
           "id": "foundation-visual-standards",
           "visible": true,
           "width": 358,
-          "height": 9614
+          "height": 9597
         }
       ],
       "referenceRegions": [],
@@ -11029,13 +11029,13 @@
           "id": "display-primitives-spec",
           "visible": true,
           "width": 358,
-          "height": 4173
+          "height": 4205
         },
         {
           "id": "interaction-disclosure-spec",
           "visible": true,
           "width": 358,
-          "height": 2030
+          "height": 2054
         }
       ],
       "referenceRegions": [],
@@ -11394,7 +11394,7 @@
           "id": "records-and-boards-backlog-spec",
           "visible": true,
           "width": 358,
-          "height": 2064
+          "height": 2164
         }
       ],
       "referenceRegions": [],
@@ -11468,7 +11468,7 @@
           "id": "hierarchy-and-relations-stages-spec",
           "visible": true,
           "width": 358,
-          "height": 5912
+          "height": 5938
         }
       ],
       "referenceRegions": [],
@@ -11543,13 +11543,13 @@
           "id": "detail-and-inspection-route-spec",
           "visible": true,
           "width": 358,
-          "height": 2340
+          "height": 2436
         },
         {
           "id": "detail-and-inspection-inspector-spec",
           "visible": true,
           "width": 358,
-          "height": 1863
+          "height": 1895
         }
       ],
       "referenceRegions": [],
@@ -11630,7 +11630,7 @@
           "id": "documents-and-collaboration-templates-spec",
           "visible": true,
           "width": 358,
-          "height": 983
+          "height": 1041
         }
       ],
       "referenceRegions": [],
@@ -11704,7 +11704,7 @@
           "id": "workbench-patterns",
           "visible": true,
           "width": 358,
-          "height": 575
+          "height": 599
         }
       ],
       "referenceRegions": [],
@@ -11774,13 +11774,13 @@
           "id": "records-and-boards-patterns",
           "visible": true,
           "width": 358,
-          "height": 3383
+          "height": 3479
         },
         {
           "id": "datagrid-fields-patterns",
           "visible": true,
           "width": 358,
-          "height": 358
+          "height": 382
         },
         {
           "id": "big-list-search-patterns",
@@ -11949,7 +11949,7 @@
           "id": "ai-consumption-contract",
           "visible": true,
           "width": 358,
-          "height": 14207
+          "height": 14231
         },
         {
           "id": "blocked-actions",
@@ -12029,13 +12029,13 @@
           "id": "frontend-shell-slice",
           "visible": true,
           "width": 358,
-          "height": 18792
+          "height": 18840
         },
         {
           "id": "owner-quality-product-shell",
           "visible": true,
           "width": 358,
-          "height": 37282
+          "height": 37538
         }
       ],
       "referenceRegions": [],
