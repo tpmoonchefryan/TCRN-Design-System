@@ -156,6 +156,22 @@ test("side navigation primitives render package-backed hierarchy and disabled re
   assert.doesNotMatch(html, /role="tab"/);
 });
 
+test("nav item density and nesting are data-driven", () => {
+  const html = renderToStaticMarkup(<NavItem depth={2} href="#nested">Nested navigation</NavItem>);
+  assert.match(html, /data-nav-depth="2"/);
+  assert.match(html, /--tcrn-nav-item-depth:2/);
+  assert.match(tcrnComponentCss, /--tcrn-nav-item-depth:\s*0/);
+  assert.match(
+    tcrnComponentCss,
+    /min-height:\s*calc\(\s*var\(--tcrn-space-6\)\s*-\s*var\(--tcrn-space-0h\)\s*\)/,
+  );
+  assert.match(tcrnComponentCss, /var\(--tcrn-color-brand-secondary-bg\)/);
+  assert.match(
+    tcrnComponentCss,
+    /\.tcrn-product-shell__sidebar \.tcrn-brand-wordmark__suffix--aos \{[\s\S]*color: var\(--tcrn-color-brand-primary\);/,
+  );
+});
+
 test("registered product logos expose exact DS AOS and TMS lockups", () => {
   assert.equal(tcrnProductLogoRegistry["design-system"].assetId, "tcrn-design-system-two-line");
   assert.equal(tcrnProductLogoRegistry["design-system"].stackSuffix, true);
