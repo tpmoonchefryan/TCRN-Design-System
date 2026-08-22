@@ -1,0 +1,116 @@
+{
+  "generatedAt": "2026-08-22T08:39:15.785Z",
+  "validator": "tcrn-workflow/scripts/dispatch-readiness-compliance.mjs",
+  "resultCount": 12,
+  "readyCount": 12,
+  "results": [
+    {
+      "story": "TCRN-DS-INC-010",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-INC-011",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-INC-012",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-INC-013",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-STORY-098",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-STORY-099",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-STORY-100",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-STORY-101",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-STORY-102",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-STORY-103",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-STORY-104",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-STORY-105",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    }
+  ]
+}

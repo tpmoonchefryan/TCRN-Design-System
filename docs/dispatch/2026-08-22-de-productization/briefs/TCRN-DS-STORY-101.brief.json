@@ -1,0 +1,41 @@
+{
+  "story": "TCRN-DS-STORY-101",
+  "workId": "work:835b590b574158a1b4c79c02",
+  "decidedBy": "Owner 2026-08-22 handoff",
+  "generatedAt": "2026-08-22T08:38:00.286Z",
+  "generatedBy": "agent:codex",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；本批状态最多推进到 pending-owner-acceptance，发布面和视觉基线仍归 Owner 亲眼验收。",
+    "不 push、不打 tag、不部署、不发布 npm/Storybook；本地 HEAD、HTTP/HTML、浏览器和真实发布位证据分开记录，不得互相冒充。",
+    "不得改动 AOS、TMS 或 workflow 兄弟仓源码；跨仓引用只作只读参考，发现未登记消费方先停手呈报。",
+    "按 Design System 仓约束使用 token 与既有样式契约；不手改生成 token/CSS 区块，不以 raw px/hex/radius 绕过门。"
+  ],
+  "filePointers": [
+    "scripts/generic-primitive-scan.mjs",
+    "scripts/generic-primitive-scan.test.mjs",
+    "packages/ui-react/src/index.tsx",
+    "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx",
+    "packages/ui-domain/src/components.tsx",
+    "package.json"
+  ],
+  "verificationCommands": [
+    "pnpm generic:scan",
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与该分区 attestations，禁止手写控制树。",
+    "最终提交之后重放本单 effectiveEvidenceCommands，证据只写仓库 docs/verification 或本批报告，公开记录不得嵌入本机路径、凭据或未经脱敏原始输出。",
+    "机检完成后仅经引擎推进 active→pending-owner-acceptance；Owner 判定人、视觉/发布面和外部发布停止点未满足前严禁 done。",
+    "完成推进后用 status、完整 work-list 与本单 work-show 回读，确认 scope 未被覆盖、状态和证据归属与实际执行者一致。"
+  ],
+  "effectiveEvidenceCommands": [
+    "最终 HEAD：运行 pnpm generic:scan，必须同时显示 props 通用改名提示、真实业务实体判红和空债务册仍执行的红绿两腿。",
+    "最终 HEAD：运行 pnpm verify，确认通用性门接入全量门且没有把命名提示当成业务实体判定。",
+    "部署位/Owner acceptance：未证——归 Owner 对规则语义与后续发布面验收。"
+  ],
+  "storyScope": "## Goal\n\n为谁:任何将来往 DS 加组件的人。目的锚:通用性门今天按函数名的前缀判定,不看 props ——\n执行「props 能被描述而不提及任何单一产品的业务概念」这条裁定的机制,检查的是名字。\n符合性判据:门按 props 与类型的实质判定,改名不改变判定结果。判定人:Owner。\n\n## Requirements\n\n现象与证据:`scripts/generic-primitive-scan.mjs` 的 `DOMAIN_PREFIXES` 是\n`[\"Work\",\"Knowledge\",\"Gate\",\"Evidence\"]`,匹配式为\n`^export function ((?:Work|Knowledge|Gate|Evidence)[A-Z]\\w*)` —— 只读函数名。\n两个方向的错都由此产生:\n①**假阴性**:把 `WorkActivityFeed` 改名为 `ActivityFeed`,门立刻变绿,而它是否通用没有任何变化;\n②**假阳性**:`KnowledgeLabelSet`、`MachineToken`、`WorkFieldPanel`、`WorkInlineCreateStatic`、\n`WorkSplitView` 的 props 里不出现任何产品实体类型,却因前缀被判为领域件并逐出 core。\n复核命令:`node scripts/generic-primitive-scan.mjs`,并对上述五个组件读其 `*Props` 接口。\n\n修复项:①判定改为读组件的 props 接口与其引用的类型,判断是否出现产品业务实体;\n②名字前缀降为**提示**而非判据 —— 命中前缀但 props 通用时,报告为「名字与实质不符」而不是判为领域件;\n③保留债务册机制与「空册不是关掉的门」的断言。修复落点:该脚本与其测试。\n\n## Acceptance Criteria\n\n1. GIVEN 一个 props 通用的组件,WHEN 给它加 `Work` 前缀,THEN 门不判它为领域件,但报告名实不符。\n2. GIVEN 一个 props 里带产品实体的组件,WHEN 去掉它的前缀改名,THEN 门仍判它为领域件 ——\n   改名不能绕过。\n3. GIVEN 五个被误逐的组件,WHEN 跑新门,THEN 判定为通用。\n4. GIVEN 债务册为空,WHEN 跑门,THEN 仍然执行,且有判据断言此点。\n5. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n这条要先做。后面四条子单会大量改名,如果判据还按名字走,那些改名会让门整片变绿 ——\n而变绿的原因是判据被绕过,不是实质变好。先修判据,后面的改动才有东西看着。\n\n## Preconditions\n\nDS `pnpm verify` 全绿;`generic-primitive-scan.test.mjs` 现有六条自证含红腿,须保持。\n\n## Assumptions\n\n假定 props 与其类型足以判断实质。若某组件 props 通用而渲染逻辑里硬编了产品词汇,\n那是门看不到的一类,记下来另议 —— 不因为它存在就退回按名字判。\n\n## Use Cases & Examples\n\n有人提交 `ActivityFeed`,props 是 `{items: ActivityItem[]}`。今天的门只看名字,放行;\n它是否真通用没人查过。新门看 `ActivityItem` 是什么。\n\n## Feature Toggle & Setting\n\n无。门无开关。\n\n## Permissions\n\n无特殊权限。机检车道。\n\n## Implementation Notes\n\n`DOMAIN_PREFIXES` 不要删 —— 它作为提示仍有用,只是不再是判据。\n六条自证要相应扩:至少补「改名不改判定」与「名实不符被报告」两条红腿。"
+}

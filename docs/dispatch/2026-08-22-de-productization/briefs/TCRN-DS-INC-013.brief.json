@@ -1,0 +1,42 @@
+{
+  "story": "TCRN-DS-INC-013",
+  "workId": "work:b6139cec49351c4582a4e197",
+  "decidedBy": "Owner 2026-08-22 handoff",
+  "generatedAt": "2026-08-22T08:38:00.286Z",
+  "generatedBy": "agent:codex",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；本批状态最多推进到 pending-owner-acceptance，发布面和视觉基线仍归 Owner 亲眼验收。",
+    "不 push、不打 tag、不部署、不发布 npm/Storybook；本地 HEAD、HTTP/HTML、浏览器和真实发布位证据分开记录，不得互相冒充。",
+    "不得改动 AOS、TMS 或 workflow 兄弟仓源码；跨仓引用只作只读参考，发现未登记消费方先停手呈报。",
+    "按 Design System 仓约束使用 token 与既有样式契约；不手改生成 token/CSS 区块，不以 raw px/hex/radius 绕过门。",
+    "视觉工作必须保留单行安全带、262 张基线的有意差异记录和 Owner review 边界；静态 HTML/HTTP 不能冒充真浏览器或 hosted 发布证明。"
+  ],
+  "filePointers": [
+    "packages/ui-react/src/components/Navigation/Navigation.tsx",
+    "packages/ui-react/src/components/Feedback/Feedback.tsx",
+    "packages/ui-react/src/components/Feedback/Feedback.test.tsx",
+    "packages/ui-react/src/index.test.tsx",
+    "scripts/internal-alpha-browser-proof.mjs",
+    "package.json"
+  ],
+  "verificationCommands": [
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm internal-alpha:proof",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与该分区 attestations，禁止手写控制树。",
+    "最终提交之后重放本单 effectiveEvidenceCommands，证据只写仓库 docs/verification 或本批报告，公开记录不得嵌入本机路径、凭据或未经脱敏原始输出。",
+    "机检完成后仅经引擎推进 active→pending-owner-acceptance；Owner 判定人、视觉/发布面和外部发布停止点未满足前严禁 done。",
+    "完成推进后用 status、完整 work-list 与本单 work-show 回读，确认 scope 未被覆盖、状态和证据归属与实际执行者一致。"
+  ],
+  "effectiveEvidenceCommands": [
+    "最终 HEAD：运行 pnpm internal-alpha:proof，在 110px 两行 --wrap fixture 中量圆点与第一行文字中心差值，并保留单行 readback。",
+    "红腿：在隔离 fixture 中把定位恢复为 50%，重跑 targeted browser assertion，必须判红后恢复源文件。",
+    "Owner acceptance/publication：未证——归 Owner 视觉基线验收与独立发布停止点。"
+  ],
+  "storyScope": "## Goal\n\n为谁:任何用 `.tcrn-badge--wrap` 放长标签的消费者。目的锚:TCRN-DS-STORY-097 修掉了状态徽章折行时\n圆点悬在两行之间的问题,做法是让徽章不折行;但同一单新增的 `--wrap` 档重新打开了折行,\n而圆点的定位没跟着改 —— 成因在这个 opt-in 档里原样活着。符合性判据:折行的徽章,圆点锚在第一行。\n判定人:Owner。\n\n## Requirements\n\n现象与证据(2026-08-22 实测,在真浏览器里量的计算样式):把\n`<span class=\"tcrn-badge tcrn-badge--warning tcrn-badge--wrap\">pending acceptance</span>`\n放进 110px 容器,徽章折成两行、高 36px;`::before` 的圆点中心距顶 **18px**,\n而第一行文字中心在 **10.5px** —— 点在两行之间,不属于任何一行。\n根因未变:`.tcrn-badge::before` 仍是 `inset-block-start: 50%`,单行时那就是文字中心,一折行就不是。\n\n修复项:让圆点锚到第一行的光学中心而非盒子的几何中心 —— 单行时两者相同,折行时只有前者是对的。\n修复落点:组件表里 `.tcrn-badge::before`(或 `--wrap` 档的覆盖)与一条断言。\n\n## Acceptance Criteria\n\n1. GIVEN 一个折成两行的 `--wrap` 徽章,WHEN 量圆点中心与第一行文字中心,THEN 两者相差不超过 1px。\n2. GIVEN 一个单行徽章,WHEN 量同样两个值,THEN 与修复前一致 —— 本条不得改变单行外观。\n3. GIVEN 该断言,WHEN 把定位改回 50%,THEN 判红。\n4. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\nSTORY-097 的三处成因里,①会折与③居中散排都随 `nowrap` 一并解决,②圆点定位是被 `nowrap`\n遮住而不是修好的。`--wrap` 是现在唯一能折行的路径,所以谁 opt-in 谁就撞上原来的缺陷。\n这不是那一单没做完 —— 它的判据都满足了 —— 是判据没覆盖到 opt-in 档。\n\n## Preconditions\n\nTCRN-DS-STORY-097 已落地(`5c3f121`),`.tcrn-badge--wrap` 已在 core。\n\n## Assumptions\n\n假定第一行的光学中心可由 padding-block-start 与 line-height 推出,不需要改成弹性项。\n把圆点从绝对定位的伪元素改成真正的 flex 子项是更彻底的做法,但那会动到每一个徽章的盒模型,\n代价与收益不匹配 —— 若实现中发现推不准,再回来议。\n\n## Use Cases & Examples\n\n一个产品给自由标签(用户起的名字)用 `--wrap`,标签折成两行,圆点浮在缝里 —— 与 Owner 在\n设计规格审稿时指出的完全是同一个观感。\n\n## Feature Toggle & Setting\n\n无。`--wrap` 本身是显式 opt-in 的折行档,不是开关。\n\n## Permissions\n\n无特殊权限。机检车道。\n\n## Implementation Notes\n\n判据 2 是本条的安全带:单行是绝大多数用例,任何修法都不得动它。"
+}

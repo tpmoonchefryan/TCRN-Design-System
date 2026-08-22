@@ -1,0 +1,43 @@
+{
+  "story": "TCRN-DS-INC-011",
+  "workId": "work:225939cf15e8bfec673f1f6f",
+  "decidedBy": "Owner 2026-08-22 handoff",
+  "generatedAt": "2026-08-22T08:38:00.286Z",
+  "generatedBy": "agent:codex",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；本批状态最多推进到 pending-owner-acceptance，发布面和视觉基线仍归 Owner 亲眼验收。",
+    "不 push、不打 tag、不部署、不发布 npm/Storybook；本地 HEAD、HTTP/HTML、浏览器和真实发布位证据分开记录，不得互相冒充。",
+    "不得改动 AOS、TMS 或 workflow 兄弟仓源码；跨仓引用只作只读参考，发现未登记消费方先停手呈报。",
+    "按 Design System 仓约束使用 token 与既有样式契约；不手改生成 token/CSS 区块，不以 raw px/hex/radius 绕过门。",
+    "视觉工作必须保留单行安全带、262 张基线的有意差异记录和 Owner review 边界；静态 HTML/HTTP 不能冒充真浏览器或 hosted 发布证明。"
+  ],
+  "filePointers": [
+    "packages/ui-react/src/components/Navigation/Navigation.tsx",
+    "packages/ui-react/src/components/Feedback/Feedback.tsx",
+    "packages/ui-react/src/components/Feedback/Feedback.test.tsx",
+    "packages/ui-react/src/components/Typography/Typography.tsx",
+    "scripts/css-template-integrity-proof.mjs",
+    "package.json"
+  ],
+  "verificationCommands": [
+    "pnpm tokens:proof",
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm test",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与该分区 attestations，禁止手写控制树。",
+    "最终提交之后重放本单 effectiveEvidenceCommands，证据只写仓库 docs/verification 或本批报告，公开记录不得嵌入本机路径、凭据或未经脱敏原始输出。",
+    "机检完成后仅经引擎推进 active→pending-owner-acceptance；Owner 判定人、视觉/发布面和外部发布停止点未满足前严禁 done。",
+    "完成推进后用 status、完整 work-list 与本单 work-show 回读，确认 scope 未被覆盖、状态和证据归属与实际执行者一致。"
+  ],
+  "effectiveEvidenceCommands": [
+    "最终 HEAD：运行 tokens:proof 与 pnpm verify，确认 InlineAlert、StateView、Heading level 4 的可渲染修饰类都在 tcrnComponentCss 中定义。",
+    "红腿：在目标 gate fixture 中临时移除一条 selector 定义，运行 targeted test，确认缺定义判红后恢复源文件。",
+    "Owner acceptance/publication：未证——归 Owner 对状态差异与视觉基线的验收。"
+  ],
+  "storyScope": "## Goal\n\n为谁:任何用 DS 组件表达状态或层级的消费者。目的锚:三组修饰类被组件渲染出来,而 CSS 里没有对应定义 ——\n渲染结果因此与基础态肉眼无法区分,而调用方以为自己表达了差别。符合性判据:组件能渲染出的每个修饰类\n在组件表里都有定义,且有门断言此事。判定人:Owner。\n\n## Requirements\n\n现象与证据(2026-08-22 实测 `tcrnComponentCss`,106,900 字节):\n①`.tcrn-inline-alert--warning` 有定义,而 `--danger`、`--positive`、`--neutral` **没有** ——\n一条危险提示与一条中性提示长得一样;\n②`.tcrn-state-view` 基类有定义,四个色调修饰 `--positive/--warning/--danger/--neutral` **全部没有**;\n③`.tcrn-heading--1/2/3` 有定义,`--4` **没有**(构建产物里 34 次 / 4 页)。\n复核命令:`node -e 'const c=require(\"./packages/ui-react/dist/index.js\").tcrnComponentCss; for (const s of [...]) console.log(s, c.includes(s))'`。\n\n修复项:①补齐三组缺失的修饰类,取值沿用 DS 既有的状态令牌(state-ready / state-warning / state-blocked),\n不新造颜色;②加一道门:把组件能渲染出的修饰类与组件表里的定义对账,缺一个判红。\n修复落点:组件表与新门。\n\n## Acceptance Criteria\n\n1. GIVEN `InlineAlert tone=\"danger\"`,WHEN 量计算样式,THEN 与 `tone=\"neutral\"` 不同。\n2. GIVEN `StateView` 四个色调,WHEN 两两比较,THEN 各不相同。\n3. GIVEN `Heading level={4}`,WHEN 量字号,THEN 与 level 3 不同。\n4. GIVEN 组件能渲染出的任一修饰类,WHEN 跑新门,THEN 在组件表里查得到;故意删一条则判红。\n5. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n这是同一类错的第三次出现。设计规格书作者在写案④时给 Badge 传了 `tone=\"info\"`,\n`tcrn-badge--info` 在 CSS 里不存在,渲染出来和 neutral 一模一样,肉眼盯着才发现;\nAOS 因此在 `gate:ds-adoption` 里立了一条断言(渲染出的修饰类必须在供给的 CSS 里有定义)。\n那道门在消费方仓里,而缺陷在 DS —— **消费者替权威源立了门,权威源自己没有**。本条要把它搬回来。\n\n## Preconditions\n\nDS `pnpm verify` 全绿。AOS 的 `gate:ds-adoption` 可作为参考实现,但不得跨仓引用其代码。\n\n## Assumptions\n\n假定这三组是当前的全部。不假定它们是唯一的 —— 正因为不确定,第二项那道门才是本条的主体:\n补三组是这一次,门管下一次。\n\n## Use Cases & Examples\n\n一个产品用 `InlineAlert tone=\"danger\"` 报一条硬错误,今天它看起来和一条普通说明一样重要。\n\n## Feature Toggle & Setting\n\n无。\n\n## Permissions\n\n无特殊权限。机检车道。\n\n## Implementation Notes\n\n不要顺手提高徽章底与面板底的对比 —— 那 1.1:1 是故意的、承重的,DS 注释写着状态读作\n「ink dot plus word」。本条只补缺失的定义,不重调既有的。"
+}

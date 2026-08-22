@@ -1,0 +1,44 @@
+{
+  "story": "TCRN-DS-STORY-105",
+  "workId": "work:ddc49e198a297e3543d97bf9",
+  "decidedBy": "Owner 2026-08-22 handoff",
+  "generatedAt": "2026-08-22T08:38:00.286Z",
+  "generatedBy": "agent:codex",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；本批状态最多推进到 pending-owner-acceptance，发布面和视觉基线仍归 Owner 亲眼验收。",
+    "不 push、不打 tag、不部署、不发布 npm/Storybook；本地 HEAD、HTTP/HTML、浏览器和真实发布位证据分开记录，不得互相冒充。",
+    "不得改动 AOS、TMS 或 workflow 兄弟仓源码；跨仓引用只作只读参考，发现未登记消费方先停手呈报。",
+    "按 Design System 仓约束使用 token 与既有样式契约；不手改生成 token/CSS 区块，不以 raw px/hex/radius 绕过门。"
+  ],
+  "filePointers": [
+    "packages/ui-domain/package.json",
+    "packages/ui-domain/src/index.ts",
+    "packages/ui-domain/src/components.tsx",
+    "tsconfig.base.json",
+    "package.json",
+    "scripts/lib/story-budget.mjs",
+    "scripts/generic-primitive-scan.mjs",
+    "CHANGELOG.md"
+  ],
+  "verificationCommands": [
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm exports:check",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与该分区 attestations，禁止手写控制树。",
+    "最终提交之后重放本单 effectiveEvidenceCommands，证据只写仓库 docs/verification 或本批报告，公开记录不得嵌入本机路径、凭据或未经脱敏原始输出。",
+    "机检完成后仅经引擎推进 active→pending-owner-acceptance；Owner 判定人、视觉/发布面和外部发布停止点未满足前严禁 done。",
+    "完成推进后用 status、完整 work-list 与本单 work-show 回读，确认 scope 未被覆盖、状态和证据归属与实际执行者一致。"
+  ],
+  "effectiveEvidenceCommands": [
+    "最终 HEAD：先由命令产出 @tcrn/ui-domain 导出名册，再据实作出归并/保留/废弃三选一记录，不先假定结论。",
+    "最终 HEAD：运行 pnpm typecheck/build/exports:check/verify，确认无空包、空导出、tsconfig 或构建脚本残留。",
+    "治理记录：TCRN-TMS-MIN-008 的抽出而非删除写为前提失效，不写成推翻裁定；Owner 对包存废的裁定未证。",
+    "Owner acceptance/publication：未证——归 Owner 对包存废与发布停止点。"
+  ],
+  "storyScope": "## Goal\n\n为谁:DS 的维护者。目的锚:`@tcrn/ui-domain` 建包的前提是「有产品家具需要住在核心之外」;\n组件与类型去产品化之后,该前提是否还成立需要一个明确结论 —— 一个空转或近空的包比没有包更坏。\n符合性判据:该包或有明确的留存理由与内容,或被归并并留下可读的迁移记录。判定人:Owner。\n\n## Requirements\n\n现象与证据:①实测**无任何产品消费方**——AOS 零代码引用、TMS 零、workflow 零;\n唯一消费方是 DS 自己的 Storybook 与 `examples/tms-react-pilot`;\n②该包建于 INIT-012,依 `TCRN-TMS-MIN-008` 的「抽出而非删除」裁定,当时的消费方是 AOS;\nAOS 于 2026-08 重建后完全不再引用 —— 包在为无人服务;\n③前三条子单执行后,原 35 个导出中真正属于产品业务词汇的候选只剩\n`WorkRelationshipType` 与 `GatePipelineGate` 两处,且两者是否也应通用化本身是待裁项。\n\n修复项:①在前四条落地后重新清点该包还剩什么;②给出结论 —— 归并进 core、\n保留为极小的产品词汇包、或废弃;③无论哪种结论,`TCRN-TMS-MIN-008` 的「抽出而非删除」\n与本次裁定的关系要写清楚:不是推翻,是那条裁定的前提(有活消费方需要被保护)已不再成立。\n修复落点:包结构、`tsconfig.base.json`、`package.json`、CHANGELOG 与迁移说明。\n\n## Acceptance Criteria\n\n1. GIVEN 前四条子单已落地,WHEN 清点 `@tcrn/ui-domain` 的导出,THEN 有一份实测名册而非估计。\n2. GIVEN 该名册,WHEN 读结论,THEN 三选一且带理由。\n3. GIVEN 结论为归并,WHEN 查仓内,THEN 无残留的空包、空导出或指向它的构建配置。\n4. GIVEN `TCRN-TMS-MIN-008`,WHEN 读本单的说明,THEN 说清楚是前提失效而非裁定被推翻。\n5. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\nINIT-012 的抽出是对的:当时 AOS 在用那些组件,删掉会打断唯一的活消费方。今天那个消费方不在了,\n而保留一个无人使用、按产品域组织的包,恰好把「同一功能三个产品共用」这件事挡在门外。\n前提变了,处置也该变 —— 这是记录新事实,不是否定旧裁定。\n\n## Preconditions\n\n`STORY-101` 至 `-104` 全部落地。\n\n## Assumptions\n\n假定归并是最可能的结论,但不预设 —— 第一项判据要求先清点再下结论,而不是先下结论再凑名册。\n\n## Use Cases & Examples\n\n一个新来的维护者看到两个包,要先搞清楚哪个该用。若第二个包已无内容也无消费方,\n这份认知成本是白付的。\n\n## Feature Toggle & Setting\n\n无。\n\n## Permissions\n\n包的存废归 Owner。本单给清点与建议。\n\n## Implementation Notes\n\n若结论是废弃,不要只删包:`tsconfig.base.json`、根 `package.json`、\n`scripts/lib/story-budget.mjs`、`generic-primitive-scan.mjs` 都提到它,要一并清理,\n否则会留下指向不存在之物的构建配置。"
+}
