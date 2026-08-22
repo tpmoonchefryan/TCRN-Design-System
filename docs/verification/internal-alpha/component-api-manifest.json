@@ -2316,6 +2316,12 @@
           "slot": true
         },
         {
+          "name": "depth",
+          "type": "number",
+          "required": false,
+          "default": "0"
+        },
+        {
           "name": "disabled",
           "type": "boolean",
           "required": false,
