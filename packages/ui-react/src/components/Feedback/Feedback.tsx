@@ -17,8 +17,27 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   tone?: Tone;
 }
 
-export function Badge({ tone = "neutral", className, ...props }: BadgeProps) {
-  return <span {...props} className={cx("tcrn-badge", `tcrn-badge--${tone}`, className)} />;
+function badgeText(children: ReactNode): string | undefined {
+  if (typeof children === "string" || typeof children === "number") return String(children);
+  if (Array.isArray(children)) {
+    const text = children.map(badgeText).filter((value): value is string => value !== undefined).join("");
+    return text.length > 0 ? text : undefined;
+  }
+  return undefined;
+}
+
+export function Badge({ tone = "neutral", className, children, title, "aria-label": ariaLabel, ...props }: BadgeProps) {
+  const text = badgeText(children);
+  return (
+    <span
+      {...props}
+      title={title ?? text}
+      aria-label={ariaLabel ?? text}
+      className={cx("tcrn-badge", `tcrn-badge--${tone}`, className)}
+    >
+      <span className="tcrn-badge__label">{children}</span>
+    </span>
+  );
 }
 
 /**
@@ -58,7 +77,13 @@ export interface StatusBadgeProps extends Omit<BadgeProps, "tone"> {
 export function StatusBadge({ state, locale, children: _children, ...props }: StatusBadgeProps) {
   const presentation = presentCopyState(state, locale);
   return (
-    <Badge {...props} tone={presentation.tone} data-state={presentation.state}>
+    <Badge
+      {...props}
+      tone={presentation.tone}
+      data-state={presentation.state}
+      title={presentation.label}
+      aria-label={presentation.label}
+    >
       {presentation.label}
     </Badge>
   );

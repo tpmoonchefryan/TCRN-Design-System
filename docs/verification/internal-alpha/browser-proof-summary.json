@@ -952,7 +952,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 60,
-        "leakCount": 3466,
+        "leakCount": 3467,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -1088,7 +1088,7 @@
           },
           {
             "storyId": "work-management-backlog-board-spec",
-            "leakCount": 53
+            "leakCount": 54
           },
           {
             "storyId": "work-management-hierarchy-gates-spec",
@@ -3067,7 +3067,7 @@
           "id": "navigation-primitives-spec",
           "visible": true,
           "width": 1077,
-          "height": 1548
+          "height": 1538
         },
         {
           "id": "navigation-product-shell-spec",
@@ -4803,7 +4803,7 @@
           "id": "Pagination",
           "visible": true,
           "width": 1077,
-          "height": 137
+          "height": 275
         },
         {
           "id": "Popover",
@@ -7143,7 +7143,7 @@
           "id": "navigation-primitives-spec",
           "visible": true,
           "width": 691,
-          "height": 1776
+          "height": 1766
         },
         {
           "id": "navigation-product-shell-spec",
@@ -7439,7 +7439,7 @@
           "id": "work-management-inspector-spec",
           "visible": true,
           "width": 691,
-          "height": 1188
+          "height": 1011
         }
       ],
       "referenceRegions": [],
@@ -8879,7 +8879,7 @@
           "id": "Pagination",
           "visible": true,
           "width": 691,
-          "height": 137
+          "height": 275
         },
         {
           "id": "Popover",
@@ -10572,7 +10572,7 @@
           "id": "navigation-primitives-spec",
           "visible": true,
           "width": 358,
-          "height": 3697
+          "height": 3687
         },
         {
           "id": "navigation-product-shell-spec",
@@ -10736,7 +10736,7 @@
           "id": "work-management-route-detail-spec",
           "visible": true,
           "width": 358,
-          "height": 2393
+          "height": 2349
         },
         {
           "id": "work-management-backlog-board-spec",
@@ -10754,7 +10754,7 @@
           "id": "work-management-inspector-spec",
           "visible": true,
           "width": 358,
-          "height": 2051
+          "height": 2019
         }
       ],
       "referenceRegions": [],
@@ -10823,13 +10823,13 @@
           "id": "knowledge-management-components-spec",
           "visible": true,
           "width": 358,
-          "height": 3534
+          "height": 3510
         },
         {
           "id": "knowledge-management-density-collaboration-spec",
           "visible": true,
           "width": 358,
-          "height": 2312
+          "height": 2240
         },
         {
           "id": "knowledge-management-templates-spec",
@@ -10976,7 +10976,7 @@
           "id": "work-management-patterns",
           "visible": true,
           "width": 358,
-          "height": 3448
+          "height": 3404
         }
       ],
       "referenceRegions": [],
@@ -11791,7 +11791,7 @@
           "id": "Pagination",
           "visible": true,
           "width": 358,
-          "height": 137
+          "height": 404
         },
         {
           "id": "Popover",

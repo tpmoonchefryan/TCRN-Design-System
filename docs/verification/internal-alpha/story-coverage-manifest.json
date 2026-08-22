@@ -7837,7 +7837,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 60,
-        "leakCount": 3466,
+        "leakCount": 3467,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7973,7 +7973,7 @@
           },
           {
             "storyId": "work-management-backlog-board-spec",
-            "leakCount": 53
+            "leakCount": 54
           },
           {
             "storyId": "work-management-hierarchy-gates-spec",
