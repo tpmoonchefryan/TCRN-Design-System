@@ -1,0 +1,36 @@
+{
+  "story": "TCRN-AOS-INC-053",
+  "workId": "work:57c3c0a6d099b88f0fdd95fc",
+  "decidedBy": "Owner 2026-08-22 · docs/2026-08-22-post-batch-incidents-handoff.md",
+  "generatedAt": "2026-08-22T14:10:48.000Z",
+  "generatedBy": "agent:fable",
+  "repositoryRoot": "../TCRN-AOS",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；机检车道止于门全绿，外观车道止于 pending-owner-acceptance。",
+    "不跨仓改动：DS 的改动落 DS 仓、AOS 的落 AOS 仓，任一仓不得伸手进另一仓的树。",
+    "不推送、不打 tag、不部署、不发布——各自是独立停止点。",
+    "不得先换 tarball 再改代码：中间那个提交是坏的，而链上会留下它。"
+  ],
+  "filePointers": [
+    "apps/server/src/main.ts",
+    "vendor/tcrn-ui-react-3.0.0.tgz",
+    "package.json"
+  ],
+  "verificationCommands": [
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm test",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与 TCRN-AOS 分区 attestations，并回读回执。",
+    "机检车道止于门全绿；外观相关的判据停在 pending-owner-acceptance，不自判 done。"
+  ],
+  "effectiveEvidenceCommands": [
+    "换包后启动实例，`curl -sI /assets/tcrn.css` 应 200 且 content-type 为 text/css。",
+    "换包后在真浏览器里量一个状态徽章与一个正文链接的计算样式，确认样式仍命中（防止 undefined 导致全站掉样式而服务仍 200）。",
+    "`git show --stat HEAD` 应同时包含 main.ts 与 vendor tarball——两者必须同一次提交。"
+  ],
+  "storyScope": "## Goal\n\n为谁:AOS 的运行与部署。目的锚:DS 于 `b29f15f` 移除了 `tcrnCoreComponentCss` 等四个公开导出,\n而 AOS 正 import 其中一个来供给自己的样式表 —— 下一次换 tarball,AOS 会在 import 处直接崩。\n符合性判据:AOS 不再引用已移除的导出,且换包后 `/assets/tcrn.css` 仍正确供给。判定人:Owner。\n\n## Requirements\n\n现象与证据(2026-08-22 实测):\n- AOS `apps/server/src/main.ts:4` 是 `import { tcrnCoreComponentCss } from \"@tcrn/ui-react\"`,\n  第 96 行用它 `.send()` 供给 `/assets/tcrn.css`;\n- DS 的 `b29f15f` 之后,`@tcrn/ui-react` 只导出 `tcrnComponentCss`(105,920B);\n  `tcrnCoreComponentCss`、`tcrnDomainComponentCss`、`partitionComponentCss`、`isDomainSelector`\n  **四个导出均已不存在**;\n- AOS 今天不受影响,因为它的 `vendor/tcrn-ui-react-3.0.0.tgz` 还是旧的 —— **风险在换包那一刻**;\n- DS 的 CHANGELOG 记了「product-named CSS partition utilities were removed from the public surface」,\n  但 72 行的验证报告里**没有一处点名 AOS**(唯一一处 \"consumer\" 讲的是品牌资产)。\n\n移除本身是对的:domain 包没了,全部即 core,切分失去意义。问题是**一个已登记的活消费方\n没有被点名,也没有迁移记录**。\n\n修复项:①`main.ts` 改用 `tcrnComponentCss`;②换 tarball 与该改动**必须同一次提交**,\n不得先换包再修;③在 AOS 侧留一条记录,写明这不是 DS 的失误面而是跨仓变更的交接面。\n修复落点:`apps/server/src/main.ts`、`vendor/*.tgz`。\n\n## Acceptance Criteria\n\n1. GIVEN 新的 DS tarball,WHEN AOS 构建,THEN 不出现未定义导出的错误。\n2. GIVEN 换包后的实例,WHEN 请求 `/assets/tcrn.css`,THEN 返回 200 且内容为 DS 的组件表。\n3. GIVEN 换包与代码改动,WHEN 看提交,THEN 在同一次里 —— 中间不存在一个装着新包却引用旧导出的状态。\n4. GIVEN AOS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n5. GIVEN 换包后的页面,WHEN 量徽章与链接,THEN 样式仍命中(即换的不只是名字,供给面确实还在)。\n\n## Business Background\n\nDS 是外部权威源,AOS 是它今天唯一的产品消费方。权威源的公开面收缩时,消费方的迁移是交接的一部分 ——\n不写下来,它就变成\"某天有人换包才发现\"的那类故障。\n\n## Preconditions\n\nDS `b29f15f` 已推送;AOS `pnpm verify` 全绿(`f15540d`)。\n\n## Assumptions\n\n假定 `tcrnComponentCss` 是 `tcrnCoreComponentCss` 的正确替代。两者在 domain 包存在时并不等价\n(前者含 domain 分区),但 domain 已并入 core,故现在前者就是全部 —— 判据 5 要求实测确认,\n而不是靠这条推理。\n\n## Use Cases & Examples\n\n有人为了拿 DS 的新组件而换 tarball,构建当场挂在 import 上;若没挂(打包方式不同),\n则 `/assets/tcrn.css` 返回 undefined,全站样式丢失而服务仍 200。第二种更坏。\n\n## Feature Toggle & Setting\n\n无。\n\n## Permissions\n\n无特殊权限。AOS 前端属 Owner 亲眼判的车道;本条不改观感,门全绿即可,但换包后的页面要看一眼。\n\n## Implementation Notes\n\n判据 3 是本单的要害:先换包后修代码,中间那个提交是坏的,而链上会留下它。两件事一次做完。"
+}

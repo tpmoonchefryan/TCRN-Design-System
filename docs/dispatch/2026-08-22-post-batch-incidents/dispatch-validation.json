@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-08-22T12:10:00.000Z",
+  "validator": "tcrn-workflow/scripts/dispatch-readiness-compliance.mjs",
+  "resultCount": 3,
+  "readyCount": 3,
+  "note": "三份于 2026-08-22 从 live 链回读 storyScope 生成并独立复跑验证器；验证器本身经变异测试（文件指针不存在、红线抽空、scope 掏空三种注入均判红）。",
+  "results": [
+    {
+      "story": "TCRN-AOS-INC-053",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-INC-014",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    },
+    {
+      "story": "TCRN-DS-INC-015",
+      "ok": true,
+      "reasonCode": "DISPATCH_BRIEF_READY",
+      "citations": {
+        "checked": true,
+        "unjudgedCommands": 0
+      }
+    }
+  ]
+}
