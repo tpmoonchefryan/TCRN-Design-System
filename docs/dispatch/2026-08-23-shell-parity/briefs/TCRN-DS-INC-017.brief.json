@@ -1,0 +1,38 @@
+{
+  "story": "TCRN-DS-INC-017",
+  "workId": "work:0da462f65d0d682f84d904f1",
+  "decidedBy": "Owner 2026-08-23 · docs/2026-08-23-shell-parity-handoff.md",
+  "generatedAt": "2026-08-22T16:15:23.000Z",
+  "generatedBy": "agent:fable",
+  "repositoryRoot": "../TCRN-Design-System",
+  "redLineBoundaries": [
+    "不写治理控制树或其文件；链上读写只经当前安装引擎 CLI，若需要状态推进先读当前版本、使用真实执行者 actor 与分区 attestations 回读。",
+    "不把测试、构建或本地静态/浏览器证据自判为 done；三条都改观感或看着观感，止于 pending-owner-acceptance。",
+    "不推送、不打 tag、不部署、不发布——各自是独立停止点。",
+    "方向不许自己调换：哪一侧算「对」是逐项比对得出的，写在单的 Assumptions 里。若认为某项应反过来，停下来呈报，不要就地改另一侧。",
+    "视觉基线会动，差异要逐项是有意的且经记录，不许为让基线绿而绕过。",
+    "不要动选中态：两侧已一致（rgba(28,29,33,0.06) + 700，边框皆透明），是 INIT-013「着墨」裁定的正确传导。",
+    "不许顺手改侧栏染色面——那是文档外壳领先的一项，由 INC-016 反向搬进包件。",
+    "七项取值用令牌不用字面量。"
+  ],
+  "filePointers": [
+    "apps/storybook/src/alpha-styles.ts",
+    "apps/storybook/src/build/page-template.tsx"
+  ],
+  "verificationCommands": [
+    "pnpm typecheck",
+    "pnpm build",
+    "pnpm storybook:smoke",
+    "pnpm internal-alpha:proof",
+    "pnpm verify"
+  ],
+  "chainCloseoutActions": [
+    "开工前重新读取 status、work-list 与本单 work-show；若推进状态，使用当前数值 expected-version、--actor agent:codex 与 TCRN-Design-System 分区 attestations，并回读回执。",
+    "三条都归 Owner 亲眼判，停在 pending-owner-acceptance，不自判 done。"
+  ],
+  "effectiveEvidenceCommands": [
+    "逐项在真浏览器里量：分组标题 11px/700、面包屑 11px、顶栏 min-height 68px 且有自己的内边距、侧栏分组 gap 非零、搜索框与语言控件有边框与圆角、外壳画布底非透明。",
+    "比对基线（2026-08-23 线上实测）见 handoff 第一节的表。"
+  ],
+  "storyScope": "## Goal\n\n为谁:读 DS Storybook 的人。目的锚:全量角色比对(2026-08-23,线上实测)发现文档外壳在**七个**\n角色上落后于包件 —— 它比包件更早收敛的是侧栏观感,但排版节奏反而更粗。\n符合性判据:七处对齐包件的做法,且两侧此后由门看着。判定人:Owner。\n\n## Requirements\n\n现象与证据(线上逐项量计算值,左为文档外壳、右为包件):\n\n| 角色 | 文档外壳 | 包件 |\n| --- | --- | --- |\n| 外壳画布底 | `rgba(0,0,0,0)` 靠继承 | `rgb(250,250,249)` 明确 |\n| 顶栏节奏 | `padding: 0`、`gap: 0`、`min-height: 0` | `padding: 12px 20px`、`gap: 16px`、`min-height: 68px` |\n| 侧栏分组间距 | `gap: 0` | `gap: 16px` |\n| **分组标题** | `13px / 400` | `11px / 700`、`padding: 0 8px` |\n| **面包屑字号** | `13px` | `11px`、`gap: 6px` |\n| 搜索框 | 无边框、无圆角、无内边距 | `1px` 边框、`4px` 圆角、`padding: 0 10px` |\n| 语言控件 | 无边框、无最小高 | `1px` 边框、`999px` 胶囊、`min-height: 36px` |\n\n其中**分组标题**最明显:文档外壳的「组件 / 样式指南 / 基础」用正文字号常规字重,\n读起来与导航项本身分不开;包件用 `11px/700` 的 eyebrow,那才是分组标签该有的形态。\n**面包屑**同理 —— 它是 caption 层级的信息,不该与正文同字号。\n\n修复项:七项各自对齐包件的取值,**用令牌不用字面量**。\n修复落点:`apps/storybook/src/alpha-styles.ts`。\n\n## Acceptance Criteria\n\n1. GIVEN 文档外壳的分组标题,WHEN 量字号与字重,THEN 为 caption 级小号粗体,与包件一致。\n2. GIVEN 文档外壳的面包屑,WHEN 量字号,THEN 为 caption 级,与包件一致。\n3. GIVEN 顶栏,WHEN 量 `min-height` 与内边距,THEN 有自己的节奏而非靠子元素撑开。\n4. GIVEN 搜索框与语言控件,WHEN 量边框与圆角,THEN 有可视 affordance,与包件同形。\n5. GIVEN 侧栏,WHEN 量分组间距,THEN 非零。\n6. GIVEN 全部改动,WHEN 跑视觉基线,THEN 差异逐项是有意的且经记录。\n7. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n文档外壳是 DS 的门面,也是 Owner 指定的设计权威源。它在侧栏观感上领先,却在排版节奏上落后 ——\n两侧各有所长这件事本身,说明它们是**分头演进**的,而不是同一套标准的两个实例。\n\n## Preconditions\n\nDS `pnpm verify` 全绿。本单与 `TCRN-DS-INC-016`(包件侧的两项)是同一次比对的两半,可并行。\n\n## Assumptions\n\n假定包件在这七项上的取值是对的。该假定来自逐项比对而非偏好 ——\n若某一项 Owner 认为文档外壳的做法才对,那是把方向反过来,按新裁定处置。\n\n## Use Cases & Examples\n\n一个人打开任一章,左侧「组件 / 样式指南 / 基础」这些分组名与其下的条目字号相同、字重相同,\n只能靠位置区分层级。补齐后它们读成标签。\n\n## Feature Toggle & Setting\n\n无。\n\n## Permissions\n\n无特殊权限。外观归 Owner 亲眼判。\n\n## Implementation Notes\n\n**不要把染色面一起改掉。** 侧栏的 `#e3eff1` 是文档外壳领先的那一项,\n由 `TCRN-DS-INC-016` 反向搬进包件,本单不动它。"
+}
