@@ -8,6 +8,8 @@ import {
   NavItem,
   SearchInput,
   ShellBrandLockup,
+  ShellLocaleMenu,
+  ShellThemeToggle,
   SideNavCollapseButton,
   SideNav,
   StatusBadge,
@@ -15,6 +17,7 @@ import {
   Text,
   TopBar
 } from "@tcrn/ui-react";
+import { tcrnDefaultLocale, tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 import {
   knowledgeNavigationGroups,
   denseShellHubActions,
@@ -233,7 +236,21 @@ export function KnowledgeBaseShellDemo() {
           actions={(
             <div className="tcrn-knowledge-shell__actions">
               <SearchInput className="tcrn-search-input--compact" placeholder="Search docs" shortcut="auto" />
-              <StatusBadge state={{ state: "local_only" }} />
+              <ShellThemeToggle
+                currentTheme="light"
+                lightLabel={localeText("shell.themeLightLabel")}
+                darkLabel={localeText("shell.themeDarkLabel")}
+                data-i18n-aria-label="shell.themeDarkLabel"
+                data-i18n-title="shell.themeDarkLabel"
+              />
+              <ShellLocaleMenu
+                locales={tcrnLocaleMetadata}
+                currentLocale={tcrnDefaultLocale}
+                label={localeText("shell.languageLabel")}
+                menuId="knowledge-shell-locale-menu"
+                triggerId="knowledge-shell-locale-trigger"
+                data-i18n-aria-label="shell.languageLabel"
+              />
             </div>
           )}
         />

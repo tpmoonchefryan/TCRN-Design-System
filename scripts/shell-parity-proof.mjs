@@ -9,7 +9,7 @@ import { chromium } from "@playwright/test";
 const staticRoot = resolve("apps/storybook/storybook-static");
 const route = "/components-navigation-shells.html?theme=light&locale=en#navigation-product-shell-spec";
 const packageStorySelector = 'article[data-story-id="navigation-product-shell-spec"]';
-const expectedParityRoleCount = 17;
+const expectedParityRoleCount = 18;
 const sampleShellRoot = '[data-story-id="navigation-focused-shells-spec"] [data-standard-shell="online-docs"]';
 const brandLockupRole = {
   id: "brand-lockup",
@@ -36,7 +36,7 @@ export const parityRoles = [
   { id: "search", document: ".tcrn-doc-header-search .tcrn-search-input", package: ".tcrn-product-shell-search .tcrn-search-input", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "locale", document: ".tcrn-doc-locale-control-slot .tcrn-shell-locale-menu__trigger", package: ".tcrn-shell-locale-menu__trigger", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "sidebar-surface", document: ".tcrn-doc-sidebar", package: ".tcrn-product-shell__sidebar", authority: "document", properties: ["backgroundColor"] },
-  { id: "package-nav-item", document: ".tcrn-doc-nav__stories a", package: ".tcrn-nav-item", authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "package-nav-item", document: ".tcrn-doc-nav__stories:not([hidden]) a", package: ".tcrn-nav-item", authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   brandLockupRole
 ];
 
@@ -101,7 +101,7 @@ export const sampleShellRoles = [
     id: "nav-item",
     kind: "sample-shell",
     document: `${sampleShellRoot} .tcrn-nav-item`,
-    package: ".tcrn-doc-nav__stories a",
+    package: ".tcrn-doc-nav__stories:not([hidden]) a",
     primitiveAttribute: "data-navigation-primitive",
     primitiveValue: "nav-item",
     authority: "truth",
@@ -117,6 +117,18 @@ export const sampleShellRoles = [
     primitiveValue: "nav-group",
     authority: "truth",
     properties: ["fontSize", "fontWeight", "paddingLeft", "paddingRight", "color"]
+  },
+  {
+    id: "element-inventory",
+    kind: "element-inventory",
+    sampleRoots: [
+      { id: "topbar", selector: `${sampleShellRoot} .tcrn-knowledge-shell__topbar`, includeControls: true },
+      { id: "sidebar", selector: `${sampleShellRoot} .tcrn-knowledge-shell__sidebar`, includeControls: false }
+    ],
+    truthRoots: [
+      { id: "topbar", selector: ".tcrn-doc-global-bar", includeControls: true },
+      { id: "sidebar", selector: ".tcrn-doc-sidebar", includeControls: false }
+    ]
   }
 ];
 
@@ -217,11 +229,7 @@ async function removeMutation(page) {
 
 export async function measureParity(page, roles = parityRoles, exceptions = parityExceptions) {
   return page.evaluate(({ roles: roleTable, exceptionTable, storySelector, enforceRoleCount, expectedRoleCount }) => {
-    const read = (node, properties) => {
-      const style = getComputedStyle(node);
-      return Object.fromEntries(properties.map((property) => [property, style[property]]));
-    };
-    const rect = (node) => {
+    const rawRect = (node) => {
       if (!node) return null;
       const box = node.getBoundingClientRect();
       return {
@@ -232,6 +240,40 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         width: Number(box.width.toFixed(2)),
         height: Number(box.height.toFixed(2))
       };
+    };
+    const layoutState = (node) => {
+      if (!node) return { ok: false, reason: "missing" };
+      const hiddenAncestor = node.closest("[hidden]");
+      if (hiddenAncestor) {
+        return {
+          ok: false,
+          reason: "hidden-ancestor",
+          hiddenAncestor: hiddenAncestor.id || hiddenAncestor.className || hiddenAncestor.tagName.toLowerCase()
+        };
+      }
+      const box = node.getBoundingClientRect();
+      if (box.width <= 0 || box.height <= 0) {
+        return {
+          ok: false,
+          reason: "zero-dimensions",
+          dimensions: { width: Number(box.width.toFixed(2)), height: Number(box.height.toFixed(2)) }
+        };
+      }
+      return { ok: true };
+    };
+    const addSampleValidity = (differences, node, side, target) => {
+      if (!node) return true;
+      const state = layoutState(node);
+      if (state.ok) return true;
+      differences.push({ property: "sample-validity", side, target, reason: state.reason, ...(state.hiddenAncestor ? { hiddenAncestor: state.hiddenAncestor } : {}), ...(state.dimensions ? { dimensions: state.dimensions } : {}) });
+      return false;
+    };
+    const read = (node, properties) => {
+      const style = getComputedStyle(node);
+      return Object.fromEntries(properties.map((property) => [property, style[property]]));
+    };
+    const rect = (node) => {
+      return layoutState(node).ok ? rawRect(node) : null;
     };
     const closeEnough = (left, right) => Math.abs(left - right) <= 0.5;
     const measureBrandLockup = (role) => {
@@ -246,6 +288,31 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       const truthTopbarSurface = document.querySelector(role.truthTopbarSurface);
       const sampleBrandSurface = document.querySelector(role.sampleBrandSurface);
       const sampleTopbarSurface = document.querySelector(role.sampleTopbarSurface);
+      const required = [
+        ["sample", "lockup", example],
+        ["truth", "lockup", truth],
+        ["sample", "mark", exampleMark],
+        ["truth", "mark", truthMark],
+        ["sample", "line", exampleLine],
+        ["truth", "line", truthLine],
+        ["truth", "brand-surface", brandSurface],
+        ["truth", "sidebar-surface", sidebarSurface],
+        ["truth", "topbar-surface", truthTopbarSurface],
+        ["sample", "brand-surface", sampleBrandSurface],
+        ["sample", "topbar-surface", sampleTopbarSurface]
+      ];
+      const missing = required.filter(([, , node]) => !node);
+      const validity = Object.fromEntries(required.filter(([, , node]) => node).map(([side, target, node]) => [`${side}:${target}`, layoutState(node)]));
+      const differences = [];
+      if (missing.length > 0) {
+        differences.push({
+          property: "selector",
+          document: Boolean(example && exampleMark && exampleLine && brandSurface && sampleBrandSurface && sampleTopbarSurface),
+          package: Boolean(truth && truthMark && truthLine && sidebarSurface && truthTopbarSurface)
+        });
+      }
+      for (const [side, target, node] of required) addSampleValidity(differences, node, side, target);
+      const canMeasure = missing.length === 0 && required.every(([, , node]) => layoutState(node).ok);
       const exampleMarkRect = rect(exampleMark);
       const truthMarkRect = rect(truthMark);
       const brandSurfaceRect = rect(brandSurface);
@@ -259,14 +326,13 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       const sampleTopGap = sampleTopbarSurfaceRect && sampleBrandSurfaceRect
         ? Number((sampleBrandSurfaceRect.top - sampleTopbarSurfaceRect.top).toFixed(2))
         : null;
-      const differences = [];
       const measurements = {
         example: {
           selector: role.document,
           className: example?.className ?? null,
           assetId: example?.getAttribute("data-product-logo-asset-id") ?? null,
           mark: exampleMarkRect,
-          firstLineFontSize: exampleLine ? getComputedStyle(exampleLine).fontSize : null,
+          firstLineFontSize: canMeasure && exampleLine ? getComputedStyle(exampleLine).fontSize : null,
           lockup: rect(example)
         },
         truth: {
@@ -274,7 +340,7 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
           className: truth?.className ?? null,
           assetId: truth?.getAttribute("data-product-logo-asset-id") ?? null,
           mark: truthMarkRect,
-          firstLineFontSize: truthLine ? getComputedStyle(truthLine).fontSize : null,
+          firstLineFontSize: canMeasure && truthLine ? getComputedStyle(truthLine).fontSize : null,
           lockup: rect(truth)
         },
         surfaces: {
@@ -287,15 +353,10 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
           verticalGap: brandSurfaceRect && sidebarSurfaceRect
             ? Number((sidebarSurfaceRect.top - brandSurfaceRect.bottom).toFixed(2))
             : null
-        }
+        },
+        validity
       };
-      if (!example || !truth || !exampleMark || !truthMark || !exampleLine || !truthLine || !brandSurface || !sidebarSurface || !truthTopbarSurface || !sampleBrandSurface || !sampleTopbarSurface) {
-        differences.push({
-          property: "selector",
-          document: Boolean(example && exampleMark && exampleLine && brandSurface && sampleBrandSurface && sampleTopbarSurface),
-          package: Boolean(truth && truthMark && truthLine && sidebarSurface && truthTopbarSurface)
-        });
-      } else {
+      if (canMeasure) {
         const comparisons = [
           ["brandMarkWidth", exampleMarkRect?.width, truthMarkRect?.width],
           ["brandMarkHeight", exampleMarkRect?.height, truthMarkRect?.height]
@@ -346,6 +407,16 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       const truthBrand = document.querySelector(role.truthBrand);
       const truthSidebar = document.querySelector(role.truthSidebar);
       const truthNav = document.querySelector(role.truthNav);
+      const required = [
+        ["sample", "brand", sampleBrand],
+        ["sample", "sidebar", sampleSidebar],
+        ["sample", "nav", sampleNav],
+        ["truth", "brand", truthBrand],
+        ["truth", "sidebar", truthSidebar],
+        ["truth", "nav", truthNav]
+      ];
+      const missing = required.filter(([, , node]) => !node);
+      const validity = Object.fromEntries(required.filter(([, , node]) => node).map(([side, target, node]) => [`${side}:${target}`, layoutState(node)]));
       const sampleBrandRect = rect(sampleBrand);
       const sampleSidebarRect = rect(sampleSidebar);
       const sampleNavRect = rect(sampleNav);
@@ -362,24 +433,35 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       const truthRelations = relationValues(truthBrandRect, truthSidebarRect, truthNavRect);
       const measurements = {
         sample: { brand: sampleBrandRect, sidebar: sampleSidebarRect, nav: sampleNavRect, relations: sampleRelations },
-        truth: { brand: truthBrandRect, sidebar: truthSidebarRect, nav: truthNavRect, relations: truthRelations }
+        truth: { brand: truthBrandRect, sidebar: truthSidebarRect, nav: truthNavRect, relations: truthRelations },
+        validity
       };
       const differences = [];
-      if (!sampleRelations || !truthRelations) {
+      if (missing.length > 0) {
         differences.push({
           property: "relation-selector",
           sample: Boolean(sampleRelations),
           truth: Boolean(truthRelations)
         });
+      }
+      for (const [side, target, node] of required) addSampleValidity(differences, node, side, target);
+      if (missing.length === 0 && required.every(([, , node]) => layoutState(node).ok) && (!sampleRelations || !truthRelations)) {
+        differences.push({
+          property: "relation-sample",
+          sample: Boolean(sampleRelations),
+          truth: Boolean(truthRelations)
+        });
       } else {
-        for (const property of Object.keys(truthRelations)) {
-          if (!closeEnough(sampleRelations[property], truthRelations[property])) {
-            differences.push({
-              property,
-              sample: sampleRelations[property],
-              truth: truthRelations[property],
-              direction: "sample-lags"
-            });
+        if (missing.length === 0 && required.every(([, , node]) => layoutState(node).ok)) {
+          for (const property of Object.keys(truthRelations)) {
+            if (!closeEnough(sampleRelations[property], truthRelations[property])) {
+              differences.push({
+                property,
+                sample: sampleRelations[property],
+                truth: truthRelations[property],
+                direction: "sample-lags"
+              });
+            }
           }
         }
       }
@@ -390,6 +472,8 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       const truth = document.querySelector(role.package);
       const differences = [];
       const accepted = [];
+      const exampleValidity = layoutState(example);
+      const truthValidity = layoutState(truth);
       const exampleRect = rect(example);
       const truthRect = rect(truth);
       const measurements = {
@@ -397,17 +481,21 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
           selector: role.document,
           className: example?.className ?? null,
           rect: exampleRect,
-          styles: example ? read(example, role.properties) : null
+          styles: exampleValidity.ok ? read(example, role.properties) : null
         },
         truth: {
           selector: role.package,
           className: truth?.className ?? null,
           rect: truthRect,
-          styles: truth ? read(truth, role.properties) : null
-        }
+          styles: truthValidity.ok ? read(truth, role.properties) : null
+        },
+        validity: { sample: exampleValidity, truth: truthValidity }
       };
       if (!example || !truth) {
         differences.push({ property: "selector", document: Boolean(example), package: Boolean(truth) });
+      } else if (!exampleValidity.ok || !truthValidity.ok) {
+        addSampleValidity(differences, example, "sample", "shell");
+        addSampleValidity(differences, truth, "truth", "shell");
       } else if (role.id === "collapse-toggle") {
         const primitiveNode = document.querySelector(role.documentControl);
         if (role.primitiveAttribute && primitiveNode?.getAttribute(role.primitiveAttribute) !== role.primitiveValue) {
@@ -417,12 +505,20 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         const truthControl = document.querySelector(role.packageControl);
         const exampleText = document.querySelector(role.documentText);
         const truthText = document.querySelector(role.packageText);
+        const controlTargets = [
+          ["sample", "control", exampleControl],
+          ["truth", "control", truthControl],
+          ["sample", "text", exampleText],
+          ["truth", "text", truthText]
+        ];
+        for (const [side, target, node] of controlTargets) addSampleValidity(differences, node, side, target);
+        const controlsCanBeMeasured = controlTargets.every(([, , node]) => node && layoutState(node).ok);
         const exampleControlRect = rect(exampleControl);
         const truthControlRect = rect(truthControl);
         const exampleTextRect = rect(exampleText);
         const truthTextRect = rect(truthText);
-        const exampleStyle = exampleControl ? getComputedStyle(exampleControl) : null;
-        const truthStyle = truthControl ? getComputedStyle(truthControl) : null;
+        const exampleStyle = controlsCanBeMeasured ? getComputedStyle(exampleControl) : null;
+        const truthStyle = controlsCanBeMeasured ? getComputedStyle(truthControl) : null;
         const exampleRightInset = exampleRect && exampleControlRect ? Number((exampleRect.right - exampleControlRect.right).toFixed(2)) : null;
         const truthRightInset = truthRect && truthControlRect ? Number((truthRect.right - truthControlRect.right).toFixed(2)) : null;
         const expectedRightInset = Number(Math.min(24, Math.max(16, window.innerWidth * 0.016)).toFixed(2));
@@ -450,8 +546,10 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
             height: truthStyle?.height ?? null
           }
         };
-        if (!exampleControl || !truthControl || !exampleControlRect || !truthControlRect || !exampleText || !truthText || !exampleTextRect || !truthTextRect) {
-          differences.push({ property: "control-selector", document: Boolean(exampleControl && exampleText), package: Boolean(truthControl && truthText) });
+        if (!controlsCanBeMeasured) {
+          if (!exampleControl || !truthControl || !exampleText || !truthText) {
+            differences.push({ property: "control-selector", document: Boolean(exampleControl && exampleText), package: Boolean(truthControl && truthText) });
+          }
         } else {
           if (!closeEnough(exampleControlRect.width, truthControlRect.width)) {
             differences.push({ property: "controlWidth", document: exampleControlRect.width, package: truthControlRect.width, direction: "sample-lags" });
@@ -490,16 +588,207 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       }
       return { id: role.id, document: role.document, package: role.package, measurements, differences, accepted, ok: differences.length === 0 };
     };
+    const measureElementInventory = (role) => {
+      const controlSelector = 'button, input, select, textarea, [role="button"], [role="combobox"]';
+      const regionSelector = '[data-parity-region]';
+      const tokenDefinitions = [
+        ["search", /search/],
+        ["theme", /theme|appearance|color[-_ ]?scheme/],
+        ["locale", /locale|language/],
+        ["collapse", /collapse|expand.*navigation|navigation.*expand|side[-_ ]?nav[-_ ]?collapse/],
+        ["nav-group", /nav[-_ ]?group|navigation.*group/],
+        ["topbar", /topbar|global[-_ ]?bar|top[-_ ]?bar/],
+        ["sidebar", /sidebar|side[-_ ]?nav/],
+        ["groups", /groups/],
+        ["brand", /brand|product[-_ ]?logo/],
+        ["actions", /actions|controls/],
+        ["module", /module/]
+      ];
+      const textSignals = (node) => [
+        node.getAttribute("data-parity-name"),
+        node.getAttribute("data-navigation-primitive"),
+        node.getAttribute("data-registered-shell-primitive"),
+        node.getAttribute("aria-label"),
+        node.getAttribute("title"),
+        node.getAttribute("placeholder"),
+        node.getAttribute("class"),
+        node.getAttribute("name"),
+        node.getAttribute("type")
+      ].filter(Boolean).join(" ").toLowerCase();
+      const semanticName = (node, kind) => {
+        const signal = textSignals(node);
+        return tokenDefinitions.find(([, pattern]) => pattern.test(signal))?.[0]
+          ?? `${kind}-${node.tagName.toLowerCase()}${node.getAttribute("role") ? `-${node.getAttribute("role")}` : ""}${node.getAttribute("type") ? `-${node.getAttribute("type")}` : ""}`;
+      };
+      const relativeGeometry = (nodeRect, parentRect) => {
+        const width = Math.max(parentRect.width, 1);
+        const height = Math.max(parentRect.height, 1);
+        return {
+          left: Number(((nodeRect.left - parentRect.left) / width).toFixed(4)),
+          top: Number(((nodeRect.top - parentRect.top) / height).toFixed(4)),
+          width: Number((nodeRect.width / width).toFixed(4)),
+          height: Number((nodeRect.height / height).toFixed(4))
+        };
+      };
+      const inventoryForSide = (rootDefinitions, side) => {
+        const items = [];
+        const failures = [];
+        const missingRoots = [];
+        for (const rootDefinition of rootDefinitions) {
+          const root = document.querySelector(rootDefinition.selector);
+          if (!root) {
+            missingRoots.push({ root: rootDefinition.id, selector: rootDefinition.selector });
+            continue;
+          }
+          const rootState = layoutState(root);
+          if (!rootState.ok) {
+            failures.push({ side, root: rootDefinition.id, target: "root", reason: rootState.reason, ...(rootState.hiddenAncestor ? { hiddenAncestor: rootState.hiddenAncestor } : {}), ...(rootState.dimensions ? { dimensions: rootState.dimensions } : {}) });
+            continue;
+          }
+          const parentRect = rawRect(root);
+          const seen = new Set();
+          const occurrences = new Map();
+          const add = (node, kind, rootKey) => {
+            if (seen.has(node)) return;
+            seen.add(node);
+            const state = layoutState(node);
+            if (!state.ok) {
+              if (state.reason !== "hidden-ancestor") {
+                failures.push({ side, root: rootDefinition.id, target: `${kind}:${semanticName(node, kind)}`, reason: state.reason, ...(state.dimensions ? { dimensions: state.dimensions } : {}) });
+              }
+              return;
+            }
+            const nodeRect = rawRect(node);
+            let container = node;
+            if (node !== root) {
+              container = node.parentElement ?? root;
+              while (container.parentElement && container.parentElement !== root) container = container.parentElement;
+            }
+            const containerRect = rawRect(container);
+            const name = semanticName(node, kind);
+            const occurrenceKey = `${kind}:${name}`;
+            const occurrence = (occurrences.get(occurrenceKey) ?? 0) + 1;
+            occurrences.set(occurrenceKey, occurrence);
+            const key = `${rootKey}/${kind}:${name}#${occurrence}`;
+            items.push({
+              key,
+              root: rootDefinition.id,
+              kind,
+              name,
+              tagName: node.tagName.toLowerCase(),
+              role: node.getAttribute("role"),
+              className: node.getAttribute("class"),
+              source: textSignals(node),
+              rect: nodeRect,
+              rootRect: parentRect,
+              containerRect,
+              relative: relativeGeometry(nodeRect, parentRect)
+            });
+          };
+          add(root, "region", `${rootDefinition.id}/root`);
+          if (rootDefinition.includeControls !== false) {
+            for (const node of root.querySelectorAll(controlSelector)) add(node, "control", rootDefinition.id);
+          }
+          for (const node of root.querySelectorAll(regionSelector)) add(node, "region", rootDefinition.id);
+        }
+        return { items, failures, missingRoots };
+      };
+      const sample = inventoryForSide(role.sampleRoots, "sample");
+      const truth = inventoryForSide(role.truthRoots, "truth");
+      const sampleByKey = new Map(sample.items.map((item) => [item.key, item]));
+      const truthByKey = new Map(truth.items.map((item) => [item.key, item]));
+      const onlyInSample = sample.items.filter((item) => !truthByKey.has(item.key));
+      const onlyInTruth = truth.items.filter((item) => !sampleByKey.has(item.key));
+      const sameName = [];
+      const outliers = [];
+      for (const [key, sampleItem] of sampleByKey) {
+        const truthItem = truthByKey.get(key);
+        if (!truthItem) continue;
+        const size = {
+          width: Number((sampleItem.rect.width - truthItem.rect.width).toFixed(2)),
+          height: Number((sampleItem.rect.height - truthItem.rect.height).toFixed(2))
+        };
+        const position = sampleItem.kind === "control"
+          ? {
+            rootRight: Number(((sampleItem.rootRect.right - sampleItem.rect.right) - (truthItem.rootRect.right - truthItem.rect.right)).toFixed(2)),
+            containerRight: Number(((sampleItem.containerRect.right - sampleItem.rect.right) - (truthItem.containerRect.right - truthItem.rect.right)).toFixed(2)),
+            top: Number((sampleItem.relative.top - truthItem.relative.top).toFixed(4))
+          }
+          : {
+            left: Number((sampleItem.relative.left - truthItem.relative.left).toFixed(4)),
+            top: Number((sampleItem.relative.top - truthItem.relative.top).toFixed(4))
+          };
+        const normalizedSize = {
+          width: Number((sampleItem.relative.width - truthItem.relative.width).toFixed(4)),
+          height: Number((sampleItem.relative.height - truthItem.relative.height).toFixed(4))
+        };
+        const sizeOutlier = sampleItem.kind === "control"
+          ? Math.abs(size.width) > 0.5 || Math.abs(size.height) > 0.5
+          : Math.abs(normalizedSize.width) > 0.02 || Math.abs(normalizedSize.height) > 0.02;
+        const positionOutlier = sampleItem.kind === "control"
+          ? sampleItem.name !== "collapse"
+            && (Math.abs(position.rootRight) > (sampleItem.name === "search" ? 24.5 : 2.5) || Math.abs(position.top) > 0.02)
+          : Math.abs(position.left) > 0.01 || Math.abs(position.top) > 0.01;
+        const comparison = { key, kind: sampleItem.kind, name: sampleItem.name, sample: { rect: sampleItem.rect, relative: sampleItem.relative }, truth: { rect: truthItem.rect, relative: truthItem.relative }, size, normalizedSize, position, sizeOutlier, positionOutlier };
+        sameName.push(comparison);
+        if (sizeOutlier || positionOutlier) outliers.push(comparison);
+      }
+      const differences = [];
+      for (const item of onlyInSample) differences.push({ property: "inventory-only-in-sample", key: item.key, kind: item.kind, name: item.name, source: item.source });
+      for (const item of onlyInTruth) differences.push({ property: "inventory-only-in-truth", key: item.key, kind: item.kind, name: item.name, source: item.source });
+      for (const failure of [...sample.failures, ...truth.failures]) differences.push({ property: "sample-validity", ...failure });
+      for (const missing of sample.missingRoots) differences.push({ property: "inventory-selector", side: "sample", ...missing });
+      for (const missing of truth.missingRoots) differences.push({ property: "inventory-selector", side: "truth", ...missing });
+      for (const outlier of outliers) differences.push({ property: outlier.sizeOutlier ? "inventory-size-outlier" : "inventory-position-outlier", ...outlier });
+      const topbarSummary = (items) => {
+        const controls = items.filter((item) => item.root === "topbar" && item.kind === "control");
+        const root = items.find((item) => item.root === "topbar" && item.kind === "region" && item.key.endsWith("/region:topbar#1"));
+        const rightEdge = controls.length > 0 ? Math.max(...controls.map((item) => item.rect.right)) : null;
+        const search = controls.find((item) => item.name === "search");
+        return {
+          controlCount: controls.length,
+          controlNames: controls.map((item) => item.name),
+          searchInnerWidth: search?.rect.width ?? null,
+          controlAreaRightMargin: root && rightEdge !== null ? Number((root.rect.right - rightEdge).toFixed(2)) : null
+        };
+      };
+      return {
+        id: role.id,
+        kind: role.kind,
+        sampleRoots: role.sampleRoots,
+        truthRoots: role.truthRoots,
+        measurements: {
+          sample: sample.items,
+          truth: truth.items,
+          onlyInSample,
+          onlyInTruth,
+          sameName,
+          outliers,
+          samplingFailures: [...sample.failures, ...truth.failures],
+          topbar: {
+            sample: topbarSummary(sample.items),
+            truth: topbarSummary(truth.items)
+          }
+        },
+        differences,
+        accepted: [],
+        ok: differences.length === 0
+      };
+    };
     const results = roleTable.map((role) => {
       if (role.kind === "brand-lockup") return measureBrandLockup(role);
       if (role.kind === "sample-shell-relations") return measureSampleShellRelations(role);
       if (role.kind === "sample-shell") return measureSampleShell(role);
+      if (role.kind === "element-inventory") return measureElementInventory(role);
       const documentNode = document.querySelector(role.document);
       const packageNode = document.querySelector(storySelector)?.querySelector(role.package);
       const differences = [];
       const accepted = [];
       if (!documentNode || !packageNode) {
         differences.push({ property: "selector", document: Boolean(documentNode), package: Boolean(packageNode) });
+      } else if (!layoutState(documentNode).ok || !layoutState(packageNode).ok) {
+        addSampleValidity(differences, documentNode, "sample", role.document);
+        addSampleValidity(differences, packageNode, "truth", role.package);
       } else {
         const documentValues = read(documentNode, role.properties);
         const packageValues = read(packageNode, role.properties);
@@ -558,6 +847,21 @@ async function main() {
       "group-title": `${sampleShellRoles.find((role) => role.id === "group-title").document} { font-size: 99px !important; }`
     };
     for (const role of sampleShellRoles) {
+      if (role.kind === "element-inventory") {
+        const inventoryTarget = `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell button`;
+        await page.evaluate((selector) => document.querySelector(selector)?.setAttribute("hidden", ""), inventoryTarget);
+        await settle(page);
+        const inventoryMutated = await measureParity(page, [role]);
+        await page.evaluate((selector) => document.querySelector(selector)?.removeAttribute("hidden"), inventoryTarget);
+        await settle(page);
+        const inventoryRestored = await measureParity(page, [role]);
+        sampleShellMutations[role.id] = {
+          mutation: `${inventoryTarget}[hidden]`,
+          mutated: inventoryMutated,
+          restored: inventoryRestored
+        };
+        continue;
+      }
       await addCssMutation(page, sampleMutationCss[role.id]);
       const mutatedRole = await measureParity(page, [role]);
       await removeMutation(page);
@@ -582,6 +886,23 @@ async function main() {
         };
       }
     }
+    const samplingValidityRole = sampleShellRoles.find((role) => role.id === "nav-item");
+    const samplingValidityTarget = samplingValidityRole.document;
+    const samplingValidityProbeTarget = await page.evaluate((selector) => {
+      const node = document.querySelector(selector);
+      const ancestor = node?.closest('[data-navigation-primitive="nav-group"]') ?? node?.parentElement;
+      ancestor?.setAttribute("hidden", "");
+      return ancestor ? { selector, ancestor: ancestor.className || ancestor.tagName.toLowerCase() } : null;
+    }, samplingValidityTarget);
+    await settle(page);
+    const samplingValidityProbe = await measureParity(page, [samplingValidityRole]);
+    await page.evaluate((selector) => {
+      const node = document.querySelector(selector);
+      const ancestor = node?.closest('[data-navigation-primitive="nav-group"]') ?? node?.parentElement;
+      ancestor?.removeAttribute("hidden");
+    }, samplingValidityTarget);
+    await settle(page);
+    const samplingValidityRestored = await measureParity(page, [samplingValidityRole]);
     const brandMatrix = [];
     for (const combination of [
       { theme: "light", locale: "en" },
@@ -671,6 +992,14 @@ async function main() {
         ok: !relationPreRepair.ok,
         differences: relationPreRepair.roles.flatMap((role) => role.differences)
       },
+      samplingValidity: {
+        target: samplingValidityProbeTarget,
+        failed: samplingValidityProbe,
+        restored: samplingValidityRestored,
+        ok: !samplingValidityProbe.ok
+          && samplingValidityProbe.roles.some((role) => role.differences.some((difference) => difference.property === "sample-validity"))
+          && samplingValidityRestored.ok
+      },
       emptyExceptionProbe: {
         ok: !emptyExceptionProbe.ok,
         differences: emptyExceptionProbe.roles.flatMap((role) => role.differences)
@@ -700,6 +1029,7 @@ async function main() {
       && restored.ok
       && result.exceptionProbe.ok
       && result.relationPreRepair.ok
+      && result.samplingValidity.ok
       && result.emptyExceptionProbe.ok
       && brandMatrix.every((entry) => entry.ok)
       && !brandMutated.ok

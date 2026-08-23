@@ -1618,13 +1618,17 @@ label {
 }
 
 .tcrn-knowledge-shell__actions {
-  align-self: stretch;
-  justify-self: stretch;
-  width: min(260px, 44%);
-  justify-items: stretch;
-  align-content: center;
+  align-self: center;
+  justify-self: end;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--tcrn-space-2);
+  width: max-content;
+  max-width: none;
   background: transparent;
-  padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
+  padding: 0;
 }
 
 .tcrn-knowledge-shell__topbar-copy {
@@ -1635,7 +1639,9 @@ label {
 }
 
 .tcrn-knowledge-shell__actions .tcrn-search-input {
-  max-width: none;
+  flex: 0 0 260px;
+  width: 260px;
+  max-width: 260px;
 }
 
 .tcrn-bookmark-panel {
