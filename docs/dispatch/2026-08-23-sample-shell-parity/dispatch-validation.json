@@ -1,9 +1,9 @@
 {
- "generatedAt": "2026-08-23T07:06:00.000Z",
+ "generatedAt": "2026-08-23T08:22:00.000Z",
  "validator": "tcrn-workflow/scripts/dispatch-readiness-compliance.mjs",
  "resultCount": 1,
  "readyCount": 1,
- "note": "storyScope 自 TCRN-Design-System 链 rev 1 回读（event-list 的 work.created 载荷 record.extensions['advisory:scope'].value），非本地副本。",
+ "note": "第二轮：Owner 于 2026-08-23 退回第一轮实施（导航项底色、分组标题颜色、分组容器 gap 三处观感 + aria-label 退化），记录已由 pending-owner-acceptance 退回 active rev5。storyScope 自链上 rev 4 回读（6272B），非本地副本。",
  "results": [
   {
    "story": "TCRN-DS-INC-022",
