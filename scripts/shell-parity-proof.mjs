@@ -9,7 +9,8 @@ import { chromium } from "@playwright/test";
 const staticRoot = resolve("apps/storybook/storybook-static");
 const route = "/components-navigation-shells.html?theme=light&locale=en#navigation-product-shell-spec";
 const packageStorySelector = 'article[data-story-id="navigation-product-shell-spec"]';
-const expectedParityRoleCount = 10;
+const expectedParityRoleCount = 15;
+const sampleShellRoot = '[data-story-id="navigation-focused-shells-spec"] [data-standard-shell="online-docs"]';
 const brandLockupRole = {
   id: "brand-lockup",
   kind: "brand-lockup",
@@ -25,19 +26,82 @@ const brandLockupRole = {
 
 export const parityRoles = [
   { id: "canvas", document: ".tcrn-doc-shell", package: ".tcrn-product-shell", authority: "package", properties: ["backgroundColor"] },
-  { id: "topbar", document: ".tcrn-doc-global-bar", package: ".tcrn-product-shell__workspace > .tcrn-top-bar", authority: "package", properties: ["gap", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "package-topbar", document: ".tcrn-doc-global-bar", package: ".tcrn-product-shell__workspace > .tcrn-top-bar", authority: "package", properties: ["gap", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "sidebar-group-spacing", document: ".tcrn-doc-nav__groups", package: ".tcrn-side-nav", authority: "package", properties: ["gap"] },
-  { id: "group-title", document: ".tcrn-doc-nav__category-toggle", package: ".tcrn-nav-group__label", authority: "package", properties: ["fontSize", "fontWeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "package-group-title", document: ".tcrn-doc-nav__category-toggle", package: ".tcrn-nav-group__label", authority: "package", properties: ["fontSize", "fontWeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "breadcrumb", document: ".tcrn-doc-current-location__story", package: ".tcrn-product-shell__current-location", authority: "package", properties: ["fontSize"] },
   { id: "search", document: ".tcrn-doc-header-search .tcrn-search-input", package: ".tcrn-product-shell-search .tcrn-search-input", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "locale", document: ".tcrn-doc-locale-control-slot .tcrn-shell-locale-menu__trigger", package: ".tcrn-shell-locale-menu__trigger", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "sidebar-surface", document: ".tcrn-doc-sidebar", package: ".tcrn-product-shell__sidebar", authority: "document", properties: ["backgroundColor"] },
-  { id: "nav-item", document: ".tcrn-doc-nav__stories a", package: ".tcrn-nav-item", authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "package-nav-item", document: ".tcrn-doc-nav__stories a", package: ".tcrn-nav-item", authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   brandLockupRole
 ];
 
-// An empty production table still executes all ten roles. It is not a switch.
-export const parityExceptions = [];
+export const sampleShellRoles = [
+  {
+    id: "collapse-toggle",
+    kind: "sample-shell",
+    document: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell`,
+    package: ".tcrn-doc-global-brand",
+    documentControl: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell button`,
+    packageControl: ".tcrn-doc-sidebar-toggle-slot button",
+    primitiveAttribute: "data-package-backed-shell-control",
+    primitiveValue: "side-nav-collapse",
+    authority: "truth",
+    properties: []
+  },
+  {
+    id: "topbar",
+    kind: "sample-shell",
+    document: `${sampleShellRoot} .tcrn-knowledge-shell__topbar`,
+    package: ".tcrn-doc-global-bar",
+    primitiveAttribute: "data-registered-shell-primitive",
+    primitiveValue: "@tcrn/ui-react/TopBar",
+    authority: "truth",
+    properties: ["minHeight", "paddingTop", "paddingBottom", "paddingLeft", "paddingRight", "gap", "backgroundColor"]
+  },
+  {
+    id: "sidebar",
+    kind: "sample-shell",
+    document: `${sampleShellRoot} .tcrn-knowledge-shell__sidebar`,
+    package: ".tcrn-doc-sidebar",
+    primitiveAttribute: "data-navigation-primitive",
+    primitiveValue: "side-nav",
+    authority: "truth",
+    properties: ["paddingTop", "paddingRight", "paddingBottom", "paddingLeft", "gap", "backgroundColor"]
+  },
+  {
+    id: "nav-item",
+    kind: "sample-shell",
+    document: `${sampleShellRoot} .tcrn-nav-item`,
+    package: ".tcrn-doc-nav__stories a",
+    primitiveAttribute: "data-navigation-primitive",
+    primitiveValue: "nav-item",
+    authority: "truth",
+    properties: ["fontSize", "paddingTop", "paddingBottom", "paddingLeft", "borderRadius", "minHeight"]
+  },
+  {
+    id: "group-title",
+    kind: "sample-shell",
+    document: `${sampleShellRoot} .tcrn-nav-group__label`,
+    package: ".tcrn-doc-nav__category-toggle",
+    primitiveSelector: `${sampleShellRoot} .tcrn-nav-group`,
+    primitiveAttribute: "data-navigation-primitive",
+    primitiveValue: "nav-group",
+    authority: "truth",
+    properties: ["fontSize", "fontWeight", "paddingLeft", "paddingRight"]
+  }
+];
+
+parityRoles.push(...sampleShellRoles);
+
+// An empty production table still executes all fifteen roles. It is not a switch.
+export const parityExceptions = [{
+  role: "nav-item",
+  property: "borderRadius",
+  acceptedAt: "2026-08-23",
+  reason: "SAMPLE_CARD_REGISTERED_NAV_RADIUS: the microcard keeps NavItem's registered product-nav radius while the full documentation shell keeps its leaf links flat"
+}];
 
 function contentType(path) {
   switch (extname(path)) {
@@ -228,8 +292,102 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         ok: differences.length === 0
       };
     };
+    const measureSampleShell = (role) => {
+      const example = document.querySelector(role.document);
+      const truth = document.querySelector(role.package);
+      const differences = [];
+      const accepted = [];
+      const exampleRect = rect(example);
+      const truthRect = rect(truth);
+      const measurements = {
+        example: {
+          selector: role.document,
+          className: example?.className ?? null,
+          rect: exampleRect,
+          styles: example ? read(example, role.properties) : null
+        },
+        truth: {
+          selector: role.package,
+          className: truth?.className ?? null,
+          rect: truthRect,
+          styles: truth ? read(truth, role.properties) : null
+        }
+      };
+      if (!example || !truth) {
+        differences.push({ property: "selector", document: Boolean(example), package: Boolean(truth) });
+      } else if (role.id === "collapse-toggle") {
+        const primitiveNode = document.querySelector(role.documentControl);
+        if (primitiveNode?.getAttribute(role.primitiveAttribute) !== role.primitiveValue) {
+          differences.push({ property: "registered-primitive", document: primitiveNode?.getAttribute(role.primitiveAttribute) ?? null, package: role.primitiveValue, direction: "sample-lags" });
+        }
+        const exampleControl = document.querySelector(role.documentControl);
+        const truthControl = document.querySelector(role.packageControl);
+        const exampleControlRect = rect(exampleControl);
+        const truthControlRect = rect(truthControl);
+        const exampleStyle = exampleControl ? getComputedStyle(exampleControl) : null;
+        const truthStyle = truthControl ? getComputedStyle(truthControl) : null;
+        const exampleRightInset = exampleRect && exampleControlRect ? Number((exampleRect.right - exampleControlRect.right).toFixed(2)) : null;
+        const truthRightInset = truthRect && truthControlRect ? Number((truthRect.right - truthControlRect.right).toFixed(2)) : null;
+        const expectedRightInset = Number(Math.min(24, Math.max(16, window.innerWidth * 0.016)).toFixed(2));
+        measurements.controls = {
+          example: {
+            selector: role.documentControl,
+            rect: exampleControlRect,
+            ariaLabel: exampleControl?.getAttribute("aria-label") ?? null,
+            rightInset: exampleRightInset,
+            expectedRightInset,
+            width: exampleStyle?.width ?? null,
+            height: exampleStyle?.height ?? null
+          },
+          truth: {
+            selector: role.packageControl,
+            rect: truthControlRect,
+            ariaLabel: truthControl?.getAttribute("aria-label") ?? null,
+            rightInset: truthRightInset,
+            width: truthStyle?.width ?? null,
+            height: truthStyle?.height ?? null
+          }
+        };
+        if (!exampleControl || !truthControl || !exampleControlRect || !truthControlRect) {
+          differences.push({ property: "control-selector", document: Boolean(exampleControl), package: Boolean(truthControl) });
+        } else {
+          if (!closeEnough(exampleControlRect.width, truthControlRect.width)) {
+            differences.push({ property: "controlWidth", document: exampleControlRect.width, package: truthControlRect.width, direction: "sample-lags" });
+          }
+          if (!closeEnough(exampleControlRect.height, truthControlRect.height)) {
+            differences.push({ property: "controlHeight", document: exampleControlRect.height, package: truthControlRect.height, direction: "sample-lags" });
+          }
+          if (!closeEnough(exampleRightInset, expectedRightInset)) {
+            differences.push({ property: "controlRightAlignment", document: exampleRightInset, package: expectedRightInset, direction: "sample-lags" });
+          }
+          const exampleLabel = exampleControl.getAttribute("aria-label");
+          const truthLabel = truthControl.getAttribute("aria-label");
+          if (exampleLabel !== truthLabel) {
+            differences.push({ property: "ariaLabel", document: exampleLabel, package: truthLabel, direction: "sample-lags" });
+          }
+        }
+      } else {
+        const primitiveNode = role.primitiveSelector ? document.querySelector(role.primitiveSelector) : example;
+        if (primitiveNode?.getAttribute(role.primitiveAttribute) !== role.primitiveValue) {
+          differences.push({ property: "registered-primitive", document: primitiveNode?.getAttribute(role.primitiveAttribute) ?? null, package: role.primitiveValue, direction: "sample-lags" });
+        }
+        const exampleValues = read(example, role.properties);
+        const truthValues = read(truth, role.properties);
+        for (const property of role.properties) {
+          if (exampleValues[property] === truthValues[property]) continue;
+          const exception = exceptionTable.find((candidate) => candidate.role === role.id && candidate.property === property);
+          if (exception) {
+            accepted.push({ role: role.id, property, reason: exception.reason, acceptedAt: exception.acceptedAt });
+            continue;
+          }
+          differences.push({ property, document: exampleValues[property], package: truthValues[property], direction: "sample-lags" });
+        }
+      }
+      return { id: role.id, document: role.document, package: role.package, measurements, differences, accepted, ok: differences.length === 0 };
+    };
     const results = roleTable.map((role) => {
       if (role.kind === "brand-lockup") return measureBrandLockup(role);
+      if (role.kind === "sample-shell") return measureSampleShell(role);
       const documentNode = document.querySelector(role.document);
       const packageNode = document.querySelector(storySelector)?.querySelector(role.package);
       const differences = [];
@@ -278,6 +436,25 @@ async function main() {
     await settle(page);
     await expandAllStories(page);
     const baseline = await measureParity(page);
+    const sampleShellMutations = {};
+    const sampleMutationCss = {
+      "collapse-toggle": `${sampleShellRoles.find((role) => role.id === "collapse-toggle").document} button { transform: translateX(-99px) !important; }`,
+      topbar: `${sampleShellRoles.find((role) => role.id === "topbar").document} { gap: 99px !important; }`,
+      sidebar: `${sampleShellRoles.find((role) => role.id === "sidebar").document} { padding-left: 99px !important; }`,
+      "nav-item": `${sampleShellRoles.find((role) => role.id === "nav-item").document} { font-size: 99px !important; }`,
+      "group-title": `${sampleShellRoles.find((role) => role.id === "group-title").document} { font-size: 99px !important; }`
+    };
+    for (const role of sampleShellRoles) {
+      await addCssMutation(page, sampleMutationCss[role.id]);
+      const mutatedRole = await measureParity(page, [role]);
+      await removeMutation(page);
+      const restoredRole = await measureParity(page, [role]);
+      sampleShellMutations[role.id] = {
+        mutation: sampleMutationCss[role.id],
+        mutated: mutatedRole,
+        restored: restoredRole
+      };
+    }
     const brandMatrix = [];
     for (const combination of [
       { theme: "light", locale: "en" },
@@ -291,6 +468,16 @@ async function main() {
       const parity = await measureParity(page, [brandLockupRole]);
       brandMatrix.push({ ...combination, ...parity });
     }
+    const collapseRole = sampleShellRoles.find((role) => role.id === "collapse-toggle");
+    const sampleShellViewportMatrix = [];
+    for (const width of [1024, 1280, 1440, 1920]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`${server.origin}${route}`);
+      await settle(page);
+      await expandAllStories(page);
+      sampleShellViewportMatrix.push({ width, ...(await measureParity(page, [collapseRole])) });
+    }
+    await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`${server.origin}${route}`);
     await settle(page);
     await expandAllStories(page);
@@ -306,6 +493,7 @@ async function main() {
     }]);
     await removeMutation(page);
     const restored = await measureParity(page);
+    const emptyExceptionProbe = await measureParity(page, [sampleShellRoles.find((role) => role.id === "nav-item")], []);
     const brandMutationCss = `${brandLockupRole.document} .tcrn-brand-wordmark, ${brandLockupRole.document} .tcrn-product-logo__line-one { font-size: 99px !important; }`;
     await addCssMutation(page, brandMutationCss);
     const brandMutated = await measureParity(page, [brandLockupRole]);
@@ -324,10 +512,19 @@ async function main() {
         mutated: brandMutated,
         restored: brandRestored
       },
+      sampleShell: {
+        baseline: baseline.roles.filter((role) => sampleShellRoles.some((candidate) => candidate.id === role.id)),
+        viewportMatrix: sampleShellViewportMatrix,
+        mutations: sampleShellMutations
+      },
       exceptionProbe: {
         ok: exceptionProbe.roles.find((role) => role.id === "locale")?.ok === true
           && exceptionProbe.acceptedExceptions.some((entry) => entry.reason === "SYNTHETIC_EXCEPTION_PATH"),
         acceptedExceptions: exceptionProbe.acceptedExceptions
+      },
+      emptyExceptionProbe: {
+        ok: !emptyExceptionProbe.ok,
+        differences: emptyExceptionProbe.roles.flatMap((role) => role.differences)
       },
       redThenGreen: {
         baselineRed: !baseline.ok,
@@ -337,16 +534,25 @@ async function main() {
           baselineRed: !brandBaseline?.ok,
           mutationRed: !brandMutated.ok,
           restoredGreen: brandRestored.ok
-        }
+        },
+        sampleShell: Object.fromEntries(sampleShellRoles.map((role) => [role.id, {
+          baselineRed: !baseline.roles.find((candidate) => candidate.id === role.id)?.ok,
+          mutationRed: !sampleShellMutations[role.id].mutated.ok,
+          restoredGreen: sampleShellMutations[role.id].restored.ok
+        }]))
       }
     };
     result.ok = baseline.ok
       && !mutated.ok
       && restored.ok
       && result.exceptionProbe.ok
+      && result.emptyExceptionProbe.ok
       && brandMatrix.every((entry) => entry.ok)
       && !brandMutated.ok
-      && brandRestored.ok;
+      && brandRestored.ok
+      && sampleShellRoles.every((role) => baseline.roles.find((candidate) => candidate.id === role.id)?.ok)
+      && sampleShellViewportMatrix.every((entry) => entry.ok)
+      && sampleShellRoles.every((role) => !sampleShellMutations[role.id].mutated.ok && sampleShellMutations[role.id].restored.ok);
   } finally {
     await page.close();
     await browser.close();

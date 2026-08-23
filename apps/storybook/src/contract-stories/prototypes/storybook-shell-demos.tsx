@@ -4,9 +4,12 @@ import {
   Icon,
   IconButton,
   ModuleTabs,
+  NavGroup,
+  NavItem,
   SearchInput,
   ShellBrandLockup,
   SideNavCollapseButton,
+  SideNav,
   StatusBadge,
   TcrnBrandMark,
   Text,
@@ -196,44 +199,54 @@ export function KnowledgeBaseShellDemo() {
   return (
     <div className="tcrn-shell-demo tcrn-shell-demo--knowledge" data-shell-pattern="knowledge-bookmarks" data-storybook-only="knowledge-shell-prototype" data-component-library-status="deferred">
       <div className="tcrn-knowledge-shell-layout" data-standard-shell="online-docs">
-        <header className="tcrn-knowledge-shell__topbar" aria-label="Knowledge base top bar">
-          <div className="tcrn-knowledge-shell__brand-cell">
-            <a className="tcrn-doc-brand tcrn-knowledge-shell__brand" href="#navigation-shell-spec">
-              <ShellBrandLockup productId="design-system" />
-            </a>
-            <SideNavCollapseButton collapsed={false} controls="knowledge-shell-sidebar" expandedLabel="Collapse navigation" />
-          </div>
-          <div className="tcrn-knowledge-shell__topbar-copy">
-            <strong>Online documentation shell</strong>
-            <span>Top bar, attached side navigation, content column, and chapter navigation stay one shell.</span>
-          </div>
-          <div className="tcrn-knowledge-shell__actions">
-            <SearchInput className="tcrn-search-input--compact" placeholder="Search docs" shortcut="auto" />
-            <StatusBadge state={{ state: "local_only" }} />
-          </div>
-        </header>
-        <aside id="knowledge-shell-sidebar" className="tcrn-knowledge-shell__sidebar tcrn-bookmark-panel tcrn-bookmark-panel--global" aria-label="Knowledge base bookmarks">
+        <TopBar
+          className="tcrn-knowledge-shell__topbar"
+          aria-label="Knowledge base top bar"
+          data-registered-shell-primitive="@tcrn/ui-react/TopBar"
+          brandProps={{ className: "tcrn-knowledge-shell__brand-slot" }}
+          productName={(
+            <div className="tcrn-knowledge-shell__brand-cell">
+              <a className="tcrn-doc-brand tcrn-knowledge-shell__brand" href="#navigation-shell-spec">
+                <ShellBrandLockup productId="design-system" />
+              </a>
+              <SideNavCollapseButton
+                collapsed={false}
+                controls="knowledge-shell-sidebar"
+                expandedLabel="Collapse side navigation"
+                collapsedLabel="Expand side navigation"
+                data-expanded-label="Collapse side navigation"
+                data-collapsed-label="Expand side navigation"
+              />
+            </div>
+          )}
+          moduleName={(
+            <div className="tcrn-knowledge-shell__topbar-copy">
+              <strong>Online documentation shell</strong>
+              <span>Top bar, attached side navigation, content column, and chapter navigation stay one shell.</span>
+            </div>
+          )}
+          actions={(
+            <div className="tcrn-knowledge-shell__actions">
+              <SearchInput className="tcrn-search-input--compact" placeholder="Search docs" shortcut="auto" />
+              <StatusBadge state={{ state: "local_only" }} />
+            </div>
+          )}
+        />
+        <SideNav id="knowledge-shell-sidebar" label="Knowledge base bookmarks" className="tcrn-knowledge-shell__sidebar tcrn-bookmark-nav tcrn-bookmark-nav--tracked">
           <div className="tcrn-knowledge-shell__sidebar-intro">
             <strong>Current page bookmarks</strong>
             <Text>Documentation uses persistent bookmarks because the reading path is deeper than the active page.</Text>
           </div>
-          <nav className="tcrn-bookmark-nav tcrn-bookmark-nav--tracked" aria-label="Multi-level bookmarks">
-            {knowledgeNavigationGroups.map((group) => (
-              <div key={group.label} className="tcrn-bookmark-nav__group" data-selected={group.selected ? "true" : undefined}>
-                <a href="#navigation-shell-spec" data-selected={group.selected ? "true" : undefined}>
-                  {group.label}
-                </a>
-                <div className="tcrn-bookmark-nav__children">
-                  {group.items.map((item) => (
-                    <a key={item} href="#navigation-shell-spec" data-selected={group.selected && item === group.selectedItem ? "true" : undefined}>
-                      {item}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </nav>
-        </aside>
+          {knowledgeNavigationGroups.map((group) => (
+            <NavGroup key={group.label} label={group.label} selected={group.selected}>
+              {group.items.map((item) => (
+                <NavItem key={item} href="#navigation-shell-spec" selected={group.selected && item === group.selectedItem}>
+                  {item}
+                </NavItem>
+              ))}
+            </NavGroup>
+          ))}
+        </SideNav>
         <div className="tcrn-knowledge-shell__content" aria-label="Knowledge base content preview">
           <div className="tcrn-knowledge-preview">
             <span className="tcrn-eyebrow">Component library</span>
