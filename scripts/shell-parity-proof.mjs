@@ -9,7 +9,7 @@ import { chromium } from "@playwright/test";
 const staticRoot = resolve("apps/storybook/storybook-static");
 const route = "/components-navigation-shells.html?theme=light&locale=en#navigation-product-shell-spec";
 const packageStorySelector = 'article[data-story-id="navigation-product-shell-spec"]';
-const expectedParityRoleCount = 18;
+const expectedParityRoleCount = 19;
 const sampleShellRoot = '[data-story-id="navigation-focused-shells-spec"] [data-standard-shell="online-docs"]';
 const brandLockupRole = {
   id: "brand-lockup",
@@ -128,6 +128,16 @@ export const sampleShellRoles = [
     truthRoots: [
       { id: "topbar", selector: ".tcrn-doc-global-bar", includeControls: true },
       { id: "sidebar", selector: ".tcrn-doc-sidebar", includeControls: false }
+    ]
+  },
+  {
+    id: "string-source",
+    kind: "visible-string-source",
+    sampleRoots: [
+      { id: "topbar", selector: `${sampleShellRoot} .tcrn-knowledge-shell__topbar` }
+    ],
+    truthRoots: [
+      { id: "topbar", selector: ".tcrn-doc-global-bar" }
     ]
   }
 ];
@@ -775,11 +785,148 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         ok: differences.length === 0
       };
     };
+    const measureVisibleStringSources = (role) => {
+      const controlSelector = 'button, input, select, textarea, [role="button"], [role="combobox"], img';
+      const userFacingAttribute = (name) => {
+        const normalized = name.toLowerCase();
+        if (normalized.startsWith("data-i18n-")) return false;
+        return /(?:aria-label|placeholder|title|alt|(?:^|-)label$|(?:^|-)placeholder$|(?:^|-)title$|(?:^|-)alt$)/u.test(normalized);
+      };
+      const sourceFor = (node, kind) => {
+        const markerName = kind === "text" ? "data-i18n" : `data-i18n-${kind}`;
+        const marker = node.getAttribute(markerName);
+        if (marker) return { kind: "storybook-locale", key: marker };
+        const controlMarker = node.getAttribute("data-i18n-aria-label") ?? node.getAttribute("data-i18n-title");
+        if (controlMarker && kind.startsWith("data-")) return { kind: "storybook-locale", key: controlMarker };
+        const localeRoot = node.closest(".tcrn-shell-locale-menu");
+        const localeMarker = localeRoot?.getAttribute(`data-i18n-${kind}`) ?? localeRoot?.getAttribute("data-i18n-aria-label") ?? localeRoot?.getAttribute("data-i18n-title");
+        if (localeMarker) return { kind: "storybook-locale", key: localeMarker };
+        const themeKey = node.closest("[data-theme-label-key]")?.getAttribute("data-theme-label-key");
+        if (themeKey && (kind === "aria-label" || kind === "title")) return { kind: "storybook-locale", key: themeKey };
+        const localeMenu = node.closest(".tcrn-shell-locale-menu");
+        if (localeMenu && (kind === "text" || node.matches("[data-locale-current-name], [data-locale-current]"))) {
+          const selected = localeMenu.querySelector('[data-locale-menu-option][aria-current="true"]');
+          return { kind: "tcrn-locale-metadata", key: selected?.getAttribute("data-locale") ?? document.documentElement.lang };
+        }
+        if (node.matches("img") && node.closest("[data-registered-product-logo]")) return { kind: "registered-brand-asset", key: "tcrn-brand-mark" };
+        return { kind: "literal", key: null };
+      };
+      const semanticName = (node) => {
+        const signal = [
+          node.getAttribute("data-shell-control"),
+          node.getAttribute("data-package-backed-shell-control"),
+          node.getAttribute("data-locale-control"),
+          node.getAttribute("data-theme-label-key"),
+          node.getAttribute("aria-label"),
+          node.getAttribute("placeholder"),
+          node.getAttribute("class"),
+          node.tagName.toLowerCase()
+        ].filter(Boolean).join(" ").toLowerCase();
+        return signal.includes("search") ? "search"
+          : signal.includes("theme") ? "theme"
+            : signal.includes("locale") || signal.includes("language") ? "locale"
+              : signal.includes("collapse") || signal.includes("side-nav") ? "collapse"
+                : signal.includes("brand") || signal.includes("product-logo") || node.matches("img") ? "brand"
+                  : `${node.tagName.toLowerCase()}-${node.getAttribute("role") ?? "element"}`;
+      };
+      const visible = (node) => {
+        if (!layoutState(node).ok) return false;
+        if (node.closest('[aria-hidden="true"]')) return false;
+        const className = node.getAttribute("class") ?? "";
+        if (/(?:sr-only|icon-button__label)/u.test(className)) return false;
+        return true;
+      };
+      const collect = (rootDefinitions, side) => {
+        const items = [];
+        const failures = [];
+        const missingRoots = [];
+        for (const rootDefinition of rootDefinitions) {
+          const root = document.querySelector(rootDefinition.selector);
+          if (!root) {
+            missingRoots.push({ root: rootDefinition.id, selector: rootDefinition.selector });
+            continue;
+          }
+          if (!layoutState(root).ok) {
+            failures.push({ side, root: rootDefinition.id, reason: layoutState(root).reason });
+            continue;
+          }
+          const nodes = [...root.querySelectorAll(controlSelector)];
+          const seen = new Set();
+          for (const node of nodes) {
+            if (seen.has(node) || !visible(node)) continue;
+            seen.add(node);
+            const semantic = semanticName(node);
+            for (const attribute of [...node.attributes].filter((candidate) => userFacingAttribute(candidate.name))) {
+              const value = attribute.value.trim();
+              if (!value) continue;
+              const source = sourceFor(node, attribute.name);
+              items.push({
+                key: `${rootDefinition.id}/${semantic}/attribute:${attribute.name}`,
+                side,
+                semantic,
+                kind: attribute.name,
+                value,
+                source,
+              });
+            }
+            const textNodes = [node, ...node.querySelectorAll("*")].filter((candidate) => candidate.children.length === 0 && candidate.textContent?.trim() && visible(candidate));
+            for (const textNode of textNodes) {
+              const value = textNode.textContent.trim();
+              const source = sourceFor(textNode, "text");
+              items.push({
+                key: `${rootDefinition.id}/${semanticName(textNode)}/visible-text`,
+                side,
+                semantic: semanticName(textNode),
+                kind: "visible-text",
+                value,
+                source,
+              });
+            }
+          }
+        }
+        return { items, failures, missingRoots };
+      };
+      const sample = collect(role.sampleRoots, "sample");
+      const truth = collect(role.truthRoots, "truth");
+      const sampleByKey = new Map(sample.items.map((item) => [item.key, item]));
+      const truthByKey = new Map(truth.items.map((item) => [item.key, item]));
+      const onlyInSample = sample.items.filter((item) => !truthByKey.has(item.key));
+      const onlyInTruth = truth.items.filter((item) => !sampleByKey.has(item.key));
+      const sameName = [];
+      const differences = [];
+      for (const item of onlyInSample) differences.push({ property: "visible-string-only-in-sample", key: item.key, value: item.value, source: item.source });
+      for (const item of onlyInTruth) differences.push({ property: "visible-string-only-in-truth", key: item.key, value: item.value, source: item.source });
+      for (const failure of [...sample.failures, ...truth.failures]) differences.push({ property: "sample-validity", ...failure });
+      for (const missing of sample.missingRoots) differences.push({ property: "string-source-selector", side: "sample", ...missing });
+      for (const missing of truth.missingRoots) differences.push({ property: "string-source-selector", side: "truth", ...missing });
+      for (const [key, sampleItem] of sampleByKey) {
+        const truthItem = truthByKey.get(key);
+        if (!truthItem) continue;
+        const sourceEqual = sampleItem.source.kind === truthItem.source.kind && sampleItem.source.key === truthItem.source.key;
+        const valueEqual = sampleItem.value === truthItem.value;
+        const comparison = { key, semantic: sampleItem.semantic, kind: sampleItem.kind, sample: { value: sampleItem.value, source: sampleItem.source }, truth: { value: truthItem.value, source: truthItem.source }, sourceEqual, valueEqual };
+        sameName.push(comparison);
+        if (!sourceEqual) differences.push({ property: "visible-string-source", ...comparison });
+        if (!valueEqual) differences.push({ property: "visible-string-value", ...comparison });
+        if (sampleItem.source.kind === "literal" || truthItem.source.kind === "literal") differences.push({ property: "visible-string-unbound", ...comparison });
+      }
+      return {
+        id: role.id,
+        kind: role.kind,
+        sampleRoots: role.sampleRoots,
+        truthRoots: role.truthRoots,
+        measurements: { sample: sample.items, truth: truth.items, onlyInSample, onlyInTruth, sameName, samplingFailures: [...sample.failures, ...truth.failures] },
+        differences,
+        accepted: [],
+        ok: differences.length === 0,
+      };
+    };
     const results = roleTable.map((role) => {
       if (role.kind === "brand-lockup") return measureBrandLockup(role);
       if (role.kind === "sample-shell-relations") return measureSampleShellRelations(role);
       if (role.kind === "sample-shell") return measureSampleShell(role);
       if (role.kind === "element-inventory") return measureElementInventory(role);
+      if (role.kind === "visible-string-source") return measureVisibleStringSources(role);
       const documentNode = document.querySelector(role.document);
       const packageNode = document.querySelector(storySelector)?.querySelector(role.package);
       const differences = [];
@@ -833,6 +980,7 @@ async function main() {
     const baseline = await measureParity(page);
     const collapseRole = sampleShellRoles.find((role) => role.id === "collapse-toggle");
     const relationRole = sampleShellRoles.find((role) => role.id === "shell-relations");
+    const stringSourceRole = sampleShellRoles.find((role) => role.id === "string-source");
     await addCssMutation(page, `${relationRole.sampleBrand} { transform: translateX(-20px) !important; }`);
     const relationPreRepair = await measureParity(page, [relationRole]);
     await removeMutation(page);
@@ -859,6 +1007,26 @@ async function main() {
           mutation: `${inventoryTarget}[hidden]`,
           mutated: inventoryMutated,
           restored: inventoryRestored
+        };
+        continue;
+      }
+      if (role.kind === "visible-string-source") {
+        const localeRootSelector = `${sampleShellRoot} .tcrn-shell-locale-menu`;
+        const originalSource = await page.locator(localeRootSelector).getAttribute("data-i18n-aria-label");
+        await page.locator(localeRootSelector).evaluate((node) => node.setAttribute("data-i18n-aria-label", "shell.searchLabel"));
+        await settle(page);
+        const sourceMutated = await measureParity(page, [role]);
+        await page.locator(localeRootSelector).evaluate((node, value) => {
+          if (value === null) node.removeAttribute("data-i18n-aria-label");
+          else node.setAttribute("data-i18n-aria-label", value);
+        }, originalSource);
+        await settle(page);
+        const sourceRestored = await measureParity(page, [role]);
+        sampleShellMutations[role.id] = {
+          mutation: `${localeRootSelector}[data-i18n-aria-label=shell.searchLabel]`,
+          mutated: sourceMutated,
+          restored: sourceRestored,
+          sourceMutation: { mutated: sourceMutated, restored: sourceRestored }
         };
         continue;
       }
@@ -933,6 +1101,17 @@ async function main() {
         sampleNetGapMatrix.push({ locale, width, ...(await measureParity(page, [collapseRole])) });
       }
     }
+    const stringSourceLocales = await page.evaluate(() => [...document.querySelectorAll(".tcrn-doc-locale-control-slot [data-locale-menu-option]")]
+      .map((node) => node.getAttribute("data-locale"))
+      .filter((locale, index, all) => typeof locale === "string" && all.indexOf(locale) === index));
+    const stringSourceMatrix = [];
+    for (const locale of stringSourceLocales) {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto(`${server.origin}/components-navigation-shells.html?theme=light&locale=${locale}#navigation-product-shell-spec`);
+      await settle(page);
+      await expandAllStories(page);
+      stringSourceMatrix.push({ locale, ...(await measureParity(page, [stringSourceRole])) });
+    }
     const sampleShellViewportMatrix = [];
     for (const width of [1024, 1280, 1440, 1920]) {
       await page.setViewportSize({ width, height: 900 });
@@ -980,6 +1159,7 @@ async function main() {
         baseline: baseline.roles.filter((role) => sampleShellRoles.some((candidate) => candidate.id === role.id)),
         localeMatrix: sampleLocaleMatrix,
         netGapMatrix: sampleNetGapMatrix,
+        stringSourceMatrix,
         viewportMatrix: sampleShellViewportMatrix,
         mutations: sampleShellMutations
       },
@@ -1017,6 +1197,10 @@ async function main() {
           baselineRed: !baseline.roles.find((candidate) => candidate.id === role.id)?.ok,
           mutationRed: !sampleShellMutations[role.id].mutated.ok,
           restoredGreen: sampleShellMutations[role.id].restored.ok,
+          ...(role.id === "string-source" ? {
+            sourceMutationRed: !sampleShellMutations[role.id].sourceMutation.mutated.ok,
+            sourceRestoredGreen: sampleShellMutations[role.id].sourceMutation.restored.ok
+          } : {}),
           ...(role.id === "collapse-toggle" ? {
             ariaLabelMutationRed: !sampleShellMutations[role.id].ariaLabel.mutated.ok,
             ariaLabelRestoredGreen: sampleShellMutations[role.id].ariaLabel.restored.ok
@@ -1037,6 +1221,7 @@ async function main() {
       && sampleShellRoles.every((role) => baseline.roles.find((candidate) => candidate.id === role.id)?.ok)
       && sampleLocaleMatrix.every((entry) => entry.ok)
       && sampleNetGapMatrix.every((entry) => entry.ok && entry.roles[0].measurements.controls.example.textGap >= 7)
+      && stringSourceMatrix.every((entry) => entry.ok)
       && sampleShellViewportMatrix.every((entry) => entry.ok)
       && sampleShellRoles.every((role) => !sampleShellMutations[role.id].mutated.ok && sampleShellMutations[role.id].restored.ok)
       && !sampleShellMutations["collapse-toggle"].ariaLabel.mutated.ok
