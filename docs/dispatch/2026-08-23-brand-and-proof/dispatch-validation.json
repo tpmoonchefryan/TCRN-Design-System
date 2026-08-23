@@ -1,0 +1,36 @@
+{
+ "generatedAt": "2026-08-23T03:52:00.000Z",
+ "validator": "tcrn-workflow/scripts/dispatch-readiness-compliance.mjs",
+ "resultCount": 3,
+ "readyCount": 3,
+ "note": "三份 storyScope 均自链上 rev 2 回读(event-list 的 work.annotated 载荷 record.extensions['advisory:scope'].value),非本地副本;引擎裁掉尾换行,回读值与本地草稿仅差该字节。",
+ "results": [
+  {
+   "story": "TCRN-DS-INC-019",
+   "ok": true,
+   "reasonCode": "DISPATCH_BRIEF_READY",
+   "citations": {
+    "checked": true,
+    "unjudgedCommands": 0
+   }
+  },
+  {
+   "story": "TCRN-DS-INC-020",
+   "ok": true,
+   "reasonCode": "DISPATCH_BRIEF_READY",
+   "citations": {
+    "checked": true,
+    "unjudgedCommands": 0
+   }
+  },
+  {
+   "story": "TCRN-DS-INC-021",
+   "ok": true,
+   "reasonCode": "DISPATCH_BRIEF_READY",
+   "citations": {
+    "checked": true,
+    "unjudgedCommands": 0
+   }
+  }
+ ]
+}

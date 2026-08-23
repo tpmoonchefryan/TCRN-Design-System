@@ -1,0 +1,42 @@
+{
+ "story": "TCRN-DS-INC-019",
+ "workId": "work:e5a8d9fc064a72ae58303323",
+ "decidedBy": "Owner 2026-08-23 · 「都开,然后给 codex 派工」",
+ "generatedAt": "2026-08-23T03:50:00.000Z",
+ "generatedBy": "agent:fable",
+ "repositoryRoot": "../TCRN-Design-System",
+ "redLineBoundaries": [
+  "不写治理控制树或其文件;链上读写只经当前安装引擎 CLI,若需要状态推进先读当前版本、使用真实执行者 actor(--actor agent:codex)与 TCRN-Design-System 分区 attestations,并回读回执。",
+  "不推送、不打 tag、不部署、不发布 —— 各自是独立停止点,不由本地测试推出。",
+  "不越界进别的仓库的树。本单全部落点在 TCRN-Design-System 内。",
+  "跑门要跑全量 pnpm verify,不是只跑自己关心的那一道。跨仓那次事故正是只跑一道门就报干净造成的(TCRN-CROSS-INC-249)。",
+  "guard-check 与各门在运行期间会真改工作树,当独占操作对待:不要并发跑门,也不要在门运行时编辑文件。",
+  "两处观感都改前端外观,归 Owner 亲眼判 —— 止于 pending-owner-acceptance,不自判 done。",
+  "方向不预设:判据 1 只要求品牌块与侧栏两块面一致,谁移动由你选。让侧栏也内缩 20px 同样满足判据,不必呈报。",
+  "brand-lockup 角色必须先红一次再转绿。一道一上来就绿的角色,证明不了它看得见这两处分叉 —— 这是 TCRN-DS-INC-018 判据 5 立下的规矩。",
+  "不要动已经一致的那九个角色。它们在 INC-016/017 刚刚对齐过,是 INIT-013「着墨」裁定的正确传导。"
+ ],
+ "filePointers": [
+  "apps/storybook/src/alpha-styles.ts",
+  "apps/storybook/src/build/page-template.tsx",
+  "apps/storybook/src/contract-stories/story-content.tsx",
+  "scripts/shell-parity-proof.mjs",
+  "package.json"
+ ],
+ "verificationCommands": [
+  "pnpm typecheck",
+  "pnpm build",
+  "pnpm verify"
+ ],
+ "chainCloseoutActions": [
+  "开工前重新读取 status、work-list 与本单在链上的当前 scope;若推进状态,使用当时数值的 expected-version、--actor agent:codex 与 TCRN-Design-System 分区 attestations,并回读回执。",
+  "改观感,止于 pending-owner-acceptance,等 Owner 亲眼判,不自判 done。"
+ ],
+ "effectiveEvidenceCommands": [
+  "把 .tcrn-doc-global-bar 的 padding-inline 改回 20px(或等价地让品牌块重新内缩),brand-lockup 角色应判红并点名对齐项。",
+  "把示例件换回不带 ProductLogo 层的裸 ShellBrandLockup,角色应判红并点名首行 font-size 不等。",
+  "接入 brand-lockup 角色时两处缺陷尚在,门应为红;修复后转绿 —— 红与绿两次运行记录都要留。",
+  "在 light/dark 与 en/zh-CN 四种组合下各量一次对齐,四次都要在报告里可见,不能只留一次。"
+ ],
+ "storyScope": "## Goal\n\n为谁:DS 的维护者,以及所有以 Storybook 为前端标准正本的产品。目的锚:文档外壳的品牌区在两个方向上失守 —— 示例件没有用它所描绘的那个组件,品牌染色面与侧栏染色面没有对齐 —— 而 `TCRN-DS-INC-018` 的九角色一致性门里没有品牌角色,于是九门全绿仍然漏过。符合性判据:品牌角色进入一致性门,且三向齐平与示例件同源两项由门断言。判定人:Owner。\n\n## Requirements\n\n现象与证据(2026-08-23 线上实测,`https://tcrn-design-system-storybook.vercel.app/components-navigation-shells.html?theme=light&locale=zh-CN`,Chromium 1440x1000,未改动任何 DOM):\n\n**一、示例件与真身不同源。**\n\n- 真实文档外壳品牌块 class = `tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup`,`data-product-logo-asset-id` = `tcrn-design-system-two-line`,首行 `font-size` = 13px。\n- `navigation-focused-shells-spec` 中自称描绘「在线文档壳层」的示例件 class = `tcrn-shell-brand-lockup`,无 ProductLogo 层、无资产 id,首行 `font-size` = 18px。\n- 品牌标同为 38x38,字号差 5px。示例件因此不是它所声称的那个外壳。\n\n**二、品牌块与侧栏三向错位。**\n\n- `.tcrn-doc-global-brand` : left=20 right=308 top=12 bottom=84 background=`rgb(227,239,241)` border-radius=0\n- `.tcrn-doc-sidebar` : left=0 right=288 top=96 background=`rgb(227,239,241)` border-radius=0\n- 同色、同宽 288、同圆角 0,本应齐平为一根连续染色柱;实测左缺 20px、右探出 20px、纵向夹 12px 白带。\n- 根因:`.tcrn-doc-global-bar` 带 `padding-inline` 20px,品牌块长在这个有内缩的顶栏里,侧栏贴外壳边缘,一个吃了内缩一个没吃。\n\n修复项:两处观感各自修好;`shell-parity-proof.mjs` 增设 brand-lockup 角色,使这一类分叉此后由门说话。\n\n## Acceptance Criteria\n\n1. GIVEN 线上文档外壳,WHEN 量取 `.tcrn-doc-global-brand` 与 `.tcrn-doc-sidebar`,THEN 两者 left 相等、right 相等,纵向间隙 <= 0;在 light 与 dark 两主题、en 与 zh-CN 两语言的四种组合下同时成立。\n2. GIVEN 任何自称描绘文档外壳的示例件,WHEN 与真实文档外壳品牌块对照,THEN 使用同一组件与同一 `data-product-logo-asset-id`,且首行 `font-size` 相等。\n3. GIVEN `shell-parity-proof.mjs`,WHEN 运行,THEN 角色表含 brand-lockup 角色,至少比对品牌标尺寸、首行 `font-size`、锁定块 left/right 对齐。\n4. GIVEN brand-lockup 角色,WHEN 首次接入,THEN 在两处缺陷尚未修复时先判红,修完后转绿;红与绿两个状态都留下运行记录。\n5. GIVEN 该角色,WHEN 注入变异再还原,THEN 基线绿、变异红、还原绿三段写入 proof JSON,与既有 red-then-green 同形。\n6. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n`TCRN-DS-INC-018` 立门时选了九个角色,那九个是当时那次人工全量比对看到的九个。品牌区没进去,不是因为判过不必进,是因为那次比对没走到那里。于是门绿着,而品牌区在两个方向上分头跑。\n\n这是同一形态第三次出现:`TCRN-DS-INC-015` 的判据量错了元素(测品牌标而非字样),这次是判据根本没伸到这个角色。规则存在而覆盖不到,与规则不存在,对使用者是同一件事。\n\n## Preconditions\n\nDS `pnpm verify` 全绿(2026-08-23 实测 exit=0);`shell-parity-proof.mjs` 已存在并已带 red-then-green 自证,可直接扩角色表;`geometry-proof.mjs` 是在真浏览器里取计算值的参考实现。\n\n## Assumptions\n\n假定这两处是品牌区当前全部的分叉。不假定判据 3 的属性清单完备 —— 正因如此,角色表与其属性清单都要可扩,新增时门因缺项而提示,不静默漏过。\n\n哪一侧算「对」不预设:判据 1 只要求两块面一致,谁移动由实施者选。若认为应当反过来(让侧栏也内缩 20px),那也满足判据,不必呈报。\n\n## Use Cases & Examples\n\n有人调了顶栏的 `padding-inline`。今天这会让品牌块与侧栏悄悄错开,直到某次有人盯着左上角看;有 brand-lockup 角色之后它当场判红,并说明是哪一侧动了。\n\n## Feature Toggle & Setting\n\n无。门无开关。\n\n## Permissions\n\n无特殊权限。两处观感归 Owner 亲眼判,门本身归机检车道。\n\n## Implementation Notes\n\n判据 4 是本单的要害:brand-lockup 角色要在**两处缺陷尚未修复时先红一次**,再由修复把它转绿。一道一上来就绿的角色,证明不了它看得见这两处分叉 —— 这正是 `TCRN-DS-INC-018` 判据 5 立下的规矩,此处照办。\n\n判据 1 的四种主题/语言组合要真的各跑一次。`zh-CN` 与 `en` 的字样宽度不同,只测一种语言过不了这道判据的本意。"
+}
