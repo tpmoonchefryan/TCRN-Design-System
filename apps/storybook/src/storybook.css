@@ -1775,6 +1775,7 @@ label {
 .tcrn-knowledge-shell__brand-slot {
   align-self: stretch;
   min-width: 0;
+  margin-block: calc(var(--tcrn-space-3) * -1);
 }
 
 .tcrn-knowledge-shell__topbar .tcrn-top-bar__module {
@@ -1852,6 +1853,20 @@ label {
   box-shadow: none;
   gap: 0 !important;
   padding: var(--tcrn-space-4) clamp(var(--tcrn-space-4), 1.6vw, 24px) var(--tcrn-space-4h) clamp(var(--tcrn-space-4h), 2vw, 30px);
+}
+
+.tcrn-knowledge-shell__groups {
+  display: grid;
+  gap: var(--tcrn-space-4);
+  min-width: 0;
+}
+
+.tcrn-knowledge-shell-layout [data-navigation-primitive="nav-item"]:not([data-selected="true"]):not([aria-current="page"]) {
+  background: transparent !important;
+}
+
+.tcrn-knowledge-shell-layout [data-navigation-primitive="nav-group"] > div:first-child {
+  color: var(--tcrn-color-text-secondary) !important;
 }
 
 .tcrn-bookmark-nav__group {
