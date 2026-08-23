@@ -1,9 +1,9 @@
 {
- "generatedAt": "2026-08-23T08:22:00.000Z",
+ "generatedAt": "2026-08-23T09:12:00.000Z",
  "validator": "tcrn-workflow/scripts/dispatch-readiness-compliance.mjs",
  "resultCount": 1,
  "readyCount": 1,
- "note": "第二轮：Owner 于 2026-08-23 退回第一轮实施（导航项底色、分组标题颜色、分组容器 gap 三处观感 + aria-label 退化），记录已由 pending-owner-acceptance 退回 active rev5。storyScope 自链上 rev 4 回读（6272B），非本地副本。",
+ "note": "第三轮：Owner 第二次退回。第二轮把首次退回的四处都收住了，但样例内部的对齐关系无人比对——品牌染色面三向错位（左 20 / 右 -31.8 / 纵 37.7）与选中带内缩 28.8，正是 INC-019 给真身修掉的缺陷在样例里原样存在。判据追加 13-16，形态由「比属性值」改为「比关系」。记录 pending-owner-acceptance → active rev8。storyScope 自链上 rev 7 回读（8091B）。",
  "results": [
   {
    "story": "TCRN-DS-INC-022",
