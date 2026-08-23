@@ -1,0 +1,44 @@
+{
+ "story": "TCRN-DS-INC-022",
+ "workId": "work:679adaeda5afbf24ed7cae3d",
+ "decidedBy": "Owner 2026-08-23 · 「收起按钮和壳层实际上不一样，壳层的左右对齐才是对的…一起开到新单派工给codex」",
+ "generatedAt": "2026-08-23T07:05:00.000Z",
+ "generatedBy": "agent:fable",
+ "repositoryRoot": "../TCRN-Design-System",
+ "redLineBoundaries": [
+  "不写治理控制树或其文件;链上读写只经当前安装引擎 CLI,推进前读当前版本、用 --actor agent:codex、写 TCRN-Design-System 分区 attestations,并回读回执。",
+  "不推送、不打 tag、不部署、不发布 —— 各自是独立停止点。",
+  "改的是观感,归 Owner 亲眼判 —— 止于 pending-owner-acceptance,不自判 done。",
+  "首选修法是让样例改用注册组件,不是逐条对齐 21 个属性值。逐条对齐能让门当下转绿,但真身一动样例又落后 —— 那正是本单要止住的循环。",
+  "方向已由 Owner 裁定:收起按钮以真实文档外壳的右对齐为准,不要反过来改外壳。",
+  "判据 5 的变异要落在样例侧。改真身让门变红,证明的是门看得见真身,不是看得见样例跑偏。",
+  "21 处差不假定全是缺陷 —— 样例是微缩件,可登记带理由的例外;但理由要写下来,不得默认。例外沿用 shell-parity-proof 现有通道,不新增旁路。",
+  "不要动 search 角色与 brand-lockup 角色 —— 前者是唯一已一致的参照,后者是 TCRN-DS-INC-019 刚立的「样例↔真身」参考实现。",
+  "跑门要跑全量 pnpm verify,不是只跑 shell:parity(TCRN-CROSS-INC-249 的教训)。",
+  "guard-check 与各门运行期间会真改工作树,当独占操作对待:不并发跑门,也不在门运行时编辑文件。"
+ ],
+ "filePointers": [
+  "apps/storybook/src/contract-stories/prototypes/storybook-shell-demos.tsx",
+  "apps/storybook/src/alpha-styles.ts",
+  "apps/storybook/src/build/locales/storybook-content-text.ts",
+  "scripts/shell-parity-proof.mjs",
+  "package.json"
+ ],
+ "verificationCommands": [
+  "pnpm typecheck",
+  "pnpm build",
+  "pnpm verify"
+ ],
+ "chainCloseoutActions": [
+  "开工前重新读取 status、work-list 与本单在链上的当前 scope;推进时用当时数值的 expected-version、--actor agent:codex 与 TCRN-Design-System 分区 attestations,并回读回执。",
+  "止于 pending-owner-acceptance,等 Owner 亲眼判。若对 compact-shell / entry-shell-strip 等类名族做了纳入或不纳入的判断,在收尾里写明理由。"
+ ],
+ "effectiveEvidenceCommands": [
+  "把样例的收起按钮容器改回 grid+gap:10px,门应判红并点名 collapse-toggle 的摆放。",
+  "把样例某个已换成注册组件的角色改回手搓标签,门应判红 —— 证明门看得见「样例又自己搓了一套」。",
+  "在 1024/1280/1440/1920 四个视口各量一次收起按钮的字样右缘→按钮左缘间距,四次都要在报告里可见;真身随宽度浮动、样例修好后应同样浮动。",
+  "门首次接入时 21 处差尚在,应为红;处置完转绿 —— 两次运行记录都要留。",
+  "登记一条带 reason 的例外后该项不判红,且例外在报告里可见;例外表为空时门仍执行。"
+ ],
+ "storyScope": "## Goal\n\n为谁:所有把 Storybook 当前端标准正本、照着样例做产品的人。目的锚:`navigation-focused-shells-spec` 的「知识库书签壳层」样例逐字声称「知识库壳层标准与当前 TCRN 文档壳层保持一致」,实测六个角色里五个不一致、共 21 处属性差 —— 而它不一致的原因不是调歪了,是**它把外壳重新手搓了一遍**。符合性判据:样例描绘的每个角色,要么与真实文档外壳一致,要么带机器可读的例外与理由;并由门守住。判定人:Owner。\n\n## Requirements\n\nOwner 于 2026-08-23 指出:样例里的收起按钮与外壳的不是一回事,**外壳的左右对齐才是对的**,并问 Storybook 上还有多少类似情况。全量扫的结果是:很多。\n\n实测(2026-08-23,本地构建 `85f6bde` 起的预览,Chromium 1440x1000,`theme=light&locale=zh-CN`,零 DOM 改动):\n\n**Owner 点出的那一处 —— 收起按钮。** 按钮本体一致(同为 38x38、同类名、同为注册 `Button`),差在容器与文案:\n\n| | 真身 | 样例 |\n| --- | --- | --- |\n| 容器 | `.tcrn-doc-sidebar-toggle-slot`,`display: block` | `.tcrn-knowledge-shell__brand-cell`,`display: grid`,`gap: 10px`,`grid-template-columns: 102px 103.656px` |\n| 字样右缘 → 按钮左缘 | 随视口 93.9 ~ 166px(右对齐到品牌块边缘) | 恒定 10px(贴着字样) |\n| `aria-label` | `收起侧边导航` | `收起导航` |\n\n在 1024/1180/1280/1440/1680/1920 六个视口下,真身的间距随宽度浮动而样例恒为 10px —— 两套摆放规则,不是同一套的两次渲染。\n\n**全量扫 —— 六角色五处不一致,21 处属性差:**\n\n| 角色 | 结果 |\n| --- | --- |\n| `search` | 一致 |\n| `collapse-toggle` | 本体一致;容器结构与 `aria-label` 不同 |\n| `topbar` | 7 处:`minHeight` 68/76、`paddingTop` 12/0、`paddingBottom` 12/0、`paddingLeft` 20/0、`paddingRight` 20/0、`gap` 16/0、`backgroundColor` 透明/`rgb(255,255,255)` |\n| `sidebar` | 4 处:`paddingTop` 16/12、`paddingLeft` 28.8/12、`paddingRight` 23.04/12、`gap` 0/10 |\n| `nav-item` | 6 处:`fontSize` 12/13、`paddingTop` 4/0、`paddingBottom` 4/0、`paddingLeft` 32/10、`borderRadius` 0/4、`minHeight` 30/34 |\n| `group-title` | 4 处:`fontSize` 11/13、`fontWeight` 700/400、`paddingLeft` 8/0、`paddingRight` 8/0 |\n\n**根因,规律完全对上:** 凡是用了注册组件的角色都一致,凡是手搓的都不一致。\n\n- `search` 一致,因为样例用的是 `@tcrn/ui-react` 的 `SearchInput`(`storybook-shell-demos.tsx:54,117,211`);\n- `collapse-toggle` 本体一致(注册 `Button`)但摆放不一致,因为**容器是手搓的**;\n- `topbar` / `sidebar` / `nav-item` / `group-title` 全部不一致,因为它们是裸标签配自造类名:`<header className=\"tcrn-knowledge-shell__topbar\">`(:199)、`<aside className=\"tcrn-knowledge-shell__sidebar ...\">`(:215)、`<nav className=\"tcrn-bookmark-nav ...\">`(:220)、`<div className=\"tcrn-bookmark-nav__group\">`(:222)。\n\n这与 `TCRN-DS-INC-019` 是同一个根因的同一个文件:那一条修的是品牌锁定块,修法是让样例改用注册组件(`<ShellBrandLockup productId=\"design-system\" />`),改完就一致了。当时只换了锁定块,外壳的其余部分仍是手搓的。\n\n修复项:让样例改用注册组件,使分叉在构造上不可能;确属有意的微缩差异登记为带理由的例外;`shell-parity-proof.mjs` 把「样例 ↔ 真身」这一类角色从只有 `brand-lockup` 扩到覆盖上表各行。\n\n## Acceptance Criteria\n\n1. GIVEN 样例里的收起按钮,WHEN 与真实文档外壳的收起按钮对照,THEN 摆放规则相同 —— 按真身的右对齐(Owner 2026-08-23 裁定外壳的左右对齐为准),而非贴着字样的固定间距;在 1024 至 1920 至少四个视口下同时成立。\n2. GIVEN 上表所列 21 处属性差与 `aria-label` 差,WHEN 逐项处置,THEN 每一项要么消除,要么登记为带 `reason` 的机器可读例外;不得有既不一致又未登记的项。\n3. GIVEN 同一个控件在样例与真身两处的无障碍文案,WHEN 比对,THEN 取自同一文案来源,不是两条各写各的字符串。\n4. GIVEN `shell-parity-proof.mjs`,WHEN 运行,THEN 「样例 ↔ 真身」类角色覆盖 `collapse-toggle`、`topbar`、`sidebar`、`nav-item`、`group-title`,与既有 `brand-lockup` 同形。\n5. GIVEN 新增的每个「样例 ↔ 真身」角色,WHEN 注入变异再还原,THEN 基线绿、变异红、还原绿三段写入 proof JSON;变异要落在样例侧,证明门看得见样例跑偏。\n6. GIVEN 门首次接入,WHEN 21 处差尚未处置,THEN 判红;处置完转绿。红与绿两个状态都留下运行记录。\n7. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\nStorybook 是平台的前端标准正本,而这个样例逐字写着「与当前 TCRN 文档壳层保持一致」。一个声称一致却在五个角色上不一致的样例,比没有样例更坏:照它做的人会做出一个既不像文档外壳、也不像包件外壳的第三种东西。\n\n`TCRN-DS-INC-019` 已经证过这条路走得通 —— 换成注册组件,分叉当场消失。这一条是把同一个修法推完剩下的部分。\n\n## Preconditions\n\nDS `pnpm verify` 全绿(2026-08-23 在 `85f6bde` 实测 exit=0,工作树干净)。`shell-parity-proof.mjs` 已升到 v2、十个角色、带 red-then-green 与按 `reason` 匹配的例外通道,`brand-lockup` 是现成的「样例 ↔ 真身」参考实现。样例源码集中在 `apps/storybook/src/contract-stories/prototypes/storybook-shell-demos.tsx`。\n\n## Assumptions\n\n假定上表六个角色是当前可比对的全部。不假定它完备 —— 样例还自带 `tcrn-compact-shell__*`、`tcrn-entry-shell-strip__*`、`tcrn-shell-command-board*` 等类名族,本单未逐一比对,因为尚未确认它们各自声称描绘哪个真身。若实施中发现其中某一族也声称与某个真实外壳一致,一并纳入并在收尾里说明;若声称的是别的东西,写明不纳入的理由。\n\n不假定 21 处差全是缺陷。样例是卡片里的微缩件,部分内边距差可能是有意的缩放 —— 判据 2 因此给了「登记例外」这条路,但要求理由是写下来的,不是默认的。\n\n## Use Cases & Examples\n\n一个实施者照着「知识库书签壳层」做产品的侧栏,取了样例的 `paddingLeft: 12px` 与 `fontSize: 13px`。他做出来的东西与文档外壳(28.8px / 12px)对不上,与包件外壳也对不上,而样例上白纸黑字写着「保持一致」。\n\n## Feature Toggle & Setting\n\n无。门无开关。例外沿用 `shell-parity-proof` 现有的带理由例外通道,不新增旁路。\n\n## Permissions\n\n无特殊权限。改的是观感,归 Owner 亲眼判,止于 `pending-owner-acceptance`。例外是否成立由 Owner 认。\n\n## Implementation Notes\n\n首选修法是换注册组件,不是逐条对齐 21 个属性值。逐条对齐能让门当下转绿,但下一次真身一动,样例又落后 —— 这正是本单和 `TCRN-DS-INC-019` 反复付的那笔钱。`search` 之所以是六个里唯一一致的,就是因为它用的是注册件。\n\n判据 5 的变异要落在**样例侧**。改真身让门变红,证明的是门看得见真身;要证明的是它看得见样例跑偏。\n\n判据 1 的多视口是必须的:样例的 10px 是恒定值,真身的间距随宽度浮动 —— 只在一个视口下量,两套规则可能恰好读数接近而看不出是两套。"
+}

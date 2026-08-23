@@ -1,0 +1,18 @@
+{
+ "generatedAt": "2026-08-23T07:06:00.000Z",
+ "validator": "tcrn-workflow/scripts/dispatch-readiness-compliance.mjs",
+ "resultCount": 1,
+ "readyCount": 1,
+ "note": "storyScope 自 TCRN-Design-System 链 rev 1 回读（event-list 的 work.created 载荷 record.extensions['advisory:scope'].value），非本地副本。",
+ "results": [
+  {
+   "story": "TCRN-DS-INC-022",
+   "ok": true,
+   "reasonCode": "DISPATCH_BRIEF_READY",
+   "citations": {
+    "checked": true,
+    "unjudgedCommands": 0
+   }
+  }
+ ]
+}
