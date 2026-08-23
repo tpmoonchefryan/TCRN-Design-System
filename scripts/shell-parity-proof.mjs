@@ -9,7 +9,7 @@ import { chromium } from "@playwright/test";
 const staticRoot = resolve("apps/storybook/storybook-static");
 const route = "/components-navigation-shells.html?theme=light&locale=en#navigation-product-shell-spec";
 const packageStorySelector = 'article[data-story-id="navigation-product-shell-spec"]';
-const expectedParityRoleCount = 16;
+const expectedParityRoleCount = 17;
 const sampleShellRoot = '[data-story-id="navigation-focused-shells-spec"] [data-standard-shell="online-docs"]';
 const brandLockupRole = {
   id: "brand-lockup",
@@ -48,6 +48,8 @@ export const sampleShellRoles = [
     package: ".tcrn-doc-global-brand",
     documentControl: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell button`,
     packageControl: ".tcrn-doc-sidebar-toggle-slot button",
+    documentText: `${sampleShellRoot} .tcrn-knowledge-shell__brand .tcrn-product-logo__copy`,
+    packageText: ".tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo__copy",
     primitiveAttribute: "data-package-backed-shell-control",
     primitiveValue: "side-nav-collapse",
     authority: "truth",
@@ -80,6 +82,20 @@ export const sampleShellRoles = [
     package: ".tcrn-doc-nav__groups",
     authority: "truth",
     properties: ["gap"]
+  },
+  {
+    id: "shell-relations",
+    kind: "sample-shell-relations",
+    document: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell`,
+    package: ".tcrn-doc-global-brand",
+    sampleBrand: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell`,
+    sampleSidebar: `${sampleShellRoot} .tcrn-knowledge-shell__sidebar`,
+    sampleNav: `${sampleShellRoot} .tcrn-nav-item`,
+    truthBrand: ".tcrn-doc-global-brand",
+    truthSidebar: ".tcrn-doc-sidebar",
+    truthNav: ".tcrn-doc-nav__stories:not([hidden]) a",
+    authority: "truth",
+    properties: []
   },
   {
     id: "nav-item",
@@ -323,6 +339,52 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         ok: differences.length === 0
       };
     };
+    const measureSampleShellRelations = (role) => {
+      const sampleBrand = document.querySelector(role.sampleBrand);
+      const sampleSidebar = document.querySelector(role.sampleSidebar);
+      const sampleNav = document.querySelector(role.sampleNav);
+      const truthBrand = document.querySelector(role.truthBrand);
+      const truthSidebar = document.querySelector(role.truthSidebar);
+      const truthNav = document.querySelector(role.truthNav);
+      const sampleBrandRect = rect(sampleBrand);
+      const sampleSidebarRect = rect(sampleSidebar);
+      const sampleNavRect = rect(sampleNav);
+      const truthBrandRect = rect(truthBrand);
+      const truthSidebarRect = rect(truthSidebar);
+      const truthNavRect = rect(truthNav);
+      const relationValues = (brand, sidebar, nav) => brand && sidebar && nav ? {
+        brandSurfaceLeft: Number((brand.left - sidebar.left).toFixed(2)),
+        brandSurfaceRight: Number((brand.right - sidebar.right).toFixed(2)),
+        sidebarTopFromBrandBottom: Number((sidebar.top - brand.bottom).toFixed(2)),
+        navItemLeft: Number((nav.left - sidebar.left).toFixed(2))
+      } : null;
+      const sampleRelations = relationValues(sampleBrandRect, sampleSidebarRect, sampleNavRect);
+      const truthRelations = relationValues(truthBrandRect, truthSidebarRect, truthNavRect);
+      const measurements = {
+        sample: { brand: sampleBrandRect, sidebar: sampleSidebarRect, nav: sampleNavRect, relations: sampleRelations },
+        truth: { brand: truthBrandRect, sidebar: truthSidebarRect, nav: truthNavRect, relations: truthRelations }
+      };
+      const differences = [];
+      if (!sampleRelations || !truthRelations) {
+        differences.push({
+          property: "relation-selector",
+          sample: Boolean(sampleRelations),
+          truth: Boolean(truthRelations)
+        });
+      } else {
+        for (const property of Object.keys(truthRelations)) {
+          if (!closeEnough(sampleRelations[property], truthRelations[property])) {
+            differences.push({
+              property,
+              sample: sampleRelations[property],
+              truth: truthRelations[property],
+              direction: "sample-lags"
+            });
+          }
+        }
+      }
+      return { id: role.id, document: role.document, package: role.package, measurements, differences, accepted: [], ok: differences.length === 0 };
+    };
     const measureSampleShell = (role) => {
       const example = document.querySelector(role.document);
       const truth = document.querySelector(role.package);
@@ -353,13 +415,19 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         }
         const exampleControl = document.querySelector(role.documentControl);
         const truthControl = document.querySelector(role.packageControl);
+        const exampleText = document.querySelector(role.documentText);
+        const truthText = document.querySelector(role.packageText);
         const exampleControlRect = rect(exampleControl);
         const truthControlRect = rect(truthControl);
+        const exampleTextRect = rect(exampleText);
+        const truthTextRect = rect(truthText);
         const exampleStyle = exampleControl ? getComputedStyle(exampleControl) : null;
         const truthStyle = truthControl ? getComputedStyle(truthControl) : null;
         const exampleRightInset = exampleRect && exampleControlRect ? Number((exampleRect.right - exampleControlRect.right).toFixed(2)) : null;
         const truthRightInset = truthRect && truthControlRect ? Number((truthRect.right - truthControlRect.right).toFixed(2)) : null;
         const expectedRightInset = Number(Math.min(24, Math.max(16, window.innerWidth * 0.016)).toFixed(2));
+        const exampleTextGap = exampleTextRect && exampleControlRect ? Number((exampleControlRect.left - exampleTextRect.right).toFixed(2)) : null;
+        const truthTextGap = truthTextRect && truthControlRect ? Number((truthControlRect.left - truthTextRect.right).toFixed(2)) : null;
         measurements.controls = {
           example: {
             selector: role.documentControl,
@@ -367,6 +435,8 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
             ariaLabel: exampleControl?.getAttribute("aria-label") ?? null,
             rightInset: exampleRightInset,
             expectedRightInset,
+            textGap: exampleTextGap,
+            minimumTruthTextGap: 7,
             width: exampleStyle?.width ?? null,
             height: exampleStyle?.height ?? null
           },
@@ -375,12 +445,13 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
             rect: truthControlRect,
             ariaLabel: truthControl?.getAttribute("aria-label") ?? null,
             rightInset: truthRightInset,
+            textGap: truthTextGap,
             width: truthStyle?.width ?? null,
             height: truthStyle?.height ?? null
           }
         };
-        if (!exampleControl || !truthControl || !exampleControlRect || !truthControlRect) {
-          differences.push({ property: "control-selector", document: Boolean(exampleControl), package: Boolean(truthControl) });
+        if (!exampleControl || !truthControl || !exampleControlRect || !truthControlRect || !exampleText || !truthText || !exampleTextRect || !truthTextRect) {
+          differences.push({ property: "control-selector", document: Boolean(exampleControl && exampleText), package: Boolean(truthControl && truthText) });
         } else {
           if (!closeEnough(exampleControlRect.width, truthControlRect.width)) {
             differences.push({ property: "controlWidth", document: exampleControlRect.width, package: truthControlRect.width, direction: "sample-lags" });
@@ -390,6 +461,9 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
           }
           if (!closeEnough(exampleRightInset, expectedRightInset)) {
             differences.push({ property: "controlRightAlignment", document: exampleRightInset, package: expectedRightInset, direction: "sample-lags" });
+          }
+          if (exampleTextGap < 7) {
+            differences.push({ property: "textToControlGap", document: exampleTextGap, package: 7, direction: "sample-lags" });
           }
           const exampleLabel = exampleControl.getAttribute("aria-label");
           const truthLabel = truthControl.getAttribute("aria-label");
@@ -418,6 +492,7 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
     };
     const results = roleTable.map((role) => {
       if (role.kind === "brand-lockup") return measureBrandLockup(role);
+      if (role.kind === "sample-shell-relations") return measureSampleShellRelations(role);
       if (role.kind === "sample-shell") return measureSampleShell(role);
       const documentNode = document.querySelector(role.document);
       const packageNode = document.querySelector(storySelector)?.querySelector(role.package);
@@ -468,12 +543,17 @@ async function main() {
     await expandAllStories(page);
     const baseline = await measureParity(page);
     const collapseRole = sampleShellRoles.find((role) => role.id === "collapse-toggle");
+    const relationRole = sampleShellRoles.find((role) => role.id === "shell-relations");
+    await addCssMutation(page, `${relationRole.sampleBrand} { transform: translateX(-20px) !important; }`);
+    const relationPreRepair = await measureParity(page, [relationRole]);
+    await removeMutation(page);
     const sampleShellMutations = {};
     const sampleMutationCss = {
       "collapse-toggle": `${sampleShellRoles.find((role) => role.id === "collapse-toggle").document} button { transform: translateX(-99px) !important; }`,
       topbar: `${sampleShellRoles.find((role) => role.id === "topbar").document} { gap: 99px !important; }`,
       sidebar: `${sampleShellRoles.find((role) => role.id === "sidebar").document} { padding-left: 99px !important; }`,
       "group-container": `${sampleShellRoles.find((role) => role.id === "group-container").document} { gap: 99px !important; }`,
+      "shell-relations": `${relationRole.sampleBrand} { transform: translateX(-20px) !important; }`,
       "nav-item": `${sampleShellRoles.find((role) => role.id === "nav-item").document} { font-size: 99px !important; }`,
       "group-title": `${sampleShellRoles.find((role) => role.id === "group-title").document} { font-size: 99px !important; }`
     };
@@ -522,6 +602,16 @@ async function main() {
       await expandAllStories(page);
       sampleLocaleMatrix.push({ locale, ...(await measureParity(page, [collapseRole])) });
     }
+    const sampleNetGapMatrix = [];
+    for (const locale of ["en", "zh-CN", "ja", "fr", "ko"]) {
+      for (const width of [1024, 1920]) {
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(`${server.origin}/components-navigation-shells.html?theme=light&locale=${locale}#navigation-product-shell-spec`);
+        await settle(page);
+        await expandAllStories(page);
+        sampleNetGapMatrix.push({ locale, width, ...(await measureParity(page, [collapseRole])) });
+      }
+    }
     const sampleShellViewportMatrix = [];
     for (const width of [1024, 1280, 1440, 1920]) {
       await page.setViewportSize({ width, height: 900 });
@@ -568,6 +658,7 @@ async function main() {
       sampleShell: {
         baseline: baseline.roles.filter((role) => sampleShellRoles.some((candidate) => candidate.id === role.id)),
         localeMatrix: sampleLocaleMatrix,
+        netGapMatrix: sampleNetGapMatrix,
         viewportMatrix: sampleShellViewportMatrix,
         mutations: sampleShellMutations
       },
@@ -575,6 +666,10 @@ async function main() {
         ok: exceptionProbe.roles.find((role) => role.id === "locale")?.ok === true
           && exceptionProbe.acceptedExceptions.some((entry) => entry.reason === "SYNTHETIC_EXCEPTION_PATH"),
         acceptedExceptions: exceptionProbe.acceptedExceptions
+      },
+      relationPreRepair: {
+        ok: !relationPreRepair.ok,
+        differences: relationPreRepair.roles.flatMap((role) => role.differences)
       },
       emptyExceptionProbe: {
         ok: !emptyExceptionProbe.ok,
@@ -604,12 +699,14 @@ async function main() {
       && !mutated.ok
       && restored.ok
       && result.exceptionProbe.ok
+      && result.relationPreRepair.ok
       && result.emptyExceptionProbe.ok
       && brandMatrix.every((entry) => entry.ok)
       && !brandMutated.ok
       && brandRestored.ok
       && sampleShellRoles.every((role) => baseline.roles.find((candidate) => candidate.id === role.id)?.ok)
       && sampleLocaleMatrix.every((entry) => entry.ok)
+      && sampleNetGapMatrix.every((entry) => entry.ok && entry.roles[0].measurements.controls.example.textGap >= 7)
       && sampleShellViewportMatrix.every((entry) => entry.ok)
       && sampleShellRoles.every((role) => !sampleShellMutations[role.id].mutated.ok && sampleShellMutations[role.id].restored.ok)
       && !sampleShellMutations["collapse-toggle"].ariaLabel.mutated.ok
