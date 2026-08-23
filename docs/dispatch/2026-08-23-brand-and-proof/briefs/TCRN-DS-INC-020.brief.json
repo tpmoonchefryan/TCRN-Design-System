@@ -1,0 +1,42 @@
+{
+ "story": "TCRN-DS-INC-020",
+ "workId": "work:d2a6da8d46e2d603ff82aa91",
+ "decidedBy": "Owner 2026-08-23 · 「都开,然后给 codex 派工」",
+ "generatedAt": "2026-08-23T03:50:00.000Z",
+ "generatedBy": "agent:fable",
+ "repositoryRoot": "../TCRN-Design-System",
+ "redLineBoundaries": [
+  "不写治理控制树或其文件;链上读写只经当前安装引擎 CLI,若需要状态推进先读当前版本、使用真实执行者 actor(--actor agent:codex)与 TCRN-Design-System 分区 attestations,并回读回执。",
+  "不推送、不打 tag、不部署、不发布 —— 各自是独立停止点,不由本地测试推出。",
+  "不越界进别的仓库的树。本单全部落点在 TCRN-Design-System 内。",
+  "跑门要跑全量 pnpm verify,不是只跑自己关心的那一道。跨仓那次事故正是只跑一道门就报干净造成的(TCRN-CROSS-INC-249)。",
+  "guard-check 与各门在运行期间会真改工作树,当独占操作对待:不要并发跑门,也不要在门运行时编辑文件。",
+  "改前端外观,归 Owner 亲眼判 —— 止于 pending-owner-acceptance,不自判 done。",
+  "不要撤掉 cockpit 预填。摆拍本身是有意的,要改的是遮挡,不是展示。",
+  "判据 1 要在加载完成且无任何交互的状态下量。用交互把浮层关掉再量,量的是另一件事。",
+  "若实施中发现 cockpit 预填其实是遗留而非有意,停下来呈报,不要就地删掉。"
+ ],
+ "filePointers": [
+  "apps/storybook/src/contract-stories/story-content.tsx",
+  "apps/storybook/src/contract-stories/groups/components.ts",
+  "apps/storybook/src/alpha-styles.ts",
+  "scripts/geometry-proof.mjs",
+  "package.json"
+ ],
+ "verificationCommands": [
+  "pnpm typecheck",
+  "pnpm build",
+  "pnpm verify"
+ ],
+ "chainCloseoutActions": [
+  "开工前重新读取 status、work-list 与本单在链上的当前 scope;若推进状态,使用当时数值的 expected-version、--actor agent:codex 与 TCRN-Design-System 分区 attestations,并回读回执。",
+  "改观感,止于 pending-owner-acceptance,等 Owner 亲眼判,不自判 done。"
+ ],
+ "effectiveEvidenceCommands": [
+  "把浮层挪回相交位置,门应判红并点名被遮的是哪一段文字。",
+  "变异要落在遮挡关系上,不是落在浮层是否存在上 —— 删掉浮层让门变绿不算通过。",
+  "零 DOM 改动加载后量一次 openMenus 与相交关系,数值写进报告。",
+  "8 个常开浮层逐个量,不是只量搜索面板那一个。"
+ ],
+ "storyScope": "## Goal\n\n为谁:读 Storybook 的人 —— 产品实施者与 Owner。目的锚:`navigation-product-shell-spec` 的示例在静态文档页上以浮层常开的形态渲染,搜索结果面板压住同卡片的标题,读者会把摆拍读成渲染故障。符合性判据:示例区内任何常开浮层不与同卡片标题或正文文字矩形相交,并由门断言。判定人:Owner。\n\n## Requirements\n\n现象与证据(2026-08-23 线上实测,`https://tcrn-design-system-storybook.vercel.app/components-navigation-shells.html?theme=light&locale=en#navigation-product-shell-spec`,Chromium 1440x1000):\n\n- 页面加载完成后**未做任何 DOM 改动、未点击**,`openMenus` = 8(`aria-expanded=\"true\"`);\n- 搜索框预填 `cockpit`,搜索结果面板与语言菜单同时展开;\n- 搜索结果面板矩形与卡片标题「Package-backed AOS shell boundary」矩形相交,标题被遮成「Package-backed AOS shell bou…」。\n\n预填查询显然是刻意摆拍,用于展示搜索行为 —— 这一点不构成缺陷,不要求撤掉。争议只在于静态文档页上该浮层长期压住正文标题。\n\n修复项:令常开浮层不遮挡同卡片文字(改为需交互展开,或保留常开但重排位置),并立一道门守住。\n\n## Acceptance Criteria\n\n1. GIVEN 该示例区,WHEN 页面加载完成且无任何交互,THEN 任何常开浮层的矩形不与其所在卡片的标题或正文文字矩形相交。\n2. GIVEN 判据 1 的实现路径,WHEN 实施者选择,THEN 二选一皆可:改为需交互才展开,或保留常开但重排位置使其不相交;不预设哪一条。\n3. GIVEN 选择保留常开摆拍形态,WHEN 读者查看该示例,THEN 示例旁有可见说明,指明该浮层为展示态而非故障。\n4. GIVEN 一道门,WHEN 运行,THEN 断言「示例区内常开浮层不与同卡片标题文字矩形相交」。\n5. GIVEN 该门,WHEN 注入变异再还原,THEN 基线绿、变异红、还原绿三段留下运行记录,与既有 red-then-green 同形。\n6. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\nStorybook 是平台的前端标准正本。一个看起来坏掉的示例,代价不是难看,是使用者不知道该照着它做还是绕开它 —— 摆拍与故障在静态页上长得一样,而读者没有办法分辨。\n\n这一条与 `TCRN-DS-INC-019` 同批发现,但性质不同:019 是两侧真的不一致,这一条是渲染出来的东西没有说明自己是摆拍。修法因此也不同 —— 可以是挪开,也可以是把它说清楚。\n\n## Preconditions\n\nDS `pnpm verify` 全绿(2026-08-23 实测 exit=0);该示例所在的 `navigation-product-shell-spec` 已在线上可复现,浮层常开是页面自身行为,非探针副作用(已用零 DOM 改动的加载复核过)。\n\n## Assumptions\n\n假定这 8 个常开浮层里,只有搜索结果面板造成遮挡。不假定语言菜单无碍 —— 判据 1 对所有常开浮层生效,实施时要逐个量,不要只修看得见的那一个。\n\n假定摆拍本身是有意的。若实施中发现 `cockpit` 预填其实是遗留而非有意,呈报,不要就地删掉。\n\n## Use Cases & Examples\n\n一个实施者照着这节做产品外壳,看到标题被盖住,以为 ProductShell 的搜索浮层有层级缺陷,于是自己加了一层 z-index 绕过 DS。门立起来之后,这种误读不会发生。\n\n## Feature Toggle & Setting\n\n无。门无开关。\n\n## Permissions\n\n无特殊权限。观感归 Owner 亲眼判,门本身归机检车道。\n\n## Implementation Notes\n\n判据 1 要在**加载完成且无任何交互**的状态下量 —— 这是本单发现时的条件,也是读者遭遇它的条件。用交互把浮层关掉再量,量的是另一件事。\n\n判据 5 的变异要落在遮挡关系上(例如把浮层挪回相交位置),不是落在浮层是否存在上。门要证明的是它看得见「压住了文字」,不是看得见「有个浮层」。"
+}

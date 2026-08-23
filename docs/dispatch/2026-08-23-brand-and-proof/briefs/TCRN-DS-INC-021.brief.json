@@ -1,0 +1,42 @@
+{
+ "story": "TCRN-DS-INC-021",
+ "workId": "work:309130d77c457ec775d6461e",
+ "decidedBy": "Owner 2026-08-23 · 「都开,然后给 codex 派工」",
+ "generatedAt": "2026-08-23T03:50:00.000Z",
+ "generatedBy": "agent:fable",
+ "repositoryRoot": "../TCRN-Design-System",
+ "redLineBoundaries": [
+  "不写治理控制树或其文件;链上读写只经当前安装引擎 CLI,若需要状态推进先读当前版本、使用真实执行者 actor(--actor agent:codex)与 TCRN-Design-System 分区 attestations,并回读回执。",
+  "不推送、不打 tag、不部署、不发布 —— 各自是独立停止点,不由本地测试推出。",
+  "不越界进别的仓库的树。本单全部落点在 TCRN-Design-System 内。",
+  "跑门要跑全量 pnpm verify,不是只跑自己关心的那一道。跨仓那次事故正是只跑一道门就报干净造成的(TCRN-CROSS-INC-249)。",
+  "guard-check 与各门在运行期间会真改工作树,当独占操作对待:不要并发跑门,也不要在门运行时编辑文件。",
+  "机检车道:九个验收门组全绿即判定,不停 pending-owner-acceptance。九门名册以 platform-docs/acceptance-gate-groups.json 为准。",
+  "若选择把证物移出版本控制,Preconditions 里那五处引用要逐个确认后再动 —— 有的读它做预算,有的拿它当冒烟基线,不是删文件就完。",
+  "若两组渲染参数翻不出那三处高度差,说明主因是别的。找出真主因并改判据,不要因为门绿了就当问题没有。"
+ ],
+ "filePointers": [
+  "scripts/internal-alpha-browser-proof.mjs",
+  "scripts/storybook-smoke.mjs",
+  "scripts/internal-alpha-hardening-proof.mjs",
+  "scripts/lib/story-budget.mjs",
+  "apps/storybook/src/contract-stories/governance.ts",
+  "apps/storybook/src/smoke.test.ts",
+  "package.json"
+ ],
+ "verificationCommands": [
+  "pnpm typecheck",
+  "pnpm build",
+  "pnpm verify"
+ ],
+ "chainCloseoutActions": [
+  "开工前重新读取 status、work-list 与本单在链上的当前 scope;若推进状态,使用当时数值的 expected-version、--actor agent:codex 与 TCRN-Design-System 分区 attestations,并回读回执。",
+  "机检车道:九门全绿后落 done,不停 pending-owner-acceptance。"
+ ],
+ "effectiveEvidenceCommands": [
+  "同一提交下以两组渲染参数各跑一次生成,两次产出做字节比对,结果写进报告。",
+  "人为让一个环境相关字段漏网,门应判红。",
+  "若选择移出版本控制,五处引用改完后 pnpm verify 仍须 exit=0 —— 这是它们没有被漏掉的证据。"
+ ],
+ "storyScope": "## Goal\n\n为谁:任何在自己机器上跑 DS `pnpm verify` 的人。目的锚:`docs/verification/internal-alpha/browser-proof-summary.json` 是入库证物,内容却依赖运行机器 —— 同一提交在两台机器上产出不同字节,于是异地跑一次就弄脏工作树,将来若有门以它为基准还会必然假红。符合性判据:该证物与渲染环境无关,或不再入库;两条路都要有门守住。判定人:机检车道 —— 九个验收门组全绿即判定。\n\n## Requirements\n\n现象与证据(2026-08-22 与 2026-08-23,同一提交 `76e471e5f1111f37d51a3ea20b45da37f069bda0`):\n\n- Codex 机器与本机跑同一条 `pnpm verify`,该文件出现三处差异,均为条目渲染高度:361 vs 388、379 vs 407、545 vs 591,差 27-46px;\n- 其余字段一致;差异来自渲染环境(字体可用性等),非代码变更;\n- 本机 `pnpm verify` exit=0,文件仍被改脏,已手工 `git checkout` 还原。\n\n后果有二:\n\n1. 任何人在异地跑一次 verify 就会产生与本次改动无关的 diff,真实差异被埋在噪声里;\n2. 若将来有门以该文件为基准比对,异地必然假红 —— 而假红正是 `TCRN-CROSS-INC-246` 要清掉的那一类东西,不该在此处新造一个。\n\n修复项:令产出与渲染环境无关,或该文件不再入库;无论走哪条,立一道门断言可复现性。\n\n## Acceptance Criteria\n\n1. GIVEN 同一提交,WHEN 在同一机器上以两组不同渲染参数各跑一次该证物的生成(至少覆盖两个不同 `deviceScaleFactor`,以及一次强制回退字体栈),THEN 产出字节相同。\n2. GIVEN 判据 1 的实现路径,WHEN 实施者选择,THEN 二选一皆可:令产出与渲染环境无关,或该文件移出版本控制并加入忽略。\n3. GIVEN 选择保留入库,WHEN 阅读该文件,THEN 文件内写明哪些字段经过归一化、量纲与容差是什么;不保留未声明容差的环境相关绝对像素量。\n4. GIVEN 一道门,WHEN 运行,THEN 断言该证物在判据 1 所述两组渲染参数下可复现。\n5. GIVEN 该门,WHEN 注入变异再还原,THEN 基线绿、变异红、还原绿三段留下运行记录,与既有 red-then-green 同形。\n6. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\n这条链刚刚为「假红挡住 done 通道」付过一次代价(`TCRN-CROSS-INC-246`),裁定是让例外带机器可读的理由,而不是把红改绿。这份证物是同一问题的上游形态:它还没变成门,所以还没有人被它挡住;一旦有人拿它当基准,挡住的将是每一个换了机器的人。\n\n趁它还只是脏工作树的时候修掉,比等它变成假红再修便宜。\n\n## Preconditions\n\nDS `pnpm verify` 全绿(2026-08-23 实测 exit=0);该文件当前由 `scripts/internal-alpha-browser-proof.mjs` 生成,被 `scripts/storybook-smoke.mjs`、`scripts/internal-alpha-hardening-proof.mjs`、`scripts/lib/story-budget.mjs`、`apps/storybook/src/contract-stories/governance.ts`、`apps/storybook/src/smoke.test.ts` 引用 —— 若选择移出版本控制,这五处都要跟着改。\n\n## Assumptions\n\n假定三处高度差全部来自渲染环境。不假定它是全部的环境相关字段 —— 两台机器只是碰巧在这三处不同,判据 1 的两组参数要能把其余的也翻出来。\n\n假定字体可用性是主因。若实测发现主因是别的(例如无头与有头的行盒差异),按实测写,不要沿用这条假设。\n\n## Use Cases & Examples\n\n新人 clone 仓库,跑一次 `pnpm verify` 想确认环境正常,得到一份三行的 diff。他要么提交它(污染历史),要么还原它(下次再来一遍),要么开始怀疑自己的环境 —— 三条路都是浪费。\n\n## Feature Toggle & Setting\n\n无。门无开关。\n\n## Permissions\n\n无特殊权限。机检车道:九个验收门组全绿即判定,不停 `pending-owner-acceptance`。\n\n## Implementation Notes\n\n判据 1 的「两组渲染参数」是为了在一台机器上模拟出跨机器的差异。若实测发现 `deviceScaleFactor` 与字体栈都翻不出那三处高度差,说明主因是别的,按 Assumptions 的第二条办 —— 找出真主因并改判据,不要因为门绿了就当问题没有。\n\n若选择移出版本控制,Preconditions 里那五处引用要逐个确认:有的是读它做预算,有的是拿它当冒烟基线,不是简单删掉文件就完。"
+}
