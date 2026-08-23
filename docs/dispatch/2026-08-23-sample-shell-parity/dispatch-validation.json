@@ -1,9 +1,9 @@
 {
- "generatedAt": "2026-08-23T09:12:00.000Z",
+ "generatedAt": "2026-08-23T10:07:00.000Z",
  "validator": "tcrn-workflow/scripts/dispatch-readiness-compliance.mjs",
  "resultCount": 1,
  "readyCount": 1,
- "note": "第三轮：Owner 第二次退回。第二轮把首次退回的四处都收住了，但样例内部的对齐关系无人比对——品牌染色面三向错位（左 20 / 右 -31.8 / 纵 37.7）与选中带内缩 28.8，正是 INC-019 给真身修掉的缺陷在样例里原样存在。判据追加 13-16，形态由「比属性值」改为「比关系」。记录 pending-owner-acceptance → active rev8。storyScope 自链上 rev 7 回读（8091B）。",
+ "note": "第四轮：Owner 第三次退回（样例顶栏只有 2 个控件，真身 4 个）。同时更正上一轮写错的一条——「导航项左 − 侧栏左 真身 0 / 样例 28.8」系取样取到带 [hidden] 祖先的未排版元素所致，真身内缩本就是 28.8，该错误判定已随链上 rev10 撤回。判据追加 17-20，新增元素清点差集与取样有效性两类。storyScope 自链上 rev 10 回读（15519B）。记录 pending-owner-acceptance → active rev11。",
  "results": [
   {
    "story": "TCRN-DS-INC-022",
