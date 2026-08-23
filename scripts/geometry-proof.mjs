@@ -7,8 +7,10 @@ const staticRoot = resolve("apps/storybook/storybook-static");
 const badgeRoute = "/components-navigation-shells.html#navigation-dense-operations-shell-spec";
 const brandRoute = "/proof-proof-visual-instances.html#owner-quality-product-shell";
 const copyRoute = "/components-navigation-shells.html#navigation-dense-operations-shell-spec";
+const searchRoute = "/components-navigation-shells.html?theme=light&locale=en&proof=search#navigation-product-shell-spec";
 const badgeStory = "navigation-dense-operations-shell-spec";
 const brandStory = "owner-quality-product-shell";
+const searchStory = "navigation-product-shell-spec";
 const collapsedVariant = "desktop-light-operations-cockpit-collapsed";
 
 function contentType(path) {
@@ -193,6 +195,58 @@ async function measureBrandCopies(page) {
   });
 }
 
+async function measureSearchOverlay(page) {
+  return page.evaluate((storyId) => {
+    const root = document.querySelector(`article[data-story-id="${storyId}"]`);
+    const rect = (node) => {
+      if (!node) return null;
+      const box = node.getBoundingClientRect();
+      return {
+        left: Number(box.left.toFixed(2)),
+        right: Number(box.right.toFixed(2)),
+        top: Number(box.top.toFixed(2)),
+        bottom: Number(box.bottom.toFixed(2)),
+        width: Number(box.width.toFixed(2)),
+        height: Number(box.height.toFixed(2))
+      };
+    };
+    const visible = (node) => {
+      const box = node.getBoundingClientRect();
+      const style = getComputedStyle(node);
+      return box.width > 0 && box.height > 0 && style.display !== "none" && style.visibility !== "hidden";
+    };
+    const intersects = (first, second) => Boolean(first && second
+      && Math.min(first.right, second.right) - Math.max(first.left, second.left) > 0.5
+      && Math.min(first.bottom, second.bottom) - Math.max(first.top, second.top) > 0.5);
+    const openMenus = document.querySelectorAll('[aria-expanded="true"]').length;
+    const overlays = root
+      ? [...root.querySelectorAll("[data-product-shell-search-results]")]
+        .filter((node) => !node.hasAttribute("hidden") && visible(node))
+        .map((node) => ({ rect: rect(node), label: node.getAttribute("aria-label") ?? "" }))
+      : [];
+    const textTargets = root
+      ? [...root.querySelectorAll(".tcrn-product-shell__main h1, .tcrn-product-shell__main h2, .tcrn-product-shell__main h3, .tcrn-product-shell__main h4, .tcrn-product-shell__main p, .tcrn-product-shell__main li, .tcrn-product-shell__main dt, .tcrn-product-shell__main dd")]
+        .filter((node) => visible(node) && node.textContent?.trim())
+        .map((node) => ({
+          text: node.textContent.trim().replace(/\s+/g, " ").slice(0, 120),
+          tag: node.tagName.toLowerCase(),
+          rect: rect(node)
+        }))
+      : [];
+    const collisions = overlays.flatMap((overlay) => textTargets
+      .filter((target) => intersects(overlay.rect, target.rect))
+      .map((target) => ({ overlay: overlay.label, target })));
+    return {
+      openMenus,
+      overlayCount: overlays.length,
+      overlays,
+      textTargets,
+      collisions,
+      ok: openMenus === 8 && overlays.length > 0 && collisions.length === 0
+    };
+  }, searchStory);
+}
+
 async function addMutation(page, cssText) {
   await page.evaluate((text) => {
     const style = document.createElement("style");
@@ -242,19 +296,30 @@ async function main() {
     await removeMutation(page);
     const copyRestored = await measureBrandCopies(page);
 
+    await page.goto(`${server.origin}${searchRoute}`);
+    await settle(page);
+    const searchBaseline = await measureSearchOverlay(page);
+    await addMutation(page, `article[data-story-id="${searchStory}"] .tcrn-product-shell-search__results { position: absolute !important; inset-block-start: calc(100% + var(--tcrn-space-2)) !important; inset-inline-end: 0 !important; margin-block-start: 0 !important; }`);
+    const searchBroken = await measureSearchOverlay(page);
+    await removeMutation(page);
+    const searchRestored = await measureSearchOverlay(page);
+
     result = {
-      schemaVersion: "tcrn.ds.geometry-proof.v1",
+      schemaVersion: "tcrn.ds.geometry-proof.v2",
       ok: badgeBaseline.ok && !badgeBroken.ok && badgeRestored.ok
         && brandBaseline.ok && !brandBroken.ok && brandRestored.ok
-        && copyBaseline.ok && !copyBroken.ok && copyRestored.ok,
+        && copyBaseline.ok && !copyBroken.ok && copyRestored.ok
+        && searchBaseline.ok && !searchBroken.ok && searchRestored.ok,
       redThenGreen: {
         badge: { red: !badgeBroken.ok, green: badgeRestored.ok },
         brand: { red: !brandBroken.ok, green: brandRestored.ok },
-        copy: { red: !copyBroken.ok, green: copyRestored.ok }
+        copy: { red: !copyBroken.ok, green: copyRestored.ok },
+        searchOverlay: { red: !searchBroken.ok, green: searchRestored.ok }
       },
       badge: { baseline: badgeBaseline, broken: badgeBroken, restored: badgeRestored },
       brand: { baseline: brandBaseline, broken: brandBroken, restored: brandRestored },
-      copy: { baseline: copyBaseline, broken: copyBroken, restored: copyRestored }
+      copy: { baseline: copyBaseline, broken: copyBroken, restored: copyRestored },
+      searchOverlay: { baseline: searchBaseline, broken: searchBroken, restored: searchRestored }
     };
   } finally {
     await page.close();

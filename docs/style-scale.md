@@ -105,9 +105,12 @@ doc-side, and must not expect them in the package.
   `.tcrn-input--short` and `.tcrn-search-input--compact` (docs demo widths),
   `.tcrn-filter-bar` (demo tab layout; the package owns it only via the scoped
   `.tcrn-table-toolbar .tcrn-filter-bar` rule, so a top-level `.tcrn-filter-bar` here does
-  not duplicate a package selector), and the tooltip static-preview hook
+  not duplicate a package selector), the tooltip static-preview hook
   `.tcrn-tooltip[data-storybook-static-tooltip="true"]` (and its `[data-placement]`
-  variants), which forces the revealed state for static docs screenshots.
+  variants), which forces the revealed state for static docs screenshots, and
+  `.tcrn-product-shell-search__results` when scoped under the
+  `navigation-product-shell-spec` static-display modifier (the docs proof keeps the
+  open result panel in flow; the package default remains the interactive overlay).
 - **Deferred primitive:** `.tcrn-icon` base rule (Icon-emitted) remains doc-side for now —
   it is outside STORY-037's named 24 families and awaits an explicit Owner call to promote
   or keep it.

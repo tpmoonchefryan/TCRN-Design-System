@@ -199,7 +199,7 @@ export function KnowledgeBaseShellDemo() {
         <header className="tcrn-knowledge-shell__topbar" aria-label="Knowledge base top bar">
           <div className="tcrn-knowledge-shell__brand-cell">
             <a className="tcrn-doc-brand tcrn-knowledge-shell__brand" href="#navigation-shell-spec">
-              <ShellBrandLockup suffix="Design System" caption="Component library" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
+              <ShellBrandLockup productId="design-system" />
             </a>
             <SideNavCollapseButton collapsed={false} controls="knowledge-shell-sidebar" expandedLabel="Collapse navigation" />
           </div>

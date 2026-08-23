@@ -573,6 +573,11 @@ article[data-story-collapsed="false"] > .tcrn-story-disclosure__heading {
   background: var(--tcrn-doc-shell-left-surface);
   box-shadow: none;
   padding: 0;
+  /* The global bar keeps its 20px rhythm for the workspace and controls. Let
+     only the brand surface claim that padding back so it shares the sidebar's
+     outer left/right edges and reaches the layout row below. */
+  margin-inline: calc(var(--tcrn-space-5) * -1) var(--tcrn-space-5);
+  margin-block-end: calc(var(--tcrn-space-3) * -1);
   overflow: hidden;
   transition: background-color var(--tcrn-motion-standard);
 }
@@ -1250,6 +1255,16 @@ ${demoStoryCss}
   font-size: var(--tcrn-type-size-section);
 }
 
+/* The ProductShell example intentionally opens search results to demonstrate the
+   result state. Keep that display in the shell's flow so it pushes its card down
+   instead of painting over the card title and body text. */
+.tcrn-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results {
+  position: static;
+  inset: auto;
+  width: 100%;
+  margin-block-start: var(--tcrn-space-2);
+}
+
 html[data-tcrn-theme="dark"] .tcrn-overlay-mode-card,
 html[data-tcrn-theme="dark"] .tcrn-overlay-static-card {
   border-color: color-mix(in srgb, var(--tcrn-color-border-strong) 62%, transparent);
@@ -1318,6 +1333,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     background-image: var(--tcrn-doc-shell-left-surface);
     border-right: 0;
     border-bottom: 0;
+    margin: 0;
   }
   .tcrn-doc-global-brand .tcrn-doc-brand {
     top: calc((var(--tcrn-doc-mobile-brand-height) - 52px) / 2);

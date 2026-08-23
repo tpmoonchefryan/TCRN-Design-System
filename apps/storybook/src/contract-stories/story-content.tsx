@@ -2138,6 +2138,7 @@ const legacyContractStories: LegacyContractStory[] = [
             locales={tcrnLocaleMetadata}
             currentLocale={tcrnDefaultLocale}
             search={{
+              className: "tcrn-product-shell-search--static-display",
               label: "Search AOS shell",
               placeholder: "Search modules, work items, or proof",
               query: "cockpit",
@@ -2160,6 +2161,7 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
           >
             <ReadbackPanel title="Package-backed AOS shell boundary">
+              <Text>Search results are open as a static display state; the card text remains readable.</Text>
               <Text>
                 Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks. Collapse, theme, locale popup, and search behavior must flow through ProductShell semantic props or the useProductShellController prop bundles instead of wrapper event delegation.
               </Text>
