@@ -9,7 +9,7 @@ import { chromium } from "@playwright/test";
 const staticRoot = resolve("apps/storybook/storybook-static");
 const route = "/components-navigation-shells.html?theme=light&locale=en#navigation-product-shell-spec";
 const packageStorySelector = 'article[data-story-id="navigation-product-shell-spec"]';
-const expectedParityRoleCount = 15;
+const expectedParityRoleCount = 16;
 const sampleShellRoot = '[data-story-id="navigation-focused-shells-spec"] [data-standard-shell="online-docs"]';
 const brandLockupRole = {
   id: "brand-lockup",
@@ -18,6 +18,9 @@ const brandLockupRole = {
   package: ".tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo",
   brandSurface: ".tcrn-doc-global-brand",
   sidebarSurface: ".tcrn-doc-sidebar",
+  truthTopbarSurface: ".tcrn-doc-global-bar",
+  sampleBrandSurface: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell`,
+  sampleTopbarSurface: `${sampleShellRoot} .tcrn-knowledge-shell__topbar`,
   documentMark: ".tcrn-brand-mark",
   packageMark: ".tcrn-brand-mark",
   documentLine: ".tcrn-brand-wordmark, .tcrn-product-logo__line-one",
@@ -71,6 +74,14 @@ export const sampleShellRoles = [
     properties: ["paddingTop", "paddingRight", "paddingBottom", "paddingLeft", "gap", "backgroundColor"]
   },
   {
+    id: "group-container",
+    kind: "sample-shell",
+    document: `${sampleShellRoot} .tcrn-knowledge-shell__groups`,
+    package: ".tcrn-doc-nav__groups",
+    authority: "truth",
+    properties: ["gap"]
+  },
+  {
     id: "nav-item",
     kind: "sample-shell",
     document: `${sampleShellRoot} .tcrn-nav-item`,
@@ -78,7 +89,7 @@ export const sampleShellRoles = [
     primitiveAttribute: "data-navigation-primitive",
     primitiveValue: "nav-item",
     authority: "truth",
-    properties: ["fontSize", "paddingTop", "paddingBottom", "paddingLeft", "borderRadius", "minHeight"]
+    properties: ["fontSize", "paddingTop", "paddingBottom", "paddingLeft", "borderRadius", "minHeight", "backgroundColor"]
   },
   {
     id: "group-title",
@@ -89,13 +100,14 @@ export const sampleShellRoles = [
     primitiveAttribute: "data-navigation-primitive",
     primitiveValue: "nav-group",
     authority: "truth",
-    properties: ["fontSize", "fontWeight", "paddingLeft", "paddingRight"]
+    properties: ["fontSize", "fontWeight", "paddingLeft", "paddingRight", "color"]
   }
 ];
 
 parityRoles.push(...sampleShellRoles);
 
-// An empty production table still executes all fifteen roles. It is not a switch.
+// The production exception table is explicit; empty-table behavior is exercised by
+// emptyExceptionProbe below rather than treated as a disabled gate.
 export const parityExceptions = [{
   role: "nav-item",
   property: "borderRadius",
@@ -215,10 +227,22 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       const truthLine = truth?.querySelector(role.packageLine);
       const brandSurface = document.querySelector(role.brandSurface);
       const sidebarSurface = document.querySelector(role.sidebarSurface);
+      const truthTopbarSurface = document.querySelector(role.truthTopbarSurface);
+      const sampleBrandSurface = document.querySelector(role.sampleBrandSurface);
+      const sampleTopbarSurface = document.querySelector(role.sampleTopbarSurface);
       const exampleMarkRect = rect(exampleMark);
       const truthMarkRect = rect(truthMark);
       const brandSurfaceRect = rect(brandSurface);
       const sidebarSurfaceRect = rect(sidebarSurface);
+      const truthTopbarSurfaceRect = rect(truthTopbarSurface);
+      const sampleBrandSurfaceRect = rect(sampleBrandSurface);
+      const sampleTopbarSurfaceRect = rect(sampleTopbarSurface);
+      const truthTopGap = truthTopbarSurfaceRect && brandSurfaceRect
+        ? Number((brandSurfaceRect.top - truthTopbarSurfaceRect.top).toFixed(2))
+        : null;
+      const sampleTopGap = sampleTopbarSurfaceRect && sampleBrandSurfaceRect
+        ? Number((sampleBrandSurfaceRect.top - sampleTopbarSurfaceRect.top).toFixed(2))
+        : null;
       const differences = [];
       const measurements = {
         example: {
@@ -240,16 +264,20 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         surfaces: {
           brand: brandSurfaceRect,
           sidebar: sidebarSurfaceRect,
+          top: {
+            truth: truthTopGap,
+            sample: sampleTopGap
+          },
           verticalGap: brandSurfaceRect && sidebarSurfaceRect
             ? Number((sidebarSurfaceRect.top - brandSurfaceRect.bottom).toFixed(2))
             : null
         }
       };
-      if (!example || !truth || !exampleMark || !truthMark || !exampleLine || !truthLine || !brandSurface || !sidebarSurface) {
+      if (!example || !truth || !exampleMark || !truthMark || !exampleLine || !truthLine || !brandSurface || !sidebarSurface || !truthTopbarSurface || !sampleBrandSurface || !sampleTopbarSurface) {
         differences.push({
           property: "selector",
-          document: Boolean(example && exampleMark && exampleLine && brandSurface),
-          package: Boolean(truth && truthMark && truthLine && sidebarSurface)
+          document: Boolean(example && exampleMark && exampleLine && brandSurface && sampleBrandSurface && sampleTopbarSurface),
+          package: Boolean(truth && truthMark && truthLine && sidebarSurface && truthTopbarSurface)
         });
       } else {
         const comparisons = [
@@ -280,6 +308,9 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         const verticalGap = sidebarSurfaceRect.top - brandSurfaceRect.bottom;
         if (verticalGap > 0.5) {
           differences.push({ property: "surfaceVerticalGap", document: verticalGap, package: 0, direction: "document-lags" });
+        }
+        if (truthTopGap > 0.5 || sampleTopGap > 0.5) {
+          differences.push({ property: "surfaceTopGap", document: sampleTopGap, package: truthTopGap, direction: "document-lags" });
         }
       }
       return {
@@ -317,7 +348,7 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         differences.push({ property: "selector", document: Boolean(example), package: Boolean(truth) });
       } else if (role.id === "collapse-toggle") {
         const primitiveNode = document.querySelector(role.documentControl);
-        if (primitiveNode?.getAttribute(role.primitiveAttribute) !== role.primitiveValue) {
+        if (role.primitiveAttribute && primitiveNode?.getAttribute(role.primitiveAttribute) !== role.primitiveValue) {
           differences.push({ property: "registered-primitive", document: primitiveNode?.getAttribute(role.primitiveAttribute) ?? null, package: role.primitiveValue, direction: "sample-lags" });
         }
         const exampleControl = document.querySelector(role.documentControl);
@@ -368,7 +399,7 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         }
       } else {
         const primitiveNode = role.primitiveSelector ? document.querySelector(role.primitiveSelector) : example;
-        if (primitiveNode?.getAttribute(role.primitiveAttribute) !== role.primitiveValue) {
+        if (role.primitiveAttribute && primitiveNode?.getAttribute(role.primitiveAttribute) !== role.primitiveValue) {
           differences.push({ property: "registered-primitive", document: primitiveNode?.getAttribute(role.primitiveAttribute) ?? null, package: role.primitiveValue, direction: "sample-lags" });
         }
         const exampleValues = read(example, role.properties);
@@ -436,11 +467,13 @@ async function main() {
     await settle(page);
     await expandAllStories(page);
     const baseline = await measureParity(page);
+    const collapseRole = sampleShellRoles.find((role) => role.id === "collapse-toggle");
     const sampleShellMutations = {};
     const sampleMutationCss = {
       "collapse-toggle": `${sampleShellRoles.find((role) => role.id === "collapse-toggle").document} button { transform: translateX(-99px) !important; }`,
       topbar: `${sampleShellRoles.find((role) => role.id === "topbar").document} { gap: 99px !important; }`,
       sidebar: `${sampleShellRoles.find((role) => role.id === "sidebar").document} { padding-left: 99px !important; }`,
+      "group-container": `${sampleShellRoles.find((role) => role.id === "group-container").document} { gap: 99px !important; }`,
       "nav-item": `${sampleShellRoles.find((role) => role.id === "nav-item").document} { font-size: 99px !important; }`,
       "group-title": `${sampleShellRoles.find((role) => role.id === "group-title").document} { font-size: 99px !important; }`
     };
@@ -454,6 +487,20 @@ async function main() {
         mutated: mutatedRole,
         restored: restoredRole
       };
+      if (role.id === "collapse-toggle") {
+        const baselineLabel = await page.locator(role.documentControl).getAttribute("aria-label");
+        await page.evaluate((selector) => document.querySelector(selector)?.setAttribute("aria-label", "SAMPLE_ARIA_MUTATION"), role.documentControl);
+        await settle(page);
+        const ariaMutated = await measureParity(page, [role]);
+        await page.evaluate(({ selector, label }) => document.querySelector(selector)?.setAttribute("aria-label", label ?? ""), { selector: role.documentControl, label: baselineLabel });
+        await settle(page);
+        const ariaRestored = await measureParity(page, [role]);
+        sampleShellMutations[role.id].ariaLabel = {
+          mutation: "aria-label=SAMPLE_ARIA_MUTATION",
+          mutated: ariaMutated,
+          restored: ariaRestored
+        };
+      }
     }
     const brandMatrix = [];
     for (const combination of [
@@ -468,7 +515,13 @@ async function main() {
       const parity = await measureParity(page, [brandLockupRole]);
       brandMatrix.push({ ...combination, ...parity });
     }
-    const collapseRole = sampleShellRoles.find((role) => role.id === "collapse-toggle");
+    const sampleLocaleMatrix = [];
+    for (const locale of ["en", "zh-CN", "ja", "fr", "ko"]) {
+      await page.goto(`${server.origin}/components-navigation-shells.html?theme=light&locale=${locale}#navigation-product-shell-spec`);
+      await settle(page);
+      await expandAllStories(page);
+      sampleLocaleMatrix.push({ locale, ...(await measureParity(page, [collapseRole])) });
+    }
     const sampleShellViewportMatrix = [];
     for (const width of [1024, 1280, 1440, 1920]) {
       await page.setViewportSize({ width, height: 900 });
@@ -514,6 +567,7 @@ async function main() {
       },
       sampleShell: {
         baseline: baseline.roles.filter((role) => sampleShellRoles.some((candidate) => candidate.id === role.id)),
+        localeMatrix: sampleLocaleMatrix,
         viewportMatrix: sampleShellViewportMatrix,
         mutations: sampleShellMutations
       },
@@ -538,7 +592,11 @@ async function main() {
         sampleShell: Object.fromEntries(sampleShellRoles.map((role) => [role.id, {
           baselineRed: !baseline.roles.find((candidate) => candidate.id === role.id)?.ok,
           mutationRed: !sampleShellMutations[role.id].mutated.ok,
-          restoredGreen: sampleShellMutations[role.id].restored.ok
+          restoredGreen: sampleShellMutations[role.id].restored.ok,
+          ...(role.id === "collapse-toggle" ? {
+            ariaLabelMutationRed: !sampleShellMutations[role.id].ariaLabel.mutated.ok,
+            ariaLabelRestoredGreen: sampleShellMutations[role.id].ariaLabel.restored.ok
+          } : {})
         }]))
       }
     };
@@ -551,8 +609,11 @@ async function main() {
       && !brandMutated.ok
       && brandRestored.ok
       && sampleShellRoles.every((role) => baseline.roles.find((candidate) => candidate.id === role.id)?.ok)
+      && sampleLocaleMatrix.every((entry) => entry.ok)
       && sampleShellViewportMatrix.every((entry) => entry.ok)
-      && sampleShellRoles.every((role) => !sampleShellMutations[role.id].mutated.ok && sampleShellMutations[role.id].restored.ok);
+      && sampleShellRoles.every((role) => !sampleShellMutations[role.id].mutated.ok && sampleShellMutations[role.id].restored.ok)
+      && !sampleShellMutations["collapse-toggle"].ariaLabel.mutated.ok
+      && sampleShellMutations["collapse-toggle"].ariaLabel.restored.ok;
   } finally {
     await page.close();
     await browser.close();

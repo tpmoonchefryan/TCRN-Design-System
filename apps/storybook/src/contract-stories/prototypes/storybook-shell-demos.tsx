@@ -25,6 +25,7 @@ import {
   denseShellSecondaryDirectoryGroupCount,
   denseShellTaskLanes
 } from "../content/index.js";
+import { localeText } from "../../build/i18n.js";
 
 function ReferenceList({ items }: { items: string[] }) {
   return <div className="tcrn-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
@@ -195,6 +196,8 @@ export function DenseOperationsShellDemo() {
 // storybook_only: documentation shell IA is retained as synthetic docs/proof content, not package component source.
 export function KnowledgeBaseShellDemo() {
   const selectedGroup = knowledgeNavigationGroups.find((group) => group.selected) ?? knowledgeNavigationGroups[0];
+  const collapseLabel = localeText("shell.collapseNavigationLabel");
+  const expandLabel = localeText("shell.expandNavigationLabel");
 
   return (
     <div className="tcrn-shell-demo tcrn-shell-demo--knowledge" data-shell-pattern="knowledge-bookmarks" data-storybook-only="knowledge-shell-prototype" data-component-library-status="deferred">
@@ -212,10 +215,12 @@ export function KnowledgeBaseShellDemo() {
               <SideNavCollapseButton
                 collapsed={false}
                 controls="knowledge-shell-sidebar"
-                expandedLabel="Collapse side navigation"
-                collapsedLabel="Expand side navigation"
-                data-expanded-label="Collapse side navigation"
-                data-collapsed-label="Expand side navigation"
+                expandedLabel={collapseLabel}
+                collapsedLabel={expandLabel}
+                data-expanded-label={collapseLabel}
+                data-collapsed-label={expandLabel}
+                data-i18n-aria-label="shell.collapseNavigationLabel"
+                data-i18n-title="shell.collapseNavigationLabel"
               />
             </div>
           )}
@@ -237,15 +242,17 @@ export function KnowledgeBaseShellDemo() {
             <strong>Current page bookmarks</strong>
             <Text>Documentation uses persistent bookmarks because the reading path is deeper than the active page.</Text>
           </div>
-          {knowledgeNavigationGroups.map((group) => (
-            <NavGroup key={group.label} label={group.label} selected={group.selected}>
-              {group.items.map((item) => (
-                <NavItem key={item} href="#navigation-shell-spec" selected={group.selected && item === group.selectedItem}>
-                  {item}
-                </NavItem>
-              ))}
-            </NavGroup>
-          ))}
+          <div className="tcrn-knowledge-shell__groups">
+            {knowledgeNavigationGroups.map((group) => (
+              <NavGroup key={group.label} label={group.label} selected={group.selected}>
+                {group.items.map((item) => (
+                  <NavItem key={item} href="#navigation-shell-spec" selected={group.selected && item === group.selectedItem}>
+                    {item}
+                  </NavItem>
+                ))}
+              </NavGroup>
+            ))}
+          </div>
         </SideNav>
         <div className="tcrn-knowledge-shell__content" aria-label="Knowledge base content preview">
           <div className="tcrn-knowledge-preview">

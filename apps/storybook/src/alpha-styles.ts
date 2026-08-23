@@ -573,6 +573,9 @@ article[data-story-collapsed="false"] > .tcrn-story-disclosure__heading {
   background: var(--tcrn-doc-shell-left-surface);
   box-shadow: none;
   padding: 0;
+  /* TCRN-DS-INC-022: the brand surface is the first painted row of the shell;
+     do not leave the global bar's top padding as a white strip above it. */
+  margin-block-start: calc(var(--tcrn-space-3) * -1);
   /* The global bar keeps its 20px rhythm for the workspace and controls. Let
      only the brand surface claim that padding back so it shares the sidebar's
      outer left/right edges and reaches the layout row below. */
