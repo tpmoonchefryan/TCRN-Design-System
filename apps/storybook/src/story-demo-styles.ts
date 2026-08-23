@@ -1568,7 +1568,7 @@ label {
 
 .tcrn-knowledge-shell__topbar {
   grid-area: topbar;
-  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr) auto;
+  grid-template-columns: calc((100% + var(--tcrn-space-5) + var(--tcrn-space-5)) * 0.242424) minmax(0, 1fr) auto !important;
   min-height: 68px;
   border-bottom: 0;
   background: transparent !important;
@@ -1578,6 +1578,7 @@ label {
   align-self: stretch;
   min-width: 0;
   margin-block: calc(var(--tcrn-space-3) * -1);
+  margin-inline: calc(var(--tcrn-space-5) * -1) var(--tcrn-space-5);
 }
 
 .tcrn-knowledge-shell__topbar .tcrn-top-bar__module {
@@ -2135,11 +2136,12 @@ label {
   grid-column: 1;
   grid-row: 1;
   display: grid;
-  grid-template-columns: max-content 38px;
-  justify-content: space-between;
-  gap: 0;
+  grid-template-columns: minmax(0, 1fr) 38px;
+  justify-content: normal;
+  gap: var(--tcrn-space-2);
   align-items: center;
   align-self: stretch;
+  height: calc(100% + (var(--tcrn-space-0h) * 0.5));
   background: var(--tcrn-knowledge-shell-left-surface);
   padding: var(--tcrn-space-3) clamp(var(--tcrn-space-4), 1.6vw, 24px) var(--tcrn-space-3) clamp(var(--tcrn-space-4h), 2vw, 30px);
 }
