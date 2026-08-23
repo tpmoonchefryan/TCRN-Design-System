@@ -213,17 +213,18 @@ export function KnowledgeBaseShellDemo() {
           productName={(
             <div className="tcrn-knowledge-shell__brand-cell">
               <a className="tcrn-doc-brand tcrn-knowledge-shell__brand" href="#navigation-shell-spec">
-                <ShellBrandLockup productId="design-system" />
+                <ShellBrandLockup productId="design-system" brandMarkAlt={localeText("shell.brand")} />
               </a>
               <SideNavCollapseButton
                 collapsed={false}
                 controls="knowledge-shell-sidebar"
                 expandedLabel={collapseLabel}
                 collapsedLabel={expandLabel}
+                data-doc-sidebar-toggle
                 data-expanded-label={collapseLabel}
                 data-collapsed-label={expandLabel}
-                data-i18n-aria-label="shell.collapseNavigationLabel"
                 data-i18n-title="shell.collapseNavigationLabel"
+                data-i18n-aria-label="shell.collapseNavigationLabel"
               />
             </div>
           )}
@@ -235,7 +236,14 @@ export function KnowledgeBaseShellDemo() {
           )}
           actions={(
             <div className="tcrn-knowledge-shell__actions">
-              <SearchInput className="tcrn-search-input--compact" placeholder="Search docs" shortcut="auto" />
+              <SearchInput
+                className="tcrn-search-input--compact"
+                placeholder={localeText("shell.searchLabel")}
+                aria-label={localeText("shell.searchLabel")}
+                data-i18n-placeholder="shell.searchLabel"
+                data-i18n-aria-label="shell.searchLabel"
+                shortcut="auto"
+              />
               <ShellThemeToggle
                 currentTheme="light"
                 lightLabel={localeText("shell.themeLightLabel")}
@@ -249,6 +257,7 @@ export function KnowledgeBaseShellDemo() {
                 label={localeText("shell.languageLabel")}
                 menuId="knowledge-shell-locale-menu"
                 triggerId="knowledge-shell-locale-trigger"
+                data-locale-menu-root
                 data-i18n-aria-label="shell.languageLabel"
               />
             </div>

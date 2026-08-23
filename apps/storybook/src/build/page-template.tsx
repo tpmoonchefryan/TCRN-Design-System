@@ -209,6 +209,8 @@ function sidebarToggleHtml(): string {
       data-doc-sidebar-toggle
       data-expanded-label={localeText("shell.collapseNavigationLabel")}
       data-collapsed-label={localeText("shell.expandNavigationLabel")}
+      data-i18n-aria-label="shell.collapseNavigationLabel"
+      data-i18n-title="shell.collapseNavigationLabel"
     />
   )}</span>`;
 }
@@ -300,6 +302,8 @@ function docHeaderWorkspaceHtml(group: ContractStoryGroup, activeStory: Contract
                 className="tcrn-search-input--compact"
                 placeholder={localeText("shell.searchLabel")}
                 aria-label={localeText("shell.searchLabel")}
+                data-i18n-placeholder="shell.searchLabel"
+                data-i18n-aria-label="shell.searchLabel"
                 role="combobox"
                 aria-autocomplete="list"
                 aria-expanded="false"

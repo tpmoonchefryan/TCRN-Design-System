@@ -326,20 +326,22 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     }
   };
   const updateLocaleMenuState = (locale) => {
-    const selected = document.querySelector("[data-locale-menu-option][data-locale='" + CSS.escape(locale) + "']");
-    const nameNode = document.querySelector("[data-locale-current-name], [data-locale-current]");
-    if (selected && nameNode) {
-      nameNode.textContent = selected.getAttribute("data-locale-name") ?? locale;
-    }
-    for (const option of document.querySelectorAll("[data-locale-menu-option]")) {
-      const nativeName = option.getAttribute("data-locale-name") ?? option.getAttribute("data-locale") ?? "";
-      const visibleName = option.querySelector(".tcrn-shell-locale-menu__name, [data-locale-option-name]");
-      if (visibleName) {
-        visibleName.textContent = nativeName;
+    for (const menu of document.querySelectorAll(".tcrn-shell-locale-menu")) {
+      const selected = menu.querySelector("[data-locale-menu-option][data-locale='" + CSS.escape(locale) + "']");
+      const nameNode = menu.querySelector("[data-locale-current-name], [data-locale-current]");
+      if (selected && nameNode) {
+        nameNode.textContent = selected.getAttribute("data-locale-name") ?? locale;
       }
-      const isSelected = option.getAttribute("data-locale") === locale;
-      option.setAttribute("aria-selected", isSelected ? "true" : "false");
-      option.setAttribute("aria-current", isSelected ? "true" : "false");
+      for (const option of menu.querySelectorAll("[data-locale-menu-option]")) {
+        const nativeName = option.getAttribute("data-locale-name") ?? option.getAttribute("data-locale") ?? "";
+        const visibleName = option.querySelector(".tcrn-shell-locale-menu__name, [data-locale-option-name]");
+        if (visibleName) {
+          visibleName.textContent = nativeName;
+        }
+        const isSelected = option.getAttribute("data-locale") === locale;
+        option.setAttribute("aria-selected", isSelected ? "true" : "false");
+        option.setAttribute("aria-current", isSelected ? "true" : "false");
+      }
     }
   };
   const updateProductLogoAccessibleNames = () => {
@@ -384,6 +386,9 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     }
     for (const node of document.querySelectorAll("[data-i18n-title]")) {
       node.setAttribute("title", textFor(resolvedLocale, node.getAttribute("data-i18n-title")));
+    }
+    for (const node of document.querySelectorAll("[data-i18n-placeholder]")) {
+      node.setAttribute("placeholder", textFor(resolvedLocale, node.getAttribute("data-i18n-placeholder")));
     }
     translateContentTree(resolvedLocale);
     // Must follow translateContentTree: it reads the tagline the swap just wrote.
