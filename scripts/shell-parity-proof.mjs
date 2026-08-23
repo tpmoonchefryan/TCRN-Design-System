@@ -894,11 +894,20 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       const onlyInTruth = truth.items.filter((item) => !sampleByKey.has(item.key));
       const sameName = [];
       const differences = [];
-      for (const item of onlyInSample) differences.push({ property: "visible-string-only-in-sample", key: item.key, value: item.value, source: item.source });
-      for (const item of onlyInTruth) differences.push({ property: "visible-string-only-in-truth", key: item.key, value: item.value, source: item.source });
-      for (const failure of [...sample.failures, ...truth.failures]) differences.push({ property: "sample-validity", ...failure });
-      for (const missing of sample.missingRoots) differences.push({ property: "string-source-selector", side: "sample", ...missing });
-      for (const missing of truth.missingRoots) differences.push({ property: "string-source-selector", side: "truth", ...missing });
+      const accepted = [];
+      const addDifference = (difference) => {
+        const exception = exceptionTable.find((candidate) => candidate.role === role.id && candidate.property === difference.property);
+        if (exception) {
+          accepted.push({ role: role.id, property: difference.property, reason: exception.reason, acceptedAt: exception.acceptedAt });
+          return;
+        }
+        differences.push(difference);
+      };
+      for (const item of onlyInSample) addDifference({ property: "visible-string-only-in-sample", key: item.key, value: item.value, source: item.source });
+      for (const item of onlyInTruth) addDifference({ property: "visible-string-only-in-truth", key: item.key, value: item.value, source: item.source });
+      for (const failure of [...sample.failures, ...truth.failures]) addDifference({ property: "sample-validity", ...failure });
+      for (const missing of sample.missingRoots) addDifference({ property: "string-source-selector", side: "sample", ...missing });
+      for (const missing of truth.missingRoots) addDifference({ property: "string-source-selector", side: "truth", ...missing });
       for (const [key, sampleItem] of sampleByKey) {
         const truthItem = truthByKey.get(key);
         if (!truthItem) continue;
@@ -906,9 +915,9 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         const valueEqual = sampleItem.value === truthItem.value;
         const comparison = { key, semantic: sampleItem.semantic, kind: sampleItem.kind, sample: { value: sampleItem.value, source: sampleItem.source }, truth: { value: truthItem.value, source: truthItem.source }, sourceEqual, valueEqual };
         sameName.push(comparison);
-        if (!sourceEqual) differences.push({ property: "visible-string-source", ...comparison });
-        if (!valueEqual) differences.push({ property: "visible-string-value", ...comparison });
-        if (sampleItem.source.kind === "literal" || truthItem.source.kind === "literal") differences.push({ property: "visible-string-unbound", ...comparison });
+        if (!sourceEqual) addDifference({ property: "visible-string-source", ...comparison });
+        if (!valueEqual) addDifference({ property: "visible-string-value", ...comparison });
+        if (sampleItem.source.kind === "literal" || truthItem.source.kind === "literal") addDifference({ property: "visible-string-unbound", ...comparison });
       }
       return {
         id: role.id,
@@ -917,7 +926,7 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         truthRoots: role.truthRoots,
         measurements: { sample: sample.items, truth: truth.items, onlyInSample, onlyInTruth, sameName, samplingFailures: [...sample.failures, ...truth.failures] },
         differences,
-        accepted: [],
+        accepted,
         ok: differences.length === 0,
       };
     };
@@ -1124,6 +1133,22 @@ async function main() {
     await page.goto(`${server.origin}${route}`);
     await settle(page);
     await expandAllStories(page);
+    const stringSourceMutationRoot = `${sampleShellRoot} .tcrn-shell-locale-menu`;
+    const stringSourceOriginalMarker = await page.locator(stringSourceMutationRoot).getAttribute("data-i18n-aria-label");
+    await page.locator(stringSourceMutationRoot).evaluate((node) => node.setAttribute("data-i18n-aria-label", "shell.searchLabel"));
+    await settle(page);
+    const stringSourceEmptyExceptionProbe = await measureParity(page, [stringSourceRole], []);
+    const stringSourceExceptionProbe = await measureParity(page, [stringSourceRole], [{
+      role: "string-source",
+      property: "visible-string-source",
+      acceptedAt: "synthetic-proof",
+      reason: "SYNTHETIC_STRING_SOURCE_EXCEPTION"
+    }]);
+    await page.locator(stringSourceMutationRoot).evaluate((node, value) => {
+      if (value === null) node.removeAttribute("data-i18n-aria-label");
+      else node.setAttribute("data-i18n-aria-label", value);
+    }, stringSourceOriginalMarker);
+    await settle(page);
     await addMutation(page);
     const mutated = await measureParity(page);
     await removeMutation(page);
@@ -1167,6 +1192,17 @@ async function main() {
         ok: exceptionProbe.roles.find((role) => role.id === "locale")?.ok === true
           && exceptionProbe.acceptedExceptions.some((entry) => entry.reason === "SYNTHETIC_EXCEPTION_PATH"),
         acceptedExceptions: exceptionProbe.acceptedExceptions
+      },
+      stringSourceExceptionProbe: {
+        empty: {
+          ok: !stringSourceEmptyExceptionProbe.ok,
+          differences: stringSourceEmptyExceptionProbe.roles.flatMap((role) => role.differences)
+        },
+        accepted: {
+          ok: stringSourceExceptionProbe.roles.find((role) => role.id === "string-source")?.ok === true
+            && stringSourceExceptionProbe.acceptedExceptions.some((entry) => entry.reason === "SYNTHETIC_STRING_SOURCE_EXCEPTION"),
+          acceptedExceptions: stringSourceExceptionProbe.acceptedExceptions
+        }
       },
       relationPreRepair: {
         ok: !relationPreRepair.ok,
@@ -1212,6 +1248,8 @@ async function main() {
       && !mutated.ok
       && restored.ok
       && result.exceptionProbe.ok
+      && result.stringSourceExceptionProbe.empty.ok
+      && result.stringSourceExceptionProbe.accepted.ok
       && result.relationPreRepair.ok
       && result.samplingValidity.ok
       && result.emptyExceptionProbe.ok
