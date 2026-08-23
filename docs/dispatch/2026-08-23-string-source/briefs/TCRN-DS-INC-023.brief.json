@@ -1,0 +1,43 @@
+{
+ "story": "TCRN-DS-INC-023",
+ "workId": "work:b2cbd1c1e12e047e025bf660",
+ "decidedBy": "Owner 2026-08-23 · 「全部同意」（建议四：语言按钮单开一条，但要开对）",
+ "generatedAt": "2026-08-23T11:02:00.000Z",
+ "generatedBy": "agent:fable",
+ "repositoryRoot": "../TCRN-Design-System",
+ "redLineBoundaries": [
+  "不写治理控制树或其文件;链上读写只经当前安装引擎 CLI,推进前读当前版本、用 --actor agent:codex、写对应分区 attestations,并回读回执。",
+  "不推送、不打 tag、不部署、不发布 —— 各自是独立停止点。",
+  "跑门要跑全量,不是只跑自己关心的那一道(TCRN-CROSS-INC-249 的教训);guard-check 与各门运行期间会真改工作树,当独占操作对待。",
+  "改的是观感与文案,归 Owner 亲眼判 —— 止于 pending-owner-acceptance,不自判 done。",
+  "**判据 3 是要害:不得写死一张「要检查哪些字段」的清单。** TCRN-DS-INC-022 退回三次的共同原因就是覆盖面由执行者事先写死(先角色清单、后属性清单),这里的对应错误就是字段清单。清点入口应当是「两侧实际渲染出了哪些用户可见字符串」,由此反推承载点。",
+  "判据 4 的变异要落在样例侧的**来源**上(把某处从语言表调用改成字面量),不是改字面量的内容 —— 要证明检查看得见「这个值不是从语言表来的」。",
+  "不得回退 TCRN-DS-INC-022 四轮的成果:18 角色、element-inventory、samplingValidity、shell-relations、五语言矩阵与 aria 注入变异、顶栏四控件、收起按钮净距 >= 7px。",
+  "判据 2 落地后先跑一次全量清点,把它报出的每一条都列进收尾说明;若还有别处不同源,一并处置或登记带 reason 的例外。",
+  "视觉验收:跑完门后把样例与真身在同一视口同尺度并排截图各看一遍,两张附在回报里。"
+ ],
+ "filePointers": [
+  "apps/storybook/src/contract-stories/prototypes/storybook-shell-demos.tsx",
+  "apps/storybook/src/build/locales/storybook-locale-text.ts",
+  "apps/storybook/src/build/page-template.tsx",
+  "scripts/shell-parity-proof.mjs",
+  "package.json"
+ ],
+ "verificationCommands": [
+  "pnpm typecheck",
+  "pnpm build",
+  "pnpm verify"
+ ],
+ "chainCloseoutActions": [
+  "开工前重读 status 与本单当前 scope;推进时用当时数值的 expected-version、--actor agent:codex 与 TCRN-Design-System 分区 attestations,并回读回执。",
+  "止于 pending-owner-acceptance,等 Owner 亲眼判。"
+ ],
+ "effectiveEvidenceCommands": [
+  "五种语言各读一次样例与真身的语言按钮可见文本,十个值都要在报告里可见。",
+  "把样例某处字符串从语言表调用改成字面量,检查应判红并点名承载点与两侧的值;还原转绿。",
+  "登记一条带 reason 的例外后该条不判红且例外可见;例外表为空时检查仍执行。",
+  "判据 2 的检查首次落地时先跑一次全量清点,把报出的每一条列进收尾说明。",
+  "并排截图:同一视口同尺度各截真身与样例顶栏,附在回报里。"
+ ],
+ "storyScope": "## Goal\n\n为谁:读 Storybook 的人,以及维护样例外壳的人。目的锚:样例外壳里凡是「自己供值」的用户可见字符串,都会在真身接语言表时留在原地 —— `aria-label` 已经这样坏过一次并修好,现在轮到语言按钮的可见文本在五种语言下恒显示 `English`。逐个字段追永远慢一步。符合性判据:存在一道通用检查,对两个外壳的**全部**用户可见字符串求同源,而不是每发现一种字段就补一道。判定人:Owner。\n\n## Requirements\n\n现象与证据(2026-08-23,本地构建 `055f499`,1440 视口,零 DOM 改动):\n\n顶栏四个控件逐语言比对,三个全对,一个不对:\n\n| 页面语言 | 真身语言按钮 | 样例语言按钮 |\n| --- | --- | --- |\n| en | English | English |\n| zh-CN | 简体中文 | **English** |\n| ja | 日本語 | **English** |\n| fr | Français | **English** |\n| ko | 한국어 | **English** |\n\n两侧 `aria-label` 都是 `Language`,因此既有的 `ariaLabel` 断言判绿;`element-inventory` 比的是存在性,也判绿。**差的是可见文本,两道检查各守一半,它正好从中间漏过去。**\n\n这是同一形态的第二次:`TCRN-DS-INC-022` 第一轮里样例的 `expandedLabel` 硬编码英文,修法是改取 `localeText(\"shell.collapseNavigationLabel\")`,与真身同源;这一次是同一个病换了个字段 —— 控件的可见文本。\n\n四轮修复下来规律稳定:**凡是把值交给注册组件或语言表的地方,修完不再坏;凡是样例自己供值的地方,反复坏。** 而字段是无穷的 —— 可见文本、`aria-label`、`placeholder`、`title`、`alt`、`data-*` 里被渲染的值。按字段逐个补检查,每次都慢真身一步。\n\n修复项:样例的语言按钮改取与真身相同的语言来源;并立一道通用检查,对两侧全部用户可见字符串求同源。\n\n## Acceptance Criteria\n\n1. GIVEN 样例的语言按钮,WHEN 在 en / zh-CN / ja / fr / ko 下读取其可见文本,THEN 与真身在同一语言下相同。\n2. GIVEN 一道通用检查,WHEN 运行,THEN 它清点两个外壳中全部用户可见字符串的承载点(至少覆盖可见文本、`aria-label`、`placeholder`、`title`、`alt`),对每一条求「样例与真身取自同一语言键」。\n3. GIVEN 判据 2 的检查,WHEN 设计其覆盖面,THEN 覆盖面由两侧实际渲染出的字符串决定,**不得写死一张字段清单** —— 写死字段清单与 `TCRN-DS-INC-022` 里写死角色清单是同一个错误,该单已因此退回三次。\n4. GIVEN 样例某处字符串改为硬编码字面量,WHEN 跑该检查,THEN 判红并点名该承载点与两侧的值;WHEN 两侧同源,THEN 判绿。红绿两侧都要能到达。\n5. GIVEN 确有理由不同源的字符串(例如样例刻意展示的示意文案),WHEN 登记为带 `reason` 的例外,THEN 不判红,且例外在报告中可见;例外表为空时检查仍执行。\n6. GIVEN DS 全量门,WHEN 跑 `pnpm verify`,THEN EXIT=0。\n\n## Business Background\n\nStorybook 是平台的前端标准正本,而这个样例逐字写着「知识库壳层标准与当前 TCRN 文档壳层保持一致」。一个在中文页面上把语言按钮写成 `English` 的样例,会让照着它做的人以为该控件本就不随语言变。\n\n`TCRN-DS-INC-022` 用四轮证明了一件事:按维度逐个补检查(属性 → 关系 → 存在性)追不上,因为下一处缺陷总在没被补到的那一维。本单是同一教训在「值的来源」这一维上的收口,并且不再按字段追。\n\n## Preconditions\n\nDS `pnpm verify` 全绿(2026-08-23 在 `055f499` 实测 exit=0,工作树干净)。`shell-parity-proof.mjs` 已含 18 角色,其中 `element-inventory`(存在性差集)与 `samplingValidity`(取样有效性)是现成的通用检查参考实现。语言表位于 `apps/storybook/src/build/locales/`,真身与样例已在 `shell.collapseNavigationLabel` 上共用同一个 `localeText` 调用,可作同源写法的样板。\n\n## Assumptions\n\n假定语言按钮是当前唯一一处不同源的可见字符串。不假定如此 —— 判据 2 的检查一旦落地,应当先跑一次全量清点,把它报出的每一条都列进收尾说明;若还有别的,一并处置或登记例外。\n\n假定五种语言覆盖了语言表的全部。若语言表中还有其他语言,按实际枚举,不要沿用这五种。\n\n## Use Cases & Examples\n\n一个实施者在中文环境下照着样例做产品顶栏,看到语言按钮写着 `English`,以为该控件的标签是固定的品牌词而非当前语言名,于是产品里也写死了。\n\n## Feature Toggle & Setting\n\n无。检查无开关。例外沿用现有的带理由例外通道,不新增旁路。\n\n## Permissions\n\n无特殊权限。改的是观感与文案,归 Owner 亲眼判,止于 `pending-owner-acceptance`。\n\n## Implementation Notes\n\n判据 3 是本单的要害。`TCRN-DS-INC-022` 退回三次的共同原因是覆盖面由执行者事先写死:先是角色清单,后是属性清单。这里的对应错误是写死一张「要检查哪些字段」的清单 —— 一旦这么做,下一个没被列进去的字段会重演同一件事。\n\n清点的入口应当是「两侧实际渲染出了哪些用户可见字符串」,由此反推承载点,而不是先列字段再去找值。\n\n判据 4 的变异要落在样例侧的**来源**上(把某处从语言表调用改成字面量),而不是改字面量的内容 —— 要证明的是检查看得见「这个值不是从语言表来的」。"
+}
