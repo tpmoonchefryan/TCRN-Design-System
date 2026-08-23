@@ -7882,7 +7882,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 2725,
+        "leakCount": 2729,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7994,7 +7994,7 @@
           },
           {
             "storyId": "navigation-product-shell-spec",
-            "leakCount": 31
+            "leakCount": 35
           },
           {
             "storyId": "dialog-spec-usage",

@@ -770,6 +770,93 @@ function normalizeEphemeralProofData(value) {
   }
   return value;
 }
+
+const browserProofEnvironmentNormalizationContract = {
+  schemaVersion: "tcrn.ds.browser-proof-environment-normalization.v1",
+  disposition: "committed-summary-keeps-structural-proof-and-omits-renderer-dependent-measurements",
+  omittedFields: [
+    "summaries[].browserVersion",
+    "summaries[].shellHeaderLayoutGap",
+    "summaries[].sidebarLeft",
+    "summaries[].bodyScrollWidth",
+    "summaries[].viewportWidth",
+    "summaries[].storyRegions[].width",
+    "summaries[].storyRegions[].height",
+    "summaries[].referenceRegions[].width",
+    "summaries[].referenceRegions[].height",
+    "summaries[].sidebarNoIconLabelReadbacks[].itemWidth",
+    "summaries[].sidebarNoIconLabelReadbacks[].labelWidth",
+    "summaries[].sidebarNoIconLabelReadbacks[].labelHeight",
+    "summaries[].sidebarNoIconLabelReadbacks[].lineHeight",
+    "summaries[].sidebarNoIconLabelReadbacks[].lineCount"
+  ],
+  retainedMeasurementPolicy: "configured viewport names remain; absolute layout measurements stay in the live story-budget evaluator and are not used as committed browser-summary baselines",
+  tolerancePolicy: "no undeclared pixel tolerance; renderer-dependent absolute pixels are omitted rather than rounded"
+};
+
+function normalizeBrowserProofSummaryForCommit(summary) {
+  return {
+    ...summary,
+    environmentNormalization: {
+      ...browserProofEnvironmentNormalizationContract,
+      ...(summary.environmentNormalization ?? {})
+    },
+    summaries: summary.summaries.map((entry) => {
+      const {
+        browserVersion,
+        shellHeaderLayoutGap,
+        sidebarLeft,
+        bodyScrollWidth,
+        viewportWidth,
+        storyRegions,
+        referenceRegions,
+        sidebarNoIconLabelReadbacks,
+        ...stableEntry
+      } = entry;
+      return {
+        ...stableEntry,
+        storyRegions: (storyRegions ?? []).map(({ id, visible }) => ({ id, visible })),
+        referenceRegions: (referenceRegions ?? []).map(({ id, visible }) => ({ id, visible })),
+        sidebarNoIconLabelReadbacks: (sidebarNoIconLabelReadbacks ?? []).map((readback) => {
+          const {
+            itemWidth,
+            labelWidth,
+            labelHeight,
+            lineHeight,
+            lineCount,
+            ...stableReadback
+          } = readback;
+          return stableReadback;
+        })
+      };
+    })
+  };
+}
+
+function findBrowserProofEnvironmentFieldLeaks(summary) {
+  const hits = [];
+  summary.summaries.forEach((entry, summaryIndex) => {
+    for (const field of ["browserVersion", "shellHeaderLayoutGap", "sidebarLeft", "bodyScrollWidth", "viewportWidth"]) {
+      if (Object.prototype.hasOwnProperty.call(entry, field)) hits.push(`summaries[${summaryIndex}].${field}`);
+    }
+    for (const [regionIndex, region] of (entry.storyRegions ?? []).entries()) {
+      for (const field of ["width", "height"]) {
+        if (Object.prototype.hasOwnProperty.call(region, field)) hits.push(`summaries[${summaryIndex}].storyRegions[${regionIndex}].${field}`);
+      }
+    }
+    for (const [regionIndex, region] of (entry.referenceRegions ?? []).entries()) {
+      for (const field of ["width", "height"]) {
+        if (Object.prototype.hasOwnProperty.call(region, field)) hits.push(`summaries[${summaryIndex}].referenceRegions[${regionIndex}].${field}`);
+      }
+    }
+    for (const [readbackIndex, readback] of (entry.sidebarNoIconLabelReadbacks ?? []).entries()) {
+      for (const field of ["itemWidth", "labelWidth", "labelHeight", "lineHeight", "lineCount"]) {
+        if (Object.prototype.hasOwnProperty.call(readback, field)) hits.push(`summaries[${summaryIndex}].sidebarNoIconLabelReadbacks[${readbackIndex}].${field}`);
+      }
+    }
+  });
+  return hits;
+}
 const browser = await chromium.launch({ headless: true });
 // A CSP-free page used only to reduce captures to signatures; the docs shell refuses
 // data: image sources, so the measurement cannot run inside the page under test.
@@ -947,6 +1034,57 @@ for (const viewport of viewports) {
     await page.close();
   }
 }
+
+// TCRN-DS-INC-021: run the same structural proof under two renderer parameter
+// groups. The raw page still gets measured above for live gates; this probe only
+// compares the environment-independent projection that is allowed into the
+// committed browser summary.
+const reproducibilityParameterGroups = [
+  { id: "native-font-stack-dsf-1", deviceScaleFactor: 1, fontStack: "document-declared" },
+  { id: "forced-fallback-font-stack-dsf-2", deviceScaleFactor: 2, fontStack: "Arial, sans-serif" }
+];
+const reproducibilityProbes = [];
+for (const group of reproducibilityParameterGroups) {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    deviceScaleFactor: group.deviceScaleFactor,
+    reducedMotion: "reduce"
+  });
+  const page = await context.newPage();
+  try {
+    await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-navigation-shells.html?theme=light&locale=en&repro=${group.id}#navigation-product-shell-spec`);
+    await page.waitForSelector("[data-contract-story-id='navigation-product-shell-spec']", { state: "attached" });
+    if (group.fontStack !== "document-declared") {
+      await page.addStyleTag({ content: "html, body, body * { font-family: Arial, sans-serif !important; }" });
+    }
+    await page.evaluate(async () => {
+      if (document.fonts?.ready) await document.fonts.ready;
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    });
+    const projection = await page.evaluate(() => ({
+      shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-doc-shell") ?? null,
+      requiredStoryPresent: document.querySelectorAll("[data-contract-story-id='navigation-product-shell-spec']").length,
+      productSearchResultsPresent: document.querySelectorAll("[data-product-shell-search-results]:not([hidden])").length,
+      productSearchResultCount: document.querySelectorAll("[data-product-shell-search-results]:not([hidden]) [data-search-result]").length,
+      openMenus: document.querySelectorAll('[aria-expanded="true"]').length,
+      rootVisible: Boolean(document.querySelector("[data-contract-surface='tcrn-design-system-storybook']"))
+    }));
+    reproducibilityProbes.push({ group, projection, bytes: JSON.stringify(projection) });
+  } finally {
+    await context.close();
+  }
+}
+const reproducibilityBytes = reproducibilityProbes.map((probe) => probe.bytes);
+const browserProofReproducibility = {
+  schemaVersion: "tcrn.ds.browser-proof-reproducibility.v1",
+  sourceRoute: "components-navigation-shells.html#navigation-product-shell-spec",
+  parameterGroups: reproducibilityParameterGroups,
+  normalizedBytesEqual: reproducibilityBytes.length === 2 && reproducibilityBytes[0] === reproducibilityBytes[1],
+  normalizedProjectionDigests: reproducibilityBytes.map((bytes) => hashText(bytes)),
+  projections: reproducibilityProbes.map((probe) => probe.projection)
+};
+browserProofReproducibility.ok = browserProofReproducibility.normalizedBytesEqual
+  && reproducibilityProbes.every((probe) => probe.projection.openMenus === 8);
 
 const storybookPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#components`);
@@ -2629,6 +2767,10 @@ const browserProofSummary = {
     retained: false,
     stoppedBeforeReturn: true
   },
+  environmentNormalization: {
+    ...browserProofEnvironmentNormalizationContract,
+    reproducibility: browserProofReproducibility
+  },
   viewports,
   aiContractTraceabilityCheck,
   componentStorybookParityReadback,
@@ -2658,7 +2800,30 @@ const visualBaselineManifest = {
   entries: visualEntries
 };
 const stableStoryCoverageManifest = normalizeEphemeralProofData(storyCoverageManifest);
-const stableBrowserProofSummary = normalizeEphemeralProofData(browserProofSummary);
+const stableBrowserProofSummary = normalizeBrowserProofSummaryForCommit(normalizeEphemeralProofData(browserProofSummary));
+const environmentBaselineLeaks = findBrowserProofEnvironmentFieldLeaks(stableBrowserProofSummary);
+const environmentLeakMutation = JSON.parse(JSON.stringify(stableBrowserProofSummary));
+if (environmentLeakMutation.summaries.length > 0) {
+  environmentLeakMutation.summaries[0].browserVersion = "synthetic-renderer-version";
+  environmentLeakMutation.summaries[0].storyRegions = [{ id: "synthetic-environment-field", visible: true, width: 1440, height: 361 }];
+}
+const environmentMutationLeaks = findBrowserProofEnvironmentFieldLeaks(environmentLeakMutation);
+const environmentRestoredLeaks = findBrowserProofEnvironmentFieldLeaks(stableBrowserProofSummary);
+const environmentFieldLeakCheck = {
+  baselineGreen: environmentBaselineLeaks.length === 0,
+  mutationRed: environmentMutationLeaks.length > 0,
+  restoredGreen: environmentRestoredLeaks.length === 0,
+  baselineLeaks: environmentBaselineLeaks,
+  mutationLeaks: environmentMutationLeaks,
+  restoredLeaks: environmentRestoredLeaks
+};
+environmentFieldLeakCheck.ok = environmentFieldLeakCheck.baselineGreen
+  && environmentFieldLeakCheck.mutationRed
+  && environmentFieldLeakCheck.restoredGreen;
+browserProofSummary.environmentNormalization.fieldLeakCheck = environmentFieldLeakCheck;
+stableBrowserProofSummary.environmentNormalization.fieldLeakCheck = environmentFieldLeakCheck;
+browserProofSummary.ok = browserProofSummary.ok && browserProofReproducibility.ok && environmentFieldLeakCheck.ok;
+stableBrowserProofSummary.ok = stableBrowserProofSummary.ok && browserProofReproducibility.ok && environmentFieldLeakCheck.ok;
 const localAbsolutePathProof = {
   ok: true,
   checkedTargets: [

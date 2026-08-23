@@ -7,8 +7,21 @@ import { extname, normalize, relative, resolve } from "node:path";
 import { chromium } from "@playwright/test";
 
 const staticRoot = resolve("apps/storybook/storybook-static");
-const route = "/components-navigation-shells.html#navigation-product-shell-spec";
+const route = "/components-navigation-shells.html?theme=light&locale=en#navigation-product-shell-spec";
 const packageStorySelector = 'article[data-story-id="navigation-product-shell-spec"]';
+const expectedParityRoleCount = 10;
+const brandLockupRole = {
+  id: "brand-lockup",
+  kind: "brand-lockup",
+  document: '[data-story-id="navigation-focused-shells-spec"] [data-standard-shell="online-docs"] .tcrn-knowledge-shell__brand .tcrn-shell-brand-lockup',
+  package: ".tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo",
+  brandSurface: ".tcrn-doc-global-brand",
+  sidebarSurface: ".tcrn-doc-sidebar",
+  documentMark: ".tcrn-brand-mark",
+  packageMark: ".tcrn-brand-mark",
+  documentLine: ".tcrn-brand-wordmark, .tcrn-product-logo__line-one",
+  packageLine: ".tcrn-product-logo__line-one"
+};
 
 export const parityRoles = [
   { id: "canvas", document: ".tcrn-doc-shell", package: ".tcrn-product-shell", authority: "package", properties: ["backgroundColor"] },
@@ -19,10 +32,11 @@ export const parityRoles = [
   { id: "search", document: ".tcrn-doc-header-search .tcrn-search-input", package: ".tcrn-product-shell-search .tcrn-search-input", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "locale", document: ".tcrn-doc-locale-control-slot .tcrn-shell-locale-menu__trigger", package: ".tcrn-shell-locale-menu__trigger", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "sidebar-surface", document: ".tcrn-doc-sidebar", package: ".tcrn-product-shell__sidebar", authority: "document", properties: ["backgroundColor"] },
-  { id: "nav-item", document: ".tcrn-doc-nav__stories a", package: ".tcrn-nav-item", authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] }
+  { id: "nav-item", document: ".tcrn-doc-nav__stories a", package: ".tcrn-nav-item", authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  brandLockupRole
 ];
 
-// An empty production table still executes all nine roles. It is not a switch.
+// An empty production table still executes all ten roles. It is not a switch.
 export const parityExceptions = [];
 
 function contentType(path) {
@@ -110,12 +124,112 @@ async function removeMutation(page) {
 }
 
 export async function measureParity(page, roles = parityRoles, exceptions = parityExceptions) {
-  return page.evaluate(({ roles: roleTable, exceptionTable, storySelector }) => {
+  return page.evaluate(({ roles: roleTable, exceptionTable, storySelector, enforceRoleCount, expectedRoleCount }) => {
     const read = (node, properties) => {
       const style = getComputedStyle(node);
       return Object.fromEntries(properties.map((property) => [property, style[property]]));
     };
+    const rect = (node) => {
+      if (!node) return null;
+      const box = node.getBoundingClientRect();
+      return {
+        left: Number(box.left.toFixed(2)),
+        right: Number(box.right.toFixed(2)),
+        top: Number(box.top.toFixed(2)),
+        bottom: Number(box.bottom.toFixed(2)),
+        width: Number(box.width.toFixed(2)),
+        height: Number(box.height.toFixed(2))
+      };
+    };
+    const closeEnough = (left, right) => Math.abs(left - right) <= 0.5;
+    const measureBrandLockup = (role) => {
+      const example = document.querySelector(role.document);
+      const truth = document.querySelector(role.package);
+      const exampleMark = example?.querySelector(role.documentMark);
+      const truthMark = truth?.querySelector(role.packageMark);
+      const exampleLine = example?.querySelector(role.documentLine);
+      const truthLine = truth?.querySelector(role.packageLine);
+      const brandSurface = document.querySelector(role.brandSurface);
+      const sidebarSurface = document.querySelector(role.sidebarSurface);
+      const exampleMarkRect = rect(exampleMark);
+      const truthMarkRect = rect(truthMark);
+      const brandSurfaceRect = rect(brandSurface);
+      const sidebarSurfaceRect = rect(sidebarSurface);
+      const differences = [];
+      const measurements = {
+        example: {
+          selector: role.document,
+          className: example?.className ?? null,
+          assetId: example?.getAttribute("data-product-logo-asset-id") ?? null,
+          mark: exampleMarkRect,
+          firstLineFontSize: exampleLine ? getComputedStyle(exampleLine).fontSize : null,
+          lockup: rect(example)
+        },
+        truth: {
+          selector: role.package,
+          className: truth?.className ?? null,
+          assetId: truth?.getAttribute("data-product-logo-asset-id") ?? null,
+          mark: truthMarkRect,
+          firstLineFontSize: truthLine ? getComputedStyle(truthLine).fontSize : null,
+          lockup: rect(truth)
+        },
+        surfaces: {
+          brand: brandSurfaceRect,
+          sidebar: sidebarSurfaceRect,
+          verticalGap: brandSurfaceRect && sidebarSurfaceRect
+            ? Number((sidebarSurfaceRect.top - brandSurfaceRect.bottom).toFixed(2))
+            : null
+        }
+      };
+      if (!example || !truth || !exampleMark || !truthMark || !exampleLine || !truthLine || !brandSurface || !sidebarSurface) {
+        differences.push({
+          property: "selector",
+          document: Boolean(example && exampleMark && exampleLine && brandSurface),
+          package: Boolean(truth && truthMark && truthLine && sidebarSurface)
+        });
+      } else {
+        const comparisons = [
+          ["brandMarkWidth", exampleMarkRect?.width, truthMarkRect?.width],
+          ["brandMarkHeight", exampleMarkRect?.height, truthMarkRect?.height]
+        ];
+        for (const [property, documentValue, packageValue] of comparisons) {
+          if (!closeEnough(documentValue, packageValue)) {
+            differences.push({ property, document: documentValue, package: packageValue, direction: "document-lags" });
+          }
+        }
+        const exampleFontSize = getComputedStyle(exampleLine).fontSize;
+        const truthFontSize = getComputedStyle(truthLine).fontSize;
+        if (exampleFontSize !== truthFontSize) {
+          differences.push({ property: "firstLineFontSize", document: exampleFontSize, package: truthFontSize, direction: "document-lags" });
+        }
+        const exampleAssetId = example.getAttribute("data-product-logo-asset-id");
+        const truthAssetId = truth.getAttribute("data-product-logo-asset-id");
+        if (exampleAssetId !== truthAssetId) {
+          differences.push({ property: "productLogoAssetId", document: exampleAssetId, package: truthAssetId, direction: "document-lags" });
+        }
+        if (!closeEnough(brandSurfaceRect.left, sidebarSurfaceRect.left)) {
+          differences.push({ property: "surfaceLeft", document: brandSurfaceRect.left, package: sidebarSurfaceRect.left, direction: "document-lags" });
+        }
+        if (!closeEnough(brandSurfaceRect.right, sidebarSurfaceRect.right)) {
+          differences.push({ property: "surfaceRight", document: brandSurfaceRect.right, package: sidebarSurfaceRect.right, direction: "document-lags" });
+        }
+        const verticalGap = sidebarSurfaceRect.top - brandSurfaceRect.bottom;
+        if (verticalGap > 0.5) {
+          differences.push({ property: "surfaceVerticalGap", document: verticalGap, package: 0, direction: "document-lags" });
+        }
+      }
+      return {
+        id: role.id,
+        document: role.document,
+        package: role.package,
+        measurements,
+        differences,
+        accepted: [],
+        ok: differences.length === 0
+      };
+    };
     const results = roleTable.map((role) => {
+      if (role.kind === "brand-lockup") return measureBrandLockup(role);
       const documentNode = document.querySelector(role.document);
       const packageNode = document.querySelector(storySelector)?.querySelector(role.package);
       const differences = [];
@@ -146,9 +260,11 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       roleCount: results.length,
       roles: results,
       acceptedExceptions: results.flatMap((result) => result.accepted),
-      ok: results.length === roleTable.length && roleTable.length === 9 && results.every((result) => result.ok)
+      ok: results.length === roleTable.length
+        && (!enforceRoleCount || roleTable.length === expectedRoleCount)
+        && results.every((result) => result.ok)
     };
-  }, { roles, exceptionTable: exceptions, storySelector: packageStorySelector });
+  }, { roles, exceptionTable: exceptions, storySelector: packageStorySelector, enforceRoleCount: roles === parityRoles, expectedRoleCount: expectedParityRoleCount });
 }
 
 async function main() {
@@ -162,6 +278,22 @@ async function main() {
     await settle(page);
     await expandAllStories(page);
     const baseline = await measureParity(page);
+    const brandMatrix = [];
+    for (const combination of [
+      { theme: "light", locale: "en" },
+      { theme: "light", locale: "zh-CN" },
+      { theme: "dark", locale: "en" },
+      { theme: "dark", locale: "zh-CN" }
+    ]) {
+      await page.goto(`${server.origin}/components-navigation-shells.html?theme=${combination.theme}&locale=${combination.locale}#navigation-product-shell-spec`);
+      await settle(page);
+      await expandAllStories(page);
+      const parity = await measureParity(page, [brandLockupRole]);
+      brandMatrix.push({ ...combination, ...parity });
+    }
+    await page.goto(`${server.origin}${route}`);
+    await settle(page);
+    await expandAllStories(page);
     await addMutation(page);
     const mutated = await measureParity(page);
     await removeMutation(page);
@@ -174,20 +306,47 @@ async function main() {
     }]);
     await removeMutation(page);
     const restored = await measureParity(page);
+    const brandMutationCss = `${brandLockupRole.document} .tcrn-brand-wordmark, ${brandLockupRole.document} .tcrn-product-logo__line-one { font-size: 99px !important; }`;
+    await addCssMutation(page, brandMutationCss);
+    const brandMutated = await measureParity(page, [brandLockupRole]);
+    await removeMutation(page);
+    const brandRestored = await measureParity(page, [brandLockupRole]);
+    const brandBaseline = baseline.roles.find((role) => role.id === brandLockupRole.id);
     result = {
-      schemaVersion: "tcrn.ds.shell-parity-proof.v1",
+      schemaVersion: "tcrn.ds.shell-parity-proof.v2",
       roleCount: parityRoles.length,
       baseline,
       mutated,
       restored,
+      brandLockup: {
+        baseline: brandBaseline,
+        matrix: brandMatrix,
+        mutated: brandMutated,
+        restored: brandRestored
+      },
       exceptionProbe: {
         ok: exceptionProbe.roles.find((role) => role.id === "locale")?.ok === true
           && exceptionProbe.acceptedExceptions.some((entry) => entry.reason === "SYNTHETIC_EXCEPTION_PATH"),
         acceptedExceptions: exceptionProbe.acceptedExceptions
       },
-      redThenGreen: { baselineRed: !baseline.ok, mutationRed: !mutated.ok, restoredGreen: restored.ok }
+      redThenGreen: {
+        baselineRed: !baseline.ok,
+        mutationRed: !mutated.ok,
+        restoredGreen: restored.ok,
+        brandLockup: {
+          baselineRed: !brandBaseline?.ok,
+          mutationRed: !brandMutated.ok,
+          restoredGreen: brandRestored.ok
+        }
+      }
     };
-    result.ok = baseline.ok && !mutated.ok && restored.ok && result.exceptionProbe.ok;
+    result.ok = baseline.ok
+      && !mutated.ok
+      && restored.ok
+      && result.exceptionProbe.ok
+      && brandMatrix.every((entry) => entry.ok)
+      && !brandMutated.ok
+      && brandRestored.ok;
   } finally {
     await page.close();
     await browser.close();
