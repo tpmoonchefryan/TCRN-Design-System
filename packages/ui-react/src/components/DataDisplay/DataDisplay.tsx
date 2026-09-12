@@ -471,15 +471,7 @@ export interface DictionaryTableProps extends Omit<HTMLAttributes<HTMLElement>, 
   tableLabel: string;
 }
 
-function hasRenderableContent(node: ReactNode) {
-  return Children.toArray(node).some((child) => {
-    if (typeof child === "string") return child.trim().length > 0;
-    if (typeof child === "number") return true;
-    return isValidElement(child);
-  });
-}
-
-function plainTextContent(node: ReactNode): string | null {
+function renderedTextContent(node: ReactNode): string | null {
   const children = Children.toArray(node);
   if (children.length === 0) return null;
   let text = "";
@@ -489,7 +481,11 @@ function plainTextContent(node: ReactNode): string | null {
       continue;
     }
     if (isValidElement(child)) {
-      const nested = plainTextContent((child.props as { children?: ReactNode }).children);
+      // Intrinsic elements expose their actual child tree. A custom ReactNode may
+      // render text, ignore its children, or render nothing, so it is unknown at
+      // this layer and must fail closed rather than self-reporting completeness.
+      if (typeof child.type !== "string") return null;
+      const nested = renderedTextContent((child.props as { children?: ReactNode }).children);
       if (nested === null) return null;
       text += nested;
       continue;
@@ -500,10 +496,14 @@ function plainTextContent(node: ReactNode): string | null {
   return normalized.length > 0 ? normalized : null;
 }
 
+function hasRenderableContent(node: ReactNode) {
+  return renderedTextContent(node) !== null;
+}
+
 function duplicatePlainTexts(nodes: ReactNode[]) {
   const counts = new Map<string, number>();
   for (const node of nodes) {
-    const text = plainTextContent(node);
+    const text = renderedTextContent(node);
     if (text) counts.set(text, (counts.get(text) ?? 0) + 1);
   }
   return [...counts.entries()].filter(([, count]) => count > 1).map(([text]) => text);
@@ -517,15 +517,22 @@ export function DictionaryTable({ category, categoryDescription, entries, valueC
     if (seenValues.has(entry.value)) duplicateValues.push(entry.value);
     seenValues.add(entry.value);
   }
+  const categoryText = renderedTextContent(category);
+  const categoryDescriptionText = renderedTextContent(categoryDescription);
+  const categoryDescriptionReused = Boolean(categoryDescriptionText && entries.some((entry) => renderedTextContent(entry.description) === categoryDescriptionText));
+  const unknownContent = categoryText === null || categoryDescriptionText === null
+    || entries.some((entry) => renderedTextContent(entry.label) === null || renderedTextContent(entry.description) === null);
   const duplicateLabels = duplicatePlainTexts(entries.map((entry) => entry.label));
   const duplicateDescriptions = duplicatePlainTexts(entries.map((entry) => entry.description));
-  const valid = hasRenderableContent(category)
+  const valid = categoryText !== null
     && hasRenderableContent(categoryDescription)
     && entries.length > 0
     && entries.every((entry) => typeof entry.value === "string" && entry.value.trim().length > 0 && hasRenderableContent(entry.label) && hasRenderableContent(entry.description))
     && duplicateValues.length === 0
     && duplicateLabels.length === 0
-    && duplicateDescriptions.length === 0;
+    && duplicateDescriptions.length === 0
+    && !categoryDescriptionReused
+    && !unknownContent;
   return (
     <section
       {...props}
@@ -533,6 +540,8 @@ export function DictionaryTable({ category, categoryDescription, entries, valueC
       data-dictionary-category="true"
       data-dictionary-valid={valid ? "true" : "false"}
       data-dictionary-value-count={entries.length}
+      data-dictionary-content-certainty={unknownContent ? "unknown" : "known-text"}
+      data-dictionary-category-description-reused={categoryDescriptionReused ? "true" : undefined}
       data-dictionary-duplicate-values={duplicateValues.length > 0 ? [...new Set(duplicateValues)].join(",") : undefined}
       data-dictionary-duplicate-labels={duplicateLabels.length > 0 ? duplicateLabels.join("|") : undefined}
       data-dictionary-duplicate-descriptions={duplicateDescriptions.length > 0 ? duplicateDescriptions.join("|") : undefined}

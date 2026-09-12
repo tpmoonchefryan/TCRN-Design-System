@@ -5633,8 +5633,8 @@ a.tcrn-relationship-chip:focus-visible {
 /* DS-113/114/115 full-surface boundary and content rules. These follow the settings
    contract marker so Storybook's global package CSS carries them once while the
    scoped legacy copy remains bounded. */
-.tcrn-tooltip__content[data-tooltip-portal="true"]{position:fixed;transform:none;max-width:min(260px,calc(100vw - var(--tcrn-space-4)))}
-.tcrn-tooltip__content[data-tooltip-portal="true"][data-tooltip-open="true"]{opacity:1}
+.tcrn-tooltip__content[data-tooltip-portal="true"],.tcrn-tooltip__content[data-overlay-positioning="static-fixed"]{position:fixed;transform:none;max-width:min(260px,calc(100vw - var(--tcrn-space-4)))}
+.tcrn-tooltip__content[data-tooltip-portal="true"][data-tooltip-open="true"],.tcrn-tooltip__content[data-overlay-positioning="static-fixed"][data-tooltip-open="true"]{opacity:1}
 .tcrn-dictionary-table{display:grid;gap:var(--tcrn-space-2);min-inline-size:0;max-inline-size:100%}
 .tcrn-dictionary-table__category-description{margin:0}
 .tcrn-dictionary-table table{inline-size:100%;border-collapse:collapse;min-inline-size:0}
@@ -5644,7 +5644,7 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-dictionary-table tbody th code{display:block;color:var(--tcrn-color-text-tertiary);font-family:var(--tcrn-type-family-mono);font-size:var(--tcrn-type-size-meta);overflow-wrap:anywhere}
 .tcrn-dictionary-table__label{display:block;margin-block-start:var(--tcrn-space-0h);color:var(--tcrn-color-text-primary)}
 .tcrn-dictionary-table[data-dictionary-valid="false"]{border-inline-start:3px solid var(--tcrn-color-state-blocked);padding-inline-start:var(--tcrn-space-2)}
-.tcrn-popover[data-overlay-positioning="portal-fixed"]{position:fixed;max-width:min(420px,calc(100vw - var(--tcrn-space-4)));max-height:calc(100vh - var(--tcrn-space-4));overflow:auto;overflow-wrap:anywhere}
+.tcrn-popover[data-overlay-positioning="portal-fixed"],.tcrn-popover[data-overlay-positioning="static-fixed"]{position:fixed;max-width:min(420px,calc(100vw - var(--tcrn-space-4)));max-height:calc(100vh - var(--tcrn-space-4));overflow:auto;overflow-wrap:anywhere}
 
 /* DS-112 page hierarchy contract. */
 .tcrn-page-hierarchy{display:grid;gap:var(--tcrn-space-4);min-inline-size:0;max-inline-size:100%}

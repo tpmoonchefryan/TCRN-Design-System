@@ -138,6 +138,121 @@ async function buildClientFixture() {
   return result.outputFiles[0].text;
 }
 
+async function buildStaticOverlayBridge() {
+  const result = await build({
+    stdin: {
+      resolveDir: root,
+      sourcefile: "static-overlay-bridge-fixture.js",
+      loader: "js",
+      contents: `
+        import { mountStaticOverlayBoundary, tcrnComponentCss } from "./packages/ui-react/dist/index.js";
+        import { tcrnTokenCss } from "./packages/ui-tokens/dist/index.js";
+        const style = document.createElement("style");
+        style.textContent = tcrnTokenCss + tcrnComponentCss + "*{box-sizing:border-box}body{margin:0;font:13px sans-serif}";
+        document.head.append(style);
+        const tooltip = mountStaticOverlayBoundary({
+          trigger: document.querySelector("#static-tooltip-trigger"),
+          layer: document.querySelector("#static-tooltip-layer"),
+          kind: "tooltip",
+          placement: "right"
+        });
+        const popover = mountStaticOverlayBoundary({
+          trigger: document.querySelector("#static-popover-trigger"),
+          layer: document.querySelector("#static-popover-layer"),
+          kind: "popover",
+          placement: "bottom-start"
+        });
+        document.documentElement.setAttribute("data-static-boundary-ready", "true");
+        window.__tcrnStaticOverlayHandles = { tooltip, popover };
+      `
+    },
+    bundle: true,
+    format: "iife",
+    platform: "browser",
+    write: false,
+    logLevel: "silent"
+  });
+  return result.outputFiles[0].text;
+}
+
+async function runStaticHtmlCssConsumerProof(browser) {
+  const page = await browser.newPage({ viewport: { width: 360, height: 240 }, reducedMotion: "reduce" });
+  try {
+    await page.setContent(`<!doctype html><meta charset="utf-8">
+      <div id="static-clip" style="position:relative;width:120px;height:72px;overflow:hidden;padding:16px">
+        <button id="static-tooltip-trigger" aria-describedby="static-tooltip-layer">Help</button>
+        <span id="static-tooltip-layer" class="tcrn-tooltip__content" role="tooltip" hidden>Static supplemental text remains outside the clipping panel.</span>
+      </div>
+      <div id="static-popover-clip" style="position:relative;overflow:hidden;width:160px;height:72px;margin-top:112px;padding:8px">
+        <button id="static-popover-trigger" aria-controls="static-popover-layer" aria-expanded="false">Open context</button>
+        <section id="static-popover-layer" class="tcrn-popover" role="dialog" aria-label="Static context" hidden>
+          <p>Static context remains readable at the viewport edge.</p>
+          <button type="button">Close context</button>
+        </section>
+      </div>`);
+    await page.addScriptTag({ content: await buildStaticOverlayBridge() });
+    await page.waitForSelector("[data-static-boundary-ready='true']");
+    const initial = await page.evaluate(() => ({
+      tooltipParentIsBody: document.querySelector("#static-tooltip-layer")?.parentElement === document.body,
+      popoverParentIsBody: document.querySelector("#static-popover-layer")?.parentElement === document.body,
+      tooltipHidden: document.querySelector("#static-tooltip-layer")?.hasAttribute("hidden") ?? false,
+      popoverHidden: document.querySelector("#static-popover-layer")?.hasAttribute("hidden") ?? false,
+      tooltipPositioning: getComputedStyle(document.querySelector("#static-tooltip-layer")).position,
+      popoverPositioning: getComputedStyle(document.querySelector("#static-popover-layer")).position
+    }));
+    assert(initial.tooltipParentIsBody && initial.popoverParentIsBody && initial.tooltipHidden && initial.popoverHidden, "static HTML layers did not move to the document body or start closed");
+    assert(initial.tooltipPositioning === "fixed" && initial.popoverPositioning === "fixed", "static HTML/CSS boundary did not use fixed positioning");
+
+    const tooltipTrigger = page.locator("#static-tooltip-trigger");
+    assert(await tooltipTrigger.count() === 1, "static tooltip trigger count drifted");
+    await tooltipTrigger.focus();
+    const tooltipOpen = await page.evaluate(() => {
+      const layer = document.querySelector("#static-tooltip-layer");
+      const box = layer?.getBoundingClientRect();
+      return {
+        open: layer?.getAttribute("data-tooltip-open"),
+        boundary: layer?.getAttribute("data-overlay-boundary"),
+        placement: layer?.getAttribute("data-overlay-placement-resolved"),
+        withinViewport: Boolean(box && box.left >= 0 && box.right <= window.innerWidth && box.top >= 0 && box.bottom <= window.innerHeight),
+        clippingAncestorContainsLayer: Boolean(layer?.closest("#static-clip"))
+      };
+    });
+    assert(tooltipOpen.open === "true" && tooltipOpen.boundary === "document-body" && tooltipOpen.withinViewport && !tooltipOpen.clippingAncestorContainsLayer, "static tooltip boundary did not open outside clipping or stay in the viewport");
+    await page.keyboard.press("Escape");
+    const tooltipClosed = await page.evaluate(() => ({
+      open: document.querySelector("#static-tooltip-layer")?.getAttribute("data-tooltip-open"),
+      hidden: document.querySelector("#static-tooltip-layer")?.hasAttribute("hidden") ?? false,
+      focusReturned: document.activeElement?.id === "static-tooltip-trigger"
+    }));
+    assert(tooltipClosed.open === "false" && tooltipClosed.hidden && tooltipClosed.focusReturned, "static tooltip Escape close did not update the actual state");
+
+    const popoverTrigger = page.locator("#static-popover-trigger");
+    assert(await popoverTrigger.count() === 1, "static popover trigger count drifted");
+    await popoverTrigger.click();
+    const popoverOpen = await page.evaluate(() => {
+      const layer = document.querySelector("#static-popover-layer");
+      const box = layer?.getBoundingClientRect();
+      return {
+        open: layer?.getAttribute("data-overlay-open"),
+        boundary: layer?.getAttribute("data-overlay-boundary"),
+        withinViewport: Boolean(box && box.left >= 0 && box.right <= window.innerWidth && box.top >= 0 && box.bottom <= window.innerHeight),
+        clippingAncestorContainsLayer: Boolean(layer?.closest("#static-popover-clip")),
+        overflowY: getComputedStyle(layer).overflowY
+      };
+    });
+    assert(popoverOpen.open === "true" && popoverOpen.boundary === "document-body" && popoverOpen.withinViewport && !popoverOpen.clippingAncestorContainsLayer && popoverOpen.overflowY === "auto", "static popover boundary did not open outside clipping or stay viewport-safe");
+    await page.mouse.click(8, 8);
+    const popoverClosed = await page.evaluate(() => ({
+      open: document.querySelector("#static-popover-layer")?.getAttribute("data-overlay-open"),
+      hidden: document.querySelector("#static-popover-layer")?.hasAttribute("hidden") ?? false
+    }));
+    assert(popoverClosed.open === "false" && popoverClosed.hidden, "static popover outside dismissal did not update the actual state");
+    return { initial, tooltipOpen, tooltipClosed, popoverOpen, popoverClosed, ok: true };
+  } finally {
+    await page.close();
+  }
+}
+
 async function runClientFixtureProof(browser) {
   const page = await browser.newPage({ viewport: { width: 360, height: 240 }, reducedMotion: "reduce" });
   try {
@@ -383,6 +498,7 @@ try {
   assert(results.dictionary.every((category) => category.validMarker === "true" && category.categoryDescriptionCount === 1 && category.entryCount > 0 && category.uniqueValues && category.entryDescriptionsComplete), "dictionary content contract failed");
   await dictionaryPage.close();
 
+  results.staticHtmlCssConsumer = await runStaticHtmlCssConsumerProof(browser);
   results.clientFixture = await runClientFixtureProof(browser);
 
   results.ok = true;

@@ -1,5 +1,5 @@
 import type { ChangeEvent as ReactChangeEvent, HTMLAttributes, InputHTMLAttributes, ReactElement, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
-import { Children, cloneElement, isValidElement, useId, useRef, useState } from "react";
+import { Children, cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
 import { Icon } from "../Icon/index.js";
 import { childPropsOf, cx, mergeIds, requiredText } from "../../utils.js";
 
@@ -181,11 +181,36 @@ export interface MultiSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectEl
 /** A native closed-set collection selector. The browser owns multiple selection and form submission. */
 export function MultiSelect({ options, value, defaultValue, onChange, className, disabled, disabledReason, title, ...props }: MultiSelectProps) {
   const isControlled = value !== undefined;
+  const selectRef = useRef<HTMLSelectElement>(null);
   const [uncontrolledValue, setUncontrolledValue] = useState(() => normalizeChoiceValues(defaultValue, options));
   const selectedValue = normalizeChoiceValues(isControlled ? value : uncontrolledValue, options);
   const normalizedReason = disabled ? requiredText(disabledReason, "Multi-select unavailable in this route") : undefined;
   const disabledReasonId = useId();
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
+  useEffect(() => {
+    if (isControlled) return;
+    const select = selectRef.current;
+    const form = select?.form;
+    if (!form) return;
+    let disposed = false;
+    const syncAfterReset = () => {
+      // The reset event fires before the browser restores selected state. The
+      // option defaultSelected flags are already the authoritative reset target;
+      // sync from them synchronously so React cannot re-render the old cache and
+      // rewrite the native reset target before the next user event.
+      if (disposed) return;
+      const nextValue = normalizeChoiceValues(
+        Array.from(select.options).filter((option) => option.defaultSelected).map((option) => option.value),
+        options
+      );
+      setUncontrolledValue(nextValue);
+    };
+    form.addEventListener("reset", syncAfterReset);
+    return () => {
+      disposed = true;
+      form.removeEventListener("reset", syncAfterReset);
+    };
+  }, [isControlled, options]);
   const handleChange = (event: ReactChangeEvent<HTMLSelectElement>) => {
     const nextValue = normalizeChoiceValues(
       Array.from(event.currentTarget.selectedOptions, (option) => option.value),
@@ -198,6 +223,7 @@ export function MultiSelect({ options, value, defaultValue, onChange, className,
   return (
     <>
       <select
+        ref={selectRef}
         {...props}
         multiple
         value={isControlled ? selectedValue : undefined}

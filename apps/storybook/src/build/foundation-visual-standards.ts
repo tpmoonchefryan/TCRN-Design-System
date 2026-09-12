@@ -154,7 +154,7 @@ export const dictionaryContentContract = {
 export const overlayBoundaryContract = {
   id: "overlay-boundary-contract-v1",
   storybookRoutes: ["components.html#interaction-disclosure-spec", "components.html#dialog-spec-usage", "proof.html#overlay-focus"],
-  packageExports: ["Tooltip", "Popover", "Dialog", "Menu", "DetailDrawer", "ActionDrawer"],
+  packageExports: ["Tooltip", "Popover", "Dialog", "Menu", "DetailDrawer", "ActionDrawer", "mountStaticOverlayBoundary"],
   modeTable: [
     {
       mode: "Tooltip",
@@ -181,7 +181,13 @@ export const overlayBoundaryContract = {
     repositionOn: ["scroll", "resize", "trigger resize", "layer resize"],
     zIndexToken: "--tcrn-z-popover"
   },
-  staticDisposition: "Server-rendered Storybook examples may remain inline-static; they must not be presented as client portal evidence.",
+  staticDisposition: "Server-rendered Storybook examples may remain inline-static; they must not be presented as client portal evidence. Static HTML consumers use a body-level trigger/layer pair, tcrnComponentCss, and mountStaticOverlayBoundary to rehome and position the layer without a React tree.",
+  staticConsumerMigration: {
+    markup: "Keep the trigger and layer paired by stable id; render the layer with role=tooltip or role=dialog, class=tcrn-tooltip__content or tcrn-popover, and hidden until the bridge opens it.",
+    bootstrap: "Import mountStaticOverlayBoundary({ trigger, layer, kind, placement }) from @tcrn/ui-react and include tcrnComponentCss in the page stylesheet.",
+    behavior: "The DOM bridge moves the layer to document.body, applies static-fixed positioning, clamps/flips against the viewport, repositions on scroll/resize, and handles tooltip focus/Escape plus popover click/outside/Escape.",
+    noScriptBoundary: "If a consumer cannot run the bridge, it may render a server-positioned body sibling with measured left/top, but it must label the surface static-only and cannot claim dynamic portal, edge, or focus behavior."
+  },
   rejectCriteria: [
     "A Tooltip or Popover relies on z-index alone while a scroll ancestor clips it.",
     "A long or interactive explanation is placed in a non-interactive Tooltip.",
@@ -301,6 +307,7 @@ export const consumerVerificationContract = {
     "correct explicit three-level PageHierarchy with local navigation inside the selected subpage",
     "dictionary category description appears once and every value has its own explanation",
     "client Tooltip and Popover escape clipping ancestors and stay inside viewport bounds",
+    "static HTML/CSS overlay bridge moves body-level layers, preserves geometry, and closes a Tooltip on Escape",
     "consumer-declared not-applicable feature absent from the visible entry"
   ],
   negativeLegs: [
@@ -312,6 +319,7 @@ export const consumerVerificationContract = {
     "radio/Select branch switching resets a valid value or emits a layout-only callback",
     "closed collection uses comma-delimited text or open suggestions reject free-form values",
     "Tooltip carries interactive descendants or accepts invalid/out-of-viewport geometry",
+    "static HTML/CSS consumer leaves a clipping-bound layer or claims portal behavior without the DOM bridge",
     "two-level page with an internal left navigation region",
     "three-level page missing its parent-level tabs",
     "overlapping page hierarchy regions",
@@ -326,13 +334,14 @@ export const consumerVerificationContract = {
     "collection selected/disabled state and open-value free-form behavior",
     "dictionary category/value description presence and duplicate-value detection",
     "overlay boundary, raw placement geometry, and focus/dismissal behavior",
+    "static HTML/CSS trigger/layer pairing, body rehoming, and independent Escape state",
     "computed visibility and rendered geometry",
     "complete numeric value visibility",
     "container and overflow policy",
     "consumer-owned feature applicability"
   ],
   independenceBoundary: "The proof renders neutral DS fixtures and does not read or execute a Workflow repository.",
-  fullSurfaceCoverage: "The browser script rechecks every DS Storybook route carrying the overlay, field-value, collection, open-value, and dictionary surfaces from the inventory; the inventory is not limited to the fixed screenshots.",
+  fullSurfaceCoverage: "The browser script rechecks every DS Storybook route carrying the overlay, field-value, collection, open-value, and dictionary surfaces from the inventory, plus a DOM-only static HTML/CSS consumer path; the inventory is not limited to the fixed screenshots.",
   noOverclaim: "A green DS consumer proof is a local contract candidate; it does not claim product adoption, Owner visual acceptance, publication, or release readiness."
 } as const;
 

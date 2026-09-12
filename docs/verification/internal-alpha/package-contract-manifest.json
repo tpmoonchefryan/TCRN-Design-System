@@ -525,6 +525,10 @@
         "exported": true
       },
       {
+        "name": "mountStaticOverlayBoundary",
+        "exported": true
+      },
+      {
         "name": "useProductShellController",
         "exported": true
       }
@@ -1704,6 +1708,15 @@
       },
       {
         "storybookItem": "resolveFieldValueControl",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "mountStaticOverlayBoundary",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
