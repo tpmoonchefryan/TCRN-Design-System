@@ -9,6 +9,8 @@
 // must all be rejected.
 
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { chromium } from "@playwright/test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -49,7 +51,7 @@ export const DS_VERIFICATION_CADENCE = Object.freeze({
   },
   evidenceReuse: {
     requiredInputs: ["source tree SHA", "working-tree status", "lockfile and package versions", "command and flags", "browser/tool version", "fixture/input digest", "baseline and output-target digest"],
-    invalidators: ["source, dependency, command, environment, fixture, baseline, or output-target change", "prior failure", "missing input or output digest"],
+    invalidators: ["source, dependency, command, environment, fixture, baseline, or output-target change", "prior failure", "missing input or output digest", "empty or unknown identity content"],
     rule: "Reuse only when every required input matches exactly; otherwise mark the old receipt invalidated and rerun the affected check."
   },
   preservation: "Timing and de-duplication do not remove security, compatibility, replay, release-identity, localization, visual, or no-overclaim gates."
@@ -72,6 +74,69 @@ function hasOwn(object, key) {
   return Object.prototype.hasOwnProperty.call(object, key);
 }
 
+function hasConcreteValue(value, { allowEmptyObject = false } = {}) {
+  if (typeof value === "string") return value.trim().length > 0;
+  if (typeof value === "number") return Number.isFinite(value);
+  if (typeof value === "boolean") return true;
+  if (value === null || value === undefined || typeof value !== "object") return false;
+  if (Array.isArray(value)) return value.length > 0 && value.every((item) => hasConcreteValue(item));
+  const keys = Object.keys(value);
+  if (keys.length === 0) return allowEmptyObject;
+  return keys.every((key) => key.trim().length > 0 && hasConcreteValue(value[key]));
+}
+
+const nonEmptyVerificationIdentityKeys = new Set([
+  "sourceTreeSha",
+  "workingTreeStatus",
+  "lockfileDigest",
+  "packageVersions",
+  "command",
+  "browserToolVersion",
+  "fixtureDigest",
+  "baselineDigest",
+  "outputTargetDigest"
+]);
+
+function hasConcreteVerificationIdentity(key, value) {
+  if (key === "flags") {
+    // An empty flag string/object is a meaningful declaration of the default
+    // invocation. It is the only identity field allowed to be empty.
+    return value === "" || hasConcreteValue(value, { allowEmptyObject: true });
+  }
+  if (key === "workingTreeStatus") {
+    if (typeof value === "string") return value.trim().length > 0;
+    if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+    if (typeof value.state !== "string" || value.state.trim().length === 0 || typeof value.porcelain !== "string") return false;
+    if (value.state === "clean") return value.porcelain === "";
+    if (value.state === "dirty") return value.porcelain.trim().length > 0;
+    return false;
+  }
+  if (["packageVersions", "browserToolVersion"].includes(key)) {
+    if (typeof value === "string") return value.trim().length > 0;
+    if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+    const entries = Object.entries(value);
+    return entries.length > 0 && entries.every(([entryKey, entryValue]) => entryKey.trim().length > 0 && typeof entryValue === "string" && entryValue.trim().length > 0);
+  }
+  if (nonEmptyVerificationIdentityKeys.has(key)) return typeof value === "string" && value.trim().length > 0;
+  return value !== undefined && value !== null;
+}
+
+function fileDigest(path) {
+  try {
+    return `sha256:${createHash("sha256").update(readFileSync(path)).digest("hex")}`;
+  } catch {
+    return "";
+  }
+}
+
+function gitOutput(args) {
+  try {
+    return execFileSync("git", args, { encoding: "utf8" }).trim();
+  } catch {
+    return "";
+  }
+}
+
 /**
  * Decide whether a successful verification receipt can be reused. The caller
  * must provide every identity input; an unknown input is not a cache hit.
@@ -83,12 +148,20 @@ export function evaluateEvidenceReuse(previous, current) {
   }
   if (previous.status !== "passed") findings.push("previous_receipt_not_successful");
   for (const key of DS_VERIFICATION_INPUT_KEYS) {
-    if (!hasOwn(previous, key) || previous[key] === undefined || previous[key] === null) {
+    if (!hasOwn(previous, key)) {
       findings.push(`previous_input_missing:${key}`);
       continue;
     }
-    if (!hasOwn(current, key) || current[key] === undefined || current[key] === null) {
+    if (!hasConcreteVerificationIdentity(key, previous[key])) {
+      findings.push(`previous_input_invalid:${key}`);
+      continue;
+    }
+    if (!hasOwn(current, key)) {
       findings.push(`current_input_missing:${key}`);
+      continue;
+    }
+    if (!hasConcreteVerificationIdentity(key, current[key])) {
+      findings.push(`current_input_invalid:${key}`);
       continue;
     }
     if (JSON.stringify(previous[key]) !== JSON.stringify(current[key])) findings.push(`input_changed:${key}`);
@@ -877,32 +950,39 @@ export async function runDsConsumptionProof() {
     await browser.close();
   }
   const mismatches = results.filter((fixture) => (fixture.expected === "pass") !== fixture.result.ok).map((fixture) => fixture.id);
+  const rootPackage = JSON.parse(readFileSync("package.json", "utf8"));
+  const uiReactPackage = JSON.parse(readFileSync("packages/ui-react/package.json", "utf8"));
+  const uiTokensPackage = JSON.parse(readFileSync("packages/ui-tokens/package.json", "utf8"));
+  const uiCopyStatePackage = JSON.parse(readFileSync("packages/ui-copy-state/package.json", "utf8"));
   const reuseBase = {
     status: "passed",
-    sourceTreeSha: "candidate-sha",
-    workingTreeStatus: "clean",
-    lockfileDigest: "lockfile-digest",
-    packageVersions: "package-versions",
+    sourceTreeSha: gitOutput(["rev-parse", "HEAD"]),
+    workingTreeStatus: { state: gitOutput(["status", "--porcelain"]) === "" ? "clean" : "dirty", porcelain: gitOutput(["status", "--porcelain"]) },
+    lockfileDigest: fileDigest("pnpm-lock.yaml"),
+    packageVersions: { workspace: rootPackage.version, packageManager: rootPackage.packageManager, uiReact: uiReactPackage.version, uiTokens: uiTokensPackage.version, uiCopyState: uiCopyStatePackage.version },
     command: "pnpm full-surface:proof",
-    flags: "default",
-    browserToolVersion: "playwright-browser-version",
-    fixtureDigest: "neutral-fixture-digest",
-    baselineDigest: "visual-baseline-digest",
-    outputTargetDigest: "storybook-static-digest"
+    flags: "",
+    browserToolVersion: { browser: "playwright", version: rootPackage.devDependencies?.["@playwright/test"] ?? "" },
+    fixtureDigest: `sha256:${createHash("sha256").update(JSON.stringify(results.map(({ id, kind, expected, markup }) => ({ id, kind, expected, markup })))).digest("hex")}`,
+    baselineDigest: fileDigest("docs/verification/internal-alpha/visual-signature-baseline.json"),
+    outputTargetDigest: fileDigest("apps/storybook/storybook-static/ai-consumption-contract.json")
   };
   const reuseSameInput = evaluateEvidenceReuse(reuseBase, { ...reuseBase });
   const reuseSourceChanged = evaluateEvidenceReuse(reuseBase, { ...reuseBase, sourceTreeSha: "changed-sha" });
   const reusePriorFailure = evaluateEvidenceReuse({ ...reuseBase, status: "failed" }, { ...reuseBase });
   const reuseMissingInput = evaluateEvidenceReuse(reuseBase, { ...reuseBase, fixtureDigest: undefined });
+  const reuseEmptyIdentity = evaluateEvidenceReuse(reuseBase, { ...reuseBase, sourceTreeSha: "", lockfileDigest: "", command: "", fixtureDigest: "", baselineDigest: "", outputTargetDigest: "", packageVersions: {}, workingTreeStatus: {} });
   const reuseProof = {
     sameInput: reuseSameInput,
     sourceChanged: reuseSourceChanged,
     priorFailure: reusePriorFailure,
     missingInput: reuseMissingInput,
+    emptyIdentity: reuseEmptyIdentity,
     ok: reuseSameInput.reusable
       && !reuseSourceChanged.reusable
       && !reusePriorFailure.reusable
       && !reuseMissingInput.reusable
+      && !reuseEmptyIdentity.reusable
   };
   if (!reuseProof.ok) mismatches.push("verification-evidence-reuse");
   const contractDigest = createHash("sha256")

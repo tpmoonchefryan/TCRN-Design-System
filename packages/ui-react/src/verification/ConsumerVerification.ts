@@ -19,8 +19,31 @@ export interface ExpectedConsumerInstance {
   selectedSurface: string;
   expectedControl: string;
   expectedPanelSurface?: string;
+  expectedValues?: readonly ExpectedConsumerValue[];
   applicability: "required" | "not-applicable";
   applicabilityEvidence?: string;
+}
+
+export type ConsumerValueSerialization = "json" | "text" | "form-data";
+
+export interface ExpectedConsumerValue {
+  key: string;
+  serialization: ConsumerValueSerialization;
+  value: unknown;
+}
+
+export interface ObservedConsumerValue {
+  key: string;
+  serialization: ConsumerValueSerialization;
+  submittedValue: unknown;
+  serializedValue: string;
+  readbackValue: unknown;
+}
+
+export interface ConsumerApplicabilityObservation {
+  source: "dom";
+  actualControlCount: number;
+  reason: string;
 }
 
 export interface ConsumerInputEvidence {
@@ -81,6 +104,8 @@ export interface ObservedConsumerInstance {
   panelSurface: string;
   controlId: string;
   controlPresent: boolean;
+  values?: readonly ObservedConsumerValue[];
+  applicabilityEvidence?: ConsumerApplicabilityObservation;
   input?: ConsumerInputEvidence;
   result?: ConsumerResultEvidence;
   uiFeedback?: ConsumerUiFeedbackEvidence;
@@ -128,6 +153,107 @@ function isZoomAxis(value: unknown): value is ConsumerEvidenceZoomAxis {
 
 function addFinding(findings: string[], value: string) {
   if (!findings.includes(value)) findings.push(value);
+}
+
+function isValueSerialization(value: unknown): value is ConsumerValueSerialization {
+  return value === "json" || value === "text" || value === "form-data";
+}
+
+function canonicalEvidenceValue(value: unknown, seen = new Set<unknown>()): unknown {
+  if (value === null || typeof value === "string" || typeof value === "boolean") return value;
+  if (typeof value === "number") return Number.isFinite(value) ? value : undefined;
+  if (typeof value !== "object" || seen.has(value)) return undefined;
+  seen.add(value);
+  if (Array.isArray(value)) {
+    const items = value.map((item) => canonicalEvidenceValue(item, seen));
+    seen.delete(value);
+    return items.some((item) => item === undefined) ? undefined : items;
+  }
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype !== Object.prototype && prototype !== null) {
+    seen.delete(value);
+    return undefined;
+  }
+  const object: Record<string, unknown> = {};
+  for (const key of Object.keys(value).sort()) {
+    const item = canonicalEvidenceValue((value as Record<string, unknown>)[key], seen);
+    if (item === undefined) {
+      seen.delete(value);
+      return undefined;
+    }
+    object[key] = item;
+  }
+  seen.delete(value);
+  return object;
+}
+
+function serializeEvidenceValue(value: unknown, serialization: unknown): string | null {
+  if (!isValueSerialization(serialization)) return null;
+  const canonical = canonicalEvidenceValue(value);
+  if (canonical === undefined) return null;
+  if (serialization === "text" || serialization === "form-data") {
+    if (typeof canonical === "string" || typeof canonical === "number" || typeof canonical === "boolean") return String(canonical);
+    if (serialization === "form-data" && Array.isArray(canonical) && canonical.every((item) => typeof item === "string" || typeof item === "number" || typeof item === "boolean")) {
+      return JSON.stringify(canonical.map(String));
+    }
+    return null;
+  }
+  return JSON.stringify(canonical);
+}
+
+/** Build the canonical value string expected by `ObservedConsumerValue.serializedValue`. */
+export function serializeConsumerEvidenceValue(value: unknown, serialization: ConsumerValueSerialization): string | null {
+  return serializeEvidenceValue(value, serialization);
+}
+
+function validateValueEvidence(
+  expectedValues: unknown,
+  observedValues: unknown,
+  findings: string[],
+  instanceId: string
+) {
+  if (!Array.isArray(expectedValues) || expectedValues.length === 0) {
+    addFinding(findings, `${instanceId}:expected_values_missing`);
+    return;
+  }
+  if (!Array.isArray(observedValues)) {
+    addFinding(findings, `${instanceId}:observed_values_missing`);
+    return;
+  }
+  const expectedByKey = new Map<string, RecordValue>();
+  for (const value of expectedValues) {
+    if (!isRecord(value) || !nonEmptyString(value.key) || !isValueSerialization(value.serialization)) {
+      addFinding(findings, `${instanceId}:expected_value_shape_invalid`);
+      continue;
+    }
+    if (expectedByKey.has(value.key)) addFinding(findings, `${instanceId}:expected_value_duplicated:${value.key}`);
+    expectedByKey.set(value.key, value);
+    if (serializeEvidenceValue(value.value, value.serialization) === null) addFinding(findings, `${instanceId}:expected_value_not_serializable:${value.key}`);
+  }
+  const observedByKey = new Map<string, RecordValue>();
+  for (const value of observedValues) {
+    if (!isRecord(value) || !nonEmptyString(value.key) || !isValueSerialization(value.serialization)) {
+      addFinding(findings, `${instanceId}:observed_value_shape_invalid`);
+      continue;
+    }
+    if (observedByKey.has(value.key)) addFinding(findings, `${instanceId}:observed_value_duplicated:${value.key}`);
+    observedByKey.set(value.key, value);
+    if (!expectedByKey.has(value.key)) addFinding(findings, `${instanceId}:observed_value_unexpected:${value.key}`);
+  }
+  for (const [key, expected] of expectedByKey) {
+    const observed = observedByKey.get(key);
+    if (!observed) {
+      addFinding(findings, `${instanceId}:observed_value_missing:${key}`);
+      continue;
+    }
+    if (observed.serialization !== expected.serialization) addFinding(findings, `${instanceId}:value_serialization_mismatch:${key}`);
+    const expectedSerialized = serializeEvidenceValue(expected.value, expected.serialization);
+    const submittedSerialized = serializeEvidenceValue(observed.submittedValue, expected.serialization);
+    const readbackSerialized = serializeEvidenceValue(observed.readbackValue, expected.serialization);
+    if (expectedSerialized === null || submittedSerialized !== expectedSerialized) addFinding(findings, `${instanceId}:submitted_value_mismatch:${key}`);
+    if (readbackSerialized !== expectedSerialized) addFinding(findings, `${instanceId}:readback_value_mismatch:${key}`);
+    if (observed.serializedValue !== expectedSerialized) addFinding(findings, `${instanceId}:serialized_value_mismatch:${key}`);
+  }
 }
 
 function validateGeometry(geometry: unknown, findings: string[], instanceId: string) {
@@ -220,6 +346,7 @@ function validateRequiredObservation(
 ) {
   const instanceId = expected.id;
   if (observed.controlPresent !== true) addFinding(findings, `${instanceId}:required_control_missing`);
+  validateValueEvidence(expected.expectedValues, observed.values, findings, instanceId);
 
   const input = observed.input;
   if (!isRecord(input)) {
@@ -351,8 +478,15 @@ export function evaluateConsumerEvidence(input: ConsumerEvidenceInput): Consumer
     if (observation.controlId !== expectedEntry.expectedControl) addFinding(findings, `${instanceId}:control_identity_mismatch`);
 
     if (expectedEntry.applicability === "not-applicable") {
-      if (observation.controlPresent === true) addFinding(findings, `${instanceId}:not_applicable_control_present`);
+      if (observation.controlPresent !== false) addFinding(findings, `${instanceId}:not_applicable_control_state_unknown_or_present`);
       if (!nonEmptyString(expectedEntry.applicabilityEvidence)) addFinding(findings, `${instanceId}:not_applicable_evidence_missing`);
+      const applicabilityEvidence = observation.applicabilityEvidence;
+      if (!isRecord(applicabilityEvidence)
+        || applicabilityEvidence.source !== "dom"
+        || applicabilityEvidence.actualControlCount !== 0
+        || !nonEmptyString(applicabilityEvidence.reason)) {
+        addFinding(findings, `${instanceId}:not_applicable_dom_absence_unverified`);
+      }
       continue;
     }
     validateRequiredObservation(expectedEntry, observation, currentRequiredAxes, findings);

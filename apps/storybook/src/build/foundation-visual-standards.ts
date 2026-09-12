@@ -322,7 +322,7 @@ export const verificationCadenceContract = {
     validator: "evaluateEvidenceReuse in scripts/ds-consumption-proof.mjs",
     inputKeys: ["sourceTreeSha", "workingTreeStatus", "lockfileDigest", "packageVersions", "command", "flags", "browserToolVersion", "fixtureDigest", "baselineDigest", "outputTargetDigest"],
     requiredInputs: ["source tree SHA", "working-tree status", "lockfile and package versions", "command and flags", "browser/tool version", "fixture/input digest", "baseline and output-target digest"],
-    invalidators: ["source or test change", "dirty or unknown working-tree change", "dependency or lockfile change", "command or flag change", "browser/tool/environment change", "fixture or baseline change", "prior failure", "missing input or output digest"],
+    invalidators: ["source or test change", "dirty or unknown working-tree change", "dependency or lockfile change", "command or flag change", "browser/tool/environment change", "fixture or baseline change", "prior failure", "missing input or output digest", "empty or unknown identity content"],
     rule: "Reuse only records whose required inputs match exactly; otherwise mark the receipt invalidated and rerun the affected check."
   },
   preservation: "This cadence changes timing and parent/child execution selection only; it does not remove security, compatibility, replay, release-identity, localization, visual, or no-overclaim gates."
@@ -331,14 +331,21 @@ export const verificationCadenceContract = {
 export const operationFeedbackContract = {
   id: "operation-feedback-contract-v1",
   storybookRoutes: ["components.html#display-primitives-spec", "proof.html#ai-consumption-contract"],
-  packageExports: ["OperationFeedback", "StatusBadge", "DisclosurePanel", "StateSurface", "ProductShell"],
+  packageExports: ["OperationFeedback", "presentOperationFeedbackPhase", "StatusBadge", "DisclosurePanel", "StateSurface", "ProductShell"],
   phases: ["idle", "loading", "success", "error"],
+  phaseSemantics: [
+    { phase: "idle", labels: { "zh-CN": "未开始", en: "Idle", ja: "待機中", ko: "대기 중", fr: "En attente" }, stateRule: "No operation has started." },
+    { phase: "loading", labels: { "zh-CN": "进行中", en: "In progress", ja: "進行中", ko: "진행 중", fr: "En cours" }, stateRule: "The operation is currently running." },
+    { phase: "success", labels: { "zh-CN": "已完成", en: "Completed", ja: "完了", ko: "완료", fr: "Terminé" }, stateRule: "The operation completed successfully." },
+    { phase: "error", labels: { "zh-CN": "失败", en: "Failed", ja: "失敗", ko: "실패", fr: "Échec" }, stateRule: "The operation failed." }
+  ],
   roles: {
-    shortStatus: "StatusBadge carries the short localized copy-state label and never carries a long reason code, timestamp, or machine id.",
+    shortStatus: "StatusBadge carries the accurate short five-locale operation phase label and never carries a readiness/proof label, long reason code, timestamp, or machine id.",
     identity: "OperationFeedback renders the consumer-supplied operation, operation id, actor, actor id, and occurrence time with consumer-supplied accessible labels.",
     details: "The complete receipt and long reason remain in a keyboard-reachable DisclosurePanel controlled by a native button.",
     notification: "The root uses polite aria-live so an operation update is announced without moving focus."
   },
+  stateContract: "The optional state is an operation phase string or { phase }; when supplied it must equal phase. Readiness/proof states such as proof_required are not operation phase labels and fail closed.",
   props: ["phase", "state", "identity", "identityLabels", "detailTitle", "detailsLabel", "details", "expanded", "onExpandedChange", "locale"],
   layout: {
     root: "min-inline-size:0; max-inline-size:100%",
@@ -378,6 +385,7 @@ export const contentScopeContract = {
     sourceBoundary: "Counts and phase describe the declared dataSource for this scope only."
   },
   independentScopes: "Each ContentScope is validated independently, so one empty scope may sit beside another valid nonempty scope.",
+  renderedContentEvidence: "The model-valid marker is separate from rendered content evidence: deterministic empty fragments/null/nested empty nodes are invalid, intrinsic non-text accessible content is verified, and custom component output is marked unknown until observed.",
   staticConsumerMigration: {
     construction: "For each independent scope, evaluate the same model with validateContentScope before emitting a root carrying data-content-scope, data-content-source, data-content-phase, data-content-valid, and count markers.",
     rendering: "Render only the declared content, empty, loading, error, or invalid branch for that scope; do not let a sibling array decide this branch.",
@@ -395,10 +403,17 @@ export const contentScopeContract = {
 export const consumerEvidenceContract = {
   id: "consumer-evidence-verification-contract-v1",
   utility: "evaluateConsumerEvidence",
-  packageExport: "evaluateConsumerEvidence",
+  packageExports: ["evaluateConsumerEvidence", "serializeConsumerEvidenceValue"],
+  valueAdapter: "serializeConsumerEvidenceValue",
   sourcePath: "packages/ui-react/src/verification/ConsumerVerification.ts",
-  expectedInventory: ["id", "requestedSurface", "selectedSurface", "expectedPanelSurface", "expectedControl", "applicability", "applicabilityEvidence"],
-  observedInstance: ["instanceId", "requestedSurface", "selectedSurface", "panelSurface", "controlId", "controlPresent", "input", "result", "uiFeedback", "geometry", "zoom"],
+  expectedInventory: ["id", "requestedSurface", "selectedSurface", "expectedPanelSurface", "expectedControl", "expectedValues", "applicability", "applicabilityEvidence"],
+  observedInstance: ["instanceId", "requestedSurface", "selectedSurface", "panelSurface", "controlId", "controlPresent", "values", "applicabilityEvidence", "input", "result", "uiFeedback", "geometry", "zoom"],
+  valueEvidence: {
+    expectedFields: ["key", "serialization", "value"],
+    observedFields: ["key", "serialization", "submittedValue", "serializedValue", "readbackValue"],
+    serializationModes: ["json", "text", "form-data"],
+    equalityRule: "For every expected key, submittedValue, serializedValue, and readbackValue must equal the expected value under the declared serialization mode; missing or extra keys fail."
+  },
   traceability: {
     identity: "Every required expected id has exactly one observed instance with matching requested/selected/panel surface and control identity.",
     input: "The exercised target id, modality, change, and keyboard target offset measurement are recorded; an unverified or unknown point fails.",
@@ -409,9 +424,9 @@ export const consumerEvidenceContract = {
   },
   zoomAxes: ["dpr", "pinch-visual-viewport", "page-zoom"],
   lifecycleIntersection: "Operation success/error UI feedback and geometry are one observation; navigation-only or write-only green results cannot substitute for the intersection.",
-  applicability: "A not-applicable entry still needs one absent-control observation and non-empty applicability evidence; a missing required control cannot become N/A.",
+  applicability: "A not-applicable entry still needs one absent-control observation, controlPresent=false, actualControlCount=0, DOM source, and non-empty applicability evidence; a missing required control or unknown control state cannot become N/A.",
   positiveLegs: ["complete DOM-backed success observation", "complete DOM-backed error observation with error DOM check", "measured geometry and all three zoom axes", "evidenced absent not-applicable control"],
-  negativeLegs: ["wrong group or instance identity", "missing DOM on error", "page overflow or target outside visible viewport", "DPR-only or unmeasured scale", "hardcoded wouldFail", "HTTP-only result/UI feedback", "missing required control relabeled N/A"],
+  negativeLegs: ["wrong group or instance identity", "missing DOM on error", "value serialization/readback mismatch", "missing or extra value key", "page overflow or target outside visible viewport", "DPR-only or unmeasured scale", "hardcoded wouldFail", "HTTP-only result/UI feedback", "missing required control relabeled N/A", "unknown N/A control state"],
   rejectCriteria: [
     "A proof returns a hardcoded wouldFail result instead of evaluating the observation.",
     "A missing required control is silently treated as not applicable.",
@@ -448,7 +463,8 @@ export const consumerVerificationContract = {
     "consumer-declared not-applicable feature absent from the visible entry",
     "operation feedback keeps short status separate from identity and full receipt details across four phases",
     "content scopes keep source/count/phase truth per scope, including one content scope beside one empty scope",
-    "consumer evidence validator accepts DOM-backed lifecycle plus visible geometry and separate zoom axes"
+    "consumer evidence validator accepts DOM-backed lifecycle plus visible geometry and separate zoom axes",
+    "consumer evidence compares expected, submitted, serialized, and readback values under one declared adapter mode"
   ],
   negativeLegs: [
     "same-looking class/CSS with navigation semantics",
@@ -466,7 +482,7 @@ export const consumerVerificationContract = {
     "consumer marks a feature not applicable while leaving its entry visible",
     "operation feedback puts a long reason or id in the compact status or removes keyboard-readable details",
     "content scope shows empty or zero for a nonempty/mismatched source or collapses loading/error into empty",
-    "consumer evidence relies on HTTP-only feedback, skips error DOM, accepts missing controls as N/A, or substitutes DPR for page zoom"
+    "consumer evidence relies on HTTP-only feedback, skips error DOM, accepts missing controls as N/A, substitutes DPR for page zoom, or changes a value during serialization/readback"
   ],
   requiredEvidence: [
     "component identity",

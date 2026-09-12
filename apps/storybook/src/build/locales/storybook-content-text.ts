@@ -1,6 +1,10 @@
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 
 export const storybookContentText: Record<string, Record<TcrnLocale, string>> = {
+  "Idle": { "zh-CN": "未开始", en: "Idle", ja: "待機中", ko: "대기 중", fr: "En attente" },
+  "In progress": { "zh-CN": "进行中", en: "In progress", ja: "進行中", ko: "진행 중", fr: "En cours" },
+  "Completed": { "zh-CN": "已完成", en: "Completed", ja: "完了", ko: "완료", fr: "Terminé" },
+  "Failed": { "zh-CN": "失败", en: "Failed", ja: "失敗", ko: "실패", fr: "Échec" },
   "Operation feedback: short status and full receipt": { "zh-CN": "操作反馈：简短状态与完整回执", en: "Operation feedback: short status and full receipt", ja: "操作フィードバック：短い状態と完全なレシート", ko: "작업 피드백: 간단한 상태와 전체 영수증", fr: "Retour d’opération : état court et reçu complet" },
   "OperationFeedback keeps a short localized status in StatusBadge and places the complete identity, long reason, and timestamp in a keyboard-readable details region.": { "zh-CN": "OperationFeedback 将简短的本地化状态放在 StatusBadge 中，并把完整身份、长原因和时间戳放入键盘可读的详情区域。", en: "OperationFeedback keeps a short localized status in StatusBadge and places the complete identity, long reason, and timestamp in a keyboard-readable details region.", ja: "OperationFeedback は短いローカライズ済み状態を StatusBadge に置き、完全な識別情報、長い理由、タイムスタンプをキーボードで読める詳細領域に置きます。", ko: "OperationFeedback는 짧은 현지화 상태를 StatusBadge에 표시하고 전체 식별 정보, 긴 사유, 타임스탬프를 키보드로 읽을 수 있는 세부 정보 영역에 둡니다.", fr: "OperationFeedback conserve un état localisé court dans StatusBadge et place l’identité complète, la raison longue et l’horodatage dans une zone de détails lisible au clavier." },
   "Full receipt details": { "zh-CN": "完整回执详情", en: "Full receipt details", ja: "完全なレシート詳細", ko: "전체 영수증 세부 정보", fr: "Détails du reçu complet" },

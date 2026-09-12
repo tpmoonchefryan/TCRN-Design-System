@@ -3228,8 +3228,8 @@ const legacyContractStories: LegacyContractStory[] = [
           <ReadbackPanel title="Operation feedback contract">
             <TableShell
               label="Operation feedback phases and roles"
-              columns={[{ key: "phase", label: "Phase" }, { key: "short", label: "Short status" }, { key: "details", label: "Details" }]}
-              rows={operationFeedbackContract.phases.map((phase) => ({ phase, short: operationFeedbackContract.roles.shortStatus, details: operationFeedbackContract.roles.details }))}
+              columns={[{ key: "phase", label: "Phase" }, { key: "labels", label: "Five-locale labels" }, { key: "stateRule", label: "State rule" }]}
+              rows={operationFeedbackContract.phaseSemantics.map((entry) => ({ phase: entry.phase, labels: Object.values(entry.labels).join(" / "), stateRule: entry.stateRule }))}
             />
             <TableShell
               label="Operation feedback static consumer construction"
@@ -3281,6 +3281,15 @@ const legacyContractStories: LegacyContractStory[] = [
               label="Consumer evidence zoom axes"
               columns={[{ key: "axis", label: "Zoom axis" }, { key: "rule", label: "Rule" }]}
               rows={consumerEvidenceContract.zoomAxes.map((axis) => ({ axis, rule: "Measured effective scale, element width, and visible viewport dimensions are required for this separate axis." }))}
+            />
+            <TableShell
+              label="Consumer evidence value-level comparison"
+              columns={[{ key: "part", label: "Value evidence" }, { key: "fields", label: "Fields" }, { key: "rule", label: "Rule" }]}
+              rows={[
+                { part: "Expected", fields: consumerEvidenceContract.valueEvidence.expectedFields.join(", "), rule: consumerEvidenceContract.valueEvidence.equalityRule },
+                { part: "Observed", fields: consumerEvidenceContract.valueEvidence.observedFields.join(", "), rule: "The submitted, serialized, and readback values must all agree with the expected value." },
+                { part: "Serialization", fields: consumerEvidenceContract.valueEvidence.serializationModes.join(", "), rule: "The declared adapter mode is part of the comparison and cannot be omitted or silently changed." }
+              ]}
             />
             <Text>Validator: {consumerEvidenceContract.utility}. Lifecycle and geometry are one observation; hardcoded wouldFail, HTTP-only UI feedback, error-DOM skips, and missing-control N/A claims fail.</Text>
           </ReadbackPanel>

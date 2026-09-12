@@ -1591,17 +1591,21 @@ if (contract.pageHierarchyContract?.id !== "page-hierarchy-contract-v1"
 if (contract.operationFeedbackContract?.id !== "operation-feedback-contract-v1"
   || !contract.operationFeedbackContract?.packageExports?.includes?.("OperationFeedback")
   || JSON.stringify(contract.operationFeedbackContract?.phases) !== JSON.stringify(["idle", "loading", "success", "error"])
+  || contract.operationFeedbackContract?.phaseSemantics?.find?.((entry) => entry.phase === "loading")?.labels?.en !== "In progress"
+  || !String(contract.operationFeedbackContract?.stateContract ?? "").includes("must equal phase")
   || !String(contract.operationFeedbackContract?.roles?.details ?? "").includes("keyboard-reachable")) {
   missing.push("contract.operationFeedbackContract");
 }
 if (contract.contentScopeContract?.id !== "content-scope-contract-v1"
   || !contract.contentScopeContract?.packageExports?.includes?.("ContentScope")
   || !contract.contentScopeContract?.packageExports?.includes?.("validateContentScope")
+  || !String(contract.contentScopeContract?.renderedContentEvidence ?? "").includes("empty fragments")
   || !String(contract.contentScopeContract?.independentScopes ?? "").includes("independently")) {
   missing.push("contract.contentScopeContract");
 }
 if (contract.consumerEvidenceContract?.id !== "consumer-evidence-verification-contract-v1"
   || contract.consumerEvidenceContract?.utility !== "evaluateConsumerEvidence"
+  || !contract.consumerEvidenceContract?.valueEvidence?.observedFields?.includes?.("readbackValue")
   || JSON.stringify(contract.consumerEvidenceContract?.zoomAxes) !== JSON.stringify(["dpr", "pinch-visual-viewport", "page-zoom"])
   || !String(contract.consumerEvidenceContract?.lifecycleIntersection ?? "").includes("one observation")) {
   missing.push("contract.consumerEvidenceContract");

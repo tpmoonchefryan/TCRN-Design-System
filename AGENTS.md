@@ -40,6 +40,28 @@ or output identity also invalidates it. This cadence changes timing and parent/c
 selection only. It does not delete or skip security, compatibility, replay, release
 identity, localization, visual, or no-overclaim gates.
 
+## EPIC038 correction rules
+
+`OperationFeedback` phase copy is operation truth, not readiness truth: the default
+labels are Idle / In progress / Completed / Failed in the five supported locales. An
+optional phase state must match `phase`; a readiness/proof state is invalid. Keep long
+identity and reason values in the labeled details region.
+
+`ContentScope` must distinguish model validity from rendered-content evidence. A null,
+empty Fragment, or nested empty intrinsic tree cannot satisfy a positive content count;
+accessible intrinsic non-text content remains valid, while custom component output is
+unknown until observed. Expose the model-valid and rendered-evidence markers separately.
+
+`evaluateConsumerEvidence` compares expected values to submitted, serialized, and
+readback values under a declared serialization mode. Missing/extra keys and unknown
+values fail. A not-applicable observation requires `controlPresent=false`, a DOM-backed
+zero control count, and non-empty evidence; an omitted control state is not N/A.
+
+`evaluateEvidenceReuse` requires concrete non-empty identity content and the expected
+type for every source, dependency, command, tool, fixture, baseline, and output-target
+field. Empty flags are allowed only as the explicit no-flags invocation. Empty source,
+command, or digest values never qualify for reuse.
+
 ## Scales come from tokens — never a raw literal
 
 `docs/style-scale.md` is the radius / spacing / type reference. New styles take their

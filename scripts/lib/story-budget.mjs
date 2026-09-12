@@ -87,7 +87,9 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 3281 -> 2978: the same story renders the public component roster after the
     // functional data-display patterns were merged into core. This is the first
     // time the number has gone DOWN, and that is the point of INIT-012.
-    recordedHeightPx: 3057,
+    // 3057 -> 3145 (EPIC038 correction): the public operation-phase presenter and
+    // consumer value serializer are now explicit utility readbacks in this story.
+    recordedHeightPx: 3145,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
@@ -97,7 +99,9 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
   },
   "ai-consumption-contract": {
-    recordedHeightPx: 11406,
+    // 11406 -> 11536 (EPIC038 correction): operation phase semantics, rendered
+    // content evidence, and value-level consumer evidence are read back together.
+    recordedHeightPx: 11536,
     owedTo: "beyond-INIT-008",
     note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },
