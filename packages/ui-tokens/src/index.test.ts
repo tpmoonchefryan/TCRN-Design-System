@@ -53,6 +53,8 @@ test("tokens expose canonical CSS variables", () => {
   assert.equal(createTokenMap()["--tcrn-container-settings-control-min"], "240px");
   assert.equal(createTokenMap()["--tcrn-container-settings-choice-option"], "112px");
   assert.equal(createTokenMap()["--tcrn-container-settings-number-min"], "12ch");
+  assert.equal(createTokenMap()["--tcrn-container-page-third-level-split"], "960px");
+  assert.equal(createTokenMap()["--tcrn-container-page-third-level-nav"], "208px");
   assert.equal(createTokenMap()["--tcrn-type-size-ui"], "13px");
   assert.equal(createTokenMap()["--tcrn-type-size-reading"], "14px");
   assert.equal(createTokenMap()["--tcrn-type-line-reading"], "1.45");
@@ -103,6 +105,8 @@ test("internal-alpha proof tokens cover state, focus, overlay, and density contr
     "container.settings.choiceOption",
     "container.settings.choicePadding",
     "container.settings.numberMin",
+    "container.pageHierarchy.thirdLevelSplit",
+    "container.pageHierarchy.localNav",
     "motion.loading.loop",
     "motion.skeleton.loop",
     "motion.progress.loop",

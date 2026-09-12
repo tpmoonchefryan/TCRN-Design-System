@@ -32,7 +32,7 @@
       },
       {
         "id": "foundation-visual-standards",
-        "measure": 3603,
+        "measure": 3620,
         "recordedHeightPx": 3603,
         "owedTo": "beyond-INIT-008",
         "note": "foundation visual-standards catalogue; gated debt"
@@ -53,8 +53,8 @@
       },
       {
         "id": "ai-consumption-contract",
-        "measure": 6304,
-        "recordedHeightPx": 6304,
+        "measure": 6388,
+        "recordedHeightPx": 6388,
         "owedTo": "beyond-INIT-008",
         "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
       },
@@ -95,7 +95,7 @@
     },
     {
       "id": "foundation-visual-standards",
-      "heightPx": 3603,
+      "heightPx": 3620,
       "owedTo": "beyond-INIT-008",
       "note": "foundation visual-standards catalogue; gated debt"
     },
@@ -113,7 +113,7 @@
     },
     {
       "id": "ai-consumption-contract",
-      "heightPx": 6304,
+      "heightPx": 6388,
       "owedTo": "beyond-INIT-008",
       "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
     },

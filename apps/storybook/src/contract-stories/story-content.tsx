@@ -101,6 +101,7 @@ import {
   RecordRow,
   RecordInspector,
   SubNav,
+  PageHierarchy,
   PageHeader,
   QuickFilters,
   SplitView,
@@ -193,6 +194,7 @@ import {
   storybookDocShellVisualOracle,
   settingControlSelectionContract,
   settingsLayoutContract,
+  pageHierarchyContract,
   consumerVerificationContract
 } from "../build/foundation-visual-standards.js";
 
@@ -2745,7 +2747,7 @@ const legacyContractStories: LegacyContractStory[] = [
         <ReadbackPanel title="Container-driven settings form">
           <Text>SettingsLayout measures its frame and content container. At 960px it admits compact local navigation beside one complete form column; below 720px each setting row stacks without hiding fields or long values.</Text>
           <SettingsLayout
-            navigation={<SectionTabs label="Settings sections" items={[{ id: "general", label: "General", selected: true }, { id: "connection", label: "Connection" }, { id: "limits", label: "Limits" }]} />}
+            navigation={<SectionTabs label="Settings local navigation" items={[{ id: "general", label: "General", selected: true }, { id: "connection", label: "Connection" }, { id: "limits", label: "Limits" }]} />}
             navigationLabel="Settings sections"
             contentLabel="Complete configuration"
             hostSwitcher={
@@ -2771,7 +2773,7 @@ const legacyContractStories: LegacyContractStory[] = [
               label="Execution mode"
               description="More than two values use Select."
               settingKey="runtime.mode"
-              control={<Select defaultValue="frontier" options={[{ value: "economy", label: "Economy" }, { value: "frontier", label: "Frontier" }, { value: "reserve", label: "Reserve" }]} />}
+              control={<Select defaultValue="frontier" options={[{ value: "economy", label: "Economy" }, { value: "frontier", label: "Frontier" }, { value: "reserve", label: "Reserve", disabled: true }]} />}
             />
             <SettingRow
               label="Token budget"
@@ -2786,6 +2788,29 @@ const legacyContractStories: LegacyContractStory[] = [
             rows={settingsLayoutContract.containerQueries.map((query) => ({ container: query.container, threshold: `${query.thresholdPx}px`, rule: `${query.whenAtOrAbove}; ${query.whenBelow}` }))}
           />
         </ReadbackPanel>
+        <section id="page-hierarchy-contract" data-page-hierarchy-contract="true">
+          <ReadbackPanel title="Page hierarchy contract">
+            <Text>Page depth decides structure: two levels place content below parent tabs; three levels place local navigation inside the selected subpage. Width only adapts the admitted third-level region.</Text>
+            <div className="tcrn-spec-grid">
+              <PageHierarchy
+                depth="two"
+                header={<PageHeader title="Settings" />}
+                sectionTabs={<SubNav label="Two-level page sections" items={[{ id: "general", label: "General", current: true }, { id: "connection", label: "Connection" }, { id: "limits", label: "Limits" }]} />}
+                content={<Text>More than two values use Select.</Text>}
+                contentLabel="Complete configuration"
+              />
+              <PageHierarchy
+                depth="three"
+                header={<PageHeader title="Settings" />}
+                sectionTabs={<SubNav label="Three-level page sections" items={[{ id: "general", label: "General", current: true }, { id: "connection", label: "Connection" }, { id: "limits", label: "Limits" }]} />}
+                localNavigation={<SectionTabs label="Three-level local navigation" items={[{ id: "general", label: "General", selected: true }, { id: "connection", label: "Connection" }, { id: "limits", label: "Limits" }]} />}
+                localNavigationLabel="Three-level navigation region"
+                content={<Text>Long values remain editable, selectable, and copyable.</Text>}
+                contentLabel="Complete configuration"
+              />
+            </div>
+          </ReadbackPanel>
+        </section>
       </section>
     )
   },

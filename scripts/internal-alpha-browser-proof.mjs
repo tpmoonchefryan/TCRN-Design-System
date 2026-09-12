@@ -2557,12 +2557,162 @@ keyboardChecklist = {
 // requested width/zoom/locale/theme risk points. The readback keeps only stable
 // classifications; raw renderer-dependent dimensions remain in the command output
 // and are not promoted to the committed baseline.
+// TCRN-DS-STORY-112: page depth is explicit structure, while width only adapts
+// the already-admitted third-level region. The proof reads actual DOM order and
+// rendered boxes for both depth variants and checks a separate 680/1200px fixture
+// pair to prove that width does not infer or change the declared depth.
+const pageHierarchyProofCases = [
+  ...[390, 768, 980, 1024, 1180, 1280, 1440].map((width) => ({ width, zoom: 1, locale: "en", theme: "light" })),
+  ...["zh-CN", "en", "ja", "ko", "fr"].flatMap((locale) => ["light", "dark"].map((theme) => ({ width: 768, zoom: 1, locale, theme })))
+];
+const pageHierarchyProofReadbacks = [];
+let pageHierarchyContainerAdaptation = { ok: false, reason: "not-run" };
+for (const proofCase of pageHierarchyProofCases) {
+  const pageHierarchyPage = await browser.newPage({ viewport: { width: Math.floor(proofCase.width / proofCase.zoom), height: 900 }, reducedMotion: "reduce" });
+  try {
+    await pageHierarchyPage.goto(staticServer.origin + "/apps/storybook/storybook-static/patterns-forms-workbench.html?theme=" + proofCase.theme + "&locale=" + proofCase.locale + "#page-hierarchy-contract");
+    await pageHierarchyPage.waitForSelector("[data-page-hierarchy-contract='true']", { state: "attached" });
+    await pageHierarchyPage.evaluate(async () => {
+      if (document.fonts?.ready) await document.fonts.ready;
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    });
+    const rawReadback = await pageHierarchyPage.evaluate(() => {
+      const contractRoot = document.querySelector("[data-page-hierarchy-contract='true']");
+      const hierarchies = Array.from(contractRoot?.querySelectorAll("[data-page-hierarchy='true']") ?? []);
+      const box = (node) => {
+        const value = node?.getBoundingClientRect();
+        return value ? { left: value.left, top: value.top, right: value.right, bottom: value.bottom, width: value.width, height: value.height } : null;
+      };
+      const visible = (node) => {
+        const value = node?.getBoundingClientRect();
+        const style = node ? getComputedStyle(node) : null;
+        return Boolean(value && value.width > 0 && value.height > 0 && style?.display !== "none" && style?.visibility !== "hidden" && !node.hasAttribute("hidden"));
+      };
+      const overlaps = (first, second) => Boolean(first && second && first.left < second.right - 1 && first.right > second.left + 1 && first.top < second.bottom - 1 && first.bottom > second.top + 1);
+      const pageWidth = Math.max(document.documentElement.clientWidth, document.body.clientWidth);
+      const pageScrollWidth = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+      return hierarchies.map((node) => {
+        const header = node.querySelector("[data-page-hierarchy-slot='header']");
+        const sectionTabs = node.querySelector("[data-page-hierarchy-slot='section-tabs']");
+        const localNavigation = node.querySelector("[data-page-hierarchy-slot='local-navigation']");
+        const content = node.querySelector("[data-page-hierarchy-slot='content']");
+        const slots = Array.from(node.querySelectorAll("[data-page-hierarchy-slot]"));
+        const slotIndex = (target) => target ? slots.indexOf(target) : -1;
+        const depth = node.getAttribute("data-page-hierarchy-depth");
+        const thirdLevel = node.querySelector(".tcrn-page-hierarchy__third-level");
+        const thirdLevelColumns = thirdLevel ? getComputedStyle(thirdLevel).gridTemplateColumns : "";
+        const headerRect = box(header);
+        const tabsRect = box(sectionTabs);
+        const localNavigationRect = box(localNavigation);
+        const contentRect = box(content);
+        const expectedOrder = depth === "three"
+          ? [slotIndex(header), slotIndex(sectionTabs), slotIndex(localNavigation), slotIndex(content)]
+          : [slotIndex(header), slotIndex(sectionTabs), slotIndex(content)];
+        return {
+          depth,
+          validMarker: node.getAttribute("data-page-hierarchy-valid") === "true",
+          source: node.getAttribute("data-page-hierarchy-source"),
+          widthPolicy: node.getAttribute("data-page-hierarchy-width-policy"),
+          shellBoundary: node.getAttribute("data-page-hierarchy-shell-boundary"),
+          pageHeaderCount: header?.querySelectorAll(".tcrn-page-header").length ?? 0,
+          parentTabsCount: sectionTabs?.querySelectorAll(".tcrn-sub-nav,.tcrn-section-tabs").length ?? 0,
+          localNavigationCount: node.querySelectorAll("[data-page-hierarchy-slot='local-navigation']").length,
+          lowerContentCount: node.querySelectorAll("[data-page-hierarchy-region='lower-content']").length,
+          contentCount: node.querySelectorAll("[data-page-hierarchy-slot='content']").length,
+          domOrderOk: expectedOrder.every((value, index) => value >= 0 && (index === 0 || value > expectedOrder[index - 1])),
+          geometryVisible: visible(node) && visible(header) && visible(sectionTabs) && visible(content) && (depth !== "three" || visible(localNavigation)),
+          regionsNonOverlapping: !overlaps(headerRect, tabsRect) && !overlaps(tabsRect, localNavigationRect) && !overlaps(tabsRect, contentRect) && !overlaps(localNavigationRect, contentRect),
+          pageOverflow: pageScrollWidth > pageWidth + 1,
+          noProductShell: node.querySelector(".tcrn-product-shell") === null,
+          thirdLevelColumns
+        };
+      });
+    });
+    const depthReadbacks = rawReadback.map((readback) => ({
+      depth: readback.depth,
+      validMarker: readback.validMarker,
+      source: readback.source,
+      widthPolicy: readback.widthPolicy,
+      shellBoundary: readback.shellBoundary,
+      pageHeaderCount: readback.pageHeaderCount,
+      parentTabsCount: readback.parentTabsCount,
+      localNavigationCount: readback.localNavigationCount,
+      lowerContentCount: readback.lowerContentCount,
+      contentCount: readback.contentCount,
+      domOrderOk: readback.domOrderOk,
+      geometryVisible: readback.geometryVisible,
+      regionsNonOverlapping: readback.regionsNonOverlapping,
+      pageOverflow: readback.pageOverflow,
+      noProductShell: readback.noProductShell
+    }));
+    const depthOk = (readback) => readback.validMarker
+      && readback.source === "explicit-depth-prop"
+      && readback.widthPolicy === "container-only"
+      && readback.shellBoundary === "global-product-shell-external"
+      && readback.pageHeaderCount === 1
+      && readback.parentTabsCount === 1
+      && readback.contentCount === 1
+      && readback.domOrderOk
+      && readback.geometryVisible
+      && readback.regionsNonOverlapping
+      && !readback.pageOverflow
+      && readback.noProductShell
+      && (readback.depth === "two"
+        ? readback.localNavigationCount === 0 && readback.lowerContentCount === 1
+        : readback.depth === "three" && readback.localNavigationCount === 1 && readback.lowerContentCount === 0);
+    if (proofCase.width === 1440 && proofCase.zoom === 1 && proofCase.locale === "en" && proofCase.theme === "light") {
+      const adaptation = await pageHierarchyPage.evaluate(() => {
+        const source = document.querySelector("[data-page-hierarchy-depth='three']");
+        if (!source) return { ok: false, reason: "missing-third-level-source" };
+        const readbacks = [680, 1200].map((width) => {
+          const host = document.createElement("div");
+          host.style.inlineSize = String(width) + "px";
+          host.style.position = "fixed";
+          host.style.insetInlineStart = "0";
+          host.style.insetBlockStart = width === 680 ? "0" : "260px";
+          host.style.pointerEvents = "none";
+          const clone = source.cloneNode(true);
+          host.append(clone);
+          document.body.append(host);
+          const region = host.querySelector(".tcrn-page-hierarchy__third-level");
+          const columns = region ? getComputedStyle(region).gridTemplateColumns.split(/\s+/u).length : 0;
+          const result = { width, depth: clone.getAttribute("data-page-hierarchy-depth"), columns };
+          host.remove();
+          return result;
+        });
+        return { readbacks, ok: readbacks[0]?.depth === "three" && readbacks[1]?.depth === "three" && readbacks[0]?.columns === 1 && readbacks[1]?.columns >= 2 };
+      });
+      pageHierarchyContainerAdaptation = adaptation;
+    }
+    pageHierarchyProofReadbacks.push({
+      ...proofCase,
+      depths: depthReadbacks,
+      ok: rawReadback.length === 2 && rawReadback.every(depthOk)
+    });
+  } finally {
+    await pageHierarchyPage.close();
+  }
+}
+const pageHierarchyBrowserProof = {
+  schemaVersion: "tcrn.ds.page-hierarchy-browser-proof.v1",
+  route: "patterns-forms-workbench.html#page-hierarchy-contract",
+  widths: [390, 768, 980, 1024, 1180, 1280, 1440],
+  locales: ["zh-CN", "en", "ja", "ko", "fr"],
+  themes: ["light", "dark"],
+  containerAdaptation: pageHierarchyContainerAdaptation,
+  readbacks: pageHierarchyProofReadbacks,
+  ok: pageHierarchyProofReadbacks.length === pageHierarchyProofCases.length
+    && pageHierarchyProofReadbacks.every((readback) => readback.ok)
+    && pageHierarchyContainerAdaptation.ok
+};
+
 const settingsLayoutProofCases = [
   ...[390, 768, 980, 1024, 1180, 1280, 1440].map((width) => ({ width, zoom: 1, locale: "en", theme: "light" })),
   ...[390, 980, 1440].flatMap((width) => [1.25, 2].map((zoom) => ({ width, zoom, locale: "zh-CN", theme: "dark" }))),
   ...["zh-CN", "en", "ja", "ko", "fr"].flatMap((locale) => ["light", "dark"].map((theme) => ({ width: 768, zoom: 1, locale, theme })))
 ];
 const settingsLayoutProofReadbacks = [];
+let settingsLayoutInteractionProof = { ok: false, reason: "not-run" };
 for (const proofCase of settingsLayoutProofCases) {
   // Browser zoom reduces the CSS viewport while retaining the requested physical
   // viewport. Use the equivalent effective CSS width here; applying CSS `zoom` to
@@ -2616,7 +2766,7 @@ for (const proofCase of settingsLayoutProofCases) {
       const nestedRowColumns = nestedRows[0] ? getComputedStyle(nestedRows[0]).gridTemplateColumns : "";
       const nestedSplitGrid = nestedGridColumns.split(/\s+/u).length >= 2;
       const nestedRowGrid = nestedRowColumns.split(/\s+/u).length >= 3;
-      return {
+      const result = {
         frameMode: splitGrid ? "split" : "single",
         frameThresholdMatch: (frameWidth >= 960) === splitGrid,
         contentMode: rowGrid ? "row" : "stack",
@@ -2634,7 +2784,35 @@ for (const proofCase of settingsLayoutProofCases) {
           pageOverflow: nestedPageScrollWidth > pageWidth + 1
         }
       };
+      nestedHost.remove();
+      return result;
     });
+    if (proofCase.width === 768 && proofCase.zoom === 1 && proofCase.locale === "en" && proofCase.theme === "light") {
+      const modeSelect = settingsPage.locator("[data-settings-layout='true'] [data-setting-row='true'] select");
+      const selectCount = await modeSelect.count();
+      if (selectCount !== 1) {
+        settingsLayoutInteractionProof = { ok: false, reason: "expected-one-execution-mode-select", selectCount };
+      } else {
+        const readSelect = () => modeSelect.evaluate((node) => ({
+          value: node instanceof HTMLSelectElement ? node.value : null,
+          disabledValues: node instanceof HTMLSelectElement ? Array.from(node.options).filter((option) => option.disabled).map((option) => option.value) : []
+        }));
+        const before = await readSelect();
+        await modeSelect.click();
+        await modeSelect.press("ArrowDown");
+        const afterDisabledAttempt = await readSelect();
+        await modeSelect.press("Escape");
+        settingsLayoutInteractionProof = {
+          ok: before.value === "frontier"
+            && afterDisabledAttempt.value === "frontier"
+            && afterDisabledAttempt.disabledValues.includes("reserve"),
+          selectCount,
+          before,
+          afterDisabledAttempt,
+          action: "mouse focus plus ArrowDown keyboard navigation leaves the disabled option unselected"
+        };
+      }
+    }
     const expectedNested = { frameMode: "single", contentMode: "stack" };
     settingsLayoutProofReadbacks.push({
       ...proofCase,
@@ -2678,8 +2856,10 @@ const settingsLayoutBrowserProof = {
   themes: ["light", "dark"],
   nestedFixture: "680px frame; expected single-column and stacked rows",
   readbacks: settingsLayoutProofReadbacks,
+  interaction: settingsLayoutInteractionProof,
   ok: settingsLayoutProofReadbacks.length === settingsLayoutProofCases.length
     && settingsLayoutProofReadbacks.every((readback) => readback.ok)
+    && settingsLayoutInteractionProof.ok
 };
 
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/welcome-governance-entry.html?theme=light&locale=zh-CN#welcome-governance`);
@@ -2888,7 +3068,8 @@ const browserProofSummary = {
     && componentStorybookParityReadback.publicSourcesVisible
     && componentStorybookParityReadback.storybookOnlyDeferredMarkersVisible
     && componentStorybookParityReadback.packageBackedDisabledNavItemReasonReadback.ok
-    && settingsLayoutBrowserProof.ok,
+    && settingsLayoutBrowserProof.ok
+    && pageHierarchyBrowserProof.ok,
   syntheticFixturesOnly: true,
   noProductDataCaptured: true,
   noLocalAbsolutePathsRetained: true,
@@ -2903,6 +3084,7 @@ const browserProofSummary = {
   },
   viewports,
   settingsLayoutBrowserProof,
+  pageHierarchyBrowserProof,
   aiContractTraceabilityCheck,
   componentStorybookParityReadback,
   localeLeakScan,
@@ -3103,7 +3285,8 @@ const ok = signatureRegressions.length === 0
   && !visualBaselineManifest.rejectChecks.clippedButtonText
   && storyHeightBudget.ok
   && panelSearchReadback.ok
-  && buttonFeedbackReadback.ok;
+  && buttonFeedbackReadback.ok
+  && pageHierarchyBrowserProof.ok;
 
 console.log(JSON.stringify({
   ok,
@@ -3128,6 +3311,8 @@ console.log(JSON.stringify({
   browserProofSummaryOk: browserProofSummary.ok,
   settingsLayoutBrowserProofOk: settingsLayoutBrowserProof.ok,
   settingsLayoutCaseCount: settingsLayoutBrowserProof.readbacks.length,
+  pageHierarchyBrowserProofOk: pageHierarchyBrowserProof.ok,
+  pageHierarchyCaseCount: pageHierarchyBrowserProof.readbacks.length,
   panelSearchOk: panelSearchReadback.ok,
   buttonFeedbackOk: buttonFeedbackReadback.ok,
   storyCoverageManifestOk: storyCoverageManifest.ok,

@@ -26,9 +26,14 @@ is never returned by the component through callbacks or DOM attributes.
 `SettingChoice` is the package-backed value-selection contract. Three or more
 values always render as `Select`; a binary choice renders as a native radio group
 only when the consumer provides enough measured inline space for every label and
-control. `SegmentedNav` remains navigation and must not be used as a setting value
+control. Each binary option must provide a finite positive `minInlineSize` measured
+from the current font, locale, content, and container; the 112px package floor is a
+CSS minimum, not a label measurement. Missing or invalid measurements select
+`Select`. `SegmentedNav` remains navigation and must not be used as a setting value
 control. `NumberInput` is the numeric-entry primitive; `Stepper` remains a process
 position indicator and is not a numeric input substitute.
+Per-option `disabled` values are preserved when the same `SettingChoice` changes
+between its native radio and native Select branches.
 
 `SettingsLayout` uses the actual content container to choose its density. At a
 960px frame it places compact local navigation beside one content column; below
@@ -36,6 +41,12 @@ that it stays one column. Its content stacks `SettingRow` label, control, and to
 below 720px. The layout keeps long native input values selectable and copyable and
 does not hide configuration through overflow clipping. `SettingsHostSwitcher`
 expresses the single-host-before-complete-form composition.
+
+`PageHierarchy` takes an explicit `depth`: `two` renders `PageHeader`, parent-level
+`SubNav`/`SectionTabs`, then lower content; `three` renders the same Header and
+parent tabs, then the selected subpage's local navigation and content. The global
+`ProductShell` topbar is external, and container width only adapts the third-level
+region after depth has been chosen.
 
 ## Icon Library Boundary
 

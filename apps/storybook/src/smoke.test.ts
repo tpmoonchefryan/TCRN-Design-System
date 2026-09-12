@@ -31,6 +31,7 @@ import {
   storybookDocShellVisualOracle,
   settingControlSelectionContract,
   settingsLayoutContract,
+  pageHierarchyContract,
   consumerVerificationContract
 } from "./build/foundation-visual-standards.js";
 import { contractStories, contractStoriesByGroup, contractStoryGroups } from "./stories.js";
@@ -58,6 +59,7 @@ const expectedAiReadbackFields = [
   "consumerVisualStyleContract",
   "settingControlSelectionContract",
   "settingsLayoutContract",
+  "pageHierarchyContract",
   "consumerVerificationContract",
   "requiredProof",
   "noOverclaimBoundaries"
@@ -136,6 +138,7 @@ const expectedAiRequiredBeforeProductFrontendImplementation = [
   "use_registered_product_logo_components_for_product_identity",
   "reject_unregistered_or_deprecated_brand_assets",
   "import_package_backed_ds_primitives",
+  "consume_page_hierarchy_contract",
   "use_design_tokens_and_accessibility_rules",
   "verify_light_and_dark_storybook_theme_contract",
   "verify_motion_effect_parity_and_reduced_motion",
@@ -178,6 +181,7 @@ const expectedAiRequiredProof = [
   "motion_effect_receipt",
   "setting_control_selection_receipt",
   "settings_layout_container_receipt",
+  "page_hierarchy_receipt",
   "consumer_negative_leg_receipt",
   "product_adoption_route_receipt"
 ];
@@ -1213,8 +1217,13 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(contract.settingsLayoutContract?.id, settingsLayoutContract.id);
   assert.deepEqual(contract.settingsLayoutContract?.containerQueries?.map((query: { thresholdPx: number }) => query.thresholdPx), [960, 720]);
   assert.match(contract.settingsLayoutContract?.construction?.form ?? "", /one complete form column/);
+  assert.equal(contract.pageHierarchyContract?.id, pageHierarchyContract.id);
+  assert.deepEqual(contract.pageHierarchyContract?.storybookRoutes, pageHierarchyContract.storybookRoutes);
+  assert.deepEqual(contract.pageHierarchyContract?.depthDecisionTable?.map((row: { depth: string }) => row.depth), ["two", "three"]);
+  assert.match(contract.pageHierarchyContract?.widthPolicy ?? "", /never infers, adds, or removes a page level/);
   assert.equal(contract.consumerVerificationContract?.id, consumerVerificationContract.id);
   assert.equal(contract.consumerVerificationContract?.proofVersion, consumerVerificationContract.proofVersion);
+  assert.equal(contract.consumerVerificationContract?.contractVersion, consumerVerificationContract.contractVersion);
   assert.ok(contract.consumerVerificationContract?.positiveLegs?.length >= 4);
   assert.ok(contract.consumerVerificationContract?.negativeLegs?.some((leg: string) => /class\/CSS/.test(leg)));
   assert.match(contract.consumerVerificationContract?.independenceBoundary ?? "", /does not read or execute a Workflow repository/);
@@ -1477,7 +1486,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   const llms = readFileSync(join(process.cwd(), "storybook-static", "llms.txt"), "utf8");
   assert.match(llms, /Agents must read ai-consumption-contract\.json before implementation work\./);
   assert.match(llms, new RegExp(contractPayloadDigest));
-  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, settingsLayoutContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
+  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, settingsLayoutContract, pageHierarchyContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
   assert.match(llms, /Required Storybook sections:/);
   assert.match(llms, /Covered Storybook section\/category\/story hierarchy:/);
   assert.match(llms, /Changelog governance: change-log\.html#local-changelog/);
@@ -1488,6 +1497,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Consumer visual style contract: consumer-visual-style-contract-v1/);
   assert.match(llms, /Setting control selection contract: setting-control-selection-contract-v1/);
   assert.match(llms, /Settings layout contract: settings-layout-contract-v1/);
+  assert.match(llms, /Page hierarchy contract: page-hierarchy-contract-v1/);
   assert.match(llms, /Consumer verification contract: consumer-verification-contract-v1/);
   assert.match(llms, /Storybook doc shell visual oracle: original-storybook-doc-shell-v1/);
   assert.match(llms, /oracle recovery: internal DS doc-shell restoration plan \(owner-held governance record\)/);

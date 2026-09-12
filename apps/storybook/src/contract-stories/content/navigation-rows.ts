@@ -7,6 +7,7 @@ export const navigationComponentRows = [
   { primitive: "SearchInput", rule: "Provides search affordance for fields, filters, documentation shells, and product navigation.", boundary: "Control/Command+K shortcut labels belong only to navigation or shell search with a real focus target and result behavior." },
   { primitive: "Breadcrumb", rule: "Shows location inside a product route or documentation trail.", boundary: "Not a substitute for primary navigation." },
   { primitive: "Tabs and SegmentedNav", rule: "Switch related local views with honest segmented navigation semantics.", boundary: "Do not claim role=tab unless keyboard tab behavior is implemented." },
+  { primitive: "PageHierarchy", rule: "Encodes explicit two-level and three-level page structures before container adaptation.", boundary: "ProductShell topbar is external; width cannot infer page depth or add an internal left navigation." },
   { primitive: "ProductSwitcher", rule: "Moves between TCRN product surfaces when a consumer route owns that capability.", boundary: "Storybook examples remain synthetic." },
   { primitive: "Pagination", rule: "Separates long indexed lists without losing current filter or proof context.", boundary: "No remote count claim without product data." },
   { primitive: "SkipLink", rule: "Provides keyboard access past repeated shell navigation.", boundary: "Must remain visible on focus." }

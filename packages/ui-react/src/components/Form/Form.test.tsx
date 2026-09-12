@@ -62,11 +62,16 @@ test("STORY-106 setting choices separate value semantics from navigation and fit
     { value: "long-local", label: "Long local execution label", minInlineSize: 220 },
     { value: "long-remote", label: "Long remote execution label", minInlineSize: 220 }
   ];
+  const unmeasuredLongBinary = [
+    { value: "unmeasured-local", label: "L".repeat(100) },
+    { value: "unmeasured-remote", label: "R".repeat(100) }
+  ];
   const three = [...binary, { value: "deferred", label: "Deferred" }];
 
   assert.equal(resolveSettingChoiceControl(binary, 248).control, "radio");
   assert.equal(resolveSettingChoiceControl(binary, 247).reason, "binary-does-not-fit");
   assert.equal(resolveSettingChoiceControl(longBinary, 248).control, "select");
+  assert.equal(resolveSettingChoiceControl(unmeasuredLongBinary, 248).reason, "option-measurement-required");
   assert.equal(resolveSettingChoiceControl(three, 720).control, "select");
   assert.equal(resolveSettingChoiceControl(binary).reason, "available-inline-size-required");
 
@@ -84,6 +89,15 @@ test("STORY-106 setting choices separate value semantics from navigation and fit
   assert.match(selectHtml, /<select/);
   assert.equal((selectHtml.match(/<option/g) ?? []).length, 3);
   assert.doesNotMatch(selectHtml, /tcrn-segmented-nav/);
+
+  const disabledOptions = [
+    { value: "allowed", label: "Allowed", minInlineSize: 112 },
+    { value: "unavailable", label: "Unavailable", minInlineSize: 112, disabled: true }
+  ];
+  const disabledRadioHtml = renderToStaticMarkup(<SettingChoice label="Mode" name="mode" options={disabledOptions} availableInlineSize={500} />);
+  assert.match(disabledRadioHtml, /type="radio"[^>]*disabled=""[^>]*name="mode"[^>]*value="unavailable"/);
+  const disabledSelectHtml = renderToStaticMarkup(<SettingChoice label="Mode" name="mode" options={disabledOptions} availableInlineSize={100} />);
+  assert.match(disabledSelectHtml, /<option[^>]*value="unavailable"[^>]*disabled/);
 
   const hostHtml = renderToStaticMarkup(
     <SettingsHostSwitcher label="Host" name="host" hosts={binary} availableInlineSize={248} />

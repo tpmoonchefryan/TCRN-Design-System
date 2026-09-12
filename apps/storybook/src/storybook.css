@@ -128,6 +128,8 @@
   --tcrn-container-settings-choice-option: 112px;
   --tcrn-container-settings-choice-padding: 8px;
   --tcrn-container-settings-number-min: 12ch;
+  --tcrn-container-page-third-level-split: 960px;
+  --tcrn-container-page-third-level-nav: 208px;
 }
 [data-tcrn-theme="dark"] {
   --tcrn-selection-fill: rgba(236, 236, 234, 0.09);

@@ -125,6 +125,7 @@ export function Textarea({ className, disabled, disabledReason, title, ...props 
 export interface SelectOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -147,7 +148,7 @@ export function Select({ options, className, disabled, disabledReason, title, ..
         className={cx("tcrn-select", className)}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} disabled={option.disabled}>
             {option.label}
           </option>
         ))}
@@ -328,17 +329,18 @@ export interface SettingChoiceOption {
 
 export interface SettingChoiceDecision {
   control: SettingChoiceControl;
-  reason: "option-count-requires-select" | "available-inline-size-required" | "binary-does-not-fit" | "binary-fits";
+  reason: "option-count-requires-select" | "option-measurement-required" | "available-inline-size-required" | "binary-does-not-fit" | "binary-fits";
   requiredInlineSize: number;
   availableInlineSize?: number;
 }
 
 /**
  * The numeric values are the package contract for the binary-choice fit check.
- * They mirror the container tokens used by the stylesheet: each option gets a
- * 112px minimum, the pair has an 8px gap, and the group has 8px padding on each
- * inline edge. Consumers with measured localized labels can raise an option's
- * `minInlineSize`; an unknown available size deliberately selects `<select>`.
+ * They mirror the container tokens used by the stylesheet: each option has a
+ * 112px CSS floor, the pair has an 8px gap, and the group has 8px padding on
+ * each inline edge. The CSS floor is not a label measurement: a consumer must
+ * provide a finite positive `minInlineSize` for each option before this helper
+ * can admit a binary radio group.
  */
 export const tcrnSettingChoiceDefaultOptionMinInlineSize = 112;
 export const tcrnSettingChoiceBinaryGap = 8;
@@ -346,6 +348,7 @@ export const tcrnSettingChoiceBinaryPadding = 8;
 
 export const tcrnSettingChoiceDecisionTable = [
   { optionCount: "0-1", control: "select", rule: "Value selection remains a select when no binary pair exists." },
+  { optionCount: "2", control: "select", rule: "Use select when either option lacks a finite positive label/control measurement." },
   { optionCount: "2", control: "radio", rule: "Use the binary value choice only when every label and control fits the measured inline size." },
   { optionCount: "2", control: "select", rule: "Use select when the measured inline size is missing or below the required binary width." },
   { optionCount: "3+", control: "select", rule: "Settings with more than two values always use select." }
@@ -364,8 +367,18 @@ export function resolveSettingChoiceControl(
     };
   }
 
-  const requiredInlineSize = options.reduce(
-    (total, option) => total + Math.max(option.minInlineSize ?? tcrnSettingChoiceDefaultOptionMinInlineSize, 0),
+  const measuredOptionSizes = options.map((option) => option.minInlineSize);
+  if (!measuredOptionSizes.every((size) => typeof size === "number" && Number.isFinite(size) && size > 0)) {
+    return {
+      control: "select",
+      reason: "option-measurement-required",
+      requiredInlineSize: 0,
+      availableInlineSize
+    };
+  }
+
+  const requiredInlineSize = measuredOptionSizes.reduce<number>(
+    (total, optionSize) => total + (optionSize ?? 0),
     tcrnSettingChoiceBinaryGap + (tcrnSettingChoiceBinaryPadding * 2)
   );
   if (availableInlineSize === undefined || !Number.isFinite(availableInlineSize)) {
@@ -415,7 +428,7 @@ export function SettingChoice({
   const hintId = useId();
   const errorId = useId();
   const describedBy = mergeIds(hint ? hintId : undefined, error ? errorId : undefined);
-  const selectOptions = options.map(({ value: optionValue, label: optionLabel }) => ({ value: optionValue, label: optionLabel }));
+  const selectOptions = options.map(({ value: optionValue, label: optionLabel, disabled: optionDisabled }) => ({ value: optionValue, label: optionLabel, disabled: optionDisabled }));
   const radioOptions: RadioOption[] = options.map(({ value: optionValue, label: optionLabel, description, disabled: optionDisabled, minInlineSize }) => ({
     value: optionValue,
     label: optionLabel,

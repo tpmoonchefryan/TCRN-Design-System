@@ -1559,15 +1559,28 @@ if (contract.settingsLayoutContract?.id !== "settings-layout-contract-v1"
   || contract.settingsLayoutContract?.containerQueries?.[1]?.thresholdPx !== 720) {
   missing.push("contract.settingsLayoutContract.containerQueries");
 }
+if (contract.pageHierarchyContract?.id !== "page-hierarchy-contract-v1"
+  || !contract.pageHierarchyContract?.packageExports?.includes?.("PageHierarchy")
+  || contract.pageHierarchyContract?.depthDecisionTable?.map?.((row) => row.depth).join(",") !== "two,three"
+  || !String(contract.pageHierarchyContract?.widthPolicy ?? "").includes("never infers")) {
+  missing.push("contract.pageHierarchyContract");
+}
+if (!pages.Patterns.includes('id="page-hierarchy-contract"')
+  || (pages.Patterns.match(/data-page-hierarchy-depth="two"/g) ?? []).length !== 1
+  || (pages.Patterns.match(/data-page-hierarchy-depth="three"/g) ?? []).length !== 1
+  || !pages.Patterns.includes('data-page-hierarchy-shell-boundary="global-product-shell-external"')) {
+  missing.push("patterns.pageHierarchyContract.story");
+}
 if (contract.consumerVerificationContract?.id !== "consumer-verification-contract-v1"
-  || contract.consumerVerificationContract?.proofVersion !== "tcrn.ds-consumption-proof.v1"
+  || contract.consumerVerificationContract?.proofVersion !== "tcrn.ds-consumption-proof.v2"
+  || contract.consumerVerificationContract?.contractVersion !== "ds_consumption_contract_v2"
   || !contract.consumerVerificationContract?.negativeLegs?.some?.((leg) => leg.includes("class/CSS"))) {
   missing.push("contract.consumerVerificationContract.negativeLegs");
 }
 if (!llmsTxt.includes("Agents must read ai-consumption-contract.json before implementation work.")) {
   missing.push("llms-first-read-requirement");
 }
-if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, settingsLayoutContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
+if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, settingsLayoutContract, pageHierarchyContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
   missing.push("llms-required-readback-fields");
 }
 if (!llmsTxt.includes("Required Storybook sections:")) {
@@ -1593,6 +1606,9 @@ if (!llmsTxt.includes("Setting control selection contract: setting-control-selec
 }
 if (!llmsTxt.includes("Settings layout contract: settings-layout-contract-v1")) {
   missing.push("llms-settings-layout-contract");
+}
+if (!llmsTxt.includes("Page hierarchy contract: page-hierarchy-contract-v1")) {
+  missing.push("llms-page-hierarchy-contract");
 }
 if (!llmsTxt.includes("Consumer verification contract: consumer-verification-contract-v1")) {
   missing.push("llms-consumer-verification-contract");

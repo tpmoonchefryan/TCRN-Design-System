@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 118,
+  "componentCount": 119,
   "coverage": {
-    "registryComponentCount": 118,
+    "registryComponentCount": 119,
     "publicComponentNames": [
       "ActionDrawer",
       "ActivityFeed",
@@ -61,6 +61,7 @@
       "NavItem",
       "NumberInput",
       "PageHeader",
+      "PageHierarchy",
       "Pagination",
       "Popover",
       "ProductLauncher",
@@ -181,6 +182,7 @@
       "NavItem",
       "NumberInput",
       "PageHeader",
+      "PageHierarchy",
       "Pagination",
       "Popover",
       "ProductLauncher",
@@ -2500,6 +2502,69 @@
         "meta"
       ],
       "propsType": "PageHeaderProps"
+    },
+    "PageHierarchy": {
+      "name": "PageHierarchy",
+      "kind": "function",
+      "props": [
+        {
+          "name": "content",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "contentLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "depth",
+          "type": "PageHierarchyDepth",
+          "required": true,
+          "enumValues": [
+            "two",
+            "three"
+          ]
+        },
+        {
+          "name": "header",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "localNavigation",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "localNavigationLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Local navigation\""
+        },
+        {
+          "name": "sectionTabs",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {
+        "depth": [
+          "two",
+          "three"
+        ]
+      },
+      "slots": [
+        "content",
+        "header",
+        "localNavigation",
+        "sectionTabs"
+      ],
+      "propsType": "PageHierarchyProps"
     },
     "Pagination": {
       "name": "Pagination",
