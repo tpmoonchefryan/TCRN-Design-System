@@ -1557,6 +1557,21 @@ if (!contract.settingControlSelectionContract?.packageExports?.includes?.("Setti
 if (!String(contract.settingControlSelectionContract?.stateRetention?.callback ?? "").includes("layout-only branch switch")) {
   missing.push("contract.settingControlSelectionContract.stateRetention");
 }
+if (contract.fieldValueSelectionContract?.id !== "field-value-selection-contract-v1"
+  || !contract.fieldValueSelectionContract?.packageExports?.includes?.("MultiSelect")
+  || !contract.fieldValueSelectionContract?.packageExports?.includes?.("SuggestInput")) {
+  missing.push("contract.fieldValueSelectionContract");
+}
+if (contract.dictionaryContentContract?.id !== "dictionary-content-contract-v1"
+  || !contract.dictionaryContentContract?.packageExports?.includes?.("DictionaryTable")) {
+  missing.push("contract.dictionaryContentContract");
+}
+if (contract.overlayBoundaryContract?.id !== "overlay-boundary-contract-v1"
+  || !contract.overlayBoundaryContract?.packageExports?.includes?.("Tooltip")
+  || !contract.overlayBoundaryContract?.packageExports?.includes?.("Popover")
+  || !String(contract.overlayBoundaryContract?.geometry?.edgePolicy ?? "").includes("flip")) {
+  missing.push("contract.overlayBoundaryContract");
+}
 if (contract.settingsLayoutContract?.id !== "settings-layout-contract-v1"
   || contract.settingsLayoutContract?.containerQueries?.[0]?.thresholdPx !== 960
   || contract.settingsLayoutContract?.containerQueries?.[1]?.thresholdPx !== 720) {
@@ -1575,6 +1590,7 @@ if (!pages.Patterns.includes('id="page-hierarchy-contract"')
   missing.push("patterns.pageHierarchyContract.story");
 }
 if (contract.consumerVerificationContract?.id !== "consumer-verification-contract-v1"
+  || contract.consumerVerificationContract?.browserScript !== "scripts/full-surface-remediation-proof.mjs"
   || contract.consumerVerificationContract?.proofVersion !== "tcrn.ds-consumption-proof.v2"
   || contract.consumerVerificationContract?.contractVersion !== "ds_consumption_contract_v2"
   || !contract.consumerVerificationContract?.negativeLegs?.some?.((leg) => leg.includes("class/CSS"))) {
@@ -1583,7 +1599,7 @@ if (contract.consumerVerificationContract?.id !== "consumer-verification-contrac
 if (!llmsTxt.includes("Agents must read ai-consumption-contract.json before implementation work.")) {
   missing.push("llms-first-read-requirement");
 }
-if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, settingsLayoutContract, pageHierarchyContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
+if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, fieldValueSelectionContract, dictionaryContentContract, overlayBoundaryContract, settingsLayoutContract, pageHierarchyContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
   missing.push("llms-required-readback-fields");
 }
 if (!llmsTxt.includes("Required Storybook sections:")) {
@@ -1606,6 +1622,15 @@ if (!llmsTxt.includes("Consumer visual style contract: consumer-visual-style-con
 }
 if (!llmsTxt.includes("Setting control selection contract: setting-control-selection-contract-v1")) {
   missing.push("llms-setting-control-selection-contract");
+}
+if (!llmsTxt.includes("Field value selection contract: field-value-selection-contract-v1")) {
+  missing.push("llms-field-value-selection-contract");
+}
+if (!llmsTxt.includes("Dictionary content contract: dictionary-content-contract-v1")) {
+  missing.push("llms-dictionary-content-contract");
+}
+if (!llmsTxt.includes("Overlay boundary contract: overlay-boundary-contract-v1")) {
+  missing.push("llms-overlay-boundary-contract");
 }
 if (!llmsTxt.includes("Settings layout contract: settings-layout-contract-v1")) {
   missing.push("llms-settings-layout-contract");

@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 119,
+  "componentCount": 122,
   "coverage": {
-    "registryComponentCount": 119,
+    "registryComponentCount": 122,
     "publicComponentNames": [
       "ActionDrawer",
       "ActivityFeed",
@@ -27,6 +27,7 @@
       "DetailInspector",
       "DetailLayout",
       "Dialog",
+      "DictionaryTable",
       "DisclosurePanel",
       "Divider",
       "DocumentCanvas",
@@ -57,6 +58,7 @@
       "MetadataRail",
       "MobileNavToggle",
       "ModuleTabs",
+      "MultiSelect",
       "NavGroup",
       "NavItem",
       "NumberInput",
@@ -109,6 +111,7 @@
       "StatusSummaryPanel",
       "Stepper",
       "SubNav",
+      "SuggestInput",
       "Surface",
       "Switch",
       "TableShell",
@@ -148,6 +151,7 @@
       "DetailInspector",
       "DetailLayout",
       "Dialog",
+      "DictionaryTable",
       "DisclosurePanel",
       "Divider",
       "DocumentCanvas",
@@ -178,6 +182,7 @@
       "MetadataRail",
       "MobileNavToggle",
       "ModuleTabs",
+      "MultiSelect",
       "NavGroup",
       "NavItem",
       "NumberInput",
@@ -230,6 +235,7 @@
       "StatusSummaryPanel",
       "Stepper",
       "SubNav",
+      "SuggestInput",
       "Surface",
       "Switch",
       "TableShell",
@@ -1012,6 +1018,50 @@
         "children"
       ],
       "propsType": "DialogProps"
+    },
+    "DictionaryTable": {
+      "name": "DictionaryTable",
+      "kind": "function",
+      "props": [
+        {
+          "name": "category",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "categoryDescription",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "descriptionColumnLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "entries",
+          "type": "DictionaryEntry[]",
+          "required": true
+        },
+        {
+          "name": "tableLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "valueColumnLabel",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "category",
+        "categoryDescription"
+      ],
+      "propsType": "DictionaryTableProps"
     },
     "DisclosurePanel": {
       "name": "DisclosurePanel",
@@ -2291,6 +2341,40 @@
       "variants": {},
       "slots": [],
       "propsType": "SelectableNavProps"
+    },
+    "MultiSelect": {
+      "name": "MultiSelect",
+      "kind": "function",
+      "props": [
+        {
+          "name": "defaultValue",
+          "type": "string[]",
+          "required": false
+        },
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "onChange",
+          "type": "(values: string[]) => void",
+          "required": false
+        },
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "string[]",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "MultiSelectProps"
     },
     "NavGroup": {
       "name": "NavGroup",
@@ -4836,6 +4920,26 @@
       "variants": {},
       "slots": [],
       "propsType": "SubNavProps"
+    },
+    "SuggestInput": {
+      "name": "SuggestInput",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "suggestions",
+          "type": "string[]",
+          "required": false,
+          "default": "[]"
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "SuggestInputProps"
     },
     "Surface": {
       "name": "Surface",

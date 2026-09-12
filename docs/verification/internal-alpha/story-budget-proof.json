@@ -32,15 +32,15 @@
       },
       {
         "id": "foundation-visual-standards",
-        "measure": 3620,
-        "recordedHeightPx": 3603,
+        "measure": 3761,
+        "recordedHeightPx": 3761,
         "owedTo": "beyond-INIT-008",
         "note": "foundation visual-standards catalogue; gated debt"
       },
       {
         "id": "component-family-index",
-        "measure": 2800,
-        "recordedHeightPx": 2800,
+        "measure": 2925,
+        "recordedHeightPx": 2925,
         "owedTo": "beyond-INIT-008",
         "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
       },
@@ -53,8 +53,8 @@
       },
       {
         "id": "ai-consumption-contract",
-        "measure": 6458,
-        "recordedHeightPx": 6458,
+        "measure": 7539,
+        "recordedHeightPx": 7539,
         "owedTo": "beyond-INIT-008",
         "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
       },
@@ -95,13 +95,13 @@
     },
     {
       "id": "foundation-visual-standards",
-      "heightPx": 3620,
+      "heightPx": 3761,
       "owedTo": "beyond-INIT-008",
       "note": "foundation visual-standards catalogue; gated debt"
     },
     {
       "id": "component-family-index",
-      "heightPx": 2800,
+      "heightPx": 2925,
       "owedTo": "beyond-INIT-008",
       "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
     },
@@ -113,7 +113,7 @@
     },
     {
       "id": "ai-consumption-contract",
-      "heightPx": 6458,
+      "heightPx": 7539,
       "owedTo": "beyond-INIT-008",
       "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
     },

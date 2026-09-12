@@ -16,6 +16,7 @@ import {
   DetailDrawer,
   DetailInspector,
   DefinitionList,
+  DictionaryTable,
   DisclosurePanel,
   Dialog,
   Divider,
@@ -35,6 +36,7 @@ import {
   LineNumberedEditor,
   LiveRegion,
   LockHint,
+  MultiSelect,
   NavGroup,
   NavItem,
   Pagination,
@@ -65,6 +67,7 @@ import {
   StampRule,
   StatusBadge,
   Surface,
+  SuggestInput,
   TableShell,
   TableToolbar,
   Text,
@@ -193,6 +196,9 @@ import {
   foundationVisualStandardsReadback,
   storybookDocShellVisualOracle,
   settingControlSelectionContract,
+  fieldValueSelectionContract,
+  dictionaryContentContract,
+  overlayBoundaryContract,
   settingsLayoutContract,
   pageHierarchyContract,
   consumerVerificationContract
@@ -1267,6 +1273,32 @@ const legacyContractStories: LegacyContractStory[] = [
             <StatusBadge state={{ state: "not_claimed" }} />
             <StatusBadge state={{ state: "future_external_ready" }} />
           </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="Dictionary value explanations">
+          <DictionaryTable
+            category="Storage backend"
+            categoryDescription="Choose the storage implementation for the workspace data in this fixture."
+            tableLabel="Storage backend values"
+            valueColumnLabel="Value"
+            descriptionColumnLabel="Description"
+            entries={[
+              { value: "file", label: "File", description: "Uses one local file implementation.", defaultValue: false },
+              { value: "file-segmented", label: "File segmented", description: "Uses bounded local segments for the same storage role.", defaultValue: true }
+            ]}
+          />
+          <DictionaryTable
+            category="Backup cadence"
+            categoryDescription="Choose when the workflow suggests a snapshot for this fixture."
+            tableLabel="Backup cadence values"
+            valueColumnLabel="Value"
+            descriptionColumnLabel="Description"
+            entries={[
+              { value: "gate-close", label: "Gate close", description: "Suggests a snapshot when a gate closes." },
+              { value: "session-end", label: "Session end", description: "Suggests a snapshot when the session ends." },
+              { value: "manual", label: "Manual", description: "Suggests a snapshot only when requested." }
+            ]}
+          />
+          <InlineAlert tone="warning">Category copy appears once per table; each machine value needs its own property, function, or selection-timing explanation.</InlineAlert>
         </ReadbackPanel>
         <ReadbackPanel title="Fail-closed presentation">
           <StateView state={{ state: "future_external_ready" }} />
@@ -2927,6 +2959,25 @@ const legacyContractStories: LegacyContractStory[] = [
           rows={patternExpansionRows.slice(0, 1)}
         />
         <InlineAlert tone="warning">Large or remote option sets need search, loading, empty, and keyboard states.</InlineAlert>
+        <ReadbackPanel title="Field value cardinality">
+          <Text>Closed single values use native value selectors, closed collections use MultiSelect, and open strings may use advisory suggestions without rejecting free-form input.</Text>
+          <div className="tcrn-display-primitive-grid">
+            <Field label="Prompt languages (collection)" hint="Choose one or more supported locale values.">
+              <MultiSelect
+                name="prompt-languages"
+                defaultValue={["en", "zh-CN"]}
+                options={[
+                  { value: "en", label: "English" },
+                  { value: "zh-CN", label: "Simplified Chinese" },
+                  { value: "ja", label: "Japanese", disabled: true }
+                ]}
+              />
+            </Field>
+            <Field label="Model or path (open value)" hint="Suggestions guide entry but do not restrict free text.">
+              <SuggestInput suggestions={["model-alpha", "docs/example"]} defaultValue="custom-model" />
+            </Field>
+          </div>
+        </ReadbackPanel>
         {/* TCRN-DS-STORY-088: the escalation named above now has a component.
             Until this shipped the page specified a search list and the package
             offered only Select, so every product that outgrew Select invented
@@ -3092,6 +3143,21 @@ const legacyContractStories: LegacyContractStory[] = [
             label="Settings container queries"
             columns={[{ key: "id", label: "Rule" }, { key: "container", label: "Container" }, { key: "threshold", label: "Threshold" }, { key: "wide", label: "At or above" }, { key: "narrow", label: "Below" }]}
             rows={settingsLayoutContract.containerQueries.map((query) => ({ id: query.id, container: query.container, threshold: `${query.thresholdPx}px`, wide: query.whenAtOrAbove, narrow: query.whenBelow }))}
+          />
+          <TableShell
+            label="Field value cardinality contract"
+            columns={[{ key: "cardinality", label: "Cardinality" }, { key: "domain", label: "Value domain" }, { key: "control", label: "Control" }, { key: "rule", label: "Rule" }]}
+            rows={fieldValueSelectionContract.decisionTable.map((row) => ({ cardinality: row.cardinality, domain: row.valueDomain, control: row.control, rule: row.rule }))}
+          />
+          <TableShell
+            label="Dictionary content contract"
+            columns={[{ key: "part", label: "Part" }, { key: "rule", label: "Rule" }]}
+            rows={Object.entries(dictionaryContentContract.contentModel).map(([part, rule]) => ({ part, rule }))}
+          />
+          <TableShell
+            label="Overlay boundary contract"
+            columns={[{ key: "mode", label: "Mode" }, { key: "boundary", label: "Boundary" }, { key: "interaction", label: "Interaction" }]}
+            rows={overlayBoundaryContract.modeTable.map((row) => ({ mode: row.mode, boundary: row.boundary, interaction: row.interaction }))}
           />
           <Text>Consumer verification uses both positive and negative legs. A matching class or stylesheet digest is not sufficient when component identity, semantics, native structure, value visibility, or container policy is wrong.</Text>
           <ReferenceList items={[consumerVerificationContract.script, consumerVerificationContract.proofVersion, ...consumerVerificationContract.negativeLegs]} />

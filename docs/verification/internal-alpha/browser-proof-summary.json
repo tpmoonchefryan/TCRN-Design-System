@@ -3157,7 +3157,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "db3a83d9ae0ce98a245713ffc7e6632d3c94a4771f9151e506691aebb44b9d01",
+    "contractPayloadDigest": "f1aa26ac6cbeb6f34623c085fb172d7683aeec3e8f559a461297240da9f989ba",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 21,
@@ -3267,7 +3267,7 @@
       "locale": "zh-CN",
       "gating": true,
       "ok": true,
-      "storyCount": 61,
+      "storyCount": 62,
       "allowlistedLeakCount": 107,
       "newLeakCount": 0,
       "newLeaks": [],
@@ -3576,6 +3576,11 @@
           "storyId": "reference-page-6",
           "allowlistedLeakCount": 0,
           "newLeaks": []
+        },
+        {
+          "storyId": "reference-page-7",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
         }
       ]
     },
@@ -3585,7 +3590,7 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 61,
+        "storyCount": 62,
         "leakCount": 111,
         "perStory": [
           {
@@ -3831,6 +3836,10 @@
           {
             "storyId": "reference-page-6",
             "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-7",
+            "leakCount": 0
           }
         ]
       },
@@ -3839,7 +3848,7 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 61,
+        "storyCount": 62,
         "leakCount": 119,
         "perStory": [
           {
@@ -4085,6 +4094,10 @@
           {
             "storyId": "reference-page-6",
             "leakCount": 0
+          },
+          {
+            "storyId": "reference-page-7",
+            "leakCount": 0
           }
         ]
       },
@@ -4093,8 +4106,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 61,
-        "leakCount": 2826,
+        "storyCount": 62,
+        "leakCount": 2880,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -4146,7 +4159,7 @@
           },
           {
             "storyId": "tokens-copy-state",
-            "leakCount": 16
+            "leakCount": 44
           },
           {
             "storyId": "i18n-theme-contract",
@@ -4154,7 +4167,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 226
+            "leakCount": 227
           },
           {
             "storyId": "copy-guidelines",
@@ -4162,7 +4175,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 100
+            "leakCount": 106
           },
           {
             "storyId": "display-primitives-spec",
@@ -4282,7 +4295,7 @@
           },
           {
             "storyId": "selection-list-patterns",
-            "leakCount": 14
+            "leakCount": 29
           },
           {
             "storyId": "modal-validation-patterns",
@@ -4339,6 +4352,10 @@
           {
             "storyId": "reference-page-6",
             "leakCount": 5
+          },
+          {
+            "storyId": "reference-page-7",
+            "leakCount": 4
           }
         ],
         "latinScriptConfound": true,
@@ -7068,6 +7085,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "DictionaryTable",
+          "visible": true
+        },
+        {
           "id": "DisclosurePanel",
           "visible": true
         },
@@ -7141,10 +7162,6 @@
         },
         {
           "id": "LabelSet",
-          "visible": true
-        },
-        {
-          "id": "LaneBoard",
           "visible": true
         }
       ],
@@ -7228,6 +7245,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "LaneBoard",
+          "visible": true
+        },
+        {
           "id": "LineNumberedEditor",
           "visible": true
         },
@@ -7268,6 +7289,10 @@
           "visible": true
         },
         {
+          "id": "MultiSelect",
+          "visible": true
+        },
+        {
           "id": "NavGroup",
           "visible": true
         },
@@ -7297,14 +7322,6 @@
         },
         {
           "id": "ProductLauncher",
-          "visible": true
-        },
-        {
-          "id": "ProductLockup",
-          "visible": true
-        },
-        {
-          "id": "ProductLogo",
           "visible": true
         }
       ],
@@ -7388,6 +7405,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ProductLockup",
+          "visible": true
+        },
+        {
+          "id": "ProductLogo",
+          "visible": true
+        },
+        {
           "id": "ProductShell",
           "visible": true
         },
@@ -7457,14 +7482,6 @@
         },
         {
           "id": "SectionTabs",
-          "visible": true
-        },
-        {
-          "id": "SegmentedNav",
-          "visible": true
-        },
-        {
-          "id": "Select",
           "visible": true
         }
       ],
@@ -7548,6 +7565,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "SegmentedNav",
+          "visible": true
+        },
+        {
+          "id": "Select",
+          "visible": true
+        },
+        {
           "id": "SettingChoice",
           "visible": true
         },
@@ -7617,14 +7642,6 @@
         },
         {
           "id": "StateView",
-          "visible": true
-        },
-        {
-          "id": "StatusBadge",
-          "visible": true
-        },
-        {
-          "id": "StatusSummaryPanel",
           "visible": true
         }
       ],
@@ -7708,11 +7725,23 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "StatusBadge",
+          "visible": true
+        },
+        {
+          "id": "StatusSummaryPanel",
+          "visible": true
+        },
+        {
           "id": "Stepper",
           "visible": true
         },
         {
           "id": "SubNav",
+          "visible": true
+        },
+        {
+          "id": "SuggestInput",
           "visible": true
         },
         {
@@ -7774,7 +7803,87 @@
         {
           "id": "TreeNav",
           "visible": true
+        }
+      ],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
         },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "url": "/apps/storybook/storybook-static/component-api-reference-7.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyOverflowX": false,
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true,
+      "storyRegions": [],
+      "referenceRegions": [
         {
           "id": "VersionHistory",
           "visible": true
@@ -10535,6 +10644,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "DictionaryTable",
+          "visible": true
+        },
+        {
           "id": "DisclosurePanel",
           "visible": true
         },
@@ -10608,10 +10721,6 @@
         },
         {
           "id": "LabelSet",
-          "visible": true
-        },
-        {
-          "id": "LaneBoard",
           "visible": true
         }
       ],
@@ -10695,6 +10804,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "LaneBoard",
+          "visible": true
+        },
+        {
           "id": "LineNumberedEditor",
           "visible": true
         },
@@ -10735,6 +10848,10 @@
           "visible": true
         },
         {
+          "id": "MultiSelect",
+          "visible": true
+        },
+        {
           "id": "NavGroup",
           "visible": true
         },
@@ -10764,14 +10881,6 @@
         },
         {
           "id": "ProductLauncher",
-          "visible": true
-        },
-        {
-          "id": "ProductLockup",
-          "visible": true
-        },
-        {
-          "id": "ProductLogo",
           "visible": true
         }
       ],
@@ -10855,6 +10964,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ProductLockup",
+          "visible": true
+        },
+        {
+          "id": "ProductLogo",
+          "visible": true
+        },
+        {
           "id": "ProductShell",
           "visible": true
         },
@@ -10924,14 +11041,6 @@
         },
         {
           "id": "SectionTabs",
-          "visible": true
-        },
-        {
-          "id": "SegmentedNav",
-          "visible": true
-        },
-        {
-          "id": "Select",
           "visible": true
         }
       ],
@@ -11015,6 +11124,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "SegmentedNav",
+          "visible": true
+        },
+        {
+          "id": "Select",
+          "visible": true
+        },
+        {
           "id": "SettingChoice",
           "visible": true
         },
@@ -11084,14 +11201,6 @@
         },
         {
           "id": "StateView",
-          "visible": true
-        },
-        {
-          "id": "StatusBadge",
-          "visible": true
-        },
-        {
-          "id": "StatusSummaryPanel",
           "visible": true
         }
       ],
@@ -11175,11 +11284,23 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "StatusBadge",
+          "visible": true
+        },
+        {
+          "id": "StatusSummaryPanel",
+          "visible": true
+        },
+        {
           "id": "Stepper",
           "visible": true
         },
         {
           "id": "SubNav",
+          "visible": true
+        },
+        {
+          "id": "SuggestInput",
           "visible": true
         },
         {
@@ -11241,7 +11362,87 @@
         {
           "id": "TreeNav",
           "visible": true
+        }
+      ],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "component-family-index",
+          "text": "Component family index",
+          "textLength": 20,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
         },
+        {
+          "route": "display-primitives-spec",
+          "text": "Display primitives spec",
+          "textLength": 21,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "interaction-disclosure-spec",
+          "text": "Interaction disclosure spec",
+          "textLength": 25,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "url": "/apps/storybook/storybook-static/component-api-reference-7.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyOverflowX": false,
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true,
+      "storyRegions": [],
+      "referenceRegions": [
         {
           "id": "VersionHistory",
           "visible": true
@@ -13298,6 +13499,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "DictionaryTable",
+          "visible": true
+        },
+        {
           "id": "DisclosurePanel",
           "visible": true
         },
@@ -13372,10 +13577,6 @@
         {
           "id": "LabelSet",
           "visible": true
-        },
-        {
-          "id": "LaneBoard",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -13430,6 +13631,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "LaneBoard",
+          "visible": true
+        },
+        {
           "id": "LineNumberedEditor",
           "visible": true
         },
@@ -13470,6 +13675,10 @@
           "visible": true
         },
         {
+          "id": "MultiSelect",
+          "visible": true
+        },
+        {
           "id": "NavGroup",
           "visible": true
         },
@@ -13499,14 +13708,6 @@
         },
         {
           "id": "ProductLauncher",
-          "visible": true
-        },
-        {
-          "id": "ProductLockup",
-          "visible": true
-        },
-        {
-          "id": "ProductLogo",
           "visible": true
         }
       ],
@@ -13561,6 +13762,14 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "ProductLockup",
+          "visible": true
+        },
+        {
+          "id": "ProductLogo",
+          "visible": true
+        },
         {
           "id": "ProductShell",
           "visible": true
@@ -13632,14 +13841,6 @@
         {
           "id": "SectionTabs",
           "visible": true
-        },
-        {
-          "id": "SegmentedNav",
-          "visible": true
-        },
-        {
-          "id": "Select",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -13693,6 +13894,14 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "SegmentedNav",
+          "visible": true
+        },
+        {
+          "id": "Select",
+          "visible": true
+        },
         {
           "id": "SettingChoice",
           "visible": true
@@ -13764,14 +13973,6 @@
         {
           "id": "StateView",
           "visible": true
-        },
-        {
-          "id": "StatusBadge",
-          "visible": true
-        },
-        {
-          "id": "StatusSummaryPanel",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -13826,11 +14027,23 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "StatusBadge",
+          "visible": true
+        },
+        {
+          "id": "StatusSummaryPanel",
+          "visible": true
+        },
+        {
           "id": "Stepper",
           "visible": true
         },
         {
           "id": "SubNav",
+          "visible": true
+        },
+        {
+          "id": "SuggestInput",
           "visible": true
         },
         {
@@ -13892,7 +14105,59 @@
         {
           "id": "TreeNav",
           "visible": true
-        },
+        }
+      ],
+      "sidebarNoIconLabelReadbacks": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "url": "/apps/storybook/storybook-static/component-api-reference-7.html",
+      "pageKind": "reference",
+      "expectedSection": "Components",
+      "expectedStoryIds": [],
+      "expectedActiveStoryId": "component-family-index",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 21,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 55,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [],
+      "currentNav": "Components",
+      "currentStoryNav": "component-family-index",
+      "bodyOverflowX": false,
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true,
+      "storyRegions": [],
+      "referenceRegions": [
         {
           "id": "VersionHistory",
           "visible": true

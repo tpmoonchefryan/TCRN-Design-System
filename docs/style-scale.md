@@ -159,3 +159,17 @@ The global `ProductShell` topbar is outside this page composition. The
 `--tcrn-container-page-third-level-split` and
 `--tcrn-container-page-third-level-nav` tokens only control the responsive
 `--tcrn-container-page-third-level-split` is `960px` and `--tcrn-container-page-third-level-nav` is `208px`; these tokens only control the responsive presentation of an already explicit third-level region.
+
+`MultiSelect` is the closed-set collection control. `SuggestInput` keeps an open
+string editable while offering advisory datalist suggestions. `DictionaryTable`
+renders category copy once and a required value-specific description for every
+entry; duplicate machine values and missing descriptions are invalid.
+`resolveFieldValueControl` is the metadata-to-control decision point: it admits
+closed single values, closed collections, and open single strings, and rejects an
+open collection or a closed field with no options as unsupported.
+
+Client-rendered `Tooltip` and anchored `Popover` instances use the document-body
+boundary when a trigger reference is available, so scroll ancestors cannot clip
+the layer. Placement is recomputed from trigger and layer rectangles on viewport
+resize and scroll; Tooltip remains text-only, while long or interactive content
+uses Popover.

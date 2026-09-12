@@ -11,10 +11,13 @@ import {
   NumberInput,
   LineNumberedEditor,
   LockHint,
+  MultiSelect,
   SearchInput,
   Select,
   SettingChoice,
   SettingsHostSwitcher,
+  SuggestInput,
+  resolveFieldValueControl,
   resolveSettingChoiceControl,
   SettingRow,
   Switch,
@@ -104,6 +107,57 @@ test("STORY-106 setting choices separate value semantics from navigation and fit
   );
   assert.match(hostHtml, /data-settings-host-switcher="true"/);
   assert.match(hostHtml, /data-setting-choice-scope="host-switcher"/);
+});
+
+test("STORY-114 collection and open-value controls preserve their distinct native contracts", () => {
+  const collection = renderToStaticMarkup(
+    <Field label="Prompt languages" hint="Choose one or more supported values.">
+      <MultiSelect
+        name="prompt-languages"
+        defaultValue={["en", "en", "zh-CN"]}
+        options={[
+          { value: "en", label: "English" },
+          { value: "zh-CN", label: "简体中文" },
+          { value: "ja", label: "日本語", disabled: true }
+        ]}
+      />
+    </Field>
+  );
+  assert.match(collection, /data-choice-cardinality="collection"/);
+  assert.match(collection, /data-choice-value-mode="closed"/);
+  assert.match(collection, /<select[^>]*multiple=""/);
+  assert.match(collection, /<option[^>]*value="ja"[^>]*disabled/);
+  assert.equal((collection.match(/<option/g) ?? []).length, 3);
+  assert.equal((collection.match(/selected=""/g) ?? []).length, 2);
+
+  const open = renderToStaticMarkup(
+    <Field label="Model or path">
+      <SuggestInput suggestions={["model-alpha", "model-alpha", "docs/example"]} defaultValue="custom-model" />
+    </Field>
+  );
+  assert.match(open, /data-choice-cardinality="single"/);
+  assert.match(open, /data-choice-value-mode="open"/);
+  assert.match(open, /data-choice-suggestions="advisory"/);
+  assert.match(open, /list="[^"]+"/);
+  assert.equal((open.match(/<option value="/g) ?? []).length, 2);
+  assert.match(open, /value="custom-model"/);
+});
+
+test("STORY-114 field metadata resolves cardinality and value domain before rendering", () => {
+  const closedSingle = resolveFieldValueControl({
+    cardinality: "single",
+    valueDomain: "closed",
+    options: [
+      { value: "a", label: "A", minInlineSize: 112 },
+      { value: "b", label: "B", minInlineSize: 112 }
+    ],
+    availableInlineSize: 248
+  });
+  assert.deepEqual(closedSingle, { control: "setting-choice", valid: true, reason: "single-closed" });
+  assert.deepEqual(resolveFieldValueControl({ cardinality: "collection", valueDomain: "closed", options: [{ value: "a", label: "A" }] }), { control: "multi-select", valid: true, reason: "collection-closed" });
+  assert.deepEqual(resolveFieldValueControl({ cardinality: "single", valueDomain: "open", suggestions: ["known"] }), { control: "suggest-input", valid: true, reason: "single-open" });
+  assert.equal(resolveFieldValueControl({ cardinality: "collection", valueDomain: "open" }).valid, false);
+  assert.equal(resolveFieldValueControl({ cardinality: "single", valueDomain: "closed" }).reason, "closed-options-required");
 });
 
 test("STORY-106 NumberInput keeps native numeric entry semantics and full-value visibility markers", () => {

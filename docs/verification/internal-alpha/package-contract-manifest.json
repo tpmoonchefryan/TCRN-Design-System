@@ -51,6 +51,14 @@
         "exported": true
       },
       {
+        "name": "MultiSelect",
+        "exported": true
+      },
+      {
+        "name": "SuggestInput",
+        "exported": true
+      },
+      {
         "name": "Checkbox",
         "exported": true
       },
@@ -228,6 +236,10 @@
       },
       {
         "name": "DefinitionList",
+        "exported": true
+      },
+      {
+        "name": "DictionaryTable",
         "exported": true
       },
       {
@@ -509,6 +521,10 @@
         "exported": true
       },
       {
+        "name": "resolveFieldValueControl",
+        "exported": true
+      },
+      {
         "name": "useProductShellController",
         "exported": true
       }
@@ -626,6 +642,24 @@
       },
       {
         "storybookItem": "Select",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "MultiSelect",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SuggestInput",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -1031,6 +1065,15 @@
       },
       {
         "storybookItem": "DefinitionList",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "DictionaryTable",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -1660,6 +1703,15 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "resolveFieldValueControl",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "useProductShellController",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -1775,7 +1827,7 @@
       "typePath": "packages/ui-react/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "cd815ccf74e268e9b2e72a914aba8df049a997e63682b8570e903e4bd27a97f7"
+      "manifestSha256": "2a61c3843a29f69512644ab97c71d50e68f16451fe50051d95c51e36a5e19617"
     }
   ],
   "exactDependencyChecks": [
@@ -1812,6 +1864,13 @@
       "section": "devDependencies",
       "name": "axe-core",
       "version": "4.12.1",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "esbuild",
+      "version": "0.28.1",
       "exact": true
     },
     {
@@ -1958,6 +2017,13 @@
       "manifestPath": "packages/ui-react/package.json",
       "section": "peerDependencies",
       "name": "react",
+      "version": "^18.3.0 || ^19.0.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "packages/ui-react/package.json",
+      "section": "peerDependencies",
+      "name": "react-dom",
       "version": "^18.3.0 || ^19.0.0",
       "exact": true
     }

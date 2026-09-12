@@ -87,7 +87,7 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 3281 -> 2978: the same story renders the public component roster after the
     // functional data-display patterns were merged into core. This is the first
     // time the number has gone DOWN, and that is the point of INIT-012.
-    recordedHeightPx: 2800,
+    recordedHeightPx: 2925,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
@@ -97,7 +97,7 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
   },
   "ai-consumption-contract": {
-    recordedHeightPx: 6458,
+    recordedHeightPx: 7539,
     owedTo: "beyond-INIT-008",
     note: "full AI-consumption contract readback (single machine-readable surface); gated debt"
   },
@@ -107,7 +107,7 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "39-token color specimen gallery; a catalogue split is future work — gated debt"
   },
   "foundation-visual-standards": {
-    recordedHeightPx: 3603,
+    recordedHeightPx: 3761,
     owedTo: "beyond-INIT-008",
     note: "foundation visual-standards catalogue; gated debt"
   },

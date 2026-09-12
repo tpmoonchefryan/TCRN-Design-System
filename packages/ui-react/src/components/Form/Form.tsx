@@ -1,4 +1,4 @@
-import type { HTMLAttributes, InputHTMLAttributes, ReactElement, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import type { ChangeEvent as ReactChangeEvent, HTMLAttributes, InputHTMLAttributes, ReactElement, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { Children, cloneElement, isValidElement, useId, useRef, useState } from "react";
 import { Icon } from "../Icon/index.js";
 import { childPropsOf, cx, mergeIds, requiredText } from "../../utils.js";
@@ -145,6 +145,9 @@ export function Select({ options, className, disabled, disabledReason, title, ..
         title={normalizedReason ?? title}
         aria-describedby={ariaDescribedBy}
         data-disabled-reason={normalizedReason}
+        data-choice-cardinality="single"
+        data-choice-value-mode="closed"
+        data-choice-option-count={options.length}
         className={cx("tcrn-select", className)}
       >
         {options.map((option) => (
@@ -154,6 +157,93 @@ export function Select({ options, className, disabled, disabledReason, title, ..
         ))}
       </select>
       {normalizedReason ? <span id={disabledReasonId} className="tcrn-sr-only">{normalizedReason}</span> : null}
+    </>
+  );
+}
+
+function normalizeChoiceValues(values: readonly string[] | undefined, options: readonly SelectOption[]) {
+  const allowedValues = new Set(options.map((option) => option.value));
+  return [...new Set((values ?? []).filter((value) => allowedValues.has(value)))];
+}
+
+function sameChoiceValues(first: readonly string[], second: readonly string[]) {
+  return first.length === second.length && first.every((value, index) => value === second[index]);
+}
+
+export interface MultiSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "multiple" | "value" | "defaultValue" | "onChange"> {
+  options: SelectOption[];
+  value?: string[];
+  defaultValue?: string[];
+  onChange?: (values: string[]) => void;
+  disabledReason?: string;
+}
+
+/** A native closed-set collection selector. The browser owns multiple selection and form submission. */
+export function MultiSelect({ options, value, defaultValue, onChange, className, disabled, disabledReason, title, ...props }: MultiSelectProps) {
+  const isControlled = value !== undefined;
+  const [uncontrolledValue, setUncontrolledValue] = useState(() => normalizeChoiceValues(defaultValue, options));
+  const selectedValue = normalizeChoiceValues(isControlled ? value : uncontrolledValue, options);
+  const normalizedReason = disabled ? requiredText(disabledReason, "Multi-select unavailable in this route") : undefined;
+  const disabledReasonId = useId();
+  const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
+  const handleChange = (event: ReactChangeEvent<HTMLSelectElement>) => {
+    const nextValue = normalizeChoiceValues(
+      Array.from(event.currentTarget.selectedOptions, (option) => option.value),
+      options
+    );
+    if (sameChoiceValues(nextValue, selectedValue)) return;
+    if (!isControlled) setUncontrolledValue(nextValue);
+    onChange?.(nextValue);
+  };
+  return (
+    <>
+      <select
+        {...props}
+        multiple
+        value={isControlled ? selectedValue : undefined}
+        defaultValue={isControlled ? undefined : selectedValue}
+        disabled={disabled}
+        title={normalizedReason ?? title}
+        aria-describedby={ariaDescribedBy}
+        data-disabled-reason={normalizedReason}
+        data-choice-cardinality="collection"
+        data-choice-value-mode="closed"
+        data-choice-option-count={options.length}
+        className={cx("tcrn-select", "tcrn-multi-select", className)}
+        onChange={handleChange}
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value} disabled={option.disabled}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {normalizedReason ? <span id={disabledReasonId} className="tcrn-sr-only">{normalizedReason}</span> : null}
+    </>
+  );
+}
+
+export interface SuggestInputProps extends Omit<InputProps, "type"> {
+  suggestions?: string[];
+}
+
+/** An open string input whose datalist suggestions never restrict free-form entry. */
+export function SuggestInput({ suggestions = [], ...props }: SuggestInputProps) {
+  const listId = useId();
+  const uniqueSuggestions = [...new Set(suggestions)];
+  return (
+    <>
+      <Input
+        {...props}
+        type="text"
+        list={listId}
+        data-choice-cardinality="single"
+        data-choice-value-mode="open"
+        data-choice-suggestions="advisory"
+      />
+      <datalist id={listId}>
+        {uniqueSuggestions.map((suggestion) => <option key={suggestion} value={suggestion} />)}
+      </datalist>
     </>
   );
 }
@@ -300,7 +390,7 @@ export function RadioGroup({ legend, name, options, value, defaultValue, onChang
     onChange?.(nextValue);
   };
   return (
-    <fieldset {...props} className={cx("tcrn-radio-group", className)} data-radio-group="true" disabled={disabled}>
+    <fieldset {...props} className={cx("tcrn-radio-group", className)} data-radio-group="true" data-choice-cardinality="single" data-choice-value-mode="closed" disabled={disabled}>
       <legend className="tcrn-radio-group__legend">{legend}</legend>
       {options.map((option) => {
         const descriptionId = `${groupId}-${option.value}`;
@@ -343,6 +433,27 @@ export interface SettingChoiceDecision {
   reason: "option-count-requires-select" | "option-measurement-required" | "available-inline-size-required" | "binary-does-not-fit" | "binary-fits";
   requiredInlineSize: number;
   availableInlineSize?: number;
+}
+
+export type FieldValueCardinality = "single" | "collection";
+export type FieldValueDomain = "closed" | "open";
+export type FieldValueControl = "setting-choice" | "select" | "multi-select" | "suggest-input" | "unsupported";
+
+export interface FieldValueSpec {
+  cardinality: FieldValueCardinality;
+  valueDomain: FieldValueDomain;
+  options?: SettingChoiceOption[];
+  suggestions?: string[];
+  defaultValue?: string | string[];
+  availableInlineSize?: number;
+  disabled?: boolean;
+  readOnly?: boolean;
+}
+
+export interface FieldValueDecision {
+  control: FieldValueControl;
+  valid: boolean;
+  reason: "single-closed" | "collection-closed" | "single-open" | "open-collection-unsupported" | "closed-options-required";
 }
 
 /**
@@ -399,6 +510,20 @@ export function resolveSettingChoiceControl(
     return { control: "select", reason: "binary-does-not-fit", requiredInlineSize, availableInlineSize };
   }
   return { control: "radio", reason: "binary-fits", requiredInlineSize, availableInlineSize };
+}
+
+/** Resolves field metadata to a value control without importing product enums or submission policy. */
+export function resolveFieldValueControl(spec: FieldValueSpec): FieldValueDecision {
+  const options = spec.options ?? [];
+  if (spec.cardinality === "collection") {
+    if (spec.valueDomain !== "closed") return { control: "unsupported", valid: false, reason: "open-collection-unsupported" };
+    if (options.length === 0) return { control: "unsupported", valid: false, reason: "closed-options-required" };
+    return { control: "multi-select", valid: true, reason: "collection-closed" };
+  }
+  if (spec.valueDomain === "open") return { control: "suggest-input", valid: true, reason: "single-open" };
+  if (options.length === 0) return { control: "unsupported", valid: false, reason: "closed-options-required" };
+  const choice = resolveSettingChoiceControl(options, spec.availableInlineSize);
+  return { control: choice.control === "radio" ? "setting-choice" : "select", valid: true, reason: "single-closed" };
 }
 
 export interface SettingChoiceProps extends Omit<HTMLAttributes<HTMLDivElement>, "children" | "onChange"> {
@@ -466,6 +591,8 @@ export function SettingChoice({
       className={cx("tcrn-setting-choice", className)}
       data-setting-choice="true"
       data-setting-choice-semantic="value-selection"
+      data-choice-cardinality="single"
+      data-choice-value-mode="closed"
       data-setting-choice-control={decision.control}
       data-setting-choice-option-count={options.length}
       data-setting-choice-required-inline-size={decision.requiredInlineSize || undefined}

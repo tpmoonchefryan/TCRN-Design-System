@@ -13,6 +13,9 @@ import {
   foundationVisualStandardsReadback,
   storybookDocShellVisualOracle,
   settingControlSelectionContract,
+  fieldValueSelectionContract,
+  dictionaryContentContract,
+  overlayBoundaryContract,
   settingsLayoutContract,
   pageHierarchyContract,
   consumerVerificationContract
@@ -41,6 +44,8 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, sidebar, focus, motion, or visual-system work",
     "use the setting-control selection contract: Select for more than two values, a measured binary RadioGroup only when it fits, SegmentedNav for navigation, and NumberInput for numeric entry",
     "preserve controlled and uncontrolled SettingChoice values across radio/Select branch changes; treat layout-only swaps as non-events",
+    "use MultiSelect for closed collections and SuggestInput for open strings without restricting free-form values",
+    "render dictionary category copy once and supply a distinct explanation for every machine value",
     "use the SettingsLayout container thresholds and single-host complete-form composition before implementing configuration pages",
     "verify light/dark and supported locale behavior against Storybook before product compliance claims",
     "block hard-coded copy, ad hoc status language, consumer-local reusable visual-system overrides, and theme-specific behavior forks"
@@ -50,6 +55,9 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "prove product code consumes package-backed components instead of local clones",
     "prove setting values use SettingChoice/Select/RadioGroup semantics and numeric values use NumberInput rather than Stepper",
     "prove SettingChoice branch swaps retain valid state and report user changes exactly once",
+    "prove collection and open-value controls preserve their declared cardinality and value domain",
+    "resolve field metadata through resolveFieldValueControl before choosing a package component",
+    "prove Tooltip and Popover use the declared boundary, placement, and dismissal contract",
     "prove the same Storybook visual instance, then compare rendered component metrics against Storybook: size, radius, padding, border, background, typography, hover, focus, active, disabled, dark, locale, mobile, and reduced-motion states"
   ],
   Patterns: [
@@ -62,6 +70,7 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
   Proof: [
     "read proof matrix, this AI contract, blocked actions, and overlay/focus proof before implementation closeout",
     "run the DS consumer verification contract's positive and negative legs; class or CSS equality alone is not proof",
+    "run the full-surface browser proof for overlays, field cardinality, collection/open-value controls, and dictionary explanations",
     "carry required receipts for browser interaction, accessibility, visual parity, no-overclaim, owner-visible preview, and product-owned adoption proof",
     "do not use Storybook-only evidence as product adoption, acceptance, release, or hosted readiness proof"
   ],
@@ -247,6 +256,9 @@ export const aiConsumptionContract = {
     "foundationVisualStandards",
     "consumerVisualStyleContract",
     "settingControlSelectionContract",
+    "fieldValueSelectionContract",
+    "dictionaryContentContract",
+    "overlayBoundaryContract",
     "settingsLayoutContract",
     "pageHierarchyContract",
     "consumerVerificationContract",
@@ -326,6 +338,9 @@ export const aiConsumptionContract = {
   storybookDocShellVisualOracle,
   consumerVisualStyleContract,
   settingControlSelectionContract,
+  fieldValueSelectionContract,
+  dictionaryContentContract,
+  overlayBoundaryContract,
   settingsLayoutContract,
   pageHierarchyContract,
   consumerVerificationContract,
@@ -890,6 +905,10 @@ export const aiConsumptionContract = {
     "setting_control_selection_receipt",
     "settings_layout_container_receipt",
     "page_hierarchy_receipt",
+    "overlay_boundary_placement_receipt",
+    "field_value_cardinality_receipt",
+    "dictionary_content_receipt",
+    "full_surface_inventory_receipt",
     "consumer_negative_leg_receipt",
     "product_adoption_route_receipt"
   ],
