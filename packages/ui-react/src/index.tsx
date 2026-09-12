@@ -23,6 +23,7 @@ export const componentLibraryPublicComponentNames = [
   "StampRule",
   "EmptyState",
   "ErrorState",
+  "OperationFeedback",
   "Highlight",
   "StatusBadge",
   "StateSurface",
@@ -58,6 +59,7 @@ export const componentLibraryPublicComponentNames = [
   "Stepper",
   "DefinitionList",
   "DictionaryTable",
+  "ContentScope",
   "StatCard",
   "FilterBar",
   "TableShell",
@@ -134,7 +136,9 @@ export const componentLibraryPublicUtilityNames = [
   "resolveSettingChoiceControl",
   "resolveFieldValueControl",
   "mountStaticOverlayBoundary",
-  "useProductShellController"
+  "useProductShellController",
+  "validateContentScope",
+  "evaluateConsumerEvidence"
 ] as const;
 
 export type ComponentLibraryPublicUtilityName = (typeof componentLibraryPublicUtilityNames)[number];
@@ -158,3 +162,4 @@ export * from "./components/Navigation/index.js";
 export * from "./components/Layout/index.js";
 export * from "./components/DataDisplay/index.js";
 export * from "./components/Overlay/index.js";
+export * from "./verification/index.js";

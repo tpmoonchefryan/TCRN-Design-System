@@ -14,6 +14,32 @@ as done. It chains: `typecheck`, `build`, `test`, `tokens:proof`, `exports:check
 to your change (for example `pnpm tokens:proof` or `pnpm shell:fidelity`) as you go, then
 the full `pnpm verify` before closeout.
 
+## Verification cadence for the bounded EPIC038 batch
+
+Development checks are selected by changed surface. For package type/API work use
+`pnpm typecheck` and the affected `@tcrn/ui-react` SSR/DOM tests; for token/CSS work use
+`pnpm tokens:proof`; for consumer-contract or browser-boundary work use the affected
+`pnpm ds:consumption:proof`, `pnpm full-surface:proof`, and `pnpm storybook:smoke` checks.
+When a validator or boundary changes, its positive and negative legs are required in the
+same focused check. Do not start the flat full `verify`/P1/push-gate set for each edit or
+before the current bounded batch and necessary local dependencies are ready.
+
+The candidate-final trigger is one fixed EPIC038 candidate with source, tests, Storybook
+consumers, documentation, and required local dependencies complete. At that point run
+`pnpm verify` once as the parent receipt; it already contains its typecheck, build, test,
+consumer-proof, full-surface, and internal-alpha child checks, so do not rerun those child
+commands after the same successful parent without changed input or targeted diagnosis of
+a failure. `pnpm public-docs:vercel-build` is a separate static-document output target and
+is run when that artifact is required; it is not inferred from the ordinary build.
+
+Evidence may be reused only when the source tree SHA, working-tree status, lockfile and
+package versions, command/flags, browser/tool environment, fixture/input digest, baseline,
+and output-target digest all match. A source, dependency, command, environment, fixture,
+baseline, output-target, or prior-failure change invalidates the old receipt; missing input
+or output identity also invalidates it. This cadence changes timing and parent/child
+selection only. It does not delete or skip security, compatibility, replay, release
+identity, localization, visual, or no-overclaim gates.
+
 ## Scales come from tokens — never a raw literal
 
 `docs/style-scale.md` is the radius / spacing / type reference. New styles take their

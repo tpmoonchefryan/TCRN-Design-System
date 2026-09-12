@@ -62,6 +62,34 @@ body when a trigger reference is supplied, compute a viewport-safe placement,
 and reposition on resize and scroll. Tooltip content remains text-only and
 non-interactive; longer or interactive explanations belong in `Popover`.
 
+`OperationFeedback` keeps the short phase label in `StatusBadge` and renders
+consumer-supplied operation/actor identity plus the complete receipt in a
+keyboard-readable disclosure. Its `idle`, `loading`, `success`, and `error`
+phases preserve the real identity and update notification; long ids, times,
+and reason codes are wrapped details, never compact status labels.
+
+`ContentScope` is the package-backed boundary for one independent content
+region. Pass the consumer-owned `scope`, `dataSource`, phase, shown/total
+counts, `filtered`, `hasContent`, and optional `staleContent` model, then pass
+`EmptyState`, `StateSurface`, or `ErrorState` nodes for the corresponding
+branches. Call `validateContentScope` before static emission or data binding;
+it rejects missing sources, contradictory counts, and loading/error states
+misrepresented as empty. Sibling scopes are validated independently.
+
+`evaluateConsumerEvidence` is a pure validator for product adoption evidence.
+It requires one observed instance per required inventory entry, matching
+requested/selected/panel surfaces and control identity, DOM-backed input/result
+and status details, post-operation geometry, and separate `dpr`,
+`pinch-visual-viewport`, and `page-zoom` measurements. Missing controls cannot
+be reclassified as not applicable, and `wouldFail` overrides are rejected.
+
+For a bounded change, use targeted type, package DOM, token, consumption, or
+browser checks during development. After all scoped work is fixed at one
+candidate, run the parent `pnpm verify` once and retain
+`pnpm public-docs:vercel-build` as its separate static-output check. Reuse a
+receipt only when its source, environment, command, fixture, baseline, and
+output identities match; a prior failure or missing identity invalidates it.
+
 ### Static HTML/CSS overlay migration
 
 An HTML/CSS consumer that does not render a React tree can use the same boundary
@@ -96,6 +124,15 @@ remain text-only. The bridge owns only the generic boundary, placement, and
 dismissal mechanics; field/domain values and product route state remain consumer
 inputs. A CSS-only server-positioned body sibling is a static fallback and must
 not claim dynamic portal, edge, or focus behavior.
+
+Static HTML/CSS consumers can use the same operation/content construction with
+`tcrnComponentCss`: emit `.tcrn-operation-feedback` with a short
+`.tcrn-badge`, labeled `.tcrn-operation-feedback__identity`, and a native
+details button/region pair; update `data-operation-phase`, the short label,
+identity values, and details together. For content, evaluate the model with
+`validateContentScope`, emit one `.tcrn-content-scope` per source, and render
+only its declared content/empty/loading/error branch. These static instructions
+do not claim React state management, product persistence, or product adoption.
 
 `PageHierarchy` takes an explicit `depth`: `two` renders `PageHeader`, parent-level
 `SubNav`/`SectionTabs`, then lower content; `three` renders the same Header and

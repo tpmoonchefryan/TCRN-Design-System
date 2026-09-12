@@ -1588,6 +1588,30 @@ if (contract.pageHierarchyContract?.id !== "page-hierarchy-contract-v1"
   || !String(contract.pageHierarchyContract?.widthPolicy ?? "").includes("never infers")) {
   missing.push("contract.pageHierarchyContract");
 }
+if (contract.operationFeedbackContract?.id !== "operation-feedback-contract-v1"
+  || !contract.operationFeedbackContract?.packageExports?.includes?.("OperationFeedback")
+  || JSON.stringify(contract.operationFeedbackContract?.phases) !== JSON.stringify(["idle", "loading", "success", "error"])
+  || !String(contract.operationFeedbackContract?.roles?.details ?? "").includes("keyboard-reachable")) {
+  missing.push("contract.operationFeedbackContract");
+}
+if (contract.contentScopeContract?.id !== "content-scope-contract-v1"
+  || !contract.contentScopeContract?.packageExports?.includes?.("ContentScope")
+  || !contract.contentScopeContract?.packageExports?.includes?.("validateContentScope")
+  || !String(contract.contentScopeContract?.independentScopes ?? "").includes("independently")) {
+  missing.push("contract.contentScopeContract");
+}
+if (contract.consumerEvidenceContract?.id !== "consumer-evidence-verification-contract-v1"
+  || contract.consumerEvidenceContract?.utility !== "evaluateConsumerEvidence"
+  || JSON.stringify(contract.consumerEvidenceContract?.zoomAxes) !== JSON.stringify(["dpr", "pinch-visual-viewport", "page-zoom"])
+  || !String(contract.consumerEvidenceContract?.lifecycleIntersection ?? "").includes("one observation")) {
+  missing.push("contract.consumerEvidenceContract");
+}
+if (contract.verificationCadenceContract?.id !== "ds-verification-cadence-contract-v1"
+  || JSON.stringify(contract.verificationCadenceContract?.stages?.map?.((stage) => stage.id)) !== JSON.stringify(["development", "candidate-final", "post-change"])
+  || !contract.verificationCadenceContract?.deduplication?.containedCommands?.includes?.("pnpm full-surface:proof")
+  || !contract.verificationCadenceContract?.evidenceReuse?.invalidators?.includes?.("prior failure")) {
+  missing.push("contract.verificationCadenceContract");
+}
 if (!pages.Patterns.includes('id="page-hierarchy-contract"')
   || (pages.Patterns.match(/data-page-hierarchy-depth="two"/g) ?? []).length !== 1
   || (pages.Patterns.match(/data-page-hierarchy-depth="three"/g) ?? []).length !== 1
@@ -1604,7 +1628,7 @@ if (contract.consumerVerificationContract?.id !== "consumer-verification-contrac
 if (!llmsTxt.includes("Agents must read ai-consumption-contract.json before implementation work.")) {
   missing.push("llms-first-read-requirement");
 }
-if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, fieldValueSelectionContract, dictionaryContentContract, overlayBoundaryContract, settingsLayoutContract, pageHierarchyContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
+if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, fieldValueSelectionContract, dictionaryContentContract, overlayBoundaryContract, settingsLayoutContract, pageHierarchyContract, verificationCadenceContract, operationFeedbackContract, contentScopeContract, consumerEvidenceContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
   missing.push("llms-required-readback-fields");
 }
 if (!llmsTxt.includes("Required Storybook sections:")) {
@@ -1642,6 +1666,18 @@ if (!llmsTxt.includes("Settings layout contract: settings-layout-contract-v1")) 
 }
 if (!llmsTxt.includes("Page hierarchy contract: page-hierarchy-contract-v1")) {
   missing.push("llms-page-hierarchy-contract");
+}
+if (!llmsTxt.includes("Verification cadence contract: ds-verification-cadence-contract-v1")) {
+  missing.push("llms-verification-cadence-contract");
+}
+if (!llmsTxt.includes("Operation feedback contract: operation-feedback-contract-v1")) {
+  missing.push("llms-operation-feedback-contract");
+}
+if (!llmsTxt.includes("Content scope contract: content-scope-contract-v1")) {
+  missing.push("llms-content-scope-contract");
+}
+if (!llmsTxt.includes("Consumer evidence contract: consumer-evidence-verification-contract-v1")) {
+  missing.push("llms-consumer-evidence-contract");
 }
 if (!llmsTxt.includes("Consumer verification contract: consumer-verification-contract-v1")) {
   missing.push("llms-consumer-verification-contract");

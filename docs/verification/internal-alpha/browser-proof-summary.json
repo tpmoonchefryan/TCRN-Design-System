@@ -3157,7 +3157,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "5cad4072dcca7ad959bd018cb10ff82fe588e94158a27d6cd50b6d8c2c73f07b",
+    "contractPayloadDigest": "0e6cc1e78208550f67332936f6b9af719e58622787bfa5a2a6494f982c1dd4d4",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 21,
@@ -4107,7 +4107,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 62,
-        "leakCount": 2880,
+        "leakCount": 2945,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -4159,7 +4159,7 @@
           },
           {
             "storyId": "tokens-copy-state",
-            "leakCount": 44
+            "leakCount": 82
           },
           {
             "storyId": "i18n-theme-contract",
@@ -4179,7 +4179,7 @@
           },
           {
             "storyId": "display-primitives-spec",
-            "leakCount": 122
+            "leakCount": 149
           },
           {
             "storyId": "interaction-disclosure-spec",
@@ -6977,6 +6977,10 @@
           "visible": true
         },
         {
+          "id": "ContentScope",
+          "visible": true
+        },
+        {
           "id": "DataGrid",
           "visible": true
         },
@@ -6998,10 +7002,6 @@
         },
         {
           "id": "DetailLayout",
-          "visible": true
-        },
-        {
-          "id": "Dialog",
           "visible": true
         }
       ],
@@ -7085,6 +7085,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "Dialog",
+          "visible": true
+        },
+        {
           "id": "DictionaryTable",
           "visible": true
         },
@@ -7158,10 +7162,6 @@
         },
         {
           "id": "KeyValueList",
-          "visible": true
-        },
-        {
-          "id": "LabelSet",
           "visible": true
         }
       ],
@@ -7245,6 +7245,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "LabelSet",
+          "visible": true
+        },
+        {
           "id": "LaneBoard",
           "visible": true
         },
@@ -7305,6 +7309,10 @@
           "visible": true
         },
         {
+          "id": "OperationFeedback",
+          "visible": true
+        },
+        {
           "id": "PageHeader",
           "visible": true
         },
@@ -7314,14 +7322,6 @@
         },
         {
           "id": "Pagination",
-          "visible": true
-        },
-        {
-          "id": "Popover",
-          "visible": true
-        },
-        {
-          "id": "ProductLauncher",
           "visible": true
         }
       ],
@@ -7405,6 +7405,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "Popover",
+          "visible": true
+        },
+        {
+          "id": "ProductLauncher",
+          "visible": true
+        },
+        {
           "id": "ProductLockup",
           "visible": true
         },
@@ -7474,14 +7482,6 @@
         },
         {
           "id": "SearchResultList",
-          "visible": true
-        },
-        {
-          "id": "SearchableList",
-          "visible": true
-        },
-        {
-          "id": "SectionTabs",
           "visible": true
         }
       ],
@@ -7565,6 +7565,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "SearchableList",
+          "visible": true
+        },
+        {
+          "id": "SectionTabs",
+          "visible": true
+        },
+        {
           "id": "SegmentedNav",
           "visible": true
         },
@@ -7634,14 +7642,6 @@
         },
         {
           "id": "StatCard",
-          "visible": true
-        },
-        {
-          "id": "StateSurface",
-          "visible": true
-        },
-        {
-          "id": "StateView",
           "visible": true
         }
       ],
@@ -7725,6 +7725,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "StateSurface",
+          "visible": true
+        },
+        {
+          "id": "StateView",
+          "visible": true
+        },
+        {
           "id": "StatusBadge",
           "visible": true
         },
@@ -7794,14 +7802,6 @@
         },
         {
           "id": "TopBar",
-          "visible": true
-        },
-        {
-          "id": "Tree",
-          "visible": true
-        },
-        {
-          "id": "TreeNav",
           "visible": true
         }
       ],
@@ -7884,6 +7884,14 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Tree",
+          "visible": true
+        },
+        {
+          "id": "TreeNav",
+          "visible": true
+        },
         {
           "id": "VersionHistory",
           "visible": true
@@ -10536,6 +10544,10 @@
           "visible": true
         },
         {
+          "id": "ContentScope",
+          "visible": true
+        },
+        {
           "id": "DataGrid",
           "visible": true
         },
@@ -10557,10 +10569,6 @@
         },
         {
           "id": "DetailLayout",
-          "visible": true
-        },
-        {
-          "id": "Dialog",
           "visible": true
         }
       ],
@@ -10644,6 +10652,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "Dialog",
+          "visible": true
+        },
+        {
           "id": "DictionaryTable",
           "visible": true
         },
@@ -10717,10 +10729,6 @@
         },
         {
           "id": "KeyValueList",
-          "visible": true
-        },
-        {
-          "id": "LabelSet",
           "visible": true
         }
       ],
@@ -10804,6 +10812,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "LabelSet",
+          "visible": true
+        },
+        {
           "id": "LaneBoard",
           "visible": true
         },
@@ -10864,6 +10876,10 @@
           "visible": true
         },
         {
+          "id": "OperationFeedback",
+          "visible": true
+        },
+        {
           "id": "PageHeader",
           "visible": true
         },
@@ -10873,14 +10889,6 @@
         },
         {
           "id": "Pagination",
-          "visible": true
-        },
-        {
-          "id": "Popover",
-          "visible": true
-        },
-        {
-          "id": "ProductLauncher",
           "visible": true
         }
       ],
@@ -10964,6 +10972,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "Popover",
+          "visible": true
+        },
+        {
+          "id": "ProductLauncher",
+          "visible": true
+        },
+        {
           "id": "ProductLockup",
           "visible": true
         },
@@ -11033,14 +11049,6 @@
         },
         {
           "id": "SearchResultList",
-          "visible": true
-        },
-        {
-          "id": "SearchableList",
-          "visible": true
-        },
-        {
-          "id": "SectionTabs",
           "visible": true
         }
       ],
@@ -11124,6 +11132,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "SearchableList",
+          "visible": true
+        },
+        {
+          "id": "SectionTabs",
+          "visible": true
+        },
+        {
           "id": "SegmentedNav",
           "visible": true
         },
@@ -11193,14 +11209,6 @@
         },
         {
           "id": "StatCard",
-          "visible": true
-        },
-        {
-          "id": "StateSurface",
-          "visible": true
-        },
-        {
-          "id": "StateView",
           "visible": true
         }
       ],
@@ -11284,6 +11292,14 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "StateSurface",
+          "visible": true
+        },
+        {
+          "id": "StateView",
+          "visible": true
+        },
+        {
           "id": "StatusBadge",
           "visible": true
         },
@@ -11353,14 +11369,6 @@
         },
         {
           "id": "TopBar",
-          "visible": true
-        },
-        {
-          "id": "Tree",
-          "visible": true
-        },
-        {
-          "id": "TreeNav",
           "visible": true
         }
       ],
@@ -11443,6 +11451,14 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Tree",
+          "visible": true
+        },
+        {
+          "id": "TreeNav",
+          "visible": true
+        },
         {
           "id": "VersionHistory",
           "visible": true
@@ -13419,6 +13435,10 @@
           "visible": true
         },
         {
+          "id": "ContentScope",
+          "visible": true
+        },
+        {
           "id": "DataGrid",
           "visible": true
         },
@@ -13440,10 +13460,6 @@
         },
         {
           "id": "DetailLayout",
-          "visible": true
-        },
-        {
-          "id": "Dialog",
           "visible": true
         }
       ],
@@ -13498,6 +13514,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Dialog",
+          "visible": true
+        },
         {
           "id": "DictionaryTable",
           "visible": true
@@ -13573,10 +13593,6 @@
         {
           "id": "KeyValueList",
           "visible": true
-        },
-        {
-          "id": "LabelSet",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -13630,6 +13646,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "LabelSet",
+          "visible": true
+        },
         {
           "id": "LaneBoard",
           "visible": true
@@ -13691,6 +13711,10 @@
           "visible": true
         },
         {
+          "id": "OperationFeedback",
+          "visible": true
+        },
+        {
           "id": "PageHeader",
           "visible": true
         },
@@ -13700,14 +13724,6 @@
         },
         {
           "id": "Pagination",
-          "visible": true
-        },
-        {
-          "id": "Popover",
-          "visible": true
-        },
-        {
-          "id": "ProductLauncher",
           "visible": true
         }
       ],
@@ -13762,6 +13778,14 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Popover",
+          "visible": true
+        },
+        {
+          "id": "ProductLauncher",
+          "visible": true
+        },
         {
           "id": "ProductLockup",
           "visible": true
@@ -13833,14 +13857,6 @@
         {
           "id": "SearchResultList",
           "visible": true
-        },
-        {
-          "id": "SearchableList",
-          "visible": true
-        },
-        {
-          "id": "SectionTabs",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -13894,6 +13910,14 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "SearchableList",
+          "visible": true
+        },
+        {
+          "id": "SectionTabs",
+          "visible": true
+        },
         {
           "id": "SegmentedNav",
           "visible": true
@@ -13965,14 +13989,6 @@
         {
           "id": "StatCard",
           "visible": true
-        },
-        {
-          "id": "StateSurface",
-          "visible": true
-        },
-        {
-          "id": "StateView",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -14026,6 +14042,14 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "StateSurface",
+          "visible": true
+        },
+        {
+          "id": "StateView",
+          "visible": true
+        },
         {
           "id": "StatusBadge",
           "visible": true
@@ -14097,14 +14121,6 @@
         {
           "id": "TopBar",
           "visible": true
-        },
-        {
-          "id": "Tree",
-          "visible": true
-        },
-        {
-          "id": "TreeNav",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -14158,6 +14174,14 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Tree",
+          "visible": true
+        },
+        {
+          "id": "TreeNav",
+          "visible": true
+        },
         {
           "id": "VersionHistory",
           "visible": true

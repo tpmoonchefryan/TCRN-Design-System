@@ -17,6 +17,7 @@ import {
   DetailInspector,
   DefinitionList,
   DictionaryTable,
+  ContentScope,
   DisclosurePanel,
   Dialog,
   Divider,
@@ -66,6 +67,7 @@ import {
   Stamp,
   StampRule,
   StatusBadge,
+  OperationFeedback,
   Surface,
   SuggestInput,
   TableShell,
@@ -201,6 +203,10 @@ import {
   overlayBoundaryContract,
   settingsLayoutContract,
   pageHierarchyContract,
+  verificationCadenceContract,
+  operationFeedbackContract,
+  contentScopeContract,
+  consumerEvidenceContract,
   consumerVerificationContract
 } from "../build/foundation-visual-standards.js";
 
@@ -1301,6 +1307,32 @@ const legacyContractStories: LegacyContractStory[] = [
           <InlineAlert tone="warning">Category copy appears once per table; each machine value needs its own property, function, or selection-timing explanation.</InlineAlert>
         </ReadbackPanel>
         <ReadbackPanel title="Fail-closed presentation">
+          <Text>ContentScope validates each independent scope against its own data source, phase, content flag, and count meaning. One scope may contain four items while a sibling scope is correctly empty.</Text>
+          <div className="tcrn-display-primitive-grid" data-content-scope-story="true">
+            <ContentScope model={{ scope: "scope-a", dataSource: "synthetic-source-a", phase: "content", shownCount: 4, totalCount: 4, hasContent: true }}>
+              <div><strong>Scope A content</strong><Text>Four records are visible for this source.</Text></div>
+            </ContentScope>
+            <ContentScope
+              model={{ scope: "scope-b", dataSource: "synthetic-source-b", phase: "empty", shownCount: 0, totalCount: 0, hasContent: false }}
+              emptyState={<EmptyState title="Scope B is empty" description="This local scope has no current records." action={<Button>Choose a source</Button>} />}
+            />
+            <ContentScope model={{ scope: "scope-filtered", dataSource: "synthetic-source-a", phase: "content", shownCount: 2, totalCount: 4, filtered: true, hasContent: true }}>
+              <div><strong>Filtered scope</strong><Text>Two shown of four total; the count meaning is explicit.</Text></div>
+            </ContentScope>
+            <ContentScope
+              model={{ scope: "scope-loading", dataSource: "synthetic-source-c", phase: "loading", shownCount: 0, totalCount: 0, hasContent: false }}
+              loadingState={<StateSurface title="Scope is loading" description="Loading is not the same as empty." tone="warning" />}
+            />
+            <ContentScope
+              model={{ scope: "scope-error", dataSource: "synthetic-source-d", phase: "error", shownCount: 0, totalCount: 0, hasContent: false }}
+              errorState={<ErrorState title="Scope could not load" description="The error state remains distinct from an empty result." action={<Button>Retry scope</Button>} />}
+            />
+            <ContentScope
+              model={{ scope: "scope-invalid", dataSource: "synthetic-source-invalid", phase: "content", shownCount: 0, totalCount: 0, hasContent: true }}
+              invalidState={<ErrorState title="Invalid scope evidence" description="Contradictory content and count truth is rejected." />}
+            />
+          </div>
+          <InlineAlert tone="warning">Consumers own scope names, data sources, permissions, and business values. The package only validates declared truth and never lets a sibling empty array decide this region.</InlineAlert>
           <StateView state={{ state: "future_external_ready" }} />
           <StateView state={{ state: "external_proof_needed" }} />
         </ReadbackPanel>
@@ -1661,6 +1693,35 @@ const legacyContractStories: LegacyContractStory[] = [
               action={<Button>Retry locally</Button>}
             />
           </div>
+        </ReadbackPanel>
+        <ReadbackPanel title="Operation feedback: short status and full receipt">
+          <Text>OperationFeedback keeps a short localized status in StatusBadge and places the complete identity, long reason, and timestamp in a keyboard-readable details region.</Text>
+          <div className="tcrn-display-primitive-grid" data-operation-feedback-story="true">
+            {([
+              ["idle", "The operation has not started; no long payload is placed in the compact status."],
+              ["loading", "The operation is in progress; visible details remain available while the route waits."],
+              ["success", "The operation completed; the complete receipt remains available for inspection."],
+              ["error", "The operation failed; error details remain in the DOM and readable after the update."]
+            ] as const).map(([phase, detail]) => (
+              <OperationFeedback key={phase}
+                phase={phase}
+                data-operation-feedback-phase={phase}
+                identity={{
+                  operation: "Rebuild local index",
+                  operationId: "operation-2026-09-13-very-long-identity-9f4d1c2b7a6e",
+                  actor: "Synthetic operator",
+                  actorId: "actor-very-long-identity-0c2e8a9d7b6f",
+                  occurredAt: "2026-09-13T12:34:56.789Z"
+                }}
+                identityLabels={{ operation: "Operation", operationId: "Operation id", actor: "Actor", actorId: "Actor id", occurredAt: "Occurred at" }}
+                detailTitle="Full receipt details"
+                detailsLabel="View full receipt"
+                details={<p>{detail} <code>reason-code-with-a-long-machine-suffix-2026-09-13.</code></p>}
+                expanded={phase === "success"}
+              />
+            ))}
+          </div>
+          <InlineAlert tone="warning">Long reason codes, timestamps, and ids belong in the details region; the compact StatusBadge stays short. Product routes own the real operation and update callback.</InlineAlert>
         </ReadbackPanel>
         <ReadbackPanel title="Divider">
           <Text>Dividers separate stacked content groups without adding semantic meaning to the reading order.</Text>
@@ -3164,6 +3225,65 @@ const legacyContractStories: LegacyContractStory[] = [
             columns={[{ key: "part", label: "Part" }, { key: "rule", label: "Rule" }]}
             rows={Object.entries(overlayBoundaryContract.staticConsumerMigration).map(([part, rule]) => ({ part, rule }))}
           />
+          <ReadbackPanel title="Operation feedback contract">
+            <TableShell
+              label="Operation feedback phases and roles"
+              columns={[{ key: "phase", label: "Phase" }, { key: "short", label: "Short status" }, { key: "details", label: "Details" }]}
+              rows={operationFeedbackContract.phases.map((phase) => ({ phase, short: operationFeedbackContract.roles.shortStatus, details: operationFeedbackContract.roles.details }))}
+            />
+            <TableShell
+              label="Operation feedback static consumer construction"
+              columns={[{ key: "part", label: "Part" }, { key: "rule", label: "Rule" }]}
+              rows={Object.entries(operationFeedbackContract.staticConsumerMigration).map(([part, rule]) => ({ part, rule }))}
+            />
+          </ReadbackPanel>
+          <ReadbackPanel title="Content scope contract">
+            <TableShell
+              label="Content scope phase rules"
+              columns={[{ key: "phase", label: "Phase" }, { key: "rule", label: "Rule" }]}
+              rows={Object.entries(contentScopeContract.phases).map(([phase, rule]) => ({ phase, rule }))}
+            />
+            <TableShell
+              label="Content scope count semantics"
+              columns={[{ key: "kind", label: "Count kind" }, { key: "rule", label: "Rule" }]}
+              rows={Object.entries(contentScopeContract.countSemantics).map(([kind, rule]) => ({ kind, rule }))}
+            />
+          </ReadbackPanel>
+          <ReadbackPanel title="Verification cadence contract">
+            <TableShell
+              label="Verification stages"
+              columns={[{ key: "stage", label: "Stage" }, { key: "trigger", label: "Trigger" }, { key: "commands", label: "Commands" }, { key: "selection", label: "Selection" }]}
+              rows={verificationCadenceContract.stages.map((stage) => ({
+                stage: stage.id,
+                trigger: stage.trigger,
+                commands: "preferredCommands" in stage ? stage.preferredCommands.join(", ") : "requiredCommands" in stage ? stage.requiredCommands.join(", ") : "Targeted affected checks",
+                selection: stage.selection
+              }))}
+            />
+            <TableShell
+              label="Verification evidence reuse"
+              columns={[{ key: "rule", label: "Rule" }, { key: "value", label: "Value" }]}
+              rows={[
+                { rule: "Reuse validator", value: verificationCadenceContract.evidenceReuse.validator },
+                { rule: "Required inputs", value: verificationCadenceContract.evidenceReuse.requiredInputs.join("; ") },
+                { rule: "Invalidators", value: verificationCadenceContract.evidenceReuse.invalidators.join("; ") },
+                { rule: "Parent-child", value: verificationCadenceContract.deduplication.rule }
+              ]}
+            />
+          </ReadbackPanel>
+          <ReadbackPanel title="Consumer evidence verification contract">
+            <TableShell
+              label="Consumer evidence traceability"
+              columns={[{ key: "part", label: "Evidence part" }, { key: "rule", label: "Required trace" }]}
+              rows={Object.entries(consumerEvidenceContract.traceability).map(([part, rule]) => ({ part, rule }))}
+            />
+            <TableShell
+              label="Consumer evidence zoom axes"
+              columns={[{ key: "axis", label: "Zoom axis" }, { key: "rule", label: "Rule" }]}
+              rows={consumerEvidenceContract.zoomAxes.map((axis) => ({ axis, rule: "Measured effective scale, element width, and visible viewport dimensions are required for this separate axis." }))}
+            />
+            <Text>Validator: {consumerEvidenceContract.utility}. Lifecycle and geometry are one observation; hardcoded wouldFail, HTTP-only UI feedback, error-DOM skips, and missing-control N/A claims fail.</Text>
+          </ReadbackPanel>
           <Text>Consumer verification uses both positive and negative legs. A matching class or stylesheet digest is not sufficient when component identity, semantics, native structure, value visibility, or container policy is wrong.</Text>
           <ReferenceList items={[consumerVerificationContract.script, consumerVerificationContract.proofVersion, ...consumerVerificationContract.negativeLegs]} />
         </ReadbackPanel>

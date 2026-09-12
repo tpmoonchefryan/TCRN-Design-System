@@ -103,6 +103,10 @@
         "exported": true
       },
       {
+        "name": "OperationFeedback",
+        "exported": true
+      },
+      {
         "name": "Highlight",
         "exported": true
       },
@@ -240,6 +244,10 @@
       },
       {
         "name": "DictionaryTable",
+        "exported": true
+      },
+      {
+        "name": "ContentScope",
         "exported": true
       },
       {
@@ -531,6 +539,14 @@
       {
         "name": "useProductShellController",
         "exported": true
+      },
+      {
+        "name": "validateContentScope",
+        "exported": true
+      },
+      {
+        "name": "evaluateConsumerEvidence",
+        "exported": true
       }
     ],
     "deferredPrototypeChecks": [
@@ -763,6 +779,15 @@
       },
       {
         "storybookItem": "ErrorState",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "OperationFeedback",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -1078,6 +1103,15 @@
       },
       {
         "storybookItem": "DictionaryTable",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ContentScope",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -1726,6 +1760,24 @@
       },
       {
         "storybookItem": "useProductShellController",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "validateContentScope",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "evaluateConsumerEvidence",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",

@@ -8,15 +8,17 @@ import {
   Tree,
   DefinitionList,
   DictionaryTable,
+  ContentScope,
   Progress,
   Stepper,
   avatarInitials,
   TemplateGallery,
   StatCard,
   TableShell,
-  TableToolbar
+  TableToolbar,
+  validateContentScope
 } from "./DataDisplay.js";
-import { EnvironmentBanner } from "../Feedback/index.js";
+import { EmptyState, EnvironmentBanner, ErrorState, StateSurface } from "../Feedback/index.js";
 import { TopBar } from "../Navigation/index.js";
 
 test("stat cards and definition lists preserve their distinct display semantics", () => {
@@ -155,6 +157,70 @@ test("table shell records arbitrary column counts for responsive layout", () => 
   assert.match(fourColumns, /--tcrn-table-shell-columns:repeat\(4, minmax\(var\(--tcrn-table-shell-column-min-width, 160px\), 1fr\)\)/);
   assert.match(fourColumns, /--tcrn-table-shell-min-width:max\(100%, calc\(4 \* var\(--tcrn-table-shell-column-min-width, 160px\)\)\)/);
   assert.match(fourColumns, /data-label="D"/);
+});
+
+test("STORY-117 validates each content scope independently and keeps count meaning explicit", () => {
+  const content = {
+    scope: "scope-a",
+    dataSource: "source-a",
+    phase: "content" as const,
+    shownCount: 4,
+    totalCount: 4,
+    hasContent: true
+  };
+  const empty = {
+    scope: "scope-b",
+    dataSource: "source-b",
+    phase: "empty" as const,
+    shownCount: 0,
+    totalCount: 0,
+    hasContent: false
+  };
+  assert.equal(validateContentScope(content).valid, true);
+  assert.equal(validateContentScope(empty).valid, true);
+  assert.equal(validateContentScope({ ...content, dataSource: "", shownCount: 0 }).valid, false);
+  assert.equal(validateContentScope({ ...content, totalCount: 3 }).valid, false);
+  assert.equal(validateContentScope({ ...empty, phase: "loading", totalCount: 4 }).valid, false);
+  assert.equal(validateContentScope({ ...empty, phase: "error", hasContent: true }).valid, false);
+  assert.equal(validateContentScope({ ...empty, phase: "loading", staleContent: true, hasContent: true, shownCount: 4, totalCount: 4 }).valid, true);
+  assert.equal(validateContentScope({ ...empty, phase: "content", hasContent: true, shownCount: 0 }).valid, false);
+});
+
+test("STORY-117 renders content, empty, loading, error, and invalid states from the owning scope", () => {
+  const html = renderToStaticMarkup(
+    <>
+      <ContentScope model={{ scope: "scope-a", dataSource: "source-a", phase: "content", shownCount: 2, totalCount: 4, filtered: true, hasContent: true }}>
+        <ul><li>Alpha</li><li>Beta</li></ul>
+      </ContentScope>
+      <ContentScope
+        model={{ scope: "scope-b", dataSource: "source-b", phase: "empty", shownCount: 0, totalCount: 0, hasContent: false }}
+        emptyState={<EmptyState title="No items in this scope" action={<button type="button">Add item</button>} />}
+      />
+      <ContentScope
+        model={{ scope: "scope-c", dataSource: "source-c", phase: "loading", shownCount: 0, totalCount: 0, hasContent: false }}
+        loadingState={<StateSurface title="Loading scope" />}
+      />
+      <ContentScope
+        model={{ scope: "scope-d", dataSource: "source-d", phase: "error", shownCount: 0, totalCount: 0, hasContent: false }}
+        errorState={<ErrorState title="Scope unavailable" />}
+      />
+      <ContentScope
+        model={{ scope: "scope-invalid", dataSource: "source-invalid", phase: "empty", shownCount: 1, totalCount: 1, hasContent: false }}
+        invalidState={<ErrorState title="Invalid scope evidence" />}
+      />
+    </>
+  );
+  assert.match(html, /data-content-scope="scope-a"[^>]*data-content-valid="true"/);
+  assert.match(html, /data-content-count-kind="filtered"/);
+  assert.match(html, /Alpha/);
+  assert.match(html, /data-content-scope="scope-b"[^>]*data-content-phase="empty"/);
+  assert.match(html, /No items in this scope/);
+  assert.match(html, /data-content-scope="scope-c"[^>]*data-content-phase="loading"/);
+  assert.match(html, /Loading scope/);
+  assert.match(html, /data-content-scope="scope-d"[^>]*data-content-phase="error"/);
+  assert.match(html, /Scope unavailable/);
+  assert.match(html, /data-content-scope="scope-invalid"[^>]*data-content-valid="false"/);
+  assert.match(html, /Invalid scope evidence/);
 });
 
 test("TableToolbar declares its host-wiring contract", () => {

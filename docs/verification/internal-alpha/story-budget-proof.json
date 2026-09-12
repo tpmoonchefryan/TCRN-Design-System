@@ -32,31 +32,31 @@
       },
       {
         "id": "foundation-visual-standards",
-        "measure": 3761,
-        "recordedHeightPx": 3761,
+        "measure": 3989,
+        "recordedHeightPx": 3954,
         "owedTo": "beyond-INIT-008",
         "note": "foundation visual-standards catalogue; gated debt"
       },
       {
         "id": "component-family-index",
-        "measure": 2969,
-        "recordedHeightPx": 2969,
+        "measure": 3057,
+        "recordedHeightPx": 3057,
         "owedTo": "beyond-INIT-008",
-        "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
+        "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
       },
       {
         "id": "display-primitives-spec",
-        "measure": 2318,
-        "recordedHeightPx": 2330,
+        "measure": 3004,
+        "recordedHeightPx": 3004,
         "owedTo": "INIT-029/S254",
-        "note": "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
+        "note": "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
       },
       {
         "id": "ai-consumption-contract",
-        "measure": 7911,
-        "recordedHeightPx": 7911,
+        "measure": 10615,
+        "recordedHeightPx": 10615,
         "owedTo": "beyond-INIT-008",
-        "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
+        "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
       },
       {
         "id": "frontend-shell-slice",
@@ -95,27 +95,27 @@
     },
     {
       "id": "foundation-visual-standards",
-      "heightPx": 3761,
+      "heightPx": 3989,
       "owedTo": "beyond-INIT-008",
       "note": "foundation visual-standards catalogue; gated debt"
     },
     {
       "id": "component-family-index",
-      "heightPx": 2969,
+      "heightPx": 3057,
       "owedTo": "beyond-INIT-008",
-      "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
+      "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
     },
     {
       "id": "display-primitives-spec",
-      "heightPx": 2318,
+      "heightPx": 3004,
       "owedTo": "INIT-029/S254",
-      "note": "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
+      "note": "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
     },
     {
       "id": "ai-consumption-contract",
-      "heightPx": 7911,
+      "heightPx": 10615,
       "owedTo": "beyond-INIT-008",
-      "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
+      "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
     },
     {
       "id": "frontend-shell-slice",

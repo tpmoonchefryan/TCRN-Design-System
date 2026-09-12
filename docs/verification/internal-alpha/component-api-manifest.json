@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 122,
+  "componentCount": 124,
   "coverage": {
-    "registryComponentCount": 122,
+    "registryComponentCount": 124,
     "publicComponentNames": [
       "ActionDrawer",
       "ActivityFeed",
@@ -20,6 +20,7 @@
       "ClipboardCopyButton",
       "CollapsibleRegion",
       "ConfirmActionDialog",
+      "ContentScope",
       "DataGrid",
       "DatePicker",
       "DefinitionList",
@@ -62,6 +63,7 @@
       "NavGroup",
       "NavItem",
       "NumberInput",
+      "OperationFeedback",
       "PageHeader",
       "PageHierarchy",
       "Pagination",
@@ -144,6 +146,7 @@
       "ClipboardCopyButton",
       "CollapsibleRegion",
       "ConfirmActionDialog",
+      "ContentScope",
       "DataGrid",
       "DatePicker",
       "DefinitionList",
@@ -186,6 +189,7 @@
       "NavGroup",
       "NavItem",
       "NumberInput",
+      "OperationFeedback",
       "PageHeader",
       "PageHierarchy",
       "Pagination",
@@ -754,6 +758,49 @@
       "variants": {},
       "slots": [],
       "propsType": "ConfirmActionDialogProps"
+    },
+    "ContentScope": {
+      "name": "ContentScope",
+      "kind": "function",
+      "props": [
+        {
+          "name": "emptyState",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "errorState",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "invalidState",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "loadingState",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "model",
+          "type": "ContentScopeModel",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "emptyState",
+        "errorState",
+        "invalidState",
+        "loadingState"
+      ],
+      "propsType": "ContentScopeProps"
     },
     "DataGrid": {
       "name": "DataGrid",
@@ -2528,6 +2575,85 @@
       "variants": {},
       "slots": [],
       "propsType": "NumberInputProps"
+    },
+    "OperationFeedback": {
+      "name": "OperationFeedback",
+      "kind": "function",
+      "props": [
+        {
+          "name": "details",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "detailsLabel",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "detailTitle",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "identity",
+          "type": "OperationIdentity",
+          "required": true
+        },
+        {
+          "name": "identityLabels",
+          "type": "OperationFeedbackLabels",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(expanded: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "phase",
+          "type": "OperationFeedbackPhase",
+          "required": true,
+          "enumValues": [
+            "idle",
+            "loading",
+            "success",
+            "error"
+          ]
+        },
+        {
+          "name": "state",
+          "type": "CopyStateInput",
+          "required": false
+        }
+      ],
+      "variants": {
+        "phase": [
+          "idle",
+          "loading",
+          "success",
+          "error"
+        ]
+      },
+      "slots": [
+        "detailTitle",
+        "details",
+        "detailsLabel"
+      ],
+      "propsType": "OperationFeedbackProps"
     },
     "PageHeader": {
       "name": "PageHeader",

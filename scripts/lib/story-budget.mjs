@@ -87,19 +87,19 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 3281 -> 2978: the same story renders the public component roster after the
     // functional data-display patterns were merged into core. This is the first
     // time the number has gone DOWN, and that is the point of INIT-012.
-    recordedHeightPx: 2969,
+    recordedHeightPx: 3057,
     owedTo: "beyond-INIT-008",
-    note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels (7802->2957px); the residual is the gate-asserted package-backed API / utility-export / storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
+    note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
   "display-primitives-spec": {
-    recordedHeightPx: 2330,
+    recordedHeightPx: 3004,
     owedTo: "INIT-029/S254",
-    note: "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
+    note: "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
   },
   "ai-consumption-contract": {
-    recordedHeightPx: 7911,
+    recordedHeightPx: 10615,
     owedTo: "beyond-INIT-008",
-    note: "full AI-consumption contract readback (single machine-readable surface); gated debt"
+    note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },
   "color-palette": {
     recordedHeightPx: 4659,
@@ -107,7 +107,7 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "39-token color specimen gallery; a catalogue split is future work — gated debt"
   },
   "foundation-visual-standards": {
-    recordedHeightPx: 3761,
+    recordedHeightPx: 3954,
     owedTo: "beyond-INIT-008",
     note: "foundation visual-standards catalogue; gated debt"
   },

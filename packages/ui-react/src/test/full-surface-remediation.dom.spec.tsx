@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { act, useRef, useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DictionaryTable, Field, MultiSelect, Popover, SuggestInput, Tooltip, mountStaticOverlayBoundary } from "../index.js";
+import { ContentScope, DictionaryTable, EmptyState, ErrorState, Field, MultiSelect, OperationFeedback, Popover, StateSurface, SuggestInput, Tooltip, mountStaticOverlayBoundary } from "../index.js";
 import { createDomInteractionHarness } from "./dom-harness.js";
 
 async function flushEffects() {
@@ -240,4 +240,76 @@ test("STORY-115 dictionary validity markers use rendered content and separate ca
   );
   assert.match(unknownNode, /data-dictionary-valid="false"/);
   assert.match(unknownNode, /data-dictionary-content-certainty="unknown"/);
+});
+
+test("STORY-116 operation feedback opens and closes full details without changing its short status", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    await harness.render(
+      <OperationFeedback
+        phase="error"
+        identity={{ operation: "Sync fixture", operationId: "operation-with-a-long-id-2026-09-13", actor: "Synthetic operator", occurredAt: "2026-09-13T12:34:56.789Z" }}
+        identityLabels={{ operation: "Operation", operationId: "Operation id", actor: "Actor", occurredAt: "Occurred at" }}
+        detailTitle="Full receipt"
+        detailsLabel="View full receipt"
+        details={<p>Long reason-code text remains available in the details region.</p>}
+      />
+    );
+    const root = harness.document.querySelector("[data-operation-feedback='true']");
+    const trigger = harness.document.querySelector("[data-operation-details-trigger='true']");
+    const details = harness.document.querySelector("[data-operation-details='true']");
+    assert.ok(root instanceof harness.window.HTMLElement);
+    assert.ok(trigger instanceof harness.window.HTMLButtonElement);
+    assert.ok(details instanceof harness.window.HTMLElement);
+    assert.equal(trigger.getAttribute("aria-expanded"), "false");
+    assert.equal(details.querySelector("[data-collapsible-region='true']")?.getAttribute("aria-hidden"), "true");
+    assert.match(root.querySelector("[data-operation-short-status='true']")?.textContent ?? "", /Blocked/);
+
+    await harness.dispatchClick(trigger);
+    assert.equal(trigger.getAttribute("aria-expanded"), "true");
+    assert.equal(details.querySelector("[data-collapsible-region='true']")?.getAttribute("aria-hidden"), "false");
+    assert.match(details.textContent ?? "", /Long reason-code text/);
+    assert.match(details.id, /^tcrn-operation-details-/);
+    assert.equal(trigger.getAttribute("aria-controls"), details.id);
+
+    await harness.dispatchClick(trigger);
+    assert.equal(trigger.getAttribute("aria-expanded"), "false");
+    assert.equal(details.querySelector("[data-collapsible-region='true']")?.getAttribute("aria-hidden"), "true");
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("STORY-117 content scopes keep sibling truth independent and fail closed on invalid models", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    await harness.render(
+      <>
+        <ContentScope model={{ scope: "scope-a", dataSource: "source-a", phase: "content", shownCount: 4, totalCount: 4, hasContent: true }}>
+          <div data-scope-content="a">Four items</div>
+        </ContentScope>
+        <ContentScope model={{ scope: "scope-b", dataSource: "source-b", phase: "empty", shownCount: 0, totalCount: 0, hasContent: false }} emptyState={<EmptyState title="No items" />} />
+        <ContentScope model={{ scope: "scope-c", dataSource: "source-c", phase: "loading", shownCount: 0, totalCount: 0, hasContent: false }} loadingState={<StateSurface title="Loading" />} />
+        <ContentScope model={{ scope: "scope-d", dataSource: "source-d", phase: "error", shownCount: 0, totalCount: 0, hasContent: false }} errorState={<ErrorState title="Unavailable" />} />
+        <ContentScope model={{ scope: "scope-invalid", dataSource: "source-invalid", phase: "empty", shownCount: 2, totalCount: 2, hasContent: false }} invalidState={<ErrorState title="Invalid" />}>
+          <div data-scope-content="invalid">Must not render</div>
+        </ContentScope>
+      </>
+    );
+    const content = harness.document.querySelector("[data-content-scope='scope-a']");
+    const empty = harness.document.querySelector("[data-content-scope='scope-b']");
+    const loading = harness.document.querySelector("[data-content-scope='scope-c']");
+    const error = harness.document.querySelector("[data-content-scope='scope-d']");
+    const invalid = harness.document.querySelector("[data-content-scope='scope-invalid']");
+    assert.equal(content?.getAttribute("data-content-valid"), "true");
+    assert.match(content?.textContent ?? "", /Four items/);
+    assert.match(empty?.textContent ?? "", /No items/);
+    assert.match(loading?.textContent ?? "", /Loading/);
+    assert.match(error?.textContent ?? "", /Unavailable/);
+    assert.equal(invalid?.getAttribute("data-content-valid"), "false");
+    assert.match(invalid?.textContent ?? "", /Invalid/);
+    assert.doesNotMatch(invalid?.textContent ?? "", /Must not render/);
+  } finally {
+    await harness.cleanup();
+  }
 });

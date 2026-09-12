@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// TCRN-DS-STORY-109/110/111/112 — consumer checks for the 106/107/112 rules.
+// TCRN-DS-STORY-109/110/111/112/119 — consumer checks for the 106/107/112 rules and the DS verification cadence.
 //
 // This proof renders neutral fixtures in a real browser and inspects semantic,
 // structural, DOM-cardinality, visibility, geometry, and layout facts, not only
@@ -29,6 +29,72 @@ import { tcrnTokenCss } from "../packages/ui-tokens/dist/index.js";
 
 export const DS_CONSUMPTION_PROOF_VERSION = "tcrn.ds-consumption-proof.v2";
 export const DS_CONSUMPTION_CONTRACT_VERSION = "ds_consumption_contract_v2";
+
+export const DS_VERIFICATION_CADENCE = Object.freeze({
+  schemaVersion: "tcrn.ds.verification-cadence.v1",
+  scope: "EPIC038 implementation and necessary DS dependencies",
+  development: {
+    preferredChecks: ["pnpm typecheck", "pnpm --filter @tcrn/ui-react test:ssr", "pnpm --filter @tcrn/ui-react test:dom", "pnpm tokens:proof", "pnpm ds:consumption:proof", "pnpm full-surface:proof", "pnpm storybook:smoke"],
+    rule: "Select checks affected by the change and a focused negative leg for changed validators or boundaries; do not start the flat full verify/P1/push-gate set for each edit."
+  },
+  candidateFinal: {
+    trigger: "All work in the bounded batch and necessary local dependencies are fixed at one candidate.",
+    requiredChecks: ["pnpm verify", "pnpm public-docs:vercel-build"],
+    rule: "Run one final top-level verify; retain the static-document build as a separate output target when requested."
+  },
+  parentChildDeduplication: {
+    parent: "pnpm verify",
+    contained: ["pnpm typecheck", "pnpm build", "pnpm test", "pnpm ds:consumption:proof", "pnpm full-surface:proof", "pnpm internal-alpha:proof"],
+    rule: "Do not rerun a contained child after the same successful parent receipt without changed input or targeted diagnosis of a failure."
+  },
+  evidenceReuse: {
+    requiredInputs: ["source tree SHA", "working-tree status", "lockfile and package versions", "command and flags", "browser/tool version", "fixture/input digest", "baseline and output-target digest"],
+    invalidators: ["source, dependency, command, environment, fixture, baseline, or output-target change", "prior failure", "missing input or output digest"],
+    rule: "Reuse only when every required input matches exactly; otherwise mark the old receipt invalidated and rerun the affected check."
+  },
+  preservation: "Timing and de-duplication do not remove security, compatibility, replay, release-identity, localization, visual, or no-overclaim gates."
+});
+
+export const DS_VERIFICATION_INPUT_KEYS = Object.freeze([
+  "sourceTreeSha",
+  "workingTreeStatus",
+  "lockfileDigest",
+  "packageVersions",
+  "command",
+  "flags",
+  "browserToolVersion",
+  "fixtureDigest",
+  "baselineDigest",
+  "outputTargetDigest"
+]);
+
+function hasOwn(object, key) {
+  return Object.prototype.hasOwnProperty.call(object, key);
+}
+
+/**
+ * Decide whether a successful verification receipt can be reused. The caller
+ * must provide every identity input; an unknown input is not a cache hit.
+ */
+export function evaluateEvidenceReuse(previous, current) {
+  const findings = [];
+  if (!previous || typeof previous !== "object" || !current || typeof current !== "object") {
+    return { reusable: false, findings: ["evidence_record_invalid"] };
+  }
+  if (previous.status !== "passed") findings.push("previous_receipt_not_successful");
+  for (const key of DS_VERIFICATION_INPUT_KEYS) {
+    if (!hasOwn(previous, key) || previous[key] === undefined || previous[key] === null) {
+      findings.push(`previous_input_missing:${key}`);
+      continue;
+    }
+    if (!hasOwn(current, key) || current[key] === undefined || current[key] === null) {
+      findings.push(`current_input_missing:${key}`);
+      continue;
+    }
+    if (JSON.stringify(previous[key]) !== JSON.stringify(current[key])) findings.push(`input_changed:${key}`);
+  }
+  return { reusable: findings.length === 0, findings };
+}
 
 export const dsConsumptionRules = Object.freeze([
   {
@@ -811,14 +877,45 @@ export async function runDsConsumptionProof() {
     await browser.close();
   }
   const mismatches = results.filter((fixture) => (fixture.expected === "pass") !== fixture.result.ok).map((fixture) => fixture.id);
+  const reuseBase = {
+    status: "passed",
+    sourceTreeSha: "candidate-sha",
+    workingTreeStatus: "clean",
+    lockfileDigest: "lockfile-digest",
+    packageVersions: "package-versions",
+    command: "pnpm full-surface:proof",
+    flags: "default",
+    browserToolVersion: "playwright-browser-version",
+    fixtureDigest: "neutral-fixture-digest",
+    baselineDigest: "visual-baseline-digest",
+    outputTargetDigest: "storybook-static-digest"
+  };
+  const reuseSameInput = evaluateEvidenceReuse(reuseBase, { ...reuseBase });
+  const reuseSourceChanged = evaluateEvidenceReuse(reuseBase, { ...reuseBase, sourceTreeSha: "changed-sha" });
+  const reusePriorFailure = evaluateEvidenceReuse({ ...reuseBase, status: "failed" }, { ...reuseBase });
+  const reuseMissingInput = evaluateEvidenceReuse(reuseBase, { ...reuseBase, fixtureDigest: undefined });
+  const reuseProof = {
+    sameInput: reuseSameInput,
+    sourceChanged: reuseSourceChanged,
+    priorFailure: reusePriorFailure,
+    missingInput: reuseMissingInput,
+    ok: reuseSameInput.reusable
+      && !reuseSourceChanged.reusable
+      && !reusePriorFailure.reusable
+      && !reuseMissingInput.reusable
+  };
+  if (!reuseProof.ok) mismatches.push("verification-evidence-reuse");
   const contractDigest = createHash("sha256")
-    .update(JSON.stringify({ contractVersion: DS_CONSUMPTION_CONTRACT_VERSION, rules: dsConsumptionRules }))
+    .update(JSON.stringify({ contractVersion: DS_CONSUMPTION_CONTRACT_VERSION, rules: dsConsumptionRules, verificationCadence: DS_VERIFICATION_CADENCE }))
     .digest("hex");
   return {
     schemaVersion: DS_CONSUMPTION_PROOF_VERSION,
     contractVersion: DS_CONSUMPTION_CONTRACT_VERSION,
     contractDigest,
     rules: dsConsumptionRules,
+    verificationCadence: DS_VERIFICATION_CADENCE,
+    verificationInputKeys: DS_VERIFICATION_INPUT_KEYS,
+    verificationReuseProof: reuseProof,
     fixtures: results,
     mismatches,
     ok: mismatches.length === 0
