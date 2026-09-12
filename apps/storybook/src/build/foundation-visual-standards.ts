@@ -72,6 +72,11 @@ export const settingControlSelectionContract = {
     measurementRequirement: "Every binary option must provide a finite positive minInlineSize measured for the current font, locale, content, and container; the default option minimum is a CSS floor only.",
     unknownAvailableSizeDisposition: "select"
   },
+  stateRetention: {
+    modes: ["controlled value", "uncontrolled defaultValue"],
+    branchSwitch: "SettingChoice retains the current valid value when its native radio and Select branches replace one another.",
+    callback: "onChange fires once for an actual user value change and does not fire for a layout-only branch switch or an unchanged value."
+  },
   numericEntry: {
     component: "NumberInput",
     semanticMarker: "data-number-input-semantic=numeric-entry",
@@ -85,7 +90,8 @@ export const settingControlSelectionContract = {
     "A process Stepper is used as a numeric input.",
     "A binary pair lacks finite positive label/control measurements.",
     "A binary radio group is emitted without a measured positive fit result.",
-    "A legal numeric value is visually clipped or replaced with an ellipsis."
+    "A legal numeric value is visually clipped or replaced with an ellipsis.",
+    "A radio/Select branch switch resets a valid value or emits a callback without a user value change."
   ]
 } as const;
 
@@ -191,6 +197,7 @@ export const consumerVerificationContract = {
     "native binary value choice with a positive measured fit",
     "more-than-two value choice rendered as Select",
     "binary value choice preserves a disabled option in radio and Select branches",
+    "radio/Select branch switching preserves controlled and uncontrolled values without synthetic callbacks",
     "native NumberInput with complete value and range markers",
     "container-driven SettingsLayout with one host and one complete form",
     "correct explicit two-level PageHierarchy with content below parent tabs",
@@ -203,6 +210,7 @@ export const consumerVerificationContract = {
     "Stepper used as numeric entry",
     "numeric value marked clipped",
     "parallel host columns at a narrow content width",
+    "radio/Select branch switching resets a valid value or emits a layout-only callback",
     "two-level page with an internal left navigation region",
     "three-level page missing its parent-level tabs",
     "overlapping page hierarchy regions",
@@ -213,6 +221,7 @@ export const consumerVerificationContract = {
     "semantic markers",
     "native element structure",
     "actual DOM cardinality and option disabled state",
+    "radio/Select branch-switch value and callback behavior",
     "computed visibility and rendered geometry",
     "complete numeric value visibility",
     "container and overflow policy",

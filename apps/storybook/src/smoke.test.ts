@@ -1214,6 +1214,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.deepEqual(contract.settingControlSelectionContract?.packageExports, settingControlSelectionContract.packageExports);
   assert.equal(contract.settingControlSelectionContract?.binaryFitMeasurement?.defaultOptionMinInlineSizePx, 112);
   assert.match(contract.settingControlSelectionContract?.rejectCriteria?.join(" ") ?? "", /SegmentedNav/);
+  assert.match(contract.settingControlSelectionContract?.stateRetention?.callback ?? "", /once.*layout-only/);
   assert.equal(contract.settingsLayoutContract?.id, settingsLayoutContract.id);
   assert.deepEqual(contract.settingsLayoutContract?.containerQueries?.map((query: { thresholdPx: number }) => query.thresholdPx), [960, 720]);
   assert.match(contract.settingsLayoutContract?.construction?.form ?? "", /one complete form column/);

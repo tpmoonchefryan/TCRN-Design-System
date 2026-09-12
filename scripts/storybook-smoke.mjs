@@ -1554,6 +1554,9 @@ if (!contract.settingControlSelectionContract?.packageExports?.includes?.("Setti
   || !contract.settingControlSelectionContract?.packageExports?.includes?.("SegmentedNav")) {
   missing.push("contract.settingControlSelectionContract.packageExports");
 }
+if (!String(contract.settingControlSelectionContract?.stateRetention?.callback ?? "").includes("layout-only branch switch")) {
+  missing.push("contract.settingControlSelectionContract.stateRetention");
+}
 if (contract.settingsLayoutContract?.id !== "settings-layout-contract-v1"
   || contract.settingsLayoutContract?.containerQueries?.[0]?.thresholdPx !== 960
   || contract.settingsLayoutContract?.containerQueries?.[1]?.thresholdPx !== 720) {

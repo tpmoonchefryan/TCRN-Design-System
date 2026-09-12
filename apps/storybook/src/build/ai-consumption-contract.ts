@@ -40,6 +40,7 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "consume semantic tokens, theme variables, locale metadata, and copy-state vocabulary before product copy or CSS",
     "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, sidebar, focus, motion, or visual-system work",
     "use the setting-control selection contract: Select for more than two values, a measured binary RadioGroup only when it fits, SegmentedNav for navigation, and NumberInput for numeric entry",
+    "preserve controlled and uncontrolled SettingChoice values across radio/Select branch changes; treat layout-only swaps as non-events",
     "use the SettingsLayout container thresholds and single-host complete-form composition before implementing configuration pages",
     "verify light/dark and supported locale behavior against Storybook before product compliance claims",
     "block hard-coded copy, ad hoc status language, consumer-local reusable visual-system overrides, and theme-specific behavior forks"
@@ -48,6 +49,7 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "identify every registered primitive, export, variant, prop, slot, and state required by the product surface",
     "prove product code consumes package-backed components instead of local clones",
     "prove setting values use SettingChoice/Select/RadioGroup semantics and numeric values use NumberInput rather than Stepper",
+    "prove SettingChoice branch swaps retain valid state and report user changes exactly once",
     "prove the same Storybook visual instance, then compare rendered component metrics against Storybook: size, radius, padding, border, background, typography, hover, focus, active, disabled, dark, locale, mobile, and reduced-motion states"
   ],
   Patterns: [

@@ -53,8 +53,8 @@
       },
       {
         "id": "ai-consumption-contract",
-        "measure": 6388,
-        "recordedHeightPx": 6388,
+        "measure": 6458,
+        "recordedHeightPx": 6458,
         "owedTo": "beyond-INIT-008",
         "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
       },
@@ -113,7 +113,7 @@
     },
     {
       "id": "ai-consumption-contract",
-      "heightPx": 6388,
+      "heightPx": 6458,
       "owedTo": "beyond-INIT-008",
       "note": "full AI-consumption contract readback (single machine-readable surface); gated debt"
     },

@@ -767,6 +767,60 @@
       ],
       "ok": true
     },
+    "negativeGeometry": {
+      "schemaVersion": "tcrn.ds.page-hierarchy-browser-negative-proof.v1",
+      "reversedGeometry": {
+        "rects": [
+          {
+            "left": 0,
+            "top": 160,
+            "right": 360,
+            "bottom": 200,
+            "width": 360,
+            "height": 40
+          },
+          {
+            "left": 0,
+            "top": 90,
+            "right": 360,
+            "bottom": 130,
+            "width": 360,
+            "height": 40
+          },
+          {
+            "left": 0,
+            "top": 20,
+            "right": 360,
+            "bottom": 60,
+            "width": 360,
+            "height": 40
+          }
+        ],
+        "rejected": true
+      },
+      "overlappingThirdLevel": {
+        "rects": {
+          "local": {
+            "left": 0,
+            "top": 260,
+            "right": 360,
+            "bottom": 420,
+            "width": 360,
+            "height": 160
+          },
+          "content": {
+            "left": 0,
+            "top": 260,
+            "right": 360,
+            "bottom": 420,
+            "width": 360,
+            "height": 160
+          }
+        },
+        "rejected": true
+      },
+      "ok": true
+    },
     "readbacks": [
       {
         "width": 390,
@@ -788,8 +842,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 50,
+                "top": 558.140625,
+                "right": 340,
+                "bottom": 696.375,
+                "width": 290,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 50,
+                "top": 558.140625,
+                "right": 340,
+                "bottom": 600.828125,
+                "width": 290,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 50,
+                "top": 616.828125,
+                "right": 340,
+                "bottom": 654.828125,
+                "width": 290,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 50,
+                "top": 670.828125,
+                "right": 340,
+                "bottom": 696.375,
+                "width": 290,
+                "height": 25.546875
+              },
+              "pageWidthPx": 390,
+              "pageScrollWidthPx": 390
+            }
           },
           {
             "depth": "three",
@@ -805,8 +899,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 50,
+                "top": 708.375,
+                "right": 340,
+                "bottom": 920.15625,
+                "width": 290,
+                "height": 211.78125
+              },
+              "headerRect": {
+                "left": 50,
+                "top": 708.375,
+                "right": 340,
+                "bottom": 751.0625,
+                "width": 290,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 50,
+                "top": 767.0625,
+                "right": 340,
+                "bottom": 805.0625,
+                "width": 290,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 50,
+                "top": 821.0625,
+                "right": 340,
+                "bottom": 920.15625,
+                "width": 290,
+                "height": 99.09375
+              },
+              "localNavigationRect": {
+                "left": 50,
+                "top": 821.0625,
+                "right": 340,
+                "bottom": 861.0625,
+                "width": 290,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 50,
+                "top": 877.0625,
+                "right": 340,
+                "bottom": 920.15625,
+                "width": 290,
+                "height": 43.09375
+              },
+              "pageWidthPx": 390,
+              "pageScrollWidthPx": 390
+            }
           }
         ],
         "ok": true
@@ -831,8 +979,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 277.15625,
+                "right": 710,
+                "bottom": 415.390625,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 277.15625,
+                "right": 710,
+                "bottom": 319.84375,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 335.84375,
+                "right": 710,
+                "bottom": 373.84375,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 389.84375,
+                "right": 710,
+                "bottom": 415.390625,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -848,8 +1036,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 427.390625,
+                "right": 710,
+                "bottom": 621.625,
+                "width": 372,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 427.390625,
+                "right": 710,
+                "bottom": 470.078125,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 486.078125,
+                "right": 710,
+                "bottom": 524.078125,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 540.078125,
+                "right": 710,
+                "bottom": 621.625,
+                "width": 372,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 540.078125,
+                "right": 710,
+                "bottom": 580.078125,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 596.078125,
+                "right": 710,
+                "bottom": 621.625,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -874,8 +1116,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 339.46875,
+                "top": 407.890625,
+                "right": 624,
+                "bottom": 619.671875,
+                "width": 284.53125,
+                "height": 211.78125
+              },
+              "headerRect": {
+                "left": 339.46875,
+                "top": 407.890625,
+                "right": 624,
+                "bottom": 475.09375,
+                "width": 284.53125,
+                "height": 67.203125
+              },
+              "sectionTabsRect": {
+                "left": 339.46875,
+                "top": 491.09375,
+                "right": 624,
+                "bottom": 553.609375,
+                "width": 284.53125,
+                "height": 62.515625
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 339.46875,
+                "top": 569.609375,
+                "right": 624,
+                "bottom": 619.671875,
+                "width": 284.53125,
+                "height": 50.0625
+              },
+              "pageWidthPx": 980,
+              "pageScrollWidthPx": 980
+            }
           },
           {
             "depth": "three",
@@ -891,8 +1173,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 636,
+                "top": 407.890625,
+                "right": 920.53125,
+                "bottom": 619.671875,
+                "width": 284.53125,
+                "height": 211.78125
+              },
+              "headerRect": {
+                "left": 636,
+                "top": 407.890625,
+                "right": 920.53125,
+                "bottom": 450.578125,
+                "width": 284.53125,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 636,
+                "top": 466.578125,
+                "right": 920.53125,
+                "bottom": 504.578125,
+                "width": 284.53125,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 636,
+                "top": 520.578125,
+                "right": 920.53125,
+                "bottom": 619.671875,
+                "width": 284.53125,
+                "height": 99.09375
+              },
+              "localNavigationRect": {
+                "left": 636,
+                "top": 520.578125,
+                "right": 920.53125,
+                "bottom": 560.578125,
+                "width": 284.53125,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 636,
+                "top": 576.578125,
+                "right": 920.53125,
+                "bottom": 619.671875,
+                "width": 284.53125,
+                "height": 43.09375
+              },
+              "pageWidthPx": 980,
+              "pageScrollWidthPx": 980
+            }
           }
         ],
         "ok": true
@@ -917,8 +1253,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 340.609375,
+                "top": 407.296875,
+                "right": 646,
+                "bottom": 619.078125,
+                "width": 305.390625,
+                "height": 211.78125
+              },
+              "headerRect": {
+                "left": 340.609375,
+                "top": 407.296875,
+                "right": 646,
+                "bottom": 474.5,
+                "width": 305.390625,
+                "height": 67.203125
+              },
+              "sectionTabsRect": {
+                "left": 340.609375,
+                "top": 490.5,
+                "right": 646,
+                "bottom": 553.015625,
+                "width": 305.390625,
+                "height": 62.515625
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 340.609375,
+                "top": 569.015625,
+                "right": 646,
+                "bottom": 619.078125,
+                "width": 305.390625,
+                "height": 50.0625
+              },
+              "pageWidthPx": 1024,
+              "pageScrollWidthPx": 1024
+            }
           },
           {
             "depth": "three",
@@ -934,8 +1310,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 658,
+                "top": 407.296875,
+                "right": 963.390625,
+                "bottom": 619.078125,
+                "width": 305.390625,
+                "height": 211.78125
+              },
+              "headerRect": {
+                "left": 658,
+                "top": 407.296875,
+                "right": 963.390625,
+                "bottom": 449.984375,
+                "width": 305.390625,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 658,
+                "top": 465.984375,
+                "right": 963.390625,
+                "bottom": 503.984375,
+                "width": 305.390625,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 658,
+                "top": 519.984375,
+                "right": 963.390625,
+                "bottom": 619.078125,
+                "width": 305.390625,
+                "height": 99.09375
+              },
+              "localNavigationRect": {
+                "left": 658,
+                "top": 519.984375,
+                "right": 963.390625,
+                "bottom": 559.984375,
+                "width": 305.390625,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 658,
+                "top": 575.984375,
+                "right": 963.390625,
+                "bottom": 619.078125,
+                "width": 305.390625,
+                "height": 43.09375
+              },
+              "pageWidthPx": 1024,
+              "pageScrollWidthPx": 1024
+            }
           }
         ],
         "ok": true
@@ -960,8 +1390,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 344.671875,
+                "top": 420.171875,
+                "right": 724,
+                "bottom": 614.40625,
+                "width": 379.328125,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 344.671875,
+                "top": 420.171875,
+                "right": 724,
+                "bottom": 481.515625,
+                "width": 379.328125,
+                "height": 61.34375
+              },
+              "sectionTabsRect": {
+                "left": 344.671875,
+                "top": 497.515625,
+                "right": 724,
+                "bottom": 554.1875,
+                "width": 379.328125,
+                "height": 56.671875
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 344.671875,
+                "top": 570.1875,
+                "right": 724,
+                "bottom": 614.40625,
+                "width": 379.328125,
+                "height": 44.21875
+              },
+              "pageWidthPx": 1180,
+              "pageScrollWidthPx": 1180
+            }
           },
           {
             "depth": "three",
@@ -977,8 +1447,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 736,
+                "top": 420.171875,
+                "right": 1115.328125,
+                "bottom": 614.40625,
+                "width": 379.328125,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 736,
+                "top": 420.171875,
+                "right": 1115.328125,
+                "bottom": 462.859375,
+                "width": 379.328125,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 736,
+                "top": 478.859375,
+                "right": 1115.328125,
+                "bottom": 516.859375,
+                "width": 379.328125,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 736,
+                "top": 532.859375,
+                "right": 1115.328125,
+                "bottom": 614.40625,
+                "width": 379.328125,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 736,
+                "top": 532.859375,
+                "right": 1115.328125,
+                "bottom": 572.859375,
+                "width": 379.328125,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 736,
+                "top": 588.859375,
+                "right": 1115.328125,
+                "bottom": 614.40625,
+                "width": 379.328125,
+                "height": 25.546875
+              },
+              "pageWidthPx": 1180,
+              "pageScrollWidthPx": 1180
+            }
           }
         ],
         "ok": true
@@ -1003,8 +1527,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 347.265625,
+                "top": 417.765625,
+                "right": 774,
+                "bottom": 612,
+                "width": 426.734375,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 347.265625,
+                "top": 417.765625,
+                "right": 774,
+                "bottom": 479.109375,
+                "width": 426.734375,
+                "height": 61.34375
+              },
+              "sectionTabsRect": {
+                "left": 347.265625,
+                "top": 495.109375,
+                "right": 774,
+                "bottom": 551.78125,
+                "width": 426.734375,
+                "height": 56.671875
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 347.265625,
+                "top": 567.78125,
+                "right": 774,
+                "bottom": 612,
+                "width": 426.734375,
+                "height": 44.21875
+              },
+              "pageWidthPx": 1280,
+              "pageScrollWidthPx": 1280
+            }
           },
           {
             "depth": "three",
@@ -1020,8 +1584,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 786,
+                "top": 417.765625,
+                "right": 1212.734375,
+                "bottom": 612,
+                "width": 426.734375,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 786,
+                "top": 417.765625,
+                "right": 1212.734375,
+                "bottom": 460.453125,
+                "width": 426.734375,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 786,
+                "top": 476.453125,
+                "right": 1212.734375,
+                "bottom": 514.453125,
+                "width": 426.734375,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 786,
+                "top": 530.453125,
+                "right": 1212.734375,
+                "bottom": 612,
+                "width": 426.734375,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 786,
+                "top": 530.453125,
+                "right": 1212.734375,
+                "bottom": 570.453125,
+                "width": 426.734375,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 786,
+                "top": 586.453125,
+                "right": 1212.734375,
+                "bottom": 612,
+                "width": 426.734375,
+                "height": 25.546875
+              },
+              "pageWidthPx": 1280,
+              "pageScrollWidthPx": 1280
+            }
           }
         ],
         "ok": true
@@ -1046,8 +1664,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 359.4375,
+                "top": 413.390625,
+                "right": 858,
+                "bottom": 607.625,
+                "width": 498.5625,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 359.4375,
+                "top": 413.390625,
+                "right": 858,
+                "bottom": 474.734375,
+                "width": 498.5625,
+                "height": 61.34375
+              },
+              "sectionTabsRect": {
+                "left": 359.4375,
+                "top": 490.734375,
+                "right": 858,
+                "bottom": 547.40625,
+                "width": 498.5625,
+                "height": 56.671875
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 359.4375,
+                "top": 563.40625,
+                "right": 858,
+                "bottom": 607.625,
+                "width": 498.5625,
+                "height": 44.21875
+              },
+              "pageWidthPx": 1440,
+              "pageScrollWidthPx": 1440
+            }
           },
           {
             "depth": "three",
@@ -1063,8 +1721,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 870,
+                "top": 413.390625,
+                "right": 1368.5625,
+                "bottom": 607.625,
+                "width": 498.5625,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 870,
+                "top": 413.390625,
+                "right": 1368.5625,
+                "bottom": 456.078125,
+                "width": 498.5625,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 870,
+                "top": 472.078125,
+                "right": 1368.5625,
+                "bottom": 510.078125,
+                "width": 498.5625,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 870,
+                "top": 526.078125,
+                "right": 1368.5625,
+                "bottom": 607.625,
+                "width": 498.5625,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 870,
+                "top": 526.078125,
+                "right": 1368.5625,
+                "bottom": 566.078125,
+                "width": 498.5625,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 870,
+                "top": 582.078125,
+                "right": 1368.5625,
+                "bottom": 607.625,
+                "width": 498.5625,
+                "height": 25.546875
+              },
+              "pageWidthPx": 1440,
+              "pageScrollWidthPx": 1440
+            }
           }
         ],
         "ok": true
@@ -1089,8 +1801,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 276.46875,
+                "right": 710,
+                "bottom": 414.703125,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 276.46875,
+                "right": 710,
+                "bottom": 319.15625,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 335.15625,
+                "right": 710,
+                "bottom": 373.15625,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 389.15625,
+                "right": 710,
+                "bottom": 414.703125,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1106,8 +1858,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 426.703125,
+                "right": 710,
+                "bottom": 620.9375,
+                "width": 372,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 426.703125,
+                "right": 710,
+                "bottom": 469.390625,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 485.390625,
+                "right": 710,
+                "bottom": 523.390625,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 539.390625,
+                "right": 710,
+                "bottom": 620.9375,
+                "width": 372,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 539.390625,
+                "right": 710,
+                "bottom": 579.390625,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 595.390625,
+                "right": 710,
+                "bottom": 620.9375,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1132,8 +1938,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 276.46875,
+                "right": 710,
+                "bottom": 414.703125,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 276.46875,
+                "right": 710,
+                "bottom": 319.15625,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 335.15625,
+                "right": 710,
+                "bottom": 373.15625,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 389.15625,
+                "right": 710,
+                "bottom": 414.703125,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1149,8 +1995,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 426.703125,
+                "right": 710,
+                "bottom": 620.9375,
+                "width": 372,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 426.703125,
+                "right": 710,
+                "bottom": 469.390625,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 485.390625,
+                "right": 710,
+                "bottom": 523.390625,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 539.390625,
+                "right": 710,
+                "bottom": 620.9375,
+                "width": 372,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 539.390625,
+                "right": 710,
+                "bottom": 579.390625,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 595.390625,
+                "right": 710,
+                "bottom": 620.9375,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1175,8 +2075,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 277.15625,
+                "right": 710,
+                "bottom": 415.390625,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 277.15625,
+                "right": 710,
+                "bottom": 319.84375,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 335.84375,
+                "right": 710,
+                "bottom": 373.84375,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 389.84375,
+                "right": 710,
+                "bottom": 415.390625,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1192,8 +2132,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 427.390625,
+                "right": 710,
+                "bottom": 621.625,
+                "width": 372,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 427.390625,
+                "right": 710,
+                "bottom": 470.078125,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 486.078125,
+                "right": 710,
+                "bottom": 524.078125,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 540.078125,
+                "right": 710,
+                "bottom": 621.625,
+                "width": 372,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 540.078125,
+                "right": 710,
+                "bottom": 580.078125,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 596.078125,
+                "right": 710,
+                "bottom": 621.625,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1218,8 +2212,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 277.15625,
+                "right": 710,
+                "bottom": 415.390625,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 277.15625,
+                "right": 710,
+                "bottom": 319.84375,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 335.84375,
+                "right": 710,
+                "bottom": 373.84375,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 389.84375,
+                "right": 710,
+                "bottom": 415.390625,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1235,8 +2269,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 427.390625,
+                "right": 710,
+                "bottom": 621.625,
+                "width": 372,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 427.390625,
+                "right": 710,
+                "bottom": 470.078125,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 486.078125,
+                "right": 710,
+                "bottom": 524.078125,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 540.078125,
+                "right": 710,
+                "bottom": 621.625,
+                "width": 372,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 540.078125,
+                "right": 710,
+                "bottom": 580.078125,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 596.078125,
+                "right": 710,
+                "bottom": 621.625,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1261,8 +2349,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 277.0625,
+                "right": 710,
+                "bottom": 415.296875,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 277.0625,
+                "right": 710,
+                "bottom": 319.75,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 335.75,
+                "right": 710,
+                "bottom": 373.75,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 389.75,
+                "right": 710,
+                "bottom": 415.296875,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1278,8 +2406,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 427.296875,
+                "right": 710,
+                "bottom": 621.53125,
+                "width": 372,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 427.296875,
+                "right": 710,
+                "bottom": 469.984375,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 485.984375,
+                "right": 710,
+                "bottom": 523.984375,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 539.984375,
+                "right": 710,
+                "bottom": 621.53125,
+                "width": 372,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 539.984375,
+                "right": 710,
+                "bottom": 579.984375,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 595.984375,
+                "right": 710,
+                "bottom": 621.53125,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1304,8 +2486,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 277.0625,
+                "right": 710,
+                "bottom": 415.296875,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 277.0625,
+                "right": 710,
+                "bottom": 319.75,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 335.75,
+                "right": 710,
+                "bottom": 373.75,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 389.75,
+                "right": 710,
+                "bottom": 415.296875,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1321,8 +2543,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 427.296875,
+                "right": 710,
+                "bottom": 621.53125,
+                "width": 372,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 427.296875,
+                "right": 710,
+                "bottom": 469.984375,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 485.984375,
+                "right": 710,
+                "bottom": 523.984375,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 539.984375,
+                "right": 710,
+                "bottom": 621.53125,
+                "width": 372,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 539.984375,
+                "right": 710,
+                "bottom": 579.984375,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 595.984375,
+                "right": 710,
+                "bottom": 621.53125,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1347,8 +2623,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 277.296875,
+                "right": 710,
+                "bottom": 415.53125,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 277.296875,
+                "right": 710,
+                "bottom": 319.984375,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 335.984375,
+                "right": 710,
+                "bottom": 373.984375,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 389.984375,
+                "right": 710,
+                "bottom": 415.53125,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1364,8 +2680,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 427.53125,
+                "right": 710,
+                "bottom": 621.765625,
+                "width": 372,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 427.53125,
+                "right": 710,
+                "bottom": 470.21875,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 486.21875,
+                "right": 710,
+                "bottom": 524.21875,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 540.21875,
+                "right": 710,
+                "bottom": 621.765625,
+                "width": 372,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 540.21875,
+                "right": 710,
+                "bottom": 580.21875,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 596.21875,
+                "right": 710,
+                "bottom": 621.765625,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1390,8 +2760,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 277.296875,
+                "right": 710,
+                "bottom": 415.53125,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 277.296875,
+                "right": 710,
+                "bottom": 319.984375,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 335.984375,
+                "right": 710,
+                "bottom": 373.984375,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 389.984375,
+                "right": 710,
+                "bottom": 415.53125,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1407,8 +2817,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 427.53125,
+                "right": 710,
+                "bottom": 621.765625,
+                "width": 372,
+                "height": 194.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 427.53125,
+                "right": 710,
+                "bottom": 470.21875,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 486.21875,
+                "right": 710,
+                "bottom": 524.21875,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 540.21875,
+                "right": 710,
+                "bottom": 621.765625,
+                "width": 372,
+                "height": 81.546875
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 540.21875,
+                "right": 710,
+                "bottom": 580.21875,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 596.21875,
+                "right": 710,
+                "bottom": 621.765625,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1433,8 +2897,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 259.8125,
+                "right": 710,
+                "bottom": 398.046875,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 259.8125,
+                "right": 710,
+                "bottom": 302.5,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 318.5,
+                "right": 710,
+                "bottom": 356.5,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 372.5,
+                "right": 710,
+                "bottom": 398.046875,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1450,8 +2954,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 410.046875,
+                "right": 710,
+                "bottom": 621.828125,
+                "width": 372,
+                "height": 211.78125
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 410.046875,
+                "right": 710,
+                "bottom": 452.734375,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 468.734375,
+                "right": 710,
+                "bottom": 506.734375,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 522.734375,
+                "right": 710,
+                "bottom": 621.828125,
+                "width": 372,
+                "height": 99.09375
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 522.734375,
+                "right": 710,
+                "bottom": 562.734375,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 578.734375,
+                "right": 710,
+                "bottom": 621.828125,
+                "width": 372,
+                "height": 43.09375
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1476,8 +3034,48 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 259.8125,
+                "right": 710,
+                "bottom": 398.046875,
+                "width": 372,
+                "height": 138.234375
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 259.8125,
+                "right": 710,
+                "bottom": 302.5,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 318.5,
+                "right": 710,
+                "bottom": 356.5,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": null,
+              "localNavigationRect": null,
+              "contentRect": {
+                "left": 338,
+                "top": 372.5,
+                "right": 710,
+                "bottom": 398.046875,
+                "width": 372,
+                "height": 25.546875
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           },
           {
             "depth": "three",
@@ -1493,8 +3091,62 @@
             "domOrderOk": true,
             "geometryVisible": true,
             "regionsNonOverlapping": true,
+            "geometryOrderOk": true,
+            "geometryEvidenceComplete": true,
             "pageOverflow": false,
-            "noProductShell": true
+            "noProductShell": true,
+            "geometry": {
+              "pageHierarchyRect": {
+                "left": 338,
+                "top": 410.046875,
+                "right": 710,
+                "bottom": 621.828125,
+                "width": 372,
+                "height": 211.78125
+              },
+              "headerRect": {
+                "left": 338,
+                "top": 410.046875,
+                "right": 710,
+                "bottom": 452.734375,
+                "width": 372,
+                "height": 42.6875
+              },
+              "sectionTabsRect": {
+                "left": 338,
+                "top": 468.734375,
+                "right": 710,
+                "bottom": 506.734375,
+                "width": 372,
+                "height": 38
+              },
+              "thirdLevelRect": {
+                "left": 338,
+                "top": 522.734375,
+                "right": 710,
+                "bottom": 621.828125,
+                "width": 372,
+                "height": 99.09375
+              },
+              "localNavigationRect": {
+                "left": 338,
+                "top": 522.734375,
+                "right": 710,
+                "bottom": 562.734375,
+                "width": 372,
+                "height": 40
+              },
+              "contentRect": {
+                "left": 338,
+                "top": 578.734375,
+                "right": 710,
+                "bottom": 621.828125,
+                "width": 372,
+                "height": 43.09375
+              },
+              "pageWidthPx": 768,
+              "pageScrollWidthPx": 768
+            }
           }
         ],
         "ok": true
@@ -1505,7 +3157,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "547c19e1a1e79b9bf9ebafc1b94b7094934d11f2db6ef94c9d36d684d9f5dbf0",
+    "contractPayloadDigest": "db3a83d9ae0ce98a245713ffc7e6632d3c94a4771f9151e506691aebb44b9d01",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 21,

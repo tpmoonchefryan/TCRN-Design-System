@@ -75,3 +75,61 @@ test("STORY-111 unmeasured binary labels conservatively choose Select", () => {
   assert.equal(result.ok, true);
   assert.deepEqual(result.findings, []);
 });
+
+const validTwoLevelMarkup = '<div data-page-hierarchy="true" data-page-hierarchy-depth="two" data-page-hierarchy-source="explicit-depth-prop" data-page-hierarchy-width-policy="container-only" data-page-hierarchy-shell-boundary="global-product-shell-external"><div data-page-hierarchy-region="header" data-page-hierarchy-slot="header"><header class="tcrn-page-header"><h2>Settings</h2></header></div><div data-page-hierarchy-region="section-tabs" data-page-hierarchy-slot="section-tabs"><nav class="tcrn-sub-nav">General</nav></div><div data-page-hierarchy-region="lower-content" data-page-hierarchy-slot="content">Content</div></div>';
+
+const validTwoLevelEvidence = {
+  schemaVersion: "tcrn.ds.rendered-consumption-evidence.v1",
+  kind: "page-hierarchy",
+  dom: {
+    pageHierarchyCount: 1,
+    pageHeaderCount: 1,
+    sectionTabsCount: 1,
+    thirdLevelRegionCount: 0,
+    localNavigationSlotCount: 0,
+    hierarchyContentSlotCount: 1,
+    pageHierarchySlotOrder: ["header", "section-tabs", "content"],
+    pageHierarchyDepths: ["two"]
+  },
+  geometry: {
+    pageWidthPx: 300,
+    pageScrollWidthPx: 300,
+    pageOverflow: false,
+    pageHierarchy: {
+      visible: true,
+      headerVisible: true,
+      sectionTabsVisible: true,
+      thirdLevelVisible: false,
+      localNavigationVisible: false,
+      contentVisible: true,
+      pageHierarchyRect: { left: 0, top: 0, right: 300, bottom: 150, width: 300, height: 150 },
+      headerRect: { left: 0, top: 0, right: 300, bottom: 40, width: 300, height: 40 },
+      sectionTabsRect: { left: 0, top: 50, right: 300, bottom: 90, width: 300, height: 40 },
+      contentRect: { left: 0, top: 100, right: 300, bottom: 140, width: 300, height: 40 },
+      thirdLevelRect: null,
+      localNavigationRect: null
+    }
+  }
+};
+
+test("STORY-109/112 reject missing, non-finite, invalid, and reversed page geometry evidence", () => {
+  const missing = structuredClone(validTwoLevelEvidence);
+  delete missing.geometry.pageHierarchy.headerRect;
+  assert.equal(inspectDsConsumption({ kind: "page-hierarchy", markup: validTwoLevelMarkup, renderedEvidence: missing, expectedPageDepth: "two" }).ok, false);
+
+  const nonFinite = structuredClone(validTwoLevelEvidence);
+  nonFinite.geometry.pageHierarchy.headerRect.top = Number.NaN;
+  assert.equal(inspectDsConsumption({ kind: "page-hierarchy", markup: validTwoLevelMarkup, renderedEvidence: nonFinite, expectedPageDepth: "two" }).ok, false);
+
+  const invalidRect = structuredClone(validTwoLevelEvidence);
+  invalidRect.geometry.pageHierarchy.sectionTabsRect.right = 20;
+  assert.equal(inspectDsConsumption({ kind: "page-hierarchy", markup: validTwoLevelMarkup, renderedEvidence: invalidRect, expectedPageDepth: "two" }).ok, false);
+
+  const reversed = structuredClone(validTwoLevelEvidence);
+  reversed.geometry.pageHierarchy.headerRect = { left: 0, top: 100, right: 300, bottom: 140, width: 300, height: 40 };
+  reversed.geometry.pageHierarchy.sectionTabsRect = { left: 0, top: 50, right: 300, bottom: 90, width: 300, height: 40 };
+  reversed.geometry.pageHierarchy.contentRect = { left: 0, top: 0, right: 300, bottom: 40, width: 300, height: 40 };
+  const reversedResult = inspectDsConsumption({ kind: "page-hierarchy", markup: validTwoLevelMarkup, renderedEvidence: reversed, expectedPageDepth: "two" });
+  assert.equal(reversedResult.ok, false);
+  assert.match(reversedResult.findings.join("; "), /not above|not below/);
+});
