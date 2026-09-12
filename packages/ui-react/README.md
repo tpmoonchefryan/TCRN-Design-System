@@ -34,6 +34,10 @@ control. `NumberInput` is the numeric-entry primitive; `Stepper` remains a proce
 position indicator and is not a numeric input substitute.
 Per-option `disabled` values are preserved when the same `SettingChoice` changes
 between its native radio and native Select branches.
+The component owns the current value for the uncontrolled `defaultValue` form and
+uses the supplied `value` for the controlled form; either mode retains a valid
+selection when the branches swap. `onChange` reports actual user value changes
+once and is silent during layout-only swaps or unchanged-value events.
 
 `SettingsLayout` uses the actual content container to choose its density. At a
 960px frame it places compact local navigation beside one content column; below

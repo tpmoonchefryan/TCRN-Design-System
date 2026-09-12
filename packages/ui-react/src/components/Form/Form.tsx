@@ -1,5 +1,5 @@
 import type { HTMLAttributes, InputHTMLAttributes, ReactElement, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
-import { Children, cloneElement, isValidElement, useId, useRef } from "react";
+import { Children, cloneElement, isValidElement, useId, useRef, useState } from "react";
 import { Icon } from "../Icon/index.js";
 import { childPropsOf, cx, mergeIds, requiredText } from "../../utils.js";
 
@@ -287,6 +287,18 @@ export interface RadioGroupProps extends Omit<HTMLAttributes<HTMLFieldSetElement
 
 export function RadioGroup({ legend, name, options, value, defaultValue, onChange, disabled, className, ...props }: RadioGroupProps) {
   const groupId = useId();
+  const isControlled = value !== undefined;
+  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
+  const selectedValue = isControlled ? value : uncontrolledValue;
+  const handleChange = (nextValue: string) => {
+    if (nextValue === selectedValue) {
+      return;
+    }
+    if (!isControlled) {
+      setUncontrolledValue(nextValue);
+    }
+    onChange?.(nextValue);
+  };
   return (
     <fieldset {...props} className={cx("tcrn-radio-group", className)} data-radio-group="true" disabled={disabled}>
       <legend className="tcrn-radio-group__legend">{legend}</legend>
@@ -303,9 +315,8 @@ export function RadioGroup({ legend, name, options, value, defaultValue, onChang
               value={option.value}
               disabled={option.disabled}
               aria-describedby={option.description ? descriptionId : undefined}
-              {...(value === undefined
-                ? { defaultChecked: defaultValue === option.value }
-                : { checked: value === option.value, onChange: () => onChange?.(option.value) })}
+              checked={selectedValue === option.value}
+              onChange={() => handleChange(option.value)}
             />
             <span className="tcrn-radio-group__label">{option.label}</span>
             {option.description ? <span id={descriptionId} className="tcrn-radio-group__description">{option.description}</span> : null}
@@ -427,7 +438,19 @@ export function SettingChoice({
   const controlId = useId();
   const hintId = useId();
   const errorId = useId();
+  const isControlled = value !== undefined;
+  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
   const describedBy = mergeIds(hint ? hintId : undefined, error ? errorId : undefined);
+  const selectedValue = isControlled ? value : uncontrolledValue;
+  const handleChange = (nextValue: string) => {
+    if (nextValue === selectedValue) {
+      return;
+    }
+    if (!isControlled) {
+      setUncontrolledValue(nextValue);
+    }
+    onChange?.(nextValue);
+  };
   const selectOptions = options.map(({ value: optionValue, label: optionLabel, disabled: optionDisabled }) => ({ value: optionValue, label: optionLabel, disabled: optionDisabled }));
   const radioOptions: RadioOption[] = options.map(({ value: optionValue, label: optionLabel, description, disabled: optionDisabled, minInlineSize }) => ({
     value: optionValue,
@@ -455,9 +478,9 @@ export function SettingChoice({
           legend={label}
           name={name}
           options={radioOptions}
-          value={value}
-          defaultValue={defaultValue}
-          onChange={onChange}
+          value={isControlled ? selectedValue : undefined}
+          defaultValue={isControlled ? undefined : selectedValue}
+          onChange={handleChange}
           disabled={disabled}
           aria-describedby={describedBy}
           aria-invalid={error ? true : undefined}
@@ -470,12 +493,12 @@ export function SettingChoice({
             id={controlId}
             name={name}
             options={selectOptions}
-            value={value}
-            defaultValue={value === undefined ? defaultValue : undefined}
+            value={isControlled ? selectedValue : undefined}
+            defaultValue={isControlled ? undefined : selectedValue}
             disabled={disabled}
             aria-describedby={describedBy}
             aria-invalid={error ? true : undefined}
-            onChange={(event) => onChange?.(event.currentTarget.value)}
+            onChange={(event) => handleChange(event.currentTarget.value)}
           />
         </label>
       )}

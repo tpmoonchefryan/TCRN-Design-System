@@ -70,6 +70,11 @@ export const dsConsumptionRules = Object.freeze([
     id: "DS-112-R2",
     name: "page-depth-rendered-evidence",
     rule: "Page hierarchy checks actual DOM order, region existence, rendered geometry, overlap, and page overflow; depth cannot be inferred from width, option count, or self-reported markers."
+  },
+  {
+    id: "DS-110-R1",
+    name: "setting-choice-state-retention",
+    rule: "SettingChoice retains valid controlled or uncontrolled values across radio/Select branch changes; onChange reports actual user value changes once and does not fire for layout-only swaps or unchanged values."
   }
 ]);
 
@@ -141,6 +146,53 @@ function expectedDisabledValuesMatch(actualValues, expectedValues, findings, bra
   }
 }
 
+const GEOMETRY_EPSILON = 1;
+
+function finiteNumber(value) {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+function validGeometryRect(rect) {
+  if (!rect || !["left", "top", "right", "bottom", "width", "height"].every((key) => finiteNumber(rect[key]))) return false;
+  if (rect.width <= 0 || rect.height <= 0 || rect.right <= rect.left || rect.bottom <= rect.top) return false;
+  return Math.abs((rect.right - rect.left) - rect.width) <= GEOMETRY_EPSILON
+    && Math.abs((rect.bottom - rect.top) - rect.height) <= GEOMETRY_EPSILON;
+}
+
+function rectContains(container, child) {
+  return validGeometryRect(container)
+    && validGeometryRect(child)
+    && child.left >= container.left - GEOMETRY_EPSILON
+    && child.top >= container.top - GEOMETRY_EPSILON
+    && child.right <= container.right + GEOMETRY_EPSILON
+    && child.bottom <= container.bottom + GEOMETRY_EPSILON;
+}
+
+function rectsOverlap(first, second) {
+  return validGeometryRect(first)
+    && validGeometryRect(second)
+    && first.left < second.right - GEOMETRY_EPSILON
+    && first.right > second.left + GEOMETRY_EPSILON
+    && first.top < second.bottom - GEOMETRY_EPSILON
+    && first.bottom > second.top + GEOMETRY_EPSILON;
+}
+
+function exactValues(actual, expected) {
+  return Array.isArray(actual)
+    && actual.length === expected.length
+    && actual.every((value, index) => value === expected[index]);
+}
+
+function renderedDisabledValuesMatch(actualValues, expectedValues, findings, branch) {
+  if (!Array.isArray(actualValues)) {
+    finding(findings, `${branch} rendered disabled state evidence is missing`);
+    return;
+  }
+  const actual = [...actualValues].sort();
+  const expected = [...expectedValues].sort();
+  if (!exactValues(actual, expected)) finding(findings, `${branch} rendered disabled values differ from the declared options`);
+}
+
 async function measureRenderedMarkup(browser, kind, markup) {
   const page = await browser.newPage({ viewport: { width: 720, height: 520 } });
   try {
@@ -168,6 +220,8 @@ async function measureRenderedMarkup(browser, kind, markup) {
       const pageHierarchy = fixture?.querySelector("[data-page-hierarchy='true']");
       const pageHierarchyHeader = pageHierarchy?.querySelector("[data-page-hierarchy-region='header']");
       const pageHierarchyTabs = pageHierarchy?.querySelector("[data-page-hierarchy-region='section-tabs']");
+      const pageHierarchyThirdLevel = pageHierarchy?.querySelector("[data-page-hierarchy-region='third-level']");
+      const pageHierarchyThirdLevelGrid = pageHierarchy?.querySelector(".tcrn-page-hierarchy__third-level");
       const pageHierarchyLocalNavigation = pageHierarchy?.querySelector("[data-page-hierarchy-slot='local-navigation']");
       const pageHierarchyContent = pageHierarchy?.querySelector("[data-page-hierarchy-slot='content']");
       const selectNodes = Array.from(fixture?.querySelectorAll("select") ?? []);
@@ -191,6 +245,8 @@ async function measureRenderedMarkup(browser, kind, markup) {
       const boxesOverlap = (first, second) => Boolean(first && second && first.left < second.right - 1 && first.right > second.left + 1 && first.top < second.bottom - 1 && first.bottom > second.top + 1);
       const hierarchyHeaderRect = regionRect(pageHierarchyHeader);
       const hierarchyTabsRect = regionRect(pageHierarchyTabs);
+      const hierarchyThirdLevelRect = regionRect(pageHierarchyThirdLevel);
+      const hierarchyThirdLevelGridRect = regionRect(pageHierarchyThirdLevelGrid);
       const hierarchyLocalNavigationRect = regionRect(pageHierarchyLocalNavigation);
       const hierarchyContentRect = regionRect(pageHierarchyContent);
       return {
@@ -205,8 +261,11 @@ async function measureRenderedMarkup(browser, kind, markup) {
           pageHierarchyCount: fixture?.querySelectorAll("[data-page-hierarchy='true']").length ?? 0,
           pageHeaderCount: pageHierarchy?.querySelectorAll(".tcrn-page-header").length ?? 0,
           sectionTabsCount: pageHierarchy?.querySelectorAll("[data-page-hierarchy-region='section-tabs'] .tcrn-sub-nav,[data-page-hierarchy-region='section-tabs'] .tcrn-section-tabs").length ?? 0,
+          thirdLevelRegionCount: pageHierarchy?.querySelectorAll("[data-page-hierarchy-region='third-level']").length ?? 0,
           localNavigationSlotCount: pageHierarchy?.querySelectorAll("[data-page-hierarchy-slot='local-navigation']").length ?? 0,
           hierarchyContentSlotCount: pageHierarchy?.querySelectorAll("[data-page-hierarchy-slot='content']").length ?? 0,
+          pageHierarchySlotOrder: Array.from(pageHierarchy?.querySelectorAll("[data-page-hierarchy-slot]") ?? []).map((node) => node.getAttribute("data-page-hierarchy-slot")),
+          pageHierarchyDepths: Array.from(fixture?.querySelectorAll("[data-page-hierarchy='true']") ?? []).map((node) => node.getAttribute("data-page-hierarchy-depth")),
           featureEntryCount: entryNodes.length,
           featureVisibleEntryCount: visibleEntries.length,
           disabledOptionValues: selectNodes.flatMap((select) => Array.from(select.options).filter((option) => option.disabled).map((option) => option.value)),
@@ -221,8 +280,16 @@ async function measureRenderedMarkup(browser, kind, markup) {
           hiddenOverflowCount: hiddenOverflowNodes.length,
           pageHierarchy: pageHierarchy ? {
             visible: visible(pageHierarchy),
+            headerVisible: visible(pageHierarchyHeader),
+            sectionTabsVisible: visible(pageHierarchyTabs),
+            thirdLevelVisible: visible(pageHierarchyThirdLevel),
+            localNavigationVisible: visible(pageHierarchyLocalNavigation),
+            contentVisible: visible(pageHierarchyContent),
+            pageHierarchyRect: regionRect(pageHierarchy),
             headerRect: hierarchyHeaderRect,
             sectionTabsRect: hierarchyTabsRect,
+            thirdLevelRect: hierarchyThirdLevelRect,
+            thirdLevelGridRect: hierarchyThirdLevelGridRect,
             localNavigationRect: hierarchyLocalNavigationRect,
             contentRect: hierarchyContentRect,
             headerTabsOverlap: boxesOverlap(hierarchyHeaderRect, hierarchyTabsRect),
@@ -291,6 +358,7 @@ export function inspectDsConsumption({ kind, markup, renderedEvidence, expectedD
       } else {
         const radioEvidence = renderedEvidence.geometry?.radioGroup;
         if (renderedEvidence.dom?.radioCount !== actualRadioValues.length) finding(findings, "actual radio DOM count is not carried by rendered evidence");
+        renderedDisabledValuesMatch(renderedEvidence.dom?.disabledRadioValues, expectedDisabledOptionValues, findings, "RadioGroup");
         if (radioEvidence?.visible !== true) finding(findings, "binary value choice is not visibly rendered");
         if (Number(radioEvidence?.scrollWidth) > Number(radioEvidence?.clientWidth) + 1) finding(findings, "binary value choice overflows its rendered group");
         if ((radioEvidence?.optionScrollWidths ?? []).some((width, index) => Number(width) > Number(radioEvidence?.optionWidths?.[index] ?? 0) + 1)) {
@@ -300,6 +368,11 @@ export function inspectDsConsumption({ kind, markup, renderedEvidence, expectedD
     } else if (control === "select") {
       if (elementTags(markup, "select").length !== 1) finding(findings, "Select control is missing or duplicated in a select decision");
       expectedDisabledValuesMatch(actualOptionValues, expectedDisabledOptionValues, findings, "Select");
+      if (renderedEvidence) {
+        if (renderedEvidence.dom?.selectCount !== 1) finding(findings, "actual Select DOM count is not exactly one");
+        if (renderedEvidence.dom?.optionCount !== actualOptionValues.length) finding(findings, "actual Select option count is not carried by rendered evidence");
+        renderedDisabledValuesMatch(renderedEvidence.dom?.disabledOptionValues, expectedDisabledOptionValues, findings, "Select");
+      }
     } else {
       finding(findings, "unknown setting choice control");
     }
@@ -391,12 +464,76 @@ export function inspectDsConsumption({ kind, markup, renderedEvidence, expectedD
       finding(findings, "page hierarchy rendered geometry evidence is missing");
     } else {
       const hierarchyEvidence = renderedEvidence.geometry?.pageHierarchy;
-      if (renderedEvidence.dom?.pageHierarchyCount !== 1 || renderedEvidence.dom?.pageHeaderCount !== 1 || renderedEvidence.dom?.sectionTabsCount !== 1) finding(findings, "actual page hierarchy component counts are not proven");
-      if (depth === "two" && Number(renderedEvidence.dom?.localNavigationSlotCount) !== 0) finding(findings, "two-level rendered DOM contains local navigation");
-      if (depth === "three" && Number(renderedEvidence.dom?.localNavigationSlotCount) !== 1) finding(findings, "three-level rendered DOM is missing local navigation");
-      if (hierarchyEvidence?.visible !== true) finding(findings, "page hierarchy is not visibly rendered");
-      if (hierarchyEvidence?.headerTabsOverlap || hierarchyEvidence?.tabsContentOverlap || hierarchyEvidence?.localContentOverlap) finding(findings, "page hierarchy regions overlap in the rendered geometry");
-      if (renderedEvidence.geometry?.pageOverflow === true) finding(findings, "page hierarchy creates page-level horizontal overflow");
+      const hierarchyDom = renderedEvidence.dom;
+      const expectedSlotOrder = depth === "three"
+        ? ["header", "section-tabs", "local-navigation", "content"]
+        : ["header", "section-tabs", "content"];
+      if (hierarchyDom?.pageHierarchyCount !== 1
+        || hierarchyDom?.pageHeaderCount !== 1
+        || hierarchyDom?.sectionTabsCount !== 1
+        || hierarchyDom?.hierarchyContentSlotCount !== 1
+        || hierarchyDom?.thirdLevelRegionCount !== (depth === "three" ? 1 : 0)
+        || hierarchyDom?.localNavigationSlotCount !== (depth === "three" ? 1 : 0)) {
+        finding(findings, "actual page hierarchy component counts are not proven");
+      }
+      if (!exactValues(hierarchyDom?.pageHierarchyDepths, [depth])) finding(findings, "actual page hierarchy depth is not proven");
+      if (!exactValues(hierarchyDom?.pageHierarchySlotOrder, expectedSlotOrder)) finding(findings, "actual page hierarchy slot order is not proven");
+
+      const pageWidth = renderedEvidence.geometry?.pageWidthPx;
+      const pageScrollWidth = renderedEvidence.geometry?.pageScrollWidthPx;
+      if (!finiteNumber(pageWidth) || pageWidth <= 0 || !finiteNumber(pageScrollWidth) || pageScrollWidth <= 0) {
+        finding(findings, "page overflow geometry evidence is missing or non-finite");
+      } else {
+        const computedPageOverflow = pageScrollWidth > pageWidth + GEOMETRY_EPSILON;
+        if (typeof renderedEvidence.geometry?.pageOverflow !== "boolean") finding(findings, "page overflow evidence is missing");
+        if (renderedEvidence.geometry?.pageOverflow !== computedPageOverflow) finding(findings, "page overflow boolean contradicts the measured widths");
+        if (computedPageOverflow) finding(findings, "page hierarchy creates page-level horizontal overflow");
+      }
+
+      const requiredGeometry = [
+        ["pageHierarchyRect", hierarchyEvidence?.pageHierarchyRect],
+        ["headerRect", hierarchyEvidence?.headerRect],
+        ["sectionTabsRect", hierarchyEvidence?.sectionTabsRect],
+        ["contentRect", hierarchyEvidence?.contentRect]
+      ];
+      if (depth === "three") requiredGeometry.push(["thirdLevelRect", hierarchyEvidence?.thirdLevelRect], ["localNavigationRect", hierarchyEvidence?.localNavigationRect]);
+      for (const [name, rect] of requiredGeometry) {
+        if (!validGeometryRect(rect)) finding(findings, `${name} is missing or invalid`);
+      }
+      if (hierarchyEvidence?.visible !== true
+        || hierarchyEvidence?.headerVisible !== true
+        || hierarchyEvidence?.sectionTabsVisible !== true
+        || hierarchyEvidence?.contentVisible !== true
+        || (depth === "three" && (hierarchyEvidence?.thirdLevelVisible !== true || hierarchyEvidence?.localNavigationVisible !== true))) {
+        finding(findings, "page hierarchy regions are not visibly rendered");
+      }
+
+      const pageHierarchyRect = hierarchyEvidence?.pageHierarchyRect;
+      const headerRect = hierarchyEvidence?.headerRect;
+      const sectionTabsRect = hierarchyEvidence?.sectionTabsRect;
+      const thirdLevelRect = hierarchyEvidence?.thirdLevelRect;
+      const localNavigationRect = hierarchyEvidence?.localNavigationRect;
+      const contentRect = hierarchyEvidence?.contentRect;
+      if (validGeometryRect(pageHierarchyRect) && validGeometryRect(headerRect) && !rectContains(pageHierarchyRect, headerRect)) finding(findings, "Header is outside the page hierarchy bounds");
+      if (validGeometryRect(pageHierarchyRect) && validGeometryRect(sectionTabsRect) && !rectContains(pageHierarchyRect, sectionTabsRect)) finding(findings, "parent tabs are outside the page hierarchy bounds");
+      if (validGeometryRect(pageHierarchyRect) && validGeometryRect(contentRect) && !rectContains(pageHierarchyRect, contentRect)) finding(findings, "content is outside the page hierarchy bounds");
+      if (rectsOverlap(headerRect, sectionTabsRect) || rectsOverlap(sectionTabsRect, contentRect)) finding(findings, "page hierarchy regions overlap in the rendered geometry");
+      if (!validGeometryRect(headerRect) || !validGeometryRect(sectionTabsRect) || headerRect.bottom > sectionTabsRect.top + GEOMETRY_EPSILON) finding(findings, "Header is not above parent tabs in the rendered geometry");
+      if (!validGeometryRect(sectionTabsRect) || !validGeometryRect(contentRect) || sectionTabsRect.bottom > contentRect.top + GEOMETRY_EPSILON) finding(findings, "content is not below parent tabs in the rendered geometry");
+      if (depth === "three") {
+        if (!validGeometryRect(thirdLevelRect) || !rectContains(pageHierarchyRect, thirdLevelRect)) finding(findings, "third-level region is outside the page hierarchy bounds");
+        if (!validGeometryRect(thirdLevelRect) || !rectContains(thirdLevelRect, localNavigationRect) || !rectContains(thirdLevelRect, contentRect)) finding(findings, "third-level local navigation/content are not contained in the selected subpage");
+        if (rectsOverlap(localNavigationRect, contentRect)) finding(findings, "third-level local navigation and content overlap in the rendered geometry");
+        const horizontalOrder = validGeometryRect(localNavigationRect) && validGeometryRect(contentRect)
+          && localNavigationRect.right <= contentRect.left + GEOMETRY_EPSILON
+          && localNavigationRect.top < contentRect.bottom - GEOMETRY_EPSILON
+          && contentRect.top < localNavigationRect.bottom - GEOMETRY_EPSILON;
+        const verticalOrder = validGeometryRect(localNavigationRect) && validGeometryRect(contentRect)
+          && localNavigationRect.bottom <= contentRect.top + GEOMETRY_EPSILON
+          && localNavigationRect.left < contentRect.right - GEOMETRY_EPSILON
+          && contentRect.left < localNavigationRect.right - GEOMETRY_EPSILON;
+        if (!horizontalOrder && !verticalOrder) finding(findings, "third-level local navigation/content order is not a valid left-right or responsive stacked layout");
+      }
     }
   } else if (kind === "consumer-feature") {
     const applicable = attr(markup, "data-consumer-feature-applicable");
@@ -551,6 +688,10 @@ function invalidThreeLevelOverlappingRegionsMarkup() {
   return '<div data-page-hierarchy="true" data-page-hierarchy-depth="three" data-page-hierarchy-source="explicit-depth-prop" data-page-hierarchy-width-policy="container-only" data-page-hierarchy-shell-boundary="global-product-shell-external" data-page-hierarchy-valid="true"><div class="tcrn-page-hierarchy__header" data-page-hierarchy-region="header" data-page-hierarchy-slot="header"><header class="tcrn-page-header"><h2>Settings</h2></header></div><div class="tcrn-page-hierarchy__section-tabs" data-page-hierarchy-region="section-tabs" data-page-hierarchy-slot="section-tabs"><nav class="tcrn-sub-nav">General</nav></div><div class="tcrn-page-hierarchy__third-level" data-page-hierarchy-region="third-level" style="position:relative;height:40px"><aside data-page-hierarchy-slot="local-navigation" style="position:absolute;inset:0">Details</aside><div data-page-hierarchy-slot="content" style="position:absolute;inset:0">Content</div></div></div>';
 }
 
+function invalidReversedTwoLevelGeometryMarkup() {
+  return '<div data-page-hierarchy="true" data-page-hierarchy-depth="two" data-page-hierarchy-source="explicit-depth-prop" data-page-hierarchy-width-policy="container-only" data-page-hierarchy-shell-boundary="global-product-shell-external" data-page-hierarchy-valid="true" style="position:relative;display:block;height:220px"><div class="tcrn-page-hierarchy__header" data-page-hierarchy-region="header" data-page-hierarchy-slot="header" style="position:absolute;inset-inline:0;top:160px;height:40px"><header class="tcrn-page-header"><h2>Settings</h2></header></div><div class="tcrn-page-hierarchy__section-tabs" data-page-hierarchy-region="section-tabs" data-page-hierarchy-slot="section-tabs" style="position:absolute;inset-inline:0;top:90px;height:40px"><nav class="tcrn-sub-nav">General</nav></div><div class="tcrn-page-hierarchy__lower-content" data-page-hierarchy-region="lower-content" data-page-hierarchy-slot="content" style="position:absolute;inset-inline:0;top:20px;height:40px"><div>Content</div></div></div>';
+}
+
 export async function runDsConsumptionProof() {
   const fixtures = [
     { id: "valid-setting-choice", kind: "setting-choice", expected: "pass", expectedDisabledOptionValues: ["remote"], markup: validSettingChoiceMarkup() },
@@ -639,6 +780,13 @@ export async function runDsConsumptionProof() {
       expected: "reject",
       expectedPageDepth: "three",
       markup: invalidThreeLevelOverlappingRegionsMarkup()
+    },
+    {
+      id: "two-level-page-reversed-rendered-geometry",
+      kind: "page-hierarchy",
+      expected: "reject",
+      expectedPageDepth: "two",
+      markup: invalidReversedTwoLevelGeometryMarkup()
     },
     {
       id: "consumer-not-applicable-entry-visible",

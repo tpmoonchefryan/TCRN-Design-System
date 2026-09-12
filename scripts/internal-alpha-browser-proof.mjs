@@ -2567,6 +2567,7 @@ const pageHierarchyProofCases = [
 ];
 const pageHierarchyProofReadbacks = [];
 let pageHierarchyContainerAdaptation = { ok: false, reason: "not-run" };
+let pageHierarchyNegativeProof = { ok: false, reason: "not-run" };
 for (const proofCase of pageHierarchyProofCases) {
   const pageHierarchyPage = await browser.newPage({ viewport: { width: Math.floor(proofCase.width / proofCase.zoom), height: 900 }, reducedMotion: "reduce" });
   try {
@@ -2599,13 +2600,47 @@ for (const proofCase of pageHierarchyProofCases) {
         const slots = Array.from(node.querySelectorAll("[data-page-hierarchy-slot]"));
         const slotIndex = (target) => target ? slots.indexOf(target) : -1;
         const depth = node.getAttribute("data-page-hierarchy-depth");
-        const thirdLevel = node.querySelector(".tcrn-page-hierarchy__third-level");
-        const thirdLevelColumns = thirdLevel ? getComputedStyle(thirdLevel).gridTemplateColumns : "";
-        const headerRect = box(header);
-        const tabsRect = box(sectionTabs);
-        const localNavigationRect = box(localNavigation);
-        const contentRect = box(content);
-        const expectedOrder = depth === "three"
+      const thirdLevel = node.querySelector(".tcrn-page-hierarchy__third-level");
+      const thirdLevelRegion = node.querySelector("[data-page-hierarchy-region='third-level']");
+      const thirdLevelColumns = thirdLevel ? getComputedStyle(thirdLevel).gridTemplateColumns : "";
+      const headerRect = box(header);
+      const tabsRect = box(sectionTabs);
+      const thirdLevelRect = box(thirdLevelRegion);
+      const localNavigationRect = box(localNavigation);
+      const contentRect = box(content);
+      const validRect = (value) => Boolean(value)
+        && ["left", "top", "right", "bottom", "width", "height"].every((key) => Number.isFinite(value[key]))
+        && value.width > 0
+        && value.height > 0
+        && value.right > value.left
+        && value.bottom > value.top
+        && Math.abs((value.right - value.left) - value.width) <= 1
+        && Math.abs((value.bottom - value.top) - value.height) <= 1;
+      const contains = (container, child) => validRect(container) && validRect(child)
+        && child.left >= container.left - 1
+        && child.top >= container.top - 1
+        && child.right <= container.right + 1
+        && child.bottom <= container.bottom + 1;
+      const horizontalOrder = validRect(localNavigationRect) && validRect(contentRect)
+        && localNavigationRect.right <= contentRect.left + 1
+        && localNavigationRect.top < contentRect.bottom - 1
+        && contentRect.top < localNavigationRect.bottom - 1;
+      const verticalOrder = validRect(localNavigationRect) && validRect(contentRect)
+        && localNavigationRect.bottom <= contentRect.top + 1
+        && localNavigationRect.left < contentRect.right - 1
+        && contentRect.left < localNavigationRect.right - 1;
+      const geometryOrderOk = validRect(headerRect)
+        && validRect(tabsRect)
+        && validRect(contentRect)
+        && headerRect.bottom <= tabsRect.top + 1
+        && (depth === "two"
+          ? tabsRect.bottom <= contentRect.top + 1
+          : validRect(thirdLevelRect)
+            && thirdLevelRect.top >= tabsRect.bottom - 1
+            && contains(thirdLevelRect, localNavigationRect)
+            && contains(thirdLevelRect, contentRect)
+            && (horizontalOrder || verticalOrder));
+      const expectedOrder = depth === "three"
           ? [slotIndex(header), slotIndex(sectionTabs), slotIndex(localNavigation), slotIndex(content)]
           : [slotIndex(header), slotIndex(sectionTabs), slotIndex(content)];
         return {
@@ -2622,9 +2657,21 @@ for (const proofCase of pageHierarchyProofCases) {
           domOrderOk: expectedOrder.every((value, index) => value >= 0 && (index === 0 || value > expectedOrder[index - 1])),
           geometryVisible: visible(node) && visible(header) && visible(sectionTabs) && visible(content) && (depth !== "three" || visible(localNavigation)),
           regionsNonOverlapping: !overlaps(headerRect, tabsRect) && !overlaps(tabsRect, localNavigationRect) && !overlaps(tabsRect, contentRect) && !overlaps(localNavigationRect, contentRect),
+          geometryOrderOk,
+          geometryEvidenceComplete: validRect(headerRect) && validRect(tabsRect) && validRect(contentRect) && (depth !== "three" || (validRect(thirdLevelRect) && validRect(localNavigationRect))),
           pageOverflow: pageScrollWidth > pageWidth + 1,
           noProductShell: node.querySelector(".tcrn-product-shell") === null,
-          thirdLevelColumns
+          thirdLevelColumns,
+          geometry: {
+            pageHierarchyRect: box(node),
+            headerRect,
+            sectionTabsRect: tabsRect,
+            thirdLevelRect,
+            localNavigationRect,
+            contentRect,
+            pageWidthPx: pageWidth,
+            pageScrollWidthPx: pageScrollWidth
+          }
         };
       });
     });
@@ -2642,8 +2689,11 @@ for (const proofCase of pageHierarchyProofCases) {
       domOrderOk: readback.domOrderOk,
       geometryVisible: readback.geometryVisible,
       regionsNonOverlapping: readback.regionsNonOverlapping,
+      geometryOrderOk: readback.geometryOrderOk,
+      geometryEvidenceComplete: readback.geometryEvidenceComplete,
       pageOverflow: readback.pageOverflow,
-      noProductShell: readback.noProductShell
+      noProductShell: readback.noProductShell,
+      geometry: readback.geometry
     }));
     const depthOk = (readback) => readback.validMarker
       && readback.source === "explicit-depth-prop"
@@ -2655,6 +2705,8 @@ for (const proofCase of pageHierarchyProofCases) {
       && readback.domOrderOk
       && readback.geometryVisible
       && readback.regionsNonOverlapping
+      && readback.geometryOrderOk
+      && readback.geometryEvidenceComplete
       && !readback.pageOverflow
       && readback.noProductShell
       && (readback.depth === "two"
@@ -2684,6 +2736,59 @@ for (const proofCase of pageHierarchyProofCases) {
       });
       pageHierarchyContainerAdaptation = adaptation;
     }
+    if (proofCase.width === 1440 && proofCase.zoom === 1 && proofCase.locale === "en" && proofCase.theme === "light") {
+      pageHierarchyNegativeProof = await pageHierarchyPage.evaluate(() => {
+        const rect = (node) => {
+          const value = node?.getBoundingClientRect();
+          return value ? { left: value.left, top: value.top, right: value.right, bottom: value.bottom, width: value.width, height: value.height } : null;
+        };
+        const overlaps = (first, second) => Boolean(first && second
+          && first.left < second.right - 1
+          && first.right > second.left + 1
+          && first.top < second.bottom - 1
+          && first.bottom > second.top + 1);
+        const reversedRoot = document.createElement("div");
+        reversedRoot.style.cssText = "position:fixed;inset-inline-start:0;inset-block-start:0;inline-size:360px;block-size:220px;display:block;z-index:1000";
+        const reversed = [
+          ["header", "header", "160px"],
+          ["section-tabs", "tabs", "90px"],
+          ["content", "content", "20px"]
+        ].map(([slot, label, top]) => {
+          const region = document.createElement("div");
+          region.dataset.pageHierarchySlot = slot;
+          region.textContent = label;
+          region.style.cssText = `position:absolute;inset-inline:0;top:${top};block-size:40px`;
+          reversedRoot.append(region);
+          return region;
+        });
+        document.body.append(reversedRoot);
+        const reversedRects = reversed.map(rect);
+        const reversedOrderRejected = reversedRects[0].bottom > reversedRects[1].top + 1 || reversedRects[1].bottom > reversedRects[2].top + 1;
+        reversedRoot.remove();
+
+        const overlapRoot = document.createElement("div");
+        overlapRoot.style.cssText = "position:fixed;inset-inline-start:0;inset-block-start:260px;inline-size:360px;block-size:160px;display:block;z-index:1000";
+        const local = document.createElement("aside");
+        const content = document.createElement("div");
+        local.dataset.pageHierarchySlot = "local-navigation";
+        content.dataset.pageHierarchySlot = "content";
+        local.textContent = "local";
+        content.textContent = "content";
+        local.style.cssText = "position:absolute;inset:0";
+        content.style.cssText = "position:absolute;inset:0";
+        overlapRoot.append(local, content);
+        document.body.append(overlapRoot);
+        const overlapRects = { local: rect(local), content: rect(content) };
+        const overlapRejected = overlaps(overlapRects.local, overlapRects.content);
+        overlapRoot.remove();
+        return {
+          schemaVersion: "tcrn.ds.page-hierarchy-browser-negative-proof.v1",
+          reversedGeometry: { rects: reversedRects, rejected: reversedOrderRejected },
+          overlappingThirdLevel: { rects: overlapRects, rejected: overlapRejected },
+          ok: reversedOrderRejected && overlapRejected
+        };
+      });
+    }
     pageHierarchyProofReadbacks.push({
       ...proofCase,
       depths: depthReadbacks,
@@ -2700,10 +2805,12 @@ const pageHierarchyBrowserProof = {
   locales: ["zh-CN", "en", "ja", "ko", "fr"],
   themes: ["light", "dark"],
   containerAdaptation: pageHierarchyContainerAdaptation,
+  negativeGeometry: pageHierarchyNegativeProof,
   readbacks: pageHierarchyProofReadbacks,
   ok: pageHierarchyProofReadbacks.length === pageHierarchyProofCases.length
     && pageHierarchyProofReadbacks.every((readback) => readback.ok)
     && pageHierarchyContainerAdaptation.ok
+    && pageHierarchyNegativeProof.ok
 };
 
 const settingsLayoutProofCases = [

@@ -140,6 +140,10 @@ reserved for navigation. `NumberInput` owns numeric entry; `Stepper` owns proces
 position.
 `SettingsLayout` owns the one-host, one-complete-form composition and never uses
 `overflow: hidden` to conceal fields, labels, actions, or long values.
+`SettingChoice` retains a valid value across radio/Select branch changes in both
+controlled (`value`) and uncontrolled (`defaultValue`) modes. Its `onChange`
+callback reports actual user value changes once; changing only the available
+inline size does not call it.
 
 ## Page hierarchy
 
