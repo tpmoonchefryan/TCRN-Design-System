@@ -97,7 +97,7 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "Nine returned component constructs are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
   },
   "ai-consumption-contract": {
-    recordedHeightPx: 6304,
+    recordedHeightPx: 6388,
     owedTo: "beyond-INIT-008",
     note: "full AI-consumption contract readback (single machine-readable surface); gated debt"
   },

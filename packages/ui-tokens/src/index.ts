@@ -911,6 +911,20 @@ export const tcrnTokens = [
     value: "12ch",
     group: "container",
     description: "Minimum inline size for numeric entry so the legal value and native editing affordance remain visible."
+  },
+  {
+    name: "container.pageHierarchy.thirdLevelSplit",
+    variable: "--tcrn-container-page-third-level-split",
+    value: "960px",
+    group: "container",
+    description: "Minimum inline size for a third-level page's internal local-navigation/content split; never a page-depth decision."
+  },
+  {
+    name: "container.pageHierarchy.localNav",
+    variable: "--tcrn-container-page-third-level-nav",
+    value: "208px",
+    group: "container",
+    description: "Compact local-navigation column width inside an explicitly third-level page."
   }
 ] as const satisfies readonly DesignToken[];
 

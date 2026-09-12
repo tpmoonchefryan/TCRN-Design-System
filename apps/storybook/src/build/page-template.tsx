@@ -179,6 +179,11 @@ const settingsContractCssStart = tcrnComponentCss.indexOf("/* DS-106/107 setting
 const scopedComponentCss = settingsContractCssStart === -1
   ? tcrnComponentCss
   : tcrnComponentCss.slice(0, settingsContractCssStart);
+const pageHierarchyContractCssStart = tcrnComponentCss.indexOf("/* DS-112 page hierarchy contract. */");
+const globalComponentCss = pageHierarchyContractCssStart === -1
+  ? tcrnComponentCss
+  : tcrnComponentCss.slice(0, pageHierarchyContractCssStart);
+const pageHierarchyComponentCss = pageHierarchyContractCssStart === -1 ? "" : tcrnComponentCss.slice(pageHierarchyContractCssStart);
 // The older scoped copy has a `.story-body .tcrn-setting-row` rule. Re-apply
 // only the settings-specific container overrides after that copy so the global
 // settings block keeps its narrow/roomy behaviour without duplicating all CSS.
@@ -188,6 +193,17 @@ const settingsScopedOverrides = `
 @container tcrn-settings-content (min-width:720px){.story-body .tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content}.story-body .tcrn-settings-layout__form .tcrn-setting-row__tools{justify-content:flex-end}}
 `;
 const staticStoryComponentCss = compactCss(`${scopeComponentCss(scopedComponentCss, ".story-body")}${settingsScopedOverrides}`);
+
+function globalComponentCssForBody(mainBody: string): string {
+  return mainBody.includes("data-page-hierarchy")
+    ? globalComponentCss + pageHierarchyComponentCss
+    : globalComponentCss;
+}
+
+function alphaStoryCssForBody(mainBody: string): string {
+  if (mainBody.includes("data-page-hierarchy")) return alphaStoryCss;
+  return alphaStoryCss.replace(/  --tcrn-container-page-third-level-(?:split|nav): [^;]+;\n/g, "");
+}
 
 function skipLinkHtml(): string {
   return renderToStaticMarkup(
@@ -516,10 +532,10 @@ function renderContractDocument(options: {
   <meta name="tcrn-ai-consumption-contract-required" content="must-read-first" />
   <title>${pageTitleText} - ${localeText("shell.title")}</title>
   <style data-tcrn-component-style-source="@tcrn/ui-react" data-tcrn-doc-shell-component-style="package-backed">
-${tcrnComponentCss}
+${globalComponentCssForBody(mainBody)}
   </style>
   <style data-tcrn-static-doc-style-source="storybook">
-${alphaStoryCss}
+${alphaStoryCssForBody(mainBody)}
   </style>
   <style data-tcrn-component-style-source="@tcrn/ui-react" data-tcrn-product-shell-comparator-style="package-backed" data-tcrn-component-style-scope=".story-body">
 ${staticStoryComponentCss}

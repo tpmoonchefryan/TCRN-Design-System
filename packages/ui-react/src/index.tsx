@@ -39,6 +39,7 @@ export const componentLibraryPublicComponentNames = [
   "CollapsibleRegion",
   "DisclosurePanel",
   "SettingsLayout",
+  "PageHierarchy",
   "KeyValueList",
   "DatePicker",
   "Tree",

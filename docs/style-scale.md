@@ -132,8 +132,26 @@ breakpoints:
 | `--tcrn-container-settings-number-min` | `12ch` | Minimum numeric-entry width for full legal values and native editing. |
 
 `SettingChoice` maps values to native `Select` when there are more than two
-options, or when a binary pair does not fit its measured labels and controls. A
-fitting binary pair uses a native `RadioGroup`; `SegmentedNav` is reserved for
-navigation. `NumberInput` owns numeric entry; `Stepper` owns process position.
+options, when a binary pair lacks finite positive `minInlineSize` measurements, or
+when a binary pair does not fit its measured labels and controls. The `112px`
+option value is a CSS floor only; it cannot stand in for a current label/control
+measurement. A fitting binary pair uses a native `RadioGroup`; `SegmentedNav` is
+reserved for navigation. `NumberInput` owns numeric entry; `Stepper` owns process
+position.
 `SettingsLayout` owns the one-host, one-complete-form composition and never uses
 `overflow: hidden` to conceal fields, labels, actions, or long values.
+
+## Page hierarchy
+
+`PageHierarchy` takes an explicit `depth` and keeps page semantics independent
+from container width:
+
+| Depth | Structure | Internal navigation |
+|---|---|---|
+| `two` | `PageHeader` → parent `SubNav`/`SectionTabs` → lower content | Omitted |
+| `three` | `PageHeader` → parent `SubNav`/`SectionTabs` → selected-subpage local navigation + content | Required |
+
+The global `ProductShell` topbar is outside this page composition. The
+`--tcrn-container-page-third-level-split` and
+`--tcrn-container-page-third-level-nav` tokens only control the responsive
+`--tcrn-container-page-third-level-split` is `960px` and `--tcrn-container-page-third-level-nav` is `208px`; these tokens only control the responsive presentation of an already explicit third-level region.

@@ -14,6 +14,7 @@ import {
   storybookDocShellVisualOracle,
   settingControlSelectionContract,
   settingsLayoutContract,
+  pageHierarchyContract,
   consumerVerificationContract
 } from "./foundation-visual-standards.js";
 
@@ -245,6 +246,7 @@ export const aiConsumptionContract = {
     "consumerVisualStyleContract",
     "settingControlSelectionContract",
     "settingsLayoutContract",
+    "pageHierarchyContract",
     "consumerVerificationContract",
     "requiredProof",
     "noOverclaimBoundaries"
@@ -323,6 +325,7 @@ export const aiConsumptionContract = {
   consumerVisualStyleContract,
   settingControlSelectionContract,
   settingsLayoutContract,
+  pageHierarchyContract,
   consumerVerificationContract,
   visualEquivalenceLevels: [
     "same_package_version",
@@ -842,6 +845,7 @@ export const aiConsumptionContract = {
     "use_registered_product_logo_components_for_product_identity",
     "reject_unregistered_or_deprecated_brand_assets",
     "import_package_backed_ds_primitives",
+    "consume_page_hierarchy_contract",
     "use_design_tokens_and_accessibility_rules",
     "verify_light_and_dark_storybook_theme_contract",
     "verify_motion_effect_parity_and_reduced_motion",
@@ -883,6 +887,7 @@ export const aiConsumptionContract = {
     "motion_effect_receipt",
     "setting_control_selection_receipt",
     "settings_layout_container_receipt",
+    "page_hierarchy_receipt",
     "consumer_negative_leg_receipt",
     "product_adoption_route_receipt"
   ],

@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { AppStatusBar, CollapsibleRegion, DisclosurePanel, Divider, SettingsLayout, Surface } from "./Layout.js";
+import { AppStatusBar, CollapsibleRegion, DisclosurePanel, Divider, PageHierarchy, SettingsLayout, Surface } from "./Layout.js";
+import { PageHeader, SubNav } from "../DataDisplay/DomainDisplay.js";
 
 test("layout primitives include surfaces and dividers", () => {
   const html = renderToStaticMarkup(
@@ -93,4 +94,47 @@ test("settings layout declares container-driven navigation and complete-form bou
   assert.match(html, /aria-label="Settings navigation"/);
   assert.match(html, /data-settings-complete-form="true"/);
   assert.match(html, /class="tcrn-settings-layout__host-switcher"/);
+});
+
+test("page hierarchy keeps two-level content below the page header and parent tabs", () => {
+  const html = renderToStaticMarkup(
+    <PageHierarchy
+      depth="two"
+      header={<PageHeader title="Settings" />}
+      sectionTabs={<SubNav label="Settings pages" items={[{ id: "general", label: "General", current: true }]} />}
+      content={<div data-page-content="true">Page content</div>}
+      contentLabel="Page content"
+    />
+  );
+
+  assert.match(html, /data-page-hierarchy="true"/);
+  assert.match(html, /data-page-hierarchy-depth="two"/);
+  assert.match(html, /data-page-hierarchy-source="explicit-depth-prop"/);
+  assert.match(html, /data-page-hierarchy-shell-boundary="global-product-shell-external"/);
+  assert.match(html, /data-page-hierarchy-valid="true"/);
+  assert.doesNotMatch(html, /data-page-hierarchy-slot="local-navigation"/);
+  assert.ok(html.indexOf('data-page-hierarchy-slot="header"') < html.indexOf('data-page-hierarchy-slot="section-tabs"'));
+  assert.ok(html.indexOf('data-page-hierarchy-slot="section-tabs"') < html.indexOf('data-page-hierarchy-slot="content"'));
+  assert.match(html, /class="[^"]*tcrn-page-header/);
+  assert.match(html, /class="tcrn-sub-nav"/);
+});
+
+test("page hierarchy reserves the internal local navigation slot for explicit third-level pages", () => {
+  const html = renderToStaticMarkup(
+    <PageHierarchy
+      depth="three"
+      header={<PageHeader title="Settings detail" />}
+      sectionTabs={<SubNav label="Settings pages" items={[{ id: "general", label: "General", current: true }]} />}
+      localNavigation={<nav aria-label="Detail sections">Details</nav>}
+      localNavigationLabel="Detail sections"
+      content={<div data-page-content="true">Detail content</div>}
+      contentLabel="Detail content"
+    />
+  );
+
+  assert.match(html, /data-page-hierarchy-depth="three"/);
+  assert.match(html, /data-page-hierarchy-valid="true"/);
+  assert.match(html, /data-page-hierarchy-region="third-level"/);
+  assert.match(html, /data-page-hierarchy-slot="local-navigation"/);
+  assert.match(html, /data-page-hierarchy-slot="content"/);
 });

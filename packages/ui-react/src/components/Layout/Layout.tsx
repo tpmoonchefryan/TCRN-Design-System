@@ -127,3 +127,82 @@ export function SettingsLayout({
     </div>
   );
 }
+
+export type PageHierarchyDepth = "two" | "three";
+
+export interface PageHierarchyProps extends Omit<HTMLAttributes<HTMLDivElement>, "children" | "content"> {
+  /** Explicit business/page depth; width never infers or changes this value. */
+  depth: PageHierarchyDepth;
+  /** The page-level Header, separate from the global ProductShell topbar. */
+  header: ReactNode;
+  /** The parent-level horizontal sub-navigation shown below the Header. */
+  sectionTabs: ReactNode;
+  /** Only a third-level page may supply an internal local navigation slot. */
+  localNavigation?: ReactNode;
+  localNavigationLabel?: string;
+  /** Two-level content sits below section tabs; three-level content sits beside local navigation. */
+  content: ReactNode;
+  contentLabel: string;
+}
+
+/**
+ * Encodes the page hierarchy before applying container-responsive presentation.
+ *
+ * A two-level page is always Header -> parent tabs -> lower content. A three-level
+ * page is Header -> parent tabs -> selected-subpage local navigation/content. The
+ * global ProductShell topbar is outside this composition and never contributes a
+ * page depth. The explicit depth prop is intentionally visible in the DOM so a
+ * consumer proof can compare actual structure, not a depth-shaped class name.
+ */
+export function PageHierarchy({
+  depth,
+  header,
+  sectionTabs,
+  localNavigation,
+  localNavigationLabel = "Local navigation",
+  content,
+  contentLabel,
+  className,
+  ...props
+}: PageHierarchyProps) {
+  const isThirdLevel = depth === "three";
+  const validation = isThirdLevel
+    ? localNavigation ? "valid" : "missing-third-level-local-navigation"
+    : localNavigation ? "unexpected-third-level-local-navigation" : "valid";
+  return (
+    <div
+      {...props}
+      className={cx("tcrn-page-hierarchy", className)}
+      data-page-hierarchy="true"
+      data-page-hierarchy-depth={depth}
+      data-page-hierarchy-source="explicit-depth-prop"
+      data-page-hierarchy-width-policy="container-only"
+      data-page-hierarchy-shell-boundary="global-product-shell-external"
+      data-page-hierarchy-valid={validation === "valid" ? "true" : "false"}
+      data-page-hierarchy-validation={validation}
+    >
+      <div className="tcrn-page-hierarchy__header" data-page-hierarchy-region="header" data-page-hierarchy-slot="header">
+        {header}
+      </div>
+      <div className="tcrn-page-hierarchy__section-tabs" data-page-hierarchy-region="section-tabs" data-page-hierarchy-slot="section-tabs">
+        {sectionTabs}
+      </div>
+      {isThirdLevel ? (
+        <div className="tcrn-page-hierarchy__third-level-frame" data-page-hierarchy-region="third-level">
+          <div className="tcrn-page-hierarchy__third-level">
+            <aside className="tcrn-page-hierarchy__local-navigation" aria-label={localNavigationLabel} data-page-hierarchy-slot="local-navigation">
+              {localNavigation}
+            </aside>
+            <div className="tcrn-page-hierarchy__content" aria-label={contentLabel} data-page-hierarchy-slot="content">
+              {content}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="tcrn-page-hierarchy__lower-content" aria-label={contentLabel} data-page-hierarchy-region="lower-content" data-page-hierarchy-slot="content">
+          {content}
+        </div>
+      )}
+    </div>
+  );
+}
