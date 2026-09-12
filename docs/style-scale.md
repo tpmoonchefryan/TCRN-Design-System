@@ -169,6 +169,30 @@ machine values, and exact duplicate labels/descriptions are invalid.
 closed single values, closed collections, and open single strings, and rejects an
 open collection or a closed field with no options as unsupported.
 
+## Operation feedback and content scopes
+
+`OperationFeedback` uses the existing `StatusBadge` for a short localized phase
+label and a controlled `DisclosurePanel` for complete operation identity and
+receipt details. The package admits `idle`, `loading`, `success`, and `error`;
+long ids, timestamps, and reason codes wrap in the identity/details region and
+must not be placed in the compact badge. The native details trigger carries
+`aria-expanded` and `aria-controls`, while the root's polite live region
+announces updates without moving focus.
+
+`ContentScope` validates one consumer-owned `scope` and `dataSource` at a time.
+`content` requires visible items, `empty` requires zero shown items, and
+`loading`/`error` remain distinct from empty unless stale content is explicitly
+declared. Unfiltered counts must match; filtered scopes distinguish
+`shownCount` from `totalCount`. `validateContentScope` is the same pure
+validator used before static emission, and sibling scopes do not share state.
+
+`evaluateConsumerEvidence` is the single pure validator for consumer evidence.
+It checks expected-to-observed instance identity, requested/selected/panel
+surface, exercised input and target offset, DOM-backed result and feedback,
+post-operation geometry, and independent `dpr`, `pinch-visual-viewport`, and
+`page-zoom` measurements. A missing required control, error DOM check, visible
+target, or zoom axis is a failure; `wouldFail` is not an accepted input.
+
 Client-rendered `Tooltip` and anchored `Popover` instances use the document-body
 boundary when a trigger reference is available, so scroll ancestors cannot clip
 the layer. Placement is recomputed from trigger and layer rectangles on viewport

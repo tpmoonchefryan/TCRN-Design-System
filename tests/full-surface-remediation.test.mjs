@@ -40,6 +40,34 @@ test("STORY-115 dictionary surface keeps category copy singular and value explan
   assert.equal((html.match(/data-dictionary-value="manual"/g) ?? []).length, 1);
 });
 
+test("STORY-116 display surface keeps four operation phases, short status, identity, and details", () => {
+  const html = readPage("components-component-inventory.html");
+  assert.equal((html.match(/data-operation-feedback="true"/g) ?? []).length, 4);
+  for (const phase of ["idle", "loading", "success", "error"]) {
+    assert.match(html, new RegExp(`data-operation-feedback-phase="${phase}"`));
+  }
+  assert.equal((html.match(/data-operation-short-status="true"/g) ?? []).length, 4);
+  assert.equal((html.match(/data-operation-identity="true"/g) ?? []).length, 4);
+  assert.equal((html.match(/data-operation-details-trigger="true"/g) ?? []).length, 4);
+  assert.equal((html.match(/data-operation-details="true"/g) ?? []).length, 4);
+  assert.match(html, /data-operation-geometry="responsive-safe"/);
+  assert.match(html, /reason-code-with-a-long-machine-suffix-2026-09-13/);
+});
+
+test("STORY-117 token surface keeps independent content scopes and distinct lifecycle states", () => {
+  const html = readPage("foundations-tokens-i18n.html");
+  assert.equal((html.match(/data-content-scope=/g) ?? []).length, 6);
+  for (const scope of ["scope-a", "scope-b", "scope-filtered", "scope-loading", "scope-error", "scope-invalid"]) {
+    assert.match(html, new RegExp(`data-content-scope="${scope}"`));
+  }
+  assert.match(html, /data-content-phase="content"[^>]*data-content-valid="true"/);
+  assert.match(html, /data-content-phase="empty"[^>]*data-content-valid="true"/);
+  assert.match(html, /data-content-phase="loading"[^>]*data-content-valid="true"/);
+  assert.match(html, /data-content-phase="error"[^>]*data-content-valid="true"/);
+  assert.match(html, /data-content-scope="scope-invalid"[^>]*data-content-valid="false"/);
+  assert.match(html, /data-content-count-kind="filtered"/);
+});
+
 test("EPIC037 contract readback names the full-surface browser proof and package exports", () => {
   const contract = JSON.parse(readFileSync(join(staticRoot, "ai-consumption-contract.json"), "utf8"));
   assert.equal(contract.fieldValueSelectionContract.id, "field-value-selection-contract-v1");
@@ -53,4 +81,19 @@ test("EPIC037 contract readback names the full-surface browser proof and package
   assert.match(contract.overlayBoundaryContract.staticConsumerMigration.bootstrap, /tcrnComponentCss/);
   assert.match(contract.overlayBoundaryContract.staticConsumerMigration.behavior, /document\.body/);
   assert.equal(contract.consumerVerificationContract.browserScript, "scripts/full-surface-remediation-proof.mjs");
+});
+
+test("EPIC038 contract readback names operation feedback, content scopes, and one evidence validator", () => {
+  const contract = JSON.parse(readFileSync(join(staticRoot, "ai-consumption-contract.json"), "utf8"));
+  assert.equal(contract.operationFeedbackContract.id, "operation-feedback-contract-v1");
+  assert.deepEqual(contract.operationFeedbackContract.phases, ["idle", "loading", "success", "error"]);
+  assert.ok(contract.operationFeedbackContract.packageExports.includes("OperationFeedback"));
+  assert.equal(contract.contentScopeContract.id, "content-scope-contract-v1");
+  assert.ok(contract.contentScopeContract.packageExports.includes("validateContentScope"));
+  assert.equal(contract.consumerEvidenceContract.id, "consumer-evidence-verification-contract-v1");
+  assert.equal(contract.consumerEvidenceContract.utility, "evaluateConsumerEvidence");
+  assert.deepEqual(contract.consumerEvidenceContract.zoomAxes, ["dpr", "pinch-visual-viewport", "page-zoom"]);
+  assert.equal(contract.consumerVerificationContract.evidenceValidator, "evaluateConsumerEvidence");
+  assert.ok(contract.requiredReadbackFields.includes("consumerEvidenceContract"));
+  assert.ok(contract.requiredProof.includes("consumer_evidence_verification_receipt"));
 });

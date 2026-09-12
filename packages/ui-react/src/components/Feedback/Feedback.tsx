@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import { useId, useState, type HTMLAttributes, type ReactNode } from "react";
 import { Icon } from "../Icon/index.js";
 import {
   presentCopyState,
@@ -9,7 +9,7 @@ import {
 } from "@tcrn/ui-copy-state";
 import { cx } from "../../utils.js";
 import { Heading, Text } from "../Typography/index.js";
-import { Surface } from "../Layout/index.js";
+import { DisclosurePanel, Surface } from "../Layout/index.js";
 
 type Tone = "neutral" | "positive" | "warning" | "danger";
 
@@ -86,6 +86,135 @@ export function StatusBadge({ state, locale, children: _children, ...props }: St
     >
       {presentation.label}
     </Badge>
+  );
+}
+
+export type OperationFeedbackPhase = "idle" | "loading" | "success" | "error";
+
+export interface OperationIdentity {
+  operation: string;
+  operationId?: string;
+  actor: string;
+  actorId?: string;
+  occurredAt?: string;
+}
+
+export interface OperationFeedbackLabels {
+  operation: ReactNode;
+  operationId?: ReactNode;
+  actor: ReactNode;
+  actorId?: ReactNode;
+  occurredAt?: ReactNode;
+}
+
+const operationPhaseStates: Record<OperationFeedbackPhase, CopyStateInput> = {
+  idle: { state: "not_configured" },
+  loading: { state: "proof_required" },
+  success: { state: "ready" },
+  error: { state: "blocked" }
+};
+
+/**
+ * A compact, accessible operation result. The badge is deliberately short and
+ * copy-state-backed; the identity and the full reason belong in the readable
+ * disclosure below it, where long ids, timestamps, and localized text can wrap.
+ */
+export interface OperationFeedbackProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+  phase: OperationFeedbackPhase;
+  state?: CopyStateInput;
+  identity: OperationIdentity;
+  identityLabels: OperationFeedbackLabels;
+  detailTitle: ReactNode;
+  detailsLabel: ReactNode;
+  details: ReactNode;
+  expanded?: boolean;
+  onExpandedChange?: (expanded: boolean) => void;
+  locale?: TcrnLocale | string;
+}
+
+export function OperationFeedback({
+  phase,
+  state,
+  identity,
+  identityLabels,
+  detailTitle,
+  detailsLabel,
+  details,
+  expanded,
+  onExpandedChange,
+  locale,
+  className,
+  id,
+  ...props
+}: OperationFeedbackProps) {
+  const detailsId = `tcrn-operation-details-${useId()}`;
+  const [uncontrolledExpanded, setUncontrolledExpanded] = useState(false);
+  const isExpanded = expanded ?? uncontrolledExpanded;
+  const toggleDetails = () => {
+    const next = !isExpanded;
+    if (expanded === undefined) setUncontrolledExpanded(next);
+    onExpandedChange?.(next);
+  };
+  const displayState = state ?? operationPhaseStates[phase];
+  const identityRows = [
+    { id: "operation", label: identityLabels.operation, value: identity.operation },
+    { id: "operation-id", label: identityLabels.operationId, value: identity.operationId },
+    { id: "actor", label: identityLabels.actor, value: identity.actor },
+    { id: "actor-id", label: identityLabels.actorId, value: identity.actorId },
+    { id: "occurred-at", label: identityLabels.occurredAt, value: identity.occurredAt }
+  ];
+
+  return (
+    <section
+      {...props}
+      id={id}
+      className={cx("tcrn-operation-feedback", className)}
+      data-operation-feedback="true"
+      data-operation-phase={phase}
+      data-operation-state={displayState.state ?? "unknown"}
+      data-operation-geometry="responsive-safe"
+      data-operation-update-notification="aria-live"
+      aria-live="polite"
+    >
+      <div className="tcrn-operation-feedback__summary">
+        <StatusBadge
+          state={displayState}
+          locale={locale}
+          data-operation-short-status="true"
+          data-operation-short-status-phase={phase}
+        />
+        <dl className="tcrn-operation-feedback__identity" data-operation-identity="true">
+          {identityRows.map((row) => row.value !== undefined && row.label !== undefined ? (
+            <div key={row.id} className="tcrn-operation-feedback__identity-row" data-operation-identity-field={row.id}>
+              <dt>{row.label}</dt>
+              <dd className="tcrn-operation-feedback__identity-value">
+                {row.id === "operation-id" || row.id === "actor-id" || row.id === "occurred-at" ? <code>{row.value}</code> : row.value}
+              </dd>
+            </div>
+          ) : null)}
+        </dl>
+        <button
+          id={id ? `${id}-details-trigger` : undefined}
+          type="button"
+          className="tcrn-operation-feedback__details-trigger"
+          aria-expanded={isExpanded}
+          aria-controls={detailsId}
+          onClick={toggleDetails}
+          data-operation-details-trigger="true"
+        >
+          {detailsLabel}
+        </button>
+      </div>
+      <DisclosurePanel
+        id={detailsId}
+        title={detailTitle}
+        expanded={isExpanded}
+        className="tcrn-operation-feedback__details"
+        data-operation-details="true"
+      >
+        <div className="tcrn-operation-feedback__details-body">{details}</div>
+      </DisclosurePanel>
+    </section>
   );
 }
 

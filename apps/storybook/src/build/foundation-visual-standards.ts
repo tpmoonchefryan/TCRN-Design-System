@@ -288,6 +288,139 @@ export const pageHierarchyContract = {
   ]
 } as const;
 
+export const verificationCadenceContract = {
+  id: "ds-verification-cadence-contract-v1",
+  scope: "EPIC038 implementation and its necessary DS dependencies",
+  stages: [
+    {
+      id: "development",
+      trigger: "A source, test, copy, token, consumer-proof, or documentation change is being developed.",
+      preferredCommands: ["pnpm typecheck", "pnpm --filter @tcrn/ui-react test:ssr", "pnpm --filter @tcrn/ui-react test:dom", "pnpm tokens:proof", "pnpm ds:consumption:proof", "pnpm full-surface:proof", "pnpm storybook:smoke"],
+      selection: "Run only checks affected by the change, plus a focused negative leg when the change alters a validator or boundary.",
+      prohibitedDefault: "Do not start the flat full verify/P1/push-gate set for each edit or before this bounded batch is ready."
+    },
+    {
+      id: "candidate-final",
+      trigger: "All EPIC038 source, tests, Storybook consumers, documentation, and necessary local dependencies are fixed at one candidate.",
+      requiredCommands: ["pnpm verify", "pnpm public-docs:vercel-build"],
+      selection: "Run one final top-level verify for the candidate and retain the static-document build as a separate output target when requested.",
+      prohibitedDefault: "Do not rerun contained child gates after the same successful parent run without a changed input or a failing result that requires targeted diagnosis."
+    },
+    {
+      id: "post-change",
+      trigger: "A merge, publication, environment, dependency, baseline, or candidate change makes an earlier receipt potentially stale.",
+      selection: "Rerun only the gates whose source, environment, command, fixture, baseline, or output target changed, then expand by risk.",
+      prohibitedDefault: "A prior same-SHA receipt cannot be reused when required input identity or output digest is missing."
+    }
+  ],
+  deduplication: {
+    parentCommand: "pnpm verify",
+    containedCommands: ["pnpm typecheck", "pnpm build", "pnpm test", "pnpm ds:consumption:proof", "pnpm full-surface:proof", "pnpm internal-alpha:proof"],
+    rule: "A successful parent receipt covers its contained commands for the same candidate; do not run the same child again merely because it is listed separately in the repository scripts."
+  },
+  evidenceReuse: {
+    validator: "evaluateEvidenceReuse in scripts/ds-consumption-proof.mjs",
+    inputKeys: ["sourceTreeSha", "workingTreeStatus", "lockfileDigest", "packageVersions", "command", "flags", "browserToolVersion", "fixtureDigest", "baselineDigest", "outputTargetDigest"],
+    requiredInputs: ["source tree SHA", "working-tree status", "lockfile and package versions", "command and flags", "browser/tool version", "fixture/input digest", "baseline and output-target digest"],
+    invalidators: ["source or test change", "dirty or unknown working-tree change", "dependency or lockfile change", "command or flag change", "browser/tool/environment change", "fixture or baseline change", "prior failure", "missing input or output digest"],
+    rule: "Reuse only records whose required inputs match exactly; otherwise mark the receipt invalidated and rerun the affected check."
+  },
+  preservation: "This cadence changes timing and parent/child execution selection only; it does not remove security, compatibility, replay, release-identity, localization, visual, or no-overclaim gates."
+} as const;
+
+export const operationFeedbackContract = {
+  id: "operation-feedback-contract-v1",
+  storybookRoutes: ["components.html#display-primitives-spec", "proof.html#ai-consumption-contract"],
+  packageExports: ["OperationFeedback", "StatusBadge", "DisclosurePanel", "StateSurface", "ProductShell"],
+  phases: ["idle", "loading", "success", "error"],
+  roles: {
+    shortStatus: "StatusBadge carries the short localized copy-state label and never carries a long reason code, timestamp, or machine id.",
+    identity: "OperationFeedback renders the consumer-supplied operation, operation id, actor, actor id, and occurrence time with consumer-supplied accessible labels.",
+    details: "The complete receipt and long reason remain in a keyboard-reachable DisclosurePanel controlled by a native button.",
+    notification: "The root uses polite aria-live so an operation update is announced without moving focus."
+  },
+  props: ["phase", "state", "identity", "identityLabels", "detailTitle", "detailsLabel", "details", "expanded", "onExpandedChange", "locale"],
+  layout: {
+    root: "min-inline-size:0; max-inline-size:100%",
+    identity: "long labels and values wrap with overflow-wrap:anywhere",
+    compactStatus: "StatusBadge remains a bounded short label; full details are not placed in the badge"
+  },
+  staticConsumerMigration: {
+    markup: "Emit one tcrn-operation-feedback root with a tcrn-badge short-status, a labeled dl identity, and a native details button controlling the details section by stable id.",
+    stylesheet: "Include tcrnTokenCss and tcrnComponentCss; use tcrn-operation-feedback and its package-emitted child classes without a consumer-local status layout.",
+    update: "On a real operation update, replace the phase/state label, identity values, and details text while preserving the same operation identity and aria-expanded/aria-controls relationship.",
+    boundary: "Static HTML/CSS expresses the same construction and visible-state semantics; it does not claim React state management, product persistence, or downstream acceptance."
+  },
+  rejectCriteria: [
+    "A long machine reason, timestamp, or id is inserted into the compact StatusBadge label.",
+    "Operation identity is dropped, replaced by a synthetic test string, or rendered without labels.",
+    "Full details cannot be opened, read, or closed from the keyboard.",
+    "Loading or error is represented only by animation or a hidden DOM node.",
+    "Operation feedback widens the root/document for a long id or localized label."
+  ]
+} as const;
+
+export const contentScopeContract = {
+  id: "content-scope-contract-v1",
+  storybookRoutes: ["foundations.html#tokens-copy-state", "components.html#display-primitives-spec", "proof.html#ai-consumption-contract"],
+  packageExports: ["ContentScope", "validateContentScope", "EmptyState", "StateSurface", "ErrorState"],
+  modelFields: ["scope", "dataSource", "phase", "shownCount", "totalCount", "filtered", "hasContent", "staleContent"],
+  phases: {
+    idle: "No content is claimed before the scope has loaded; shown and total counts are zero.",
+    loading: "Loading is distinct from empty; counts stay zero unless explicitly rendering stale content.",
+    content: "The same scope and source have visible content and shownCount is positive.",
+    empty: "The same scope and source have no current content; shownCount is zero and stale content is false.",
+    error: "Error is distinct from empty; stale content is allowed only when explicitly marked and still visible."
+  },
+  countSemantics: {
+    unfiltered: "When filtered is not true, totalCount equals shownCount.",
+    filtered: "When filtered is true, shownCount is the visible filtered count and totalCount is the source total; totalCount is never below shownCount.",
+    sourceBoundary: "Counts and phase describe the declared dataSource for this scope only."
+  },
+  independentScopes: "Each ContentScope is validated independently, so one empty scope may sit beside another valid nonempty scope.",
+  staticConsumerMigration: {
+    construction: "For each independent scope, evaluate the same model with validateContentScope before emitting a root carrying data-content-scope, data-content-source, data-content-phase, data-content-valid, and count markers.",
+    rendering: "Render only the declared content, empty, loading, error, or invalid branch for that scope; do not let a sibling array decide this branch.",
+    boundary: "Consumers own data, permissions, business values, and copy. DS does not infer product groups, field names, or Workflow enums."
+  },
+  rejectCriteria: [
+    "A nonempty scope renders its own empty state or zero count.",
+    "An empty array from another data source controls this scope.",
+    "Loading or error is presented as empty without an explicit stale-content declaration.",
+    "filtered and total counts are shown with ambiguous or contradictory meaning.",
+    "A missing scope or data source passes because data-* markers say it is valid."
+  ]
+} as const;
+
+export const consumerEvidenceContract = {
+  id: "consumer-evidence-verification-contract-v1",
+  utility: "evaluateConsumerEvidence",
+  packageExport: "evaluateConsumerEvidence",
+  sourcePath: "packages/ui-react/src/verification/ConsumerVerification.ts",
+  expectedInventory: ["id", "requestedSurface", "selectedSurface", "expectedPanelSurface", "expectedControl", "applicability", "applicabilityEvidence"],
+  observedInstance: ["instanceId", "requestedSurface", "selectedSurface", "panelSurface", "controlId", "controlPresent", "input", "result", "uiFeedback", "geometry", "zoom"],
+  traceability: {
+    identity: "Every required expected id has exactly one observed instance with matching requested/selected/panel surface and control identity.",
+    input: "The exercised target id, modality, change, and keyboard target offset measurement are recorded; an unverified or unknown point fails.",
+    result: "The result status and identity are observed in the DOM and must not be synthesized from an HTTP response.",
+    feedback: "Status, identity, details reachability, and the actual feedback DOM are visible; error feedback additionally proves error DOM was checked.",
+    geometry: "After-operation geometry records page, scroll, visible viewport, requested/selected/panel surfaces, and the actual visible instance; target bounds must fit.",
+    zoom: "dpr, pinch-visual-viewport, and page-zoom are separate axes, each with measured effective scale, element width, and visible viewport dimensions."
+  },
+  zoomAxes: ["dpr", "pinch-visual-viewport", "page-zoom"],
+  lifecycleIntersection: "Operation success/error UI feedback and geometry are one observation; navigation-only or write-only green results cannot substitute for the intersection.",
+  applicability: "A not-applicable entry still needs one absent-control observation and non-empty applicability evidence; a missing required control cannot become N/A.",
+  positiveLegs: ["complete DOM-backed success observation", "complete DOM-backed error observation with error DOM check", "measured geometry and all three zoom axes", "evidenced absent not-applicable control"],
+  negativeLegs: ["wrong group or instance identity", "missing DOM on error", "page overflow or target outside visible viewport", "DPR-only or unmeasured scale", "hardcoded wouldFail", "HTTP-only result/UI feedback", "missing required control relabeled N/A"],
+  rejectCriteria: [
+    "A proof returns a hardcoded wouldFail result instead of evaluating the observation.",
+    "A missing required control is silently treated as not applicable.",
+    "DPR is used as a substitute for pinch visual viewport or desktop page zoom.",
+    "Geometry is measured only on body/navigation while the selected panel or actual operation feedback is unmeasured.",
+    "An error path skips DOM and visibility checks."
+  ]
+} as const;
+
 export const consumerVerificationContract = {
   id: "consumer-verification-contract-v1",
   script: "scripts/ds-consumption-proof.mjs",
@@ -295,6 +428,10 @@ export const consumerVerificationContract = {
   proofVersion: "tcrn.ds-consumption-proof.v2",
   contractVersion: "ds_consumption_contract_v2",
   storybookRoutes: ["components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#ai-consumption-contract"],
+  operationFeedbackContract,
+  contentScopeContract,
+  consumerEvidenceContract,
+  evidenceValidator: "evaluateConsumerEvidence",
   positiveLegs: [
     "native binary value choice with a positive measured fit",
     "more-than-two value choice rendered as Select",
@@ -308,7 +445,10 @@ export const consumerVerificationContract = {
     "dictionary category description appears once and every value has its own explanation",
     "client Tooltip and Popover escape clipping ancestors and stay inside viewport bounds",
     "static HTML/CSS overlay bridge moves body-level layers, preserves geometry, and closes a Tooltip on Escape",
-    "consumer-declared not-applicable feature absent from the visible entry"
+    "consumer-declared not-applicable feature absent from the visible entry",
+    "operation feedback keeps short status separate from identity and full receipt details across four phases",
+    "content scopes keep source/count/phase truth per scope, including one content scope beside one empty scope",
+    "consumer evidence validator accepts DOM-backed lifecycle plus visible geometry and separate zoom axes"
   ],
   negativeLegs: [
     "same-looking class/CSS with navigation semantics",
@@ -323,7 +463,10 @@ export const consumerVerificationContract = {
     "two-level page with an internal left navigation region",
     "three-level page missing its parent-level tabs",
     "overlapping page hierarchy regions",
-    "consumer marks a feature not applicable while leaving its entry visible"
+    "consumer marks a feature not applicable while leaving its entry visible",
+    "operation feedback puts a long reason or id in the compact status or removes keyboard-readable details",
+    "content scope shows empty or zero for a nonempty/mismatched source or collapses loading/error into empty",
+    "consumer evidence relies on HTTP-only feedback, skips error DOM, accepts missing controls as N/A, or substitutes DPR for page zoom"
   ],
   requiredEvidence: [
     "component identity",
@@ -338,10 +481,14 @@ export const consumerVerificationContract = {
     "computed visibility and rendered geometry",
     "complete numeric value visibility",
     "container and overflow policy",
-    "consumer-owned feature applicability"
+    "consumer-owned feature applicability",
+    "operation phase, short status, full identity, details reachability, update notification, and narrow/wide layout",
+    "content scope/source/phase/count markers, rendered branch, independent sibling scope, and invalid-state fail-closed readback",
+    "expected-to-observed inventory, requested/selected/panel/actual surface, input/result/UI feedback, operation geometry, and dpr/pinch/page zoom measurements",
+    "verification stage, parent/child coverage, and exact reuse/invalidation input identity"
   ],
   independenceBoundary: "The proof renders neutral DS fixtures and does not read or execute a Workflow repository.",
-  fullSurfaceCoverage: "The browser script rechecks every DS Storybook route carrying the overlay, field-value, collection, open-value, and dictionary surfaces from the inventory, plus a DOM-only static HTML/CSS consumer path; the inventory is not limited to the fixed screenshots.",
+  fullSurfaceCoverage: "The browser script rechecks every DS Storybook route carrying the overlay, field-value, collection, open-value, dictionary, operation-feedback, and content-scope surfaces from the inventory, plus DOM-only static HTML/CSS consumer paths and the reusable evidence validator; the inventory is not limited to the fixed screenshots.",
   noOverclaim: "A green DS consumer proof is a local contract candidate; it does not claim product adoption, Owner visual acceptance, publication, or release readiness."
 } as const;
 
@@ -488,7 +635,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx", "packages/ui-react/src/components/Layout/Layout.tsx", "packages/ui-react/src/components/Form/Form.tsx"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-record-index-spec", "components.html#field-spec-usage", "components.html#records-and-boards-components-spec", "components.html#documents-and-collaboration-components-spec", "patterns.html#forms-patterns"],
     authorityLevel: "package_authority",
-    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "recordsDensityComponents", "documentsDensityComponents", "settingsLayoutContract", "pageHierarchyContract", "fieldValueSelectionContract", "dictionaryContentContract", "containerQueries"],
+    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "recordsDensityComponents", "documentsDensityComponents", "settingsLayoutContract", "pageHierarchyContract", "fieldValueSelectionContract", "dictionaryContentContract", "operationFeedbackContract", "contentScopeContract", "containerQueries"],
     allowedConsumerInputs: ["content-specific row data", "table columns", "local filters", "documented functional display density props", "documented documents and collaboration static content props"],
     forbiddenConsumerOverrides: ["ad hoc dense card padding", "global table overflow rules", "page-level horizontal scrollers", "consumer-local row/list/group/detail density systems", "consumer-local tree/document/comment/template systems"],
     proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment", "SettingsLayout uses frame/content container queries and one complete form column", "RecordRow/RecordTable/DetailLayout examples fit without overlarge card regression", "TreeNav/DocumentCanvas/TocRail examples fit without vendor-asset leakage"],
@@ -534,7 +681,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy", "functionalDisplayDensityRegistry", "settingControlSelectionContract", "fieldValueSelectionContract", "dictionaryContentContract", "overlayBoundaryContract", "pageHierarchyContract"],
     allowedConsumerInputs: ["IA/data", "locale data", "content slots", "documented callbacks"],
     forbiddenConsumerOverrides: ["local reusable clones", "Storybook-only prototype imports", "package-looking selectors outside DS", "consumer-local page-header/filter/list/group/board/detail/activity systems"],
-    proofExpectations: ["package import receipt", "component identity markers", "SettingChoice, MultiSelect, SuggestInput, DictionaryTable, and NumberInput semantic markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace", "functional display layout and density components exported by @tcrn/ui-react"],
+    proofExpectations: ["package import receipt", "component identity markers", "SettingChoice, MultiSelect, SuggestInput, DictionaryTable, ContentScope, OperationFeedback, and NumberInput semantic markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace", "functional display layout and density components exported by @tcrn/ui-react"],
     missingStandardEscalation: "Return a needed DS component/pattern list instead of building product-local shared UI."
   },
   {
@@ -544,7 +691,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/Form/Form.tsx", "packages/ui-react/src/components/Overlay/Overlay.tsx", "scripts/internal-alpha-browser-proof.mjs", "scripts/ds-consumption-proof.mjs", "scripts/full-surface-remediation-proof.mjs"],
     storybookRoutes: ["style-guide.html#icons-motion", "components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#overlay-focus"],
     authorityLevel: "proof_contract",
-    readbackFields: ["transitionProperty", "duration", "easing", "keyboardActivation", "focusReturn", "reducedMotion", "overlayBoundaryContract"],
+    readbackFields: ["transitionProperty", "duration", "easing", "keyboardActivation", "focusReturn", "reducedMotion", "overlayBoundaryContract", "operationFeedbackContract", "consumerEvidenceContract"],
     allowedConsumerInputs: ["callback implementations", "route-owned state persistence", "semantic disabled reasons"],
     forbiddenConsumerOverrides: ["wrapper-only event delegation", "static endpoint-only motion proof", "unproven no-op affordances"],
     proofExpectations: ["Enter/Space activation", "native numeric keyboard and paste entry", "Escape/blur dismissal", "sampled motion timeline", "reduced-motion suppression"],
@@ -568,15 +715,17 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Evidence, proof, and visual oracle",
     category: "Foundation",
     sourcePaths: [
+      "AGENTS.md",
       "apps/storybook/src/build/ai-consumption-contract.ts",
       "scripts/storybook-smoke.mjs",
       "scripts/internal-alpha-browser-proof.mjs",
       "scripts/ds-consumption-proof.mjs",
-      "scripts/full-surface-remediation-proof.mjs"
+      "scripts/full-surface-remediation-proof.mjs",
+      "scripts/lib/story-budget.mjs"
     ],
     storybookRoutes: ["proof.html#ai-consumption-contract", "proof.html#proof-matrix"],
     authorityLevel: "proof_contract",
-    readbackFields: ["contractPayloadDigest", "artifactPaths", "browserMetrics", "screenshotPaths", "noOverclaimBoundaries", "consumerVerificationContract", "fieldValueSelectionContract", "dictionaryContentContract", "overlayBoundaryContract", "pageHierarchyContract"],
+    readbackFields: ["contractPayloadDigest", "artifactPaths", "browserMetrics", "screenshotPaths", "noOverclaimBoundaries", "verificationCadenceContract", "consumerVerificationContract", "consumerEvidenceContract", "operationFeedbackContract", "contentScopeContract", "fieldValueSelectionContract", "dictionaryContentContract", "overlayBoundaryContract", "pageHierarchyContract"],
     allowedConsumerInputs: ["proof artifact paths", "route-specific metric readbacks"],
     forbiddenConsumerOverrides: ["marker-only proof", "stale screenshots as current oracle", "hidden failed proof gaps"],
     proofExpectations: ["AI contract digest verified", "llms alignment", "positive and negative consumer legs", "browser screenshot/metric receipts", "no-overclaim scan"],
@@ -586,10 +735,10 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "consumer-enforcement",
     label: "Consumer enforcement and reject criteria",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/build/foundation-visual-standards.ts", "apps/storybook/src/build/ai-consumption-contract.ts"],
+    sourcePaths: ["AGENTS.md", "apps/storybook/src/build/foundation-visual-standards.ts", "apps/storybook/src/build/ai-consumption-contract.ts", "scripts/ds-consumption-proof.mjs"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#ai-consumption-contract"],
     authorityLevel: "consumer_contract",
-    readbackFields: ["allowedInputs", "forbiddenOverrides", "rejectCriteria", "missingStandardEscalation", "routeOwner", "settingControlSelectionContract", "fieldValueSelectionContract", "dictionaryContentContract", "overlayBoundaryContract", "settingsLayoutContract", "pageHierarchyContract", "consumerVerificationContract"],
+    readbackFields: ["allowedInputs", "forbiddenOverrides", "rejectCriteria", "missingStandardEscalation", "routeOwner", "settingControlSelectionContract", "fieldValueSelectionContract", "dictionaryContentContract", "operationFeedbackContract", "contentScopeContract", "overlayBoundaryContract", "settingsLayoutContract", "pageHierarchyContract", "verificationCadenceContract", "consumerVerificationContract", "consumerEvidenceContract"],
     allowedConsumerInputs: ["product data", "IA labels", "copy keys", "documented DS props", "callbacks"],
     forbiddenConsumerOverrides: ["consumer-local shared spacing", "consumer-local typography", "shell-control geometry", "package-equivalent styles", "consumer-local functional display layout/density components"],
     proofExpectations: ["consumer contract present in AI JSON", "local style clone reject criteria present", "llms first-read alignment"],
@@ -629,6 +778,10 @@ export const consumerVisualStyleContract = {
     "settingControlSelectionContract",
     "settingsLayoutContract",
     "pageHierarchyContract",
+    "operationFeedbackContract",
+    "contentScopeContract",
+    "consumerEvidenceContract",
+    "verificationCadenceContract",
     "consumerVerificationContract"
   ],
   rejectCriteria: [
@@ -654,6 +807,10 @@ export const foundationVisualStandardsReadback = {
   settingControlSelectionContract,
   settingsLayoutContract,
   pageHierarchyContract,
+  verificationCadenceContract,
+  operationFeedbackContract,
+  contentScopeContract,
+  consumerEvidenceContract,
   consumerVerificationContract,
   noOverclaimBoundary:
     "Foundation visual standards define local Storybook and consumer-contract authority only; package publication, product adoption, owner acceptance, release readiness, and live dispatch are not claimed."

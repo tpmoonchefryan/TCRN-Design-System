@@ -1,6 +1,35 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { inspectDsConsumption } from "../scripts/ds-consumption-proof.mjs";
+import { DS_VERIFICATION_CADENCE, DS_VERIFICATION_INPUT_KEYS, evaluateEvidenceReuse, inspectDsConsumption } from "../scripts/ds-consumption-proof.mjs";
+
+test("STORY-119 exposes targeted development, one candidate-final parent, and input-bound reuse cadence", () => {
+  assert.equal(DS_VERIFICATION_CADENCE.schemaVersion, "tcrn.ds.verification-cadence.v1");
+  assert.ok(DS_VERIFICATION_CADENCE.development.preferredChecks.includes("pnpm typecheck"));
+  assert.ok(DS_VERIFICATION_CADENCE.development.preferredChecks.includes("pnpm full-surface:proof"));
+  assert.deepEqual(DS_VERIFICATION_CADENCE.candidateFinal.requiredChecks, ["pnpm verify", "pnpm public-docs:vercel-build"]);
+  assert.ok(DS_VERIFICATION_CADENCE.parentChildDeduplication.contained.includes("pnpm ds:consumption:proof"));
+  assert.ok(DS_VERIFICATION_CADENCE.evidenceReuse.requiredInputs.includes("fixture/input digest"));
+  assert.ok(DS_VERIFICATION_CADENCE.evidenceReuse.invalidators.includes("prior failure"));
+  assert.match(DS_VERIFICATION_CADENCE.preservation, /security, compatibility, replay/);
+});
+
+test("STORY-119 reuses only a successful receipt with every identical input", () => {
+  const previous = Object.fromEntries([
+    ["status", "passed"],
+    ...DS_VERIFICATION_INPUT_KEYS.map((key) => [key, `${key}-value`])
+  ]);
+  const same = evaluateEvidenceReuse(previous, { ...previous });
+  const changed = evaluateEvidenceReuse(previous, { ...previous, browserToolVersion: "changed-browser" });
+  const failed = evaluateEvidenceReuse({ ...previous, status: "failed" }, { ...previous });
+  const missing = evaluateEvidenceReuse(previous, { ...previous, fixtureDigest: undefined });
+  assert.equal(same.reusable, true);
+  assert.equal(changed.reusable, false);
+  assert.equal(failed.reusable, false);
+  assert.equal(missing.reusable, false);
+  assert.match(changed.findings.join(";"), /input_changed:browserToolVersion/);
+  assert.match(failed.findings.join(";"), /previous_receipt_not_successful/);
+  assert.match(missing.findings.join(";"), /current_input_missing:fixtureDigest/);
+});
 
 test("STORY-108 positive consumer fixture requires semantic and structure markers", () => {
   const result = inspectDsConsumption({

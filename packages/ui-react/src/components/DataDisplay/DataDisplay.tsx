@@ -574,6 +574,145 @@ export function DictionaryTable({ category, categoryDescription, entries, valueC
   );
 }
 
+export type ContentScopePhase = "idle" | "loading" | "content" | "empty" | "error";
+
+export interface ContentScopeModel {
+  scope: string;
+  dataSource: string;
+  phase: ContentScopePhase;
+  shownCount: number;
+  totalCount: number;
+  filtered?: boolean;
+  hasContent: boolean;
+  staleContent?: boolean;
+}
+
+export interface ContentScopeValidation {
+  valid: boolean;
+  findings: string[];
+}
+
+const contentScopePhases: readonly ContentScopePhase[] = ["idle", "loading", "content", "empty", "error"];
+
+function addContentScopeFinding(findings: string[], finding: string) {
+  if (!findings.includes(finding)) findings.push(finding);
+}
+
+function finiteNonNegativeInteger(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && Number.isInteger(value) && value >= 0;
+}
+
+/**
+ * Validates the consumer-owned truth behind one independent content region.
+ * It does not infer business groups, permissions, or field names; it only
+ * rejects a scope whose source, phase, content flag, or count contradicts.
+ */
+export function validateContentScope(model: ContentScopeModel): ContentScopeValidation {
+  const findings: string[] = [];
+  if (!model || typeof model !== "object") return { valid: false, findings: ["model_invalid"] };
+  if (typeof model.scope !== "string" || model.scope.trim().length === 0) addContentScopeFinding(findings, "scope_missing");
+  if (typeof model.dataSource !== "string" || model.dataSource.trim().length === 0) addContentScopeFinding(findings, "data_source_missing");
+  if (!contentScopePhases.includes(model.phase)) addContentScopeFinding(findings, "phase_unknown");
+  if (!finiteNonNegativeInteger(model.shownCount)) addContentScopeFinding(findings, "shown_count_invalid");
+  if (!finiteNonNegativeInteger(model.totalCount)) addContentScopeFinding(findings, "total_count_invalid");
+  if (model.filtered !== undefined && typeof model.filtered !== "boolean") addContentScopeFinding(findings, "filtered_flag_invalid");
+  if (typeof model.hasContent !== "boolean") addContentScopeFinding(findings, "content_flag_invalid");
+  if (model.staleContent !== undefined && typeof model.staleContent !== "boolean") addContentScopeFinding(findings, "stale_content_flag_invalid");
+
+  const countsAreValid = finiteNonNegativeInteger(model.shownCount) && finiteNonNegativeInteger(model.totalCount);
+  if (countsAreValid) {
+    if (model.totalCount < model.shownCount) addContentScopeFinding(findings, "total_below_shown");
+    if (model.filtered !== true && model.totalCount !== model.shownCount) addContentScopeFinding(findings, "unfiltered_count_mismatch");
+    if (model.hasContent === true && model.shownCount === 0) addContentScopeFinding(findings, "content_without_shown_items");
+  }
+
+  switch (model.phase) {
+    case "idle":
+      if (model.hasContent !== false) addContentScopeFinding(findings, "idle_content_forbidden");
+      if (model.shownCount !== 0) addContentScopeFinding(findings, "idle_shown_count_nonzero");
+      if (model.totalCount !== 0) addContentScopeFinding(findings, "idle_total_count_nonzero");
+      if (model.staleContent === true) addContentScopeFinding(findings, "idle_stale_content_forbidden");
+      break;
+    case "loading":
+    case "error":
+      if (model.staleContent === true) {
+        if (model.hasContent !== true || model.shownCount <= 0) addContentScopeFinding(findings, `${model.phase}_stale_content_inconsistent`);
+      } else {
+        if (model.hasContent !== false) addContentScopeFinding(findings, `${model.phase}_content_requires_explicit_stale`);
+        if (model.shownCount !== 0 || model.totalCount !== 0) addContentScopeFinding(findings, `${model.phase}_counts_require_explicit_stale`);
+      }
+      break;
+    case "content":
+      if (model.hasContent !== true || model.shownCount <= 0) addContentScopeFinding(findings, "content_phase_requires_content");
+      if (model.staleContent === true) addContentScopeFinding(findings, "content_stale_flag_forbidden");
+      break;
+    case "empty":
+      if (model.hasContent !== false) addContentScopeFinding(findings, "empty_phase_has_content");
+      if (model.shownCount !== 0) addContentScopeFinding(findings, "empty_phase_shown_count_nonzero");
+      if (model.staleContent === true) addContentScopeFinding(findings, "empty_phase_stale_content_forbidden");
+      break;
+    default:
+      break;
+  }
+  return { valid: findings.length === 0, findings };
+}
+
+export interface ContentScopeProps extends HTMLAttributes<HTMLElement> {
+  model: ContentScopeModel;
+  emptyState?: ReactNode;
+  loadingState?: ReactNode;
+  errorState?: ReactNode;
+  invalidState?: ReactNode;
+}
+
+/** Renders one independent scope and never derives its state from a sibling scope. */
+export function ContentScope({
+  model,
+  emptyState,
+  loadingState,
+  errorState,
+  invalidState,
+  children,
+  className,
+  ...props
+}: ContentScopeProps) {
+  const validation = validateContentScope(model);
+  const hasContentSlot = Children.count(children) > 0;
+  const slotValid = model.phase !== "content" && model.staleContent !== true ? true : hasContentSlot;
+  if (!slotValid) addContentScopeFinding(validation.findings, "content_slot_empty");
+  const valid = validation.valid && slotValid;
+  const showContent = valid && (model.phase === "content" || ((model.phase === "loading" || model.phase === "error") && model.staleContent === true));
+  const body = !valid
+    ? invalidState ?? null
+    : showContent
+      ? <div className="tcrn-content-scope__content">{children}</div>
+      : model.phase === "empty"
+        ? emptyState ?? null
+        : model.phase === "loading"
+          ? loadingState ?? null
+          : model.phase === "error"
+            ? errorState ?? null
+            : null;
+
+  return (
+    <section
+      {...props}
+      className={cx("tcrn-content-scope", className)}
+      data-content-scope={model.scope}
+      data-content-source={model.dataSource}
+      data-content-phase={model.phase}
+      data-content-valid={valid ? "true" : "false"}
+      data-content-shown-count={String(model.shownCount)}
+      data-content-total-count={String(model.totalCount)}
+      data-content-count-kind={model.filtered === true ? "filtered" : "total"}
+      data-content-stale={model.staleContent === true ? "true" : "false"}
+      data-content-validation-findings={validation.findings.length > 0 ? validation.findings.join("|") : undefined}
+    >
+      {body}
+    </section>
+  );
+}
+
 export interface FilterBarProps {
   label: string;
   children: ReactNode;

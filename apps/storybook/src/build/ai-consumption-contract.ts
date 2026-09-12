@@ -18,6 +18,10 @@ import {
   overlayBoundaryContract,
   settingsLayoutContract,
   pageHierarchyContract,
+  verificationCadenceContract,
+  operationFeedbackContract,
+  contentScopeContract,
+  consumerEvidenceContract,
   consumerVerificationContract
 } from "./foundation-visual-standards.js";
 
@@ -46,6 +50,9 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "preserve controlled and uncontrolled SettingChoice values across radio/Select branch changes; treat layout-only swaps as non-events",
     "use MultiSelect for closed collections and SuggestInput for open strings without restricting free-form values",
     "render dictionary category copy once and supply a distinct explanation for every machine value",
+    "use OperationFeedback for short operation status plus labeled identity and keyboard-readable receipt details",
+    "use ContentScope with consumer-owned source, phase, count, and stale-content truth for every independent region",
+    "follow the DS verification cadence: targeted development checks first, one candidate-final parent verify, and input-bound invalidation",
     "use the SettingsLayout container thresholds and single-host complete-form composition before implementing configuration pages",
     "verify light/dark and supported locale behavior against Storybook before product compliance claims",
     "block hard-coded copy, ad hoc status language, consumer-local reusable visual-system overrides, and theme-specific behavior forks"
@@ -58,6 +65,8 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "prove collection and open-value controls preserve their declared cardinality and value domain",
     "resolve field metadata through resolveFieldValueControl before choosing a package component",
     "prove Tooltip and Popover use the declared boundary, placement, and dismissal contract",
+    "prove OperationFeedback and ContentScope states through package-backed identity, branch, and accessibility markers",
+    "run evaluateConsumerEvidence with DOM-backed lifecycle, geometry, and separate zoom-axis measurements",
     "prove the same Storybook visual instance, then compare rendered component metrics against Storybook: size, radius, padding, border, background, typography, hover, focus, active, disabled, dark, locale, mobile, and reduced-motion states"
   ],
   Patterns: [
@@ -70,7 +79,8 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
   Proof: [
     "read proof matrix, this AI contract, blocked actions, and overlay/focus proof before implementation closeout",
     "run the DS consumer verification contract's positive and negative legs; class or CSS equality alone is not proof",
-    "run the full-surface browser proof for overlays, field cardinality, collection/open-value controls, and dictionary explanations",
+    "run the full-surface browser proof for overlays, field cardinality, collection/open-value controls, dictionary explanations, operation feedback, content scopes, and consumer evidence",
+    "do not rerun contained child gates after the same successful parent receipt unless an input changes or a failure requires diagnosis",
     "carry required receipts for browser interaction, accessibility, visual parity, no-overclaim, owner-visible preview, and product-owned adoption proof",
     "do not use Storybook-only evidence as product adoption, acceptance, release, or hosted readiness proof"
   ],
@@ -261,6 +271,10 @@ export const aiConsumptionContract = {
     "overlayBoundaryContract",
     "settingsLayoutContract",
     "pageHierarchyContract",
+    "verificationCadenceContract",
+    "operationFeedbackContract",
+    "contentScopeContract",
+    "consumerEvidenceContract",
     "consumerVerificationContract",
     "requiredProof",
     "noOverclaimBoundaries"
@@ -343,6 +357,10 @@ export const aiConsumptionContract = {
   overlayBoundaryContract,
   settingsLayoutContract,
   pageHierarchyContract,
+  verificationCadenceContract,
+  operationFeedbackContract,
+  contentScopeContract,
+  consumerEvidenceContract,
   consumerVerificationContract,
   visualEquivalenceLevels: [
     "same_package_version",
@@ -863,6 +881,10 @@ export const aiConsumptionContract = {
     "reject_unregistered_or_deprecated_brand_assets",
     "import_package_backed_ds_primitives",
     "consume_page_hierarchy_contract",
+    "consume_operation_feedback_contract",
+    "consume_content_scope_contract",
+    "run_consumer_evidence_validator",
+    "follow_ds_verification_cadence",
     "use_design_tokens_and_accessibility_rules",
     "verify_light_and_dark_storybook_theme_contract",
     "verify_motion_effect_parity_and_reduced_motion",
@@ -908,6 +930,10 @@ export const aiConsumptionContract = {
     "overlay_boundary_placement_receipt",
     "field_value_cardinality_receipt",
     "dictionary_content_receipt",
+    "operation_feedback_receipt",
+    "content_scope_receipt",
+    "consumer_evidence_verification_receipt",
+    "verification_cadence_receipt",
     "full_surface_inventory_receipt",
     "consumer_negative_leg_receipt",
     "product_adoption_route_receipt"
@@ -960,7 +986,7 @@ export const aiConsumptionContract = {
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, readback, table, spacing/rhythm, disclosure, and Records and boards surfaces including RelationshipChip, MachineToken, MachineTokenCell, SubNav, PageHeader, ViewTabs, QuickFilters, RecordRow, RecordTable, SplitView, RowGroup, InlineCreate, LaneBoard, DetailLayout, MetadataRail, DetailInspector, ActivityFeed, RelationGraph, StagePipeline, AttachmentList, RecordInspector, and SavedViewToolbar, plus static Documents and collaboration surfaces including TreeNav, DocumentCanvas, TocRail, InlineCommentList, MetadataRail, AttachmentList, LabelSet, VersionHistory, TemplateGallery, and SearchResultList, instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate. A server-rendered product parses the request's Cookie header with the exported readPreferenceCookieValues and passes the three narrowed values to useProductShellController as requestPreferences, so the shell's stored preferences are readable during the render that produces the first paint; the raw Cookie header must not cross the package boundary, because it carries every cookie the product's requests hold while the shell governs only theme, locale, and side-nav collapse. The controller writes each preference to both a cookie and the client store, so a product must not hand-roll its own preference parsing or persistence to work around a client-only store.",
+    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, OperationFeedback, ContentScope, readback, table, spacing/rhythm, disclosure, and Records and boards surfaces including RelationshipChip, MachineToken, MachineTokenCell, SubNav, PageHeader, ViewTabs, QuickFilters, RecordRow, RecordTable, SplitView, RowGroup, InlineCreate, LaneBoard, DetailLayout, MetadataRail, DetailInspector, ActivityFeed, RelationGraph, StagePipeline, AttachmentList, RecordInspector, and SavedViewToolbar, plus static Documents and collaboration surfaces including TreeNav, DocumentCanvas, TocRail, InlineCommentList, MetadataRail, AttachmentList, LabelSet, VersionHistory, TemplateGallery, and SearchResultList, instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate. A server-rendered product parses the request's Cookie header with the exported readPreferenceCookieValues and passes the three narrowed values to useProductShellController as requestPreferences, so the shell's stored preferences are readable during the render that produces the first paint; the raw Cookie header must not cross the package boundary, because it carries every cookie the product's requests hold while the shell governs only theme, locale, and side-nav collapse. The controller writes each preference to both a cookie and the client store, so a product must not hand-roll its own preference parsing or persistence to work around a client-only store.",
   recordsAndBoardsPatternDisposition:
     "Functional display package exports cover static records, stages, relations, documents, and machine-token presentation, compact route context, local view tabs, quick filters, dense rows and lists, split detail, row groups, static create affordances, lane-board density, metadata rails, activity feeds, relation chips, stage pipelines, attachment lists, saved-view controls, record inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, and package publication are not claimed.",
   documentsAndCollaborationPatternDisposition:

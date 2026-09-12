@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// TCRN-DS-STORY-113/114/115 — real-browser proof for the full-surface contract.
+// TCRN-DS-STORY-116/117/118 — real-browser proof for the full-surface contract.
 // The page checks use the built static Storybook routes and the native DOM they emit. React
 // portal behavior is covered by the package DOM harness; this script covers the rendered
 // Storybook surfaces, actual option/description counts, and viewport geometry.
@@ -9,6 +9,7 @@ import { createServer } from "node:http";
 import { extname, normalize, relative, resolve } from "node:path";
 import { chromium } from "@playwright/test";
 import { build } from "esbuild";
+import { evaluateConsumerEvidence, validateContentScope } from "../packages/ui-react/dist/index.js";
 
 const root = resolve(".");
 
@@ -78,13 +79,14 @@ async function buildClientFixture() {
       contents: `
         import React, { useRef, useState } from "react";
         import { createRoot } from "react-dom/client";
-        import { Field, MultiSelect, Popover, SettingChoice, SuggestInput, Tooltip, tcrnComponentCss } from "./packages/ui-react/dist/index.js";
+        import { ContentScope, EmptyState, ErrorState, Field, MultiSelect, OperationFeedback, Popover, SettingChoice, StateSurface, SuggestInput, Tooltip, tcrnComponentCss } from "./packages/ui-react/dist/index.js";
         import { tcrnTokenCss } from "./packages/ui-tokens/dist/index.js";
 
         function Fixture() {
           const [availableInlineSize, setAvailableInlineSize] = useState(500);
           const [callbacks, setCallbacks] = useState([]);
           const [popoverOpen, setPopoverOpen] = useState(true);
+          const [operationPhase, setOperationPhase] = useState("success");
           const popoverTriggerRef = useRef(null);
           const popoverCloseRef = useRef(null);
           const choiceOptions = [
@@ -93,6 +95,26 @@ async function buildClientFixture() {
           ];
           return (
             <main data-full-surface-fixture="true" style={{ position: "relative", minHeight: "240px", padding: "16px" }}>
+              <section data-operation-proof-panel="true">
+                <OperationFeedback
+                  id="operation-feedback-proof"
+                  phase={operationPhase}
+                  identity={{ operation: "Rebuild local index", operationId: "operation-2026-09-13-very-long-identity-9f4d1c2b7a6e", actor: "Synthetic operator", actorId: "actor-very-long-identity-0c2e8a9d7b6f", occurredAt: "2026-09-13T12:34:56.789Z" }}
+                  identityLabels={{ operation: "Operation", operationId: "Operation id", actor: "Actor", actorId: "Actor id", occurredAt: "Occurred at" }}
+                  detailTitle="Full receipt details"
+                  detailsLabel="View full receipt"
+                  details={<p>{operationPhase === "success" ? "The operation completed; the complete receipt remains available for inspection." : "The operation failed; error details remain in the DOM and readable after the update."} <code>reason-code-with-a-long-machine-suffix-2026-09-13.</code></p>}
+                />
+                <button type="button" data-operation-set-error onClick={() => setOperationPhase("error")}>Update operation to error</button>
+              </section>
+              <section data-content-scope-proof="true">
+                <ContentScope model={{ scope: "scope-a", dataSource: "synthetic-source-a", phase: "content", shownCount: 4, totalCount: 4, hasContent: true }}>
+                  <div data-scope-content="scope-a">Four records are visible for this source.</div>
+                </ContentScope>
+                <ContentScope model={{ scope: "scope-b", dataSource: "synthetic-source-b", phase: "empty", shownCount: 0, totalCount: 0, hasContent: false }} emptyState={<EmptyState title="Scope B is empty" />} />
+                <ContentScope model={{ scope: "scope-loading", dataSource: "synthetic-source-c", phase: "loading", shownCount: 0, totalCount: 0, hasContent: false }} loadingState={<StateSurface title="Scope is loading" />} />
+                <ContentScope model={{ scope: "scope-error", dataSource: "synthetic-source-d", phase: "error", shownCount: 0, totalCount: 0, hasContent: false }} errorState={<ErrorState title="Scope could not load" />} />
+              </section>
               <div data-clipping-ancestor="true" style={{ overflow: "hidden", width: "120px", height: "72px" }}>
                 <Tooltip content="Supplemental content is positioned outside the clipping ancestor." placement="right">
                   <button type="button" data-tooltip-trigger>Tooltip trigger</button>
@@ -189,19 +211,65 @@ async function runStaticHtmlCssConsumerProof(browser) {
           <p>Static context remains readable at the viewport edge.</p>
           <button type="button">Close context</button>
         </section>
-      </div>`);
+      </div>
+      <section id="static-operation" class="tcrn-operation-feedback" data-operation-feedback="true" data-operation-phase="success" data-operation-state="ready" data-operation-geometry="responsive-safe" data-operation-update-notification="aria-live" aria-live="polite">
+        <div class="tcrn-operation-feedback__summary">
+          <span class="tcrn-badge tcrn-badge--positive" data-operation-short-status="true"><span class="tcrn-badge__label">Ready for local use</span></span>
+          <dl class="tcrn-operation-feedback__identity" data-operation-identity="true"><div class="tcrn-operation-feedback__identity-row" data-operation-identity-field="operation"><dt>Operation</dt><dd>Rebuild local index</dd></div><div class="tcrn-operation-feedback__identity-row" data-operation-identity-field="operation-id"><dt>Operation id</dt><dd><code>operation-2026-09-13-very-long-identity-9f4d1c2b7a6e</code></dd></div><div class="tcrn-operation-feedback__identity-row" data-operation-identity-field="actor"><dt>Actor</dt><dd>Synthetic operator</dd></div></dl>
+          <button id="static-operation-details-trigger" type="button" class="tcrn-operation-feedback__details-trigger" aria-controls="static-operation-details" aria-expanded="false" data-operation-details-trigger="true">View full receipt</button>
+        </div>
+        <section id="static-operation-details" class="tcrn-operation-feedback__details tcrn-disclosure-panel" data-operation-details="true" hidden><h3 class="tcrn-disclosure-panel__title">Full receipt details</h3><div class="tcrn-operation-feedback__details-body">The operation completed; the complete receipt remains available for inspection. <code>reason-code-with-a-long-machine-suffix-2026-09-13.</code></div></section>
+      </section>
+      <section id="static-content-scope-a" class="tcrn-content-scope" data-content-scope="scope-a" data-content-source="synthetic-source-a" data-content-phase="content" data-content-valid="true" data-content-shown-count="4" data-content-total-count="4" data-content-count-kind="total" data-content-stale="false"><div class="tcrn-content-scope__content" data-scope-content="scope-a">Four records are visible for this source.</div></section>
+      <section id="static-content-scope-b" class="tcrn-content-scope" data-content-scope="scope-b" data-content-source="synthetic-source-b" data-content-phase="empty" data-content-valid="true" data-content-shown-count="0" data-content-total-count="0" data-content-count-kind="total" data-content-stale="false"><div class="tcrn-state-surface" data-state-surface-kind="empty"><h3 class="tcrn-state-surface__title">Scope B is empty</h3></div></section>`);
     await page.addScriptTag({ content: await buildStaticOverlayBridge() });
     await page.waitForSelector("[data-static-boundary-ready='true']");
+    await page.evaluate(() => {
+      const trigger = document.querySelector("#static-operation-details-trigger");
+      const details = document.querySelector("#static-operation-details");
+      if (!(trigger instanceof HTMLButtonElement) || !(details instanceof HTMLElement)) throw new Error("static_operation_controls_missing");
+      trigger.addEventListener("click", () => {
+        const expanded = trigger.getAttribute("aria-expanded") === "true";
+        trigger.setAttribute("aria-expanded", String(!expanded));
+        details.hidden = expanded;
+      });
+    });
     const initial = await page.evaluate(() => ({
       tooltipParentIsBody: document.querySelector("#static-tooltip-layer")?.parentElement === document.body,
       popoverParentIsBody: document.querySelector("#static-popover-layer")?.parentElement === document.body,
       tooltipHidden: document.querySelector("#static-tooltip-layer")?.hasAttribute("hidden") ?? false,
       popoverHidden: document.querySelector("#static-popover-layer")?.hasAttribute("hidden") ?? false,
       tooltipPositioning: getComputedStyle(document.querySelector("#static-tooltip-layer")).position,
-      popoverPositioning: getComputedStyle(document.querySelector("#static-popover-layer")).position
+      popoverPositioning: getComputedStyle(document.querySelector("#static-popover-layer")).position,
+      operationPhase: document.querySelector("#static-operation")?.getAttribute("data-operation-phase"),
+      operationStatus: document.querySelector("#static-operation [data-operation-short-status='true']")?.textContent ?? "",
+      operationDetailsHidden: document.querySelector("#static-operation-details")?.hasAttribute("hidden") ?? false,
+      operationRootScrollWidth: document.documentElement.scrollWidth,
+      contentScopes: Array.from(document.querySelectorAll("[data-content-scope]")).map((node) => ({ scope: node.getAttribute("data-content-scope"), source: node.getAttribute("data-content-source"), phase: node.getAttribute("data-content-phase"), valid: node.getAttribute("data-content-valid"), shown: node.getAttribute("data-content-shown-count"), total: node.getAttribute("data-content-total-count"), hasContent: Boolean(node.querySelector("[data-scope-content]")), hasEmpty: Boolean(node.querySelector("[data-state-surface-kind='empty']")) }))
     }));
     assert(initial.tooltipParentIsBody && initial.popoverParentIsBody && initial.tooltipHidden && initial.popoverHidden, "static HTML layers did not move to the document body or start closed");
     assert(initial.tooltipPositioning === "fixed" && initial.popoverPositioning === "fixed", "static HTML/CSS boundary did not use fixed positioning");
+    assert(initial.operationPhase === "success" && /Ready for local use/.test(initial.operationStatus) && initial.operationDetailsHidden && initial.operationRootScrollWidth <= 360, "static operation feedback markup is not compact or viewport-safe");
+    assert(initial.contentScopes.length === 2 && initial.contentScopes[0].valid === "true" && initial.contentScopes[0].hasContent && initial.contentScopes[1].phase === "empty" && initial.contentScopes[1].hasEmpty, "static content scope markup lost independent source/phase truth");
+
+    await page.locator("#static-operation-details-trigger").click();
+    const operationOpen = await page.evaluate(() => ({
+      expanded: document.querySelector("#static-operation-details-trigger")?.getAttribute("aria-expanded"),
+      hidden: document.querySelector("#static-operation-details")?.hasAttribute("hidden") ?? false,
+      details: document.querySelector("#static-operation-details")?.textContent ?? ""
+    }));
+    assert(operationOpen.expanded === "true" && !operationOpen.hidden && operationOpen.details.includes("reason-code-with-a-long-machine-suffix-2026-09-13"), "static operation details did not open with the actual update semantics");
+    const staticOperationUpdate = await page.evaluate(() => {
+      const root = document.querySelector("#static-operation");
+      const status = root?.querySelector("[data-operation-short-status='true'] .tcrn-badge__label");
+      const details = root?.querySelector("#static-operation-details .tcrn-operation-feedback__details-body");
+      root?.setAttribute("data-operation-phase", "error");
+      root?.setAttribute("data-operation-state", "blocked");
+      if (status) status.textContent = "Blocked";
+      if (details) details.textContent = "The operation failed; error details remain in the DOM and readable after the update.";
+      return { phase: root?.getAttribute("data-operation-phase"), state: root?.getAttribute("data-operation-state"), status: status?.textContent ?? "", details: details?.textContent ?? "" };
+    });
+    assert(staticOperationUpdate.phase === "error" && staticOperationUpdate.state === "blocked" && staticOperationUpdate.status === "Blocked" && staticOperationUpdate.details.includes("error details"), "static operation update did not preserve short status and full error details");
 
     const tooltipTrigger = page.locator("#static-tooltip-trigger");
     assert(await tooltipTrigger.count() === 1, "static tooltip trigger count drifted");
@@ -247,7 +315,12 @@ async function runStaticHtmlCssConsumerProof(browser) {
       hidden: document.querySelector("#static-popover-layer")?.hasAttribute("hidden") ?? false
     }));
     assert(popoverClosed.open === "false" && popoverClosed.hidden, "static popover outside dismissal did not update the actual state");
-    return { initial, tooltipOpen, tooltipClosed, popoverOpen, popoverClosed, ok: true };
+    const contentValidation = [
+      validateContentScope({ scope: "scope-a", dataSource: "synthetic-source-a", phase: "content", shownCount: 4, totalCount: 4, hasContent: true }),
+      validateContentScope({ scope: "scope-b", dataSource: "synthetic-source-b", phase: "empty", shownCount: 0, totalCount: 0, hasContent: false })
+    ];
+    assert(contentValidation.every((result) => result.valid), "static content scope models did not pass the shared validator");
+    return { initial, operationOpen, staticOperationUpdate, contentValidation, tooltipOpen, tooltipClosed, popoverOpen, popoverClosed, ok: true };
   } finally {
     await page.close();
   }
@@ -260,6 +333,8 @@ async function runClientFixtureProof(browser) {
     await page.addScriptTag({ content: await buildClientFixture() });
     await page.waitForSelector("[data-full-surface-fixture='true']");
     await page.waitForTimeout(100);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(20);
     const initial = await page.evaluate(() => {
       const tooltip = document.querySelector("[data-tooltip-portal='true']");
       const popover = document.querySelector("[data-overlay-positioning='portal-fixed']");
@@ -269,6 +344,9 @@ async function runClientFixtureProof(browser) {
       };
       const tooltipRect = rect(tooltip);
       const popoverRect = rect(popover);
+      const operation = document.querySelector("[data-operation-feedback='true']");
+      const operationTrigger = operation?.querySelector("[data-operation-details-trigger='true']");
+      const contentScopes = Array.from(document.querySelectorAll("[data-content-scope]"));
       return {
         tooltipParentIsBody: tooltip?.parentElement === document.body,
         tooltipRect,
@@ -278,12 +356,156 @@ async function runClientFixtureProof(browser) {
         popoverWithinViewport: Boolean(popoverRect && popoverRect.left >= 0 && popoverRect.right <= window.innerWidth && popoverRect.top >= 0 && popoverRect.bottom <= window.innerHeight),
         popoverPlacement: popover?.getAttribute("data-overlay-placement-resolved"),
         clippingAncestorContainsTooltip: Boolean(tooltip?.closest("[data-clipping-ancestor]")),
-        scrollAncestorContainsPopover: Boolean(popover?.closest("[data-scroll-ancestor]"))
+        scrollAncestorContainsPopover: Boolean(popover?.closest("[data-scroll-ancestor]")),
+        rootScrollWidth: document.documentElement.scrollWidth,
+        operationPhase: operation?.getAttribute("data-operation-phase"),
+        operationShortStatus: operation?.querySelector("[data-operation-short-status='true']")?.textContent ?? "",
+        operationShortStatusBox: rect(operation?.querySelector("[data-operation-short-status='true']")),
+        operationRootBox: rect(operation),
+        operationIdentityVisible: Boolean(operation?.querySelector("[data-operation-identity='true']")),
+        operationDetailsReachable: Boolean(operationTrigger?.getAttribute("aria-controls")),
+        contentScopes: contentScopes.map((scope) => ({
+          scope: scope.getAttribute("data-content-scope"),
+          source: scope.getAttribute("data-content-source"),
+          phase: scope.getAttribute("data-content-phase"),
+          valid: scope.getAttribute("data-content-valid"),
+          shown: scope.getAttribute("data-content-shown-count"),
+          total: scope.getAttribute("data-content-total-count"),
+          hasEmptyState: Boolean(scope.querySelector("[data-state-surface-kind='empty']")),
+          hasContent: Boolean(scope.querySelector("[data-scope-content]"))
+        }))
       };
     });
     assert(initial.tooltipParentIsBody && initial.popoverParentIsBody, "client overlays did not escape to document body");
     assert(initial.tooltipWithinViewport && initial.popoverWithinViewport, "client overlay placement escaped the viewport");
     assert(!initial.clippingAncestorContainsTooltip && !initial.scrollAncestorContainsPopover, "client overlay remained inside a clipping ancestor");
+    assert(initial.rootScrollWidth <= 360, "operation/content fixture created root horizontal overflow");
+    assert(initial.operationPhase === "success" && /Ready for local use/.test(initial.operationShortStatus) && initial.operationIdentityVisible && initial.operationDetailsReachable, "operation feedback success surface is incomplete");
+    assert(initial.contentScopes.length === 4, "content scope fixture inventory drifted");
+    assert(initial.contentScopes.find((scope) => scope.scope === "scope-a")?.valid === "true" && initial.contentScopes.find((scope) => scope.scope === "scope-a")?.hasContent, "nonempty content scope did not render its own content");
+    assert(initial.contentScopes.find((scope) => scope.scope === "scope-b")?.phase === "empty" && initial.contentScopes.find((scope) => scope.scope === "scope-b")?.hasEmptyState, "empty content scope did not render its own empty state");
+    assert(initial.contentScopes.find((scope) => scope.scope === "scope-loading")?.phase === "loading" && initial.contentScopes.find((scope) => scope.scope === "scope-error")?.phase === "error", "loading and error scopes collapsed into empty");
+
+    const operationDetailsTrigger = page.locator("[data-operation-feedback='true'] [data-operation-details-trigger='true']");
+    assert(await operationDetailsTrigger.count() === 1, "operation details trigger count drifted");
+    await operationDetailsTrigger.focus();
+    await page.keyboard.press("Enter");
+    const operationDetailsOpen = await page.evaluate(() => {
+      const root = document.querySelector("[data-operation-feedback='true']");
+      const trigger = root?.querySelector("[data-operation-details-trigger='true']");
+      const details = root?.querySelector("[data-operation-details='true']");
+      return {
+        expanded: trigger?.getAttribute("aria-expanded"),
+        controls: trigger?.getAttribute("aria-controls"),
+        detailsId: details?.id,
+        detailsVisible: details?.querySelector("[data-collapsible-region='true']")?.getAttribute("aria-hidden") === "false",
+        longReasonVisible: details?.textContent?.includes("reason-code-with-a-long-machine-suffix-2026-09-13") ?? false
+      };
+    });
+    assert(operationDetailsOpen.expanded === "true" && operationDetailsOpen.controls === operationDetailsOpen.detailsId && operationDetailsOpen.detailsVisible && operationDetailsOpen.longReasonVisible, "operation details did not open as a keyboard-readable DOM region");
+    await page.locator("[data-operation-set-error]").dispatchEvent("click");
+    await page.waitForFunction(() => document.querySelector("[data-operation-feedback='true']")?.getAttribute("data-operation-phase") === "error");
+    const operationError = await page.evaluate(() => {
+      const root = document.querySelector("[data-operation-feedback='true']");
+      return {
+        phase: root?.getAttribute("data-operation-phase"),
+        status: root?.querySelector("[data-operation-short-status='true']")?.textContent ?? "",
+        detailsInDom: root?.querySelector("[data-operation-details='true']")?.textContent?.includes("error details") ?? false,
+        detailsVisible: root?.querySelector("[data-operation-details='true'] [data-collapsible-region='true']")?.getAttribute("aria-hidden") === "false"
+      };
+    });
+    assert(operationError.phase === "error" && /Blocked/.test(operationError.status) && operationError.detailsInDom && operationError.detailsVisible, "operation error update lost DOM-backed status or details");
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(20);
+
+    const consumerEvidenceInput = await page.evaluate(() => {
+      const operation = document.querySelector("[data-operation-feedback='true']");
+      const detailsTrigger = operation?.querySelector("[data-operation-details-trigger='true']");
+      const operationBox = operation?.getBoundingClientRect();
+      const targetBox = detailsTrigger?.getBoundingClientRect();
+      const statusBox = operation?.querySelector("[data-operation-short-status='true']")?.getBoundingClientRect();
+      const visibleViewportWidthPx = window.innerWidth;
+      const visibleViewportHeightPx = window.innerHeight;
+      const pageWidthPx = document.documentElement.clientWidth;
+      const pageScrollWidthPx = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+      const visible = (box) => Boolean(box && box.width > 0 && box.height > 0 && box.top < visibleViewportHeightPx && box.bottom > 0 && box.left < visibleViewportWidthPx && box.right > 0);
+      const measuredZoom = () => ({
+        measured: true,
+        effectiveScale: window.devicePixelRatio || 1,
+        elementWidthPx: operationBox?.width ?? 0,
+        viewportWidthPx: visibleViewportWidthPx,
+        viewportHeightPx: visibleViewportHeightPx,
+        elementVisible: visible(operationBox),
+        source: "browser-measurement"
+      });
+      return {
+        expectedInventory: [{
+          id: "operation-feedback-proof",
+          requestedSurface: "operation-proof-panel",
+          selectedSurface: "operation-proof-panel",
+          expectedPanelSurface: "operation-feedback-proof",
+          expectedControl: "operation-feedback-proof-details-trigger",
+          applicability: "required"
+        }],
+        observed: [{
+          instanceId: "operation-feedback-proof",
+          requestedSurface: "operation-proof-panel",
+          selectedSurface: "operation-proof-panel",
+          panelSurface: operation?.id ?? "",
+          controlId: detailsTrigger?.id ?? "",
+          controlPresent: Boolean(detailsTrigger),
+          input: {
+            modality: "keyboard",
+            targetId: detailsTrigger?.id ?? "",
+            changed: operation?.getAttribute("data-operation-phase") === "error",
+            targetOffsetMeasured: Boolean(targetBox),
+            targetOffsetPx: targetBox?.top ?? Number.NaN
+          },
+          result: {
+            status: "error",
+            resultId: operation?.querySelector("[data-operation-identity-field='operation-id'] dd")?.textContent?.trim() ?? "",
+            observedInDom: Boolean(operation?.querySelector("[data-operation-details='true']")),
+            source: "dom"
+          },
+          uiFeedback: {
+            source: "dom",
+            status: "error",
+            domPresent: Boolean(operation),
+            statusVisible: visible(statusBox),
+            statusBox: statusBox ? { left: statusBox.left, top: statusBox.top, right: statusBox.right, bottom: statusBox.bottom, width: statusBox.width, height: statusBox.height } : null,
+            identityVisible: visible(operation?.querySelector("[data-operation-identity='true']")?.getBoundingClientRect()),
+            detailsReachable: Boolean(detailsTrigger?.getAttribute("aria-controls") === operation?.querySelector("[data-operation-details='true']")?.id),
+            errorDomChecked: true
+          },
+          geometry: {
+            afterOperation: true,
+            requestedSurfaceVisible: visible(operationBox),
+            selectedSurfaceVisible: visible(operationBox),
+            panelSurfaceVisible: visible(operationBox),
+            actualInstanceVisible: visible(operationBox),
+            pageWidthPx,
+            pageScrollWidthPx,
+            visibleViewportWidthPx,
+            visibleViewportHeightPx,
+            targetLeftPx: targetBox?.left ?? Number.NaN,
+            targetTopPx: targetBox?.top ?? Number.NaN,
+            targetRightPx: targetBox?.right ?? Number.NaN,
+            targetBottomPx: targetBox?.bottom ?? Number.NaN
+          },
+          zoom: {
+            dpr: measuredZoom(),
+            "pinch-visual-viewport": measuredZoom(),
+            "page-zoom": measuredZoom()
+          }
+        }]
+      };
+    });
+    const consumerEvidencePositive = evaluateConsumerEvidence(consumerEvidenceInput);
+    const consumerEvidenceNegativeInput = structuredClone(consumerEvidenceInput);
+    consumerEvidenceNegativeInput.observed[0].selectedSurface = "wrong-surface";
+    const consumerEvidenceNegative = evaluateConsumerEvidence(consumerEvidenceNegativeInput);
+    assert(consumerEvidencePositive.ok && !consumerEvidenceNegative.ok, "consumer evidence validator did not use the actual positive and negative observations");
+    results.consumerEvidence = { positive: consumerEvidencePositive, negative: consumerEvidenceNegative, input: consumerEvidenceInput };
 
     await page.evaluate(() => {
       const scrollAncestor = document.querySelector("[data-scroll-ancestor]");
@@ -297,7 +519,7 @@ async function runClientFixtureProof(browser) {
       const box = node?.getBoundingClientRect();
       return { top: box?.top ?? null, bottom: box?.bottom ?? null, withinViewport: Boolean(box && box.left >= 0 && box.right <= window.innerWidth && box.top >= 0 && box.bottom <= window.innerHeight) };
     });
-    assert(afterScroll.withinViewport, "scroll-ancestor movement escaped the viewport");
+    assert(afterScroll.withinViewport, `scroll-ancestor movement escaped the viewport: ${JSON.stringify(afterScroll)}`);
     await page.setViewportSize({ width: 320, height: 200 });
     await page.waitForTimeout(20);
     const afterResize = await page.evaluate(() => {
@@ -305,7 +527,7 @@ async function runClientFixtureProof(browser) {
       const box = node?.getBoundingClientRect();
       return { width: window.innerWidth, height: window.innerHeight, left: box?.left ?? null, top: box?.top ?? null, right: box?.right ?? null, bottom: box?.bottom ?? null, withinViewport: Boolean(box && box.left >= 0 && box.right <= window.innerWidth && box.top >= 0 && box.bottom <= window.innerHeight) };
     });
-    assert(afterResize.withinViewport, "viewport resize escaped the overlay boundary");
+    assert(afterResize.withinViewport, `viewport resize escaped the overlay boundary: ${JSON.stringify(afterResize)}`);
 
     const tooltipTrigger = page.locator("[data-tooltip-trigger]");
     assert(await tooltipTrigger.count() === 1, "client tooltip trigger count drifted");
@@ -508,9 +730,10 @@ try {
 }
 
 process.stdout.write(`${JSON.stringify({
-  schemaVersion: "tcrn.ds.full-surface-remediation-browser-proof.v1",
+  schemaVersion: "tcrn.ds.full-surface-remediation-browser-proof.v2",
   routes: [
     "components-component-inventory.html#interaction-disclosure-spec",
+    "components-component-inventory.html#display-primitives-spec",
     "components-overlays.html#dialog-spec-usage",
     "patterns-feedback-selection.html#selection-list-patterns",
     "foundations-tokens-i18n.html#tokens-copy-state"

@@ -35,6 +35,10 @@ import {
   overlayBoundaryContract,
   settingsLayoutContract,
   pageHierarchyContract,
+  verificationCadenceContract,
+  operationFeedbackContract,
+  contentScopeContract,
+  consumerEvidenceContract,
   consumerVerificationContract
 } from "./build/foundation-visual-standards.js";
 import { contractStories, contractStoriesByGroup, contractStoryGroups } from "./stories.js";
@@ -66,6 +70,10 @@ const expectedAiReadbackFields = [
   "overlayBoundaryContract",
   "settingsLayoutContract",
   "pageHierarchyContract",
+  "verificationCadenceContract",
+  "operationFeedbackContract",
+  "contentScopeContract",
+  "consumerEvidenceContract",
   "consumerVerificationContract",
   "requiredProof",
   "noOverclaimBoundaries"
@@ -145,6 +153,10 @@ const expectedAiRequiredBeforeProductFrontendImplementation = [
   "reject_unregistered_or_deprecated_brand_assets",
   "import_package_backed_ds_primitives",
   "consume_page_hierarchy_contract",
+  "consume_operation_feedback_contract",
+  "consume_content_scope_contract",
+  "run_consumer_evidence_validator",
+  "follow_ds_verification_cadence",
   "use_design_tokens_and_accessibility_rules",
   "verify_light_and_dark_storybook_theme_contract",
   "verify_motion_effect_parity_and_reduced_motion",
@@ -191,6 +203,10 @@ const expectedAiRequiredProof = [
   "overlay_boundary_placement_receipt",
   "field_value_cardinality_receipt",
   "dictionary_content_receipt",
+  "operation_feedback_receipt",
+  "content_scope_receipt",
+  "consumer_evidence_verification_receipt",
+  "verification_cadence_receipt",
   "full_surface_inventory_receipt",
   "consumer_negative_leg_receipt",
   "product_adoption_route_receipt"
@@ -1243,6 +1259,21 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.deepEqual(contract.pageHierarchyContract?.storybookRoutes, pageHierarchyContract.storybookRoutes);
   assert.deepEqual(contract.pageHierarchyContract?.depthDecisionTable?.map((row: { depth: string }) => row.depth), ["two", "three"]);
   assert.match(contract.pageHierarchyContract?.widthPolicy ?? "", /never infers, adds, or removes a page level/);
+  assert.equal(contract.verificationCadenceContract?.id, verificationCadenceContract.id);
+  assert.deepEqual(contract.verificationCadenceContract?.stages?.map((stage: { id: string }) => stage.id), ["development", "candidate-final", "post-change"]);
+  assert.ok(contract.verificationCadenceContract?.deduplication?.containedCommands?.includes("pnpm full-surface:proof"));
+  assert.ok(contract.verificationCadenceContract?.evidenceReuse?.invalidators?.includes("prior failure"));
+  assert.equal(contract.operationFeedbackContract?.id, operationFeedbackContract.id);
+  assert.deepEqual(contract.operationFeedbackContract?.phases, operationFeedbackContract.phases);
+  assert.ok(contract.operationFeedbackContract?.packageExports?.includes("OperationFeedback"));
+  assert.match(contract.operationFeedbackContract?.roles?.details ?? "", /keyboard-reachable/);
+  assert.equal(contract.contentScopeContract?.id, contentScopeContract.id);
+  assert.ok(contract.contentScopeContract?.packageExports?.includes("validateContentScope"));
+  assert.match(contract.contentScopeContract?.independentScopes ?? "", /independently/);
+  assert.equal(contract.consumerEvidenceContract?.id, consumerEvidenceContract.id);
+  assert.equal(contract.consumerEvidenceContract?.utility, "evaluateConsumerEvidence");
+  assert.deepEqual(contract.consumerEvidenceContract?.zoomAxes, consumerEvidenceContract.zoomAxes);
+  assert.match(contract.consumerEvidenceContract?.lifecycleIntersection ?? "", /one observation/);
   assert.equal(contract.consumerVerificationContract?.id, consumerVerificationContract.id);
   assert.equal(contract.consumerVerificationContract?.browserScript, "scripts/full-surface-remediation-proof.mjs");
   assert.equal(contract.consumerVerificationContract?.proofVersion, consumerVerificationContract.proofVersion);
@@ -1250,6 +1281,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.ok(contract.consumerVerificationContract?.positiveLegs?.length >= 4);
   assert.ok(contract.consumerVerificationContract?.negativeLegs?.some((leg: string) => /class\/CSS/.test(leg)));
   assert.match(contract.consumerVerificationContract?.independenceBoundary ?? "", /does not read or execute a Workflow repository/);
+  assert.equal(contract.consumerVerificationContract?.evidenceValidator, "evaluateConsumerEvidence");
   assert.deepEqual(contract.visualEquivalenceLevels, [
     "same_package_version",
     "same_exported_component",
@@ -1509,7 +1541,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   const llms = readFileSync(join(process.cwd(), "storybook-static", "llms.txt"), "utf8");
   assert.match(llms, /Agents must read ai-consumption-contract\.json before implementation work\./);
   assert.match(llms, new RegExp(contractPayloadDigest));
-  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, fieldValueSelectionContract, dictionaryContentContract, overlayBoundaryContract, settingsLayoutContract, pageHierarchyContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
+  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, fieldValueSelectionContract, dictionaryContentContract, overlayBoundaryContract, settingsLayoutContract, pageHierarchyContract, verificationCadenceContract, operationFeedbackContract, contentScopeContract, consumerEvidenceContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
   assert.match(llms, /Required Storybook sections:/);
   assert.match(llms, /Covered Storybook section\/category\/story hierarchy:/);
   assert.match(llms, /Changelog governance: change-log\.html#local-changelog/);
@@ -1524,6 +1556,10 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Overlay boundary contract: overlay-boundary-contract-v1/);
   assert.match(llms, /Settings layout contract: settings-layout-contract-v1/);
   assert.match(llms, /Page hierarchy contract: page-hierarchy-contract-v1/);
+  assert.match(llms, /Verification cadence contract: ds-verification-cadence-contract-v1/);
+  assert.match(llms, /Operation feedback contract: operation-feedback-contract-v1/);
+  assert.match(llms, /Content scope contract: content-scope-contract-v1/);
+  assert.match(llms, /Consumer evidence contract: consumer-evidence-verification-contract-v1/);
   assert.match(llms, /Consumer verification contract: consumer-verification-contract-v1/);
   assert.match(llms, /browser script: scripts\/full-surface-remediation-proof\.mjs/);
   assert.match(llms, /Storybook doc shell visual oracle: original-storybook-doc-shell-v1/);
