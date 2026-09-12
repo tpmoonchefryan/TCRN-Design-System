@@ -147,6 +147,19 @@ function validSettingChoiceMarkup() {
   }));
 }
 
+function validMultiOptionSettingChoiceMarkup() {
+  return renderToStaticMarkup(createElement(SettingChoice, {
+    label: "Execution mode",
+    name: "mode",
+    options: [
+      { value: "local", label: "Local" },
+      { value: "remote", label: "Remote" },
+      { value: "deferred", label: "Deferred" }
+    ],
+    availableInlineSize: 720
+  }));
+}
+
 function validNumberInputMarkup() {
   return renderToStaticMarkup(createElement(NumberInput, {
     name: "budget",
@@ -190,6 +203,7 @@ function validSettingsLayoutMarkup() {
 export async function runDsConsumptionProof() {
   const fixtures = [
     { id: "valid-setting-choice", kind: "setting-choice", expected: "pass", markup: validSettingChoiceMarkup() },
+    { id: "valid-multi-option-setting-choice", kind: "setting-choice", expected: "pass", markup: validMultiOptionSettingChoiceMarkup() },
     {
       id: "valid-number-input",
       kind: "number-input",
