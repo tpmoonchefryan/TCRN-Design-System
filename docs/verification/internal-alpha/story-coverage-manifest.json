@@ -375,7 +375,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "f1aa26ac6cbeb6f34623c085fb172d7683aeec3e8f559a461297240da9f989ba",
+    "contractPayloadDigest": "5cad4072dcca7ad959bd018cb10ff82fe588e94158a27d6cd50b6d8c2c73f07b",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 21,

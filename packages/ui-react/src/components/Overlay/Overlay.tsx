@@ -1,4 +1,4 @@
-import type { CSSProperties, FocusEvent as ReactFocusEvent, HTMLAttributes, MouseEvent as ReactMouseEvent, ReactElement, ReactNode, RefObject } from "react";
+import type { CSSProperties, FocusEvent as ReactFocusEvent, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent, ReactElement, ReactNode, RefObject } from "react";
 import { createPortal } from "react-dom";
 import { cloneElement, useEffect, useId, useRef, useState } from "react";
 import { Heading, Text } from "../Typography/index.js";
@@ -106,6 +106,173 @@ function computeFloatingPosition(anchor: FloatingRect, layer: FloatingRect, requ
   };
 }
 
+export type StaticOverlayKind = "tooltip" | "popover";
+
+export interface StaticOverlayBoundaryOptions {
+  trigger: HTMLElement;
+  layer: HTMLElement;
+  kind: StaticOverlayKind;
+  placement: FloatingPlacement;
+  gap?: number;
+}
+
+export interface StaticOverlayBoundaryHandle {
+  open(): void;
+  close(options?: { restoreFocus?: boolean }): void;
+  reposition(): void;
+  destroy(): void;
+}
+
+/**
+ * Adds the same body-boundary behavior to server-emitted HTML without requiring
+ * a React tree. The consumer owns the trigger/layer markup and imports this
+ * small DOM bridge alongside `tcrnComponentCss`.
+ */
+export function mountStaticOverlayBoundary({ trigger, layer, kind, placement, gap }: StaticOverlayBoundaryOptions): StaticOverlayBoundaryHandle {
+  if (typeof document === "undefined" || typeof window === "undefined" || !(trigger instanceof HTMLElement) || !(layer instanceof HTMLElement)) {
+    return { open: () => undefined, close: () => undefined, reposition: () => undefined, destroy: () => undefined };
+  }
+
+  const originalParent = layer.parentNode;
+  const originalNextSibling = layer.nextSibling;
+  const previousStyle = layer.getAttribute("style");
+  const previousHidden = layer.hidden;
+  const previousBoundary = layer.getAttribute("data-overlay-boundary");
+  const previousPositioning = layer.getAttribute("data-overlay-positioning");
+  const previousResolvedPlacement = layer.getAttribute("data-overlay-placement-resolved");
+  const previousOpen = layer.getAttribute("data-overlay-open");
+  const previousTooltipOpen = layer.getAttribute("data-tooltip-open");
+  const previousExpanded = trigger.getAttribute("aria-expanded");
+  const initialOpen = layer.getAttribute("data-overlay-open") === "true"
+    || (layer.getAttribute("data-overlay-open") === null && !layer.hidden);
+  const resolvedGap = gap ?? 8;
+  let openState = initialOpen;
+  let disposed = false;
+
+  const setLayerState = (nextOpen: boolean) => {
+    openState = nextOpen;
+    layer.hidden = !nextOpen;
+    layer.setAttribute("data-overlay-open", nextOpen ? "true" : "false");
+    if (kind === "tooltip") layer.setAttribute("data-tooltip-open", nextOpen ? "true" : "false");
+    if (kind === "popover") trigger.setAttribute("aria-expanded", nextOpen ? "true" : "false");
+  };
+
+  const reposition = () => {
+    if (disposed || !openState) return;
+    layer.hidden = false;
+    layer.style.visibility = "hidden";
+    const next = computeFloatingPosition(
+      floatingRect(trigger),
+      floatingRect(layer),
+      placement,
+      window.innerWidth,
+      window.innerHeight,
+      resolvedGap
+    );
+    layer.style.left = `${next.left}px`;
+    layer.style.top = `${next.top}px`;
+    layer.setAttribute("data-overlay-placement-resolved", next.placement);
+    layer.style.visibility = "visible";
+  };
+
+  const open = () => {
+    if (disposed) return;
+    setLayerState(true);
+    reposition();
+  };
+  const close = ({ restoreFocus = false }: { restoreFocus?: boolean } = {}) => {
+    if (disposed) return;
+    setLayerState(false);
+    layer.style.visibility = "hidden";
+    if (restoreFocus) trigger.focus();
+  };
+  const onFocusIn = () => {
+    if (kind === "tooltip") open();
+  };
+  const onFocusOut = (event: FocusEvent) => {
+    const related = event.relatedTarget;
+    if (related instanceof Node && (trigger.contains(related) || layer.contains(related))) return;
+    if (kind === "tooltip") close();
+  };
+  const onMouseEnter = () => {
+    if (kind === "tooltip") open();
+  };
+  const onMouseLeave = () => {
+    if (kind === "tooltip") close();
+  };
+  const onClick = () => {
+    if (kind === "popover") (openState ? close : open)();
+  };
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== "Escape" || !openState) return;
+    event.preventDefault();
+    close({ restoreFocus: kind === "popover" });
+  };
+  const onPointerDown = (event: PointerEvent) => {
+    const target = event.target;
+    if (kind === "popover" && openState && (!(target instanceof Node) || (!trigger.contains(target) && !layer.contains(target)))) {
+      close();
+    }
+  };
+
+  document.body.append(layer);
+  layer.setAttribute("data-overlay-boundary", "document-body");
+  layer.setAttribute("data-overlay-positioning", "static-fixed");
+  layer.style.position = "fixed";
+  trigger.addEventListener("focusin", onFocusIn);
+  trigger.addEventListener("focusout", onFocusOut);
+  trigger.addEventListener("mouseenter", onMouseEnter);
+  trigger.addEventListener("mouseleave", onMouseLeave);
+  trigger.addEventListener("click", onClick);
+  document.addEventListener("keydown", onKeyDown);
+  document.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("resize", reposition);
+  window.addEventListener("scroll", reposition, true);
+  if (openState) open();
+  else close();
+
+  return {
+    open,
+    close,
+    reposition,
+    destroy() {
+      if (disposed) return;
+      disposed = true;
+      trigger.removeEventListener("focusin", onFocusIn);
+      trigger.removeEventListener("focusout", onFocusOut);
+      trigger.removeEventListener("mouseenter", onMouseEnter);
+      trigger.removeEventListener("mouseleave", onMouseLeave);
+      trigger.removeEventListener("click", onClick);
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("resize", reposition);
+      window.removeEventListener("scroll", reposition, true);
+      if (originalParent) {
+        if (originalNextSibling?.parentNode === originalParent) originalParent.insertBefore(layer, originalNextSibling);
+        else originalParent.appendChild(layer);
+      }
+      if (previousStyle === null) layer.removeAttribute("style");
+      else layer.setAttribute("style", previousStyle);
+      if (previousHidden) layer.hidden = true;
+      else layer.removeAttribute("hidden");
+      if (previousBoundary === null) layer.removeAttribute("data-overlay-boundary");
+      else layer.setAttribute("data-overlay-boundary", previousBoundary);
+      if (previousPositioning === null) layer.removeAttribute("data-overlay-positioning");
+      else layer.setAttribute("data-overlay-positioning", previousPositioning);
+      if (previousResolvedPlacement === null) layer.removeAttribute("data-overlay-placement-resolved");
+      else layer.setAttribute("data-overlay-placement-resolved", previousResolvedPlacement);
+      if (previousOpen === null) layer.removeAttribute("data-overlay-open");
+      else layer.setAttribute("data-overlay-open", previousOpen);
+      if (previousTooltipOpen === null) layer.removeAttribute("data-tooltip-open");
+      else layer.setAttribute("data-tooltip-open", previousTooltipOpen);
+      if (kind === "popover") {
+        if (previousExpanded === null) trigger.removeAttribute("aria-expanded");
+        else trigger.setAttribute("aria-expanded", previousExpanded);
+      }
+    }
+  };
+}
+
 function useFloatingLayer({ enabled, placement, triggerRef, layerRef }: { enabled: boolean; placement: FloatingPlacement; triggerRef?: RefObject<HTMLElement | null>; layerRef: RefObject<HTMLElement | null> }) {
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const [position, setPosition] = useState<FloatingPosition | null>(null);
@@ -182,6 +349,12 @@ export function Tooltip({ content, children, placement = "top", className, ...pr
     props.onMouseLeave?.(event);
     setRevealed(false);
   };
+  const onKeyDown = (event: ReactKeyboardEvent<HTMLSpanElement>) => {
+    props.onKeyDown?.(event);
+    if (event.defaultPrevented || event.key !== "Escape") return;
+    event.preventDefault();
+    setRevealed(false);
+  };
   const contentStyle: CSSProperties | undefined = floating.shouldPortal ? {
     position: "fixed",
     left: `${floating.position?.left ?? 0}px`,
@@ -212,6 +385,7 @@ export function Tooltip({ content, children, placement = "top", className, ...pr
       onBlur={onBlur}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onKeyDown={onKeyDown}
       className={cx("tcrn-tooltip", className)}
       data-tooltip-scope="supplemental"
       data-tooltip-interactive-content="forbidden"

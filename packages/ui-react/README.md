@@ -51,7 +51,8 @@ disabled options, keyboard behavior, and repeated form values remain native.
 `SuggestInput` is the open-string control: its datalist suggestions are advisory
 and never reject a value outside the suggestion list. `DictionaryTable` renders
 one category description and requires a separate explanation for every machine
-value; duplicate values are marked invalid rather than merged.
+value; empty or unknown rendered content, category-description reuse, and exact
+duplicate values/labels/descriptions are marked invalid rather than merged.
 `resolveFieldValueControl` maps declared single/collection and closed/open metadata
 to these controls and fails closed for unsupported open collections or closed
 fields without options.
@@ -60,6 +61,41 @@ Client-rendered `Tooltip` and anchored `Popover` content move to the document
 body when a trigger reference is supplied, compute a viewport-safe placement,
 and reposition on resize and scroll. Tooltip content remains text-only and
 non-interactive; longer or interactive explanations belong in `Popover`.
+
+### Static HTML/CSS overlay migration
+
+An HTML/CSS consumer that does not render a React tree can use the same boundary
+with `tcrnComponentCss` and the DOM-only `mountStaticOverlayBoundary` bridge.
+The server emits a stable trigger/layer pair; the bridge moves the layer
+to `document.body`, applies `static-fixed` positioning, flips and clamps it to the
+viewport, and repositions it on scroll/resize.
+
+```html
+<div class="settings-panel" style="overflow: hidden">
+  <button id="help-trigger" aria-describedby="help-layer">Help</button>
+  <span id="help-layer" class="tcrn-tooltip__content" role="tooltip" hidden>
+    Supplemental text stays outside the clipping panel.
+  </span>
+</div>
+<script type="module">
+  import { mountStaticOverlayBoundary, tcrnComponentCss } from "@tcrn/ui-react";
+  const style = document.createElement("style");
+  style.textContent = tcrnComponentCss;
+  document.head.append(style);
+  mountStaticOverlayBoundary({
+    trigger: document.getElementById("help-trigger"),
+    layer: document.getElementById("help-layer"),
+    kind: "tooltip",
+    placement: "right"
+  });
+</script>
+```
+
+The trigger and layer must be paired by the consumer and the tooltip layer must
+remain text-only. The bridge owns only the generic boundary, placement, and
+dismissal mechanics; field/domain values and product route state remain consumer
+inputs. A CSS-only server-positioned body sibling is a static fallback and must
+not claim dynamic portal, edge, or focus behavior.
 
 `PageHierarchy` takes an explicit `depth`: `two` renders `PageHeader`, parent-level
 `SubNav`/`SectionTabs`, then lower content; `three` renders the same Header and

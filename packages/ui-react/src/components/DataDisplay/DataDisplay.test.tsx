@@ -95,6 +95,36 @@ test("STORY-115 dictionary tables render one category description and require ea
   assert.match(duplicateContent, /data-dictionary-valid="false"/);
   assert.match(duplicateContent, /data-dictionary-duplicate-labels="Same label"/);
   assert.match(duplicateContent, /data-dictionary-duplicate-descriptions="Same explanation\."/);
+
+  const emptyElement = renderToStaticMarkup(
+    <DictionaryTable
+      category="Category"
+      categoryDescription="Shared category explanation"
+      tableLabel="Values"
+      valueColumnLabel="Value"
+      descriptionColumnLabel="Description"
+      entries={[{ value: "a", label: "Alpha", description: <span /> }]}
+    />
+  );
+  assert.match(emptyElement, /data-dictionary-valid="false"/);
+  assert.match(emptyElement, /data-dictionary-content-certainty="unknown"/);
+  assert.match(emptyElement, /data-dictionary-entry-description-present="false"/);
+
+  const categoryReused = renderToStaticMarkup(
+    <DictionaryTable
+      category="Category"
+      categoryDescription="Shared category explanation"
+      tableLabel="Values"
+      valueColumnLabel="Value"
+      descriptionColumnLabel="Description"
+      entries={[
+        { value: "a", label: "Alpha", description: "Shared category explanation" },
+        { value: "b", label: "Beta", description: "Beta-specific explanation" }
+      ]}
+    />
+  );
+  assert.match(categoryReused, /data-dictionary-valid="false"/);
+  assert.match(categoryReused, /data-dictionary-category-description-reused="true"/);
 });
 
 test("table shell records arbitrary column counts for responsive layout", () => {

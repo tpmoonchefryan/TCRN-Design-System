@@ -1569,8 +1569,13 @@ if (contract.dictionaryContentContract?.id !== "dictionary-content-contract-v1"
 if (contract.overlayBoundaryContract?.id !== "overlay-boundary-contract-v1"
   || !contract.overlayBoundaryContract?.packageExports?.includes?.("Tooltip")
   || !contract.overlayBoundaryContract?.packageExports?.includes?.("Popover")
+  || !contract.overlayBoundaryContract?.packageExports?.includes?.("mountStaticOverlayBoundary")
   || !String(contract.overlayBoundaryContract?.geometry?.edgePolicy ?? "").includes("flip")) {
   missing.push("contract.overlayBoundaryContract");
+}
+if (!String(contract.overlayBoundaryContract?.staticConsumerMigration?.bootstrap ?? "").includes("tcrnComponentCss")
+  || !String(contract.overlayBoundaryContract?.staticConsumerMigration?.behavior ?? "").includes("document.body")) {
+  missing.push("contract.overlayBoundaryContract.staticConsumerMigration");
 }
 if (contract.settingsLayoutContract?.id !== "settings-layout-contract-v1"
   || contract.settingsLayoutContract?.containerQueries?.[0]?.thresholdPx !== 960

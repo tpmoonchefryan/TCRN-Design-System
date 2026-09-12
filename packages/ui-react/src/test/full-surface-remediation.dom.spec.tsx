@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { act, useRef, useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DictionaryTable, Field, MultiSelect, Popover, SuggestInput, Tooltip } from "../index.js";
+import { DictionaryTable, Field, MultiSelect, Popover, SuggestInput, Tooltip, mountStaticOverlayBoundary } from "../index.js";
 import { createDomInteractionHarness } from "./dom-harness.js";
 
 async function flushEffects() {
@@ -35,6 +35,10 @@ function OverlayFixture() {
   );
 }
 
+function UnknownDescription() {
+  return <span>Rendered only after the custom component runs.</span>;
+}
+
 test("STORY-113 client overlays escape clipping ancestors through the document body", async () => {
   const harness = createDomInteractionHarness();
   try {
@@ -60,10 +64,42 @@ test("STORY-113 client overlays escape clipping ancestors through the document b
     });
     await flushEffects();
     assert.equal(tooltip.getAttribute("data-tooltip-open"), "true");
+    await harness.dispatchKeydown(trigger, "Escape");
+    await flushEffects();
+    assert.equal(tooltip.getAttribute("data-tooltip-open"), null);
 
     await harness.dispatchKeydown(harness.document, "Escape");
     await flushEffects();
     assert.equal(harness.document.querySelector("[data-overlay-scope='popover']"), null);
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("STORY-113 static HTML boundary moves a layer and closes Tooltip on Escape", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    await harness.render(
+      <div data-static-clipping="true" style={{ overflow: "hidden" }}>
+        <button id="static-trigger" type="button">Help</button>
+        <span id="static-layer" role="tooltip" hidden>Static supplemental text</span>
+      </div>
+    );
+    const trigger = harness.document.querySelector("#static-trigger");
+    const layer = harness.document.querySelector("#static-layer");
+    assert.ok(trigger instanceof harness.window.HTMLButtonElement);
+    assert.ok(layer instanceof harness.window.HTMLElement);
+    const boundary = mountStaticOverlayBoundary({ trigger, layer, kind: "tooltip", placement: "right" });
+    boundary.open();
+    assert.equal(layer.parentElement, harness.document.body);
+    assert.equal(layer.getAttribute("data-overlay-boundary"), "document-body");
+    assert.equal(layer.getAttribute("data-overlay-positioning"), "static-fixed");
+    assert.equal(layer.getAttribute("data-tooltip-open"), "true");
+    await harness.dispatchKeydown(trigger, "Escape");
+    assert.equal(layer.hidden, true);
+    assert.equal(layer.getAttribute("data-tooltip-open"), "false");
+    boundary.destroy();
+    assert.equal(layer.parentElement?.getAttribute("data-static-clipping"), "true");
   } finally {
     await harness.cleanup();
   }
@@ -93,6 +129,8 @@ test("STORY-114 native collection and open-value controls preserve state boundar
     const multiSelect = harness.document.querySelector("select[multiple]");
     assert.ok(multiSelect instanceof harness.window.HTMLSelectElement);
     assert.equal(multiSelect.value, "en");
+    const englishOption = multiSelect.querySelector("option[value='en']");
+    assert.ok(englishOption instanceof harness.window.HTMLOptionElement);
     const disabledOption = multiSelect.querySelector("option[value='ja']");
     assert.ok(disabledOption instanceof harness.window.HTMLOptionElement);
     assert.equal(disabledOption.disabled, true);
@@ -118,11 +156,17 @@ test("STORY-114 native collection and open-value controls preserve state boundar
     assert.match(form.textContent ?? "", /Choose at least one supported language\./);
 
     await act(async () => {
-      chineseOption.selected = false;
+      form.reset();
+    });
+    assert.equal(englishOption.selected, true);
+    assert.equal(chineseOption.selected, false);
+    assert.deepEqual(Array.from(new harness.window.FormData(form).getAll("languages")), ["en"]);
+    await act(async () => {
+      chineseOption.selected = true;
       multiSelect.dispatchEvent(new harness.window.Event("change", { bubbles: true }));
     });
-    assert.deepEqual(callbacks, [["en", "zh-CN"], ["en"]]);
-    assert.deepEqual(Array.from(new harness.window.FormData(form).getAll("languages")), ["en"]);
+    assert.deepEqual(callbacks, [["en", "zh-CN"], ["en", "zh-CN"]]);
+    assert.deepEqual(Array.from(new harness.window.FormData(form).getAll("languages")), ["en", "zh-CN"]);
 
     const input = harness.document.querySelector("input[data-choice-value-mode='open']");
     assert.ok(input instanceof harness.window.HTMLInputElement);
@@ -136,7 +180,7 @@ test("STORY-114 native collection and open-value controls preserve state boundar
   }
 });
 
-test("STORY-115 dictionary validity markers reject missing explanations and duplicate values", () => {
+test("STORY-115 dictionary validity markers use rendered content and separate category/value explanations", () => {
   const html = renderToStaticMarkup(
     <DictionaryTable
       category="Backend"
@@ -153,4 +197,47 @@ test("STORY-115 dictionary validity markers reject missing explanations and dupl
   assert.match(html, /data-dictionary-valid="false"/);
   assert.match(html, /data-dictionary-entry-description-present="false"/);
   assert.match(html, /data-dictionary-duplicate-values="file"/);
+
+  const emptyElement = renderToStaticMarkup(
+    <DictionaryTable
+      category="Category"
+      categoryDescription="Shared category explanation"
+      tableLabel="Values"
+      valueColumnLabel="Value"
+      descriptionColumnLabel="Description"
+      entries={[{ value: "a", label: "Alpha", description: <span /> }]}
+    />
+  );
+  assert.match(emptyElement, /data-dictionary-valid="false"/);
+  assert.match(emptyElement, /data-dictionary-content-certainty="unknown"/);
+  assert.match(emptyElement, /data-dictionary-entry-description-present="false"/);
+
+  const categoryReused = renderToStaticMarkup(
+    <DictionaryTable
+      category="Category"
+      categoryDescription="Shared category explanation"
+      tableLabel="Values"
+      valueColumnLabel="Value"
+      descriptionColumnLabel="Description"
+      entries={[
+        { value: "a", label: "Alpha", description: "Shared category explanation" },
+        { value: "b", label: "Beta", description: "Beta-specific explanation" }
+      ]}
+    />
+  );
+  assert.match(categoryReused, /data-dictionary-valid="false"/);
+  assert.match(categoryReused, /data-dictionary-category-description-reused="true"/);
+
+  const unknownNode = renderToStaticMarkup(
+    <DictionaryTable
+      category="Category"
+      categoryDescription="Shared category explanation"
+      tableLabel="Values"
+      valueColumnLabel="Value"
+      descriptionColumnLabel="Description"
+      entries={[{ value: "a", label: "Alpha", description: <UnknownDescription /> }]}
+    />
+  );
+  assert.match(unknownNode, /data-dictionary-valid="false"/);
+  assert.match(unknownNode, /data-dictionary-content-certainty="unknown"/);
 });

@@ -3159,6 +3159,11 @@ const legacyContractStories: LegacyContractStory[] = [
             columns={[{ key: "mode", label: "Mode" }, { key: "boundary", label: "Boundary" }, { key: "interaction", label: "Interaction" }]}
             rows={overlayBoundaryContract.modeTable.map((row) => ({ mode: row.mode, boundary: row.boundary, interaction: row.interaction }))}
           />
+          <TableShell
+            label="Static HTML/CSS overlay migration"
+            columns={[{ key: "part", label: "Part" }, { key: "rule", label: "Rule" }]}
+            rows={Object.entries(overlayBoundaryContract.staticConsumerMigration).map(([part, rule]) => ({ part, rule }))}
+          />
           <Text>Consumer verification uses both positive and negative legs. A matching class or stylesheet digest is not sufficient when component identity, semantics, native structure, value visibility, or container policy is wrong.</Text>
           <ReferenceList items={[consumerVerificationContract.script, consumerVerificationContract.proofVersion, ...consumerVerificationContract.negativeLegs]} />
         </ReadbackPanel>

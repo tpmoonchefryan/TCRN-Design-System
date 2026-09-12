@@ -133,6 +133,7 @@ export const componentLibraryPublicUtilityNames = [
   "tcrnSettingChoiceDecisionTable",
   "resolveSettingChoiceControl",
   "resolveFieldValueControl",
+  "mountStaticOverlayBoundary",
   "useProductShellController"
 ] as const;
 

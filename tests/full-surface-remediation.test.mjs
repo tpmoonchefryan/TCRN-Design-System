@@ -49,5 +49,8 @@ test("EPIC037 contract readback names the full-surface browser proof and package
   assert.equal(contract.overlayBoundaryContract.id, "overlay-boundary-contract-v1");
   assert.ok(contract.overlayBoundaryContract.packageExports.includes("Tooltip"));
   assert.ok(contract.overlayBoundaryContract.packageExports.includes("Popover"));
+  assert.ok(contract.overlayBoundaryContract.packageExports.includes("mountStaticOverlayBoundary"));
+  assert.match(contract.overlayBoundaryContract.staticConsumerMigration.bootstrap, /tcrnComponentCss/);
+  assert.match(contract.overlayBoundaryContract.staticConsumerMigration.behavior, /document\.body/);
   assert.equal(contract.consumerVerificationContract.browserScript, "scripts/full-surface-remediation-proof.mjs");
 });

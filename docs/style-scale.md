@@ -163,7 +163,8 @@ The global `ProductShell` topbar is outside this page composition. The
 `MultiSelect` is the closed-set collection control. `SuggestInput` keeps an open
 string editable while offering advisory datalist suggestions. `DictionaryTable`
 renders category copy once and a required value-specific description for every
-entry; duplicate machine values and missing descriptions are invalid.
+entry; empty/unknown rendered content, category-description reuse, duplicate
+machine values, and exact duplicate labels/descriptions are invalid.
 `resolveFieldValueControl` is the metadata-to-control decision point: it admits
 closed single values, closed collections, and open single strings, and rejects an
 open collection or a closed field with no options as unsupported.
@@ -173,3 +174,13 @@ boundary when a trigger reference is available, so scroll ancestors cannot clip
 the layer. Placement is recomputed from trigger and layer rectangles on viewport
 resize and scroll; Tooltip remains text-only, while long or interactive content
 uses Popover.
+
+Static HTML/CSS consumers use the same package boundary through
+`mountStaticOverlayBoundary` plus `tcrnComponentCss`. Emit a stable trigger/layer
+pair, keep the layer body-independent in the source markup, and let the DOM bridge
+move it to `document.body`, apply `static-fixed`, flip/clamp against the viewport,
+reposition on scroll/resize, and handle Tooltip focus/Escape or Popover
+click/outside/Escape. The static layer uses `role="tooltip"` for text-only
+supplemental content or `role="dialog"` for local interactive context. A
+CSS-only server-positioned body sibling is a static fallback only; it cannot claim
+dynamic portal, edge, or focus behavior.
