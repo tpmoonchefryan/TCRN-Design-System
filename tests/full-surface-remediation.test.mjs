@@ -51,6 +51,8 @@ test("STORY-116 display surface keeps four operation phases, short status, ident
   assert.equal((html.match(/data-operation-details-trigger="true"/g) ?? []).length, 4);
   assert.equal((html.match(/data-operation-details="true"/g) ?? []).length, 4);
   assert.match(html, /data-operation-geometry="responsive-safe"/);
+  assert.match(html, />Completed</);
+  assert.match(html, />Failed</);
   assert.match(html, /reason-code-with-a-long-machine-suffix-2026-09-13/);
 });
 
@@ -88,10 +90,14 @@ test("EPIC038 contract readback names operation feedback, content scopes, and on
   assert.equal(contract.operationFeedbackContract.id, "operation-feedback-contract-v1");
   assert.deepEqual(contract.operationFeedbackContract.phases, ["idle", "loading", "success", "error"]);
   assert.ok(contract.operationFeedbackContract.packageExports.includes("OperationFeedback"));
+  assert.equal(contract.operationFeedbackContract.phaseSemantics.find((entry) => entry.phase === "loading").labels.en, "In progress");
+  assert.match(contract.operationFeedbackContract.stateContract, /must equal phase/);
   assert.equal(contract.contentScopeContract.id, "content-scope-contract-v1");
+  assert.match(contract.contentScopeContract.renderedContentEvidence, /empty fragments/);
   assert.ok(contract.contentScopeContract.packageExports.includes("validateContentScope"));
   assert.equal(contract.consumerEvidenceContract.id, "consumer-evidence-verification-contract-v1");
   assert.equal(contract.consumerEvidenceContract.utility, "evaluateConsumerEvidence");
+  assert.deepEqual(contract.consumerEvidenceContract.valueEvidence.observedFields, ["key", "serialization", "submittedValue", "serializedValue", "readbackValue"]);
   assert.deepEqual(contract.consumerEvidenceContract.zoomAxes, ["dpr", "pinch-visual-viewport", "page-zoom"]);
   assert.equal(contract.consumerVerificationContract.evidenceValidator, "evaluateConsumerEvidence");
   assert.ok(contract.requiredReadbackFields.includes("consumerEvidenceContract"));

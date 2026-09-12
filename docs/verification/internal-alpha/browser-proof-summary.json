@@ -3157,7 +3157,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "2f2c0f5ccfec4a8d710c45f4374f09e8882f1ae9a35c881c73ca50d416d984bb",
+    "contractPayloadDigest": "a56fcf3427866d4034ede1c59b59b888ac8169ca19fcd1c3af66b0a49cd16138",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 21,
@@ -4107,7 +4107,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 62,
-        "leakCount": 2945,
+        "leakCount": 2944,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -4179,7 +4179,7 @@
           },
           {
             "storyId": "display-primitives-spec",
-            "leakCount": 149
+            "leakCount": 148
           },
           {
             "storyId": "interaction-disclosure-spec",

@@ -65,8 +65,10 @@ non-interactive; longer or interactive explanations belong in `Popover`.
 `OperationFeedback` keeps the short phase label in `StatusBadge` and renders
 consumer-supplied operation/actor identity plus the complete receipt in a
 keyboard-readable disclosure. Its `idle`, `loading`, `success`, and `error`
-phases preserve the real identity and update notification; long ids, times,
-and reason codes are wrapped details, never compact status labels.
+phases use the accurate short labels Idle, In progress, Completed, and Failed
+in all five locales, preserve the real identity and update notification, and
+reject a contradictory optional phase state; long ids, times, and reason codes
+are wrapped details, never compact status labels.
 
 `ContentScope` is the package-backed boundary for one independent content
 region. Pass the consumer-owned `scope`, `dataSource`, phase, shown/total
@@ -74,14 +76,18 @@ counts, `filtered`, `hasContent`, and optional `staleContent` model, then pass
 `EmptyState`, `StateSurface`, or `ErrorState` nodes for the corresponding
 branches. Call `validateContentScope` before static emission or data binding;
 it rejects missing sources, contradictory counts, and loading/error states
-misrepresented as empty. Sibling scopes are validated independently.
+misrepresented as empty. Deterministically empty fragments, null, and nested
+empty nodes are not treated as content; dynamic component output is marked
+unknown until observed, while accessible intrinsic non-text content remains
+valid. Sibling scopes are validated independently.
 
 `evaluateConsumerEvidence` is a pure validator for product adoption evidence.
 It requires one observed instance per required inventory entry, matching
 requested/selected/panel surfaces and control identity, DOM-backed input/result
-and status details, post-operation geometry, and separate `dpr`,
-`pinch-visual-viewport`, and `page-zoom` measurements. Missing controls cannot
-be reclassified as not applicable, and `wouldFail` overrides are rejected.
+and status details, expected/submitted/serialized/readback values, post-operation
+geometry, and separate `dpr`, `pinch-visual-viewport`, and `page-zoom`
+measurements. Missing controls cannot be reclassified as not applicable without
+an observed DOM count of zero, and `wouldFail` overrides are rejected.
 
 For a bounded change, use targeted type, package DOM, token, consumption, or
 browser checks during development. After all scoped work is fixed at one

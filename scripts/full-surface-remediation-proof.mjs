@@ -212,16 +212,16 @@ async function runStaticHtmlCssConsumerProof(browser) {
           <button type="button">Close context</button>
         </section>
       </div>
-      <section id="static-operation" class="tcrn-operation-feedback" data-operation-feedback="true" data-operation-phase="success" data-operation-state="ready" data-operation-geometry="responsive-safe" data-operation-update-notification="aria-live" aria-live="polite">
+      <section id="static-operation" class="tcrn-operation-feedback" data-operation-feedback="true" data-operation-phase="success" data-operation-state="success" data-operation-state-claim="success" data-operation-valid="true" data-operation-geometry="responsive-safe" data-operation-update-notification="aria-live" aria-live="polite">
         <div class="tcrn-operation-feedback__summary">
-          <span class="tcrn-badge tcrn-badge--positive" data-operation-short-status="true"><span class="tcrn-badge__label">Ready for local use</span></span>
+          <span class="tcrn-badge tcrn-badge--positive" data-operation-short-status="true" title="Completed" aria-label="Completed"><span class="tcrn-badge__label">Completed</span></span>
           <dl class="tcrn-operation-feedback__identity" data-operation-identity="true"><div class="tcrn-operation-feedback__identity-row" data-operation-identity-field="operation"><dt>Operation</dt><dd>Rebuild local index</dd></div><div class="tcrn-operation-feedback__identity-row" data-operation-identity-field="operation-id"><dt>Operation id</dt><dd><code>operation-2026-09-13-very-long-identity-9f4d1c2b7a6e</code></dd></div><div class="tcrn-operation-feedback__identity-row" data-operation-identity-field="actor"><dt>Actor</dt><dd>Synthetic operator</dd></div></dl>
           <button id="static-operation-details-trigger" type="button" class="tcrn-operation-feedback__details-trigger" aria-controls="static-operation-details" aria-expanded="false" data-operation-details-trigger="true">View full receipt</button>
         </div>
         <section id="static-operation-details" class="tcrn-operation-feedback__details tcrn-disclosure-panel" data-operation-details="true" hidden><h3 class="tcrn-disclosure-panel__title">Full receipt details</h3><div class="tcrn-operation-feedback__details-body">The operation completed; the complete receipt remains available for inspection. <code>reason-code-with-a-long-machine-suffix-2026-09-13.</code></div></section>
       </section>
-      <section id="static-content-scope-a" class="tcrn-content-scope" data-content-scope="scope-a" data-content-source="synthetic-source-a" data-content-phase="content" data-content-valid="true" data-content-shown-count="4" data-content-total-count="4" data-content-count-kind="total" data-content-stale="false"><div class="tcrn-content-scope__content" data-scope-content="scope-a">Four records are visible for this source.</div></section>
-      <section id="static-content-scope-b" class="tcrn-content-scope" data-content-scope="scope-b" data-content-source="synthetic-source-b" data-content-phase="empty" data-content-valid="true" data-content-shown-count="0" data-content-total-count="0" data-content-count-kind="total" data-content-stale="false"><div class="tcrn-state-surface" data-state-surface-kind="empty"><h3 class="tcrn-state-surface__title">Scope B is empty</h3></div></section>`);
+      <section id="static-content-scope-a" class="tcrn-content-scope" data-content-scope="scope-a" data-content-source="synthetic-source-a" data-content-phase="content" data-content-valid="true" data-content-model-valid="true" data-content-rendered="verified" data-content-shown-count="4" data-content-total-count="4" data-content-count-kind="total" data-content-stale="false"><div class="tcrn-content-scope__content" data-scope-content="scope-a">Four records are visible for this source.</div></section>
+      <section id="static-content-scope-b" class="tcrn-content-scope" data-content-scope="scope-b" data-content-source="synthetic-source-b" data-content-phase="empty" data-content-valid="true" data-content-model-valid="true" data-content-rendered="not-applicable" data-content-shown-count="0" data-content-total-count="0" data-content-count-kind="total" data-content-stale="false"><div class="tcrn-state-surface" data-state-surface-kind="empty"><h3 class="tcrn-state-surface__title">Scope B is empty</h3></div></section>`);
     await page.addScriptTag({ content: await buildStaticOverlayBridge() });
     await page.waitForSelector("[data-static-boundary-ready='true']");
     await page.evaluate(() => {
@@ -245,12 +245,12 @@ async function runStaticHtmlCssConsumerProof(browser) {
       operationStatus: document.querySelector("#static-operation [data-operation-short-status='true']")?.textContent ?? "",
       operationDetailsHidden: document.querySelector("#static-operation-details")?.hasAttribute("hidden") ?? false,
       operationRootScrollWidth: document.documentElement.scrollWidth,
-      contentScopes: Array.from(document.querySelectorAll("[data-content-scope]")).map((node) => ({ scope: node.getAttribute("data-content-scope"), source: node.getAttribute("data-content-source"), phase: node.getAttribute("data-content-phase"), valid: node.getAttribute("data-content-valid"), shown: node.getAttribute("data-content-shown-count"), total: node.getAttribute("data-content-total-count"), hasContent: Boolean(node.querySelector("[data-scope-content]")), hasEmpty: Boolean(node.querySelector("[data-state-surface-kind='empty']")) }))
+      contentScopes: Array.from(document.querySelectorAll("[data-content-scope]")).map((node) => ({ scope: node.getAttribute("data-content-scope"), source: node.getAttribute("data-content-source"), phase: node.getAttribute("data-content-phase"), valid: node.getAttribute("data-content-valid"), modelValid: node.getAttribute("data-content-model-valid"), rendered: node.getAttribute("data-content-rendered"), shown: node.getAttribute("data-content-shown-count"), total: node.getAttribute("data-content-total-count"), hasContent: Boolean(node.querySelector("[data-scope-content]")), hasEmpty: Boolean(node.querySelector("[data-state-surface-kind='empty']")) }))
     }));
     assert(initial.tooltipParentIsBody && initial.popoverParentIsBody && initial.tooltipHidden && initial.popoverHidden, "static HTML layers did not move to the document body or start closed");
     assert(initial.tooltipPositioning === "fixed" && initial.popoverPositioning === "fixed", "static HTML/CSS boundary did not use fixed positioning");
-    assert(initial.operationPhase === "success" && /Ready for local use/.test(initial.operationStatus) && initial.operationDetailsHidden && initial.operationRootScrollWidth <= 360, "static operation feedback markup is not compact or viewport-safe");
-    assert(initial.contentScopes.length === 2 && initial.contentScopes[0].valid === "true" && initial.contentScopes[0].hasContent && initial.contentScopes[1].phase === "empty" && initial.contentScopes[1].hasEmpty, "static content scope markup lost independent source/phase truth");
+    assert(initial.operationPhase === "success" && initial.operationStatus === "Completed" && initial.operationDetailsHidden && initial.operationRootScrollWidth <= 360, "static operation feedback markup is not compact or viewport-safe");
+    assert(initial.contentScopes.length === 2 && initial.contentScopes[0].valid === "true" && initial.contentScopes[0].modelValid === "true" && initial.contentScopes[0].rendered === "verified" && initial.contentScopes[0].hasContent && initial.contentScopes[1].phase === "empty" && initial.contentScopes[1].modelValid === "true" && initial.contentScopes[1].rendered === "not-applicable" && initial.contentScopes[1].hasEmpty, "static content scope markup lost independent source/phase truth");
 
     await page.locator("#static-operation-details-trigger").click();
     const operationOpen = await page.evaluate(() => ({
@@ -264,12 +264,14 @@ async function runStaticHtmlCssConsumerProof(browser) {
       const status = root?.querySelector("[data-operation-short-status='true'] .tcrn-badge__label");
       const details = root?.querySelector("#static-operation-details .tcrn-operation-feedback__details-body");
       root?.setAttribute("data-operation-phase", "error");
-      root?.setAttribute("data-operation-state", "blocked");
-      if (status) status.textContent = "Blocked";
+      root?.setAttribute("data-operation-state", "error");
+      root?.setAttribute("data-operation-state-claim", "error");
+      root?.setAttribute("data-operation-valid", "true");
+      if (status) status.textContent = "Failed";
       if (details) details.textContent = "The operation failed; error details remain in the DOM and readable after the update.";
       return { phase: root?.getAttribute("data-operation-phase"), state: root?.getAttribute("data-operation-state"), status: status?.textContent ?? "", details: details?.textContent ?? "" };
     });
-    assert(staticOperationUpdate.phase === "error" && staticOperationUpdate.state === "blocked" && staticOperationUpdate.status === "Blocked" && staticOperationUpdate.details.includes("error details"), "static operation update did not preserve short status and full error details");
+    assert(staticOperationUpdate.phase === "error" && staticOperationUpdate.state === "error" && staticOperationUpdate.status === "Failed" && staticOperationUpdate.details.includes("error details"), "static operation update did not preserve short operation status and full error details");
 
     const tooltipTrigger = page.locator("#static-tooltip-trigger");
     assert(await tooltipTrigger.count() === 1, "static tooltip trigger count drifted");
@@ -369,6 +371,8 @@ async function runClientFixtureProof(browser) {
           source: scope.getAttribute("data-content-source"),
           phase: scope.getAttribute("data-content-phase"),
           valid: scope.getAttribute("data-content-valid"),
+          modelValid: scope.getAttribute("data-content-model-valid"),
+          rendered: scope.getAttribute("data-content-rendered"),
           shown: scope.getAttribute("data-content-shown-count"),
           total: scope.getAttribute("data-content-total-count"),
           hasEmptyState: Boolean(scope.querySelector("[data-state-surface-kind='empty']")),
@@ -380,10 +384,10 @@ async function runClientFixtureProof(browser) {
     assert(initial.tooltipWithinViewport && initial.popoverWithinViewport, "client overlay placement escaped the viewport");
     assert(!initial.clippingAncestorContainsTooltip && !initial.scrollAncestorContainsPopover, "client overlay remained inside a clipping ancestor");
     assert(initial.rootScrollWidth <= 360, "operation/content fixture created root horizontal overflow");
-    assert(initial.operationPhase === "success" && /Ready for local use/.test(initial.operationShortStatus) && initial.operationIdentityVisible && initial.operationDetailsReachable, "operation feedback success surface is incomplete");
+    assert(initial.operationPhase === "success" && initial.operationShortStatus === "Completed" && initial.operationIdentityVisible && initial.operationDetailsReachable, "operation feedback success surface is incomplete");
     assert(initial.contentScopes.length === 4, "content scope fixture inventory drifted");
-    assert(initial.contentScopes.find((scope) => scope.scope === "scope-a")?.valid === "true" && initial.contentScopes.find((scope) => scope.scope === "scope-a")?.hasContent, "nonempty content scope did not render its own content");
-    assert(initial.contentScopes.find((scope) => scope.scope === "scope-b")?.phase === "empty" && initial.contentScopes.find((scope) => scope.scope === "scope-b")?.hasEmptyState, "empty content scope did not render its own empty state");
+    assert(initial.contentScopes.find((scope) => scope.scope === "scope-a")?.valid === "true" && initial.contentScopes.find((scope) => scope.scope === "scope-a")?.modelValid === "true" && initial.contentScopes.find((scope) => scope.scope === "scope-a")?.rendered === "verified" && initial.contentScopes.find((scope) => scope.scope === "scope-a")?.hasContent, "nonempty content scope did not render verified content");
+    assert(initial.contentScopes.find((scope) => scope.scope === "scope-b")?.phase === "empty" && initial.contentScopes.find((scope) => scope.scope === "scope-b")?.rendered === "not-applicable" && initial.contentScopes.find((scope) => scope.scope === "scope-b")?.hasEmptyState, "empty content scope did not render its own empty state");
     assert(initial.contentScopes.find((scope) => scope.scope === "scope-loading")?.phase === "loading" && initial.contentScopes.find((scope) => scope.scope === "scope-error")?.phase === "error", "loading and error scopes collapsed into empty");
 
     const operationDetailsTrigger = page.locator("[data-operation-feedback='true'] [data-operation-details-trigger='true']");
@@ -414,7 +418,7 @@ async function runClientFixtureProof(browser) {
         detailsVisible: root?.querySelector("[data-operation-details='true'] [data-collapsible-region='true']")?.getAttribute("aria-hidden") === "false"
       };
     });
-    assert(operationError.phase === "error" && /Blocked/.test(operationError.status) && operationError.detailsInDom && operationError.detailsVisible, "operation error update lost DOM-backed status or details");
+    assert(operationError.phase === "error" && operationError.status === "Failed" && operationError.detailsInDom && operationError.detailsVisible, "operation error update lost DOM-backed status or details");
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(20);
 
@@ -445,6 +449,10 @@ async function runClientFixtureProof(browser) {
           selectedSurface: "operation-proof-panel",
           expectedPanelSurface: "operation-feedback-proof",
           expectedControl: "operation-feedback-proof-details-trigger",
+          expectedValues: [
+            { key: "operation.phase", serialization: "text", value: "error" },
+            { key: "operation.id", serialization: "text", value: "operation-2026-09-13-very-long-identity-9f4d1c2b7a6e" }
+          ],
           applicability: "required"
         }],
         observed: [{
@@ -454,6 +462,10 @@ async function runClientFixtureProof(browser) {
           panelSurface: operation?.id ?? "",
           controlId: detailsTrigger?.id ?? "",
           controlPresent: Boolean(detailsTrigger),
+          values: [
+            { key: "operation.phase", serialization: "text", submittedValue: operation?.getAttribute("data-operation-phase") ?? "", serializedValue: operation?.getAttribute("data-operation-phase") ?? "", readbackValue: operation?.getAttribute("data-operation-phase") ?? "" },
+            { key: "operation.id", serialization: "text", submittedValue: operation?.querySelector("[data-operation-identity-field='operation-id'] dd")?.textContent?.trim() ?? "", serializedValue: operation?.querySelector("[data-operation-identity-field='operation-id'] dd")?.textContent?.trim() ?? "", readbackValue: operation?.querySelector("[data-operation-identity-field='operation-id'] dd")?.textContent?.trim() ?? "" }
+          ],
           input: {
             modality: "keyboard",
             targetId: detailsTrigger?.id ?? "",

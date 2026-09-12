@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Badge, EmptyState, EnvironmentBanner, ErrorState, OperationFeedback, Skeleton, StateSurface, StatusBadge, StateView, StatusSummaryPanel, Toast } from "./Feedback.js";
+import { Badge, EmptyState, EnvironmentBanner, ErrorState, OperationFeedback, presentOperationFeedbackPhase, Skeleton, StateSurface, StatusBadge, StateView, StatusSummaryPanel, Toast } from "./Feedback.js";
 import { presentCopyState } from "@tcrn/ui-copy-state";
 
 test("stateful components fail closed without product acceptance claims", () => {
@@ -88,7 +88,7 @@ test("STORY-116 keeps short operation status separate from full identity and rec
   assert.match(html, /data-operation-feedback="true"/);
   assert.match(html, /data-operation-phase="success"/);
   assert.match(html, /data-operation-short-status="true"/);
-  assert.match(html, />Ready for local use</);
+  assert.match(html, />Completed</);
   assert.match(html, /data-operation-identity-field="operation-id"/);
   assert.match(html, /operation-2026-09-13-very-long-identity-9f4d1c2b7a6e/);
   assert.match(html, /data-operation-details="true"/);
@@ -96,6 +96,33 @@ test("STORY-116 keeps short operation status separate from full identity and rec
   assert.match(html, /aria-expanded="true"/);
   assert.match(html, /aria-controls="tcrn-operation-details-/);
   assert.doesNotMatch(html, /data-operation-short-status="true"[^>]*>[^<]*reason-code/);
+});
+
+test("STORY-116 gives each operation phase its own five-locale short status", () => {
+  assert.equal(presentOperationFeedbackPhase("idle", "zh-CN").label, "未开始");
+  assert.equal(presentOperationFeedbackPhase("loading", "en").label, "In progress");
+  assert.equal(presentOperationFeedbackPhase("success", "ja").label, "完了");
+  assert.equal(presentOperationFeedbackPhase("error", "ko").label, "실패");
+  assert.equal(presentOperationFeedbackPhase("error", "fr").label, "Échec");
+});
+
+test("STORY-116 rejects a contradictory optional operation state", () => {
+  const html = renderToStaticMarkup(
+    <OperationFeedback
+      phase="success"
+      state="loading"
+      identity={{ operation: "Check fixture", actor: "Synthetic operator" }}
+      identityLabels={{ operation: "Operation", actor: "Actor" }}
+      detailTitle="Receipt details"
+      detailsLabel="Details"
+      details="The operation details remain available."
+    />
+  );
+  assert.match(html, /data-operation-valid="false"/);
+  assert.match(html, /data-operation-validation="state-phase-mismatch"/);
+  assert.match(html, /data-operation-state="invalid"/);
+  assert.match(html, />Unknown</);
+  assert.doesNotMatch(html, />In progress</);
 });
 
 test("STORY-116 renders every operation phase through the same compact status contract", () => {

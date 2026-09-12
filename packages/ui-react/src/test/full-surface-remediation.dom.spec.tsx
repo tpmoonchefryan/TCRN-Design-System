@@ -263,7 +263,7 @@ test("STORY-116 operation feedback opens and closes full details without changin
     assert.ok(details instanceof harness.window.HTMLElement);
     assert.equal(trigger.getAttribute("aria-expanded"), "false");
     assert.equal(details.querySelector("[data-collapsible-region='true']")?.getAttribute("aria-hidden"), "true");
-    assert.match(root.querySelector("[data-operation-short-status='true']")?.textContent ?? "", /Blocked/);
+    assert.match(root.querySelector("[data-operation-short-status='true']")?.textContent ?? "", /Failed/);
 
     await harness.dispatchClick(trigger);
     assert.equal(trigger.getAttribute("aria-expanded"), "true");

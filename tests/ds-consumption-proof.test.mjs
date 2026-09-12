@@ -22,13 +22,37 @@ test("STORY-119 reuses only a successful receipt with every identical input", ()
   const changed = evaluateEvidenceReuse(previous, { ...previous, browserToolVersion: "changed-browser" });
   const failed = evaluateEvidenceReuse({ ...previous, status: "failed" }, { ...previous });
   const missing = evaluateEvidenceReuse(previous, { ...previous, fixtureDigest: undefined });
+  const emptyIdentity = evaluateEvidenceReuse(previous, {
+    ...previous,
+    sourceTreeSha: "",
+    lockfileDigest: "",
+    command: "",
+    fixtureDigest: "",
+    baselineDigest: "",
+    outputTargetDigest: "",
+    packageVersions: {},
+    workingTreeStatus: {}
+  });
+  const unknownIdentity = evaluateEvidenceReuse(previous, { ...previous, browserToolVersion: Number.NaN });
+  const noFlagsPrevious = { ...previous, flags: "" };
+  const emptyFlags = evaluateEvidenceReuse(noFlagsPrevious, { ...noFlagsPrevious });
+  const cleanWorkingTree = evaluateEvidenceReuse({ ...noFlagsPrevious, workingTreeStatus: { state: "clean", porcelain: "" } }, { ...noFlagsPrevious, workingTreeStatus: { state: "clean", porcelain: "" } });
+  const wrongIdentityTypes = evaluateEvidenceReuse(previous, { ...previous, sourceTreeSha: true, packageVersions: { uiReact: "" }, browserToolVersion: { browser: "playwright", version: "" } });
   assert.equal(same.reusable, true);
   assert.equal(changed.reusable, false);
   assert.equal(failed.reusable, false);
   assert.equal(missing.reusable, false);
+  assert.equal(emptyIdentity.reusable, false);
+  assert.equal(unknownIdentity.reusable, false);
+  assert.equal(emptyFlags.reusable, true);
+  assert.equal(cleanWorkingTree.reusable, true);
+  assert.equal(wrongIdentityTypes.reusable, false);
   assert.match(changed.findings.join(";"), /input_changed:browserToolVersion/);
   assert.match(failed.findings.join(";"), /previous_receipt_not_successful/);
-  assert.match(missing.findings.join(";"), /current_input_missing:fixtureDigest/);
+  assert.match(missing.findings.join(";"), /current_input_invalid:fixtureDigest/);
+  assert.match(emptyIdentity.findings.join(";"), /current_input_invalid:sourceTreeSha/);
+  assert.match(unknownIdentity.findings.join(";"), /current_input_invalid:browserToolVersion/);
+  assert.match(wrongIdentityTypes.findings.join(";"), /current_input_invalid:sourceTreeSha/);
 });
 
 test("STORY-108 positive consumer fixture requires semantic and structure markers", () => {

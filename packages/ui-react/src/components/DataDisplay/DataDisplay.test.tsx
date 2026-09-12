@@ -223,6 +223,51 @@ test("STORY-117 renders content, empty, loading, error, and invalid states from 
   assert.match(html, /Invalid scope evidence/);
 });
 
+function DynamicScopeContent() {
+  return <span>Rendered after the scope component runs.</span>;
+}
+
+test("STORY-117 rejects definitely empty fragments while distinguishing unknown dynamic output from verified content", () => {
+  const emptyFragment = renderToStaticMarkup(
+    <ContentScope
+      model={{ scope: "empty-fragment", dataSource: "source", phase: "content", shownCount: 1, totalCount: 1, hasContent: true }}
+      invalidState={<ErrorState title="Content was not rendered" />}
+    >
+      <></>
+    </ContentScope>
+  );
+  assert.match(emptyFragment, /data-content-model-valid="true"/);
+  assert.match(emptyFragment, /data-content-valid="false"/);
+  assert.match(emptyFragment, /data-content-rendered="empty"/);
+  assert.match(emptyFragment, /Content was not rendered/);
+
+  const nestedEmpty = renderToStaticMarkup(
+    <ContentScope model={{ scope: "nested-empty", dataSource: "source", phase: "content", shownCount: 1, totalCount: 1, hasContent: true }}>
+      <div><span /></div>
+    </ContentScope>
+  );
+  assert.match(nestedEmpty, /data-content-valid="false"/);
+  assert.match(nestedEmpty, /data-content-rendered="empty"/);
+
+  const accessibleNonText = renderToStaticMarkup(
+    <ContentScope model={{ scope: "image-content", dataSource: "source", phase: "content", shownCount: 1, totalCount: 1, hasContent: true }}>
+      <img src="fixture.png" alt="A content diagram" />
+    </ContentScope>
+  );
+  assert.match(accessibleNonText, /data-content-valid="true"/);
+  assert.match(accessibleNonText, /data-content-rendered="verified"/);
+
+  const dynamic = renderToStaticMarkup(
+    <ContentScope model={{ scope: "dynamic-content", dataSource: "source", phase: "content", shownCount: 1, totalCount: 1, hasContent: true }}>
+      <DynamicScopeContent />
+    </ContentScope>
+  );
+  assert.match(dynamic, /data-content-model-valid="true"/);
+  assert.match(dynamic, /data-content-valid="false"/);
+  assert.match(dynamic, /data-content-rendered="unknown"/);
+  assert.match(dynamic, /Rendered after the scope component runs/);
+});
+
 test("TableToolbar declares its host-wiring contract", () => {
   const html = renderToStaticMarkup(
     <TableToolbar

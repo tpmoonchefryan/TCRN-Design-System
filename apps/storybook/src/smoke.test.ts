@@ -1266,13 +1266,18 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(contract.operationFeedbackContract?.id, operationFeedbackContract.id);
   assert.deepEqual(contract.operationFeedbackContract?.phases, operationFeedbackContract.phases);
   assert.ok(contract.operationFeedbackContract?.packageExports?.includes("OperationFeedback"));
+  assert.deepEqual(contract.operationFeedbackContract?.phaseSemantics?.map((entry: { phase: string }) => entry.phase), ["idle", "loading", "success", "error"]);
+  assert.equal(contract.operationFeedbackContract?.phaseSemantics?.find((entry: { phase: string }) => entry.phase === "loading")?.labels?.en, "In progress");
+  assert.match(contract.operationFeedbackContract?.stateContract ?? "", /must equal phase/);
   assert.match(contract.operationFeedbackContract?.roles?.details ?? "", /keyboard-reachable/);
   assert.equal(contract.contentScopeContract?.id, contentScopeContract.id);
   assert.ok(contract.contentScopeContract?.packageExports?.includes("validateContentScope"));
   assert.match(contract.contentScopeContract?.independentScopes ?? "", /independently/);
+  assert.match(contract.contentScopeContract?.renderedContentEvidence ?? "", /empty fragments/);
   assert.equal(contract.consumerEvidenceContract?.id, consumerEvidenceContract.id);
   assert.equal(contract.consumerEvidenceContract?.utility, "evaluateConsumerEvidence");
   assert.deepEqual(contract.consumerEvidenceContract?.zoomAxes, consumerEvidenceContract.zoomAxes);
+  assert.deepEqual(contract.consumerEvidenceContract?.valueEvidence?.observedFields, ["key", "serialization", "submittedValue", "serializedValue", "readbackValue"]);
   assert.match(contract.consumerEvidenceContract?.lifecycleIntersection ?? "", /one observation/);
   assert.equal(contract.consumerVerificationContract?.id, consumerVerificationContract.id);
   assert.equal(contract.consumerVerificationContract?.browserScript, "scripts/full-surface-remediation-proof.mjs");

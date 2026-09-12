@@ -547,6 +547,14 @@
       {
         "name": "evaluateConsumerEvidence",
         "exported": true
+      },
+      {
+        "name": "serializeConsumerEvidenceValue",
+        "exported": true
+      },
+      {
+        "name": "presentOperationFeedbackPhase",
+        "exported": true
       }
     ],
     "deferredPrototypeChecks": [
@@ -1778,6 +1786,24 @@
       },
       {
         "storybookItem": "evaluateConsumerEvidence",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "serializeConsumerEvidenceValue",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "presentOperationFeedbackPhase",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",

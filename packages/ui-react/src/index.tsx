@@ -138,7 +138,9 @@ export const componentLibraryPublicUtilityNames = [
   "mountStaticOverlayBoundary",
   "useProductShellController",
   "validateContentScope",
-  "evaluateConsumerEvidence"
+  "evaluateConsumerEvidence",
+  "serializeConsumerEvidenceValue",
+  "presentOperationFeedbackPhase"
 ] as const;
 
 export type ComponentLibraryPublicUtilityName = (typeof componentLibraryPublicUtilityNames)[number];

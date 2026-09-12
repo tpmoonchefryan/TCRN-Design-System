@@ -1,5 +1,5 @@
 import type { CSSProperties, HTMLAttributes, KeyboardEvent, ReactNode } from "react";
-import { Children, isValidElement, useState } from "react";
+import { Children, Fragment, isValidElement, useState } from "react";
 import { resolveTcrnLocale, type CopyStateInput, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { Button } from "../Button/index.js";
 import { Icon } from "../Icon/index.js";
@@ -602,6 +602,58 @@ function finiteNonNegativeInteger(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value) && Number.isInteger(value) && value >= 0;
 }
 
+type ContentSlotState = "empty" | "nonempty" | "unknown";
+
+const contentSlotLeafElements = new Set([
+  "audio",
+  "br",
+  "canvas",
+  "embed",
+  "hr",
+  "iframe",
+  "img",
+  "input",
+  "meter",
+  "object",
+  "progress",
+  "select",
+  "svg",
+  "textarea",
+  "video"
+]);
+
+function mergeContentSlotStates(states: ContentSlotState[]): ContentSlotState {
+  if (states.some((state) => state === "nonempty")) return "nonempty";
+  if (states.some((state) => state === "unknown")) return "unknown";
+  return "empty";
+}
+
+/**
+ * Distinguishes a deterministically empty React slot from a custom component
+ * whose output is only knowable after rendering. A fragment is inspected
+ * recursively; accessible or visual intrinsic leaves count as content even
+ * when they have no text children.
+ */
+function inspectContentSlot(node: ReactNode): ContentSlotState {
+  if (node === null || node === undefined || typeof node === "boolean") return "empty";
+  if (typeof node === "string") return node.trim().length > 0 ? "nonempty" : "empty";
+  if (typeof node === "number" || typeof node === "bigint") return "nonempty";
+  if (Array.isArray(node)) return mergeContentSlotStates(node.map(inspectContentSlot));
+  if (!isValidElement(node)) return "unknown";
+  if (node.type === Fragment) return inspectContentSlot((node.props as { children?: ReactNode }).children);
+  if (node.type === Icon) return "nonempty";
+  if (typeof node.type !== "string") return "unknown";
+
+  const props = node.props as { children?: ReactNode; "aria-label"?: unknown; alt?: unknown; dangerouslySetInnerHTML?: { __html?: unknown } };
+  if ((typeof props["aria-label"] === "string" && props["aria-label"].trim().length > 0)
+    || (typeof props.alt === "string" && props.alt.trim().length > 0)
+    || (typeof props.dangerouslySetInnerHTML?.__html === "string" && props.dangerouslySetInnerHTML.__html.trim().length > 0)
+    || contentSlotLeafElements.has(node.type)) {
+    return "nonempty";
+  }
+  return inspectContentSlot(props.children);
+}
+
 /**
  * Validates the consumer-owned truth behind one independent content region.
  * It does not infer business groups, permissions, or field names; it only
@@ -677,15 +729,19 @@ export function ContentScope({
   ...props
 }: ContentScopeProps) {
   const validation = validateContentScope(model);
-  const hasContentSlot = Children.count(children) > 0;
-  const slotValid = model.phase !== "content" && model.staleContent !== true ? true : hasContentSlot;
-  if (!slotValid) addContentScopeFinding(validation.findings, "content_slot_empty");
-  const valid = validation.valid && slotValid;
-  const showContent = valid && (model.phase === "content" || ((model.phase === "loading" || model.phase === "error") && model.staleContent === true));
-  const body = !valid
+  const contentExpected = model.phase === "content" || ((model.phase === "loading" || model.phase === "error") && model.staleContent === true);
+  const contentSlotState = contentExpected ? inspectContentSlot(children) : "empty";
+  if (contentExpected && contentSlotState === "empty") addContentScopeFinding(validation.findings, "content_slot_empty");
+  if (contentExpected && contentSlotState === "unknown") addContentScopeFinding(validation.findings, "content_slot_unverified");
+  const modelValid = validation.valid;
+  const valid = modelValid && (!contentExpected || contentSlotState === "nonempty");
+  const renderedState = !modelValid ? "invalid" : contentExpected ? contentSlotState === "nonempty" ? "verified" : contentSlotState : "not-applicable";
+  const body = !modelValid
     ? invalidState ?? null
-    : showContent
-      ? <div className="tcrn-content-scope__content">{children}</div>
+    : contentExpected
+      ? contentSlotState === "empty"
+        ? invalidState ?? null
+        : <div className="tcrn-content-scope__content" data-content-rendered-content={contentSlotState}>{children}</div>
       : model.phase === "empty"
         ? emptyState ?? null
         : model.phase === "loading"
@@ -702,6 +758,8 @@ export function ContentScope({
       data-content-source={model.dataSource}
       data-content-phase={model.phase}
       data-content-valid={valid ? "true" : "false"}
+      data-content-model-valid={modelValid ? "true" : "false"}
+      data-content-rendered={renderedState}
       data-content-shown-count={String(model.shownCount)}
       data-content-total-count={String(model.totalCount)}
       data-content-count-kind={model.filtered === true ? "filtered" : "total"}

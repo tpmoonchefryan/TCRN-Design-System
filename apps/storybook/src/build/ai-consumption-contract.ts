@@ -67,6 +67,7 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "prove Tooltip and Popover use the declared boundary, placement, and dismissal contract",
     "prove OperationFeedback and ContentScope states through package-backed identity, branch, and accessibility markers",
     "run evaluateConsumerEvidence with DOM-backed lifecycle, geometry, and separate zoom-axis measurements",
+    "compare expected, submitted, serialized, and readback values under the declared consumer serialization mode",
     "prove the same Storybook visual instance, then compare rendered component metrics against Storybook: size, radius, padding, border, background, typography, hover, focus, active, disabled, dark, locale, mobile, and reduced-motion states"
   ],
   Patterns: [

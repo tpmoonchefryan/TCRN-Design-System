@@ -2,6 +2,7 @@ import { useId, useState, type HTMLAttributes, type ReactNode } from "react";
 import { Icon } from "../Icon/index.js";
 import {
   presentCopyState,
+  resolveTcrnLocale,
   sanitizeCopyStateLabel,
   type CopyStateInput,
   type CopyStatePresentation,
@@ -91,6 +92,42 @@ export function StatusBadge({ state, locale, children: _children, ...props }: St
 
 export type OperationFeedbackPhase = "idle" | "loading" | "success" | "error";
 
+export interface OperationFeedbackPhasePresentation {
+  phase: OperationFeedbackPhase;
+  label: string;
+  statusState: CopyStateInput;
+}
+
+const operationPhaseCopy: Record<TcrnLocale, Record<OperationFeedbackPhase, string>> = {
+  "zh-CN": { idle: "未开始", loading: "进行中", success: "已完成", error: "失败" },
+  en: { idle: "Idle", loading: "In progress", success: "Completed", error: "Failed" },
+  ja: { idle: "待機中", loading: "進行中", success: "完了", error: "失敗" },
+  ko: { idle: "대기 중", loading: "진행 중", success: "완료", error: "실패" },
+  fr: { idle: "En attente", loading: "En cours", success: "Terminé", error: "Échec" }
+};
+
+const operationPhaseStatusStates: Record<OperationFeedbackPhase, CopyStateInput> = {
+  idle: { state: "local_only" },
+  loading: { state: "local_only" },
+  success: { state: "ready" },
+  error: { state: "blocked" }
+};
+
+const operationFeedbackPhases: readonly OperationFeedbackPhase[] = ["idle", "loading", "success", "error"];
+
+function isOperationFeedbackPhase(value: unknown): value is OperationFeedbackPhase {
+  return typeof value === "string" && operationFeedbackPhases.includes(value as OperationFeedbackPhase);
+}
+
+export function presentOperationFeedbackPhase(phase: OperationFeedbackPhase, locale?: TcrnLocale | string): OperationFeedbackPhasePresentation {
+  const resolvedLocale = resolveTcrnLocale(locale);
+  return {
+    phase,
+    label: operationPhaseCopy[resolvedLocale][phase],
+    statusState: { ...operationPhaseStatusStates[phase], label: operationPhaseCopy[resolvedLocale][phase] }
+  };
+}
+
 export interface OperationIdentity {
   operation: string;
   operationId?: string;
@@ -107,12 +144,7 @@ export interface OperationFeedbackLabels {
   occurredAt?: ReactNode;
 }
 
-const operationPhaseStates: Record<OperationFeedbackPhase, CopyStateInput> = {
-  idle: { state: "not_configured" },
-  loading: { state: "proof_required" },
-  success: { state: "ready" },
-  error: { state: "blocked" }
-};
+export type OperationFeedbackStateInput = OperationFeedbackPhase | { phase: OperationFeedbackPhase };
 
 /**
  * A compact, accessible operation result. The badge is deliberately short and
@@ -121,7 +153,7 @@ const operationPhaseStates: Record<OperationFeedbackPhase, CopyStateInput> = {
  */
 export interface OperationFeedbackProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
   phase: OperationFeedbackPhase;
-  state?: CopyStateInput;
+  state?: OperationFeedbackStateInput;
   identity: OperationIdentity;
   identityLabels: OperationFeedbackLabels;
   detailTitle: ReactNode;
@@ -155,7 +187,10 @@ export function OperationFeedback({
     if (expanded === undefined) setUncontrolledExpanded(next);
     onExpandedChange?.(next);
   };
-  const displayState = state ?? operationPhaseStates[phase];
+  const stateClaim = typeof state === "string" ? state : state?.phase;
+  const stateMatchesPhase = state === undefined || (isOperationFeedbackPhase(stateClaim) && stateClaim === phase);
+  const phasePresentation = presentOperationFeedbackPhase(phase, locale);
+  const displayState = stateMatchesPhase ? phasePresentation.statusState : { state: "unknown" as const };
   const identityRows = [
     { id: "operation", label: identityLabels.operation, value: identity.operation },
     { id: "operation-id", label: identityLabels.operationId, value: identity.operationId },
@@ -171,7 +206,10 @@ export function OperationFeedback({
       className={cx("tcrn-operation-feedback", className)}
       data-operation-feedback="true"
       data-operation-phase={phase}
-      data-operation-state={displayState.state ?? "unknown"}
+      data-operation-state={stateMatchesPhase ? phase : "invalid"}
+      data-operation-state-claim={stateClaim ?? phase}
+      data-operation-valid={stateMatchesPhase ? "true" : "false"}
+      data-operation-validation={stateMatchesPhase ? undefined : "state-phase-mismatch"}
       data-operation-geometry="responsive-safe"
       data-operation-update-notification="aria-live"
       aria-live="polite"
