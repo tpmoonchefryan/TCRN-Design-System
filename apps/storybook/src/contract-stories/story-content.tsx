@@ -29,6 +29,7 @@ import {
   Icon,
   InlineAlert,
   Input,
+  NumberInput,
   KeyValueList,
   LinkButton,
   LineNumberedEditor,
@@ -47,7 +48,10 @@ import {
   SectionTabs,
   SegmentedNav,
   Select,
+  SettingChoice,
   SettingRow,
+  SettingsHostSwitcher,
+  SettingsLayout,
   ShellThemeToggle,
   SideNav,
   Skeleton,
@@ -186,7 +190,10 @@ import {
   consumerVisualStyleContract,
   foundationVisualStandards,
   foundationVisualStandardsReadback,
-  storybookDocShellVisualOracle
+  storybookDocShellVisualOracle,
+  settingControlSelectionContract,
+  settingsLayoutContract,
+  consumerVerificationContract
 } from "../build/foundation-visual-standards.js";
 
 type LegacyContractStory = Omit<ContractStory, "category" | "categoryId" | "sourcePath" | "packageAuthority" | "readiness" | "proofPosture">;
@@ -1940,6 +1947,21 @@ const legacyContractStories: LegacyContractStory[] = [
             <Checkbox disabled disabledReason="Consent unavailable in this synthetic fixture" />
           </div>
         </Field>
+        <ReadbackPanel title="Value and numeric control semantics">
+          <Text>SettingChoice keeps values separate from navigation: more than two options use Select, fitting binary values use native radios, and NumberInput owns complete numeric entry. Stepper remains process position.</Text>
+          <div className="tcrn-display-primitive-grid">
+            <SettingChoice
+              label="Execution host"
+              name="field-host"
+              defaultValue="local"
+              availableInlineSize={248}
+              options={[{ value: "local", label: "Local", minInlineSize: 112 }, { value: "remote", label: "Remote", minInlineSize: 112 }]}
+            />
+            <Field label="Token budget" hint="Allowed range: 512–8192">
+              <NumberInput name="token-budget" defaultValue={4096} min={512} max={8192} />
+            </Field>
+          </div>
+        </ReadbackPanel>
         <ReadbackPanel title="Field width rules">
           <TableShell
             columns={[
@@ -2720,6 +2742,50 @@ const legacyContractStories: LegacyContractStory[] = [
             <Text>Primary and secondary actions sit in a wrapped row with a minimum gap; zero-spacing joins are rejected.</Text>
           </ReadbackPanel>
         </div>
+        <ReadbackPanel title="Container-driven settings form">
+          <Text>SettingsLayout measures its frame and content container. At 960px it admits compact local navigation beside one complete form column; below 720px each setting row stacks without hiding fields or long values.</Text>
+          <SettingsLayout
+            navigation={<SectionTabs label="Settings sections" items={[{ id: "general", label: "General", selected: true }, { id: "connection", label: "Connection" }, { id: "limits", label: "Limits" }]} />}
+            navigationLabel="Settings sections"
+            contentLabel="Complete configuration"
+            hostSwitcher={
+              <SettingsHostSwitcher
+                label="Execution host"
+                name="settings-host"
+                defaultValue="local"
+                availableInlineSize={248}
+                hosts={[
+                  { value: "local", label: "Local", minInlineSize: 112 },
+                  { value: "remote", label: "Remote", minInlineSize: 112 }
+                ]}
+              />
+            }
+          >
+            <SettingRow
+              label="Model"
+              description="Long values remain editable, selectable, and copyable."
+              settingKey="runtime.model"
+              control={<Input defaultValue="model-with-a-long-but-editable-identifier" />}
+            />
+            <SettingRow
+              label="Execution mode"
+              description="More than two values use Select."
+              settingKey="runtime.mode"
+              control={<Select defaultValue="frontier" options={[{ value: "economy", label: "Economy" }, { value: "frontier", label: "Frontier" }, { value: "reserve", label: "Reserve" }]} />}
+            />
+            <SettingRow
+              label="Token budget"
+              description="The legal range stays visible beside the numeric control."
+              settingKey="runtime.budget"
+              control={<NumberInput defaultValue={4096} min={512} max={8192} />}
+            />
+          </SettingsLayout>
+          <TableShell
+            label="Settings layout thresholds"
+            columns={[{ key: "container", label: "Container" }, { key: "threshold", label: "Threshold" }, { key: "rule", label: "Rule" }]}
+            rows={settingsLayoutContract.containerQueries.map((query) => ({ container: query.container, threshold: `${query.thresholdPx}px`, rule: `${query.whenAtOrAbove}; ${query.whenBelow}` }))}
+          />
+        </ReadbackPanel>
       </section>
     )
   },
@@ -2990,6 +3056,20 @@ const legacyContractStories: LegacyContractStory[] = [
               { rule: "Product proof", evidence: "Run product-owned adoption proof before claiming AOS or TMS Design System compliance." }
             ]}
           />
+        </ReadbackPanel>
+        <ReadbackPanel title="Settings and consumer contract readback">
+          <TableShell
+            label="Settings control decisions"
+            columns={[{ key: "id", label: "Rule" }, { key: "count", label: "Option count" }, { key: "condition", label: "Condition" }, { key: "control", label: "Selected control" }]}
+            rows={settingControlSelectionContract.decisionTable.map((row) => ({ id: row.id, count: row.optionCount, condition: row.condition, control: row.selectedControl }))}
+          />
+          <TableShell
+            label="Settings container queries"
+            columns={[{ key: "id", label: "Rule" }, { key: "container", label: "Container" }, { key: "threshold", label: "Threshold" }, { key: "wide", label: "At or above" }, { key: "narrow", label: "Below" }]}
+            rows={settingsLayoutContract.containerQueries.map((query) => ({ id: query.id, container: query.container, threshold: `${query.thresholdPx}px`, wide: query.whenAtOrAbove, narrow: query.whenBelow }))}
+          />
+          <Text>Consumer verification uses both positive and negative legs. A matching class or stylesheet digest is not sufficient when component identity, semantics, native structure, value visibility, or container policy is wrong.</Text>
+          <ReferenceList items={[consumerVerificationContract.script, consumerVerificationContract.proofVersion, ...consumerVerificationContract.negativeLegs]} />
         </ReadbackPanel>
         <ReadbackPanel title="Required Storybook chapters">
           <TableShell

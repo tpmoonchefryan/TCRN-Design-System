@@ -6,6 +6,7 @@ export const componentLibraryPublicComponentNames = [
   "ClipboardCopyButton",
   "Field",
   "Input",
+  "NumberInput",
   "Textarea",
   "SearchInput",
   "Select",
@@ -37,6 +38,7 @@ export const componentLibraryPublicComponentNames = [
   "AppStatusBar",
   "CollapsibleRegion",
   "DisclosurePanel",
+  "SettingsLayout",
   "KeyValueList",
   "DatePicker",
   "Tree",
@@ -44,6 +46,8 @@ export const componentLibraryPublicComponentNames = [
   "Menu",
   "Toast",
   "RadioGroup",
+  "SettingChoice",
+  "SettingsHostSwitcher",
   "Tabs",
   "Card",
   "Avatar",
@@ -122,6 +126,8 @@ export const componentLibraryPublicUtilityNames = [
   "tcrnComponentCss",
   "tcrnProductLogoRegistry",
   "getTcrnProductLogoAsset",
+  "tcrnSettingChoiceDecisionTable",
+  "resolveSettingChoiceControl",
   "useProductShellController"
 ] as const;
 

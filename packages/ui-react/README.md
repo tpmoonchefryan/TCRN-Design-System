@@ -23,6 +23,20 @@ fails closed when the Clipboard API is unavailable, and reports only local copy
 state enums through callbacks. Copied text must remain product-approved input and
 is never returned by the component through callbacks or DOM attributes.
 
+`SettingChoice` is the package-backed value-selection contract. Three or more
+values always render as `Select`; a binary choice renders as a native radio group
+only when the consumer provides enough measured inline space for every label and
+control. `SegmentedNav` remains navigation and must not be used as a setting value
+control. `NumberInput` is the numeric-entry primitive; `Stepper` remains a process
+position indicator and is not a numeric input substitute.
+
+`SettingsLayout` uses the actual content container to choose its density. At a
+960px frame it places compact local navigation beside one content column; below
+that it stays one column. Its content stacks `SettingRow` label, control, and tools
+below 720px. The layout keeps long native input values selectable and copyable and
+does not hide configuration through overflow clipping. `SettingsHostSwitcher`
+expresses the single-host-before-complete-form composition.
+
 ## Icon Library Boundary
 
 `Icon` is the package-backed icon primitive. It wraps the curated Lucide icon set

@@ -1028,16 +1028,16 @@ export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps
   );
 }
 
-export function ModuleTabs({ items, locale, onSelect }: SelectableNavProps) {
-  return <TabList items={items} locale={locale} onSelect={onSelect} className="tcrn-module-tabs" />;
+export function ModuleTabs({ items, locale, label, onSelect }: SelectableNavProps) {
+  return <TabList items={items} locale={locale} label={label} onSelect={onSelect} className="tcrn-module-tabs" />;
 }
 
-export function SectionTabs({ items, locale, onSelect }: SelectableNavProps) {
-  return <TabList items={items} locale={locale} onSelect={onSelect} className="tcrn-section-tabs" />;
+export function SectionTabs({ items, locale, label, onSelect }: SelectableNavProps) {
+  return <TabList items={items} locale={locale} label={label} onSelect={onSelect} className="tcrn-section-tabs" />;
 }
 
-export function SegmentedNav({ items, locale, onSelect }: SelectableNavProps) {
-  return <TabList items={items} locale={locale} onSelect={onSelect} className="tcrn-segmented-nav" />;
+export function SegmentedNav({ items, locale, label, onSelect }: SelectableNavProps) {
+  return <TabList items={items} locale={locale} label={label} onSelect={onSelect} className="tcrn-segmented-nav" />;
 }
 
 /**
@@ -1048,14 +1048,16 @@ export function SegmentedNav({ items, locale, onSelect }: SelectableNavProps) {
  * do not select.
  */
 export interface SelectableNavProps extends ProductLauncherProps {
+  /** Optional accessible name for a local navigation instance. */
+  label?: string;
   /** Called with the item's `id`. Omit for a nav the consumer wires another way. */
   onSelect?: (id: string) => void;
 }
 
-function TabList({ items, locale, className, onSelect }: SelectableNavProps & { className: string }) {
+function TabList({ items, locale, className, label, onSelect }: SelectableNavProps & { className: string }) {
   const chrome = chromeLabels(locale);
   return (
-    <nav className={className} aria-label={className === "tcrn-module-tabs" ? chrome.moduleSections : chrome.sectionNavigation} data-tab-semantics="segmented-navigation">
+    <nav className={className} aria-label={label ?? (className === "tcrn-module-tabs" ? chrome.moduleSections : chrome.sectionNavigation)} data-tab-semantics="segmented-navigation">
       {items.map((item) => (
         <button key={item.id} type="button"
           aria-current={item.selected ? "page" : undefined}
@@ -5602,4 +5604,29 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-data-grid { inline-size: 100%; border-collapse: collapse; }
 .tcrn-data-grid th, .tcrn-data-grid td { padding: var(--tcrn-space-2) var(--tcrn-space-3); text-align: start; border-block-end: 1px solid var(--tcrn-color-border-subtle); }
 .tcrn-data-grid__sort { border: 0; background: none; cursor: pointer; font: inherit; padding: 0; }
+
+/* DS-106/107 settings contract. */
+.tcrn-setting-choice{display:grid;gap:var(--tcrn-space-1);min-inline-size:0;max-inline-size:100%}
+.tcrn-setting-choice__select-label{display:grid;gap:var(--tcrn-space-1);min-inline-size:0;color:var(--tcrn-color-text-primary);font-weight:var(--tcrn-type-weight-medium)}
+.tcrn-setting-choice__select-label>.tcrn-select{inline-size:100%}
+.tcrn-setting-choice[data-setting-choice-control="radio"] .tcrn-radio-group{flex-direction:row;flex-wrap:nowrap;gap:var(--tcrn-space-2);max-inline-size:100%;overflow-x:auto;padding:var(--tcrn-container-settings-choice-padding);border:1px solid var(--tcrn-color-border-subtle);border-radius:var(--tcrn-radius-surface);background:var(--tcrn-color-surface-muted)}
+.tcrn-setting-choice[data-setting-choice-control="radio"] .tcrn-radio-group__option{min-inline-size:0;flex:1 1 0}
+.tcrn-setting-choice[data-setting-choice-control="radio"] .tcrn-radio-group__label{min-inline-size:0;overflow-wrap:anywhere}
+.tcrn-setting-choice__hint,.tcrn-setting-choice__error{overflow-wrap:anywhere;font-size:var(--tcrn-type-size-meta);line-height:var(--tcrn-type-line-caption)}
+.tcrn-setting-choice__hint{color:var(--tcrn-color-text-secondary)}.tcrn-setting-choice__error{color:var(--tcrn-color-state-blocked)}
+.tcrn-number-input{inline-size:100%;min-inline-size:var(--tcrn-container-settings-number-min);font-variant-numeric:tabular-nums;text-overflow:clip}
+.tcrn-settings-layout{min-inline-size:0;max-inline-size:100%}
+.tcrn-settings-layout__frame{container:tcrn-settings-layout-frame/inline-size;min-inline-size:0}
+.tcrn-settings-layout__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-4);min-inline-size:0}
+.tcrn-settings-layout__nav{min-inline-size:0;max-inline-size:100%;overflow-x:auto}
+.tcrn-settings-layout__nav>:is(.tcrn-segmented-nav,.tcrn-section-tabs,.tcrn-module-tabs){flex-wrap:nowrap;max-inline-size:max-content}
+.tcrn-settings-layout__content{display:grid;gap:var(--tcrn-space-4);min-inline-size:0;container:tcrn-settings-content/inline-size}
+.tcrn-settings-layout__form{display:grid;gap:var(--tcrn-space-2);min-inline-size:0}
+.tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2)}
+.tcrn-settings-layout__form .tcrn-setting-row__control{inline-size:100%;grid-column:auto;grid-row:auto}
+.tcrn-settings-layout__form .tcrn-setting-row__tools{grid-column:auto;grid-row:auto}
+.tcrn-settings-layout__form .tcrn-setting-row__control>:is(.tcrn-input,.tcrn-select){inline-size:100%;min-inline-size:0}
+.tcrn-settings-layout__form .tcrn-setting-row__control>.tcrn-number-input{inline-size:100%}
+@container tcrn-settings-layout-frame (min-width:960px){.tcrn-settings-layout__grid{grid-template-columns:minmax(0,var(--tcrn-container-settings-local-nav)) minmax(0,1fr)}}
+@container tcrn-settings-content (min-width:720px){.tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content}.tcrn-settings-layout__form .tcrn-setting-row__tools{justify-content:flex-end}}
 `;

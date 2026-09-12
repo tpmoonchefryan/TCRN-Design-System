@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 114,
+  "componentCount": 118,
   "coverage": {
-    "registryComponentCount": 114,
+    "registryComponentCount": 118,
     "publicComponentNames": [
       "ActionDrawer",
       "ActivityFeed",
@@ -59,6 +59,7 @@
       "ModuleTabs",
       "NavGroup",
       "NavItem",
+      "NumberInput",
       "PageHeader",
       "Pagination",
       "Popover",
@@ -85,7 +86,10 @@
       "SectionTabs",
       "SegmentedNav",
       "Select",
+      "SettingChoice",
       "SettingRow",
+      "SettingsHostSwitcher",
+      "SettingsLayout",
       "ShellBrandLockup",
       "ShellLocaleMenu",
       "ShellThemeToggle",
@@ -175,6 +179,7 @@
       "ModuleTabs",
       "NavGroup",
       "NavItem",
+      "NumberInput",
       "PageHeader",
       "Pagination",
       "Popover",
@@ -201,7 +206,10 @@
       "SectionTabs",
       "SegmentedNav",
       "Select",
+      "SettingChoice",
       "SettingRow",
+      "SettingsHostSwitcher",
+      "SettingsLayout",
       "ShellBrandLockup",
       "ShellLocaleMenu",
       "ShellThemeToggle",
@@ -2263,6 +2271,11 @@
           "required": true
         },
         {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
@@ -2415,6 +2428,20 @@
         "children"
       ],
       "propsType": "NavItemProps"
+    },
+    "NumberInput": {
+      "name": "NumberInput",
+      "kind": "function",
+      "props": [
+        {
+          "name": "disabledReason",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "NumberInputProps"
     },
     "PageHeader": {
       "name": "PageHeader",
@@ -3739,6 +3766,11 @@
           "required": true
         },
         {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
@@ -3761,6 +3793,11 @@
           "name": "items",
           "type": "NavItem[]",
           "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
         },
         {
           "name": "locale",
@@ -3795,6 +3832,73 @@
       "variants": {},
       "slots": [],
       "propsType": "SelectProps"
+    },
+    "SettingChoice": {
+      "name": "SettingChoice",
+      "kind": "function",
+      "props": [
+        {
+          "name": "availableInlineSize",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "hint",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onChange",
+          "type": "(value: string) => void",
+          "required": false
+        },
+        {
+          "name": "options",
+          "type": "SettingChoiceOption[]",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "error",
+        "hint",
+        "label"
+      ],
+      "propsType": "SettingChoiceProps"
     },
     "SettingRow": {
       "name": "SettingRow",
@@ -3850,6 +3954,113 @@
         "settingKey"
       ],
       "propsType": "SettingRowProps"
+    },
+    "SettingsHostSwitcher": {
+      "name": "SettingsHostSwitcher",
+      "kind": "function",
+      "props": [
+        {
+          "name": "availableInlineSize",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "hint",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "hosts",
+          "type": "SettingChoiceOption[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onChange",
+          "type": "(value: string) => void",
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "error",
+        "hint",
+        "label"
+      ],
+      "propsType": "SettingsHostSwitcherProps"
+    },
+    "SettingsLayout": {
+      "name": "SettingsLayout",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "contentLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "hostSwitcher",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "navigation",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "navigationLabel",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children",
+        "hostSwitcher",
+        "navigation"
+      ],
+      "propsType": "SettingsLayoutProps"
     },
     "ShellBrandLockup": {
       "name": "ShellBrandLockup",

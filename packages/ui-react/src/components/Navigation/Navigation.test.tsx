@@ -45,6 +45,9 @@ test("tabs use honest segmented navigation semantics", () => {
   assert.match(segmented, /tcrn-segmented-nav/);
   assert.match(segmented, /data-tab-semantics="segmented-navigation"/);
   assert.doesNotMatch(segmented, /role="tab"/);
+
+  const local = renderToStaticMarkup(<SectionTabs label="Settings sections" items={[{ id: "general", label: "General", selected: true }]} />);
+  assert.match(local, /aria-label="Settings sections"/);
 });
 
 test("breadcrumb separates route segments without concatenating labels", () => {

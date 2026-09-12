@@ -192,6 +192,19 @@ label {
   }
 }
 
+/* At 200% zoom a 390px physical viewport has a 195px CSS viewport. Remove the
+   220px demo-card floor at that effective width so the page itself never grows
+   a horizontal scrollbar; tables retain their own local overflow contract. */
+@media (max-width: 240px) {
+  .tcrn-spec-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tcrn-spec-grid > * {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+}
+
 .tcrn-guidance-list {
   display: grid;
   gap: var(--tcrn-space-2);

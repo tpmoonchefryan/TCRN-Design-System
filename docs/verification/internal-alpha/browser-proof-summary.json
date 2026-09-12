@@ -100,10 +100,622 @@
       "height": 844
     }
   ],
+  "settingsLayoutBrowserProof": {
+    "schemaVersion": "tcrn.ds.settings-layout-browser-proof.v1",
+    "route": "patterns-forms-workbench.html#forms-patterns",
+    "thresholds": {
+      "frameSplitPx": 960,
+      "contentStackPx": 720
+    },
+    "widths": [
+      390,
+      768,
+      980,
+      1024,
+      1180,
+      1280,
+      1440
+    ],
+    "zooms": [
+      1,
+      1.25,
+      2
+    ],
+    "locales": [
+      "zh-CN",
+      "en",
+      "ja",
+      "ko",
+      "fr"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "nestedFixture": "680px frame; expected single-column and stacked rows",
+    "readbacks": [
+      {
+        "width": 390,
+        "zoom": 1,
+        "locale": "en",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "en",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 980,
+        "zoom": 1,
+        "locale": "en",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 1024,
+        "zoom": 1,
+        "locale": "en",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 1180,
+        "zoom": 1,
+        "locale": "en",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "row",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 1280,
+        "zoom": 1,
+        "locale": "en",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "row",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 1440,
+        "zoom": 1,
+        "locale": "en",
+        "theme": "light",
+        "frameMode": "split",
+        "contentMode": "row",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 390,
+        "zoom": 1.25,
+        "locale": "zh-CN",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 390,
+        "zoom": 2,
+        "locale": "zh-CN",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 980,
+        "zoom": 1.25,
+        "locale": "zh-CN",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 980,
+        "zoom": 2,
+        "locale": "zh-CN",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 1440,
+        "zoom": 1.25,
+        "locale": "zh-CN",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "row",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 1440,
+        "zoom": 2,
+        "locale": "zh-CN",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "zh-CN",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "zh-CN",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "en",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "en",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "ja",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "ja",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "ko",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "ko",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "fr",
+        "theme": "light",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      },
+      {
+        "width": 768,
+        "zoom": 1,
+        "locale": "fr",
+        "theme": "dark",
+        "frameMode": "single",
+        "contentMode": "stack",
+        "frameThresholdMatch": true,
+        "contentThresholdMatch": true,
+        "pageOverflow": false,
+        "rowsFit": true,
+        "longValueComplete": true,
+        "noHiddenOverflow": true,
+        "nested": {
+          "frameMode": "single",
+          "frameThresholdMatch": true,
+          "contentMode": "stack",
+          "contentThresholdMatch": true,
+          "rowsFit": true,
+          "pageOverflow": false,
+          "expectedFrameMode": "single",
+          "expectedContentMode": "stack"
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "56c7491ff81b5309acd8c8732938732693be23ec641b5acc7ab04093af9336fc",
+    "contractPayloadDigest": "5d81eff81b1fc4fec911b1becce13b382ab12dbe172db453820a376675e604d9",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 21,
@@ -214,7 +826,7 @@
       "gating": true,
       "ok": true,
       "storyCount": 61,
-      "allowlistedLeakCount": 122,
+      "allowlistedLeakCount": 107,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -290,7 +902,7 @@
         },
         {
           "storyId": "foundation-visual-standards",
-          "allowlistedLeakCount": 37,
+          "allowlistedLeakCount": 22,
           "newLeaks": []
         },
         {
@@ -532,7 +1144,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 126,
+        "leakCount": 111,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -592,7 +1204,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 37
+            "leakCount": 22
           },
           {
             "storyId": "copy-guidelines",
@@ -786,7 +1398,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 134,
+        "leakCount": 119,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -846,7 +1458,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 39
+            "leakCount": 24
           },
           {
             "storyId": "copy-guidelines",
@@ -1040,7 +1652,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 2729,
+        "leakCount": 2808,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -1100,7 +1712,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 194
+            "leakCount": 226
           },
           {
             "storyId": "copy-guidelines",
@@ -1108,7 +1720,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 90
+            "leakCount": 99
           },
           {
             "storyId": "display-primitives-spec",
@@ -1128,11 +1740,11 @@
           },
           {
             "storyId": "field-spec-usage",
-            "leakCount": 67
+            "leakCount": 79
           },
           {
             "storyId": "table-record-index-spec",
-            "leakCount": 103
+            "leakCount": 104
           },
           {
             "storyId": "navigation-shell-spec",
@@ -1200,7 +1812,7 @@
           },
           {
             "storyId": "forms-patterns",
-            "leakCount": 12
+            "leakCount": 37
           },
           {
             "storyId": "workbench-patterns",
@@ -4222,6 +4834,10 @@
           "visible": true
         },
         {
+          "id": "NumberInput",
+          "visible": true
+        },
+        {
           "id": "PageHeader",
           "visible": true
         },
@@ -4247,10 +4863,6 @@
         },
         {
           "id": "ProductShell",
-          "visible": true
-        },
-        {
-          "id": "ProductShellSearch",
           "visible": true
         }
       ],
@@ -4334,6 +4946,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ProductShellSearch",
+          "visible": true
+        },
+        {
           "id": "ProductSwitcher",
           "visible": true
         },
@@ -4406,11 +5022,7 @@
           "visible": true
         },
         {
-          "id": "SettingRow",
-          "visible": true
-        },
-        {
-          "id": "ShellBrandLockup",
+          "id": "SettingChoice",
           "visible": true
         }
       ],
@@ -4494,6 +5106,22 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "SettingRow",
+          "visible": true
+        },
+        {
+          "id": "SettingsHostSwitcher",
+          "visible": true
+        },
+        {
+          "id": "SettingsLayout",
+          "visible": true
+        },
+        {
+          "id": "ShellBrandLockup",
+          "visible": true
+        },
+        {
           "id": "ShellLocaleMenu",
           "visible": true
         },
@@ -4555,22 +5183,6 @@
         },
         {
           "id": "Stepper",
-          "visible": true
-        },
-        {
-          "id": "SubNav",
-          "visible": true
-        },
-        {
-          "id": "Surface",
-          "visible": true
-        },
-        {
-          "id": "Switch",
-          "visible": true
-        },
-        {
-          "id": "TableShell",
           "visible": true
         }
       ],
@@ -4653,6 +5265,22 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "SubNav",
+          "visible": true
+        },
+        {
+          "id": "Surface",
+          "visible": true
+        },
+        {
+          "id": "Switch",
+          "visible": true
+        },
+        {
+          "id": "TableShell",
+          "visible": true
+        },
         {
           "id": "TableToolbar",
           "visible": true
@@ -7669,6 +8297,10 @@
           "visible": true
         },
         {
+          "id": "NumberInput",
+          "visible": true
+        },
+        {
           "id": "PageHeader",
           "visible": true
         },
@@ -7694,10 +8326,6 @@
         },
         {
           "id": "ProductShell",
-          "visible": true
-        },
-        {
-          "id": "ProductShellSearch",
           "visible": true
         }
       ],
@@ -7781,6 +8409,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "ProductShellSearch",
+          "visible": true
+        },
+        {
           "id": "ProductSwitcher",
           "visible": true
         },
@@ -7853,11 +8485,7 @@
           "visible": true
         },
         {
-          "id": "SettingRow",
-          "visible": true
-        },
-        {
-          "id": "ShellBrandLockup",
+          "id": "SettingChoice",
           "visible": true
         }
       ],
@@ -7941,6 +8569,22 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "SettingRow",
+          "visible": true
+        },
+        {
+          "id": "SettingsHostSwitcher",
+          "visible": true
+        },
+        {
+          "id": "SettingsLayout",
+          "visible": true
+        },
+        {
+          "id": "ShellBrandLockup",
+          "visible": true
+        },
+        {
           "id": "ShellLocaleMenu",
           "visible": true
         },
@@ -8002,22 +8646,6 @@
         },
         {
           "id": "Stepper",
-          "visible": true
-        },
-        {
-          "id": "SubNav",
-          "visible": true
-        },
-        {
-          "id": "Surface",
-          "visible": true
-        },
-        {
-          "id": "Switch",
-          "visible": true
-        },
-        {
-          "id": "TableShell",
           "visible": true
         }
       ],
@@ -8100,6 +8728,22 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "SubNav",
+          "visible": true
+        },
+        {
+          "id": "Surface",
+          "visible": true
+        },
+        {
+          "id": "Switch",
+          "visible": true
+        },
+        {
+          "id": "TableShell",
+          "visible": true
+        },
         {
           "id": "TableToolbar",
           "visible": true
@@ -10384,6 +11028,10 @@
           "visible": true
         },
         {
+          "id": "NumberInput",
+          "visible": true
+        },
+        {
           "id": "PageHeader",
           "visible": true
         },
@@ -10409,10 +11057,6 @@
         },
         {
           "id": "ProductShell",
-          "visible": true
-        },
-        {
-          "id": "ProductShellSearch",
           "visible": true
         }
       ],
@@ -10467,6 +11111,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "ProductShellSearch",
+          "visible": true
+        },
         {
           "id": "ProductSwitcher",
           "visible": true
@@ -10540,11 +11188,7 @@
           "visible": true
         },
         {
-          "id": "SettingRow",
-          "visible": true
-        },
-        {
-          "id": "ShellBrandLockup",
+          "id": "SettingChoice",
           "visible": true
         }
       ],
@@ -10599,6 +11243,22 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "SettingRow",
+          "visible": true
+        },
+        {
+          "id": "SettingsHostSwitcher",
+          "visible": true
+        },
+        {
+          "id": "SettingsLayout",
+          "visible": true
+        },
+        {
+          "id": "ShellBrandLockup",
+          "visible": true
+        },
         {
           "id": "ShellLocaleMenu",
           "visible": true
@@ -10662,22 +11322,6 @@
         {
           "id": "Stepper",
           "visible": true
-        },
-        {
-          "id": "SubNav",
-          "visible": true
-        },
-        {
-          "id": "Surface",
-          "visible": true
-        },
-        {
-          "id": "Switch",
-          "visible": true
-        },
-        {
-          "id": "TableShell",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -10731,6 +11375,22 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "SubNav",
+          "visible": true
+        },
+        {
+          "id": "Surface",
+          "visible": true
+        },
+        {
+          "id": "Switch",
+          "visible": true
+        },
+        {
+          "id": "TableShell",
+          "visible": true
+        },
         {
           "id": "TableToolbar",
           "visible": true

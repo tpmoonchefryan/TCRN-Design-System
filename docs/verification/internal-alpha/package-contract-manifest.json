@@ -35,6 +35,10 @@
         "exported": true
       },
       {
+        "name": "NumberInput",
+        "exported": true
+      },
+      {
         "name": "Textarea",
         "exported": true
       },
@@ -159,6 +163,10 @@
         "exported": true
       },
       {
+        "name": "SettingsLayout",
+        "exported": true
+      },
+      {
         "name": "KeyValueList",
         "exported": true
       },
@@ -184,6 +192,14 @@
       },
       {
         "name": "RadioGroup",
+        "exported": true
+      },
+      {
+        "name": "SettingChoice",
+        "exported": true
+      },
+      {
+        "name": "SettingsHostSwitcher",
         "exported": true
       },
       {
@@ -481,6 +497,14 @@
         "exported": true
       },
       {
+        "name": "tcrnSettingChoiceDecisionTable",
+        "exported": true
+      },
+      {
+        "name": "resolveSettingChoiceControl",
+        "exported": true
+      },
+      {
         "name": "useProductShellController",
         "exported": true
       }
@@ -562,6 +586,15 @@
       },
       {
         "storybookItem": "Input",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "NumberInput",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -849,6 +882,15 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "SettingsLayout",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "KeyValueList",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -904,6 +946,24 @@
       },
       {
         "storybookItem": "RadioGroup",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SettingChoice",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SettingsHostSwitcher",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -1561,6 +1621,24 @@
       },
       {
         "storybookItem": "getTcrnProductLogoAsset",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "tcrnSettingChoiceDecisionTable",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "resolveSettingChoiceControl",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",

@@ -62,6 +62,43 @@ export function Input({ className, disabled, disabledReason, title, ...props }: 
   );
 }
 
+export interface NumberInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+  disabledReason?: string;
+}
+
+/**
+ * A numeric value is entered as a numeric value.
+ *
+ * This is intentionally separate from Stepper: Stepper communicates position in
+ * an ordered process, while NumberInput owns keyboard entry, paste, range
+ * constraints, and native invalid-state semantics for a number. The input stays
+ * a native number control so the browser preserves its editing and accessibility
+ * behaviour instead of making a visual stepper carry a value-entry contract.
+ */
+export function NumberInput({ className, disabled, disabledReason, title, ...props }: NumberInputProps) {
+  const normalizedReason = disabled ? requiredText(disabledReason, "Number input unavailable in this route") : undefined;
+  const disabledReasonId = useId();
+  const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
+  return (
+    <>
+      <input
+        {...props}
+        type="number"
+        inputMode={props.inputMode ?? "numeric"}
+        disabled={disabled}
+        title={normalizedReason ?? title}
+        aria-describedby={ariaDescribedBy}
+        data-disabled-reason={normalizedReason}
+        data-number-input="true"
+        data-number-input-semantic="numeric-entry"
+        data-number-input-visibility="full-value"
+        className={cx("tcrn-input", "tcrn-number-input", className)}
+      />
+      {normalizedReason ? <span id={disabledReasonId} className="tcrn-sr-only">{normalizedReason}</span> : null}
+    </>
+  );
+}
+
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   disabledReason?: string;
 }
@@ -232,6 +269,7 @@ export interface RadioOption {
   label: ReactNode;
   description?: ReactNode;
   disabled?: boolean;
+  minInlineSize?: number;
 }
 
 export interface RadioGroupProps extends Omit<HTMLAttributes<HTMLFieldSetElement>, "onChange"> {
@@ -254,7 +292,11 @@ export function RadioGroup({ legend, name, options, value, defaultValue, onChang
       {options.map((option) => {
         const descriptionId = `${groupId}-${option.value}`;
         return (
-          <label key={option.value} className="tcrn-radio-group__option" data-option-disabled={option.disabled ? "true" : undefined}>
+          <label key={option.value}
+            className="tcrn-radio-group__option"
+            data-option-disabled={option.disabled ? "true" : undefined}
+            style={option.minInlineSize ? { minInlineSize: `${option.minInlineSize}px` } : undefined}
+          >
             <input type="radio" className="tcrn-radio-group__control"
               name={name}
               value={option.value}
@@ -270,6 +312,176 @@ export function RadioGroup({ legend, name, options, value, defaultValue, onChang
         );
       })}
     </fieldset>
+  );
+}
+
+export type SettingChoiceControl = "select" | "radio";
+
+export interface SettingChoiceOption {
+  value: string;
+  label: string;
+  description?: ReactNode;
+  disabled?: boolean;
+  /** Minimum inline size needed for this option's label and control. */
+  minInlineSize?: number;
+}
+
+export interface SettingChoiceDecision {
+  control: SettingChoiceControl;
+  reason: "option-count-requires-select" | "available-inline-size-required" | "binary-does-not-fit" | "binary-fits";
+  requiredInlineSize: number;
+  availableInlineSize?: number;
+}
+
+/**
+ * The numeric values are the package contract for the binary-choice fit check.
+ * They mirror the container tokens used by the stylesheet: each option gets a
+ * 112px minimum, the pair has an 8px gap, and the group has 8px padding on each
+ * inline edge. Consumers with measured localized labels can raise an option's
+ * `minInlineSize`; an unknown available size deliberately selects `<select>`.
+ */
+export const tcrnSettingChoiceDefaultOptionMinInlineSize = 112;
+export const tcrnSettingChoiceBinaryGap = 8;
+export const tcrnSettingChoiceBinaryPadding = 8;
+
+export const tcrnSettingChoiceDecisionTable = [
+  { optionCount: "0-1", control: "select", rule: "Value selection remains a select when no binary pair exists." },
+  { optionCount: "2", control: "radio", rule: "Use the binary value choice only when every label and control fits the measured inline size." },
+  { optionCount: "2", control: "select", rule: "Use select when the measured inline size is missing or below the required binary width." },
+  { optionCount: "3+", control: "select", rule: "Settings with more than two values always use select." }
+] as const;
+
+export function resolveSettingChoiceControl(
+  options: readonly SettingChoiceOption[],
+  availableInlineSize?: number
+): SettingChoiceDecision {
+  if (options.length !== 2) {
+    return {
+      control: "select",
+      reason: "option-count-requires-select",
+      requiredInlineSize: 0,
+      availableInlineSize
+    };
+  }
+
+  const requiredInlineSize = options.reduce(
+    (total, option) => total + Math.max(option.minInlineSize ?? tcrnSettingChoiceDefaultOptionMinInlineSize, 0),
+    tcrnSettingChoiceBinaryGap + (tcrnSettingChoiceBinaryPadding * 2)
+  );
+  if (availableInlineSize === undefined || !Number.isFinite(availableInlineSize)) {
+    return { control: "select", reason: "available-inline-size-required", requiredInlineSize, availableInlineSize };
+  }
+  if (availableInlineSize < requiredInlineSize) {
+    return { control: "select", reason: "binary-does-not-fit", requiredInlineSize, availableInlineSize };
+  }
+  return { control: "radio", reason: "binary-fits", requiredInlineSize, availableInlineSize };
+}
+
+export interface SettingChoiceProps extends Omit<HTMLAttributes<HTMLDivElement>, "children" | "onChange"> {
+  label: ReactNode;
+  name: string;
+  options: SettingChoiceOption[];
+  value?: string;
+  defaultValue?: string;
+  availableInlineSize?: number;
+  hint?: ReactNode;
+  error?: ReactNode;
+  disabled?: boolean;
+  onChange?: (value: string) => void;
+}
+
+/**
+ * Selects a value-control by semantics and measured capacity, never by visual
+ * similarity to navigation. Three or more values are always a Select. A pair
+ * becomes a native radio group only after the consumer supplies enough inline
+ * space for the measured labels and controls.
+ */
+export function SettingChoice({
+  label,
+  name,
+  options,
+  value,
+  defaultValue,
+  availableInlineSize,
+  hint,
+  error,
+  disabled = false,
+  onChange,
+  className,
+  ...props
+}: SettingChoiceProps) {
+  const decision = resolveSettingChoiceControl(options, availableInlineSize);
+  const controlId = useId();
+  const hintId = useId();
+  const errorId = useId();
+  const describedBy = mergeIds(hint ? hintId : undefined, error ? errorId : undefined);
+  const selectOptions = options.map(({ value: optionValue, label: optionLabel }) => ({ value: optionValue, label: optionLabel }));
+  const radioOptions: RadioOption[] = options.map(({ value: optionValue, label: optionLabel, description, disabled: optionDisabled, minInlineSize }) => ({
+    value: optionValue,
+    label: optionLabel,
+    description,
+    disabled: optionDisabled,
+    minInlineSize
+  }));
+
+  return (
+    <div
+      {...props}
+      className={cx("tcrn-setting-choice", className)}
+      data-setting-choice="true"
+      data-setting-choice-semantic="value-selection"
+      data-setting-choice-control={decision.control}
+      data-setting-choice-option-count={options.length}
+      data-setting-choice-required-inline-size={decision.requiredInlineSize || undefined}
+      data-setting-choice-available-inline-size={availableInlineSize}
+      data-setting-choice-fit={decision.reason === "binary-fits" ? "true" : "false"}
+      data-setting-choice-rejection-reason={decision.reason === "binary-fits" ? undefined : decision.reason}
+    >
+      {decision.control === "radio" ? (
+        <RadioGroup
+          legend={label}
+          name={name}
+          options={radioOptions}
+          value={value}
+          defaultValue={defaultValue}
+          onChange={onChange}
+          disabled={disabled}
+          aria-describedby={describedBy}
+          aria-invalid={error ? true : undefined}
+          className="tcrn-setting-choice__radio"
+        />
+      ) : (
+        <label className="tcrn-setting-choice__select-label" htmlFor={controlId}>
+          <span className="tcrn-setting-choice__label">{label}</span>
+          <Select
+            id={controlId}
+            name={name}
+            options={selectOptions}
+            value={value}
+            defaultValue={value === undefined ? defaultValue : undefined}
+            disabled={disabled}
+            aria-describedby={describedBy}
+            aria-invalid={error ? true : undefined}
+            onChange={(event) => onChange?.(event.currentTarget.value)}
+          />
+        </label>
+      )}
+      {hint ? <span id={hintId} className="tcrn-setting-choice__hint">{hint}</span> : null}
+      {error ? <span id={errorId} className="tcrn-setting-choice__error">{error}</span> : null}
+    </div>
+  );
+}
+
+export interface SettingsHostSwitcherProps extends Omit<SettingChoiceProps, "options"> {
+  hosts: SettingChoiceOption[];
+}
+
+/** A single-host value choice used before rendering the host's full settings form. */
+export function SettingsHostSwitcher({ hosts, className, ...props }: SettingsHostSwitcherProps) {
+  return (
+    <div className={cx("tcrn-settings-host-switcher", className)} data-settings-host-switcher="true">
+      <SettingChoice {...props} options={hosts} data-setting-choice-scope="host-switcher" />
+    </div>
   );
 }
 
@@ -322,6 +534,16 @@ export function SettingRow({
   className,
   ...props
 }: SettingRowProps) {
+  const labelId = useId();
+  const labeledControl = isValidElement(control)
+    ? (() => {
+      const controlElement = control as ReactElement<Record<string, unknown>>;
+      const controlProps = childPropsOf(controlElement);
+      return cloneElement(controlElement, {
+        "aria-labelledby": mergeIds(controlProps["aria-labelledby"] as string | undefined, labelId)
+      });
+    })()
+    : control;
   return (
     <div
       {...props}
@@ -331,10 +553,10 @@ export function SettingRow({
     >
       <div className="tcrn-setting-row__label">
         {settingKey ? <code className="tcrn-setting-row__key">{settingKey}</code> : null}
-        <span className="tcrn-setting-row__name">{label}</span>
+        <span id={labelId} className="tcrn-setting-row__name">{label}</span>
         {description ? <span className="tcrn-setting-row__description">{description}</span> : null}
       </div>
-      <div className="tcrn-setting-row__control">{control}</div>
+      <div className="tcrn-setting-row__control">{labeledControl}</div>
       {modified ? (
         <div className="tcrn-setting-row__tools">
           <span className="tcrn-setting-row__modified" role="img" title="Modified" aria-label="Modified" aria-hidden={onReset ? undefined : true} />

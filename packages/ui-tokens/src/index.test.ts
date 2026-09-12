@@ -47,6 +47,12 @@ test("tokens expose canonical CSS variables", () => {
   assert.match(createTokenMap()["--tcrn-motion-ease-out"], /cubic-bezier/);
   assert.doesNotMatch(createTokenMap()["--tcrn-motion-standard"], /ease$/, "built-in easings are too weak for UI motion");
   assert.equal(createTokenMap()["--tcrn-density-compact-row-height"], "36px");
+  assert.equal(createTokenMap()["--tcrn-container-settings-split"], "960px");
+  assert.equal(createTokenMap()["--tcrn-container-settings-content-stack"], "720px");
+  assert.equal(createTokenMap()["--tcrn-container-settings-local-nav"], "208px");
+  assert.equal(createTokenMap()["--tcrn-container-settings-control-min"], "240px");
+  assert.equal(createTokenMap()["--tcrn-container-settings-choice-option"], "112px");
+  assert.equal(createTokenMap()["--tcrn-container-settings-number-min"], "12ch");
   assert.equal(createTokenMap()["--tcrn-type-size-ui"], "13px");
   assert.equal(createTokenMap()["--tcrn-type-size-reading"], "14px");
   assert.equal(createTokenMap()["--tcrn-type-line-reading"], "1.45");
@@ -90,6 +96,13 @@ test("internal-alpha proof tokens cover state, focus, overlay, and density contr
     "typography.role.bodyDense",
     "typography.role.bodyReading",
     "density.compact.rowHeight",
+    "container.settings.split",
+    "container.settings.contentStack",
+    "container.settings.localNav",
+    "container.settings.controlMin",
+    "container.settings.choiceOption",
+    "container.settings.choicePadding",
+    "container.settings.numberMin",
     "motion.loading.loop",
     "motion.skeleton.loop",
     "motion.progress.loop",

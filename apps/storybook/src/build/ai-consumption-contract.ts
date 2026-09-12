@@ -11,7 +11,10 @@ import {
   consumerVisualStyleContract,
   foundationVisualStandards,
   foundationVisualStandardsReadback,
-  storybookDocShellVisualOracle
+  storybookDocShellVisualOracle,
+  settingControlSelectionContract,
+  settingsLayoutContract,
+  consumerVerificationContract
 } from "./foundation-visual-standards.js";
 
 // --- Section -> category -> story trees derived from the single registry source ---
@@ -35,22 +38,27 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
   Foundations: [
     "consume semantic tokens, theme variables, locale metadata, and copy-state vocabulary before product copy or CSS",
     "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, sidebar, focus, motion, or visual-system work",
+    "use the setting-control selection contract: Select for more than two values, a measured binary RadioGroup only when it fits, SegmentedNav for navigation, and NumberInput for numeric entry",
+    "use the SettingsLayout container thresholds and single-host complete-form composition before implementing configuration pages",
     "verify light/dark and supported locale behavior against Storybook before product compliance claims",
     "block hard-coded copy, ad hoc status language, consumer-local reusable visual-system overrides, and theme-specific behavior forks"
   ],
   Components: [
     "identify every registered primitive, export, variant, prop, slot, and state required by the product surface",
     "prove product code consumes package-backed components instead of local clones",
+    "prove setting values use SettingChoice/Select/RadioGroup semantics and numeric values use NumberInput rather than Stepper",
     "prove the same Storybook visual instance, then compare rendered component metrics against Storybook: size, radius, padding, border, background, typography, hover, focus, active, disabled, dark, locale, mobile, and reduced-motion states"
   ],
   Patterns: [
     "consume page, dashboard, workbench, list, form, notification, validation, data-grid, and search composition rules before arranging product screens",
     "consume Records and boards route context, local view tabs, quick filters, dense rows/lists, split detail, row groups, lane-board density, stages, references, activity, relationships, saved-view, and machine-token patterns before building record surfaces",
+    "use actual SettingsLayout frame/content container queries at 960px and 720px; keep one selected host and one complete form column without overflow clipping",
     "prove information hierarchy, density, mobile reflow, empty/loading/error states, and route-level IA match the relevant Storybook pattern",
     "block proof/status panels from replacing product-first page composition unless the Storybook pattern explicitly requires them"
   ],
   Proof: [
     "read proof matrix, this AI contract, blocked actions, and overlay/focus proof before implementation closeout",
+    "run the DS consumer verification contract's positive and negative legs; class or CSS equality alone is not proof",
     "carry required receipts for browser interaction, accessibility, visual parity, no-overclaim, owner-visible preview, and product-owned adoption proof",
     "do not use Storybook-only evidence as product adoption, acceptance, release, or hosted readiness proof"
   ],
@@ -235,6 +243,9 @@ export const aiConsumptionContract = {
     "coveredStorybookSections",
     "foundationVisualStandards",
     "consumerVisualStyleContract",
+    "settingControlSelectionContract",
+    "settingsLayoutContract",
+    "consumerVerificationContract",
     "requiredProof",
     "noOverclaimBoundaries"
   ],
@@ -310,6 +321,9 @@ export const aiConsumptionContract = {
   foundationVisualStandardCategories: foundationVisualStandards,
   storybookDocShellVisualOracle,
   consumerVisualStyleContract,
+  settingControlSelectionContract,
+  settingsLayoutContract,
+  consumerVerificationContract,
   visualEquivalenceLevels: [
     "same_package_version",
     "same_exported_component",
@@ -867,6 +881,9 @@ export const aiConsumptionContract = {
     "storybook_section_coverage_receipt",
     "visual_equivalence_receipt",
     "motion_effect_receipt",
+    "setting_control_selection_receipt",
+    "settings_layout_container_receipt",
+    "consumer_negative_leg_receipt",
     "product_adoption_route_receipt"
   ],
   supportedThemeModes: ["light", "dark"],

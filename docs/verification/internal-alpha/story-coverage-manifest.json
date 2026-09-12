@@ -375,7 +375,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "56c7491ff81b5309acd8c8732938732693be23ec641b5acc7ab04093af9336fc",
+    "contractPayloadDigest": "5d81eff81b1fc4fec911b1becce13b382ab12dbe172db453820a376675e604d9",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 21,
@@ -1748,10 +1748,10 @@
         "article": {
           "top": 411.7,
           "right": 374,
-          "bottom": 9341.63,
+          "bottom": 9587.28,
           "left": 16,
           "width": 358,
-          "height": 8929.92
+          "height": 9175.58
         },
         "title": {
           "top": 428.7,
@@ -2393,10 +2393,10 @@
         "article": {
           "top": 411.7,
           "right": 374,
-          "bottom": 9341.63,
+          "bottom": 9587.28,
           "left": 16,
           "width": 358,
-          "height": 8929.92
+          "height": 9175.58
         },
         "title": {
           "top": 428.7,
@@ -3038,10 +3038,10 @@
         "article": {
           "top": 411.7,
           "right": 374,
-          "bottom": 9341.63,
+          "bottom": 9587.28,
           "left": 16,
           "width": 358,
-          "height": 8929.92
+          "height": 9175.58
         },
         "title": {
           "top": 428.7,
@@ -3683,10 +3683,10 @@
         "article": {
           "top": 411.7,
           "right": 374,
-          "bottom": 9341.63,
+          "bottom": 9587.28,
           "left": 16,
           "width": 358,
-          "height": 8929.92
+          "height": 9175.58
         },
         "title": {
           "top": 428.7,
@@ -7056,7 +7056,7 @@
       "gating": true,
       "ok": true,
       "storyCount": 61,
-      "allowlistedLeakCount": 122,
+      "allowlistedLeakCount": 107,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -7132,7 +7132,7 @@
         },
         {
           "storyId": "foundation-visual-standards",
-          "allowlistedLeakCount": 37,
+          "allowlistedLeakCount": 22,
           "newLeaks": []
         },
         {
@@ -7374,7 +7374,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 126,
+        "leakCount": 111,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7434,7 +7434,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 37
+            "leakCount": 22
           },
           {
             "storyId": "copy-guidelines",
@@ -7628,7 +7628,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 134,
+        "leakCount": 119,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7688,7 +7688,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 39
+            "leakCount": 24
           },
           {
             "storyId": "copy-guidelines",
@@ -7882,7 +7882,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 61,
-        "leakCount": 2729,
+        "leakCount": 2808,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7942,7 +7942,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 194
+            "leakCount": 226
           },
           {
             "storyId": "copy-guidelines",
@@ -7950,7 +7950,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 90
+            "leakCount": 99
           },
           {
             "storyId": "display-primitives-spec",
@@ -7970,11 +7970,11 @@
           },
           {
             "storyId": "field-spec-usage",
-            "leakCount": 67
+            "leakCount": 79
           },
           {
             "storyId": "table-record-index-spec",
-            "leakCount": 103
+            "leakCount": 104
           },
           {
             "storyId": "navigation-shell-spec",
@@ -8042,7 +8042,7 @@
           },
           {
             "storyId": "forms-patterns",
-            "leakCount": 12
+            "leakCount": 37
           },
           {
             "storyId": "workbench-patterns",
