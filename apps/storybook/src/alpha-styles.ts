@@ -1393,6 +1393,37 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
   }
 }
+@media (max-width: 240px) {
+  /* 390px at 200% zoom is a 195px CSS viewport. Keep the brand mark and
+     collapse control in one row and let the remaining header controls wrap
+     within the viewport instead of expanding the document. */
+  .tcrn-doc-global-brand {
+    min-height: var(--tcrn-space-6);
+  }
+  .tcrn-doc-global-brand .tcrn-doc-brand {
+    --tcrn-brand-mark-size: 40px;
+    top: var(--tcrn-space-4);
+    left: var(--tcrn-space-2);
+    width: 40px;
+  }
+  .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-shell-brand-lockup__copy,
+  .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo__copy {
+    display: none;
+  }
+  .tcrn-doc-sidebar-toggle-slot {
+    top: var(--tcrn-space-4);
+    left: calc(100% - var(--tcrn-space-2) - 38px);
+  }
+  .tcrn-doc-header__workspace {
+    padding-inline: var(--tcrn-space-2);
+  }
+  .tcrn-doc-header-controls {
+    padding-inline: var(--tcrn-space-2);
+  }
+  .tcrn-doc-header-controls__row {
+    gap: var(--tcrn-space-1);
+  }
+}
 @media (max-width: 520px) {
   .tcrn-key-value-list > div {
     grid-template-columns: 1fr;

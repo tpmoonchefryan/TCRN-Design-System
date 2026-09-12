@@ -24,6 +24,141 @@ export interface FoundationVisualStandard {
   missingStandardEscalation: string;
 }
 
+export const settingControlSelectionContract = {
+  id: "setting-control-selection-contract-v1",
+  storybookRoutes: ["components.html#field-spec-usage", "patterns.html#forms-patterns"],
+  packageExports: ["SettingChoice", "SettingsHostSwitcher", "Select", "RadioGroup", "NumberInput", "SegmentedNav", "Stepper"],
+  semanticRoles: {
+    valueSelection: ["SettingChoice", "Select", "RadioGroup"],
+    navigation: ["SegmentedNav"],
+    processPosition: ["Stepper"],
+    numericEntry: ["NumberInput"]
+  },
+  decisionTable: [
+    {
+      id: "DS-106-R1-3-plus",
+      optionCount: "3+",
+      condition: "setting values exceed two options",
+      selectedControl: "Select",
+      rejectedControl: "SegmentedNav"
+    },
+    {
+      id: "DS-106-R1-2-fit",
+      optionCount: "2",
+      condition: "both measured labels and controls fit the available inline size",
+      selectedControl: "RadioGroup",
+      rejectedControl: "SegmentedNav"
+    },
+    {
+      id: "DS-106-R1-2-no-fit",
+      optionCount: "2",
+      condition: "available inline size is missing or below the measured requirement",
+      selectedControl: "Select",
+      rejectedControl: "wrapped or clipped binary navigation"
+    }
+  ],
+  binaryFitMeasurement: {
+    defaultOptionMinInlineSizePx: 112,
+    gapPx: 8,
+    groupPaddingEachSidePx: 8,
+    formula: "sum(option minInlineSize) + gap + 2 * group padding",
+    unknownAvailableSizeDisposition: "select"
+  },
+  numericEntry: {
+    component: "NumberInput",
+    semanticMarker: "data-number-input-semantic=numeric-entry",
+    fullValueMarker: "data-number-input-visibility=full-value",
+    minimumInlineSizeToken: "--tcrn-container-settings-number-min",
+    minimumInlineSize: "12ch",
+    rangeAndInteraction: ["min/max", "keyboard entry", "paste", "disabled", "error"]
+  },
+  rejectCriteria: [
+    "A setting value uses SegmentedNav or another navigation primitive.",
+    "A process Stepper is used as a numeric input.",
+    "A binary radio group is emitted without a measured positive fit result.",
+    "A legal numeric value is visually clipped or replaced with an ellipsis."
+  ]
+} as const;
+
+export const settingsLayoutContract = {
+  id: "settings-layout-contract-v1",
+  storybookRoutes: ["components.html#field-spec-usage", "patterns.html#forms-patterns"],
+  packageExports: ["SettingsLayout", "SettingsHostSwitcher", "SettingRow", "Input", "NumberInput"],
+  tokens: {
+    frameSplit: "--tcrn-container-settings-split",
+    contentStack: "--tcrn-container-settings-content-stack",
+    localNavigation: "--tcrn-container-settings-local-nav",
+    controlMinimum: "--tcrn-container-settings-control-min",
+    numberMinimum: "--tcrn-container-settings-number-min"
+  },
+  containerQueries: [
+    {
+      id: "DS-107-R1-frame",
+      container: "SettingsLayout frame",
+      thresholdPx: 960,
+      whenAtOrAbove: "compact local navigation column plus one complete content column",
+      whenBelow: "one full-width content column with compact local navigation"
+    },
+    {
+      id: "DS-107-R1-content",
+      container: "SettingsLayout content",
+      thresholdPx: 720,
+      whenAtOrAbove: "SettingRow label, control, and tools share one row",
+      whenBelow: "SettingRow label, control, and tools stack in source order"
+    }
+  ],
+  construction: {
+    hostSelection: "one SettingsHostSwitcher before the selected host's form",
+    form: "one complete form column; never parallel host columns",
+    localNavigation: "compact, bounded by its own scroll container, with no page-level overflow",
+    longValue: "native input remains selectable and copyable; no overflow clipping or ellipsis"
+  },
+  densityRules: [
+    "Use the frame query rather than a viewport-only breakpoint.",
+    "Use the content query for nested narrow containers.",
+    "Stack labels, controls, and tools when the content container is below 720px.",
+    "Keep a 240px minimum control column only in the non-stacked form row."
+  ],
+  rejectCriteria: [
+    "A 980px viewport assumption is used without measuring the actual content container.",
+    "Two host configuration columns remain visible when the content container cannot hold them.",
+    "overflow:hidden conceals an input, label, action, or long value.",
+    "A local navigation strip creates root horizontal overflow."
+  ]
+} as const;
+
+export const consumerVerificationContract = {
+  id: "consumer-verification-contract-v1",
+  script: "scripts/ds-consumption-proof.mjs",
+  proofVersion: "tcrn.ds-consumption-proof.v1",
+  storybookRoutes: ["components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#ai-consumption-contract"],
+  positiveLegs: [
+    "native binary value choice with a positive measured fit",
+    "more-than-two value choice rendered as Select",
+    "native NumberInput with complete value and range markers",
+    "container-driven SettingsLayout with one host and one complete form",
+    "consumer-declared not-applicable feature absent from the visible entry"
+  ],
+  negativeLegs: [
+    "same-looking class/CSS with navigation semantics",
+    "three-option radio value choice",
+    "Stepper used as numeric entry",
+    "numeric value marked clipped",
+    "parallel host columns at a narrow content width",
+    "consumer marks a feature not applicable while leaving its entry visible"
+  ],
+  requiredEvidence: [
+    "component identity",
+    "semantic markers",
+    "native element structure",
+    "complete numeric value visibility",
+    "container and overflow policy",
+    "consumer-owned feature applicability"
+  ],
+  independenceBoundary: "The proof renders neutral DS fixtures and does not read or execute a Workflow repository.",
+  noOverclaim: "A green DS consumer proof is a local contract candidate; it does not claim product adoption, Owner visual acceptance, publication, or release readiness."
+} as const;
+
 export const storybookDocShellVisualOracle = {
   id: "original-storybook-doc-shell-v1",
   baselineManifest: "docs/verification/internal-alpha/visual-signature-baseline.json",
@@ -164,13 +299,13 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "spacing-density",
     label: "Spacing and density",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx"],
-    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-record-index-spec", "components.html#records-and-boards-components-spec", "components.html#documents-and-collaboration-components-spec"],
+    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx", "packages/ui-react/src/components/Layout/Layout.tsx", "packages/ui-react/src/components/Form/Form.tsx"],
+    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-record-index-spec", "components.html#field-spec-usage", "components.html#records-and-boards-components-spec", "components.html#documents-and-collaboration-components-spec", "patterns.html#forms-patterns"],
     authorityLevel: "package_authority",
-    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "recordsDensityComponents", "documentsDensityComponents"],
+    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "recordsDensityComponents", "documentsDensityComponents", "settingsLayoutContract", "containerQueries"],
     allowedConsumerInputs: ["content-specific row data", "table columns", "local filters", "documented functional display density props", "documented documents and collaboration static content props"],
     forbiddenConsumerOverrides: ["ad hoc dense card padding", "global table overflow rules", "page-level horizontal scrollers", "consumer-local row/list/group/detail density systems", "consumer-local tree/document/comment/template systems"],
-    proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment", "RecordRow/RecordTable/DetailLayout examples fit without overlarge card regression", "TreeNav/DocumentCanvas/TocRail examples fit without vendor-asset leakage"],
+    proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment", "SettingsLayout uses frame/content container queries and one complete form column", "RecordRow/RecordTable/DetailLayout examples fit without overlarge card regression", "TreeNav/DocumentCanvas/TocRail examples fit without vendor-asset leakage"],
     missingStandardEscalation: "Skip product-specific reusable pattern work and list the missing DS primitive/pattern."
   },
   {
@@ -208,38 +343,38 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Component composition",
     category: "Foundation",
     sourcePaths: ["packages/ui-react/src/index.tsx", "apps/storybook/src/contract-stories/story-content.tsx"],
-    storybookRoutes: ["components.html#component-family-index", "components.html#navigation-shell-spec", "components.html#records-and-boards-components-spec", "patterns.html#records-and-boards-patterns"],
+    storybookRoutes: ["components.html#component-family-index", "components.html#field-spec-usage", "components.html#navigation-shell-spec", "components.html#records-and-boards-components-spec", "patterns.html#forms-patterns", "patterns.html#records-and-boards-patterns"],
     authorityLevel: "package_authority",
-    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy", "functionalDisplayDensityRegistry"],
+    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy", "functionalDisplayDensityRegistry", "settingControlSelectionContract"],
     allowedConsumerInputs: ["IA/data", "locale data", "content slots", "documented callbacks"],
     forbiddenConsumerOverrides: ["local reusable clones", "Storybook-only prototype imports", "package-looking selectors outside DS", "consumer-local page-header/filter/list/group/board/detail/activity systems"],
-    proofExpectations: ["package import receipt", "component identity markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace", "functional display layout and density components exported by @tcrn/ui-react"],
+    proofExpectations: ["package import receipt", "component identity markers", "SettingChoice and NumberInput semantic markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace", "functional display layout and density components exported by @tcrn/ui-react"],
     missingStandardEscalation: "Return a needed DS component/pattern list instead of building product-local shared UI."
   },
   {
     id: "interaction-motion-accessibility",
     label: "Interaction, motion, and accessibility",
     category: "Foundation",
-    sourcePaths: ["packages/ui-react/src/components/Navigation/Navigation.tsx", "scripts/internal-alpha-browser-proof.mjs"],
-    storybookRoutes: ["style-guide.html#icons-motion", "proof.html#overlay-focus"],
+    sourcePaths: ["packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/Form/Form.tsx", "scripts/internal-alpha-browser-proof.mjs", "scripts/ds-consumption-proof.mjs"],
+    storybookRoutes: ["style-guide.html#icons-motion", "components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#overlay-focus"],
     authorityLevel: "proof_contract",
     readbackFields: ["transitionProperty", "duration", "easing", "keyboardActivation", "focusReturn", "reducedMotion"],
     allowedConsumerInputs: ["callback implementations", "route-owned state persistence", "semantic disabled reasons"],
     forbiddenConsumerOverrides: ["wrapper-only event delegation", "static endpoint-only motion proof", "unproven no-op affordances"],
-    proofExpectations: ["Enter/Space activation", "Escape/blur dismissal", "sampled motion timeline", "reduced-motion suppression"],
+    proofExpectations: ["Enter/Space activation", "native numeric keyboard and paste entry", "Escape/blur dismissal", "sampled motion timeline", "reduced-motion suppression"],
     missingStandardEscalation: "Block owner-quality claims until browser interaction proof exercises rendered behavior."
   },
   {
     id: "responsive-mobile",
     label: "Responsive and mobile",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
-    storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#owner-quality-product-shell"],
+    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/Layout/Layout.tsx"],
+    storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#owner-quality-product-shell"],
     authorityLevel: "storybook_visual_oracle",
     readbackFields: ["viewport", "searchMaxWidth", "collapsePolicy", "pageOverflow", "tableLocalOverflow"],
     allowedConsumerInputs: ["mobile content order", "mobile route content", "approved hidden-affordance policy"],
     forbiddenConsumerOverrides: ["page-level horizontal overflow", "clickable mobile no-op controls", "full-width search beyond accepted cap"],
-    proofExpectations: ["390px mobile no page overflow", "mobile search cap", "mobile collapse hidden/disabled per oracle"],
+    proofExpectations: ["390px mobile no page overflow", "390/768/980/1024/1180/1280/1440 container matrix", "nested narrow content stacks without clipping", "mobile search cap", "mobile collapse hidden/disabled per oracle"],
     missingStandardEscalation: "Return a DS/mobile policy blocker if the oracle does not admit the requested mobile behavior."
   },
   {
@@ -249,14 +384,15 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: [
       "apps/storybook/src/build/ai-consumption-contract.ts",
       "scripts/storybook-smoke.mjs",
-      "scripts/internal-alpha-browser-proof.mjs"
+      "scripts/internal-alpha-browser-proof.mjs",
+      "scripts/ds-consumption-proof.mjs"
     ],
     storybookRoutes: ["proof.html#ai-consumption-contract", "proof.html#proof-matrix"],
     authorityLevel: "proof_contract",
-    readbackFields: ["contractPayloadDigest", "artifactPaths", "browserMetrics", "screenshotPaths", "noOverclaimBoundaries"],
+    readbackFields: ["contractPayloadDigest", "artifactPaths", "browserMetrics", "screenshotPaths", "noOverclaimBoundaries", "consumerVerificationContract"],
     allowedConsumerInputs: ["proof artifact paths", "route-specific metric readbacks"],
     forbiddenConsumerOverrides: ["marker-only proof", "stale screenshots as current oracle", "hidden failed proof gaps"],
-    proofExpectations: ["AI contract digest verified", "llms alignment", "browser screenshot/metric receipts", "no-overclaim scan"],
+    proofExpectations: ["AI contract digest verified", "llms alignment", "positive and negative consumer legs", "browser screenshot/metric receipts", "no-overclaim scan"],
     missingStandardEscalation: "Do not close implementation until proof receipts fail closed and are source-visible."
   },
   {
@@ -266,7 +402,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["apps/storybook/src/build/foundation-visual-standards.ts", "apps/storybook/src/build/ai-consumption-contract.ts"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#ai-consumption-contract"],
     authorityLevel: "consumer_contract",
-    readbackFields: ["allowedInputs", "forbiddenOverrides", "rejectCriteria", "missingStandardEscalation", "routeOwner"],
+    readbackFields: ["allowedInputs", "forbiddenOverrides", "rejectCriteria", "missingStandardEscalation", "routeOwner", "settingControlSelectionContract", "settingsLayoutContract", "consumerVerificationContract"],
     allowedConsumerInputs: ["product data", "IA labels", "copy keys", "documented DS props", "callbacks"],
     forbiddenConsumerOverrides: ["consumer-local shared spacing", "consumer-local typography", "shell-control geometry", "package-equivalent styles", "consumer-local functional display layout/density components"],
     proofExpectations: ["consumer contract present in AI JSON", "local style clone reject criteria present", "llms first-read alignment"],
@@ -302,13 +438,18 @@ export const consumerVisualStyleContract = {
     "allowedConsumerInputs",
     "forbiddenConsumerOverrides",
     "proofExpectations",
-    "missingStandardEscalation"
+    "missingStandardEscalation",
+    "settingControlSelectionContract",
+    "settingsLayoutContract",
+    "consumerVerificationContract"
   ],
   rejectCriteria: [
     "A product claims DS compliance without naming a foundation standard id and Storybook route.",
     "A product fixes shared typography, spacing, shell-control geometry, or ProductShell visual behavior locally instead of routing DS standards admission.",
     "A product builds reusable record rows, filters, groups, board cards, detail rails, or activity feeds locally instead of consuming admitted functional display package exports.",
     "A proof compares only endpoints or markers and omits computed style, motion, i18n, overflow, and browser interaction metrics.",
+    "A proof accepts matching class names or CSS bytes without checking component identity, semantic purpose, native structure, value visibility, and container policy.",
+    "A configuration page keeps parallel host forms or hides fields when the actual content container is below the admitted threshold.",
     "Storybook surfaces hide mandatory owner-review/no-overclaim/proof posture inside optional disclosure."
   ]
 } as const;
@@ -322,6 +463,9 @@ export const foundationVisualStandardsReadback = {
   categoryIds: foundationVisualStandardCategoryIds,
   storybookDocShellVisualOracle,
   consumerVisualStyleContract,
+  settingControlSelectionContract,
+  settingsLayoutContract,
+  consumerVerificationContract,
   noOverclaimBoundary:
     "Foundation visual standards define local Storybook and consumer-contract authority only; package publication, product adoption, owner acceptance, release readiness, and live dispatch are not claimed."
 } as const;

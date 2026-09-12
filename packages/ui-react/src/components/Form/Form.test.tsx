@@ -8,10 +8,14 @@ import {
   Field,
   FieldProvenance,
   Input,
+  NumberInput,
   LineNumberedEditor,
   LockHint,
   SearchInput,
   Select,
+  SettingChoice,
+  SettingsHostSwitcher,
+  resolveSettingChoiceControl,
   SettingRow,
   Switch,
   Textarea
@@ -47,6 +51,63 @@ test("disabled form controls expose their own reason contract", () => {
   const describedByCount = (html.match(/aria-describedby="/g) ?? []).length;
   assert.equal(describedByCount, 5);
   assert.match(html, /class="[^"]*tcrn-textarea/);
+});
+
+test("STORY-106 setting choices separate value semantics from navigation and fit before using binary radios", () => {
+  const binary = [
+    { value: "local", label: "Local", minInlineSize: 112 },
+    { value: "remote", label: "Remote", minInlineSize: 112 }
+  ];
+  const longBinary = [
+    { value: "long-local", label: "Long local execution label", minInlineSize: 220 },
+    { value: "long-remote", label: "Long remote execution label", minInlineSize: 220 }
+  ];
+  const three = [...binary, { value: "deferred", label: "Deferred" }];
+
+  assert.equal(resolveSettingChoiceControl(binary, 248).control, "radio");
+  assert.equal(resolveSettingChoiceControl(binary, 247).reason, "binary-does-not-fit");
+  assert.equal(resolveSettingChoiceControl(longBinary, 248).control, "select");
+  assert.equal(resolveSettingChoiceControl(three, 720).control, "select");
+  assert.equal(resolveSettingChoiceControl(binary).reason, "available-inline-size-required");
+
+  const radioHtml = renderToStaticMarkup(<SettingChoice label="Execution host" name="host" options={binary} availableInlineSize={248} />);
+  assert.match(radioHtml, /data-setting-choice="true"/);
+  assert.match(radioHtml, /data-setting-choice-semantic="value-selection"/);
+  assert.match(radioHtml, /data-setting-choice-control="radio"/);
+  assert.match(radioHtml, /<fieldset/);
+  assert.match(radioHtml, /<legend[^>]*>Execution host<\/legend>/);
+  assert.equal((radioHtml.match(/type="radio"/g) ?? []).length, 2);
+  assert.doesNotMatch(radioHtml, /tcrn-segmented-nav/);
+
+  const selectHtml = renderToStaticMarkup(<SettingChoice label="Execution mode" name="mode" options={three} availableInlineSize={720} />);
+  assert.match(selectHtml, /data-setting-choice-control="select"/);
+  assert.match(selectHtml, /<select/);
+  assert.equal((selectHtml.match(/<option/g) ?? []).length, 3);
+  assert.doesNotMatch(selectHtml, /tcrn-segmented-nav/);
+
+  const hostHtml = renderToStaticMarkup(
+    <SettingsHostSwitcher label="Host" name="host" hosts={binary} availableInlineSize={248} />
+  );
+  assert.match(hostHtml, /data-settings-host-switcher="true"/);
+  assert.match(hostHtml, /data-setting-choice-scope="host-switcher"/);
+});
+
+test("STORY-106 NumberInput keeps native numeric entry semantics and full-value visibility markers", () => {
+  const html = renderToStaticMarkup(
+    <Field label="Token budget" hint="Allowed range: 512–8192">
+      <NumberInput name="budget" value={8192} min={512} max={8192} onChange={() => undefined} />
+    </Field>
+  );
+
+  assert.match(html, /data-number-input="true"/);
+  assert.match(html, /data-number-input-semantic="numeric-entry"/);
+  assert.match(html, /data-number-input-visibility="full-value"/);
+  assert.match(html, /type="number"/);
+  assert.match(html, /value="8192"/);
+  assert.match(html, /min="512"/);
+  assert.match(html, /max="8192"/);
+  assert.match(html, /Allowed range: 512–8192/);
+  assert.doesNotMatch(html, /tcrn-stepper/);
 });
 
 test("field wires real aria description and error relationships into controls", () => {
@@ -123,6 +184,8 @@ test("component-loop form constructs expose their state and recovery surfaces", 
   assert.match(html, /role="switch"/);
   assert.match(html, /data-switch-state="on"/);
   assert.match(html, /data-setting-row="true" data-modified="true"/);
+  assert.match(html, /id="[^\"]+" class="tcrn-setting-row__name"/);
+  assert.match(html, /<select[^>]*aria-labelledby="[^\"]+"/);
   assert.match(html, /class="tcrn-setting-row__modified"/);
   assert.match(html, />Restore<\/button>/);
   assert.match(html, /data-provenance-state="overridden"/);

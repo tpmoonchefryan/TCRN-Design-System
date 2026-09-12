@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { AppStatusBar, CollapsibleRegion, DisclosurePanel, Divider, Surface } from "./Layout.js";
+import { AppStatusBar, CollapsibleRegion, DisclosurePanel, Divider, SettingsLayout, Surface } from "./Layout.js";
 
 test("layout primitives include surfaces and dividers", () => {
   const html = renderToStaticMarkup(
@@ -69,4 +69,28 @@ test("app status bar exposes command, state, and optional action slots", () => {
   assert.match(html, /class="tcrn-app-status-bar__command">local<\/span>/);
   assert.match(html, /class="tcrn-app-status-bar__state">Ready<\/span>/);
   assert.match(html, /class="tcrn-app-status-bar__action"><button/);
+});
+
+test("settings layout declares container-driven navigation and complete-form boundaries", () => {
+  const html = renderToStaticMarkup(
+    <SettingsLayout
+      navigation={<a href="#appearance">Appearance</a>}
+      navigationLabel="Settings navigation"
+      contentLabel="Settings content"
+      hostSwitcher={<select aria-label="Host"><option>Local</option></select>}
+    >
+      <div data-setting-row="true">Complete configuration</div>
+    </SettingsLayout>
+  );
+
+  assert.match(html, /data-settings-layout="true"/);
+  assert.match(html, /data-settings-layout-mode="container-driven"/);
+  assert.match(html, /data-settings-layout-form-policy="single-host-single-column"/);
+  assert.match(html, /data-settings-layout-breakpoint="960px"/);
+  assert.match(html, /data-settings-content-breakpoint="720px"/);
+  assert.match(html, /data-settings-local-navigation="compact"/);
+  assert.match(html, /data-settings-overflow-policy="no-page-overflow"/);
+  assert.match(html, /aria-label="Settings navigation"/);
+  assert.match(html, /data-settings-complete-form="true"/);
+  assert.match(html, /class="tcrn-settings-layout__host-switcher"/);
 });

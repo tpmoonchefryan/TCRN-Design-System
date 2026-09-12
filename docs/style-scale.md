@@ -114,3 +114,26 @@ doc-side, and must not expect them in the package.
 - **Deferred primitive:** `.tcrn-icon` base rule (Icon-emitted) remains doc-side for now —
   it is outside STORY-037's named 24 families and awaits an explicit Owner call to promote
   or keep it.
+
+## Settings controls and container thresholds
+
+Settings value controls and configuration layout are package-backed contracts.
+The thresholds below are semantic container measurements, not viewport-only
+breakpoints:
+
+| Token | Value | Contract |
+|---|---:|---|
+| `--tcrn-container-settings-split` | `960px` | `SettingsLayout` may place compact local navigation beside one content column. |
+| `--tcrn-container-settings-content-stack` | `720px` | The content column stacks each setting row's label, control, and tools. |
+| `--tcrn-container-settings-local-nav` | `208px` | Local navigation column width at the split layout. |
+| `--tcrn-container-settings-control-min` | `240px` | Minimum control column width in a non-stacked setting row. |
+| `--tcrn-container-settings-choice-option` | `112px` | Default minimum width for one binary value option. |
+| `--tcrn-container-settings-choice-padding` | `8px` | Inline padding on each edge of a binary value group. |
+| `--tcrn-container-settings-number-min` | `12ch` | Minimum numeric-entry width for full legal values and native editing. |
+
+`SettingChoice` maps values to native `Select` when there are more than two
+options, or when a binary pair does not fit its measured labels and controls. A
+fitting binary pair uses a native `RadioGroup`; `SegmentedNav` is reserved for
+navigation. `NumberInput` owns numeric entry; `Stepper` owns process position.
+`SettingsLayout` owns the one-host, one-complete-form composition and never uses
+`overflow: hidden` to conceal fields, labels, actions, or long values.

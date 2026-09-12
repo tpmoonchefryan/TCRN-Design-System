@@ -1546,10 +1546,28 @@ if (!String(contract.consumerVisualStyleContract?.forbiddenConsumerOverrides?.jo
 if (!contract.consumerVisualStyleContract?.requiredReadbackFields?.includes?.("foundationVisualStandards")) {
   missing.push("contract.consumerVisualStyleContract.requiredReadbackFields.foundationVisualStandards");
 }
+if (contract.settingControlSelectionContract?.id !== "setting-control-selection-contract-v1") {
+  missing.push("contract.settingControlSelectionContract.id");
+}
+if (!contract.settingControlSelectionContract?.packageExports?.includes?.("SettingChoice")
+  || !contract.settingControlSelectionContract?.packageExports?.includes?.("NumberInput")
+  || !contract.settingControlSelectionContract?.packageExports?.includes?.("SegmentedNav")) {
+  missing.push("contract.settingControlSelectionContract.packageExports");
+}
+if (contract.settingsLayoutContract?.id !== "settings-layout-contract-v1"
+  || contract.settingsLayoutContract?.containerQueries?.[0]?.thresholdPx !== 960
+  || contract.settingsLayoutContract?.containerQueries?.[1]?.thresholdPx !== 720) {
+  missing.push("contract.settingsLayoutContract.containerQueries");
+}
+if (contract.consumerVerificationContract?.id !== "consumer-verification-contract-v1"
+  || contract.consumerVerificationContract?.proofVersion !== "tcrn.ds-consumption-proof.v1"
+  || !contract.consumerVerificationContract?.negativeLegs?.some?.((leg) => leg.includes("class/CSS"))) {
+  missing.push("contract.consumerVerificationContract.negativeLegs");
+}
 if (!llmsTxt.includes("Agents must read ai-consumption-contract.json before implementation work.")) {
   missing.push("llms-first-read-requirement");
 }
-if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
+if (!llmsTxt.includes("Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, settingsLayoutContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections")) {
   missing.push("llms-required-readback-fields");
 }
 if (!llmsTxt.includes("Required Storybook sections:")) {
@@ -1569,6 +1587,15 @@ if (!llmsTxt.includes("Foundation visual standards: foundation-visual-standards-
 }
 if (!llmsTxt.includes("Consumer visual style contract: consumer-visual-style-contract-v1")) {
   missing.push("llms-consumer-visual-style-contract");
+}
+if (!llmsTxt.includes("Setting control selection contract: setting-control-selection-contract-v1")) {
+  missing.push("llms-setting-control-selection-contract");
+}
+if (!llmsTxt.includes("Settings layout contract: settings-layout-contract-v1")) {
+  missing.push("llms-settings-layout-contract");
+}
+if (!llmsTxt.includes("Consumer verification contract: consumer-verification-contract-v1")) {
+  missing.push("llms-consumer-verification-contract");
 }
 if (!llmsTxt.includes("Storybook doc shell visual oracle: original-storybook-doc-shell-v1")) {
   missing.push("llms-storybook-doc-shell-visual-oracle");

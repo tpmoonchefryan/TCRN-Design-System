@@ -2553,6 +2553,135 @@ keyboardChecklist = {
   ]
 };
 
+// TCRN-DS-STORY-106/107: consume the actual Storybook settings composition at the
+// requested width/zoom/locale/theme risk points. The readback keeps only stable
+// classifications; raw renderer-dependent dimensions remain in the command output
+// and are not promoted to the committed baseline.
+const settingsLayoutProofCases = [
+  ...[390, 768, 980, 1024, 1180, 1280, 1440].map((width) => ({ width, zoom: 1, locale: "en", theme: "light" })),
+  ...[390, 980, 1440].flatMap((width) => [1.25, 2].map((zoom) => ({ width, zoom, locale: "zh-CN", theme: "dark" }))),
+  ...["zh-CN", "en", "ja", "ko", "fr"].flatMap((locale) => ["light", "dark"].map((theme) => ({ width: 768, zoom: 1, locale, theme })))
+];
+const settingsLayoutProofReadbacks = [];
+for (const proofCase of settingsLayoutProofCases) {
+  // Browser zoom reduces the CSS viewport while retaining the requested physical
+  // viewport. Use the equivalent effective CSS width here; applying CSS `zoom` to
+  // the document would create artificial page overflow unlike browser zoom.
+  const settingsPage = await browser.newPage({ viewport: { width: Math.floor(proofCase.width / proofCase.zoom), height: 900 }, reducedMotion: "reduce" });
+  try {
+    await settingsPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/patterns-forms-workbench.html?theme=${proofCase.theme}&locale=${proofCase.locale}#forms-patterns`);
+    await settingsPage.waitForSelector("[data-settings-layout='true']", { state: "attached" });
+    await settingsPage.evaluate(async () => {
+      if (document.fonts?.ready) await document.fonts.ready;
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    });
+    const readback = await settingsPage.evaluate(() => {
+      const layout = document.querySelector("[data-settings-layout='true']");
+      const frame = layout?.querySelector(".tcrn-settings-layout__frame");
+      const grid = layout?.querySelector(".tcrn-settings-layout__grid");
+      const content = layout?.querySelector("[data-settings-content='true']");
+      const rows = Array.from(layout?.querySelectorAll("[data-setting-row='true']") ?? []);
+      const longValue = layout?.querySelector("input[value*='model-with-a-long']");
+      const pageWidth = Math.max(document.documentElement.clientWidth, document.body.clientWidth);
+      const pageScrollWidth = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+      const gridColumns = grid ? getComputedStyle(grid).gridTemplateColumns : "";
+      const contentWidth = content?.getBoundingClientRect().width ?? 0;
+      const frameWidth = frame?.getBoundingClientRect().width ?? 0;
+      const rowColumns = rows[0] ? getComputedStyle(rows[0]).gridTemplateColumns : "";
+      const nestedHost = document.createElement("div");
+      nestedHost.setAttribute("data-settings-nested-fixture", "true");
+      nestedHost.style.inlineSize = "680px";
+      nestedHost.style.maxInlineSize = "100%";
+      if (layout) nestedHost.append(layout.cloneNode(true));
+      (layout?.parentElement ?? document.body).append(nestedHost);
+      const nestedLayout = nestedHost.querySelector("[data-settings-layout='true']");
+      const nestedGrid = nestedLayout?.querySelector(".tcrn-settings-layout__grid");
+      const nestedContent = nestedLayout?.querySelector("[data-settings-content='true']");
+      const nestedRows = Array.from(nestedLayout?.querySelectorAll("[data-setting-row='true']") ?? []);
+      const descendants = Array.from(layout?.querySelectorAll("*") ?? []);
+      const noHiddenOverflow = descendants.every((node) => {
+        const style = getComputedStyle(node);
+        return style.overflowX !== "hidden" && style.overflowY !== "hidden";
+      });
+      const rowsFit = rows.length === 3 && rows.every((row) => row.scrollWidth <= row.clientWidth + 1);
+      const nestedRowsFit = nestedRows.length === 3 && nestedRows.every((row) => row.scrollWidth <= row.clientWidth + 1);
+      const nestedPageScrollWidth = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+      const longValueComplete = longValue instanceof HTMLInputElement
+        && longValue.value === "model-with-a-long-but-editable-identifier"
+        && getComputedStyle(longValue).textOverflow !== "ellipsis";
+      const splitGrid = gridColumns.split(/\s+/u).length >= 2;
+      const rowGrid = rowColumns.split(/\s+/u).length >= 3;
+      const nestedFrameWidth = nestedLayout?.querySelector(".tcrn-settings-layout__frame")?.getBoundingClientRect().width ?? 0;
+      const nestedGridColumns = nestedGrid ? getComputedStyle(nestedGrid).gridTemplateColumns : "";
+      const nestedRowColumns = nestedRows[0] ? getComputedStyle(nestedRows[0]).gridTemplateColumns : "";
+      const nestedSplitGrid = nestedGridColumns.split(/\s+/u).length >= 2;
+      const nestedRowGrid = nestedRowColumns.split(/\s+/u).length >= 3;
+      return {
+        frameMode: splitGrid ? "split" : "single",
+        frameThresholdMatch: (frameWidth >= 960) === splitGrid,
+        contentMode: rowGrid ? "row" : "stack",
+        contentThresholdMatch: (contentWidth >= 720) === rowGrid,
+        pageOverflow: pageScrollWidth > pageWidth + 1,
+        rowsFit,
+        longValueComplete,
+        noHiddenOverflow,
+        nested: {
+          frameMode: nestedSplitGrid ? "split" : "single",
+          frameThresholdMatch: (nestedFrameWidth >= 960) === nestedSplitGrid,
+          contentMode: nestedRowGrid ? "row" : "stack",
+          contentThresholdMatch: ((nestedContent?.getBoundingClientRect().width ?? 0) >= 720) === nestedRowGrid,
+          rowsFit: nestedRowsFit,
+          pageOverflow: nestedPageScrollWidth > pageWidth + 1
+        }
+      };
+    });
+    const expectedNested = { frameMode: "single", contentMode: "stack" };
+    settingsLayoutProofReadbacks.push({
+      ...proofCase,
+      frameMode: readback.frameMode,
+      contentMode: readback.contentMode,
+      frameThresholdMatch: readback.frameThresholdMatch,
+      contentThresholdMatch: readback.contentThresholdMatch,
+      pageOverflow: readback.pageOverflow,
+      rowsFit: readback.rowsFit,
+      longValueComplete: readback.longValueComplete,
+      noHiddenOverflow: readback.noHiddenOverflow,
+      nested: {
+        ...readback.nested,
+        expectedFrameMode: expectedNested.frameMode,
+        expectedContentMode: expectedNested.contentMode
+      },
+      ok: !readback.pageOverflow
+        && readback.rowsFit
+        && readback.longValueComplete
+        && readback.noHiddenOverflow
+        && readback.frameThresholdMatch
+        && readback.contentThresholdMatch
+        && readback.nested.frameMode === expectedNested.frameMode
+        && readback.nested.contentMode === expectedNested.contentMode
+        && readback.nested.frameThresholdMatch
+        && readback.nested.contentThresholdMatch
+        && readback.nested.rowsFit
+        && !readback.nested.pageOverflow
+    });
+  } finally {
+    await settingsPage.close();
+  }
+}
+const settingsLayoutBrowserProof = {
+  schemaVersion: "tcrn.ds.settings-layout-browser-proof.v1",
+  route: "patterns-forms-workbench.html#forms-patterns",
+  thresholds: { frameSplitPx: 960, contentStackPx: 720 },
+  widths: [390, 768, 980, 1024, 1180, 1280, 1440],
+  zooms: [1, 1.25, 2],
+  locales: ["zh-CN", "en", "ja", "ko", "fr"],
+  themes: ["light", "dark"],
+  nestedFixture: "680px frame; expected single-column and stacked rows",
+  readbacks: settingsLayoutProofReadbacks,
+  ok: settingsLayoutProofReadbacks.length === settingsLayoutProofCases.length
+    && settingsLayoutProofReadbacks.every((readback) => readback.ok)
+};
+
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/welcome-governance-entry.html?theme=light&locale=zh-CN#welcome-governance`);
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");
 await storybookPage.waitForSelector("#tcrn-doc-locale-trigger");
@@ -2758,7 +2887,8 @@ const browserProofSummary = {
     && componentStorybookParityReadback.packageBackedComponentParityVisible
     && componentStorybookParityReadback.publicSourcesVisible
     && componentStorybookParityReadback.storybookOnlyDeferredMarkersVisible
-    && componentStorybookParityReadback.packageBackedDisabledNavItemReasonReadback.ok,
+    && componentStorybookParityReadback.packageBackedDisabledNavItemReasonReadback.ok
+    && settingsLayoutBrowserProof.ok,
   syntheticFixturesOnly: true,
   noProductDataCaptured: true,
   noLocalAbsolutePathsRetained: true,
@@ -2772,6 +2902,7 @@ const browserProofSummary = {
     reproducibility: browserProofReproducibility
   },
   viewports,
+  settingsLayoutBrowserProof,
   aiContractTraceabilityCheck,
   componentStorybookParityReadback,
   localeLeakScan,
@@ -2995,6 +3126,8 @@ console.log(JSON.stringify({
   coveredStorybookSections: aiContractTraceabilityCheck.coveredSectionCount,
   coveredStorybookCategories: aiContractTraceabilityCheck.coveredCategoryCount,
   browserProofSummaryOk: browserProofSummary.ok,
+  settingsLayoutBrowserProofOk: settingsLayoutBrowserProof.ok,
+  settingsLayoutCaseCount: settingsLayoutBrowserProof.readbacks.length,
   panelSearchOk: panelSearchReadback.ok,
   buttonFeedbackOk: buttonFeedbackReadback.ok,
   storyCoverageManifestOk: storyCoverageManifest.ok,

@@ -862,6 +862,55 @@ export const tcrnTokens = [
     value: "1120px",
     group: "container",
     description: "Readable content max width."
+  },
+  {
+    name: "container.settings.split",
+    variable: "--tcrn-container-settings-split",
+    value: "960px",
+    group: "container",
+    description: "Minimum inline size for a settings frame to show compact local navigation beside one content column."
+  },
+  {
+    name: "container.settings.contentStack",
+    variable: "--tcrn-container-settings-content-stack",
+    value: "720px",
+    group: "container",
+    description: "Content-column inline-size threshold below which setting rows stack their label, control, and tools."
+  },
+  {
+    name: "container.settings.localNav",
+    variable: "--tcrn-container-settings-local-nav",
+    value: "208px",
+    group: "container",
+    description: "Compact local settings navigation column width at the split layout threshold."
+  },
+  {
+    name: "container.settings.controlMin",
+    variable: "--tcrn-container-settings-control-min",
+    value: "240px",
+    group: "container",
+    description: "Minimum inline size reserved for a setting control in a non-stacked row."
+  },
+  {
+    name: "container.settings.choiceOption",
+    variable: "--tcrn-container-settings-choice-option",
+    value: "112px",
+    group: "container",
+    description: "Default minimum inline size for one binary setting option before a radio choice is admitted."
+  },
+  {
+    name: "container.settings.choicePadding",
+    variable: "--tcrn-container-settings-choice-padding",
+    value: "8px",
+    group: "container",
+    description: "Inline padding on each edge of an admitted binary setting choice group."
+  },
+  {
+    name: "container.settings.numberMin",
+    variable: "--tcrn-container-settings-number-min",
+    value: "12ch",
+    group: "container",
+    description: "Minimum inline size for numeric entry so the legal value and native editing affordance remain visible."
   }
 ] as const satisfies readonly DesignToken[];
 
