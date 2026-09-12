@@ -1,4 +1,5 @@
-import type { HTMLAttributes, ReactElement, ReactNode, RefObject } from "react";
+import type { CSSProperties, FocusEvent as ReactFocusEvent, HTMLAttributes, MouseEvent as ReactMouseEvent, ReactElement, ReactNode, RefObject } from "react";
+import { createPortal } from "react-dom";
 import { cloneElement, useEffect, useId, useRef, useState } from "react";
 import { Heading, Text } from "../Typography/index.js";
 import { Button } from "../Button/index.js";
@@ -33,6 +34,121 @@ export function ActionDrawer({ title, open, children }: DrawerProps) {
 export type PopoverPlacement = "bottom-start" | "bottom-end" | "top-start" | "top-end";
 export type TooltipPlacement = "top" | "right" | "bottom" | "left";
 
+type FloatingPlacement = PopoverPlacement | TooltipPlacement;
+
+interface FloatingPosition {
+  left: number;
+  top: number;
+  placement: FloatingPlacement;
+}
+
+interface FloatingRect {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+  width: number;
+  height: number;
+}
+
+function readCssPixelValue(element: HTMLElement, variable: string, fallback = 0) {
+  const value = Number.parseFloat(window.getComputedStyle(element).getPropertyValue(variable));
+  return Number.isFinite(value) ? value : fallback;
+}
+
+function clamp(value: number, minimum: number, maximum: number) {
+  return Math.min(Math.max(value, minimum), Math.max(minimum, maximum));
+}
+
+function floatingRect(element: HTMLElement): FloatingRect {
+  const rect = element.getBoundingClientRect();
+  return { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height };
+}
+
+function computeFloatingPosition(anchor: FloatingRect, layer: FloatingRect, requestedPlacement: FloatingPlacement, viewportWidth: number, viewportHeight: number, gap: number): FloatingPosition {
+  const layerWidth = Math.max(layer.width, 0);
+  const layerHeight = Math.max(layer.height, 0);
+  const edge = Math.max(gap, 0);
+  const fitsTop = anchor.top - layerHeight - edge >= edge;
+  const fitsBottom = anchor.bottom + layerHeight + edge <= viewportHeight - edge;
+  const fitsLeft = anchor.left - layerWidth - edge >= edge;
+  const fitsRight = anchor.right + layerWidth + edge <= viewportWidth - edge;
+  let placement = requestedPlacement;
+  const direction = requestedPlacement.split("-")[0];
+
+  if (direction === "top" && !fitsTop && fitsBottom) placement = requestedPlacement.replace(/^top/u, "bottom") as PopoverPlacement;
+  if (direction === "bottom" && !fitsBottom && fitsTop) placement = requestedPlacement.replace(/^bottom/u, "top") as PopoverPlacement;
+  if (direction === "left" && !fitsLeft && fitsRight) placement = "right";
+  if (direction === "right" && !fitsRight && fitsLeft) placement = "left";
+
+  let left = anchor.left;
+  let top = anchor.bottom + edge;
+  if (placement === "top" || placement === "top-start" || placement === "top-end") {
+    top = anchor.top - layerHeight - edge;
+  } else if (placement === "bottom" || placement === "bottom-start" || placement === "bottom-end") {
+    top = anchor.bottom + edge;
+  } else if (placement === "left") {
+    left = anchor.left - layerWidth - edge;
+    top = anchor.top + ((anchor.height - layerHeight) / 2);
+  } else if (placement === "right") {
+    left = anchor.right + edge;
+    top = anchor.top + ((anchor.height - layerHeight) / 2);
+  }
+
+  if (placement === "top-end" || placement === "bottom-end") left = anchor.right - layerWidth;
+  if (placement === "top" || placement === "bottom") left = anchor.left + ((anchor.width - layerWidth) / 2);
+  if (placement === "top-start" || placement === "bottom-start") left = anchor.left;
+
+  return {
+    left: clamp(left, edge, viewportWidth - layerWidth - edge),
+    top: clamp(top, edge, viewportHeight - layerHeight - edge),
+    placement
+  };
+}
+
+function useFloatingLayer({ enabled, placement, triggerRef, layerRef }: { enabled: boolean; placement: FloatingPlacement; triggerRef?: RefObject<HTMLElement | null>; layerRef: RefObject<HTMLElement | null> }) {
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+  const [position, setPosition] = useState<FloatingPosition | null>(null);
+
+  useEffect(() => {
+    if (typeof document !== "undefined") setPortalRoot(document.body);
+  }, []);
+
+  const shouldPortal = Boolean(enabled && portalRoot && triggerRef?.current);
+  useEffect(() => {
+    if (!shouldPortal || !triggerRef?.current || !layerRef.current) {
+      setPosition(null);
+      return;
+    }
+    const trigger = triggerRef.current;
+    const layer = layerRef.current;
+    const update = () => {
+      const next = computeFloatingPosition(
+        floatingRect(trigger),
+        floatingRect(layer),
+        placement,
+        window.innerWidth,
+        window.innerHeight,
+        readCssPixelValue(layer, "--tcrn-space-2")
+      );
+      setPosition(next);
+    };
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, true);
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(update);
+    observer?.observe(trigger);
+    observer?.observe(layer);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update, true);
+      observer?.disconnect();
+    };
+  }, [enabled, layerRef, placement, shouldPortal, triggerRef]);
+
+  return { portalRoot, position, shouldPortal };
+}
+
 export interface TooltipProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children" | "content"> {
   content: string;
   children: ReactElement<Record<string, unknown>>;
@@ -41,24 +157,70 @@ export interface TooltipProps extends Omit<HTMLAttributes<HTMLSpanElement>, "chi
 
 export function Tooltip({ content, children, placement = "top", className, ...props }: TooltipProps) {
   const tooltipId = useId();
+  const triggerRef = useRef<HTMLSpanElement>(null);
+  const contentRef = useRef<HTMLSpanElement>(null);
+  const [revealed, setRevealed] = useState(false);
+  const floating = useFloatingLayer({ enabled: true, placement, triggerRef, layerRef: contentRef });
   const childProps = childPropsOf(children);
   const trigger = {
     ...childProps,
     "aria-describedby": mergeIds(childProps["aria-describedby"] as string | undefined, tooltipId)
   };
+  const onFocus = (event: ReactFocusEvent<HTMLSpanElement>) => {
+    props.onFocus?.(event);
+    setRevealed(true);
+  };
+  const onBlur = (event: ReactFocusEvent<HTMLSpanElement>) => {
+    props.onBlur?.(event);
+    setRevealed(false);
+  };
+  const onMouseEnter = (event: ReactMouseEvent<HTMLSpanElement>) => {
+    props.onMouseEnter?.(event);
+    setRevealed(true);
+  };
+  const onMouseLeave = (event: ReactMouseEvent<HTMLSpanElement>) => {
+    props.onMouseLeave?.(event);
+    setRevealed(false);
+  };
+  const contentStyle: CSSProperties | undefined = floating.shouldPortal ? {
+    position: "fixed",
+    left: `${floating.position?.left ?? 0}px`,
+    top: `${floating.position?.top ?? 0}px`,
+    visibility: floating.position ? "visible" : "hidden",
+    transform: "none"
+  } : undefined;
+  const tooltipContent = (
+    <span
+      ref={contentRef}
+      id={tooltipId}
+      role="tooltip"
+      className="tcrn-tooltip__content"
+      data-tooltip-portal={floating.shouldPortal ? "true" : undefined}
+      data-tooltip-open={revealed ? "true" : undefined}
+      data-tooltip-placement={floating.position?.placement ?? placement}
+      style={contentStyle}
+    >
+      {requiredText(content, "Supplemental information unavailable")}
+    </span>
+  );
 
   return (
     <span
+      ref={triggerRef}
       {...props}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       className={cx("tcrn-tooltip", className)}
       data-tooltip-scope="supplemental"
       data-tooltip-interactive-content="forbidden"
       data-placement={placement}
+      data-tooltip-open={revealed ? "true" : undefined}
+      data-overlay-boundary={floating.shouldPortal ? "document-body" : "inline-static"}
     >
       {cloneElement(children, trigger)}
-      <span id={tooltipId} role="tooltip" className="tcrn-tooltip__content">
-        {requiredText(content, "Supplemental information unavailable")}
-      </span>
+      {floating.shouldPortal && floating.portalRoot ? createPortal(tooltipContent, floating.portalRoot) : tooltipContent}
     </span>
   );
 }
@@ -78,6 +240,7 @@ export function Popover({ title, open, children, className, placement = "bottom-
   const titleId = useId();
   const popoverRef = useRef<HTMLElement>(null);
   const wasOpenRef = useRef(false);
+  const floating = useFloatingLayer({ enabled: open, placement, triggerRef, layerRef: popoverRef });
   const supportsEscapeClose = Boolean(onOpenChange);
   const supportsFocusReturn = Boolean(triggerRef);
 
@@ -90,12 +253,22 @@ export function Popover({ title, open, children, className, placement = "bottom-
     focusTarget?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        event.preventDefault();
         onOpenChange?.(false);
         window.setTimeout(() => triggerRef?.current?.focus(), 0);
       }
     };
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node) || popoverRef.current?.contains(target) || triggerRef?.current?.contains(target)) return;
+      onOpenChange?.(false);
+    };
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
   }, [initialFocusRef, onOpenChange, open, triggerRef]);
 
   useEffect(() => {
@@ -110,7 +283,7 @@ export function Popover({ title, open, children, className, placement = "bottom-
     return null;
   }
 
-  return (
+  const popoverContent = (
     <section
       ref={popoverRef}
       role="dialog"
@@ -123,12 +296,22 @@ export function Popover({ title, open, children, className, placement = "bottom-
       data-tab-containment="not-implemented"
       data-escape-close={supportsEscapeClose ? "implemented" : "requires-on-open-change"}
       data-focus-return={supportsFocusReturn ? "implemented" : "requires-trigger-ref"}
+      data-overlay-boundary={floating.shouldPortal ? "document-body" : "inline-static"}
+      data-overlay-positioning={floating.shouldPortal ? "portal-fixed" : "inline-static"}
+      data-overlay-placement-resolved={floating.position?.placement ?? placement}
+      style={floating.shouldPortal ? {
+        position: "fixed",
+        left: `${floating.position?.left ?? 0}px`,
+        top: `${floating.position?.top ?? 0}px`,
+        visibility: floating.position ? "visible" : "hidden"
+      } : undefined}
       tabIndex={-1}
     >
       <Heading id={titleId} level={3}>{title}</Heading>
       {children}
     </section>
   );
+  return floating.shouldPortal && floating.portalRoot ? createPortal(popoverContent, floating.portalRoot) : popoverContent;
 }
 
 /**

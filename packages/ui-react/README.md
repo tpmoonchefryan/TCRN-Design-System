@@ -46,6 +46,21 @@ below 720px. The layout keeps long native input values selectable and copyable a
 does not hide configuration through overflow clipping. `SettingsHostSwitcher`
 expresses the single-host-before-complete-form composition.
 
+`MultiSelect` is the native closed-set collection control: its selected values,
+disabled options, keyboard behavior, and repeated form values remain native.
+`SuggestInput` is the open-string control: its datalist suggestions are advisory
+and never reject a value outside the suggestion list. `DictionaryTable` renders
+one category description and requires a separate explanation for every machine
+value; duplicate values are marked invalid rather than merged.
+`resolveFieldValueControl` maps declared single/collection and closed/open metadata
+to these controls and fails closed for unsupported open collections or closed
+fields without options.
+
+Client-rendered `Tooltip` and anchored `Popover` content move to the document
+body when a trigger reference is supplied, compute a viewport-safe placement,
+and reposition on resize and scroll. Tooltip content remains text-only and
+non-interactive; longer or interactive explanations belong in `Popover`.
+
 `PageHierarchy` takes an explicit `depth`: `two` renders `PageHeader`, parent-level
 `SubNav`/`SectionTabs`, then lower content; `three` renders the same Header and
 parent tabs, then the selected subpage's local navigation and content. The global

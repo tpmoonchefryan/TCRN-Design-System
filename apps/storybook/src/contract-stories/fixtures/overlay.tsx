@@ -80,8 +80,8 @@ function OverlayModeMatrix() {
 }
 
 function DialogSpecFixture() {
-  const triggerRef = { current: null };
-  const closeRef = { current: null };
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   return (
     <section
@@ -100,6 +100,7 @@ function DialogSpecFixture() {
       </div>
       <div className="tcrn-dialog-spec-fixture__actions">
         <Button
+          ref={triggerRef}
           type="button"
           aria-controls="dialog-spec-fixture-panel"
           aria-expanded="false"
@@ -133,8 +134,8 @@ function DialogSpecFixture() {
 }
 
 function PopoverSpecFixture() {
-  const triggerRef = { current: null };
-  const closeRef = { current: null };
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   return (
     <section
@@ -153,6 +154,7 @@ function PopoverSpecFixture() {
       </div>
       <div className="tcrn-dialog-spec-fixture__actions">
         <Button
+          ref={triggerRef}
           type="button"
           aria-controls="popover-spec-fixture-panel"
           aria-expanded="false"

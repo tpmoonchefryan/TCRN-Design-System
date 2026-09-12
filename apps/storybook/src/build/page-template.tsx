@@ -172,6 +172,10 @@ function compactCss(css: string): string {
     .trim();
 }
 
+function stripCssComments(css: string): string {
+  return css.replace(/\/\*[\s\S]*?\*\//g, "").trim();
+}
+
 // SettingsLayout and its controls are already present in the global package CSS above.
 // Keep their container-query block out of the scoped duplicate so adding a reusable
 // package family does not make every large proof page pay for the same rules twice.
@@ -179,10 +183,19 @@ const settingsContractCssStart = tcrnComponentCss.indexOf("/* DS-106/107 setting
 const scopedComponentCss = settingsContractCssStart === -1
   ? tcrnComponentCss
   : tcrnComponentCss.slice(0, settingsContractCssStart);
+const fullSurfaceContractCssStart = tcrnComponentCss.indexOf("/* DS-113/114/115 full-surface boundary and content rules.");
 const pageHierarchyContractCssStart = tcrnComponentCss.indexOf("/* DS-112 page hierarchy contract. */");
-const globalComponentCss = pageHierarchyContractCssStart === -1
+const prePageHierarchyComponentCss = pageHierarchyContractCssStart === -1
   ? tcrnComponentCss
   : tcrnComponentCss.slice(0, pageHierarchyContractCssStart);
+const fullSurfaceContractCssEnd = pageHierarchyContractCssStart === -1 ? tcrnComponentCss.length : pageHierarchyContractCssStart;
+const fullSurfaceContractCss = fullSurfaceContractCssStart === -1
+  ? ""
+  : tcrnComponentCss.slice(fullSurfaceContractCssStart, fullSurfaceContractCssEnd);
+const globalComponentCssWithoutFullSurface = fullSurfaceContractCssStart === -1
+  ? prePageHierarchyComponentCss
+  : `${prePageHierarchyComponentCss.slice(0, fullSurfaceContractCssStart)}${prePageHierarchyComponentCss.slice(fullSurfaceContractCssEnd)}`;
+const globalComponentCss = globalComponentCssWithoutFullSurface;
 const pageHierarchyComponentCss = pageHierarchyContractCssStart === -1 ? "" : tcrnComponentCss.slice(pageHierarchyContractCssStart);
 // The older scoped copy has a `.story-body .tcrn-setting-row` rule. Re-apply
 // only the settings-specific container overrides after that copy so the global
@@ -195,9 +208,11 @@ const settingsScopedOverrides = `
 const staticStoryComponentCss = compactCss(`${scopeComponentCss(scopedComponentCss, ".story-body")}${settingsScopedOverrides}`);
 
 function globalComponentCssForBody(mainBody: string): string {
-  return mainBody.includes("data-page-hierarchy")
+  const pageCss = mainBody.includes("data-page-hierarchy")
     ? globalComponentCss + pageHierarchyComponentCss
     : globalComponentCss;
+  const needsFullSurfaceCss = /data-tooltip-scope|data-overlay-scope|data-dictionary-category|data-choice-cardinality|data-choice-value-mode/u.test(mainBody);
+  return needsFullSurfaceCss ? `${pageCss}${fullSurfaceContractCss}` : pageCss;
 }
 
 function alphaStoryCssForBody(mainBody: string): string {
@@ -532,7 +547,7 @@ function renderContractDocument(options: {
   <meta name="tcrn-ai-consumption-contract-required" content="must-read-first" />
   <title>${pageTitleText} - ${localeText("shell.title")}</title>
   <style data-tcrn-component-style-source="@tcrn/ui-react" data-tcrn-doc-shell-component-style="package-backed">
-${globalComponentCssForBody(mainBody)}
+${stripCssComments(globalComponentCssForBody(mainBody))}
   </style>
   <style data-tcrn-static-doc-style-source="storybook">
 ${alphaStoryCssForBody(mainBody)}

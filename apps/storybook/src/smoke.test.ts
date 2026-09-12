@@ -30,6 +30,9 @@ import {
   foundationVisualStandards,
   storybookDocShellVisualOracle,
   settingControlSelectionContract,
+  fieldValueSelectionContract,
+  dictionaryContentContract,
+  overlayBoundaryContract,
   settingsLayoutContract,
   pageHierarchyContract,
   consumerVerificationContract
@@ -58,6 +61,9 @@ const expectedAiReadbackFields = [
   "foundationVisualStandards",
   "consumerVisualStyleContract",
   "settingControlSelectionContract",
+  "fieldValueSelectionContract",
+  "dictionaryContentContract",
+  "overlayBoundaryContract",
   "settingsLayoutContract",
   "pageHierarchyContract",
   "consumerVerificationContract",
@@ -182,6 +188,10 @@ const expectedAiRequiredProof = [
   "setting_control_selection_receipt",
   "settings_layout_container_receipt",
   "page_hierarchy_receipt",
+  "overlay_boundary_placement_receipt",
+  "field_value_cardinality_receipt",
+  "dictionary_content_receipt",
+  "full_surface_inventory_receipt",
   "consumer_negative_leg_receipt",
   "product_adoption_route_receipt"
 ];
@@ -1215,6 +1225,15 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(contract.settingControlSelectionContract?.binaryFitMeasurement?.defaultOptionMinInlineSizePx, 112);
   assert.match(contract.settingControlSelectionContract?.rejectCriteria?.join(" ") ?? "", /SegmentedNav/);
   assert.match(contract.settingControlSelectionContract?.stateRetention?.callback ?? "", /once.*layout-only/);
+  assert.equal(contract.fieldValueSelectionContract?.id, fieldValueSelectionContract.id);
+  assert.deepEqual(contract.fieldValueSelectionContract?.packageExports, fieldValueSelectionContract.packageExports);
+  assert.match(contract.fieldValueSelectionContract?.domainBoundary ?? "", /consumer supplies/);
+  assert.equal(contract.dictionaryContentContract?.id, dictionaryContentContract.id);
+  assert.deepEqual(contract.dictionaryContentContract?.packageExports, dictionaryContentContract.packageExports);
+  assert.match(contract.dictionaryContentContract?.contentModel?.description ?? "", /Every entry/);
+  assert.equal(contract.overlayBoundaryContract?.id, overlayBoundaryContract.id);
+  assert.deepEqual(contract.overlayBoundaryContract?.packageExports, overlayBoundaryContract.packageExports);
+  assert.match(contract.overlayBoundaryContract?.geometry?.edgePolicy ?? "", /flip/);
   assert.equal(contract.settingsLayoutContract?.id, settingsLayoutContract.id);
   assert.deepEqual(contract.settingsLayoutContract?.containerQueries?.map((query: { thresholdPx: number }) => query.thresholdPx), [960, 720]);
   assert.match(contract.settingsLayoutContract?.construction?.form ?? "", /one complete form column/);
@@ -1223,6 +1242,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.deepEqual(contract.pageHierarchyContract?.depthDecisionTable?.map((row: { depth: string }) => row.depth), ["two", "three"]);
   assert.match(contract.pageHierarchyContract?.widthPolicy ?? "", /never infers, adds, or removes a page level/);
   assert.equal(contract.consumerVerificationContract?.id, consumerVerificationContract.id);
+  assert.equal(contract.consumerVerificationContract?.browserScript, "scripts/full-surface-remediation-proof.mjs");
   assert.equal(contract.consumerVerificationContract?.proofVersion, consumerVerificationContract.proofVersion);
   assert.equal(contract.consumerVerificationContract?.contractVersion, consumerVerificationContract.contractVersion);
   assert.ok(contract.consumerVerificationContract?.positiveLegs?.length >= 4);
@@ -1487,7 +1507,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   const llms = readFileSync(join(process.cwd(), "storybook-static", "llms.txt"), "utf8");
   assert.match(llms, /Agents must read ai-consumption-contract\.json before implementation work\./);
   assert.match(llms, new RegExp(contractPayloadDigest));
-  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, settingsLayoutContract, pageHierarchyContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
+  assert.match(llms, /Required readback fields: contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, foundationVisualStandards, consumerVisualStyleContract, settingControlSelectionContract, fieldValueSelectionContract, dictionaryContentContract, overlayBoundaryContract, settingsLayoutContract, pageHierarchyContract, consumerVerificationContract, requiredProof, noOverclaimBoundaries, coveredStorybookSections/);
   assert.match(llms, /Required Storybook sections:/);
   assert.match(llms, /Covered Storybook section\/category\/story hierarchy:/);
   assert.match(llms, /Changelog governance: change-log\.html#local-changelog/);
@@ -1497,9 +1517,13 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /consumer-enforcement: Consumer enforcement and reject criteria/);
   assert.match(llms, /Consumer visual style contract: consumer-visual-style-contract-v1/);
   assert.match(llms, /Setting control selection contract: setting-control-selection-contract-v1/);
+  assert.match(llms, /Field value selection contract: field-value-selection-contract-v1/);
+  assert.match(llms, /Dictionary content contract: dictionary-content-contract-v1/);
+  assert.match(llms, /Overlay boundary contract: overlay-boundary-contract-v1/);
   assert.match(llms, /Settings layout contract: settings-layout-contract-v1/);
   assert.match(llms, /Page hierarchy contract: page-hierarchy-contract-v1/);
   assert.match(llms, /Consumer verification contract: consumer-verification-contract-v1/);
+  assert.match(llms, /browser script: scripts\/full-surface-remediation-proof\.mjs/);
   assert.match(llms, /Storybook doc shell visual oracle: original-storybook-doc-shell-v1/);
   assert.match(llms, /oracle recovery: internal DS doc-shell restoration plan \(owner-held governance record\)/);
   assert.match(llms, /baseline classification: owner_declared_original_storybook_doc_shell_standard/);

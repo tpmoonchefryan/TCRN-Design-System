@@ -1,5 +1,5 @@
 import type { CSSProperties, HTMLAttributes, KeyboardEvent, ReactNode } from "react";
-import { useState } from "react";
+import { Children, isValidElement, useState } from "react";
 import { resolveTcrnLocale, type CopyStateInput, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { Button } from "../Button/index.js";
 import { Icon } from "../Icon/index.js";
@@ -451,6 +451,117 @@ export function DefinitionList({ items, dense = false, className, ...props }: De
         </div>
       ))}
     </dl>
+  );
+}
+
+export interface DictionaryEntry {
+  value: string;
+  label: ReactNode;
+  description: ReactNode;
+  disabled?: boolean;
+  defaultValue?: boolean;
+}
+
+export interface DictionaryTableProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+  category: ReactNode;
+  categoryDescription: ReactNode;
+  entries: DictionaryEntry[];
+  valueColumnLabel: string;
+  descriptionColumnLabel: string;
+  tableLabel: string;
+}
+
+function hasRenderableContent(node: ReactNode) {
+  return Children.toArray(node).some((child) => {
+    if (typeof child === "string") return child.trim().length > 0;
+    if (typeof child === "number") return true;
+    return isValidElement(child);
+  });
+}
+
+function plainTextContent(node: ReactNode): string | null {
+  const children = Children.toArray(node);
+  if (children.length === 0) return null;
+  let text = "";
+  for (const child of children) {
+    if (typeof child === "string" || typeof child === "number" || typeof child === "bigint") {
+      text += String(child);
+      continue;
+    }
+    if (isValidElement(child)) {
+      const nested = plainTextContent((child.props as { children?: ReactNode }).children);
+      if (nested === null) return null;
+      text += nested;
+      continue;
+    }
+    return null;
+  }
+  const normalized = text.trim();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function duplicatePlainTexts(nodes: ReactNode[]) {
+  const counts = new Map<string, number>();
+  for (const node of nodes) {
+    const text = plainTextContent(node);
+    if (text) counts.set(text, (counts.get(text) ?? 0) + 1);
+  }
+  return [...counts.entries()].filter(([, count]) => count > 1).map(([text]) => text);
+}
+
+/** Renders one category explanation and one independently required explanation per value. */
+export function DictionaryTable({ category, categoryDescription, entries, valueColumnLabel, descriptionColumnLabel, tableLabel, className, ...props }: DictionaryTableProps) {
+  const seenValues = new Set<string>();
+  const duplicateValues: string[] = [];
+  for (const entry of entries) {
+    if (seenValues.has(entry.value)) duplicateValues.push(entry.value);
+    seenValues.add(entry.value);
+  }
+  const duplicateLabels = duplicatePlainTexts(entries.map((entry) => entry.label));
+  const duplicateDescriptions = duplicatePlainTexts(entries.map((entry) => entry.description));
+  const valid = hasRenderableContent(category)
+    && hasRenderableContent(categoryDescription)
+    && entries.length > 0
+    && entries.every((entry) => typeof entry.value === "string" && entry.value.trim().length > 0 && hasRenderableContent(entry.label) && hasRenderableContent(entry.description))
+    && duplicateValues.length === 0
+    && duplicateLabels.length === 0
+    && duplicateDescriptions.length === 0;
+  return (
+    <section
+      {...props}
+      className={cx("tcrn-dictionary-table", className)}
+      data-dictionary-category="true"
+      data-dictionary-valid={valid ? "true" : "false"}
+      data-dictionary-value-count={entries.length}
+      data-dictionary-duplicate-values={duplicateValues.length > 0 ? [...new Set(duplicateValues)].join(",") : undefined}
+      data-dictionary-duplicate-labels={duplicateLabels.length > 0 ? duplicateLabels.join("|") : undefined}
+      data-dictionary-duplicate-descriptions={duplicateDescriptions.length > 0 ? duplicateDescriptions.join("|") : undefined}
+    >
+      <Heading level={3}>{category}</Heading>
+      <Text className="tcrn-dictionary-table__category-description" data-dictionary-category-description="true">{categoryDescription}</Text>
+      <table aria-label={tableLabel} data-dictionary-table="true">
+        <thead>
+          <tr>
+            <th scope="col">{valueColumnLabel}</th>
+            <th scope="col">{descriptionColumnLabel}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map((entry, index) => (
+            <tr key={`${entry.value}-${index}`}
+              data-dictionary-entry="true"
+              data-dictionary-value={entry.value}
+              data-dictionary-entry-description-present={hasRenderableContent(entry.description) ? "true" : "false"}
+              data-dictionary-entry-disabled={entry.disabled ? "true" : undefined}
+              data-dictionary-entry-default={entry.defaultValue ? "true" : undefined}
+            >
+              <th scope="row"><code>{entry.value}</code><span className="tcrn-dictionary-table__label">{entry.label}</span></th>
+              <td>{entry.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
   );
 }
 

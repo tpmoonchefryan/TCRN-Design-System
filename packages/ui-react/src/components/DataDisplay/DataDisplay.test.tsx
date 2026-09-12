@@ -7,6 +7,7 @@ import {
   DataGrid,
   Tree,
   DefinitionList,
+  DictionaryTable,
   Progress,
   Stepper,
   avatarInitials,
@@ -39,6 +40,61 @@ test("stat cards and definition lists preserve their distinct display semantics"
   assert.match(html, /<dt class="tcrn-definition-list__term">Readback<\/dt>/);
   assert.match(html, /<dd class="tcrn-definition-list__definition">A recorded explanation/);
   assert.doesNotMatch(html, /tcrn-key-value-list/);
+});
+
+test("STORY-115 dictionary tables render one category description and require each value explanation", () => {
+  const valid = renderToStaticMarkup(
+    <DictionaryTable
+      category="Storage backend"
+      categoryDescription="Choose the storage implementation for this fixture."
+      tableLabel="Storage backend values"
+      valueColumnLabel="Value"
+      descriptionColumnLabel="Description"
+      entries={[
+        { value: "file", label: "File", description: "Uses one local file." },
+        { value: "file-segmented", label: "File segmented", description: "Uses bounded local segments." }
+      ]}
+    />
+  );
+  assert.match(valid, /data-dictionary-category="true"/);
+  assert.match(valid, /data-dictionary-valid="true"/);
+  assert.equal((valid.match(/data-dictionary-category-description="true"/g) ?? []).length, 1);
+  assert.equal((valid.match(/data-dictionary-entry="true"/g) ?? []).length, 2);
+  assert.match(valid, /data-dictionary-entry-description-present="true"/);
+
+  const invalid = renderToStaticMarkup(
+    <DictionaryTable
+      category="Backup cadence"
+      categoryDescription="Choose when this fixture suggests a snapshot."
+      tableLabel="Backup cadence values"
+      valueColumnLabel="Value"
+      descriptionColumnLabel="Description"
+      entries={[
+        { value: "gate-close", label: "Gate close", description: "At gate close." },
+        { value: "gate-close", label: "Duplicate", description: null }
+      ]}
+    />
+  );
+  assert.match(invalid, /data-dictionary-valid="false"/);
+  assert.match(invalid, /data-dictionary-duplicate-values="gate-close"/);
+  assert.match(invalid, /data-dictionary-entry-description-present="false"/);
+
+  const duplicateContent = renderToStaticMarkup(
+    <DictionaryTable
+      category="Duplicate content"
+      categoryDescription="Review exact repeated reader-facing content."
+      tableLabel="Duplicate content values"
+      valueColumnLabel="Value"
+      descriptionColumnLabel="Description"
+      entries={[
+        { value: "a", label: "Same label", description: "Same explanation." },
+        { value: "b", label: "Same label", description: "Same explanation." }
+      ]}
+    />
+  );
+  assert.match(duplicateContent, /data-dictionary-valid="false"/);
+  assert.match(duplicateContent, /data-dictionary-duplicate-labels="Same label"/);
+  assert.match(duplicateContent, /data-dictionary-duplicate-descriptions="Same explanation\."/);
 });
 
 test("table shell records arbitrary column counts for responsive layout", () => {

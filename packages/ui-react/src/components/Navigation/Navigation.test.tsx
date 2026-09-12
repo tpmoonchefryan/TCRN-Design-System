@@ -426,6 +426,9 @@ test("component-loop CSS ships independent roots for every returned construct", 
   assert.match(tcrnComponentCss, /\.tcrn-line-numbered-editor__gutter li\[data-editor-line-finding="true"\]/);
   assert.match(tcrnComponentCss, /\.tcrn-setting-row__modified[\s\S]*border-radius: 50%;/);
   assert.match(tcrnComponentCss, /\.tcrn-definition-list__item[\s\S]*grid-template-columns:/);
+  assert.match(tcrnComponentCss, /\.tcrn-tooltip__content\[data-tooltip-portal="true"\]/);
+  assert.match(tcrnComponentCss, /\.tcrn-popover\[data-overlay-positioning="portal-fixed"\]/);
+  assert.match(tcrnComponentCss, /\.tcrn-dictionary-table[\s\S]*data-dictionary-valid/);
 });
 
 test("product shell component css isolates topbar from docs chrome", () => {

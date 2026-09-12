@@ -10,6 +10,8 @@ export const componentLibraryPublicComponentNames = [
   "Textarea",
   "SearchInput",
   "Select",
+  "MultiSelect",
+  "SuggestInput",
   "Checkbox",
   "Switch",
   "SettingRow",
@@ -55,6 +57,7 @@ export const componentLibraryPublicComponentNames = [
   "Progress",
   "Stepper",
   "DefinitionList",
+  "DictionaryTable",
   "StatCard",
   "FilterBar",
   "TableShell",
@@ -129,6 +132,7 @@ export const componentLibraryPublicUtilityNames = [
   "getTcrnProductLogoAsset",
   "tcrnSettingChoiceDecisionTable",
   "resolveSettingChoiceControl",
+  "resolveFieldValueControl",
   "useProductShellController"
 ] as const;
 

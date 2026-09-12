@@ -95,6 +95,101 @@ export const settingControlSelectionContract = {
   ]
 } as const;
 
+export const fieldValueSelectionContract = {
+  id: "field-value-selection-contract-v1",
+  storybookRoutes: ["components.html#field-spec-usage", "patterns.html#selection-list-patterns"],
+  packageExports: ["SettingChoice", "Select", "RadioGroup", "MultiSelect", "SuggestInput"],
+  resolver: "resolveFieldValueControl",
+  decisionTable: [
+    {
+      cardinality: "single",
+      valueDomain: "closed",
+      control: "SettingChoice/Select/RadioGroup",
+      rule: "Use a native value selector; use measured binary radios only when the pair fits."
+    },
+    {
+      cardinality: "collection",
+      valueDomain: "closed",
+      control: "MultiSelect",
+      rule: "Use native multiple selection; preserve disabled options, selected state, deduplication, keyboard interaction, and repeated form values."
+    },
+    {
+      cardinality: "single",
+      valueDomain: "open",
+      control: "SuggestInput",
+      rule: "Suggestions are advisory; the input keeps free-form values and never turns an open field into a closed set."
+    }
+  ],
+  stateContract: {
+    controlled: "value is authoritative and onChange returns the semantic value.",
+    uncontrolled: "defaultValue seeds native state and user changes remain readable from the native control.",
+    collection: "values are unique and constrained only when the field is declared closed-set."
+  },
+  domainBoundary: "DS owns cardinality and value-domain presentation; the consumer supplies field ownership, allowed values, labels, defaults, and submission policy.",
+  rejectCriteria: [
+    "A closed collection is represented by a comma-delimited free-text field.",
+    "An open string field is forced into a Select or its suggestions reject a value not in the list.",
+    "A collection loses disabled or selected state, emits duplicate values, or breaks native keyboard/form semantics."
+  ]
+} as const;
+
+export const dictionaryContentContract = {
+  id: "dictionary-content-contract-v1",
+  storybookRoutes: ["foundations.html#tokens-copy-state", "style-guide.html#copy-creation-rules"],
+  packageExports: ["DictionaryTable"],
+  contentModel: {
+    category: "One category label and one category description per table.",
+    value: "Each entry carries a stable machine value and a reader-facing label.",
+    description: "Every entry carries its own non-empty explanation of the value's property, function, or selection timing.",
+    defaults: "Default and disabled state are explicit metadata and do not replace the entry description."
+  },
+  validation: [
+    "Missing category or entry descriptions are invalid.",
+    "Duplicate machine values are machine-detected and rendered for review rather than silently merged.",
+    "Exact duplicate labels and descriptions are machine-detected within a category; near-similar text and source conflicts are not automatic claims of business-function equivalence and remain separate semantic/consumer review."
+  ],
+  domainBoundary: "DS owns the content shape and validation markers; consumers supply domain categories, values, labels, and descriptions."
+} as const;
+
+export const overlayBoundaryContract = {
+  id: "overlay-boundary-contract-v1",
+  storybookRoutes: ["components.html#interaction-disclosure-spec", "components.html#dialog-spec-usage", "proof.html#overlay-focus"],
+  packageExports: ["Tooltip", "Popover", "Dialog", "Menu", "DetailDrawer", "ActionDrawer"],
+  modeTable: [
+    {
+      mode: "Tooltip",
+      content: "short supplemental text only",
+      boundary: "document body in a client-rendered tree",
+      interaction: "hover/focus reveal; no interactive descendants"
+    },
+    {
+      mode: "Popover",
+      content: "long or interactive local context",
+      boundary: "document body when a trigger reference is supplied",
+      interaction: "viewport-safe placement, scroll/resize reposition, Escape/outside close, and route-owned focus return"
+    },
+    {
+      mode: "Dialog/Drawer/Menu",
+      content: "modal, structural, or command-specific surface",
+      boundary: "their declared semantic layer",
+      interaction: "each surface must expose only the focus and dismissal capabilities it actually implements"
+    }
+  ],
+  geometry: {
+    placementInputs: ["trigger rectangle", "layer rectangle", "viewport rectangle"],
+    edgePolicy: "flip when the requested side lacks room, then clamp inside the viewport gap",
+    repositionOn: ["scroll", "resize", "trigger resize", "layer resize"],
+    zIndexToken: "--tcrn-z-popover"
+  },
+  staticDisposition: "Server-rendered Storybook examples may remain inline-static; they must not be presented as client portal evidence.",
+  rejectCriteria: [
+    "A Tooltip or Popover relies on z-index alone while a scroll ancestor clips it.",
+    "A long or interactive explanation is placed in a non-interactive Tooltip.",
+    "Placement accepts missing, invalid, or out-of-viewport trigger/layer geometry.",
+    "Open, Escape, outside close, or focus return is claimed without the corresponding route-owned wiring."
+  ]
+} as const;
+
 export const settingsLayoutContract = {
   id: "settings-layout-contract-v1",
   storybookRoutes: ["components.html#field-spec-usage", "patterns.html#forms-patterns"],
@@ -190,6 +285,7 @@ export const pageHierarchyContract = {
 export const consumerVerificationContract = {
   id: "consumer-verification-contract-v1",
   script: "scripts/ds-consumption-proof.mjs",
+  browserScript: "scripts/full-surface-remediation-proof.mjs",
   proofVersion: "tcrn.ds-consumption-proof.v2",
   contractVersion: "ds_consumption_contract_v2",
   storybookRoutes: ["components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#ai-consumption-contract"],
@@ -198,10 +294,13 @@ export const consumerVerificationContract = {
     "more-than-two value choice rendered as Select",
     "binary value choice preserves a disabled option in radio and Select branches",
     "radio/Select branch switching preserves controlled and uncontrolled values without synthetic callbacks",
+    "closed collection uses native MultiSelect and open strings use free-form SuggestInput",
     "native NumberInput with complete value and range markers",
     "container-driven SettingsLayout with one host and one complete form",
     "correct explicit two-level PageHierarchy with content below parent tabs",
     "correct explicit three-level PageHierarchy with local navigation inside the selected subpage",
+    "dictionary category description appears once and every value has its own explanation",
+    "client Tooltip and Popover escape clipping ancestors and stay inside viewport bounds",
     "consumer-declared not-applicable feature absent from the visible entry"
   ],
   negativeLegs: [
@@ -211,6 +310,8 @@ export const consumerVerificationContract = {
     "numeric value marked clipped",
     "parallel host columns at a narrow content width",
     "radio/Select branch switching resets a valid value or emits a layout-only callback",
+    "closed collection uses comma-delimited text or open suggestions reject free-form values",
+    "Tooltip carries interactive descendants or accepts invalid/out-of-viewport geometry",
     "two-level page with an internal left navigation region",
     "three-level page missing its parent-level tabs",
     "overlapping page hierarchy regions",
@@ -222,12 +323,16 @@ export const consumerVerificationContract = {
     "native element structure",
     "actual DOM cardinality and option disabled state",
     "radio/Select branch-switch value and callback behavior",
+    "collection selected/disabled state and open-value free-form behavior",
+    "dictionary category/value description presence and duplicate-value detection",
+    "overlay boundary, raw placement geometry, and focus/dismissal behavior",
     "computed visibility and rendered geometry",
     "complete numeric value visibility",
     "container and overflow policy",
     "consumer-owned feature applicability"
   ],
   independenceBoundary: "The proof renders neutral DS fixtures and does not read or execute a Workflow repository.",
+  fullSurfaceCoverage: "The browser script rechecks every DS Storybook route carrying the overlay, field-value, collection, open-value, and dictionary surfaces from the inventory; the inventory is not limited to the fixed screenshots.",
   noOverclaim: "A green DS consumer proof is a local contract candidate; it does not claim product adoption, Owner visual acceptance, publication, or release readiness."
 } as const;
 
@@ -374,7 +479,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx", "packages/ui-react/src/components/Layout/Layout.tsx", "packages/ui-react/src/components/Form/Form.tsx"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#table-record-index-spec", "components.html#field-spec-usage", "components.html#records-and-boards-components-spec", "components.html#documents-and-collaboration-components-spec", "patterns.html#forms-patterns"],
     authorityLevel: "package_authority",
-    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "recordsDensityComponents", "documentsDensityComponents", "settingsLayoutContract", "pageHierarchyContract", "containerQueries"],
+    readbackFields: ["densityScale", "panelGap", "tableContainment", "mobileStacking", "overflowContainment", "recordsDensityComponents", "documentsDensityComponents", "settingsLayoutContract", "pageHierarchyContract", "fieldValueSelectionContract", "dictionaryContentContract", "containerQueries"],
     allowedConsumerInputs: ["content-specific row data", "table columns", "local filters", "documented functional display density props", "documented documents and collaboration static content props"],
     forbiddenConsumerOverrides: ["ad hoc dense card padding", "global table overflow rules", "page-level horizontal scrollers", "consumer-local row/list/group/detail density systems", "consumer-local tree/document/comment/template systems"],
     proofExpectations: ["mobile no page-level overflow", "table-local overflow only", "long-token containment", "SettingsLayout uses frame/content container queries and one complete form column", "RecordRow/RecordTable/DetailLayout examples fit without overlarge card regression", "TreeNav/DocumentCanvas/TocRail examples fit without vendor-asset leakage"],
@@ -417,20 +522,20 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["packages/ui-react/src/index.tsx", "apps/storybook/src/contract-stories/story-content.tsx"],
     storybookRoutes: ["components.html#component-family-index", "components.html#field-spec-usage", "components.html#navigation-shell-spec", "components.html#records-and-boards-components-spec", "patterns.html#forms-patterns", "patterns.html#records-and-boards-patterns"],
     authorityLevel: "package_authority",
-    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy", "functionalDisplayDensityRegistry", "settingControlSelectionContract", "pageHierarchyContract"],
+    readbackFields: ["packageExport", "variantProps", "slotContract", "componentIdentity", "storyRoute", "productSuffixColorHierarchy", "functionalDisplayDensityRegistry", "settingControlSelectionContract", "fieldValueSelectionContract", "dictionaryContentContract", "overlayBoundaryContract", "pageHierarchyContract"],
     allowedConsumerInputs: ["IA/data", "locale data", "content slots", "documented callbacks"],
     forbiddenConsumerOverrides: ["local reusable clones", "Storybook-only prototype imports", "package-looking selectors outside DS", "consumer-local page-header/filter/list/group/board/detail/activity systems"],
-    proofExpectations: ["package import receipt", "component identity markers", "SettingChoice and NumberInput semantic markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace", "functional display layout and density components exported by @tcrn/ui-react"],
+    proofExpectations: ["package import receipt", "component identity markers", "SettingChoice, MultiSelect, SuggestInput, DictionaryTable, and NumberInput semantic markers", "ProductLogo suffix accent hierarchy", "no visible local UI namespace", "functional display layout and density components exported by @tcrn/ui-react"],
     missingStandardEscalation: "Return a needed DS component/pattern list instead of building product-local shared UI."
   },
   {
     id: "interaction-motion-accessibility",
     label: "Interaction, motion, and accessibility",
     category: "Foundation",
-    sourcePaths: ["packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/Form/Form.tsx", "scripts/internal-alpha-browser-proof.mjs", "scripts/ds-consumption-proof.mjs"],
+    sourcePaths: ["packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/Form/Form.tsx", "packages/ui-react/src/components/Overlay/Overlay.tsx", "scripts/internal-alpha-browser-proof.mjs", "scripts/ds-consumption-proof.mjs", "scripts/full-surface-remediation-proof.mjs"],
     storybookRoutes: ["style-guide.html#icons-motion", "components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#overlay-focus"],
     authorityLevel: "proof_contract",
-    readbackFields: ["transitionProperty", "duration", "easing", "keyboardActivation", "focusReturn", "reducedMotion"],
+    readbackFields: ["transitionProperty", "duration", "easing", "keyboardActivation", "focusReturn", "reducedMotion", "overlayBoundaryContract"],
     allowedConsumerInputs: ["callback implementations", "route-owned state persistence", "semantic disabled reasons"],
     forbiddenConsumerOverrides: ["wrapper-only event delegation", "static endpoint-only motion proof", "unproven no-op affordances"],
     proofExpectations: ["Enter/Space activation", "native numeric keyboard and paste entry", "Escape/blur dismissal", "sampled motion timeline", "reduced-motion suppression"],
@@ -443,7 +548,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/Layout/Layout.tsx"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#owner-quality-product-shell"],
     authorityLevel: "storybook_visual_oracle",
-    readbackFields: ["viewport", "searchMaxWidth", "collapsePolicy", "pageOverflow", "tableLocalOverflow", "pageHierarchyContract"],
+    readbackFields: ["viewport", "searchMaxWidth", "collapsePolicy", "pageOverflow", "tableLocalOverflow", "overlayBoundaryContract", "pageHierarchyContract"],
     allowedConsumerInputs: ["mobile content order", "mobile route content", "approved hidden-affordance policy"],
     forbiddenConsumerOverrides: ["page-level horizontal overflow", "clickable mobile no-op controls", "full-width search beyond accepted cap"],
     proofExpectations: ["390px mobile no page overflow", "390/768/980/1024/1180/1280/1440 container matrix", "nested narrow content stacks without clipping", "mobile search cap", "mobile collapse hidden/disabled per oracle"],
@@ -457,11 +562,12 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
       "apps/storybook/src/build/ai-consumption-contract.ts",
       "scripts/storybook-smoke.mjs",
       "scripts/internal-alpha-browser-proof.mjs",
-      "scripts/ds-consumption-proof.mjs"
+      "scripts/ds-consumption-proof.mjs",
+      "scripts/full-surface-remediation-proof.mjs"
     ],
     storybookRoutes: ["proof.html#ai-consumption-contract", "proof.html#proof-matrix"],
     authorityLevel: "proof_contract",
-    readbackFields: ["contractPayloadDigest", "artifactPaths", "browserMetrics", "screenshotPaths", "noOverclaimBoundaries", "consumerVerificationContract", "pageHierarchyContract"],
+    readbackFields: ["contractPayloadDigest", "artifactPaths", "browserMetrics", "screenshotPaths", "noOverclaimBoundaries", "consumerVerificationContract", "fieldValueSelectionContract", "dictionaryContentContract", "overlayBoundaryContract", "pageHierarchyContract"],
     allowedConsumerInputs: ["proof artifact paths", "route-specific metric readbacks"],
     forbiddenConsumerOverrides: ["marker-only proof", "stale screenshots as current oracle", "hidden failed proof gaps"],
     proofExpectations: ["AI contract digest verified", "llms alignment", "positive and negative consumer legs", "browser screenshot/metric receipts", "no-overclaim scan"],
@@ -474,7 +580,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["apps/storybook/src/build/foundation-visual-standards.ts", "apps/storybook/src/build/ai-consumption-contract.ts"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#ai-consumption-contract"],
     authorityLevel: "consumer_contract",
-    readbackFields: ["allowedInputs", "forbiddenOverrides", "rejectCriteria", "missingStandardEscalation", "routeOwner", "settingControlSelectionContract", "settingsLayoutContract", "pageHierarchyContract", "consumerVerificationContract"],
+    readbackFields: ["allowedInputs", "forbiddenOverrides", "rejectCriteria", "missingStandardEscalation", "routeOwner", "settingControlSelectionContract", "fieldValueSelectionContract", "dictionaryContentContract", "overlayBoundaryContract", "settingsLayoutContract", "pageHierarchyContract", "consumerVerificationContract"],
     allowedConsumerInputs: ["product data", "IA labels", "copy keys", "documented DS props", "callbacks"],
     forbiddenConsumerOverrides: ["consumer-local shared spacing", "consumer-local typography", "shell-control geometry", "package-equivalent styles", "consumer-local functional display layout/density components"],
     proofExpectations: ["consumer contract present in AI JSON", "local style clone reject criteria present", "llms first-read alignment"],
