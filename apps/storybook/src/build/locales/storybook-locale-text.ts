@@ -2,6 +2,9 @@ import type { TcrnLocale } from "@tcrn/ui-copy-state";
 
 export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
   "zh-CN": {
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "直接的 SettingRow 子项共享完整表单的标签、控件和按内容宽度分配的工具轨道；SettingRowList 为显式分组提供相同的共享轨道。每行使用子网格，使有操作和无操作的行保持对齐",
+    "SettingRow label, control, and tools stack in source order": "SettingRow 标签、控件和工具按源顺序堆叠",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "直接的 SettingRow 子项共享完整表单的标签、控件和按内容宽度分配的工具轨道；SettingRowList 为显式分组提供相同的共享轨道。每行使用子网格，使有操作和无操作的行保持对齐; SettingRow 标签、控件和工具按源顺序堆叠",
     "shell.title": "TCRN 设计系统契约故事",
     "shell.brand": "TCRN 设计系统",
     "shell.skip": "跳到内容",
@@ -155,6 +158,9 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "不声明包发布或发布状态的人类可读本地检查点历史。"
   },
   en: {
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align",
+    "SettingRow label, control, and tools stack in source order": "SettingRow label, control, and tools stack in source order",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order",
     "shell.title": "TCRN Design System Contract Stories",
     "shell.brand": "TCRN Design System",
     "shell.skip": "Skip to content",
@@ -308,6 +314,9 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "Human-readable local checkpoint history without package publication or release claims."
   },
   ja: {
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "直接の SettingRow 子要素はフォーム全体のラベル、コントロール、内容幅に合わせたツール列を共有します。SettingRowList は明示的なグループに同じ共有列を提供します。各行はサブグリッドを使い、操作の有無にかかわらず整列します",
+    "SettingRow label, control, and tools stack in source order": "SettingRow のラベル、コントロール、ツールをソース順に積み重ねます",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "直接の SettingRow 子要素はフォーム全体のラベル、コントロール、内容幅に合わせたツール列を共有します。SettingRowList は明示的なグループに同じ共有列を提供します。各行はサブグリッドを使い、操作の有無にかかわらず整列します; SettingRow のラベル、コントロール、ツールをソース順に積み重ねます",
     "shell.title": "TCRN デザインシステム契約ストーリー",
     "shell.brand": "TCRN デザインシステム",
     "shell.skip": "本文へスキップ",
@@ -461,6 +470,9 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "パッケージ公開やリリース主張を伴わない、人が読めるローカルチェックポイント履歴。"
   },
   ko: {
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "직접 배치한 SettingRow 자식은 전체 폼의 레이블, 컨트롤, 콘텐츠 너비의 도구 열을 공유합니다. SettingRowList는 명시적 그룹에 같은 공유 열을 제공합니다. 각 행은 하위 그리드를 사용하여 작업 유무와 관계없이 정렬됩니다",
+    "SettingRow label, control, and tools stack in source order": "SettingRow 레이블, 컨트롤, 도구를 소스 순서로 쌓습니다",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "직접 배치한 SettingRow 자식은 전체 폼의 레이블, 컨트롤, 콘텐츠 너비의 도구 열을 공유합니다. SettingRowList는 명시적 그룹에 같은 공유 열을 제공합니다. 각 행은 하위 그리드를 사용하여 작업 유무와 관계없이 정렬됩니다; SettingRow 레이블, 컨트롤, 도구를 소스 순서로 쌓습니다",
     "shell.title": "TCRN 디자인 시스템 계약 스토리",
     "shell.brand": "TCRN 디자인 시스템",
     "shell.skip": "본문으로 건너뛰기",
@@ -614,6 +626,9 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "패키지 게시나 릴리스 주장이 없는 사람이 읽을 수 있는 로컬 체크포인트 기록."
   },
   fr: {
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "Les enfants SettingRow directs partagent les colonnes de libellé, de contrôle et d’outils dimensionnés au contenu du formulaire complet ; SettingRowList fournit ces mêmes colonnes à un groupe explicite. Chaque ligne utilise une sous-grille pour aligner les lignes avec ou sans actions",
+    "SettingRow label, control, and tools stack in source order": "Le libellé, le contrôle et les outils de SettingRow s’empilent dans l’ordre source",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "Les enfants SettingRow directs partagent les colonnes de libellé, de contrôle et d’outils dimensionnés au contenu du formulaire complet ; SettingRowList fournit ces mêmes colonnes à un groupe explicite. Chaque ligne utilise une sous-grille pour aligner les lignes avec ou sans actions; Le libellé, le contrôle et les outils de SettingRow s’empilent dans l’ordre source",
     "shell.title": "Histoires contractuelles du Design System TCRN",
     "shell.brand": "Design System TCRN",
     "shell.skip": "Aller au contenu",

@@ -9,9 +9,94 @@ import { createServer } from "node:http";
 import { extname, normalize, relative, resolve } from "node:path";
 import { chromium } from "@playwright/test";
 import { build } from "esbuild";
-import { evaluateConsumerEvidence, validateContentScope } from "../packages/ui-react/dist/index.js";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { evaluateConsumerEvidence, validateContentScope, Surface, OperationFeedback, tcrnComponentCss } from "../packages/ui-react/dist/index.js";
+import { tcrnTokenCss } from "../packages/ui-tokens/dist/index.js";
+import { settingsLayoutContract } from "../apps/storybook/dist/build/foundation-visual-standards.js";
+import { storybookContentText, storybookLocaleText } from "../apps/storybook/dist/build/i18n.js";
 
 const root = resolve(".");
+
+async function runFullDetailsContainmentProof(browser) {
+  const unbroken = "unbroken-path-hash-reason".replaceAll("-", "").repeat(40);
+  const structured = JSON.stringify({ path: `/fixture/${unbroken}`, hash: unbroken, failures: [unbroken, unbroken], nested: { unchanged: true } }, null, 2);
+  const markup = renderToStaticMarkup(createElement("div", { id: "detail-matrix" },
+    createElement(Surface, {
+      id: "detail-card", heading: createElement("h2", null, unbroken),
+      actions: createElement("span", { className: "tcrn-badge tcrn-badge--danger" }, "Failed")
+    }, ...[0, 1].map((index) => createElement(OperationFeedback, {
+      key: index, id: `detail-${index}`, phase: "error", expanded: true,
+      identity: { operation: "Inspect local fixture", operationId: unbroken, actor: "Synthetic operator", actorId: unbroken },
+      identityLabels: { operation: "Operation", operationId: unbroken, actor: "Actor", actorId: "Actor id" },
+      detailsLabel: "View full receipt", detailTitle: "Full receipt details", details: createElement("pre", { "data-structured-detail": index }, structured)
+    }))),
+    createElement(Surface, { id: "neighbor-card", heading: createElement("h2", null, "Selected library"), actions: createElement("span", { className: "tcrn-badge tcrn-badge--danger" }, "Failed") },
+      createElement("dl", { className: "tcrn-definition-list" }, createElement("div", { className: "tcrn-definition-list__item" },
+        createElement("dt", { className: "tcrn-definition-list__term" }, "Path"), createElement("dd", { className: "tcrn-definition-list__definition" }, unbroken))))));
+  const observations = [];
+  for (const fixture of [
+    { id: "wide", viewport: 1440 }, { id: "narrow", viewport: 390 },
+    { id: "nested-wide", viewport: 1440, mother: 900 }, { id: "nested-narrow", viewport: 1440, mother: 360 }
+  ]) {
+    const page = await browser.newPage({ viewport: { width: fixture.viewport, height: 900 }, reducedMotion: "reduce" });
+    try {
+      await page.setContent(`<!doctype html><meta charset="utf-8"><style>${tcrnTokenCss}${tcrnComponentCss}
+        body{margin:0;padding:var(--tcrn-space-4);font-family:var(--tcrn-type-family-body)}
+        #detail-matrix{display:grid;grid-template-columns:${fixture.viewport === 390 || fixture.mother === 360 ? "minmax(0,1fr)" : "repeat(2,minmax(0,1fr))"};gap:var(--tcrn-space-4);max-inline-size:100%;inline-size:${fixture.mother ? `${fixture.mother}px` : "100%"}}
+      </style>${markup}`);
+      const observe = () => page.evaluate(() => {
+        const box = (node) => { const r = node.getBoundingClientRect(); return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width }; };
+        const leaks = [];
+        for (const card of document.querySelectorAll("#detail-matrix > .tcrn-surface")) {
+          const bound = box(card);
+          for (const node of card.querySelectorAll(".tcrn-surface__head,.tcrn-surface__head > *, .tcrn-operation-feedback,.tcrn-operation-feedback__summary,.tcrn-operation-feedback__identity dt,.tcrn-operation-feedback__identity dd,.tcrn-badge,pre,.tcrn-definition-list__definition")) {
+            const r = box(node);
+            if (r.left < bound.left - 1 || r.right > bound.right + 1 || node.scrollWidth > node.clientWidth + 1) leaks.push({ tag: node.tagName, className: node.className, box: r, bound, scrollWidth: node.scrollWidth, clientWidth: node.clientWidth });
+          }
+        }
+        const cards = Array.from(document.querySelectorAll("#detail-matrix > .tcrn-surface"), box);
+        return { cards, leaks, pageOverflow: document.documentElement.scrollWidth > innerWidth,
+          details: Array.from(document.querySelectorAll("pre"), (node) => ({ text: node.textContent, whiteSpace: getComputedStyle(node).whiteSpace, box: box(node) })),
+          badges: Array.from(document.querySelectorAll("#detail-matrix .tcrn-badge"), (node) => ({ text: node.textContent, box: box(node) })),
+          hiddenData: Array.from(document.querySelectorAll("pre"), (node) => ["hidden", "clip"].includes(getComputedStyle(node).overflowX)) };
+      });
+      const positive = await observe();
+      assert(!positive.pageOverflow && positive.leaks.length === 0 && positive.hiddenData.every((value) => !value), `${fixture.id}: full-detail containment failed: ${JSON.stringify(positive.leaks)}`);
+      assert(positive.details.length === 2 && positive.details.every((entry) => entry.text === structured && entry.whiteSpace === "pre-wrap"), `${fixture.id}: structured detail bytes changed or cannot wrap`);
+      assert(positive.badges.length === 4 && positive.badges.every((entry) => entry.text === "Failed"), `${fixture.id}: failed states changed`);
+      assert(positive.cards[0].right <= positive.cards[1].left || positive.cards[0].bottom <= positive.cards[1].top, `${fixture.id}: neighboring cards overlap`);
+      await page.addStyleTag({ content: ".tcrn-operation-feedback__details-body pre{white-space:pre!important}" });
+      const negative = await observe();
+      assert(negative.pageOverflow || negative.leaks.length > 0, `${fixture.id}: unwrapped structured-details negative was not rejected`);
+      observations.push({ fixture, positive, unwrappedNegative: negative });
+    } finally { await page.close(); }
+  }
+  return { structured, observations };
+}
+
+async function runSettingsExplanationLocaleProof(browser, origin) {
+  const query = settingsLayoutContract.containerQueries[1];
+  const entries = [query.whenAtOrAbove, `${query.whenAtOrAbove}; ${query.whenBelow}`];
+  const observations = [];
+  for (const locale of ["en", "zh-CN", "ja", "ko", "fr"]) {
+    for (const source of entries) {
+      assert(storybookContentText[source]?.[locale] && storybookLocaleText[locale]?.[source] === storybookContentText[source][locale], `settings explanation is missing ${locale} in a required dictionary`);
+    }
+    for (const [route, source] of [["patterns-forms-workbench.html", entries[1]], ["proof-proof-governance.html", entries[0]]]) {
+      const page = await browser.newPage();
+      try {
+        await page.goto(`${origin}/apps/storybook/storybook-static/${route}?locale=${locale}&theme=light`);
+        await settle(page);
+        const expected = storybookContentText[source][locale];
+        const matches = await page.locator(".tcrn-table-shell__cell").evaluateAll((cells, value) => cells.filter((node) => node.textContent?.trim() === value).map((node) => ({ text: node.textContent, rectCount: node.getClientRects().length, invariant: Boolean(node.closest("[data-locale-invariant]")) })), expected);
+        assert(matches.length === 1, `${route}/${locale}: actual settings explanation not translated`);
+        observations.push({ locale, route, expected, matches });
+      } finally { await page.close(); }
+    }
+  }
+  return observations;
+}
 
 function contentType(path) {
   if (extname(path) === ".html") return "text/html; charset=utf-8";
@@ -827,6 +912,8 @@ try {
 
   results.staticHtmlCssConsumer = await runStaticHtmlCssConsumerProof(browser);
   results.clientFixture = await runClientFixtureProof(browser);
+  results.fullDetailsContainment = await runFullDetailsContainmentProof(browser);
+  results.settingsExplanationLocales = await runSettingsExplanationLocaleProof(browser, staticServer.origin);
 
   results.ok = true;
 } finally {
