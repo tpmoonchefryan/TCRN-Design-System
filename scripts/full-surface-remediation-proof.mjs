@@ -11,7 +11,7 @@ import { chromium } from "@playwright/test";
 import { build } from "esbuild";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { evaluateConsumerEvidence, validateContentScope, Surface, OperationFeedback, tcrnComponentCss } from "../packages/ui-react/dist/index.js";
+import { evaluateConsumerEvidence, validateContentScope, Surface, OperationFeedback, DefinitionList, tcrnComponentCss } from "../packages/ui-react/dist/index.js";
 import { tcrnTokenCss } from "../packages/ui-tokens/dist/index.js";
 import { settingsLayoutContract } from "../apps/storybook/dist/build/foundation-visual-standards.js";
 import { storybookContentText, storybookLocaleText } from "../apps/storybook/dist/build/i18n.js";
@@ -32,25 +32,25 @@ async function runFullDetailsContainmentProof(browser) {
       detailsLabel: "View full receipt", detailTitle: "Full receipt details", details: createElement("pre", { "data-structured-detail": index }, structured)
     }))),
     createElement(Surface, { id: "neighbor-card", heading: createElement("h2", null, "Selected library"), actions: createElement("span", { className: "tcrn-badge tcrn-badge--danger" }, "Failed") },
-      createElement("dl", { className: "tcrn-definition-list" }, createElement("div", { className: "tcrn-definition-list__item" },
-        createElement("dt", { className: "tcrn-definition-list__term" }, "Path"), createElement("dd", { className: "tcrn-definition-list__definition" }, unbroken))))));
+      createElement(DefinitionList, { items: [{ key: "path", term: unbroken, definition: unbroken }] }))));
   const observations = [];
   for (const fixture of [
     { id: "wide", viewport: 1440 }, { id: "narrow", viewport: 390 },
-    { id: "nested-wide", viewport: 1440, mother: 900 }, { id: "nested-narrow", viewport: 1440, mother: 360 }
+    { id: "nested-wide", viewport: 1440, mother: 900 }, { id: "nested-narrow", viewport: 1440, mother: 360 },
+    { id: "nested-card", viewport: 1440, mother: 360, columns: 2 }
   ]) {
     const page = await browser.newPage({ viewport: { width: fixture.viewport, height: 900 }, reducedMotion: "reduce" });
     try {
       await page.setContent(`<!doctype html><meta charset="utf-8"><style>${tcrnTokenCss}${tcrnComponentCss}
         body{margin:0;padding:var(--tcrn-space-4);font-family:var(--tcrn-type-family-body)}
-        #detail-matrix{display:grid;grid-template-columns:${fixture.viewport === 390 || fixture.mother === 360 ? "minmax(0,1fr)" : "repeat(2,minmax(0,1fr))"};gap:var(--tcrn-space-4);max-inline-size:100%;inline-size:${fixture.mother ? `${fixture.mother}px` : "100%"}}
+        #detail-matrix{display:grid;grid-template-columns:${(fixture.viewport === 390 || fixture.mother === 360) && fixture.columns !== 2 ? "minmax(0,1fr)" : "repeat(2,minmax(0,1fr))"};gap:var(--tcrn-space-4);max-inline-size:100%;inline-size:${fixture.mother ? `${fixture.mother}px` : "100%"}}
       </style>${markup}`);
       const observe = () => page.evaluate(() => {
         const box = (node) => { const r = node.getBoundingClientRect(); return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width }; };
         const leaks = [];
         for (const card of document.querySelectorAll("#detail-matrix > .tcrn-surface")) {
           const bound = box(card);
-          for (const node of card.querySelectorAll(".tcrn-surface__head,.tcrn-surface__head > *, .tcrn-operation-feedback,.tcrn-operation-feedback__summary,.tcrn-operation-feedback__identity dt,.tcrn-operation-feedback__identity dd,.tcrn-badge,pre,.tcrn-definition-list__definition")) {
+          for (const node of card.querySelectorAll(".tcrn-surface__head,.tcrn-surface__head > *, .tcrn-operation-feedback,.tcrn-operation-feedback__summary,.tcrn-operation-feedback__identity dt,.tcrn-operation-feedback__identity dd,.tcrn-badge,pre,.tcrn-definition-list__term,.tcrn-definition-list__definition")) {
             const r = box(node);
             if (r.left < bound.left - 1 || r.right > bound.right + 1 || node.scrollWidth > node.clientWidth + 1) leaks.push({ tag: node.tagName, className: node.className, box: r, bound, scrollWidth: node.scrollWidth, clientWidth: node.clientWidth });
           }

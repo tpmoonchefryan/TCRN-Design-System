@@ -227,3 +227,7 @@ vocabulary, so it resolves that itself and passes the winner as `initialTheme` o
 inside the card, including nested narrow cards and long heading text. Structured
 `OperationFeedback` details preserve preformatted content while wrapping long
 paths and hashes; identity labels and values remain inside their assigned tracks.
+
+`DefinitionList` stacks at its 760px mother-width boundary as well as the narrow
+viewport fallback. Terms and definitions wrap in nested cards without a fixed
+consumer term-column minimum.
