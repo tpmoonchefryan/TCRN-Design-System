@@ -135,11 +135,18 @@ async function buildClientFixture() {
                 <button type="button" data-wide onClick={() => setAvailableInlineSize(500)}>Wide</button>
                 <output data-choice-callbacks>{callbacks.join(",")}</output>
               </section>
-              <form data-selection-form>
+              <form data-selection-form data-locale-invariant="true" onSubmit={(event) => {
+                event.preventDefault();
+                window.__fullSurfaceSubmissions.push(Array.from(new FormData(event.currentTarget).entries()));
+              }}>
                 <Field label="Collection" hint="Choose one or more values." error="Synthetic collection error">
                   <MultiSelect name="fixture-collection" defaultValue={["one"]} options={[{ value: "one", label: "One" }, { value: "two", label: "Two" }, { value: "blocked", label: "Blocked", disabled: true }]} />
                 </Field>
+                <Field group label="Collection" hint="Choose one or more values.">
+                  <MultiSelect id="fixture-checklist" name="fixture-checklist" presentation="checkboxes" clearSelectionLabel="Clear selection" required defaultValue={["one"]} options={[{ value: "one", label: "One" }, { value: "two", label: "Two" }, { value: "blocked", label: "Blocked", disabled: true }]} />
+                </Field>
                 <SuggestInput name="fixture-open" suggestions={["suggested", "suggested"]} defaultValue="free" />
+                <button type="submit" data-selection-submit>Submit</button>
               </form>
             </main>
           );
@@ -148,6 +155,7 @@ async function buildClientFixture() {
         const style = document.createElement("style");
         style.textContent = tcrnTokenCss + tcrnComponentCss + "body{margin:0;font:13px sans-serif}*{box-sizing:border-box}";
         document.head.append(style);
+        window.__fullSurfaceSubmissions = [];
         createRoot(document.querySelector("#root")).render(<Fixture />);
       `
     },
@@ -619,7 +627,68 @@ async function runClientFixtureProof(browser) {
       };
     });
     assert(afterCollectionRemove.selected.join(",") === "two" && afterCollectionRemove.submitted.join(",") === "two", "client collection removal did not preserve native submission");
-    return { initial, afterScroll, afterResize, afterEscape, afterRadio, afterNarrow, afterWide, afterCollectionAdd, afterCollectionRemove, ok: true };
+
+    const observeChecklist = () => page.evaluate(() => {
+      const form = document.querySelector("[data-selection-form]");
+      const group = document.querySelector("#fixture-checklist");
+      const options = Array.from(group?.querySelectorAll('input[type="checkbox"]') ?? []);
+      const bridge = group?.closest(".tcrn-multi-select-group")?.querySelector('input[required][aria-hidden="true"]');
+      return {
+        nativeCount: document.querySelectorAll("select[data-choice-cardinality='collection']").length,
+        checkboxCount: document.querySelectorAll("[data-choice-cardinality='collection'][data-choice-presentation='checkboxes']").length,
+        totalCount: document.querySelectorAll("[data-choice-cardinality='collection']").length,
+        selected: options.filter((input) => input.checked).map((input) => input.value),
+        submitted: new FormData(form).getAll("fixture-checklist"),
+        entries: Array.from(new FormData(form).entries()),
+        disabled: options.filter((input) => input.disabled).map((input) => input.value),
+        optionRequired: options.map((input) => input.required),
+        valid: form.checkValidity(),
+        activeValue: group?.contains(document.activeElement) ? document.activeElement?.value : null,
+        bridgeCount: group?.closest(".tcrn-multi-select-group")?.querySelectorAll('input[required][aria-hidden="true"]').length ?? 0,
+        bridgeNamed: Boolean(bridge?.name),
+        bridgeCardinality: bridge?.getAttribute("data-choice-cardinality") ?? null,
+        submissions: window.__fullSurfaceSubmissions
+      };
+    });
+    const checklistInitial = await observeChecklist();
+    assert(checklistInitial.nativeCount === 1 && checklistInitial.checkboxCount === 1 && checklistInitial.totalCount === 2
+      && checklistInitial.selected.join(",") === "one" && checklistInitial.submitted.join(",") === "one"
+      && checklistInitial.disabled.join(",") === "blocked" && checklistInitial.valid
+      && checklistInitial.optionRequired.every((required) => !required)
+      && checklistInitial.bridgeCount === 1 && !checklistInitial.bridgeNamed && checklistInitial.bridgeCardinality === null, "client checkbox collection structure/validation bridge inventory failed");
+
+    await page.locator("#fixture-checklist input[value='one']").focus();
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Space");
+    const checklistKeyboardAdd = await observeChecklist();
+    assert(checklistKeyboardAdd.activeValue === "two" && checklistKeyboardAdd.selected.join(",") === "one,two"
+      && checklistKeyboardAdd.submitted.join(",") === "one,two" && checklistKeyboardAdd.valid, "client checkbox Tab/Space multi-selection failed");
+    await page.keyboard.press("Shift+Tab");
+    await page.keyboard.press("Space");
+    const checklistKeyboardRemove = await observeChecklist();
+    assert(checklistKeyboardRemove.activeValue === "one" && checklistKeyboardRemove.selected.join(",") === "two"
+      && checklistKeyboardRemove.submitted.join(",") === "two" && checklistKeyboardRemove.valid, "client checkbox keyboard removal failed");
+    await page.keyboard.press("Space");
+    await page.locator("[data-selection-submit]").click();
+    const checklistSubmitted = await observeChecklist();
+    assert(checklistSubmitted.submissions.length === 1
+      && JSON.stringify(checklistSubmitted.submissions[0]) === JSON.stringify([
+        ["fixture-collection", "two"], ["fixture-checklist", "one"], ["fixture-checklist", "two"], ["fixture-open", "free"]
+      ]), "client native and checkbox collections did not submit distinct repeated values");
+    await page.locator("#fixture-checklist").locator("..").locator("button.tcrn-multi-select-group__clear").click();
+    await page.locator("[data-selection-submit]").click();
+    const checklistCleared = await observeChecklist();
+    assert(checklistCleared.selected.length === 0 && checklistCleared.submitted.length === 0 && !checklistCleared.valid
+      && checklistCleared.submissions.length === 1 && checklistCleared.activeValue === "one"
+      && checklistCleared.totalCount === 2, "client cleared required collection was not refused without changing inventory");
+    await page.evaluate(() => document.querySelector("[data-selection-form]").reset());
+    const checklistReset = await observeChecklist();
+    assert(checklistReset.selected.join(",") === "one" && checklistReset.submitted.join(",") === "one" && checklistReset.valid
+      && JSON.stringify(checklistReset.entries) === JSON.stringify([
+        ["fixture-collection", "one"], ["fixture-checklist", "one"], ["fixture-open", "free"]
+      ]), "client collection reset lost defaults or added validation bridge values");
+    return { initial, afterScroll, afterResize, afterEscape, afterRadio, afterNarrow, afterWide, afterCollectionAdd, afterCollectionRemove,
+      checklistInitial, checklistKeyboardAdd, checklistKeyboardRemove, checklistSubmitted, checklistCleared, checklistReset, ok: true };
   } finally {
     await page.close();
   }
@@ -691,6 +760,12 @@ try {
   await settle(fieldPage);
   results.selection = await fieldPage.evaluate(() => {
     const collection = document.querySelector("select[data-choice-cardinality='collection']");
+    const checklist = document.querySelector("[data-choice-cardinality='collection'][data-choice-presentation='checkboxes']");
+    const checkboxes = Array.from(checklist?.querySelectorAll('input[type="checkbox"]') ?? []);
+    const legend = document.getElementById(checklist?.getAttribute("aria-labelledby") ?? "");
+    const clear = checklist?.closest(".tcrn-multi-select-group")?.querySelector("button.tcrn-multi-select-group__clear");
+    const checklistBox = checklist?.getBoundingClientRect();
+    const checklistStyle = checklist ? getComputedStyle(checklist) : null;
     const openInput = document.querySelector("input[data-choice-value-mode='open']");
     const options = collection instanceof HTMLSelectElement ? Array.from(collection.options) : [];
     if (openInput instanceof HTMLInputElement) {
@@ -698,19 +773,37 @@ try {
       openInput.dispatchEvent(new Event("input", { bubbles: true }));
     }
     return {
+      totalCollectionCount: document.querySelectorAll("[data-choice-cardinality='collection']").length,
       collectionCount: document.querySelectorAll("select[data-choice-cardinality='collection']").length,
+      collectionsClosed: Array.from(document.querySelectorAll("[data-choice-cardinality='collection']")).every((node) => node.getAttribute("data-choice-value-mode") === "closed"),
       collectionMultiple: collection instanceof HTMLSelectElement && collection.multiple,
       collectionSelected: options.filter((option) => option.selected).map((option) => option.value),
       collectionDisabledValues: options.filter((option) => option.disabled).map((option) => option.value),
       collectionUniqueValues: new Set(options.map((option) => option.value)).size === options.length,
+      checkboxCollectionCount: document.querySelectorAll("[data-choice-cardinality='collection'][data-choice-presentation='checkboxes']").length,
+      checkboxStructure: checklist?.tagName === "DIV" && checklist.getAttribute("role") === "group"
+        && legend?.tagName === "LEGEND" && legend.closest("fieldset")?.contains(checklist)
+        && checkboxes.every((input) => input.name === "prompt-languages-checklist" && input.closest("label")),
+      checkboxOptionCount: checkboxes.length,
+      checkboxSelected: checkboxes.filter((input) => input.checked).map((input) => input.value),
+      checkboxDisabledValues: checkboxes.filter((input) => input.disabled).map((input) => input.value),
+      checkboxUniqueValues: new Set(checkboxes.map((input) => input.value)).size === checkboxes.length,
+      checkboxVisible: Boolean(checklistBox && checklistBox.width > 0 && checklistBox.height > 0 && checklistStyle.visibility !== "hidden"),
+      checkboxClearAction: clear instanceof HTMLButtonElement && clear.type === "button" && !clear.disabled && clear.textContent === "Clear selection",
       openInputCount: document.querySelectorAll("input[data-choice-value-mode='open']").length,
       openInputFreeForm: openInput instanceof HTMLInputElement && openInput.value === "free-form-value",
       datalistCount: document.querySelectorAll("input[data-choice-value-mode='open'] + datalist").length,
       datalistOptionCount: document.querySelector("input[data-choice-value-mode='open'] + datalist")?.querySelectorAll("option").length ?? 0
     };
   });
+  assert(results.selection.totalCollectionCount === 2 && results.selection.checkboxCollectionCount === 1, "MultiSelect total/checkbox inventory drifted");
   assert(results.selection.collectionCount === 1 && results.selection.collectionMultiple, "MultiSelect native contract failed");
-  assert(results.selection.collectionDisabledValues.length === 1 && results.selection.openInputFreeForm, "selection state contract failed");
+  assert(results.selection.collectionsClosed && results.selection.collectionUniqueValues
+    && results.selection.collectionSelected.join(",") === "en,zh-CN" && results.selection.collectionDisabledValues.join(",") === "ja"
+    && results.selection.openInputCount === 1 && results.selection.openInputFreeForm, "selection state contract failed");
+  assert(results.selection.checkboxStructure && results.selection.checkboxOptionCount === 3 && results.selection.checkboxUniqueValues
+    && results.selection.checkboxSelected.join(",") === "en,zh-CN" && results.selection.checkboxDisabledValues.join(",") === "ja"
+    && results.selection.checkboxVisible && results.selection.checkboxClearAction, "MultiSelect checkbox presentation contract failed");
   assert(results.selection.datalistCount === 1 && results.selection.datalistOptionCount === 2, "SuggestInput datalist contract failed");
   await fieldPage.close();
 
