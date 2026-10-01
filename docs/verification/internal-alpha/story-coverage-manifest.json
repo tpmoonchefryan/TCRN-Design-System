@@ -375,7 +375,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "a56fcf3427866d4034ede1c59b59b888ac8169ca19fcd1c3af66b0a49cd16138",
+    "contractPayloadDigest": "66a1cc5fad098f7aa802416ab3577d3735583c700edd1b78c5c6b715b3b3ccb4",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 21,
@@ -7895,7 +7895,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 62,
-        "leakCount": 2944,
+        "leakCount": 2956,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -8055,7 +8055,7 @@
           },
           {
             "storyId": "forms-patterns",
-            "leakCount": 47
+            "leakCount": 54
           },
           {
             "storyId": "workbench-patterns",
@@ -8083,7 +8083,7 @@
           },
           {
             "storyId": "selection-list-patterns",
-            "leakCount": 29
+            "leakCount": 34
           },
           {
             "storyId": "modal-validation-patterns",

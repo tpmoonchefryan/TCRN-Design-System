@@ -101,7 +101,9 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
   "ai-consumption-contract": {
     // 11406 -> 11536 (EPIC038 correction): operation phase semantics, rendered
     // content evidence, and value-level consumer evidence are read back together.
-    recordedHeightPx: 11536,
+    // 11536 -> 11764 (INC-399): the shared settings-row and collection-selection
+    // contracts now read back the approved grouping, checklist, and clear action.
+    recordedHeightPx: 11764,
     owedTo: "beyond-INIT-008",
     note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },
