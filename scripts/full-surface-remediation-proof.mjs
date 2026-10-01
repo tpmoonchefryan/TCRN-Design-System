@@ -86,11 +86,12 @@ async function runSettingsExplanationLocaleProof(browser, origin) {
     for (const [route, source] of [["patterns-forms-workbench.html", entries[1]], ["proof-proof-governance.html", entries[0]]]) {
       const page = await browser.newPage();
       try {
-        await page.goto(`${origin}/apps/storybook/storybook-static/${route}?locale=${locale}&theme=light`);
+        const story = route === "patterns-forms-workbench.html" ? "forms-patterns" : "ai-consumption-contract";
+        await page.goto(`${origin}/apps/storybook/storybook-static/${route}?locale=${locale}&theme=light#${story}`);
         await settle(page);
         const expected = storybookContentText[source][locale];
         const matches = await page.locator(".tcrn-table-shell__cell").evaluateAll((cells, value) => cells.filter((node) => node.textContent?.trim() === value).map((node) => ({ text: node.textContent, rectCount: node.getClientRects().length, invariant: Boolean(node.closest("[data-locale-invariant]")) })), expected);
-        assert(matches.length === 1, `${route}/${locale}: actual settings explanation not translated`);
+        assert(matches.length === 1 && matches[0].rectCount > 0, `${route}/${locale}: visible settings explanation not translated`);
         observations.push({ locale, route, expected, matches });
       } finally { await page.close(); }
     }
