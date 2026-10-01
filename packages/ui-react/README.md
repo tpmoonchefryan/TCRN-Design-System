@@ -222,3 +222,8 @@ client-only product omits the prop and behaves as before. An explicit URL query
 still outranks a stored preference: only the product knows its own URL
 vocabulary, so it resolves that itself and passes the winner as `initialTheme` or
 `initialLocale`.
+
+`Surface` accepts optional `heading` and `actions` slots. Its shared header wraps
+inside the card, including nested narrow cards and long heading text. Structured
+`OperationFeedback` details preserve preformatted content while wrapping long
+paths and hashes; identity labels and values remain inside their assigned tracks.

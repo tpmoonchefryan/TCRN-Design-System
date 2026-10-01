@@ -2,8 +2,23 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { cx } from "../../utils.js";
 import { Heading } from "../Typography/index.js";
 
-export function Surface({ className, ...props }: HTMLAttributes<HTMLElement>) {
-  return <section {...props} className={cx("tcrn-surface", className)} />;
+export interface SurfaceProps extends HTMLAttributes<HTMLElement> {
+  heading?: ReactNode;
+  actions?: ReactNode;
+}
+
+export function Surface({ className, heading, actions, children, ...props }: SurfaceProps) {
+  return (
+    <section {...props} className={cx("tcrn-surface", className)}>
+      {heading !== undefined || actions !== undefined ? (
+        <header className="tcrn-surface__head">
+          <div className="tcrn-surface__head-content">{heading}</div>
+          {actions !== undefined ? <div className="tcrn-surface__head-actions">{actions}</div> : null}
+        </header>
+      ) : null}
+      {children}
+    </section>
+  );
 }
 
 export function Divider(props: HTMLAttributes<HTMLHRElement>) {

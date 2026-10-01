@@ -185,6 +185,13 @@ reason codes wrap in the identity/details region and must not be placed in the c
 `aria-expanded` and `aria-controls`, while the root's polite live region
 announces updates without moving focus.
 
+`Surface` supplies optional heading and actions slots through its shared wrapping
+header. Each slot shrinks within the card, with actions wrapping when their
+combined width does not fit. Static consumers use the same header child classes.
+`OperationFeedback` identity labels and values both wrap. Structured `pre` details
+preserve all whitespace and bytes while wrapping long paths and hashes inside
+the disclosure; neither surface clips data to satisfy its container.
+
 `ContentScope` validates one consumer-owned `scope` and `dataSource` at a time.
 `content` requires visible items, `empty` requires zero shown items, and
 `loading`/`error` remain distinct from empty unless stale content is explicitly
