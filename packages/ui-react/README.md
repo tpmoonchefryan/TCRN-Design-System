@@ -39,15 +39,21 @@ uses the supplied `value` for the controlled form; either mode retains a valid
 selection when the branches swap. `onChange` reports actual user value changes
 once and is silent during layout-only swaps or unchanged-value events.
 
-`SettingsLayout` uses the actual content container to choose its density. At a
+`SettingsLayout` uses the actual content container to choose its density. Wrap
+related setting rows in `SettingRowList`; it shares the label, control, and
+tools tracks so rows with and without reset actions align. At a
 960px frame it places compact local navigation beside one content column; below
 that it stays one column. Its content stacks `SettingRow` label, control, and tools
 below 720px. The layout keeps long native input values selectable and copyable and
 does not hide configuration through overflow clipping. `SettingsHostSwitcher`
 expresses the single-host-before-complete-form composition.
 
-`MultiSelect` is the native closed-set collection control: its selected values,
-disabled options, keyboard behavior, and repeated form values remain native.
+`MultiSelect` is the closed-set collection control. It defaults to the native
+multiple-select; use `presentation="checkboxes"` with a localized
+`clearSelectionLabel` when a visible checklist is needed. The checklist keeps
+native checkbox keyboard and repeated form values, preserves disabled options,
+and resets to `defaultValue` with its form. Wrap grouped controls in
+`<Field group>` to provide fieldset/legend semantics.
 `SuggestInput` is the open-string control: its datalist suggestions are advisory
 and never reject a value outside the suggestion list. `DictionaryTable` renders
 one category description and requires a separate explanation for every machine

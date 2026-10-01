@@ -111,7 +111,7 @@ export const fieldValueSelectionContract = {
       cardinality: "collection",
       valueDomain: "closed",
       control: "MultiSelect",
-      rule: "Use native multiple selection; preserve disabled options, selected state, deduplication, keyboard interaction, and repeated form values."
+      rule: "Native multiple-select stays the default. A visible checkbox-list presentation is available when the options need an explicit checklist; preserve disabled options, unique values, keyboard access, repeated form values, and a labeled clear action."
     },
     {
       cardinality: "single",
@@ -122,8 +122,8 @@ export const fieldValueSelectionContract = {
   ],
   stateContract: {
     controlled: "value is authoritative and onChange returns the semantic value.",
-    uncontrolled: "defaultValue seeds native state and user changes remain readable from the native control.",
-    collection: "values are unique and constrained only when the field is declared closed-set."
+    uncontrolled: "defaultValue seeds the native select or checkbox list; form reset returns to that default and user changes remain readable from the control.",
+    collection: "values are unique and constrained only when the field is declared closed-set; the checkbox list submits repeated native checkbox values."
   },
   domainBoundary: "DS owns cardinality and value-domain presentation; the consumer supplies field ownership, allowed values, labels, defaults, and submission policy.",
   rejectCriteria: [
@@ -199,7 +199,7 @@ export const overlayBoundaryContract = {
 export const settingsLayoutContract = {
   id: "settings-layout-contract-v1",
   storybookRoutes: ["components.html#field-spec-usage", "patterns.html#forms-patterns"],
-  packageExports: ["SettingsLayout", "SettingsHostSwitcher", "SettingRow", "Input", "NumberInput"],
+  packageExports: ["SettingsLayout", "SettingsHostSwitcher", "SettingRowList", "SettingRow", "Input", "NumberInput"],
   tokens: {
     frameSplit: "--tcrn-container-settings-split",
     contentStack: "--tcrn-container-settings-content-stack",
@@ -219,13 +219,14 @@ export const settingsLayoutContract = {
       id: "DS-107-R1-content",
       container: "SettingsLayout content",
       thresholdPx: 720,
-      whenAtOrAbove: "SettingRow label, control, and tools share one row",
+      whenAtOrAbove: "SettingRowList owns one shared label, control, and max-content tools grid; each SettingRow uses subgrid so rows with and without actions align",
       whenBelow: "SettingRow label, control, and tools stack in source order"
     }
   ],
   construction: {
     hostSelection: "one SettingsHostSwitcher before the selected host's form",
     form: "one complete form column; never parallel host columns",
+    settingRows: "wrap related SettingRow children in SettingRowList so tools width and control starts align across rows",
     localNavigation: "compact, bounded by its own scroll container, with no page-level overflow",
     longValue: "native input remains selectable and copyable; no overflow clipping or ellipsis"
   },
@@ -452,7 +453,7 @@ export const consumerVerificationContract = {
     "more-than-two value choice rendered as Select",
     "binary value choice preserves a disabled option in radio and Select branches",
     "radio/Select branch switching preserves controlled and uncontrolled values without synthetic callbacks",
-    "closed collection uses native MultiSelect and open strings use free-form SuggestInput",
+    "closed collections retain native MultiSelect by default and can use the accessible checkbox-list mode with clear action; open strings use free-form SuggestInput",
     "native NumberInput with complete value and range markers",
     "container-driven SettingsLayout with one host and one complete form",
     "correct explicit two-level PageHierarchy with content below parent tabs",
@@ -821,6 +822,7 @@ export const foundationVisualStandardsReadback = {
   storybookDocShellVisualOracle,
   consumerVisualStyleContract,
   settingControlSelectionContract,
+  fieldValueSelectionContract,
   settingsLayoutContract,
   pageHierarchyContract,
   verificationCadenceContract,
