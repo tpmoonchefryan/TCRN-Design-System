@@ -140,6 +140,11 @@ reserved for navigation. `NumberInput` owns numeric entry; `Stepper` owns proces
 position.
 `SettingsLayout` owns the one-host, one-complete-form composition and never uses
 `overflow: hidden` to conceal fields, labels, actions, or long values.
+Direct `SettingRow` children remain supported: at the content threshold they
+share the complete form's label, control, and tools tracks. `SettingRowList`
+owns the shared tracks for an explicit group. Both shapes stack below the same
+content threshold, keep empty tools slots aligned, and wrap long labels and
+descriptions inside their assigned columns.
 `SettingChoice` retains a valid value across radio/Select branch changes in both
 controlled (`value`) and uncontrolled (`defaultValue`) modes. Its `onChange`
 callback reports actual user value changes once; changing only the available

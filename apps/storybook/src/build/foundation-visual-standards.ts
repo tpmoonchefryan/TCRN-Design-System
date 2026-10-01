@@ -219,7 +219,7 @@ export const settingsLayoutContract = {
       id: "DS-107-R1-content",
       container: "SettingsLayout content",
       thresholdPx: 720,
-      whenAtOrAbove: "SettingRowList owns one shared label, control, and max-content tools grid; each SettingRow uses subgrid so rows with and without actions align",
+      whenAtOrAbove: "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align",
       whenBelow: "SettingRow label, control, and tools stack in source order"
     }
   ],

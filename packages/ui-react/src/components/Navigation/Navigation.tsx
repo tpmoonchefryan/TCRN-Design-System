@@ -5649,15 +5649,23 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-settings-layout__form>.tcrn-setting-row-list{display:grid;grid-template-columns:minmax(0,1fr);min-inline-size:0}
 .tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row{display:grid;grid-column:1/-1;grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2)}
 .tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row__tools:empty{display:none}
-.tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2)}
+.tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2);overflow-wrap:anywhere}
 .tcrn-settings-layout__form .tcrn-setting-row__control{inline-size:100%;grid-column:auto;grid-row:auto}
 .tcrn-settings-layout__form .tcrn-setting-row__tools{grid-column:auto;grid-row:auto}
 .tcrn-settings-layout__form .tcrn-setting-row__control>:is(.tcrn-input,.tcrn-select,.tcrn-field,.tcrn-setting-choice,.tcrn-number-input-field,.tcrn-multi-select-group){inline-size:100%;min-inline-size:0}
 .tcrn-settings-layout__form .tcrn-setting-row__control .tcrn-field :is(.tcrn-input,.tcrn-select,.tcrn-number-input){inline-size:100%;min-inline-size:0}
-.tcrn-settings-layout__form .tcrn-setting-row__control .tcrn-field{margin-block:0}
+.tcrn-settings-layout__form .tcrn-setting-row__control .tcrn-field{margin:0}
 .tcrn-settings-layout__form .tcrn-setting-row__control>.tcrn-number-input{inline-size:100%}
 @container tcrn-settings-layout-frame (min-width:960px){.tcrn-settings-layout__grid{grid-template-columns:minmax(0,var(--tcrn-container-settings-local-nav)) minmax(0,1fr)}}
-@container tcrn-settings-content (min-width:720px){.tcrn-settings-layout__form .tcrn-setting-row-list{grid-template-columns:minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content}.tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row{grid-template-columns:subgrid}.tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row__tools{justify-content:flex-end}.tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row__control>:is(.tcrn-field,.tcrn-setting-choice,.tcrn-number-input-field,.tcrn-multi-select-group){inline-size:100%;min-inline-size:0}}
+@container tcrn-settings-content (min-width:720px){
+  /* The complete form also shares tracks for the supported direct-row API.
+     Other children still span the form; an explicit list owns its own tracks. */
+  .tcrn-settings-layout__form,.tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content}
+  .tcrn-settings-layout__form .tcrn-setting-row-list{grid-template-columns:minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content}
+  .tcrn-settings-layout__form>*{grid-column:1/-1}
+  .tcrn-settings-layout__form>.tcrn-setting-row,.tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row{grid-template-columns:subgrid}
+  .tcrn-settings-layout__form .tcrn-setting-row__tools{justify-content:flex-end}
+}
 
 /* DS-113/114/115 full-surface boundary and content rules. These follow the settings
    contract marker so Storybook's global package CSS carries them once while the
