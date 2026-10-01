@@ -1,10 +1,43 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { join } from "node:path";
 
+const { JSDOM } = createRequire(new URL("../packages/ui-react/package.json", import.meta.url))("jsdom");
 const staticRoot = join(process.cwd(), "apps/storybook/storybook-static");
 const readPage = (file) => readFileSync(join(staticRoot, file), "utf8");
+
+function assertCollectionInventory(document) {
+  const collections = Array.from(document.querySelectorAll('[data-choice-cardinality="collection"]'));
+  const native = collections.filter((node) => node.matches('select.tcrn-multi-select[multiple]:not([data-choice-presentation="checkboxes"])'));
+  const checklists = collections.filter((node) => node.matches('div[role="group"][data-choice-presentation="checkboxes"]'));
+  assert.equal(collections.length, 2, "total collection inventory");
+  assert.equal(native.length, 1, "native collection inventory");
+  assert.equal(checklists.length, 1, "checkbox collection inventory");
+  assert.ok(collections.every((node) => node.getAttribute("data-choice-value-mode") === "closed"));
+
+  const select = native[0];
+  assert.equal(select.name, "prompt-languages");
+  assert.deepEqual(Array.from(select.options, (option) => option.value), ["en", "zh-CN", "ja"]);
+  assert.deepEqual(Array.from(select.selectedOptions, (option) => option.value), ["en", "zh-CN"]);
+  assert.deepEqual(Array.from(select.options).filter((option) => option.disabled).map((option) => option.value), ["ja"]);
+
+  const checklist = checklists[0];
+  assert.equal(checklist.id, "prompt-languages-checklist");
+  const legend = document.getElementById(checklist.getAttribute("aria-labelledby"));
+  assert.equal(legend?.tagName, "LEGEND");
+  assert.ok(legend.closest("fieldset").contains(checklist));
+  const checkboxes = Array.from(checklist.querySelectorAll('input[type="checkbox"]'));
+  assert.deepEqual(checkboxes.map((input) => input.value), ["en", "zh-CN", "ja"]);
+  assert.ok(checkboxes.every((input) => input.name === "prompt-languages-checklist" && input.closest("label")));
+  assert.deepEqual(checkboxes.filter((input) => input.checked).map((input) => input.value), ["en", "zh-CN"]);
+  assert.deepEqual(checkboxes.filter((input) => input.disabled).map((input) => input.value), ["ja"]);
+  const clear = checklist.closest(".tcrn-multi-select-group").querySelector("button.tcrn-multi-select-group__clear");
+  assert.equal(clear?.type, "button");
+  assert.equal(clear?.textContent, "Clear selection");
+  assert.equal(clear?.disabled, false);
+}
 
 test("STORY-113 static overlay inventory retains every tooltip placement and text-only boundary", () => {
   const html = readPage("components-component-inventory.html");
@@ -16,14 +49,45 @@ test("STORY-113 static overlay inventory retains every tooltip placement and tex
   assert.equal((html.match(/role="tooltip"/g) ?? []).length, 4);
 });
 
-test("STORY-114 static field surface carries native collection and open-value controls", () => {
+test("STORY-114 static field surface carries one native and one checkbox collection plus an open-value control", () => {
   const html = readPage("patterns-feedback-selection.html");
-  assert.equal((html.match(/data-choice-cardinality="collection"/g) ?? []).length, 1);
+  const dom = new JSDOM(html);
+  try {
+    assertCollectionInventory(dom.window.document);
+  } finally {
+    dom.window.close();
+  }
   assert.match(html, /data-choice-value-mode="closed"/);
   assert.equal((html.match(/data-choice-value-mode="open"/g) ?? []).length, 1);
   assert.match(html, /<select[^>]*multiple=""/);
   assert.match(html, /<option[^>]*value="ja"[^>]*disabled/);
   assert.equal((html.match(/<datalist /g) ?? []).length, 1);
+});
+
+test("STORY-114 inventory rejects missing, duplicate, mislabeled, or structurally invalid collection branches", () => {
+  const html = readPage("patterns-feedback-selection.html");
+  const cases = [
+    ["missing native", (native) => native.remove()],
+    ["missing checkbox", (_, checklist) => checklist.remove()],
+    ["two native collections at total two", (native, checklist) => checklist.replaceWith(native.cloneNode(true))],
+    ["two checkbox collections at total two", (native, checklist) => native.replaceWith(checklist.cloneNode(true))],
+    ["extra collection", (_, checklist) => checklist.after(checklist.cloneNode(true))],
+    ["native without multiple", (native) => { native.multiple = false; }],
+    ["checkbox marker without group structure", (_, checklist) => checklist.removeAttribute("role")],
+    ["open collection", (_, checklist) => checklist.setAttribute("data-choice-value-mode", "open")],
+    ["native disabled option lost", (native) => { native.querySelector('option[value="ja"]').disabled = false; }],
+    ["checkbox disabled option lost", (_, checklist) => { checklist.querySelector('input[value="ja"]').disabled = false; }]
+  ];
+  for (const [reason, mutate] of cases) {
+    const dom = new JSDOM(html);
+    try {
+      const document = dom.window.document;
+      mutate(document.querySelector('select[data-choice-cardinality="collection"]'), document.querySelector('[data-choice-presentation="checkboxes"]'));
+      assert.throws(() => assertCollectionInventory(document), assert.AssertionError, reason);
+    } finally {
+      dom.window.close();
+    }
+  }
 });
 
 test("STORY-115 dictionary surface keeps category copy singular and value explanations complete", () => {
