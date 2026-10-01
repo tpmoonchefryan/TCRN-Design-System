@@ -14,6 +14,7 @@ export const componentLibraryPublicComponentNames = [
   "SuggestInput",
   "Checkbox",
   "Switch",
+  "SettingRowList",
   "SettingRow",
   "FieldProvenance",
   "LineNumberedEditor",

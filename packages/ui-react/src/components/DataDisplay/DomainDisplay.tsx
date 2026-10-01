@@ -362,6 +362,8 @@ export interface RecordRowProps {
   owner: string;
   href?: string;
   selected?: boolean;
+  /** Briefly identify the row a navigation action has just brought into view. */
+  transientTarget?: boolean;
   rank?: string;
   priority?: string;
   summary?: ReactNode;
@@ -407,17 +409,17 @@ function RecordRowBody({ id, title, state, owner, rank, priority, summary, field
 }
 
 export function RecordRow(props: RecordRowProps) {
-  const { href, selected = false, density = "compact", title } = props;
+  const { href, selected = false, transientTarget = false, density = "compact", title } = props;
   const className = cx("tcrn-record-row", `tcrn-record-row--${density}`);
   if (href) {
     return (
-      <a className={className} href={href} aria-label={title} data-selected={selected || undefined} data-pattern="record-row" data-density={density}>
+      <a className={className} href={href} aria-label={title} data-selected={selected || undefined} data-transient-target={transientTarget || undefined} data-pattern="record-row" data-density={density}>
         <RecordRowBody {...props} density={density} />
       </a>
     );
   }
   return (
-    <article className={className} aria-label={title} data-selected={selected || undefined} data-pattern="record-row" data-density={density}>
+    <article className={className} aria-label={title} data-selected={selected || undefined} data-transient-target={transientTarget || undefined} data-pattern="record-row" data-density={density}>
       <RecordRowBody {...props} density={density} />
     </article>
   );
