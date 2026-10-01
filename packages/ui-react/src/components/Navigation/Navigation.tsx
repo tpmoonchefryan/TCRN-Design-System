@@ -5375,6 +5375,8 @@ a.tcrn-relationship-chip:focus-visible {
 
 .tcrn-definition-list {
   display: grid;
+  container-type: inline-size;
+  container-name: tcrn-definition-list;
   gap: var(--tcrn-space-3);
   margin: 0;
 }
@@ -5385,6 +5387,8 @@ a.tcrn-relationship-chip:focus-visible {
   min-width: 0;
 }
 .tcrn-definition-list__term {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
   color: var(--tcrn-color-text-secondary);
   font-weight: var(--tcrn-type-weight-medium);
 }
@@ -5399,6 +5403,14 @@ a.tcrn-relationship-chip:focus-visible {
 }
 .tcrn-definition-list--dense .tcrn-definition-list__item {
   gap: var(--tcrn-space-2);
+}
+/* A detail card can be narrow inside a wide viewport. Apply the existing
+   760px detail stacking boundary to its actual mother as well. */
+@container tcrn-definition-list (max-width: 760px) {
+  .tcrn-definition-list__item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--tcrn-space-1);
+  }
 }
 
 .tcrn-lock-hint {

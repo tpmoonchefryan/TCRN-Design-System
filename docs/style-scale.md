@@ -225,3 +225,8 @@ click/outside/Escape. The static layer uses `role="tooltip"` for text-only
 supplemental content or `role="dialog"` for local interactive context. A
 CSS-only server-positioned body sibling is a static fallback only; it cannot claim
 dynamic portal, edge, or focus behavior.
+
+`DefinitionList` uses its own inline container for the existing 760px detail
+stacking boundary. A narrow card inside a wide viewport stacks terms before their
+definitions; long terms wrap inside their track. Consumers retain the shared
+column sizing rather than imposing a fixed term minimum on a nested card.
