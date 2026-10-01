@@ -53,8 +53,8 @@
       },
       {
         "id": "ai-consumption-contract",
-        "measure": 11536,
-        "recordedHeightPx": 11536,
+        "measure": 11764,
+        "recordedHeightPx": 11764,
         "owedTo": "beyond-INIT-008",
         "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
       },
@@ -113,7 +113,7 @@
     },
     {
       "id": "ai-consumption-contract",
-      "heightPx": 11536,
+      "heightPx": 11764,
       "owedTo": "beyond-INIT-008",
       "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
     },

@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 124,
+  "componentCount": 125,
   "coverage": {
-    "registryComponentCount": 124,
+    "registryComponentCount": 125,
     "publicComponentNames": [
       "ActionDrawer",
       "ActivityFeed",
@@ -93,6 +93,7 @@
       "Select",
       "SettingChoice",
       "SettingRow",
+      "SettingRowList",
       "SettingsHostSwitcher",
       "SettingsLayout",
       "ShellBrandLockup",
@@ -219,6 +220,7 @@
       "Select",
       "SettingChoice",
       "SettingRow",
+      "SettingRowList",
       "SettingsHostSwitcher",
       "SettingsLayout",
       "ShellBrandLockup",
@@ -1398,6 +1400,12 @@
           "required": false
         },
         {
+          "name": "group",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
           "name": "hint",
           "type": "string",
           "required": false
@@ -2394,6 +2402,11 @@
       "kind": "function",
       "props": [
         {
+          "name": "clearSelectionLabel",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "defaultValue",
           "type": "string[]",
           "required": false
@@ -2414,12 +2427,27 @@
           "required": true
         },
         {
+          "name": "presentation",
+          "type": "\"native\" | \"checkboxes\"",
+          "required": false,
+          "default": "\"native\"",
+          "enumValues": [
+            "native",
+            "checkboxes"
+          ]
+        },
+        {
           "name": "value",
           "type": "string[]",
           "required": false
         }
       ],
-      "variants": {},
+      "variants": {
+        "presentation": [
+          "native",
+          "checkboxes"
+        ]
+      },
       "slots": [],
       "propsType": "MultiSelectProps"
     },
@@ -3621,6 +3649,11 @@
           "name": "title",
           "type": "string",
           "required": true
+        },
+        {
+          "name": "transientTarget",
+          "type": "boolean",
+          "required": false
         }
       ],
       "variants": {
@@ -4229,6 +4262,23 @@
         "settingKey"
       ],
       "propsType": "SettingRowProps"
+    },
+    "SettingRowList": {
+      "name": "SettingRowList",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children"
+      ],
+      "propsType": "SettingRowListProps"
     },
     "SettingsHostSwitcher": {
       "name": "SettingsHostSwitcher",
@@ -5070,10 +5120,26 @@
     "Surface": {
       "name": "Surface",
       "kind": "function",
-      "props": [],
+      "props": [
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "heading",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        }
+      ],
       "variants": {},
-      "slots": [],
-      "propsType": "HTMLAttributes<HTMLElement>"
+      "slots": [
+        "actions",
+        "heading"
+      ],
+      "propsType": "SurfaceProps"
     },
     "Switch": {
       "name": "Switch",
