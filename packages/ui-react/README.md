@@ -52,7 +52,14 @@ expresses the single-host-before-complete-form composition.
 multiple-select; use `presentation="checkboxes"` with a localized
 `clearSelectionLabel` when a visible checklist is needed. The checklist keeps
 native checkbox keyboard and repeated form values, preserves disabled options,
-and resets to `defaultValue` with its form. Wrap grouped controls in
+and resets to `defaultValue` with its form. A required enabled checklist fails
+native form validation until at least one enabled option is selected, including
+when its option set is empty or all options are disabled. The group's disabled
+state excludes it from validation and submission. Its unnamed validation control
+adds no submitted value or tab stop; validated-submit focus goes to the first
+enabled checkbox, or the group when no enabled option exists. Controlled values
+remain authoritative on reset; uncontrolled values reset to their current defaults.
+The `form` prop supports association with a form outside the checklist. Wrap grouped controls in
 `<Field group>` to provide fieldset/legend semantics.
 `SuggestInput` is the open-string control: its datalist suggestions are advisory
 and never reject a value outside the suggestion list. `DictionaryTable` renders

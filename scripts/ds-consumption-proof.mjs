@@ -32,6 +32,7 @@ import {
   tcrnComponentCss
 } from "../packages/ui-react/dist/index.js";
 import { tcrnTokenCss } from "../packages/ui-tokens/dist/index.js";
+import { runMultiSelectRequiredProof } from "./lib/multi-select-required-proof.mjs";
 
 export const DS_CONSUMPTION_PROOF_VERSION = "tcrn.ds-consumption-proof.v2";
 export const DS_CONSUMPTION_CONTRACT_VERSION = "ds_consumption_contract_v2";
@@ -1116,6 +1117,7 @@ export async function runDsConsumptionProof() {
   ];
   const browser = await chromium.launch({ headless: true });
   let results;
+  let multiSelectRequired;
   try {
     results = [];
     for (const { markup, ...fixture } of fixtures) {
@@ -1126,10 +1128,12 @@ export async function runDsConsumptionProof() {
         result: inspectDsConsumption({ kind: fixture.kind, markup, renderedEvidence, expectedDisabledOptionValues: fixture.expectedDisabledOptionValues, expectedPageDepth: fixture.expectedPageDepth })
       });
     }
+    multiSelectRequired = await runMultiSelectRequiredProof(browser);
   } finally {
     await browser.close();
   }
   const mismatches = results.filter((fixture) => (fixture.expected === "pass") !== fixture.result.ok).map((fixture) => fixture.id);
+  mismatches.push(...multiSelectRequired.mismatches);
   const rootPackage = JSON.parse(readFileSync("package.json", "utf8"));
   const uiReactPackage = JSON.parse(readFileSync("packages/ui-react/package.json", "utf8"));
   const uiTokensPackage = JSON.parse(readFileSync("packages/ui-tokens/package.json", "utf8"));
@@ -1143,7 +1147,7 @@ export async function runDsConsumptionProof() {
     command: "pnpm full-surface:proof",
     flags: "",
     browserToolVersion: { browser: "playwright", version: rootPackage.devDependencies?.["@playwright/test"] ?? "" },
-    fixtureDigest: `sha256:${createHash("sha256").update(JSON.stringify(fixtures)).digest("hex")}`,
+    fixtureDigest: `sha256:${createHash("sha256").update(JSON.stringify({ fixtures, multiSelectRequired: multiSelectRequired.fixtureDigest })).digest("hex")}`,
     baselineDigest: fileDigest("docs/verification/internal-alpha/visual-signature-baseline.json"),
     outputTargetDigest: fileDigest("apps/storybook/storybook-static/ai-consumption-contract.json")
   };
@@ -1176,6 +1180,7 @@ export async function runDsConsumptionProof() {
     verificationCadence: DS_VERIFICATION_CADENCE,
     verificationInputKeys: DS_VERIFICATION_INPUT_KEYS,
     verificationReuseProof: reuseProof,
+    multiSelectRequired,
     fixtures: results,
     mismatches,
     ok: mismatches.length === 0
