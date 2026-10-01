@@ -87,8 +87,9 @@ export interface SettingsLayoutProps extends Omit<HTMLAttributes<HTMLDivElement>
  * two-host form. At the package's admitted frame width it gains a compact local
  * navigation column and one complete content column. The content column owns a
  * second container query so SettingRow stacks when its actual space is tight,
- * including when it is nested inside another shell. SettingRowList shares the
- * label, control, and tools tracks across related rows before those rows stack.
+ * including when it is nested inside another shell. Direct SettingRow children
+ * share the complete form's label, control, and tools tracks. SettingRowList
+ * owns those shared tracks for an explicit group before those rows stack.
  */
 export function SettingsLayout({
   navigation,
