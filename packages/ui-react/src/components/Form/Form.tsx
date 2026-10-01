@@ -199,13 +199,21 @@ export interface MultiSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectEl
   disabledReason?: string;
 }
 
-/** A closed-set collection selector with native multiple-select and checkbox-list presentations. */
+/**
+ * A closed-set collection selector with native multiple-select and checkbox-list presentations.
+ * A required checklist needs at least one selected enabled option. An enabled
+ * required checklist with no enabled options remains invalid.
+ */
 export function MultiSelect({ options, value, defaultValue, onChange, presentation = "native", clearSelectionLabel, className, disabled, disabledReason, title, ...props }: MultiSelectProps) {
   const isControlled = value !== undefined;
   const selectRef = useRef<HTMLSelectElement>(null);
   const groupRef = useRef<HTMLDivElement>(null);
+  const validationRef = useRef<HTMLInputElement | null>(null);
   const [uncontrolledValue, setUncontrolledValue] = useState(() => normalizeChoiceValues(defaultValue, options));
   const selectedValue = normalizeChoiceValues(isControlled ? value : uncontrolledValue, options);
+  const defaultSelectedValue = normalizeChoiceValues(defaultValue, options);
+  const hasEnabledSelection = options.some((option) => !option.disabled && selectedValue.includes(option.value));
+  const hasEnabledDefaultSelection = options.some((option) => !option.disabled && defaultSelectedValue.includes(option.value));
   const normalizedReason = disabled ? requiredText(disabledReason, "Multi-select unavailable in this route") : undefined;
   const disabledReasonId = useId();
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
@@ -215,7 +223,7 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
     const firstCheckbox = presentation === "checkboxes"
       ? groupRef.current?.querySelector<HTMLInputElement>('input[type="checkbox"]')
       : null;
-    const form = select?.form ?? firstCheckbox?.form;
+    const form = select?.form ?? firstCheckbox?.form ?? validationRef.current?.form;
     if (!form) return;
     let disposed = false;
     const syncAfterReset = () => {
@@ -237,10 +245,16 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
       disposed = true;
       form.removeEventListener("reset", syncAfterReset);
     };
-  }, [defaultValue, isControlled, options, presentation]);
+  }, [defaultValue, isControlled, options, presentation, props.form]);
   const commitValue = (nextValue: string[]) => {
     if (sameChoiceValues(nextValue, selectedValue)) return;
-    if (!isControlled) setUncontrolledValue(nextValue);
+    if (!isControlled) {
+      setUncontrolledValue(nextValue);
+      // A consumer can request validated submission inside onChange, before
+      // React commits this state update. The native validation control must
+      // already reflect the uncontrolled value being reported.
+      if (validationRef.current) validationRef.current.checked = options.some((option) => !option.disabled && nextValue.includes(option.value));
+    }
     onChange?.(nextValue);
   };
   const handleChange = (event: ReactChangeEvent<HTMLSelectElement>) => {
@@ -266,6 +280,7 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
           ref={groupRef}
           id={id}
           role="group"
+          tabIndex={-1}
           aria-label={ariaLabel}
           aria-labelledby={labelledBy}
           aria-describedby={mergeIds(describedBy, normalizedReason ? disabledReasonId : undefined)}
@@ -285,6 +300,12 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
             return (
               <label key={`${option.value}-${index}`} className="tcrn-multi-select-group__option" htmlFor={optionId}>
                 <input
+                  ref={(input) => {
+                    // Keep the native reset target current even before React's
+                    // reset listener commits its state update. Controlled values
+                    // stay authoritative; uncontrolled values return to defaults.
+                    if (input) input.defaultChecked = isControlled ? checked : defaultSelectedValue.includes(option.value);
+                  }}
                   id={optionId}
                   type="checkbox"
                   name={name}
@@ -308,6 +329,31 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
             );
           })}
         </div>
+        {required ? (
+          <input
+            ref={(input) => {
+              validationRef.current = input;
+              if (input) input.defaultChecked = isControlled ? hasEnabledSelection : hasEnabledDefaultSelection;
+            }}
+            type="checkbox"
+            required
+            checked={hasEnabledSelection}
+            disabled={disabled}
+            form={form}
+            aria-hidden="true"
+            tabIndex={-1}
+            className="tcrn-sr-only"
+            onChange={() => {}}
+            onFocus={() => {
+              // Native validated submission focuses its invalid control. Route
+              // that focus to the visible checklist without moving focus during
+              // checkValidity(), which only dispatches an invalid event.
+              const group = groupRef.current;
+              const option = group?.querySelector<HTMLInputElement>('input[type="checkbox"]:not(:disabled)');
+              (option ?? group)?.focus();
+            }}
+          />
+        ) : null}
         <div className="tcrn-multi-select-group__actions">
           <button type="button" className="tcrn-multi-select-group__clear" disabled={disabled || selectedValue.length === 0} onClick={() => commitValue([])}>
             {clearSelectionLabel}
