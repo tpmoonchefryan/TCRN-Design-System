@@ -5160,6 +5160,10 @@ a.tcrn-relationship-chip:focus-visible {
   padding-block: var(--tcrn-space-2);
   border-block-end: 1px solid var(--tcrn-color-border-subtle);
 }
+.tcrn-setting-row[data-transient-target="true"] {
+  border-block-end-color: var(--tcrn-selection-edge);
+  background: var(--tcrn-selection-fill);
+}
 .tcrn-setting-row__label,
 .tcrn-setting-row__control,
 .tcrn-setting-row__tools {
