@@ -614,6 +614,7 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row__control \.tcrn-field :is\(\.tcrn-input,\.tcrn-select,\.tcrn-number-input\)\{inline-size:100%;min-inline-size:0\}/);
   assert.match(tcrnComponentCss, /\.tcrn-record-row\[data-transient-target="true"\][^{]*\{[^}]*--tcrn-selection-fill/);
   assert.match(tcrnComponentCss, /\.tcrn-table-shell__row\[data-transient-target="true"\][^{]*\{[^}]*--tcrn-selection-fill/);
+  assert.match(tcrnComponentCss, /\.tcrn-setting-row\[data-transient-target="true"\][^{]*\{[^}]*--tcrn-selection-fill/);
   assert.match(tcrnComponentCss, /\.tcrn-page-header--dense,[\s\S]*\.tcrn-activity-feed--dense \{[\s\S]*--tcrn-density-row-min: 34px;/);
   assert.match(tcrnComponentCss, /\.tcrn-tree-nav,[\s\S]*\.tcrn-search-result-list \{[\s\S]*min-width: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-template-gallery \{[\s\S]*grid-template-columns: repeat\(auto-fit, minmax\(180px, 1fr\)\);/);
