@@ -198,12 +198,14 @@ const globalComponentCssWithoutFullSurface = fullSurfaceContractCssStart === -1
 const globalComponentCss = globalComponentCssWithoutFullSurface;
 const pageHierarchyComponentCss = pageHierarchyContractCssStart === -1 ? "" : tcrnComponentCss.slice(pageHierarchyContractCssStart);
 // The older scoped copy has a `.story-body .tcrn-setting-row` rule. Re-apply
-// only the settings-specific container overrides after that copy so the global
-// settings block keeps its narrow/roomy behaviour without duplicating all CSS.
+// only the settings-specific container overrides after that copy. Wide rows must
+// inherit the complete form/list tracks, including the empty tools slots.
 const settingsScopedOverrides = `
+.story-body .tcrn-settings-layout__content{grid-template-columns:minmax(0,1fr)}
 .story-body .tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2)}
 .story-body .tcrn-settings-layout__form :is(.tcrn-setting-row__control,.tcrn-setting-row__tools){grid-column:auto;grid-row:auto}
-@container tcrn-settings-content (min-width:720px){.story-body .tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content}.story-body .tcrn-settings-layout__form .tcrn-setting-row__tools{justify-content:flex-end}}
+@container tcrn-settings-content (width < 720px){.story-body .tcrn-settings-layout__form{grid-template-columns:minmax(0,1fr)}}
+@container tcrn-settings-content (min-width:720px){.story-body .tcrn-settings-layout__form>.tcrn-setting-row,.story-body .tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row{grid-template-columns:subgrid}.story-body .tcrn-settings-layout__form .tcrn-setting-row__tools{justify-content:flex-end}}
 `;
 const staticStoryComponentCss = compactCss(`${scopeComponentCss(scopedComponentCss, ".story-body")}${settingsScopedOverrides}`);
 

@@ -147,6 +147,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -172,6 +182,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -197,6 +217,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -222,6 +252,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -247,6 +287,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -272,6 +322,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -297,6 +357,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -322,6 +392,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -347,6 +427,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -372,6 +462,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -397,6 +497,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -422,6 +532,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -447,6 +567,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -472,6 +602,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -497,6 +637,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -522,6 +672,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -547,6 +707,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -572,6 +742,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -597,6 +777,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -622,6 +812,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -647,6 +847,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -672,6 +882,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -697,6 +917,16 @@
         "rowsFit": true,
         "longValueComplete": true,
         "noHiddenOverflow": true,
+        "siblingTracks": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
         "nested": {
           "frameMode": "single",
           "frameThresholdMatch": true,
@@ -706,6 +936,404 @@
           "pageOverflow": false,
           "expectedFrameMode": "single",
           "expectedContentMode": "stack"
+        },
+        "ok": true
+      }
+    ],
+    "boundaryTracks": [
+      {
+        "shape": "list",
+        "contentWidth": 785.125,
+        "widthMatch": true,
+        "positive": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [
+          {
+            "mutation": "legacy-row-tracks",
+            "rejected": true
+          },
+          {
+            "mutation": "control-start",
+            "rejected": true
+          },
+          {
+            "mutation": "control-width",
+            "rejected": true
+          }
+        ],
+        "recovered": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "list",
+        "contentWidth": 720,
+        "widthMatch": true,
+        "positive": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [
+          {
+            "mutation": "legacy-row-tracks",
+            "rejected": true
+          },
+          {
+            "mutation": "control-start",
+            "rejected": true
+          },
+          {
+            "mutation": "control-width",
+            "rejected": true
+          }
+        ],
+        "recovered": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "list",
+        "contentWidth": 719,
+        "widthMatch": true,
+        "positive": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [],
+        "recovered": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "list",
+        "contentWidth": 360,
+        "widthMatch": true,
+        "positive": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [],
+        "recovered": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "list",
+        "contentWidth": 212,
+        "widthMatch": true,
+        "positive": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [
+          {
+            "mutation": "legacy-auto-columns",
+            "rejected": true
+          }
+        ],
+        "recovered": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "list",
+        "contentWidth": 95,
+        "widthMatch": true,
+        "positive": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [
+          {
+            "mutation": "legacy-auto-columns",
+            "rejected": true
+          }
+        ],
+        "recovered": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "direct",
+        "contentWidth": 785.125,
+        "widthMatch": true,
+        "positive": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [
+          {
+            "mutation": "legacy-row-tracks",
+            "rejected": true
+          },
+          {
+            "mutation": "control-start",
+            "rejected": true
+          },
+          {
+            "mutation": "control-width",
+            "rejected": true
+          }
+        ],
+        "recovered": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "direct",
+        "contentWidth": 720,
+        "widthMatch": true,
+        "positive": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [
+          {
+            "mutation": "legacy-row-tracks",
+            "rejected": true
+          },
+          {
+            "mutation": "control-start",
+            "rejected": true
+          },
+          {
+            "mutation": "control-width",
+            "rejected": true
+          }
+        ],
+        "recovered": {
+          "wide": true,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "direct",
+        "contentWidth": 719,
+        "widthMatch": true,
+        "positive": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [],
+        "recovered": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "direct",
+        "contentWidth": 360,
+        "widthMatch": true,
+        "positive": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [],
+        "recovered": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "direct",
+        "contentWidth": 212,
+        "widthMatch": true,
+        "positive": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [
+          {
+            "mutation": "legacy-auto-columns",
+            "rejected": true
+          }
+        ],
+        "recovered": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "ok": true
+      },
+      {
+        "shape": "direct",
+        "contentWidth": 95,
+        "widthMatch": true,
+        "positive": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
+        },
+        "negatives": [
+          {
+            "mutation": "legacy-auto-columns",
+            "rejected": true
+          }
+        ],
+        "recovered": {
+          "wide": false,
+          "siblingTracks": true,
+          "labelsContained": true,
+          "slotsContained": true,
+          "wrappersFill": true,
+          "orderedSlots": true,
+          "mixedTools": true,
+          "ok": true
         },
         "ok": true
       }
@@ -7589,6 +8217,10 @@
           "visible": true
         },
         {
+          "id": "SettingRowList",
+          "visible": true
+        },
+        {
           "id": "SettingsHostSwitcher",
           "visible": true
         },
@@ -7638,10 +8270,6 @@
         },
         {
           "id": "StampRule",
-          "visible": true
-        },
-        {
-          "id": "StatCard",
           "visible": true
         }
       ],
@@ -7725,6 +8353,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "StatCard",
+          "visible": true
+        },
+        {
           "id": "StateSurface",
           "visible": true
         },
@@ -7798,10 +8430,6 @@
         },
         {
           "id": "Tooltip",
-          "visible": true
-        },
-        {
-          "id": "TopBar",
           "visible": true
         }
       ],
@@ -7884,6 +8512,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "TopBar",
+          "visible": true
+        },
         {
           "id": "Tree",
           "visible": true
@@ -11156,6 +11788,10 @@
           "visible": true
         },
         {
+          "id": "SettingRowList",
+          "visible": true
+        },
+        {
           "id": "SettingsHostSwitcher",
           "visible": true
         },
@@ -11205,10 +11841,6 @@
         },
         {
           "id": "StampRule",
-          "visible": true
-        },
-        {
-          "id": "StatCard",
           "visible": true
         }
       ],
@@ -11292,6 +11924,10 @@
       "storyRegions": [],
       "referenceRegions": [
         {
+          "id": "StatCard",
+          "visible": true
+        },
+        {
           "id": "StateSurface",
           "visible": true
         },
@@ -11365,10 +12001,6 @@
         },
         {
           "id": "Tooltip",
-          "visible": true
-        },
-        {
-          "id": "TopBar",
           "visible": true
         }
       ],
@@ -11451,6 +12083,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "TopBar",
+          "visible": true
+        },
         {
           "id": "Tree",
           "visible": true
@@ -13935,6 +14571,10 @@
           "visible": true
         },
         {
+          "id": "SettingRowList",
+          "visible": true
+        },
+        {
           "id": "SettingsHostSwitcher",
           "visible": true
         },
@@ -13984,10 +14624,6 @@
         },
         {
           "id": "StampRule",
-          "visible": true
-        },
-        {
-          "id": "StatCard",
           "visible": true
         }
       ],
@@ -14042,6 +14678,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "StatCard",
+          "visible": true
+        },
         {
           "id": "StateSurface",
           "visible": true
@@ -14117,10 +14757,6 @@
         {
           "id": "Tooltip",
           "visible": true
-        },
-        {
-          "id": "TopBar",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -14174,6 +14810,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "TopBar",
+          "visible": true
+        },
         {
           "id": "Tree",
           "visible": true
