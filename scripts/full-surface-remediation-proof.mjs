@@ -9,9 +9,97 @@ import { createServer } from "node:http";
 import { extname, normalize, relative, resolve } from "node:path";
 import { chromium } from "@playwright/test";
 import { build } from "esbuild";
-import { evaluateConsumerEvidence, validateContentScope } from "../packages/ui-react/dist/index.js";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { evaluateConsumerEvidence, validateContentScope, Surface, OperationFeedback, DefinitionList, tcrnComponentCss } from "../packages/ui-react/dist/index.js";
+import { tcrnTokenCss } from "../packages/ui-tokens/dist/index.js";
+import { settingsLayoutContract } from "../apps/storybook/dist/build/foundation-visual-standards.js";
+import { storybookContentText, storybookLocaleText } from "../apps/storybook/dist/build/i18n.js";
+
+import { runMultiSelectDropdownProof } from "./lib/multi-select-dropdown-proof.mjs";
 
 const root = resolve(".");
+
+async function runFullDetailsContainmentProof(browser) {
+  const unbroken = "unbroken-path-hash-reason".replaceAll("-", "").repeat(40);
+  const structured = JSON.stringify({ path: `/fixture/${unbroken}`, hash: unbroken, failures: [unbroken, unbroken], nested: { unchanged: true } }, null, 2);
+  const markup = renderToStaticMarkup(createElement("div", { id: "detail-matrix" },
+    createElement(Surface, {
+      id: "detail-card", heading: createElement("h2", null, unbroken),
+      actions: createElement("span", { className: "tcrn-badge tcrn-badge--danger" }, "Failed")
+    }, ...[0, 1].map((index) => createElement(OperationFeedback, {
+      key: index, id: `detail-${index}`, phase: "error", expanded: true,
+      identity: { operation: "Inspect local fixture", operationId: unbroken, actor: "Synthetic operator", actorId: unbroken },
+      identityLabels: { operation: "Operation", operationId: unbroken, actor: "Actor", actorId: "Actor id" },
+      detailsLabel: "View full receipt", detailTitle: "Full receipt details", details: createElement("pre", { "data-structured-detail": index }, structured)
+    }))),
+    createElement(Surface, { id: "neighbor-card", heading: createElement("h2", null, "Selected library"), actions: createElement("span", { className: "tcrn-badge tcrn-badge--danger" }, "Failed") },
+      createElement(DefinitionList, { items: [{ key: "path", term: unbroken, definition: unbroken }] }))));
+  const observations = [];
+  for (const fixture of [
+    { id: "wide", viewport: 1440 }, { id: "narrow", viewport: 390 },
+    { id: "nested-wide", viewport: 1440, mother: 900 }, { id: "nested-narrow", viewport: 1440, mother: 360 },
+    { id: "nested-card", viewport: 1440, mother: 360, columns: 2 }
+  ]) {
+    const page = await browser.newPage({ viewport: { width: fixture.viewport, height: 900 }, reducedMotion: "reduce" });
+    try {
+      await page.setContent(`<!doctype html><meta charset="utf-8"><style>${tcrnTokenCss}${tcrnComponentCss}
+        body{margin:0;padding:var(--tcrn-space-4);font-family:var(--tcrn-type-family-body)}
+        #detail-matrix{display:grid;grid-template-columns:${(fixture.viewport === 390 || fixture.mother === 360) && fixture.columns !== 2 ? "minmax(0,1fr)" : "repeat(2,minmax(0,1fr))"};gap:var(--tcrn-space-4);max-inline-size:100%;inline-size:${fixture.mother ? `${fixture.mother}px` : "100%"}}
+      </style>${markup}`);
+      const observe = () => page.evaluate(() => {
+        const box = (node) => { const r = node.getBoundingClientRect(); return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width }; };
+        const leaks = [];
+        for (const card of document.querySelectorAll("#detail-matrix > .tcrn-surface")) {
+          const bound = box(card);
+          for (const node of card.querySelectorAll(".tcrn-surface__head,.tcrn-surface__head > *, .tcrn-operation-feedback,.tcrn-operation-feedback__summary,.tcrn-operation-feedback__identity dt,.tcrn-operation-feedback__identity dd,.tcrn-badge,pre,.tcrn-definition-list__term,.tcrn-definition-list__definition")) {
+            const r = box(node);
+            if (r.left < bound.left - 1 || r.right > bound.right + 1 || node.scrollWidth > node.clientWidth + 1) leaks.push({ tag: node.tagName, className: node.className, box: r, bound, scrollWidth: node.scrollWidth, clientWidth: node.clientWidth });
+          }
+        }
+        const cards = Array.from(document.querySelectorAll("#detail-matrix > .tcrn-surface"), box);
+        return { cards, leaks, pageOverflow: document.documentElement.scrollWidth > innerWidth,
+          details: Array.from(document.querySelectorAll("pre"), (node) => ({ text: node.textContent, whiteSpace: getComputedStyle(node).whiteSpace, box: box(node) })),
+          badges: Array.from(document.querySelectorAll("#detail-matrix .tcrn-badge"), (node) => ({ text: node.textContent, box: box(node) })),
+          hiddenData: Array.from(document.querySelectorAll("pre"), (node) => ["hidden", "clip"].includes(getComputedStyle(node).overflowX)) };
+      });
+      const positive = await observe();
+      assert(!positive.pageOverflow && positive.leaks.length === 0 && positive.hiddenData.every((value) => !value), `${fixture.id}: full-detail containment failed: ${JSON.stringify(positive.leaks)}`);
+      assert(positive.details.length === 2 && positive.details.every((entry) => entry.text === structured && entry.whiteSpace === "pre-wrap"), `${fixture.id}: structured detail bytes changed or cannot wrap`);
+      assert(positive.badges.length === 4 && positive.badges.every((entry) => entry.text === "Failed"), `${fixture.id}: failed states changed`);
+      assert(positive.cards[0].right <= positive.cards[1].left || positive.cards[0].bottom <= positive.cards[1].top, `${fixture.id}: neighboring cards overlap`);
+      await page.addStyleTag({ content: ".tcrn-operation-feedback__details-body pre{white-space:pre!important}" });
+      const negative = await observe();
+      assert(negative.pageOverflow || negative.leaks.length > 0, `${fixture.id}: unwrapped structured-details negative was not rejected`);
+      observations.push({ fixture, positive, unwrappedNegative: negative });
+    } finally { await page.close(); }
+  }
+  return { structured, observations };
+}
+
+async function runSettingsExplanationLocaleProof(browser, origin) {
+  const query = settingsLayoutContract.containerQueries[1];
+  const entries = [query.whenAtOrAbove, `${query.whenAtOrAbove}; ${query.whenBelow}`];
+  const observations = [];
+  for (const locale of ["en", "zh-CN", "ja", "ko", "fr"]) {
+    for (const source of entries) {
+      assert(storybookContentText[source]?.[locale] && storybookLocaleText[locale]?.[source] === storybookContentText[source][locale], `settings explanation is missing ${locale} in a required dictionary`);
+    }
+    for (const [route, source] of [["patterns-forms-workbench.html", entries[1]], ["proof-proof-governance.html", entries[0]]]) {
+      const page = await browser.newPage();
+      try {
+        const story = route === "patterns-forms-workbench.html" ? "forms-patterns" : "ai-consumption-contract";
+        await page.goto(`${origin}/apps/storybook/storybook-static/${route}?locale=${locale}&theme=light#${story}`);
+        await settle(page);
+        const expected = storybookContentText[source][locale];
+        const matches = await page.locator(".tcrn-table-shell__cell").evaluateAll((cells, value) => cells.filter((node) => node.textContent?.trim() === value).map((node) => ({ text: node.textContent, rectCount: node.getClientRects().length, invariant: Boolean(node.closest("[data-locale-invariant]")) })), expected);
+        assert(matches.length === 1 && matches[0].rectCount > 0, `${route}/${locale}: visible settings explanation not translated`);
+        observations.push({ locale, route, expected, matches });
+      } finally { await page.close(); }
+    }
+  }
+  return observations;
+}
 
 function contentType(path) {
   if (extname(path) === ".html") return "text/html; charset=utf-8";
@@ -135,11 +223,18 @@ async function buildClientFixture() {
                 <button type="button" data-wide onClick={() => setAvailableInlineSize(500)}>Wide</button>
                 <output data-choice-callbacks>{callbacks.join(",")}</output>
               </section>
-              <form data-selection-form>
+              <form data-selection-form data-locale-invariant="true" onSubmit={(event) => {
+                event.preventDefault();
+                window.__fullSurfaceSubmissions.push(Array.from(new FormData(event.currentTarget).entries()));
+              }}>
                 <Field label="Collection" hint="Choose one or more values." error="Synthetic collection error">
                   <MultiSelect name="fixture-collection" defaultValue={["one"]} options={[{ value: "one", label: "One" }, { value: "two", label: "Two" }, { value: "blocked", label: "Blocked", disabled: true }]} />
                 </Field>
+                <Field group label="Collection" hint="Choose one or more values.">
+                  <MultiSelect id="fixture-checklist" name="fixture-checklist" presentation="checkboxes" clearSelectionLabel="Clear selection" required defaultValue={["one"]} options={[{ value: "one", label: "One" }, { value: "two", label: "Two" }, { value: "blocked", label: "Blocked", disabled: true }]} />
+                </Field>
                 <SuggestInput name="fixture-open" suggestions={["suggested", "suggested"]} defaultValue="free" />
+                <button type="submit" data-selection-submit>Submit</button>
               </form>
             </main>
           );
@@ -148,6 +243,7 @@ async function buildClientFixture() {
         const style = document.createElement("style");
         style.textContent = tcrnTokenCss + tcrnComponentCss + "body{margin:0;font:13px sans-serif}*{box-sizing:border-box}";
         document.head.append(style);
+        window.__fullSurfaceSubmissions = [];
         createRoot(document.querySelector("#root")).render(<Fixture />);
       `
     },
@@ -619,7 +715,68 @@ async function runClientFixtureProof(browser) {
       };
     });
     assert(afterCollectionRemove.selected.join(",") === "two" && afterCollectionRemove.submitted.join(",") === "two", "client collection removal did not preserve native submission");
-    return { initial, afterScroll, afterResize, afterEscape, afterRadio, afterNarrow, afterWide, afterCollectionAdd, afterCollectionRemove, ok: true };
+
+    const observeChecklist = () => page.evaluate(() => {
+      const form = document.querySelector("[data-selection-form]");
+      const group = document.querySelector("#fixture-checklist");
+      const options = Array.from(group?.querySelectorAll('input[type="checkbox"]') ?? []);
+      const bridge = group?.closest(".tcrn-multi-select-group")?.querySelector('input[required][aria-hidden="true"]');
+      return {
+        nativeCount: document.querySelectorAll("select[data-choice-cardinality='collection']").length,
+        checkboxCount: document.querySelectorAll("[data-choice-cardinality='collection'][data-choice-presentation='checkboxes']").length,
+        totalCount: document.querySelectorAll("[data-choice-cardinality='collection']").length,
+        selected: options.filter((input) => input.checked).map((input) => input.value),
+        submitted: new FormData(form).getAll("fixture-checklist"),
+        entries: Array.from(new FormData(form).entries()),
+        disabled: options.filter((input) => input.disabled).map((input) => input.value),
+        optionRequired: options.map((input) => input.required),
+        valid: form.checkValidity(),
+        activeValue: group?.contains(document.activeElement) ? document.activeElement?.value : null,
+        bridgeCount: group?.closest(".tcrn-multi-select-group")?.querySelectorAll('input[required][aria-hidden="true"]').length ?? 0,
+        bridgeNamed: Boolean(bridge?.name),
+        bridgeCardinality: bridge?.getAttribute("data-choice-cardinality") ?? null,
+        submissions: window.__fullSurfaceSubmissions
+      };
+    });
+    const checklistInitial = await observeChecklist();
+    assert(checklistInitial.nativeCount === 1 && checklistInitial.checkboxCount === 1 && checklistInitial.totalCount === 2
+      && checklistInitial.selected.join(",") === "one" && checklistInitial.submitted.join(",") === "one"
+      && checklistInitial.disabled.join(",") === "blocked" && checklistInitial.valid
+      && checklistInitial.optionRequired.every((required) => !required)
+      && checklistInitial.bridgeCount === 1 && !checklistInitial.bridgeNamed && checklistInitial.bridgeCardinality === null, "client checkbox collection structure/validation bridge inventory failed");
+
+    await page.locator("#fixture-checklist input[value='one']").focus();
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Space");
+    const checklistKeyboardAdd = await observeChecklist();
+    assert(checklistKeyboardAdd.activeValue === "two" && checklistKeyboardAdd.selected.join(",") === "one,two"
+      && checklistKeyboardAdd.submitted.join(",") === "one,two" && checklistKeyboardAdd.valid, "client checkbox Tab/Space multi-selection failed");
+    await page.keyboard.press("Shift+Tab");
+    await page.keyboard.press("Space");
+    const checklistKeyboardRemove = await observeChecklist();
+    assert(checklistKeyboardRemove.activeValue === "one" && checklistKeyboardRemove.selected.join(",") === "two"
+      && checklistKeyboardRemove.submitted.join(",") === "two" && checklistKeyboardRemove.valid, "client checkbox keyboard removal failed");
+    await page.keyboard.press("Space");
+    await page.locator("[data-selection-submit]").click();
+    const checklistSubmitted = await observeChecklist();
+    assert(checklistSubmitted.submissions.length === 1
+      && JSON.stringify(checklistSubmitted.submissions[0]) === JSON.stringify([
+        ["fixture-collection", "two"], ["fixture-checklist", "one"], ["fixture-checklist", "two"], ["fixture-open", "free"]
+      ]), "client native and checkbox collections did not submit distinct repeated values");
+    await page.locator("#fixture-checklist").locator("..").locator("button.tcrn-multi-select-group__clear").click();
+    await page.locator("[data-selection-submit]").click();
+    const checklistCleared = await observeChecklist();
+    assert(checklistCleared.selected.length === 0 && checklistCleared.submitted.length === 0 && !checklistCleared.valid
+      && checklistCleared.submissions.length === 1 && checklistCleared.activeValue === "one"
+      && checklistCleared.totalCount === 2, "client cleared required collection was not refused without changing inventory");
+    await page.evaluate(() => document.querySelector("[data-selection-form]").reset());
+    const checklistReset = await observeChecklist();
+    assert(checklistReset.selected.join(",") === "one" && checklistReset.submitted.join(",") === "one" && checklistReset.valid
+      && JSON.stringify(checklistReset.entries) === JSON.stringify([
+        ["fixture-collection", "one"], ["fixture-checklist", "one"], ["fixture-open", "free"]
+      ]), "client collection reset lost defaults or added validation bridge values");
+    return { initial, afterScroll, afterResize, afterEscape, afterRadio, afterNarrow, afterWide, afterCollectionAdd, afterCollectionRemove,
+      checklistInitial, checklistKeyboardAdd, checklistKeyboardRemove, checklistSubmitted, checklistCleared, checklistReset, ok: true };
   } finally {
     await page.close();
   }
@@ -629,6 +786,7 @@ const staticServer = await startStaticServer();
 const browser = await chromium.launch({ headless: true });
 const results = {};
 try {
+  results.multiSelectDropdown = await runMultiSelectDropdownProof(browser);
   const overlayPage = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: "reduce" });
   await overlayPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-component-inventory.html?theme=light&locale=en#interaction-disclosure-spec`);
   await settle(overlayPage);
@@ -690,7 +848,13 @@ try {
   await fieldPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/patterns-feedback-selection.html?theme=light&locale=en#selection-list-patterns`);
   await settle(fieldPage);
   results.selection = await fieldPage.evaluate(() => {
-    const collection = document.querySelector("select[data-choice-cardinality='collection']");
+    const collection = document.querySelector(".tcrn-multi-select-dropdown__value");
+    const checklist = document.querySelector("[data-choice-cardinality='collection'][data-choice-presentation='checkboxes']");
+    const checkboxes = Array.from(checklist?.querySelectorAll('input[type="checkbox"]') ?? []);
+    const legend = document.getElementById(checklist?.getAttribute("aria-labelledby") ?? "");
+    const clear = checklist?.closest(".tcrn-multi-select-group")?.querySelector("button.tcrn-multi-select-group__clear");
+    const checklistBox = checklist?.getBoundingClientRect();
+    const checklistStyle = checklist ? getComputedStyle(checklist) : null;
     const openInput = document.querySelector("input[data-choice-value-mode='open']");
     const options = collection instanceof HTMLSelectElement ? Array.from(collection.options) : [];
     if (openInput instanceof HTMLInputElement) {
@@ -698,19 +862,38 @@ try {
       openInput.dispatchEvent(new Event("input", { bubbles: true }));
     }
     return {
-      collectionCount: document.querySelectorAll("select[data-choice-cardinality='collection']").length,
+      totalCollectionCount: document.querySelectorAll("[data-choice-cardinality='collection']").length,
+      collectionCount: document.querySelectorAll(".tcrn-multi-select-dropdown__value").length,
+      dropdownCount: document.querySelectorAll("[data-choice-presentation=dropdown]").length,
+      collectionsClosed: Array.from(document.querySelectorAll("[data-choice-cardinality='collection']")).every((node) => node.getAttribute("data-choice-value-mode") === "closed"),
       collectionMultiple: collection instanceof HTMLSelectElement && collection.multiple,
       collectionSelected: options.filter((option) => option.selected).map((option) => option.value),
       collectionDisabledValues: options.filter((option) => option.disabled).map((option) => option.value),
       collectionUniqueValues: new Set(options.map((option) => option.value)).size === options.length,
+      checkboxCollectionCount: document.querySelectorAll("[data-choice-cardinality='collection'][data-choice-presentation='checkboxes']").length,
+      checkboxStructure: checklist?.tagName === "DIV" && checklist.getAttribute("role") === "group"
+        && legend?.tagName === "LEGEND" && legend.closest("fieldset")?.contains(checklist)
+        && checkboxes.every((input) => input.name === "prompt-languages-checklist" && input.closest("label")),
+      checkboxOptionCount: checkboxes.length,
+      checkboxSelected: checkboxes.filter((input) => input.checked).map((input) => input.value),
+      checkboxDisabledValues: checkboxes.filter((input) => input.disabled).map((input) => input.value),
+      checkboxUniqueValues: new Set(checkboxes.map((input) => input.value)).size === checkboxes.length,
+      checkboxVisible: Boolean(checklistBox && checklistBox.width > 0 && checklistBox.height > 0 && checklistStyle.visibility !== "hidden"),
+      checkboxClearAction: clear instanceof HTMLButtonElement && clear.type === "button" && !clear.disabled && clear.textContent === "Clear selection",
       openInputCount: document.querySelectorAll("input[data-choice-value-mode='open']").length,
       openInputFreeForm: openInput instanceof HTMLInputElement && openInput.value === "free-form-value",
       datalistCount: document.querySelectorAll("input[data-choice-value-mode='open'] + datalist").length,
       datalistOptionCount: document.querySelector("input[data-choice-value-mode='open'] + datalist")?.querySelectorAll("option").length ?? 0
     };
   });
-  assert(results.selection.collectionCount === 1 && results.selection.collectionMultiple, "MultiSelect native contract failed");
-  assert(results.selection.collectionDisabledValues.length === 1 && results.selection.openInputFreeForm, "selection state contract failed");
+  assert(results.selection.totalCollectionCount === 2 && results.selection.checkboxCollectionCount === 1, "MultiSelect total/checkbox inventory drifted");
+  assert(results.selection.dropdownCount === 1 && results.selection.collectionCount === 1 && results.selection.collectionMultiple, "MultiSelect native contract failed");
+  assert(results.selection.collectionsClosed && results.selection.collectionUniqueValues
+    && results.selection.collectionSelected.join(",") === "en,zh-CN" && results.selection.collectionDisabledValues.join(",") === "ja"
+    && results.selection.openInputCount === 1 && results.selection.openInputFreeForm, "selection state contract failed");
+  assert(results.selection.checkboxStructure && results.selection.checkboxOptionCount === 3 && results.selection.checkboxUniqueValues
+    && results.selection.checkboxSelected.join(",") === "en,zh-CN" && results.selection.checkboxDisabledValues.join(",") === "ja"
+    && results.selection.checkboxVisible && results.selection.checkboxClearAction, "MultiSelect checkbox presentation contract failed");
   assert(results.selection.datalistCount === 1 && results.selection.datalistOptionCount === 2, "SuggestInput datalist contract failed");
   await fieldPage.close();
 
@@ -734,7 +917,10 @@ try {
 
   results.staticHtmlCssConsumer = await runStaticHtmlCssConsumerProof(browser);
   results.clientFixture = await runClientFixtureProof(browser);
+  results.fullDetailsContainment = await runFullDetailsContainmentProof(browser);
+  results.settingsExplanationLocales = await runSettingsExplanationLocaleProof(browser, staticServer.origin);
 
+  assert(results.multiSelectDropdown.ok, `MultiSelect dropdown checks failed: ${JSON.stringify(results.multiSelectDropdown.checks.filter(check => !check.ok))}`);
   results.ok = true;
 } finally {
   await browser.close();

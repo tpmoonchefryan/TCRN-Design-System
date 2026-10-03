@@ -39,15 +39,40 @@ uses the supplied `value` for the controlled form; either mode retains a valid
 selection when the branches swap. `onChange` reports actual user value changes
 once and is silent during layout-only swaps or unchanged-value events.
 
-`SettingsLayout` uses the actual content container to choose its density. At a
+`SettingsLayout` uses the actual content container to choose its density. Wrap
+related setting rows in `SettingRowList`; it shares the label, control, and
+tools tracks so rows with and without reset actions align. At a
 960px frame it places compact local navigation beside one content column; below
 that it stays one column. Its content stacks `SettingRow` label, control, and tools
 below 720px. The layout keeps long native input values selectable and copyable and
 does not hide configuration through overflow clipping. `SettingsHostSwitcher`
 expresses the single-host-before-complete-form composition.
 
-`MultiSelect` is the native closed-set collection control: its selected values,
-disabled options, keyboard behavior, and repeated form values remain native.
+`MultiSelect` is the closed-set collection control. Use `presentation="dropdown"`
+with a localized `emptySelectionLabel` for ordinary collection choice. The closed
+Select-family trigger shows the current choices. The Menu-family list stays open
+while values are added or removed using clicks or Space/Enter; arrows, Home/End and
+letter keys move focus without changing values. Escape and outside clicks dismiss
+the list; Tab returns to normal form navigation. Disabled choices cannot change.
+The native form value submits each enabled choice once, preserves required
+validation and external form association, and resets to `defaultValue` for an
+uncontrolled field. A controlled `value` remains authoritative. Server-rendered
+consumers use the same markup and `mountStaticMultiSelect`, which also owns the
+shared body overlay boundary, placement, cleanup and summary updates.
+
+For compatibility it defaults to the native
+multiple-select; use `presentation="checkboxes"` with a localized
+`clearSelectionLabel` when a visible checklist is needed. The checklist keeps
+native checkbox keyboard and repeated form values, preserves disabled options,
+and resets to `defaultValue` with its form. A required enabled checklist fails
+native form validation until at least one enabled option is selected, including
+when its option set is empty or all options are disabled. The group's disabled
+state excludes it from validation and submission. Its unnamed validation control
+adds no submitted value or tab stop; validated-submit focus goes to the first
+enabled checkbox, or the group when no enabled option exists. Controlled values
+remain authoritative on reset; uncontrolled values reset to their current defaults.
+The `form` prop supports association with a form outside the checklist. Wrap grouped controls in
+`<Field group>` to provide fieldset/legend semantics.
 `SuggestInput` is the open-string control: its datalist suggestions are advisory
 and never reject a value outside the suggestion list. `DictionaryTable` renders
 one category description and requires a separate explanation for every machine
@@ -209,3 +234,12 @@ client-only product omits the prop and behaves as before. An explicit URL query
 still outranks a stored preference: only the product knows its own URL
 vocabulary, so it resolves that itself and passes the winner as `initialTheme` or
 `initialLocale`.
+
+`Surface` accepts optional `heading` and `actions` slots. Its shared header wraps
+inside the card, including nested narrow cards and long heading text. Structured
+`OperationFeedback` details preserve preformatted content while wrapping long
+paths and hashes; identity labels and values remain inside their assigned tracks.
+
+`DefinitionList` stacks at its 760px mother-width boundary as well as the narrow
+viewport fallback. Terms and definitions wrap in nested cards without a fixed
+consumer term-column minimum.

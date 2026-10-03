@@ -2813,12 +2813,72 @@ const pageHierarchyBrowserProof = {
     && pageHierarchyNegativeProof.ok
 };
 
+// Inspect every sibling in the real consumer rather than inferring shared tracks
+// from the first row's computed columns. These measurements also exercise the
+// complete direct/list mothers at the exact content threshold below.
+function measureSettingsRowTracks(layout) {
+  const rect = (node) => {
+    if (!node) return null;
+    const value = node.getBoundingClientRect();
+    return { left: value.left, top: value.top, right: value.right, bottom: value.bottom, width: value.width, height: value.height };
+  };
+  const contains = (outer, inner) => outer && inner && inner.width > 0 && inner.height > 0
+    && inner.left >= outer.left - 1 && inner.right <= outer.right + 1
+    && inner.top >= outer.top - 1 && inner.bottom <= outer.bottom + 1;
+  const contentNode = layout?.querySelector("[data-settings-content='true']");
+  const content = rect(contentNode);
+  const controlMinimum = contentNode ? Number.parseFloat(getComputedStyle(contentNode).getPropertyValue("--tcrn-container-settings-control-min")) : NaN;
+  const rows = Array.from(layout?.querySelectorAll("[data-setting-row='true']") ?? []).map((row) => {
+    const label = row.querySelector(":scope > .tcrn-setting-row__label");
+    const control = row.querySelector(":scope > .tcrn-setting-row__control");
+    const tools = row.querySelector(":scope > .tcrn-setting-row__tools");
+    const withTools = Boolean(tools?.children.length);
+    return {
+      row: rect(row), label: rect(label), control: rect(control), tools: withTools ? rect(tools) : null, withTools,
+      sourceOrder: label?.nextElementSibling === control && control?.nextElementSibling === tools,
+      labelText: Boolean(label?.textContent?.trim()),
+      wrapper: rect(control?.firstElementChild),
+      nativeControls: Array.from(control?.querySelectorAll("input:not([type='hidden']),select") ?? []).map(rect),
+      columns: getComputedStyle(row).gridTemplateColumns
+    };
+  });
+  const spread = (field) => rows.length && rows.every((row) => row.control)
+    ? Math.max(...rows.map((row) => row.control[field])) - Math.min(...rows.map((row) => row.control[field]))
+    : null;
+  const controls = { start: spread("left"), width: spread("width"), right: spread("right") };
+  const wide = content?.width >= 720;
+  const siblingTracks = !wide || Object.values(controls).every((value) => Number.isFinite(value) && value <= 1);
+  const labelsContained = rows.every((row) => row.labelText && contains(row.row, row.label));
+  const slotsContained = rows.every((row) => contains(content, row.row) && contains(row.row, row.control)
+    && (!row.withTools || contains(row.row, row.tools)));
+  const wrappersFill = rows.every((row) => row.wrapper && row.control && row.nativeControls.length > 0
+    && [row.wrapper, ...row.nativeControls].every((control) => contains(row.control, control)
+      && Math.abs(control.left - row.control.left) <= 1 && Math.abs(control.right - row.control.right) <= 1));
+  const orderedSlots = rows.every((row) => row.sourceOrder && row.label && row.control
+    && (wide
+      ? row.label.right <= row.control.left + 1 && Number.isFinite(controlMinimum) && row.control.width >= controlMinimum - 1
+        && (!row.withTools || row.control.right <= row.tools.left + 1)
+      : row.control.top >= row.label.bottom - 1 && (!row.withTools || row.tools.top >= row.control.bottom - 1)));
+  const mixedTools = rows.some((row) => row.withTools) && rows.some((row) => !row.withTools);
+  return {
+    content, rows, controls, wide, siblingTracks, labelsContained, slotsContained, wrappersFill, orderedSlots, mixedTools,
+    ok: rows.length === 3 && mixedTools && siblingTracks && labelsContained && slotsContained && wrappersFill && orderedSlots
+  };
+}
+
+function stableSettingsTrackResult(measurement) {
+  const { wide, siblingTracks, labelsContained, slotsContained, wrappersFill, orderedSlots, mixedTools, ok } = measurement;
+  return { wide, siblingTracks, labelsContained, slotsContained, wrappersFill, orderedSlots, mixedTools, ok };
+}
+
 const settingsLayoutProofCases = [
   ...[390, 768, 980, 1024, 1180, 1280, 1440].map((width) => ({ width, zoom: 1, locale: "en", theme: "light" })),
   ...[390, 980, 1440].flatMap((width) => [1.25, 2].map((zoom) => ({ width, zoom, locale: "zh-CN", theme: "dark" }))),
   ...["zh-CN", "en", "ja", "ko", "fr"].flatMap((locale) => ["light", "dark"].map((theme) => ({ width: 768, zoom: 1, locale, theme })))
 ];
 const settingsLayoutProofReadbacks = [];
+const settingsRowTrackMeasurements = [];
+const settingsBoundaryTrackReadbacks = [];
 let settingsLayoutInteractionProof = { ok: false, reason: "not-run" };
 for (const proofCase of settingsLayoutProofCases) {
   // Browser zoom reduces the CSS viewport while retaining the requested physical
@@ -2921,6 +2981,83 @@ for (const proofCase of settingsLayoutProofCases) {
       }
     }
     const expectedNested = { frameMode: "single", contentMode: "stack" };
+    const tracks = await settingsPage.locator("[data-settings-layout='true']").evaluate(measureSettingsRowTracks);
+    settingsRowTrackMeasurements.push({ kind: "actual-story", ...proofCase, ...tracks });
+    if (proofCase.width === 1440 && proofCase.zoom === 1 && proofCase.locale === "en" && proofCase.theme === "light") {
+      for (const shape of ["list", "direct"]) {
+        for (const contentWidth of [785.125, 720, 719, 360, 212, 95]) {
+          const fixture = await settingsPage.locator("[data-settings-layout='true']").evaluateHandle((layout, { shape, contentWidth }) => {
+            const host = document.createElement("div");
+            host.style.inlineSize = `${contentWidth}px`;
+            const clone = layout.cloneNode(true);
+            if (shape === "direct") {
+              const list = clone.querySelector(".tcrn-setting-row-list");
+              list.replaceWith(...list.children);
+            }
+            host.append(clone);
+            layout.parentElement.append(host);
+            return clone;
+          }, { shape, contentWidth });
+          try {
+            const positive = await fixture.evaluate(measureSettingsRowTracks);
+            settingsRowTrackMeasurements.push({ kind: "boundary-positive", shape, contentWidth, ...positive });
+            const negatives = [];
+            if (contentWidth >= 720) {
+              // Replay the actual superseded per-row cascade; then independently
+              // perturb starts and widths in the DOM to prove each comparison.
+              for (const mutation of ["legacy-row-tracks", "control-start", "control-width"]) {
+                await fixture.evaluate((layout, mutation) => {
+                  const rows = Array.from(layout.querySelectorAll("[data-setting-row='true']"));
+                  if (mutation === "legacy-row-tracks") {
+                    for (const row of rows) row.style.gridTemplateColumns = "minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content";
+                  } else {
+                    const control = rows[2].querySelector(".tcrn-setting-row__control");
+                    if (mutation === "control-start") control.style.transform = "translateX(-6px)";
+                    else control.style.inlineSize = "calc(100% - 6px)";
+                  }
+                }, mutation);
+                const negative = await fixture.evaluate(measureSettingsRowTracks);
+                settingsRowTrackMeasurements.push({ kind: "boundary-negative", mutation, shape, contentWidth, ...negative });
+                negatives.push({ mutation, rejected: !negative.ok && !negative.siblingTracks });
+                await fixture.evaluate((layout) => {
+                  for (const row of layout.querySelectorAll("[data-setting-row='true']")) {
+                    row.style.removeProperty("grid-template-columns");
+                    const control = row.querySelector(".tcrn-setting-row__control");
+                    control.style.removeProperty("transform");
+                    control.style.removeProperty("inline-size");
+                  }
+                });
+              }
+            } else if (contentWidth < 240) {
+              // The old auto columns can grow to the native input's intrinsic
+              // width even while each row's own scrollWidth still appears to fit.
+              await fixture.evaluate((layout) => {
+                layout.querySelector(".tcrn-settings-layout__content").style.gridTemplateColumns = "auto";
+                layout.querySelector(".tcrn-settings-layout__form").style.gridTemplateColumns = "auto";
+              });
+              const negative = await fixture.evaluate(measureSettingsRowTracks);
+              settingsRowTrackMeasurements.push({ kind: "boundary-negative", mutation: "legacy-auto-columns", shape, contentWidth, ...negative });
+              negatives.push({ mutation: "legacy-auto-columns", rejected: !negative.ok && !negative.slotsContained });
+              await fixture.evaluate((layout) => {
+                layout.querySelector(".tcrn-settings-layout__content").style.removeProperty("grid-template-columns");
+                layout.querySelector(".tcrn-settings-layout__form").style.removeProperty("grid-template-columns");
+              });
+            }
+            const recovered = await fixture.evaluate(measureSettingsRowTracks);
+            settingsRowTrackMeasurements.push({ kind: "boundary-recovered", shape, contentWidth, ...recovered });
+            const widthMatch = Math.abs(positive.content.width - contentWidth) <= 0.02;
+            settingsBoundaryTrackReadbacks.push({
+              shape, contentWidth, widthMatch,
+              positive: stableSettingsTrackResult(positive), negatives, recovered: stableSettingsTrackResult(recovered),
+              ok: widthMatch && positive.ok && negatives.every((entry) => entry.rejected) && recovered.ok
+            });
+          } finally {
+            await fixture.evaluate((layout) => layout.parentElement.remove());
+            await fixture.dispose();
+          }
+        }
+      }
+    }
     settingsLayoutProofReadbacks.push({
       ...proofCase,
       frameMode: readback.frameMode,
@@ -2931,12 +3068,14 @@ for (const proofCase of settingsLayoutProofCases) {
       rowsFit: readback.rowsFit,
       longValueComplete: readback.longValueComplete,
       noHiddenOverflow: readback.noHiddenOverflow,
+      siblingTracks: stableSettingsTrackResult(tracks),
       nested: {
         ...readback.nested,
         expectedFrameMode: expectedNested.frameMode,
         expectedContentMode: expectedNested.contentMode
       },
       ok: !readback.pageOverflow
+        && tracks.ok
         && readback.rowsFit
         && readback.longValueComplete
         && readback.noHiddenOverflow
@@ -2963,11 +3102,15 @@ const settingsLayoutBrowserProof = {
   themes: ["light", "dark"],
   nestedFixture: "680px frame; expected single-column and stacked rows",
   readbacks: settingsLayoutProofReadbacks,
+  boundaryTracks: settingsBoundaryTrackReadbacks,
   interaction: settingsLayoutInteractionProof,
   ok: settingsLayoutProofReadbacks.length === settingsLayoutProofCases.length
     && settingsLayoutProofReadbacks.every((readback) => readback.ok)
+    && settingsBoundaryTrackReadbacks.length === 12
+    && settingsBoundaryTrackReadbacks.every((readback) => readback.ok)
     && settingsLayoutInteractionProof.ok
 };
+console.log(JSON.stringify({ schemaVersion: "tcrn.ds.actual-settings-track-measurements.v1", measurements: settingsRowTrackMeasurements }));
 
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/welcome-governance-entry.html?theme=light&locale=zh-CN#welcome-governance`);
 await storybookPage.waitForSelector("[data-storybook-locale='zh-CN']");

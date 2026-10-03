@@ -53,6 +53,7 @@ import {
   Select,
   SettingChoice,
   SettingRow,
+  SettingRowList,
   SettingsHostSwitcher,
   SettingsLayout,
   ShellThemeToggle,
@@ -2856,24 +2857,27 @@ const legacyContractStories: LegacyContractStory[] = [
               />
             }
           >
-            <SettingRow
-              label="Model"
-              description="Long values remain editable, selectable, and copyable."
-              settingKey="runtime.model"
-              control={<Input defaultValue="model-with-a-long-but-editable-identifier" />}
-            />
-            <SettingRow
-              label="Execution mode"
-              description="More than two values use Select."
-              settingKey="runtime.mode"
-              control={<Select defaultValue="frontier" options={[{ value: "economy", label: "Economy" }, { value: "frontier", label: "Frontier" }, { value: "reserve", label: "Reserve", disabled: true }]} />}
-            />
-            <SettingRow
-              label="Token budget"
-              description="The legal range stays visible beside the numeric control."
-              settingKey="runtime.budget"
-              control={<NumberInput defaultValue={4096} min={512} max={8192} />}
-            />
+            <SettingRowList>
+              <SettingRow
+                label="Model"
+                description="Long values remain editable, selectable, and copyable."
+                settingKey="runtime.model"
+                control={<Input defaultValue="model-with-a-long-but-editable-identifier" />}
+              />
+              <SettingRow
+                label="Execution mode"
+                description="More than two values use Select."
+                settingKey="runtime.mode"
+                control={<Select defaultValue="frontier" options={[{ value: "economy", label: "Economy" }, { value: "frontier", label: "Frontier" }, { value: "reserve", label: "Reserve", disabled: true }]} />}
+              />
+              <SettingRow
+                label="Token budget"
+                description="The legal range stays visible beside the numeric control."
+                settingKey="runtime.budget"
+                modified
+                control={<NumberInput defaultValue={4096} min={512} max={8192} />}
+              />
+            </SettingRowList>
           </SettingsLayout>
           <TableShell
             label="Settings layout thresholds"
@@ -3021,12 +3025,28 @@ const legacyContractStories: LegacyContractStory[] = [
         />
         <InlineAlert tone="warning">Large or remote option sets need search, loading, empty, and keyboard states.</InlineAlert>
         <ReadbackPanel title="Field value cardinality">
-          <Text>Closed single values use native value selectors, closed collections use MultiSelect, and open strings may use advisory suggestions without rejecting free-form input.</Text>
+          <Text>Use a Select-family dropdown to choose several values: the closed trigger shows the selection, and the open list lets you add or remove values. Native multiple lists and explicit checklists remain separate opt-in presentations; suggestions never restrict open text.</Text>
           <div className="tcrn-display-primitive-grid">
             <Field label="Prompt languages (collection)" hint="Choose one or more supported locale values.">
               <MultiSelect
                 name="prompt-languages"
+                presentation="dropdown"
+                emptySelectionLabel="Select languages"
                 defaultValue={["en", "zh-CN"]}
+                options={[
+                  { value: "en", label: "English" },
+                  { value: "zh-CN", label: "Simplified Chinese" },
+                  { value: "ja", label: "Japanese", disabled: true }
+                ]}
+              />
+            </Field>
+            <Field group label="Visible checklist (explicit opt-in)" hint="Check the values you want to submit, or clear the collection.">
+              <MultiSelect
+                id="prompt-languages-checklist"
+                name="prompt-languages-checklist"
+                defaultValue={["en", "zh-CN"]}
+                presentation="checkboxes"
+                clearSelectionLabel="Clear selection"
                 options={[
                   { value: "en", label: "English" },
                   { value: "zh-CN", label: "Simplified Chinese" },

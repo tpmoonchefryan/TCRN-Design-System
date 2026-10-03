@@ -16,11 +16,15 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   Input,
+  Field,
+  Select,
+  MultiSelect,
   NumberInput,
   SettingChoice,
   SettingsHostSwitcher,
   SettingsLayout,
   SettingRow,
+  SettingRowList,
   PageHierarchy,
   PageHeader,
   SectionTabs,
@@ -28,6 +32,7 @@ import {
   tcrnComponentCss
 } from "../packages/ui-react/dist/index.js";
 import { tcrnTokenCss } from "../packages/ui-tokens/dist/index.js";
+import { runMultiSelectRequiredProof } from "./lib/multi-select-required-proof.mjs";
 
 export const DS_CONSUMPTION_PROOF_VERSION = "tcrn.ds-consumption-proof.v2";
 export const DS_CONSUMPTION_CONTRACT_VERSION = "ds_consumption_contract_v2";
@@ -332,8 +337,8 @@ function renderedDisabledValuesMatch(actualValues, expectedValues, findings, bra
   if (!exactValues(actual, expected)) finding(findings, `${branch} rendered disabled values differ from the declared options`);
 }
 
-async function measureRenderedMarkup(browser, kind, markup) {
-  const page = await browser.newPage({ viewport: { width: 720, height: 520 } });
+async function measureRenderedMarkup(browser, kind, markup, viewportWidth = 720) {
+  const page = await browser.newPage({ viewport: { width: viewportWidth, height: 520 } });
   try {
     await page.setContent(`<!doctype html><meta charset="utf-8"><style>${tcrnTokenCss}${tcrnComponentCss}*{box-sizing:border-box}body{margin:0;padding:16px;font:13px sans-serif}#fixture{inline-size:100%;max-inline-size:100%;min-inline-size:0}</style><main id="fixture">${markup}</main>`);
     await page.evaluate(async () => {
@@ -369,6 +374,9 @@ async function measureRenderedMarkup(browser, kind, markup) {
       const entryNodes = Array.from(fixture?.querySelectorAll("button,a,input,select,textarea,[role='button'],[role='menuitem']") ?? []);
       const visibleEntries = entryNodes.filter(visible);
       const hiddenOverflowNodes = Array.from(layout?.querySelectorAll("*") ?? []).filter((node) => {
+        // Native Select owns its internal option viewport. Its UA overflow does
+        // not conceal the form's labels, control border boxes or tools.
+        if (node instanceof HTMLSelectElement) return false;
         const style = getComputedStyle(node);
         return style.overflowX === "hidden" || style.overflowY === "hidden";
       });
@@ -388,6 +396,26 @@ async function measureRenderedMarkup(browser, kind, markup) {
       const hierarchyThirdLevelGridRect = regionRect(pageHierarchyThirdLevelGrid);
       const hierarchyLocalNavigationRect = regionRect(pageHierarchyLocalNavigation);
       const hierarchyContentRect = regionRect(pageHierarchyContent);
+      const settingsContent = layout?.querySelector(".tcrn-settings-layout__content");
+      const settingsForm = layout?.querySelector(".tcrn-settings-layout__form");
+      const settingRows = Array.from(settingsForm?.querySelectorAll(".tcrn-setting-row") ?? []);
+      // Native input values scroll inside the control. Measure its border box,
+      // while ordinary labels, descriptions and checklist text must wrap.
+      const horizontalLeaks = (slot) => {
+        if (!slot || !visible(slot)) return 0;
+        const bounds = slot.getBoundingClientRect();
+        const leaks = (box) => box.width > 0 && (box.left < bounds.left - 1 || box.right > bounds.right + 1);
+        let count = Array.from(slot.querySelectorAll("*")).filter((node) => visible(node) && leaks(node.getBoundingClientRect())).length;
+        const texts = document.createTreeWalker(slot, NodeFilter.SHOW_TEXT);
+        while (texts.nextNode()) {
+          const node = texts.currentNode;
+          if (!node.textContent.trim() || !visible(node.parentElement) || node.parentElement.closest("select,textarea,.tcrn-sr-only")) continue;
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          count += Array.from(range.getClientRects()).filter(leaks).length;
+        }
+        return count;
+      };
       return {
         schemaVersion: "tcrn.ds.rendered-consumption-evidence.v1",
         kind: fixtureKind,
@@ -397,6 +425,7 @@ async function measureRenderedMarkup(browser, kind, markup) {
           selectCount: selectNodes.length,
           optionCount: selectNodes.reduce((total, select) => total + select.options.length, 0),
           numericCount: numericNodes.length,
+          settingRowCount: settingRows.length,
           pageHierarchyCount: fixture?.querySelectorAll("[data-page-hierarchy='true']").length ?? 0,
           pageHeaderCount: pageHierarchy?.querySelectorAll(".tcrn-page-header").length ?? 0,
           sectionTabsCount: pageHierarchy?.querySelectorAll("[data-page-hierarchy-region='section-tabs'] .tcrn-sub-nav,[data-page-hierarchy-region='section-tabs'] .tcrn-section-tabs").length ?? 0,
@@ -417,6 +446,27 @@ async function measureRenderedMarkup(browser, kind, markup) {
           settingVisible: visible(setting),
           layoutVisible: visible(layout),
           hiddenOverflowCount: hiddenOverflowNodes.length,
+          settings: settingsContent ? {
+            contentRect: regionRect(settingsContent),
+            stackThresholdPx: Number.parseFloat(layout.getAttribute("data-settings-content-breakpoint")),
+            controlMinimumPx: Number.parseFloat(getComputedStyle(settingsContent).getPropertyValue("--tcrn-container-settings-control-min")),
+            rows: settingRows.map((row) => {
+              const label = row.querySelector(":scope > .tcrn-setting-row__label");
+              const control = row.querySelector(":scope > .tcrn-setting-row__control");
+              const tools = row.querySelector(":scope > .tcrn-setting-row__tools");
+              return {
+                rowRect: regionRect(row),
+                labelRect: regionRect(label),
+                controlRect: regionRect(control),
+                toolsRect: regionRect(tools),
+                toolsPresent: Boolean(tools?.childElementCount),
+                gapPx: Number.parseFloat(getComputedStyle(row).columnGap),
+                wrapperRects: Array.from(control?.children ?? []).filter(visible).map(regionRect),
+                valueControlRects: Array.from(control?.querySelectorAll("input:not([type='checkbox']):not([type='radio']),select") ?? []).filter(visible).map(regionRect),
+                horizontalLeakCount: [label, control, tools].reduce((count, slot) => count + horizontalLeaks(slot), 0)
+              };
+            })
+          } : null,
           pageHierarchy: pageHierarchy ? {
             visible: visible(pageHierarchy),
             headerVisible: visible(pageHierarchyHeader),
@@ -466,6 +516,62 @@ async function measureRenderedMarkup(browser, kind, markup) {
 
 function finding(findings, message) {
   findings.push(message);
+}
+
+function inspectSettingRowGeometry(markup, renderedEvidence, findings) {
+  const settings = renderedEvidence.geometry?.settings;
+  const rows = settings?.rows;
+  const rowCount = (markup.match(/data-setting-row="true"/gu) ?? []).length;
+  if (!validGeometryRect(settings?.contentRect) || !Array.isArray(rows) || rows.length === 0 || rows.some((row) => !row || typeof row !== "object")
+    || rows.length !== rowCount || renderedEvidence.dom?.settingRowCount !== rowCount
+    || !finiteNumber(settings.stackThresholdPx) || settings.stackThresholdPx !== 720
+    || !finiteNumber(settings.controlMinimumPx) || settings.controlMinimumPx <= 0) {
+    finding(findings, "settings row/container geometry evidence is missing or invalid");
+    return;
+  }
+  const wide = settings.contentRect.width >= settings.stackThresholdPx;
+  const first = rows[0];
+  if (!validGeometryRect(first.labelRect) || !validGeometryRect(first.controlRect)) {
+    finding(findings, "settings first-row track geometry is missing or invalid");
+    return;
+  }
+  const close = (a, b) => Math.abs(a - b) <= GEOMETRY_EPSILON;
+  const toolStarts = rows.filter((row) => row.toolsPresent).map((row) => row.toolsRect?.left);
+  for (const [index, row] of rows.entries()) {
+    const { rowRect, labelRect, controlRect, toolsRect, gapPx } = row;
+    const slots = [labelRect, controlRect, ...(row.toolsPresent ? [toolsRect] : [])];
+    if (!rectContains(settings.contentRect, rowRect) || slots.some((slot) => !rectContains(rowRect, slot))
+      || !finiteNumber(gapPx) || gapPx <= 0 || typeof row.toolsPresent !== "boolean") {
+      finding(findings, `setting row ${index} has invalid or leaking slot geometry`);
+      continue;
+    }
+    if (wide) {
+      if (controlRect.left < labelRect.right + gapPx - GEOMETRY_EPSILON
+        || controlRect.top >= labelRect.bottom || labelRect.top >= controlRect.bottom
+        || controlRect.width < settings.controlMinimumPx - GEOMETRY_EPSILON
+        || (row.toolsPresent && toolsRect.left < controlRect.right + gapPx - GEOMETRY_EPSILON)) {
+        finding(findings, `setting row ${index} lacks distinct wide label/control/tools tracks`);
+      }
+      if (!close(labelRect.left, first.labelRect.left) || !close(labelRect.right, first.labelRect.right)
+        || !close(controlRect.left, first.controlRect.left) || !close(controlRect.right, first.controlRect.right)
+        || (row.toolsPresent && !close(toolsRect.left, toolStarts[0]))) {
+        finding(findings, `setting row ${index} does not align with the shared wide tracks`);
+      }
+    } else if (controlRect.top < labelRect.bottom + gapPx - GEOMETRY_EPSILON
+      || !close(controlRect.left, labelRect.left) || !close(controlRect.right, labelRect.right)
+      || (row.toolsPresent && toolsRect.top < controlRect.bottom + gapPx - GEOMETRY_EPSILON)) {
+      finding(findings, `setting row ${index} does not stack at the content-container boundary`);
+    }
+    if (!Array.isArray(row.wrapperRects) || row.wrapperRects.length === 0
+      || !Array.isArray(row.valueControlRects)
+      || [...row.wrapperRects, ...row.valueControlRects].some((box) => !rectContains(controlRect, box)
+        || !close(box.left, controlRect.left) || !close(box.right, controlRect.right))) {
+      finding(findings, `setting row ${index} control or wrapper does not fill its allocated track`);
+    }
+    if (!Number.isInteger(row.horizontalLeakCount) || row.horizontalLeakCount !== 0) {
+      finding(findings, `setting row ${index} label, description, control or tools leaks horizontally`);
+    }
+  }
 }
 
 export function inspectDsConsumption({ kind, markup, renderedEvidence, expectedDisabledOptionValues = [], expectedPageDepth }) {
@@ -572,6 +678,7 @@ export function inspectDsConsumption({ kind, markup, renderedEvidence, expectedD
       if (renderedEvidence.geometry?.layoutVisible !== true) finding(findings, "settings layout is not visibly rendered");
       if (renderedEvidence.geometry?.pageOverflow === true) finding(findings, "settings layout creates page-level horizontal overflow");
       if (Number(renderedEvidence.geometry?.hiddenOverflowCount) > 0) finding(findings, "settings layout contains hidden overflow in its rendered content");
+      inspectSettingRowGeometry(markup, renderedEvidence, findings);
     }
   } else if (kind === "page-hierarchy") {
     const depth = attr(markup, "data-page-hierarchy-depth");
@@ -755,7 +862,7 @@ function narrowNumberInputMarkup() {
   }));
 }
 
-function validSettingsLayoutMarkup() {
+function validSettingsLayoutMarkup({ rows, shape = "direct", motherWidth } = {}) {
   const hostSwitcher = createElement(SettingsHostSwitcher, {
     label: "Execution host",
     name: "host",
@@ -776,12 +883,43 @@ function validSettingsLayoutMarkup() {
     description: "The complete value stays selectable and copyable.",
     control: longValue
   });
-  return renderToStaticMarkup(createElement(SettingsLayout, {
+  const layout = createElement(SettingsLayout, {
     navigation,
     navigationLabel: "Settings navigation",
     hostSwitcher,
     contentLabel: "Settings content",
-    children: row
+    children: shape === "list" ? createElement(SettingRowList, null, rows ?? row) : rows ?? row
+  });
+  return renderToStaticMarkup(motherWidth === undefined ? layout : createElement("section", {
+    style: { inlineSize: motherWidth, maxInlineSize: "100%", minInlineSize: 0 }
+  }, layout));
+}
+
+function mixedSettingsRows({ forcedColumns, shrinkControl, unwrappedText } = {}) {
+  const longText = `A complete localized label /${"continuousidentifier".repeat(16)}`;
+  const options = [{ value: "local", label: longText }, { value: "remote", label: "Remote" }, { value: "deferred", label: "Deferred", disabled: true }];
+  const controls = [
+    createElement(Input, { name: "raw", value: longText, readOnly: true }),
+    createElement(Field, { label: "Wrapped input", hint: longText }, createElement(Input, { name: "wrapped", value: longText, readOnly: true })),
+    createElement(Select, { name: "select", options, defaultValue: "local" }),
+    createElement(SettingChoice, { name: "choice", label: longText, options, availableInlineSize: 240, defaultValue: "local" }),
+    createElement("div", { className: "tcrn-number-input-field" }, createElement(NumberInput, { name: "numeric", value: 8192, min: 512, max: 8192, readOnly: true })),
+    createElement(Field, { label: "Wrapped number", hint: longText }, createElement(NumberInput, { name: "wrapped-number", value: 8192, min: 512, max: 8192, readOnly: true })),
+    createElement(MultiSelect, { name: "native-set", options, defaultValue: ["local"] }),
+    createElement(Field, { label: "Checkbox collection", group: true }, createElement(MultiSelect, {
+      name: "checkbox-set", options, defaultValue: ["local"], presentation: "checkboxes", clearSelectionLabel: "Clear selection"
+    }))
+  ];
+  return controls.map((control, index) => createElement(SettingRow, {
+    key: index,
+    label: index === 0 ? longText : `Configuration ${index}`,
+    settingKey: `settings.${"long-key-".repeat(12)}${index}`,
+    description: longText,
+    control: shrinkControl && index === 1 ? createElement("div", { style: { inlineSize: "75%" } }, control) : control,
+    modified: index % 3 === 0,
+    onReset: index % 3 === 0 ? () => {} : undefined,
+    resetLabel: index === 0 ? "Restore defaults" : "Reset",
+    style: index === 0 ? { gridTemplateColumns: forcedColumns, overflowWrap: unwrappedText ? "normal" : undefined } : undefined
   }));
 }
 
@@ -843,6 +981,49 @@ export async function runDsConsumptionProof() {
       markup: validNumberInputMarkup()
     },
     { id: "valid-settings-layout", kind: "settings-layout", expected: "pass", markup: validSettingsLayoutMarkup() },
+    ...["direct", "list"].flatMap((shape) => [
+      { id: "wide", viewportWidth: 1440 },
+      { id: "narrow", viewportWidth: 390 },
+      { id: "wide-before-frame-split", viewportWidth: 980 },
+      { id: "wide-after-frame-split", viewportWidth: 1024 },
+      { id: "nested-narrow", viewportWidth: 1440, motherWidth: 600 },
+      { id: "below-content-boundary", viewportWidth: 1440, motherWidth: 719 },
+      { id: "at-content-boundary", viewportWidth: 1440, motherWidth: 720 }
+    ].map(({ id, viewportWidth, motherWidth }) => ({
+      id: `valid-settings-${shape}-${id}`,
+      kind: "settings-layout",
+      expected: "pass",
+      viewportWidth,
+      markup: validSettingsLayoutMarkup({ shape, motherWidth, rows: mixedSettingsRows() })
+    }))),
+    {
+      id: "settings-wide-row-forced-to-stack",
+      kind: "settings-layout",
+      expected: "reject",
+      viewportWidth: 1440,
+      markup: validSettingsLayoutMarkup({ rows: mixedSettingsRows({ forcedColumns: "minmax(0,1fr)" }) })
+    },
+    {
+      id: "settings-narrow-row-forced-to-columns",
+      kind: "settings-layout",
+      expected: "reject",
+      viewportWidth: 1440,
+      markup: validSettingsLayoutMarkup({ shape: "list", motherWidth: 600, rows: mixedSettingsRows({ forcedColumns: "minmax(0,1fr) minmax(0,1fr) max-content" }) })
+    },
+    {
+      id: "settings-wrapper-does-not-fill-control-track",
+      kind: "settings-layout",
+      expected: "reject",
+      viewportWidth: 1440,
+      markup: validSettingsLayoutMarkup({ shape: "list", rows: mixedSettingsRows({ shrinkControl: true }) })
+    },
+    {
+      id: "settings-long-label-leaks-its-track",
+      kind: "settings-layout",
+      expected: "reject",
+      viewportWidth: 1440,
+      markup: validSettingsLayoutMarkup({ rows: mixedSettingsRows({ unwrappedText: true }) })
+    },
     {
       id: "number-value-too-narrow",
       kind: "number-input",
@@ -936,20 +1117,23 @@ export async function runDsConsumptionProof() {
   ];
   const browser = await chromium.launch({ headless: true });
   let results;
+  let multiSelectRequired;
   try {
     results = [];
     for (const { markup, ...fixture } of fixtures) {
-      const renderedEvidence = await measureRenderedMarkup(browser, fixture.kind, markup);
+      const renderedEvidence = await measureRenderedMarkup(browser, fixture.kind, markup, fixture.viewportWidth);
       results.push({
         ...fixture,
         renderedEvidence,
         result: inspectDsConsumption({ kind: fixture.kind, markup, renderedEvidence, expectedDisabledOptionValues: fixture.expectedDisabledOptionValues, expectedPageDepth: fixture.expectedPageDepth })
       });
     }
+    multiSelectRequired = await runMultiSelectRequiredProof(browser);
   } finally {
     await browser.close();
   }
   const mismatches = results.filter((fixture) => (fixture.expected === "pass") !== fixture.result.ok).map((fixture) => fixture.id);
+  mismatches.push(...multiSelectRequired.mismatches);
   const rootPackage = JSON.parse(readFileSync("package.json", "utf8"));
   const uiReactPackage = JSON.parse(readFileSync("packages/ui-react/package.json", "utf8"));
   const uiTokensPackage = JSON.parse(readFileSync("packages/ui-tokens/package.json", "utf8"));
@@ -963,7 +1147,7 @@ export async function runDsConsumptionProof() {
     command: "pnpm full-surface:proof",
     flags: "",
     browserToolVersion: { browser: "playwright", version: rootPackage.devDependencies?.["@playwright/test"] ?? "" },
-    fixtureDigest: `sha256:${createHash("sha256").update(JSON.stringify(results.map(({ id, kind, expected, markup }) => ({ id, kind, expected, markup })))).digest("hex")}`,
+    fixtureDigest: `sha256:${createHash("sha256").update(JSON.stringify({ fixtures, multiSelectRequired: multiSelectRequired.fixtureDigest })).digest("hex")}`,
     baselineDigest: fileDigest("docs/verification/internal-alpha/visual-signature-baseline.json"),
     outputTargetDigest: fileDigest("apps/storybook/storybook-static/ai-consumption-contract.json")
   };
@@ -996,6 +1180,7 @@ export async function runDsConsumptionProof() {
     verificationCadence: DS_VERIFICATION_CADENCE,
     verificationInputKeys: DS_VERIFICATION_INPUT_KEYS,
     verificationReuseProof: reuseProof,
+    multiSelectRequired,
     fixtures: results,
     mismatches,
     ok: mismatches.length === 0

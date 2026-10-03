@@ -2,8 +2,23 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { cx } from "../../utils.js";
 import { Heading } from "../Typography/index.js";
 
-export function Surface({ className, ...props }: HTMLAttributes<HTMLElement>) {
-  return <section {...props} className={cx("tcrn-surface", className)} />;
+export interface SurfaceProps extends HTMLAttributes<HTMLElement> {
+  heading?: ReactNode;
+  actions?: ReactNode;
+}
+
+export function Surface({ className, heading, actions, children, ...props }: SurfaceProps) {
+  return (
+    <section {...props} className={cx("tcrn-surface", className)}>
+      {heading !== undefined || actions !== undefined ? (
+        <header className="tcrn-surface__head">
+          <div className="tcrn-surface__head-content">{heading}</div>
+          {actions !== undefined ? <div className="tcrn-surface__head-actions">{actions}</div> : null}
+        </header>
+      ) : null}
+      {children}
+    </section>
+  );
 }
 
 export function Divider(props: HTMLAttributes<HTMLHRElement>) {
@@ -87,7 +102,9 @@ export interface SettingsLayoutProps extends Omit<HTMLAttributes<HTMLDivElement>
  * two-host form. At the package's admitted frame width it gains a compact local
  * navigation column and one complete content column. The content column owns a
  * second container query so SettingRow stacks when its actual space is tight,
- * including when it is nested inside another shell.
+ * including when it is nested inside another shell. Direct SettingRow children
+ * share the complete form's label, control, and tools tracks. SettingRowList
+ * owns those shared tracks for an explicit group before those rows stack.
  */
 export function SettingsLayout({
   navigation,
