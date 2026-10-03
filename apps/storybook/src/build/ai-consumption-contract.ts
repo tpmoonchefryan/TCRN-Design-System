@@ -48,7 +48,7 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, sidebar, focus, motion, or visual-system work",
     "use the setting-control selection contract: Select for more than two values, a measured binary RadioGroup only when it fits, SegmentedNav for navigation, and NumberInput for numeric entry",
     "preserve controlled and uncontrolled SettingChoice values across radio/Select branch changes; treat layout-only swaps as non-events",
-    "use MultiSelect's native multiple-select by default; choose its labeled checkbox-list presentation when visible options and a clear action improve collection entry, while keeping SuggestInput open to free-form values",
+    "use MultiSelect presentation=dropdown for ordinary collection choice, with Select-family collapsed values and Menu-family multi-selection; keep native lists and explicit checklists separate and keep SuggestInput open to free-form values",
     "render dictionary category copy once and supply a distinct explanation for every machine value",
     "use OperationFeedback for short operation status plus labeled identity and keyboard-readable receipt details",
     "use ContentScope with consumer-owned source, phase, count, and stale-content truth for every independent region",

@@ -2417,6 +2417,11 @@
           "required": false
         },
         {
+          "name": "emptySelectionLabel",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "onChange",
           "type": "(values: string[]) => void",
           "required": false
@@ -2428,11 +2433,12 @@
         },
         {
           "name": "presentation",
-          "type": "\"native\" | \"checkboxes\"",
+          "type": "\"native\" | \"dropdown\" | \"checkboxes\"",
           "required": false,
           "default": "\"native\"",
           "enumValues": [
             "native",
+            "dropdown",
             "checkboxes"
           ]
         },
@@ -2445,6 +2451,7 @@
       "variants": {
         "presentation": [
           "native",
+          "dropdown",
           "checkboxes"
         ]
       },

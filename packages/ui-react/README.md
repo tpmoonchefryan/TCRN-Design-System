@@ -48,7 +48,19 @@ below 720px. The layout keeps long native input values selectable and copyable a
 does not hide configuration through overflow clipping. `SettingsHostSwitcher`
 expresses the single-host-before-complete-form composition.
 
-`MultiSelect` is the closed-set collection control. It defaults to the native
+`MultiSelect` is the closed-set collection control. Use `presentation="dropdown"`
+with a localized `emptySelectionLabel` for ordinary collection choice. The closed
+Select-family trigger shows the current choices. The Menu-family list stays open
+while values are added or removed using clicks or Space/Enter; arrows, Home/End and
+letter keys move focus without changing values. Escape and outside clicks dismiss
+the list; Tab returns to normal form navigation. Disabled choices cannot change.
+The native form value submits each enabled choice once, preserves required
+validation and external form association, and resets to `defaultValue` for an
+uncontrolled field. A controlled `value` remains authoritative. Server-rendered
+consumers use the same markup and `mountStaticMultiSelect`, which also owns the
+shared body overlay boundary, placement, cleanup and summary updates.
+
+For compatibility it defaults to the native
 multiple-select; use `presentation="checkboxes"` with a localized
 `clearSelectionLabel` when a visible checklist is needed. The checklist keeps
 native checkbox keyboard and repeated form values, preserves disabled options,

@@ -165,7 +165,7 @@ The global `ProductShell` topbar is outside this page composition. The
 `--tcrn-container-page-third-level-nav` tokens only control the responsive
 `--tcrn-container-page-third-level-split` is `960px` and `--tcrn-container-page-third-level-nav` is `208px`; these tokens only control the responsive presentation of an already explicit third-level region.
 
-`MultiSelect` is the closed-set collection control. `SuggestInput` keeps an open
+`MultiSelect` is the closed-set collection control. Its ordinary collection dropdown uses the existing Select trigger and Menu option families, keeps selected labels visible when closed, and opens a body-boundary listbox for multiple choice. Native multiple lists and explicit checklists are distinct opt-in presentations, never evidence of a dropdown. Static consumers share `mountStaticMultiSelect` with React; no application-private selector implementation is needed. `SuggestInput` keeps an open
 string editable while offering advisory datalist suggestions. `DictionaryTable`
 renders category copy once and a required value-specific description for every
 entry; empty/unknown rendered content, category-description reuse, duplicate

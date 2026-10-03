@@ -16,6 +16,8 @@ import { tcrnTokenCss } from "../packages/ui-tokens/dist/index.js";
 import { settingsLayoutContract } from "../apps/storybook/dist/build/foundation-visual-standards.js";
 import { storybookContentText, storybookLocaleText } from "../apps/storybook/dist/build/i18n.js";
 
+import { runMultiSelectDropdownProof } from "./lib/multi-select-dropdown-proof.mjs";
+
 const root = resolve(".");
 
 async function runFullDetailsContainmentProof(browser) {
@@ -784,6 +786,7 @@ const staticServer = await startStaticServer();
 const browser = await chromium.launch({ headless: true });
 const results = {};
 try {
+  results.multiSelectDropdown = await runMultiSelectDropdownProof(browser);
   const overlayPage = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: "reduce" });
   await overlayPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-component-inventory.html?theme=light&locale=en#interaction-disclosure-spec`);
   await settle(overlayPage);
@@ -845,7 +848,7 @@ try {
   await fieldPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/patterns-feedback-selection.html?theme=light&locale=en#selection-list-patterns`);
   await settle(fieldPage);
   results.selection = await fieldPage.evaluate(() => {
-    const collection = document.querySelector("select[data-choice-cardinality='collection']");
+    const collection = document.querySelector(".tcrn-multi-select-dropdown__value");
     const checklist = document.querySelector("[data-choice-cardinality='collection'][data-choice-presentation='checkboxes']");
     const checkboxes = Array.from(checklist?.querySelectorAll('input[type="checkbox"]') ?? []);
     const legend = document.getElementById(checklist?.getAttribute("aria-labelledby") ?? "");
@@ -860,7 +863,8 @@ try {
     }
     return {
       totalCollectionCount: document.querySelectorAll("[data-choice-cardinality='collection']").length,
-      collectionCount: document.querySelectorAll("select[data-choice-cardinality='collection']").length,
+      collectionCount: document.querySelectorAll(".tcrn-multi-select-dropdown__value").length,
+      dropdownCount: document.querySelectorAll("[data-choice-presentation=dropdown]").length,
       collectionsClosed: Array.from(document.querySelectorAll("[data-choice-cardinality='collection']")).every((node) => node.getAttribute("data-choice-value-mode") === "closed"),
       collectionMultiple: collection instanceof HTMLSelectElement && collection.multiple,
       collectionSelected: options.filter((option) => option.selected).map((option) => option.value),
@@ -883,7 +887,7 @@ try {
     };
   });
   assert(results.selection.totalCollectionCount === 2 && results.selection.checkboxCollectionCount === 1, "MultiSelect total/checkbox inventory drifted");
-  assert(results.selection.collectionCount === 1 && results.selection.collectionMultiple, "MultiSelect native contract failed");
+  assert(results.selection.dropdownCount === 1 && results.selection.collectionCount === 1 && results.selection.collectionMultiple, "MultiSelect native contract failed");
   assert(results.selection.collectionsClosed && results.selection.collectionUniqueValues
     && results.selection.collectionSelected.join(",") === "en,zh-CN" && results.selection.collectionDisabledValues.join(",") === "ja"
     && results.selection.openInputCount === 1 && results.selection.openInputFreeForm, "selection state contract failed");
@@ -916,6 +920,7 @@ try {
   results.fullDetailsContainment = await runFullDetailsContainmentProof(browser);
   results.settingsExplanationLocales = await runSettingsExplanationLocaleProof(browser, staticServer.origin);
 
+  assert(results.multiSelectDropdown.ok, `MultiSelect dropdown checks failed: ${JSON.stringify(results.multiSelectDropdown.checks.filter(check => !check.ok))}`);
   results.ok = true;
 } finally {
   await browser.close();

@@ -98,7 +98,7 @@ export const settingControlSelectionContract = {
 export const fieldValueSelectionContract = {
   id: "field-value-selection-contract-v1",
   storybookRoutes: ["components.html#field-spec-usage", "patterns.html#selection-list-patterns"],
-  packageExports: ["SettingChoice", "Select", "RadioGroup", "MultiSelect", "SuggestInput"],
+  packageExports: ["SettingChoice", "Select", "RadioGroup", "MultiSelect", "mountStaticMultiSelect", "SuggestInput"],
   resolver: "resolveFieldValueControl",
   decisionTable: [
     {
@@ -111,7 +111,7 @@ export const fieldValueSelectionContract = {
       cardinality: "collection",
       valueDomain: "closed",
       control: "MultiSelect",
-      rule: "Native multiple-select stays the default. A visible checkbox-list presentation is available when the options need an explicit checklist; preserve disabled options, unique values, keyboard access, repeated form values, and a labeled clear action."
+      rule: "Use the Select-family dropdown for ordinary collection choice. Its closed trigger shows current choices; its open list supports click, Space/Enter, arrows, Home/End, type-to-focus, Escape, outside dismissal and form navigation. Native multiple lists remain for compatibility and checklists require an explicit task reason; neither is a dropdown. Preserve disabled options, unique values, controlled/uncontrolled values, repeated form submission, validation, and reset."
     },
     {
       cardinality: "single",

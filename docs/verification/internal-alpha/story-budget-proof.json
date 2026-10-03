@@ -39,8 +39,8 @@
       },
       {
         "id": "component-family-index",
-        "measure": 3145,
-        "recordedHeightPx": 3145,
+        "measure": 3189,
+        "recordedHeightPx": 3189,
         "owedTo": "beyond-INIT-008",
         "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
       },
@@ -53,7 +53,7 @@
       },
       {
         "id": "ai-consumption-contract",
-        "measure": 11764,
+        "measure": 11869,
         "recordedHeightPx": 11764,
         "owedTo": "beyond-INIT-008",
         "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
@@ -101,7 +101,7 @@
     },
     {
       "id": "component-family-index",
-      "heightPx": 3145,
+      "heightPx": 3189,
       "owedTo": "beyond-INIT-008",
       "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
     },
@@ -113,7 +113,7 @@
     },
     {
       "id": "ai-consumption-contract",
-      "heightPx": 11764,
+      "heightPx": 11869,
       "owedTo": "beyond-INIT-008",
       "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
     },
