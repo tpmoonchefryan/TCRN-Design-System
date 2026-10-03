@@ -137,6 +137,7 @@ export const componentLibraryPublicUtilityNames = [
   "resolveSettingChoiceControl",
   "resolveFieldValueControl",
   "mountStaticOverlayBoundary",
+  "mountStaticMultiSelect",
   "useProductShellController",
   "validateContentScope",
   "evaluateConsumerEvidence",

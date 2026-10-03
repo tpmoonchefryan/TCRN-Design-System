@@ -172,8 +172,10 @@ function compactCss(css: string): string {
     .trim();
 }
 
-function stripCssComments(css: string): string {
-  return css.replace(/\/\*[\s\S]*?\*\//g, "").trim();
+// Keep readable declaration spacing used by the emitted semantic contracts while
+// removing indentation from the global copy. This changes no declaration or selector.
+function compactGlobalCss(css: string): string {
+  return css.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]+/gm, "").replace(/\n[ \t]*\n/g, "\n").replace(/([{};,])\n/g, "$1").trim();
 }
 
 // SettingsLayout and its controls are already present in the global package CSS above.
@@ -549,7 +551,7 @@ function renderContractDocument(options: {
   <meta name="tcrn-ai-consumption-contract-required" content="must-read-first" />
   <title>${pageTitleText} - ${localeText("shell.title")}</title>
   <style data-tcrn-component-style-source="@tcrn/ui-react" data-tcrn-doc-shell-component-style="package-backed">
-${stripCssComments(globalComponentCssForBody(mainBody))}
+${compactGlobalCss(globalComponentCssForBody(mainBody))}
   </style>
   <style data-tcrn-static-doc-style-source="storybook">
 ${alphaStoryCssForBody(mainBody)}
@@ -593,6 +595,7 @@ ${storybookSearchScript}
 ${dialogFixtureScript}
 ${storyDisclosureScript}
 ${tableToolbarScript}
+<script type="module">import { mountStaticMultiSelect } from "./ds-static-bridges.js"; for (const root of document.querySelectorAll("[data-choice-presentation=dropdown]")) mountStaticMultiSelect({ root });</script>
 ${anchorScrollScript}
 </body>
 </html>

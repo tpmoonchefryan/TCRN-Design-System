@@ -1,6 +1,7 @@
 import type { ChangeEvent as ReactChangeEvent, HTMLAttributes, InputHTMLAttributes, ReactElement, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { Children, cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
 import { Icon } from "../Icon/index.js";
+import { mountStaticMultiSelect, type StaticMultiSelectHandle } from "./multi-select-dropdown.js";
 import { childPropsOf, cx, mergeIds, requiredText } from "../../utils.js";
 
 export interface FieldProps {
@@ -192,22 +193,28 @@ export interface MultiSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectEl
   value?: string[];
   defaultValue?: string[];
   onChange?: (values: string[]) => void;
-  /** Native select is the default. Checkboxes are useful when selection needs a visible checklist. */
-  presentation?: "native" | "checkboxes";
+  /** Use dropdown for ordinary collection choices. Native remains the compatibility default. */
+  presentation?: "native" | "dropdown" | "checkboxes";
+  /** Localized collapsed text when a dropdown has no selected values. */
+  emptySelectionLabel?: string;
   /** Required when using the checkbox presentation; describes its clear action. */
   clearSelectionLabel?: string;
   disabledReason?: string;
 }
 
 /**
- * A closed-set collection selector with native multiple-select and checkbox-list presentations.
+ * A closed-set collection selector with dropdown, native and explicit checklist presentations.
  * A required checklist needs at least one selected enabled option. An enabled
  * required checklist with no enabled options remains invalid.
  */
-export function MultiSelect({ options, value, defaultValue, onChange, presentation = "native", clearSelectionLabel, className, disabled, disabledReason, title, ...props }: MultiSelectProps) {
+export function MultiSelect({ options, value, defaultValue, onChange, presentation = "native", clearSelectionLabel, emptySelectionLabel, className, disabled, disabledReason, title, ...props }: MultiSelectProps) {
   const isControlled = value !== undefined;
   const selectRef = useRef<HTMLSelectElement>(null);
   const groupRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownHandle = useRef<StaticMultiSelectHandle | null>(null);
+  const dropdownState = useRef<{ controlled: boolean; value: string[]; commit: (next: string[]) => void }>({ controlled: false, value: [], commit: () => {} });
+  const dropdownId = useId();
   const validationRef = useRef<HTMLInputElement | null>(null);
   const [uncontrolledValue, setUncontrolledValue] = useState(() => normalizeChoiceValues(defaultValue, options));
   const selectedValue = normalizeChoiceValues(isControlled ? value : uncontrolledValue, options);
@@ -218,8 +225,8 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
   const disabledReasonId = useId();
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
   useEffect(() => {
-    if (isControlled) return;
-    const select = presentation === "native" ? selectRef.current : null;
+    if (isControlled || presentation === "dropdown") return;
+    const select = presentation !== "checkboxes" ? selectRef.current : null;
     const firstCheckbox = presentation === "checkboxes"
       ? groupRef.current?.querySelector<HTMLInputElement>('input[type="checkbox"]')
       : null;
@@ -257,9 +264,47 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
     }
     onChange?.(nextValue);
   };
+  dropdownState.current = { controlled: isControlled, value: selectedValue, commit: commitValue };
+  useEffect(() => {
+    if (presentation !== "dropdown" || !dropdownRef.current) return;
+    dropdownHandle.current = mountStaticMultiSelect({
+      root: dropdownRef.current,
+      getValue: isControlled ? () => dropdownState.current.value : undefined,
+      onChange: (next) => dropdownState.current.commit(next),
+      onReset: (next) => setUncontrolledValue(next)
+    });
+    return () => { dropdownHandle.current?.destroy(); dropdownHandle.current = null; };
+  }, [presentation, isControlled, props.form]);
+  useEffect(() => { dropdownHandle.current?.sync(); });
   const handleChange = (event: ReactChangeEvent<HTMLSelectElement>) => {
     commitValue(normalizeChoiceValues(Array.from(event.currentTarget.selectedOptions, (option) => option.value), options));
   };
+  if (presentation === "dropdown") {
+    const placeholder = requiredText(emptySelectionLabel, "MultiSelect dropdown requires emptySelectionLabel");
+    const listId = `${props.id ?? dropdownId}-listbox`;
+    const uniqueOptions = [...new Map(options.map((option) => [option.value, option])).values()];
+    return (
+      <div ref={dropdownRef} className={cx("tcrn-multi-select-dropdown", className)} data-choice-cardinality="collection" data-choice-value-mode="closed" data-choice-presentation="dropdown" data-choice-option-count={uniqueOptions.length} data-empty-selection-label={placeholder}>
+        <button type="button" id={props.id} disabled={disabled} autoFocus={props.autoFocus} tabIndex={props.tabIndex} title={normalizedReason ?? title}
+          aria-label={props["aria-label"]} aria-labelledby={props["aria-labelledby"]} aria-describedby={ariaDescribedBy} aria-invalid={props["aria-invalid"]} aria-required={props.required || undefined}
+          aria-haspopup="listbox" aria-expanded="false" aria-controls={listId} className="tcrn-select tcrn-multi-select-dropdown__trigger">
+          <span data-multi-select-summary>{uniqueOptions.filter((option) => selectedValue.includes(option.value)).map((option) => option.label).join(", ") || placeholder}</span><Icon name="chevron-down" aria-hidden className="tcrn-multi-select-dropdown__caret" />
+        </button>
+        <select ref={selectRef} multiple name={props.name} form={props.form} disabled={disabled} tabIndex={-1} aria-hidden="true"
+          value={isControlled ? selectedValue : undefined} defaultValue={isControlled ? undefined : defaultSelectedValue} onChange={handleChange} className="tcrn-sr-only tcrn-multi-select-dropdown__value">
+          {uniqueOptions.map((option) => <option key={option.value} value={option.value} disabled={option.disabled} ref={(element) => { if (element) element.defaultSelected = isControlled ? selectedValue.includes(option.value) : defaultSelectedValue.includes(option.value); }}>{option.label}</option>)}
+        </select>
+        {props.required ? <input type="checkbox" required disabled={disabled} form={props.form} checked={hasEnabledSelection} tabIndex={-1} aria-hidden="true" onChange={() => {}} className="tcrn-sr-only tcrn-multi-select-dropdown__validation" ref={(input) => { if (input) input.defaultChecked = isControlled ? hasEnabledSelection : hasEnabledDefaultSelection; }} /> : null}
+        <div id={listId} hidden tabIndex={-1} role="listbox" aria-multiselectable="true" aria-label={props["aria-label"]} aria-labelledby={props["aria-labelledby"]} className="tcrn-menu tcrn-multi-select-dropdown__list">
+          {uniqueOptions.map((option, index) => <button type="button" role="option" id={`${listId}-option-${index}`} key={option.value} disabled={option.disabled} aria-selected={selectedValue.includes(option.value)}
+            data-multi-select-value={option.value} data-selected={selectedValue.includes(option.value)} className="tcrn-menu__item tcrn-multi-select-dropdown__option">
+            <span data-multi-select-label>{option.label}</span><span data-multi-select-check data-selected={selectedValue.includes(option.value)} aria-hidden="true"><Icon name="check" /></span>
+          </button>)}
+        </div>
+        {normalizedReason ? <span id={disabledReasonId} className="tcrn-sr-only">{normalizedReason}</span> : null}
+      </div>
+    );
+  }
   if (presentation === "checkboxes") {
     if (!clearSelectionLabel) throw new Error("MultiSelect checkbox presentation requires clearSelectionLabel");
     const {
@@ -308,6 +353,7 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
                   }}
                   id={optionId}
                   type="checkbox"
+                  className="tcrn-checkbox"
                   name={name}
                   form={form}
                   value={option.value}
@@ -355,7 +401,7 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
           />
         ) : null}
         <div className="tcrn-multi-select-group__actions">
-          <button type="button" className="tcrn-multi-select-group__clear" disabled={disabled || selectedValue.length === 0} onClick={() => commitValue([])}>
+          <button type="button" className="tcrn-button tcrn-button--quiet tcrn-button--sm tcrn-multi-select-group__clear" disabled={disabled || selectedValue.length === 0} onClick={() => commitValue([])}>
             {clearSelectionLabel}
           </button>
         </div>

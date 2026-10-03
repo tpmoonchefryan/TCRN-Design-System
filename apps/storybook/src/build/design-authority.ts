@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { execFileSync } from "node:child_process";
+import { tcrnComponentCss } from "@tcrn/ui-react";
 
 /**
  * TCRN-CROSS-STORY-283 — the design-authority contract.
@@ -35,6 +37,9 @@ export interface DesignAuthorityContract {
    * the consumer's own byte gate against its own copy.
    */
   readonly tokensDigest: string;
+  readonly sourceCommit: string;
+  readonly componentCssDigest: string;
+  readonly staticBridgeDigest: string;
 }
 
 const REPOSITORY_ROOT = join(process.cwd(), "..", "..");
@@ -58,6 +63,9 @@ export function designAuthorityContract(): DesignAuthorityContract {
     schemaVersion: DESIGN_AUTHORITY_SCHEMA_VERSION,
     name: "TCRN Design System",
     version,
-    tokensDigest: sha256(readFileSync(TOKENS_CSS, "utf8"))
+    tokensDigest: sha256(readFileSync(TOKENS_CSS, "utf8")),
+    sourceCommit: process.env.VERCEL_GIT_COMMIT_SHA || execFileSync("git", ["rev-parse", "HEAD"], { cwd: REPOSITORY_ROOT, encoding: "utf8" }).trim(),
+    componentCssDigest: sha256(tcrnComponentCss),
+    staticBridgeDigest: sha256(readFileSync(join(process.cwd(), "storybook-static", "ds-static-bridges.js"), "utf8"))
   };
 }

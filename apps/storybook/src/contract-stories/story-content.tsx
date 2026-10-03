@@ -3025,11 +3025,13 @@ const legacyContractStories: LegacyContractStory[] = [
         />
         <InlineAlert tone="warning">Large or remote option sets need search, loading, empty, and keyboard states.</InlineAlert>
         <ReadbackPanel title="Field value cardinality">
-          <Text>Closed single values use native value selectors. MultiSelect keeps a native multiple-select by default and can show a checkbox list with a clear action; open strings may use advisory suggestions without rejecting free-form input.</Text>
+          <Text>Use a Select-family dropdown to choose several values: the closed trigger shows the selection, and the open list lets you add or remove values. Native multiple lists and explicit checklists remain separate opt-in presentations; suggestions never restrict open text.</Text>
           <div className="tcrn-display-primitive-grid">
             <Field label="Prompt languages (collection)" hint="Choose one or more supported locale values.">
               <MultiSelect
                 name="prompt-languages"
+                presentation="dropdown"
+                emptySelectionLabel="Select languages"
                 defaultValue={["en", "zh-CN"]}
                 options={[
                   { value: "en", label: "English" },
@@ -3038,7 +3040,7 @@ const legacyContractStories: LegacyContractStory[] = [
                 ]}
               />
             </Field>
-            <Field group label="Prompt languages (visible checklist)" hint="Check the values you want to submit, or clear the collection.">
+            <Field group label="Visible checklist (explicit opt-in)" hint="Check the values you want to submit, or clear the collection.">
               <MultiSelect
                 id="prompt-languages-checklist"
                 name="prompt-languages-checklist"
