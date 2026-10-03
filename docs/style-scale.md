@@ -140,6 +140,11 @@ reserved for navigation. `NumberInput` owns numeric entry; `Stepper` owns proces
 position.
 `SettingsLayout` owns the one-host, one-complete-form composition and never uses
 `overflow: hidden` to conceal fields, labels, actions, or long values.
+Direct `SettingRow` children remain supported: at the content threshold they
+share the complete form's label, control, and tools tracks. `SettingRowList`
+owns the shared tracks for an explicit group. Both shapes stack below the same
+content threshold, keep empty tools slots aligned, and wrap long labels and
+descriptions inside their assigned columns.
 `SettingChoice` retains a valid value across radio/Select branch changes in both
 controlled (`value`) and uncontrolled (`defaultValue`) modes. Its `onChange`
 callback reports actual user value changes once; changing only the available
@@ -160,7 +165,7 @@ The global `ProductShell` topbar is outside this page composition. The
 `--tcrn-container-page-third-level-nav` tokens only control the responsive
 `--tcrn-container-page-third-level-split` is `960px` and `--tcrn-container-page-third-level-nav` is `208px`; these tokens only control the responsive presentation of an already explicit third-level region.
 
-`MultiSelect` is the closed-set collection control. `SuggestInput` keeps an open
+`MultiSelect` is the closed-set collection control. Its ordinary collection dropdown uses the existing Select trigger and Menu option families, keeps selected labels visible when closed, and opens a body-boundary listbox for multiple choice. Native multiple lists and explicit checklists are distinct opt-in presentations, never evidence of a dropdown. Static consumers share `mountStaticMultiSelect` with React; no application-private selector implementation is needed. `SuggestInput` keeps an open
 string editable while offering advisory datalist suggestions. `DictionaryTable`
 renders category copy once and a required value-specific description for every
 entry; empty/unknown rendered content, category-description reuse, duplicate
@@ -179,6 +184,13 @@ readiness and proof labels are not operation phases. Long ids, timestamps, and
 reason codes wrap in the identity/details region and must not be placed in the compact badge. The native details trigger carries
 `aria-expanded` and `aria-controls`, while the root's polite live region
 announces updates without moving focus.
+
+`Surface` supplies optional heading and actions slots through its shared wrapping
+header. Each slot shrinks within the card, with actions wrapping when their
+combined width does not fit. Static consumers use the same header child classes.
+`OperationFeedback` identity labels and values both wrap. Structured `pre` details
+preserve all whitespace and bytes while wrapping long paths and hashes inside
+the disclosure; neither surface clips data to satisfy its container.
 
 `ContentScope` validates one consumer-owned `scope` and `dataSource` at a time.
 `content` requires visible items, `empty` requires zero shown items, and
@@ -213,3 +225,8 @@ click/outside/Escape. The static layer uses `role="tooltip"` for text-only
 supplemental content or `role="dialog"` for local interactive context. A
 CSS-only server-positioned body sibling is a static fallback only; it cannot claim
 dynamic portal, edge, or focus behavior.
+
+`DefinitionList` uses its own inline container for the existing 760px detail
+stacking boundary. A narrow card inside a wide viewport stacks terms before their
+definitions; long terms wrap inside their track. Consumers retain the shared
+column sizing rather than imposing a fixed term minimum on a nested card.

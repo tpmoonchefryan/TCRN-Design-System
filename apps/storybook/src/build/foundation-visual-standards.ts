@@ -98,7 +98,7 @@ export const settingControlSelectionContract = {
 export const fieldValueSelectionContract = {
   id: "field-value-selection-contract-v1",
   storybookRoutes: ["components.html#field-spec-usage", "patterns.html#selection-list-patterns"],
-  packageExports: ["SettingChoice", "Select", "RadioGroup", "MultiSelect", "SuggestInput"],
+  packageExports: ["SettingChoice", "Select", "RadioGroup", "MultiSelect", "mountStaticMultiSelect", "SuggestInput"],
   resolver: "resolveFieldValueControl",
   decisionTable: [
     {
@@ -111,7 +111,7 @@ export const fieldValueSelectionContract = {
       cardinality: "collection",
       valueDomain: "closed",
       control: "MultiSelect",
-      rule: "Use native multiple selection; preserve disabled options, selected state, deduplication, keyboard interaction, and repeated form values."
+      rule: "Use the Select-family dropdown for ordinary collection choice. Its closed trigger shows current choices; its open list supports click, Space/Enter, arrows, Home/End, type-to-focus, Escape, outside dismissal and form navigation. Native multiple lists remain for compatibility and checklists require an explicit task reason; neither is a dropdown. Preserve disabled options, unique values, controlled/uncontrolled values, repeated form submission, validation, and reset."
     },
     {
       cardinality: "single",
@@ -122,8 +122,8 @@ export const fieldValueSelectionContract = {
   ],
   stateContract: {
     controlled: "value is authoritative and onChange returns the semantic value.",
-    uncontrolled: "defaultValue seeds native state and user changes remain readable from the native control.",
-    collection: "values are unique and constrained only when the field is declared closed-set."
+    uncontrolled: "defaultValue seeds the native select or checkbox list; form reset returns to that default and user changes remain readable from the control.",
+    collection: "values are unique and constrained only when the field is declared closed-set; the checkbox list submits repeated native checkbox values."
   },
   domainBoundary: "DS owns cardinality and value-domain presentation; the consumer supplies field ownership, allowed values, labels, defaults, and submission policy.",
   rejectCriteria: [
@@ -199,7 +199,7 @@ export const overlayBoundaryContract = {
 export const settingsLayoutContract = {
   id: "settings-layout-contract-v1",
   storybookRoutes: ["components.html#field-spec-usage", "patterns.html#forms-patterns"],
-  packageExports: ["SettingsLayout", "SettingsHostSwitcher", "SettingRow", "Input", "NumberInput"],
+  packageExports: ["SettingsLayout", "SettingsHostSwitcher", "SettingRowList", "SettingRow", "Input", "NumberInput"],
   tokens: {
     frameSplit: "--tcrn-container-settings-split",
     contentStack: "--tcrn-container-settings-content-stack",
@@ -219,13 +219,14 @@ export const settingsLayoutContract = {
       id: "DS-107-R1-content",
       container: "SettingsLayout content",
       thresholdPx: 720,
-      whenAtOrAbove: "SettingRow label, control, and tools share one row",
+      whenAtOrAbove: "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align",
       whenBelow: "SettingRow label, control, and tools stack in source order"
     }
   ],
   construction: {
     hostSelection: "one SettingsHostSwitcher before the selected host's form",
     form: "one complete form column; never parallel host columns",
+    settingRows: "wrap related SettingRow children in SettingRowList so tools width and control starts align across rows",
     localNavigation: "compact, bounded by its own scroll container, with no page-level overflow",
     longValue: "native input remains selectable and copyable; no overflow clipping or ellipsis"
   },
@@ -452,7 +453,7 @@ export const consumerVerificationContract = {
     "more-than-two value choice rendered as Select",
     "binary value choice preserves a disabled option in radio and Select branches",
     "radio/Select branch switching preserves controlled and uncontrolled values without synthetic callbacks",
-    "closed collection uses native MultiSelect and open strings use free-form SuggestInput",
+    "closed collections retain native MultiSelect by default and can use the accessible checkbox-list mode with clear action; open strings use free-form SuggestInput",
     "native NumberInput with complete value and range markers",
     "container-driven SettingsLayout with one host and one complete form",
     "correct explicit two-level PageHierarchy with content below parent tabs",
@@ -821,6 +822,7 @@ export const foundationVisualStandardsReadback = {
   storybookDocShellVisualOracle,
   consumerVisualStyleContract,
   settingControlSelectionContract,
+  fieldValueSelectionContract,
   settingsLayoutContract,
   pageHierarchyContract,
   verificationCadenceContract,

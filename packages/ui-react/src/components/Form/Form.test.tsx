@@ -15,6 +15,7 @@ import {
   SearchInput,
   Select,
   SettingChoice,
+  SettingRowList,
   SettingsHostSwitcher,
   SuggestInput,
   resolveFieldValueControl,
@@ -130,6 +131,30 @@ test("STORY-114 collection and open-value controls preserve their distinct nativ
   assert.equal((collection.match(/<option/g) ?? []).length, 3);
   assert.equal((collection.match(/selected=""/g) ?? []).length, 2);
 
+  const checklist = renderToStaticMarkup(
+    <Field group label="Prompt languages" hint="Choose one or more supported values.">
+      <MultiSelect
+        id="prompt-languages"
+        name="prompt-languages"
+        presentation="checkboxes"
+        clearSelectionLabel="Clear selection"
+        defaultValue={["en", "en"]}
+        options={[
+          { value: "en", label: "English" },
+          { value: "zh-CN", label: "简体中文" },
+          { value: "ja", label: "日本語", disabled: true }
+        ]}
+      />
+    </Field>
+  );
+  assert.match(checklist, /<fieldset[^>]*aria-describedby=/);
+  assert.match(checklist, /<legend id="[^"]+"[^>]*>Prompt languages<\/legend>/);
+  assert.match(checklist, /role="group"[^>]*aria-labelledby="[^"]+"[^>]*data-choice-presentation="checkboxes"/);
+  assert.match(checklist, /<input[^>]*type="checkbox"[^>]*name="prompt-languages"[^>]*checked=""[^>]*value="en"/);
+  assert.match(checklist, /<input[^>]*type="checkbox"[^>]*disabled=""[^>]*value="ja"/);
+  assert.match(checklist, />Clear selection<\/button>/);
+  assert.equal((checklist.match(/type="checkbox"/g) ?? []).length, 3);
+
   const open = renderToStaticMarkup(
     <Field label="Model or path">
       <SuggestInput suggestions={["model-alpha", "model-alpha", "docs/example"]} defaultValue="custom-model" />
@@ -239,6 +264,10 @@ test("component-loop form constructs expose their state and recovery surfaces", 
         onReset={() => undefined}
         control={<Select options={[{ value: "light", label: "Light" }]} />}
       />
+      <SettingRowList>
+        <SettingRow label="No tools" control={<Input defaultValue="value" />} />
+        <SettingRow label="Reset available" modified control={<Input defaultValue="other" />} />
+      </SettingRowList>
       <FieldProvenance value="Compact" source="Inherited" overridden action={<button type="button">Restore field</button>} />
       <LineNumberedEditor
         value={["const value = true;", "return value;"].join("\n")}
@@ -252,6 +281,8 @@ test("component-loop form constructs expose their state and recovery surfaces", 
   assert.match(html, /role="switch"/);
   assert.match(html, /data-switch-state="on"/);
   assert.match(html, /data-setting-row="true" data-modified="true"/);
+  assert.match(html, /class="tcrn-setting-row-list" data-setting-row-list="true"/);
+  assert.equal((html.match(/class="tcrn-setting-row__tools"/g) ?? []).length, 3);
   assert.match(html, /id="[^\"]+" class="tcrn-setting-row__name"/);
   assert.match(html, /<select[^>]*aria-labelledby="[^\"]+"/);
   assert.match(html, /class="tcrn-setting-row__modified"/);

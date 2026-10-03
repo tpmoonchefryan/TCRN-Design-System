@@ -2,6 +2,13 @@ import type { TcrnLocale } from "@tcrn/ui-copy-state";
 
 export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
   "zh-CN": {
+    "Use the Select-family dropdown for ordinary collection choice. Its closed trigger shows current choices; its open list supports click, Space/Enter, arrows, Home/End, type-to-focus, Escape, outside dismissal and form navigation. Native multiple lists remain for compatibility and checklists require an explicit task reason; neither is a dropdown. Preserve disabled options, unique values, controlled/uncontrolled values, repeated form submission, validation, and reset.": "普通的多项选择使用 Select 家族下拉菜单。收起时显示当前选择；展开后支持点击、空格/回车、方向键、Home/End、首字母定位、Escape、点击外部关闭及表单导航。原生多选列表仅保留兼容能力，清单需有明确任务理由；两者都不是下拉菜单。保留禁用项、唯一值、受控/非受控值、多值提交、验证和重置。",
+    "Visible checklist (explicit opt-in)": "可见清单（显式选用）",
+    "Select languages": "选择语言",
+    "Use a Select-family dropdown to choose several values: the closed trigger shows the selection, and the open list lets you add or remove values. Native multiple lists and explicit checklists remain separate opt-in presentations; suggestions never restrict open text.": "用 Select 家族的下拉菜单选择多个值：收起时显示当前选择，展开后可添加或移除选项。原生多选列表和显式清单是独立的选用方式；输入建议不限制开放文本。",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "直接的 SettingRow 子项共享完整表单的标签、控件和按内容宽度分配的工具轨道；SettingRowList 为显式分组提供相同的共享轨道。每行使用子网格，使有操作和无操作的行保持对齐",
+    "SettingRow label, control, and tools stack in source order": "SettingRow 标签、控件和工具按源顺序堆叠",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "直接的 SettingRow 子项共享完整表单的标签、控件和按内容宽度分配的工具轨道；SettingRowList 为显式分组提供相同的共享轨道。每行使用子网格，使有操作和无操作的行保持对齐; SettingRow 标签、控件和工具按源顺序堆叠",
     "shell.title": "TCRN 设计系统契约故事",
     "shell.brand": "TCRN 设计系统",
     "shell.skip": "跳到内容",
@@ -155,6 +162,13 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "不声明包发布或发布状态的人类可读本地检查点历史。"
   },
   en: {
+    "Use the Select-family dropdown for ordinary collection choice. Its closed trigger shows current choices; its open list supports click, Space/Enter, arrows, Home/End, type-to-focus, Escape, outside dismissal and form navigation. Native multiple lists remain for compatibility and checklists require an explicit task reason; neither is a dropdown. Preserve disabled options, unique values, controlled/uncontrolled values, repeated form submission, validation, and reset.": "Use the Select-family dropdown for ordinary collection choice. Its closed trigger shows current choices; its open list supports click, Space/Enter, arrows, Home/End, type-to-focus, Escape, outside dismissal and form navigation. Native multiple lists remain for compatibility and checklists require an explicit task reason; neither is a dropdown. Preserve disabled options, unique values, controlled/uncontrolled values, repeated form submission, validation, and reset.",
+    "Visible checklist (explicit opt-in)": "Visible checklist (explicit opt-in)",
+    "Select languages": "Select languages",
+    "Use a Select-family dropdown to choose several values: the closed trigger shows the selection, and the open list lets you add or remove values. Native multiple lists and explicit checklists remain separate opt-in presentations; suggestions never restrict open text.": "Use a Select-family dropdown to choose several values: the closed trigger shows the selection, and the open list lets you add or remove values. Native multiple lists and explicit checklists remain separate opt-in presentations; suggestions never restrict open text.",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align",
+    "SettingRow label, control, and tools stack in source order": "SettingRow label, control, and tools stack in source order",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order",
     "shell.title": "TCRN Design System Contract Stories",
     "shell.brand": "TCRN Design System",
     "shell.skip": "Skip to content",
@@ -308,6 +322,13 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "Human-readable local checkpoint history without package publication or release claims."
   },
   ja: {
+    "Use the Select-family dropdown for ordinary collection choice. Its closed trigger shows current choices; its open list supports click, Space/Enter, arrows, Home/End, type-to-focus, Escape, outside dismissal and form navigation. Native multiple lists remain for compatibility and checklists require an explicit task reason; neither is a dropdown. Preserve disabled options, unique values, controlled/uncontrolled values, repeated form submission, validation, and reset.": "通常の複数選択には Select ファミリーのドロップダウンを使います。閉じた状態で選択値を表示し、開いたリストはクリック、Space/Enter、矢印、Home/End、文字でのフォーカス、Escape、外側クリックとフォーム移動に対応します。ネイティブの複数選択は互換用、チェックリストは明確な用途がある場合に使います。無効状態、重複しない値、制御・非制御、多値送信、検証とリセットを維持します。",
+    "Visible checklist (explicit opt-in)": "チェックリスト（明示的選択）",
+    "Select languages": "言語を選択",
+    "Use a Select-family dropdown to choose several values: the closed trigger shows the selection, and the open list lets you add or remove values. Native multiple lists and explicit checklists remain separate opt-in presentations; suggestions never restrict open text.": "複数の値は Select ファミリーのドロップダウンで選択します。閉じた状態で選択値を表示し、開いたリストで値を追加・解除できます。ネイティブの複数選択リストと明示的なチェックリストは別の選択肢です。入力候補は自由なテキストを制限しません。",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "直接の SettingRow 子要素はフォーム全体のラベル、コントロール、内容幅に合わせたツール列を共有します。SettingRowList は明示的なグループに同じ共有列を提供します。各行はサブグリッドを使い、操作の有無にかかわらず整列します",
+    "SettingRow label, control, and tools stack in source order": "SettingRow のラベル、コントロール、ツールをソース順に積み重ねます",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "直接の SettingRow 子要素はフォーム全体のラベル、コントロール、内容幅に合わせたツール列を共有します。SettingRowList は明示的なグループに同じ共有列を提供します。各行はサブグリッドを使い、操作の有無にかかわらず整列します; SettingRow のラベル、コントロール、ツールをソース順に積み重ねます",
     "shell.title": "TCRN デザインシステム契約ストーリー",
     "shell.brand": "TCRN デザインシステム",
     "shell.skip": "本文へスキップ",
@@ -461,6 +482,13 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "パッケージ公開やリリース主張を伴わない、人が読めるローカルチェックポイント履歴。"
   },
   ko: {
+    "Use the Select-family dropdown for ordinary collection choice. Its closed trigger shows current choices; its open list supports click, Space/Enter, arrows, Home/End, type-to-focus, Escape, outside dismissal and form navigation. Native multiple lists remain for compatibility and checklists require an explicit task reason; neither is a dropdown. Preserve disabled options, unique values, controlled/uncontrolled values, repeated form submission, validation, and reset.": "일반적인 다중 선택에는 Select 계열 드롭다운을 사용합니다. 닫힌 상태에서 선택을 표시하고 열린 목록은 클릭, Space/Enter, 방향키, Home/End, 문자로 초점 이동, Escape, 외부 클릭 및 폼 탐색을 지원합니다. 네이티브 다중 목록은 호환용이며 체크리스트에는 명확한 작업 이유가 필요합니다. 비활성 옵션, 고유 값, 제어 및 비제어 값, 다중 제출, 검증 및 초기화를 유지합니다.",
+    "Visible checklist (explicit opt-in)": "체크리스트(명시적 선택)",
+    "Select languages": "언어 선택",
+    "Use a Select-family dropdown to choose several values: the closed trigger shows the selection, and the open list lets you add or remove values. Native multiple lists and explicit checklists remain separate opt-in presentations; suggestions never restrict open text.": "여러 값은 Select 계열 드롭다운으로 선택합니다. 닫혀 있을 때 현재 선택을 표시하고 열린 목록에서 값을 추가하거나 제거합니다. 네이티브 다중 목록과 명시적 체크리스트는 별도 선택 방식이며 입력 제안은 자유 텍스트를 제한하지 않습니다.",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "직접 배치한 SettingRow 자식은 전체 폼의 레이블, 컨트롤, 콘텐츠 너비의 도구 열을 공유합니다. SettingRowList는 명시적 그룹에 같은 공유 열을 제공합니다. 각 행은 하위 그리드를 사용하여 작업 유무와 관계없이 정렬됩니다",
+    "SettingRow label, control, and tools stack in source order": "SettingRow 레이블, 컨트롤, 도구를 소스 순서로 쌓습니다",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "직접 배치한 SettingRow 자식은 전체 폼의 레이블, 컨트롤, 콘텐츠 너비의 도구 열을 공유합니다. SettingRowList는 명시적 그룹에 같은 공유 열을 제공합니다. 각 행은 하위 그리드를 사용하여 작업 유무와 관계없이 정렬됩니다; SettingRow 레이블, 컨트롤, 도구를 소스 순서로 쌓습니다",
     "shell.title": "TCRN 디자인 시스템 계약 스토리",
     "shell.brand": "TCRN 디자인 시스템",
     "shell.skip": "본문으로 건너뛰기",
@@ -614,6 +642,13 @@ export const storybookLocaleText: Record<TcrnLocale, Record<string, string>> = {
     "story.local-changelog.description": "패키지 게시나 릴리스 주장이 없는 사람이 읽을 수 있는 로컬 체크포인트 기록."
   },
   fr: {
+    "Use the Select-family dropdown for ordinary collection choice. Its closed trigger shows current choices; its open list supports click, Space/Enter, arrows, Home/End, type-to-focus, Escape, outside dismissal and form navigation. Native multiple lists remain for compatibility and checklists require an explicit task reason; neither is a dropdown. Preserve disabled options, unique values, controlled/uncontrolled values, repeated form submission, validation, and reset.": "Utilisez le menu déroulant de la famille Select pour le choix multiple courant. Fermé, il affiche les choix ; ouvert, il accepte clic, Espace/Entrée, flèches, Home/End, recherche par lettre, Escape, fermeture extérieure et navigation du formulaire. Les listes natives restent pour la compatibilité ; les listes à cocher exigent une raison liée à la tâche. Préservez options désactivées, valeurs uniques, contrôle externe ou local, envoi multiple, validation et réinitialisation.",
+    "Visible checklist (explicit opt-in)": "Liste à cocher (choix explicite)",
+    "Select languages": "Choisir les langues",
+    "Use a Select-family dropdown to choose several values: the closed trigger shows the selection, and the open list lets you add or remove values. Native multiple lists and explicit checklists remain separate opt-in presentations; suggestions never restrict open text.": "Choisissez plusieurs valeurs avec un menu déroulant de la famille Select : fermé, il montre la sélection ; ouvert, il permet d’ajouter ou de retirer des valeurs. Les listes multiples natives et les listes à cocher sont des options distinctes. Les suggestions ne limitent jamais le texte libre.",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align": "Les enfants SettingRow directs partagent les colonnes de libellé, de contrôle et d’outils dimensionnés au contenu du formulaire complet ; SettingRowList fournit ces mêmes colonnes à un groupe explicite. Chaque ligne utilise une sous-grille pour aligner les lignes avec ou sans actions",
+    "SettingRow label, control, and tools stack in source order": "Le libellé, le contrôle et les outils de SettingRow s’empilent dans l’ordre source",
+    "Direct SettingRow children share the complete form's label, control, and max-content tools grid; SettingRowList owns that shared grid for an explicit group. Each row uses subgrid so rows with and without actions align; SettingRow label, control, and tools stack in source order": "Les enfants SettingRow directs partagent les colonnes de libellé, de contrôle et d’outils dimensionnés au contenu du formulaire complet ; SettingRowList fournit ces mêmes colonnes à un groupe explicite. Chaque ligne utilise une sous-grille pour aligner les lignes avec ou sans actions; Le libellé, le contrôle et les outils de SettingRow s’empilent dans l’ordre source",
     "shell.title": "Histoires contractuelles du Design System TCRN",
     "shell.brand": "Design System TCRN",
     "shell.skip": "Aller au contenu",

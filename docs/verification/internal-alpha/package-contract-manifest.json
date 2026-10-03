@@ -67,6 +67,10 @@
         "exported": true
       },
       {
+        "name": "SettingRowList",
+        "exported": true
+      },
+      {
         "name": "SettingRow",
         "exported": true
       },
@@ -537,6 +541,10 @@
         "exported": true
       },
       {
+        "name": "mountStaticMultiSelect",
+        "exported": true
+      },
+      {
         "name": "useProductShellController",
         "exported": true
       },
@@ -706,6 +714,15 @@
       },
       {
         "storybookItem": "Switch",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "SettingRowList",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -1759,6 +1776,15 @@
       },
       {
         "storybookItem": "mountStaticOverlayBoundary",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "mountStaticMultiSelect",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",

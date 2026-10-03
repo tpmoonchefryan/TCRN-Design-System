@@ -5,6 +5,7 @@ import {
   AttachmentList,
   MetadataRail,
   RecordInspector,
+  RecordRow,
   RecordTable,
   RelationGraph,
   StagePipeline
@@ -50,6 +51,13 @@ test("RecordTable and RelationGraph accept generic records and open relation des
   assert.match(table, /data-pattern="record-table"/);
   assert.match(table, /data-pattern="record-row"/);
   assert.match(graph, /data-relationship="handoff"/);
+});
+
+test("RecordRow exposes transient navigation target state without changing selected state", () => {
+  const html = renderToStaticMarkup(<RecordRow id="r-1" title="Record" state={state} owner="QA" transientTarget />);
+  assert.match(html, /data-transient-target="true"/);
+  assert.match(html, /data-pattern="record-row"/);
+  assert.doesNotMatch(html, /data-selected="true"/);
 });
 
 test("StagePipeline uses supporting references and remains presentation-only", () => {

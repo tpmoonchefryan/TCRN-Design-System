@@ -48,12 +48,12 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, sidebar, focus, motion, or visual-system work",
     "use the setting-control selection contract: Select for more than two values, a measured binary RadioGroup only when it fits, SegmentedNav for navigation, and NumberInput for numeric entry",
     "preserve controlled and uncontrolled SettingChoice values across radio/Select branch changes; treat layout-only swaps as non-events",
-    "use MultiSelect for closed collections and SuggestInput for open strings without restricting free-form values",
+    "use MultiSelect presentation=dropdown for ordinary collection choice, with Select-family collapsed values and Menu-family multi-selection; keep native lists and explicit checklists separate and keep SuggestInput open to free-form values",
     "render dictionary category copy once and supply a distinct explanation for every machine value",
     "use OperationFeedback for short operation status plus labeled identity and keyboard-readable receipt details",
     "use ContentScope with consumer-owned source, phase, count, and stale-content truth for every independent region",
     "follow the DS verification cadence: targeted development checks first, one candidate-final parent verify, and input-bound invalidation",
-    "use the SettingsLayout container thresholds and single-host complete-form composition before implementing configuration pages",
+    "use SettingRowList inside SettingsLayout for shared control and tools columns, with one-host complete-form composition at the admitted container thresholds",
     "verify light/dark and supported locale behavior against Storybook before product compliance claims",
     "block hard-coded copy, ad hoc status language, consumer-local reusable visual-system overrides, and theme-specific behavior forks"
   ],
@@ -73,7 +73,7 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
   Patterns: [
     "consume page, dashboard, workbench, list, form, notification, validation, data-grid, and search composition rules before arranging product screens",
     "consume Records and boards route context, local view tabs, quick filters, dense rows/lists, split detail, row groups, lane-board density, stages, references, activity, relationships, saved-view, and machine-token patterns before building record surfaces",
-    "use actual SettingsLayout frame/content container queries at 960px and 720px; keep one selected host and one complete form column without overflow clipping",
+    "use actual SettingsLayout frame/content container queries at 960px and 720px; wrap related rows in SettingRowList so controls and tools align across rows, including rows without tools",
     "prove information hierarchy, density, mobile reflow, empty/loading/error states, and route-level IA match the relevant Storybook pattern",
     "block proof/status panels from replacing product-first page composition unless the Storybook pattern explicitly requires them"
   ],

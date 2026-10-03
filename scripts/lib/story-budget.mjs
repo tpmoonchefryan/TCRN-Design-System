@@ -89,7 +89,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // time the number has gone DOWN, and that is the point of INIT-012.
     // 3057 -> 3145 (EPIC038 correction): the public operation-phase presenter and
     // consumer value serializer are now explicit utility readbacks in this story.
-    recordedHeightPx: 3145,
+    // INC-399: the registered static MultiSelect bridge adds its public utility row.
+    recordedHeightPx: 3189,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
@@ -101,7 +102,9 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
   "ai-consumption-contract": {
     // 11406 -> 11536 (EPIC038 correction): operation phase semantics, rendered
     // content evidence, and value-level consumer evidence are read back together.
-    recordedHeightPx: 11536,
+    // 11536 -> 11764 (INC-399): the shared settings-row and collection-selection
+    // contracts now read back the approved grouping, checklist, and clear action.
+    recordedHeightPx: 11764,
     owedTo: "beyond-INIT-008",
     note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },

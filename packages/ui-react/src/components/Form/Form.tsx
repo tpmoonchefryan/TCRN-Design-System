@@ -1,16 +1,20 @@
 import type { ChangeEvent as ReactChangeEvent, HTMLAttributes, InputHTMLAttributes, ReactElement, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { Children, cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
 import { Icon } from "../Icon/index.js";
+import { mountStaticMultiSelect, type StaticMultiSelectHandle } from "./multi-select-dropdown.js";
 import { childPropsOf, cx, mergeIds, requiredText } from "../../utils.js";
 
 export interface FieldProps {
   label: string;
   hint?: string;
   error?: string;
+  /** Use a fieldset and legend when the field contains a group of controls. */
+  group?: boolean;
   children: ReactNode;
 }
 
-export function Field({ label, hint, error, children }: FieldProps) {
+export function Field({ label, hint, error, group = false, children }: FieldProps) {
+  const labelId = useId();
   const hintId = useId();
   const errorId = useId();
   const describedBy = mergeIds(hint ? hintId : undefined, error ? errorId : undefined);
@@ -22,15 +26,29 @@ export function Field({ label, hint, error, children }: FieldProps) {
     const props = childPropsOf(childElement);
     return cloneElement(childElement, {
       "aria-describedby": mergeIds(props["aria-describedby"] as string | undefined, describedBy),
+      "aria-labelledby": group ? mergeIds(props["aria-labelledby"] as string | undefined, labelId) : props["aria-labelledby"],
       "aria-invalid": error ? true : props["aria-invalid"]
     });
   });
+  const className = cx("tcrn-field", error && "tcrn-field--error");
+  if (group) {
+    return (
+      <fieldset
+        className={className}
+        aria-describedby={describedBy}
+        aria-invalid={error ? true : undefined}
+        data-field-description={hint ? hintId : undefined}
+        data-field-error={error ? errorId : undefined}
+      >
+        <legend id={labelId} className="tcrn-field__label">{label}</legend>
+        {controls}
+        {hint ? <span id={hintId} className="tcrn-field__hint">{hint}</span> : null}
+        {error ? <span id={errorId} className="tcrn-field__error">{error}</span> : null}
+      </fieldset>
+    );
+  }
   return (
-    <label
-      className={cx("tcrn-field", error && "tcrn-field--error")}
-      data-field-description={hint ? hintId : undefined}
-      data-field-error={error ? errorId : undefined}
-    >
+    <label className={className} data-field-description={hint ? hintId : undefined} data-field-error={error ? errorId : undefined}>
       <span className="tcrn-field__label">{label}</span>
       {controls}
       {hint ? <span id={hintId} className="tcrn-field__hint">{hint}</span> : null}
@@ -175,22 +193,44 @@ export interface MultiSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectEl
   value?: string[];
   defaultValue?: string[];
   onChange?: (values: string[]) => void;
+  /** Use dropdown for ordinary collection choices. Native remains the compatibility default. */
+  presentation?: "native" | "dropdown" | "checkboxes";
+  /** Localized collapsed text when a dropdown has no selected values. */
+  emptySelectionLabel?: string;
+  /** Required when using the checkbox presentation; describes its clear action. */
+  clearSelectionLabel?: string;
   disabledReason?: string;
 }
 
-/** A native closed-set collection selector. The browser owns multiple selection and form submission. */
-export function MultiSelect({ options, value, defaultValue, onChange, className, disabled, disabledReason, title, ...props }: MultiSelectProps) {
+/**
+ * A closed-set collection selector with dropdown, native and explicit checklist presentations.
+ * A required checklist needs at least one selected enabled option. An enabled
+ * required checklist with no enabled options remains invalid.
+ */
+export function MultiSelect({ options, value, defaultValue, onChange, presentation = "native", clearSelectionLabel, emptySelectionLabel, className, disabled, disabledReason, title, ...props }: MultiSelectProps) {
   const isControlled = value !== undefined;
   const selectRef = useRef<HTMLSelectElement>(null);
+  const groupRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownHandle = useRef<StaticMultiSelectHandle | null>(null);
+  const dropdownState = useRef<{ controlled: boolean; value: string[]; commit: (next: string[]) => void }>({ controlled: false, value: [], commit: () => {} });
+  const dropdownId = useId();
+  const validationRef = useRef<HTMLInputElement | null>(null);
   const [uncontrolledValue, setUncontrolledValue] = useState(() => normalizeChoiceValues(defaultValue, options));
   const selectedValue = normalizeChoiceValues(isControlled ? value : uncontrolledValue, options);
+  const defaultSelectedValue = normalizeChoiceValues(defaultValue, options);
+  const hasEnabledSelection = options.some((option) => !option.disabled && selectedValue.includes(option.value));
+  const hasEnabledDefaultSelection = options.some((option) => !option.disabled && defaultSelectedValue.includes(option.value));
   const normalizedReason = disabled ? requiredText(disabledReason, "Multi-select unavailable in this route") : undefined;
   const disabledReasonId = useId();
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
   useEffect(() => {
-    if (isControlled) return;
-    const select = selectRef.current;
-    const form = select?.form;
+    if (isControlled || presentation === "dropdown") return;
+    const select = presentation !== "checkboxes" ? selectRef.current : null;
+    const firstCheckbox = presentation === "checkboxes"
+      ? groupRef.current?.querySelector<HTMLInputElement>('input[type="checkbox"]')
+      : null;
+    const form = select?.form ?? firstCheckbox?.form ?? validationRef.current?.form;
     if (!form) return;
     let disposed = false;
     const syncAfterReset = () => {
@@ -199,10 +239,12 @@ export function MultiSelect({ options, value, defaultValue, onChange, className,
       // sync from them synchronously so React cannot re-render the old cache and
       // rewrite the native reset target before the next user event.
       if (disposed) return;
-      const nextValue = normalizeChoiceValues(
-        Array.from(select.options).filter((option) => option.defaultSelected).map((option) => option.value),
-        options
-      );
+      const nextValue = select
+        ? normalizeChoiceValues(
+          Array.from(select.options).filter((option) => option.defaultSelected).map((option) => option.value),
+          options
+        )
+        : normalizeChoiceValues(defaultValue, options);
       setUncontrolledValue(nextValue);
     };
     form.addEventListener("reset", syncAfterReset);
@@ -210,16 +252,163 @@ export function MultiSelect({ options, value, defaultValue, onChange, className,
       disposed = true;
       form.removeEventListener("reset", syncAfterReset);
     };
-  }, [isControlled, options]);
-  const handleChange = (event: ReactChangeEvent<HTMLSelectElement>) => {
-    const nextValue = normalizeChoiceValues(
-      Array.from(event.currentTarget.selectedOptions, (option) => option.value),
-      options
-    );
+  }, [defaultValue, isControlled, options, presentation, props.form]);
+  const commitValue = (nextValue: string[]) => {
     if (sameChoiceValues(nextValue, selectedValue)) return;
-    if (!isControlled) setUncontrolledValue(nextValue);
+    if (!isControlled) {
+      setUncontrolledValue(nextValue);
+      // A consumer can request validated submission inside onChange, before
+      // React commits this state update. The native validation control must
+      // already reflect the uncontrolled value being reported.
+      if (validationRef.current) validationRef.current.checked = options.some((option) => !option.disabled && nextValue.includes(option.value));
+    }
     onChange?.(nextValue);
   };
+  dropdownState.current = { controlled: isControlled, value: selectedValue, commit: commitValue };
+  useEffect(() => {
+    if (presentation !== "dropdown" || !dropdownRef.current) return;
+    dropdownHandle.current = mountStaticMultiSelect({
+      root: dropdownRef.current,
+      getValue: isControlled ? () => dropdownState.current.value : undefined,
+      onChange: (next) => dropdownState.current.commit(next),
+      onReset: (next) => setUncontrolledValue(next)
+    });
+    return () => { dropdownHandle.current?.destroy(); dropdownHandle.current = null; };
+  }, [presentation, isControlled, props.form]);
+  useEffect(() => { dropdownHandle.current?.sync(); });
+  const handleChange = (event: ReactChangeEvent<HTMLSelectElement>) => {
+    commitValue(normalizeChoiceValues(Array.from(event.currentTarget.selectedOptions, (option) => option.value), options));
+  };
+  if (presentation === "dropdown") {
+    const placeholder = requiredText(emptySelectionLabel, "MultiSelect dropdown requires emptySelectionLabel");
+    const listId = `${props.id ?? dropdownId}-listbox`;
+    const uniqueOptions = [...new Map(options.map((option) => [option.value, option])).values()];
+    return (
+      <div ref={dropdownRef} className={cx("tcrn-multi-select-dropdown", className)} data-choice-cardinality="collection" data-choice-value-mode="closed" data-choice-presentation="dropdown" data-choice-option-count={uniqueOptions.length} data-empty-selection-label={placeholder}>
+        <button type="button" id={props.id} disabled={disabled} autoFocus={props.autoFocus} tabIndex={props.tabIndex} title={normalizedReason ?? title}
+          aria-label={props["aria-label"]} aria-labelledby={props["aria-labelledby"]} aria-describedby={ariaDescribedBy} aria-invalid={props["aria-invalid"]} aria-required={props.required || undefined}
+          aria-haspopup="listbox" aria-expanded="false" aria-controls={listId} className="tcrn-select tcrn-multi-select-dropdown__trigger">
+          <span data-multi-select-summary>{uniqueOptions.filter((option) => selectedValue.includes(option.value)).map((option) => option.label).join(", ") || placeholder}</span><Icon name="chevron-down" aria-hidden className="tcrn-multi-select-dropdown__caret" />
+        </button>
+        <select ref={selectRef} multiple name={props.name} form={props.form} disabled={disabled} tabIndex={-1} aria-hidden="true"
+          value={isControlled ? selectedValue : undefined} defaultValue={isControlled ? undefined : defaultSelectedValue} onChange={handleChange} className="tcrn-sr-only tcrn-multi-select-dropdown__value">
+          {uniqueOptions.map((option) => <option key={option.value} value={option.value} disabled={option.disabled} ref={(element) => { if (element) element.defaultSelected = isControlled ? selectedValue.includes(option.value) : defaultSelectedValue.includes(option.value); }}>{option.label}</option>)}
+        </select>
+        {props.required ? <input type="checkbox" required disabled={disabled} form={props.form} checked={hasEnabledSelection} tabIndex={-1} aria-hidden="true" onChange={() => {}} className="tcrn-sr-only tcrn-multi-select-dropdown__validation" ref={(input) => { if (input) input.defaultChecked = isControlled ? hasEnabledSelection : hasEnabledDefaultSelection; }} /> : null}
+        <div id={listId} hidden tabIndex={-1} role="listbox" aria-multiselectable="true" aria-label={props["aria-label"]} aria-labelledby={props["aria-labelledby"]} className="tcrn-menu tcrn-multi-select-dropdown__list">
+          {uniqueOptions.map((option, index) => <button type="button" role="option" id={`${listId}-option-${index}`} key={option.value} disabled={option.disabled} aria-selected={selectedValue.includes(option.value)}
+            data-multi-select-value={option.value} data-selected={selectedValue.includes(option.value)} className="tcrn-menu__item tcrn-multi-select-dropdown__option">
+            <span data-multi-select-label>{option.label}</span><span data-multi-select-check data-selected={selectedValue.includes(option.value)} aria-hidden="true"><Icon name="check" /></span>
+          </button>)}
+        </div>
+        {normalizedReason ? <span id={disabledReasonId} className="tcrn-sr-only">{normalizedReason}</span> : null}
+      </div>
+    );
+  }
+  if (presentation === "checkboxes") {
+    if (!clearSelectionLabel) throw new Error("MultiSelect checkbox presentation requires clearSelectionLabel");
+    const {
+      name,
+      id,
+      required,
+      form,
+      autoFocus,
+      tabIndex,
+      "aria-label": ariaLabel,
+      "aria-describedby": describedBy,
+      "aria-invalid": invalid,
+      "aria-labelledby": labelledBy
+    } = props;
+    return (
+      <div className={cx("tcrn-multi-select-group", className)}>
+        <div
+          ref={groupRef}
+          id={id}
+          role="group"
+          tabIndex={-1}
+          aria-label={ariaLabel}
+          aria-labelledby={labelledBy}
+          aria-describedby={mergeIds(describedBy, normalizedReason ? disabledReasonId : undefined)}
+          aria-invalid={invalid}
+          aria-required={required || undefined}
+          title={normalizedReason ?? title}
+          data-disabled-reason={normalizedReason}
+          data-choice-cardinality="collection"
+          data-choice-value-mode="closed"
+          data-choice-presentation="checkboxes"
+          data-choice-option-count={options.length}
+          className="tcrn-multi-select-group__options"
+        >
+          {options.map((option, index) => {
+            const checked = selectedValue.includes(option.value);
+            const optionId = id ? `${id}-option-${index}` : undefined;
+            return (
+              <label key={`${option.value}-${index}`} className="tcrn-multi-select-group__option" htmlFor={optionId}>
+                <input
+                  ref={(input) => {
+                    // Keep the native reset target current even before React's
+                    // reset listener commits its state update. Controlled values
+                    // stay authoritative; uncontrolled values return to defaults.
+                    if (input) input.defaultChecked = isControlled ? checked : defaultSelectedValue.includes(option.value);
+                  }}
+                  id={optionId}
+                  type="checkbox"
+                  className="tcrn-checkbox"
+                  name={name}
+                  form={form}
+                  value={option.value}
+                  checked={checked}
+                  disabled={disabled || option.disabled}
+                  autoFocus={autoFocus && index === 0}
+                  tabIndex={tabIndex}
+                  aria-describedby={mergeIds(describedBy, normalizedReason ? disabledReasonId : undefined)}
+                  aria-invalid={invalid}
+                  onChange={(event) => {
+                    const next = event.currentTarget.checked
+                      ? [...selectedValue, option.value]
+                      : selectedValue.filter((selected) => selected !== option.value);
+                    commitValue(normalizeChoiceValues(next, options));
+                  }}
+                />
+                <span>{option.label}</span>
+              </label>
+            );
+          })}
+        </div>
+        {required ? (
+          <input
+            ref={(input) => {
+              validationRef.current = input;
+              if (input) input.defaultChecked = isControlled ? hasEnabledSelection : hasEnabledDefaultSelection;
+            }}
+            type="checkbox"
+            required
+            checked={hasEnabledSelection}
+            disabled={disabled}
+            form={form}
+            aria-hidden="true"
+            tabIndex={-1}
+            className="tcrn-sr-only"
+            onChange={() => {}}
+            onFocus={() => {
+              // Native validated submission focuses its invalid control. Route
+              // that focus to the visible checklist without moving focus during
+              // checkValidity(), which only dispatches an invalid event.
+              const group = groupRef.current;
+              const option = group?.querySelector<HTMLInputElement>('input[type="checkbox"]:not(:disabled)');
+              (option ?? group)?.focus();
+            }}
+          />
+        ) : null}
+        <div className="tcrn-multi-select-group__actions">
+          <button type="button" className="tcrn-button tcrn-button--quiet tcrn-button--sm tcrn-multi-select-group__clear" disabled={disabled || selectedValue.length === 0} onClick={() => commitValue([])}>
+            {clearSelectionLabel}
+          </button>
+        </div>
+        {normalizedReason ? <span id={disabledReasonId} className="tcrn-sr-only">{normalizedReason}</span> : null}
+      </div>
+    );
+  }
   return (
     <>
       <select
@@ -712,6 +901,19 @@ export interface SettingRowProps extends HTMLAttributes<HTMLDivElement> {
   onReset?: () => void;
 }
 
+export interface SettingRowListProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
+}
+
+/** Shared grid tracks keep controls and tools aligned across rows, including rows without actions. */
+export function SettingRowList({ children, className, ...props }: SettingRowListProps) {
+  return (
+    <div {...props} className={cx("tcrn-setting-row-list", className)} data-setting-row-list="true">
+      {children}
+    </div>
+  );
+}
+
 export function SettingRow({
   label,
   description,
@@ -746,16 +948,18 @@ export function SettingRow({
         {description ? <span className="tcrn-setting-row__description">{description}</span> : null}
       </div>
       <div className="tcrn-setting-row__control">{labeledControl}</div>
-      {modified ? (
-        <div className="tcrn-setting-row__tools">
-          <span className="tcrn-setting-row__modified" role="img" title="Modified" aria-label="Modified" aria-hidden={onReset ? undefined : true} />
-          {onReset ? (
-            <button type="button" className="tcrn-setting-row__reset" onClick={onReset}>
-              {resetLabel}
-            </button>
-          ) : null}
-        </div>
-      ) : null}
+      <div className="tcrn-setting-row__tools">
+        {modified ? (
+          <>
+            <span className="tcrn-setting-row__modified" role="img" title="Modified" aria-label="Modified" aria-hidden={onReset ? undefined : true} />
+            {onReset ? (
+              <button type="button" className="tcrn-setting-row__reset" onClick={onReset}>
+                {resetLabel}
+              </button>
+            ) : null}
+          </>
+        ) : null}
+      </div>
     </div>
   );
 }

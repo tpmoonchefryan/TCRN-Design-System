@@ -3330,6 +3330,9 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 .tcrn-table-shell__row:last-child .tcrn-table-shell__cell {
   border-bottom: 0;
 }
+.tcrn-table-shell__row[data-transient-target="true"] > .tcrn-table-shell__cell {
+  background: var(--tcrn-selection-fill);
+}
 .tcrn-table-shell__empty {
   padding: var(--tcrn-space-3);
   color: var(--tcrn-color-text-secondary);
@@ -3817,6 +3820,10 @@ a.tcrn-relationship-chip:focus-visible {
    which is exactly what produced the double frame consumers reported. */
 .tcrn-record-row[data-selected="true"] {
   border-color: var(--tcrn-selection-edge);
+}
+.tcrn-record-row[data-transient-target="true"] {
+  border-color: var(--tcrn-selection-edge);
+  background: var(--tcrn-selection-fill);
 }
 .tcrn-record-row__id,
 .tcrn-record-row__summary,
@@ -4543,6 +4550,30 @@ a.tcrn-relationship-chip:focus-visible {
   gap: var(--tcrn-space-2h);
 }
 
+/* Surface heading/actions keep their own bounds even in a nested narrow card. */
+.tcrn-surface__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--tcrn-space-3);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.tcrn-surface__head > * {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.tcrn-surface__head-content { flex: 1 1 50%; }
+.tcrn-surface__head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+}
+.tcrn-surface__head :is(h2,h3) { margin: 0; font-size: var(--tcrn-type-size-heading-3); }
+
 /* Typography highlight */
 .tcrn-highlight-text {
   display: inline;
@@ -4816,6 +4847,11 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-field__label {
   font-weight: 600;
 }
+.tcrn-field:is(fieldset) {
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+}
 
 .tcrn-field__hint {
   color: var(--tcrn-color-text-secondary);
@@ -4828,6 +4864,9 @@ a.tcrn-relationship-chip:focus-visible {
 /* Form input + select (.tcrn-input--short is a docs-only demo width and stays there) */
 .tcrn-input,
 .tcrn-select {
+  font: inherit;
+  color: var(--tcrn-color-text-primary);
+  background: var(--tcrn-color-surface-panel);
   min-height: 34px;
   border: 1px solid var(--tcrn-color-border-strong);
   border-radius: var(--tcrn-radius-control);
@@ -5148,6 +5187,10 @@ a.tcrn-relationship-chip:focus-visible {
   padding-block: var(--tcrn-space-2);
   border-block-end: 1px solid var(--tcrn-color-border-subtle);
 }
+.tcrn-setting-row[data-transient-target="true"] {
+  border-block-end-color: var(--tcrn-selection-edge);
+  background: var(--tcrn-selection-fill);
+}
 .tcrn-setting-row__label,
 .tcrn-setting-row__control,
 .tcrn-setting-row__tools {
@@ -5335,6 +5378,8 @@ a.tcrn-relationship-chip:focus-visible {
 
 .tcrn-definition-list {
   display: grid;
+  container-type: inline-size;
+  container-name: tcrn-definition-list;
   gap: var(--tcrn-space-3);
   margin: 0;
 }
@@ -5345,6 +5390,8 @@ a.tcrn-relationship-chip:focus-visible {
   min-width: 0;
 }
 .tcrn-definition-list__term {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
   color: var(--tcrn-color-text-secondary);
   font-weight: var(--tcrn-type-weight-medium);
 }
@@ -5359,6 +5406,14 @@ a.tcrn-relationship-chip:focus-visible {
 }
 .tcrn-definition-list--dense .tcrn-definition-list__item {
   gap: var(--tcrn-space-2);
+}
+/* A detail card can be narrow inside a wide viewport. Apply the existing
+   760px detail stacking boundary to its actual mother as well. */
+@container tcrn-definition-list (max-width: 760px) {
+  .tcrn-definition-list__item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--tcrn-space-1);
+  }
 }
 
 .tcrn-lock-hint {
@@ -5604,6 +5659,28 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-data-grid { inline-size: 100%; border-collapse: collapse; }
 .tcrn-data-grid th, .tcrn-data-grid td { padding: var(--tcrn-space-2) var(--tcrn-space-3); text-align: start; border-block-end: 1px solid var(--tcrn-color-border-subtle); }
 .tcrn-data-grid__sort { border: 0; background: none; cursor: pointer; font: inherit; padding: 0; }
+.tcrn-multi-select-group{display:grid;gap:var(--tcrn-space-2);min-inline-size:0;max-inline-size:100%}
+.tcrn-multi-select-group__options{display:grid;gap:var(--tcrn-space-1);min-inline-size:0;margin:0;padding:0;border:0}
+.tcrn-multi-select-group__option{display:flex;align-items:flex-start;gap:var(--tcrn-space-2);min-inline-size:0;overflow-wrap:anywhere}
+.tcrn-multi-select-group__option input{flex:0 0 auto;margin-block-start:var(--tcrn-space-0h)}
+.tcrn-multi-select-group__actions{display:flex;justify-content:flex-start}
+.tcrn-multi-select-group__clear{justify-self:start}
+
+
+/* A collection dropdown uses the Select trigger and Menu option families. */
+.tcrn-multi-select-dropdown{position:relative;min-inline-size:0;max-inline-size:100%}
+.tcrn-multi-select-dropdown__trigger{display:flex;align-items:center;justify-content:space-between;gap:var(--tcrn-space-2);inline-size:100%;font:inherit;color:var(--tcrn-color-text-primary);background:var(--tcrn-color-surface-panel);text-align:start;cursor:pointer}
+.tcrn-multi-select-dropdown__trigger [data-multi-select-summary]{min-inline-size:0;overflow-wrap:anywhere}
+.tcrn-multi-select-dropdown__caret{flex:0 0 auto}
+.tcrn-multi-select-dropdown__trigger:focus-visible{outline:var(--tcrn-space-0h) solid var(--tcrn-color-focus-ring);outline-offset:var(--tcrn-space-0h)}
+.tcrn-multi-select-dropdown__trigger:disabled{color:var(--tcrn-color-text-disabled);cursor:not-allowed}
+.tcrn-multi-select-dropdown__list{z-index:var(--tcrn-z-popover);min-inline-size:0;max-inline-size:calc(100vw - var(--tcrn-space-4));max-block-size:calc(100vh - var(--tcrn-space-4));overflow:auto;box-sizing:border-box}
+.tcrn-multi-select-dropdown__list[hidden]{display:none}
+.tcrn-multi-select-dropdown__option{display:flex;justify-content:space-between;align-items:center;gap:var(--tcrn-space-2);font:inherit;color:var(--tcrn-color-text-primary);overflow-wrap:anywhere}
+.tcrn-multi-select-dropdown__option:not(:disabled):hover{background:var(--tcrn-selection-fill-hover)}
+.tcrn-multi-select-dropdown__option[aria-selected="true"]{background:var(--tcrn-selection-fill)}
+.tcrn-multi-select-dropdown__option [data-multi-select-check]{flex:0 0 auto;visibility:hidden}
+.tcrn-multi-select-dropdown__option [data-multi-select-check][data-selected="true"]{visibility:visible}
 
 /* DS-106/107 settings contract. */
 .tcrn-setting-choice{display:grid;gap:var(--tcrn-space-1);min-inline-size:0;max-inline-size:100%}
@@ -5622,13 +5699,26 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-settings-layout__nav>:is(.tcrn-segmented-nav,.tcrn-section-tabs,.tcrn-module-tabs){flex-wrap:nowrap;max-inline-size:max-content}
 .tcrn-settings-layout__content{display:grid;gap:var(--tcrn-space-4);min-inline-size:0;container:tcrn-settings-content/inline-size}
 .tcrn-settings-layout__form{display:grid;gap:var(--tcrn-space-2);min-inline-size:0}
-.tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2)}
+.tcrn-settings-layout__form>.tcrn-setting-row-list{display:grid;grid-template-columns:minmax(0,1fr);min-inline-size:0}
+.tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row{display:grid;grid-column:1/-1;grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2)}
+.tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row__tools:empty{display:none}
+.tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2);overflow-wrap:anywhere}
 .tcrn-settings-layout__form .tcrn-setting-row__control{inline-size:100%;grid-column:auto;grid-row:auto}
 .tcrn-settings-layout__form .tcrn-setting-row__tools{grid-column:auto;grid-row:auto}
-.tcrn-settings-layout__form .tcrn-setting-row__control>:is(.tcrn-input,.tcrn-select){inline-size:100%;min-inline-size:0}
+.tcrn-settings-layout__form .tcrn-setting-row__control>:is(.tcrn-input,.tcrn-select,.tcrn-field,.tcrn-setting-choice,.tcrn-number-input-field,.tcrn-multi-select-group,.tcrn-multi-select-dropdown){inline-size:100%;min-inline-size:0}
+.tcrn-settings-layout__form .tcrn-setting-row__control .tcrn-field :is(.tcrn-input,.tcrn-select,.tcrn-number-input){inline-size:100%;min-inline-size:0}
+.tcrn-settings-layout__form .tcrn-setting-row__control .tcrn-field{margin:0}
 .tcrn-settings-layout__form .tcrn-setting-row__control>.tcrn-number-input{inline-size:100%}
 @container tcrn-settings-layout-frame (min-width:960px){.tcrn-settings-layout__grid{grid-template-columns:minmax(0,var(--tcrn-container-settings-local-nav)) minmax(0,1fr)}}
-@container tcrn-settings-content (min-width:720px){.tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content}.tcrn-settings-layout__form .tcrn-setting-row__tools{justify-content:flex-end}}
+@container tcrn-settings-content (min-width:720px){
+  /* The complete form also shares tracks for the supported direct-row API.
+     Other children still span the form; an explicit list owns its own tracks. */
+  .tcrn-settings-layout__form,.tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content}
+  .tcrn-settings-layout__form .tcrn-setting-row-list{grid-template-columns:minmax(0,1fr) minmax(var(--tcrn-container-settings-control-min),.8fr) max-content}
+  .tcrn-settings-layout__form>*{grid-column:1/-1}
+  .tcrn-settings-layout__form>.tcrn-setting-row,.tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row{grid-template-columns:subgrid}
+  .tcrn-settings-layout__form .tcrn-setting-row__tools{justify-content:flex-end}
+}
 
 /* DS-113/114/115 full-surface boundary and content rules. These follow the settings
    contract marker so Storybook's global package CSS carries them once while the
@@ -5653,15 +5743,16 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-operation-feedback,.tcrn-content-scope{display:grid;gap:var(--tcrn-space-2);min-inline-size:0;max-inline-size:100%;border:1px solid var(--tcrn-color-border-subtle);border-radius:var(--tcrn-radius-surface);background:var(--tcrn-color-surface-panel);padding:var(--tcrn-space-3)}
 .tcrn-operation-feedback__summary{display:flex;align-items:flex-start;flex-wrap:wrap;gap:var(--tcrn-space-2);min-inline-size:0;max-inline-size:100%}
 .tcrn-operation-feedback__status{flex:0 1 auto;min-inline-size:0}
-.tcrn-operation-feedback__identity{display:grid;grid-template-columns:max-content minmax(0,1fr);flex:1 1 240px;gap:var(--tcrn-space-1) var(--tcrn-space-2);min-inline-size:0;margin:0}
+.tcrn-operation-feedback__identity{display:grid;grid-template-columns:fit-content(40%) minmax(0,1fr);flex:1 1 240px;gap:var(--tcrn-space-1) var(--tcrn-space-2);min-inline-size:0;margin:0}
 .tcrn-operation-feedback__identity-row{display:grid;grid-template-columns:subgrid;grid-column:1/-1;min-inline-size:0}
-.tcrn-operation-feedback__identity dt{color:var(--tcrn-color-text-secondary);font-size:var(--tcrn-type-size-meta);font-weight:var(--tcrn-type-weight-medium)}
+.tcrn-operation-feedback__identity dt{min-inline-size:0;overflow-wrap:anywhere;color:var(--tcrn-color-text-secondary);font-size:var(--tcrn-type-size-meta);font-weight:var(--tcrn-type-weight-medium)}
 .tcrn-operation-feedback__identity dd{min-inline-size:0;margin:0;overflow-wrap:anywhere;word-break:break-word;color:var(--tcrn-color-text-primary)}
 .tcrn-operation-feedback__details-trigger{flex:0 1 auto;max-inline-size:100%;min-block-size:36px;border:1px solid var(--tcrn-color-border-control);border-radius:var(--tcrn-radius-control);background:var(--tcrn-color-surface-muted);color:var(--tcrn-color-text-primary);padding:var(--tcrn-space-1) var(--tcrn-space-2);font:inherit;cursor:pointer;overflow-wrap:anywhere}
 .tcrn-operation-feedback__details-trigger:focus-visible{outline:2px solid var(--tcrn-color-focus-ring);outline-offset:2px}
 .tcrn-operation-feedback__details{min-inline-size:0;max-inline-size:100%}
 .tcrn-operation-feedback__details-body{min-inline-size:0;max-inline-size:100%;overflow-wrap:anywhere;word-break:break-word}
 .tcrn-operation-feedback__details-body p{max-inline-size:100%;overflow-wrap:anywhere}
+.tcrn-operation-feedback__details-body pre{min-inline-size:0;max-inline-size:100%;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-family:var(--tcrn-type-family-mono)}
 .tcrn-content-scope__content{min-inline-size:0;max-inline-size:100%}
 .tcrn-content-scope[data-content-valid="false"]{border-inline-start:3px solid var(--tcrn-color-state-blocked);padding-inline-start:var(--tcrn-space-2)}
 .tcrn-content-scope[data-content-phase="loading"]{border-color:var(--tcrn-color-state-warning)}
