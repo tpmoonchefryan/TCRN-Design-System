@@ -20,13 +20,15 @@ The comparison starts at the prior production source 610680b81a950e91e9e1e77718e
 
 Each appearance uses existing typography, color, spacing, radius, border, icon and motion tokens. The dropdown comparison measures its trigger against Select and exercises native form values, required/disabled states, reset, controlled values, keyboard navigation and dismissal. Container and detail checks preserve full values and distinguish failed status from empty content. The application consumes the resulting published artifact only after its production build and deployment have matching source evidence. Machine checks and Owner visual review retain separate results.
 
-The earlier recorded workspace verification (271 browser captures, zero axe violations) did not bind the final accidental JSON test source. Current verification must cover the restored executable test and complete public aliases; native multiple-list and explicit-checklist compatibility remains verified. The ordinary dropdown uses observable native reset settlement, including cancellation, and localized labels. Static proof-page CSS is compacted without changing its semantic declarations or selectors; page and story budgets were not increased. The publication target build and actual Production deployment remain separate evidence checks.
+The earlier recorded workspace verification (271 browser captures, zero axe violations) did not bind the final accidental JSON test source. Current verification must cover the restored executable test and complete public token references; native multiple-list and explicit-checklist compatibility remains verified. The ordinary dropdown uses observable native reset settlement, including cancellation, and localized labels. Static proof-page CSS is compacted without changing its semantic declarations or selectors; page and story budgets were not increased. The publication target build and actual Production deployment remain separate evidence checks.
 
-## Public alias audit
+## Public token reference audit
 
-All previously unresolved component references are public token entries. Fourteen aliases point to existing family values, including dark-theme overrides. The brand-mark filter and SearchInput minimum keep their prior `none` and `0` defaults. Component consumers use the public token stylesheet and component stylesheet together. No documentation-only style is needed for menu opacity, corners, elevation, selected text, disabled text or state borders.
+Previously unresolved component references now consume the existing semantic family tokens directly. Fourteen unpublished aliases duplicated those same values and added eight duplicate entries to the color-palette story. That source drift changed all three palette signatures and the recorded story height. The aliases are removed before publication; the original color registry and its complete palette example remain unchanged. No visual baseline, signature threshold, height threshold or debt allowance is changed.
 
-| Public variable | Same-family source or retained default |
+The brand-mark filter and SearchInput minimum retain their public `none` and `0` defaults. Component consumers use the public token stylesheet and component stylesheet together. Menu opacity, corners, elevation, selected text, disabled text and state borders all resolve through the original public family tokens in both themes.
+
+| Former unpublished component reference | Public family token or retained default |
 | --- | --- |
 | `--tcrn-color-surface` | `--tcrn-color-surface-panel` |
 | `--tcrn-color-surface-subtle` | `--tcrn-color-surface-muted` |
@@ -45,6 +47,6 @@ All previously unresolved component references are public token entries. Fourtee
 | `--tcrn-brand-mark-filter` | `none` |
 | `--tcrn-search-input-min-inline-size` | `0` |
 
-The existing token-extension proof checks every consumed variable, and the restored full-surface test refuses omission of the menu surface alias. The existing browser proof measures the popup using only package tokens and component CSS in both themes. All rows in the family audit above remain applicable, including native/checklist compatibility, reset, disabled options, required values, static bridge interaction, settings grid, complete detail values and transient-target semantics. Owner visual acceptance remains unobserved.
+The token-extension proof checks every consumed variable, and the executable full-surface test refuses omission of the actual public menu panel token. The existing browser proof measures the popup using only package tokens and component CSS in both themes. All family-audit rows above remain applicable, including native/checklist compatibility, reset, disabled options, required values, static bridge interaction, settings grid, complete detail values and transient-target semantics. Fresh ordinary parent results and matching Production publication evidence are separate receipts. Owner visual acceptance remains unobserved.
 
-`TableShell` supplies `--tcrn-table-column-count` from its actual columns, and its documented `--tcrn-table-shell-column-min-width` parameter retains its existing fallback. These two component data/width parameters are registered separately from the sixteen public aliases; neither is an absent menu token.
+`TableShell` supplies `--tcrn-table-column-count` from its actual columns, and its documented `--tcrn-table-shell-column-min-width` parameter retains its existing fallback. These two component data/width parameters are registered separately from the public semantic tokens and the two retained parameter defaults.
