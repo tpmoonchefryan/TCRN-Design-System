@@ -5603,7 +5603,7 @@ a.tcrn-relationship-chip:focus-visible {
   cursor: pointer;
   border-block-end: 2px solid transparent;
 }
-.tcrn-tabs__tab--selected { color: var(--tcrn-color-text-primary); border-block-end-color: var(--tcrn-color-brand-primary); font-weight: 600; }
+.tcrn-tabs__tab--selected { color: var(--tcrn-color-text-primary); border-block-end-color: var(--tcrn-selection-edge); font-weight: 600; }
 .tcrn-tabs__tab:focus-visible { outline: 2px solid var(--tcrn-color-focus-ring); outline-offset: -2px; }
 .tcrn-tabs__tab:disabled { color: var(--tcrn-color-text-muted); cursor: not-allowed; }
 .tcrn-tabs__panel { padding-block-start: var(--tcrn-space-3); }

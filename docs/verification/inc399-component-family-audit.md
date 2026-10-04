@@ -15,6 +15,7 @@ The comparison starts at the prior production source 610680b81a950e91e9e1e77718e
 | DefinitionList | published key/value definition family | nested terms and values wrap inside same parent; no data clipping or text substitution | DomainDisplay.test; full-details nested-card geometry |
 | OperationFeedback | published StatusBadge and DisclosurePanel | long operation identity and structured receipt wrap in labeled details; phase badges remain compact and truthful | full-details byte equality, positive containment and negative nowrap |
 | TableShell/RecordRow/SettingRow transient target | existing selection-fill and selection-edge grammar | same selection tokens; one boundary owner avoids doubled edges; target attribute does not claim selected/focused identity; consumer owns navigation timer | Navigation.test; ds:consumption:proof transient target geometry |
+| Tabs selected state | published Navigation selection grammar: selection is ink | the existing bottom border uses selection-edge; text, weight, geometry, disabled state, focus feedback and wrapping arrow/Home/End keyboard selection retain the Tabs family | selection:proof; Navigation.test; component-modifiers:proof; full-surface:proof |
 | Storybook static bridge and CSS placement | published package CSS and static-overlay consumption contracts | build packages the same static dropdown bridge; working translated dropdown example; shared settings CSS remains in package truth | storybook:smoke; full-surface:proof; internal-alpha:browser-proof |
 | Publication identity | existing design-authority contract | source commit, component CSS and static bridge digests bind the artifact to the build | public-docs:vercel-build; production deployment SHA and artifact digest readback |
 
@@ -32,7 +33,7 @@ The brand-mark filter and SearchInput minimum retain their public `none` and `0`
 | --- | --- |
 | `--tcrn-color-surface` | `--tcrn-color-surface-panel` |
 | `--tcrn-color-surface-subtle` | `--tcrn-color-surface-muted` |
-| `--tcrn-color-accent` | `--tcrn-color-brand-primary` |
+| `--tcrn-color-accent` | `--tcrn-color-brand-primary` for actionability; `--tcrn-selection-edge` for the Tabs selected border |
 | `--tcrn-color-on-accent` | `--tcrn-color-text-inverse` |
 | `--tcrn-color-positive-border` | `--tcrn-color-state-ready` |
 | `--tcrn-color-warning-border` | `--tcrn-color-state-warning` |
@@ -48,5 +49,7 @@ The brand-mark filter and SearchInput minimum retain their public `none` and `0`
 | `--tcrn-search-input-min-inline-size` | `0` |
 
 The token-extension proof checks every consumed variable, and the executable full-surface test refuses omission of the actual public menu panel token. The existing browser proof measures the popup using only package tokens and component CSS in both themes. All family-audit rows above remain applicable, including native/checklist compatibility, reset, disabled options, required values, static bridge interaction, settings grid, complete detail values and transient-target semantics. Fresh ordinary parent results and matching Production publication evidence are separate receipts. Owner visual acceptance remains unobserved.
+
+The complete selected/current-state rule inspection covers the package Navigation source, the Storybook shell, story examples and internal-alpha styles. The Tabs border was the remaining direct brand-colour selection declaration. Framed selected controls promote their existing border with selection-edge; surface-bearing selected controls use selection-fill. Tabs keeps its two-pixel border, primary selected text, existing weight, no added axis or elevation, and the same tab/tabpanel ARIA and keyboard behavior. The brand token remains applicable to actionability elsewhere; an alias cannot substitute for this context-specific selection contract. The inspection and fresh parent verification bind the actual public source rather than permitting the retired brand selection grammar.
 
 `TableShell` supplies `--tcrn-table-column-count` from its actual columns, and its documented `--tcrn-table-shell-column-min-width` parameter retains its existing fallback. These two component data/width parameters are registered separately from the public semantic tokens and the two retained parameter defaults.
