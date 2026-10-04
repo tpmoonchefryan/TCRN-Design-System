@@ -190,6 +190,6 @@ test("public component tokens are complete and a missing menu surface is refused
   const { tcrnTokenCss } = await import("../packages/ui-tokens/dist/index.js");
   const { tcrnComponentCss } = await import("../packages/ui-react/dist/index.js");
   assertPublicTokenReferences(tcrnTokenCss, tcrnComponentCss);
-  assert.throws(() => assertPublicTokenReferences(tcrnTokenCss.replace(/^  --tcrn-color-surface:.*\n/m, ""), tcrnComponentCss), assert.AssertionError);
-  assert.match(tcrnComponentCss, /\.tcrn-menu\s*\{[^}]*background:\s*var\(--tcrn-color-surface\)/);
+  assert.throws(() => assertPublicTokenReferences(tcrnTokenCss.replace(/^  --tcrn-color-surface-panel:.*\n/m, ""), tcrnComponentCss), assert.AssertionError);
+  assert.match(tcrnComponentCss, /\.tcrn-menu\s*\{[^}]*background:\s*var\(--tcrn-color-surface-panel\)/);
 });
