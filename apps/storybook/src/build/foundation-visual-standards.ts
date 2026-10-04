@@ -453,7 +453,7 @@ export const consumerVerificationContract = {
     "more-than-two value choice rendered as Select",
     "binary value choice preserves a disabled option in radio and Select branches",
     "radio/Select branch switching preserves controlled and uncontrolled values without synthetic callbacks",
-    "closed collections retain native MultiSelect by default and can use the accessible checkbox-list mode with clear action; open strings use free-form SuggestInput",
+    "ordinary closed collections use the Select-family MultiSelect dropdown; native lists remain compatible and explicit checklists provide a clear action; open strings use free-form SuggestInput",
     "native NumberInput with complete value and range markers",
     "container-driven SettingsLayout with one host and one complete form",
     "correct explicit two-level PageHierarchy with content below parent tabs",
