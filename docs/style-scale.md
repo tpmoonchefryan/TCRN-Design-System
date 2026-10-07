@@ -230,3 +230,14 @@ dynamic portal, edge, or focus behavior.
 stacking boundary. A narrow card inside a wide viewport stacks terms before their
 definitions; long terms wrap inside their track. Consumers retain the shared
 column sizing rather than imposing a fixed term minimum on a nested card.
+
+### Narrow ProductShell navigation stacking
+
+At the existing mobile breakpoint, the sidebar header owns the persistent
+MobileNavToggle. The workspace TopBar remains in normal document flow and must
+not stick at the same inset over that trigger. Desktop TopBar placement is
+unchanged. The navigation-product-shell-spec example uses the package stylesheet
+and demonstrates the same header composition. Geometry proof scrolls the real
+ProductShell at 760px and 390px, checks the pointer hit target, clicks the
+trigger, and verifies its expanded state; restoring the old sticky TopBar is a
+negative case. This is a shell contract, not a consumer z-index override.
