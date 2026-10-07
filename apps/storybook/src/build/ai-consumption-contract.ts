@@ -1,3 +1,4 @@
+import { tcrnTokens } from "@tcrn/ui-tokens";
 import {
   storyCategoryDefinitions,
   storyRegistryOrder,
@@ -256,6 +257,9 @@ export const aiConsumptionContract = {
     }
   },
   firstReadRoutes: ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"],
+  // Semantic component references consume the existing public family tokens directly.
+  // Only the two retained component parameter defaults need compatibility entries.
+  publicTokenAliases: tcrnTokens.filter((token) => token.name.startsWith("compatibility.")).map(({ variable, value, group }) => ({ variable, value, group })),
   requiredReadbackFields: [
     "contractVersion",
     "contractPayloadDigest",
