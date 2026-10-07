@@ -2,6 +2,9 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, normalize, relative, resolve } from "node:path";
 import { chromium } from "@playwright/test";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { ProductShell, tcrnComponentCss } from "../packages/ui-react/dist/index.js";
 
 const staticRoot = resolve("apps/storybook/storybook-static");
 const badgeRoute = "/components-navigation-shells.html#navigation-dense-operations-shell-spec";
@@ -264,6 +267,39 @@ async function removeMutation(page) {
   await settle(page);
 }
 
+async function measureMobileNavigation(page, width, broken = false) {
+  await page.setViewportSize({ width, height: 900 });
+  const markup = renderToStaticMarkup(createElement(ProductShell, {
+    productName: "Navigation example", moduleName: "Library", currentRouteLabel: "Settings",
+    navLabel: "Pages", navGroups: [{ label: "Pages", items: [{ label: "Settings", href: "#settings" }] }],
+    locales: [{ value: "en", label: "English" }], currentLocale: "en",
+    headerActions: createElement("select", { "aria-label": "Library" }, createElement("option", null, "Example library")),
+  }, Array.from({ length: 80 }, (_, i) => createElement("p", { key: i }, "Example content " + i))));
+  await page.setContent(`<style>${tcrnComponentCss}</style>${markup}`);
+  await page.evaluate(() => {
+    const toggle = document.querySelector('[data-mobile-nav-toggle]');
+    toggle.addEventListener('click', () => {
+      const shell = toggle.closest('.tcrn-product-shell');
+      const expanded = shell.dataset.mobileNavExpanded !== 'true';
+      shell.dataset.mobileNavExpanded = String(expanded);
+      toggle.setAttribute('aria-expanded', String(expanded));
+    });
+  });
+  if (broken) await page.addStyleTag({ content: '.tcrn-product-shell__workspace > .tcrn-top-bar { position: sticky; top: 0; z-index: 20; }' });
+  await page.evaluate(() => window.scrollTo(0, 500));
+  const observation = await page.locator('[data-mobile-nav-toggle]').evaluate(toggle => {
+    const box = toggle.getBoundingClientRect();
+    const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+    return { box: box.toJSON(), hit: hit?.outerHTML, reachable: toggle === hit || toggle.contains(hit) };
+  });
+  let expanded = false;
+  if (observation.reachable) {
+    await page.locator('[data-mobile-nav-toggle]').click();
+    expanded = await page.locator('[data-mobile-nav-toggle]').getAttribute('aria-expanded') === 'true';
+  }
+  return { width, broken, ...observation, expanded, ok: observation.reachable && expanded };
+}
+
 async function main() {
   if (!existsSync(staticRoot)) throw new Error("geometry_proof_missing_static_surface");
   const server = await startStaticServer();
@@ -304,9 +340,16 @@ async function main() {
     await removeMutation(page);
     const searchRestored = await measureSearchOverlay(page);
 
+    const mobileNavigation = [];
+    for (const width of [760, 390]) mobileNavigation.push({
+      baseline: await measureMobileNavigation(page, width),
+      broken: await measureMobileNavigation(page, width, true),
+      restored: await measureMobileNavigation(page, width),
+    });
     result = {
+      mobileNavigation,
       schemaVersion: "tcrn.ds.geometry-proof.v2",
-      ok: badgeBaseline.ok && !badgeBroken.ok && badgeRestored.ok
+      ok: mobileNavigation.every(row => row.baseline.ok && !row.broken.ok && row.restored.ok) && badgeBaseline.ok && !badgeBroken.ok && badgeRestored.ok
         && brandBaseline.ok && !brandBroken.ok && brandRestored.ok
         && copyBaseline.ok && !copyBroken.ok && copyRestored.ok
         && searchBaseline.ok && !searchBroken.ok && searchRestored.ok,
