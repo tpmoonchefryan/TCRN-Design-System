@@ -59,7 +59,10 @@ const LOCAL_VARS = [
   "--tcrn-density-row-min",
   // NavItem receives this data-owned depth from its consumer and uses it only to
   // derive the nested item's inline inset.
-  "--tcrn-nav-item-depth"
+  "--tcrn-nav-item-depth",
+  // TableShell supplies its column count; the documented width parameter has a CSS fallback.
+  "--tcrn-table-column-count",
+  "--tcrn-table-shell-column-min-width"
 ];
 
 function componentCss(source) {
@@ -89,6 +92,12 @@ export function tokenExtensionChecks() {
     problems.push(
       `unregistered token defined in tcrnComponentCss: ${property} — register it in @tcrn/ui-tokens or add it to the EXTENSION_TOKENS / LOCAL_VARS log with justification`
     );
+  }
+
+  // Every consumed property must resolve through the public token or component surface.
+  const referenced = new Set([...css.matchAll(/var\((--tcrn-[a-z0-9-]+)/g)].map((match) => match[1]));
+  for (const property of referenced) {
+    if (!known.has(property) && !definedSet.has(property) && !LOCAL_VARS.includes(property)) problems.push(`unresolved public token reference: ${property}`);
   }
 
   // 2. Allowlist completeness: a listed extension token must still exist (catches stale allowlist).

@@ -15,9 +15,41 @@ The comparison starts at the prior production source 610680b81a950e91e9e1e77718e
 | DefinitionList | published key/value definition family | nested terms and values wrap inside same parent; no data clipping or text substitution | DomainDisplay.test; full-details nested-card geometry |
 | OperationFeedback | published StatusBadge and DisclosurePanel | long operation identity and structured receipt wrap in labeled details; phase badges remain compact and truthful | full-details byte equality, positive containment and negative nowrap |
 | TableShell/RecordRow/SettingRow transient target | existing selection-fill and selection-edge grammar | same selection tokens; one boundary owner avoids doubled edges; target attribute does not claim selected/focused identity; consumer owns navigation timer | Navigation.test; ds:consumption:proof transient target geometry |
+| Tabs selected state | published Navigation selection grammar: selection is ink | the existing bottom border uses selection-edge; text, weight, geometry, disabled state, focus feedback and wrapping arrow/Home/End keyboard selection retain the Tabs family | selection:proof; Navigation.test; component-modifiers:proof; full-surface:proof |
 | Storybook static bridge and CSS placement | published package CSS and static-overlay consumption contracts | build packages the same static dropdown bridge; working translated dropdown example; shared settings CSS remains in package truth | storybook:smoke; full-surface:proof; internal-alpha:browser-proof |
 | Publication identity | existing design-authority contract | source commit, component CSS and static bridge digests bind the artifact to the build | public-docs:vercel-build; production deployment SHA and artifact digest readback |
 
 Each appearance uses existing typography, color, spacing, radius, border, icon and motion tokens. The dropdown comparison measures its trigger against Select and exercises native form values, required/disabled states, reset, controlled values, keyboard navigation and dismissal. Container and detail checks preserve full values and distinguish failed status from empty content. The application consumes the resulting published artifact only after its production build and deployment have matching source evidence. Machine checks and Owner visual review retain separate results.
 
-The complete workspace verification passed on the repaired source (271 browser captures, zero axe violations); native multiple-list and explicit-checklist compatibility remains verified. The ordinary dropdown uses observable native reset settlement, including cancellation, and localized labels. Static proof-page CSS is compacted without changing its semantic declarations or selectors; page and story budgets were not increased. The publication target build and actual Production deployment remain separate evidence checks.
+The earlier recorded workspace verification (271 browser captures, zero axe violations) did not bind the final accidental JSON test source. Current verification must cover the restored executable test and complete public token references; native multiple-list and explicit-checklist compatibility remains verified. The ordinary dropdown uses observable native reset settlement, including cancellation, and localized labels. Static proof-page CSS is compacted without changing its semantic declarations or selectors; page and story budgets were not increased. The publication target build and actual Production deployment remain separate evidence checks.
+
+## Public token reference audit
+
+Previously unresolved component references now consume the existing semantic family tokens directly. Fourteen unpublished aliases duplicated those same values and added eight duplicate entries to the color-palette story. That source drift changed all three palette signatures and the recorded story height. The aliases are removed before publication; the original color registry and its complete palette example remain unchanged. No visual baseline, signature threshold, height threshold or debt allowance is changed.
+
+The brand-mark filter and SearchInput minimum retain their public `none` and `0` defaults. Component consumers use the public token stylesheet and component stylesheet together. Menu opacity, corners, elevation, selected text, disabled text and state borders all resolve through the original public family tokens in both themes.
+
+| Former unpublished component reference | Public family token or retained default |
+| --- | --- |
+| `--tcrn-color-surface` | `--tcrn-color-surface-panel` |
+| `--tcrn-color-surface-subtle` | `--tcrn-color-surface-muted` |
+| `--tcrn-color-accent` | `--tcrn-color-brand-primary` for actionability; `--tcrn-selection-edge` for the Tabs selected border |
+| `--tcrn-color-on-accent` | `--tcrn-color-text-inverse` |
+| `--tcrn-color-positive-border` | `--tcrn-color-state-ready` |
+| `--tcrn-color-warning-border` | `--tcrn-color-state-warning` |
+| `--tcrn-color-danger-border` | `--tcrn-color-state-blocked` |
+| `--tcrn-color-text-disabled` | `--tcrn-color-text-muted` |
+| `--tcrn-font-size-xs` | `--tcrn-type-size-caption` |
+| `--tcrn-font-size-sm` | `--tcrn-type-size-meta` |
+| `--tcrn-font-size-md` | `--tcrn-type-size-ui` |
+| `--tcrn-radius-md` | `--tcrn-radius-panel` |
+| `--tcrn-radius-sm` | `--tcrn-radius-control` |
+| `--tcrn-shadow-raised` | `--tcrn-elevation-floating` |
+| `--tcrn-brand-mark-filter` | `none` |
+| `--tcrn-search-input-min-inline-size` | `0` |
+
+The token-extension proof checks every consumed variable, and the executable full-surface test refuses omission of the actual public menu panel token. The existing browser proof measures the popup using only package tokens and component CSS in both themes. All family-audit rows above remain applicable, including native/checklist compatibility, reset, disabled options, required values, static bridge interaction, settings grid, complete detail values and transient-target semantics. Fresh ordinary parent results and matching Production publication evidence are separate receipts. Owner visual acceptance remains unobserved.
+
+The complete selected/current-state rule inspection covers the package Navigation source, the Storybook shell, story examples and internal-alpha styles. The Tabs border was the remaining direct brand-colour selection declaration. Framed selected controls promote their existing border with selection-edge; surface-bearing selected controls use selection-fill. Tabs keeps its two-pixel border, primary selected text, existing weight, no added axis or elevation, and the same tab/tabpanel ARIA and keyboard behavior. The brand token remains applicable to actionability elsewhere; an alias cannot substitute for this context-specific selection contract. The inspection and fresh parent verification bind the actual public source rather than permitting the retired brand selection grammar.
+
+`TableShell` supplies `--tcrn-table-column-count` from its actual columns, and its documented `--tcrn-table-shell-column-min-width` parameter retains its existing fallback. These two component data/width parameters are registered separately from the public semantic tokens and the two retained parameter defaults.

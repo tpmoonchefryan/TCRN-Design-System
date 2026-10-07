@@ -925,6 +925,21 @@ export const tcrnTokens = [
     value: "208px",
     group: "container",
     description: "Compact local-navigation column width inside an explicitly third-level page."
+  },
+  // Public defaults for component parameters; semantic values use existing family tokens directly.
+  {
+    "name": "compatibility.brand-mark-filter",
+    "variable": "--tcrn-brand-mark-filter",
+    "value": "none",
+    "group": "elevation",
+    "description": "Default brand-mark filter; no effect unless an explicitly themed component overrides it."
+  },
+  {
+    "name": "compatibility.search-input-min-inline-size",
+    "variable": "--tcrn-search-input-min-inline-size",
+    "value": "0",
+    "group": "container",
+    "description": "Default responsive SearchInput minimum inline size; allows shrinking within its declared container."
   }
 ] as const satisfies readonly DesignToken[];
 
