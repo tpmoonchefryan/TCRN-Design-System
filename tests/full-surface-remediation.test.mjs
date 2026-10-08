@@ -228,3 +228,44 @@ test("visual baseline selection preserves unselected bytes and refuses stale, bl
     assert.strictEqual(rejected.baseline, baseline, "a refused generation leaves every baseline entry unchanged");
   }
 });
+
+test("I20 the static bridge bundle, the contract readback and the docs construct carry the clipboard bridge", () => {
+  // The bundle a static consumer loads names all three bridges in its export clause.
+  const bridges = readFileSync(join(staticRoot, "ds-static-bridges.js"), "utf8");
+  const exportClause = bridges.match(/export\{([^}]*)\}/)?.[1] ?? "";
+  const exportedNames = exportClause.split(",").map((entry) => entry.trim().split(/\s+as\s+/).at(-1)).sort();
+  assert.deepEqual(exportedNames, ["mountStaticClipboardCopyButton", "mountStaticMultiSelect", "mountStaticOverlayBoundary"]);
+
+  // The machine contract says where the value lives and how a static page starts the bridge.
+  const contract = JSON.parse(readFileSync(join(staticRoot, "ai-consumption-contract.json"), "utf8"));
+  const clipboard = contract.foundationVisualStandards.clipboardCopyContract;
+  assert.equal(clipboard.id, "clipboard-copy-contract-v1");
+  assert.deepEqual(clipboard.packageExports, ["ClipboardCopyButton", "mountStaticClipboardCopyButton"]);
+  assert.deepEqual(clipboard.states, ["idle", "copying", "copied", "failed", "unsupported"]);
+  assert.equal(clipboard.resetDelayMs, 2000);
+  assert.match(clipboard.staticConsumerMigration.bootstrap, /mountStaticClipboardCopyButton\(\{ root, locale \}\)/);
+  assert.match(clipboard.staticConsumerMigration.bootstrap, /tcrnComponentCss/);
+  assert.match(clipboard.valueBoundary, /data-clipboard-text/);
+
+  // The Clipboard story shows the static construct, and every docs page mounts the bridge on it.
+  const page = readPage("components-controls-data.html");
+  const dom = new JSDOM(page);
+  try {
+    const document = dom.window.document;
+    const example = document.querySelector('[data-contract-story-id="button-spec-usage"] [data-clipboard-static-example="true"]');
+    assert.ok(example, "the Clipboard story carries the static example");
+    const button = example.querySelector("button[data-clipboard-text]");
+    assert.equal(button?.getAttribute("type"), "button");
+    assert.equal(button?.getAttribute("data-clipboard-copy-state"), "idle");
+    assert.equal(button?.getAttribute("data-clipboard-text"), "synthetic-trace-id-042");
+    assert.ok(button?.querySelector('[role="status"][aria-live="polite"]'));
+    assert.equal(example.querySelector("code")?.textContent, "mountStaticClipboardCopyButton");
+    // The React examples beside it still keep their values out of the DOM.
+    assert.equal(page.includes("synthetic-secret-hidden-from-dom"), false);
+  } finally {
+    dom.window.close();
+  }
+  assert.match(page, /import \{ mountStaticMultiSelect, mountStaticClipboardCopyButton \} from "\.\/ds-static-bridges\.js"/);
+  assert.match(page, /querySelectorAll\("button\[data-clipboard-text\]"\)\) mountStaticClipboardCopyButton\(\{ root \}\)/);
+  assert.match(readPage("components-component-inventory.html"), />mountStaticClipboardCopyButton</);
+});

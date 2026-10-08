@@ -21,7 +21,10 @@ exports, package publication, or product adoption claims.
 explicit native button activation, writes only through `navigator.clipboard.writeText`,
 fails closed when the Clipboard API is unavailable, and reports only local copy
 state enums through callbacks. Copied text must remain product-approved input and
-is never returned by the component through callbacks or DOM attributes.
+is never returned by the component through callbacks or DOM attributes. A server-rendered
+page can give the same construct the same behaviour with `mountStaticClipboardCopyButton`
+(see Static HTML/CSS clipboard copy below); that bridge reads the value from the page, so
+it is only for values the page may already expose.
 
 `SettingChoice` is the package-backed value-selection contract. Three or more
 values always render as `Select`; a binary choice renders as a native radio group
@@ -155,6 +158,36 @@ remain text-only. The bridge owns only the generic boundary, placement, and
 dismissal mechanics; field/domain values and product route state remain consumer
 inputs. A CSS-only server-positioned body sibling is a static fallback and must
 not claim dynamic portal, edge, or focus behavior.
+
+### Static HTML/CSS clipboard copy
+
+A server-rendered page that does not run React can make the `ClipboardCopyButton`
+construct work with the DOM-only `mountStaticClipboardCopyButton({ root, locale })`
+bridge, which returns `{ destroy() }`. The root is the component's own markup: a native
+button with `data-clipboard-copy-state`, its visible label as a direct text node and the
+polite `role="status"` region. The value to copy is read from `data-clipboard-text`, so it
+is present in the page: use the bridge only for values the page may already expose and
+keep restricted values on the React component, which never writes them to the DOM.
+
+```html
+<button type="button" class="tcrn-button tcrn-button--secondary tcrn-button--md"
+  aria-label="Copy trace ID" aria-describedby="trace-copy-status"
+  data-clipboard-copy-state="idle" data-clipboard-text="trace-042">Copy trace ID<span
+  id="trace-copy-status" aria-live="polite" role="status" class="tcrn-sr-only"></span></button>
+<script type="module">
+  import { mountStaticClipboardCopyButton } from "@tcrn/ui-react";
+  mountStaticClipboardCopyButton({ root: document.querySelector("[data-clipboard-text]") });
+</script>
+```
+
+An explicit click or keyboard activation writes the value with
+`navigator.clipboard.writeText`; the button moves through idle, copying, copied, failed and
+unsupported exactly as the component does, returns to idle after two seconds and keeps
+focus. The five state labels come from the package's copy for the page's language;
+`data-clipboard-idle-label`, `data-clipboard-copying-label`, `data-clipboard-copied-label`,
+`data-clipboard-failed-label` and `data-clipboard-unsupported-label` override them per
+button, and `data-clipboard-reset-delay-ms` changes the delay. An accessible name that
+contains the value is replaced with the generic copy label, as the component does.
 
 Static HTML/CSS consumers can use the same operation/content construction with
 `tcrnComponentCss`: emit `.tcrn-operation-feedback` with a short

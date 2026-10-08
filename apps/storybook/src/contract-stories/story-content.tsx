@@ -209,6 +209,7 @@ import {
   fieldValueSelectionContract,
   dictionaryContentContract,
   overlayBoundaryContract,
+  clipboardCopyContract,
   settingsLayoutContract,
   pageHierarchyContract,
   verificationCadenceContract,
@@ -1979,6 +1980,12 @@ const legacyContractStories: LegacyContractStory[] = [
               disabledReason="Requires product-owned copy permission"
             />
           </div>
+          {/* The static HTML construct: the same button plus the value the page may expose, made
+              interactive by the static bridge the page mounts on button[data-clipboard-text]. */}
+          <div className="tcrn-action-row" data-clipboard-static-example="true">
+            <code>mountStaticClipboardCopyButton</code>
+            <ClipboardCopyButton text="synthetic-trace-id-042" ariaLabel="Copy trace ID" idleLabel="Copy trace ID" data-clipboard-text="synthetic-trace-id-042" />
+          </div>
           <TableShell
             columns={[
               { key: "rule", label: "Rule" },
@@ -3256,6 +3263,14 @@ const legacyContractStories: LegacyContractStory[] = [
             label="Static HTML/CSS overlay migration"
             columns={[{ key: "part", label: "Part" }, { key: "rule", label: "Rule" }]}
             rows={Object.entries(overlayBoundaryContract.staticConsumerMigration).map(([part, rule]) => ({ part, rule }))}
+          />
+          <TableShell
+            label="Static HTML/CSS clipboard copy migration"
+            columns={[{ key: "part", label: "Part" }, { key: "rule", label: "Rule" }]}
+            rows={[
+              { part: "value", rule: clipboardCopyContract.valueBoundary },
+              ...Object.entries(clipboardCopyContract.staticConsumerMigration).map(([part, rule]) => ({ part, rule }))
+            ]}
           />
           <ReadbackPanel title="Operation feedback contract">
             <TableShell

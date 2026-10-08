@@ -1,8 +1,8 @@
-import test from "node:test";
+import test, { mock } from "node:test";
 import assert from "node:assert/strict";
 import { act, useRef, useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { ContentScope, DictionaryTable, EmptyState, ErrorState, Field, MultiSelect, OperationFeedback, Popover, StateSurface, SuggestInput, Tooltip, mountStaticOverlayBoundary } from "../index.js";
+import { ClipboardCopyButton, ContentScope, DictionaryTable, EmptyState, ErrorState, Field, MultiSelect, OperationFeedback, Popover, StateSurface, SuggestInput, Tooltip, mountStaticClipboardCopyButton, mountStaticOverlayBoundary } from "../index.js";
 import { createDomInteractionHarness } from "./dom-harness.js";
 
 async function flushEffects() {
@@ -309,6 +309,196 @@ test("STORY-117 content scopes keep sibling truth independent and fail closed on
     assert.equal(invalid?.getAttribute("data-content-valid"), "false");
     assert.match(invalid?.textContent ?? "", /Invalid/);
     assert.doesNotMatch(invalid?.textContent ?? "", /Must not render/);
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+async function settleMicrotasks() {
+  for (let step = 0; step < 6; step += 1) await Promise.resolve();
+}
+
+function mountStaticCopyFixture(markup: string, locale?: string) {
+  const harness = createDomInteractionHarness();
+  harness.document.documentElement.lang = locale ?? "en";
+  const host = harness.document.createElement("div");
+  host.innerHTML = markup;
+  harness.document.body.append(host);
+  const button = host.querySelector("button");
+  assert.ok(button instanceof harness.window.HTMLButtonElement);
+  return { harness, button };
+}
+
+function installStaticClipboard(harness: ReturnType<typeof createDomInteractionHarness>, writeText: ((value: string) => Promise<void>) | undefined) {
+  Object.defineProperty(harness.window.navigator, "clipboard", {
+    configurable: true,
+    value: writeText ? { writeText } : undefined
+  });
+}
+
+const staticCopyMarkup = renderToStaticMarkup(
+  <ClipboardCopyButton text="synthetic-trace-id-042" ariaLabel="Copy trace ID" idleLabel="Copy trace ID" data-clipboard-text="synthetic-trace-id-042" />
+);
+
+test("I20 static clipboard bridge copies the server-rendered value, keeps focus and returns to idle after two seconds", async () => {
+  const { harness, button } = mountStaticCopyFixture(staticCopyMarkup);
+  const writes: string[] = [];
+  const states: string[] = [];
+  installStaticClipboard(harness, async (value) => {
+    writes.push(value);
+    states.push(button.getAttribute("data-clipboard-copy-state") ?? "");
+  });
+  mock.timers.enable({ apis: ["setTimeout"] });
+  try {
+    const bridge = mountStaticClipboardCopyButton({ root: button });
+    const status = button.querySelector("[role='status']");
+    assert.ok(status instanceof harness.window.HTMLElement);
+    assert.equal(button.getAttribute("data-clipboard-copy-state"), "idle");
+    assert.match(button.getAttribute("aria-describedby") ?? "", new RegExp(status.id));
+    assert.match(button.textContent ?? "", /^Copy trace ID/);
+
+    button.focus();
+    button.dispatchEvent(new harness.window.MouseEvent("click", { bubbles: true, cancelable: true }));
+    // The write happens inside the copying state, exactly as the component does it.
+    await settleMicrotasks();
+    assert.deepEqual(writes, ["synthetic-trace-id-042"]);
+    assert.deepEqual(states, ["copying"]);
+    assert.equal(button.getAttribute("data-clipboard-copy-state"), "copied");
+    assert.equal(button.getAttribute("aria-busy"), null);
+    assert.match(button.textContent ?? "", /^Copied/);
+    assert.equal(status.textContent, "Copied");
+    assert.equal(harness.document.activeElement, button);
+
+    mock.timers.tick(1999);
+    assert.equal(button.getAttribute("data-clipboard-copy-state"), "copied");
+    mock.timers.tick(1);
+    assert.equal(button.getAttribute("data-clipboard-copy-state"), "idle");
+    assert.match(button.textContent ?? "", /^Copy trace ID/);
+    assert.equal(status.textContent, "");
+    assert.equal(harness.document.activeElement, button);
+
+    bridge.destroy();
+    button.dispatchEvent(new harness.window.MouseEvent("click", { bubbles: true, cancelable: true }));
+    await settleMicrotasks();
+    assert.deepEqual(writes, ["synthetic-trace-id-042"], "a destroyed bridge no longer copies");
+  } finally {
+    mock.timers.reset();
+    await harness.cleanup();
+  }
+});
+
+test("I20 static clipboard bridge reaches failed and unsupported, and a disabled construct never writes", async () => {
+  const rejected = mountStaticCopyFixture(staticCopyMarkup);
+  installStaticClipboard(rejected.harness, async () => {
+    throw new Error("permission denied");
+  });
+  try {
+    mountStaticClipboardCopyButton({ root: rejected.button });
+    rejected.button.dispatchEvent(new rejected.harness.window.MouseEvent("click", { bubbles: true, cancelable: true }));
+    await settleMicrotasks();
+    assert.equal(rejected.button.getAttribute("data-clipboard-copy-state"), "failed");
+    assert.match(rejected.button.textContent ?? "", /^Copy failed/);
+  } finally {
+    await rejected.harness.cleanup();
+  }
+
+  const unsupported = mountStaticCopyFixture(staticCopyMarkup);
+  installStaticClipboard(unsupported.harness, undefined);
+  try {
+    mountStaticClipboardCopyButton({ root: unsupported.button });
+    unsupported.button.dispatchEvent(new unsupported.harness.window.MouseEvent("click", { bubbles: true, cancelable: true }));
+    await settleMicrotasks();
+    assert.equal(unsupported.button.getAttribute("data-clipboard-copy-state"), "unsupported");
+    assert.match(unsupported.button.textContent ?? "", /^Copy unavailable/);
+  } finally {
+    await unsupported.harness.cleanup();
+  }
+
+  const disabledMarkup = renderToStaticMarkup(
+    <ClipboardCopyButton text="blocked-value" ariaLabel="Copy blocked value" disabledReason="Requires owning product permission" data-clipboard-text="blocked-value" />
+  );
+  const disabled = mountStaticCopyFixture(disabledMarkup);
+  const writes: string[] = [];
+  installStaticClipboard(disabled.harness, async (value) => {
+    writes.push(value);
+  });
+  try {
+    mountStaticClipboardCopyButton({ root: disabled.button });
+    assert.equal(disabled.button.disabled, true);
+    disabled.button.dispatchEvent(new disabled.harness.window.MouseEvent("click", { bubbles: true, cancelable: true }));
+    await settleMicrotasks();
+    assert.deepEqual(writes, []);
+    assert.equal(disabled.button.getAttribute("data-clipboard-copy-state"), "idle");
+    assert.equal(disabled.button.querySelector("[role='status']")?.textContent, "Requires owning product permission");
+  } finally {
+    await disabled.harness.cleanup();
+  }
+});
+
+test("I20 static clipboard bridge speaks the page's language, honours label overrides and keeps the value out of its name", async () => {
+  const expected = {
+    "zh-CN": "已复制",
+    ja: "コピーしました",
+    ko: "복사됨",
+    fr: "Copié",
+    en: "Copied"
+  } as const;
+  for (const [locale, copied] of Object.entries(expected)) {
+    const markup = renderToStaticMarkup(<ClipboardCopyButton locale={locale} text="tenant-42" ariaLabel="Copy tenant ID" data-clipboard-text="tenant-42" />);
+    const fixture = mountStaticCopyFixture(markup, locale);
+    installStaticClipboard(fixture.harness, async () => undefined);
+    try {
+      mountStaticClipboardCopyButton({ root: fixture.button });
+      fixture.button.dispatchEvent(new fixture.harness.window.MouseEvent("click", { bubbles: true, cancelable: true }));
+      await settleMicrotasks();
+      assert.equal(fixture.button.querySelector("[role='status']")?.textContent, copied, `${locale} copied label`);
+    } finally {
+      await fixture.harness.cleanup();
+    }
+  }
+
+  const overridden = mountStaticCopyFixture(
+    staticCopyMarkup.replace("<button ", '<button data-clipboard-copied-label="Trace ID copied" data-clipboard-reset-delay-ms="0" ')
+  );
+  installStaticClipboard(overridden.harness, async () => undefined);
+  try {
+    mountStaticClipboardCopyButton({ root: overridden.button, locale: "fr" });
+    overridden.button.dispatchEvent(new overridden.harness.window.MouseEvent("click", { bubbles: true, cancelable: true }));
+    await settleMicrotasks();
+    assert.match(overridden.button.textContent ?? "", /^Trace ID copied/);
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    assert.equal(overridden.button.getAttribute("data-clipboard-copy-state"), "idle");
+    assert.match(overridden.button.textContent ?? "", /^Copy trace ID/);
+  } finally {
+    await overridden.harness.cleanup();
+  }
+
+  const leaking = mountStaticCopyFixture(
+    staticCopyMarkup.replace('aria-label="Copy trace ID"', 'aria-label="Copy synthetic-trace-id-042"')
+  );
+  try {
+    const bridge = mountStaticClipboardCopyButton({ root: leaking.button });
+    assert.equal(leaking.button.getAttribute("aria-label"), "Copy value");
+    bridge.destroy();
+    assert.equal(leaking.button.getAttribute("aria-label"), "Copy synthetic-trace-id-042", "destroy restores the markup it was given");
+  } finally {
+    await leaking.harness.cleanup();
+  }
+});
+
+test("I20 static clipboard bridge refuses markup that is not the construct", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    const span = harness.document.createElement("span");
+    assert.throws(() => mountStaticClipboardCopyButton({ root: span }), /native button root/);
+    const bare = harness.document.createElement("button");
+    bare.setAttribute("data-clipboard-text", "x");
+    assert.throws(() => mountStaticClipboardCopyButton({ root: bare }), /polite status region/);
+    const host = harness.document.createElement("div");
+    host.innerHTML = renderToStaticMarkup(<ClipboardCopyButton text="x" ariaLabel="Copy value" />);
+    const withoutValue = host.querySelector("button");
+    assert.ok(withoutValue instanceof harness.window.HTMLButtonElement);
+    assert.throws(() => mountStaticClipboardCopyButton({ root: withoutValue }), /data-clipboard-text/);
   } finally {
     await harness.cleanup();
   }

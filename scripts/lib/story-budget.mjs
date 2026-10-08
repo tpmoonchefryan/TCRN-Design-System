@@ -86,7 +86,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 3057 -> 3145 (EPIC038 correction): the public operation-phase presenter and
     // consumer value serializer are now explicit utility readbacks in this story.
     // INC-399: the registered static MultiSelect bridge adds its public utility row.
-    recordedHeightPx: 3189,
+    // 3189 -> 3233 (INC-399 R46 I20): the static clipboard bridge adds its public utility row.
+    recordedHeightPx: 3233,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
@@ -103,7 +104,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // contracts now read back the approved grouping, checklist, and clear action.
     // 11764 -> 12275 (INC-399 R44): the record-family containment check joins the Components chapter checks and KeyValueList fields use the package geometry.
     // 12275 -> 12417 (INC-399 R46): long consumer-verification references wrap inside their panel, so its tables keep the panel width and scroll instead of being cut off.
-    recordedHeightPx: 12417,
+    // 12417 -> 12973 (INC-399 R46 I20): the clipboard copy contract's value boundary and static migration are read back beside the overlay migration.
+    recordedHeightPx: 12973,
     owedTo: "beyond-INIT-008",
     note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },
