@@ -101,6 +101,7 @@ body {
 }
 .tcrn-doc-shell {
   --tcrn-doc-shell-side-width: clamp(280px, 20vw, 360px);
+  --tcrn-doc-content-inset: calc(var(--tcrn-space-5) + var(--tcrn-space-4));
   --tcrn-doc-shell-side-expanded-width: clamp(280px, 20vw, 360px);
   --tcrn-doc-shell-side-collapsed-width: 120px;
   --tcrn-doc-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
@@ -216,12 +217,16 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
     background-color var(--tcrn-doc-motion-smooth),
     color var(--tcrn-doc-motion-smooth);
 }
+/* The bar carries the package TopBar surface itself rather than leaving the header to
+   paint it, so the sample shells that mirror this bar can show the package background and
+   still match it. Over the header's panel colour the two paint the same pixels. */
 .tcrn-doc-global-bar {
   display: grid;
   grid-template-columns: var(--tcrn-doc-shell-side-width) minmax(320px, 1fr) auto;
   align-items: center;
   gap: var(--tcrn-space-4);
   min-width: 0;
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
   min-height: calc(var(--tcrn-space-6) + var(--tcrn-space-5) + var(--tcrn-space-3) + var(--tcrn-space-1));
   padding: var(--tcrn-space-3) var(--tcrn-space-5);
   transition: grid-template-columns var(--tcrn-motion-emphasis);
@@ -245,7 +250,9 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   align-items: center;
   gap: clamp(var(--tcrn-space-3h), 1.6vw, 24px);
   min-width: 0;
-  padding: var(--tcrn-space-3) clamp(var(--tcrn-space-2), 1vw, var(--tcrn-space-3h)) var(--tcrn-space-3) clamp(28px, 2.8vw, 48px);
+  /* The global bar already supplies the content inset through its inline
+     padding and column gap. Do not add a second inset inside that grid cell. */
+  padding: var(--tcrn-space-3) clamp(var(--tcrn-space-2), 1vw, var(--tcrn-space-3h)) var(--tcrn-space-3) 0;
   border-left: 0;
   transition: grid-template-columns var(--tcrn-doc-motion-spring);
 }
@@ -673,7 +680,7 @@ article[data-story-collapsed="false"] > .tcrn-story-disclosure__heading {
   align-content: start;
   min-width: 0;
   background: var(--tcrn-color-surface-canvas);
-  padding: clamp(24px, 2.6vw, 48px);
+  padding: clamp(24px, 2.6vw, 48px) var(--tcrn-doc-content-inset);
   transition: padding var(--tcrn-motion-emphasis);
 }
 article {
@@ -1215,19 +1222,7 @@ ${demoStoryCss}
   width: 100%;
 }
 
-.tcrn-key-value-list > div {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  grid-template-columns: minmax(120px, 0.32fr) minmax(0, 1fr);
-}
-.tcrn-key-value-list dt {
-  color: var(--tcrn-color-text-secondary);
-  font-weight: 700;
-}
-.tcrn-key-value-list dd {
-  margin: 0;
-  min-width: 0;
-}
+/* KeyValueList geometry is package-owned, including inside nested inspectors. */
 
 .tcrn-doc-header-search .tcrn-search-input {
   width: 100%;
@@ -1285,6 +1280,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     --tcrn-doc-mobile-brand-height: 219px;
   }
   .tcrn-doc-shell {
+    --tcrn-doc-content-inset: var(--tcrn-space-4);
     padding: 0;
   }
   .tcrn-doc-header {
@@ -1295,7 +1291,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     min-height: 0;
     background-color: var(--tcrn-color-surface-panel);
     background-image: none;
-    padding: var(--tcrn-space-2h);
+    padding: var(--tcrn-space-2h) 0;
     box-shadow: var(--tcrn-elevation-floating);
   }
   .tcrn-doc-global-bar {
@@ -1309,7 +1305,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   .tcrn-doc-header__workspace {
     grid-template-columns: 1fr;
     gap: var(--tcrn-space-2h);
-    padding: var(--tcrn-space-2h) var(--tcrn-space-4);
+    padding: var(--tcrn-space-2h) var(--tcrn-doc-content-inset);
     background-color: var(--tcrn-color-surface-panel);
     background-image: none;
   }
@@ -1377,7 +1373,7 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     border-bottom: 1px solid var(--tcrn-color-border-subtle);
   }
   .tcrn-doc-content {
-    padding: var(--tcrn-space-4);
+    padding: var(--tcrn-space-4) var(--tcrn-doc-content-inset);
   }
   .tcrn-doc-chapter-pager {
     grid-template-columns: 1fr;
@@ -1394,6 +1390,9 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   }
 }
 @media (max-width: 240px) {
+  .tcrn-doc-shell {
+    --tcrn-doc-content-inset: var(--tcrn-space-2);
+  }
   /* 390px at 200% zoom is a 195px CSS viewport. Keep the brand mark and
      collapse control in one row and let the remaining header controls wrap
      within the viewport instead of expanding the document. */
@@ -1415,18 +1414,13 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     left: calc(100% - var(--tcrn-space-2) - 38px);
   }
   .tcrn-doc-header__workspace {
-    padding-inline: var(--tcrn-space-2);
+    padding-inline: var(--tcrn-doc-content-inset);
   }
   .tcrn-doc-header-controls {
     padding-inline: var(--tcrn-space-2);
   }
   .tcrn-doc-header-controls__row {
     gap: var(--tcrn-space-1);
-  }
-}
-@media (max-width: 520px) {
-  .tcrn-key-value-list > div {
-    grid-template-columns: 1fr;
   }
 }
 

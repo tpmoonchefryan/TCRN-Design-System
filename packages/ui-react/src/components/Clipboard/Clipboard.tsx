@@ -2,35 +2,16 @@ import type { MouseEvent } from "react";
 import { forwardRef, useCallback, useEffect, useId, useRef, useState } from "react";
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { Button, type ButtonProps } from "../Button/index.js";
-import { mergeIds, requiredText, resolveDocumentLocale } from "../../utils.js";
+import { mergeIds } from "../../utils.js";
+import {
+  DEFAULT_RESET_DELAY_MS,
+  clipboardLabelsFor,
+  clipboardWriteText,
+  safeCopyActionLabel,
+  type ClipboardCopyState
+} from "./clipboard-copy.js";
 
-export type ClipboardCopyState = "idle" | "copying" | "copied" | "failed" | "unsupported";
-
-interface ClipboardLabels {
-  idle: string;
-  copying: string;
-  copied: string;
-  failed: string;
-  unsupported: string;
-  /** The name used when the caller's own is unusable, per `safeCopyActionLabel`. */
-  copyValue: string;
-}
-
-/**
- * The five words this button says about itself, in every supported locale.
- *
- * All five were English literals in parameter defaults, and four of them are
- * announced through an `aria-live` region — so on a translated page a screen
- * reader was interrupted mid-task to say "Copy failed" in a language the rest of
- * the page was not in. The visible label had the same problem in plain sight.
- */
-const clipboardLabels: Record<TcrnLocale, ClipboardLabels> = {
-  "zh-CN": { idle: "复制", copying: "正在复制", copied: "已复制", failed: "复制失败", unsupported: "无法复制", copyValue: "复制该值" },
-  en: { idle: "Copy", copying: "Copying", copied: "Copied", failed: "Copy failed", unsupported: "Copy unavailable", copyValue: "Copy value" },
-  ja: { idle: "コピー", copying: "コピー中", copied: "コピーしました", failed: "コピーできませんでした", unsupported: "コピーは利用できません", copyValue: "値をコピー" },
-  ko: { idle: "복사", copying: "복사 중", copied: "복사됨", failed: "복사 실패", unsupported: "복사할 수 없음", copyValue: "값 복사" },
-  fr: { idle: "Copier", copying: "Copie en cours", copied: "Copié", failed: "Échec de la copie", unsupported: "Copie indisponible", copyValue: "Copier la valeur" }
-};
+export type { ClipboardCopyState } from "./clipboard-copy.js";
 
 export interface ClipboardCopyButtonProps
   extends Omit<ButtonProps, "aria-label" | "children" | "disabledReason" | "onClick" | "type" | "value"> {
@@ -50,23 +31,6 @@ export interface ClipboardCopyButtonProps
   disabledReason?: string;
   resetDelayMs?: number;
   onCopyStateChange?: (state: ClipboardCopyState) => void;
-}
-
-const DEFAULT_RESET_DELAY_MS = 2000;
-
-function clipboardWriteText(): ((value: string) => Promise<void>) | null {
-  if (typeof navigator === "undefined") {
-    return null;
-  }
-
-  const writeText = navigator.clipboard?.writeText;
-  return typeof writeText === "function" ? writeText.bind(navigator.clipboard) : null;
-}
-
-function safeCopyActionLabel(ariaLabel: string, text: string, copyValue: string): string {
-  const label = requiredText(ariaLabel, copyValue);
-  const copiedValue = text.trim();
-  return copiedValue && label.includes(copiedValue) ? copyValue : label;
 }
 
 export const ClipboardCopyButton = forwardRef<HTMLButtonElement, ClipboardCopyButtonProps>(function ClipboardCopyButton(
@@ -151,7 +115,7 @@ export const ClipboardCopyButton = forwardRef<HTMLButtonElement, ClipboardCopyBu
     [disabled, disabledReason, emitState, scheduleReset, state, text]
   );
 
-  const labels = clipboardLabels[resolveDocumentLocale(locale)];
+  const labels = clipboardLabelsFor(locale);
   const accessibleLabel = safeCopyActionLabel(ariaLabel, text, labels.copyValue);
   const isDisabled = Boolean(disabled || disabledReason);
   const liveMessage =

@@ -375,7 +375,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "d4e37627877029e08f18636dc005429b06b7c1bc0868266017feac1b3889dee7",
+    "contractPayloadDigest": "012b12f5b84052510b84e477781901c52ad352390fbbf37dd49ff3ee49eae649",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 21,
@@ -824,10 +824,10 @@
         },
         "pageHead": {
           "top": 133.44,
-          "left": 325.44,
-          "right": 1402.56,
+          "left": 324,
+          "right": 1404,
           "bottom": 288.67,
-          "width": 1077.13,
+          "width": 1080,
           "height": 155.23
         },
         "firstStoryTop": 379.33,
@@ -889,12 +889,12 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "579.656px 260px",
+          "grid-template-columns": "619.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "743.125px 320px",
+          "grid-template-columns": "746px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
@@ -963,10 +963,10 @@
         },
         "pageHead": {
           "top": 133.44,
-          "left": 325.44,
-          "right": 1402.56,
+          "left": 324,
+          "right": 1404,
           "bottom": 288.67,
-          "width": 1077.13,
+          "width": 1080,
           "height": 155.23
         },
         "firstStoryTop": 379.33,
@@ -1028,12 +1028,12 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "579.656px 260px",
+          "grid-template-columns": "619.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "743.125px 320px",
+          "grid-template-columns": "746px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
@@ -1096,10 +1096,10 @@
         },
         "pageHead": {
           "top": 133.44,
-          "left": 325.44,
-          "right": 1402.56,
+          "left": 324,
+          "right": 1404,
           "bottom": 288.67,
-          "width": 1077.13,
+          "width": 1080,
           "height": 155.23
         },
         "firstStoryTop": 379.33,
@@ -1161,12 +1161,12 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "579.656px 260px",
+          "grid-template-columns": "619.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "743.125px 320px",
+          "grid-template-columns": "746px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
@@ -1229,10 +1229,10 @@
         },
         "pageHead": {
           "top": 133.44,
-          "left": 325.44,
-          "right": 1402.56,
+          "left": 324,
+          "right": 1404,
           "bottom": 369.42,
-          "width": 1077.13,
+          "width": 1080,
           "height": 235.98
         },
         "firstStoryTop": 460.08,
@@ -1294,12 +1294,12 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "579.656px 260px",
+          "grid-template-columns": "619.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "743.125px 320px",
+          "grid-template-columns": "746px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
@@ -1362,10 +1362,10 @@
         },
         "pageHead": {
           "top": 133.44,
-          "left": 325.44,
-          "right": 1402.56,
+          "left": 324,
+          "right": 1404,
           "bottom": 288.67,
-          "width": 1077.13,
+          "width": 1080,
           "height": 155.23
         },
         "firstStoryTop": 379.33,
@@ -1427,12 +1427,12 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "579.656px 260px",
+          "grid-template-columns": "619.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "743.125px 320px",
+          "grid-template-columns": "746px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
@@ -1495,10 +1495,10 @@
         },
         "pageHead": {
           "top": 133.44,
-          "left": 325.44,
-          "right": 1402.56,
+          "left": 324,
+          "right": 1404,
           "bottom": 288.67,
-          "width": 1077.13,
+          "width": 1080,
           "height": 155.23
         },
         "firstStoryTop": 379.33,
@@ -1560,12 +1560,12 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "579.656px 260px",
+          "grid-template-columns": "619.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "743.125px 320px",
+          "grid-template-columns": "746px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
@@ -1628,10 +1628,10 @@
         },
         "pageHead": {
           "top": 133.44,
-          "left": 325.44,
-          "right": 1402.56,
+          "left": 324,
+          "right": 1404,
           "bottom": 288.67,
-          "width": 1077.13,
+          "width": 1080,
           "height": 155.23
         },
         "firstStoryTop": 379.33,
@@ -1693,12 +1693,12 @@
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "579.656px 260px",
+          "grid-template-columns": "619.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "743.125px 320px",
+          "grid-template-columns": "746px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
@@ -1786,10 +1786,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 10,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 378.69
           },
           "workspace": {
@@ -1801,10 +1801,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 229,
-            "right": 380,
+            "right": 390,
             "bottom": 332.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 103.69
           },
           "currentLocation": {
@@ -1816,10 +1816,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 239,
-            "right": 364,
+            "right": 374,
             "bottom": 274.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 35.69
           },
           "searchWrapper": {
@@ -1831,10 +1831,10 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "searchInput": {
@@ -1846,10 +1846,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "headerControls": {
@@ -1861,9 +1861,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 332.69,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 185,
+            "left": 195,
             "width": 195,
             "height": 56
           },
@@ -1876,9 +1876,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 163,
             "height": 36
           },
@@ -1891,9 +1891,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 237,
+            "right": 247,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 36,
             "height": 36
           },
@@ -1906,9 +1906,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 247,
+            "left": 257,
             "width": 117,
             "height": 36
           },
@@ -2431,10 +2431,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 10,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 378.69
           },
           "workspace": {
@@ -2446,10 +2446,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 229,
-            "right": 380,
+            "right": 390,
             "bottom": 332.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 103.69
           },
           "currentLocation": {
@@ -2461,10 +2461,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 239,
-            "right": 364,
+            "right": 374,
             "bottom": 274.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 35.69
           },
           "searchWrapper": {
@@ -2476,10 +2476,10 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "searchInput": {
@@ -2491,10 +2491,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "headerControls": {
@@ -2506,9 +2506,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 332.69,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 185,
+            "left": 195,
             "width": 195,
             "height": 56
           },
@@ -2521,9 +2521,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 163,
             "height": 36
           },
@@ -2536,9 +2536,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 237,
+            "right": 247,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 36,
             "height": 36
           },
@@ -2551,9 +2551,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 247,
+            "left": 257,
             "width": 117,
             "height": 36
           },
@@ -3076,10 +3076,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 10,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 378.69
           },
           "workspace": {
@@ -3091,10 +3091,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 229,
-            "right": 380,
+            "right": 390,
             "bottom": 332.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 103.69
           },
           "currentLocation": {
@@ -3106,10 +3106,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 239,
-            "right": 364,
+            "right": 374,
             "bottom": 274.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 35.69
           },
           "searchWrapper": {
@@ -3121,10 +3121,10 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "searchInput": {
@@ -3136,10 +3136,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "headerControls": {
@@ -3151,9 +3151,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 332.69,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 185,
+            "left": 195,
             "width": 195,
             "height": 56
           },
@@ -3166,9 +3166,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 163,
             "height": 36
           },
@@ -3181,9 +3181,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 237,
+            "right": 247,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 36,
             "height": 36
           },
@@ -3196,9 +3196,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 247,
+            "left": 257,
             "width": 117,
             "height": 36
           },
@@ -3721,10 +3721,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 10,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 378.69
           },
           "workspace": {
@@ -3736,10 +3736,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 229,
-            "right": 380,
+            "right": 390,
             "bottom": 332.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 103.69
           },
           "currentLocation": {
@@ -3751,10 +3751,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 239,
-            "right": 364,
+            "right": 374,
             "bottom": 274.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 35.69
           },
           "searchWrapper": {
@@ -3766,10 +3766,10 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "searchInput": {
@@ -3781,10 +3781,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "headerControls": {
@@ -3796,9 +3796,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 332.69,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 185,
+            "left": 195,
             "width": 195,
             "height": 56
           },
@@ -3811,9 +3811,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 163,
             "height": 36
           },
@@ -3826,9 +3826,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 237,
+            "right": 247,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 36,
             "height": 36
           },
@@ -3841,9 +3841,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 247,
+            "left": 257,
             "width": 117,
             "height": 36
           },
@@ -4355,7 +4355,7 @@
         "ok": true,
         "navItemCount": 11,
         "railScrollable": true,
-        "lastItemTop": 15315,
+        "lastItemTop": 20220,
         "reachable": true
       },
       {
@@ -4363,7 +4363,7 @@
         "ok": true,
         "navItemCount": 11,
         "railScrollable": false,
-        "lastItemTop": 9832,
+        "lastItemTop": 10685,
         "reachable": true
       }
     ]
@@ -4437,10 +4437,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 10,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 378.69
           },
           "workspace": {
@@ -4452,10 +4452,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 229,
-            "right": 380,
+            "right": 390,
             "bottom": 332.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 103.69
           },
           "currentLocation": {
@@ -4467,10 +4467,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 239,
-            "right": 364,
+            "right": 374,
             "bottom": 274.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 35.69
           },
           "searchWrapper": {
@@ -4482,10 +4482,10 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "searchInput": {
@@ -4497,10 +4497,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "headerControls": {
@@ -4512,9 +4512,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 332.69,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 185,
+            "left": 195,
             "width": 195,
             "height": 56
           },
@@ -4527,9 +4527,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 163,
             "height": 36
           },
@@ -4542,9 +4542,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 237,
+            "right": 247,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 36,
             "height": 36
           },
@@ -4557,9 +4557,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 247,
+            "left": 257,
             "width": 117,
             "height": 36
           },
@@ -5143,10 +5143,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 10,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 378.69
           },
           "workspace": {
@@ -5158,10 +5158,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 229,
-            "right": 380,
+            "right": 390,
             "bottom": 332.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 103.69
           },
           "currentLocation": {
@@ -5173,10 +5173,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 239,
-            "right": 364,
+            "right": 374,
             "bottom": 274.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 35.69
           },
           "searchWrapper": {
@@ -5188,10 +5188,10 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "searchInput": {
@@ -5203,10 +5203,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "headerControls": {
@@ -5218,9 +5218,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 332.69,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 185,
+            "left": 195,
             "width": 195,
             "height": 56
           },
@@ -5233,9 +5233,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 163,
             "height": 36
           },
@@ -5248,9 +5248,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 237,
+            "right": 247,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 36,
             "height": 36
           },
@@ -5263,9 +5263,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 247,
+            "left": 257,
             "width": 117,
             "height": 36
           },
@@ -5849,10 +5849,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 10,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 378.69
           },
           "workspace": {
@@ -5864,10 +5864,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 229,
-            "right": 380,
+            "right": 390,
             "bottom": 332.69,
-            "left": 10,
-            "width": 370,
+            "left": 0,
+            "width": 390,
             "height": 103.69
           },
           "currentLocation": {
@@ -5879,10 +5879,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 239,
-            "right": 364,
+            "right": 374,
             "bottom": 274.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 35.69
           },
           "searchWrapper": {
@@ -5894,10 +5894,10 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "searchInput": {
@@ -5909,10 +5909,10 @@
             "position": "static",
             "zIndex": "auto",
             "top": 284.69,
-            "right": 364,
+            "right": 374,
             "bottom": 322.69,
-            "left": 26,
-            "width": 338,
+            "left": 16,
+            "width": 358,
             "height": 38
           },
           "headerControls": {
@@ -5924,9 +5924,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 332.69,
-            "right": 380,
+            "right": 390,
             "bottom": 388.69,
-            "left": 185,
+            "left": 195,
             "width": 195,
             "height": 56
           },
@@ -5939,9 +5939,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 163,
             "height": 36
           },
@@ -5954,9 +5954,9 @@
             "position": "relative",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 237,
+            "right": 247,
             "bottom": 376.69,
-            "left": 201,
+            "left": 211,
             "width": 36,
             "height": 36
           },
@@ -5969,9 +5969,9 @@
             "position": "static",
             "zIndex": "auto",
             "top": 340.69,
-            "right": 364,
+            "right": 374,
             "bottom": 376.69,
-            "left": 247,
+            "left": 257,
             "width": 117,
             "height": 36
           },

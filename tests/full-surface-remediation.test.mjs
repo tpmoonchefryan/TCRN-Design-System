@@ -193,3 +193,79 @@ test("public component tokens are complete and a missing menu surface is refused
   assert.throws(() => assertPublicTokenReferences(tcrnTokenCss.replace(/^  --tcrn-color-surface-panel:.*\n/gm, ""), tcrnComponentCss), assert.AssertionError);
   assert.match(tcrnComponentCss, /\.tcrn-menu\s*\{[^}]*background:\s*var\(--tcrn-color-surface-panel\)/);
 });
+
+test("visual baseline selection preserves unselected bytes and refuses stale, blanket or unreadable updates", async () => {
+  const { createHash } = await import("node:crypto");
+  const { validateBaselineSelection, applyBaselineSelection, SIGNATURE_TOLERANCE } = await import("../scripts/lib/visual-signature.mjs");
+  const digest = (value) => createHash("sha256").update(value).digest("hex");
+  const baseline = { schemaVersion: "tcrn.visual-signature-baseline.v1", tolerance: SIGNATURE_TOLERANCE, entries: { "inspector@tablet": "00".repeat(256), "unrelated@desktop": "11".repeat(256) } };
+  const baselineDigest = digest(JSON.stringify(baseline));
+  const selection = { schemaVersion: "tcrn.visual-baseline-selection.v1", baselineSha256: baselineDigest, entries: [{ key: "inspector@tablet", beforeSignatureSha256: digest(baseline.entries["inspector@tablet"]), disposition: "accepted-layout-change", expectedSignatureSha256: digest("22".repeat(256)), reason: "Readable nested fields after containment repair", evidence: "retained geometry and comparative image disposition" }] };
+  const selected = validateBaselineSelection(selection, baseline, baselineDigest, digest);
+  const captures = [{ key: "inspector@tablet", gated: true, status: "regression", encoded: "22".repeat(256), captureSha256: "capture", geometryOk: true }, { key: "unrelated@desktop", gated: true, status: "match", encoded: "12".repeat(256), geometryOk: true }];
+  const accepted = applyBaselineSelection(baseline, selected, captures, { geometryOk: true, proofOk: true, digest });
+  assert.equal(accepted.ok, true);
+  assert.equal(accepted.baseline.entries["inspector@tablet"], captures[0].encoded);
+  assert.equal(accepted.baseline.entries["unrelated@desktop"], baseline.entries["unrelated@desktop"]);
+  assert.deepEqual(accepted.baseline.tolerance, baseline.tolerance);
+  assert.equal(baseline.entries["inspector@tablet"], "00".repeat(256), "input is immutable");
+  assert.equal(accepted.changes[0].afterSignatureSha256, digest(captures[0].encoded));
+  for (const invalid of [null, { ...selection, entries: [] }, { ...selection, baselineSha256: "stale" }, { ...selection, entries: [...selection.entries, ...selection.entries] }, { ...selection, entries: [{ ...selection.entries[0], beforeSignatureSha256: "stale" }] }, { ...selection, entries: [{ ...selection.entries[0], disposition: "old-unreadable" }] }, { ...selection, entries: [{ ...selection.entries[0], evidence: "" }] }]) {
+    assert.throws(() => validateBaselineSelection(invalid, baseline, baselineDigest, digest));
+  }
+  assert.throws(() => validateBaselineSelection(selection, { ...baseline, tolerance: { meanAbsolute: 100, maxCell: 100 } }, baselineDigest, digest));
+  for (const [observations, geometryOk, proofOk] of [
+    [captures.slice(1), true, true],
+    [captures.map((row) => ({ ...row, gated: false })), true, true],
+    [captures.map((row) => ({ ...row, geometryOk: false })), true, true],
+    [captures.map((row) => ({ ...row, encoded: "unexpected" })), true, true],
+    [captures, false, true], [captures, true, false],
+    [[...captures, { key: "unexpected@mobile", gated: true, status: "regression" }], true, true],
+    [[...captures, { key: "unexpected@mobile", gated: true, status: "new" }], true, true]
+  ]) {
+    const rejected = applyBaselineSelection(baseline, selected, observations, { geometryOk, proofOk, digest });
+    assert.equal(rejected.ok, false);
+    assert.strictEqual(rejected.baseline, baseline, "a refused generation leaves every baseline entry unchanged");
+  }
+});
+
+test("I20 the static bridge bundle, the contract readback and the docs construct carry the clipboard bridge", () => {
+  // The bundle a static consumer loads names all three bridges in its export clause.
+  const bridges = readFileSync(join(staticRoot, "ds-static-bridges.js"), "utf8");
+  const exportClause = bridges.match(/export\{([^}]*)\}/)?.[1] ?? "";
+  const exportedNames = exportClause.split(",").map((entry) => entry.trim().split(/\s+as\s+/).at(-1)).sort();
+  assert.deepEqual(exportedNames, ["mountStaticClipboardCopyButton", "mountStaticMultiSelect", "mountStaticOverlayBoundary"]);
+
+  // The machine contract says where the value lives and how a static page starts the bridge.
+  const contract = JSON.parse(readFileSync(join(staticRoot, "ai-consumption-contract.json"), "utf8"));
+  const clipboard = contract.foundationVisualStandards.clipboardCopyContract;
+  assert.equal(clipboard.id, "clipboard-copy-contract-v1");
+  assert.deepEqual(clipboard.packageExports, ["ClipboardCopyButton", "mountStaticClipboardCopyButton"]);
+  assert.deepEqual(clipboard.states, ["idle", "copying", "copied", "failed", "unsupported"]);
+  assert.equal(clipboard.resetDelayMs, 2000);
+  assert.match(clipboard.staticConsumerMigration.bootstrap, /mountStaticClipboardCopyButton\(\{ root, locale \}\)/);
+  assert.match(clipboard.staticConsumerMigration.bootstrap, /tcrnComponentCss/);
+  assert.match(clipboard.valueBoundary, /data-clipboard-text/);
+
+  // The Clipboard story shows the static construct, and every docs page mounts the bridge on it.
+  const page = readPage("components-controls-data.html");
+  const dom = new JSDOM(page);
+  try {
+    const document = dom.window.document;
+    const example = document.querySelector('[data-contract-story-id="button-spec-usage"] [data-clipboard-static-example="true"]');
+    assert.ok(example, "the Clipboard story carries the static example");
+    const button = example.querySelector("button[data-clipboard-text]");
+    assert.equal(button?.getAttribute("type"), "button");
+    assert.equal(button?.getAttribute("data-clipboard-copy-state"), "idle");
+    assert.equal(button?.getAttribute("data-clipboard-text"), "synthetic-trace-id-042");
+    assert.ok(button?.querySelector('[role="status"][aria-live="polite"]'));
+    assert.equal(example.querySelector("code")?.textContent, "mountStaticClipboardCopyButton");
+    // The React examples beside it still keep their values out of the DOM.
+    assert.equal(page.includes("synthetic-secret-hidden-from-dom"), false);
+  } finally {
+    dom.window.close();
+  }
+  assert.match(page, /import \{ mountStaticMultiSelect, mountStaticClipboardCopyButton \} from "\.\/ds-static-bridges\.js"/);
+  assert.match(page, /querySelectorAll\("button\[data-clipboard-text\]"\)\) mountStaticClipboardCopyButton\(\{ root \}\)/);
+  assert.match(readPage("components-component-inventory.html"), />mountStaticClipboardCopyButton</);
+});

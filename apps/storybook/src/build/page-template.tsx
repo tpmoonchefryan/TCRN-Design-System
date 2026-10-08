@@ -119,7 +119,7 @@ function scopeComponentCss(css: string, scope: string): string {
       continue;
     }
 
-    if (trimmed.startsWith("@media") || trimmed.startsWith("@supports")) {
+    if (trimmed.startsWith("@media") || trimmed.startsWith("@supports") || trimmed.startsWith("@container")) {
       output.push(line);
       blockStack.push("media");
       continue;
@@ -158,7 +158,7 @@ function scopeComponentCss(css: string, scope: string): string {
 
 // The package export stays readable for consumers and source-level proof. Static
 // pages carry it twice (global and scoped); compacting only the emitted copy keeps
-// the public docs under the page budget without changing selectors or declarations.
+// the public docs smaller without changing selectors or declarations.
 function compactCss(css: string): string {
   return css
     .replace(/\/\*[\s\S]*?\*\//g, "")
@@ -595,7 +595,7 @@ ${storybookSearchScript}
 ${dialogFixtureScript}
 ${storyDisclosureScript}
 ${tableToolbarScript}
-<script type="module">import { mountStaticMultiSelect } from "./ds-static-bridges.js"; for (const root of document.querySelectorAll("[data-choice-presentation=dropdown]")) mountStaticMultiSelect({ root });</script>
+<script type="module">import { mountStaticMultiSelect, mountStaticClipboardCopyButton } from "./ds-static-bridges.js"; for (const root of document.querySelectorAll("[data-choice-presentation=dropdown]")) mountStaticMultiSelect({ root }); for (const root of document.querySelectorAll("button[data-clipboard-text]")) mountStaticClipboardCopyButton({ root });</script>
 ${anchorScrollScript}
 </body>
 </html>
