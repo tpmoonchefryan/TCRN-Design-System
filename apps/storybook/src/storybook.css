@@ -862,6 +862,13 @@ label {
   align-items: stretch;
 }
 
+/* A wrapping reference strip must not take its longest reference as its minimum width:
+   inside a panel's grid that minimum widens the whole track and the panel clips its
+   tables instead of letting them scroll. */
+.tcrn-reference-strip[data-reference-wrap="true"] {
+  min-width: 0;
+}
+
 .tcrn-interaction-primitive-row {
   display: flex;
   flex-wrap: wrap;
@@ -1772,12 +1779,20 @@ label {
 [data-tcrn-theme="dark"] .tcrn-knowledge-shell-layout {
   --tcrn-knowledge-shell-left-surface: var(--tcrn-color-surface-panel);
 }
+/* The layout is the size container its top bar answers to: the demo sits in a story
+   frame, so its own width, not the viewport, decides whether one row fits.
+   The rail holds the brand lockup beside its collapse control, as the documentation
+   shell's own rail does: a 38px mark, its 12px gap and the 112px tagline, the 8px gap,
+   the 38px control and at most 54px of cell padding need 262px, so the rail never
+   drops below 264px. A narrower rail cut the tagline and ran it under the control. */
 .tcrn-knowledge-shell-layout {
+  --tcrn-knowledge-shell-rail-min: 264px;
+  container: tcrn-knowledge-shell / inline-size;
   display: grid;
   grid-template-areas:
     "topbar topbar"
     "sidebar content";
-  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr);
+  grid-template-columns: minmax(var(--tcrn-knowledge-shell-rail-min), 0.32fr) minmax(0, 1fr);
   gap: 0;
   align-items: stretch;
   min-width: 0;
@@ -1788,9 +1803,10 @@ label {
   overflow: hidden;
 }
 
+/* The published TopBar tracks (brand, module, actions) lay the bar out; the demo only
+   sizes its own slot contents. */
 .tcrn-knowledge-shell__topbar {
   grid-area: topbar;
-  grid-template-columns: calc((100% + var(--tcrn-space-5) + var(--tcrn-space-5)) * 0.242424) minmax(0, 1fr) auto !important;
   min-height: 68px;
   border-bottom: 0;
   background: transparent !important;
@@ -1798,6 +1814,7 @@ label {
 
 .tcrn-knowledge-shell__brand-slot {
   align-self: stretch;
+  inline-size: max(var(--tcrn-knowledge-shell-rail-min), calc(100cqi * 0.32 / 1.32));
   min-width: 0;
   margin-block: calc(var(--tcrn-space-3) * -1);
   margin-inline: calc(var(--tcrn-space-5) * -1) var(--tcrn-space-5);
@@ -1847,8 +1864,8 @@ label {
   align-items: center;
   justify-content: flex-end;
   gap: var(--tcrn-space-2);
-  width: max-content;
-  max-width: none;
+  width: auto;
+  max-width: 100%;
   background: transparent;
   padding: 0;
 }
@@ -1856,14 +1873,41 @@ label {
 .tcrn-knowledge-shell__topbar-copy {
   align-self: stretch;
   align-content: center;
+  max-inline-size: 32ch;
   background: transparent;
-  padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
+  padding: var(--tcrn-space-2h) 0;
 }
 
 .tcrn-knowledge-shell__actions .tcrn-search-input {
-  flex: 0 0 260px;
+  flex: 0 1 260px;
   width: 260px;
   max-width: 260px;
+}
+
+/* One row needs the rail, the 32ch copy measure and the actions at full width: about
+   1000px of layout, and the search gives up a few pixels between 960px and that. Below
+   960px the brand cell keeps the rail for both rows and the copy and the actions stack
+   beside it, so neither the collapse control nor the search covers text; the search
+   takes its own line there rather than shrinking under its placeholder. */
+@container tcrn-knowledge-shell (max-width: 960px) {
+  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__brand {
+    grid-row: span 2;
+  }
+
+  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__module,
+  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__actions {
+    grid-column: 2 / -1;
+  }
+
+  .tcrn-knowledge-shell__actions {
+    flex-wrap: wrap;
+  }
+
+  .tcrn-knowledge-shell__actions .tcrn-search-input {
+    flex: 1 1 100%;
+    width: auto;
+    max-width: none;
+  }
 }
 
 .tcrn-bookmark-panel {
@@ -2166,9 +2210,20 @@ label {
     grid-template-columns: 1fr;
   }
 
-  .tcrn-knowledge-shell__topbar,
   .tcrn-knowledge-shell__pager {
     grid-template-columns: 1fr;
+  }
+
+  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__brand,
+  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__module,
+  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__actions {
+    grid-row: auto;
+    grid-column: auto;
+  }
+
+  .tcrn-knowledge-shell__brand-slot {
+    inline-size: auto;
+    margin-inline: calc(var(--tcrn-space-5) * -1);
   }
 
   .tcrn-dialog-spec-fixture__header {
