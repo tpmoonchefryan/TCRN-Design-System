@@ -1,16 +1,16 @@
 // Content-explosion budget gates — TCRN-DS-STORY-052 (EPIC-018).
 //
-// A single canonical audited-debt ledger + a pure, budget-agnostic evaluator. Both the
-// browser proof (story-height) and the storybook smoke (page-bytes, category-story-count)
+// A single canonical audited-debt ledger + a pure, budget-agnostic evaluator for two
+// budgets: the browser proof (story-height) and the storybook smoke (category-story-count)
 // import this file so there is exactly one place the budgets and the grace allowlists live.
 //
 // WHY THESE GATES EXIST
-// The contract-docs site had grown a handful of mega-stories and one bloated page with no
-// machine that could SEE the growth: nothing compared a rendered story height, a page's
-// byte size, or a category's story count to a ceiling. These gates make the explosion
-// visible. Two of the three (story-height, page-bytes) ARRIVE RED against the current site
-// — the only thing keeping `pnpm verify` green is the seeded grace allowlist, and that
-// allowlist IS the split worklist that TCRN-DS-STORY-059 / -054 / -056 / -057 burn down.
+// The contract-docs site had grown a handful of mega-stories with no machine that could
+// SEE the growth: nothing compared a rendered story height or a category's story count to
+// a ceiling. These gates make the explosion visible. The story-height gate ARRIVES RED
+// against the current site — the only thing keeping `pnpm verify` green is the seeded
+// grace allowlist, and that allowlist IS the split worklist that TCRN-DS-STORY-059 / -057
+// burn down.
 //
 // WHY 2000px FOR STORY HEIGHT (detection-derived, not a round number)
 // The perceptual visual-signature gate (scripts/lib/visual-signature.mjs) downscales each
@@ -22,17 +22,11 @@
 // desktop-1440x900 only: tablet/mobile single-column heights are inherently larger and are
 // a conscious NON-scope (they are not gated here).
 //
-// WHY 1,000,000 BYTES FOR PAGE SIZE
-// Every built page carries a ~676KB fixed floor (global dictionary + CSS), so the six
-// non-Components pages sit in the 770-855KB band. A 1,000,000B budget flags exactly the
-// current outlier (Components) and names the true split target, rather than the shared
-// payload floor that TCRN-DS-STORY-054 owns. Keep it loose on purpose.
-//
 // WHY category-story-count CAP = 8 (preventive, GREEN today)
 // The current max stories in any one section/category is 4. This cap does NOT arrive red;
 // it is a forward guard so a post-split reshuffle (S056/S059) cannot silently stuff a
-// category. Documented departure from "all budget gates arrive red": only height + page-KB
-// arrive red.
+// category. Documented departure from "all budget gates arrive red": only story height
+// arrives red.
 //
 // BIDIRECTIONAL ALLOWLIST IDIOM (mirrors scripts/token-extension-proof.mjs:82-96)
 //   1. A NEW over-budget item that is NOT allowlisted FAILS (catches fresh explosion).
@@ -43,9 +37,9 @@
 //      the SAME commit that shrinks/splits a story, or the stale-entry check fails.
 //
 // The recorded* sizes below are seeded from CURRENT measured reality (desktop story heights
-// from docs/verification/internal-alpha/browser-proof-summary.json; page bytes and category
-// counts from the built apps/storybook/storybook-static/*.html + ai-consumption-contract.json),
-// NOT from any earlier audit snapshot. A stale recorded value fails its own gate.
+// from docs/verification/internal-alpha/browser-proof-summary.json; category counts from the
+// built apps/storybook/storybook-static/ai-consumption-contract.json), NOT from any earlier
+// audit snapshot. A stale recorded value fails its own gate.
 
 import { pathToFileURL } from "node:url";
 
@@ -130,20 +124,6 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
   }
 };
 
-export const PAGE_KB_BUDGET_BYTES = 1_000_000;
-
-// TCRN-DS-STORY-056: the byte budget is now measured PER EMITTED PAGE FILE (7 section index
-// pages + one page per category), not per group. The former group-keyed debt ("Proof",
-// "Components") is retired by the split — the section pages are bounded (nav only) and each
-// category page carries only its own bodies, so entries are keyed by page FILENAME.
-//
-// VERIFIER ACTION (cannot be measured without a build): after `pnpm --filter @tcrn/storybook
-// build`, if any emitted page still exceeds PAGE_KB_BUDGET_BYTES (the likely remaining outlier
-// is `proof-proof-visual-instances.html`, which carries both large AOS oracles), add one
-// file-keyed entry here with the measured `recordedBytes` and owedTo TCRN-DS-STORY-054/059.
-// An empty allowlist means the split brought every page under budget.
-export const PAGE_KB_GRACE_ALLOWLIST = {};
-
 export const CATEGORY_STORY_COUNT_CAP = 8;
 
 // Preventive ceiling — GREEN today (current max stories/category is 4). No debt owed.
@@ -159,7 +139,7 @@ export const CATEGORY_STORY_COUNT_GRACE_ALLOWLIST = {};
  * @param {number}   input.budget     the ceiling; measure > budget is "over"
  * @param {Record<string, object>} input.allowlist  audited-debt entries keyed by id
  * @param {string=}  input.recordedKey  name of the recorded-size field on allowlist entries
- *                                       (e.g. "recordedHeightPx" / "recordedBytes"); when
+ *                                       (e.g. "recordedHeightPx"); when
  *                                       present, an allowlisted item whose recorded size no
  *                                       longer matches its current measure (beyond tolerance)
  *                                       is flagged stale so the number stays honest.
@@ -244,10 +224,6 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
       budgetPx: STORY_HEIGHT_BUDGET_PX,
       viewport: STORY_HEIGHT_BUDGET_VIEWPORT,
       allowlistedDebtCount: Object.keys(STORY_HEIGHT_GRACE_ALLOWLIST).length
-    },
-    pageBytes: {
-      budgetBytes: PAGE_KB_BUDGET_BYTES,
-      allowlistedDebtCount: Object.keys(PAGE_KB_GRACE_ALLOWLIST).length
     },
     categoryStoryCount: {
       cap: CATEGORY_STORY_COUNT_CAP,

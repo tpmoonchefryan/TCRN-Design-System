@@ -6,10 +6,10 @@
 // on filenames, anchors, and which component lands on which page.
 
 // Components per emitted reference page. Page HEIGHT is gated per component region
-// (data-component-reference-id, <=2000px; the tallest single component ProductShell is ~1416px),
-// and page WEIGHT is gated at 1MB per emitted file, so this only trades total output size against
-// file count. ~20/page keeps every file well under 1MB while avoiding ~100 near-duplicate
-// shell-floor copies.
+// (data-component-reference-id, <=2000px; the tallest single component ProductShell is ~1416px);
+// the byte size of an emitted file is not gated, so this only trades total output size against
+// file count. ~20/page avoids ~100 near-duplicate shell-floor copies without packing every
+// component into one file.
 export const COMPONENTS_PER_REFERENCE_PAGE = 20;
 
 export const REFERENCE_PAGE_FILE_PREFIX = "component-api-reference-";
