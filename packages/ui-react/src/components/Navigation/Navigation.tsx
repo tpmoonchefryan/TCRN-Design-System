@@ -2736,10 +2736,19 @@ export const tcrnComponentCss = `
   min-width: 0;
   padding: var(--tcrn-space-5);
 }
+/*
+ * The content stack is the size container for the section grid it holds, the
+ * same arrangement as the split-view frame: an element cannot answer a container
+ * query about itself, so the parent carries the container and the grid's own
+ * columns respond to it. width 100% keeps a definite size wherever the parent
+ * has one to give, because inline-size containment removes the intrinsic width.
+ */
 .tcrn-product-shell-content-stack {
+  container: tcrn-product-shell-content / inline-size;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--tcrn-space-5);
+  width: 100%;
   min-width: 0;
   max-width: 1180px;
 }
@@ -2753,6 +2762,19 @@ export const tcrnComponentCss = `
   grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.75fr);
   gap: var(--tcrn-space-4);
   align-items: start;
+}
+/*
+ * The section grid stacks when ITS OWN container cannot hold its columns, the
+ * record family's rule. Side by side, the second column keeps its 280px floor
+ * and the primary column gets the same floor: 280 + 16 + 280 = 576px of
+ * container. Below that the primary column used to keep a zero minimum and
+ * collapsed to about 20px on a 1024px viewport with a 280px rail, so a work
+ * queue broke its records one character per line (TCRN-CROSS-INC-399).
+ */
+@container tcrn-product-shell-content (max-width: 576px) {
+  .tcrn-product-shell-section-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .tcrn-top-bar {
   display: grid;
@@ -3780,7 +3802,7 @@ a.tcrn-relationship-chip:focus-visible {
 }
 .tcrn-record-row {
   display: grid;
-  grid-template-columns: minmax(0, 0.18fr) minmax(0, 1fr) minmax(0, 0.8fr);
+  grid-template-columns: minmax(112px, 0.18fr) minmax(0, 1fr) minmax(0, 0.8fr);
   align-items: center;
   gap: var(--tcrn-density-gap);
   min-height: var(--tcrn-density-row-min);
@@ -3789,7 +3811,7 @@ a.tcrn-relationship-chip:focus-visible {
   text-decoration: none;
 }
 .tcrn-record-row--compact {
-  grid-template-columns: minmax(0, 0.16fr) minmax(0, 1fr) minmax(0, 0.72fr);
+  grid-template-columns: minmax(96px, 0.16fr) minmax(0, 1fr) minmax(0, 0.72fr);
   gap: var(--tcrn-space-2);
   padding: var(--tcrn-space-2) var(--tcrn-space-3);
 }
@@ -3797,8 +3819,16 @@ a.tcrn-relationship-chip:focus-visible {
  * A row stacks when ITS OWN container cannot hold its columns, not when the
  * viewport crosses a number.
  *
- * The established compact boundary is 464px. Above it, zero track minima let
- * long content wrap rather than add an intrinsic floor. The mobile block stacks the row
+ * The established compact boundary is 464px. Above it, the summary and meta
+ * tracks keep zero minima so long content wraps rather than adding an intrinsic
+ * floor. The identifier track keeps a readable floor instead: with a zero
+ * minimum it fell to about 40px in a half-width table and broke identifiers
+ * inside words, one fragment per line (TCRN-CROSS-INC-399). The floor is the one
+ * the family published before the zero minima — 112px, 96px compact, 92px dense —
+ * so identifiers break only at their own hyphens. It cannot overflow the row:
+ * the largest floor plus both gaps is far below the 464px boundary.
+ *
+ * The mobile block stacks the row
  * below a 760px viewport, which sounds like the same thing and is not: on a
  * shell with a 280px rail, a 761px viewport leaves the row 441px — 23px short
  * of its own floor, and the row overflowed the page by exactly that. Measured
@@ -3813,7 +3843,7 @@ a.tcrn-relationship-chip:focus-visible {
   container: tcrn-record-row / inline-size;
 }
 .tcrn-record-row--dense {
-  grid-template-columns: minmax(0, 0.14fr) minmax(0, 1fr) minmax(0, 0.62fr);
+  grid-template-columns: minmax(92px, 0.14fr) minmax(0, 1fr) minmax(0, 0.62fr);
   padding: var(--tcrn-space-1) var(--tcrn-space-2);
   font-size: var(--tcrn-type-size-ui);
 }
