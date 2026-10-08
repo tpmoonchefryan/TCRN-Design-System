@@ -62,12 +62,14 @@ export const STORY_HEIGHT_BUDGET_VIEWPORT = "desktop-1440x900";
 // beyond INIT-008's 17 stories. Every recorded value is the current measured desktop height.
 export const STORY_HEIGHT_GRACE_ALLOWLIST = {
   "owner-quality-product-shell": {
-    recordedHeightPx: 14943,
+    // 14943 -> 16387 (INC-399 R44): record rows stack at their own compact boundary and row badges wrap in every shell instance.
+    recordedHeightPx: 16387,
     owedTo: "beyond-INIT-008",
     note: "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
   },
   "frontend-shell-slice": {
-    recordedHeightPx: 8806,
+    // 8806 -> 9659 (INC-399 R44): KeyValueList fields render the package label-above-value geometry once the docs-only label grid was removed.
+    recordedHeightPx: 9659,
     owedTo: "beyond-INIT-008",
     note: "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
   },
@@ -93,12 +95,19 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     owedTo: "INIT-029/S254",
     note: "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
   },
+  "table-record-index-spec": {
+    // 1907 -> 2086 (INC-399 R44): zero-minimum record-row tracks wrap identifiers inside the half-width RecordTable panel.
+    recordedHeightPx: 2086,
+    owedTo: "INC-399/record-id-track",
+    note: "Above the 2000px budget a single-token regression in this story no longer trips the signature gate, so this is gated debt, not a visual approval. The rules, RecordTable scanning, empty-state distinction and DataGrid escalation boundary stay one table/record contract; retire the entry when a readable identifier track above the compact record boundary or an owner-approved split brings the story under budget."
+  },
   "ai-consumption-contract": {
     // 11406 -> 11536 (EPIC038 correction): operation phase semantics, rendered
     // content evidence, and value-level consumer evidence are read back together.
     // 11536 -> 11764 (INC-399): the shared settings-row and collection-selection
     // contracts now read back the approved grouping, checklist, and clear action.
-    recordedHeightPx: 11764,
+    // 11764 -> 12275 (INC-399 R44): the record-family containment check joins the Components chapter checks and KeyValueList fields use the package geometry.
+    recordedHeightPx: 12275,
     owedTo: "beyond-INIT-008",
     note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },
@@ -108,7 +117,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "39-token color specimen gallery; a catalogue split is future work — gated debt"
   },
   "foundation-visual-standards": {
-    recordedHeightPx: 3954,
+    // 3954 -> 4020 (INC-399 R44): the registry and doc-shell oracle KeyValueLists use the package label-above-value geometry.
+    recordedHeightPx: 4020,
     owedTo: "beyond-INIT-008",
     note: "foundation visual-standards catalogue; gated debt"
   },
