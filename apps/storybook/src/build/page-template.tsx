@@ -595,7 +595,7 @@ ${storybookSearchScript}
 ${dialogFixtureScript}
 ${storyDisclosureScript}
 ${tableToolbarScript}
-<script type="module">import { mountStaticMultiSelect } from "./ds-static-bridges.js"; for (const root of document.querySelectorAll("[data-choice-presentation=dropdown]")) mountStaticMultiSelect({ root });</script>
+<script type="module">import { mountStaticMultiSelect, mountStaticClipboardCopyButton } from "./ds-static-bridges.js"; for (const root of document.querySelectorAll("[data-choice-presentation=dropdown]")) mountStaticMultiSelect({ root }); for (const root of document.querySelectorAll("button[data-clipboard-text]")) mountStaticClipboardCopyButton({ root });</script>
 ${anchorScrollScript}
 </body>
 </html>

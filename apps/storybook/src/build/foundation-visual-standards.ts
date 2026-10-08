@@ -196,6 +196,28 @@ export const overlayBoundaryContract = {
   ]
 } as const;
 
+export const clipboardCopyContract = {
+  id: "clipboard-copy-contract-v1",
+  storybookRoutes: ["components.html#button-spec-usage", "proof.html#ai-consumption-contract"],
+  packageExports: ["ClipboardCopyButton", "mountStaticClipboardCopyButton"],
+  states: ["idle", "copying", "copied", "failed", "unsupported"],
+  resetDelayMs: 2000,
+  valueBoundary: "ClipboardCopyButton keeps the copied value out of the DOM, callbacks, and telemetry. The static bridge reads the value from data-clipboard-text, so the value is present in the page: use it only for values the page may already expose, and keep restricted values on the React component.",
+  staticConsumerMigration: {
+    markup: "Render the ClipboardCopyButton construct: a native button with type=button and data-clipboard-copy-state=idle, its visible label as a direct text node, a polite role=status region named by aria-describedby, and the value in data-clipboard-text.",
+    bootstrap: "Import mountStaticClipboardCopyButton({ root, locale }) from @tcrn/ui-react and include tcrnComponentCss in the page stylesheet; the call returns { destroy() }.",
+    behavior: "An explicit click or keyboard activation writes data-clipboard-text with navigator.clipboard.writeText; the button moves through idle, copying, copied, failed, and unsupported like the component, returns to idle after 2 seconds, and keeps focus.",
+    labels: "State labels come from the package's five-locale copy for the page's language; data-clipboard-idle-label, data-clipboard-copying-label, data-clipboard-copied-label, data-clipboard-failed-label, and data-clipboard-unsupported-label override them per button.",
+    boundary: "The bridge never reads the clipboard and has no document.execCommand fallback; without the Clipboard API it fails closed to unsupported."
+  },
+  rejectCriteria: [
+    "A restricted value is placed in data-clipboard-text instead of staying with the React ClipboardCopyButton.",
+    "Copying starts on hover, mount, a timer, or anything other than an explicit activation.",
+    "A static copy button announces the copied value in its accessible name.",
+    "A state change moves focus away from the button or leaves a state without returning to idle."
+  ]
+} as const;
+
 export const settingsLayoutContract = {
   id: "settings-layout-contract-v1",
   storybookRoutes: ["components.html#field-spec-usage", "patterns.html#forms-patterns"],
@@ -823,6 +845,7 @@ export const foundationVisualStandardsReadback = {
   consumerVisualStyleContract,
   settingControlSelectionContract,
   fieldValueSelectionContract,
+  clipboardCopyContract,
   settingsLayoutContract,
   pageHierarchyContract,
   verificationCadenceContract,
