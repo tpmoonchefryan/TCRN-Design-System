@@ -217,12 +217,16 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
     background-color var(--tcrn-doc-motion-smooth),
     color var(--tcrn-doc-motion-smooth);
 }
+/* The bar carries the package TopBar surface itself rather than leaving the header to
+   paint it, so the sample shells that mirror this bar can show the package background and
+   still match it. Over the header's panel colour the two paint the same pixels. */
 .tcrn-doc-global-bar {
   display: grid;
   grid-template-columns: var(--tcrn-doc-shell-side-width) minmax(320px, 1fr) auto;
   align-items: center;
   gap: var(--tcrn-space-4);
   min-width: 0;
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
   min-height: calc(var(--tcrn-space-6) + var(--tcrn-space-5) + var(--tcrn-space-3) + var(--tcrn-space-1));
   padding: var(--tcrn-space-3) var(--tcrn-space-5);
   transition: grid-template-columns var(--tcrn-motion-emphasis);
