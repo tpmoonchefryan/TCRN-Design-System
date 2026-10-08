@@ -69,6 +69,7 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
     "prove OperationFeedback and ContentScope states through package-backed identity, branch, and accessibility markers",
     "run evaluateConsumerEvidence with DOM-backed lifecycle, geometry, and separate zoom-axis measurements",
     "compare expected, submitted, serialized, and readback values under the declared consumer serialization mode",
+    "RecordInspector and DetailLayout respond to their own available width; nested DetailInspector fields stack at the record-family compact boundary. KeyValueList label/value pairs wrap inside their own cells, and record metadata and attachment statuses keep full text readable using the existing wrapping badge grammar. TableShell retains keyboard-scrollable columns above its mobile stacked-card breakpoint. Do not override these package styles in documentation or product consumers; verify narrow children inside wide viewports and actual route/pattern consumers with the geometry proof, including overlap and clipped-status mutation negatives",
     "prove the same Storybook visual instance, then compare rendered component metrics against Storybook: size, radius, padding, border, background, typography, hover, focus, active, disabled, dark, locale, mobile, and reduced-motion states"
   ],
   Patterns: [

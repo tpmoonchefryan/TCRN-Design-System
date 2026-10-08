@@ -119,7 +119,7 @@ function scopeComponentCss(css: string, scope: string): string {
       continue;
     }
 
-    if (trimmed.startsWith("@media") || trimmed.startsWith("@supports")) {
+    if (trimmed.startsWith("@media") || trimmed.startsWith("@supports") || trimmed.startsWith("@container")) {
       output.push(line);
       blockStack.push("media");
       continue;
