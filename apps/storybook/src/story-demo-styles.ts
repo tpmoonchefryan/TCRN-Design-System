@@ -725,6 +725,8 @@ label {
   width: min(18ch, 100%);
 }
 
+/* The TopBar surface is the package's own; demos frame and position the bar but do not
+   repaint it, so a docs demo and a consuming product show the same background. */
 .tcrn-storybook-component-example .tcrn-top-bar {
   display: flex;
   align-items: center;
@@ -732,7 +734,6 @@ label {
   gap: var(--tcrn-space-3);
   border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
   padding: var(--tcrn-space-2h) var(--tcrn-space-3);
   min-width: 0;
 }
@@ -927,7 +928,6 @@ label {
   border: 0;
   border-bottom: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 80%, transparent);
   border-radius: 0;
-  background: var(--tcrn-color-surface-panel);
   padding: 0 var(--tcrn-space-4);
 }
 
@@ -1600,7 +1600,6 @@ label {
   grid-area: topbar;
   min-height: 68px;
   border-bottom: 0;
-  background: transparent !important;
 }
 
 .tcrn-knowledge-shell__brand-slot {
