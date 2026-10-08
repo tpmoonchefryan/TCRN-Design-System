@@ -3275,12 +3275,20 @@ html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
   gap: var(--tcrn-space-3);
   margin: var(--tcrn-space-3) 0 0;
 }
-.tcrn-key-value-list div {
+.tcrn-key-value-list > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
   display: grid;
   gap: var(--tcrn-space-0h);
   padding: var(--tcrn-space-2);
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-surface-muted);
+}
+.tcrn-key-value-list dt,
+.tcrn-key-value-list dd {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .tcrn-key-value-list dt {
   color: var(--tcrn-color-text-secondary);
@@ -3772,7 +3780,7 @@ a.tcrn-relationship-chip:focus-visible {
 }
 .tcrn-record-row {
   display: grid;
-  grid-template-columns: minmax(112px, 0.18fr) minmax(180px, 1fr) minmax(220px, 0.8fr);
+  grid-template-columns: minmax(0, 0.18fr) minmax(0, 1fr) minmax(0, 0.8fr);
   align-items: center;
   gap: var(--tcrn-density-gap);
   min-height: var(--tcrn-density-row-min);
@@ -3781,7 +3789,7 @@ a.tcrn-relationship-chip:focus-visible {
   text-decoration: none;
 }
 .tcrn-record-row--compact {
-  grid-template-columns: minmax(96px, 0.16fr) minmax(160px, 1fr) minmax(192px, 0.72fr);
+  grid-template-columns: minmax(0, 0.16fr) minmax(0, 1fr) minmax(0, 0.72fr);
   gap: var(--tcrn-space-2);
   padding: var(--tcrn-space-2) var(--tcrn-space-3);
 }
@@ -3789,7 +3797,8 @@ a.tcrn-relationship-chip:focus-visible {
  * A row stacks when ITS OWN container cannot hold its columns, not when the
  * viewport crosses a number.
  *
- * The three floors plus their gaps need 464px. The mobile block stacks the row
+ * The established compact boundary is 464px. Above it, zero track minima let
+ * long content wrap rather than add an intrinsic floor. The mobile block stacks the row
  * below a 760px viewport, which sounds like the same thing and is not: on a
  * shell with a 280px rail, a 761px viewport leaves the row 441px — 23px short
  * of its own floor, and the row overflowed the page by exactly that. Measured
@@ -3803,17 +3812,17 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-record-table {
   container: tcrn-record-row / inline-size;
 }
+.tcrn-record-row--dense {
+  grid-template-columns: minmax(0, 0.14fr) minmax(0, 1fr) minmax(0, 0.62fr);
+  padding: var(--tcrn-space-1) var(--tcrn-space-2);
+  font-size: var(--tcrn-type-size-ui);
+}
 @container tcrn-record-row (max-width: 464px) {
   .tcrn-record-row,
   .tcrn-record-row--compact,
   .tcrn-record-row--dense {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-.tcrn-record-row--dense {
-  grid-template-columns: minmax(92px, 0.14fr) minmax(180px, 1fr) minmax(172px, 0.62fr);
-  padding: var(--tcrn-space-1) var(--tcrn-space-2);
-  font-size: var(--tcrn-type-size-ui);
 }
 /* The framed half of the grammar. A row already has a border, so selection
    promotes that border to ink rather than drawing a second mark inside it —
@@ -3842,6 +3851,10 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-record-row__summary {
   display: grid;
   gap: var(--tcrn-space-0h);
+}
+.tcrn-record-row__field,
+.tcrn-record-row__summary {
+  overflow-wrap: anywhere;
 }
 .tcrn-record-row__summary strong {
   overflow-wrap: anywhere;
@@ -4102,6 +4115,10 @@ a.tcrn-relationship-chip:focus-visible {
   margin: 0;
 }
 .tcrn-record-inspector {
+  container: tcrn-record-inspector / inline-size;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-wrap: anywhere;
   display: grid;
   gap: var(--tcrn-space-4);
 }
@@ -4113,6 +4130,45 @@ a.tcrn-relationship-chip:focus-visible {
 }
 .tcrn-record-inspector__grid > section {
   min-width: 0;
+}
+/* Detail cards are nested within split views and inspectors. Their own available
+   width governs fields; a desktop viewport does not imply two readable columns.
+   Reuse the record family's compact containment boundary. */
+.tcrn-detail-inspector {
+  container: tcrn-detail-fields / inline-size;
+}
+@container tcrn-detail-fields (max-width: 464px) {
+  .tcrn-key-value-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@container tcrn-record-inspector (max-width: 464px) {
+  .tcrn-record-inspector__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Inspection is a full-content surface. Use the existing wrapping badge grammar
+   for values and row metadata rather than hiding status/owner suffixes. */
+.tcrn-attachment-list .tcrn-badge,
+.tcrn-record-inspector__head .tcrn-badge,
+.tcrn-key-value-list .tcrn-badge,
+.tcrn-record-row__meta .tcrn-badge {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.tcrn-attachment-list .tcrn-badge__label,
+.tcrn-record-inspector__head .tcrn-badge__label,
+.tcrn-key-value-list .tcrn-badge__label,
+.tcrn-record-row__meta .tcrn-badge__label {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+.tcrn-attachment-list .tcrn-badge::before,
+.tcrn-record-inspector__head .tcrn-badge::before,
+.tcrn-key-value-list .tcrn-badge::before,
+.tcrn-record-row__meta .tcrn-badge::before {
+  inset-block-start: var(--tcrn-space-2h);
 }
 .tcrn-record-inspector__actions {
   display: flex;
@@ -4138,6 +4194,10 @@ a.tcrn-relationship-chip:focus-visible {
   margin: 0;
 }
 .tcrn-detail-layout {
+  container: tcrn-detail-layout / inline-size;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-wrap: anywhere;
   gap: var(--tcrn-density-gap);
   padding: var(--tcrn-density-padding);
 }
@@ -4151,6 +4211,11 @@ a.tcrn-relationship-chip:focus-visible {
   gap: var(--tcrn-space-3);
   min-width: 0;
   align-items: start;
+}
+@container tcrn-detail-layout (max-width: 464px) {
+  .tcrn-detail-layout__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .tcrn-tree-nav,
 .tcrn-document-canvas,

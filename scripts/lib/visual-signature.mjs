@@ -110,3 +110,51 @@ export function withinTolerance(distance) {
     && distance.meanAbsolute <= SIGNATURE_TOLERANCE.meanAbsolute
     && distance.maxCell <= SIGNATURE_TOLERANCE.maxCell;
 }
+
+/** Bounded updates are explicit compare-and-swap operations, never capture side effects. */
+export function validateBaselineSelection(selection, baseline, baselineDigest, digest) {
+  if (selection?.schemaVersion !== "tcrn.visual-baseline-selection.v1"
+    || selection.baselineSha256 !== baselineDigest
+    || !Array.isArray(selection.entries) || selection.entries.length === 0) {
+    throw new Error("VISUAL_SELECTION_INVALID_OR_STALE");
+  }
+  if (JSON.stringify(baseline.tolerance) !== JSON.stringify(SIGNATURE_TOLERANCE)) {
+    throw new Error("VISUAL_TOLERANCE_CHANGED");
+  }
+  const selected = new Map();
+  for (const entry of selection.entries) {
+    if (typeof entry.key !== "string" || !entry.key || selected.has(entry.key)
+      || entry.disposition !== "accepted-layout-change"
+      || typeof entry.reason !== "string" || !entry.reason.trim()
+      || typeof entry.evidence !== "string" || !entry.evidence.trim()
+      || !/^[a-f0-9]{64}$/.test(entry.expectedSignatureSha256 ?? "")
+      || entry.beforeSignatureSha256 !== (baseline.entries[entry.key] ? digest(baseline.entries[entry.key]) : null)) {
+      throw new Error("VISUAL_SELECTION_ENTRY_INVALID_OR_STALE");
+    }
+    selected.set(entry.key, entry);
+  }
+  return selected;
+}
+
+export function applyBaselineSelection(baseline, selected, captures, { geometryOk, proofOk, digest }) {
+  const refused = [];
+  const changes = [];
+  const entries = { ...baseline.entries };
+  for (const [key, entry] of selected) {
+    const capture = captures.find((row) => row.key === key && row.gated);
+    if (!capture || !capture.encoded || capture.geometryOk !== true
+      || digest(capture.encoded) !== entry.expectedSignatureSha256) {
+      refused.push({ key, reason: "missing-or-unexpected-capture-or-geometry" });
+      continue;
+    }
+    entries[key] = capture.encoded;
+    changes.push({ ...entry, afterSignatureSha256: digest(capture.encoded), captureSha256: capture.captureSha256 });
+  }
+  for (const capture of captures) {
+    if (capture.gated && ["regression", "new"].includes(capture.status) && !selected.has(capture.key)) {
+      refused.push({ key: capture.key, reason: "unselected-visual-change" });
+    }
+  }
+  if (!geometryOk || !proofOk) refused.push({ reason: "current-proof-or-geometry-failed" });
+  return { ok: refused.length === 0, refused, changes, baseline: refused.length ? baseline : { ...baseline, entries } };
+}

@@ -608,7 +608,7 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-section-grid \{[\s\S]*grid-template-columns: minmax\(0, 1\.45fr\) minmax\(280px, 0\.75fr\);/);
   assert.match(tcrnComponentCss, /\.tcrn-table-shell__head,[\s\S]*\.tcrn-table-shell__row \{[\s\S]*grid-template-columns: var\([\s\S]*--tcrn-table-shell-columns/);
   assert.match(tcrnComponentCss, /\.tcrn-table-shell__head span,[\s\S]*\.tcrn-table-shell__cell \{[\s\S]*overflow-wrap: anywhere;/);
-  assert.match(tcrnComponentCss, /\.tcrn-record-row--dense \{[\s\S]*grid-template-columns: minmax\(92px, 0\.14fr\)/);
+  assert.match(tcrnComponentCss, /\.tcrn-record-row--dense \{[\s\S]*grid-template-columns: minmax\(0, 0\.14fr\)/);
   assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row-list\{grid-template-columns:minmax\(0,1fr\) minmax\(var\(--tcrn-container-settings-control-min\),\.8fr\) max-content\}/);
   assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row-list \.tcrn-setting-row\{grid-template-columns:subgrid\}/);
   assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row__control \.tcrn-field :is\(\.tcrn-input,\.tcrn-select,\.tcrn-number-input\)\{inline-size:100%;min-inline-size:0\}/);

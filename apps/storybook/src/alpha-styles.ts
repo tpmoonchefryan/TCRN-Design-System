@@ -1218,19 +1218,7 @@ ${demoStoryCss}
   width: 100%;
 }
 
-.tcrn-key-value-list > div {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  grid-template-columns: minmax(120px, 0.32fr) minmax(0, 1fr);
-}
-.tcrn-key-value-list dt {
-  color: var(--tcrn-color-text-secondary);
-  font-weight: 700;
-}
-.tcrn-key-value-list dd {
-  margin: 0;
-  min-width: 0;
-}
+/* KeyValueList geometry is package-owned, including inside nested inspectors. */
 
 .tcrn-doc-header-search .tcrn-search-input {
   width: 100%;
@@ -1429,11 +1417,6 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   }
   .tcrn-doc-header-controls__row {
     gap: var(--tcrn-space-1);
-  }
-}
-@media (max-width: 520px) {
-  .tcrn-key-value-list > div {
-    grid-template-columns: 1fr;
   }
 }
 
