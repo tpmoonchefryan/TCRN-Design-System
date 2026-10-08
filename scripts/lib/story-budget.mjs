@@ -95,12 +95,6 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     owedTo: "INIT-029/S254",
     note: "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
   },
-  "table-record-index-spec": {
-    // 1907 -> 2086 (INC-399 R44): zero-minimum record-row tracks wrap identifiers inside the half-width RecordTable panel.
-    recordedHeightPx: 2086,
-    owedTo: "INC-399/record-id-track",
-    note: "Above the 2000px budget a single-token regression in this story no longer trips the signature gate, so this is gated debt, not a visual approval. The rules, RecordTable scanning, empty-state distinction and DataGrid escalation boundary stay one table/record contract; retire the entry when a readable identifier track above the compact record boundary or an owner-approved split brings the story under budget."
-  },
   "ai-consumption-contract": {
     // 11406 -> 11536 (EPIC038 correction): operation phase semantics, rendered
     // content evidence, and value-level consumer evidence are read back together.
