@@ -32,43 +32,43 @@
       },
       {
         "id": "foundation-visual-standards",
-        "measure": 3989,
-        "recordedHeightPx": 3954,
+        "measure": 4020,
+        "recordedHeightPx": 4020,
         "owedTo": "beyond-INIT-008",
         "note": "foundation visual-standards catalogue; gated debt"
       },
       {
         "id": "component-family-index",
-        "measure": 3189,
-        "recordedHeightPx": 3189,
+        "measure": 3233,
+        "recordedHeightPx": 3233,
         "owedTo": "beyond-INIT-008",
         "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
       },
       {
         "id": "display-primitives-spec",
-        "measure": 3004,
-        "recordedHeightPx": 3004,
+        "measure": 3062,
+        "recordedHeightPx": 3062,
         "owedTo": "INIT-029/S254",
         "note": "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
       },
       {
         "id": "ai-consumption-contract",
-        "measure": 11869,
-        "recordedHeightPx": 11764,
+        "measure": 12973,
+        "recordedHeightPx": 12973,
         "owedTo": "beyond-INIT-008",
         "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
       },
       {
         "id": "frontend-shell-slice",
-        "measure": 8806,
-        "recordedHeightPx": 8806,
+        "measure": 9659,
+        "recordedHeightPx": 9659,
         "owedTo": "beyond-INIT-008",
         "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
       },
       {
         "id": "owner-quality-product-shell",
-        "measure": 14943,
-        "recordedHeightPx": 14943,
+        "measure": 16374,
+        "recordedHeightPx": 16387,
         "owedTo": "beyond-INIT-008",
         "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
       }
@@ -95,37 +95,37 @@
     },
     {
       "id": "foundation-visual-standards",
-      "heightPx": 3989,
+      "heightPx": 4020,
       "owedTo": "beyond-INIT-008",
       "note": "foundation visual-standards catalogue; gated debt"
     },
     {
       "id": "component-family-index",
-      "heightPx": 3189,
+      "heightPx": 3233,
       "owedTo": "beyond-INIT-008",
       "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
     },
     {
       "id": "display-primitives-spec",
-      "heightPx": 3004,
+      "heightPx": 3062,
       "owedTo": "INIT-029/S254",
       "note": "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
     },
     {
       "id": "ai-consumption-contract",
-      "heightPx": 11869,
+      "heightPx": 12973,
       "owedTo": "beyond-INIT-008",
       "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
     },
     {
       "id": "frontend-shell-slice",
-      "heightPx": 8806,
+      "heightPx": 9659,
       "owedTo": "beyond-INIT-008",
       "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
     },
     {
       "id": "owner-quality-product-shell",
-      "heightPx": 14943,
+      "heightPx": 16374,
       "owedTo": "beyond-INIT-008",
       "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
     }
