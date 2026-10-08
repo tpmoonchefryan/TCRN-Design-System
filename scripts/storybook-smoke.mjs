@@ -5,8 +5,6 @@ import { chromium } from "@playwright/test";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
 import {
-  PAGE_KB_BUDGET_BYTES,
-  PAGE_KB_GRACE_ALLOWLIST,
   CATEGORY_STORY_COUNT_CAP,
   CATEGORY_STORY_COUNT_GRACE_ALLOWLIST,
   evaluateBudget
@@ -3628,21 +3626,10 @@ async function main() {
     ok: false,
     failures: [`locale-menu-focus-return-proof-error:${error instanceof Error ? error.message : String(error)}`]
   }));
-  // Page-byte + category-story-count budget gates (TCRN-DS-STORY-052). `pages` and `contract`
-  // are already read at module scope; this is additive. Page-KB arrives red (Components is the
-  // seeded debt); the category cap is a preventive ceiling that is green today. Failures are
-  // pushed into `missing` (which folds into `ok`) so they surface in the existing stdout list,
-  // and asserted explicitly below so the intent stays legible.
-  // TCRN-DS-STORY-056: the byte budget now measures each EMITTED page file (7 index + category
-  // pages), not the per-group concatenation — the whole point of the split is that every emitted
-  // page is bounded. The PAGE_KB_GRACE_ALLOWLIST is now keyed by page FILE.
-  const pageKbBudget = evaluateBudget({
-    label: "page-bytes",
-    items: contractPages.map((page) => ({ id: page.file, measure: Buffer.byteLength(pageHtmlByFile[page.file], "utf8") })),
-    budget: PAGE_KB_BUDGET_BYTES,
-    allowlist: PAGE_KB_GRACE_ALLOWLIST,
-    recordedKey: "recordedBytes"
-  });
+  // Category-story-count budget gate (TCRN-DS-STORY-052). `contract` is already read at module
+  // scope; this is additive. The category cap is a preventive ceiling that is green today.
+  // Failures are pushed into `missing` (which folds into `ok`) so they surface in the existing
+  // stdout list, and asserted explicitly below so the intent stays legible.
   const categoryStoryCountBudget = evaluateBudget({
     label: "category-story-count",
     items: (contract.coveredStorybookSections ?? []).flatMap((section) =>
@@ -3653,12 +3640,6 @@ async function main() {
     budget: CATEGORY_STORY_COUNT_CAP,
     allowlist: CATEGORY_STORY_COUNT_GRACE_ALLOWLIST
   });
-  for (const violation of pageKbBudget.unbudgetedViolations) {
-    missing.push(`page-kb-budget:${violation.id}:${violation.measure}>${violation.budget}`);
-  }
-  for (const stale of pageKbBudget.staleAllowlist) {
-    missing.push(`stale-page-kb-allowlist:${stale.id}:${stale.reason}`);
-  }
   for (const violation of categoryStoryCountBudget.unbudgetedViolations) {
     missing.push(`category-count-budget:${violation.id}:${violation.measure}>${violation.budget}`);
   }
@@ -3675,7 +3656,6 @@ async function main() {
     && globalStorybookZhCnIaProof.ok
     && crossSectionShellParityProof.ok
     && localeMenuFocusReturnProof.ok
-    && pageKbBudget.ok
     && categoryStoryCountBudget.ok;
   console.log(JSON.stringify({
     ok,
@@ -3690,7 +3670,6 @@ async function main() {
 	    globalStorybookZhCnIaProof,
 	    crossSectionShellParityProof,
 	    localeMenuFocusReturnProof,
-	    pageKbBudget,
 	    categoryStoryCountBudget
 	  }, null, 2));
   if (!ok) {

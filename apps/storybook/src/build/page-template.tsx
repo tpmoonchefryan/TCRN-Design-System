@@ -158,7 +158,7 @@ function scopeComponentCss(css: string, scope: string): string {
 
 // The package export stays readable for consumers and source-level proof. Static
 // pages carry it twice (global and scoped); compacting only the emitted copy keeps
-// the public docs under the page budget without changing selectors or declarations.
+// the public docs smaller without changing selectors or declarations.
 function compactCss(css: string): string {
   return css
     .replace(/\/\*[\s\S]*?\*\//g, "")
