@@ -1,11 +1,12 @@
 import { createHash } from "node:crypto";
-import { createReadStream, existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { createReadStream, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, normalize, resolve, join, relative } from "node:path";
 import { createRequire } from "node:module";
 import { chromium } from "@playwright/test";
 import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.mjs";
-import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE } from "./lib/visual-signature.mjs";
+import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE, validateBaselineSelection, applyBaselineSelection } from "./lib/visual-signature.mjs";
+import { measureRecordContainment } from "./geometry-proof.mjs";
 import { storybookId } from "./lib/storybook-id.mjs";
 import { localeInvariantLedger, findLatinLeaks, partitionStoryLeaks } from "./lib/locale-invariant-ledger.mjs";
 import {
@@ -600,10 +601,53 @@ async function setTransientScreenshotChromeHidden(page, hidden) {
 }
 
 const signatureBaselinePath = "docs/verification/internal-alpha/visual-signature-baseline.json";
-const updateVisualBaseline = process.argv.includes("--update-visual-baseline");
-const signatureBaseline = existsSync(signatureBaselinePath)
-  ? JSON.parse(readFileSync(signatureBaselinePath, "utf8"))
-  : { schemaVersion: "tcrn.visual-signature-baseline.v1", tolerance: SIGNATURE_TOLERANCE, entries: {} };
+const updateIndex = process.argv.indexOf("--update-visual-baseline");
+const selectionPath = updateIndex >= 0 ? process.argv[updateIndex + 1] : null;
+if (updateIndex >= 0 && (!selectionPath || selectionPath.startsWith("--"))) {
+  throw new Error("VISUAL_SELECTION_REQUIRED: --update-visual-baseline <selection.json>");
+}
+const baselineBytes = readFileSync(signatureBaselinePath, "utf8");
+const signatureBaseline = JSON.parse(baselineBytes);
+const digest = (value) => createHash("sha256").update(value).digest("hex");
+// Bind reused captures to every byte served by the static docs build. Applying a
+// selection consumes these measured signatures; it does not recapture or rerun a gate.
+function captureInputDigest() {
+  const hash = createHash("sha256");
+  const visit = (directory) => {
+    for (const entry of readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) visit(path);
+      else if (entry.isFile()) hash.update(relative("apps/storybook/storybook-static", path)).update("\0").update(readFileSync(path));
+      else throw new Error("VISUAL_CAPTURE_INPUT_NOT_REGULAR");
+    }
+  };
+  visit("apps/storybook/storybook-static");
+  // The measurement source itself is part of the proof input.
+  for (const path of ["scripts/internal-alpha-browser-proof.mjs", "scripts/geometry-proof.mjs", "scripts/lib/visual-signature.mjs", "packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx", "packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx", "apps/storybook/src/alpha-styles.ts", "apps/storybook/src/build/page-template.tsx", "apps/storybook/src/build/ai-consumption-contract.ts", "pnpm-lock.yaml"]) hash.update(path).update(readFileSync(path));
+  return hash.digest("hex");
+}
+const inputSha256 = captureInputDigest();
+if (selectionPath) {
+  const selected = validateBaselineSelection(JSON.parse(readFileSync(selectionPath, "utf8")), signatureBaseline, digest(baselineBytes), digest);
+  const measured = JSON.parse(readFileSync(join(outputRoot, "visual-selection-result.json"), "utf8"));
+  if (measured.baselineBeforeSha256 !== digest(baselineBytes) || measured.inputSha256 !== inputSha256) {
+    throw new Error("VISUAL_CAPTURE_INPUT_STALE");
+  }
+  const update = applyBaselineSelection(signatureBaseline, selected, measured.captures, {
+    geometryOk: measured.recordContainment?.length > 0 && measured.recordContainment.every((row) => row.ok),
+    proofOk: measured.nonVisualProofOk === true, digest
+  });
+  if (update.ok) writeFileSync(signatureBaselinePath, `${JSON.stringify(update.baseline, null, 2)}\n`);
+  const application = { ok: update.ok, inputSha256, baselineBeforeSha256: digest(baselineBytes),
+    baselineAfterSha256: digest(readFileSync(signatureBaselinePath, "utf8")), changes: update.changes, refused: update.refused };
+  writeFileSync(join(outputRoot, "visual-selection-application.json"), `${JSON.stringify(application, null, 2)}\n`);
+  writeFileSync(join(outputRoot, "intentional-diff-manifest.json"), `${JSON.stringify({
+    ...application, disposition: update.ok ? "selected-layout-changes-applied" : "selected-layout-changes-refused"
+  }, null, 2)}\n`);
+  console.log(JSON.stringify(application));
+  process.exit(update.ok ? 0 : 1);
+}
+const recordContainmentResults = [];
 const signatureResults = [];
 
 /**
@@ -612,6 +656,9 @@ const signatureResults = [];
  * scripts/lib/visual-signature.mjs for the measurements the tolerance rests on.
  */
 async function captureWithSignature(target, key, path, { gated = true, ...options } = {}) {
+  // The measured content must be readable before any selected signature qualifies.
+  const geometry = gated ? await target.evaluate(measureRecordContainment) : null;
+  if (geometry?.count) recordContainmentResults.push({ key, ...geometry });
   const buffer = await target.screenshot({ path, animations: "disabled", ...options });
   if (!gated) {
     // The capture is kept on disk for a human to look at, but nothing about it is
@@ -629,10 +676,7 @@ async function captureWithSignature(target, key, path, { gated = true, ...option
     distance = compareSignatures(decodeSignature(baseline), cells);
     status = withinTolerance(distance) ? "match" : "regression";
   }
-  if (updateVisualBaseline || !baseline) {
-    signatureBaseline.entries[key] = encoded;
-  }
-  signatureResults.push({ key, status, distance, gated: true });
+  signatureResults.push({ key, status, distance, gated: true, encoded, captureSha256: digest(buffer), geometryOk: geometry?.ok === true });
   return encoded;
 }
 
@@ -3448,24 +3492,14 @@ Route: \`route_tcrn_design_system_internal_alpha_hardening_proof_implementation\
 ${keyboardChecklist.checks.map((check) => `- ${check.status === "passed" ? "[x]" : "[ ]"} ${check.item}: ${check.status}. Evidence: ${check.evidence}`).join("\n")}
 `);
 writeFileSync(join(outputRoot, "visual-baseline-manifest.json"), `${JSON.stringify(visualBaselineManifest, null, 2)}\n`);
-writeFileSync(join(outputRoot, "intentional-diff-manifest.json"), `${JSON.stringify({
-  ok: true,
-  disposition: "new_internal_alpha_baselines_created",
-  entries: visualEntries.map((entry) => ({ storyId: entry.storyId, viewport: entry.viewport, path: entry.path, sha256: entry.sha256 }))
-}, null, 2)}\n`);
-
 const signatureNew = signatureResults.filter((entry) => entry.status === "new");
-if (updateVisualBaseline || signatureNew.length > 0) {
-  const ordered = Object.fromEntries(Object.keys(signatureBaseline.entries).sort().map((key) => [key, signatureBaseline.entries[key]]));
-  writeFileSync(signatureBaselinePath, `${JSON.stringify({ ...signatureBaseline, tolerance: SIGNATURE_TOLERANCE, entries: ordered }, null, 2)}\n`);
-}
 if (signatureRegressions.length > 0) {
   console.error(`VISUAL REGRESSION: ${signatureRegressions.length} capture(s) moved beyond tolerance ` +
     `(mean<=${SIGNATURE_TOLERANCE.meanAbsolute}, maxCell<=${SIGNATURE_TOLERANCE.maxCell}):`);
   for (const entry of signatureRegressions) {
     console.error(`  - ${entry.key}: mean=${entry.distance.meanAbsolute} maxCell=${entry.distance.maxCell}`);
   }
-  console.error("If the change is intended, re-run with --update-visual-baseline and commit the new baseline.");
+  console.error("Selected changes require --update-visual-baseline <selection.json>, current geometry and an exact accepted disposition; unexpected changes remain red.");
 }
 
 const shellFidelityTripped = Object.entries(shellFidelity).filter(([, tripped]) => tripped);
@@ -3521,7 +3555,7 @@ if (!localizationPolicyBinding.ok) {
       : " (## Localization section not found)"));
 }
 
-const ok = signatureRegressions.length === 0
+const nonVisualProofOk = recordContainmentResults.length > 0 && recordContainmentResults.every((entry) => entry.ok)
   && localizationPolicyBinding.ok
   && disclosureOk
   && shellFidelityTripped.length === 0
@@ -3537,6 +3571,16 @@ const ok = signatureRegressions.length === 0
   && panelSearchReadback.ok
   && buttonFeedbackReadback.ok
   && pageHierarchyBrowserProof.ok;
+
+const ok = nonVisualProofOk && signatureRegressions.length === 0 && signatureNew.length === 0;
+writeFileSync(join(outputRoot, "intentional-diff-manifest.json"), `${JSON.stringify({
+  ok, disposition: "comparison-only", entries: []
+}, null, 2)}\n`);
+writeFileSync(join(outputRoot, "visual-selection-result.json"), `${JSON.stringify({
+  ok, nonVisualProofOk, inputSha256, baselineBeforeSha256: digest(baselineBytes),
+  baselineAfterSha256: digest(readFileSync(signatureBaselinePath, "utf8")),
+  captures: signatureResults, recordContainment: recordContainmentResults
+}, null, 2)}\n`);
 
 console.log(JSON.stringify({
   ok,

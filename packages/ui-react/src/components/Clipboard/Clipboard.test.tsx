@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
 import { ClipboardCopyButton } from "./Clipboard.js";
+import { DEFAULT_RESET_DELAY_MS, clipboardLabelsFor } from "./clipboard-copy.js";
+import { mountStaticClipboardCopyButton } from "./static-clipboard.js";
 
 test("clipboard copy button renders as a native button without exposing copied text", () => {
   const html = renderToStaticMarkup(
@@ -67,4 +69,39 @@ test("clipboard copy button says its own five words in the reader's language", (
   const explicit = renderToStaticMarkup(<ClipboardCopyButton locale="zh-CN" text="x" ariaLabel="复制" idleLabel="拷贝" />);
   assert.match(explicit, />拷贝</);
   assert.match(renderToStaticMarkup(<ClipboardCopyButton text="x" ariaLabel="Copy value" />), />Copy</);
+});
+
+test("the static bridge is safe to import and call where there is no document", () => {
+  // A server render or a test runner imports the package without a DOM. The bridge must
+  // neither throw there nor touch anything; it only starts work in a browser.
+  assert.equal(typeof document, "undefined");
+  const handle = mountStaticClipboardCopyButton({ root: {} as HTMLElement });
+  assert.equal(typeof handle.destroy, "function");
+  assert.doesNotThrow(() => handle.destroy());
+});
+
+test("the server-rendered construct carries what the static bridge reads, and only when asked", () => {
+  // The static construct is the component's own markup plus one attribute the consumer
+  // adds on purpose. Without that attribute the component still never writes the value.
+  const construct = renderToStaticMarkup(
+    <ClipboardCopyButton text="synthetic-trace-id-042" ariaLabel="Copy trace ID" idleLabel="Copy trace ID" data-clipboard-text="synthetic-trace-id-042" />
+  );
+  assert.match(construct, /^<button [^>]*type="button"/);
+  assert.match(construct, /data-clipboard-copy-state="idle"/);
+  assert.match(construct, /data-clipboard-text="synthetic-trace-id-042"/);
+  assert.match(construct, /aria-live="polite" role="status"/);
+  assert.match(construct, />Copy trace ID</);
+
+  const plain = renderToStaticMarkup(<ClipboardCopyButton text="synthetic-trace-id-042" ariaLabel="Copy trace ID" />);
+  assert.doesNotMatch(plain, /synthetic-trace-id-042/);
+});
+
+test("the button and the static bridge read one five-locale label table", () => {
+  for (const locale of ["zh-CN", "en", "ja", "ko", "fr"] as const) {
+    const labels = clipboardLabelsFor(locale);
+    const html = renderToStaticMarkup(<ClipboardCopyButton locale={locale} text="x" ariaLabel={labels.copyValue} />);
+    assert.match(html, new RegExp(`>${labels.idle}<`));
+    assert.equal(new Set([labels.idle, labels.copying, labels.copied, labels.failed, labels.unsupported]).size, 5, `${locale} states are distinct`);
+  }
+  assert.equal(DEFAULT_RESET_DELAY_MS, 2000);
 });

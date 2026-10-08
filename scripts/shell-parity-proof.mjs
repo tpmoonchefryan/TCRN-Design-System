@@ -976,6 +976,66 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
   }, { roles, exceptionTable: exceptions, storySelector: packageStorySelector, enforceRoleCount: roles === parityRoles, expectedRoleCount: expectedParityRoleCount });
 }
 
+// Compare actual content edges, not padding strings: desktop uses the global
+// bar's grid gap; mobile uses a stacked header. Missing/hidden samples fail.
+async function measureDocumentContentEdge(page) {
+  return page.evaluate(() => {
+    const location = document.querySelector(".tcrn-doc-current-location");
+    const content = document.querySelector(".tcrn-doc-content");
+    const heading = document.querySelector(".tcrn-doc-page-head");
+    if (!location || !content || !heading) return { ok: false, reason: "missing-surface" };
+    const locationRect = location.getBoundingClientRect();
+    const headingRect = heading.getBoundingClientRect();
+    const contentRect = content.getBoundingClientRect();
+    const style = getComputedStyle(content);
+    const contentLeft = contentRect.left + parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft);
+    const delta = locationRect.left - contentLeft;
+    return {
+      ok: locationRect.width > 0 && locationRect.height > 0 && headingRect.width > 0
+        && Math.abs(delta) <= 1 && Math.abs(headingRect.left - contentLeft) <= 1,
+      locationLeft: locationRect.left, contentLeft, headingLeft: headingRect.left, delta
+    };
+  });
+}
+
+async function documentContentEdgeProof(page, origin) {
+  const matrix = [];
+  for (const locale of ["en", "zh-CN", "ja", "ko", "fr"]) {
+    for (const theme of ["light", "dark"]) {
+      for (const width of [195, 390, 760, 1024, 1440, 1920]) {
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(`${origin}/style-guide.html?theme=${theme}&locale=${locale}`);
+        for (const collapsed of [false, true]) {
+          await page.locator(".tcrn-doc-shell").evaluate((node, value) => {
+            node.setAttribute("data-sidebar-collapsed", String(value));
+          }, collapsed);
+          await settle(page);
+          await page.locator(".tcrn-doc-shell").evaluate(async (node) => {
+            await Promise.all(node.getAnimations({ subtree: true })
+              .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+              .map((animation) => animation.finished.catch(() => {})));
+          });
+          matrix.push({ locale, theme, width, collapsed, ...(await measureDocumentContentEdge(page)) });
+        }
+      }
+    }
+  }
+  const negative = [];
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(`${origin}/style-guide.html?theme=light&locale=en`);
+    await settle(page);
+    // Recreate the consumer's extra nested inset; the shared package is untouched.
+    await addCssMutation(page, ".tcrn-doc-header__workspace { padding-left: 48px !important; }");
+    const mutated = await measureDocumentContentEdge(page);
+    await removeMutation(page);
+    await settle(page);
+    const restored = await measureDocumentContentEdge(page);
+    negative.push({ width, mutated, restored, ok: !mutated.ok && restored.ok });
+  }
+  return { matrix, negative, ok: matrix.every((entry) => entry.ok) && negative.every((entry) => entry.ok) };
+}
+
 async function main() {
   if (!existsSync(staticRoot)) throw new Error("shell_parity_missing_static_surface");
   const server = await startStaticServer();
@@ -1168,7 +1228,9 @@ async function main() {
     await removeMutation(page);
     const brandRestored = await measureParity(page, [brandLockupRole]);
     const brandBaseline = baseline.roles.find((role) => role.id === brandLockupRole.id);
+    const documentContentEdge = await documentContentEdgeProof(page, server.origin);
     result = {
+      documentContentEdge,
       schemaVersion: "tcrn.ds.shell-parity-proof.v2",
       roleCount: parityRoles.length,
       baseline,
@@ -1244,7 +1306,8 @@ async function main() {
         }]))
       }
     };
-    result.ok = baseline.ok
+    result.ok = documentContentEdge.ok
+      && baseline.ok
       && !mutated.ok
       && restored.ok
       && result.exceptionProbe.ok

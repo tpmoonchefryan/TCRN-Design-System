@@ -605,10 +605,21 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-readback-panel > \.tcrn-heading \+ \* \{[\s\S]*margin-top: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-content-stack \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-5\);[\s\S]*min-width: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-content-stack > \*,[\s\S]*\.tcrn-product-shell-section-grid > \* \{[\s\S]*min-width: 0;[\s\S]*max-width: 100%;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell-section-grid \{[\s\S]*grid-template-columns: minmax\(0, 1\.45fr\) minmax\(280px, 0\.75fr\);/);
+  // DS#1 (TCRN-CROSS-INC-399 R46): the section grid stacks by its own container, the record
+  // family's rule, so a 1024px viewport with a 280px rail no longer squeezes the primary column
+  // to about 20px. The content stack is the container; two 280px floors plus the gap need 576px.
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell-section-grid \{\n  display: grid;\n  grid-template-columns: minmax\(0, 1\.45fr\) minmax\(280px, 0\.75fr\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell-content-stack \{\n  container: tcrn-product-shell-content \/ inline-size;[^}]*width: 100%;/);
+  assert.match(tcrnComponentCss, /@container tcrn-product-shell-content \(max-width: 576px\) \{\n  \.tcrn-product-shell-section-grid \{\n    grid-template-columns: minmax\(0, 1fr\);\n  \}\n\}/);
   assert.match(tcrnComponentCss, /\.tcrn-table-shell__head,[\s\S]*\.tcrn-table-shell__row \{[\s\S]*grid-template-columns: var\([\s\S]*--tcrn-table-shell-columns/);
   assert.match(tcrnComponentCss, /\.tcrn-table-shell__head span,[\s\S]*\.tcrn-table-shell__cell \{[\s\S]*overflow-wrap: anywhere;/);
-  assert.match(tcrnComponentCss, /\.tcrn-record-row--dense \{[\s\S]*grid-template-columns: minmax\(92px, 0\.14fr\)/);
+  // P-DS-R45-06 (TCRN-CROSS-INC-399 R46): above the 464px record boundary the identifier track
+  // keeps the family's published readable floor while summary and meta keep zero minima; below
+  // the boundary every density still stacks into one column.
+  assert.match(tcrnComponentCss, /\.tcrn-record-row \{\n  display: grid;\n  grid-template-columns: minmax\(112px, 0\.18fr\) minmax\(0, 1fr\) minmax\(0, 0\.8fr\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-record-row--compact \{\n  grid-template-columns: minmax\(96px, 0\.16fr\) minmax\(0, 1fr\) minmax\(0, 0\.72fr\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-record-row--dense \{\n  grid-template-columns: minmax\(92px, 0\.14fr\) minmax\(0, 1fr\) minmax\(0, 0\.62fr\);/);
+  assert.match(tcrnComponentCss, /@container tcrn-record-row \(max-width: 464px\) \{\n  \.tcrn-record-row,\n  \.tcrn-record-row--compact,\n  \.tcrn-record-row--dense \{\n    grid-template-columns: minmax\(0, 1fr\);/);
   assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row-list\{grid-template-columns:minmax\(0,1fr\) minmax\(var\(--tcrn-container-settings-control-min\),\.8fr\) max-content\}/);
   assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row-list \.tcrn-setting-row\{grid-template-columns:subgrid\}/);
   assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row__control \.tcrn-field :is\(\.tcrn-input,\.tcrn-select,\.tcrn-number-input\)\{inline-size:100%;min-inline-size:0\}/);

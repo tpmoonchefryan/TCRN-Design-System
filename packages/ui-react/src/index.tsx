@@ -138,6 +138,7 @@ export const componentLibraryPublicUtilityNames = [
   "resolveFieldValueControl",
   "mountStaticOverlayBoundary",
   "mountStaticMultiSelect",
+  "mountStaticClipboardCopyButton",
   "useProductShellController",
   "validateContentScope",
   "evaluateConsumerEvidence",

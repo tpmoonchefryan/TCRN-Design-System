@@ -226,6 +226,16 @@ supplemental content or `role="dialog"` for local interactive context. A
 CSS-only server-positioned body sibling is a static fallback only; it cannot claim
 dynamic portal, edge, or focus behavior.
 
+`ClipboardCopyButton` server markup becomes interactive on a static page through
+`mountStaticClipboardCopyButton({ root, locale })`, the third DOM bridge beside
+`mountStaticOverlayBoundary` and `mountStaticMultiSelect`. The root is the component's own
+construct (native button, visible label text node, polite `role="status"` region,
+`data-clipboard-copy-state`) plus `data-clipboard-text`, so the copied value is present in
+the page; restricted values stay with the React component, which never writes them to the
+DOM. The bridge follows the component's states (idle, copying, copied, failed, unsupported),
+returns to idle after 2 seconds, keeps focus, speaks the package's five-locale labels and
+accepts per-button `data-clipboard-<state>-label` overrides.
+
 `DefinitionList` uses its own inline container for the existing 760px detail
 stacking boundary. A narrow card inside a wide viewport stacks terms before their
 definitions; long terms wrap inside their track. Consumers retain the shared

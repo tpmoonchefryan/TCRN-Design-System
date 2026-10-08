@@ -4,7 +4,10 @@ import { extname, normalize, relative, resolve } from "node:path";
 import { chromium } from "@playwright/test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { ProductShell, tcrnComponentCss } from "../packages/ui-react/dist/index.js";
+import { ProductShell, RecordInspector, StatusBadge, tcrnComponentCss } from "../packages/ui-react/dist/index.js";
+
+import { tcrnTokenCss } from "../packages/ui-tokens/dist/index.js";
+import { pathToFileURL } from "node:url";
 
 const staticRoot = resolve("apps/storybook/storybook-static");
 const badgeRoute = "/components-navigation-shells.html#navigation-dense-operations-shell-spec";
@@ -300,6 +303,114 @@ async function measureMobileNavigation(page, width, broken = false) {
   return { width, broken, ...observation, expanded, ok: observation.reachable && expanded };
 }
 
+/** Browser-serializable geometry oracle shared by capture qualification and mutation proof.
+ * Text ranges detect overflow even when a box itself fits; scroll tables retain their
+ * deliberate scrollport, while each cell must still contain its own readable content. */
+export function measureRecordContainment(root) {
+  const surfaces = [...root.querySelectorAll(".tcrn-record-inspector, .tcrn-detail-inspector, .tcrn-record-table, .tcrn-detail-layout")];
+  if (root.matches?.(".tcrn-record-inspector, .tcrn-detail-inspector, .tcrn-record-table, .tcrn-detail-layout")) surfaces.unshift(root);
+  const failures = [];
+  const visible = (node) => node.getClientRects().length && getComputedStyle(node).visibility !== "hidden";
+  const inside = (outer, inner) => inner.left >= outer.left - 1 && inner.right <= outer.right + 1
+    && inner.top >= outer.top - 1 && inner.bottom <= outer.bottom + 1;
+  for (const surface of surfaces.filter(visible)) {
+    if (surface.scrollWidth > surface.clientWidth + 1) failures.push({ kind: "surface-overflow", className: surface.className });
+    const slots = surface.querySelectorAll(".tcrn-key-value-list > div, .tcrn-record-row__summary, .tcrn-record-row__meta, .tcrn-table-shell__cell");
+    for (const slot of slots) {
+      if (!visible(slot)) continue;
+      const box = slot.getBoundingClientRect();
+      const walker = document.createTreeWalker(slot, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        const text = walker.currentNode;
+        if (!text.textContent.trim() || !visible(text.parentElement)) continue;
+        const range = document.createRange();
+        range.selectNodeContents(text);
+        const rects = [...range.getClientRects()];
+        if (rects.some((rect) => !inside(box, rect))) failures.push({ kind: "text-outside-slot", text: text.textContent, className: slot.className });
+        for (let parent = text.parentElement; parent && parent !== slot.parentElement; parent = parent.parentElement) {
+          const style = getComputedStyle(parent);
+          if (["hidden", "clip"].includes(style.overflowX) || ["hidden", "clip"].includes(style.overflowY)) {
+            if (rects.some((rect) => !inside(parent.getBoundingClientRect(), rect))) failures.push({ kind: "clipped-text", text: text.textContent, className: parent.className });
+          }
+        }
+      }
+    }
+  }
+  return { count: surfaces.length, failures, ok: failures.length === 0 };
+}
+
+async function recordContainmentMatrix(page, origin) {
+  const rows = [];
+  const words = { "zh-CN": "完整的层级与负责人信息", en: "Complete hierarchy and owner information", ja: "階層と担当者の完全な情報", ko: "전체 계층 및 담당자 정보", fr: "Informations complètes sur la hiérarchie et le responsable" };
+  for (const locale of Object.keys(words)) for (const theme of ["light", "dark"]) {
+    for (const width of [280, 390, 464, 488, 640]) {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      const label = words[locale];
+      const record = { id: "record-identifier-with-a-long-unbroken-suffix-0123456789", title: label, state: { state: "proof_required" }, owner: label, href: "#record", fields: [{ key: "owner", label, value: label.repeat(3) }] };
+      const markup = renderToStaticMarkup(createElement(RecordInspector, {
+        title: label, summary: label.repeat(3), locale,
+        hierarchy: [{ key: "parent", label, value: label.repeat(3) }, { key: "id", label, value: "identifier".repeat(15) }],
+        details: [{ key: "owner", label, value: label }, { key: "status", label, value: createElement(StatusBadge, { state: { state: "proof_required" }, locale }) }],
+        subtasks: [record, { ...record, id: "dense-row", density: "dense" }, { ...record, id: "comfortable-row", density: "comfortable" }],
+        attachments: [{ id: "reference", label, reference: "artifact-reference/".repeat(8), state: { state: "proof_required" } }]
+      }));
+      await page.setContent(`<style>${tcrnTokenCss} ${tcrnComponentCss}</style><main data-theme="${theme}" data-tcrn-theme="${theme}" lang="${locale}" style="width:${width}px">${markup}</main>`);
+      await settle(page);
+      const root = page.locator("main");
+      const baseline = await root.evaluate(measureRecordContainment);
+      const table = page.locator(".tcrn-table-shell");
+      await table.focus();
+      const before = await table.evaluate((node) => ({ scroll: node.scrollLeft, max: node.scrollWidth - node.clientWidth, focused: document.activeElement === node }));
+      // Exercise the native horizontal scrollport with keys through its full range.
+      let after = before.scroll;
+      for (let step = 0; step < 32 && after < before.max - 1; step += 1) {
+        await page.keyboard.press("ArrowRight");
+        await page.waitForTimeout(50);
+        after = await table.evaluate((node) => node.scrollLeft);
+      }
+      const rightmostVisible = await table.evaluate((node) => {
+        const port = node.getBoundingClientRect();
+        const last = node.querySelector(".tcrn-table-shell__row .tcrn-table-shell__cell:last-child").getBoundingClientRect();
+        return last.right <= port.right + 1 && last.left >= port.left - 1;
+      });
+      const scrollKeyboard = before.focused && (before.max <= 1 || after >= before.max - 1) && rightmostVisible;
+      const rowLink = page.locator("a.tcrn-record-row").first();
+      await rowLink.focus();
+      const rowFocused = await rowLink.evaluate((node) => document.activeElement === node);
+      await page.keyboard.press("Enter");
+      const keyboard = scrollKeyboard && rowFocused && new URL(page.url()).hash === "#record";
+      const fullReference = await page.locator(".tcrn-attachment-list [data-full-token]").getAttribute("data-full-token") === "artifact-reference/".repeat(8);
+      // Restore the previous intrinsic sizing, wrapping and global-breakpoint-only behavior.
+      await addMutation(page, ".tcrn-detail-inspector, .tcrn-record-inspector { container-type: normal !important; } .tcrn-key-value-list { grid-template-columns: repeat(2,minmax(0,1fr)) !important; } .tcrn-key-value-list > div { grid-template-columns: minmax(120px, .32fr) minmax(0, 1fr) !important; min-width: auto !important; overflow-wrap: normal !important; } .tcrn-key-value-list dt, .tcrn-key-value-list dd { min-width: auto !important; overflow-wrap: normal !important; } .tcrn-record-inspector__grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }");
+      const oldGeometry = await root.evaluate(measureRecordContainment);
+      await removeMutation(page);
+      await addMutation(page, ".tcrn-key-value-list .tcrn-badge__label, .tcrn-record-row__meta .tcrn-badge__label { max-width: 2px !important; overflow: hidden !important; white-space: nowrap !important; }");
+      const clipped = await root.evaluate(measureRecordContainment);
+      await removeMutation(page);
+      const restored = await root.evaluate(measureRecordContainment);
+      rows.push({ locale, theme, width, baseline, keyboard, fullReference, oldRejected: !oldGeometry.ok, clipRejected: !clipped.ok, restored,
+        ok: baseline.count > 0 && baseline.ok && keyboard && fullReference && !oldGeometry.ok && !clipped.ok && restored.ok });
+    }
+  }
+  // Actual consumers, including the nested route/pattern detail layout, not just a fixture.
+  const routes = [
+    ["components-detail-and-inspection.html", "detail-and-inspection-inspector-spec"],
+    ["components-detail-and-inspection.html", "detail-and-inspection-route-spec"],
+    ["patterns-data-pages.html", "records-and-boards-patterns"]
+  ];
+  for (const locale of Object.keys(words)) for (const theme of ["light", "dark"]) for (const width of [1440, 1024, 390]) {
+    await page.setViewportSize({ width, height: width === 1024 ? 768 : width === 390 ? 844 : 900 });
+    for (const [file, id] of routes) {
+      await page.goto(`${origin}/${file}?locale=${locale}&theme=${theme}#${id}`);
+      await settle(page);
+      const story = page.locator(`[data-contract-story-id="${id}"]`);
+      const geometry = await story.evaluate(measureRecordContainment);
+      rows.push({ locale, theme, width, story: id, ...geometry, ok: geometry.count > 0 && geometry.ok });
+    }
+  }
+  return { rows, ok: rows.length > 0 && rows.every((row) => row.ok) };
+}
+
 async function main() {
   if (!existsSync(staticRoot)) throw new Error("geometry_proof_missing_static_surface");
   const server = await startStaticServer();
@@ -346,10 +457,12 @@ async function main() {
       broken: await measureMobileNavigation(page, width, true),
       restored: await measureMobileNavigation(page, width),
     });
+    const recordContainment = await recordContainmentMatrix(page, server.origin);
     result = {
+      recordContainment,
       mobileNavigation,
       schemaVersion: "tcrn.ds.geometry-proof.v2",
-      ok: mobileNavigation.every(row => row.baseline.ok && !row.broken.ok && row.restored.ok) && badgeBaseline.ok && !badgeBroken.ok && badgeRestored.ok
+      ok: recordContainment.ok && mobileNavigation.every(row => row.baseline.ok && !row.broken.ok && row.restored.ok) && badgeBaseline.ok && !badgeBroken.ok && badgeRestored.ok
         && brandBaseline.ok && !brandBroken.ok && brandRestored.ok
         && copyBaseline.ok && !copyBroken.ok && copyRestored.ok
         && searchBaseline.ok && !searchBroken.ok && searchRestored.ok,
@@ -373,4 +486,4 @@ async function main() {
   if (!result.ok) process.exitCode = 1;
 }
 
-await main();
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) await main();
