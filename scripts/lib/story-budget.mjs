@@ -91,7 +91,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
   "display-primitives-spec": {
-    recordedHeightPx: 3004,
+    // 3004 -> 3062 (INC-399 R46): SettingRow and FieldProvenance leave the 180px gallery cells for a full-width SettingRowList.
+    recordedHeightPx: 3062,
     owedTo: "INIT-029/S254",
     note: "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
   },
@@ -101,7 +102,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 11536 -> 11764 (INC-399): the shared settings-row and collection-selection
     // contracts now read back the approved grouping, checklist, and clear action.
     // 11764 -> 12275 (INC-399 R44): the record-family containment check joins the Components chapter checks and KeyValueList fields use the package geometry.
-    recordedHeightPx: 12275,
+    // 12275 -> 12417 (INC-399 R46): long consumer-verification references wrap inside their panel, so its tables keep the panel width and scroll instead of being cut off.
+    recordedHeightPx: 12417,
     owedTo: "beyond-INIT-008",
     note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },

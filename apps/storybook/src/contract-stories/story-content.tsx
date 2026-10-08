@@ -122,8 +122,15 @@ import {
 } from "@tcrn/ui-copy-state";
 import { tcrnTokens } from "@tcrn/ui-tokens";
 
-function ReferenceList({ items }: { items: string[] }) {
-  return <div className="tcrn-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
+// A list of long free-form references opts into the published wrapping badge, and its strip
+// gives up its content-based minimum: otherwise one long reference widens the grid track of the
+// panel it sits in, and every table beside it is cut off instead of scrolling inside itself.
+function ReferenceList({ items, wrap = false }: { items: string[]; wrap?: boolean }) {
+  return (
+    <div className="tcrn-reference-strip" data-reference-wrap={wrap ? "true" : undefined}>
+      {items.map((item) => <Badge key={item} className={wrap ? "tcrn-badge--wrap" : undefined}>{item}</Badge>)}
+    </div>
+  );
 }
 
 const relationshipExamples = [
@@ -1757,21 +1764,6 @@ const legacyContractStories: LegacyContractStory[] = [
             <Switch label="Compact density" description="Use the smaller row rhythm" defaultChecked />
             <StatCard label="Visible items" value="24" note="Current filtered set" tone="positive" />
             <StatCard label="Needs attention" value="3" note="Review before continuing" tone="warning" />
-            <SettingRow
-              label="Display mode"
-              settingKey="display.mode"
-              description="The current presentation preference"
-              modified
-              resetLabel="Restore"
-              onReset={() => undefined}
-              control={<Select aria-label="Display mode" options={[{ value: "comfortable", label: "Comfortable" }, { value: "compact", label: "Compact" }]} />}
-            />
-            <FieldProvenance
-              value="Inherited value"
-              source="Default"
-              overridden
-              action={<Button variant="secondary">Restore field</Button>}
-            />
             <LineNumberedEditor
               value={["const route = 'local';", "return route;"].join("\n")}
               readOnly
@@ -1787,6 +1779,26 @@ const legacyContractStories: LegacyContractStory[] = [
             />
             <LockHint>Editing is unavailable until this route is unlocked.</LockHint>
           </div>
+          {/* A setting row and a value's provenance are full-width constructs: the published
+              settings track needs label, control, and tools side by side, so they sit in the
+              published SettingRowList rather than in a 180px gallery cell. */}
+          <SettingRowList>
+            <SettingRow
+              label="Display mode"
+              settingKey="display.mode"
+              description="The current presentation preference"
+              modified
+              resetLabel="Restore"
+              onReset={() => undefined}
+              control={<Select aria-label="Display mode" options={[{ value: "comfortable", label: "Comfortable" }, { value: "compact", label: "Compact" }]} />}
+            />
+            <FieldProvenance
+              value="Inherited value"
+              source="Default"
+              overridden
+              action={<Button variant="secondary">Restore field</Button>}
+            />
+          </SettingRowList>
         </ReadbackPanel>
         <InlineAlert tone="warning">
           These primitives do not implement React ErrorBoundary wrappers, telemetry, product error policy, publication, package release, or product adoption.
@@ -3314,7 +3326,7 @@ const legacyContractStories: LegacyContractStory[] = [
             <Text>Validator: {consumerEvidenceContract.utility}. Lifecycle and geometry are one observation; hardcoded wouldFail, HTTP-only UI feedback, error-DOM skips, and missing-control N/A claims fail.</Text>
           </ReadbackPanel>
           <Text>Consumer verification uses both positive and negative legs. A matching class or stylesheet digest is not sufficient when component identity, semantics, native structure, value visibility, or container policy is wrong.</Text>
-          <ReferenceList items={[consumerVerificationContract.script, consumerVerificationContract.proofVersion, ...consumerVerificationContract.negativeLegs]} />
+          <ReferenceList wrap items={[consumerVerificationContract.script, consumerVerificationContract.proofVersion, ...consumerVerificationContract.negativeLegs]} />
         </ReadbackPanel>
         <ReadbackPanel title="Required Storybook chapters">
           <TableShell
