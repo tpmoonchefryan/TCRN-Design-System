@@ -15,3 +15,8 @@
 **M3 P27 接受。** token 包（W2-A）与五家族同在 W2 并行；家族只引用契约定死的变量名。
 
 **M4 并行上限按 START 5814699 为 3。** packages.md 写的「每波不超过 8」只是分包校验口径；派工时同时在跑的包不超过 3，同波的包分批派，依赖已合入的下一波包可以提前补位，文件集与在跑包不相交。
+
+**M5 `.tcrn-icon` 基类进包（设计会话 B 类裁定，Owner 事后可更正）。**
+现象：Icon 板 F 段把「.tcrn-icon 基类位置」标为待 Owner 裁定、本批建议进包；W2-C 因此没有搬，基类仍在文档层 `apps/storybook/src/story-demo-styles.ts`。
+裁定：设计会话 2026-10-11 按纪要 TCRN-DS-MIN-20261011-GPLUS-RENEWAL D6（包是真值，Storybook 只渲染包）与 STORY-128（文档层清零）定案：基类进包，放 icon 家族段 `packages/ui-react/src/styles/icon.css.ts`；内容按 Icon 板 E 段（display inline-block；width/height 取 sm 14 / md 16 / lg 20 或数字，经 token；stroke 恒 1.25 且 vector-effect non-scaling-stroke；stroke-linecap 与 linejoin round；fill none；color currentColor；vertical-align 按行内文本对齐）；文档站只保留 `.tcrn-icon-sample*` 这类样例布局样式。不改 Story 正文，不单独写链，随批末那一次链写注解。
+处置：并入 W3-D 的派工（icon.css.ts 加入其文件集；若 W3-B 合入后文档层仍留有 `.tcrn-icon` 规则，W3-D 同提交删去）。

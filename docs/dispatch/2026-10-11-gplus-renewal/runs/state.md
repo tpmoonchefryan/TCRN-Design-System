@@ -37,12 +37,17 @@
 | W1-D | 已合入 35b918b，包树已退役 | d736309 | SUB-024；现仓先红 171 个包外类（映射 171 条：包已提供删 38、改 tcrn-doc- 86、删演示 32、删死类 15）；40 个「包组件写出但包 CSS 无规则」的类按包类计、不计入差集（按建议先做，验收复核）；35 个类被 shell-parity/shell-fidelity/storybook-smoke/smoke.test 点名，W3 改名须同提交改门；集外：`doc-shell:proof` 脚本先跑 `node --test tests/doc-shell-class-proof.test.mjs`（归 W6-A/SUB-038 接线） |
 | W2-A | 已合入 d0e6900，包树已退役 | c447221 | SUB-001→006；C5 两块各 85 名同集（主题无关块 118）；fonts-proof coverage 红：「盃」U+76C3（marks.json）不在随包分片，基线即红，批末跑 `pnpm fonts:vendor` 重生分片；预计红：token-contrast-proof（旧名变 var 别名，W3-A 重写）、smoke.test canvas 断言与 .storybook/preview.ts（P3）、旧几何断言门（P11）；tokens.css 顶部 @import fonts.css；问题 P1–P15 与 51 行新旧名表在 `problems/W2-A.md`、`handoff/W2-A.md`（W3-A/W3-B 摘录追加） |
 | W2-E | 已合入 7fb37e6，包树已退役 | 85d8583 | SUB-019→020；Form 单测 21/21；交 W3-D：base 段 `.tcrn-product-shell :focus-visible:not(.tcrn-search-input__control)` 的 box-shadow:none 要扩排除表、Navigation.test 搜索框断言（441、597–602 行）、Select chevron 与 DatePicker calendar 包裹层；交 W6-B：smoke.test 815/819 行（Field 洗底去除）；契约待议：只读框焦点环（P5）、焦点环间隙色在 :root 解析（P6）；sm/lg 与顶栏 28px 未做（P9）；无 token 的几何字面值清单（P10）——见 `problems/W2-E.md`、`handoff/W2-E.md` |
-| W2-D | 在跑 | 223100e | SUB-016→017 |
+| W2-D | 已合入 b4e9374，包树已退役 | 223100e | SUB-016→017；Button 13/13、Clipboard/ButtonGroup/index 22/22；component-api-manifest --check 红为回执漂移（W8-A 重生成）；交 W3-D：base 段 6 条与状态对冲突的规则（baseCss03 主题钮按下缩放违反 125-GWT5、baseCss08 产品壳内 focus-visible 清 box-shadow、baseCss05/06/23 四条）、Navigation.test:603 夜间 primary 断言；交 W6-B：storybook-smoke.mjs:984 的 `.tcrn-link-button:active` 字面量；foundation-visual-standards.ts:207 描述过期；设计数据待议 P7–P10（clipboard copied 换底色、quiet 组分隔线、组轮廓浅色墨字面量、loader 13/15px 无 token）；copied/failed/unsupported 三态图标建议与 copy 图标一起由 SUB-018 做（P12） |
 | W2-C | 已合入 3dc2904，包树已退役 | 0af0bf8 | SUB-014→015；Icon 6/6；锁文件只删 12 行 lucide（保留 26 行 libc）；package-contract-manifest 红两处：OFL-1.1 不在许可白名单（W1-C 字体包带入，依据 D4 加入白名单，归 W6-B 并入文件集）、story-content.tsx 第 1065 行 `data-icon-library-source="lucide-react"`（归 W3-C，W2-C 交回写了新来源值与五语文案、smoke.test 667/669、语言条目 506–509、机器词台账 160 行——台账归 W4-A）；待 Owner：画板把 `.tcrn-icon` 基础样式搬进包标为待裁（未搬）；新树先构建 ui-tokens、ui-copy-state 再构建 ui-react（TS6305） |
 | W3-B | 在跑 | 5630344 | SUB-025→026 |
+| W2-B | 在跑 | 817fc19 | SUB-012→013（可加 Typography 导出到 index.tsx） |
 | W2-F | 在跑 | 97f68c4 | SUB-022→023（与 W3-C 同改 story-content.tsx；与 W3-D 同改 Navigation.test.tsx：二者都在 W2-F 合入后再派） |
 
 集成树合入 W1-A/B/C 后 typecheck 与 build 均 EXIT=0（scratch `logs/integ-w1abc-compile.log`）。
+
+## 已收到的 B 类裁定（随批末链写注解）
+
+- `.tcrn-icon` 基类进包（icon.css.ts），见 `problems/main.md` M5；并入 W3-D。
 
 ## 批末生成物（一次再生，不随单包重做）
 
