@@ -22,6 +22,7 @@
 import { readFileSync } from "node:fs";
 import { resolve, dirname, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { componentCssModules } from "./lib/component-css-sources.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -51,14 +52,10 @@ const ALLOWED_RADIUS_LITERALS = ["50%", "0", "inherit"];
 // a drifted value cannot pass by being merely present.
 const SPACING_SCALE_PX = new Set([2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 32]);
 
-// Package-truth component CSS sources. Every `tcrnComponentCss` rule currently lives in
-// Navigation.tsx (the only `export const *Css` in the package), so this is a one-element
-// list today — but the dup gate reads a LIST so that when a STORY-037-style relocation
-// moves component families into other component sources, they stay covered without a
-// further edit to this gate.
-const COMPONENT_CSS_SOURCES = [
-  "packages/ui-react/src/components/Navigation/Navigation.tsx"
-];
+// Package-truth component CSS sources. Since TCRN-DS-SUB-010 the `tcrnComponentCss` rules
+// live in the family segment modules under packages/ui-react/src/styles/, and the list
+// comes from scripts/lib/component-css-sources.mjs, so a family module or generated
+// segment added there is covered without a further edit to this gate.
 
 // The doc-only presentation layers the dup gate must scan for re-implementations of
 // package classes. alpha-styles.ts is already in SURFACES for the per-line drift checks,
@@ -146,12 +143,12 @@ function isTokenDefinitionOrComment(line) {
 // styles IT, but NOT when the package class is merely ancestor CONTEXT for a demo child
 // (`.tcrn-nav-item .demo-child` → subject `.demo-child`).
 //
-// JSX-parsing mitigation: this runs over Navigation.tsx, a .tsx file. It is safe because
-// (a) the class match is dot-anchored — `\.(tcrn-…)` — and a TSX `className="tcrn-…"`
-// carries no leading dot, and (b) the prelude character class `[^{}();]` resets at every
-// `(` / `)` / `;`, so a leading-dot string inside a call such as `querySelector(".tcrn-x")`
-// is never captured as a rule subject. Verified: parsing the whole Navigation.tsx yields
-// exactly the same subject set as slicing only the `tcrnComponentCss` template body.
+// The package side is fed only the CSS text of the stylesheet segments (the template
+// literal bodies), never the TypeScript around them, so module comments and imports
+// cannot be mistaken for rule preludes. The docs side still reads whole files; there the
+// class match is dot-anchored — `\.(tcrn-…)` — and the prelude character class `[^{}();]`
+// resets at every `(` / `)` / `;`, so a leading-dot string inside a call such as
+// `querySelector(".tcrn-x")` is never captured as a rule subject.
 function ruleSubjectClasses(text) {
   const classes = new Set();
   for (const m of text.matchAll(/([^{}();]*)\{/g)) {
@@ -291,8 +288,8 @@ export function scanShellFidelity() {
   // compound). Both doc surfaces are read here; the whitelist admits only the demo-scoped
   // overrides documented in docs/style-scale.md.
   const packageSubjects = new Set();
-  for (const src of COMPONENT_CSS_SOURCES) {
-    for (const c of ruleSubjectClasses(readFileSync(resolve(root, src), "utf8"))) packageSubjects.add(c);
+  for (const { css } of componentCssModules(root)) {
+    for (const c of ruleSubjectClasses(css)) packageSubjects.add(c);
   }
   for (const docsSurface of DUPLICATE_DOCS_SURFACES) {
     const docsSubjects = ruleSubjectClasses(readFileSync(resolve(root, docsSurface), "utf8"));

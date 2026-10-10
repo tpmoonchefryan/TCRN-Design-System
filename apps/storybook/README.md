@@ -19,7 +19,9 @@ The same contract content is presented two ways:
   copy of `tcrnComponentCss` (see `src/build/page-template.tsx`).
 
 `storybook.css` and `alpha-styles.ts` are doc-only presentation layers. The package-truth
-component stylesheet is `tcrnComponentCss` in
+component stylesheet is `tcrnComponentCss`, written in `packages/ui-react/src/styles/`:
+one module per family (`base`, `typography`, `icon`, `actions`, `inputs`, `brand`), joined
+in cascade order by `styles/index.ts` and re-exported from
 `packages/ui-react/src/components/Navigation/Navigation.tsx`.
 
 ## Where the contract lives

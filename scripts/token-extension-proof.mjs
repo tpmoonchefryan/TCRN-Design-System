@@ -1,7 +1,8 @@
 // Extension-token registry + radius-agreement gate — TCRN-DS-INIT-007 (STORY-038).
 //
-// The package-truth component stylesheet is the `tcrnComponentCss` template literal in
-// packages/ui-react/src/components/Navigation/Navigation.tsx. Besides consuming the
+// The package-truth component stylesheet is `tcrnComponentCss`, written since
+// TCRN-DS-SUB-010 as family segment modules under packages/ui-react/src/styles/ and read
+// here through scripts/lib/component-css-sources.mjs. Besides consuming the
 // generated @tcrn/ui-tokens custom properties, it defines a handful of its own:
 //
 //   * component-layer product brand/motion accents that intentionally live outside the
@@ -17,13 +18,12 @@
 // shared-silhouette contract for `--tcrn-radius-panel`: the redefinition must be gone from
 // tcrnComponentCss (single-sourced from ui-tokens), and the token layer must keep
 // radius.panel === radius.surface.
-import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { tcrnTokens, tcrnDarkThemeTokens, createTokenMap } from "../packages/ui-tokens/dist/index.js";
+import { componentCssText } from "./lib/component-css-sources.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const NAVIGATION = resolve(root, "packages/ui-react/src/components/Navigation/Navigation.tsx");
 
 // Documented component-layer extension tokens: product-specific brand and motion accents
 // that are intentionally NOT part of the core @tcrn/ui-tokens surface. They are consumed
@@ -65,20 +65,21 @@ const LOCAL_VARS = [
   "--tcrn-table-shell-column-min-width"
 ];
 
-function componentCss(source) {
-  const declStart = source.indexOf("export const tcrnComponentCss = `");
-  if (declStart === -1) throw new Error("token-extension-proof: tcrnComponentCss declaration not found");
-  const openBacktick = source.indexOf("`", declStart);
-  const closeBacktick = source.indexOf("`", openBacktick + 1);
-  if (closeBacktick === -1) throw new Error("token-extension-proof: tcrnComponentCss closing backtick not found");
-  // The literal carries no `${}` interpolation and no escaped backticks, so the first
-  // backtick after the opener is the terminator.
-  return source.slice(openBacktick + 1, closeBacktick);
-}
+// State-pair locals. A variant declares the pair it paints with
+// (--tcrn-pair-fill-<state>, --tcrn-pair-ink-<state>, --tcrn-pair-edge-<state>, plus the
+// extra tuples the pair contract names for checkable and switch controls) and the base
+// rule reads the live pair (--tcrn-pair-fill|ink|edge|weight). They are scoped to the
+// component that declares them, so they are admitted as a namespace rather than listed
+// one by one. A pair variable that is read must still be declared somewhere in the sheet:
+// the unresolved-reference check below does not exempt them.
+const PAIR_LOCAL = /^--tcrn-pair-[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export function tokenExtensionChecks() {
-  const css = componentCss(readFileSync(NAVIGATION, "utf8"));
-  const definedProps = [...css.matchAll(/^\s*(--tcrn-[a-z0-9-]+)\s*:/gim)].map((match) => match[1]);
+  const css = componentCssText(root);
+  // A definition opens a line or follows "{" or ";", so the one-line rules the sheet also
+  // carries (and generated segments may be written as) are read too, not just the
+  // multi-line ones.
+  const definedProps = [...css.matchAll(/(?:^|[{;])\s*(--tcrn-[a-z0-9-]+)\s*:/gim)].map((match) => match[1]);
   const definedSet = new Set(definedProps);
 
   const known = new Set([...tcrnTokens, ...tcrnDarkThemeTokens].map((token) => token.variable));
@@ -87,7 +88,7 @@ export function tokenExtensionChecks() {
   const problems = [];
 
   // 1. No unregistered token definitions (catches future drift).
-  const unregistered = [...definedSet].filter((property) => !allowlisted.has(property));
+  const unregistered = [...definedSet].filter((property) => !allowlisted.has(property) && !PAIR_LOCAL.test(property));
   for (const property of unregistered) {
     problems.push(
       `unregistered token defined in tcrnComponentCss: ${property} — register it in @tcrn/ui-tokens or add it to the EXTENSION_TOKENS / LOCAL_VARS log with justification`
@@ -135,6 +136,7 @@ export function tokenExtensionChecks() {
     known: known.size,
     extensionTokens: EXTENSION_TOKENS.length,
     localVars: LOCAL_VARS.length,
+    pairLocals: [...definedSet].filter((property) => PAIR_LOCAL.test(property)).length,
     radiusPanel: panel,
     radiusSurface: surface
   };

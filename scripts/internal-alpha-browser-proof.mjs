@@ -8,6 +8,7 @@ import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.m
 import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE, validateBaselineSelection, applyBaselineSelection } from "./lib/visual-signature.mjs";
 import { measureRecordContainment } from "./geometry-proof.mjs";
 import { storybookId } from "./lib/storybook-id.mjs";
+import { componentCssSourcePaths } from "./lib/component-css-sources.mjs";
 import { localeInvariantLedger, findLatinLeaks, partitionStoryLeaks } from "./lib/locale-invariant-ledger.mjs";
 import {
   STORY_HEIGHT_BUDGET_PX,
@@ -622,8 +623,10 @@ function captureInputDigest() {
     }
   };
   visit("apps/storybook/storybook-static");
-  // The measurement source itself is part of the proof input.
-  for (const path of ["scripts/internal-alpha-browser-proof.mjs", "scripts/geometry-proof.mjs", "scripts/lib/visual-signature.mjs", "packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx", "packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx", "apps/storybook/src/alpha-styles.ts", "apps/storybook/src/build/page-template.tsx", "apps/storybook/src/build/ai-consumption-contract.ts", "pnpm-lock.yaml"]) hash.update(path).update(readFileSync(path));
+  // The measurement source itself is part of the proof input. The component stylesheet
+  // is the family segment modules under packages/ui-react/src/styles/ (TCRN-DS-SUB-010);
+  // Navigation.tsx stays in the list for the shell markup it still renders.
+  for (const path of ["scripts/internal-alpha-browser-proof.mjs", "scripts/geometry-proof.mjs", "scripts/lib/visual-signature.mjs", "packages/ui-react/src/components/Navigation/Navigation.tsx", ...componentCssSourcePaths(), "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx", "packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx", "apps/storybook/src/alpha-styles.ts", "apps/storybook/src/build/page-template.tsx", "apps/storybook/src/build/ai-consumption-contract.ts", "pnpm-lock.yaml"]) hash.update(path).update(readFileSync(path));
   return hash.digest("hex");
 }
 const inputSha256 = captureInputDigest();
