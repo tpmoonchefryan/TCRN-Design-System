@@ -1,23 +1,146 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Icon, tcrnIconNames } from "./Icon.js";
+import { tcrnTokens } from "@tcrn/ui-tokens";
+import { tcrnComponentCss } from "../../styles/index.js";
+import { Icon, tcrnIconNames, type IconName } from "./Icon.js";
+import { tcrnIconNewNames, tcrnIconPaths } from "./icon-paths.generated.js";
 
-test("icon primitive wraps the approved icon library through package exports", () => {
-  assert.ok(tcrnIconNames.includes("search"));
-  assert.ok(tcrnIconNames.includes("menu"));
-  assert.ok(tcrnIconNames.includes("panel-left-close"));
-  assert.ok(tcrnIconNames.includes("sun"));
-  assert.ok(tcrnIconNames.includes("moon"));
-  assert.ok(tcrnIconNames.includes("globe-2"));
+interface IconContract {
+  viewBox: string;
+  strokeWidth: number;
+  icons: { name: string; new: boolean; body: string }[];
+}
 
+// The compiled test sits at packages/ui-react/dist/components/Icon/, five levels below
+// the repository root that holds the design contract.
+const iconContract = JSON.parse(
+  readFileSync(new URL("../../../../../docs/design/gplus-2026-10/contract/icons.json", import.meta.url), "utf8")
+) as IconContract;
+
+function tokenValue(variable: string): string | undefined {
+  return tcrnTokens.find((entry) => entry.variable === variable)?.value;
+}
+
+function svgOpeningTag(markup: string): string {
+  return markup.slice(0, markup.indexOf(">") + 1);
+}
+
+// React writes SVG children with closing tags. Folding them back to the generated
+// self-closing form, and requiring vector-effect on each to do it, makes "every child
+// is non-scaling" and "the children are exactly the contract paths" one comparison.
+function childrenAsContractMarkup(markup: string): string {
+  const inner = markup.slice(markup.indexOf(">") + 1, markup.lastIndexOf("</svg>"));
+  return inner.replace(/<(path|circle|ellipse|rect) vector-effect="non-scaling-stroke"([^>]*)><\/\1>/g, "<$1$2/>");
+}
+
+test("the roster is the icons.json name set: 37 names, the 9 new ones included", () => {
+  assert.equal(tcrnIconNames.length, 37);
+  assert.deepEqual([...tcrnIconNames], iconContract.icons.map((icon) => icon.name));
+  assert.equal(new Set(tcrnIconNames).size, tcrnIconNames.length);
+  assert.deepEqual(
+    [...tcrnIconNewNames],
+    iconContract.icons.filter((icon) => icon.new).map((icon) => icon.name)
+  );
+  for (const name of ["plus", "minus", "users", "bell", "copy", "trash", "calendar", "more-horizontal", "chevron-up"] as const) {
+    assert.ok(tcrnIconNames.includes(name), name);
+  }
+  for (const name of ["search", "menu", "panel-left-close", "sun", "moon", "globe-2", "loader-circle"] as const) {
+    assert.ok(tcrnIconNames.includes(name), name);
+  }
+});
+
+test("every icon renders its contract paths on the 20 grid with a 1.25 non-scaling stroke", () => {
+  assert.equal(iconContract.viewBox, "0 0 20 20");
+  assert.equal(iconContract.strokeWidth, 1.25);
+  for (const icon of iconContract.icons) {
+    const name = icon.name as IconName;
+    assert.equal(tcrnIconPaths[name], icon.body, `${name}: generated paths match the contract`);
+    const markup = renderToStaticMarkup(<Icon name={name} />);
+    const svg = svgOpeningTag(markup);
+    assert.match(svg, /viewBox="0 0 20 20"/, name);
+    assert.match(svg, /stroke-width="1.25"/, name);
+    assert.match(svg, /fill="none"/, name);
+    assert.match(svg, /stroke="currentColor"/, name);
+    assert.match(svg, /stroke-linecap="round"/, name);
+    assert.match(svg, /stroke-linejoin="round"/, name);
+    assert.equal(childrenAsContractMarkup(markup), icon.body, `${name}: children are the contract paths, each non-scaling`);
+  }
+});
+
+test("sm, md and lg are the icon size tokens; a number is used as given", () => {
+  const steps = [
+    ["sm", "--tcrn-icon-size-sm"],
+    ["md", "--tcrn-icon-size-md"],
+    ["lg", "--tcrn-icon-size-lg"]
+  ] as const;
+  for (const [size, variable] of steps) {
+    const pixels = Number.parseFloat(tokenValue(variable) ?? "");
+    const svg = svgOpeningTag(renderToStaticMarkup(<Icon name="search" size={size} />));
+    assert.match(svg, new RegExp(`width="${pixels}" height="${pixels}"`), size);
+    // The stroke does not follow the size: one width at every step.
+    assert.match(svg, /stroke-width="1.25"/, size);
+  }
+  assert.deepEqual(steps.map(([, variable]) => tokenValue(variable)), ["14px", "16px", "20px"]);
+  assert.match(svgOpeningTag(renderToStaticMarkup(<Icon name="search" />)), /width="16" height="16"/);
+  assert.match(svgOpeningTag(renderToStaticMarkup(<Icon name="copy" size={13} />)), /width="13" height="13"/);
+});
+
+test("names outside the roster and a strokeWidth override do not type-check", () => {
+  // @ts-expect-error: a name outside the closed roster is a compile error.
+  const outside = <Icon name="sparkles" />;
+  // @ts-expect-error: strokeWidth is no longer a prop; the stroke is the contract.
+  const thicker = <Icon name="search" strokeWidth={2} />;
+  assert.ok(outside && thicker);
+  // Forced through anyway, the contract stroke still wins.
+  const forced = { name: "search", strokeWidth: 2 } as unknown as Parameters<typeof Icon>[0];
+  assert.match(svgOpeningTag(renderToStaticMarkup(<Icon {...forced} />)), /stroke-width="1.25"/);
+  assert.doesNotMatch(renderToStaticMarkup(<Icon {...forced} />), /stroke-width="2"/);
+});
+
+test("decorative and accessible-name behaviour is unchanged", () => {
   const decorative = renderToStaticMarkup(<Icon name="search" />);
   assert.match(decorative, /class="[^"]*tcrn-icon/);
   assert.match(decorative, /data-icon-name="search"/);
   assert.match(decorative, /aria-hidden="true"/);
+  assert.match(decorative, /focusable="false"/);
+  assert.doesNotMatch(decorative, /role=/);
+  assert.doesNotMatch(decorative, /aria-label=/);
 
   const named = renderToStaticMarkup(<Icon name="menu" decorative={false} title="Open navigation" />);
   assert.match(named, /role="img"/);
   assert.match(named, /aria-label="Open navigation"/);
   assert.doesNotMatch(named, /aria-hidden="true"/);
+
+  // A title or an aria-label alone is enough to make the icon an image.
+  const titled = renderToStaticMarkup(<Icon name="bell" title="Notifications" />);
+  assert.match(titled, /role="img"/);
+  assert.match(titled, /aria-label="Notifications"/);
+  assert.doesNotMatch(titled, /aria-hidden=/);
+  const labelled = renderToStaticMarkup(<Icon name="trash" aria-label="Delete" />);
+  assert.match(labelled, /role="img"/);
+  assert.match(labelled, /aria-label="Delete"/);
+
+  const merged = renderToStaticMarkup(<Icon name="x" className="host-icon" data-doc-shell-icon="close" />);
+  assert.match(merged, /class="tcrn-icon host-icon"/);
+  assert.match(merged, /data-doc-shell-icon="close"/);
+
+  // The doc shell smoke test treats this attribute run as a hand-drawn svg, so the
+  // package icon must not produce it.
+  assert.doesNotMatch(decorative, /viewBox="0 0 20 20" focusable="false" aria-hidden="true"/);
+});
+
+test("loader-circle turns on the loading loop token and stops under reduced motion", () => {
+  assert.equal(tokenValue("--tcrn-motion-loading-loop"), "900ms linear");
+  assert.match(
+    tcrnComponentCss,
+    /\.tcrn-icon\[data-icon-name="loader-circle"\] \{[^}]*animation: tcrn-icon-spin var\(--tcrn-motion-loading-loop\) infinite;/
+  );
+  assert.match(tcrnComponentCss, /@keyframes tcrn-icon-spin \{\s*to \{\s*transform: rotate\(360deg\);/);
+  assert.match(
+    tcrnComponentCss,
+    /@media \(prefers-reduced-motion: reduce\) \{\s*\.tcrn-icon\[data-icon-name="loader-circle"\] \{\s*animation: none;/
+  );
+  assert.match(renderToStaticMarkup(<Icon name="loader-circle" />), /data-icon-name="loader-circle"/);
 });

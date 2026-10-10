@@ -1,10 +1,28 @@
-// Icon segments of tcrnComponentCss: rules whose selector subject is an icon class. There
-// are none yet. iconCss01 is the empty landing segment for them; styles/index.ts places it
-// after the root custom properties and before the first actions rule.
+// Icon segments of tcrnComponentCss: rules whose selector subject is an icon class.
+// iconCss01 sits after the root custom properties and before the first actions rule.
+// Sizing stays on the svg width and height attributes (the icon size tokens, read by
+// Icon.tsx), so host components can still size an icon from their own rules.
 //
 // styles/index.ts joins the segments of all six family modules in the stylesheet's cascade
 // order, so where a segment sits in the sheet is decided there; this module owns what the
 // segment says. A backtick ends a segment early, so the CSS comments in it never use one
 // (scripts/css-template-integrity-proof.mjs checks every segment).
 
-export const iconCss01 = ``;
+export const iconCss01 = `
+/* loader-circle turns on the loading loop token, motion.loading.loop (900ms linear). A
+   loop needs visible status copy beside it, so reduced motion stops the turn: rotation
+   is transform travel, and the copy still says that work is under way. */
+.tcrn-icon[data-icon-name="loader-circle"] {
+  transform-origin: 50% 50%;
+  animation: tcrn-icon-spin var(--tcrn-motion-loading-loop) infinite;
+}
+@keyframes tcrn-icon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-icon[data-icon-name="loader-circle"] {
+    animation: none;
+  }
+}`;
