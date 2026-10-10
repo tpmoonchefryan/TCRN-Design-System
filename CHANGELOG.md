@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+### The repository root no longer carries an agent entry (TCRN-CROSS-SUB-443)
+
+Documentation and proof wiring only — no package, token, component or rendered
+output changes, so nothing a consumer installs moves.
+
+`AGENTS.md` and the one-line `CLAUDE.md` bridge are removed from the repository
+root (TCRN-CROSS-MIN-250): agent rules now live only at the platform container
+root, and nothing from either file is carried over. The three places that still
+depended on them are rebound. The internal-alpha proof's localization policy
+binding reads the `## Localization` section of `apps/storybook/README.md`, which
+already carries the same seven tokens; the check and its place in
+`nonVisualProofOk` are unchanged. Two foundation visual standards drop
+`AGENTS.md` from their `sourcePaths`, so the AI consumption contract stops
+citing a file that no longer exists; the hosted contract changes only at the
+next deployment. The storybook README loses its two pointers to the root
+`CLAUDE.md`. The removed file's `TOPOLOGY-CLAIMS` block named a
+`doc-topology:proof` command that the current TCRN-AOS tree no longer has; that
+stale claim goes with it. The earlier entries below that mention these files
+are history and stay as written.
+
 ### De-productized functional display surface (2026-08-22)
 
 The former `@tcrn/ui-domain` surface has been merged into `@tcrn/ui-react` under

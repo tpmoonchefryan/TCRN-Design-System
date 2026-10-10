@@ -38,8 +38,7 @@ story titles/descriptions; `storybook-content-text.ts` for in-story copy), or re
 as locale-invariant (a machine token) in `scripts/lib/locale-invariant-ledger.mjs`. The
 runtime locale swap is an exact-string match, so a string with no entry silently renders
 English on a localized route; the per-story English-leak scan in `pnpm internal-alpha:proof`
-reds the gate on any unregistered English run. See the repo-root `CLAUDE.md` "Localization"
-section for the full policy.
+reds the gate on any unregistered English run.
 
 ## Build and check
 
@@ -54,5 +53,5 @@ From the repo root:
 - `pnpm storybook:smoke` — checks the built static-docs HTML surface.
 - `pnpm verify` — the full gate chain; run it before claiming a change done.
 
-See the repo-root `CLAUDE.md` for agent house rules and `docs/style-scale.md` for the
-token scales (values come from tokens, never a raw literal).
+See the repo-root `docs/style-scale.md` for the token scales (values come from tokens, never
+a raw literal).

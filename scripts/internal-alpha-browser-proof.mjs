@@ -3533,13 +3533,13 @@ const disclosureOk = disclosureChecks.length > 0 && disclosureChecks.every(
 // this gate's script name. Only these stable tokens are checked (never volatile prose) so the
 // binding does not couple to S046/S047/S049 copy churn.
 //
-// Read from AGENTS.md, not CLAUDE.md (TCRN-CROSS-INC-200). CLAUDE.md is a bridge: the
-// platform's doc-topology gate requires it to be exactly one `@AGENTS.md` line, so that a
-// second canonical policy document cannot grow beside the first. Two gates therefore made
-// opposite demands of one file, and satisfying one broke the other. Binding here to the
-// canonical document rather than to the bridge serves this gate's own stated intent better —
-// the policy is asserted where it actually lives.
-const claudeMdLocalizationSection = readFileSync("AGENTS.md", "utf8")
+// Read from apps/storybook/README.md (TCRN-CROSS-SUB-443). The repository root no longer
+// carries an agent entry file or its one-line bridge (TCRN-CROSS-MIN-250): agent rules live
+// only at the platform container root. The README's "## Localization" section is where this
+// repository writes the policy down and already carries every token below, so the check and
+// its place in nonVisualProofOk are unchanged — only the document it reads moved, and the
+// policy is still asserted where it actually lives.
+const claudeMdLocalizationSection = readFileSync("apps/storybook/README.md", "utf8")
   .split(/^## /m)
   .find((section) => section.startsWith("Localization")) ?? "";
 const localizationPolicyRequiredTokens = ["`zh-CN`", "`en`", "`ja`", "`ko`", "`fr`", "scripts/lib/locale-invariant-ledger.mjs", "internal-alpha:proof"];
@@ -3549,7 +3549,7 @@ const localizationPolicyBinding = {
 };
 localizationPolicyBinding.ok = localizationPolicyBinding.sectionPresent && localizationPolicyBinding.missingTokens.length === 0;
 if (!localizationPolicyBinding.ok) {
-  console.error("localization policy in AGENTS.md missing/renamed — restore the ## Localization section pointer" +
+  console.error("localization policy in apps/storybook/README.md missing/renamed — restore the ## Localization section pointer" +
     (localizationPolicyBinding.sectionPresent
       ? ` (missing tokens: ${localizationPolicyBinding.missingTokens.join(", ")})`
       : " (## Localization section not found)"));
