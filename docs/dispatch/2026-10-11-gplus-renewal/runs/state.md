@@ -27,16 +27,17 @@
 - 调度（并行 ≤3，滚动补位）：包工作树在 scratch 的 `pkg/<包小写>`，分支 `claude/init015-r1-<包小写>`，自集成分支切出并已装依赖；摘录在 `runs/r1/excerpts/<包>.md`（生成器 scratch `tools/make-excerpt.mjs <runDir> <包> <out> [4|5|6|7]`）。包交回后：核对提交与 `status` 干净 → 按依赖合入集成分支（`git -C <集成树> merge --no-ff`）→ 退役包工作树 → 派下一个就绪包。
 - 依赖（就绪条件，按 subtasks.json 的 dependsOn）：W2-A 等 W1-A、W1-C；W2-B/D/E/F 等 W1-A、W1-B；W2-C 等 W1-A、W1-B（另：锁文件在 W1-C 后）；W2-G 等 W1-C；W2-H 等 W1-A；W1-D/E/F 无依赖；W3-A 等 W2-A；W3-B 等 W1-D、W2-A；W3-C 等 W1-D；W3-D 等 W2-C、W2-D、W2-E；W4-A 等 W2-B、W2-C、W2-F、W3-B、W3-C、W3-D；W4-B 等 W1-E、W2-F、W3-B、W3-C、W3-D；W5-A/B 等 W4-A（W5-B 另等 W1-F）；W5-C 等 W4-A、W3-C、W1-F；W6-A 等 W3-A、W1-C、W2-G、W2-H、W1-D、W5-B、W5-C、W4-B；W6-B 等 W5-A、W4-A、W3-C；W7-A 等 W6-A、W6-B、W5-B；W8-A 等 W6-A、W6-B、W7-A。
 - 摘录附加：家族包与 W2-H 的摘录追加 `file:handoff/W1-A.md`；W2-G 追加 `file:handoff/W1-C.md`；需要的问题条目在派工提示里点名（摘录生成器只按 P 编号自动带入拆分问题清单的条目）。
-- 补位优先级（关键路径）：W2-A、W2-E、W2-D、W2-F、W2-C、W2-B、W1-D、W2-G、W2-H、W1-E、W1-F，然后 W3（W3-B、W3-C、W3-A、W3-D）、W4、W5、W6、W7、W8。
+- 补位优先级（关键路径）：W2-C、W2-F 与 W3-C（二者都改 story-content.tsx，不能同时在跑）、W2-B、W3-B（W2-A 后）、W3-D（W2-C/D/E 后）、W2-G、W2-H、W1-E、W1-F、W3-A（W2-A 后），然后 W4、W5、W6、W7、W8。
 
 | 包 | 状态 | 包分支起点 | 备注 |
 | --- | --- | --- | --- |
 | W1-A | 已合入 2bf6d9b，包树已退役 | 6a35a29 | SUB-008→009；问题 P1–P8 在 `problems/W1-A.md`；`handoff/W1-A.md`「给后续包」一节须并入 W2 家族包、W2-A、W2-H 的摘录 |
 | W1-B | 已合入 3fff29c，包树已退役 | 6a35a29 | SUB-010；CSS 规范化相同（974 条规则同序，字节 124578→126188 全在原位拆开的跨家族选择器）；集外：doc-shell-class-proof 仍读 Navigation.tsx（W1-D 重写时按约定 8 改读 dist）、s254-component-contract-proof 正则失效（不在 verify，批末问题清单）、style-scale.md 第 63 行（W6-A/SUB-040） |
 | W1-C | 已合入 31b0f6b，包树已退役 | 6a35a29 | SUB-004→005；字体 52 文件 3,290,644 B；`handoff/W1-C.md` 写给 SUB-006/007 与集成（合并新文案后跑 `fonts-vendor --check`）；待 Owner：W1C-1 上游 OFL 版权行；安全：子代理跑 `pnpm config list` 时 npm authToken 出现在其工具输出（未落任何文件，已 grep 核对），收口时报 Owner 建议轮换；此后派工提示禁止打印配置/凭据 |
-| W1-D | 在跑 | d736309 | SUB-024 |
+| W1-D | 已合入 35b918b，包树已退役 | d736309 | SUB-024；现仓先红 171 个包外类（映射 171 条：包已提供删 38、改 tcrn-doc- 86、删演示 32、删死类 15）；40 个「包组件写出但包 CSS 无规则」的类按包类计、不计入差集（按建议先做，验收复核）；35 个类被 shell-parity/shell-fidelity/storybook-smoke/smoke.test 点名，W3 改名须同提交改门；集外：`doc-shell:proof` 脚本先跑 `node --test tests/doc-shell-class-proof.test.mjs`（归 W6-A/SUB-038 接线） |
 | W2-A | 在跑 | c447221 | SUB-001→006（依赖只有 W1-A、W1-C，已满足） |
 | W2-E | 在跑 | 85d8583 | SUB-019→020 |
+| W2-D | 在跑 | 223100e | SUB-016→017 |
 
 集成树合入 W1-A/B/C 后 typecheck 与 build 均 EXIT=0（scratch `logs/integ-w1abc-compile.log`）。
 
