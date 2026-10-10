@@ -57,13 +57,13 @@ test("tokens expose canonical CSS variables", () => {
   assert.match(tcrnTokenCss, /\[data-tcrn-theme="dark"\]/);
 });
 
-test("G+ colour and outline tokens come from the generated contract file (STORY-120)", () => {
+test("G+ colour and outline tokens come from the generated contract file", () => {
   for (const token of tcrnGplusThemedTokens) {
     assert.equal(light[token.cssVar], token.light, `${token.cssVar} light value`);
     assert.equal(dark[token.cssVar], token.dark, `${token.cssVar} night value`);
     assert.equal(tcrnTokens.find((candidate) => candidate.variable === token.cssVar)?.scope, "theme", `${token.cssVar} is theme-scoped`);
   }
-  for (const token of [...tcrnGplusFixedTokens.filter((candidate) => candidate.group === "color" || candidate.group === "focus"), ...tcrnGplusBrandTokens]) assert.equal(light[token.cssVar], token.value, `${token.cssVar} value`);
+  for (const token of [...tcrnGplusFixedTokens, ...tcrnGplusBrandTokens]) assert.equal(light[token.cssVar], token.value, `${token.cssVar} value`);
   // The six tokens STORY-120 adds, plus the product suffix colours.
   for (const variable of ["--tcrn-color-line-ctl", "--tcrn-color-surface", "--tcrn-color-acc-ul", "--tcrn-color-dis", "--tcrn-color-wash", "--tcrn-color-hover"]) {
     assert.ok(variable in light, `${variable} is defined`);
@@ -142,7 +142,7 @@ test("theme blocks declare the same property names; theme-independent tokens sit
   assert.deepEqual([...compareTokenThemeBlocks(lightOnly).lightOnly], ["--tcrn-color-ink-3"]);
 });
 
-test("pre-G+ names stay as deprecated aliases that resolve to the G+ values (STORY-120 GWT4)", () => {
+test("pre-G+ names stay as deprecated aliases that resolve to the G+ values and print deprecation notices", () => {
   const legacyColour = tcrnTokens.filter((token) => /^--tcrn-color-(text|border|surface|brand)-/.test(token.variable));
   assert.ok(legacyColour.length >= 20);
   for (const token of legacyColour) assert.ok(token.variable in tcrnDeprecatedTokenAliases, `${token.variable} is a deprecated alias`);
@@ -162,19 +162,107 @@ test("pre-G+ names stay as deprecated aliases that resolve to the G+ values (STO
   assert.equal(tcrnDeprecatedTokenAliases["--tcrn-color-brand-primary"], "--tcrn-color-acc");
   assert.equal(resolvedLight["--tcrn-color-text-muted"], "#6b675d");
   assert.equal(resolvedDark["--tcrn-color-brand-primary"], "#3fc7b7");
-  const consumer = ".a{color:var(--tcrn-color-text-primary);border-color:var(--tcrn-color-border-control)}.b{color:var(--tcrn-color-text-primary);outline-color:var(--tcrn-color-focus-ring-calibrated)}.c{color:var(--tcrn-color-ink)}";
+  // press-scale keeps its definition, marked deprecated with no successor.
+  assert.equal(light["--tcrn-motion-press-scale"], "0.97");
+  assert.deepEqual(
+    tcrnDeprecatedTokens.find((token) => token.variable === "--tcrn-motion-press-scale")?.replacement,
+    null
+  );
+  assert.equal("--tcrn-motion-press-scale" in tcrnDeprecatedTokenAliases, false);
+
+  const consumer = ".a{color:var(--tcrn-color-text-primary);border-color:var(--tcrn-color-border-control)}.b{color:var(--tcrn-color-text-primary);outline-color:var(--tcrn-color-focus-ring-calibrated)}.c{color:var(--tcrn-color-ink);transform:scale(var(--tcrn-motion-press-scale))}";
   const usages = findDeprecatedTokenUsages(consumer);
   assert.deepEqual(
     usages.map((usage) => [usage.variable, usage.replacement, usage.count]),
     [
       ["--tcrn-color-text-primary", "--tcrn-color-ink", 2],
       ["--tcrn-color-border-control", "--tcrn-color-line-ctl", 1],
-      ["--tcrn-color-focus-ring-calibrated", "--tcrn-color-acc", 1]
+      ["--tcrn-color-focus-ring-calibrated", "--tcrn-color-acc", 1],
+      ["--tcrn-motion-press-scale", null, 1]
     ]
   );
   const notices = formatDeprecatedTokenNotices(usages);
   assert.equal(notices[0], "deprecated token --tcrn-color-text-primary (2 uses): use --tcrn-color-ink");
+  assert.match(notices[3], /no G\+ successor/);
   assert.deepEqual(findDeprecatedTokenUsages(".c{color:var(--tcrn-color-ink);box-shadow:var(--tcrn-focus-ring)}"), []);
+});
+
+test("typography, shape, shadow and motion tokens follow the G+ scale", () => {
+  // Families: the bundled faces first, with the Noto CJK fallbacks.
+  assert.equal(light["--tcrn-type-family-ui"], tcrnGplusFixedTokens.find((token) => token.key === "sans")?.value);
+  assert.match(light["--tcrn-type-family-ui"], /^"Hanken Grotesk","Noto Sans SC",/);
+  assert.match(light["--tcrn-type-family-heading"], /^"Source Serif 4","Noto Serif SC",/);
+  assert.equal(light["--tcrn-type-family-heading"], light["--tcrn-type-family-serif"]);
+  assert.match(light["--tcrn-type-family-mono"], /^"IBM Plex Mono",/);
+  assert.notEqual(light["--tcrn-type-family-heading"], light["--tcrn-type-family-stamp"], "headings do not borrow the stamp face");
+  assert.doesNotMatch(light["--tcrn-type-family-heading"], /--tcrn-type-family-stamp/);
+  assert.equal(resolvedLight["--tcrn-type-family-zh-cn"], light["--tcrn-type-family-ui"], "Chinese UI text falls back to the bundled Noto Sans SC");
+
+  // Size / line pairs from contract/typography.json (13/20, 14/22, 12/16, 11/16; 36/40, 26/30, 20/26).
+  const size = (name: string) => typography.text.sizes.find((entry: { name: string }) => entry.name === name);
+  const pairs: Array<[string, string, { size: number; line: number }]> = [
+    ["--tcrn-type-size-ui", "--tcrn-type-line-ui", typography.text.base],
+    ["--tcrn-type-size-body", "--tcrn-type-line-body", size("body")],
+    ["--tcrn-type-size-reading", "--tcrn-type-line-reading", size("reading")],
+    ["--tcrn-type-size-meta", "--tcrn-type-line-meta", size("meta")],
+    ["--tcrn-type-size-caption", "--tcrn-type-line-caption", size("caption")],
+    ["--tcrn-type-size-page", "--tcrn-type-line-page", typography.headings[0]],
+    ["--tcrn-type-size-heading-2", "--tcrn-type-line-heading-2", typography.headings[1]],
+    ["--tcrn-type-size-section", "--tcrn-type-line-section", typography.headings[2]],
+    ["--tcrn-type-size-heading-3", "--tcrn-type-line-heading-3", typography.headings[2]]
+  ];
+  for (const [sizeVar, lineVar, expected] of pairs) {
+    assert.equal(light[sizeVar], px(expected.size), sizeVar);
+    assert.equal(light[lineVar], px(expected.line), lineVar);
+  }
+  assert.deepEqual(
+    [light["--tcrn-type-size-ui"], light["--tcrn-type-size-reading"], light["--tcrn-type-size-meta"], light["--tcrn-type-size-caption"], light["--tcrn-type-size-page"], light["--tcrn-type-size-heading-2"], light["--tcrn-type-size-heading-3"]],
+    ["13px", "14px", "12px", "11px", "36px", "26px", "20px"]
+  );
+  // Weights: 500 and 600 are separate steps; G+ has no 700.
+  assert.equal(light["--tcrn-type-weight-regular"], "400");
+  assert.equal(light["--tcrn-type-weight-medium"], String(typography.caps.weight));
+  assert.equal(light["--tcrn-type-weight-medium"], "500");
+  assert.equal(light["--tcrn-type-weight-semibold"], String(typography.headings[3].weight));
+  assert.equal(light["--tcrn-type-weight-semibold"], "600");
+  assert.equal(light["--tcrn-type-weight-strong"], String(typography.text.tones.find((tone: { name: string }) => tone.name === "strong").weight));
+  assert.equal(light["--tcrn-type-weight-light"], String(typography.numeral.weight));
+  assert.equal(light["--tcrn-type-tracking-caps"], typography.caps.tracking);
+  assert.equal(light["--tcrn-type-numeric-tabular"], typography.numeral.numeric);
+  assert.match(light["--tcrn-type-numeric-tabular"], /tabular-nums/);
+
+  // Shape: 8 / 12 / 3, and the panel and surface silhouettes stay one value.
+  assert.equal(light["--tcrn-radius-control"], "8px");
+  assert.equal(light["--tcrn-radius-panel"], "12px");
+  assert.equal(light["--tcrn-radius-stamp"], "3px");
+  assert.equal(light["--tcrn-radius-surface"], light["--tcrn-radius-panel"]);
+
+  // Shadows: no layer of s1/s2/s3 blurs more than 3px, in either theme.
+  const blurs = (shadow: string): number[] =>
+    shadow.split(/,(?![^(]*\))/).map((layer) => {
+      const lengths = layer.replace(/rgba?\([^)]*\)|inset/g, "").trim().split(/\s+/);
+      return Number.parseFloat(lengths[2] ?? "0");
+    });
+  for (const variable of ["--tcrn-shadow-s1", "--tcrn-shadow-s2", "--tcrn-shadow-s3"]) {
+    for (const [theme, value] of [["light", light[variable]], ["dark", dark[variable]]]) {
+      assert.ok(value, `${variable} ${theme}`);
+      assert.ok(Math.max(...blurs(value)) <= 3, `${variable} ${theme} blurs at most 3px: ${value}`);
+    }
+  }
+  assert.equal(resolvedLight["--tcrn-elevation-floating"], light["--tcrn-shadow-s3"]);
+
+  // Motion: one ease, 240ms movement, 120ms fill, 80ms press.
+  assert.equal(light["--tcrn-motion-ease"], "cubic-bezier(.22,1,.36,1)");
+  assert.equal(light["--tcrn-motion-duration-move"], "240ms");
+  assert.equal(light["--tcrn-motion-duration-fill"], "120ms");
+  assert.equal(light["--tcrn-motion-duration-press"], "80ms");
+  assert.equal(light["--tcrn-motion-standard"], "240ms cubic-bezier(.22,1,.36,1)");
+  assert.equal(light["--tcrn-motion-emphasis"], "240ms cubic-bezier(.22,1,.36,1)");
+  assert.equal(light["--tcrn-motion-fast"], "120ms cubic-bezier(.22,1,.36,1)");
+  assert.equal(light["--tcrn-motion-instant"], "80ms cubic-bezier(.22,1,.36,1)");
+  assert.equal(light["--tcrn-selection-glide"], "240ms cubic-bezier(.22,1,.36,1)");
+  assert.equal(light["--tcrn-motion-loading-loop"], "900ms linear");
+  assert.equal(resolvedLight["--tcrn-motion-ease-out"], "cubic-bezier(.22,1,.36,1)");
 });
 
 test("css variable output is deterministic", () => {
