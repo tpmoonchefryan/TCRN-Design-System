@@ -283,12 +283,15 @@ export function MultiSelect({ options, value, defaultValue, onChange, presentati
     const placeholder = requiredText(emptySelectionLabel, "MultiSelect dropdown requires emptySelectionLabel");
     const listId = `${props.id ?? dropdownId}-listbox`;
     const uniqueOptions = [...new Map(options.map((option) => [option.value, option])).values()];
+    // The summary is cut to one line, so it carries its full text as a title. A disabled
+    // trigger keeps its reason as the only title.
+    const summaryText = uniqueOptions.filter((option) => selectedValue.includes(option.value)).map((option) => option.label).join(", ") || placeholder;
     return (
       <div ref={dropdownRef} className={cx("tcrn-multi-select-dropdown", className)} data-choice-cardinality="collection" data-choice-value-mode="closed" data-choice-presentation="dropdown" data-choice-option-count={uniqueOptions.length} data-empty-selection-label={placeholder}>
         <button type="button" id={props.id} disabled={disabled} autoFocus={props.autoFocus} tabIndex={props.tabIndex} title={normalizedReason ?? title}
           aria-label={props["aria-label"]} aria-labelledby={props["aria-labelledby"]} aria-describedby={ariaDescribedBy} aria-invalid={props["aria-invalid"]} aria-required={props.required || undefined}
           aria-haspopup="listbox" aria-expanded="false" aria-controls={listId} className="tcrn-select tcrn-multi-select-dropdown__trigger">
-          <span data-multi-select-summary>{uniqueOptions.filter((option) => selectedValue.includes(option.value)).map((option) => option.label).join(", ") || placeholder}</span><Icon name="chevron-down" aria-hidden className="tcrn-multi-select-dropdown__caret" />
+          <span data-multi-select-summary title={disabled ? undefined : summaryText}>{summaryText}</span><Icon name="chevron-down" size="sm" aria-hidden className="tcrn-multi-select-dropdown__caret" />
         </button>
         <select ref={selectRef} multiple name={props.name} form={props.form} disabled={disabled} tabIndex={-1} aria-hidden="true"
           value={isControlled ? selectedValue : undefined} defaultValue={isControlled ? undefined : defaultSelectedValue} onChange={handleChange} className="tcrn-sr-only tcrn-multi-select-dropdown__value">
@@ -887,8 +890,14 @@ export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputEleme
   max?: string;
 }
 
+/*
+ * It is a .tcrn-input, so it takes the same pair table as every other text control.
+ * The browser's own picker indicator stays in place as the click target over the end
+ * of the box (made transparent in the stylesheet), so the system calendar still opens
+ * from there without a scripted showPicker call.
+ */
 export function DatePicker({ className, ...props }: DatePickerProps) {
-  return <input {...props} type="date" className={cx("tcrn-date-picker", className)} data-date-picker="true" />;
+  return <input {...props} type="date" className={cx("tcrn-input", "tcrn-date-picker", className)} data-date-picker="true" />;
 }
 
 export interface SettingRowProps extends HTMLAttributes<HTMLDivElement> {
