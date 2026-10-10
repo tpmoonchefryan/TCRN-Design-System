@@ -115,6 +115,76 @@ export const actionsCss03 = actionsPairsCss + `
 .tcrn-link-button:focus-visible {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+/* ClipboardCopyButton says how the copy went with the ink alone: copied ok, failed bad,
+   unsupported ink-3. Fill and edge stay the variant's, so the face does not change. The ink
+   is given for default, hover, active and focus alike, because the pointer is still over the
+   button, and focus is back on it, when the result arrives. */
+.tcrn-button[data-clipboard-copy-state="copied"] {
+  --tcrn-pair-ink-d: var(--tcrn-color-ok);
+  --tcrn-pair-ink-h: var(--tcrn-color-ok);
+  --tcrn-pair-ink-a: var(--tcrn-color-ok);
+  --tcrn-pair-ink-f: var(--tcrn-color-ok);
+}
+.tcrn-button[data-clipboard-copy-state="failed"] {
+  --tcrn-pair-ink-d: var(--tcrn-color-bad);
+  --tcrn-pair-ink-h: var(--tcrn-color-bad);
+  --tcrn-pair-ink-a: var(--tcrn-color-bad);
+  --tcrn-pair-ink-f: var(--tcrn-color-bad);
+}
+.tcrn-button[data-clipboard-copy-state="unsupported"] {
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-3);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink-3);
+  --tcrn-pair-ink-a: var(--tcrn-color-ink-3);
+  --tcrn-pair-ink-f: var(--tcrn-color-ink-3);
+}
+/* ButtonGroup: attached buttons share one outline, drawn by the group; the members drop
+   their own edges, square their inner corners and sit 1px apart beside a 1px separator.
+   The group isolates its stacking, so the focused member, raised by one, draws its whole
+   ring above its neighbours; nothing here clips (no overflow), so the ring is never cut.
+   The member rules sit after the generated variant declarations they override, at the
+   same (0,2,0). */
+.tcrn-button-group {
+  display: inline-flex;
+  align-items: stretch;
+  max-inline-size: 100%;
+  border-radius: var(--tcrn-radius-control);
+  box-shadow: 0 1px 1px rgba(22, 21, 15, 0.04), 0 0 0 1px var(--tcrn-color-line-ctl);
+  isolation: isolate;
+}
+.tcrn-button-group--quiet {
+  box-shadow: none;
+}
+.tcrn-button-group__separator {
+  flex: 0 0 auto;
+  inline-size: 1px;
+  background: var(--tcrn-color-line-ctl);
+}
+.tcrn-button-group--quiet > .tcrn-button-group__separator {
+  background: var(--tcrn-color-line-2);
+}
+.tcrn-button-group > .tcrn-button {
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-edge-h: 0 0 #0000;
+  --tcrn-pair-edge-a: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-edge-x: 0 0 #0000;
+  --tcrn-pair-edge-l: 0 0 #0000;
+  --tcrn-pair-edge-s: 0 0 #0000;
+  margin-inline-start: 1px;
+  border-radius: 0;
+}
+.tcrn-button-group > .tcrn-button:first-child {
+  margin-inline-start: 0;
+  border-start-start-radius: var(--tcrn-radius-control);
+  border-end-start-radius: var(--tcrn-radius-control);
+}
+.tcrn-button-group > .tcrn-button:last-child {
+  border-start-end-radius: var(--tcrn-radius-control);
+  border-end-end-radius: var(--tcrn-radius-control);
+}
+:where(.tcrn-button-group) > .tcrn-button:where(:focus-visible,[data-tcrn-preview-state="focus"]) {
+  z-index: 1;
 }`;
 
 export const actionsCss04 = `
