@@ -8,16 +8,16 @@ TCRN-DS-INIT-015 下 TCRN-DS-STORY-120 至 134 共 15 张 Story 全部 `done`，
 
 ## 你是谁、在哪、改什么
 
-- 你是 INIT-015 的实施对话，跑在 `TCRN-Design-System` 的独立工作树与分支上；cwd 就是这棵树。容器根 `/Users/ryanlan/Code/AGENTS.md` 的全部规则对你有效，特别是第三部分的批量处理原则 v3、自主运行、无人值守指令、静默汇报，和第二部分八的无效残余收尾原则。
+- 你是 INIT-015 的实施对话，会话根是平台容器 `/Users/ryanlan/Code`（不是 DS 仓目录）。开工第一个动作：为 DS 仓建独立工作树与分支——`git -C "/Users/ryanlan/Code/TCRN Platform/TCRN-Design-System" worktree add "/Users/ryanlan/Code/.worktrees/TCRN-Design-System/init015-gplus-renewal" -b claude/init015-gplus-renewal main`——之后所有改动、构建、门都在这棵树上用绝对路径做（`git -C`、`corepack pnpm@10.12.1 -C`），不动主检出 main；主检出只用来读 `.ether` 库。容器根 `/Users/ryanlan/Code/AGENTS.md` 的全部规则对你有效，特别是第三部分的批量处理原则 v3、自主运行、无人值守指令、静默汇报，和第二部分八的无效残余收尾原则。
 - git 身份 `tpmoonchefryan <253097889+tpmoonchefryan@users.noreply.github.com>`，提交信息末尾不加 Co-Authored-By。按 Subtask 提交，提交信息带工单键号。
 - 不推送、不打 tag、不发版、不部署、不改其它仓、不改宿主与 launchd；这些是 Owner 停点。控制树只经引擎（下文），永不用文件工具写 `.ether`。
-- 包管理器：`corepack pnpm@10.12.1 -C "<本工作树>" run <脚本>`，命令里不 cd、不 rm（删除改 mv 到 scratch 的 trash）。
+- 包管理器：`corepack pnpm@10.12.1 -C "/Users/ryanlan/Code/.worktrees/TCRN-Design-System/init015-gplus-renewal" run <脚本>`，命令里不 cd、不 rm（删除改 mv 到 scratch 的 trash）；只写这棵工作树与 scratch 目录。
 
 ## 真值在哪
 
 | 东西 | 位置 | 怎么读 |
 | --- | --- | --- |
-| 工单正文 | DS 库 `TCRN Platform/TCRN-Design-System/.ether`（在本工作树里 `--workspace` 指向主检出的这个路径） | `node ~/.einzbern/engine/einzbern.mjs work-show --external-key <键> --workspace <库>`；Story 的 goal、acceptance、body 在 `fields` 里；INIT 与 Epic 的 scope 在 `fields.body` |
+| 工单正文 | DS 库 `/Users/ryanlan/Code/TCRN Platform/TCRN-Design-System/.ether`（主检出里的库；工作树里没有它，`--workspace` 永远指向这个绝对路径） | `node ~/.einzbern/engine/einzbern.mjs work-show --external-key <键> --workspace <库>`；Story 的 goal、acceptance、body 在 `fields` 里；INIT 与 Epic 的 scope 在 `fields.body` |
 | 裁定 | `minutes:` 记录 `TCRN-DS-MIN-20261011-GPLUS-RENEWAL`（D1 至 D8） | `minutes-show` |
 | 设计正本 | 画布 https://claude.ai/artifact/DuPjVjwSK6Wb9qthW4BwFz 版本 33（草稿与确认面） | 只看，不改 |
 | 设计数据与画板 | `docs/design/gplus-2026-10/`：`tools/lib.mjs` 的 `T`（token 对象）、`ICONS`（37 件路径）、`build-actions.mjs` 的 `pairs()`、`build-inputs.mjs` 的对表 CSS、`build-logos2.mjs` 的 `MARKS` 与 `PAL`、`boards/*.dc.html`（每块板的矩阵表与 F 段 token 差异）、`measure.js`（八项测量）、`logos2/*.svg` | 这是 STORY-122 要抽成 `contract/*.json` 的来源；在那之前实现与 story 直接读这些文件 |
