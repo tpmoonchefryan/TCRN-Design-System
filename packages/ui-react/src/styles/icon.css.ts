@@ -7,8 +7,44 @@
 // order, so where a segment sits in the sheet is decided there; this module owns what the
 // segment says. A backtick ends a segment early, so the CSS comments in it never use one
 // (scripts/css-template-integrity-proof.mjs checks every segment).
+//
+// The stroke width is the icon contract's (docs/design/gplus-2026-10/contract/icons.json,
+// through the generated path module), so the base class cannot drift from the roster.
+
+import { tcrnIconStrokeWidth } from "../components/Icon/icon-paths.generated.js";
 
 export const iconCss01 = `
+/* The icon base class (Icon board, section E). It moved here from the docs layer, which
+   now keeps only sample layout (docs/style-scale.md). An icon is an inline-block that
+   neither grows nor shrinks in a flex row and sits on the middle of the text line around
+   it, as the board draws it; containers that centre their icon (buttons, nav items,
+   inputs) do so themselves. The size is the svg width and height: sm 14, md 16 or lg 20
+   from the icon size tokens, or a number. The roster line is restated so that a page
+   rule aimed at svg cannot fill, thin or recolour an icon: no fill, the current text
+   colour, one stroke width at every size, round caps and joins. vector-effect is not
+   inherited, so it is set on the shapes. */
+.tcrn-icon {
+  display: inline-block;
+  flex: none;
+  color: currentColor;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: ${tcrnIconStrokeWidth};
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+}
+.tcrn-icon > * {
+  vector-effect: non-scaling-stroke;
+}
+/* Markup written without size attributes takes the md step rather than the 300 by 150
+   default of a replaced element. Zero specificity, so a host rule still wins. */
+:where(.tcrn-icon:not([width])) {
+  inline-size: var(--tcrn-icon-size-md);
+}
+:where(.tcrn-icon:not([height])) {
+  block-size: var(--tcrn-icon-size-md);
+}
 /* loader-circle turns on the loading loop token, motion.loading.loop (900ms linear). A
    loop needs visible status copy beside it, so reduced motion stops the turn: rotation
    is transform travel, and the copy still says that work is under way. */

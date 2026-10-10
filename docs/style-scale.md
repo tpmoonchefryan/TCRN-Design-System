@@ -131,9 +131,13 @@ components instead.
   so a top-level `.tcrn-filter-bar` here does not duplicate a package selector) and the
   tooltip static-preview hook `.tcrn-tooltip[data-storybook-static-tooltip="true"]` (and its
   `[data-placement]` variants), which forces the revealed state for static docs screenshots.
-- **Deferred primitive:** `.tcrn-icon` base rule (Icon-emitted) remains doc-side for now —
-  it is outside STORY-037's named 24 families and awaits an explicit Owner call to promote
-  or keep it.
+- **Icon base class (promoted):** the `.tcrn-icon` base rule (Icon-emitted) is the
+  package's, in `packages/ui-react/src/styles/icon.css.ts` (Icon board section E; design
+  session ruling of 2026-10-11 under STORY-128, open to Owner correction). The docs layer
+  keeps only sample layout (`.tcrn-doc-icon-sample`, `.tcrn-icon-sample*`) and placements
+  inside `.tcrn-doc-*` containers, and addresses a package icon there as
+  `svg[data-icon-name]`, so no docs rule takes `.tcrn-icon` as its subject and the class is
+  not on the shell-fidelity whitelist.
 
 ## Settings controls and container thresholds
 
