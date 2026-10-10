@@ -35,11 +35,16 @@
 | W1-B | 已合入 3fff29c，包树已退役 | 6a35a29 | SUB-010；CSS 规范化相同（974 条规则同序，字节 124578→126188 全在原位拆开的跨家族选择器）；集外：doc-shell-class-proof 仍读 Navigation.tsx（W1-D 重写时按约定 8 改读 dist）、s254-component-contract-proof 正则失效（不在 verify，批末问题清单）、style-scale.md 第 63 行（W6-A/SUB-040） |
 | W1-C | 已合入 31b0f6b，包树已退役 | 6a35a29 | SUB-004→005；字体 52 文件 3,290,644 B；`handoff/W1-C.md` 写给 SUB-006/007 与集成（合并新文案后跑 `fonts-vendor --check`）；待 Owner：W1C-1 上游 OFL 版权行；安全：子代理跑 `pnpm config list` 时 npm authToken 出现在其工具输出（未落任何文件，已 grep 核对），收口时报 Owner 建议轮换；此后派工提示禁止打印配置/凭据 |
 | W1-D | 已合入 35b918b，包树已退役 | d736309 | SUB-024；现仓先红 171 个包外类（映射 171 条：包已提供删 38、改 tcrn-doc- 86、删演示 32、删死类 15）；40 个「包组件写出但包 CSS 无规则」的类按包类计、不计入差集（按建议先做，验收复核）；35 个类被 shell-parity/shell-fidelity/storybook-smoke/smoke.test 点名，W3 改名须同提交改门；集外：`doc-shell:proof` 脚本先跑 `node --test tests/doc-shell-class-proof.test.mjs`（归 W6-A/SUB-038 接线） |
-| W2-A | 在跑 | c447221 | SUB-001→006（依赖只有 W1-A、W1-C，已满足） |
+| W2-A | 已合入 d0e6900，包树已退役 | c447221 | SUB-001→006；C5 两块各 85 名同集（主题无关块 118）；fonts-proof coverage 红：「盃」U+76C3（marks.json）不在随包分片，基线即红，批末跑 `pnpm fonts:vendor` 重生分片；预计红：token-contrast-proof（旧名变 var 别名，W3-A 重写）、smoke.test canvas 断言与 .storybook/preview.ts（P3）、旧几何断言门（P11）；tokens.css 顶部 @import fonts.css；问题 P1–P15 与 51 行新旧名表在 `problems/W2-A.md`、`handoff/W2-A.md`（W3-A/W3-B 摘录追加） |
 | W2-E | 在跑 | 85d8583 | SUB-019→020 |
 | W2-D | 在跑 | 223100e | SUB-016→017 |
+| W2-C | 在跑 | 0af0bf8 | SUB-014→015 |
 
 集成树合入 W1-A/B/C 后 typecheck 与 build 均 EXIT=0（scratch `logs/integ-w1abc-compile.log`）。
+
+## 批末生成物（一次再生，不随单包重做）
+
+- `pnpm fonts:vendor`（中文分片按最终产品用字重选）→ fonts-proof coverage 转绿；`node scripts/contract-generate.mjs --check`；tokens-sync；internal-alpha 回执与视觉签名基线（W8-A）。
 
 ## 下一步
 
