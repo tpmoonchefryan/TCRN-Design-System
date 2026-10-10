@@ -1,0 +1,19 @@
+# 问题清单 · W2-E（SUB-019 → SUB-020）
+
+只记不修。本包四条局部门全部通过（typecheck、ui-react build、Form 单测 21/21、css-template-integrity）；以下是实施中发现、留给后续处置的事项。集外改动需求另见 `runs/r1/handoff/W2-E.md`。
+
+| # | 类别 | 事实 | 建议 |
+| --- | --- | --- | --- |
+| P1 | 预期红（集外测试） | `packages/ui-react/src/components/Navigation/Navigation.test.tsx` 断言旧搜索框外形。把这些正则直接对构建后的 `tcrnComponentCss` 求值：第 441（外壳内控件 focus 时 `box-shadow: none`）、597（包裹层三列 grid）、599（快捷键 `position: static`、text-secondary、UI 字族）、600（图标 `grid-column: 1`）、601（控件 `grid-column: 2`、`padding: 0`）、602（快捷键 `grid-column: 3`）行红；第 440、598 行仍过，但只是因为 `[\s\S]*` 跨到后面别的 3px outline 规则，已不再验证原意。SUB-020 按画板改为工具形态（控件即盒，图标与快捷键绝对定位于其上）。 | W3-D 按新形态改写这八条：控件读 search 对、包裹层不画边与底、图标与快捷键绝对定位、控件内距让开两者；440、598 改为断言外壳内包裹层不画 outline。 |
+| P2 | 预期红（集外测试） | `apps/storybook/src/smoke.test.ts` 第 815 行（`.tcrn-field:focus-within` 后接 background-color）与第 819 行（forced-colors 块里 `.tcrn-field:focus-within,` 与 `.tcrn-field--error` 并列）断言已按 P29 去掉的整块洗底。 | W3-D 删除这两条，或改为断言 `.tcrn-field:focus-within` 不存在、forced-colors 块只含 `.tcrn-field--error`。 |
+| P3 | 预期红（集外门） | inputs 段与生成段引用的 G+ token（`--tcrn-color-line-ctl`、`--tcrn-color-wash`、`--tcrn-color-ink-3`、`--tcrn-focus-ring`、`--tcrn-control-height-md`、`--tcrn-icon-size-sm`、`--tcrn-radius-check`、`--tcrn-motion-duration-fill`、`--tcrn-motion-ease` 等）在本包树的 @tcrn/ui-tokens 里还没有，token-extension-proof 会报 unresolved reference。 | SUB-001 把 G+ token 落进 ui-tokens 后转绿（W2 集成）；本包没有新增 `--tcrn-*` 定义，只沿用 LOCAL_VARS 里的五个 `--tcrn-search-input-*` 并改了取值。 |
+| P4 | 基础段冲突（冻结） | base 段 `.tcrn-product-shell :focus-visible:not(.tcrn-search-input__control)`（base.css.ts 约第 213 行，特异性 0,3,0）在外壳内给获焦元素画 3px outline 并写 `box-shadow: none`：外壳里的 Input、Select、MultiSelect 触发器、Checkbox、Radio、Switch 获焦时边与环（都在 box-shadow 里）全部消失，只剩旧 outline。 | 交 W3-D：把对表驱动的控件加进 `:not()` 排除表，或改为只对未接入对表的元素生效。Actions 家族同理。 |
+| P5 | 合同顺序 | inputs-text 的 ruleOrder 为 h、f、r、e、ef、x，readonly 规则排在 focus 之后：只读输入框获焦时生效对被 r 覆盖，没有焦点环（画板同序）。只读框可获焦，WCAG 2.4.7 风险。 | 合同增加 rf 态或把 f 排到 r 之后后重生成；本包未改生成物。 |
+| P6 | token 解析 | `--tcrn-focus-ring` 在 `:root` 声明，其中 `var(--tcrn-color-surface)` 在 `:root` 就被替换，容器改 `--tcrn-color-surface` 传不到环里。Chromium 实测：纸面上 acc 焦点环的间隙是 bg（#efeeea），而生成段把 error 环展开写在控件上（`--tcrn-pair-edge-ef`），间隙取到 panel（#ffffff），两种环的间隙色不一致。画板同构。 | SUB-001 或生成器处理：承载面同时重声明 `--tcrn-focus-ring`，或生成器把环展开写进各对值。 |
+| P7 | 未做（依赖 W3-D） | Select 的 chevron-down 14、ink-3、appearance none（画板 F 段）未做：原生 `<select>` 放不进图标，需像画板 `.sw>.chev` 那样加包裹层与 Icon，会碰到 base 段 `.tcrn-setting-row__control>:is(.tcrn-input,.tcrn-select,…)` 的直接子选择器；不用 data: URI 或渐变补画。现保留原生箭头（single select 未设 appearance none）。 | 与 DatePicker 的 calendar 图标同一机制，交 W3-D 一并处理。 |
+| P8 | 未做（Field 第五批） | 按 P29 只去掉了 `.tcrn-field:focus-within` 整块洗底；`.tcrn-field--error` 的整块 blocked-bg 洗底与 outline 未动，画板 F 段要求改为红边、红字文案加 alert-triangle。 | 第五批 Field 处理。 |
+| P9 | 未做（范围外） | 画板的 sm 28 / lg 40 尺寸档：表单控件没有 size 属性，本包只做 md 32；顶栏搜索框 sm 28、220 宽属外壳上下文，未做。MultiSelect dropdown 的弹层与选项外形（圆角 10、s3、30px 行）以第三批 Menu 为准，未做，只改了选中行（wash 加 600）与 hover（hover token）。 | 尺寸档与顶栏搜索交 W3-D 或外壳包；弹层外形随第三批。 |
+| P10 | 字面几何 | 合同没有对应 token、按画板取字面值的几何：勾选框与单选 16、开关轨 34×20、钮 16、钮内缩 2、行程 14、单选点 5px 内环、日期指示区 30、Textarea 最小高 76、行高 20、快捷键 mono 10px 与 14px 行高与 4px 圆角、搜索快捷键预留 7ch。其余（高、圆角、内距、图标尺寸、字号、动效）都用 token。 | 若 contract-static 要求全部取自 token，合同补对应 token 后替换。 |
+| P11 | 布局取舍 | 搜索快捷键改为绝对定位后，控件末端预留固定 `7ch`（加 8px 内缩与 6px 间距），够放自动标签 Ctrl K（实测 46px 宽，文字区末端与快捷键之间留 17px）；超过约七个字符的自定义标签会压到文字区。旧 grid 布局会随标签变宽。 | 需要长标签时再议（例如合同为快捷键定宽）。 |
+| P12 | 小偏差 | 画板动效表写单选「inset 环 0 → 5px」，画板 CSS 实际是 5px 环只换色；本包按画板 CSS 做（120ms 换色，reduced-motion 改瞬时）。 | 以画板 CSS 为准即可，如需环宽动画再加态规则。 |
+| P13 | 惰性残留 | inputsCss04 里 reduced-motion 给 `.tcrn-search-input` 包裹层的 transition 已无作用（包裹层不再画底与边）；`apps/storybook/src/alpha-styles.ts` 第 1231 行 `.tcrn-checkbox { accent-color: brand-primary }` 在 appearance none 后失效且仍用品牌色。 | 前者可在 W3-D 顺手删；后者交文档站清理。 |
