@@ -16,7 +16,7 @@ import {
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 
 function ReferenceList({ items }: { items: string[] }) {
-  return <div className="tcrn-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
+  return <div className="tcrn-doc-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
 }
 
 type ShellVisualInstanceRoute = "cockpit" | "work";

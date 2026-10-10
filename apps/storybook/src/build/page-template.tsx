@@ -349,7 +349,6 @@ function docHeaderWorkspaceHtml(group: ContractStoryGroup, activeStory: Contract
             <span class="tcrn-sr-only">${i18nText("shell.searchLabel")}</span>
             ${renderToStaticMarkup(
               <SearchInput
-                className="tcrn-search-input--compact"
                 placeholder={localeText("shell.searchLabel")}
                 aria-label={localeText("shell.searchLabel")}
                 data-i18n-placeholder="shell.searchLabel"
@@ -420,7 +419,7 @@ function injectReadbackPanelAnchors(html: string, storyId: string): string {
 }
 
 function storyHtml(group: ContractStoryGroup, stories: ContractStory[]): string {
-  return `<section class="tcrn-static-section" id="${groupSlug(group)}" data-story-section="${group}">
+  return `<section class="tcrn-doc-static-section" id="${groupSlug(group)}" data-story-section="${group}">
   <h2>${i18nText(`group.${group}`)}</h2>
 ${stories.map((story) => {
   // Each story is rendered in its own renderToStaticMarkup pass, so React's useId counter
@@ -431,7 +430,7 @@ ${stories.map((story) => {
     identifierPrefix: `${story.id}-`
   }), story.id);
   return `  <article id="${story.id}" data-contract-story-id="${story.id}" data-story-id="${story.id}" data-story-group="${story.group}" data-story-category="${escapeHtml(story.category)}" data-story-category-id="${escapeHtml(story.categoryId)}" data-story-source-path="${escapeHtml(story.sourcePath)}" data-story-package-authority="${escapeHtml(story.packageAuthority)}" data-story-readiness="${escapeHtml(story.readiness)}" data-story-proof-posture="${escapeHtml(story.proofPosture)}" data-story-collapsed="true">
-  <h2 class="tcrn-story-disclosure__heading"><button type="button" class="tcrn-story-disclosure" aria-expanded="false" aria-controls="${story.id}-region" data-story-disclosure="${story.id}"><span class="tcrn-story-disclosure__title">${i18nText(`story.${story.id}.title`)}</span><span class="tcrn-story-disclosure__chevron" aria-hidden="true">${iconHtml("chevron-right", "tcrn-story-disclosure__chevron-svg", "story-disclosure")}</span></button></h2>
+  <h2 class="tcrn-doc-story-disclosure__heading"><button type="button" class="tcrn-doc-story-disclosure" aria-expanded="false" aria-controls="${story.id}-region" data-story-disclosure="${story.id}"><span class="tcrn-doc-story-disclosure__title">${i18nText(`story.${story.id}.title`)}</span><span class="tcrn-doc-story-disclosure__chevron" aria-hidden="true">${iconHtml("chevron-right", "tcrn-doc-story-disclosure__chevron-svg", "story-disclosure")}</span></button></h2>
   <p>${i18nText(`story.${story.id}.description`)}</p>
   <div class="story-body" id="${story.id}-region">${body}</div>
 </article>`;
@@ -446,7 +445,7 @@ ${stories.map((story) => {
 function sectionIndexBodyHtml(group: ContractStoryGroup): string {
   const stories = contractStoriesByGroup(group);
   const categories = storyCategoriesForGroup(group, stories);
-  return `<section class="tcrn-static-section tcrn-static-section--category-index" id="${groupSlug(group)}" data-doc-category-index="${group}">
+  return `<section class="tcrn-doc-static-section tcrn-doc-static-section--category-index" id="${groupSlug(group)}" data-doc-category-index="${group}">
   <ol class="tcrn-doc-category-index">
 ${categories.map((category) => {
   const categoryLabel = localeText(category.label);
@@ -646,9 +645,9 @@ function componentReferenceRegionHtml(component: ComponentApiEntry): string {
   const anchor = referenceComponentAnchor(component.name);
   const propsType = component.propsType ? `<code>${escapeHtml(component.propsType)}</code>` : "<code>—</code>";
   const propsBody = component.props.length === 0
-    ? `<p class="tcrn-component-reference__empty">${i18nText("reference.noProps")}</p>`
-    : `<div class="tcrn-reference-table-scroll">
-      <table class="tcrn-reference-table">
+    ? `<p class="tcrn-doc-component-reference__empty">${i18nText("reference.noProps")}</p>`
+    : `<div class="tcrn-doc-reference-table-scroll">
+      <table class="tcrn-doc-reference-table">
         <thead>
           <tr>
             <th scope="col">${i18nText("reference.colProp")}</th>
@@ -670,14 +669,14 @@ ${component.props.map((prop) => `          <tr>
   const variantKeys = Object.keys(component.variants);
   const variantsBody = variantKeys.length === 0
     ? ""
-    : `<p class="tcrn-component-reference__facet">${i18nText("reference.variants")}: ${variantKeys.map((axis) =>
+    : `<p class="tcrn-doc-component-reference__facet">${i18nText("reference.variants")}: ${variantKeys.map((axis) =>
         `<code>${escapeHtml(axis)}</code> (${component.variants[axis].map((value) => `<code>${escapeHtml(String(value))}</code>`).join(", ")})`).join("; ")}</p>`;
   const slotsBody = component.slots.length === 0
     ? ""
-    : `<p class="tcrn-component-reference__facet">${i18nText("reference.slots")}: ${component.slots.map((slot) => `<code>${escapeHtml(slot)}</code>`).join(", ")}</p>`;
-  return `      <article class="tcrn-component-reference" data-component-reference-id="${escapeHtml(component.name)}" id="${anchor}">
+    : `<p class="tcrn-doc-component-reference__facet">${i18nText("reference.slots")}: ${component.slots.map((slot) => `<code>${escapeHtml(slot)}</code>`).join(", ")}</p>`;
+  return `      <article class="tcrn-doc-component-reference" data-component-reference-id="${escapeHtml(component.name)}" id="${anchor}">
         <h2 class="tcrn-heading"><code>${escapeHtml(component.name)}</code></h2>
-        <p class="tcrn-component-reference__meta">${i18nText("reference.propsType")}: ${propsType}</p>
+        <p class="tcrn-doc-component-reference__meta">${i18nText("reference.propsType")}: ${propsType}</p>
         ${propsBody}
         ${variantsBody}
         ${slotsBody}
@@ -686,7 +685,7 @@ ${component.props.map((prop) => `          <tr>
 
 function referenceBodyHtml(page: ReferencePage): string {
   return `<section class="alpha-story-stack" data-reference-page="${page.pageIndex}">
-      <p class="tcrn-component-reference__intro">${i18nText("reference.intro")}</p>
+      <p class="tcrn-doc-component-reference__intro">${i18nText("reference.intro")}</p>
 ${page.components.map(componentReferenceRegionHtml).join("\n")}
     </section>`;
 }

@@ -22,7 +22,7 @@ import {
 } from "./overlay-family-lab-model.js";
 
 function ReferenceList({ items }: { items: string[] }) {
-  return <div className="tcrn-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
+  return <div className="tcrn-doc-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
 }
 
 const layoutStyle: CSSProperties = {

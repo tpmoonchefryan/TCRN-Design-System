@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import {
   AppStatusBar,
   Badge,
+  Card,
   Button,
   Breadcrumb,
   Checkbox,
@@ -58,6 +59,7 @@ import {
   SettingsLayout,
   ShellThemeToggle,
   SideNav,
+  Progress,
   Skeleton,
   SkipLink,
   EmptyState,
@@ -127,7 +129,7 @@ import { tcrnTokens } from "@tcrn/ui-tokens";
 // panel it sits in, and every table beside it is cut off instead of scrolling inside itself.
 function ReferenceList({ items, wrap = false }: { items: string[]; wrap?: boolean }) {
   return (
-    <div className="tcrn-reference-strip" data-reference-wrap={wrap ? "true" : undefined}>
+    <div className="tcrn-doc-reference-strip" data-reference-wrap={wrap ? "true" : undefined}>
       {items.map((item) => <Badge key={item} className={wrap ? "tcrn-badge--wrap" : undefined}>{item}</Badge>)}
     </div>
   );
@@ -174,7 +176,6 @@ import {
 import {
   CompactToolShellDemo,
   KnowledgeBaseShellDemo,
-  StorybookEntryShellStrip,
   DenseOperationsShellDemo
 } from "./prototypes/storybook-shell-demos.js";
 import {
@@ -234,8 +235,8 @@ function tokenValue(variable: string): string {
 
 function TokenSwatch({ label, token, note }: { label: string; token: string; note: string }) {
   return (
-    <div className="tcrn-token-swatch">
-      <span className="tcrn-token-swatch__color" style={{ background: `var(${token})` }} aria-hidden="true" />
+    <div className="tcrn-doc-token-swatch">
+      <span className="tcrn-doc-token-swatch__color" style={{ background: `var(${token})` }} aria-hidden="true" />
       <strong>{label}</strong>
       <code>{token}</code>
       <code>{tokenValue(token)}</code>
@@ -279,14 +280,12 @@ function compactBoundary(boundary: string): string {
 function ChangelogToken({ label, value, compactValue, kind }: { label: string; value: string; compactValue: string; kind: string }) {
   return (
     <span
-      className="tcrn-changelog-token"
       data-changelog-token-kind={kind}
       data-changelog-full-token={value}
       title={value}
       aria-label={`${label}: ${value}`}
     >
-      <span className="tcrn-changelog-token__label">{label}</span>
-      <code className="tcrn-changelog-token__value">{compactValue}</code>
+      <MachineToken token={compactValue} label={label} density="compact" />
     </span>
   );
 }
@@ -587,7 +586,6 @@ const legacyContractStories: LegacyContractStory[] = [
     description: "Design-system entry point, reader paths, and local-only claim boundaries.",
     render: () => (
       <section className="alpha-story-stack">
-        <StorybookEntryShellStrip />
         <ReadbackPanel title="Start here">
           <Text>
             Use this Storybook as the contract map for shared TCRN frontend presentation. It explains which UI decisions are owned by the design system, which proof is local, and where product adoption must be proven separately.
@@ -610,7 +608,7 @@ const legacyContractStories: LegacyContractStory[] = [
           />
         </ReadbackPanel>
         <ReadbackPanel title="Claim boundaries">
-          <div className="tcrn-guidance-grid">
+          <div className="tcrn-doc-guidance-grid">
             <StateView state={{ state: "local_only" }} title="Package-local proof" />
             <StateView state={{ state: "not_claimed" }} title="Consumer adoption separate" />
             <StateView state={{ state: "proof_required" }} title="Downstream evidence required" />
@@ -727,11 +725,11 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="TCRN mother brand">
-          <div className="tcrn-brand-system">
-            <div className="tcrn-brand-system__symbol">
+          <div className="tcrn-doc-brand-system">
+            <div className="tcrn-doc-brand-system__symbol">
               <TcrnBrandMark />
             </div>
-            <div className="tcrn-brand-system__copy">
+            <div className="tcrn-doc-brand-system__copy">
               <Heading level={3}>TCRN mark draft</Heading>
               <Text>The current mark is a local Storybook draft for visual review. It does not claim final brand acceptance, product adoption, package publication, or downstream product UI acceptance.</Text>
               <ReferenceList items={["local brand draft", "mother brand only", "no red connector points", "product suffix color owned downstream"]} />
@@ -739,16 +737,10 @@ const legacyContractStories: LegacyContractStory[] = [
           </div>
         </ReadbackPanel>
         <ReadbackPanel title="Product lockups">
-          <div className="tcrn-brand-lockups" aria-label="TCRN product lockup examples">
-            <div className="tcrn-brand-lockup-card">
-              <ProductLockup suffix="AOS" suffixClassName="tcrn-brand-wordmark__suffix--aos" />
-            </div>
-            <div className="tcrn-brand-lockup-card">
-              <ProductLockup suffix="TMS" suffixClassName="tcrn-brand-wordmark__suffix--tms" />
-            </div>
-            <div className="tcrn-brand-lockup-card">
-              <ProductLockup suffix="Design System" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
-            </div>
+          <div className="tcrn-doc-brand-lockups" aria-label="TCRN product lockup examples">
+            <ProductLockup suffix="AOS" suffixClassName="tcrn-brand-wordmark__suffix--aos" />
+            <ProductLockup suffix="TMS" suffixClassName="tcrn-brand-wordmark__suffix--tms" />
+            <ProductLockup suffix="Design System" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
           </div>
           <Text>Product suffix typography follows the mother-brand wordmark rhythm. Long product suffixes stack below TCRN; suffix color is product-owned and must not change the TCRN symbol colors.</Text>
         </ReadbackPanel>
@@ -783,7 +775,7 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="Brand palette">
-          <div className="tcrn-token-swatch-grid">
+          <div className="tcrn-doc-token-swatch-grid">
             <TokenSwatch label="Primary brand" token="--tcrn-color-brand-primary" note="Use for TCRN identity, selected navigation, and creator-channel emphasis." />
             <TokenSwatch label="Primary brand background" token="--tcrn-color-brand-primary-bg" note="Use for quiet selected surfaces and brand callouts." />
             <TokenSwatch label="Secondary brand" token="--tcrn-color-brand-secondary" note="Use for system connection, informational support, charts, and secondary emphasis." />
@@ -808,7 +800,7 @@ const legacyContractStories: LegacyContractStory[] = [
           <ReferenceList items={["brand primary", "secondary support", "accent sparingly", "state colors are not brand"]} />
         </ReadbackPanel>
         <ReadbackPanel title="Color role matrix">
-          <div className="tcrn-token-swatch-grid">
+          <div className="tcrn-doc-token-swatch-grid">
             <TokenSwatch label="Canvas" token="--tcrn-color-surface-canvas" note="Use for page background and quiet space." />
             <TokenSwatch label="Panel" token="--tcrn-color-surface-panel" note="Use for cards, drawers, dialogs, and doc surfaces." />
             <TokenSwatch label="Muted surface" token="--tcrn-color-surface-muted" note="Use for secondary chips, nav states, and low-emphasis fills." />
@@ -833,7 +825,7 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Neutral calibration candidates">
           <Text>Owner review admitted a narrow neutral-gray calibration token set as package-backed evidence only. These tokens do not replace the current canvas, panel, state, progress, or focus defaults without a separate component adoption route.</Text>
-          <div className="tcrn-token-swatch-grid">
+          <div className="tcrn-doc-token-swatch-grid">
             <TokenSwatch label="Neutral canvas" token="--tcrn-color-neutral-calibration-canvas" note="Measured neutral gray canvas candidate; no blue/purple surface tint." />
             <TokenSwatch label="Neutral panel" token="--tcrn-color-neutral-calibration-panel" note="Measured neutral panel candidate for future proofed surfaces." />
             <TokenSwatch label="Neutral muted" token="--tcrn-color-neutral-calibration-muted" note="Muted neutral fill and progress track candidate." />
@@ -858,12 +850,12 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Color token index">
           <Text>Every color token surfaces here by identifier and live value, sourced from the token registry so a rename can never silently drop a swatch.</Text>
-          <div className="tcrn-token-swatch-grid">
+          <div className="tcrn-doc-token-swatch-grid">
             {tcrnTokens
               .filter((token) => token.group === "color")
               .map((token) => (
-                <div key={token.variable} className="tcrn-token-swatch">
-                  <span className="tcrn-token-swatch__color" style={{ background: `var(${token.variable})` }} aria-hidden="true" />
+                <div key={token.variable} className="tcrn-doc-token-swatch">
+                  <span className="tcrn-doc-token-swatch__color" style={{ background: `var(${token.variable})` }} aria-hidden="true" />
                   <code>{token.variable}</code>
                   <code>{token.value}</code>
                 </div>
@@ -993,17 +985,17 @@ const legacyContractStories: LegacyContractStory[] = [
               { token: "Code text", size: `${tokenValue("--tcrn-type-size-meta")} / 1.4 / mono`, usage: "Token names, ids, commands, and technical readback." }
             ]}
           />
-          <div className="tcrn-type-scale-demo" aria-label="Type scale specimen">
+          <div className="tcrn-doc-type-scale-demo" aria-label="Type scale specimen">
             {/* each specimen is one template-literal child (single text node) so the localization
                 dictionary lookup on the full string still hits — a `text {expr}` split would leak
                 English on zh-CN/ja/ko/fr and trip the browser localization proof (S039). */}
-            <p className="tcrn-type-scale-demo__page">{`Page title / ${tokenValue("--tcrn-type-size-page")}`}</p>
-            <p className="tcrn-type-scale-demo__section">{`Section title / ${tokenValue("--tcrn-type-size-section")}`}</p>
-            <p className="tcrn-type-scale-demo__dense">{`Dense UI body / ${tokenValue("--tcrn-type-size-ui")} remains the default for operational scanning.`}</p>
-            <p className="tcrn-type-scale-demo__reading">{`Reading body / ${tokenValue("--tcrn-type-size-reading")} is reserved for proof-gated explanatory copy.`}</p>
-            <p className="tcrn-type-scale-demo__body">{`Body copy / ${tokenValue("--tcrn-type-size-body")} keeps dense product surfaces readable without becoming tiny.`}</p>
-            <p className="tcrn-type-scale-demo__caption">{`Caption / ${tokenValue("--tcrn-type-size-caption")} is reserved for metadata and helper context.`}</p>
-            <code className="tcrn-type-scale-demo__code">--tcrn-type-family-mono</code>
+            <Heading level={3} visualLevel={1}>{`Page title / ${tokenValue("--tcrn-type-size-page")}`}</Heading>
+            <Heading level={3} visualLevel={2}>{`Section title / ${tokenValue("--tcrn-type-size-section")}`}</Heading>
+            <Text>{`Dense UI body / ${tokenValue("--tcrn-type-size-ui")} remains the default for operational scanning.`}</Text>
+            <Text>{`Reading body / ${tokenValue("--tcrn-type-size-reading")} is reserved for proof-gated explanatory copy.`}</Text>
+            <Text>{`Body copy / ${tokenValue("--tcrn-type-size-body")} keeps dense product surfaces readable without becoming tiny.`}</Text>
+            <Text>{`Caption / ${tokenValue("--tcrn-type-size-caption")} is reserved for metadata and helper context.`}</Text>
+            <code>--tcrn-type-family-mono</code>
           </div>
         </ReadbackPanel>
         <ReadbackPanel title="Visual level decoupling">
@@ -1012,10 +1004,10 @@ const legacyContractStories: LegacyContractStory[] = [
           <Heading level={2} visualLevel={3}>Level 3</Heading>
           <Heading level={2} visualLevel={4}>Level 4</Heading>
         </ReadbackPanel>
-        <div className="tcrn-typography-sample">
+        <Card>
           <Heading level={3}>Localized text must wrap without changing scale.</Heading>
           <Text>Use fixed type roles and let containers wrap. Do not scale text by viewport width; long translated strings must remain readable without overlapping controls.</Text>
-        </div>
+        </Card>
         <ReferenceList items={["paragraph rhythm", "localized wrapping", "font licensing tiers", "no viewport font scaling"]} />
       </section>
     )
@@ -1042,7 +1034,7 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
           />
         </ReadbackPanel>
-        <div className="tcrn-spec-grid">
+        <div className="tcrn-doc-spec-grid">
           <StateView state={{ state: "local_only" }} title="Readable column" />
           <StateView state={{ state: "fixture_only" }} title="Adaptive grid" />
           <StateView state={{ state: "proof_required" }} title="Overflow proof" />
@@ -1062,9 +1054,8 @@ const legacyContractStories: LegacyContractStory[] = [
       <section className="alpha-story-stack">
         <ReadbackPanel title="Icon library contract">
           <div
-            data-icon-library-source="lucide-react"
+            data-icon-library-source="tcrn-icon-contract"
             data-icon-library-wrapper="@tcrn/ui-react/Icon"
-            data-icon-library-license="ISC"
             data-icon-brand-boundary="not-brand-identity"
           >
             <TableShell
@@ -1076,13 +1067,8 @@ const legacyContractStories: LegacyContractStory[] = [
               rows={[
                 {
                   aspect: "Source library",
-                  standard: "Lucide React is consumed inside @tcrn/ui-react and exposed through Icon.",
-                  boundary: "Downstream UI imports TCRN icon primitives instead of importing lucide-react directly."
-                },
-                {
-                  aspect: "License readback",
-                  standard: "Lucide is recorded with an ISC license readback for local commercial-use review.",
-                  boundary: "This is a license receipt, not legal advice or package publication."
+                  standard: "37 icons drawn for @tcrn/ui-react from the design contract, exposed through Icon.",
+                  boundary: "Downstream UI imports TCRN icon primitives instead of drawing its own SVGs."
                 },
                 {
                   aspect: "Brand boundary",
@@ -1091,9 +1077,9 @@ const legacyContractStories: LegacyContractStory[] = [
                 }
               ]}
             />
-            <ul className="tcrn-icon-sample-grid" aria-label="Approved icon names">
+            <ul className="tcrn-doc-icon-sample-grid" aria-label="Approved icon names">
               {tcrnIconNames.map((iconName) => (
-                <li key={iconName} className="tcrn-icon-sample">
+                <li key={iconName} className="tcrn-doc-icon-sample">
                   <Icon name={iconName} />
                   <code title={iconName}>{iconName}</code>
                 </li>
@@ -1118,33 +1104,33 @@ const legacyContractStories: LegacyContractStory[] = [
           />
         </ReadbackPanel>
         <ReadbackPanel title="Motion examples">
-          <div className="tcrn-motion-demo-grid">
-            <div className="tcrn-motion-demo tcrn-motion-demo--instant">
+          <div className="tcrn-doc-motion-demo-grid">
+            <div className="tcrn-doc-motion-demo tcrn-doc-motion-demo--instant">
               <h3>Instant feedback</h3>
               <Text>80ms ease-out for press, focus, and tiny affordance feedback.</Text>
-              <span className="tcrn-motion-demo__track" aria-hidden="true">
-                <span className="tcrn-motion-demo__dot" />
+              <span className="tcrn-doc-motion-demo__track" aria-hidden="true">
+                <span className="tcrn-doc-motion-demo__dot" />
               </span>
             </div>
-            <div className="tcrn-motion-demo tcrn-motion-demo--standard">
+            <div className="tcrn-doc-motion-demo tcrn-doc-motion-demo--standard">
               <h3>Standard transition</h3>
               <Text>160ms ease for hover, selected state, and lightweight surface changes.</Text>
-              <span className="tcrn-motion-demo__track" aria-hidden="true">
-                <span className="tcrn-motion-demo__dot" />
+              <span className="tcrn-doc-motion-demo__track" aria-hidden="true">
+                <span className="tcrn-doc-motion-demo__dot" />
               </span>
             </div>
-            <div className="tcrn-motion-demo tcrn-motion-demo--emphasis">
+            <div className="tcrn-doc-motion-demo tcrn-doc-motion-demo--emphasis">
               <h3>Emphasis transition</h3>
               <Text>220ms emphasized easing for drawers, dialogs, and high-attention changes.</Text>
-              <span className="tcrn-motion-demo__track" aria-hidden="true">
-                <span className="tcrn-motion-demo__dot" />
+              <span className="tcrn-doc-motion-demo__track" aria-hidden="true">
+                <span className="tcrn-doc-motion-demo__dot" />
               </span>
             </div>
-            <div className="tcrn-motion-demo tcrn-motion-demo--reduced">
+            <div className="tcrn-doc-motion-demo tcrn-doc-motion-demo--reduced">
               <h3>Reduced motion fallback</h3>
               <Text>Reduced motion preserves layout and copy when animation is unavailable.</Text>
-              <span className="tcrn-motion-demo__track" aria-hidden="true">
-                <span className="tcrn-motion-demo__dot" />
+              <span className="tcrn-doc-motion-demo__track" aria-hidden="true">
+                <span className="tcrn-doc-motion-demo__dot" />
               </span>
             </div>
           </div>
@@ -1167,41 +1153,35 @@ const legacyContractStories: LegacyContractStory[] = [
           />
         </ReadbackPanel>
         <ReadbackPanel title="Loading and progress examples">
-          <div className="tcrn-loading-motion-grid">
-            <div className="tcrn-loading-card" role="status">
-              <div className="tcrn-loading-card__row">
-                <span className="tcrn-loading-spinner" aria-hidden="true" />
-                <div className="tcrn-loading-copy">
+          <div className="tcrn-doc-loading-motion-grid">
+            <Card role="status">
+              <div className="tcrn-doc-loading-card__row">
+                <Icon name="loader-circle" />
+                <div className="tcrn-doc-loading-copy">
                   <h3>Loading state</h3>
                   <Text>Spinner motion is paired with visible copy and never replaces status text.</Text>
                 </div>
               </div>
-            </div>
-            <div className="tcrn-loading-card">
+            </Card>
+            <Card>
               <h3>Skeleton preview</h3>
               <Text>Skeletons reserve layout while content is unavailable; they do not imply readiness.</Text>
-              <div className="tcrn-loading-skeleton" aria-hidden="true">
-                <span className="tcrn-loading-skeleton__line" />
-                <span className="tcrn-loading-skeleton__line tcrn-loading-skeleton__line--medium" />
-                <span className="tcrn-loading-skeleton__line tcrn-loading-skeleton__line--short" />
-              </div>
-            </div>
-            <div className="tcrn-loading-card">
+              <Skeleton variant="text" lines={3} aria-hidden="true" />
+            </Card>
+            <Card>
               <h3>Progress feedback</h3>
               <Text>Indeterminate progress names the work being checked and keeps owner proof separate.</Text>
-              <div className="tcrn-loading-progress" aria-hidden="true">
-                <span className="tcrn-loading-progress__bar" />
-              </div>
-            </div>
-            <div className="tcrn-loading-card">
+              <Progress label="Progress feedback" aria-hidden="true" />
+            </Card>
+            <Card>
               <h3>State transition</h3>
               <Text>Copy changes first; motion only softens the surface update.</Text>
-              <div className="tcrn-loading-status">
-                <span className="tcrn-loading-status__chip tcrn-loading-status__chip--active">Proof required</span>
-                <Icon name="arrow-right" className="tcrn-loading-status__arrow" />
-                <span className="tcrn-loading-status__chip">Blocked</span>
+              <div>
+                <Badge>Proof required</Badge>
+                <Icon name="arrow-right" />
+                <Badge>Blocked</Badge>
               </div>
-            </div>
+            </Card>
           </div>
         </ReadbackPanel>
         <InlineAlert tone="warning">Motion may decorate state changes, but it cannot be the only evidence that a state changed.</InlineAlert>
@@ -1215,7 +1195,7 @@ const legacyContractStories: LegacyContractStory[] = [
     description: "State surfaces for ready, blocked, unknown, unavailable, and external proof-needed UI.",
     render: () => (
       <section className="alpha-story-stack">
-        <div className="tcrn-guidance-grid">
+        <div className="tcrn-doc-guidance-grid">
           <StateView state={{ state: "ready" }} />
           <StateView state={{ state: "blocked" }} />
           <StateView state={{ state: "unknown" }} />
@@ -1278,7 +1258,7 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="State vocabulary">
-          <div className="tcrn-status-cloud">
+          <div className="tcrn-doc-status-cloud">
             <StatusBadge state={{ state: "ready" }} />
             <StatusBadge state={{ state: "local_only" }} />
             <StatusBadge state={{ state: "fixture_only" }} />
@@ -1317,7 +1297,7 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Fail-closed presentation">
           <Text>ContentScope validates each independent scope against its own data source, phase, content flag, and count meaning. One scope may contain four items while a sibling scope is correctly empty.</Text>
-          <div className="tcrn-display-primitive-grid" data-content-scope-story="true">
+          <div className="tcrn-doc-display-primitive-grid" data-content-scope-story="true">
             <ContentScope model={{ scope: "scope-a", dataSource: "synthetic-source-a", phase: "content", shownCount: 4, totalCount: 4, hasContent: true }}>
               <div><strong>Scope A content</strong><Text>Four records are visible for this source.</Text></div>
             </ContentScope>
@@ -1359,16 +1339,16 @@ const legacyContractStories: LegacyContractStory[] = [
           <Text>
             Default locale {tcrnDefaultLocale}; fallback locale {tcrnFallbackLocale}; raw enum labels are blocked before UI display.
           </Text>
-          <div className="tcrn-locale-grid">
+          <div className="tcrn-doc-locale-grid">
             {tcrnLocaleMetadata.map((metadata) => {
               const presentation = presentCopyState({ state: "not_claimed" }, metadata.locale);
               return (
-                <div key={metadata.locale} className="tcrn-locale-card" lang={metadata.locale}>
+                <Card key={metadata.locale} lang={metadata.locale}>
                   <strong>{metadata.nativeName}</strong>
                   <span>{metadata.englishName}</span>
                   <Badge>{metadata.locale}</Badge>
                   <Badge>{presentation.label}</Badge>
-                </div>
+                </Card>
               );
             })}
           </div>
@@ -1376,17 +1356,17 @@ const legacyContractStories: LegacyContractStory[] = [
             Supported locales: {tcrnI18nContract.supportedLocales.join(", ")}.
           </Text>
         </ReadbackPanel>
-        <section className="tcrn-theme-preview" data-tcrn-theme="dark" aria-label="Dark theme token preview">
+        <section className="tcrn-doc-theme-preview" data-tcrn-theme="dark" aria-label="Dark theme token preview">
           <Heading level={3}>Dark theme preview</Heading>
           <Text>Dark mode is a token override, not a separate component fork.</Text>
           <StatusBadge state={{ state: "proof_required" }} />
           <StateView state={{ state: "proof_required" }} />
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <Button variant="primary">Inspect tokens</Button>
             <Button disabled disabledReason="Requires product adoption route">Publish theme</Button>
           </div>
           <Text>The shell theme toggle is a single circular icon-only control that reflects the current mode. Shown here in the dark preview reflecting the dark theme.</Text>
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <ShellThemeToggle currentTheme="dark" />
           </div>
         </section>
@@ -1613,9 +1593,9 @@ const legacyContractStories: LegacyContractStory[] = [
             data-copy-state-source="@tcrn/ui-copy-state"
           >
             <ReferenceList items={["@tcrn/ui-react", "Local proof only"]} />
-            <ul className="tcrn-reference-index">
+            <ul className="tcrn-doc-reference-index">
               {componentReferenceLocationsFor([...componentLibraryPublicComponentNames].sort()).map((location) => (
-                <li key={location.name} className="tcrn-reference-index__item">
+                <li key={location.name} className="tcrn-doc-reference-index__item">
                   <a href={`${location.file}#${location.anchor}`}><code>{location.name}</code></a>
                 </li>
               ))}
@@ -1684,7 +1664,7 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Skeleton">
           <Text>Skeletons are decorative placeholders. Loading announcements stay with the owning product surface through aria-busy or LiveRegion.</Text>
-          <div className="tcrn-display-primitive-grid">
+          <div className="tcrn-doc-display-primitive-grid">
             <Skeleton variant="text" />
             <Skeleton variant="rectangular" />
             <Skeleton variant="circular" />
@@ -1692,7 +1672,7 @@ const legacyContractStories: LegacyContractStory[] = [
           </div>
         </ReadbackPanel>
         <ReadbackPanel title="State surfaces">
-          <div className="tcrn-display-primitive-grid">
+          <div className="tcrn-doc-display-primitive-grid">
             <StateSurface title="Proof route needed" description="The owner must route verification before downstream claims." tone="warning" />
             <StateSurface title="Route confirmed" description="Downstream claims are unblocked because the owning route recorded proof." tone="positive" />
             <EmptyState title="No local rows" description="Clear filters or add a synthetic fixture." />
@@ -1705,7 +1685,7 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Operation feedback: short status and full receipt">
           <Text>OperationFeedback keeps a short localized status in StatusBadge and places the complete identity, long reason, and timestamp in a keyboard-readable details region.</Text>
-          <div className="tcrn-display-primitive-grid" data-operation-feedback-story="true">
+          <div className="tcrn-doc-display-primitive-grid" data-operation-feedback-story="true">
             {([
               ["idle", "The operation has not started; no long payload is placed in the compact status."],
               ["loading", "The operation is in progress; visible details remain available while the route waits."],
@@ -1743,7 +1723,7 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Badge tones">
           <Text>Badge carries a neutral, positive, warning, or danger tone. All four tones are styled in the package.</Text>
-          <div className="tcrn-status-cloud">
+          <div className="tcrn-doc-status-cloud">
             <Badge tone="neutral">Neutral</Badge>
             <Badge tone="positive">Positive</Badge>
             <Badge tone="warning">Warning</Badge>
@@ -1761,7 +1741,7 @@ const legacyContractStories: LegacyContractStory[] = [
           <Text>
             These package constructs cover compact controls, values, editable text, provenance, and route status. Each example shows the public class contract and a meaningful state; product wiring remains with the consuming surface.
           </Text>
-          <div className="tcrn-display-primitive-grid">
+          <div className="tcrn-doc-display-primitive-grid">
             <Switch label="Compact density" description="Use the smaller row rhythm" defaultChecked />
             <StatCard label="Visible items" value="24" note="Current filtered set" tone="positive" />
             <StatCard label="Needs attention" value="3" note="Review before continuing" tone="warning" />
@@ -1821,12 +1801,12 @@ const legacyContractStories: LegacyContractStory[] = [
           <ReferenceList items={["owner review completed", "a11y constrained", "package-backed primitives", "consumer adoption separate"]} />
         </ReadbackPanel>
         <ReadbackPanel title="Tooltip">
-          <div className="tcrn-interaction-primitive-row">
+          <div className="tcrn-doc-interaction-primitive-row">
             <Tooltip content="Supplemental detail only; visible labels stay required." placement="right" data-storybook-static-tooltip="true">
               <Button>Inspect route</Button>
             </Tooltip>
             <Tooltip content="Tooltip content is text-only and non-interactive." placement="top">
-              <span className="tcrn-inline-proof-token" tabIndex={0}>proof token</span>
+              <span tabIndex={0}><MachineToken token="proof token" /></span>
             </Tooltip>
             <Tooltip content="Bottom placement reveals beneath the trigger." placement="bottom" data-storybook-static-tooltip="true">
               <Button>Bottom trigger</Button>
@@ -1848,7 +1828,7 @@ const legacyContractStories: LegacyContractStory[] = [
           />
         </ReadbackPanel>
         <ReadbackPanel title="Disclosure">
-          <div className="tcrn-interaction-primitive-grid">
+          <div className="tcrn-doc-interaction-primitive-grid">
             <DisclosurePanel expanded title="Expanded controlled region">
               <Text>Products own the trigger and state. The package primitive owns the region animation and hidden-content semantics.</Text>
               <Button>Focusable only while expanded</Button>
@@ -1893,7 +1873,7 @@ const legacyContractStories: LegacyContractStory[] = [
             and that restriction is what gives it weight — an impression that appears everywhere stops
             meaning anything.
           </Text>
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <Stamp moment="gate-close">Gate closed</Stamp>
             <Stamp moment="ruling">Ruling recorded</Stamp>
             <Stamp moment="release">Release accepted</Stamp>
@@ -1915,7 +1895,7 @@ const legacyContractStories: LegacyContractStory[] = [
             and never appears in a data row — the serif loses its strokes below 12px, which is why the
             minimum stamp size is a token rather than a suggestion.
           </Text>
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <StatusBadge state={{ state: "ready" }} />
             <Stamp moment="gate-close">Gate closed</Stamp>
           </div>
@@ -1936,7 +1916,7 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="Spec">
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <Button variant="primary">Primary action</Button>
             <Button>Secondary action</Button>
             <Button variant="quiet">Quiet action</Button>
@@ -1944,7 +1924,7 @@ const legacyContractStories: LegacyContractStory[] = [
           </div>
         </ReadbackPanel>
         <ReadbackPanel title="Size">
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <Button variant="primary" size="sm">Small action</Button>
             <Button variant="primary" size="md">Medium action</Button>
           </div>
@@ -1953,7 +1933,7 @@ const legacyContractStories: LegacyContractStory[] = [
           </Text>
         </ReadbackPanel>
         <ReadbackPanel title="Link button (anchor)">
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <LinkButton href="#button-spec-usage" variant="primary">Primary link</LinkButton>
             <LinkButton href="#button-spec-usage">Secondary link</LinkButton>
             <LinkButton href="#button-spec-usage" variant="quiet">Quiet link</LinkButton>
@@ -1964,14 +1944,14 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Disabled usage">
           <Text>Visible button labels stay clean; disabled reasons are exposed through title and assistive text.</Text>
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <Button disabled disabledReason="Requires owning route approval">Apply</Button>
             <Button>Focus target</Button>
           </div>
         </ReadbackPanel>
         <ReadbackPanel title="Clipboard copy action">
           <Text>ClipboardCopyButton is a package-backed button action for explicitly copying product-approved values without exposing the copied payload through callbacks, DOM attributes, logs, or Storybook claims.</Text>
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <ClipboardCopyButton text="synthetic-trace-id-042" ariaLabel="Copy trace ID" idleLabel="Copy trace ID" />
             <ClipboardCopyButton
               text="synthetic-secret-hidden-from-dom"
@@ -1982,7 +1962,7 @@ const legacyContractStories: LegacyContractStory[] = [
           </div>
           {/* The static HTML construct: the same button plus the value the page may expose, made
               interactive by the static bridge the page mounts on button[data-clipboard-text]. */}
-          <div className="tcrn-action-row" data-clipboard-static-example="true">
+          <div className="tcrn-doc-action-row" data-clipboard-static-example="true">
             <code>mountStaticClipboardCopyButton</code>
             <ClipboardCopyButton text="synthetic-trace-id-042" ariaLabel="Copy trace ID" idleLabel="Copy trace ID" data-clipboard-text="synthetic-trace-id-042" />
           </div>
@@ -2007,7 +1987,7 @@ const legacyContractStories: LegacyContractStory[] = [
     group: "Components",
     description: "Field labeling, hints, errors, disabled controls, and aria relationships.",
     render: () => (
-      <section className="tcrn-form-stack">
+      <section className="tcrn-doc-form-stack">
         <Field label="Search fixture" hint="Hint text stays visible in weak emphasis; ordinary search fields keep the search icon but do not show a keyboard shortcut.">
           <SearchInput placeholder="Search components" />
         </Field>
@@ -2050,21 +2030,23 @@ const legacyContractStories: LegacyContractStory[] = [
         <Field label="Editable text input" hint="An enabled Input is editable; the readOnly Text input above keeps the same appearance.">
           <Input defaultValue="Editable synthetic value" />
         </Field>
-        <Field label="Short code" hint="Short fields keep measured width for codes, counts, and compact filters.">
-          <Input className="tcrn-input--short" placeholder="A-102" maxLength={6} />
-        </Field>
+        <div data-field-width="short" style={{ inlineSize: "min(18ch, 100%)" }}>
+          <Field label="Short code" hint="Short fields keep measured width for codes, counts, and compact filters.">
+            <Input placeholder="A-102" maxLength={6} />
+          </Field>
+        </div>
         <Field label="Invalid state" hint="Hint text is visible and retained in the DOM." error="Synthetic validation message">
           <Input value="Blocked local fixture" readOnly aria-invalid />
         </Field>
         <Field label="Consent">
-          <div className="tcrn-action-row">
+          <div className="tcrn-doc-action-row">
             <Checkbox defaultChecked />
             <Checkbox disabled disabledReason="Consent unavailable in this synthetic fixture" />
           </div>
         </Field>
         <ReadbackPanel title="Value and numeric control semantics">
           <Text>SettingChoice keeps values separate from navigation: more than two options use Select, fitting binary values use native radios, and NumberInput owns complete numeric entry. Stepper remains process position.</Text>
-          <div className="tcrn-display-primitive-grid">
+          <div className="tcrn-doc-display-primitive-grid">
             <SettingChoice
               label="Execution host"
               name="field-host"
@@ -2193,7 +2175,7 @@ const legacyContractStories: LegacyContractStory[] = [
               { id: "components", label: "Components", selected: true }
             ]}
           />
-          <div className="tcrn-nav-component-preview">
+          <div className="tcrn-doc-nav-component-preview">
             <ProductSwitcher
               items={[
                 { id: "aos", label: "TCRN AOS" },
@@ -2209,8 +2191,8 @@ const legacyContractStories: LegacyContractStory[] = [
               ]}
             />
             <Text>Deprecated alias of ProductSwitcher. ProductLauncher is code-identical to ProductSwitcher and is retained only for backward compatibility; prefer ProductSwitcher for new surfaces.</Text>
-            <div className="tcrn-package-nav-proof" data-package-backed-navigation-proof="true">
-              <div className="tcrn-package-nav-proof__skip">
+            <div className="tcrn-doc-package-nav-proof" data-package-backed-navigation-proof="true">
+              <div className="tcrn-doc-package-nav-proof__skip">
                 <SkipLink href="#navigation-shell-spec">Skip to navigation shell content</SkipLink>
               </div>
               <SideNav label="Package-backed side navigation">
@@ -2257,7 +2239,7 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <div
-          className="tcrn-product-shell-contract-proof"
+          className="tcrn-doc-product-shell-contract-proof"
           data-package-backed-product-shell-proof="true"
           data-aos-shell-effect-boundary="package-backed"
         >
@@ -2275,7 +2257,6 @@ const legacyContractStories: LegacyContractStory[] = [
             locales={tcrnLocaleMetadata}
             currentLocale={tcrnDefaultLocale}
             search={{
-              className: "tcrn-product-shell-search--static-display",
               label: "Search AOS shell",
               placeholder: "Search modules, work items, or proof",
               query: "cockpit",
@@ -2437,7 +2418,7 @@ const legacyContractStories: LegacyContractStory[] = [
         <PopoverSpecFixture />
         <ReadbackPanel title="Popover placement matrix">
           <Text>Placement selects the anchoring corner. It is recorded on the data-placement attribute; the package does not add positional CSS for placement, so these static specimens document the value rather than a repositioned overlay.</Text>
-          <div className="tcrn-display-primitive-grid">
+          <div className="tcrn-doc-display-primitive-grid">
             <Popover title="Bottom start" open placement="bottom-start">
               <Text>Anchors from the bottom-start corner of its trigger.</Text>
             </Popover>
@@ -2475,7 +2456,7 @@ const legacyContractStories: LegacyContractStory[] = [
             rows={tableShellRuleRows}
           />
         </ReadbackPanel>
-        <div className="tcrn-spec-grid tcrn-spec-grid--record-index">
+        <div className="tcrn-doc-spec-grid tcrn-doc-spec-grid--record-index">
           <ReadbackPanel title="Record index scanning">
             <Text>Use RecordTable for finite synthetic queues that need compact status and owner scanning.</Text>
             <RecordTable label="Component story record index" rows={componentStoryRows} />
@@ -2849,7 +2830,7 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <SectionTabs items={[{ id: "inputs", label: "Inputs", selected: true }, { id: "validation", label: "Validation" }, { id: "actions", label: "Actions" }]} />
-        <div className="tcrn-spec-grid">
+        <div className="tcrn-doc-spec-grid">
           <ReadbackPanel title="Label and hint">
             <Text>Every input has a persistent label. Hints and errors remain in the DOM and are wired into the control.</Text>
           </ReadbackPanel>
@@ -2907,7 +2888,7 @@ const legacyContractStories: LegacyContractStory[] = [
         <section id="page-hierarchy-contract" data-page-hierarchy-contract="true">
           <ReadbackPanel title="Page hierarchy contract">
             <Text>Page depth decides structure: two levels place content below parent tabs; three levels place local navigation inside the selected subpage. Width only adapts the admitted third-level region.</Text>
-            <div className="tcrn-spec-grid">
+            <div className="tcrn-doc-spec-grid">
               <PageHierarchy
                 depth="two"
                 header={<PageHeader title="Settings" />}
@@ -3019,7 +3000,7 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <InlineAlert tone="warning">Proof-dependent surfaces must describe the missing proof instead of implying readiness.</InlineAlert>
-        <div className="tcrn-guidance-grid">
+        <div className="tcrn-doc-guidance-grid">
           <StateView state={{ state: "not_configured" }} />
           <StateView state={{ state: "unknown" }} />
           <StateView state={{ state: "unavailable" }} />
@@ -3045,7 +3026,7 @@ const legacyContractStories: LegacyContractStory[] = [
         <InlineAlert tone="warning">Large or remote option sets need search, loading, empty, and keyboard states.</InlineAlert>
         <ReadbackPanel title="Field value cardinality">
           <Text>Use a Select-family dropdown to choose several values: the closed trigger shows the selection, and the open list lets you add or remove values. Native multiple lists and explicit checklists remain separate opt-in presentations; suggestions never restrict open text.</Text>
-          <div className="tcrn-display-primitive-grid">
+          <div className="tcrn-doc-display-primitive-grid">
             <Field label="Prompt languages (collection)" hint="Choose one or more supported locale values.">
               <MultiSelect
                 name="prompt-languages"
@@ -3086,7 +3067,7 @@ const legacyContractStories: LegacyContractStory[] = [
             carries no untranslated English into a non-English page — the same
             rule the locale leak scan enforces on every other story. The four
             states the alert above demands are each shown once. */}
-        <div className="tcrn-guidance-grid">
+        <div className="tcrn-doc-guidance-grid">
           <SearchableList
             label="TCRN-DS-STORY-088 scope"
             items={[
@@ -3167,7 +3148,7 @@ const legacyContractStories: LegacyContractStory[] = [
           ]}
           rows={patternExpansionRows.slice(3, 4)}
         />
-        <div className="tcrn-guidance-grid">
+        <div className="tcrn-doc-guidance-grid">
           <StateView state={{ state: "not_configured" }} title="No filter applied" />
           <StateView state={{ state: "unknown" }} title="Remote count unknown" />
         </div>
@@ -3487,17 +3468,17 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack" data-changelog-localized-readback="true">
         <ReadbackPanel title="Governance changelog records">
-          <div className="tcrn-changelog-records" data-changelog-records="governance">
+          <div className="tcrn-doc-changelog-records" data-changelog-records="governance">
             {storybookGovernanceChangelogRecords.map((record) => (
               <article key={record.routeId}
-                className="tcrn-changelog-record"
+                className="tcrn-doc-changelog-record"
                 data-changelog-route-id={record.routeId}
                 data-changelog-planned-commit={record.plannedCommit}
                 data-changelog-ai-digest-readback={record.aiContractDigestReadback}
                 data-changelog-proof-artifacts={record.proofArtifacts.join("|")}
                 data-changelog-no-overclaim-boundaries={record.noOverclaimBoundaries.join("|")}
               >
-                <div className="tcrn-changelog-record__header">
+                <div className="tcrn-doc-changelog-record__header">
                   <Badge>{record.date}</Badge>
                   <div>
                     <Heading level={3}>Storybook governance checkpoint</Heading>
@@ -3541,14 +3522,14 @@ const legacyContractStories: LegacyContractStory[] = [
                     }
                   ]}
                 />
-                <div className="tcrn-changelog-record__evidence-grid">
-                  <section className="tcrn-changelog-record__evidence-list" aria-label="Proof artifacts">
+                <div className="tcrn-doc-changelog-record__evidence-grid">
+                  <section className="tcrn-doc-changelog-record__evidence-list" aria-label="Proof artifacts">
                     <Heading level={4}>Proof artifacts</Heading>
                     <ul>
                       {record.proofArtifacts.map((artifact) => (
                         <li key={artifact}>
                           <span
-                            className="tcrn-changelog-record__artifact"
+                            className="tcrn-doc-changelog-record__artifact"
                             data-changelog-proof-artifact={artifact}
                             title={artifact}
                             aria-label={`Proof artifact: ${artifact}`}
@@ -3559,13 +3540,13 @@ const legacyContractStories: LegacyContractStory[] = [
                       ))}
                     </ul>
                   </section>
-                  <section className="tcrn-changelog-record__evidence-list" aria-label="No-overclaim boundaries">
+                  <section className="tcrn-doc-changelog-record__evidence-list" aria-label="No-overclaim boundaries">
                     <Heading level={4}>No-overclaim boundaries</Heading>
                     <ul>
                       {record.noOverclaimBoundaries.map((boundary) => (
                         <li key={boundary}>
                           <span
-                            className="tcrn-changelog-record__boundary"
+                            className="tcrn-doc-changelog-record__boundary"
                             data-changelog-no-overclaim-boundary={boundary}
                             title={boundary}
                             aria-label={`No-overclaim boundary: ${boundary}`}

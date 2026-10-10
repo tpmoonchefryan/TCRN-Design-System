@@ -31,40 +31,43 @@ import {
 import { localeText } from "../../build/i18n.js";
 
 function ReferenceList({ items }: { items: string[] }) {
-  return <div className="tcrn-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
+  return <div className="tcrn-doc-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
 }
 
 // storybook_only: dense shell IA is retained as synthetic docs/proof content, not package component source.
 export function DenseOperationsShellDemo() {
   const selectedArea = denseShellNavigationGroups.flatMap((group) => group.items).find((item) => item.selected) ?? denseShellNavigationGroups[0].items[0];
   return (
-    <div className="tcrn-shell-density-stack" data-dense-menu-density-standard="adaptive">
+    <div data-dense-menu-density-standard="adaptive">
       <div
-        className="tcrn-shell-demo tcrn-shell-demo--dense tcrn-shell-demo--hub"
+        className="tcrn-doc-shell-demo tcrn-doc-shell-demo--dense"
         data-shell-pattern="dense-product-nav"
         data-shell-width="edge-to-edge"
         data-menu-density="hub"
         data-storybook-only="dense-shell-prototype"
         data-component-library-status="deferred"
       >
-        <div className="tcrn-shell-demo__topbar tcrn-shell-demo__topbar--dense" data-shell-topbar="edge-to-edge">
-          <IconButton
-            ariaLabel="Open compact operations hub"
-            aria-expanded="true"
-            aria-controls="dense-shell-hub-menu"
-            className="tcrn-shell-demo__menu-button"
-            data-icon-only-menu="true"
-            iconName="menu"
-            type="button"
-          />
-          <ShellBrandLockup suffix="Ops" caption="Operations workspace" />
-          <SearchInput className="tcrn-search-input--compact" placeholder="Search menu" shortcut="auto" />
-          <StatusBadge state={{ state: "local_only" }} />
-        </div>
-        <div className="tcrn-shell-layer" data-shell-layer="mega-menu" data-menu-layer="low-secondary">
+        <TopBar
+          data-shell-topbar="edge-to-edge"
+          productName={(
+            <>
+              <IconButton
+                ariaLabel="Open compact operations hub"
+                aria-expanded="true"
+                aria-controls="dense-shell-hub-menu"
+                data-icon-only-menu="true"
+                iconName="menu"
+                type="button"
+              />
+              <ShellBrandLockup suffix="Ops" caption="Operations workspace" />
+            </>
+          )}
+          moduleName={<SearchInput placeholder="Search menu" shortcut="auto" />}
+          actions={<StatusBadge state={{ state: "local_only" }} />}
+        />
+        <div data-shell-layer="mega-menu" data-menu-layer="low-secondary">
           <div
             id="dense-shell-hub-menu"
-            className="tcrn-shell-hub-menu"
             data-menu-expanded="true"
             data-menu-layout="hub"
             data-menu-density="hub"
@@ -73,14 +76,14 @@ export function DenseOperationsShellDemo() {
             role="region"
             aria-label="Compact navigation hub"
           >
-            <section className="tcrn-shell-hub-summary" aria-label="Selected low-density operations area">
+            <section aria-label="Selected low-density operations area">
               <span>Low secondary density</span>
               <strong>{selectedArea.label}</strong>
               <p>When the selected area has only a handful of secondary routes, use a visual hub before falling back to command-center density.</p>
             </section>
-            <div className="tcrn-shell-hub-actions" data-directory-layout="hub-tiles">
+            <div data-directory-layout="hub-tiles">
               {denseShellHubActions.map((action, actionIndex) => (
-                <a key={action.label} href="#navigation-shell-spec" className="tcrn-shell-hub-action" data-selected={actionIndex === 0 ? "true" : undefined}>
+                <a key={action.label} href="#navigation-shell-spec" data-selected={actionIndex === 0 ? "true" : undefined}>
                   <Icon name={action.iconName} />
                   <span>
                     <strong>{action.label}</strong>
@@ -90,7 +93,7 @@ export function DenseOperationsShellDemo() {
                 </a>
               ))}
             </div>
-            <aside className="tcrn-shell-hub-sidecar" aria-label="Density escalation rules">
+            <aside aria-label="Density escalation rules">
               <strong>Switch density when</strong>
               <ul>
                 <li>Primary navigation reaches 10+ routes.</li>
@@ -103,31 +106,34 @@ export function DenseOperationsShellDemo() {
       </div>
 
       <div
-        className="tcrn-shell-demo tcrn-shell-demo--dense"
+        className="tcrn-doc-shell-demo tcrn-doc-shell-demo--dense"
         data-shell-pattern="dense-product-nav"
         data-shell-width="edge-to-edge"
         data-menu-density="command-center"
         data-storybook-only="dense-shell-prototype"
         data-component-library-status="deferred"
       >
-        <div className="tcrn-shell-demo__topbar tcrn-shell-demo__topbar--dense" data-shell-topbar="edge-to-edge">
-          <IconButton
-            ariaLabel="Open dense navigation menu"
-            aria-expanded="true"
-            aria-controls="tms-shell-expanded-menu"
-            className="tcrn-shell-demo__menu-button"
-            data-icon-only-menu="true"
-            iconName="menu"
-            type="button"
-          />
-          <ShellBrandLockup suffix="Ops" caption="Operations workspace" />
-          <SearchInput className="tcrn-search-input--compact" placeholder="Search menu" shortcut="auto" />
-          <StatusBadge state={{ state: "local_only" }} />
-        </div>
-        <div className="tcrn-shell-layer" data-shell-layer="mega-menu" data-menu-layer="10-plus-primary">
+        <TopBar
+          data-shell-topbar="edge-to-edge"
+          productName={(
+            <>
+              <IconButton
+                ariaLabel="Open dense navigation menu"
+                aria-expanded="true"
+                aria-controls="tms-shell-expanded-menu"
+                data-icon-only-menu="true"
+                iconName="menu"
+                type="button"
+              />
+              <ShellBrandLockup suffix="Ops" caption="Operations workspace" />
+            </>
+          )}
+          moduleName={<SearchInput placeholder="Search menu" shortcut="auto" />}
+          actions={<StatusBadge state={{ state: "local_only" }} />}
+        />
+        <div data-shell-layer="mega-menu" data-menu-layer="10-plus-primary">
           <div
             id="tms-shell-expanded-menu"
-            className="tcrn-shell-mega-menu"
             data-menu-expanded="true"
             data-menu-layout="command-center"
             data-menu-density="command-center"
@@ -137,13 +143,13 @@ export function DenseOperationsShellDemo() {
             role="region"
             aria-label="Expanded navigation menu"
           >
-            <nav className="tcrn-shell-domain-nav" aria-label="Primary navigation" data-primary-nav-count={denseShellPrimaryNavCount}>
+            <nav aria-label="Primary navigation" data-primary-nav-count={denseShellPrimaryNavCount}>
               {denseShellNavigationGroups.map((domain) => (
-                <section key={domain.title} className="tcrn-shell-domain-group" aria-label={domain.title}>
+                <section key={domain.title} aria-label={domain.title}>
                   <strong>{domain.title}</strong>
-                  <div className="tcrn-shell-domain-list">
+                  <div>
                     {domain.items.map((item) => (
-                      <button key={item.id} className="tcrn-shell-domain-item" type="button" data-selected={item.selected ? "true" : undefined}>
+                      <button key={item.id} type="button" data-selected={item.selected ? "true" : undefined}>
                         <Icon name={item.iconName} />
                         <span>
                           <strong>{item.label}</strong>
@@ -155,16 +161,16 @@ export function DenseOperationsShellDemo() {
                 </section>
               ))}
             </nav>
-            <section className="tcrn-shell-command-board" aria-label="Selected operations area">
-              <div className="tcrn-shell-command-board__header">
+            <section aria-label="Selected operations area">
+              <div>
                 <span>Selected operations area</span>
                 <strong>{selectedArea.label}</strong>
                 <p>This command-center layer groups 10+ primary routes by business domain, then exposes task lanes and quick entries without turning the menu into a flat directory.</p>
               </div>
-              <div className="tcrn-shell-task-lanes" data-directory-layout="task-lanes">
+              <div data-directory-layout="task-lanes">
                 {denseShellTaskLanes.map((lane, laneIndex) => (
-                  <section key={lane.title} className="tcrn-shell-task-lane" aria-label={lane.title}>
-                    <div className="tcrn-shell-task-lane__title">
+                  <section key={lane.title} aria-label={lane.title}>
+                    <div>
                       <Icon name={lane.iconName} />
                       <strong>{lane.title}</strong>
                     </div>
@@ -177,10 +183,10 @@ export function DenseOperationsShellDemo() {
                 ))}
               </div>
             </section>
-            <aside className="tcrn-shell-quick-rail" aria-label="Quick entries">
+            <aside aria-label="Quick entries">
               <strong>Quick entries</strong>
               <p>Pinned, recent, and governance routes stay separate from the main IA.</p>
-              <div className="tcrn-shell-quick-list">
+              <div>
                 {denseShellQuickLinks.map((item) => (
                   <a key={item.label} href="#navigation-shell-spec">
                     <span>{item.label}</span>
@@ -203,16 +209,14 @@ export function KnowledgeBaseShellDemo() {
   const expandLabel = localeText("shell.expandNavigationLabel");
 
   return (
-    <div className="tcrn-shell-demo tcrn-shell-demo--knowledge" data-shell-pattern="knowledge-bookmarks" data-storybook-only="knowledge-shell-prototype" data-component-library-status="deferred">
-      <div className="tcrn-knowledge-shell-layout" data-standard-shell="online-docs">
+    <div className="tcrn-doc-shell-demo tcrn-doc-shell-demo--knowledge" data-shell-pattern="knowledge-bookmarks" data-storybook-only="knowledge-shell-prototype" data-component-library-status="deferred">
+      <div className="tcrn-doc-knowledge-shell-layout" data-standard-shell="online-docs">
         <TopBar
-          className="tcrn-knowledge-shell__topbar"
           aria-label="Knowledge base top bar"
           data-registered-shell-primitive="@tcrn/ui-react/TopBar"
-          brandProps={{ className: "tcrn-knowledge-shell__brand-slot" }}
           productName={(
-            <div className="tcrn-knowledge-shell__brand-cell">
-              <a className="tcrn-doc-brand tcrn-knowledge-shell__brand" href="#navigation-shell-spec">
+            <div className="tcrn-doc-knowledge-shell__brand-cell">
+              <a className="tcrn-doc-brand tcrn-doc-knowledge-shell__brand" href="#navigation-shell-spec">
                 <ShellBrandLockup productId="design-system" brandMarkAlt={localeText("shell.brand")} />
               </a>
               <SideNavCollapseButton
@@ -229,15 +233,14 @@ export function KnowledgeBaseShellDemo() {
             </div>
           )}
           moduleName={(
-            <div className="tcrn-knowledge-shell__topbar-copy">
+            <div className="tcrn-doc-knowledge-shell__topbar-copy">
               <strong>Online documentation shell</strong>
               <span>Top bar, attached side navigation, content column, and chapter navigation stay one shell.</span>
             </div>
           )}
           actions={(
-            <div className="tcrn-knowledge-shell__actions">
+            <div className="tcrn-doc-knowledge-shell__actions">
               <SearchInput
-                className="tcrn-search-input--compact"
                 placeholder={localeText("shell.searchLabel")}
                 aria-label={localeText("shell.searchLabel")}
                 data-i18n-placeholder="shell.searchLabel"
@@ -263,12 +266,12 @@ export function KnowledgeBaseShellDemo() {
             </div>
           )}
         />
-        <SideNav id="knowledge-shell-sidebar" label="Knowledge base bookmarks" className="tcrn-knowledge-shell__sidebar tcrn-bookmark-nav tcrn-bookmark-nav--tracked">
-          <div className="tcrn-knowledge-shell__sidebar-intro">
+        <SideNav id="knowledge-shell-sidebar" label="Knowledge base bookmarks">
+          <div className="tcrn-doc-knowledge-shell__sidebar-intro">
             <strong>Current page bookmarks</strong>
             <Text>Documentation uses persistent bookmarks because the reading path is deeper than the active page.</Text>
           </div>
-          <div className="tcrn-knowledge-shell__groups">
+          <div className="tcrn-doc-knowledge-shell__groups">
             {knowledgeNavigationGroups.map((group) => (
               <NavGroup key={group.label} label={group.label} selected={group.selected}>
                 {group.items.map((item) => (
@@ -280,25 +283,25 @@ export function KnowledgeBaseShellDemo() {
             ))}
           </div>
         </SideNav>
-        <div className="tcrn-knowledge-shell__content" aria-label="Knowledge base content preview">
-          <div className="tcrn-knowledge-preview">
-            <span className="tcrn-eyebrow">Component library</span>
+        <div className="tcrn-doc-knowledge-shell__content" aria-label="Knowledge base content preview">
+          <div className="tcrn-doc-knowledge-preview">
+            <Text>Component library</Text>
             <Heading level={3}>Navigation and shell spec</Heading>
             <Text>The knowledge-base shell standard mirrors the active TCRN documentation shell: one top bar, attached side navigation, one content column, and bottom chapter navigation.</Text>
-            <div className="tcrn-knowledge-preview__panel">
+            <div className="tcrn-doc-knowledge-preview__panel">
               <Heading level={4}>{selectedGroup.label}</Heading>
               <Text>Selected section and subsection remain visible while readers move through nested documentation.</Text>
               <ReferenceList items={["scroll-aware", "multi-level", "documentation-first"]} />
             </div>
           </div>
-          <nav className="tcrn-knowledge-shell__pager" aria-label="Knowledge base shell chapter navigation">
+          <nav className="tcrn-doc-knowledge-shell__pager" aria-label="Knowledge base shell chapter navigation">
             <a href="#navigation-shell-spec">
-              <Icon name="arrow-left" className="tcrn-knowledge-shell__pager-icon" />
+              <Icon name="arrow-left" />
               <span>Previous chapter</span>
               <strong>Field spec and usage</strong>
             </a>
             <a href="#navigation-shell-spec">
-              <Icon name="arrow-right" className="tcrn-knowledge-shell__pager-icon" />
+              <Icon name="arrow-right" />
               <span>Next chapter</span>
               <strong>Dialog spec and usage</strong>
             </a>
@@ -312,23 +315,22 @@ export function KnowledgeBaseShellDemo() {
 // storybook_only: compact shell IA is retained as synthetic docs/proof content, not package component source.
 export function CompactToolShellDemo() {
   return (
-    <div className="tcrn-shell-demo tcrn-shell-demo--compact" data-shell-pattern="compact-tool-nav" data-storybook-only="compact-shell-prototype" data-component-library-status="deferred">
-      <div className="tcrn-compact-shell" data-shell-layer="compact-tool">
+    <div className="tcrn-doc-shell-demo tcrn-doc-shell-demo--compact" data-shell-pattern="compact-tool-nav" data-storybook-only="compact-shell-prototype" data-component-library-status="deferred">
+      <div data-shell-layer="compact-tool">
         <TopBar
           aria-label="Compact tool shell top bar"
-          className="tcrn-compact-shell__top-bar"
           productName={<TcrnBrandMark />}
-          brandProps={{ className: "tcrn-compact-shell__brand", "aria-label": "TCRN" }}
+          brandProps={{ "aria-label": "TCRN" }}
           moduleName="Focused tool"
           actions={<StatusBadge state={{ state: "local_only" }} />}
         />
-        <div className="tcrn-compact-shell__body">
-          <section className="tcrn-compact-shell__summary" aria-label="Compact tool shell boundary">
+        <div>
+          <section aria-label="Compact tool shell boundary">
             <span>Stable peer views</span>
             <strong>Review queue</strong>
             <Text>Use compact segmented navigation only when the route has a small, stable set of peer views.</Text>
           </section>
-          <section className="tcrn-compact-shell__switcher" aria-label="Local tool views">
+          <section aria-label="Local tool views">
             <ModuleTabs
               items={[
                 { id: "queue", label: "Queue", selected: true },
@@ -336,22 +338,22 @@ export function CompactToolShellDemo() {
                 { id: "history", label: "History" }
               ]}
             />
-            <div className="tcrn-compact-shell__panel" aria-label="Selected tool view preview">
-              <div className="tcrn-compact-shell__metric">
+            <div aria-label="Selected tool view preview">
+              <div>
                 <Icon name="check" />
                 <span>
                   <strong>Queue</strong>
                   <small>Ready to review</small>
                 </span>
               </div>
-              <div className="tcrn-compact-shell__metric">
+              <div>
                 <Icon name="alert-triangle" />
                 <span>
                   <strong>Needs proof</strong>
                   <small>Owner route pending</small>
                 </span>
               </div>
-              <div className="tcrn-compact-shell__metric">
+              <div>
                 <Icon name="book-open" />
                 <span>
                   <strong>History</strong>
@@ -362,25 +364,6 @@ export function CompactToolShellDemo() {
           </section>
         </div>
       </div>
-    </div>
-  );
-}
-
-export function StorybookEntryShellStrip() {
-  return (
-    <div className="tcrn-entry-shell-strip" data-shell-pattern="storybook-entry" data-storybook-only="entry-shell-visual">
-      <div className="tcrn-entry-shell-strip__brand">
-        <TcrnBrandMark />
-        <span>
-          <strong>Design System</strong>
-          <small>Component library</small>
-        </span>
-      </div>
-      <div className="tcrn-entry-shell-strip__module">
-        <Icon name="book-open" />
-        <span>Contract map</span>
-      </div>
-      <StatusBadge state={{ state: "local_only" }} />
     </div>
   );
 }

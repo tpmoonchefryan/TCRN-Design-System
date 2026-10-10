@@ -14,13 +14,13 @@ const sampleShellRoot = '[data-story-id="navigation-focused-shells-spec"] [data-
 const brandLockupRole = {
   id: "brand-lockup",
   kind: "brand-lockup",
-  document: '[data-story-id="navigation-focused-shells-spec"] [data-standard-shell="online-docs"] .tcrn-knowledge-shell__brand .tcrn-shell-brand-lockup',
+  document: '[data-story-id="navigation-focused-shells-spec"] [data-standard-shell="online-docs"] .tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup',
   package: ".tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo",
   brandSurface: ".tcrn-doc-global-brand",
   sidebarSurface: ".tcrn-doc-sidebar",
   truthTopbarSurface: ".tcrn-doc-global-bar",
-  sampleBrandSurface: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell`,
-  sampleTopbarSurface: `${sampleShellRoot} .tcrn-knowledge-shell__topbar`,
+  sampleBrandSurface: `${sampleShellRoot} .tcrn-doc-knowledge-shell__brand-cell`,
+  sampleTopbarSurface: `${sampleShellRoot} > .tcrn-top-bar`,
   documentMark: ".tcrn-brand-mark",
   packageMark: ".tcrn-brand-mark",
   documentLine: ".tcrn-brand-wordmark, .tcrn-product-logo__line-one",
@@ -44,11 +44,11 @@ export const sampleShellRoles = [
   {
     id: "collapse-toggle",
     kind: "sample-shell",
-    document: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell`,
+    document: `${sampleShellRoot} .tcrn-doc-knowledge-shell__brand-cell`,
     package: ".tcrn-doc-global-brand",
-    documentControl: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell button`,
+    documentControl: `${sampleShellRoot} .tcrn-doc-knowledge-shell__brand-cell button`,
     packageControl: ".tcrn-doc-sidebar-toggle-slot button",
-    documentText: `${sampleShellRoot} .tcrn-knowledge-shell__brand .tcrn-product-logo__copy`,
+    documentText: `${sampleShellRoot} .tcrn-doc-knowledge-shell__brand .tcrn-product-logo__copy`,
     packageText: ".tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo__copy",
     primitiveAttribute: "data-package-backed-shell-control",
     primitiveValue: "side-nav-collapse",
@@ -58,7 +58,7 @@ export const sampleShellRoles = [
   {
     id: "topbar",
     kind: "sample-shell",
-    document: `${sampleShellRoot} .tcrn-knowledge-shell__topbar`,
+    document: `${sampleShellRoot} > .tcrn-top-bar`,
     package: ".tcrn-doc-global-bar",
     primitiveAttribute: "data-registered-shell-primitive",
     primitiveValue: "@tcrn/ui-react/TopBar",
@@ -68,7 +68,7 @@ export const sampleShellRoles = [
   {
     id: "sidebar",
     kind: "sample-shell",
-    document: `${sampleShellRoot} .tcrn-knowledge-shell__sidebar`,
+    document: `${sampleShellRoot} > .tcrn-side-nav`,
     package: ".tcrn-doc-sidebar",
     primitiveAttribute: "data-navigation-primitive",
     primitiveValue: "side-nav",
@@ -78,7 +78,7 @@ export const sampleShellRoles = [
   {
     id: "group-container",
     kind: "sample-shell",
-    document: `${sampleShellRoot} .tcrn-knowledge-shell__groups`,
+    document: `${sampleShellRoot} .tcrn-doc-knowledge-shell__groups`,
     package: ".tcrn-doc-nav__groups",
     authority: "truth",
     properties: ["gap"]
@@ -86,10 +86,10 @@ export const sampleShellRoles = [
   {
     id: "shell-relations",
     kind: "sample-shell-relations",
-    document: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell`,
+    document: `${sampleShellRoot} .tcrn-doc-knowledge-shell__brand-cell`,
     package: ".tcrn-doc-global-brand",
-    sampleBrand: `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell`,
-    sampleSidebar: `${sampleShellRoot} .tcrn-knowledge-shell__sidebar`,
+    sampleBrand: `${sampleShellRoot} .tcrn-doc-knowledge-shell__brand-cell`,
+    sampleSidebar: `${sampleShellRoot} > .tcrn-side-nav`,
     sampleNav: `${sampleShellRoot} .tcrn-nav-item`,
     truthBrand: ".tcrn-doc-global-brand",
     truthSidebar: ".tcrn-doc-sidebar",
@@ -122,8 +122,8 @@ export const sampleShellRoles = [
     id: "element-inventory",
     kind: "element-inventory",
     sampleRoots: [
-      { id: "topbar", selector: `${sampleShellRoot} .tcrn-knowledge-shell__topbar`, includeControls: true },
-      { id: "sidebar", selector: `${sampleShellRoot} .tcrn-knowledge-shell__sidebar`, includeControls: false }
+      { id: "topbar", selector: `${sampleShellRoot} > .tcrn-top-bar`, includeControls: true },
+      { id: "sidebar", selector: `${sampleShellRoot} > .tcrn-side-nav`, includeControls: false }
     ],
     truthRoots: [
       { id: "topbar", selector: ".tcrn-doc-global-bar", includeControls: true },
@@ -134,7 +134,7 @@ export const sampleShellRoles = [
     id: "string-source",
     kind: "visible-string-source",
     sampleRoots: [
-      { id: "topbar", selector: `${sampleShellRoot} .tcrn-knowledge-shell__topbar` }
+      { id: "topbar", selector: `${sampleShellRoot} > .tcrn-top-bar` }
     ],
     truthRoots: [
       { id: "topbar", selector: ".tcrn-doc-global-bar" }
@@ -1065,7 +1065,7 @@ async function main() {
     };
     for (const role of sampleShellRoles) {
       if (role.kind === "element-inventory") {
-        const inventoryTarget = `${sampleShellRoot} .tcrn-knowledge-shell__brand-cell button`;
+        const inventoryTarget = `${sampleShellRoot} .tcrn-doc-knowledge-shell__brand-cell button`;
         await page.evaluate((selector) => document.querySelector(selector)?.setAttribute("hidden", ""), inventoryTarget);
         await settle(page);
         const inventoryMutated = await measureParity(page, [role]);

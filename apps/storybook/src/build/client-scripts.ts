@@ -689,7 +689,7 @@ export const storybookSearchScript = `<script>
       const heading = panel.querySelector(":scope > h2.tcrn-heading, :scope > h3.tcrn-heading, :scope > h4.tcrn-heading");
       const label = heading?.textContent?.trim() ?? "";
       const story = panel.closest("[data-contract-story-id]");
-      const groupLabel = story?.querySelector(".tcrn-story-disclosure__title")?.textContent?.trim() ?? "";
+      const groupLabel = story?.querySelector(".tcrn-doc-story-disclosure__title")?.textContent?.trim() ?? "";
       const href = "#" + panel.id;
       const searchable = [label, groupLabel].filter(Boolean).join(" ");
       return { href, label, groupLabel, searchable };
