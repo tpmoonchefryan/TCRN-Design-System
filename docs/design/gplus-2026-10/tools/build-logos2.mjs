@@ -1,4 +1,5 @@
 import { T, cr, fmt, kvTable, page, write, grain, esc } from "./lib.mjs";
+import { PAL, MARKS, marks as MK } from "./data.mjs";
 import fs from "node:fs";
 
 const height = process.argv[2] ? Number(process.argv[2]) : 0;
@@ -6,36 +7,9 @@ const OUTSVG = new URL("../logos2/", import.meta.url).pathname;
 fs.mkdirSync(OUTSVG, { recursive: true });
 
 // ---------- palette: flat tones taken from the TCRN mark family (blue / navy / lime-green / the four DS accents) ----------
-export const PAL = {
-  tms: { deep: "#2c63c8", bright: "#7aa0f5", tint: "#e4ecfc", name: "蓝" },
-  einzbern: { deep: "#3b5272", bright: "#8aa6c9", tint: "#e6ecf3", name: "藏青" },
-  mana: { deep: "#3a9a63", bright: "#9ddc8c", tint: "#e5f5e6", name: "绿" },
-  ds: { deep: "#6577f3", bright: "#3096f4", c3: "#43d4cf", c4: "#78b957", tint: "#eceefc", name: "四色" }
-};
-
+export { PAL };
 // ---------- marks: 48 grid, solid, two flat tones; `c` returns the svg body for a colour mode ----------
-export const MARKS = {
-  tms: {
-    name: "TCRN TMS", zh: "艺人管理系统", word: "TCRN", suffix: "TMS", font: "sans",
-    body: ({ deep, bright }) => `<path d="M11 23L24 39" stroke="${deep}" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M37 23L24 39" stroke="${bright}" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12.5" r="8" fill="${deep}"/>`,
-    says: "一个艺人双臂高举的剪影：头是一个圆，手臂是一个 V。V 既是 VTuber 的 V，也是谢幕、安可时的姿势；两条手臂一深一浅，像聚光灯打在一侧。"
-  },
-  einzbern: {
-    name: "Einzbern", zh: "项目记忆引擎", word: "Einzbern", font: "serif",
-    body: ({ deep, bright }) => `<circle cx="24" cy="7.5" r="3.5" fill="${bright}"/><path d="M10 14A14 14 0 0 0 38 14Z" fill="${deep}"/><rect x="15" y="31" width="18" height="5" rx="2.5" fill="${bright}"/><rect x="11" y="39" width="26" height="5" rx="2.5" fill="${deep}"/>`,
-    says: "一只盃接住一点光，盃下是两层基座：圣杯接住的是愿望，引擎接住的是项目的记忆；两层基座是存下来的层（纪要、卡片）。深浅交替，像一枚徽记。"
-  },
-  mana: {
-    name: "Mana Orchestrate", zh: "项目记忆助手", word: "Mana Orchestrate", font: "serif",
-    body: ({ deep, bright }) => `<path d="M13 13C13 30 35 18 35 35" stroke="${bright}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="13" cy="13" r="7" fill="${deep}"/><circle cx="35" cy="35" r="7" fill="${deep}"/>`,
-    says: "两个结点，一道流：mana 从代理流到引擎，再流回来。结点是深绿，流是亮绿，像一条有生命的带子。"
-  },
-  ds: {
-    name: "TCRN Design System", zh: "设计系统", word: "TCRN", suffix: "Design System", font: "sans",
-    body: ({ deep, bright, c3, c4 }) => `<rect x="4" y="4" width="17" height="40" rx="4" fill="${deep}"/><rect x="24" y="4" width="20" height="17" rx="4" fill="${bright}"/><rect x="24" y="24" width="9" height="20" rx="3" fill="${c3}"/><rect x="36" y="24" width="8" height="20" rx="3" fill="${c4}"/>`,
-    says: "一张版面：四块大小不等的面，四种颜色。版面是布局，颜色是调色板，合起来就是设计系统；四种颜色沿用 TCRN 母标的紫蓝、蓝、青、绿。"
-  }
-};
+export { MARKS };
 const ink = (c) => ({ deep: c, bright: c, c3: c, c4: c });
 export function mark(k, size, mode = "color", extra = "") {
   const pal = mode === "color" ? PAL[k] : mode === "white" ? ink("#ffffff") : mode === "ink" ? ink("currentColor") : ink(mode);
@@ -50,7 +24,7 @@ export function tile(k, size, kind) {
 }
 for (const k of Object.keys(MARKS)) {
   fs.writeFileSync(`${OUTSVG}/${k}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="${MARKS[k].name}">${MARKS[k].body(PAL[k])}</svg>\n`);
-  fs.writeFileSync(`${OUTSVG}/${k}-mono.svg`, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="${MARKS[k].name}">${MARKS[k].body(ink("#16150f"))}</svg>\n`);
+  fs.writeFileSync(`${OUTSVG}/${k}-mono.svg`, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="${MARKS[k].name}">${MARKS[k].body(ink(MK.monoInk))}</svg>\n`);
 }
 
 const css = `
@@ -136,11 +110,8 @@ const colorRows = [
 const colors = kvTable(colorRows, [170, 70, 320, 320]);
 
 const taglines = kvTable([
-  ["产品", "zh-CN", "en", "ja", "ko", "fr"],
-  ["TCRN TMS", "艺人管理系统", "Talent Management System", "タレントマネジメントシステム", "탤런트 관리 시스템", "Système de gestion des talents"],
-  ["Einzbern", "项目记忆引擎", "Project memory engine", "プロジェクト記憶エンジン", "프로젝트 메모리 엔진", "Moteur de mémoire de projet"],
-  ["Mana Orchestrate", "项目记忆助手", "Project memory assistant", "プロジェクト記憶アシスタント", "프로젝트 메모리 어시스턴트", "Assistant mémoire de projet"],
-  ["TCRN Design System", "设计系统", "Design System", "デザインシステム", "디자인 시스템", "Système de design"]
+  ["产品", ...MK.locales],
+  ...MK.marks.map((m) => [m.name, ...MK.locales.map((l) => m.taglines[l])])
 ], [170, 240, 320, 300, 280]);
 
 const body = `

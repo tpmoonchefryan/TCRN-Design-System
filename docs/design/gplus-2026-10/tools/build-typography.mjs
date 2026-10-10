@@ -1,31 +1,38 @@
-import { T, cr, fmt, icon, shell, matrixTable, kvTable, page, write, grain } from "./lib.mjs";
+import { T, cr, fmt, icon, shell, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
+import { typography as TY } from "./data.mjs";
+
+// type scale from contract/typography.json
+const H = Object.fromEntries(TY.headings.map((h) => [h.level, h]));
+const SZ = Object.fromEntries(TY.text.sizes.map((x) => [x.name, x]));
+const STRONG = TY.text.tones.find((x) => x.name === "strong");
+const NU = TY.numeral, CA = TY.caps, MO = TY.mono, LK = TY.link, MK = TY.mark;
 
 const height = process.argv[2] ? Number(process.argv[2]) : 0;
 
 const css = `
-.h1,.h2,.h3{margin:0;font-family:var(--serif);font-weight:400;color:var(--ink);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.h1{font-size:36px;line-height:40px}
-.h2{font-size:26px;line-height:30px;letter-spacing:-.005em}
-.h3{font-size:20px;line-height:26px;letter-spacing:0}
-.h4{margin:0;font-family:var(--sans);font-size:13px;line-height:20px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tx{margin:0;font-size:13px;line-height:20px;color:var(--ink-2)}
-.tx.strong{color:var(--ink);font-weight:600}
-.tx.read{font-size:14px;line-height:22px}
-.tx.meta{font-size:12px;line-height:16px;color:var(--ink-3)}
-.tx.cap{font-size:11px;line-height:16px;color:var(--ink-3)}
-.num{margin:0;font-family:var(--serif);font-weight:300;font-size:26px;line-height:30px;letter-spacing:-.01em;color:var(--ink);font-variant-numeric:tabular-nums lining-nums;display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap}
-.num small{font-family:var(--sans);font-size:11px;line-height:16px;letter-spacing:.06em;color:var(--ink-3);font-weight:500}
-.num.inl{font-size:16px;line-height:20px;font-weight:400;letter-spacing:0}
-.num.big{font-size:44px;line-height:48px}
-.caps{margin:0;font-family:var(--sans);font-size:11px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;white-space:nowrap}
-.caps b{font-family:var(--mono);color:var(--ink);font-weight:500;margin-right:8px;letter-spacing:.04em}
+.h1,.h2,.h3{margin:0;font-family:var(--${H[1].family});font-weight:${H[1].weight};color:var(--${H[1].tone});letter-spacing:${H[1].tracking};white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h1{font-size:${H[1].size}px;line-height:${H[1].line}px}
+.h2{font-size:${H[2].size}px;line-height:${H[2].line}px;letter-spacing:${H[2].tracking}}
+.h3{font-size:${H[3].size}px;line-height:${H[3].line}px;letter-spacing:${H[3].tracking}}
+.h4{margin:0;font-family:var(--${H[4].family});font-size:${H[4].size}px;line-height:${H[4].line}px;font-weight:${H[4].weight};color:var(--${H[4].tone});white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx{margin:0;font-size:${TY.text.base.size}px;line-height:${TY.text.base.line}px;color:var(--${TY.text.base.tone})}
+.tx.strong{color:var(--${STRONG.tone});font-weight:${STRONG.weight}}
+.tx.read{font-size:${SZ.reading.size}px;line-height:${SZ.reading.line}px}
+.tx.meta{font-size:${SZ.meta.size}px;line-height:${SZ.meta.line}px;color:var(--${SZ.meta.tone})}
+.tx.cap{font-size:${SZ.caption.size}px;line-height:${SZ.caption.line}px;color:var(--${SZ.caption.tone})}
+.num{margin:0;font-family:var(--${NU.family});font-weight:${NU.weight};font-size:${NU.size}px;line-height:${NU.line}px;letter-spacing:${NU.tracking};color:var(--${NU.tone});font-variant-numeric:${NU.numeric};display:inline-flex;align-items:baseline;gap:${NU.gap}px;white-space:nowrap}
+.num small{font-family:var(--${NU.unit.family});font-size:${NU.unit.size}px;line-height:${NU.unit.line}px;letter-spacing:${NU.unit.tracking};color:var(--${NU.unit.tone});font-weight:${NU.unit.weight}}
+.num.inl{font-size:${NU.inline.size}px;line-height:${NU.inline.line}px;font-weight:${NU.inline.weight};letter-spacing:${NU.inline.tracking}}
+.num.big{font-size:${NU.large.size}px;line-height:${NU.large.line}px}
+.caps{margin:0;font-family:var(--${CA.family});font-size:${CA.size}px;line-height:${CA.line}px;letter-spacing:${CA.tracking};text-transform:${CA.transform};color:var(--${CA.tone});font-weight:${CA.weight};white-space:nowrap}
+.caps b{font-family:var(--${CA.prefix.family});color:var(--${CA.prefix.tone});font-weight:${CA.prefix.weight};margin-right:${CA.prefix.gap}px;letter-spacing:${CA.prefix.tracking}}
 .secrule{display:flex;align-items:center;gap:12px;min-width:0}
 .secrule i{flex:1;height:1px;background:var(--rule)}
-.id{font-family:var(--mono);font-size:11.5px;line-height:16px;color:var(--ink-2)}
-.lnk{color:var(--acc);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;text-decoration-color:var(--acc-ul);border-radius:2px}
-.lnk:hover,.lnk.is-hover{color:var(--acc-2);text-decoration-color:var(--acc-2)}
-.lnk:focus-visible,.lnk.is-focus{outline:none;box-shadow:var(--focus)}
-mark.hl{background:var(--acc-bg);color:inherit;font:inherit;letter-spacing:inherit;padding:0;margin:0;border-radius:2px;box-shadow:0 0 0 2px var(--acc-bg);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.id{font-family:var(--${MO.family});font-size:${MO.size}px;line-height:${MO.line}px;color:var(--${MO.tone})}
+.lnk{color:var(--${LK.tone});text-decoration:underline;text-decoration-thickness:${LK.thickness};text-underline-offset:${LK.offset};text-decoration-color:var(--${LK.underline});border-radius:${LK.radius}}
+.lnk:hover,.lnk.is-hover{color:var(--${LK.hover.tone});text-decoration-color:var(--${LK.hover.underline})}
+.lnk:focus-visible,.lnk.is-focus{outline:none;box-shadow:var(--${LK.focus.ring})}
+mark.hl{background:var(--${MK.fill});color:inherit;font:inherit;letter-spacing:inherit;padding:0;margin:0;border-radius:${MK.radius};box-shadow:0 0 0 ${MK.spread} var(--${MK.fill});box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .spec{display:grid;grid-template-columns:150px minmax(0,1fr);column-gap:16px;row-gap:12px;align-items:baseline}
 .spec>small{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .on-canvas{padding:14px 18px;border-radius:var(--r-panel);box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:10px}
@@ -53,42 +60,42 @@ const hl = (s) => s.replace(new RegExp(Q, "g"), `<mark class="hl">${Q}</mark>`);
 function pane(night) {
   const t = night ? T.night : T.light;
   const th = night ? "n" : "l";
-  const cell = (id, ink, fill, surface, kind = "text") => `data-cell="${id}-${th}" data-kind="${kind}" data-expect="${fmt(cr(ink, fill, surface))}"`;
+  const cell = (id) => cellAttrs("typography", `${id}-${th}`);
   const P = t.panel, B = t.bg;
   return `<section class="pane gp${night ? " night" : ""}" aria-label="${night ? "夜间" : "浅色"}">
 ${grain("ty-" + th)}
 <span class="ptag">${night ? "night · 画布 #121210 · 纸 #191916" : "light · 画布 #efeeea · 纸 #ffffff"}</span>
 <div class="blk"><h6>Heading · 四级 <span>level 决定标签，visualLevel 决定外观；1 至 3 级衬线 400，4 级怪诞体 600</span></h6>
 <div class="paper"><div class="spec">
-<small>h1 · serif 36/40 · -.01em</small><h1 class="h1" ${cell("h1", t.ink, P, P)}>季度复盘与产品发布 Q3 Review</h1>
-<small>h2 · serif 26/30</small><h2 class="h2" ${cell("h2", t.ink, P, P)}>成员与权限 Members</h2>
-<small>h3 · serif 20/26</small><h3 class="h3" ${cell("h3", t.ink, P, P)}>本月账单 October invoice</h3>
-<small>h4 · sans 13/20 · 600</small><h4 class="h4" ${cell("h4", t.ink, P, P)}>通知偏好 Notification preferences</h4>
+<small>h1 · serif 36/40 · -.01em</small><h1 class="h1" ${cell("h1")}>季度复盘与产品发布 Q3 Review</h1>
+<small>h2 · serif 26/30</small><h2 class="h2" ${cell("h2")}>成员与权限 Members</h2>
+<small>h3 · serif 20/26</small><h3 class="h3" ${cell("h3")}>本月账单 October invoice</h3>
+<small>h4 · sans 13/20 · 600</small><h4 class="h4" ${cell("h4")}>通知偏好 Notification preferences</h4>
 </div></div></div>
 
 <div class="blk"><h6>Text · 五种 <span>正文 13/20 默认次墨；强调加字重不换色；元数据与说明用三级墨；阅读体 14/22</span></h6>
 <div class="paper"><div class="spec">
-<small>body · 13/20 · ink-2</small><p class="tx" ${cell("body", t.ink2, P, P)}>项目「季度复盘」已有 12 位成员，3 人待邀请。邀请邮件会在 7 天内送达，之后链接失效。</p>
-<small>strong · 13/20 · 600 ink</small><p class="tx strong" ${cell("strong", t.ink, P, P)}>删除后 30 天内可从回收站恢复，之后永久删除。</p>
-<small>reading · 14/22 · ink-2</small><p class="tx read" ${cell("read", t.ink2, P, P)}>账单按席位计费，每月 1 日生成；年付在当期账单中一次扣除，并在下一期显示抵扣。</p>
-<small>meta · 12/16 · ink-3</small><p class="tx meta" ${cell("meta", t.ink3, P, P)}>最近活跃 2 分钟前 · 由 林晓 创建于 2026-09-14</p>
-<small>caption · 11/16 · ink-3</small><p class="tx cap" ${cell("cap", t.ink3, P, P)}>对团队成员可见；更改后立即生效</p>
-<small>link · acc · 下划线 70%</small><p class="tx">查看 <a class="lnk" href="#a" ${cell("link", t.acc, P, P)}>全部账单</a> 或 <a class="lnk is-hover" href="#b" ${cell("link-hover", t.acc2, P, P)}>悬停态</a> 与 <a class="lnk is-focus" href="#c">焦点态</a></p>
+<small>body · 13/20 · ink-2</small><p class="tx" ${cell("body")}>项目「季度复盘」已有 12 位成员，3 人待邀请。邀请邮件会在 7 天内送达，之后链接失效。</p>
+<small>strong · 13/20 · 600 ink</small><p class="tx strong" ${cell("strong")}>删除后 30 天内可从回收站恢复，之后永久删除。</p>
+<small>reading · 14/22 · ink-2</small><p class="tx read" ${cell("read")}>账单按席位计费，每月 1 日生成；年付在当期账单中一次扣除，并在下一期显示抵扣。</p>
+<small>meta · 12/16 · ink-3</small><p class="tx meta" ${cell("meta")}>最近活跃 2 分钟前 · 由 林晓 创建于 2026-09-14</p>
+<small>caption · 11/16 · ink-3</small><p class="tx cap" ${cell("cap")}>对团队成员可见；更改后立即生效</p>
+<small>link · acc · 下划线 70%</small><p class="tx">查看 <a class="lnk" href="#a" ${cell("link")}>全部账单</a> 或 <a class="lnk is-hover" href="#b" ${cell("link-hover")}>悬停态</a> 与 <a class="lnk is-focus" href="#c">焦点态</a></p>
 </div></div>
 <div class="on-canvas"><div class="spec">
-<small>同四种 · 落在画布上</small><p class="tx" ${cell("body-canvas", t.ink2, B, B)}>正文落在画布色上：侧栏、页脚与空状态说明会用到。</p>
-<small></small><p class="tx strong" ${cell("strong-canvas", t.ink, B, B)}>强调仍是同一墨色。</p>
-<small></small><p class="tx meta" ${cell("meta-canvas", t.ink3, B, B)}>元数据 · 2 分钟前</p>
-<small></small><p class="tx">链接 <a class="lnk" href="#d" ${cell("link-canvas", t.acc, B, B)}>查看项目</a></p>
+<small>同四种 · 落在画布上</small><p class="tx" ${cell("body-canvas")}>正文落在画布色上：侧栏、页脚与空状态说明会用到。</p>
+<small></small><p class="tx strong" ${cell("strong-canvas")}>强调仍是同一墨色。</p>
+<small></small><p class="tx meta" ${cell("meta-canvas")}>元数据 · 2 分钟前</p>
+<small></small><p class="tx">链接 <a class="lnk" href="#d" ${cell("link-canvas")}>查看项目</a></p>
 </div></div></div>
 
 <div class="blk"><h6>Highlight · 搜索命中 <span>mark 只加 8% 青洗底：不改字重、字距、字号，不加内距；2px 晕用 box-shadow 画在行内盒之外，排版零变化；在正文、列表与选中行里同一规则</span></h6>
 <div class="paper">
-<p class="tx">在「<mark class="hl" ${cell("mark", t.ink2, t.accBg, P)}>设计</mark>组」里搜索「设计」：命中两处，其余文字不变。</p>
+<p class="tx">在「<mark class="hl" ${cell("mark")}>设计</mark>组」里搜索「设计」：命中两处，其余文字不变。</p>
 <div class="list" data-rows>
 <div class="li"><b>${hl("TCRN 设计系统 · 组件库")}</b><span class="id">PRJ-2026-0412</span><span>${hl("设计组")}</span></div>
 <div class="li b2"><b>${hl("季度复盘 · 设计评审")}</b><span class="id">PRJ-2026-0391</span><span>产品组</span></div>
-<div class="sel-row" ${cell("sel", t.ink, t.wash, P)}>选中行里的命中：${hl("设计评审")}<span style="margin-left:auto" class="id">PRJ-2026-0391</span></div>
+<div class="sel-row" ${cell("sel")}>选中行里的命中：${hl("设计评审")}<span style="margin-left:auto" class="id">PRJ-2026-0391</span></div>
 </div>
 <p class="tx meta">选中行的墨洗向左右各出血 10px（margin 0 -10px），文字起点与同容器各行相同；所有列表与表格的选中态都按这条规则。</p>
 <span class="sr">${hl("设计")}</span>
@@ -97,20 +104,20 @@ ${grain("ty-" + th)}
 <div class="blk"><h6>衬线数字 numeral · 新样式 <span>Source Serif 4 300，等宽数字；单位缩小、拉开字距、三级墨；行内 16/20 用 400</span></h6>
 <div class="paper">
 <div class="stats">
-<div class="stat"><span class="caps">活跃成员</span><span class="num" ${cell("num", t.ink, P, P)}>128<small ${cell("unit", t.ink3, P, P)}>人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
+<div class="stat"><span class="caps">活跃成员</span><span class="num" ${cell("num")}>128<small ${cell("unit")}>人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
 <div class="stat"><span class="caps">本月账单</span><span class="num">4,280<small>.00 元</small></span><span class="d"><i></i>与上月持平</span></div>
 <div class="stat"><span class="caps">待处理</span><span class="num">7</span><span class="d warn"><i></i>3 项逾期</span></div>
 <div class="stat"><span class="caps">席位用量</span><span class="num">86<small>/ 120</small></span><span class="d"><i></i>剩余 34 席</span></div>
 </div>
 <div class="spec" style="margin-top:4px">
-<small>inline · 16/20 · 400</small><p class="tx">本期应付 <span class="num inl" ${cell("num-inl", t.ink, P, P)}>4,280.00<small>元</small></span>，含税 <span class="num inl">232.45<small>元</small></span>；到期日 <span class="id">2026-10-31</span>。</p>
+<small>inline · 16/20 · 400</small><p class="tx">本期应付 <span class="num inl" ${cell("num-inl")}>4,280.00<small>元</small></span>，含税 <span class="num inl">232.45<small>元</small></span>；到期日 <span class="id">2026-10-31</span>。</p>
 <small>big · 44/48 · 300</small><span class="num big">12,480<small>.00 元</small></span>
 </div>
 </div></div>
 
 <div class="blk"><h6>小型大写标签 caps · 新样式 <span>11/16 · 500 · 字距 .14em · 三级墨；用于区段编号、表头、指标标签；中文不转大写但同字距</span></h6>
 <div class="paper">
-<div class="secrule"><span class="caps" ${cell("caps", t.ink3, P, P)}><b>01</b>基本信息 Basic info</span><i></i></div>
+<div class="secrule"><span class="caps" ${cell("caps")}><b>01</b>基本信息 Basic info</span><i></i></div>
 <div class="secrule"><span class="caps"><b>02</b>成员与权限 Members</span><i></i></div>
 <div class="spec">
 <small>table header</small><div class="list"><div class="li" style="height:30px;color:var(--ink-3);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500"><span>项目 Project</span><span>编号 ID</span><span>团队 Team</span></div></div>
@@ -120,7 +127,7 @@ ${grain("ty-" + th)}
 
 <div class="blk"><h6>等宽编号 mono <span>IBM Plex Mono 11.5/16 · 次墨；编号、邮箱、时间戳、快捷键；永不用于正文</span></h6>
 <div class="paper"><div class="spec">
-<small>id · 11.5/16</small><span class="id" ${cell("id", t.ink2, P, P)}>PRJ-2026-0412 · INV-2026-10-0031</span>
+<small>id · 11.5/16</small><span class="id" ${cell("id")}>PRJ-2026-0412 · INV-2026-10-0031</span>
 <small>email · time</small><span class="id">lin.xiao@tcrn.app · 2026-10-11 09:41:07 +08:00</span>
 <small>kbd</small><span class="id">⌘K · ⇧⌘P · Esc</span>
 </div></div></div>

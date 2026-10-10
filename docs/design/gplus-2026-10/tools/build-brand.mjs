@@ -1,4 +1,4 @@
-import { T, cr, fmt, icon, shell, matrixTable, kvTable, page, write, grain } from "./lib.mjs";
+import { T, cr, fmt, icon, shell, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
 
 const height = process.argv[2] ? Number(process.argv[2]) : 0;
 const MARK = process.argv[3] || "/_blob/MISSING";
@@ -79,7 +79,7 @@ function logo(r, { size = 38, accent = false, night = false, lang = "zh", cellAt
 function pane(night) {
   const t = night ? T.night : T.light;
   const th = night ? "n" : "l";
-  const cell = (id, ink, fill, surface, kind = "text", exempt = false) => `data-cell="${id}-${th}" data-kind="${kind}" data-expect="${fmt(cr(ink, fill, surface))}"${exempt || /^suffix-(ds|aos|tms|wf)$/.test(id) ? " data-exempt" : ""}`;
+  const cell = (id) => cellAttrs("brand", `${id}-${th}`);
   const P = t.panel, B = t.bg;
   const n = night ? 1 : 0;
   return `<section class="pane gp${night ? " night" : ""}" aria-label="${night ? "夜间" : "浅色"}">
@@ -96,16 +96,16 @@ ${grain("br-" + th)}
 
 <div class="blk"><h6>ProductLogo · 标加两行 <span>mark 38 · 一行 14/18：TCRN 500 加后缀 600，后缀用各自产品标的深色（TMS #2c63c8、Design System #6577f3；渐变文字停用；本板样张仍为墨色，新产品标见第二批前置板）· 二行 11.5/16 三级墨 500；Design System 的后缀按注册表堆叠</span></h6>
 <div class="paper"><div class="spec2">
-<small>后缀色 · 2026-10-11 改为产品色</small><div class="row" style="gap:32px">${REG.map((r, i) => logo(r, { night, cellAttr: i === 1 ? cell("suffix-ink", t.ink, P, P) : "" })).join("")}</div>
+<small>后缀色 · 2026-10-11 改为产品色</small><div class="row" style="gap:32px">${REG.map((r, i) => logo(r, { night, cellAttr: i === 1 ? cell("suffix-ink") : "" })).join("")}</div>
 <small>二行五语 · locale</small><div class="row" style="gap:32px">${["zh", "en", "ja", "ko", "fr"].map((l) => logo(REG[1], { night, lang: l })).join("")}</div>
 <small>c28 · 顶栏 / c56 · 关于页</small><div class="row" style="gap:32px">${logo(REG[2], { night, size: 28 })}${logo(REG[0], { night, size: 56 })}</div>
-<small>tagline 对比</small><div class="row"><span class="l2" style="font-size:11.5px" ${cell("tagline", t.ink3, P, P)}>AI 运营系统 · 二行三级墨于纸</span></div>
+<small>tagline 对比</small><div class="row"><span class="l2" style="font-size:11.5px" ${cell("tagline")}>AI 运营系统 · 二行三级墨于纸</span></div>
 </div></div></div>
 
 <div class="blk"><h6>ProductLockup · 标加字标 <span>mark 28 · 字标 16/20：TCRN 500 加后缀 600；无 productId 时后缀来自 suffix，长名（> 8 字符、含空格或 ≥ 4 个汉字）堆叠</span></h6>
 <div class="paper"><div class="spec2">
 <small>productId · 走 ProductLogo</small><div class="row" style="gap:32px">${logo(REG[1], { night, size: 28 })}${logo(REG[2], { night, size: 28 })}</div>
-<small>suffix · 短名</small><div class="row" style="gap:32px"><span class="lock">${mark("", 28)}<span class="wm" ${cell("wm", t.ink, P, P)}><span class="b">TCRN</span><span class="s">AOS</span></span></span><span class="lock">${mark("", 28)}<span class="wm"><span class="b">TCRN</span><span class="s">产品</span></span></span></div>
+<small>suffix · 短名</small><div class="row" style="gap:32px"><span class="lock">${mark("", 28)}<span class="wm" ${cell("wm")}><span class="b">TCRN</span><span class="s">AOS</span></span></span><span class="lock">${mark("", 28)}<span class="wm"><span class="b">TCRN</span><span class="s">产品</span></span></span></div>
 <small>suffix · 长名堆叠</small><div class="row" style="gap:32px"><span class="lock">${mark("", 28)}<span class="wm stack"><span class="b">TCRN</span><span class="s">Design System</span></span></span><span class="lock">${mark("", 28)}<span class="wm stack"><span class="b">TCRN</span><span class="s">工作流治理引擎</span></span></span></div>
 <small>作为链接 · focus</small><div class="row" style="gap:32px"><a class="lock lnk" href="#home">${mark("", 28)}<span class="wm"><span class="b">TCRN</span><span class="s">AOS</span></span></a><a class="lock lnk is-focus" href="#home2">${mark("", 28)}<span class="wm"><span class="b">TCRN</span><span class="s">AOS</span></span></a><span class="tx" style="font-size:11.5px;color:var(--ink-3)">悬停不变色、不下划线；只有焦点环</span></div>
 <small>收起态 52 · 只留标</small><div class="row" style="gap:32px"><span class="collapse">${mark("", 22)}<span class="copy"><span class="wm"><span class="b">TCRN</span><span class="s">AOS</span></span></span></span><span class="tx" style="font-size:11.5px;color:var(--ink-3)">文案 display:none，不用 overflow:hidden 藏字（C16）</span></div>
@@ -114,7 +114,7 @@ ${grain("br-" + th)}
 
 <div class="blk"><h6>在画布上 · 侧栏与收起 <span>22 标，一行 12.5 600、二行 10.5 三级墨；与导航项共用 22px 引导列</span></h6>
 <div class="on-canvas" style="padding:14px 18px;border-radius:var(--r-panel);box-shadow:inset 0 0 0 1px var(--line)"><div class="row" style="gap:40px;align-items:center">
-<div class="logo c22" role="img" aria-label="TCRN AOS AI 运营系统">${mark("", 22)}<span class="copy" aria-hidden="true"><span class="l1" style="font-weight:600" ${cell("rail-wm", t.ink, B, B)}><span class="b" style="font-weight:600">TCRN</span><span class="s">AOS</span></span><span class="l2" ${cell("rail-tag", t.ink3, B, B)}>AI 运营系统</span></span></div>
+<div class="logo c22" role="img" aria-label="TCRN AOS AI 运营系统">${mark("", 22)}<span class="copy" aria-hidden="true"><span class="l1" style="font-weight:600" ${cell("rail-wm")}><span class="b" style="font-weight:600">TCRN</span><span class="s">AOS</span></span><span class="l2" ${cell("rail-tag")}>AI 运营系统</span></span></div>
 <div class="logo c22" role="img" aria-label="TCRN Design System 设计系统">${mark("", 22)}<span class="copy" aria-hidden="true"><span class="l1 stack" style="font-weight:600"><span class="b" style="font-weight:600">TCRN</span><span class="s">Design System</span></span></span></div>
 <span class="collapse" style="box-shadow:inset 0 0 0 1px var(--line-2)">${mark("", 22)}<span class="copy"></span></span>
 </div></div></div>

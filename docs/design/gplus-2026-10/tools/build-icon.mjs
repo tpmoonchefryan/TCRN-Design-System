@@ -1,4 +1,5 @@
-import { T, cr, fmt, icon, ICON_NAMES, ICON_NEW, shell, matrixTable, kvTable, page, write, grain } from "./lib.mjs";
+import { T, cr, fmt, icon, ICON_NAMES, ICON_NEW, shell, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
+import { matrixCell } from "./data.mjs";
 
 const height = process.argv[2] ? Number(process.argv[2]) : 0;
 
@@ -59,15 +60,16 @@ function gridSvg(th) {
 function pane(night) {
   const t = night ? T.night : T.light;
   const th = night ? "n" : "l";
-  const cell = (id, ink, fill, surface) => `data-cell="${id}-${th}" data-kind="icon" data-expect="${fmt(cr(ink, fill, surface))}"`;
+  const cell = (id) => cellAttrs("icon", `${id}-${th}`);
+  const mc = (id) => matrixCell("icon", `${id}-${th}`);
   const P = t.panel, B = t.bg;
-  const roster = ICON_NAMES.map((n, i) => `<div class="ri"${i === 0 ? ` ${cell("roster", t.ink2, P, P)}` : ""}>${ICON_NEW.includes(n) ? "<i>新增</i>" : ""}${icon(n, { size: 20 })}<small>${n}</small></div>`).join("");
+  const roster = ICON_NAMES.map((n, i) => `<div class="ri"${i === 0 ? ` ${cell("roster")}` : ""}>${ICON_NEW.includes(n) ? "<i>新增</i>" : ""}${icon(n, { size: 20 })}<small>${n}</small></div>`).join("");
   const six = ["search", "settings", "check", "alert-triangle", "layers", "globe-2"];
   const sizes = [["sm", 14], ["md", 16], ["lg", 20]].map(([k, s]) => `<div class="sz"><div class="r">${six.map((n) => icon(n, { size: s })).join("")}</div><small>${k} ${s}px · 描边 1.25px</small></div>`).join("");
   const chips = [
-    ["默认 ink-2", t.ink2, P, "ink2-panel"], ["次要 ink-3", t.ink3, P, "ink3-panel"], ["当前 ink 于 wash", t.ink, t.wash, "ink-wash", P], ["主按钮 on-acc", t.onAcc, t.acc, "onacc-acc", P], ["链接 acc", t.acc, P, "acc-panel"], ["危险 red", t.red, P, "red-panel"], ["成功 ok", t.ok, P, "ok-panel"], ["警告 warn", t.warn, P, "warn-panel"], ["错误 bad", t.bad, P, "bad-panel"], ["禁用 ink-3 于 dis", t.ink3, t.dis, "dis", P]
-  ].map(([lbl, ink, fill, id, surface]) => `<div class="chip-i"><span class="b" style="background:${fill};color:${ink}" ${cell(id, ink, fill, surface || fill)}${id === "dis" ? " data-exempt" : ""}>${icon(id === "dis" ? "settings" : id === "onacc-acc" ? "check" : id === "red-panel" ? "alert-triangle" : id === "ok-panel" ? "shield-check" : id === "warn-panel" ? "info" : id === "bad-panel" ? "x" : id === "acc-panel" ? "external-link" : "search", { size: 16 })}</span><small>${lbl}</small></div>`).join("");
-  const onCanvas = [["默认 ink-2 于画布", t.ink2, B, "ink2-bg"], ["次要 ink-3 于画布", t.ink3, B, "ink3-bg"], ["当前 ink 于纸（侧栏选中）", t.ink, P, "ink-panel"]].map(([lbl, ink, fill, id]) => `<div class="chip-i"><span class="b" style="background:${fill};color:${ink};box-shadow:inset 0 0 0 1px var(--line)" ${cell(id, ink, fill, fill)}>${icon("layout-grid", { size: 16 })}</span><small>${lbl}</small></div>`).join("");
+    ["默认 ink-2", "ink2-panel"], ["次要 ink-3", "ink3-panel"], ["当前 ink 于 wash", "ink-wash"], ["主按钮 on-acc", "onacc-acc"], ["链接 acc", "acc-panel"], ["危险 red", "red-panel"], ["成功 ok", "ok-panel"], ["警告 warn", "warn-panel"], ["错误 bad", "bad-panel"], ["禁用 ink-3 于 dis", "dis"]
+  ].map(([lbl, id]) => { const c = mc(id); return `<div class="chip-i"><span class="b" style="background:${c.fillValue};color:${c.inkValue}" ${cell(id)}>${icon(id === "dis" ? "settings" : id === "onacc-acc" ? "check" : id === "red-panel" ? "alert-triangle" : id === "ok-panel" ? "shield-check" : id === "warn-panel" ? "info" : id === "bad-panel" ? "x" : id === "acc-panel" ? "external-link" : "search", { size: 16 })}</span><small>${lbl}</small></div>`; }).join("");
+  const onCanvas = [["默认 ink-2 于画布", "ink2-bg"], ["次要 ink-3 于画布", "ink3-bg"], ["当前 ink 于纸（侧栏选中）", "ink-panel"]].map(([lbl, id]) => { const c = mc(id); return `<div class="chip-i"><span class="b" style="background:${c.fillValue};color:${c.inkValue};box-shadow:inset 0 0 0 1px var(--line)" ${cell(id)}>${icon("layout-grid", { size: 16 })}</span><small>${lbl}</small></div>`; }).join("");
   return `<section class="pane gp${night ? " night" : ""}" aria-label="${night ? "夜间" : "浅色"}">
 ${grain("ic-" + th)}
 <span class="ptag">${night ? "night · 画布 #121210 · 纸 #191916" : "light · 画布 #efeeea · 纸 #ffffff"}</span>

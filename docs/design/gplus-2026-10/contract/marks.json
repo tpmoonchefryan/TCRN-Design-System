@@ -1,0 +1,68 @@
+{
+  "description": "四枚产品标：48 格实心几何，两种平涂色（ds 四色）。body 是 SVG 片段模板，{deep} {bright} {c3} {c4} 由 palette 或单色墨替换。",
+  "viewBox": "0 0 48 48",
+  "grid": 48,
+  "monoInk": "#16150f",
+  "tile": { "radius": 11, "inset": "translate(7.2 7.2) scale(0.7)" },
+  "wordmark": {
+    "sans": { "family": "Hanken Grotesk", "weight": 600, "tokenFamily": "sans", "rule": "「TCRN」墨色，后缀用本产品 palette.deep" },
+    "serif": { "family": "Source Serif 4", "weight": 400, "tokenFamily": "serif", "byline": "by TCRN", "rule": "完整名称，墨色，加 by TCRN" }
+  },
+  "locales": ["zh-CN", "en", "ja", "ko", "fr"],
+  "marks": [
+    {
+      "id": "tms",
+      "productId": "tms",
+      "name": "TCRN TMS",
+      "zh": "艺人管理系统",
+      "word": "TCRN",
+      "suffix": "TMS",
+      "font": "sans",
+      "palette": { "deep": "#2c63c8", "bright": "#7aa0f5", "tint": "#e4ecfc" },
+      "toneName": "蓝",
+      "body": "<path d=\"M11 23L24 39\" stroke=\"{deep}\" stroke-width=\"9\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M37 23L24 39\" stroke=\"{bright}\" stroke-width=\"9\" stroke-linecap=\"round\" fill=\"none\"/><circle cx=\"24\" cy=\"12.5\" r=\"8\" fill=\"{deep}\"/>",
+      "says": "一个艺人双臂高举的剪影：头是一个圆，手臂是一个 V。V 既是 VTuber 的 V，也是谢幕、安可时的姿势；两条手臂一深一浅，像聚光灯打在一侧。",
+      "taglines": { "zh-CN": "艺人管理系统", "en": "Talent Management System", "ja": "タレントマネジメントシステム", "ko": "탤런트 관리 시스템", "fr": "Système de gestion des talents" }
+    },
+    {
+      "id": "einzbern",
+      "productId": "einzbern",
+      "name": "Einzbern",
+      "zh": "项目记忆引擎",
+      "word": "Einzbern",
+      "font": "serif",
+      "palette": { "deep": "#3b5272", "bright": "#8aa6c9", "tint": "#e6ecf3" },
+      "toneName": "藏青",
+      "body": "<circle cx=\"24\" cy=\"7.5\" r=\"3.5\" fill=\"{bright}\"/><path d=\"M10 14A14 14 0 0 0 38 14Z\" fill=\"{deep}\"/><rect x=\"15\" y=\"31\" width=\"18\" height=\"5\" rx=\"2.5\" fill=\"{bright}\"/><rect x=\"11\" y=\"39\" width=\"26\" height=\"5\" rx=\"2.5\" fill=\"{deep}\"/>",
+      "says": "一只盃接住一点光，盃下是两层基座：圣杯接住的是愿望，引擎接住的是项目的记忆；两层基座是存下来的层（纪要、卡片）。深浅交替，像一枚徽记。",
+      "taglines": { "zh-CN": "项目记忆引擎", "en": "Project memory engine", "ja": "プロジェクト記憶エンジン", "ko": "프로젝트 메모리 엔진", "fr": "Moteur de mémoire de projet" }
+    },
+    {
+      "id": "mana",
+      "productId": "mana-orchestrate",
+      "name": "Mana Orchestrate",
+      "zh": "项目记忆助手",
+      "word": "Mana Orchestrate",
+      "font": "serif",
+      "palette": { "deep": "#3a9a63", "bright": "#9ddc8c", "tint": "#e5f5e6" },
+      "toneName": "绿",
+      "body": "<path d=\"M13 13C13 30 35 18 35 35\" stroke=\"{bright}\" stroke-width=\"8\" stroke-linecap=\"round\" fill=\"none\"/><circle cx=\"13\" cy=\"13\" r=\"7\" fill=\"{deep}\"/><circle cx=\"35\" cy=\"35\" r=\"7\" fill=\"{deep}\"/>",
+      "says": "两个结点，一道流：mana 从代理流到引擎，再流回来。结点是深绿，流是亮绿，像一条有生命的带子。",
+      "taglines": { "zh-CN": "项目记忆助手", "en": "Project memory assistant", "ja": "プロジェクト記憶アシスタント", "ko": "프로젝트 메모리 어시스턴트", "fr": "Assistant mémoire de projet" }
+    },
+    {
+      "id": "ds",
+      "productId": "design-system",
+      "name": "TCRN Design System",
+      "zh": "设计系统",
+      "word": "TCRN",
+      "suffix": "Design System",
+      "font": "sans",
+      "palette": { "deep": "#6577f3", "bright": "#3096f4", "c3": "#43d4cf", "c4": "#78b957", "tint": "#eceefc" },
+      "toneName": "四色",
+      "body": "<rect x=\"4\" y=\"4\" width=\"17\" height=\"40\" rx=\"4\" fill=\"{deep}\"/><rect x=\"24\" y=\"4\" width=\"20\" height=\"17\" rx=\"4\" fill=\"{bright}\"/><rect x=\"24\" y=\"24\" width=\"9\" height=\"20\" rx=\"3\" fill=\"{c3}\"/><rect x=\"36\" y=\"24\" width=\"8\" height=\"20\" rx=\"3\" fill=\"{c4}\"/>",
+      "says": "一张版面：四块大小不等的面，四种颜色。版面是布局，颜色是调色板，合起来就是设计系统；四种颜色沿用 TCRN 母标的紫蓝、蓝、青、绿。",
+      "taglines": { "zh-CN": "设计系统", "en": "Design System", "ja": "デザインシステム", "ko": "디자인 시스템", "fr": "Système de design" }
+    }
+  ]
+}

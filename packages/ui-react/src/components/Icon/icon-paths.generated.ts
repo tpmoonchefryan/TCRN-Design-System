@@ -1,0 +1,94 @@
+// 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
+// contract files: icons.json
+// contract-sha256: 66ea60f3d25c51994b1916f9b61abc5b9cba88808ea94f93da0003a7b03986d6
+
+
+export const tcrnIconViewBox = "0 0 20 20";
+
+export const tcrnIconStrokeWidth = 1.25;
+
+export const tcrnIconPathNames = [
+  "alert-triangle",
+  "arrow-left",
+  "arrow-right",
+  "book-open",
+  "check",
+  "chevron-down",
+  "chevron-left",
+  "chevron-right",
+  "database",
+  "external-link",
+  "globe-2",
+  "history",
+  "home",
+  "info",
+  "layers",
+  "layout-grid",
+  "loader-circle",
+  "menu",
+  "moon",
+  "package",
+  "palette",
+  "panel-left-close",
+  "panel-left-open",
+  "search",
+  "settings",
+  "shield-check",
+  "sun",
+  "x",
+  "plus",
+  "minus",
+  "users",
+  "bell",
+  "copy",
+  "trash",
+  "calendar",
+  "more-horizontal",
+  "chevron-up"
+] as const;
+
+export type TcrnIconPathName = (typeof tcrnIconPathNames)[number];
+
+/** names added in the G+ batch */
+export const tcrnIconNewNames: readonly TcrnIconPathName[] = ["plus", "minus", "users", "bell", "copy", "trash", "calendar", "more-horizontal", "chevron-up"];
+
+/** SVG children on the 20 grid; stroke and caps come from the svg element */
+export const tcrnIconPaths: Readonly<Record<TcrnIconPathName, string>> = {
+  "alert-triangle": "<path d=\"M10 3.5L2.5 16.5h15L10 3.5z\"/><path d=\"M10 8v4\"/><path d=\"M10 14.25h.01\"/>",
+  "arrow-left": "<path d=\"M16 10H4\"/><path d=\"M9 5l-5 5 5 5\"/>",
+  "arrow-right": "<path d=\"M4 10h12\"/><path d=\"M11 5l5 5-5 5\"/>",
+  "book-open": "<path d=\"M10 6.5C8.6 5.3 6.6 5 3.5 5v10c3.1 0 5.1.3 6.5 1.5 1.4-1.2 3.4-1.5 6.5-1.5V5c-3.1 0-5.1.3-6.5 1.5z\"/><path d=\"M10 6.5v10\"/>",
+  "check": "<path d=\"M4 10.5l4 4 8-9\"/>",
+  "chevron-down": "<path d=\"M5 8l5 5 5-5\"/>",
+  "chevron-left": "<path d=\"M12 5l-5 5 5 5\"/>",
+  "chevron-right": "<path d=\"M8 5l5 5-5 5\"/>",
+  "database": "<ellipse cx=\"10\" cy=\"5.5\" rx=\"6.5\" ry=\"2.5\"/><path d=\"M3.5 5.5v9c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5v-9\"/><path d=\"M3.5 10c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5\"/>",
+  "external-link": "<path d=\"M11.5 4H16v4.5\"/><path d=\"M16 4l-7 7\"/><path d=\"M14 11v4.25a.75.75 0 0 1-.75.75h-8.5a.75.75 0 0 1-.75-.75v-8.5A.75.75 0 0 1 4.75 6H9\"/>",
+  "globe-2": "<circle cx=\"10\" cy=\"10\" r=\"7\"/><path d=\"M3 10h14\"/><path d=\"M10 3c2 2 3 4.5 3 7s-1 5-3 7c-2-2-3-4.5-3-7s1-5 3-7z\"/>",
+  "history": "<path d=\"M3.5 10a6.5 6.5 0 1 0 1.9-4.6\"/><path d=\"M3.5 4v3.5H7\"/><path d=\"M10 7v3.5l2.5 1.5\"/>",
+  "home": "<path d=\"M3 9l7-6 7 6v8h-5v-5H8v5H3z\"/>",
+  "info": "<circle cx=\"10\" cy=\"10\" r=\"7\"/><path d=\"M10 9v4.5\"/><path d=\"M10 6.75h.01\"/>",
+  "layers": "<path d=\"M10 3l7 3.5-7 3.5-7-3.5z\"/><path d=\"M3 10l7 3.5 7-3.5\"/><path d=\"M3 13.5L10 17l7-3.5\"/>",
+  "layout-grid": "<rect x=\"3\" y=\"3\" width=\"6\" height=\"6\" rx=\"1.5\"/><rect x=\"11\" y=\"3\" width=\"6\" height=\"6\" rx=\"1.5\"/><rect x=\"3\" y=\"11\" width=\"6\" height=\"6\" rx=\"1.5\"/><rect x=\"11\" y=\"11\" width=\"6\" height=\"6\" rx=\"1.5\"/>",
+  "loader-circle": "<path d=\"M10 3a7 7 0 0 1 7 7\"/>",
+  "menu": "<path d=\"M3 6h14\"/><path d=\"M3 10h14\"/><path d=\"M3 14h14\"/>",
+  "moon": "<path d=\"M16.5 12.5A6.5 6.5 0 0 1 7.5 3.5a6.5 6.5 0 1 0 9 9z\"/>",
+  "package": "<path d=\"M10 3l7 3.5v7L10 17l-7-3.5v-7z\"/><path d=\"M3 6.5l7 3.5 7-3.5\"/><path d=\"M10 10v7\"/><path d=\"M6.5 4.75l7 3.5\"/>",
+  "palette": "<path d=\"M10 3a7 7 0 1 0 0 14c.9 0 1.5-.7 1.5-1.5 0-.6-.4-1-.4-1.6 0-.8.7-1.4 1.5-1.4H14a3 3 0 0 0 3-3c0-3.6-3.1-6.5-7-6.5z\"/><path d=\"M7 9.25h.01\"/><path d=\"M10 6.5h.01\"/><path d=\"M13 8.25h.01\"/><path d=\"M6.75 12.5h.01\"/>",
+  "panel-left-close": "<rect x=\"3\" y=\"4\" width=\"14\" height=\"12\" rx=\"2\"/><path d=\"M8 4v12\"/><path d=\"M14 8l-2 2 2 2\"/>",
+  "panel-left-open": "<rect x=\"3\" y=\"4\" width=\"14\" height=\"12\" rx=\"2\"/><path d=\"M8 4v12\"/><path d=\"M11.5 8l2 2-2 2\"/>",
+  "search": "<circle cx=\"9\" cy=\"9\" r=\"5.5\"/><path d=\"M13 13l4 4\"/>",
+  "settings": "<circle cx=\"10\" cy=\"10\" r=\"2.5\"/><path d=\"M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.5 1.5M13.5 13.5L15 15M15 5l-1.5 1.5M6.5 13.5L5 15\"/>",
+  "shield-check": "<path d=\"M10 3l6 2.5v4.5c0 3.5-2.5 6-6 7-3.5-1-6-3.5-6-7V5.5z\"/><path d=\"M7.5 10l2 2 3.5-4\"/>",
+  "sun": "<circle cx=\"10\" cy=\"10\" r=\"3.5\"/><path d=\"M10 3v1.5M10 15.5V17M3 10h1.5M15.5 10H17M5 5l1 1M14 14l1 1M15 5l-1 1M6 14l-1 1\"/>",
+  "x": "<path d=\"M5 5l10 10\"/><path d=\"M15 5L5 15\"/>",
+  "plus": "<path d=\"M10 4v12\"/><path d=\"M4 10h12\"/>",
+  "minus": "<path d=\"M4 10h12\"/>",
+  "users": "<circle cx=\"8\" cy=\"7\" r=\"3\"/><path d=\"M2.5 16a5.5 5.5 0 0 1 11 0\"/><path d=\"M13 4.5a3 3 0 0 1 0 5.5\"/><path d=\"M17.5 16a5 5 0 0 0-3.5-4.7\"/>",
+  "bell": "<path d=\"M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z\"/><path d=\"M8.5 17.5a1.5 1.5 0 0 0 3 0\"/>",
+  "copy": "<rect x=\"7\" y=\"7\" width=\"10\" height=\"10\" rx=\"2\"/><path d=\"M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2\"/>",
+  "trash": "<path d=\"M3.5 5.5h13\"/><path d=\"M8 5.5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5\"/><path d=\"M5 5.5l.8 10A1.5 1.5 0 0 0 7.3 17h5.4a1.5 1.5 0 0 0 1.5-1.5l.8-10\"/><path d=\"M8.5 9v5\"/><path d=\"M11.5 9v5\"/>",
+  "calendar": "<rect x=\"3\" y=\"4.5\" width=\"14\" height=\"12.5\" rx=\"2\"/><path d=\"M3 9h14\"/><path d=\"M7 3v3\"/><path d=\"M13 3v3\"/>",
+  "more-horizontal": "<path d=\"M4.5 10h1\"/><path d=\"M9.5 10h1\"/><path d=\"M14.5 10h1\"/>",
+  "chevron-up": "<path d=\"M5 12l5-5 5 5\"/>"
+};

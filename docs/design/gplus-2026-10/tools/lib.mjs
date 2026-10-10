@@ -1,7 +1,11 @@
 // Shared generator library for the batch-one boards (V2-B1-*.dc.html).
-// Tokens, contrast math, icon roster, board chrome, composition-one shell.
+// Contrast math, board chrome, composition-one shell. Tokens, icons, pairs, matrix cells, marks and
+// type scale come from ../contract/*.json through data.mjs (single source; STORY-122).
 import fs from "node:fs";
 import path from "node:path";
+import { T, ICONS, ICON_NEW, ICON_NAMES, boardTokenBlocks, matrixCell } from "./data.mjs";
+
+export { T, ICONS, ICON_NEW, ICON_NAMES };
 
 export const OUT = new URL("../boards/", import.meta.url).pathname;
 
@@ -43,93 +47,27 @@ export function cr(ink, fill, surface = "#ffffff") {
 export const hex = ([r, g, b]) => "#" + [r, g, b].map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
 export const fmt = (n) => (Math.round(n * 100) / 100).toFixed(2);
 
-// ---------- tokens (same keys in both themes: C5) ----------
-export const T = {
-  light: {
-    bg: "#efeeea", bg2: "#e7e5df", panel: "#ffffff", panel2: "#f8f7f3",
-    line: "rgba(22,21,15,.09)", line2: "rgba(22,21,15,.16)", line3: "rgba(22,21,15,.30)", lineCtl: "rgba(22,21,15,.47)", rule: "#16150f",
-    ink: "#16150f", ink2: "#4f4c43", ink3: "#6b675d",
-    acc: "#0b6b65", acc2: "#0a5f5a", acc3: "#084f4a", accBg: "rgba(11,107,101,.08)", accUl: "rgba(11,107,101,.7)", onAcc: "#ffffff",
-    red: "#8e2d24", redBg: "rgba(142,45,36,.06)", redBg2: "rgba(142,45,36,.11)",
-    ok: "#2f6b3a", warn: "#8a5a08", bad: "#a8321f", badBg: "rgba(168,50,31,.08)",
-    wash: "rgba(22,21,15,.06)", hover: "rgba(22,21,15,.035)", dis: "rgba(22,21,15,.05)",
-    s1: "0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07)",
-    s2: "0 1px 2px rgba(22,21,15,.05),0 2px 3px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.08)",
-    s3: "0 2px 3px rgba(22,21,15,.06),0 3px 3px rgba(22,21,15,.06),0 0 0 1px rgba(22,21,15,.10)",
-    glass: "rgba(255,255,255,.78)", edge: "inset 0 0 0 1px rgba(255,255,255,.8)",
-    grain: ".035", blend: "multiply", avBg: "#e7e5df", avInk: "#16150f", knob: "#ffffff", chrome: "rgba(239,238,234,.82)"
-  },
-  night: {
-    bg: "#121210", bg2: "#0d0d0b", panel: "#191916", panel2: "#1f1f1b",
-    line: "rgba(255,255,255,.07)", line2: "rgba(255,255,255,.13)", line3: "rgba(255,255,255,.26)", lineCtl: "rgba(255,255,255,.36)", rule: "#ebe8df",
-    ink: "#ebe8df", ink2: "#a9a69c", ink3: "#85827a",
-    acc: "#3fc7b7", acc2: "#5ad3c5", acc3: "#34b3a4", accBg: "rgba(63,199,183,.10)", accUl: "rgba(63,199,183,.7)", onAcc: "#07211e",
-    red: "#d98d82", redBg: "rgba(217,141,130,.08)", redBg2: "rgba(217,141,130,.14)",
-    ok: "#6fcf97", warn: "#d9ab52", bad: "#e5897b", badBg: "rgba(229,137,123,.10)",
-    wash: "rgba(235,232,223,.07)", hover: "rgba(235,232,223,.04)", dis: "rgba(235,232,223,.05)",
-    s1: "0 1px 1px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.06)",
-    s2: "0 1px 2px rgba(0,0,0,.35),0 2px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.07)",
-    s3: "0 2px 3px rgba(0,0,0,.4),0 3px 3px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.09)",
-    glass: "rgba(25,25,22,.74)", edge: "inset 0 1px 0 rgba(255,255,255,.06)",
-    grain: ".06", blend: "screen", avBg: "#2a2a26", avInk: "#ebe8df", knob: "#ffffff", chrome: "rgba(18,18,16,.82)"
-  }
-};
-const VAR = { bg: "--bg", bg2: "--bg-2", panel: "--panel", panel2: "--panel-2", line: "--line", line2: "--line-2", line3: "--line-3", lineCtl: "--line-ctl", rule: "--rule", ink: "--ink", ink2: "--ink-2", ink3: "--ink-3", acc: "--acc", acc2: "--acc-2", acc3: "--acc-3", accBg: "--acc-bg", accUl: "--acc-ul", onAcc: "--on-acc", red: "--red", redBg: "--red-bg", redBg2: "--red-bg-2", ok: "--ok", warn: "--warn", bad: "--bad", badBg: "--bad-bg", wash: "--wash", hover: "--hover", dis: "--dis", s1: "--s1", s2: "--s2", s3: "--s3", glass: "--glass", edge: "--edge", grain: "--grain", blend: "--blend", avBg: "--av-bg", avInk: "--av-ink", knob: "--knob", chrome: "--chrome" };
+// ---------- tokens (same keys in both themes: C5) — contract/tokens.json ----------
 export function tokenCss() {
-  const block = (t) => Object.keys(VAR).map((k) => `${VAR[k]}:${t[k]}`).join(";");
-  const fixed = `--surface:var(--bg);--focus:0 0 0 2px var(--surface),0 0 0 4px var(--acc);--serif:"Source Serif 4","Noto Serif SC",Georgia,serif;--sans:"Hanken Grotesk","Noto Sans SC",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--r-ctl:8px;--r-sm:6px;--r-panel:12px;--r-check:4px;--r-stamp:3px;--h-sm:28px;--h-md:32px;--h-lg:40px;--pad-sm:10px;--pad-md:12px;--pad-lg:16px;--fs-sm:12px;--fs-md:13px;--fs-lg:14px;--ico-sm:14px;--ico-md:16px;--ico-lg:20px;--ease:cubic-bezier(.22,1,.36,1);--t-fill:120ms;--t-press:80ms;--t-move:240ms;--t-loop:900ms`;
-  return `.gp{${block(T.light)};${fixed}}\n.gp.night{${block(T.night)}}`;
+  const b = boardTokenBlocks();
+  return `.gp{${b.light};${b.fixed}}\n.gp.night{${b.night}}`;
 }
 
 export const FONTS = `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500;600&amp;family=Noto+Serif+SC:wght@300;400&amp;display=swap">`;
 
-// ---------- icons: the 28-name roster, 20 grid, 1.25px stroke ----------
-export const ICONS = {
-  "alert-triangle": '<path d="M10 3.5L2.5 16.5h15L10 3.5z"/><path d="M10 8v4"/><path d="M10 14.25h.01"/>',
-  "arrow-left": '<path d="M16 10H4"/><path d="M9 5l-5 5 5 5"/>',
-  "arrow-right": '<path d="M4 10h12"/><path d="M11 5l5 5-5 5"/>',
-  "book-open": '<path d="M10 6.5C8.6 5.3 6.6 5 3.5 5v10c3.1 0 5.1.3 6.5 1.5 1.4-1.2 3.4-1.5 6.5-1.5V5c-3.1 0-5.1.3-6.5 1.5z"/><path d="M10 6.5v10"/>',
-  check: '<path d="M4 10.5l4 4 8-9"/>',
-  "chevron-down": '<path d="M5 8l5 5 5-5"/>',
-  "chevron-left": '<path d="M12 5l-5 5 5 5"/>',
-  "chevron-right": '<path d="M8 5l5 5-5 5"/>',
-  database: '<ellipse cx="10" cy="5.5" rx="6.5" ry="2.5"/><path d="M3.5 5.5v9c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5v-9"/><path d="M3.5 10c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5"/>',
-  "external-link": '<path d="M11.5 4H16v4.5"/><path d="M16 4l-7 7"/><path d="M14 11v4.25a.75.75 0 0 1-.75.75h-8.5a.75.75 0 0 1-.75-.75v-8.5A.75.75 0 0 1 4.75 6H9"/>',
-  "globe-2": '<circle cx="10" cy="10" r="7"/><path d="M3 10h14"/><path d="M10 3c2 2 3 4.5 3 7s-1 5-3 7c-2-2-3-4.5-3-7s1-5 3-7z"/>',
-  history: '<path d="M3.5 10a6.5 6.5 0 1 0 1.9-4.6"/><path d="M3.5 4v3.5H7"/><path d="M10 7v3.5l2.5 1.5"/>',
-  home: '<path d="M3 9l7-6 7 6v8h-5v-5H8v5H3z"/>',
-  info: '<circle cx="10" cy="10" r="7"/><path d="M10 9v4.5"/><path d="M10 6.75h.01"/>',
-  layers: '<path d="M10 3l7 3.5-7 3.5-7-3.5z"/><path d="M3 10l7 3.5 7-3.5"/><path d="M3 13.5L10 17l7-3.5"/>',
-  "layout-grid": '<rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/>',
-  "loader-circle": '<path d="M10 3a7 7 0 0 1 7 7"/>',
-  menu: '<path d="M3 6h14"/><path d="M3 10h14"/><path d="M3 14h14"/>',
-  moon: '<path d="M16.5 12.5A6.5 6.5 0 0 1 7.5 3.5a6.5 6.5 0 1 0 9 9z"/>',
-  package: '<path d="M10 3l7 3.5v7L10 17l-7-3.5v-7z"/><path d="M3 6.5l7 3.5 7-3.5"/><path d="M10 10v7"/><path d="M6.5 4.75l7 3.5"/>',
-  palette: '<path d="M10 3a7 7 0 1 0 0 14c.9 0 1.5-.7 1.5-1.5 0-.6-.4-1-.4-1.6 0-.8.7-1.4 1.5-1.4H14a3 3 0 0 0 3-3c0-3.6-3.1-6.5-7-6.5z"/><path d="M7 9.25h.01"/><path d="M10 6.5h.01"/><path d="M13 8.25h.01"/><path d="M6.75 12.5h.01"/>',
-  "panel-left-close": '<rect x="3" y="4" width="14" height="12" rx="2"/><path d="M8 4v12"/><path d="M14 8l-2 2 2 2"/>',
-  "panel-left-open": '<rect x="3" y="4" width="14" height="12" rx="2"/><path d="M8 4v12"/><path d="M11.5 8l2 2-2 2"/>',
-  search: '<circle cx="9" cy="9" r="5.5"/><path d="M13 13l4 4"/>',
-  settings: '<circle cx="10" cy="10" r="2.5"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.5 1.5M13.5 13.5L15 15M15 5l-1.5 1.5M6.5 13.5L5 15"/>',
-  "shield-check": '<path d="M10 3l6 2.5v4.5c0 3.5-2.5 6-6 7-3.5-1-6-3.5-6-7V5.5z"/><path d="M7.5 10l2 2 3.5-4"/>',
-  sun: '<circle cx="10" cy="10" r="3.5"/><path d="M10 3v1.5M10 15.5V17M3 10h1.5M15.5 10H17M5 5l1 1M14 14l1 1M15 5l-1 1M6 14l-1 1"/>',
-  x: '<path d="M5 5l10 10"/><path d="M15 5L5 15"/>',
-  plus: '<path d="M10 4v12"/><path d="M4 10h12"/>',
-  minus: '<path d="M4 10h12"/>',
-  users: '<circle cx="8" cy="7" r="3"/><path d="M2.5 16a5.5 5.5 0 0 1 11 0"/><path d="M13 4.5a3 3 0 0 1 0 5.5"/><path d="M17.5 16a5 5 0 0 0-3.5-4.7"/>',
-  bell: '<path d="M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/>',
-  copy: '<rect x="7" y="7" width="10" height="10" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/>',
-  trash: '<path d="M3.5 5.5h13"/><path d="M8 5.5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5"/><path d="M5 5.5l.8 10A1.5 1.5 0 0 0 7.3 17h5.4a1.5 1.5 0 0 0 1.5-1.5l.8-10"/><path d="M8.5 9v5"/><path d="M11.5 9v5"/>',
-  calendar: '<rect x="3" y="4.5" width="14" height="12.5" rx="2"/><path d="M3 9h14"/><path d="M7 3v3"/><path d="M13 3v3"/>',
-  "more-horizontal": '<path d="M4.5 10h1"/><path d="M9.5 10h1"/><path d="M14.5 10h1"/>',
-  "chevron-up": '<path d="M5 12l5-5 5 5"/>'
-};
-export const ICON_NEW = ["plus", "minus", "users", "bell", "copy", "trash", "calendar", "more-horizontal", "chevron-up"];
-export const ICON_NAMES = Object.keys(ICONS);
+// ---------- icons: contract/icons.json (20 grid, 1.25px stroke) ----------
 /** inline svg; stroke is 1.25 CSS px at every size (non-scaling) */
 export function icon(name, { size = 16, cls = "", attrs = "" } = {}) {
   const body = ICONS[name];
   if (!body) throw new Error("icon " + name);
   return `<svg class="ic${cls ? " " + cls : ""}" width="${size}" height="${size}" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="${name}"${attrs ? " " + attrs : ""}>${body.replace(/<(path|circle|rect|ellipse) /g, '<$1 vector-effect="non-scaling-stroke" ')}</svg>`;
+}
+
+// ---------- matrix cells: contract/matrices.json ----------
+/** data-cell attributes of one cell: id, kind, expected contrast (cr / fmt above), exemption */
+export function cellAttrs(board, cellId) {
+  const c = matrixCell(board, cellId);
+  return `data-cell="${c.cellId}" data-kind="${c.kind}" data-expect="${fmt(cr(c.inkValue, c.fillValue, c.surfaceValue))}"${c.exempt ? " data-exempt" : ""}`;
 }
 
 // ---------- board chrome ----------

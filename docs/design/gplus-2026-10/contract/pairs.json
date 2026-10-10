@@ -1,0 +1,299 @@
+{
+  "description": "状态对表。每张表的变体为每个状态声明 slot 值（fill/ink/mark/knob 为 tokens.json 的 key 或字面量，edge 为画板语法的 box-shadow，var(--x) 指 token 或 fixed 变量）；状态规则只切换生效对，不写颜色。product 段由 scripts/contract-generate.mjs 生成：变体声明 --tcrn-pair-<slot>-<态>，生效对 --tcrn-pair-<slot>。",
+  "slotVars": { "fill": "--tcrn-pair-fill", "ink": "--tcrn-pair-ink", "edge": "--tcrn-pair-edge", "mark": "--tcrn-pair-mark", "knob": "--tcrn-pair-knob", "knob-edge": "--tcrn-pair-knob-edge", "weight": "--tcrn-pair-weight" },
+  "targetsNote": "targets 为包内选择器：无 modifier 的目标在 base 上声明合并后的全部状态值（部分覆盖的变体回落到表的第一个变体）；有 modifier 的目标以 base.modifier（特异性 0,2,0）声明该变体自己的值。生效对默认值与状态规则（:where，特异性 0,1,0）挂在全部 base 上。",
+  "tables": {
+    "actions": {
+      "family": "Actions",
+      "note": "Button · IconButton · LinkButton 同表；primary 与 danger 的 selected 声明保留，画板不展示",
+      "slots": ["fill", "ink", "edge"],
+      "boardSlots": { "fill": "fill", "ink": "ink", "edge": "edge" },
+      "weight": { "default": 500, "s": 600 },
+      "targets": [
+        {
+          "base": ".tcrn-button",
+          "modifier": "tcrn-button--{variant}",
+          "variants": ["primary", "secondary", "quiet", "danger"]
+        },
+        {
+          "base": ".tcrn-link-button",
+          "modifier": "tcrn-link-button--{variant}",
+          "variants": ["primary", "secondary", "quiet"]
+        }
+      ],
+      "states": [
+        { "key": "d", "name": "default" },
+        {
+          "key": "h",
+          "name": "hover",
+          "when": [":hover", "[data-tcrn-preview-state=\"hover\"]"]
+        },
+        {
+          "key": "a",
+          "name": "active",
+          "when": [":active", "[data-tcrn-preview-state=\"active\"]"]
+        },
+        {
+          "key": "f",
+          "name": "focus",
+          "when": [":focus-visible", "[data-tcrn-preview-state=\"focus\"]"],
+          "switch": ["edge"]
+        },
+        {
+          "key": "x",
+          "name": "disabled",
+          "when": [":disabled", "[aria-disabled=\"true\"]"]
+        },
+        {
+          "key": "l",
+          "name": "loading",
+          "when": ["[aria-busy=\"true\"]"]
+        },
+        {
+          "key": "s",
+          "name": "selected",
+          "when": ["[aria-pressed=\"true\"]"]
+        }
+      ],
+      "ruleOrder": ["h", "a", "f", "s", "x", "l"],
+      "variants": {
+        "primary": {
+          "d": { "fill": "acc", "ink": "on-acc", "edge": "0 0 #0000" },
+          "h": { "fill": "acc-2", "ink": "on-acc", "edge": "0 0 #0000" },
+          "a": { "fill": "acc-3", "ink": "on-acc", "edge": "0 0 #0000" },
+          "f": { "fill": "acc", "ink": "on-acc", "edge": "var(--focus),0 0 #0000" },
+          "x": { "fill": "dis", "ink": "ink-3", "edge": "0 0 #0000" },
+          "l": { "fill": "acc", "ink": "on-acc", "edge": "0 0 #0000" },
+          "s": { "fill": "acc-3", "ink": "on-acc", "edge": "0 0 #0000" }
+        },
+        "secondary": {
+          "d": { "fill": "panel", "ink": "ink", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "h": { "fill": "panel-2", "ink": "ink", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "a": { "fill": "bg-2", "ink": "ink", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "f": { "fill": "panel", "ink": "ink", "edge": "var(--focus),0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "x": { "fill": "dis", "ink": "ink-3", "edge": "0 0 0 1px var(--line-2)" },
+          "l": { "fill": "panel", "ink": "ink", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "s": { "fill": "wash", "ink": "ink", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" }
+        },
+        "quiet": {
+          "d": { "fill": "#0000", "ink": "ink-2", "edge": "0 0 #0000" },
+          "h": { "fill": "hover", "ink": "ink", "edge": "0 0 #0000" },
+          "a": { "fill": "wash", "ink": "ink", "edge": "0 0 #0000" },
+          "f": { "fill": "#0000", "ink": "ink-2", "edge": "var(--focus),0 0 #0000" },
+          "x": { "fill": "#0000", "ink": "ink-3", "edge": "0 0 #0000" },
+          "l": { "fill": "#0000", "ink": "ink-2", "edge": "0 0 #0000" },
+          "s": { "fill": "wash", "ink": "ink", "edge": "0 0 #0000" }
+        },
+        "danger": {
+          "d": { "fill": "panel", "ink": "red", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "h": { "fill": "red-bg", "ink": "red", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "a": { "fill": "red-bg-2", "ink": "red", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "f": { "fill": "panel", "ink": "red", "edge": "var(--focus),0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "x": { "fill": "dis", "ink": "ink-3", "edge": "0 0 0 1px var(--line-2)" },
+          "l": { "fill": "panel", "ink": "red", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" },
+          "s": { "fill": "red-bg", "ink": "red", "edge": "0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)" }
+        }
+      }
+    },
+    "inputs-text": {
+      "family": "Inputs",
+      "note": "文本类：TextInput · TextArea · NumberInput · DatePicker · Select · SearchInput；search 只覆盖 d/h/f 的部分 slot",
+      "slots": ["fill", "ink", "edge"],
+      "boardSlots": { "fill": "fill", "ink": "ink", "edge": "edge" },
+      "targets": [
+        {
+          "base": ".tcrn-input",
+          "variants": ["default"]
+        },
+        {
+          "base": ".tcrn-select",
+          "variants": ["default"]
+        },
+        {
+          "base": ".tcrn-input",
+          "modifier": "tcrn-search-input__control",
+          "variants": ["search"]
+        }
+      ],
+      "states": [
+        { "key": "d", "name": "default" },
+        {
+          "key": "h",
+          "name": "hover",
+          "when": [":hover", "[data-tcrn-preview-state=\"hover\"]"]
+        },
+        {
+          "key": "f",
+          "name": "focus",
+          "when": [":focus-visible", "[data-tcrn-preview-state=\"focus\"]"]
+        },
+        {
+          "key": "x",
+          "name": "disabled",
+          "when": [":disabled", "[aria-disabled=\"true\"]"]
+        },
+        {
+          "key": "r",
+          "name": "readonly",
+          "when": ["[readonly]", "[aria-readonly=\"true\"]"]
+        },
+        {
+          "key": "e",
+          "name": "invalid",
+          "when": ["[aria-invalid=\"true\"]"]
+        },
+        {
+          "key": "ef",
+          "name": "invalid-focus",
+          "when": ["[aria-invalid=\"true\"]:focus-visible", "[aria-invalid=\"true\"][data-tcrn-preview-state=\"focus\"]"]
+        }
+      ],
+      "ruleOrder": ["h", "f", "r", "e", "ef", "x"],
+      "variants": {
+        "default": {
+          "d": { "fill": "panel", "ink": "ink", "edge": "inset 0 0 0 1px var(--line-ctl)" },
+          "h": { "fill": "panel", "ink": "ink", "edge": "inset 0 0 0 1px var(--ink-2)" },
+          "f": { "fill": "panel", "ink": "ink", "edge": "inset 0 0 0 1px var(--acc),var(--focus)" },
+          "x": { "fill": "dis", "ink": "ink-3", "edge": "inset 0 0 0 1px var(--line-2)" },
+          "r": { "fill": "panel-2", "ink": "ink", "edge": "inset 0 0 0 1px var(--line-2)" },
+          "e": { "fill": "panel", "ink": "ink", "edge": "inset 0 0 0 1px var(--bad)" },
+          "ef": { "edge": "inset 0 0 0 1px var(--bad),0 0 0 2px var(--surface),0 0 0 4px var(--bad)" }
+        },
+        "search": {
+          "d": { "fill": "wash", "edge": "0 0 #0000" },
+          "h": { "fill": "wash", "edge": "inset 0 0 0 1px var(--line-2)" },
+          "f": { "fill": "panel" }
+        }
+      }
+    },
+    "inputs-check": {
+      "family": "Inputs",
+      "note": "勾选类：Checkbox（含 indeterminate）与 Radio；附加 mark 三元组（fill · edge · mark）",
+      "slots": ["fill", "edge", "mark"],
+      "boardSlots": { "fill": "fill", "edge": "edge", "mark": "mk" },
+      "targets": [
+        {
+          "base": ".tcrn-checkbox",
+          "variants": ["checkbox"]
+        },
+        {
+          "base": ".tcrn-radio-group__control",
+          "variants": ["radio"]
+        }
+      ],
+      "states": [
+        { "key": "d", "name": "default" },
+        {
+          "key": "h",
+          "name": "hover",
+          "when": [":hover", "[data-tcrn-preview-state=\"hover\"]"]
+        },
+        {
+          "key": "c",
+          "name": "checked",
+          "when": [":checked", ":indeterminate"]
+        },
+        {
+          "key": "f",
+          "name": "focus",
+          "when": [":focus-visible", "[data-tcrn-preview-state=\"focus\"]"]
+        },
+        {
+          "key": "cf",
+          "name": "checked-focus",
+          "when": [":checked:focus-visible", ":indeterminate:focus-visible", ":checked[data-tcrn-preview-state=\"focus\"]", ":indeterminate[data-tcrn-preview-state=\"focus\"]"]
+        },
+        {
+          "key": "x",
+          "name": "disabled",
+          "when": [":disabled"]
+        },
+        {
+          "key": "cx",
+          "name": "checked-disabled",
+          "when": [":disabled:checked", ":disabled:indeterminate"]
+        },
+        {
+          "key": "e",
+          "name": "invalid",
+          "when": ["[aria-invalid=\"true\"]"]
+        }
+      ],
+      "ruleOrder": ["h", "c", "f", "cf", "e", "x", "cx"],
+      "variants": {
+        "checkbox": {
+          "d": { "fill": "panel", "edge": "inset 0 0 0 1px var(--line-ctl)", "mark": "transparent" },
+          "h": { "fill": "panel", "edge": "inset 0 0 0 1px var(--ink-2)", "mark": "transparent" },
+          "c": { "fill": "acc", "edge": "0 0 #0000", "mark": "on-acc" },
+          "f": { "fill": "panel", "edge": "inset 0 0 0 1px var(--acc),var(--focus)", "mark": "transparent" },
+          "cf": { "fill": "acc", "edge": "var(--focus)", "mark": "on-acc" },
+          "x": { "fill": "dis", "edge": "inset 0 0 0 1px var(--line-2)", "mark": "transparent" },
+          "cx": { "fill": "dis", "edge": "inset 0 0 0 1px var(--line-2)", "mark": "ink-3" },
+          "e": { "fill": "panel", "edge": "inset 0 0 0 1px var(--bad)", "mark": "transparent" }
+        },
+        "radio": {
+          "c": { "fill": "panel", "edge": "0 0 #0000", "mark": "acc" },
+          "cf": { "fill": "panel", "edge": "var(--focus)", "mark": "acc" },
+          "cx": { "fill": "dis", "edge": "inset 0 0 0 1px var(--line-2)", "mark": "ink-3" }
+        }
+      }
+    },
+    "inputs-switch": {
+      "family": "Inputs",
+      "note": "开关类：Switch；四元组（fill 即轨道 · edge · knob · knob-edge）",
+      "slots": ["fill", "edge", "knob", "knob-edge"],
+      "boardSlots": { "fill": "trk", "edge": "edge", "knob": "kn", "knob-edge": "kedge" },
+      "targets": [
+        {
+          "base": ".tcrn-switch__control",
+          "variants": ["switch"]
+        }
+      ],
+      "states": [
+        { "key": "d", "name": "default" },
+        {
+          "key": "h",
+          "name": "hover",
+          "when": [":hover", "[data-tcrn-preview-state=\"hover\"]"]
+        },
+        {
+          "key": "c",
+          "name": "checked",
+          "when": [":checked"]
+        },
+        {
+          "key": "f",
+          "name": "focus",
+          "when": [":focus-visible", "[data-tcrn-preview-state=\"focus\"]"]
+        },
+        {
+          "key": "cf",
+          "name": "checked-focus",
+          "when": [":checked:focus-visible", ":checked[data-tcrn-preview-state=\"focus\"]"]
+        },
+        {
+          "key": "x",
+          "name": "disabled",
+          "when": [":disabled"]
+        },
+        {
+          "key": "cx",
+          "name": "checked-disabled",
+          "when": [":disabled:checked"]
+        }
+      ],
+      "ruleOrder": ["h", "c", "f", "cf", "x", "cx"],
+      "variants": {
+        "switch": {
+          "d": { "fill": "bg-2", "edge": "inset 0 0 0 1px var(--line-ctl)", "knob": "panel", "knob-edge": "0 0 0 1px var(--line-ctl)" },
+          "h": { "fill": "bg-2", "edge": "inset 0 0 0 1px var(--ink-2)", "knob": "panel", "knob-edge": "0 0 0 1px var(--ink-2)" },
+          "c": { "fill": "acc", "edge": "0 0 #0000", "knob": "on-acc", "knob-edge": "0 0 #0000" },
+          "f": { "fill": "bg-2", "edge": "inset 0 0 0 1px var(--line-ctl),var(--focus)", "knob": "panel", "knob-edge": "0 0 0 1px var(--line-ctl)" },
+          "cf": { "fill": "acc", "edge": "var(--focus)", "knob": "on-acc", "knob-edge": "0 0 #0000" },
+          "x": { "fill": "dis", "edge": "inset 0 0 0 1px var(--line-2)", "knob": "panel", "knob-edge": "0 0 0 1px var(--line-2)" },
+          "cx": { "fill": "dis", "edge": "inset 0 0 0 1px var(--line-2)", "knob": "ink-3", "knob-edge": "0 0 #0000" }
+        }
+      }
+    }
+  }
+}
