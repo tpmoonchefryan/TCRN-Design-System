@@ -107,9 +107,8 @@ const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-shell-brand-lockup",
   ".tcrn-shell-brand-lockup__copy",
   ".tcrn-shell-brand-lockup__caption",
-  // Static ProductShell proof keeps its intentionally-open result panel in flow;
-  // the modifier is Storybook-only and does not change the package default.
-  ".tcrn-product-shell-search__results",
+  // The Storybook-only ProductShell static-display modifier and its result-panel rule
+  // were removed with the doc-layer parallel implementations (TCRN-DS-SUB-026).
   // Documented demo-chrome hook — not a duplicate (see comment above):
   ".tcrn-filter-bar"
 ]);
