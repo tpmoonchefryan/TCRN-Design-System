@@ -5,16 +5,36 @@
 // order, so where a segment sits in the sheet is decided there; this module owns what the
 // segment says. A backtick ends a segment early, so the CSS comments in it never use one
 // (scripts/css-template-integrity-proof.mjs checks every segment).
+//
+// G+ brand rules (STORY-127, boards V2-B1-Brand and V2-B2-Logos): the mark comes in four
+// sizes set by its container (side rail 22, lockup 28, product logo 38, about page 56 by
+// overriding the variable); TCRN is ink and a TCRN product suffix is the product's deep
+// colour from the brand-suffix tokens, the same in both themes; Einzbern and Mana
+// Orchestrate are whole names in Source Serif 4 with the byline. Gradient text is retired.
+// The tier variables below are brand locals, registered in scripts/token-extension-proof.mjs.
 
 export const brandCss01 = `
 .tcrn-brand-lockup,
 .tcrn-shell-brand-lockup,
 .tcrn-product-logo {
   --tcrn-brand-mark-size: 38px;
+  --tcrn-brand-line-one-size: var(--tcrn-type-size-reading);
+  --tcrn-brand-line-one-height: 18px;
+  --tcrn-brand-line-one-base-weight: var(--tcrn-type-weight-medium);
+  --tcrn-brand-line-two-size: 11.5px;
+  --tcrn-brand-line-two-height: var(--tcrn-type-line-caption);
   display: inline-flex;
   align-items: center;
   min-width: 0;
   gap: var(--tcrn-space-3);
+  font-family: var(--tcrn-type-family-ui);
+}
+.tcrn-brand-lockup {
+  --tcrn-brand-mark-size: 28px;
+  --tcrn-brand-line-one-size: var(--tcrn-type-size-ui);
+  --tcrn-brand-line-two-size: 10.5px;
+  --tcrn-brand-line-two-height: 14px;
+  gap: var(--tcrn-space-2h);
 }
 .tcrn-brand-mark {
   display: block;
@@ -22,33 +42,29 @@ export const brandCss01 = `
   block-size: var(--tcrn-brand-mark-size);
   flex: 0 0 auto;
   filter: var(--tcrn-brand-mark-filter, none);
-  transition:
-    inline-size var(--tcrn-motion-emphasis),
-    block-size var(--tcrn-motion-emphasis),
-    filter var(--tcrn-motion-standard);
 }
 .tcrn-brand-wordmark {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: baseline;
   min-width: 0;
-  gap: var(--tcrn-space-0h) var(--tcrn-space-2);
-  color: var(--tcrn-color-text-primary);
-  font-size: var(--tcrn-type-size-section);
-  font-weight: var(--tcrn-type-weight-regular);
-  line-height: var(--tcrn-type-line-section);
+  gap: var(--tcrn-space-0h) var(--tcrn-space-1h);
+  color: var(--tcrn-color-ink);
+  font-size: 16px;
+  font-weight: var(--tcrn-type-weight-medium);
+  line-height: 20px;
   overflow-wrap: anywhere;
 }
 .tcrn-brand-wordmark__base {
   flex: 0 0 auto;
   letter-spacing: 0;
-  font-weight: var(--tcrn-type-weight-regular);
+  font-weight: var(--tcrn-type-weight-medium);
   white-space: nowrap;
 }
 .tcrn-brand-wordmark__suffix {
   flex: 0 1 auto;
   min-width: 0;
-  color: var(--tcrn-color-brand-secondary-readable);
+  color: var(--tcrn-color-ink);
   font-size: inherit;
   font-weight: var(--tcrn-type-weight-strong);
 }
@@ -56,23 +72,10 @@ export const brandCss01 = `
   color: var(--tcrn-brand-accent-aos);
 }
 .tcrn-brand-wordmark__suffix--tms {
-  color: var(--tcrn-brand-accent-tms);
-}
-.tcrn-brand-wordmark__suffix--workflow {
-  color: var(--tcrn-brand-accent-workflow);
+  color: var(--tcrn-brand-suffix-tms);
 }
 .tcrn-brand-wordmark__suffix--design-system {
-  background: linear-gradient(
-    105deg,
-    var(--tcrn-brand-accent-design-system-1) 0%,
-    var(--tcrn-brand-accent-design-system-2) 31%,
-    var(--tcrn-brand-accent-design-system-3) 62%,
-    var(--tcrn-brand-accent-design-system-4) 100%
-  );
-  background-clip: text;
-  color: transparent;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--tcrn-brand-suffix-design-system);
 }
 .tcrn-brand-lockup--long-name .tcrn-brand-wordmark {
   flex-direction: column;
@@ -90,15 +93,15 @@ export const brandCss01 = `
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--tcrn-space-0h) var(--tcrn-space-1);
-  color: var(--tcrn-color-text-primary);
-  font-size: var(--tcrn-type-size-ui);
-  font-weight: var(--tcrn-type-weight-regular);
-  line-height: var(--tcrn-type-line-ui);
+  color: var(--tcrn-color-ink);
+  font-size: var(--tcrn-brand-line-one-size);
+  font-weight: var(--tcrn-type-weight-medium);
+  line-height: var(--tcrn-brand-line-one-height);
   white-space: nowrap;
 }
 .tcrn-product-logo__line-one-base {
   flex: 0 0 auto;
-  font-weight: var(--tcrn-type-weight-regular);
+  font-weight: var(--tcrn-brand-line-one-base-weight);
   white-space: nowrap;
 }
 .tcrn-product-logo__line-one-suffix {
@@ -111,33 +114,58 @@ export const brandCss01 = `
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
+  line-height: 16px;
   white-space: normal;
+}
+.tcrn-product-logo--serif .tcrn-product-logo__line-one {
+  font-family: var(--tcrn-type-family-serif);
+  letter-spacing: 0.03em;
+}
+.tcrn-product-logo--serif .tcrn-product-logo__line-one-base {
+  font-size: 1.08em;
+  font-weight: var(--tcrn-type-weight-regular);
 }
 .tcrn-shell-brand-lockup__caption,
 .tcrn-product-logo__line-two {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-meta);
-  font-weight: var(--tcrn-type-weight-strong);
-  line-height: var(--tcrn-type-line-caption);
+  color: var(--tcrn-color-ink-3);
+  font-size: var(--tcrn-brand-line-two-size);
+  font-weight: var(--tcrn-type-weight-medium);
+  line-height: var(--tcrn-brand-line-two-height);
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-product-logo__byline {
+  color: var(--tcrn-color-ink-3);
+  font-size: 10px;
+  font-weight: var(--tcrn-type-weight-medium);
+  letter-spacing: var(--tcrn-type-tracking-caps);
+  line-height: 14px;
+  text-transform: uppercase;
   white-space: nowrap;
 }`;
 
 export const brandCss02 = `
 .tcrn-product-shell__sidebar .tcrn-brand-wordmark__suffix--aos {
   color: var(--tcrn-color-brand-primary);
+}
+.tcrn-product-shell .tcrn-shell-brand-lockup {
+  --tcrn-brand-mark-size: 22px;
+  --tcrn-brand-line-one-size: 12.5px;
+  --tcrn-brand-line-one-height: 16px;
+  --tcrn-brand-line-one-base-weight: var(--tcrn-type-weight-strong);
+  --tcrn-brand-line-two-size: 10.5px;
+  --tcrn-brand-line-two-height: 14px;
+  gap: var(--tcrn-space-2h);
+}
+.tcrn-product-shell .tcrn-product-logo__byline {
+  display: none;
 }`;
 
 export const brandCss03 = `
 .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-shell-brand-lockup__copy,
 .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-logo__copy {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  display: none;
 }`;
 
 export const brandCss04 = `
