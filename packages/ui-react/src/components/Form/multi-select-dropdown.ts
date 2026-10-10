@@ -46,7 +46,12 @@ export function mountStaticMultiSelect({ root, getValue, onChange, onReset }: St
       const native = Array.from(select.options).find((entry) => entry.value === option.dataset.multiSelectValue);
       if (label && native && label.textContent !== native.label) label.textContent = native.label;
     }
-    summary.textContent = Array.from(select.options).filter((option) => current.includes(option.value)).map((option) => option.label).join(", ") || root.dataset.emptySelectionLabel || "";
+    const summaryText = Array.from(select.options).filter((option) => current.includes(option.value)).map((option) => option.label).join(", ") || root.dataset.emptySelectionLabel || "";
+    summary.textContent = summaryText;
+    // The summary is cut to one line, so its full text rides along as a title; a disabled
+    // trigger keeps its reason as the only title.
+    if (summaryText && !trigger.matches(":disabled")) summary.title = summaryText;
+    else summary.removeAttribute("title");
     layer.style.width = `${trigger.getBoundingClientRect().width}px`;
     if (trigger.matches(":disabled")) boundary.close();
     boundary.reposition();

@@ -24,6 +24,19 @@ import {
   Switch,
   Textarea
 } from "./Form.js";
+import { tcrnComponentCss } from "../../styles/index.js";
+import { inputsTextPairsCss } from "../../styles/generated/inputs.pairs.js";
+
+function escapeRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** The body of the first rule in the sheet whose selector text is exactly `selector`. */
+function cssRule(selector: string): string {
+  const match = new RegExp(`(?:^|[}\\s])${escapeRegExp(selector)}\\s*\\{([^}]*)\\}`).exec(tcrnComponentCss);
+  assert.ok(match, `missing rule: ${selector}`);
+  return match[1];
+}
 
 test("core primitives render normalized class names and accessibility attributes", () => {
   const html = renderToStaticMarkup(
@@ -348,4 +361,91 @@ test("STORY-092 a date picker keeps the machine format in the value and the read
   assert.match(html, /value="2026-08-18"/);
   assert.match(html, /min="2026-01-01"/);
   assert.match(html, /max="2026-12-31"/);
+});
+
+
+// TCRN-DS-SUB-019 (STORY-126). The text-like controls share one pair table. The family
+// base only reads the live pair; the segment generated from the design contract declares
+// it, and its state rules decide which pair is live.
+
+test("STORY-126 every text-like control carries a shared pair target", () => {
+  const html = renderToStaticMarkup(
+    <>
+      <Input name="a" />
+      <Textarea name="b" />
+      <NumberInput name="c" />
+      <DatePicker name="d" />
+      <SuggestInput name="e" suggestions={["one"]} />
+      <Select name="f" options={[{ value: "a", label: "A" }]} />
+      <MultiSelect name="g" presentation="dropdown" emptySelectionLabel="Nothing chosen" defaultValue={["a"]} options={[{ value: "a", label: "Alpha" }]} />
+    </>
+  );
+  assert.equal((html.match(/class="tcrn-input[ "]/g) ?? []).length, 5);
+  assert.match(html, /type="date" class="tcrn-input tcrn-date-picker" data-date-picker="true"/);
+  assert.match(html, /<select[^>]*class="tcrn-select"/);
+  assert.match(html, /class="tcrn-select tcrn-multi-select-dropdown__trigger"/);
+  // The summary is cut to one line, so it carries its full text as a title.
+  assert.match(html, /<span data-multi-select-summary="[^"]*" title="Alpha">Alpha<\/span>/);
+  assert.match(html, /<svg[^>]*width="14" height="14"[^>]*class="[^"]*tcrn-multi-select-dropdown__caret"[^>]*data-icon-name="chevron-down"/);
+
+  const disabled = renderToStaticMarkup(
+    <MultiSelect presentation="dropdown" disabled disabledReason="Choices are locked" emptySelectionLabel="Nothing chosen" options={[{ value: "a", label: "Alpha" }]} />
+  );
+  assert.match(disabled, /title="Choices are locked"/);
+  assert.doesNotMatch(disabled, /data-multi-select-summary="[^"]*" title=/);
+});
+
+test("STORY-126 the text-control base reads the live pair and paints nothing itself", () => {
+  const base = cssRule(".tcrn-input,\n.tcrn-select");
+  for (const declaration of [
+    "border: 0;",
+    "background-color: var(--tcrn-pair-fill);",
+    "color: var(--tcrn-pair-ink);",
+    "box-shadow: var(--tcrn-pair-edge);",
+    "block-size: var(--tcrn-control-height-md);",
+    "border-radius: var(--tcrn-radius-control);"
+  ]) {
+    assert.ok(base.includes(declaration), `base declares ${declaration}`);
+  }
+  assert.doesNotMatch(base, /--tcrn-color-/);
+  assert.doesNotMatch(base, /--tcrn-pair-[a-z-]+\s*:/);
+  const segment = tcrnComponentCss.indexOf(inputsTextPairsCss.trim());
+  assert.notEqual(segment, -1, "the generated text pair segment is joined into the sheet");
+  assert.ok(segment > tcrnComponentCss.indexOf(".tcrn-input,\n.tcrn-select {"), "the pair segment follows the base it serves");
+});
+
+test("STORY-126 GWT1 and GWT2: line-ctl edge by default, red edge and red ring when invalid and focused", () => {
+  for (const target of ["tcrn-input", "tcrn-select"]) {
+    const declarations = new RegExp(`^\\.${target}\\{([^}]*)\\}`, "m").exec(inputsTextPairsCss)?.[1] ?? "";
+    assert.match(declarations, /--tcrn-pair-edge-d:inset 0 0 0 1px var\(--tcrn-color-line-ctl\)/);
+    assert.match(declarations, /--tcrn-pair-edge-h:inset 0 0 0 1px var\(--tcrn-color-ink-2\)/);
+    assert.match(declarations, /--tcrn-pair-edge-f:inset 0 0 0 1px var\(--tcrn-color-acc\),var\(--tcrn-focus-ring\)/);
+    assert.match(declarations, /--tcrn-pair-edge-e:inset 0 0 0 1px var\(--tcrn-color-bad\)/);
+    const invalidFocus = /--tcrn-pair-edge-ef:([^;}]*)/.exec(declarations)?.[1] ?? "";
+    assert.match(invalidFocus, /var\(--tcrn-color-bad\)[\s\S]*var\(--tcrn-color-bad\)/);
+    assert.doesNotMatch(invalidFocus, /acc|focus-ring/);
+    for (const slot of ["fill-e", "ink-e"]) {
+      assert.doesNotMatch(new RegExp(`--tcrn-pair-${slot}:([^;}]*)`).exec(declarations)?.[1] ?? "acc", /acc/);
+    }
+  }
+  const focusRule = tcrnComponentCss.indexOf(".tcrn-input:where(:focus-visible,");
+  const invalidRule = tcrnComponentCss.indexOf('.tcrn-input:where([aria-invalid="true"]),');
+  const invalidFocusRule = tcrnComponentCss.indexOf('.tcrn-input:where([aria-invalid="true"]:focus-visible,');
+  assert.ok(focusRule !== -1 && focusRule < invalidRule && invalidRule < invalidFocusRule, "the invalid rules follow the focus rule, so they win");
+  assert.doesNotMatch(tcrnComponentCss, /aria-invalid[^{}]*\{[^}]*--tcrn-color-acc/);
+});
+
+test("STORY-126 number, date, placeholder and collection details follow the Inputs board", () => {
+  assert.match(cssRule(".tcrn-number-input"), /appearance:textfield/);
+  assert.match(tcrnComponentCss, /\.tcrn-number-input::-webkit-inner-spin-button,\.tcrn-number-input::-webkit-outer-spin-button\{-webkit-appearance:none;margin:0\}/);
+  // GWT4: the native indicator stays the click target, transparent over the end 30px.
+  const indicator = cssRule(".tcrn-date-picker::-webkit-calendar-picker-indicator");
+  for (const declaration of ["position: absolute;", "inset-inline-end: 0;", "inline-size: 30px;", "block-size: 100%;", "opacity: 0;", "cursor: pointer;"]) {
+    assert.ok(indicator.includes(declaration), `indicator declares ${declaration}`);
+  }
+  assert.match(cssRule(".tcrn-date-picker"), /position: relative; padding-inline-end: 30px;/);
+  assert.match(cssRule(".tcrn-input::placeholder"), /color: var\(--tcrn-color-ink-3\);\s*opacity: 1;/);
+  assert.match(cssRule(".tcrn-select.tcrn-multi-select"), /block-size:auto/);
+  assert.equal(cssRule('.tcrn-multi-select-dropdown__option[aria-selected="true"]'), "background:var(--tcrn-color-wash);font-weight:600");
+  assert.match(cssRule(".tcrn-multi-select-dropdown__option:not(:disabled):hover"), /var\(--tcrn-color-hover\)/);
 });
