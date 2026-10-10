@@ -25,10 +25,12 @@ const STAMP_TOKENS = [
 ];
 const ALLOWED_MOMENTS = new Set(["gate-close", "ruling", "release"]);
 
-// The stamp rules themselves live in the Navigation stylesheet (where the component
-// CSS is authored) and the components live in Feedback.
+// The stamp rules themselves live in the base segments of the component stylesheet
+// (styles/base.css.ts, where the component CSS has been authored since TCRN-DS-SUB-010)
+// and the components live in Feedback. No other family module is an owner: a heading
+// or text rule reaching for the serif stamp face is exactly the leak this gate stops.
 const TOKEN_OWNERS = new Set([
-  path.join(SRC, "components/Navigation/Navigation.tsx"),
+  path.join(SRC, "styles/base.css.ts"),
   path.join(SRC, "components/Feedback/Feedback.tsx")
 ]);
 
