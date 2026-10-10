@@ -26,7 +26,7 @@ TCRN-DS-INIT-015 下 TCRN-DS-STORY-120 至 134 共 15 张 Story 全部 `done`，
 ## 回路（批量处理原则 v3，一批 = 15 张 Story）
 
 1. **拆分一次**：派一个子代理读完 15 张 Story 的正文与 `docs/design/gplus-2026-10`，一次拆成 Subtask（每张写改动文件与依赖），用 `work-create --kind Subtask --parent-id <Story id>` 落链；拆分子代理把发现的 scope 矛盾记入本批问题清单，不改 Story。
-2. **分包并行**：改同一批文件或有先后依赖的 Subtask 进同一个包，包内按序；互不影响的各成一包；依赖顺序大体是 EPIC-039 → 040 → 041 → 042 → 043，但 039 与 128（文档层清零）、131/132 的门脚本可早做。并发上限 `execution.maxConcurrentSubagents` 为 8；两个写代理不得同时改同一文件集。包完成即退役，不跑门、不验收、不写链。
+2. **分包并行**：改同一批文件或有先后依赖的 Subtask 进同一个包，包内按序；互不影响的各成一包；依赖顺序大体是 EPIC-039 → 040 → 041 → 042 → 043，但 039 与 128（文档层清零）、131/132 的门脚本可早做。并发上限按「模型与子代理」一节为 3（链上变量未配置）；拆分与实施包派经济档，两个写代理不得同时改同一文件集。包完成即退役，不跑门、不验收、不写链。
 3. **集成一次**：包全部完成后按依赖顺序合到本分支，冲突交一个集成子代理。
 4. **门与验收批末一次**：开发期只跑受影响的局部门（STORY-119 的分阶段规则）；批末 `verify` 一次、Opus 档验收一次（按 Story 出结论），问题清单一次处置、一轮返工、一次重跑（MIN-218）。见红只记不修。
 5. **一次链写、一次汇报**：Story 转态与注解用批量入口；Subtask 免十块模板；`work-transition` 的 summary 不超过 160 字节；planned 不能直接 active（先 ready）。验收通过的 Story 转 `done`；不通过的开 Incident（`--fixes`）或补充 Story 回拆分。
@@ -35,7 +35,18 @@ TCRN-DS-INIT-015 下 TCRN-DS-STORY-120 至 134 共 15 张 Story 全部 `done`，
 
 ## 模型与子代理
 
-- 三档按 Owner 2026-09-22 裁定（MIN-214/215）：主力与经济档都是 `claude-opus-5-5`，效果档不调旗舰；DS 库未配置 `execution.dispatchTiers`，记为未配置，不猜。
+- 档位是变量不是人设。DS 库与协调库的 `models.category`、`models.tiers`、`execution.maxConcurrentSubagents` 现读皆为未配置（2.x 库 `settings-catalog` 2026-10-11 读数 value 为 null），记为未配置、不猜；Atelier 配置之前按下表的 Owner 裁定执行，每行注明来源纪要（协调库 `/Users/ryanlan/Code/.ether`，`minutes-show --id`）。
+- 档位表（Claude Code 宿主）：
+
+| 档 | 模型 / effort | 代理定义（容器根 `.claude/agents`，宿主本地文件） | 用在哪 | 来源 |
+| --- | --- | --- | --- | --- |
+| 旗舰 | claude-fable-5-1 / max | 无 | 不调；设计与裁定对话专用 | minutes:23fa3c95ea1965d0a09b35f7 D1（2026-09-16） |
+| 主力 | claude-opus-5-5 / max | `einzbern-main` | 批末验收、问题清单判断、集成冲突、改共享契约的返工、升档后的返工 | minutes:73653e64a465de427be20fb2（2026-09-22）；minutes:c8739892952325c316bdcea8 D2（2026-09-28） |
+| 经济 | claude-opus-5-5 / low | `einzbern-economy` | 拆分、实施包、孤立修复 | minutes:74cc0232ca417b74a954dcf2 D1（2026-09-26，取代 2026-09-22 的 opus-5-5/max） |
+
+- 派子代理时用 `subagent_type` 指定上表的代理定义：effort 只能来自定义的 frontmatter，Agent 工具没有 effort 参数，不指定定义就会继承主对话的 max。两份定义的正文写的是 INIT-053，其执行约束（单次派工不超过 200 次模型响应、工具输出进文件按需读、见红只记不修、不发进度、不派子代理的子代理、不用 claude-fable-5-1）对本 INIT 同样有效。
+- 起始档与升档（minutes:c8739892952325c316bdcea8 D2、D5）：孤立修复从经济档起，改共享契约（token 键集、`contract/*.json`、导出面、门的判定语义）的返工从主力档起；同一修复目标被退回 1 次即升到主力，止于主力，再被退回停下记入收口文件交 Owner；升档目标单独成包。
+- 并发与包大小：并行包上限 3（minutes:eb763b2a518d5eddc8eee84f D1，2026-09-26，由 8 改 4 再改 3）；每包按预计回合数定、不超过 150 回合，大单单独成包（同纪要 D3）；每个包派工前切一份只含本包 Subtask、通用约定与跨单契约的摘录文件，派工提示只指向摘录，不指向整份拆分文件（同纪要 D1）。
 - 子代理单次派工即退役，不派子代理的子代理；子代理之间不互发进度；只有安全问题、硬阻塞与会阻塞别人的冲突可中途上报。
 - 子代理只读派工指明的文件、节号或行号范围；工具输出先写进文件再按需读入，每次不超过 200 行；超过 32 KB 的文件不整读。
 
