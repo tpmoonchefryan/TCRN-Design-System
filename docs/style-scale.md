@@ -59,58 +59,78 @@ suffix. Gap and padding values come from this scale.
 
 ## Component CSS lives in the package; the docs keep only demo chrome
 
-The package-truth component stylesheet is the `tcrnComponentCss` template literal in
-`packages/ui-react/src/components/Navigation/Navigation.tsx`. Every style for a class that
-a real `@tcrn/ui-react` component emits belongs there so downstream consumers get it. The
-docs stylesheets (`apps/storybook/src/storybook.css`, `apps/storybook/src/alpha-styles.ts`,
-and their shared single source `apps/storybook/src/story-demo-styles.ts`) are presentation
-layers only. INIT-007 (TCRN-DS-STORY-037) relocated the 24 genuine component families out
-of the docs layer into the package; the shell-fidelity duplicate-selector gate
-(`scripts/shell-fidelity-proof.mjs`, `docsPackageSelectorDuplication`) fails closed if a
-top-level class selector appears in both `storybook.css` and the package component CSS.
+The package-truth component stylesheet is `tcrnComponentCss`. Its rules live in the family
+segment modules under `packages/ui-react/src/styles/` (`base`, `typography`, `icon`, `actions`,
+`inputs`, `brand`, plus the contract-generated segments in `styles/generated/`), and
+`packages/ui-react/src/styles/index.ts` concatenates them in cascade order (TCRN-DS-SUB-010).
+Every style for a class that a real `@tcrn/ui-react` component emits belongs there so
+downstream consumers get it. The docs stylesheets (`apps/storybook/src/storybook.css`,
+`apps/storybook/src/alpha-styles.ts`, and their shared single source
+`apps/storybook/src/story-demo-styles.ts`) are presentation layers only: Storybook renders
+the package, and the docs layer never repaints a package component.
+
+Three gates hold that line:
+
+- `scripts/doc-shell-class-proof.mjs` collects every `tcrn-*` class the built docs and the
+  docs sources write or style, subtracts the classes `tcrnComponentCss` defines, and fails on
+  anything left. Documentation-private classes therefore use the `tcrn-doc-` prefix, which the
+  gate exempts (TCRN-DS-STORY-128).
+- `scripts/shell-fidelity-proof.mjs` (`docsPackageSelectorDuplication`) fails when a rule in
+  `storybook.css` or `alpha-styles.ts` styles a package class as its key subject, unless that
+  class is on the gate's whitelist of demo-scoped placements listed below.
+- `scripts/selection-grammar-proof.mjs` reads the same three docs files for the retired
+  selection shapes.
 
 ### Demo-chrome exemption list
 
 These classes legitimately stay in the docs demo layer — they are presentation scaffolding
-that no shipped component emits, not component styles. A future gate that widens the
-duplicate/parallel-implementation check (S035) must treat this set as allowed to live
-doc-side, and must not expect them in the package.
+that no shipped component emits, not component styles. Since TCRN-DS-SUB-025 every
+documentation-private `tcrn-*` class carries the `tcrn-doc-` prefix; the doc-layer copies of
+package components (loading, skeleton, changelog token, typography and locale cards, brand
+lockup cards, the shell demo top bars, the dense and compact shell prototypes, the bookmark
+nav and the entry strip) were deleted rather than renamed, and the stories render the package
+components instead.
 
 - **Story scaffolding:** `.alpha-frame`, `.alpha-story-card`, `.alpha-story-stack`,
-  `.tcrn-story-kicker`, `.tcrn-static-section`.
-- **Token / scale demos:** `.tcrn-token-swatch*`, `.tcrn-typography-sample`,
-  `.tcrn-type-scale-demo*`, `.tcrn-icon-sample*`, `.tcrn-locale-grid`, `.tcrn-locale-card`,
-  `.tcrn-theme-preview`.
-- **Motion / loading demos:** `.tcrn-motion-demo*` (incl. `@keyframes tcrn-motion-*`),
-  `.tcrn-loading-*` (spinner / progress / skeleton demo variants), and the docs-only
-  blanket `@media (prefers-reduced-motion: reduce)` `animation-duration` clamp.
-- **Layout / grid demos:** `.tcrn-guidance-grid`, `.tcrn-spec-grid`, `.tcrn-guidance-list`,
-  `.tcrn-status-cloud`, `.tcrn-form-stack`, `.tcrn-action-row`,
-  `.tcrn-display-primitive-grid`, `.tcrn-interaction-primitive-row`,
-  `.tcrn-interaction-primitive-grid`, `.tcrn-inline-proof-token`.
-- **Changelog demos:** `.tcrn-changelog-records`, `.tcrn-changelog-record*`,
-  `.tcrn-changelog-token*`.
-- **Shell / doc-chrome demos:** `.tcrn-shell-demo*`, `.tcrn-compact-shell*`,
-  `.tcrn-shell-*` (mega-menu, hub, domain, task-lane, quick-rail, layer, density),
-  `.tcrn-entry-shell-strip*`, `.tcrn-nav-component-preview`, `.tcrn-package-nav-proof*`,
-  `.tcrn-storybook-component-example *` (scoped top-bar / nav-item demos),
-  `.tcrn-doc-*` (doc-brand, doc-search-*), `.tcrn-bookmark-*`, `.tcrn-knowledge-shell*`,
-  `.tcrn-knowledge-preview*`.
-- **Overlay demos / fixtures:** `.tcrn-overlay-mode-matrix`, `.tcrn-overlay-static-modes`,
-  `.tcrn-overlay-mode-grid`, `.tcrn-overlay-drawer-grid`, `.tcrn-overlay-mode-card`,
-  `.tcrn-overlay-static-card`, `.tcrn-dialog-spec-fixture*`, `.alpha-overlay-demo`,
+  `.tcrn-doc-story-kicker`, `.tcrn-doc-static-section` (and `--category-index`),
+  `.tcrn-doc-story-disclosure*`.
+- **Token / scale demos:** `.tcrn-doc-token-swatch*`, `.tcrn-doc-token-swatch-grid`,
+  `.tcrn-doc-type-scale-demo`, `.tcrn-doc-icon-sample*`, `.tcrn-doc-locale-grid`,
+  `.tcrn-doc-theme-preview`.
+- **Motion / loading demos:** `.tcrn-doc-motion-demo*` (incl. `@keyframes tcrn-motion-travel`),
+  `.tcrn-doc-motion-demo-grid`, `.tcrn-doc-loading-motion-grid`, `.tcrn-doc-loading-card__row`,
+  `.tcrn-doc-loading-copy`, and the docs-only blanket
+  `@media (prefers-reduced-motion: reduce)` `animation-duration` clamp.
+- **Layout / grid demos:** `.tcrn-doc-guidance-grid`, `.tcrn-doc-spec-grid` (and
+  `--record-index`), `.tcrn-doc-status-cloud`, `.tcrn-doc-form-stack`, `.tcrn-doc-action-row`,
+  `.tcrn-doc-display-primitive-grid`, `.tcrn-doc-interaction-primitive-row`,
+  `.tcrn-doc-interaction-primitive-grid`, `.tcrn-doc-reference-strip`.
+- **Changelog demos:** `.tcrn-doc-changelog-records`, `.tcrn-doc-changelog-record*`.
+- **Reference and brand pages:** `.tcrn-doc-component-reference*`, `.tcrn-doc-reference-index*`,
+  `.tcrn-doc-reference-table*`, `.tcrn-doc-brand-system*`, `.tcrn-doc-brand-lockups`.
+- **Shell / doc-chrome demos:** `.tcrn-doc-shell-demo` (and `--compact`, `--dense`,
+  `--knowledge`), `.tcrn-doc-nav-component-preview`, `.tcrn-doc-package-nav-proof*`,
+  `.tcrn-doc-knowledge-shell-layout`, `.tcrn-doc-knowledge-shell__*`,
+  `.tcrn-doc-knowledge-preview*`, and the docs-shell chrome in `alpha-styles.ts`
+  (`.tcrn-doc-brand`, `.tcrn-doc-search-*`, `.tcrn-doc-nav*` and the rest of `.tcrn-doc-*`).
+- **Overlay demos / fixtures:** `.tcrn-doc-overlay-mode-matrix*`,
+  `.tcrn-doc-overlay-static-modes`, `.tcrn-doc-overlay-mode-grid`, `.tcrn-doc-overlay-mode-card`,
+  `.tcrn-doc-overlay-static-card`, `.tcrn-doc-dialog-spec-fixture*`, `.alpha-overlay-demo`,
   `.alpha-overlay-demo__dialog`.
+- **Package components placed by doc scaffolding:** a rule scoped under a `.tcrn-doc-*`
+  container may place a package component (grid area, track width, wrapping) but does not
+  repaint it, for example `.tcrn-doc-knowledge-shell-layout > .tcrn-top-bar { grid-area: topbar; }`.
+  The key subjects these placements need are the shell-fidelity whitelist: `.tcrn-top-bar`,
+  `.tcrn-side-nav`, `.tcrn-search-input`, `.tcrn-product-switcher`, `.tcrn-segmented-nav`,
+  `.tcrn-field`, `.tcrn-brand-wordmark*`, `.tcrn-product-logo__copy`, `.tcrn-tooltip__content`,
+  `.tcrn-shell-brand-lockup*`, plus the infra primitives `.tcrn-sr-only` and `.tcrn-skip-link`
+  that the docs shell reproduces verbatim.
 - **Component-scoped demo hooks** (same base class as a package component, but a
-  presentation-only variant/hook that the component never emits):
-  `.tcrn-input--short` and `.tcrn-search-input--compact` (docs demo widths),
-  `.tcrn-filter-bar` (demo tab layout; the package owns it only via the scoped
-  `.tcrn-table-toolbar .tcrn-filter-bar` rule, so a top-level `.tcrn-filter-bar` here does
-  not duplicate a package selector), the tooltip static-preview hook
-  `.tcrn-tooltip[data-storybook-static-tooltip="true"]` (and its `[data-placement]`
-  variants), which forces the revealed state for static docs screenshots, and
-  `.tcrn-product-shell-search__results` when scoped under the
-  `navigation-product-shell-spec` static-display modifier (the docs proof keeps the
-  open result panel in flow; the package default remains the interactive overlay).
+  presentation-only hook that the component never emits): `.tcrn-filter-bar` (demo tab
+  layout; the package owns it only via the scoped `.tcrn-table-toolbar .tcrn-filter-bar` rule,
+  so a top-level `.tcrn-filter-bar` here does not duplicate a package selector) and the
+  tooltip static-preview hook `.tcrn-tooltip[data-storybook-static-tooltip="true"]` (and its
+  `[data-placement]` variants), which forces the revealed state for static docs screenshots.
 - **Deferred primitive:** `.tcrn-icon` base rule (Icon-emitted) remains doc-side for now —
   it is outside STORY-037's named 24 families and awaits an explicit Owner call to promote
   or keep it.

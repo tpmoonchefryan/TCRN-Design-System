@@ -33,11 +33,10 @@ const SURFACES = [
 ];
 
 // Gradients that encode state rather than decorate a surface.
+// The doc-layer loading and bookmark demos that carried the other entries were removed
+// with the doc-layer parallel implementations (TCRN-DS-SUB-025).
 const FUNCTIONAL_GRADIENT_SELECTORS = [
-  ".tcrn-loading-progress__bar",
-  ".tcrn-loading-skeleton__line",
-  ".tcrn-skeleton::after",
-  ".tcrn-bookmark-nav--tracked"
+  ".tcrn-skeleton::after"
 ];
 
 // Radii the shell may state literally, because they are shape declarations rather
@@ -74,32 +73,25 @@ const DUPLICATE_DOCS_SURFACES = [
 //   1. Infra primitives the docs shell reproduces verbatim (.tcrn-sr-only, .tcrn-skip-link).
 //   2. LEGITIMATE demo overrides whose STYLED SUBJECT is a package class but which are
 //      demo-SCOPED (rendered only under a documented demo container) — the key-subject
-//      extractor deliberately flags e.g. `.tcrn-storybook-component-example .tcrn-nav-item`
-//      (key-subject `.tcrn-nav-item`), which is demo scoping, not a parallel component.
+//      extractor deliberately flags e.g. `.tcrn-doc-knowledge-shell-layout > .tcrn-top-bar`
+//      (key-subject `.tcrn-top-bar`), which is demo scoping, not a parallel component.
 // The authoritative list of what may live doc-side is docs/style-scale.md
 // § "Demo-chrome exemption list". Every entry below is a key-subject the expanded gate
 // flags only because it is scoped under one of those documented demo containers
-// (.tcrn-storybook-component-example, .tcrn-doc-*, .tcrn-compact-shell*,
-// .tcrn-knowledge-shell*, .tcrn-nav-component-preview, .tcrn-package-nav-proof*,
-// .tcrn-form-stack, the tooltip static-preview hook), or — for .tcrn-filter-bar — is
-// documented there as non-duplicating (the package owns it only via the scoped
+// (.tcrn-doc-*, which since TCRN-DS-SUB-025 covers the knowledge-shell, nav-preview,
+// package-nav-proof and form-stack scaffolding, and the tooltip static-preview hook), or —
+// for .tcrn-filter-bar — is documented there as non-duplicating (the package owns it only via the scoped
 // `.tcrn-table-toolbar .tcrn-filter-bar` rule, so a top-level docs `.tcrn-filter-bar`
 // shares the key-subject but not the selector).
 const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-sr-only",
   ".tcrn-skip-link",
-  // Demo-scoped overrides of package classes (docs/style-scale.md exemption list):
-  ".tcrn-nav-item",
-  ".tcrn-nav-item__content",
-  ".tcrn-nav-item__label",
-  ".tcrn-nav-item__disabled-reason",
+  // Demo-scoped overrides of package classes (docs/style-scale.md exemption list). The
+  // nav-item, top-bar track and module-tabs entries went with the doc rules that needed
+  // them (TCRN-DS-SUB-025):
   ".tcrn-top-bar",
-  ".tcrn-top-bar__actions",
-  ".tcrn-top-bar__brand",
-  ".tcrn-top-bar__module",
   ".tcrn-search-input",
   ".tcrn-product-switcher",
-  ".tcrn-module-tabs",
   ".tcrn-segmented-nav",
   ".tcrn-field",
   ".tcrn-brand-wordmark",
@@ -108,8 +100,8 @@ const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-product-logo__copy",
   ".tcrn-tooltip__content",
   // Doc-shell layout/collapse overrides of the brand lockup and the attached side nav
-  // (scoped under .tcrn-doc-brand / .tcrn-doc-shell[collapsed] / .tcrn-knowledge-shell__brand
-  // / .tcrn-package-nav-proof). The package owns their appearance; docs only position them
+  // (scoped under .tcrn-doc-brand / .tcrn-doc-shell[collapsed] / .tcrn-doc-knowledge-shell__brand
+  // / .tcrn-doc-package-nav-proof). The package owns their appearance; docs only position them
   // and hide the copy on collapse. Their bare re-implementations were removed in INIT-007.
   ".tcrn-side-nav",
   ".tcrn-shell-brand-lockup",
@@ -135,7 +127,7 @@ function isTokenDefinitionOrComment(line) {
 // scan only ever saw a bare single class at the start of a line, so it was blind to the
 // shapes a docs re-implementation actually takes: dark-scope
 // (`[data-tcrn-theme="dark"] .tcrn-button--primary`), descendant
-// (`.tcrn-storybook-component-example .tcrn-nav-item`), attribute
+// (`.tcrn-doc-nav-component-preview .tcrn-nav-item`), attribute
 // (`.tcrn-nav-item[data-selected="true"]`) and compound (`.tcrn-a.tcrn-b`). Instead we
 // parse every CSS rule prelude (the text before `{`) and record the class of the KEY
 // SUBJECT — the rightmost compound after the final combinator (` `, `>`, `+`, `~`). That
@@ -330,7 +322,7 @@ export function assertDetectorShapes() {
   const pkg = ruleSubjectClasses(".tcrn-button--primary{}\n.tcrn-nav-item{}\n.tcrn-widget{}");
   const cases = [
     ['[data-tcrn-theme="dark"] .tcrn-button--primary{}', ".tcrn-button--primary", true],
-    ['.tcrn-storybook-component-example .tcrn-nav-item{}', ".tcrn-nav-item", true],
+    ['.tcrn-doc-nav-component-preview .tcrn-nav-item{}', ".tcrn-nav-item", true],
     ['.tcrn-nav-item[data-selected="true"]{}', ".tcrn-nav-item", true],
     ['.tcrn-widget.tcrn-nav-item{}', ".tcrn-nav-item", true],
     ['.tcrn-nav-item .demo-child{}', ".tcrn-nav-item", false] // ancestor-only, must NOT flag
