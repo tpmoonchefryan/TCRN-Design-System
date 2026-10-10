@@ -19,13 +19,19 @@ const expected = [
   { selector: ".tcrn-heading--1", source: "Heading visualLevel" },
   { selector: ".tcrn-heading--2", source: "Heading visualLevel" },
   { selector: ".tcrn-heading--3", source: "Heading visualLevel" },
-  { selector: ".tcrn-heading--4", source: "Heading visualLevel" }
+  { selector: ".tcrn-heading--4", source: "Heading visualLevel" },
+  ...["body", "reading", "meta", "caption"].map((size) => ({ selector: `.tcrn-text--${size}`, source: "Text size" })),
+  { selector: ".tcrn-text--strong", source: "Text tone" },
+  ...["numeral", "caps"].map((variant) => ({ selector: `.tcrn-text--${variant}`, source: "Text variant" }))
 ];
 
 const emittedFamilies = {
   inlineAlert: /`tcrn-inline-alert--\$\{tone\}`/.test(feedback),
   stateView: /`tcrn-state-view--\$\{presentation\.tone\}`/.test(feedback),
-  heading: /`tcrn-heading--\$\{visualLevel\}`/.test(typography)
+  heading: /`tcrn-heading--\$\{visualLevel\}`/.test(typography),
+  textSize: /`tcrn-text--\$\{size\}`/.test(typography),
+  textTone: /"tcrn-text--strong"/.test(typography),
+  textVariant: /`tcrn-text--\$\{variant\}`/.test(typography)
 };
 const missing = expected.filter(({ selector }) => !css.includes(selector));
 const result = {
