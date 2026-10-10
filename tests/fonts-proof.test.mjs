@@ -166,18 +166,22 @@ test("zh-CN and untagged Chinese text outside the shipped slices is red; other l
   assert.equal((await prove(testsOnly)).ok, true);
 });
 
-test("googleapis or gstatic in a package dist is red, and an unbuilt tree is not a pass", async (t) => {
+test("googleapis, gstatic or an inlined data: font in build output is red, and an unbuilt tree is not a pass", async (t) => {
   const cdn = fixture(t);
   write(cdn, "packages/ui-tokens/dist/fonts.js", 'export const href = "https://fonts.googleapis.com/css2?family=Hanken+Grotesk";\n');
-  assert.match(failures(await prove(cdn), "cdn"), /packages\/ui-tokens\/dist\/fonts\.js references googleapis or gstatic/);
+  assert.match(failures(await prove(cdn), "build-output"), /packages\/ui-tokens\/dist\/fonts\.js references googleapis or gstatic/);
 
   const docs = fixture(t);
   write(docs, "apps/storybook/storybook-static/index.html", '<link rel="preconnect" href="https://fonts.gstatic.com">\n');
-  assert.match(failures(await prove(docs), "cdn"), /storybook-static\/index\.html references googleapis or gstatic/);
+  assert.match(failures(await prove(docs), "build-output"), /storybook-static\/index\.html references googleapis or gstatic/);
+
+  const inlined = fixture(t);
+  write(inlined, "packages/ui-tokens/dist/fonts.css", "@font-face { font-family: X; src: url(data:font/woff2;base64,d09GMg==) format(\"woff2\"); }\n");
+  assert.match(failures(await prove(inlined), "build-output"), /packages\/ui-tokens\/dist\/fonts\.css inlines a font as a data: URI/);
 
   const unbuilt = fixture(t);
   fs.rmSync(path.join(unbuilt, "packages/ui-tokens/dist"), { recursive: true });
-  assert.match(failures(await prove(unbuilt), "cdn"), /no packages\/\*\/dist to scan/);
+  assert.match(failures(await prove(unbuilt), "build-output"), /no packages\/\*\/dist to scan/);
 });
 
 test("a proprietary face inside a distributable stack stays red", async (t) => {

@@ -19,7 +19,8 @@
 //   coverage     a product code point falls outside the shipped Chinese slices, the
 //                sample 季度复盘 is not in the serif fallback, or a Latin family lacks
 //                latin or latin-ext
-//   cdn          a package dist or the docs build references googleapis or gstatic
+//   build-output a package dist or the docs build references googleapis or gstatic, or
+//                inlines a font as a data: URI
 //   proprietary  a proprietary face appears in a stack that promises bundleability
 //
 // Scope note kept from the earlier proof: `storybook build` writes its own manager
@@ -55,6 +56,7 @@ const SKIP_DIRS = new Set(["node_modules", ".git", ".pnpm-store", ".tarball-smok
 const BUILD_OUTPUT_DIRS = new Set(["dist", "storybook-static"]);
 const DOCS_BUILD = "apps/storybook/storybook-static";
 const CDN_PATTERN = /googleapis|gstatic/i;
+const DATA_FONT_PATTERN = /data:(?:font\/|application\/(?:x-)?font)/i;
 const BINARY_EXTENSIONS = new Set([...FONT_EXTENSIONS, ".png", ".jpg", ".jpeg", ".gif", ".webp", ".avif", ".ico", ".tgz", ".gz", ".zip"]);
 const OFL_MARKER = /SIL OPEN FONT LICENSE Version 1\.1/i;
 
@@ -293,7 +295,7 @@ function checkCoverage(root, files, failures, notes) {
   return product;
 }
 
-function checkCdn(root, failures, notes) {
+function checkBuildOutput(root, failures, notes) {
   const roots = [];
   const packagesDir = path.join(root, "packages");
   if (fs.existsSync(packagesDir)) {
@@ -309,7 +311,9 @@ function checkCdn(root, failures, notes) {
     walk(root, start, (rel, full) => {
       if (BINARY_EXTENSIONS.has(path.extname(rel).toLowerCase())) return;
       scanned += 1;
-      if (CDN_PATTERN.test(fs.readFileSync(full, "utf8"))) failures.push(`${rel} references googleapis or gstatic`);
+      const body = fs.readFileSync(full, "utf8");
+      if (CDN_PATTERN.test(body)) failures.push(`${rel} references googleapis or gstatic`);
+      if (DATA_FONT_PATTERN.test(body)) failures.push(`${rel} inlines a font as a data: URI`);
     });
   }
   return { roots, scanned };
@@ -375,10 +379,10 @@ export async function runFontsProof({ root = scriptRoot, tokens } = {}) {
   const product = checkCoverage(root, files, coverageFailures, coverageNotes);
   record("coverage", coverageFailures, `the shipped Chinese slices cover all ${product.codepoints.length} product code points from ${product.files.length} source files, including ${PRODUCT_SAMPLE}; the Latin families ship latin and latin-ext`, coverageNotes);
 
-  const cdnFailures = [];
-  const cdnNotes = [];
-  const cdn = checkCdn(root, cdnFailures, cdnNotes);
-  record("cdn", cdnFailures, `no googleapis or gstatic reference in ${cdn.scanned} files under ${cdn.roots.join(", ") || "(nothing)"}`, cdnNotes);
+  const outputFailures = [];
+  const outputNotes = [];
+  const output = checkBuildOutput(root, outputFailures, outputNotes);
+  record("build-output", outputFailures, `no googleapis or gstatic reference and no data: font in ${output.scanned} files under ${output.roots.join(", ") || "(nothing)"}`, outputNotes);
 
   const proprietaryFailures = [];
   const distributable = await checkProprietary(root, tokens, manifest, proprietaryFailures);
