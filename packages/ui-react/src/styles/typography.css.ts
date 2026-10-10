@@ -107,15 +107,10 @@ export const typographyCss11 = `
 
 export const typographyCss12 = `
 
-/* Typography highlight */
+/* Typography highlight. The mark rule is part of the generated scale in the first segment:
+   it only adds the wash fill and draws its halo as a box shadow outside the inline box, so
+   weight, tracking, size and padding stay those of the surrounding text and a match takes
+   exactly the width it took unmarked. */
 .tcrn-highlight-text {
   display: inline;
-}
-
-.tcrn-highlight-mark {
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-brand-primary-bg);
-  color: var(--tcrn-color-text-primary);
-  font-weight: var(--tcrn-type-weight-medium);
-  padding: 0 var(--tcrn-space-0h);
 }`;

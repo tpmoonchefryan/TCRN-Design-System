@@ -1,28 +1,58 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Heading, Text } from "./Typography.js";
+import { Heading, Highlight, Text } from "./Typography.js";
 import { tcrnComponentCss } from "../../styles/index.js";
 import { typographyScaleCss } from "../../styles/generated/typography.scale.js";
 
+interface CssRule {
+  selectors: string[];
+  declarations: Array<[string, string]>;
+}
+
+/** A selector list split at its top-level commas, so :where(:hover,...) stays one selector. */
+function splitSelectors(list: string): string[] {
+  const selectors: string[] = [];
+  let depth = 0;
+  let current = "";
+  for (const character of list) {
+    if (character === "(" || character === "[") depth += 1;
+    if (character === ")" || character === "]") depth -= 1;
+    if (character === "," && depth === 0) {
+      selectors.push(current.trim());
+      current = "";
+    } else {
+      current += character;
+    }
+  }
+  selectors.push(current.trim());
+  return selectors.map((selector) => selector.replace(/\s+/g, " "));
+}
+
+/** Every style rule of the stylesheet in source order, comments dropped. */
+function cssRules(): CssRule[] {
+  const css = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  return [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((match) => ({
+    selectors: splitSelectors(match[1]),
+    declarations: match[2]
+      .split(";")
+      .filter((declaration) => declaration.includes(":"))
+      .map((declaration): [string, string] => {
+        const colon = declaration.indexOf(":");
+        return [declaration.slice(0, colon).trim(), declaration.slice(colon + 1).trim()];
+      })
+  }));
+}
+
 /**
  * The declarations the stylesheet gives one exact selector, later rules overriding earlier ones
- * the way the cascade does for equal specificity. Comments are dropped first.
+ * the way the cascade does for equal specificity.
  */
 function declarationsFor(selector: string): Map<string, string> {
   const merged = new Map<string, string>();
-  const css = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
-  for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
-    const selectors = match[1].split(",").map((part) => part.trim());
-    if (!selectors.includes(selector)) {
-      continue;
-    }
-    for (const declaration of match[2].split(";")) {
-      const colon = declaration.indexOf(":");
-      if (colon < 0) {
-        continue;
-      }
-      merged.set(declaration.slice(0, colon).trim(), declaration.slice(colon + 1).trim());
+  for (const rule of cssRules()) {
+    if (rule.selectors.includes(selector)) {
+      for (const [property, value] of rule.declarations) merged.set(property, value);
     }
   }
   return merged;
@@ -137,4 +167,71 @@ test("caps stays on one line and ends in an ellipsis", () => {
   assert.equal(rule.get("text-overflow"), "ellipsis");
   assert.equal(rule.get("text-transform"), "uppercase");
   assert.equal(rule.get("margin"), "0");
+});
+
+test("a highlight wraps each match in the contract mark and leaves the rest of the text alone", () => {
+  assert.equal(
+    renderToStaticMarkup(<Highlight text="在设计组里搜索设计" query="设计" />),
+    '<span class="tcrn-highlight-text">在<mark class="tcrn-highlight__mark">设计</mark>组里搜索<mark class="tcrn-highlight__mark">设计</mark></span>'
+  );
+  assert.equal(renderToStaticMarkup(<Highlight text="设计组" query="  " />), '<span class="tcrn-highlight-text">设计组</span>');
+  assert.match(
+    renderToStaticMarkup(<Highlight text="Design review" query="design" markClassName="hit" />),
+    /<mark class="tcrn-highlight__mark hit">Design<\/mark> review/
+  );
+  assert.doesNotMatch(renderToStaticMarkup(<Highlight text="Design review" query="design" caseSensitive />), /<mark/);
+});
+
+test("the mark adds only the wash fill and keeps the type and spacing of the text around it", () => {
+  const rule = declarationsFor(".tcrn-highlight__mark");
+  assert.equal(rule.get("background"), "var(--tcrn-color-acc-bg)");
+  assert.equal(rule.get("color"), "inherit");
+  assert.equal(rule.get("font"), "inherit");
+  assert.equal(rule.get("letter-spacing"), "inherit");
+  assert.equal(rule.get("padding"), "0");
+  assert.equal(rule.get("margin"), "0");
+  assert.match(rule.get("box-shadow") ?? "", /^0 0 0 \S+ var\(--tcrn-color-acc-bg\)$/, "the halo is drawn outside the inline box");
+  assert.equal(rule.get("box-decoration-break"), "clone");
+
+  // No rule that reaches a highlight mark may change its type or take up space.
+  const neutral = new Map([
+    ["font", "inherit"],
+    ["letter-spacing", "inherit"],
+    ["padding", "0"],
+    ["margin", "0"]
+  ]);
+  const reachesMark = (selector: string) => /highlight/.test(selector) || /(^|[\s>+~])mark\b/.test(selector);
+  const offenders = cssRules()
+    .filter((cssRule) => cssRule.selectors.some(reachesMark))
+    .flatMap((cssRule) =>
+      cssRule.declarations
+        .filter(([property, value]) => /^(font|letter-spacing|word-spacing|padding|margin|border(-width)?$)/.test(property) && neutral.get(property) !== value)
+        .map(([property, value]) => `${cssRule.selectors.join(", ")} { ${property}: ${value} }`)
+    );
+  assert.deepEqual(offenders, []);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-highlight-mark\b/, "the pre-contract mark rule with padding and weight is gone");
+});
+
+test(
+  "a link is accent ink with the 70% underline, accent-2 on hover and the focus ring",
+  { todo: "the base segment still declares .tcrn-link after the contract rules and wins; see the W2-B handoff" },
+  () => {
+    const link = declarationsFor(".tcrn-link");
+    assert.equal(link.get("color"), "var(--tcrn-color-acc)");
+    assert.equal(link.get("text-decoration-color"), "var(--tcrn-color-acc-ul)");
+    assert.equal(link.get("text-underline-offset"), "2px");
+    const hover = declarationsFor('.tcrn-link:where(:hover,[data-tcrn-preview-state="hover"])');
+    assert.equal(hover.get("color"), "var(--tcrn-color-acc-2)");
+    assert.equal(hover.get("text-decoration-color"), "var(--tcrn-color-acc-2)");
+    const focus = declarationsFor('.tcrn-link:where(:focus-visible,[data-tcrn-preview-state="focus"])');
+    assert.equal(focus.get("box-shadow"), "var(--tcrn-focus-ring)");
+    const later = cssRules().filter((cssRule) => cssRule.selectors.some((selector) => /^\.tcrn-link(:hover|:focus-visible)?$/.test(selector)));
+    assert.equal(later.length, 1, "only the contract rule styles a bare link; no later rule overrides its colour, hover or focus");
+  }
+);
+
+test("the contract link rules are in the stylesheet", () => {
+  assert.match(tcrnComponentCss, /\.tcrn-link\{color:var\(--tcrn-color-acc\);[^}]*text-decoration-color:var\(--tcrn-color-acc-ul\)/);
+  assert.match(tcrnComponentCss, /\.tcrn-link:where\(:hover,\[data-tcrn-preview-state="hover"\]\)\{color:var\(--tcrn-color-acc-2\)/);
+  assert.match(tcrnComponentCss, /\.tcrn-link:where\(:focus-visible,\[data-tcrn-preview-state="focus"\]\)\{outline:none;box-shadow:var\(--tcrn-focus-ring\)\}/);
 });

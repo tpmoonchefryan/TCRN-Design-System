@@ -93,6 +93,10 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+/**
+ * Wraps every match of query in text in a mark that only adds the wash fill: weight, tracking,
+ * size and padding stay those of the surrounding text, so the line sets exactly as unmarked.
+ */
 export function Highlight({ text, query, caseSensitive = false, className, markClassName, ...props }: HighlightProps) {
   const normalizedQuery = query?.trim();
   if (!normalizedQuery) {
@@ -111,7 +115,7 @@ export function Highlight({ text, query, caseSensitive = false, className, markC
         }
         const isMatch = caseSensitive ? part === normalizedQuery : part.toLowerCase() === normalizedQuery.toLowerCase();
         return isMatch ? (
-          <mark key={`${part}-${index}`} className={cx("tcrn-highlight-mark", markClassName)}>
+          <mark key={`${part}-${index}`} className={cx("tcrn-highlight__mark", markClassName)}>
             {part}
           </mark>
         ) : (
