@@ -1,6 +1,7 @@
 {
   "description": "状态对表。每张表的变体为每个状态声明 slot 值（fill/ink/mark/knob 为 tokens.json 的 key 或字面量，edge 为画板语法的 box-shadow，var(--x) 指 token 或 fixed 变量）；状态规则只切换生效对，不写颜色。product 段由 scripts/contract-generate.mjs 生成：变体声明 --tcrn-pair-<slot>-<态>，生效对 --tcrn-pair-<slot>。",
   "slotVars": { "fill": "--tcrn-pair-fill", "ink": "--tcrn-pair-ink", "edge": "--tcrn-pair-edge", "mark": "--tcrn-pair-mark", "knob": "--tcrn-pair-knob", "knob-edge": "--tcrn-pair-knob-edge", "weight": "--tcrn-pair-weight" },
+  "targetsNote": "targets 为包内选择器：无 modifier 的目标在 base 上声明合并后的全部状态值（部分覆盖的变体回落到表的第一个变体）；有 modifier 的目标以 base.modifier（特异性 0,2,0）声明该变体自己的值。生效对默认值与状态规则（:where，特异性 0,1,0）挂在全部 base 上。",
   "tables": {
     "actions": {
       "family": "Actions",
@@ -109,8 +110,8 @@
           "variants": ["default"]
         },
         {
-          "base": ".tcrn-search-input",
-          "modifierOf": ".tcrn-input",
+          "base": ".tcrn-input",
+          "modifier": "tcrn-search-input__control",
           "variants": ["search"]
         }
       ],
@@ -176,8 +177,7 @@
           "variants": ["checkbox"]
         },
         {
-          "base": ".tcrn-radio",
-          "modifierOf": ".tcrn-checkbox",
+          "base": ".tcrn-radio-group__control",
           "variants": ["radio"]
         }
       ],
