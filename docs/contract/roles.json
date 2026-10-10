@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "tcrn.ds.contract-roles.v1",
+  "description": "C7 与 C8 的角色登记。singleLine 是条款 C7 列出的单行角色在包 CSS 里的承载类：门要求其基础规则同时声明 white-space: nowrap、text-overflow: ellipsis 与 overflow: hidden（或 clip），且任何上下文规则不得把它改回可折行。toolbars 是条款 C8 的工具栏：container 是行容器，yield 是唯一让步项（须声明非零 min-width 或 min-inline-size，且可收缩），fixed 是固定项（须 flex-shrink: 0）。家族归属以类名对 families.json 的根类为准，后续批次家族的条目按 exemptions.json 豁免；title 属性与真实换行由 story 层检查（TCRN-DS-SUB-037）。",
+  "singleLine": [
+    { "role": "按钮", "class": "tcrn-button__label", "components": ["Button", "LinkButton", "ClipboardCopyButton", "ButtonGroup"], "note": "LinkButton 与 ClipboardCopyButton 的文字同样包在 tcrn-button__label 里；IconButton 的 tcrn-icon-button__label 是视觉隐藏文本，不是可见单行角色" },
+    { "role": "面包屑项", "class": "tcrn-breadcrumb__item", "components": ["Breadcrumb"] },
+    { "role": "导航项", "class": "tcrn-nav-item__label", "components": ["NavItem"] },
+    { "role": "徽标", "class": "tcrn-badge__label", "components": ["Badge", "StatusBadge"] },
+    { "role": "表格单元", "class": "tcrn-table-shell__cell", "components": ["TableShell"] },
+    { "role": "页头标题", "class": "tcrn-page-header__title", "components": ["PageHeader"] }
+  ],
+  "unregistered": [
+    { "role": "标签", "note": "包 CSS 暂无独立的标签类（LabelSet 只有容器类 tcrn-label-set），随展示件家族开工时登记" }
+  ],
+  "toolbars": [
+    { "toolbar": "顶栏", "container": "tcrn-top-bar", "yield": "tcrn-product-shell-search", "fixed": ["tcrn-top-bar__brand", "tcrn-top-bar__actions"], "note": "STORY-132 用例：顶栏里的搜索框是唯一让步项，min-width 140" }
+  ]
+}
