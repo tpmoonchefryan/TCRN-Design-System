@@ -9,7 +9,7 @@ export function StoryFrame({ story, children }: { story: ContractStory; children
       data-contract-story-group={story.group}
     >
       <div className="alpha-story-card">
-        <div className="tcrn-story-kicker">{story.group}</div>
+        <div className="tcrn-doc-story-kicker">{story.group}</div>
         <h1>{story.title}</h1>
         <p>{story.description}</p>
         {children}

@@ -355,7 +355,7 @@ async function collectPageHealth(page) {
       copyStateSource: node.getAttribute("data-copy-state-source"),
       visible: node.getBoundingClientRect().width > 0 && node.getBoundingClientRect().height > 0
     }));
-    const packageBackedDisabledNavItems = Array.from(document.querySelectorAll(".tcrn-package-nav-proof [data-navigation-primitive='nav-item'][aria-disabled='true']")).map((node) => {
+    const packageBackedDisabledNavItems = Array.from(document.querySelectorAll(".tcrn-doc-package-nav-proof [data-navigation-primitive='nav-item'][aria-disabled='true']")).map((node) => {
       const describedByIds = (node.getAttribute("aria-describedby") ?? "").split(/\s+/).filter(Boolean);
       const describedReason = describedByIds
         .map((id) => document.getElementById(id))

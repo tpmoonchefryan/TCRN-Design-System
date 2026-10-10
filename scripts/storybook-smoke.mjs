@@ -157,7 +157,7 @@ const productShellComparatorContract = {
   // into navigation-product-shell-spec (same navigation-shells category page).
   storyId: "navigation-product-shell-spec",
   page: "components-navigation-shells.html#navigation-product-shell-spec",
-  scopedSelector: ".tcrn-product-shell-contract-proof .tcrn-product-shell",
+  scopedSelector: ".tcrn-doc-product-shell-contract-proof .tcrn-product-shell",
   componentSelectors: {
     productLogo: ".tcrn-product-logo",
     themeToggle: ".tcrn-shell-theme-toggle",
@@ -943,7 +943,7 @@ const required = [
   // no-overclaim boundary is carried by the rendered page-head chips (shell.noPackagePublicationClaim
   // / shell.noProductAdoptionClaim / shell.acceptanceDownstreamClaim).
   "data-anchor-scroll-controlled=\"true\"",
-  "tcrn-shell-layer",
+  "data-menu-layer=\"10-plus-primary\"",
   "data-shell-layer=\"mega-menu\"",
   "Top bar, attached side navigation, content column, and chapter navigation stay one shell"
 ];
@@ -2899,7 +2899,7 @@ async function runChangelogI18nReadabilityProof() {
         const html = document.documentElement;
         const body = document.body;
         const compactNodes = Array.from(document.querySelectorAll(
-          ".tcrn-changelog-token__value, .tcrn-changelog-record__artifact, .tcrn-changelog-record__boundary"
+          "[data-changelog-full-token] .tcrn-machine-token__value, .tcrn-doc-changelog-record__artifact, .tcrn-doc-changelog-record__boundary"
         ));
         const compactNodeReadbacks = compactNodes.map((node) => {
           const rect = node.getBoundingClientRect();
