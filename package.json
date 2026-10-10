@@ -41,7 +41,7 @@
     "badge-wrap:proof": "node scripts/badge-wrap-proof.mjs",
     "geometry:proof": "node scripts/geometry-proof.mjs",
     "shell:parity": "node scripts/shell-parity-proof.mjs",
-    "doc-shell:proof": "node scripts/doc-shell-class-proof.mjs",
+    "doc-shell:proof": "node --test tests/doc-shell-class-proof.test.mjs && node scripts/doc-shell-class-proof.mjs",
     "brand-asset:proof": "node scripts/brand-asset-source-proof.mjs",
     "fonts:proof": "node --test tests/fonts-proof.test.mjs && node scripts/fonts-proof.mjs",
     "fonts:vendor": "node scripts/fonts-vendor.mjs",
