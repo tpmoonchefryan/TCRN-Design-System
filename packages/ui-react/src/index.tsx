@@ -3,6 +3,7 @@ export const componentLibraryPublicComponentNames = [
   "Icon",
   "IconButton",
   "LinkButton",
+  "ButtonGroup",
   "ClipboardCopyButton",
   "Field",
   "Input",
@@ -159,6 +160,7 @@ export type ComponentLibraryDeferredPrototypeName = (typeof componentLibraryDefe
 export { cx, resolveDocumentLocale } from "./utils.js";
 export * from "./components/Icon/index.js";
 export * from "./components/Button/index.js";
+export * from "./components/ButtonGroup/index.js";
 export * from "./components/Clipboard/index.js";
 export * from "./components/Typography/index.js";
 export * from "./components/Form/index.js";

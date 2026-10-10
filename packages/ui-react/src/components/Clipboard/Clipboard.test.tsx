@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { ClipboardCopyButton } from "./Clipboard.js";
 import { DEFAULT_RESET_DELAY_MS, clipboardLabelsFor } from "./clipboard-copy.js";
 import { mountStaticClipboardCopyButton } from "./static-clipboard.js";
+import { tcrnComponentCss } from "../../styles/index.js";
 
 test("clipboard copy button renders as a native button without exposing copied text", () => {
   const html = renderToStaticMarkup(
@@ -104,4 +105,41 @@ test("the button and the static bridge read one five-locale label table", () => 
     assert.equal(new Set([labels.idle, labels.copying, labels.copied, labels.failed, labels.unsupported]).size, 5, `${locale} states are distinct`);
   }
   assert.equal(DEFAULT_RESET_DELAY_MS, 2000);
+});
+
+test("copied, failed and unsupported change the ink only; idle and copying keep the variant's pair", () => {
+  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  for (const [state, token] of [
+    ["copied", "ok"],
+    ["failed", "bad"],
+    ["unsupported", "ink-3"]
+  ] as const) {
+    const rule = new RegExp(`\\.tcrn-button\\[data-clipboard-copy-state="${state}"\\]\\s*\\{([^}]*)\\}`).exec(sheet);
+    assert.ok(rule, `${state} has its rule`);
+    const declarations = rule[1].split(";").map((item) => item.trim()).filter(Boolean);
+    // Default, hover, active and focus all carry the result: the pointer and the focus are
+    // still on the button when it arrives. Fill and edge are never touched.
+    assert.deepEqual(
+      declarations,
+      ["d", "h", "a", "f"].map((slot) => `--tcrn-pair-ink-${slot}: var(--tcrn-color-${token})`)
+    );
+  }
+  assert.doesNotMatch(sheet, /data-clipboard-copy-state="(?:idle|copying)"/);
+});
+
+test("the copy button carries the loader for its busy state and repeats its label in title", () => {
+  const html = renderToStaticMarkup(<ClipboardCopyButton text="x" ariaLabel="Copy trace ID" idleLabel="Copy trace ID" />);
+  // Rendered in every state and shown by the stylesheet only while aria-busy is set, so the
+  // static bridge, which only sets aria-busy, shows the same loader.
+  assert.match(html, /data-icon-name="loader-circle"/);
+  assert.match(html, /class="[^"]*\btcrn-button__spinner\b[^"]*"/);
+  assert.doesNotMatch(html, /aria-busy/);
+  assert.match(html, /<span class="tcrn-button__label">Copy trace ID<\/span>/);
+  assert.match(html, /title="Copy trace ID"/);
+
+  // A disabled copy button says why in title instead.
+  const blocked = renderToStaticMarkup(
+    <ClipboardCopyButton text="x" ariaLabel="Copy audit ID" disabledReason="Requires owning product permission" />
+  );
+  assert.match(blocked, /title="Requires owning product permission"/);
 });

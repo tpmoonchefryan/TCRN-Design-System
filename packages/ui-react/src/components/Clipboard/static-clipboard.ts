@@ -10,8 +10,9 @@ import {
 
 export interface StaticClipboardCopyButtonOptions {
   /**
-   * A native button rendered with the ClipboardCopyButton construct: its visible label as a
-   * direct text node, the polite `role="status"` region and `data-clipboard-copy-state`. The
+   * A native button rendered with the ClipboardCopyButton construct: its visible label in the
+   * `tcrn-button__label` span (a label written as a direct text node of the button is read
+   * too), the polite `role="status"` region and `data-clipboard-copy-state`. The
    * value it copies is read from `data-clipboard-text`, so it is present in the page; a value
    * that must stay out of the DOM belongs to the React ClipboardCopyButton, which never writes it.
    */
@@ -64,19 +65,33 @@ export function mountStaticClipboardCopyButton({ root, locale }: StaticClipboard
     busy: button.getAttribute("aria-busy"),
     ariaLabel: button.getAttribute("aria-label"),
     describedBy: button.getAttribute("aria-describedby"),
+    title: button.getAttribute("title"),
     statusId: status.getAttribute("id"),
     statusText: status.textContent
   };
 
+  // The component renders the label in its label span (one line, cut with an ellipsis); markup
+  // written to the earlier construct carries it as a direct text node of the button.
+  const labelHost = (): Element => {
+    for (const child of Array.from(button.children)) {
+      if (child.classList.contains("tcrn-button__label")) return child;
+    }
+    return button;
+  };
   const labelNode = (): Text => {
-    for (const node of Array.from(button.childNodes)) {
+    const host = labelHost();
+    for (const node of Array.from(host.childNodes)) {
       if (node.nodeType === 3) return node as Text;
     }
     const text = document.createTextNode("");
-    button.insertBefore(text, button.firstChild);
+    host.insertBefore(text, host.firstChild);
     return text;
   };
   const originalLabel = labelNode().data;
+  // The component repeats its visible label in title, so a label that was cut stays readable;
+  // that title follows the label through the states. A title set for another reason (the
+  // disabled reason, or the page's own) stays as it is.
+  const titleFollowsLabel = original.title !== null && original.title === originalLabel.trim();
   const overrideFor = (state: ClipboardCopyState) => button.getAttribute(labelAttributes[state])?.trim() || "";
   const isDisabled = () => button.disabled || button.getAttribute("aria-disabled") === "true";
   const resetDelay = () => {
@@ -102,6 +117,7 @@ export function mountStaticClipboardCopyButton({ root, locale }: StaticClipboard
     if (next === "copying") button.setAttribute("aria-busy", "true");
     else button.removeAttribute("aria-busy");
     labelNode().data = message || idleLabel;
+    if (titleFollowsLabel) button.setAttribute("title", message || idleLabel);
     const reason = isDisabled() ? button.getAttribute("data-disabled-reason") : null;
     status.textContent = reason || message;
   };
@@ -162,6 +178,7 @@ export function mountStaticClipboardCopyButton({ root, locale }: StaticClipboard
       restoreAttribute(button, "aria-busy", original.busy);
       restoreAttribute(button, "aria-label", original.ariaLabel);
       restoreAttribute(button, "aria-describedby", original.describedBy);
+      restoreAttribute(button, "title", original.title);
       labelNode().data = originalLabel;
       status.textContent = original.statusText;
       restoreAttribute(status, "id", original.statusId);
