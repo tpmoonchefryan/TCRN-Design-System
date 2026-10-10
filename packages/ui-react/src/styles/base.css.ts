@@ -11,24 +11,10 @@ export const baseCss01 = `
 :root {
   --tcrn-motion-product-shell: var(--tcrn-motion-emphasis);
   --tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer);
-  --tcrn-color-brand-secondary-readable: #246f80;
   --tcrn-brand-accent-aos: #187c7c;
-  --tcrn-brand-accent-tms: #2c63c8;
-  --tcrn-brand-accent-workflow: #3b5272;
-  --tcrn-brand-accent-design-system-1: #6577f3;
-  --tcrn-brand-accent-design-system-2: #3096f4;
-  --tcrn-brand-accent-design-system-3: #43d4cf;
-  --tcrn-brand-accent-design-system-4: #78b957;
 }
 [data-tcrn-theme="dark"] {
-  --tcrn-color-brand-secondary-readable: #a6e8ef;
   --tcrn-brand-accent-aos: #69d6d0;
-  --tcrn-brand-accent-tms: #9bb8ff;
-  --tcrn-brand-accent-workflow: #9db5d4;
-  --tcrn-brand-accent-design-system-1: #aeb8ff;
-  --tcrn-brand-accent-design-system-2: #83c8ff;
-  --tcrn-brand-accent-design-system-3: #7ce4df;
-  --tcrn-brand-accent-design-system-4: #c9f08f;
 }`;
 
 export const baseCss02 = `
