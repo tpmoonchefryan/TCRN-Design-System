@@ -13,55 +13,52 @@
 // --tcrn-pair-mark or --tcrn-pair-knob with --tcrn-pair-knob-edge) and never declare it;
 // each pair segment is joined after the base rules it serves.
 
-import { inputsTextPairsCss } from "./generated/inputs.pairs.js";
+import { inputsCheckPairsCss, inputsSwitchPairsCss, inputsTextPairsCss } from "./generated/inputs.pairs.js";
 
 export const inputsCss01 = `
+/* In the product shell the search keeps the same tool form as everywhere else: the
+   control draws its own edge and focus ring from the inputs pair table, and the wrapper
+   draws nothing around it. The shell-wide focus outline in the base segment already
+   skips the search control. */
 .tcrn-product-shell .tcrn-search-input:focus-within {
-  box-shadow: none;
-}
-.tcrn-product-shell .tcrn-search-input:focus-within {
-  outline: 3px solid var(--tcrn-color-focus-ring);
-  outline-offset: 2px;
-}
-.tcrn-product-shell .tcrn-search-input__control:focus,
-.tcrn-product-shell .tcrn-search-input__control:focus-visible {
-  outline-style: none;
-  outline-width: 0;
-  outline-offset: 0;
+  outline: 0;
   box-shadow: none;
 }`;
 
 export const inputsCss02 = `
+/* SearchInput is a quiet tool, the same in a form and in a top bar: a wash fill with no
+   edge, a line-2 edge on hover, and the paper fill with the focus ring once focused. The
+   control itself is the box and takes those values from the inputs pair table (the
+   search variant of .tcrn-input); the wrapper only positions the icon and the shortcut
+   over it, and the control's inline padding keeps the text clear of both. */
 .tcrn-search-input {
-  --tcrn-search-input-icon-size: 16px;
-  --tcrn-search-input-block-size: 38px;
-  --tcrn-search-input-padding-inline: var(--tcrn-space-3);
-  --tcrn-search-input-column-gap: var(--tcrn-space-2);
+  --tcrn-search-input-icon-size: var(--tcrn-icon-size-sm);
+  --tcrn-search-input-block-size: var(--tcrn-control-height-md);
+  --tcrn-search-input-padding-inline: var(--tcrn-space-2h);
+  --tcrn-search-input-column-gap: var(--tcrn-space-1h);
   --tcrn-search-input-control-min-inline-size: 9ch;
+  position: relative;
   display: grid;
-  grid-template-columns: var(--tcrn-search-input-icon-size) minmax(var(--tcrn-search-input-control-min-inline-size), 1fr) max-content;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  gap: var(--tcrn-search-input-column-gap);
-  min-block-size: var(--tcrn-search-input-block-size);
   min-inline-size: var(--tcrn-search-input-min-inline-size, 0);
   max-inline-size: 100%;
-  padding: 0 var(--tcrn-search-input-padding-inline);
-  border: 1px solid var(--tcrn-color-border-control);
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-panel);
 }
 /* The fill prop: the wrapper takes its container's full inline size. */
 .tcrn-search-input--fill {
   inline-size: 100%;
 }
 .tcrn-search-input__icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: var(--tcrn-search-input-padding-inline);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  grid-column: 1;
   inline-size: var(--tcrn-search-input-icon-size);
   block-size: var(--tcrn-search-input-icon-size);
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-3);
+  transform: translateY(-50%);
   pointer-events: none;
 }
 .tcrn-search-input__icon svg {
@@ -69,52 +66,39 @@ export const inputsCss02 = `
   block-size: var(--tcrn-search-input-icon-size);
 }
 .tcrn-search-input .tcrn-search-input__control {
+  -webkit-appearance: none;
   appearance: none;
-  box-sizing: border-box;
-  grid-column: 2;
-  width: 100%;
-  min-height: 0;
-  min-width: 0;
-  max-width: none;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--tcrn-color-text-primary);
-  font: inherit;
-  box-shadow: none;
+  inline-size: 100%;
+  min-inline-size: calc(var(--tcrn-search-input-control-min-inline-size) + var(--tcrn-search-input-icon-size) + var(--tcrn-search-input-column-gap) + 2 * var(--tcrn-search-input-padding-inline));
+  max-inline-size: none;
+  block-size: var(--tcrn-search-input-block-size);
+  padding-block: 0;
+  padding-inline: calc(var(--tcrn-search-input-padding-inline) + var(--tcrn-search-input-icon-size) + var(--tcrn-search-input-column-gap)) var(--tcrn-search-input-padding-inline);
 }
-.tcrn-search-input:focus-within {
-  outline: 3px solid var(--tcrn-color-focus-ring);
-  outline-offset: 2px;
-  box-shadow: none;
+/* With a shortcut the text stops short of it: the reserve fits the six-character
+   automatic label in the shortcut's 10px mono with room to spare. */
+.tcrn-search-input[data-shortcut-visible="true"] .tcrn-search-input__control {
+  padding-inline-end: calc(var(--tcrn-space-2) + var(--tcrn-search-input-column-gap) + 7ch);
 }
-.tcrn-search-input .tcrn-search-input__control:focus,
-.tcrn-search-input .tcrn-search-input__control:focus-visible {
-  outline-style: none;
-  outline-width: 0;
-  outline-offset: 0;
-  box-shadow: none;
+.tcrn-input.tcrn-search-input__control::placeholder {
+  color: var(--tcrn-color-ink-2);
 }
 .tcrn-search-input__shortcut {
-  position: static;
-  z-index: auto;
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--tcrn-space-2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  align-self: center;
-  grid-column: 3;
-  color: var(--tcrn-color-text-secondary);
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-muted);
-  padding: var(--tcrn-space-0h) var(--tcrn-space-1h);
-  font-family: var(--tcrn-type-family-ui);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: var(--tcrn-type-weight-strong);
-  line-height: var(--tcrn-type-line-caption);
+  padding: 0 var(--tcrn-space-1);
+  border: 1px solid var(--tcrn-color-line-2);
+  border-radius: 4px;
+  color: var(--tcrn-color-ink-3);
+  font-family: var(--tcrn-type-family-mono);
+  font-size: 10px;
+  line-height: 14px;
   letter-spacing: 0;
+  transform: translateY(-50%);
   pointer-events: none;
 }`;
 
@@ -153,10 +137,8 @@ export const inputsCss05 = `
     outline-color 150ms ease-out;
 }
 
-.tcrn-field:focus-within {
-  background-color: color-mix(in srgb, var(--tcrn-color-surface-muted) 56%, transparent);
-  outline-color: color-mix(in srgb, var(--tcrn-color-border-strong) 66%, transparent);
-}
+/* Focus no longer washes the whole field: the control inside changes its own edge and
+   draws the focus ring from the inputs pair table. */
 
 .tcrn-field--error {
   background-color: color-mix(in srgb, var(--tcrn-color-state-blocked-bg) 62%, transparent);
@@ -244,44 +226,56 @@ export const inputsCss06 = `
 .tcrn-switch {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
-  gap: var(--tcrn-space-1) var(--tcrn-space-2);
+  gap: var(--tcrn-space-1) var(--tcrn-space-2h);
   align-items: center;
   min-width: 0;
   color: var(--tcrn-color-text-primary);
   cursor: pointer;
 }
+/* Switch: a 34 by 20 track (fill and edge of the pair) with a 16px knob (knob and
+   knob-edge) that travels 14px. Checked, the knob takes on-acc, a dark knob at night. */
 .tcrn-switch__control {
+  -webkit-appearance: none;
   appearance: none;
-  inline-size: 42px;
-  block-size: 24px;
+  position: relative;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  inline-size: 34px;
+  block-size: 20px;
   margin: 0;
-  border: 1px solid var(--tcrn-color-border-control);
+  border: 0;
   border-radius: var(--tcrn-radius-pill);
-  background: var(--tcrn-color-surface-muted);
-  box-shadow: inset 0 0 0 3px var(--tcrn-color-surface-muted);
+  outline: 0;
+  background-color: var(--tcrn-pair-fill);
+  box-shadow: var(--tcrn-pair-edge);
   cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
 }
 .tcrn-switch__control::before {
-  display: block;
+  position: absolute;
+  top: 2px;
+  left: 2px;
   inline-size: 16px;
   block-size: 16px;
-  margin: 3px;
   border-radius: 50%;
-  background: var(--tcrn-color-text-secondary);
+  background-color: var(--tcrn-pair-knob);
+  box-shadow: var(--tcrn-pair-knob-edge);
   content: "";
-  transition: transform var(--tcrn-motion-fast) var(--tcrn-motion-comprehension), background var(--tcrn-motion-fast) var(--tcrn-motion-comprehension);
+  transition:
+    transform var(--tcrn-motion-duration-move) var(--tcrn-motion-ease),
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
 }
-.tcrn-switch__control:checked {
-  border-color: var(--tcrn-color-brand-primary);
-  background: var(--tcrn-color-brand-primary-bg);
+.tcrn-switch__control:where(:checked)::before {
+  transform: translateX(14px);
 }
-.tcrn-switch__control:checked::before {
-  background: var(--tcrn-color-brand-primary);
-  transform: translateX(18px);
-}
-.tcrn-switch__control:focus-visible {
-  outline: 3px solid var(--tcrn-color-focus-ring);
+.tcrn-switch__control:where(:focus-visible) {
+  outline: 2px solid transparent;
   outline-offset: 2px;
+}
+.tcrn-switch__control:where(:disabled) {
+  cursor: not-allowed;
 }
 .tcrn-switch__label {
   min-width: 0;
@@ -295,13 +289,72 @@ export const inputsCss06 = `
   line-height: var(--tcrn-type-line-caption);
 }
 .tcrn-switch--disabled {
-  color: var(--tcrn-color-text-muted);
+  color: var(--tcrn-color-ink-3);
   cursor: not-allowed;
 }
-.tcrn-switch--disabled .tcrn-switch__control {
+
+/* Checkbox and radio draw a 16px box from the pair table (fill, edge and mark). The tick
+   is an ::after border and the radio dot an inset 5px ring, never an image. */
+.tcrn-checkbox,
+.tcrn-radio-group__control {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  inline-size: 16px;
+  block-size: 16px;
+  margin: 0;
+  border: 0;
+  border-radius: var(--tcrn-radius-check);
+  outline: 0;
+  background-color: var(--tcrn-pair-fill);
+  box-shadow: var(--tcrn-pair-edge);
+  cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-checkbox::after {
+  position: absolute;
+  top: 1.5px;
+  left: 5px;
+  box-sizing: content-box;
+  inline-size: 4px;
+  block-size: 8px;
+  border: solid var(--tcrn-pair-mark);
+  border-width: 0 1.5px 1.5px 0;
+  content: "";
+  transform: rotate(45deg);
+}
+.tcrn-checkbox:where(:indeterminate)::after {
+  top: 7px;
+  left: 4px;
+  inline-size: 8px;
+  block-size: 0;
+  border-width: 0 0 1.5px;
+  transform: none;
+}
+.tcrn-radio-group__control {
+  border-radius: 50%;
+}
+.tcrn-radio-group__control::after {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 5px var(--tcrn-pair-mark);
+  content: "";
+  transition: box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-checkbox:where(:focus-visible),
+.tcrn-radio-group__control:where(:focus-visible) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-checkbox:where(:disabled),
+.tcrn-radio-group__control:where(:disabled) {
   cursor: not-allowed;
-  opacity: 0.62;
-}`;
+}` + inputsCheckPairsCss + inputsSwitchPairsCss;
 
 export const inputsCss07 = `
 
@@ -340,13 +393,42 @@ export const inputsCss08 = `
   .tcrn-field {
     transition: none;
   }
+  /* The knob jumps instead of travelling and keeps its colour change; the radio dot
+     appears at once. */
+  .tcrn-switch__control::before {
+    transition: background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+  }
+  .tcrn-radio-group__control::after {
+    transition: none;
+  }
 }
 
 @media (forced-colors: active) {
-  .tcrn-field:focus-within,
   .tcrn-field--error {
     outline: 2px solid Highlight;
     outline-offset: 2px;
+  }
+  /* Forced colours drop every box-shadow, which is where the edges, rings, knob and
+     radio dot live. Text controls get a real border back, and the checkable controls
+     return to the system's own drawing. */
+  .tcrn-input,
+  .tcrn-select {
+    border: 1px solid;
+  }
+  .tcrn-checkbox,
+  .tcrn-radio-group__control,
+  .tcrn-switch__control {
+    -webkit-appearance: auto;
+    appearance: auto;
+  }
+  .tcrn-switch__control {
+    inline-size: auto;
+    block-size: auto;
+  }
+  .tcrn-checkbox::after,
+  .tcrn-radio-group__control::after,
+  .tcrn-switch__control::before {
+    content: none;
   }
 }`;
 

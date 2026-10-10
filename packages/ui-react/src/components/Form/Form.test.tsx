@@ -25,15 +25,15 @@ import {
   Textarea
 } from "./Form.js";
 import { tcrnComponentCss } from "../../styles/index.js";
-import { inputsTextPairsCss } from "../../styles/generated/inputs.pairs.js";
+import { inputsCheckPairsCss, inputsSwitchPairsCss, inputsTextPairsCss } from "../../styles/generated/inputs.pairs.js";
 
 function escapeRegExp(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/** The body of the first rule in the sheet whose selector text is exactly `selector`. */
+/** The body of the first rule in the sheet whose whole selector text is `selector`. */
 function cssRule(selector: string): string {
-  const match = new RegExp(`(?:^|[}\\s])${escapeRegExp(selector)}\\s*\\{([^}]*)\\}`).exec(tcrnComponentCss);
+  const match = new RegExp(`(?:^|\\}|\\*\\/)\\s*${escapeRegExp(selector)}\\s*\\{([^}]*)\\}`).exec(tcrnComponentCss);
   assert.ok(match, `missing rule: ${selector}`);
   return match[1];
 }
@@ -448,4 +448,83 @@ test("STORY-126 number, date, placeholder and collection details follow the Inpu
   assert.match(cssRule(".tcrn-select.tcrn-multi-select"), /block-size:auto/);
   assert.equal(cssRule('.tcrn-multi-select-dropdown__option[aria-selected="true"]'), "background:var(--tcrn-color-wash);font-weight:600");
   assert.match(cssRule(".tcrn-multi-select-dropdown__option:not(:disabled):hover"), /var\(--tcrn-color-hover\)/);
+});
+
+
+// TCRN-DS-SUB-020 (STORY-126). Checkable controls take a fill, edge and mark triple,
+// the switch a track, edge, knob and knob-edge quadruple; SearchInput is the quiet tool
+// form; the field no longer washes as a whole on focus.
+
+test("STORY-126 checkbox and radio draw a 16px box from the pair table with a border-drawn tick", () => {
+  const box = cssRule(".tcrn-checkbox,\n.tcrn-radio-group__control");
+  for (const declaration of [
+    "appearance: none;",
+    "inline-size: 16px;",
+    "block-size: 16px;",
+    "border: 0;",
+    "border-radius: var(--tcrn-radius-check);",
+    "background-color: var(--tcrn-pair-fill);",
+    "box-shadow: var(--tcrn-pair-edge);"
+  ]) {
+    assert.ok(box.includes(declaration), `box declares ${declaration}`);
+  }
+  assert.doesNotMatch(box, /--tcrn-color-/);
+  const tick = cssRule(".tcrn-checkbox::after");
+  assert.match(tick, /border: solid var\(--tcrn-pair-mark\);/);
+  assert.match(tick, /border-width: 0 1\.5px 1\.5px 0;/);
+  assert.match(tick, /transform: rotate\(45deg\);/);
+  assert.match(cssRule(".tcrn-radio-group__control"), /border-radius: 50%;/);
+  assert.match(cssRule(".tcrn-radio-group__control::after"), /box-shadow: inset 0 0 0 5px var\(--tcrn-pair-mark\);/);
+  assert.doesNotMatch(tcrnComponentCss, /url\(\s*["']?data:/);
+  assert.ok(tcrnComponentCss.includes(inputsCheckPairsCss.trim()), "the generated check pair segment is joined into the sheet");
+  assert.match(inputsCheckPairsCss, /^\.tcrn-checkbox\{[^}]*--tcrn-pair-fill-c:var\(--tcrn-color-acc\);[^}]*--tcrn-pair-mark-c:var\(--tcrn-color-on-acc\)/m);
+  assert.match(inputsCheckPairsCss, /^\.tcrn-radio-group__control\{[^}]*--tcrn-pair-fill-c:var\(--tcrn-color-panel\);[^}]*--tcrn-pair-mark-c:var\(--tcrn-color-acc\)/m);
+});
+
+test("STORY-126 the switch is a 34 by 20 track whose 16px knob travels 14px and turns on-acc when on", () => {
+  const track = cssRule(".tcrn-switch__control");
+  for (const declaration of [
+    "appearance: none;",
+    "inline-size: 34px;",
+    "block-size: 20px;",
+    "border: 0;",
+    "border-radius: var(--tcrn-radius-pill);",
+    "background-color: var(--tcrn-pair-fill);",
+    "box-shadow: var(--tcrn-pair-edge);"
+  ]) {
+    assert.ok(track.includes(declaration), `track declares ${declaration}`);
+  }
+  const knob = cssRule(".tcrn-switch__control::before");
+  for (const declaration of ["inline-size: 16px;", "block-size: 16px;", "background-color: var(--tcrn-pair-knob);", "box-shadow: var(--tcrn-pair-knob-edge);"]) {
+    assert.ok(knob.includes(declaration), `knob declares ${declaration}`);
+  }
+  assert.match(cssRule(".tcrn-switch__control:where(:checked)::before"), /transform: translateX\(14px\);/);
+  assert.ok(tcrnComponentCss.includes(inputsSwitchPairsCss.trim()), "the generated switch pair segment is joined into the sheet");
+  assert.match(inputsSwitchPairsCss, /--tcrn-pair-fill-c:var\(--tcrn-color-acc\);[^}]*--tcrn-pair-knob-c:var\(--tcrn-color-on-acc\)/);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-switch[^{]*\{[^}]*opacity:/);
+  const html = renderToStaticMarkup(<Switch label="Archive automatically" defaultChecked />);
+  assert.match(html, /type="checkbox" role="switch"[^>]*class="tcrn-switch__control"/);
+});
+
+test("STORY-126 GWT3 SearchInput is a quiet tool: wash without an edge, ink-2 placeholder, paper and ring on focus", () => {
+  const search = /^\.tcrn-input\.tcrn-search-input__control\{([^}]*)\}/m.exec(inputsTextPairsCss)?.[1] ?? "";
+  assert.match(search, /--tcrn-pair-fill-d:var\(--tcrn-color-wash\);--tcrn-pair-edge-d:0 0 #0000/);
+  assert.match(search, /--tcrn-pair-edge-h:inset 0 0 0 1px var\(--tcrn-color-line-2\)/);
+  assert.match(search, /--tcrn-pair-fill-f:var\(--tcrn-color-panel\)/);
+  assert.match(cssRule(".tcrn-input.tcrn-search-input__control::placeholder"), /color: var\(--tcrn-color-ink-2\);/);
+  assert.doesNotMatch(cssRule(".tcrn-search-input .tcrn-search-input__control"), /background|box-shadow|border|color:/);
+  assert.doesNotMatch(cssRule(".tcrn-search-input"), /background|border|box-shadow|outline/);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-search-input:focus-within\s*\{[^}]*outline:\s*[1-9]/);
+  const html = renderToStaticMarkup(<SearchInput placeholder="Search members" shortcut="auto" />);
+  assert.match(html, /class="tcrn-input tcrn-search-input__control"/);
+  assert.match(html, /data-shortcut-visible="true"/);
+});
+
+test("STORY-126 the field no longer washes on focus, and every ring keeps a forced-colours outline", () => {
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-field:focus-within/);
+  assert.match(cssRule(".tcrn-field--error"), /outline-color/);
+  for (const control of [".tcrn-input", ".tcrn-select", ".tcrn-checkbox", ".tcrn-radio-group__control", ".tcrn-switch__control"]) {
+    assert.match(tcrnComponentCss, new RegExp(`${escapeRegExp(control)}:where\\(:focus-visible\\)[^{]*\\{\\s*outline: 2px solid transparent;\\s*outline-offset: 2px;`));
+  }
+  assert.match(tcrnComponentCss, /@media \(forced-colors: active\) \{[\s\S]*\.tcrn-checkbox,\s*\.tcrn-radio-group__control,\s*\.tcrn-switch__control \{\s*-webkit-appearance: auto;\s*appearance: auto;/);
 });
