@@ -1,0 +1,62 @@
+{
+  "description": "字体刻度：Heading 1–4、Text 的 size / tone / variant、numeral 与 caps、mono 编号、Highlight 的 mark、链接。family 与 tone 为 tokens.json 的 key（family 指 fixed 的 serif / sans / mono），size 与 line 单位 px。className 为包内类名，由 scripts/contract-generate.mjs 生成 typography.scale.ts。",
+  "headings": [
+    { "level": 1, "className": "tcrn-heading--1", "family": "serif", "size": 36, "line": 40, "weight": 400, "tracking": "-.01em", "tone": "ink", "truncate": true },
+    { "level": 2, "className": "tcrn-heading--2", "family": "serif", "size": 26, "line": 30, "weight": 400, "tracking": "-.005em", "tone": "ink", "truncate": true },
+    { "level": 3, "className": "tcrn-heading--3", "family": "serif", "size": 20, "line": 26, "weight": 400, "tracking": "0", "tone": "ink", "truncate": true },
+    { "level": 4, "className": "tcrn-heading--4", "family": "sans", "size": 13, "line": 20, "weight": 600, "tone": "ink", "truncate": true }
+  ],
+  "text": {
+    "className": "tcrn-text",
+    "base": { "size": 13, "line": 20, "tone": "ink-2" },
+    "sizes": [
+      { "name": "body", "className": "tcrn-text--body", "size": 13, "line": 20 },
+      { "name": "reading", "className": "tcrn-text--reading", "size": 14, "line": 22 },
+      { "name": "meta", "className": "tcrn-text--meta", "size": 12, "line": 16, "tone": "ink-3" },
+      { "name": "caption", "className": "tcrn-text--caption", "size": 11, "line": 16, "tone": "ink-3" }
+    ],
+    "tones": [
+      { "name": "default", "tone": "ink-2" },
+      { "name": "strong", "className": "tcrn-text--strong", "tone": "ink", "weight": 600 }
+    ],
+    "variants": [
+      { "name": "numeral", "className": "tcrn-text--numeral" },
+      { "name": "caps", "className": "tcrn-text--caps" }
+    ]
+  },
+  "numeral": {
+    "family": "serif",
+    "size": 26,
+    "line": 30,
+    "weight": 300,
+    "tracking": "-.01em",
+    "tone": "ink",
+    "numeric": "tabular-nums lining-nums",
+    "gap": 5,
+    "unit": { "family": "sans", "size": 11, "line": 16, "weight": 500, "tracking": ".06em", "tone": "ink-3" },
+    "inline": { "className": "tcrn-text--numeral-inline", "size": 16, "line": 20, "weight": 400, "tracking": "0" },
+    "large": { "className": "tcrn-text--numeral-large", "size": 44, "line": 48 }
+  },
+  "caps": {
+    "family": "sans",
+    "size": 11,
+    "line": 16,
+    "weight": 500,
+    "tracking": ".14em",
+    "tone": "ink-3",
+    "transform": "uppercase",
+    "prefix": { "family": "mono", "weight": 500, "tracking": ".04em", "tone": "ink", "gap": 8 }
+  },
+  "mono": { "className": "tcrn-text--mono", "family": "mono", "size": 11.5, "line": 16, "tone": "ink-2" },
+  "link": {
+    "className": "tcrn-link",
+    "tone": "acc",
+    "underline": "acc-ul",
+    "thickness": "1px",
+    "offset": "2px",
+    "radius": "2px",
+    "hover": { "tone": "acc-2", "underline": "acc-2" },
+    "focus": { "ring": "focus" }
+  },
+  "mark": { "className": "tcrn-highlight__mark", "fill": "acc-bg", "radius": "2px", "spread": "2px" }
+}
