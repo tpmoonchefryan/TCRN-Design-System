@@ -38,7 +38,8 @@
 | W2-A | 已合入 d0e6900，包树已退役 | c447221 | SUB-001→006；C5 两块各 85 名同集（主题无关块 118）；fonts-proof coverage 红：「盃」U+76C3（marks.json）不在随包分片，基线即红，批末跑 `pnpm fonts:vendor` 重生分片；预计红：token-contrast-proof（旧名变 var 别名，W3-A 重写）、smoke.test canvas 断言与 .storybook/preview.ts（P3）、旧几何断言门（P11）；tokens.css 顶部 @import fonts.css；问题 P1–P15 与 51 行新旧名表在 `problems/W2-A.md`、`handoff/W2-A.md`（W3-A/W3-B 摘录追加） |
 | W2-E | 已合入 7fb37e6，包树已退役 | 85d8583 | SUB-019→020；Form 单测 21/21；交 W3-D：base 段 `.tcrn-product-shell :focus-visible:not(.tcrn-search-input__control)` 的 box-shadow:none 要扩排除表、Navigation.test 搜索框断言（441、597–602 行）、Select chevron 与 DatePicker calendar 包裹层；交 W6-B：smoke.test 815/819 行（Field 洗底去除）；契约待议：只读框焦点环（P5）、焦点环间隙色在 :root 解析（P6）；sm/lg 与顶栏 28px 未做（P9）；无 token 的几何字面值清单（P10）——见 `problems/W2-E.md`、`handoff/W2-E.md` |
 | W2-D | 在跑 | 223100e | SUB-016→017 |
-| W2-C | 在跑 | 0af0bf8 | SUB-014→015 |
+| W2-C | 已合入 3dc2904，包树已退役 | 0af0bf8 | SUB-014→015；Icon 6/6；锁文件只删 12 行 lucide（保留 26 行 libc）；package-contract-manifest 红两处：OFL-1.1 不在许可白名单（W1-C 字体包带入，依据 D4 加入白名单，归 W6-B 并入文件集）、story-content.tsx 第 1065 行 `data-icon-library-source="lucide-react"`（归 W3-C，W2-C 交回写了新来源值与五语文案、smoke.test 667/669、语言条目 506–509、机器词台账 160 行——台账归 W4-A）；待 Owner：画板把 `.tcrn-icon` 基础样式搬进包标为待裁（未搬）；新树先构建 ui-tokens、ui-copy-state 再构建 ui-react（TS6305） |
+| W3-B | 在跑 | 5630344 | SUB-025→026 |
 | W2-F | 在跑 | 97f68c4 | SUB-022→023（与 W3-C 同改 story-content.tsx；与 W3-D 同改 Navigation.test.tsx：二者都在 W2-F 合入后再派） |
 
 集成树合入 W1-A/B/C 后 typecheck 与 build 均 EXIT=0（scratch `logs/integ-w1abc-compile.log`）。
