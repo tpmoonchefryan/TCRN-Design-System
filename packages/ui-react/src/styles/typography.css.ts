@@ -5,29 +5,40 @@
 // order, so where a segment sits in the sheet is decided there; this module owns what the
 // segment says. A backtick ends a segment early, so the CSS comments in it never use one
 // (scripts/css-template-integrity-proof.mjs checks every segment).
+//
+// The type scale itself (heading levels, Text size, tone and variant, numeral, caps, mono, the
+// link and the highlight mark) is the generated segment styles/generated/typography.scale.ts,
+// written from docs/design/gplus-2026-10/contract/typography.json by
+// scripts/contract-generate.mjs. It is joined into the first segment between the family base
+// rule it refines and the family rules that sit on top of it; change the scale in the contract
+// and regenerate, never here.
+
+import { typographyScaleCss } from "./generated/typography.scale.js";
 
 export const typographyCss01 = `
+/* Heading base: the generated levels set size, line, weight, tracking and the single-line
+   truncation; min-width 0 lets a heading shrink inside a flex or grid track so the ellipsis
+   can appear instead of the track growing. */
 .tcrn-heading {
+  min-width: 0;
   margin: 0;
   letter-spacing: 0;
-}
-.tcrn-heading--1 {
-  font-size: clamp(28px, 3vw, 44px);
-  line-height: 1.04;
-}
-.tcrn-heading--2 {
-  font-size: var(--tcrn-type-size-heading-2);
-}
-.tcrn-heading--3 {
-  font-size: var(--tcrn-type-size-heading-3);
-}
-.tcrn-heading--4 {
-  font-size: var(--tcrn-type-size-ui);
-  line-height: var(--tcrn-type-line-reading);
-}
+}` + typographyScaleCss + `
+/* The scale zeroes the text margin. Paragraph text keeps the top margin it has always had, so
+   a Text given no props looks as before and text under a heading sits no closer to it than its
+   own lines sit to each other. The single-line variants are placed by their containers. */
 .tcrn-text {
   margin: var(--tcrn-space-2) 0 0;
-  color: var(--tcrn-color-text-secondary);
+}
+.tcrn-text.tcrn-text--numeral,
+.tcrn-text.tcrn-text--caps {
+  margin: 0;
+}
+/* Caps is a single-line label role: a label that does not fit ends in an ellipsis, and the
+   component repeats its text as a title. */
+.tcrn-text.tcrn-text--caps {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }`;
 
 export const typographyCss02 = `
