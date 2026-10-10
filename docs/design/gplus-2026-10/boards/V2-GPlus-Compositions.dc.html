@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>G+ 两种构图</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500;600&amp;family=Noto+Serif+SC:wght@300;400&amp;display=swap">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+.board{--bg:#efeeea;--bg-2:#e7e5df;--panel:#ffffff;--panel-2:#f6f5f1;--line:rgba(22,21,15,.09);--line-2:rgba(22,21,15,.16);--line-ctl:rgba(22,21,15,.47);--ink:#16150f;--ink-2:#4f4c43;--ink-3:#6b675d;--acc:#0b6b65;--acc-2:#0a5f5a;--on-acc:#ffffff;--red:#8e2d24;--ok:#2f6b3a;--warn:#8a5a08;--bad:#a8321f;--wash:rgba(22,21,15,.06);--hover:rgba(22,21,15,.035);--s1:0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07);--s2:0 1px 2px rgba(22,21,15,.05),0 2px 3px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.08);--s3:0 2px 3px rgba(22,21,15,.06),0 3px 3px rgba(22,21,15,.06),0 0 0 1px rgba(22,21,15,.10);--serif:"Source Serif 4","Noto Serif SC",Georgia,serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--dark:#1b1a16;--dark-2:#23221d;--dark-ink:#ebe8df;--dark-ink-2:#a9a69c;--dark-ink-3:#85827a;--dark-line:rgba(255,255,255,.08);--dark-wash:rgba(255,255,255,.08);width:2640px;height:1180px;padding:48px;display:grid;grid-template-rows:150px 640px minmax(0,1fr);row-gap:32px;background:#efeeea;color:#16150f;font-family:"Hanken Grotesk","Noto Sans SC",system-ui,sans-serif;font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums}
+.bh{display:grid;grid-template-columns:1560px minmax(0,1fr);column-gap:48px;align-items:end;padding-bottom:22px;border-bottom:1px solid var(--line-2)}
+.bh .k{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.bh h1{margin:6px 0 0;font-family:var(--serif);font-size:44px;line-height:1.05;font-weight:400;letter-spacing:-.01em}
+.bh h1 em{font-style:normal;color:var(--red)}
+.bh p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.6;max-width:1500px}
+.bh .meta{font-size:12px;color:var(--ink-3);line-height:1.6;text-align:right}
+.bh .meta b{display:block;color:var(--ink);font-weight:500}
+.screens{display:grid;grid-template-columns:repeat(2,1240px);column-gap:64px}
+.scr{position:relative;width:1240px;height:640px;overflow:hidden;background:var(--bg);color:var(--ink);border-radius:14px;box-shadow:var(--s1);font-size:13px;line-height:1.5}
+.scr > .grain{position:absolute;left:0;top:0;width:100%;height:100%;opacity:.035;mix-blend-mode:multiply;pointer-events:none;z-index:0}
+.scr > .lay{position:relative;z-index:1;width:100%;height:100%}
+.nv{display:grid;grid-template-columns:22px minmax(0,1fr) auto;column-gap:10px;align-items:center;height:32px;padding:0 6px 0 4px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-size:12.5px;font-weight:500;white-space:nowrap}
+.nv svg{width:22px;height:22px;padding:3px;color:var(--ink-3)}
+.nv .cnt{justify-self:end;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.nv.on{background:var(--panel);color:var(--ink);box-shadow:var(--s1)}
+.nv.on svg{color:var(--ink)}
+.brand{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:center;padding:2px 4px 14px}
+.brand .mk{width:22px;height:22px;border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;color:var(--on-acc);font-family:var(--serif);font-weight:500;font-size:13px}
+.brand b{display:block;font-size:12.5px;font-weight:600;line-height:1.2;letter-spacing:.01em}
+.brand small{display:block;font-size:10.5px;color:var(--ink-3);letter-spacing:.04em}
+.rail h6{margin:12px 0 4px 4px;padding:0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.rail .user{margin-top:auto;padding:12px 4px 2px;border-top:1px solid var(--line);display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:center}
+.av{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:500;background:var(--bg-2);color:var(--ink);flex:0 0 auto;box-shadow:inset 0 0 0 1px var(--line)}
+.rail .user .av{width:22px;height:22px;font-size:10px}
+.rail .user b{display:block;font-size:12px;font-weight:600;line-height:1.2}
+.rail .user small{display:block;font-size:10.5px;color:var(--ink-3)}
+.crumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);white-space:nowrap;flex:0 0 auto}
+.crumbs a{color:var(--ink-2);text-decoration:none}
+.crumbs b{color:var(--ink);font-weight:600}
+.crumbs svg{width:11px;height:11px}
+.sp{flex:1 1 auto;min-width:0}
+.cmd{position:relative;display:flex;align-items:center;width:220px;min-width:140px;flex:0 1 220px;height:30px;padding:0 8px 0 28px;border-radius:8px;background:var(--wash);color:var(--ink-3);font-size:12px;white-space:nowrap;overflow:hidden}
+.cmd svg{position:absolute;left:9px;width:13px;height:13px}
+.cmd kbd{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3);border:1px solid var(--line-2);border-radius:4px;padding:0 4px}
+.ib{position:relative;width:28px;height:28px;border-radius:7px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+.ib:hover{background:var(--hover);color:var(--ink)}
+.ib svg{width:15px;height:15px}
+.ib i{position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px var(--panel)}
+.ph{display:flex;align-items:flex-end;gap:14px;padding-bottom:12px;border-bottom:1px solid var(--line-2)}
+.ph h2{margin:0;font-family:var(--serif);font-size:26px;line-height:1.1;font-weight:400;letter-spacing:-.005em;white-space:nowrap}
+.ph .sub{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;white-space:nowrap;padding-bottom:4px}
+.ph .act{margin-left:auto;display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.btn{height:30px;padding:0 13px;border:0;border-radius:8px;background:var(--panel);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)}
+.btn:hover{background:var(--panel-2)}
+.btn.pri{background:var(--acc);color:var(--on-acc);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 0 0 1px rgba(0,0,0,.04)}
+.btn.pri:hover{background:var(--acc-2);color:var(--on-acc)}
+.btn.quiet{background:transparent;box-shadow:none;color:var(--ink-2)}
+.btn.quiet:hover{background:var(--hover);color:var(--ink)}
+.btn svg{width:13px;height:13px}
+.stamp{display:inline-flex;align-items:center;gap:8px;padding:5px 10px;border:1px solid var(--red);border-radius:3px;color:var(--red);font-family:var(--serif);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:1.2;white-space:nowrap}
+.stamp i{width:5px;height:5px;border-radius:50%;background:currentColor}
+.stats{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
+.stat{flex:1;display:flex;flex-direction:column;gap:2px;padding:4px 18px 12px 0;border-right:1px solid var(--line);margin-right:18px}
+.stat:last-child{border-right:0;margin-right:0}
+.stat .l{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.stat .v{font-family:var(--serif);font-size:26px;line-height:1.15;font-weight:300;letter-spacing:-.01em;display:flex;align-items:baseline;gap:6px}
+.stat .v small{font-family:"Hanken Grotesk","Noto Sans SC",sans-serif;font-size:11px;color:var(--ink-3);letter-spacing:.06em;font-weight:500}
+.stat .d{font-size:11.5px;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.stat .d i{width:5px;height:5px;border-radius:50%;background:currentColor}
+.stat .d.ok{color:var(--ok)}.stat .d.warn{color:var(--warn)}
+.tabs{display:flex;gap:18px;border-bottom:1px solid var(--line)}
+.tabs a{position:relative;padding:4px 0 9px;font-size:12.5px;color:var(--ink-3);text-decoration:none;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.tabs a.on{color:var(--ink);font-weight:600}
+.tabs a.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--ink)}
+.tabs .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+table{width:calc(100% + 16px);margin:0 -8px;border-collapse:collapse;table-layout:fixed;font-size:12.5px}
+th{height:30px;text-align:left;padding:0 10px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--line-2);white-space:nowrap}
+th:first-child,td:first-child{padding-left:8px}
+th:last-child,td:last-child{padding-right:8px}
+th.r,td.r{text-align:right}
+td{height:38px;padding:0 10px;border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;color:var(--ink-2)}
+tr.sel td{background:var(--wash);color:var(--ink)}
+tr.sel td:first-child{border-radius:6px 0 0 6px}
+tr.sel td:last-child{border-radius:0 6px 6px 0}
+tr:hover td{background:var(--hover)}
+tr.sel:hover td{background:var(--wash)}
+.who{display:flex;align-items:center;gap:9px;min-width:0}
+.who b{font-weight:600;color:var(--ink);display:block;line-height:1.2;font-size:12.5px}
+.who small{display:block;font-size:10.5px;color:var(--ink-3);font-family:var(--mono)}
+.st{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);white-space:nowrap}
+.st i{width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 auto}
+.st.ok{color:var(--ok)}.st.warn{color:var(--warn)}.st.bad{color:var(--bad)}
+.chip{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:4px;font-size:11px;font-weight:500;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-2);white-space:nowrap}
+.mono{font-family:var(--mono);font-size:11.5px}
+.tfoot{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:11px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;font-weight:500}
+.toast{position:absolute;right:22px;bottom:22px;z-index:4;display:flex;align-items:center;gap:10px;width:300px;padding:10px 12px;border-radius:10px;font-size:12.5px;background:rgba(255,255,255,.78);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);box-shadow:inset 0 0 0 1px rgba(255,255,255,.8),var(--s3);color:var(--ink)}
+.toast svg{width:15px;height:15px;color:var(--ok);flex:0 0 auto}
+.toast b{display:block;font-weight:600}
+.toast small{display:block;font-size:11px;color:var(--ink-3)}
+.toast .btn{margin-left:auto;height:26px;padding:0 9px;font-size:12px}
+.content{display:flex;flex-direction:column;gap:12px;min-height:0}
+/* 构图一：一张纸 */
+.o1 .lay{display:grid;grid-template-columns:220px minmax(0,1fr)}
+.o1 .rail{display:flex;flex-direction:column;gap:2px;padding:16px 12px 14px}
+.o1 .sheet{margin:12px 12px 12px 0;background:var(--panel);border-radius:14px;box-shadow:var(--s1);display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.o1 .topbar{display:flex;align-items:center;gap:12px;height:52px;padding:0 28px;border-bottom:1px solid var(--line);flex:0 0 auto}
+.o1 .content{padding:18px 28px 14px;flex:1}
+/* 构图三：顶部导航 */
+.o3 .lay{display:flex;flex-direction:column}
+.o3 .top{display:flex;align-items:center;gap:22px;height:56px;padding:0 32px;background:var(--panel);border-bottom:1px solid var(--line);flex:0 0 auto}
+.o3 .top .brand{padding:0;grid-template-columns:22px auto;column-gap:10px}
+.o3 .top .brand b{font-size:13px}
+.o3 .top .brand small{display:none}
+.o3 .topnav{display:flex;gap:4px;margin-left:12px;height:56px}
+.o3 .topnav a{position:relative;display:inline-flex;align-items:center;gap:7px;padding:0 10px;font-size:13px;color:var(--ink-2);text-decoration:none;font-weight:500;white-space:nowrap}
+.o3 .topnav a .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.o3 .topnav a.on{color:var(--ink);font-weight:600}
+.o3 .topnav a.on:after{content:"";position:absolute;left:10px;right:10px;bottom:-1px;height:2px;background:var(--ink)}
+.o3 .wrap{flex:1;min-height:0;display:flex;justify-content:center;padding:24px 32px 0}
+.o3 .content{width:1040px;max-width:100%}
+.o3 .card{background:var(--panel);border-radius:12px;box-shadow:var(--s1);padding:4px 16px 0}
+.o3 .card .tfoot{padding:10px 0 12px}
+.notes{display:grid;grid-template-columns:repeat(2,1240px);column-gap:64px}
+.note{display:grid;grid-template-columns:200px minmax(0,1fr) minmax(0,1fr);column-gap:24px;align-items:start;padding-top:4px}
+.note h4{margin:0;font-family:var(--serif);font-size:20px;font-weight:400;line-height:1.2}
+.note h4 small{display:block;font-family:"Hanken Grotesk","Noto Sans SC",sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:6px}
+.note h6{margin:0 0 6px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.note ul{margin:0;padding-left:16px;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.note li{margin:2px 0}
+.note li b{color:var(--ink);font-weight:500}
+</style>
+</helmet>
+<div class="board" style="width: 2640px; height: 1180px">
+  <header class="bh">
+    <div>
+      <p class="k">G+ · two compositions, one token set</p>
+      <h1>同一页面、同一套 G+ token，两种构图<em>，一与三并用</em></h1>
+      <p>页面的两种骨架：一，侧栏留在画布上，顶栏与内容合成一张离边 12px 的白纸；三，没有侧栏，顶部一条导航，内容居中 1040px。两屏的字体、颜色、圆角、阴影、组件完全相同，都是第一批组件的消费方。构图二（墨色侧栏）已作废并从本板移除；选中行的墨洗向左右出血 8px，文字起点与其它行相同；次按钮轮廓改为 line-ctl 47%（2026-10-11 定）。</p>
+    </div>
+    <div class="meta"><b>浅色为准，选定后再出夜间</b>每屏都经过渲染测量：引导列 16 / 文字 48，无元素超出外壳<b>阴影最大模糊 3px · 玻璃只在轻提示</b></div>
+  </header>
+
+  <div class="screens">
+
+    <div class="scr o1">
+      <svg class="grain" aria-hidden="true"><filter id="gc-1"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gc-1)"/></svg>
+      <div class="lay">
+        <nav class="rail">
+          <div class="brand"><span class="mk">T</span><span><b>TCRN 设计组</b><small>团队 · 12 人</small></span></div>
+          <a class="nv" href="#home"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l7-6 7 6v8h-5v-5H8v5H3z"/></svg>工作台</a>
+          <a class="nv" href="#projects"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M3 8h14"/></svg>项目<span class="cnt">12</span></a>
+          <a class="nv on" href="#members"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2.5 16a5.5 5.5 0 0 1 11 0M13 4.5a3 3 0 0 1 0 5.5M17.5 16a5 5 0 0 0-3.5-4.7"/></svg>成员<span class="cnt">24</span></a>
+          <a class="nv" href="#billing"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="15" height="10" rx="2"/><path d="M2.5 9h15"/></svg>账单</a>
+          <a class="nv" href="#inbox"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></svg>通知</a>
+          <h6>团队</h6>
+          <a class="nv" href="#settings"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="2.5"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.5 1.5M13.5 13.5L15 15M15 5l-1.5 1.5M6.5 13.5L5 15"/></svg>设置</a>
+          <div class="user"><span class="av">林</span><span><b>林晓</b><small>管理员</small></span></div>
+        </nav>
+        <div class="sheet">
+          <div class="topbar">
+            <div class="crumbs"><a href="#team">设计组</a><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg><b>成员</b></div>
+            <span class="sp"></span>
+            <div class="cmd"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13 13l4 4"/></svg>搜索<kbd>⌘K</kbd></div>
+            <button class="ib" type="button" aria-label="通知"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></svg><i></i></button>
+            <span class="av">林</span>
+          </div>
+          <div class="content">
+            <div class="ph"><h2>成员</h2><span class="sub">24 人 · 3 人待邀请</span><span class="act"><span class="stamp"><i></i>已验收 · 2026-10-09</span><button class="btn" type="button">导出</button><button class="btn pri" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>邀请成员</button></span></div>
+            <div class="stats">
+              <div class="stat"><span class="l">活跃成员</span><span class="v">128<small>人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
+              <div class="stat"><span class="l">本月账单</span><span class="v">4,280<small>.00 元</small></span><span class="d"><i></i>与上月持平</span></div>
+              <div class="stat"><span class="l">待处理</span><span class="v">7</span><span class="d warn"><i></i>3 项逾期</span></div>
+            </div>
+            <div class="tabs"><a class="on" href="#all">全部<span class="n">24</span></a><a href="#admin">管理员</a><a href="#pending">待邀请<span class="n">3</span></a><a href="#left">已离开</a></div>
+            <table>
+              <colgroup><col style="width: 250px" /><col style="width: 110px" /><col style="width: 110px" /><col /><col style="width: 120px" /></colgroup>
+              <thead><tr><th>成员</th><th>角色</th><th>状态</th><th>项目</th><th class="r">最近活跃</th></tr></thead>
+              <tbody>
+                <tr class="sel"><td><span class="who"><span class="av">林</span><span><b>林晓</b><small>lin.xiao@tcrn.app</small></span></span></td><td><span class="chip">管理员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>季度复盘、产品发布、招聘</td><td class="r mono">2 分钟前</td></tr>
+                <tr><td><span class="who"><span class="av">陈</span><span><b>陈默</b><small>chen.mo@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>季度复盘、产品发布</td><td class="r mono">09:41</td></tr>
+                <tr><td><span class="who"><span class="av">王</span><span><b>王一帆</b><small>wang.yf@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st warn"><i></i>待邀请</span></td><td>—</td><td class="r mono">—</td></tr>
+                <tr><td><span class="who"><span class="av">赵</span><span><b>赵青</b><small>zhao.qing@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>招聘</td><td class="r mono">昨天</td></tr>
+                <tr><td><span class="who"><span class="av">周</span><span><b>周然</b><small>zhou.ran@tcrn.app</small></span></span></td><td><span class="chip">只读</span></td><td><span class="st bad"><i></i>已停用</span></td><td>—</td><td class="r mono">08-23</td></tr>
+              </tbody>
+            </table>
+            <div class="tfoot"><span>1 到 5 · 共 24</span><span class="sp"></span><button class="btn quiet" type="button">下一页</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="toast"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5"/></svg><span><b>已发送邀请</b><small>王一帆将在 7 天内收到邮件</small></span><button class="btn quiet" type="button">撤销</button></div>
+    </div>
+
+    <div class="scr o3">
+      <svg class="grain" aria-hidden="true"><filter id="gc-3"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gc-3)"/></svg>
+      <div class="lay">
+        <div class="top">
+          <div class="brand"><span class="mk">T</span><span><b>TCRN 设计组</b><small>团队</small></span></div>
+          <nav class="topnav">
+            <a href="#home">工作台</a>
+            <a href="#projects">项目<span class="n">12</span></a>
+            <a class="on" href="#members">成员<span class="n">24</span></a>
+            <a href="#billing">账单</a>
+            <a href="#inbox">通知</a>
+            <a href="#settings">设置</a>
+          </nav>
+          <span class="sp"></span>
+          <div class="cmd"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13 13l4 4"/></svg>搜索<kbd>⌘K</kbd></div>
+          <button class="ib" type="button" aria-label="通知"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></svg><i></i></button>
+          <span class="av">林</span>
+        </div>
+        <div class="wrap">
+          <div class="content">
+            <div class="ph"><h2>成员</h2><span class="sub">24 人 · 3 人待邀请</span><span class="act"><span class="stamp"><i></i>已验收 · 2026-10-09</span><button class="btn" type="button">导出</button><button class="btn pri" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>邀请成员</button></span></div>
+            <div class="stats">
+              <div class="stat"><span class="l">活跃成员</span><span class="v">128<small>人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
+              <div class="stat"><span class="l">本月账单</span><span class="v">4,280<small>.00 元</small></span><span class="d"><i></i>与上月持平</span></div>
+              <div class="stat"><span class="l">待处理</span><span class="v">7</span><span class="d warn"><i></i>3 项逾期</span></div>
+            </div>
+            <div class="tabs"><a class="on" href="#all">全部<span class="n">24</span></a><a href="#admin">管理员</a><a href="#pending">待邀请<span class="n">3</span></a><a href="#left">已离开</a></div>
+            <div class="card">
+              <table>
+                <colgroup><col style="width: 240px" /><col style="width: 100px" /><col style="width: 100px" /><col /><col style="width: 110px" /></colgroup>
+                <thead><tr><th>成员</th><th>角色</th><th>状态</th><th>项目</th><th class="r">最近活跃</th></tr></thead>
+                <tbody>
+                  <tr class="sel"><td><span class="who"><span class="av">林</span><span><b>林晓</b><small>lin.xiao@tcrn.app</small></span></span></td><td><span class="chip">管理员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>季度复盘、产品发布、招聘</td><td class="r mono">2 分钟前</td></tr>
+                  <tr><td><span class="who"><span class="av">陈</span><span><b>陈默</b><small>chen.mo@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>季度复盘、产品发布</td><td class="r mono">09:41</td></tr>
+                  <tr><td><span class="who"><span class="av">王</span><span><b>王一帆</b><small>wang.yf@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st warn"><i></i>待邀请</span></td><td>—</td><td class="r mono">—</td></tr>
+                  <tr><td><span class="who"><span class="av">赵</span><span><b>赵青</b><small>zhao.qing@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>招聘</td><td class="r mono">昨天</td></tr>
+                  <tr><td><span class="who"><span class="av">周</span><span><b>周然</b><small>zhou.ran@tcrn.app</small></span></span></td><td><span class="chip">只读</span></td><td><span class="st bad"><i></i>已停用</span></td><td>—</td><td class="r mono">08-23</td></tr>
+                </tbody>
+              </table>
+              <div class="tfoot"><span>1 到 5 · 共 24</span><span class="sp"></span><button class="btn quiet" type="button">下一页</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="toast"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5"/></svg><span><b>已发送邀请</b><small>王一帆将在 7 天内收到邮件</small></span><button class="btn quiet" type="button">撤销</button></div>
+    </div>
+
+  </div>
+
+  <div class="notes">
+    <div class="note">
+      <h4><small>构图一</small>一张纸</h4>
+      <div><h6>为什么好看</h6><ul><li><b>只有一个抬起的面。</b>顶栏与内容合成一张白纸，侧栏留在画布上，纸的边缘就是层次。</li><li><b>侧栏选中项是侧栏上唯一的白</b>，与纸同色，视线自然连到内容。</li><li>窗口感：纸离外缘 12px，像一份放在桌面上的文件。</li></ul></div>
+      <div><h6>风险与适用</h6><ul><li>侧栏项多于十个时画布会显得空，可加第二层分组标题。</li><li>最接近 Linear、Arc 一类当代工具的骨架，辨识度靠字体与印章。</li><li><b>我的推荐。</b>兼顾你两次反应：面有抬起，彼此不分离。</li></ul></div>
+    </div>
+    <div class="note">
+      <h4><small>构图三</small>顶部导航</h4>
+      <div><h6>为什么好看</h6><ul><li><b>最空、最现代。</b>没有侧栏，内容居中 1040px，两侧留白本身就是高级感。</li><li>顶栏一条白，导航是文字加 2px 墨线，和页面标签同一语法。</li><li>页面标题与指标直接落在画布上，只有表格是一张纸。</li></ul></div>
+      <div><h6>风险与适用</h6><ul><li>一级导航超过七项就放不下，子导航要落到页内标签。</li><li>宽屏下内容居中会让 1440 以上的显示器两侧很空，密排表格用户可能嫌浪费。</li><li>适合产品型与面向客户的界面，不适合多面板操作台。</li></ul></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2640,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

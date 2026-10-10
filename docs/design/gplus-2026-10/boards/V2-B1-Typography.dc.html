@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>字体 Typography · 第一批</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500;600&amp;family=Noto+Serif+SC:wght@300;400&amp;display=swap">
+<style>
+
+body{margin:0}
+*{box-sizing:border-box}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.board{position:relative;width:2640px;padding:48px;display:flex;flex-direction:column;gap:40px;background:#efeeea;color:#16150f;font-family:"Hanken Grotesk","Noto Sans SC",system-ui,sans-serif;font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums;overflow:hidden}
+.bh{display:grid;grid-template-columns:1560px minmax(0,1fr);column-gap:48px;align-items:end;padding-bottom:22px;border-bottom:1px solid rgba(22,21,15,.16)}
+.bh .k{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b675d;font-weight:500}
+.bh h1{margin:6px 0 0;font-family:"Source Serif 4","Noto Serif SC",Georgia,serif;font-size:44px;line-height:1.05;font-weight:400;letter-spacing:-.01em}
+.bh h1 em{font-style:normal;color:#8e2d24}
+.bh p{margin:10px 0 0;font-size:14px;color:#4f4c43;line-height:1.6;max-width:1400px}
+.bh .meta{font-size:12px;color:#6b675d;line-height:1.6;text-align:right}
+.bh .meta b{display:block;color:#16150f;font-weight:500}
+.sec{display:flex;flex-direction:column;gap:18px}
+.sec>h3{margin:0;font-size:11px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:#6b675d;font-weight:500;padding-bottom:8px;border-bottom:1px solid rgba(22,21,15,.16);display:flex;align-items:center;gap:14px}
+.sec>h3 b{font-family:"IBM Plex Mono",ui-monospace,monospace;color:#16150f;font-weight:500}
+.sec>h3 span{letter-spacing:0;text-transform:none;font-weight:400;color:#4f4c43;font-size:12.5px;line-height:16px}
+.two{display:grid;grid-template-columns:1248px 1248px;column-gap:48px;align-items:start}
+.pane{position:relative;padding:24px 28px 28px;border-radius:14px;background:var(--bg);color:var(--ink);box-shadow:var(--s1);display:flex;flex-direction:column;gap:22px;font-family:var(--sans);overflow:hidden}
+.pane>.grain{position:absolute;left:0;top:0;width:100%;height:100%;opacity:var(--grain);mix-blend-mode:var(--blend);pointer-events:none;z-index:0}
+.pane>.ptag{position:absolute;top:14px;right:18px;z-index:2;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.pane>.blk{position:relative;z-index:1;display:flex;flex-direction:column;gap:14px}
+.blk>h6{margin:0;font-size:10.5px;line-height:16px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500;display:flex;align-items:center;gap:10px}
+.blk>h6 span{letter-spacing:0;text-transform:none;font-weight:400;color:var(--ink-2);font-size:12px;line-height:16px}
+.row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.row.top{align-items:flex-start}
+.cell{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0}
+.cell>small{font-size:10.5px;color:var(--ink-3);font-family:var(--mono);white-space:nowrap}
+.paper{padding:16px 18px;border-radius:var(--r-panel);background:var(--panel);box-shadow:var(--s1);--surface:var(--panel);display:flex;flex-direction:column;gap:14px}
+.mx{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;background:#ffffff;border-radius:12px;box-shadow:0 0 0 1px rgba(22,21,15,.08);overflow:hidden}
+.mx th{text-align:left;height:34px;padding:0 10px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#6b675d;font-weight:500;border-bottom:1px solid #16150f;background:#f6f5f1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mx td{height:34px;padding:0 10px;border-bottom:1px solid rgba(22,21,15,.09);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4f4c43;vertical-align:middle}
+.mx tr:last-child td{border-bottom:0}
+.mx td.c{color:#16150f;font-weight:600}
+.mx td.m{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:#16150f}
+.mx td.n{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;color:#16150f;text-align:right}
+.mx td.n.lo{color:#a8321f}
+.mx td.n.ex{color:#6b675d}
+.mx tr.grp td{background:#f6f5f1;color:#16150f;font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;height:28px}
+.mx .sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px;box-shadow:inset 0 0 0 1px rgba(22,21,15,.14)}
+.mx td.r{text-align:right}
+.box{background:#ffffff;border-radius:12px;box-shadow:0 0 0 1px rgba(22,21,15,.08);padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box h4{margin:0;font-size:13px;font-weight:600}
+.box h4 small{font-weight:400;color:#6b675d;margin-left:8px;font-size:12px}
+.box p,.box li{margin:0;font-size:12.5px;color:#4f4c43;line-height:1.55}
+.box ol,.box ul{margin:0;padding-left:18px}
+.box li{margin:3px 0}
+.box b{color:#16150f;font-weight:600}
+.box code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;color:#16150f}
+.box .lead{font-size:13.5px;color:#16150f}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.cols4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:start}
+.ic{display:inline-block;flex:0 0 auto;vertical-align:middle}
+.spin{animation:spin var(--t-loop) linear infinite;transform-origin:50% 50%}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.gp{--bg:#efeeea;--bg-2:#e7e5df;--panel:#ffffff;--panel-2:#f8f7f3;--line:rgba(22,21,15,.09);--line-2:rgba(22,21,15,.16);--line-3:rgba(22,21,15,.30);--line-ctl:rgba(22,21,15,.47);--rule:#16150f;--ink:#16150f;--ink-2:#4f4c43;--ink-3:#6b675d;--acc:#0b6b65;--acc-2:#0a5f5a;--acc-3:#084f4a;--acc-bg:rgba(11,107,101,.08);--acc-ul:rgba(11,107,101,.7);--on-acc:#ffffff;--red:#8e2d24;--red-bg:rgba(142,45,36,.06);--red-bg-2:rgba(142,45,36,.11);--ok:#2f6b3a;--warn:#8a5a08;--bad:#a8321f;--bad-bg:rgba(168,50,31,.08);--wash:rgba(22,21,15,.06);--hover:rgba(22,21,15,.035);--dis:rgba(22,21,15,.05);--s1:0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07);--s2:0 1px 2px rgba(22,21,15,.05),0 2px 3px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.08);--s3:0 2px 3px rgba(22,21,15,.06),0 3px 3px rgba(22,21,15,.06),0 0 0 1px rgba(22,21,15,.10);--glass:rgba(255,255,255,.78);--edge:inset 0 0 0 1px rgba(255,255,255,.8);--grain:.035;--blend:multiply;--av-bg:#e7e5df;--av-ink:#16150f;--knob:#ffffff;--chrome:rgba(239,238,234,.82);--surface:var(--bg);--focus:0 0 0 2px var(--surface),0 0 0 4px var(--acc);--serif:"Source Serif 4","Noto Serif SC",Georgia,serif;--sans:"Hanken Grotesk","Noto Sans SC",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--r-ctl:8px;--r-sm:6px;--r-panel:12px;--r-check:4px;--r-stamp:3px;--h-sm:28px;--h-md:32px;--h-lg:40px;--pad-sm:10px;--pad-md:12px;--pad-lg:16px;--fs-sm:12px;--fs-md:13px;--fs-lg:14px;--ico-sm:14px;--ico-md:16px;--ico-lg:20px;--ease:cubic-bezier(.22,1,.36,1);--t-fill:120ms;--t-press:80ms;--t-move:240ms;--t-loop:900ms}
+.gp.night{--bg:#121210;--bg-2:#0d0d0b;--panel:#191916;--panel-2:#1f1f1b;--line:rgba(255,255,255,.07);--line-2:rgba(255,255,255,.13);--line-3:rgba(255,255,255,.26);--line-ctl:rgba(255,255,255,.36);--rule:#ebe8df;--ink:#ebe8df;--ink-2:#a9a69c;--ink-3:#85827a;--acc:#3fc7b7;--acc-2:#5ad3c5;--acc-3:#34b3a4;--acc-bg:rgba(63,199,183,.10);--acc-ul:rgba(63,199,183,.7);--on-acc:#07211e;--red:#d98d82;--red-bg:rgba(217,141,130,.08);--red-bg-2:rgba(217,141,130,.14);--ok:#6fcf97;--warn:#d9ab52;--bad:#e5897b;--bad-bg:rgba(229,137,123,.10);--wash:rgba(235,232,223,.07);--hover:rgba(235,232,223,.04);--dis:rgba(235,232,223,.05);--s1:0 1px 1px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.06);--s2:0 1px 2px rgba(0,0,0,.35),0 2px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.07);--s3:0 2px 3px rgba(0,0,0,.4),0 3px 3px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.09);--glass:rgba(25,25,22,.74);--edge:inset 0 1px 0 rgba(255,255,255,.06);--grain:.06;--blend:screen;--av-bg:#2a2a26;--av-ink:#ebe8df;--knob:#ffffff;--chrome:rgba(18,18,16,.82)}
+
+.scr{position:relative;width:1240px;height:640px;overflow:hidden;background:var(--bg);color:var(--ink);border-radius:14px;box-shadow:var(--s1);font-size:13px;line-height:1.5;font-family:var(--sans)}
+.scr>.grain{position:absolute;left:0;top:0;width:100%;height:100%;opacity:var(--grain);mix-blend-mode:var(--blend);pointer-events:none;z-index:0}
+.scr>.lay{position:relative;z-index:1;width:100%;height:100%;display:grid;grid-template-columns:220px minmax(0,1fr)}
+.rail{display:flex;flex-direction:column;gap:2px;padding:16px 12px 14px;min-height:0}
+.brand{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:center;padding:2px 4px 14px;min-width:0}
+.brand .mk{width:22px;height:22px;display:block;flex:0 0 auto}
+.brand b{display:block;font-size:12.5px;font-weight:600;line-height:1.2;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand small{display:block;font-size:10.5px;color:var(--ink-3);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nv{display:grid;grid-template-columns:22px minmax(0,1fr) auto;column-gap:10px;align-items:center;height:32px;padding:0 6px 0 4px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-size:12.5px;font-weight:500;white-space:nowrap;min-width:0}
+.nv>span.t{overflow:hidden;text-overflow:ellipsis}
+.nv .ic{width:22px;height:22px;padding:3px;color:var(--ink-3)}
+.nv .cnt{justify-self:end;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.nv:hover{background:var(--hover);color:var(--ink)}
+.nv.on{background:var(--panel);color:var(--ink);box-shadow:var(--s1)}
+.nv.on .ic{color:var(--ink)}
+.rail h6{margin:12px 0 4px 4px;padding:0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.rail .user{margin-top:auto;padding:12px 4px 2px;border-top:1px solid var(--line);display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:center;min-width:0}
+.rail .user .av{width:22px;height:22px;font-size:10px}
+.rail .user b{display:block;font-size:12px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rail .user small{display:block;font-size:10.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.av{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:500;background:var(--av-bg);color:var(--av-ink);flex:0 0 auto;box-shadow:inset 0 0 0 1px var(--line)}
+.sheet{margin:12px 12px 12px 0;background:var(--panel);border-radius:14px;box-shadow:var(--s1);display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;--surface:var(--panel)}
+.topbar{display:flex;align-items:center;gap:12px;height:52px;padding:0 28px;border-bottom:1px solid var(--line);flex:0 0 auto;min-width:0}
+.crumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);white-space:nowrap;flex:0 0 auto}
+.crumbs a{color:var(--ink-2);text-decoration:none}
+.crumbs b{color:var(--ink);font-weight:600}
+.crumbs .ic{width:11px;height:11px}
+.sp{flex:1 1 auto;min-width:0}
+.content{padding:18px 28px 14px;flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.ph{display:flex;align-items:flex-end;gap:14px;padding-bottom:12px;border-bottom:1px solid var(--line-2);min-width:0}
+.ph h2{margin:0;font-family:var(--serif);font-size:26px;line-height:1.1;font-weight:400;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ph .sub{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;white-space:nowrap;padding-bottom:4px;flex:0 0 auto}
+.ph .act{margin-left:auto;display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.tabs{display:flex;gap:18px;border-bottom:1px solid var(--line)}
+.tabs a{position:relative;padding:4px 0 9px;font-size:12.5px;color:var(--ink-3);text-decoration:none;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.tabs a.on{color:var(--ink);font-weight:600}
+.tabs a.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--rule)}
+.tabs .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.tbl{width:calc(100% + 16px);margin:0 -8px;border-collapse:collapse;table-layout:fixed;font-size:12.5px}
+.tbl th{height:30px;text-align:left;padding:0 10px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--line-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbl th:first-child,.tbl td:first-child{padding-left:8px}
+.tbl th:last-child,.tbl td:last-child{padding-right:8px}
+.tbl th.r,.tbl td.r{text-align:right}
+.tbl td{height:38px;padding:0 10px;border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;color:var(--ink-2)}
+.tbl tr.sel td{background:var(--wash);color:var(--ink)}
+.tbl tr.sel td:first-child{border-radius:6px 0 0 6px}
+.tbl tr.sel td:last-child{border-radius:0 6px 6px 0}
+.st{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);white-space:nowrap}
+.st i{width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 auto}
+.st.ok{color:var(--ok)}.st.warn{color:var(--warn)}.st.bad{color:var(--bad)}
+.chip{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:4px;font-size:11px;font-weight:500;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-2);white-space:nowrap}
+.mono{font-family:var(--mono);font-size:11.5px}
+.tfoot{display:flex;align-items:center;gap:8px;padding:8px 0 0;font-size:11px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;font-weight:500;white-space:nowrap}
+.stamp{display:inline-flex;align-items:center;gap:8px;padding:5px 10px;border:1px solid var(--red);border-radius:var(--r-stamp);color:var(--red);font-family:var(--serif);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:1.2;white-space:nowrap}
+.stamp i{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+
+.h1,.h2,.h3{margin:0;font-family:var(--serif);font-weight:400;color:var(--ink);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h1{font-size:36px;line-height:40px}
+.h2{font-size:26px;line-height:30px;letter-spacing:-.005em}
+.h3{font-size:20px;line-height:26px;letter-spacing:0}
+.h4{margin:0;font-family:var(--sans);font-size:13px;line-height:20px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx{margin:0;font-size:13px;line-height:20px;color:var(--ink-2)}
+.tx.strong{color:var(--ink);font-weight:600}
+.tx.read{font-size:14px;line-height:22px}
+.tx.meta{font-size:12px;line-height:16px;color:var(--ink-3)}
+.tx.cap{font-size:11px;line-height:16px;color:var(--ink-3)}
+.num{margin:0;font-family:var(--serif);font-weight:300;font-size:26px;line-height:30px;letter-spacing:-.01em;color:var(--ink);font-variant-numeric:tabular-nums lining-nums;display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap}
+.num small{font-family:var(--sans);font-size:11px;line-height:16px;letter-spacing:.06em;color:var(--ink-3);font-weight:500}
+.num.inl{font-size:16px;line-height:20px;font-weight:400;letter-spacing:0}
+.num.big{font-size:44px;line-height:48px}
+.caps{margin:0;font-family:var(--sans);font-size:11px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;white-space:nowrap}
+.caps b{font-family:var(--mono);color:var(--ink);font-weight:500;margin-right:8px;letter-spacing:.04em}
+.secrule{display:flex;align-items:center;gap:12px;min-width:0}
+.secrule i{flex:1;height:1px;background:var(--rule)}
+.id{font-family:var(--mono);font-size:11.5px;line-height:16px;color:var(--ink-2)}
+.lnk{color:var(--acc);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;text-decoration-color:var(--acc-ul);border-radius:2px}
+.lnk:hover,.lnk.is-hover{color:var(--acc-2);text-decoration-color:var(--acc-2)}
+.lnk:focus-visible,.lnk.is-focus{outline:none;box-shadow:var(--focus)}
+mark.hl{background:var(--acc-bg);color:inherit;font:inherit;letter-spacing:inherit;padding:0;margin:0;border-radius:2px;box-shadow:0 0 0 2px var(--acc-bg);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.spec{display:grid;grid-template-columns:150px minmax(0,1fr);column-gap:16px;row-gap:12px;align-items:baseline}
+.spec>small{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.on-canvas{padding:14px 18px;border-radius:var(--r-panel);box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:10px}
+.stats{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
+.stat{flex:1;display:flex;flex-direction:column;gap:2px;padding:4px 18px 12px 0;border-right:1px solid var(--line);margin-right:18px;min-width:0}
+.stat:last-child{border-right:0;margin-right:0}
+.stat .d{font-size:11.5px;color:var(--ink-2);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.stat .d i{width:5px;height:5px;border-radius:50%;background:currentColor}
+.stat .d.ok{color:var(--ok)}.stat .d.warn{color:var(--warn)}
+.sel-row{display:flex;align-items:center;height:36px;padding:0 10px;margin:0 -10px;border-radius:6px;background:var(--wash);color:var(--ink);font-weight:600;font-size:13px;white-space:nowrap}
+.list{display:flex;flex-direction:column}
+.list .li{display:grid;grid-template-columns:minmax(0,1fr) 150px 110px;align-items:center;height:36px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--ink-2);white-space:nowrap;column-gap:12px}
+.list .li>*{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list .li b{color:var(--ink);font-weight:600}
+.list .li:last-child{border-bottom:0}
+.list .li.b2{border-bottom:1px solid var(--line)}
+.lic{display:grid;grid-template-columns:160px minmax(0,1fr);column-gap:14px;row-gap:4px;font-size:12px;line-height:1.5;align-items:baseline}
+.lic dt{color:var(--ink-3)}.lic dd{margin:0;color:var(--ink-2)}.lic b{color:var(--ink);font-weight:600}
+.mixed{display:flex;flex-direction:column;gap:6px}
+
+</style>
+</helmet>
+<div class="board" style="width: 2640px; height: 5840px">
+
+<header class="bh">
+<div>
+<p class="k">Batch one · 01 / 05 · Typography</p>
+<h1>字体：衬线标题与数字，怪诞体正文，等宽编号<em>，两种新样式</em></h1>
+<p>Heading、Text、Highlight 三件现有组件换到 G+ 字体底盘，并加入「衬线数字」与「小型大写标签」两种样式。上半部分是浅色与夜间两套同一规则的静态样张，中间是逐格算出的对比度矩阵与动效规范，下半部分是放进构图一壳层的账单页样板，最后是消费方契约与 token 差异。</p>
+</div>
+<div class="meta"><b>Hanken Grotesk 13/20 · Source Serif 4 300/400 · IBM Plex Mono 11.5</b>中文 Noto Sans SC / Noto Serif SC；五款全部 SIL OFL 1.1，可商用、可打包，产品须自托管<b>文字对比 ≥ 4.5 · 边线与点 ≥ 3</b>矩阵里每格由脚本算出，夜间同一属性集只换值<b>单行元素一律截断加 title</b>标题、标签、表头、编号不折行</div>
+</header>
+
+<div class="sec"><h3><b>A</b>组件与样式 <span>左浅色、右夜间；每块纸是一张 panel，纸外是画布</span></h3>
+<div class="two"><section class="pane gp" aria-label="浅色">
+<svg class="grain" aria-hidden="true"><filter id="ty-l"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#ty-l)"/></svg>
+<span class="ptag">light · 画布 #efeeea · 纸 #ffffff</span>
+<div class="blk"><h6>Heading · 四级 <span>level 决定标签，visualLevel 决定外观；1 至 3 级衬线 400，4 级怪诞体 600</span></h6>
+<div class="paper"><div class="spec">
+<small>h1 · serif 36/40 · -.01em</small><h1 class="h1" data-cell="h1-l" data-kind="text" data-expect="18.29">季度复盘与产品发布 Q3 Review</h1>
+<small>h2 · serif 26/30</small><h2 class="h2" data-cell="h2-l" data-kind="text" data-expect="18.29">成员与权限 Members</h2>
+<small>h3 · serif 20/26</small><h3 class="h3" data-cell="h3-l" data-kind="text" data-expect="18.29">本月账单 October invoice</h3>
+<small>h4 · sans 13/20 · 600</small><h4 class="h4" data-cell="h4-l" data-kind="text" data-expect="18.29">通知偏好 Notification preferences</h4>
+</div></div></div>
+
+<div class="blk"><h6>Text · 五种 <span>正文 13/20 默认次墨；强调加字重不换色；元数据与说明用三级墨；阅读体 14/22</span></h6>
+<div class="paper"><div class="spec">
+<small>body · 13/20 · ink-2</small><p class="tx" data-cell="body-l" data-kind="text" data-expect="8.58">项目「季度复盘」已有 12 位成员，3 人待邀请。邀请邮件会在 7 天内送达，之后链接失效。</p>
+<small>strong · 13/20 · 600 ink</small><p class="tx strong" data-cell="strong-l" data-kind="text" data-expect="18.29">删除后 30 天内可从回收站恢复，之后永久删除。</p>
+<small>reading · 14/22 · ink-2</small><p class="tx read" data-cell="read-l" data-kind="text" data-expect="8.58">账单按席位计费，每月 1 日生成；年付在当期账单中一次扣除，并在下一期显示抵扣。</p>
+<small>meta · 12/16 · ink-3</small><p class="tx meta" data-cell="meta-l" data-kind="text" data-expect="5.64">最近活跃 2 分钟前 · 由 林晓 创建于 2026-09-14</p>
+<small>caption · 11/16 · ink-3</small><p class="tx cap" data-cell="cap-l" data-kind="text" data-expect="5.64">对团队成员可见；更改后立即生效</p>
+<small>link · acc · 下划线 70%</small><p class="tx">查看 <a class="lnk" href="#a" data-cell="link-l" data-kind="text" data-expect="6.35">全部账单</a> 或 <a class="lnk is-hover" href="#b" data-cell="link-hover-l" data-kind="text" data-expect="7.51">悬停态</a> 与 <a class="lnk is-focus" href="#c">焦点态</a></p>
+</div></div>
+<div class="on-canvas"><div class="spec">
+<small>同四种 · 落在画布上</small><p class="tx" data-cell="body-canvas-l" data-kind="text" data-expect="7.39">正文落在画布色上：侧栏、页脚与空状态说明会用到。</p>
+<small></small><p class="tx strong" data-cell="strong-canvas-l" data-kind="text" data-expect="15.75">强调仍是同一墨色。</p>
+<small></small><p class="tx meta" data-cell="meta-canvas-l" data-kind="text" data-expect="4.86">元数据 · 2 分钟前</p>
+<small></small><p class="tx">链接 <a class="lnk" href="#d" data-cell="link-canvas-l" data-kind="text" data-expect="5.47">查看项目</a></p>
+</div></div></div>
+
+<div class="blk"><h6>Highlight · 搜索命中 <span>mark 只加 8% 青洗底：不改字重、字距、字号，不加内距；2px 晕用 box-shadow 画在行内盒之外，排版零变化；在正文、列表与选中行里同一规则</span></h6>
+<div class="paper">
+<p class="tx">在「<mark class="hl" data-cell="mark-l" data-kind="text" data-expect="7.63">设计</mark>组」里搜索「设计」：命中两处，其余文字不变。</p>
+<div class="list" data-rows>
+<div class="li"><b>TCRN <mark class="hl">设计</mark>系统 · 组件库</b><span class="id">PRJ-2026-0412</span><span><mark class="hl">设计</mark>组</span></div>
+<div class="li b2"><b>季度复盘 · <mark class="hl">设计</mark>评审</b><span class="id">PRJ-2026-0391</span><span>产品组</span></div>
+<div class="sel-row" data-cell="sel-l" data-kind="text" data-expect="16.18">选中行里的命中：<mark class="hl">设计</mark>评审<span style="margin-left:auto" class="id">PRJ-2026-0391</span></div>
+</div>
+<p class="tx meta">选中行的墨洗向左右各出血 10px（margin 0 -10px），文字起点与同容器各行相同；所有列表与表格的选中态都按这条规则。</p>
+<span class="sr"><mark class="hl">设计</mark></span>
+</div></div>
+
+<div class="blk"><h6>衬线数字 numeral · 新样式 <span>Source Serif 4 300，等宽数字；单位缩小、拉开字距、三级墨；行内 16/20 用 400</span></h6>
+<div class="paper">
+<div class="stats">
+<div class="stat"><span class="caps">活跃成员</span><span class="num" data-cell="num-l" data-kind="text" data-expect="18.29">128<small data-cell="unit-l" data-kind="text" data-expect="5.64">人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
+<div class="stat"><span class="caps">本月账单</span><span class="num">4,280<small>.00 元</small></span><span class="d"><i></i>与上月持平</span></div>
+<div class="stat"><span class="caps">待处理</span><span class="num">7</span><span class="d warn"><i></i>3 项逾期</span></div>
+<div class="stat"><span class="caps">席位用量</span><span class="num">86<small>/ 120</small></span><span class="d"><i></i>剩余 34 席</span></div>
+</div>
+<div class="spec" style="margin-top:4px">
+<small>inline · 16/20 · 400</small><p class="tx">本期应付 <span class="num inl" data-cell="num-inl-l" data-kind="text" data-expect="18.29">4,280.00<small>元</small></span>，含税 <span class="num inl">232.45<small>元</small></span>；到期日 <span class="id">2026-10-31</span>。</p>
+<small>big · 44/48 · 300</small><span class="num big">12,480<small>.00 元</small></span>
+</div>
+</div></div>
+
+<div class="blk"><h6>小型大写标签 caps · 新样式 <span>11/16 · 500 · 字距 .14em · 三级墨；用于区段编号、表头、指标标签；中文不转大写但同字距</span></h6>
+<div class="paper">
+<div class="secrule"><span class="caps" data-cell="caps-l" data-kind="text" data-expect="5.64"><b>01</b>基本信息 Basic info</span><i></i></div>
+<div class="secrule"><span class="caps"><b>02</b>成员与权限 Members</span><i></i></div>
+<div class="spec">
+<small>table header</small><div class="list"><div class="li" style="height:30px;color:var(--ink-3);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500"><span>项目 Project</span><span>编号 ID</span><span>团队 Team</span></div></div>
+<small>stat label</small><span class="caps">本月账单 Invoice</span>
+</div>
+</div></div>
+
+<div class="blk"><h6>等宽编号 mono <span>IBM Plex Mono 11.5/16 · 次墨；编号、邮箱、时间戳、快捷键；永不用于正文</span></h6>
+<div class="paper"><div class="spec">
+<small>id · 11.5/16</small><span class="id" data-cell="id-l" data-kind="text" data-expect="8.58">PRJ-2026-0412 · INV-2026-10-0031</span>
+<small>email · time</small><span class="id">lin.xiao@tcrn.app · 2026-10-11 09:41:07 +08:00</span>
+<small>kbd</small><span class="id">⌘K · ⇧⌘P · Esc</span>
+</div></div></div>
+
+<div class="blk"><h6>中英混排 <span>衬线标题回退 Noto Serif SC 400，正文回退 Noto Sans SC；数字与拉丁永远用主字体</span></h6>
+<div class="paper"><div class="mixed">
+<h2 class="h2">2026 年第三季度 · Q3 复盘 Review</h2>
+<p class="tx read">本季度新增 <span class="num inl">24</span> 位成员，<span class="num inl">3</span> 个项目归档；「账单」页改为按席位计费（per-seat billing）。</p>
+<p class="tx meta">更新于 2026-10-09 · Updated Oct 9, 2026</p>
+</div></div></div>
+</section><section class="pane gp night" aria-label="夜间">
+<svg class="grain" aria-hidden="true"><filter id="ty-n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#ty-n)"/></svg>
+<span class="ptag">night · 画布 #121210 · 纸 #191916</span>
+<div class="blk"><h6>Heading · 四级 <span>level 决定标签，visualLevel 决定外观；1 至 3 级衬线 400，4 级怪诞体 600</span></h6>
+<div class="paper"><div class="spec">
+<small>h1 · serif 36/40 · -.01em</small><h1 class="h1" data-cell="h1-n" data-kind="text" data-expect="14.38">季度复盘与产品发布 Q3 Review</h1>
+<small>h2 · serif 26/30</small><h2 class="h2" data-cell="h2-n" data-kind="text" data-expect="14.38">成员与权限 Members</h2>
+<small>h3 · serif 20/26</small><h3 class="h3" data-cell="h3-n" data-kind="text" data-expect="14.38">本月账单 October invoice</h3>
+<small>h4 · sans 13/20 · 600</small><h4 class="h4" data-cell="h4-n" data-kind="text" data-expect="14.38">通知偏好 Notification preferences</h4>
+</div></div></div>
+
+<div class="blk"><h6>Text · 五种 <span>正文 13/20 默认次墨；强调加字重不换色；元数据与说明用三级墨；阅读体 14/22</span></h6>
+<div class="paper"><div class="spec">
+<small>body · 13/20 · ink-2</small><p class="tx" data-cell="body-n" data-kind="text" data-expect="7.23">项目「季度复盘」已有 12 位成员，3 人待邀请。邀请邮件会在 7 天内送达，之后链接失效。</p>
+<small>strong · 13/20 · 600 ink</small><p class="tx strong" data-cell="strong-n" data-kind="text" data-expect="14.38">删除后 30 天内可从回收站恢复，之后永久删除。</p>
+<small>reading · 14/22 · ink-2</small><p class="tx read" data-cell="read-n" data-kind="text" data-expect="7.23">账单按席位计费，每月 1 日生成；年付在当期账单中一次扣除，并在下一期显示抵扣。</p>
+<small>meta · 12/16 · ink-3</small><p class="tx meta" data-cell="meta-n" data-kind="text" data-expect="4.59">最近活跃 2 分钟前 · 由 林晓 创建于 2026-09-14</p>
+<small>caption · 11/16 · ink-3</small><p class="tx cap" data-cell="cap-n" data-kind="text" data-expect="4.59">对团队成员可见；更改后立即生效</p>
+<small>link · acc · 下划线 70%</small><p class="tx">查看 <a class="lnk" href="#a" data-cell="link-n" data-kind="text" data-expect="8.44">全部账单</a> 或 <a class="lnk is-hover" href="#b" data-cell="link-hover-n" data-kind="text" data-expect="9.70">悬停态</a> 与 <a class="lnk is-focus" href="#c">焦点态</a></p>
+</div></div>
+<div class="on-canvas"><div class="spec">
+<small>同四种 · 落在画布上</small><p class="tx" data-cell="body-canvas-n" data-kind="text" data-expect="7.70">正文落在画布色上：侧栏、页脚与空状态说明会用到。</p>
+<small></small><p class="tx strong" data-cell="strong-canvas-n" data-kind="text" data-expect="15.31">强调仍是同一墨色。</p>
+<small></small><p class="tx meta" data-cell="meta-canvas-n" data-kind="text" data-expect="4.89">元数据 · 2 分钟前</p>
+<small></small><p class="tx">链接 <a class="lnk" href="#d" data-cell="link-canvas-n" data-kind="text" data-expect="8.99">查看项目</a></p>
+</div></div></div>
+
+<div class="blk"><h6>Highlight · 搜索命中 <span>mark 只加 8% 青洗底：不改字重、字距、字号，不加内距；2px 晕用 box-shadow 画在行内盒之外，排版零变化；在正文、列表与选中行里同一规则</span></h6>
+<div class="paper">
+<p class="tx">在「<mark class="hl" data-cell="mark-n" data-kind="text" data-expect="6.09">设计</mark>组」里搜索「设计」：命中两处，其余文字不变。</p>
+<div class="list" data-rows>
+<div class="li"><b>TCRN <mark class="hl">设计</mark>系统 · 组件库</b><span class="id">PRJ-2026-0412</span><span><mark class="hl">设计</mark>组</span></div>
+<div class="li b2"><b>季度复盘 · <mark class="hl">设计</mark>评审</b><span class="id">PRJ-2026-0391</span><span>产品组</span></div>
+<div class="sel-row" data-cell="sel-n" data-kind="text" data-expect="12.15">选中行里的命中：<mark class="hl">设计</mark>评审<span style="margin-left:auto" class="id">PRJ-2026-0391</span></div>
+</div>
+<p class="tx meta">选中行的墨洗向左右各出血 10px（margin 0 -10px），文字起点与同容器各行相同；所有列表与表格的选中态都按这条规则。</p>
+<span class="sr"><mark class="hl">设计</mark></span>
+</div></div>
+
+<div class="blk"><h6>衬线数字 numeral · 新样式 <span>Source Serif 4 300，等宽数字；单位缩小、拉开字距、三级墨；行内 16/20 用 400</span></h6>
+<div class="paper">
+<div class="stats">
+<div class="stat"><span class="caps">活跃成员</span><span class="num" data-cell="num-n" data-kind="text" data-expect="14.38">128<small data-cell="unit-n" data-kind="text" data-expect="4.59">人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
+<div class="stat"><span class="caps">本月账单</span><span class="num">4,280<small>.00 元</small></span><span class="d"><i></i>与上月持平</span></div>
+<div class="stat"><span class="caps">待处理</span><span class="num">7</span><span class="d warn"><i></i>3 项逾期</span></div>
+<div class="stat"><span class="caps">席位用量</span><span class="num">86<small>/ 120</small></span><span class="d"><i></i>剩余 34 席</span></div>
+</div>
+<div class="spec" style="margin-top:4px">
+<small>inline · 16/20 · 400</small><p class="tx">本期应付 <span class="num inl" data-cell="num-inl-n" data-kind="text" data-expect="14.38">4,280.00<small>元</small></span>，含税 <span class="num inl">232.45<small>元</small></span>；到期日 <span class="id">2026-10-31</span>。</p>
+<small>big · 44/48 · 300</small><span class="num big">12,480<small>.00 元</small></span>
+</div>
+</div></div>
+
+<div class="blk"><h6>小型大写标签 caps · 新样式 <span>11/16 · 500 · 字距 .14em · 三级墨；用于区段编号、表头、指标标签；中文不转大写但同字距</span></h6>
+<div class="paper">
+<div class="secrule"><span class="caps" data-cell="caps-n" data-kind="text" data-expect="4.59"><b>01</b>基本信息 Basic info</span><i></i></div>
+<div class="secrule"><span class="caps"><b>02</b>成员与权限 Members</span><i></i></div>
+<div class="spec">
+<small>table header</small><div class="list"><div class="li" style="height:30px;color:var(--ink-3);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500"><span>项目 Project</span><span>编号 ID</span><span>团队 Team</span></div></div>
+<small>stat label</small><span class="caps">本月账单 Invoice</span>
+</div>
+</div></div>
+
+<div class="blk"><h6>等宽编号 mono <span>IBM Plex Mono 11.5/16 · 次墨；编号、邮箱、时间戳、快捷键；永不用于正文</span></h6>
+<div class="paper"><div class="spec">
+<small>id · 11.5/16</small><span class="id" data-cell="id-n" data-kind="text" data-expect="7.23">PRJ-2026-0412 · INV-2026-10-0031</span>
+<small>email · time</small><span class="id">lin.xiao@tcrn.app · 2026-10-11 09:41:07 +08:00</span>
+<small>kbd</small><span class="id">⌘K · ⇧⌘P · Esc</span>
+</div></div></div>
+
+<div class="blk"><h6>中英混排 <span>衬线标题回退 Noto Serif SC 400，正文回退 Noto Sans SC；数字与拉丁永远用主字体</span></h6>
+<div class="paper"><div class="mixed">
+<h2 class="h2">2026 年第三季度 · Q3 复盘 Review</h2>
+<p class="tx read">本季度新增 <span class="num inl">24</span> 位成员，<span class="num inl">3</span> 个项目归档；「账单」页改为按席位计费（per-seat billing）。</p>
+<p class="tx meta">更新于 2026-10-09 · Updated Oct 9, 2026</p>
+</div></div></div>
+</section></div></div>
+
+<div class="sec"><h3><b>B</b>状态矩阵 <span>fill 与 ink 成对；对比度为 WCAG 2.x 相对亮度比，脚本计算，半透明先合成到承载面</span></h3><table class="mx" aria-label="字体状态矩阵"><colgroup><col style="width:190px"><col style="width:300px"><col style="width:270px"><col style="width:270px"><col style="width:90px"><col style="width:270px"><col style="width:270px"><col style="width:90px"></colgroup><thead><tr><th>变体 · 状态</th><th>规则</th><th>浅色 fill</th><th>浅色 ink</th><th class="r">浅色 对比</th><th>夜间 fill</th><th>夜间 ink</th><th class="r">夜间 对比</th></tr></thead><tbody><tr class="grp"><td colspan="8">在纸上 · panel</td></tr>
+<tr><td class="c">heading 1–4</td><td>ink 于纸 / 画布</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="18.29">18.29</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="14.38">14.38</td></tr>
+<tr><td class="c">body · reading</td><td>ink-2</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</td><td class="n " data-cr="8.58">8.58</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</td><td class="n " data-cr="7.23">7.23</td></tr>
+<tr><td class="c">strong</td><td>ink · 600</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="18.29">18.29</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="14.38">14.38</td></tr>
+<tr><td class="c">meta · caption · caps · unit</td><td>ink-3</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#6b675d"></span>ink-3</td><td class="n " data-cr="5.64">5.64</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#85827a"></span>ink-3</td><td class="n " data-cr="4.59">4.59</td></tr>
+<tr><td class="c">numeral</td><td>ink · serif 300</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="18.29">18.29</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="14.38">14.38</td></tr>
+<tr><td class="c">mono id</td><td>ink-2</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</td><td class="n " data-cr="8.58">8.58</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</td><td class="n " data-cr="7.23">7.23</td></tr>
+<tr><td class="c">link · default</td><td>acc · 下划线 acc 70%</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#0b6b65"></span>acc</td><td class="n " data-cr="6.35">6.35</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#3fc7b7"></span>acc</td><td class="n " data-cr="8.44">8.44</td></tr>
+<tr><td class="c">link · hover</td><td>acc-2 · 下划线 100%</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#0a5f5a"></span>acc-2</td><td class="n " data-cr="7.51">7.51</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#5ad3c5"></span>acc-2</td><td class="n " data-cr="9.70">9.70</td></tr>
+<tr><td class="c">link · focus</td><td>同 default + 焦点环 4px acc</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#0b6b65"></span>acc</td><td class="n " data-cr="6.35">6.35</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#3fc7b7"></span>acc</td><td class="n " data-cr="8.44">8.44</td></tr>
+<tr><td class="c">link underline · 70%</td><td>边线类 ≥ 3</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#549793"></span>acc-ul .7</td><td class="n " data-cr="3.36">3.36</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#349387"></span>acc-ul .7</td><td class="n " data-cr="4.74">4.74</td></tr>
+<tr><td class="c">highlight mark · 正文里</td><td>继承字色 ink-2 于 acc-bg 8%（取最低）</td><td class="m"><span class="sw" style="background:#ebf3f3"></span>acc-bg</td><td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</td><td class="n " data-cr="7.63">7.63</td><td class="m"><span class="sw" style="background:#1d2a26"></span>acc-bg</td><td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</td><td class="n " data-cr="6.09">6.09</td></tr>
+<tr><td class="c">highlight mark · 强调或标题里</td><td>继承字色 ink 于 acc-bg 8%</td><td class="m"><span class="sw" style="background:#ebf3f3"></span>acc-bg</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="16.27">16.27</td><td class="m"><span class="sw" style="background:#1d2a26"></span>acc-bg</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="12.10">12.10</td></tr>
+<tr><td class="c">highlight in selected row</td><td>ink 于 acc-bg 于 wash</td><td class="m"><span class="sw" style="background:#dfe6e6"></span>acc-bg</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="14.47">14.47</td><td class="m"><span class="sw" style="background:#2a3733"></span>acc-bg</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="10.12">10.12</td></tr>
+<tr><td class="c">selected row text</td><td>ink 于 wash 6%</td><td class="m"><span class="sw" style="background:#f1f1f1"></span>wash</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="16.18">16.18</td><td class="m"><span class="sw" style="background:#282724"></span>wash</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="12.15">12.15</td></tr>
+<tr><td class="c">section rule</td><td>rule 1px 于纸</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#16150f"></span>rule</td><td class="n " data-cr="18.29">18.29</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#ebe8df"></span>rule</td><td class="n " data-cr="14.38">14.38</td></tr>
+<tr><td class="c">status dot ok / warn</td><td>ok · warn 6px 点</td><td class="m"><span class="sw" style="background:#ffffff"></span>panel</td><td class="m"><span class="sw" style="background:#8a5a08"></span>warn</td><td class="n " data-cr="5.92">5.92</td><td class="m"><span class="sw" style="background:#191916"></span>panel</td><td class="m"><span class="sw" style="background:#d9ab52"></span>warn</td><td class="n " data-cr="8.30">8.30</td></tr>
+<tr class="grp"><td colspan="8">在画布上 · bg</td></tr>
+<tr><td class="c">heading 1–4</td><td>ink 于纸 / 画布</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="15.75">15.75</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="15.31">15.31</td></tr>
+<tr><td class="c">body · reading</td><td>ink-2</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</td><td class="n " data-cr="7.39">7.39</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</td><td class="n " data-cr="7.70">7.70</td></tr>
+<tr><td class="c">strong</td><td>ink · 600</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="15.75">15.75</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="15.31">15.31</td></tr>
+<tr><td class="c">meta · caption · caps · unit</td><td>ink-3</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#6b675d"></span>ink-3</td><td class="n " data-cr="4.86">4.86</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#85827a"></span>ink-3</td><td class="n " data-cr="4.89">4.89</td></tr>
+<tr><td class="c">numeral</td><td>ink · serif 300</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="15.75">15.75</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="15.31">15.31</td></tr>
+<tr><td class="c">mono id</td><td>ink-2</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</td><td class="n " data-cr="7.39">7.39</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</td><td class="n " data-cr="7.70">7.70</td></tr>
+<tr><td class="c">link · default</td><td>acc · 下划线 acc 70%</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#0b6b65"></span>acc</td><td class="n " data-cr="5.47">5.47</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#3fc7b7"></span>acc</td><td class="n " data-cr="8.99">8.99</td></tr>
+<tr><td class="c">link · hover</td><td>acc-2 · 下划线 100%</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#0a5f5a"></span>acc-2</td><td class="n " data-cr="6.47">6.47</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#5ad3c5"></span>acc-2</td><td class="n " data-cr="10.32">10.32</td></tr>
+<tr><td class="c">link · focus</td><td>同 default + 焦点环 4px acc</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#0b6b65"></span>acc</td><td class="n " data-cr="5.47">5.47</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#3fc7b7"></span>acc</td><td class="n " data-cr="8.99">8.99</td></tr>
+<tr><td class="c">link underline · 70%</td><td>边线类 ≥ 3</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#4f928d"></span>acc-ul .7</td><td class="n " data-cr="3.09">3.09</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#319185"></span>acc-ul .7</td><td class="n " data-cr="4.91">4.91</td></tr>
+<tr><td class="c">highlight mark · 正文里</td><td>继承字色 ink-2 于 acc-bg 8%（取最低）</td><td class="m"><span class="sw" style="background:#dde4df"></span>acc-bg</td><td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</td><td class="n " data-cr="6.61">6.61</td><td class="m"><span class="sw" style="background:#172421"></span>acc-bg</td><td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</td><td class="n " data-cr="6.58">6.58</td></tr>
+<tr><td class="c">highlight mark · 强调或标题里</td><td>继承字色 ink 于 acc-bg 8%</td><td class="m"><span class="sw" style="background:#dde4df"></span>acc-bg</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="14.09">14.09</td><td class="m"><span class="sw" style="background:#172421"></span>acc-bg</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="13.08">13.08</td></tr>
+<tr><td class="c">highlight in selected row</td><td>ink 于 acc-bg 于 wash</td><td class="m"><span class="sw" style="background:#dde4df"></span>acc-bg</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="14.09">14.09</td><td class="m"><span class="sw" style="background:#172421"></span>acc-bg</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="13.08">13.08</td></tr>
+<tr><td class="c">selected row text</td><td>ink 于 wash 6%</td><td class="m"><span class="sw" style="background:#e2e1dd"></span>wash</td><td class="m"><span class="sw" style="background:#16150f"></span>ink</td><td class="n " data-cr="13.97">13.97</td><td class="m"><span class="sw" style="background:#21211e"></span>wash</td><td class="m"><span class="sw" style="background:#ebe8df"></span>ink</td><td class="n " data-cr="13.17">13.17</td></tr>
+<tr><td class="c">section rule</td><td>rule 1px 于纸</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#16150f"></span>rule</td><td class="n " data-cr="15.75">15.75</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#ebe8df"></span>rule</td><td class="n " data-cr="15.31">15.31</td></tr>
+<tr><td class="c">status dot ok / warn</td><td>ok · warn 6px 点</td><td class="m"><span class="sw" style="background:#efeeea"></span>bg</td><td class="m"><span class="sw" style="background:#8a5a08"></span>warn</td><td class="n " data-cr="5.10">5.10</td><td class="m"><span class="sw" style="background:#121210"></span>bg</td><td class="m"><span class="sw" style="background:#d9ab52"></span>warn</td><td class="n " data-cr="8.84">8.84</td></tr></tbody></table></div>
+
+<div class="sec"><h3><b>C</b>动效规范 <span>字体家族本身几乎不动；只有链接与焦点环有过渡</span></h3><table class="mx"><colgroup><col style="width:200px"><col style="width:260px"><col style="width:90px"><col style="width:220px"><col style="width:220px"><col></colgroup><thead><tr><th>元素 · 触发</th><th>变化的属性</th><th>时长</th><th>曲线</th><th>reduced-motion</th><th>备注</th></tr></thead><tbody><tr><td class="c">link · hover</td><td class="">color · text-decoration-color</td><td class="">120ms</td><td class="">cubic-bezier(.22,1,.36,1)</td><td class="">保留（颜色是理解线索）</td><td class="">只换色，不位移、不加粗</td></tr><tr><td class="c">link · focus-visible</td><td class="">box-shadow 焦点环</td><td class="">120ms</td><td class="">同上</td><td class="">保留</td><td class="">环 2px 面色 + 2px 青</td></tr><tr><td class="c">highlight mark</td><td class="">无</td><td class="">0</td><td class="">—</td><td class="">—</td><td class="">命中即出现，不闪、不渐入</td></tr><tr><td class="c">numeral 数值变化</td><td class="">无（禁止滚动计数）</td><td class="">0</td><td class="">—</td><td class="">—</td><td class="">新值直接替换；加载态用骨架，不用数字跳动</td></tr><tr><td class="c">heading · text 出现</td><td class="">opacity（随所在面板）</td><td class="">240ms</td><td class="">cubic-bezier(.22,1,.36,1)</td><td class="">保留 opacity，去位移</td><td class="">交错 20ms 由容器控制，字体本身不动</td></tr><tr><td class="c">字体加载</td><td class="">font-display swap</td><td class="">—</td><td class="">—</td><td class="">—</td><td class="">回退字体同度量级（Noto Sans SC / Noto Serif SC），避免换字跳动</td></tr></tbody></table></div>
+
+<div class="sec"><h3><b>D</b>组合样板 · 构图一 <span>账单页：页头衬线标题、指标衬线数字、区段编号标签、表格等宽编号、搜索命中与链接</span></h3><div class="two"><div class="scr gp" data-shell="ty-l">
+<svg class="grain" aria-hidden="true"><filter id="g-ty-l"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#g-ty-l)"/></svg>
+<div class="lay">
+<nav class="rail" aria-label="主导航">
+<div class="brand"><span class="mk" data-guide="rail" style="border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;color:var(--on-acc);font-family:var(--serif);font-weight:500;font-size:13px">T</span><span><b data-text="rail">TCRN 设计组</b><small>团队 · 12 人</small></span></div>
+<a class="nv" href="#home"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="home" data-guide="rail"><path vector-effect="non-scaling-stroke" d="M3 9l7-6 7 6v8h-5v-5H8v5H3z"/></svg><span class="t" data-text="rail">工作台</span></a>
+<a class="nv" href="#projects"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="layout-grid" data-guide="rail"><rect vector-effect="non-scaling-stroke" x="3" y="3" width="6" height="6" rx="1.5"/><rect vector-effect="non-scaling-stroke" x="11" y="3" width="6" height="6" rx="1.5"/><rect vector-effect="non-scaling-stroke" x="3" y="11" width="6" height="6" rx="1.5"/><rect vector-effect="non-scaling-stroke" x="11" y="11" width="6" height="6" rx="1.5"/></svg><span class="t" data-text="rail">项目</span><span class="cnt">12</span></a>
+<a class="nv" href="#library"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="book-open" data-guide="rail"><path vector-effect="non-scaling-stroke" d="M10 6.5C8.6 5.3 6.6 5 3.5 5v10c3.1 0 5.1.3 6.5 1.5 1.4-1.2 3.4-1.5 6.5-1.5V5c-3.1 0-5.1.3-6.5 1.5z"/><path vector-effect="non-scaling-stroke" d="M10 6.5v10"/></svg><span class="t" data-text="rail">资料库</span></a>
+<a class="nv on" href="#billing" aria-current="page"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="database" data-guide="rail"><ellipse vector-effect="non-scaling-stroke" cx="10" cy="5.5" rx="6.5" ry="2.5"/><path vector-effect="non-scaling-stroke" d="M3.5 5.5v9c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5v-9"/><path vector-effect="non-scaling-stroke" d="M3.5 10c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5"/></svg><span class="t" data-text="rail">账单</span></a>
+<h6>团队</h6>
+<a class="nv" href="#settings"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="settings" data-guide="rail"><circle vector-effect="non-scaling-stroke" cx="10" cy="10" r="2.5"/><path vector-effect="non-scaling-stroke" d="M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.5 1.5M13.5 13.5L15 15M15 5l-1.5 1.5M6.5 13.5L5 15"/></svg><span class="t" data-text="rail">设置</span></a>
+<div class="user"><span class="av" data-guide="rail">林</span><span><b data-text="rail">林晓</b><small>管理员</small></span></div>
+</nav>
+<div class="sheet">
+<div class="topbar">
+<div class="crumbs"><a href="#t">设计组</a><svg class="ic" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="chevron-right"><path vector-effect="non-scaling-stroke" d="M8 5l5 5-5 5"/></svg><b>账单</b></div>
+<span class="sp"></span>
+<div class="cmd" style="position:relative;display:flex;align-items:center;width:220px;height:28px;padding:0 8px 0 28px;border-radius:7px;background:var(--wash);color:var(--ink-3);font-size:12px;white-space:nowrap;overflow:hidden"><svg class="ic" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="search" style="position:absolute;left:9px"><circle vector-effect="non-scaling-stroke" cx="9" cy="9" r="5.5"/><path vector-effect="non-scaling-stroke" d="M13 13l4 4"/></svg>搜索<kbd style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3);border:1px solid var(--line-2);border-radius:4px;padding:0 4px">⌘K</kbd></div>
+<span class="av">林</span>
+</div>
+<div class="content">
+<div class="ph"><h2 class="h2" style="font-size:26px;line-height:1.1">账单</h2><span class="sub">2026 年 10 月 · 按席位计费</span><span class="act"><span class="caps" style="color:var(--ink-3)">INV-2026-10-0031</span></span></div>
+<div class="stats">
+<div class="stat"><span class="caps">本期应付</span><span class="num">4,280<small>.00 元</small></span><span class="d"><i></i>到期 10-31</span></div>
+<div class="stat"><span class="caps">席位</span><span class="num">86<small>/ 120</small></span><span class="d ok"><i></i>剩余 34 席</span></div>
+<div class="stat"><span class="caps">上期</span><span class="num">4,280<small>.00 元</small></span><span class="d"><i></i>已付 09-30</span></div>
+<div class="stat"><span class="caps">待处理</span><span class="num">2</span><span class="d warn"><i></i>1 张逾期</span></div>
+</div>
+<div class="secrule"><span class="caps"><b>01</b>账单明细</span><i></i></div>
+<table class="tbl">
+<colgroup><col style="width:330px"><col style="width:150px"><col style="width:120px"><col><col style="width:120px"></colgroup>
+<thead><tr><th>项目</th><th>编号</th><th>席位</th><th>状态</th><th class="r">金额</th></tr></thead>
+<tbody>
+<tr><td><b style="color:var(--ink);font-weight:600">TCRN <mark class="hl">设计</mark>系统 · 组件库</b></td><td class="mono">PRJ-2026-0412</td><td>24</td><td><span class="st ok"><i></i>已结算</span></td><td class="r"><span class="num inl" style="font-size:14px">1,200<small>.00</small></span></td></tr>
+<tr class="sel"><td><b style="color:var(--ink);font-weight:600">季度复盘 · <mark class="hl">设计</mark>评审</b></td><td class="mono">PRJ-2026-0391</td><td>12</td><td><span class="st warn"><i></i>待确认</span></td><td class="r"><span class="num inl" style="font-size:14px">600<small>.00</small></span></td></tr>
+<tr><td><b style="color:var(--ink);font-weight:600">产品发布 · 十月</b></td><td class="mono">PRJ-2026-0377</td><td>30</td><td><span class="st ok"><i></i>已结算</span></td><td class="r"><span class="num inl" style="font-size:14px">1,500<small>.00</small></span></td></tr>
+<tr><td><b style="color:var(--ink);font-weight:600">招聘 · 秋季</b></td><td class="mono">PRJ-2026-0360</td><td>20</td><td><span class="st bad"><i></i>逾期</span></td><td class="r"><span class="num inl" style="font-size:14px">980<small>.00</small></span></td></tr>
+</tbody></table>
+<p class="tx meta">按席位计费，每月 1 日生成；年付在当期账单中一次扣除。查看 <a class="lnk" href="#h">计费说明</a> 或 <a class="lnk" href="#i">下载发票</a>。</p>
+</div>
+</div>
+</div>
+</div><div class="scr gp night" data-shell="ty-n">
+<svg class="grain" aria-hidden="true"><filter id="g-ty-n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#g-ty-n)"/></svg>
+<div class="lay">
+<nav class="rail" aria-label="主导航">
+<div class="brand"><span class="mk" data-guide="rail" style="border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;color:var(--on-acc);font-family:var(--serif);font-weight:500;font-size:13px">T</span><span><b data-text="rail">TCRN 设计组</b><small>团队 · 12 人</small></span></div>
+<a class="nv" href="#home"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="home" data-guide="rail"><path vector-effect="non-scaling-stroke" d="M3 9l7-6 7 6v8h-5v-5H8v5H3z"/></svg><span class="t" data-text="rail">工作台</span></a>
+<a class="nv" href="#projects"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="layout-grid" data-guide="rail"><rect vector-effect="non-scaling-stroke" x="3" y="3" width="6" height="6" rx="1.5"/><rect vector-effect="non-scaling-stroke" x="11" y="3" width="6" height="6" rx="1.5"/><rect vector-effect="non-scaling-stroke" x="3" y="11" width="6" height="6" rx="1.5"/><rect vector-effect="non-scaling-stroke" x="11" y="11" width="6" height="6" rx="1.5"/></svg><span class="t" data-text="rail">项目</span><span class="cnt">12</span></a>
+<a class="nv" href="#library"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="book-open" data-guide="rail"><path vector-effect="non-scaling-stroke" d="M10 6.5C8.6 5.3 6.6 5 3.5 5v10c3.1 0 5.1.3 6.5 1.5 1.4-1.2 3.4-1.5 6.5-1.5V5c-3.1 0-5.1.3-6.5 1.5z"/><path vector-effect="non-scaling-stroke" d="M10 6.5v10"/></svg><span class="t" data-text="rail">资料库</span></a>
+<a class="nv on" href="#billing" aria-current="page"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="database" data-guide="rail"><ellipse vector-effect="non-scaling-stroke" cx="10" cy="5.5" rx="6.5" ry="2.5"/><path vector-effect="non-scaling-stroke" d="M3.5 5.5v9c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5v-9"/><path vector-effect="non-scaling-stroke" d="M3.5 10c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5"/></svg><span class="t" data-text="rail">账单</span></a>
+<h6>团队</h6>
+<a class="nv" href="#settings"><svg class="ic" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="settings" data-guide="rail"><circle vector-effect="non-scaling-stroke" cx="10" cy="10" r="2.5"/><path vector-effect="non-scaling-stroke" d="M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.5 1.5M13.5 13.5L15 15M15 5l-1.5 1.5M6.5 13.5L5 15"/></svg><span class="t" data-text="rail">设置</span></a>
+<div class="user"><span class="av" data-guide="rail">林</span><span><b data-text="rail">林晓</b><small>管理员</small></span></div>
+</nav>
+<div class="sheet">
+<div class="topbar">
+<div class="crumbs"><a href="#t">设计组</a><svg class="ic" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="chevron-right"><path vector-effect="non-scaling-stroke" d="M8 5l5 5-5 5"/></svg><b>账单</b></div>
+<span class="sp"></span>
+<div class="cmd" style="position:relative;display:flex;align-items:center;width:220px;height:28px;padding:0 8px 0 28px;border-radius:7px;background:var(--wash);color:var(--ink-3);font-size:12px;white-space:nowrap;overflow:hidden"><svg class="ic" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon="search" style="position:absolute;left:9px"><circle vector-effect="non-scaling-stroke" cx="9" cy="9" r="5.5"/><path vector-effect="non-scaling-stroke" d="M13 13l4 4"/></svg>搜索<kbd style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3);border:1px solid var(--line-2);border-radius:4px;padding:0 4px">⌘K</kbd></div>
+<span class="av">林</span>
+</div>
+<div class="content">
+<div class="ph"><h2 class="h2" style="font-size:26px;line-height:1.1">账单</h2><span class="sub">2026 年 10 月 · 按席位计费</span><span class="act"><span class="caps" style="color:var(--ink-3)">INV-2026-10-0031</span></span></div>
+<div class="stats">
+<div class="stat"><span class="caps">本期应付</span><span class="num">4,280<small>.00 元</small></span><span class="d"><i></i>到期 10-31</span></div>
+<div class="stat"><span class="caps">席位</span><span class="num">86<small>/ 120</small></span><span class="d ok"><i></i>剩余 34 席</span></div>
+<div class="stat"><span class="caps">上期</span><span class="num">4,280<small>.00 元</small></span><span class="d"><i></i>已付 09-30</span></div>
+<div class="stat"><span class="caps">待处理</span><span class="num">2</span><span class="d warn"><i></i>1 张逾期</span></div>
+</div>
+<div class="secrule"><span class="caps"><b>01</b>账单明细</span><i></i></div>
+<table class="tbl">
+<colgroup><col style="width:330px"><col style="width:150px"><col style="width:120px"><col><col style="width:120px"></colgroup>
+<thead><tr><th>项目</th><th>编号</th><th>席位</th><th>状态</th><th class="r">金额</th></tr></thead>
+<tbody>
+<tr><td><b style="color:var(--ink);font-weight:600">TCRN <mark class="hl">设计</mark>系统 · 组件库</b></td><td class="mono">PRJ-2026-0412</td><td>24</td><td><span class="st ok"><i></i>已结算</span></td><td class="r"><span class="num inl" style="font-size:14px">1,200<small>.00</small></span></td></tr>
+<tr class="sel"><td><b style="color:var(--ink);font-weight:600">季度复盘 · <mark class="hl">设计</mark>评审</b></td><td class="mono">PRJ-2026-0391</td><td>12</td><td><span class="st warn"><i></i>待确认</span></td><td class="r"><span class="num inl" style="font-size:14px">600<small>.00</small></span></td></tr>
+<tr><td><b style="color:var(--ink);font-weight:600">产品发布 · 十月</b></td><td class="mono">PRJ-2026-0377</td><td>30</td><td><span class="st ok"><i></i>已结算</span></td><td class="r"><span class="num inl" style="font-size:14px">1,500<small>.00</small></span></td></tr>
+<tr><td><b style="color:var(--ink);font-weight:600">招聘 · 秋季</b></td><td class="mono">PRJ-2026-0360</td><td>20</td><td><span class="st bad"><i></i>逾期</span></td><td class="r"><span class="num inl" style="font-size:14px">980<small>.00</small></span></td></tr>
+</tbody></table>
+<p class="tx meta">按席位计费，每月 1 日生成；年付在当期账单中一次扣除。查看 <a class="lnk" href="#h">计费说明</a> 或 <a class="lnk" href="#i">下载发票</a>。</p>
+</div>
+</div>
+</div>
+</div></div></div>
+
+<div class="sec"><h3><b>E</b>消费方须提供什么 · 何时用与不用 <span>每件一句话摘要在前</span></h3><div class="cols3">
+<div class="box"><h4>Heading <small>level 1–4 · visualLevel 1–4</small></h4><p class="lead">一句话：标签级别由 <code>level</code> 定，外观由 <code>visualLevel</code> 定，1 至 3 级衬线 400、4 级怪诞体 600，一律单行截断。</p><ul><li><b>须提供</b>：文本 children；<code>level</code>（默认 2）；需要和文档结构不同的外观时给 <code>visualLevel</code>。</li><li><b>容器</b>：由页头、区段、卡片提供宽度；标题自己不折行，装不下截断加 title（C7）。</li><li><b>用</b>：页标题 h1/2、区段 h3、卡片与设置行 h4。</li><li><b>不用</b>：表头与指标标签（用 caps 样式）；按钮与导航项文字。</li></ul></div>
+<div class="box"><h4>Text <small>size body | reading | meta | caption · tone default | strong · variant numeral | caps</small></h4><p class="lead">一句话：段落文本，13/20 次墨为默认；强调只加字重不换色，说明文字用三级墨。</p><ul><li><b>须提供</b>：children；可选 <code>size</code>、<code>tone</code>、<code>variant</code>（现包只有一个 <code>Text</code> 类；三个 prop 为本批新增，Owner 2026-10-11 定，默认值不变）。</li><li><b>容器</b>：可折行，由父级定宽；表格单元内不用 Text，用单元自身样式。</li><li><b>用</b>：说明、帮助、空状态、通知正文。</li><li><b>不用</b>：标题、标签、编号。</li></ul></div>
+<div class="box"><h4>Highlight <small>text · query · caseSensitive · markClassName</small></h4><p class="lead">一句话：把 <code>query</code> 在 <code>text</code> 里的命中包成 mark，只加 8% 青洗底；字重、字距、字号、内距全部不变，命中前后的排版与未命中时逐像素相同。</p><ul><li><b>须提供</b>：<code>text</code> 字符串与 <code>query</code>；query 为空时原样输出。</li><li><b>容器</b>：行内；在选中行与表格单元里同一规则，不另配色。</li><li><b>用</b>：搜索结果、过滤命中、命令面板。</li><li><b>不用</b>：强调语气（用 strong）；状态（用点加字）。</li></ul></div>
+<div class="box"><h4>numeral <small>新样式 · Text 的 variant 值（已定）</small></h4><p class="lead">一句话：数字用 Source Serif 4 300 等宽数字，单位进 <code>small</code> 槽缩小拉距；只给指标与金额。</p><ul><li><b>须提供</b>：数值文本；单位放在 unit 槽；行内用 inl（16/20 400）。</li><li><b>用</b>：指标、金额、席位、计数。</li><li><b>不用</b>：编号与时间（mono）、表格里的普通数字（正文）。</li></ul></div>
+<div class="box"><h4>caps <small>新样式 · Text 的 variant 值（已定）</small></h4><p class="lead">一句话：11/16 500、字距 .14em、三级墨；区段编号前缀用等宽。</p><ul><li><b>须提供</b>：短标签文本；可选编号前缀。</li><li><b>用</b>：区段标题、表头、指标标签、页头副标。</li><li><b>不用</b>：可点击元素的文字；超过四个词的句子。</li></ul></div>
+<div class="box"><h4>mono <small>编号 · 现有 --tcrn-type-family-mono 换字体</small></h4><p class="lead">一句话：IBM Plex Mono 11.5/16 次墨，只给机器可读的值。</p><ul><li><b>用</b>：ID、邮箱、时间戳、快捷键、哈希。</li><li><b>不用</b>：任何给人读的句子。</li></ul></div>
+</div></div>
+
+<div class="sec"><h3><b>F</b>与 G+ 底盘的 token 差异 <span>现值取自 packages/ui-tokens/src/tokens.css</span></h3><table class="mx"><colgroup><col style="width:280px"><col style="width:420px"><col style="width:380px"><col></colgroup><thead><tr><th>Token</th><th>现值（@tcrn/ui-tokens 3.0.0）</th><th>G+ 值</th><th>说明</th></tr></thead><tbody><tr><td class="c">type.family.ui</td><td class="">Inter, Avenir Next, Helvetica Neue, Arial</td><td class="">Hanken Grotesk, Noto Sans SC</td><td class="">正文与控件；中文回退 Noto Sans SC</td></tr><tr><td class="c">type.family.heading（新）</td><td class="">无，继承 ui</td><td class="">Source Serif 4, Noto Serif SC</td><td class="">1 至 3 级标题与数字</td></tr><tr><td class="c">type.family.mono</td><td class="">SFMono-Regular, Consolas, Liberation Mono, Menlo</td><td class="">IBM Plex Mono</td><td class="">编号</td></tr><tr><td class="c">type.family.stamp</td><td class="">Source Serif 4, Songti SC, Noto Serif CJK SC</td><td class="">不变</td><td class="">印章沿用</td></tr><tr><td class="c">type.size.page / heading-2 / heading-3</td><td class="">28 / 22 / 16</td><td class="">36 / 26 / 20</td><td class="">h1 不再用 clamp(28, 3vw, 44)，产品页固定 36</td></tr><tr><td class="c">type.size.ui · body · control</td><td class="">13</td><td class="">13</td><td class="">不变；行高改 20px</td></tr><tr><td class="c">type.line.ui</td><td class="">1.35</td><td class="">20px（1.54）</td><td class="">正文行距放松到 20</td></tr><tr><td class="c">type.size.reading / line</td><td class="">14 / 1.45</td><td class="">14 / 22px</td><td class="">阅读体</td></tr><tr><td class="c">type.size.meta / caption</td><td class="">12 / 11</td><td class="">12/16 · 11/16</td><td class="">不变，行高定为 16</td></tr><tr><td class="c">type.weight.medium</td><td class="">600</td><td class="">500（标签）· 600（强调）</td><td class="">两档拆开；caps 与控件文字 500</td></tr><tr><td class="c">type.tracking.caps（新）</td><td class="">无</td><td class="">.14em</td><td class="">小型大写标签</td></tr><tr><td class="c">font-variant-numeric（新）</td><td class="">无</td><td class="">tabular-nums 全局</td><td class="">数字对齐</td></tr><tr><td class="c">color.text.primary / secondary / muted</td><td class="">#1c1d21 / #55575e / #8a8c93</td><td class="">#16150f / #4f4c43 / #6b675d</td><td class="">muted 现值在白底 3.44，不达 4.5；G+ 三级墨 5.64</td></tr><tr><td class="c">color.brand.primary（链接）</td><td class="">#17707f</td><td class="">#0b6b65（夜间 #3fc7b7）</td><td class="">链接下划线 70% 不透明</td></tr><tr><td class="c">highlight mark</td><td class="">brand-primary-bg #e6f1f3 · r 4 · 600 · padding 0 2</td><td class="">acc-bg 8% · r 2 · 字重与内距不变 · 2px box-shadow 晕</td><td class="">命中不改排版</td></tr><tr><td class="c">selection-fill</td><td class="">rgba(28,29,33,.06)</td><td class="">rgba(22,21,15,.06)</td><td class="">数值同为 6%，底色随墨换</td></tr></tbody></table></div>
+
+<div class="sec"><h3><b>G</b>许可与分发 <span>字体、图标、品牌标各自能不能商用、能不能打进包</span></h3><table class="mx"><colgroup><col style="width:220px"><col style="width:300px"><col style="width:180px"><col style="width:300px"><col></colgroup><thead><tr><th>资源</th><th>来源与版权方</th><th>许可证</th><th>商用 · 嵌入网页与应用 · 打进 @tcrn/ui 分发</th><th>义务与限制</th></tr></thead><tbody><tr><td class="c">Hanken Grotesk</td><td class="">Hanken Design Co.（Google Fonts 收录）</td><td class="">SIL Open Font License 1.1</td><td class="">全部允许</td><td class="">分发时附 OFL 许可文本与版权声明；不得把字体文件单独出售；修改后不得再用保留字体名</td></tr><tr><td class="c">Source Serif 4</td><td class="">Adobe（Frank Grießhammer），GitHub adobe-fonts/source-serif</td><td class="">SIL OFL 1.1</td><td class="">全部允许</td><td class="">同上</td></tr><tr><td class="c">IBM Plex Mono</td><td class="">IBM，GitHub IBM/plex</td><td class="">SIL OFL 1.1</td><td class="">全部允许</td><td class="">同上</td></tr><tr><td class="c">Noto Sans SC · Noto Serif SC</td><td class="">Google（Noto 项目）</td><td class="">SIL OFL 1.1</td><td class="">全部允许；体积大，按产品用字子集化</td><td class="">同上</td></tr><tr><td class="c">Google Fonts css2 链接</td><td class="">Google</td><td class="">服务条款</td><td class="">画板预览用；产品不依赖</td><td class="">fonts.googleapis.com 在中国大陆不可靠，产品必须自托管 woff2（OFL 允许），不走 CDN</td></tr><tr><td class="c">图标 37 件</td><td class="">本批自绘（20 格 1.25px）</td><td class="">随 TCRN-Design-System 仓库许可</td><td class="">—</td><td class="">不再依赖 lucide-react（ISC）；无第三方义务</td></tr><tr><td class="c">品牌标 tcrn-brand-mark.svg</td><td class="">TCRN 自有资产</td><td class="">内部</td><td class="">—</td><td class="">Owner 另行重设计；重设计前资产只复制不重绘</td></tr></tbody></table></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2640,"height":5840}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

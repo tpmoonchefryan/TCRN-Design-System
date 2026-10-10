@@ -1,0 +1,155 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-10T02:00:00Z"
+  },
+  "title": "DS 视觉方向方案",
+  "launch": {
+    "view": "canvas",
+    "page": "v2"
+  },
+  "pages": [
+    {
+      "id": "v2",
+      "name": "设计正本 · G+ 底盘与第一批组件"
+    }
+  ],
+  "boards": {
+    "V2-Rejections.dc.html": {
+      "x": 13600,
+      "y": 3340,
+      "w": 1480,
+      "h": 3700,
+      "title": "打回根因总账 · 契约条款草案",
+      "page": "v2"
+    },
+    "V2-GPlus.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 2640,
+      "h": 1640,
+      "title": "G+ · 以 G 为底盘的高级感版",
+      "page": "v2"
+    },
+    "V2-GPlus-Compositions.dc.html": {
+      "x": 0,
+      "y": 1760,
+      "w": 2640,
+      "h": 1180,
+      "title": "G+ · 两种页面构图（一、三并用；二已作废移除）",
+      "page": "v2"
+    },
+    "V2-Families.dc.html": {
+      "x": 2720,
+      "y": 0,
+      "w": 1480,
+      "h": 2000,
+      "title": "组件家族清单 · 16 个家族 125 件",
+      "page": "v2"
+    },
+    "V2-B1-Typography.dc.html": {
+      "x": 0,
+      "y": 3340,
+      "w": 2640,
+      "h": 5840,
+      "title": "第一批 01 · 字体 Typography",
+      "page": "v2"
+    },
+    "V2-B1-Icon.dc.html": {
+      "x": 2720,
+      "y": 3340,
+      "w": 2640,
+      "h": 4280,
+      "title": "第一批 02 · 图标 Icon",
+      "page": "v2"
+    },
+    "V2-B1-Brand.dc.html": {
+      "x": 5440,
+      "y": 3340,
+      "w": 2640,
+      "h": 4000,
+      "title": "第一批 03 · 品牌 Brand",
+      "page": "v2"
+    },
+    "V2-B1-Actions.dc.html": {
+      "x": 8160,
+      "y": 3340,
+      "w": 2640,
+      "h": 5220,
+      "title": "第一批 04 · 动作 Actions",
+      "page": "v2"
+    },
+    "V2-B1-Inputs.dc.html": {
+      "x": 10880,
+      "y": 3340,
+      "w": 2640,
+      "h": 6540,
+      "title": "第一批 05 · 表单控件 Inputs",
+      "page": "v2"
+    },
+    "V2-B2-Logos-Draft.dc.html": {
+      "x": 0,
+      "y": 10260,
+      "w": 2640,
+      "h": 3380,
+      "title": "第二批前置 · 四枚产品标（Owner 2026-10-11 通过）",
+      "page": "v2"
+    }
+  },
+  "order": [
+    "V2-GPlus.dc.html",
+    "V2-Families.dc.html",
+    "V2-GPlus-Compositions.dc.html",
+    "V2-B1-Typography.dc.html",
+    "V2-B1-Icon.dc.html",
+    "V2-B1-Brand.dc.html",
+    "V2-B1-Actions.dc.html",
+    "V2-B1-Inputs.dc.html",
+    "V2-Rejections.dc.html",
+    "V2-B2-Logos-Draft.dc.html"
+  ],
+  "notes": {
+    "v2-row6": {
+      "x": 0,
+      "y": -280,
+      "text": "G+ 底盘（浅色与夜间）· 右侧：组件家族清单",
+      "kind": "title1",
+      "maxW": 4200,
+      "page": "v2"
+    },
+    "v2-row7": {
+      "x": 0,
+      "y": 1480,
+      "text": "G+ · 两种页面构图（一、三）",
+      "kind": "title1",
+      "maxW": 2640,
+      "page": "v2"
+    },
+    "v2-guide": {
+      "x": 4280,
+      "y": 0,
+      "w": 640,
+      "text": "导读（2026-10-11）\n\n本页是设计正本：G+ 底盘（左上，浅色与夜间）、两种页面构图（一与三并用）、组件家族清单，以及第一批五个家族 23 件的画板。\n\n每块第一批画板六段：A 组件全态（浅色 / 夜间同一规则只换 token）、B 状态矩阵（fill 与 ink 成对，脚本算对比度）、C 动效、D 构图一样板、E 消费方契约、F 与 G+ 的 token 差异；字体板另有 G 许可与分发。\n\n发布前每块板都经真实渲染与 DOM 测量：无溢出、单行不折、阴影模糊 ≤ 3px、引导列 16 / 48、选中行与各行左对齐、每格对比度与矩阵表一致。\n\n最右是打回根因总账与契约条款草案 C1 至 C17。v1 方向板与 v2 三方向板已按 Owner 2026-10-11 裁定删除；品牌标待 Owner 另行重设计。",
+      "fill": "teal",
+      "page": "v2"
+    },
+    "v2-row8": {
+      "x": 0,
+      "y": 3060,
+      "text": "第一批 · 字体 图标 品牌 动作 表单控件 · 五项裁定已写入（2026-10-11）· 最右：打回根因总账",
+      "kind": "title1",
+      "maxW": 15080,
+      "page": "v2"
+    },
+    "v2-row9": {
+      "x": 0,
+      "y": 9980,
+      "text": "第二批前置 · 四枚产品标（已通过）：TCRN TMS（艺人管理系统）· Einzbern · Mana Orchestrate · TCRN Design System",
+      "kind": "title1",
+      "maxW": 2640,
+      "page": "v2"
+    }
+  },
+  "designSystems": []
+}

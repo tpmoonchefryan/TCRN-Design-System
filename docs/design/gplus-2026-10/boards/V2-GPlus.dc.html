@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>G+ · 高级感版</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500;600&amp;family=Noto+Serif+SC:wght@300;400&amp;display=swap">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.board{width:2640px;height:1640px;padding:48px;display:grid;grid-template-rows:150px 640px minmax(0,1fr);row-gap:36px;background:#efeeea;color:#16150f;font-family:"Hanken Grotesk","Noto Sans SC",system-ui,sans-serif;font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums}
+.bh{display:grid;grid-template-columns:1400px minmax(0,1fr);column-gap:48px;align-items:end;padding-bottom:22px;border-bottom:1px solid rgba(22,21,15,.16)}
+.bh .k{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b675d;font-weight:500}
+.bh h1{margin:6px 0 0;font-family:"Source Serif 4","Noto Serif SC",Georgia,serif;font-size:44px;line-height:1.05;font-weight:400;letter-spacing:-.01em}
+.bh h1 em{font-style:normal;color:#8e2d24}
+.bh p{margin:0;font-size:14px;color:#4f4c43;line-height:1.6;max-width:1100px}
+.bh .meta{font-size:12px;color:#6b675d;line-height:1.6;text-align:right}
+.bh .meta b{display:block;color:#16150f;font-weight:500}
+.screens{display:grid;grid-template-columns:1240px 1240px;column-gap:48px}
+.gp{--bg:#efeeea;--bg-2:#e7e5df;--panel:#ffffff;--panel-2:#f8f7f3;--glass:rgba(255,255,255,.78);--blur:blur(20px) saturate(1.3);--line:rgba(22,21,15,.09);--line-2:rgba(22,21,15,.16);--line-ctl:rgba(22,21,15,.47);--rule:#16150f;--edge:inset 0 0 0 1px rgba(255,255,255,.8);--ink:#16150f;--ink-2:#4f4c43;--ink-3:#6b675d;--acc:#0b6b65;--acc-2:#0a5f5a;--acc-bg:rgba(11,107,101,.08);--on-acc:#ffffff;--red:#8e2d24;--ok:#2f6b3a;--warn:#8a5a08;--bad:#a8321f;--wash:rgba(22,21,15,.06);--hover:rgba(22,21,15,.035);--s1:0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07);--s2:0 1px 2px rgba(22,21,15,.05),0 2px 3px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.08);--s3:0 2px 3px rgba(22,21,15,.06),0 3px 3px rgba(22,21,15,.06),0 0 0 1px rgba(22,21,15,.10);--focus:0 0 0 2px #efeeea,0 0 0 4px #0b6b65;--grain:.035;--blend:multiply;--chrome:rgba(239,238,234,.82);--serif:"Source Serif 4","Noto Serif SC",Georgia,serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--av-bg:#e7e5df;--av-ink:#16150f}
+.gp.night{--bg:#121210;--bg-2:#0d0d0b;--panel:#191916;--panel-2:#1f1f1b;--glass:rgba(25,25,22,.74);--line:rgba(255,255,255,.07);--line-2:rgba(255,255,255,.13);--line-ctl:rgba(255,255,255,.36);--rule:#ebe8df;--edge:inset 0 1px 0 rgba(255,255,255,.06);--ink:#ebe8df;--ink-2:#a9a69c;--ink-3:#85827a;--acc:#3fc7b7;--acc-2:#5ad3c5;--acc-bg:rgba(63,199,183,.10);--on-acc:#07211e;--red:#d98d82;--ok:#6fcf97;--warn:#d9ab52;--bad:#e5897b;--wash:rgba(235,232,223,.07);--hover:rgba(235,232,223,.04);--s1:0 1px 1px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.06);--s2:0 1px 2px rgba(0,0,0,.35),0 2px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.07);--s3:0 2px 3px rgba(0,0,0,.4),0 3px 3px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.09);--focus:0 0 0 2px #121210,0 0 0 4px #3fc7b7;--grain:.06;--blend:screen;--chrome:rgba(18,18,16,.82);--av-bg:#2a2a26;--av-ink:#ebe8df}
+.scr{position:relative;width:1240px;height:640px;overflow:hidden;display:grid;grid-template-columns:212px minmax(0,1fr);background:var(--bg);color:var(--ink);border-radius:14px;box-shadow:var(--s1);font-size:13px;line-height:1.5}
+.scr > .rail,.scr > .main{position:relative;z-index:1}
+.scr > .grain{position:absolute;left:0;top:0;width:100%;height:100%;opacity:var(--grain);mix-blend-mode:var(--blend);pointer-events:none;z-index:0}
+.tag{position:absolute;top:18px;right:22px;z-index:3;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.rail{display:flex;flex-direction:column;gap:2px;padding:14px 12px 12px;border-right:1px solid var(--line)}
+.brand{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:center;padding:2px 4px 14px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.brand .mk{width:22px;height:22px;border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;color:var(--on-acc);font-family:var(--serif);font-weight:500;font-size:13px}
+.brand b{display:block;font-size:12.5px;font-weight:600;line-height:1.2;letter-spacing:.01em}
+.brand small{display:block;font-size:10.5px;color:var(--ink-3);letter-spacing:.04em}
+.nv{display:grid;grid-template-columns:22px minmax(0,1fr) auto;column-gap:10px;align-items:center;height:32px;padding:0 6px 0 4px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-size:12.5px;font-weight:500;white-space:nowrap}
+.nv svg{width:22px;height:22px;padding:3px;color:var(--ink-3)}
+.nv:hover{background:var(--hover);color:var(--ink)}
+.nv.on{background:var(--panel);color:var(--ink);box-shadow:var(--s1)}
+.nv.on svg{color:var(--ink)}
+.nv .cnt{justify-self:end;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.rail h6{margin:12px 0 4px 4px;padding:0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.rail .user{margin-top:auto;padding:12px 4px 2px;border-top:1px solid var(--line);display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:center}
+.rail .user .av{width:22px;height:22px;font-size:10px}
+.av{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:500;background:var(--av-bg);color:var(--av-ink);flex:0 0 auto;box-shadow:inset 0 0 0 1px var(--line)}
+.rail .user b{display:block;font-size:12px;font-weight:600;line-height:1.2}
+.rail .user small{display:block;font-size:10.5px;color:var(--ink-3)}
+.main{display:flex;flex-direction:column;gap:0;min-width:0}
+.topbar{display:flex;align-items:center;gap:12px;height:48px;padding:0 36px;border-bottom:1px solid var(--line);background:var(--chrome);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);flex:0 0 auto}
+.crumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);white-space:nowrap;flex:0 0 auto}
+.crumbs a{color:var(--ink-2);text-decoration:none}
+.crumbs b{color:var(--ink);font-weight:600}
+.crumbs svg{width:11px;height:11px}
+.sp{flex:1 1 auto;min-width:0}
+.cmd{position:relative;display:flex;align-items:center;width:220px;min-width:140px;flex:0 1 220px;height:28px;padding:0 8px 0 28px;border-radius:7px;background:var(--wash);color:var(--ink-3);font-size:12px;white-space:nowrap;overflow:hidden}
+.cmd svg{position:absolute;left:9px;width:13px;height:13px}
+.cmd kbd{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3);border:1px solid var(--line-2);border-radius:4px;padding:0 4px}
+.ib{position:relative;width:28px;height:28px;border-radius:7px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+.ib:hover{background:var(--hover);color:var(--ink)}
+.ib svg{width:15px;height:15px}
+.ib i{position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px var(--panel)}
+.page{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;margin:14px 16px 16px;padding:18px 20px 14px;background:var(--panel);border-radius:12px;box-shadow:var(--s1);overflow:hidden}
+.ph{display:flex;align-items:flex-end;gap:14px;padding-bottom:12px;border-bottom:1px solid var(--line-2)}
+.ph h2{margin:0;font-family:var(--serif);font-size:26px;line-height:1.1;font-weight:400;letter-spacing:-.005em;white-space:nowrap}
+.ph .sub{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;white-space:nowrap;padding-bottom:4px}
+.ph .act{margin-left:auto;display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.btn{height:30px;padding:0 13px;border:0;border-radius:8px;background:var(--panel);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl)}
+.btn:hover{background:var(--panel-2)}
+.btn.pri{background:var(--acc);color:var(--on-acc);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 0 0 1px rgba(0,0,0,.04)}
+.btn.pri:hover{background:var(--acc-2);color:var(--on-acc)}
+.btn.quiet{background:transparent;box-shadow:none;color:var(--ink-2)}
+.btn.quiet:hover{background:var(--hover);color:var(--ink)}
+.btn svg{width:13px;height:13px}
+.stamp{display:inline-flex;align-items:center;gap:8px;padding:5px 10px;border:1px solid var(--red);border-radius:3px;color:var(--red);font-family:var(--serif);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:1.2;white-space:nowrap}
+.stamp i{width:5px;height:5px;border-radius:50%;background:currentColor}
+.stats{display:flex;align-items:stretch;gap:0;border-bottom:1px solid var(--line)}
+.stat{flex:1;display:flex;flex-direction:column;gap:2px;padding:4px 18px 12px 0;border-right:1px solid var(--line);margin-right:18px}
+.stat:last-child{border-right:0;margin-right:0}
+.stat .l{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.stat .v{font-family:var(--serif);font-size:26px;line-height:1.15;font-weight:300;letter-spacing:-.01em;display:flex;align-items:baseline;gap:6px}
+.stat .v small{font-family:"Hanken Grotesk","Noto Sans SC",sans-serif;font-size:11px;color:var(--ink-3);letter-spacing:.06em;font-weight:500}
+.stat .d{font-size:11.5px;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.stat .d i{width:5px;height:5px;border-radius:50%;background:currentColor}
+.stat .d.ok{color:var(--ok)}.stat .d.warn{color:var(--warn)}
+.tabs{display:flex;gap:18px;border-bottom:1px solid var(--line)}
+.tabs a{position:relative;padding:4px 0 9px;font-size:12.5px;color:var(--ink-3);text-decoration:none;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.tabs a.on{color:var(--ink);font-weight:600}
+.tabs a.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--rule)}
+.tabs .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+table{width:calc(100% + 16px);margin:0 -8px;border-collapse:collapse;table-layout:fixed;font-size:12.5px}
+th{height:30px;text-align:left;padding:0 10px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--line-2);white-space:nowrap}
+th:first-child,td:first-child{padding-left:8px}
+th:last-child,td:last-child{padding-right:8px}
+th.r,td.r{text-align:right}
+td{height:38px;padding:0 10px;border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;color:var(--ink-2)}
+tr.sel td{background:var(--wash);color:var(--ink)}
+tr.sel td:first-child{border-radius:6px 0 0 6px}
+tr.sel td:last-child{border-radius:0 6px 6px 0}
+tr:hover td{background:var(--hover)}
+tr.sel:hover td{background:var(--wash)}
+.who{display:flex;align-items:center;gap:9px;min-width:0}
+.who b{font-weight:600;color:var(--ink);display:block;line-height:1.2;font-size:12.5px}
+.who small{display:block;font-size:10.5px;color:var(--ink-3);font-family:var(--mono)}
+.st{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);white-space:nowrap}
+.st i{width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 auto}
+.st.ok{color:var(--ok)}.st.warn{color:var(--warn)}.st.bad{color:var(--bad)}
+.chip{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:4px;font-size:11px;font-weight:500;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-2);white-space:nowrap}
+.mono{font-family:var(--mono);font-size:11.5px}
+.tfoot{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:11px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;font-weight:500}
+.toast{position:absolute;right:22px;bottom:22px;z-index:4;display:flex;align-items:center;gap:10px;width:300px;padding:10px 12px;border-radius:10px;font-size:12.5px;background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--edge),var(--s3);color:var(--ink)}
+.toast svg{width:15px;height:15px;color:var(--ok);flex:0 0 auto}
+.toast b{display:block;font-weight:600}
+.toast small{display:block;font-size:11px;color:var(--ink-3)}
+.toast .btn{margin-left:auto;height:26px;padding:0 9px;font-size:12px}
+.bottom{display:grid;grid-template-columns:1640px minmax(0,1fr);column-gap:48px;min-height:0}
+.bottom h3{margin:0 0 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b675d;font-weight:500;padding-bottom:8px;border-bottom:1px solid rgba(22,21,15,.16)}
+.devices{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:1fr 1fr;gap:14px}
+.dv{position:relative;background:#ffffff;border-radius:12px;box-shadow:0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07);padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden}
+.dv .n{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10.5px;color:#6b675d;letter-spacing:.06em}
+.dv h5{margin:0;font-size:12.5px;font-weight:600}
+.dv p{margin:0;font-size:11.5px;color:#4f4c43;line-height:1.45}
+.dv .ex{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;min-height:64px;border-radius:8px;background:#f8f7f3;position:relative;overflow:hidden}
+.ex .serif{font-family:"Source Serif 4","Noto Serif SC",Georgia,serif;font-size:24px;font-weight:300;letter-spacing:-.005em;line-height:1}
+.ex .grot{font-size:12px;color:#4f4c43}
+.ex .num{font-family:"Source Serif 4","Noto Serif SC",Georgia,serif;font-size:30px;font-weight:300;letter-spacing:-.01em;line-height:1}
+.ex .num small{font-family:"Hanken Grotesk",sans-serif;font-size:10px;letter-spacing:.1em;color:#6b675d;margin-left:4px}
+.ex .sec{display:flex;align-items:center;gap:10px;width:100%;padding:0 14px}
+.ex .sec i{flex:1;height:1px;background:#16150f}
+.ex .sec span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#6b675d;font-weight:500;white-space:nowrap}
+.ex .sec span b{color:#16150f;font-family:"IBM Plex Mono",monospace;font-weight:500;margin-right:8px}
+.ex .sq{width:64px;height:48px;border-radius:8px;background:#efeeea;position:relative;overflow:hidden;box-shadow:0 0 0 1px rgba(22,21,15,.08)}
+.ex .sq svg{position:absolute;inset:0;width:100%;height:100%;opacity:.12;mix-blend-mode:multiply}
+.ex .sq small{position:absolute;left:6px;bottom:4px;font-size:9.5px;color:#6b675d;letter-spacing:.06em}
+.ex .ico{width:34px;height:34px;border-radius:8px;background:#ffffff;box-shadow:0 0 0 1px rgba(22,21,15,.08);display:flex;align-items:center;justify-content:center}
+.ex .ico svg{width:18px;height:18px;color:#4f4c43}
+.ex .sh{width:54px;height:40px;border-radius:8px;background:#ffffff}
+.ex .sh.a{box-shadow:0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07)}
+.ex .sh.b{box-shadow:0 1px 2px rgba(22,21,15,.05),0 2px 3px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.08)}
+.ex .sh.c{box-shadow:0 2px 3px rgba(22,21,15,.06),0 3px 3px rgba(22,21,15,.06),0 0 0 1px rgba(22,21,15,.10)}
+.ex .rows{width:100%;padding:0 12px;display:flex;flex-direction:column;gap:2px}
+.ex .rows span{display:flex;align-items:center;height:26px;padding:0 10px;border-radius:6px;font-size:12px;color:#4f4c43}
+.ex .rows span.on{background:rgba(22,21,15,.06);color:#16150f;font-weight:600}
+.ex .glass{position:relative;width:150px;height:44px;border-radius:9px;background:rgba(255,255,255,.78);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);box-shadow:inset 0 0 0 1px rgba(255,255,255,.8),0 0 0 1px rgba(22,21,15,.09),0 1px 1px rgba(22,21,15,.04);display:flex;align-items:center;justify-content:center;font-size:12px;color:#16150f;font-weight:500}
+.ex .u{position:absolute;border-radius:6px}
+.ex .u.x{left:10px;top:8px;width:70px;height:48px;background:rgba(11,107,101,.22)}
+.ex .u.y{right:14px;top:18px;width:60px;height:40px;background:rgba(142,45,36,.18)}
+.ex .sts{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.ex .sts .st{font-size:12px}
+.ex .stamp{font-size:11px}
+.removed{display:flex;flex-direction:column;gap:0;background:#ffffff;border-radius:12px;box-shadow:0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07);overflow:hidden}
+.removed .r{display:grid;grid-template-columns:200px 20px minmax(0,1fr);align-items:center;column-gap:10px;padding:9px 14px;border-bottom:1px solid rgba(22,21,15,.08);font-size:12.5px}
+.removed .r:last-child{border-bottom:0}
+.removed .r .x{color:#a8321f;text-decoration:line-through;text-decoration-thickness:1px}
+.removed .r svg{width:14px;height:14px;color:#6b675d}
+.removed .r .y{color:#16150f;font-weight:500}
+.kv{margin:12px 0 0;display:grid;grid-template-columns:150px minmax(0,1fr);row-gap:3px;column-gap:14px;font-size:12px;line-height:1.45}
+.kv dt{color:#6b675d}
+.kv dd{margin:0;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;color:#16150f}
+</style>
+</helmet>
+<div class="board" style="width: 2640px; height: 1640px">
+  <header class="bh">
+    <div>
+      <p class="k">G+ · Layered glass, refined</p>
+      <h1>以 G 为底盘，加入出版物与仪器的手法<em>，不加任何现成产品的皮肤</em></h1>
+      <p>高级感来自克制与细节，不来自更多效果：一对有性格的字体、发丝线与编号分区、纸的颗粒、衬线数字、更细的图标、紧贴的三层阴影、只用墨洗的选中态、薄玻璃的边缘、留着的印章。下面两屏是同一页面的浅色与夜间版，底部十格是每一种手法单独的样子，右侧是从 G 里去掉的高频套路。</p>
+    </div>
+    <div class="meta"><b>左屏浅色 · 颗粒 3.5% / 右屏夜间 · 颗粒 6%</b>同一页面、同一数据、同一条选中规则<b>字体 · Hanken Grotesk + Source Serif 4 + IBM Plex Mono</b>均为 OFL，可捆绑；中文 Noto Sans SC 与 Noto Serif SC<b>侧栏与顶栏是画布色，内容是一张纸</b>玻璃只给轻提示、弹层与内容滚过时的顶栏；阴影最大模糊 3px，与 shell-fidelity 的阈值一致</div>
+  </header>
+
+  <div class="screens">
+    <div class="scr gp">
+      <svg class="grain" aria-hidden="true"><filter id="gp-l"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gp-l)"/></svg>
+      <nav class="rail">
+        <div class="brand"><span class="mk">T</span><span><b>TCRN 设计组</b><small>团队 · 12 人</small></span></div>
+        <a class="nv" href="#home"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l7-6 7 6v8h-5v-5H8v5H3z"/></svg>工作台</a>
+        <a class="nv" href="#projects"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M3 8h14"/></svg>项目<span class="cnt">12</span></a>
+        <a class="nv on" href="#members"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2.5 16a5.5 5.5 0 0 1 11 0M13 4.5a3 3 0 0 1 0 5.5M17.5 16a5 5 0 0 0-3.5-4.7"/></svg>成员<span class="cnt">24</span></a>
+        <a class="nv" href="#billing"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="15" height="10" rx="2"/><path d="M2.5 9h15"/></svg>账单</a>
+        <a class="nv" href="#inbox"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></svg>通知</a>
+        <h6>团队</h6>
+        <a class="nv" href="#settings"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="2.5"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.5 1.5M13.5 13.5L15 15M15 5l-1.5 1.5M6.5 13.5L5 15"/></svg>设置</a>
+        <div class="user"><span class="av">林</span><span><b>林晓</b><small>管理员</small></span></div>
+      </nav>
+      <div class="main">
+        <div class="topbar">
+          <div class="crumbs"><a href="#team">设计组</a><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg><b>成员</b></div>
+          <span class="sp"></span>
+          <div class="cmd"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13 13l4 4"/></svg>搜索<kbd>⌘K</kbd></div>
+          <button class="ib" type="button" aria-label="通知"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></svg><i></i></button>
+          <span class="av">林</span>
+        </div>
+        <div class="page">
+          <div class="ph"><h2>成员</h2><span class="sub">24 人 · 3 人待邀请</span><span class="act"><span class="stamp"><i></i>已验收 · 2026-10-09</span><button class="btn" type="button">导出</button><button class="btn pri" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>邀请成员</button></span></div>
+          <div class="stats">
+            <div class="stat"><span class="l">活跃成员</span><span class="v">128<small>人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
+            <div class="stat"><span class="l">本月账单</span><span class="v">4,280<small>.00 元</small></span><span class="d"><i></i>与上月持平</span></div>
+            <div class="stat"><span class="l">待处理</span><span class="v">7</span><span class="d warn"><i></i>3 项逾期</span></div>
+          </div>
+          <div class="tabs"><a class="on" href="#all">全部<span class="n">24</span></a><a href="#admin">管理员</a><a href="#pending">待邀请<span class="n">3</span></a><a href="#left">已离开</a></div>
+          <table>
+            <colgroup><col style="width: 250px" /><col style="width: 110px" /><col style="width: 110px" /><col /><col style="width: 120px" /></colgroup>
+            <thead><tr><th>成员</th><th>角色</th><th>状态</th><th>项目</th><th class="r">最近活跃</th></tr></thead>
+            <tbody>
+              <tr class="sel"><td><span class="who"><span class="av">林</span><span><b>林晓</b><small>lin.xiao@tcrn.app</small></span></span></td><td><span class="chip">管理员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>季度复盘、产品发布、招聘</td><td class="r mono">2 分钟前</td></tr>
+              <tr><td><span class="who"><span class="av">陈</span><span><b>陈默</b><small>chen.mo@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>季度复盘、产品发布</td><td class="r mono">09:41</td></tr>
+              <tr><td><span class="who"><span class="av">王</span><span><b>王一帆</b><small>wang.yf@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st warn"><i></i>待邀请</span></td><td>—</td><td class="r mono">—</td></tr>
+              <tr><td><span class="who"><span class="av">赵</span><span><b>赵青</b><small>zhao.qing@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>招聘</td><td class="r mono">昨天</td></tr>
+              <tr><td><span class="who"><span class="av">周</span><span><b>周然</b><small>zhou.ran@tcrn.app</small></span></span></td><td><span class="chip">只读</span></td><td><span class="st bad"><i></i>已停用</span></td><td>—</td><td class="r mono">08-23</td></tr>
+            </tbody>
+          </table>
+          <div class="tfoot"><span>1 到 5 · 共 24</span><span class="sp"></span><button class="btn quiet" type="button">下一页</button></div>
+        </div>
+      </div>
+      <div class="toast"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5"/></svg><span><b>已发送邀请</b><small>王一帆将在 7 天内收到邮件</small></span><button class="btn quiet" type="button">撤销</button></div>
+    </div>
+
+    <div class="scr gp night">
+      <svg class="grain" aria-hidden="true"><filter id="gp-d"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gp-d)"/></svg>
+      <nav class="rail">
+        <div class="brand"><span class="mk">T</span><span><b>TCRN 设计组</b><small>团队 · 12 人</small></span></div>
+        <a class="nv" href="#home"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l7-6 7 6v8h-5v-5H8v5H3z"/></svg>工作台</a>
+        <a class="nv" href="#projects"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M3 8h14"/></svg>项目<span class="cnt">12</span></a>
+        <a class="nv on" href="#members"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2.5 16a5.5 5.5 0 0 1 11 0M13 4.5a3 3 0 0 1 0 5.5M17.5 16a5 5 0 0 0-3.5-4.7"/></svg>成员<span class="cnt">24</span></a>
+        <a class="nv" href="#billing"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="15" height="10" rx="2"/><path d="M2.5 9h15"/></svg>账单</a>
+        <a class="nv" href="#inbox"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></svg>通知</a>
+        <h6>团队</h6>
+        <a class="nv" href="#settings"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="2.5"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.5 1.5M13.5 13.5L15 15M15 5l-1.5 1.5M6.5 13.5L5 15"/></svg>设置</a>
+        <div class="user"><span class="av">林</span><span><b>林晓</b><small>管理员</small></span></div>
+      </nav>
+      <div class="main">
+        <div class="topbar">
+          <div class="crumbs"><a href="#team">设计组</a><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg><b>成员</b></div>
+          <span class="sp"></span>
+          <div class="cmd"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13 13l4 4"/></svg>搜索<kbd>⌘K</kbd></div>
+          <button class="ib" type="button" aria-label="通知"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></svg><i></i></button>
+          <span class="av">林</span>
+        </div>
+        <div class="page">
+          <div class="ph"><h2>成员</h2><span class="sub">24 人 · 3 人待邀请</span><span class="act"><span class="stamp"><i></i>已验收 · 2026-10-09</span><button class="btn" type="button">导出</button><button class="btn pri" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>邀请成员</button></span></div>
+          <div class="stats">
+            <div class="stat"><span class="l">活跃成员</span><span class="v">128<small>人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
+            <div class="stat"><span class="l">本月账单</span><span class="v">4,280<small>.00 元</small></span><span class="d"><i></i>与上月持平</span></div>
+            <div class="stat"><span class="l">待处理</span><span class="v">7</span><span class="d warn"><i></i>3 项逾期</span></div>
+          </div>
+          <div class="tabs"><a class="on" href="#all">全部<span class="n">24</span></a><a href="#admin">管理员</a><a href="#pending">待邀请<span class="n">3</span></a><a href="#left">已离开</a></div>
+          <table>
+            <colgroup><col style="width: 250px" /><col style="width: 110px" /><col style="width: 110px" /><col /><col style="width: 120px" /></colgroup>
+            <thead><tr><th>成员</th><th>角色</th><th>状态</th><th>项目</th><th class="r">最近活跃</th></tr></thead>
+            <tbody>
+              <tr class="sel"><td><span class="who"><span class="av">林</span><span><b>林晓</b><small>lin.xiao@tcrn.app</small></span></span></td><td><span class="chip">管理员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>季度复盘、产品发布、招聘</td><td class="r mono">2 分钟前</td></tr>
+              <tr><td><span class="who"><span class="av">陈</span><span><b>陈默</b><small>chen.mo@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>季度复盘、产品发布</td><td class="r mono">09:41</td></tr>
+              <tr><td><span class="who"><span class="av">王</span><span><b>王一帆</b><small>wang.yf@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st warn"><i></i>待邀请</span></td><td>—</td><td class="r mono">—</td></tr>
+              <tr><td><span class="who"><span class="av">赵</span><span><b>赵青</b><small>zhao.qing@tcrn.app</small></span></span></td><td><span class="chip">成员</span></td><td><span class="st ok"><i></i>活跃</span></td><td>招聘</td><td class="r mono">昨天</td></tr>
+              <tr><td><span class="who"><span class="av">周</span><span><b>周然</b><small>zhou.ran@tcrn.app</small></span></span></td><td><span class="chip">只读</span></td><td><span class="st bad"><i></i>已停用</span></td><td>—</td><td class="r mono">08-23</td></tr>
+            </tbody>
+          </table>
+          <div class="tfoot"><span>1 到 5 · 共 24</span><span class="sp"></span><button class="btn quiet" type="button">下一页</button></div>
+        </div>
+      </div>
+      <div class="toast"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5"/></svg><span><b>已发送邀请</b><small>王一帆将在 7 天内收到邮件</small></span><button class="btn quiet" type="button">撤销</button></div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <section>
+      <h3>加入的十种手法 · 每种单独看</h3>
+      <div class="devices">
+        <div class="dv"><span class="n">01</span><h5>字体配对</h5><div class="ex"><span class="serif">成员与权限</span><span class="grot">Hanken Grotesk 13 / 20</span></div><p>衬线只给标题与数字，正文用低调的怪诞体；两者字重都偏轻。</p></div>
+        <div class="dv"><span class="n">02</span><h5>发丝线与编号分区</h5><div class="ex"><div class="sec"><span><b>01</b>基本信息</span><i></i></div></div><p>区段靠 1px 墨线与小型大写标签分开，不靠卡片与阴影。</p></div>
+        <div class="dv"><span class="n">03</span><h5>纸的颗粒</h5><div class="ex"><span class="sq"><small>平</small></span><span class="sq"><svg aria-hidden="true"><filter id="gp-s"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gp-s)"/></svg><small>颗粒</small></span></div><p>画布叠 3.5% 的单色噪点，夜间 6%；屏幕上几乎看不见，但大面积平色不再像塑料。</p></div>
+        <div class="dv"><span class="n">04</span><h5>衬线数字</h5><div class="ex"><span class="num">4,280<small>.00 元</small></span></div><p>指标用 Source Serif 4 的 300 字重与等宽数字，单位缩小拉开字距。</p></div>
+        <div class="dv"><span class="n">05</span><h5>更细的图标</h5><div class="ex"><span class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13 13l4 4"/></svg></span><span class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></svg></span><span class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2.5 16a5.5 5.5 0 0 1 11 0"/></svg></span></div><p>描边从 1.5 降到 1.25，20 格；图标退到文字之后，不再是色块。</p></div>
+        <div class="dv"><span class="n">06</span><h5>印章留着</h5><div class="ex"><span class="stamp" style="color: #8e2d24; border: 1px solid #8e2d24; border-radius: 3px; padding: 5px 10px; font-family: 'Source Serif 4', 'Noto Serif SC', serif; letter-spacing: .12em; text-transform: uppercase; font-size: 11px; display: inline-flex; gap: 8px; align-items: center"><i style="width: 5px; height: 5px; border-radius: 50%; background: currentColor; display: inline-block"></i>已验收 · 2026-10-09</span></div><p>身份时刻仍是砖红衬线印章，但不倾斜、细边、小字距：仪式感来自克制。</p></div>
+        <div class="dv"><span class="n">07</span><h5>紧贴的三层阴影</h5><div class="ex"><span class="sh a"></span><span class="sh b"></span><span class="sh c"></span></div><p>1 / 2 / 3px 三层叠加，最大模糊 3px，外加 1px 轮廓；是画出来的边，不是云，过得了现有的门。</p></div>
+        <div class="dv"><span class="n">08</span><h5>只用墨洗的选中态</h5><div class="ex"><div class="rows"><span>季度复盘</span><span class="on">产品发布</span><span>招聘</span></div></div><p>选中只做一件事：6% 墨底加字重。没有色条、没有青底，浅色与夜间同一条规则。</p></div>
+        <div class="dv"><span class="n">09</span><h5>薄玻璃的边</h5><div class="ex"><span class="u x"></span><span class="u y"></span><span class="glass">white .78 · blur 20</span></div><p>只给轻提示与弹层：透明度 78%、模糊 20，内侧 1px 白边加外侧 1px 墨线，玻璃像有厚度；壳层本身不用玻璃。</p></div>
+        <div class="dv"><span class="n">10</span><h5>状态不用色底</h5><div class="ex"><div class="sts"><span class="st ok" style="color: #2f6b3a"><i style="background: currentColor; width: 6px; height: 6px; border-radius: 50%; display: inline-block"></i>活跃</span><span class="st warn" style="color: #8a5a08"><i style="background: currentColor; width: 6px; height: 6px; border-radius: 50%; display: inline-block"></i>待邀请</span><span class="st bad" style="color: #a8321f"><i style="background: currentColor; width: 6px; height: 6px; border-radius: 50%; display: inline-block"></i>已停用</span></div></div><p>一个 6px 点加文字；角色标签用发丝线描边。彩色药丸全部退场。</p></div>
+      </div>
+    </section>
+    <section>
+      <h3>从 G 里去掉的高频套路 · 换成了什么</h3>
+      <div class="removed">
+        <div class="r"><span class="x">悬浮的白色侧栏与顶栏</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">画布色壳层，发丝线分区，内容区是一张白纸</span></div>
+        <div class="r"><span class="x">彩色药丸徽标</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">点加文字；角色用发丝线描边</span></div>
+        <div class="r"><span class="x">云阴影 24 / 64px</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">三层紧阴影，模糊不超过 3px</span></div>
+        <div class="r"><span class="x">统计卡加折线</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">衬线数字一行，发丝线分隔</span></div>
+        <div class="r"><span class="x">实白药丸与青色下划线</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">墨洗选中，1px 墨线标签</span></div>
+        <div class="r"><span class="x">五色头像圈</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">单色墨底头像，发丝线描边</span></div>
+        <div class="r"><span class="x">渐变色块做底衬</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">玻璃下面是真实内容与颗粒</span></div>
+        <div class="r"><span class="x">三档大圆角 10 / 16 / 22</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">8 与 12 两档，印章 3</span></div>
+        <div class="r"><span class="x">Inter 全场</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">Hanken Grotesk 正文，Source Serif 4 标题与数字</span></div>
+        <div class="r"><span class="x">弹簧过冲 6%</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">240ms 长尾缓出，不过冲，交错 20ms</span></div>
+        <div class="r"><span class="x">图标盒与虚线空状态</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg><span class="y">一句衬线标题加一行说明与一个按钮</span></div>
+      </div>
+      <dl class="kv">
+        <dt>画布 / 墨</dt><dd>#efeeea / #16150f（夜间 #121210 / #ebe8df）</dd>
+        <dt>品牌青</dt><dd>#0b6b65 只给主按钮、链接、焦点（夜间 #3fc7b7）</dd>
+        <dt>砖红</dt><dd>#8e2d24 只给印章与裁决（夜间 #d98d82）</dd>
+        <dt>壳层</dt><dd>侧栏 212 画布色 + 右发丝线 · 顶栏 48 画布色 + 下发丝线 · 内容纸 r 12 + s1</dd>
+        <dt>侧栏左线</dt><dd>引导列 22 · 左边 16 · 文字起点 48 · 分组标题同 16</dd>
+        <dt>玻璃</dt><dd>只在轻提示、弹层：white .78 · blur 20 · sat 1.3 · 内白边 + 外墨线</dd>
+        <dt>阴影</dt><dd>s1 1px · s2 2+3px · s3 3+3px，均带 1px 轮廓</dd>
+        <dt>颗粒</dt><dd>feTurbulence .9 · 两倍频 · 3.5% / 6%</dd>
+        <dt>控件轮廓</dt><dd>line-ctl 墨 47%（夜间白 36%），3:1；次按钮与输入框用它，取代 s1 的 7% 轮廓（2026-10-11 定）</dd>
+        <dt>选中行</dt><dd>墨洗向左右各出血 8px，文字起点与其它行相同（2026-10-11 修）</dd>
+        <dt>圆角 / 行高</dt><dd>控件 8 · 面板 12 · 印章 3 / 表格行 38</dd>
+      </dl>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2640,"height":1640}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
