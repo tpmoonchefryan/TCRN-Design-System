@@ -65,9 +65,21 @@ const LOCAL_VARS = [
   "--tcrn-table-shell-column-min-width"
 ];
 
+// State-pair locals. A variant declares the pair it paints with
+// (--tcrn-pair-fill-<state>, --tcrn-pair-ink-<state>, --tcrn-pair-edge-<state>, plus the
+// extra tuples the pair contract names for checkable and switch controls) and the base
+// rule reads the live pair (--tcrn-pair-fill|ink|edge|weight). They are scoped to the
+// component that declares them, so they are admitted as a namespace rather than listed
+// one by one. A pair variable that is read must still be declared somewhere in the sheet:
+// the unresolved-reference check below does not exempt them.
+const PAIR_LOCAL = /^--tcrn-pair-[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 export function tokenExtensionChecks() {
   const css = componentCssText(root);
-  const definedProps = [...css.matchAll(/^\s*(--tcrn-[a-z0-9-]+)\s*:/gim)].map((match) => match[1]);
+  // A definition opens a line or follows "{" or ";", so the one-line rules the sheet also
+  // carries (and generated segments may be written as) are read too, not just the
+  // multi-line ones.
+  const definedProps = [...css.matchAll(/(?:^|[{;])\s*(--tcrn-[a-z0-9-]+)\s*:/gim)].map((match) => match[1]);
   const definedSet = new Set(definedProps);
 
   const known = new Set([...tcrnTokens, ...tcrnDarkThemeTokens].map((token) => token.variable));
@@ -76,7 +88,7 @@ export function tokenExtensionChecks() {
   const problems = [];
 
   // 1. No unregistered token definitions (catches future drift).
-  const unregistered = [...definedSet].filter((property) => !allowlisted.has(property));
+  const unregistered = [...definedSet].filter((property) => !allowlisted.has(property) && !PAIR_LOCAL.test(property));
   for (const property of unregistered) {
     problems.push(
       `unregistered token defined in tcrnComponentCss: ${property} — register it in @tcrn/ui-tokens or add it to the EXTENSION_TOKENS / LOCAL_VARS log with justification`
@@ -124,6 +136,7 @@ export function tokenExtensionChecks() {
     known: known.size,
     extensionTokens: EXTENSION_TOKENS.length,
     localVars: LOCAL_VARS.length,
+    pairLocals: [...definedSet].filter((property) => PAIR_LOCAL.test(property)).length,
     radiusPanel: panel,
     radiusSurface: surface
   };
