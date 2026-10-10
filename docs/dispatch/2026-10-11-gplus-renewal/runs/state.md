@@ -36,9 +36,10 @@
 | W1-C | 已合入 31b0f6b，包树已退役 | 6a35a29 | SUB-004→005；字体 52 文件 3,290,644 B；`handoff/W1-C.md` 写给 SUB-006/007 与集成（合并新文案后跑 `fonts-vendor --check`）；待 Owner：W1C-1 上游 OFL 版权行；安全：子代理跑 `pnpm config list` 时 npm authToken 出现在其工具输出（未落任何文件，已 grep 核对），收口时报 Owner 建议轮换；此后派工提示禁止打印配置/凭据 |
 | W1-D | 已合入 35b918b，包树已退役 | d736309 | SUB-024；现仓先红 171 个包外类（映射 171 条：包已提供删 38、改 tcrn-doc- 86、删演示 32、删死类 15）；40 个「包组件写出但包 CSS 无规则」的类按包类计、不计入差集（按建议先做，验收复核）；35 个类被 shell-parity/shell-fidelity/storybook-smoke/smoke.test 点名，W3 改名须同提交改门；集外：`doc-shell:proof` 脚本先跑 `node --test tests/doc-shell-class-proof.test.mjs`（归 W6-A/SUB-038 接线） |
 | W2-A | 已合入 d0e6900，包树已退役 | c447221 | SUB-001→006；C5 两块各 85 名同集（主题无关块 118）；fonts-proof coverage 红：「盃」U+76C3（marks.json）不在随包分片，基线即红，批末跑 `pnpm fonts:vendor` 重生分片；预计红：token-contrast-proof（旧名变 var 别名，W3-A 重写）、smoke.test canvas 断言与 .storybook/preview.ts（P3）、旧几何断言门（P11）；tokens.css 顶部 @import fonts.css；问题 P1–P15 与 51 行新旧名表在 `problems/W2-A.md`、`handoff/W2-A.md`（W3-A/W3-B 摘录追加） |
-| W2-E | 在跑 | 85d8583 | SUB-019→020 |
+| W2-E | 已合入 7fb37e6，包树已退役 | 85d8583 | SUB-019→020；Form 单测 21/21；交 W3-D：base 段 `.tcrn-product-shell :focus-visible:not(.tcrn-search-input__control)` 的 box-shadow:none 要扩排除表、Navigation.test 搜索框断言（441、597–602 行）、Select chevron 与 DatePicker calendar 包裹层；交 W6-B：smoke.test 815/819 行（Field 洗底去除）；契约待议：只读框焦点环（P5）、焦点环间隙色在 :root 解析（P6）；sm/lg 与顶栏 28px 未做（P9）；无 token 的几何字面值清单（P10）——见 `problems/W2-E.md`、`handoff/W2-E.md` |
 | W2-D | 在跑 | 223100e | SUB-016→017 |
 | W2-C | 在跑 | 0af0bf8 | SUB-014→015 |
+| W2-F | 在跑 | 97f68c4 | SUB-022→023（与 W3-C 同改 story-content.tsx；与 W3-D 同改 Navigation.test.tsx：二者都在 W2-F 合入后再派） |
 
 集成树合入 W1-A/B/C 后 typecheck 与 build 均 EXIT=0（scratch `logs/integ-w1abc-compile.log`）。
 
