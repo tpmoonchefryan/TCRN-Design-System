@@ -754,7 +754,6 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     label: "Evidence, proof, and visual oracle",
     category: "Foundation",
     sourcePaths: [
-      "AGENTS.md",
       "apps/storybook/src/build/ai-consumption-contract.ts",
       "scripts/storybook-smoke.mjs",
       "scripts/internal-alpha-browser-proof.mjs",
@@ -774,7 +773,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "consumer-enforcement",
     label: "Consumer enforcement and reject criteria",
     category: "Foundation",
-    sourcePaths: ["AGENTS.md", "apps/storybook/src/build/foundation-visual-standards.ts", "apps/storybook/src/build/ai-consumption-contract.ts", "scripts/ds-consumption-proof.mjs"],
+    sourcePaths: ["apps/storybook/src/build/foundation-visual-standards.ts", "apps/storybook/src/build/ai-consumption-contract.ts", "scripts/ds-consumption-proof.mjs"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#ai-consumption-contract"],
     authorityLevel: "consumer_contract",
     readbackFields: ["allowedInputs", "forbiddenOverrides", "rejectCriteria", "missingStandardEscalation", "routeOwner", "settingControlSelectionContract", "fieldValueSelectionContract", "dictionaryContentContract", "operationFeedbackContract", "contentScopeContract", "overlayBoundaryContract", "settingsLayoutContract", "pageHierarchyContract", "verificationCadenceContract", "consumerVerificationContract", "consumerEvidenceContract"],
