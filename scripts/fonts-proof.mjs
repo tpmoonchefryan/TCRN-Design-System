@@ -22,6 +22,12 @@
 //   build-output a package dist or the docs build references googleapis or gstatic, or
 //                inlines a font as a data: URI
 //   proprietary  a proprietary face appears in a stack that promises bundleability
+//                (stacks are read with their var() references resolved)
+//   token-families
+//                a G+ family token (--tcrn-type-family-ui / heading / serif / mono) does
+//                not open with its vendored face, drops its Noto Chinese fallback, or
+//                names a bundled face that fonts.css does not declare with @font-face;
+//                or fonts.css ships a family that no family token names
 //
 // Scope note kept from the earlier proof: `storybook build` writes its own manager
 // chrome fonts (Nunito Sans, SIL OFL-1.1) into apps/storybook/storybook-preview-static/.
@@ -319,20 +325,32 @@ function checkBuildOutput(root, failures, notes) {
   return { roots, scanned };
 }
 
-async function checkProprietary(root, tokens, manifest, failures) {
-  let list = tokens;
-  if (!list) {
-    const distIndex = path.join(root, PACKAGE_DIR, "dist/index.js");
-    if (!fs.existsSync(distIndex)) {
-      failures.push(`${PACKAGE_DIR}/dist/index.js is missing; build @tcrn/ui-tokens first`);
-      return 0;
-    }
-    list = (await import(pathToFileURL(distIndex).href)).tcrnTokens ?? [];
+async function loadTokenList(root, tokens, failures) {
+  if (tokens) return tokens;
+  const distIndex = path.join(root, PACKAGE_DIR, "dist/index.js");
+  if (!fs.existsSync(distIndex)) {
+    failures.push(`${PACKAGE_DIR}/dist/index.js is missing; build @tcrn/ui-tokens first`);
+    return null;
   }
+  return (await import(pathToFileURL(distIndex).href)).tcrnTokens ?? [];
+}
+
+// Deprecated aliases are `var(--new)`; read every stack the way a browser computes it.
+export function resolveTokenValue(value, byVariable, depth = 0) {
+  return String(value).replace(/var\(\s*(--[a-z0-9-]+)\s*\)/g, (whole, name) =>
+    depth < 8 && byVariable.has(name) ? resolveTokenValue(byVariable.get(name), byVariable, depth + 1) : whole
+  );
+}
+
+async function checkProprietary(root, tokens, manifest, failures) {
+  const list = await loadTokenList(root, tokens, failures);
+  if (!list) return 0;
+  const byVariable = new Map(list.map((token) => [String(token.variable), String(token.value)]));
   const distributable = list.filter((token) => String(token.variable).includes("distributable"));
   for (const token of distributable) {
+    const value = resolveTokenValue(token.value, byVariable).toLowerCase();
     for (const face of PROPRIETARY) {
-      if (String(token.value).toLowerCase().includes(face.toLowerCase())) failures.push(`${token.variable} advertises bundleability but names "${face}"`);
+      if (value.includes(face.toLowerCase())) failures.push(`${token.variable} advertises bundleability but names "${face}"`);
     }
   }
   for (const family of manifest?.families ?? []) {
@@ -341,6 +359,65 @@ async function checkProprietary(root, tokens, manifest, failures) {
     }
   }
   return distributable.length;
+}
+
+// G+ family tokens and the vendored roles they must use (FAMILIES[].role): the stack opens
+// with the `role` face, and Chinese text falls back to the `fallback` face.
+export const TOKEN_FAMILY_STACKS = [
+  { variable: "--tcrn-type-family-ui", role: "ui", fallback: "ui-zh-fallback" },
+  { variable: "--tcrn-type-family-heading", role: "heading", fallback: "heading-zh-fallback" },
+  { variable: "--tcrn-type-family-serif", role: "heading", fallback: "heading-zh-fallback" },
+  { variable: "--tcrn-type-family-mono", role: "mono" }
+];
+
+export function parseFamilyStack(value) {
+  const entries = [];
+  let current = "";
+  let quote = null;
+  for (const char of String(value)) {
+    if (quote) {
+      if (char === quote) quote = null;
+      current += char;
+    } else if (char === '"' || char === "'") {
+      quote = char;
+      current += char;
+    } else if (char === ",") {
+      entries.push(current.trim());
+      current = "";
+    } else current += char;
+  }
+  if (current.trim()) entries.push(current.trim());
+  return entries.filter(Boolean).map((entry) => ({ name: unquote(entry), quoted: /^["']/.test(entry) }));
+}
+
+async function checkTokenFamilies(root, tokens, failures) {
+  const list = await loadTokenList(root, tokens, failures);
+  if (!list) return { stacks: 0, faces: 0 };
+  const cssPath = path.join(root, FONTS_DIR, CSS_NAME);
+  const declared = new Set(
+    fs.existsSync(cssPath) ? parseFontFaces(fs.readFileSync(cssPath, "utf8")).map((face) => unquote(face["font-family"])) : []
+  );
+  if (!declared.size) failures.push(`${FONTS_DIR}/${CSS_NAME} declares no @font-face`);
+  const vendored = new Set(FAMILIES.map((family) => family.family));
+  const byRole = new Map(FAMILIES.map((family) => [family.role, family.family]));
+  const byVariable = new Map(list.map((token) => [String(token.variable), String(token.value)]));
+  const named = new Set();
+  for (const { variable, role, fallback } of TOKEN_FAMILY_STACKS) {
+    if (!byVariable.has(variable)) {
+      failures.push(`${variable} is missing from @tcrn/ui-tokens`);
+      continue;
+    }
+    const stack = parseFamilyStack(resolveTokenValue(byVariable.get(variable), byVariable));
+    const names = stack.map((entry) => entry.name);
+    if (names[0] !== byRole.get(role)) failures.push(`${variable} opens with "${names[0] ?? ""}", expected the vendored ${role} face "${byRole.get(role)}"`);
+    if (fallback && !names.slice(1).includes(byRole.get(fallback))) failures.push(`${variable} lacks the Chinese fallback "${byRole.get(fallback)}"`);
+    for (const entry of stack.filter((candidate) => candidate.quoted || vendored.has(candidate.name))) {
+      named.add(entry.name);
+      if (!declared.has(entry.name)) failures.push(`${variable} names "${entry.name}", which ${CSS_NAME} does not declare with @font-face`);
+    }
+  }
+  for (const family of declared) if (!named.has(family)) failures.push(`${CSS_NAME} ships "${family}", which no family token names`);
+  return { stacks: TOKEN_FAMILY_STACKS.length, faces: named.size };
 }
 
 export async function runFontsProof({ root = scriptRoot, tokens } = {}) {
@@ -387,6 +464,10 @@ export async function runFontsProof({ root = scriptRoot, tokens } = {}) {
   const proprietaryFailures = [];
   const distributable = await checkProprietary(root, tokens, manifest, proprietaryFailures);
   record("proprietary", proprietaryFailures, `all ${distributable} distributable stacks name only open-licensed families`);
+
+  const familyFailures = [];
+  const families = await checkTokenFamilies(root, tokens, familyFailures);
+  record("token-families", familyFailures, `the ${families.stacks} G+ family tokens open with their vendored faces and keep the Noto fallbacks; all ${families.faces} faces they name have an @font-face in ${CSS_NAME}`);
 
   return { ok: checks.every((check) => check.ok), checks };
 }
