@@ -738,12 +738,20 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.doesNotMatch(sheetWithoutComments, /\.tcrn-shell-(?:theme|side-nav|mobile-nav)-toggle:(?:hover|active|focus-visible)/);
   assert.doesNotMatch(sheetWithoutComments, /\.tcrn-button\.tcrn-shell-theme-toggle[^{]*\{[^}]*transition/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger \{[\s\S]*min-height: 36px;[\s\S]*border-radius: var\(--tcrn-radius-pill\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input \{[\s\S]*--tcrn-search-input-control-min-inline-size: 9ch;[\s\S]*display: grid;[\s\S]*grid-template-columns: var\(--tcrn-search-input-icon-size\) minmax\(var\(--tcrn-search-input-control-min-inline-size\), 1fr\) max-content;/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input:focus-within \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*outline-offset: 2px;[\s\S]*box-shadow: none;/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*position: static;[\s\S]*color: var\(--tcrn-color-text-secondary\);[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-weight: var\(--tcrn-type-weight-strong\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__icon \{[\s\S]*grid-column: 1;[\s\S]*inline-size: var\(--tcrn-search-input-icon-size\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input \.tcrn-search-input__control \{[\s\S]*appearance: none;[\s\S]*box-sizing: border-box;[\s\S]*grid-column: 2;[\s\S]*width: 100%;[\s\S]*min-height: 0;[\s\S]*min-width: 0;[\s\S]*max-width: none;[\s\S]*padding: 0;[\s\S]*border: 0;[\s\S]*border-radius: 0;[\s\S]*background: transparent;[\s\S]*box-shadow: none;/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*grid-column: 3;/);
+  // SearchInput keeps the tool form (STORY-126, Owner ruling): the control is the box and
+  // takes the search pair (wash fill, no edge, line-2 on hover, the paper fill with the
+  // focus ring once focused); the wrapper only positions the icon and the shortcut over it,
+  // and the control's inline padding keeps the text clear of both.
+  assert.match(tcrnComponentCss, /\.tcrn-search-input \{[^}]*--tcrn-search-input-control-min-inline-size: 9ch;[^}]*position: relative;[^}]*display: grid;[^}]*grid-template-columns: minmax\(0, 1fr\);/);
+  assert.doesNotMatch(tcrnComponentCss, /(?:^|\n)\.tcrn-search-input:focus-within \{/);
+  assert.match(tcrnComponentCss, /\.tcrn-input\.tcrn-search-input__control\{--tcrn-pair-fill-d:var\(--tcrn-color-wash\);--tcrn-pair-edge-d:0 0 #0000;[^}]*--tcrn-pair-edge-h:inset 0 0 0 1px var\(--tcrn-color-line-2\);--tcrn-pair-fill-f:var\(--tcrn-color-panel\)\}/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__icon \{[^}]*position: absolute;[^}]*inset-inline-start: var\(--tcrn-search-input-padding-inline\);[^}]*inline-size: var\(--tcrn-search-input-icon-size\);[^}]*color: var\(--tcrn-color-ink-3\);[^}]*pointer-events: none;/);
+  const searchControlRule = /\.tcrn-search-input \.tcrn-search-input__control \{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
+  assert.match(searchControlRule, /appearance: none;[^}]*inline-size: 100%;[^}]*block-size: var\(--tcrn-search-input-block-size\);[^}]*padding-inline: calc\(var\(--tcrn-search-input-padding-inline\) \+ var\(--tcrn-search-input-icon-size\) \+ var\(--tcrn-search-input-column-gap\)\) var\(--tcrn-search-input-padding-inline\);/);
+  assert.doesNotMatch(searchControlRule, /(?:^|[;\s])(?:background|box-shadow|border|color)\s*:/, "the search pair, not the wrapper rule, paints the control");
+  assert.match(tcrnComponentCss, /\.tcrn-input\.tcrn-search-input__control::placeholder \{\s*color: var\(--tcrn-color-ink-2\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[^}]*position: absolute;[^}]*inset-inline-end: var\(--tcrn-space-2\);[^}]*border: 1px solid var\(--tcrn-color-line-2\);[^}]*color: var\(--tcrn-color-ink-3\);[^}]*font-family: var\(--tcrn-type-family-mono\);[^}]*pointer-events: none;/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input\[data-shortcut-visible="true"\] \.tcrn-search-input__control \{\s*padding-inline-end: calc\(/);
   // The primary button reads on-acc ink from its own pair in both themes; the night theme
   // changes the tokens, not the button, so there is no dark-scoped primary rule any more.
   assert.match(tcrnComponentCss, /\.tcrn-button\.tcrn-button--primary\{[^}]*--tcrn-pair-ink-d:var\(--tcrn-color-on-acc\)/);

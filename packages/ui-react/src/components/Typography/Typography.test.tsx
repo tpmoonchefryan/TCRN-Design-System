@@ -214,7 +214,6 @@ test("the mark adds only the wash fill and keeps the type and spacing of the tex
 
 test(
   "a link is accent ink with the 70% underline, accent-2 on hover and the focus ring",
-  { todo: "the base segment still declares .tcrn-link after the contract rules and wins; see the W2-B handoff" },
   () => {
     const link = declarationsFor(".tcrn-link");
     assert.equal(link.get("color"), "var(--tcrn-color-acc)");

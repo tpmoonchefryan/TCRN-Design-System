@@ -386,7 +386,8 @@ test("STORY-126 every text-like control carries a shared pair target", () => {
   assert.match(html, /class="tcrn-select tcrn-multi-select-dropdown__trigger"/);
   // The summary is cut to one line, so it carries its full text as a title.
   assert.match(html, /<span data-multi-select-summary="[^"]*" title="Alpha">Alpha<\/span>/);
-  assert.match(html, /<svg[^>]*width="14" height="14"[^>]*class="[^"]*tcrn-multi-select-dropdown__caret"[^>]*data-icon-name="chevron-down"/);
+  // Attribute order is the Icon component's business, so each attribute is looked for on its own.
+  assert.match(html, /<svg(?=[^>]*\swidth="14")(?=[^>]*\sheight="14")(?=[^>]*class="[^"]*tcrn-multi-select-dropdown__caret")(?=[^>]*data-icon-name="chevron-down")[^>]*>/);
 
   const disabled = renderToStaticMarkup(
     <MultiSelect presentation="dropdown" disabled disabledReason="Choices are locked" emptySelectionLabel="Nothing chosen" options={[{ value: "a", label: "Alpha" }]} />
@@ -527,4 +528,43 @@ test("STORY-126 the field no longer washes on focus, and every ring keeps a forc
     assert.match(tcrnComponentCss, new RegExp(`${escapeRegExp(control)}:where\\(:focus-visible\\)[^{]*\\{\\s*outline: 2px solid transparent;\\s*outline-offset: 2px;`));
   }
   assert.match(tcrnComponentCss, /@media \(forced-colors: active\) \{[\s\S]*\.tcrn-checkbox,\s*\.tcrn-radio-group__control,\s*\.tcrn-switch__control \{\s*-webkit-appearance: auto;\s*appearance: auto;/);
+});
+
+test("STORY-126 Select and DatePicker draw their end icon in the 30px the control keeps clear", () => {
+  const html = renderToStaticMarkup(
+    <>
+      <Select name="role" options={[{ value: "member", label: "Member" }]} />
+      <DatePicker name="due" />
+    </>
+  );
+  // Each control sits in a wrapper that only positions its icon: chevron-down for Select,
+  // calendar for DatePicker, sm (14), decorative.
+  assert.match(html, /<span class="tcrn-select-wrap"><select[^>]*class="tcrn-select"[^>]*>[\s\S]*?<\/select><svg(?=[^>]*class="tcrn-icon tcrn-select-wrap__icon")(?=[^>]*data-icon-name="chevron-down")(?=[^>]*\swidth="14")(?=[^>]*aria-hidden="true")[^>]*>/);
+  assert.match(html, /<span class="tcrn-date-picker-wrap"><input[^>]*type="date" class="tcrn-input tcrn-date-picker" data-date-picker="true"[^>]*\/><svg(?=[^>]*class="tcrn-icon tcrn-date-picker-wrap__icon")(?=[^>]*data-icon-name="calendar")(?=[^>]*\swidth="14")(?=[^>]*aria-hidden="true")[^>]*>/);
+
+  // The icon is centred in the end 30px, in ink-3, and lets the pointer through to the
+  // native select or to the transparent date indicator over the same area (GWT4).
+  const icon = cssRule(".tcrn-select-wrap__icon,\n.tcrn-date-picker-wrap__icon");
+  for (const declaration of [
+    "position: absolute;",
+    "inset-inline-end: calc((30px - var(--tcrn-icon-size-sm)) / 2);",
+    "inline-size: var(--tcrn-icon-size-sm);",
+    "block-size: var(--tcrn-icon-size-sm);",
+    "color: var(--tcrn-color-ink-3);",
+    "pointer-events: none;"
+  ]) {
+    assert.ok(icon.includes(declaration), `the end icon declares ${declaration}`);
+  }
+  assert.doesNotMatch(icon, /transform/);
+  // With the chevron drawn the native arrow goes and the label stops short of it; a bare
+  // select outside the wrapper keeps the native arrow.
+  const select = cssRule(".tcrn-select-wrap > .tcrn-select");
+  for (const declaration of ["appearance: none;", "padding-inline-end: 30px;", "text-overflow: ellipsis;", "white-space: nowrap;"]) {
+    assert.ok(select.includes(declaration), `the wrapped select declares ${declaration}`);
+  }
+  assert.doesNotMatch(cssRule(".tcrn-input,\n.tcrn-select"), /appearance/);
+  // The wrapper draws nothing.
+  const wrapper = cssRule(".tcrn-select-wrap,\n.tcrn-date-picker-wrap");
+  assert.match(wrapper, /position: relative;[\s\S]*display: inline-flex;/);
+  assert.doesNotMatch(wrapper, /(?:background|border|box-shadow|outline|color)\s*:/);
 });

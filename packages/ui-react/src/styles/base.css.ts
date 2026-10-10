@@ -2235,7 +2235,10 @@ export const baseCss28 = `
   align-items: center;
   gap: var(--tcrn-space-2);
 }
-.tcrn-surface__head :is(h2,h3) { margin: 0; font-size: var(--tcrn-type-size-heading-3); }`;
+.tcrn-surface__head :is(h2,h3) { margin: 0; }
+/* A Heading in a surface head keeps the contract scale it was given; a plain h2 or h3
+   there takes the surface heading size. */
+.tcrn-surface__head :is(h2,h3):not(.tcrn-heading) { font-size: var(--tcrn-type-size-heading-3); }`;
 
 export const baseCss29 = `
 
@@ -2514,26 +2517,6 @@ export const baseCss30 = `
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
-}
-
-/* A record link cannot rely on colour alone: the brand ink is only 2.94:1 against
-   primary text in light mode and 1.73:1 in dark mode. The always-visible underline
-   is therefore part of the semantic treatment, with a 70% mix that measures 3.14:1
-   and 4.83:1 against the two panel surfaces. */
-.tcrn-link {
-  color: var(--tcrn-color-brand-primary);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-  text-decoration-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 70%, transparent);
-}
-.tcrn-link:hover {
-  text-decoration-color: var(--tcrn-color-brand-primary);
-}
-.tcrn-link:focus-visible {
-  outline: 2px solid var(--tcrn-color-focus-ring);
-  outline-offset: 2px;
-  border-radius: var(--tcrn-radius-control);
 }
 
 /* Pagination container. The component supplies only a truthful range and links from
@@ -3164,7 +3147,7 @@ export const baseCss38 = `
 .tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2);overflow-wrap:anywhere}
 .tcrn-settings-layout__form .tcrn-setting-row__control{inline-size:100%;grid-column:auto;grid-row:auto}
 .tcrn-settings-layout__form .tcrn-setting-row__tools{grid-column:auto;grid-row:auto}
-.tcrn-settings-layout__form .tcrn-setting-row__control>:is(.tcrn-input,.tcrn-select,.tcrn-field,.tcrn-setting-choice,.tcrn-number-input-field,.tcrn-multi-select-group,.tcrn-multi-select-dropdown){inline-size:100%;min-inline-size:0}`;
+.tcrn-settings-layout__form .tcrn-setting-row__control>:is(.tcrn-input,.tcrn-select,.tcrn-select-wrap,.tcrn-date-picker-wrap,.tcrn-field,.tcrn-setting-choice,.tcrn-number-input-field,.tcrn-multi-select-group,.tcrn-multi-select-dropdown){inline-size:100%;min-inline-size:0}`;
 
 export const baseCss39 = `
 @container tcrn-settings-layout-frame (min-width:960px){.tcrn-settings-layout__grid{grid-template-columns:minmax(0,var(--tcrn-container-settings-local-nav)) minmax(0,1fr)}}

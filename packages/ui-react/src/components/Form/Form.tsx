@@ -155,25 +155,31 @@ export function Select({ options, className, disabled, disabledReason, title, ..
   const normalizedReason = disabled ? requiredText(disabledReason, "Select unavailable in this route") : undefined;
   const disabledReasonId = useId();
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
+  // The wrapper only positions the chevron (Inputs board .sw > .chev): it draws nothing,
+  // and the chevron sits in the 30px the select keeps clear at its end, decorative and
+  // out of the pointer's way, so a click there still opens the native list.
   return (
     <>
-      <select
-        {...props}
-        disabled={disabled}
-        title={normalizedReason ?? title}
-        aria-describedby={ariaDescribedBy}
-        data-disabled-reason={normalizedReason}
-        data-choice-cardinality="single"
-        data-choice-value-mode="closed"
-        data-choice-option-count={options.length}
-        className={cx("tcrn-select", className)}
-      >
-        {options.map((option) => (
-          <option key={option.value} value={option.value} disabled={option.disabled}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <span className="tcrn-select-wrap">
+        <select
+          {...props}
+          disabled={disabled}
+          title={normalizedReason ?? title}
+          aria-describedby={ariaDescribedBy}
+          data-disabled-reason={normalizedReason}
+          data-choice-cardinality="single"
+          data-choice-value-mode="closed"
+          data-choice-option-count={options.length}
+          className={cx("tcrn-select", className)}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value} disabled={option.disabled}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <Icon name="chevron-down" size="sm" className="tcrn-select-wrap__icon" />
+      </span>
       {normalizedReason ? <span id={disabledReasonId} className="tcrn-sr-only">{normalizedReason}</span> : null}
     </>
   );
@@ -894,10 +900,17 @@ export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputEleme
  * It is a .tcrn-input, so it takes the same pair table as every other text control.
  * The browser's own picker indicator stays in place as the click target over the end
  * of the box (made transparent in the stylesheet), so the system calendar still opens
- * from there without a scripted showPicker call.
+ * from there without a scripted showPicker call. The calendar icon drawn in that same
+ * 30px is decorative and lets the pointer through to the indicator; the wrapper only
+ * positions it (Inputs board .sw > .chev).
  */
 export function DatePicker({ className, ...props }: DatePickerProps) {
-  return <input {...props} type="date" className={cx("tcrn-input", "tcrn-date-picker", className)} data-date-picker="true" />;
+  return (
+    <span className="tcrn-date-picker-wrap">
+      <input {...props} type="date" className={cx("tcrn-input", "tcrn-date-picker", className)} data-date-picker="true" />
+      <Icon name="calendar" size="sm" className="tcrn-date-picker-wrap__icon" />
+    </span>
+  );
 }
 
 export interface SettingRowProps extends HTMLAttributes<HTMLDivElement> {
