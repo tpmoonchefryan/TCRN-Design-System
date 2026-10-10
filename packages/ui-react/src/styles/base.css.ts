@@ -38,8 +38,9 @@ export const baseCss02 = `
 }`;
 
 export const baseCss03 = `
+/* The theme toggle is an IconButton: a press switches it to the active pair and never
+   scales it (Actions), so it is not in this list. */
 .tcrn-nav-item:active,
-.tcrn-shell-theme-toggle:active,
 .tcrn-shell-locale-menu__trigger:active,
 .tcrn-table-toolbar__chip:active,
 .tcrn-table-toolbar__collapse:active {
@@ -58,6 +59,9 @@ export const baseCss05 = `
   border-top: 1px solid var(--tcrn-color-border-subtle);
   margin: var(--tcrn-space-3) 0;
 }
+/* The theme, side-nav and mobile-nav toggles are IconButtons, so their fill, ink, edge,
+   focus ring and transitions all come from the Actions pair table. These shell rules only
+   size and shape them; none of them writes a colour, a shadow or a transition. */
 .tcrn-shell-theme-toggle,
 .tcrn-button.tcrn-shell-theme-toggle {
   position: relative;
@@ -69,22 +73,7 @@ export const baseCss05 = `
   padding: 0;
   overflow: hidden;
   border-radius: var(--tcrn-radius-pill);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-  transition:
-    background-color var(--tcrn-motion-standard),
-    border-color var(--tcrn-motion-standard),
-    color var(--tcrn-motion-standard),
-    box-shadow var(--tcrn-motion-standard);
 }
-.tcrn-shell-side-nav-toggle {
-  transition:
-    background-color var(--tcrn-motion-standard),
-    border-color var(--tcrn-motion-standard),
-    color var(--tcrn-motion-standard),
-    box-shadow var(--tcrn-motion-standard);
-}
-.tcrn-shell-theme-toggle:hover,
-.tcrn-shell-side-nav-toggle:hover,
 .tcrn-shell-locale-menu__trigger:hover,
 .tcrn-shell-locale-menu__trigger[aria-expanded="true"] {
   border-color: var(--tcrn-color-border-control);
@@ -92,8 +81,6 @@ export const baseCss05 = `
   color: var(--tcrn-color-text-primary);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
 }
-.tcrn-product-shell .tcrn-shell-theme-toggle:focus-visible,
-.tcrn-product-shell .tcrn-shell-side-nav-toggle:focus-visible,
 .tcrn-product-shell .tcrn-shell-locale-menu__trigger:focus-visible {
   box-shadow: none;
 }`;
@@ -134,7 +121,6 @@ export const baseCss06 = `
   display: inline-grid;
   place-items: center;
   padding: 0;
-  color: var(--tcrn-color-brand-primary);
 }
 /*
  * Mobile-only, and hidden by default rather than shown by default: above the
@@ -147,7 +133,6 @@ export const baseCss06 = `
   display: none;
   place-items: center;
   padding: 0;
-  color: var(--tcrn-color-brand-primary);
 }
 .tcrn-shell-side-nav-toggle__icon {
   display: inline-grid;
@@ -210,10 +195,17 @@ export const baseCss08 = `
   from { opacity: 0.22; }
   to { opacity: 0; }
 }
-.tcrn-product-shell :focus-visible:not(.tcrn-search-input__control) {
-  outline: 3px solid var(--tcrn-color-focus-ring);
+/* Inside the product shell an element with no focus treatment of its own takes the G+
+   focus ring (--tcrn-focus-ring: a surface gap, then the accent ring), with a transparent
+   outline behind it for forced colours, which paint no box-shadow. The pair-driven
+   controls are left out: buttons and link buttons, links, text controls (the search
+   control is one), selects and the multi-select trigger, checkboxes, radios and switches
+   draw the same ring from their own pair tables together with their edge, and a shell
+   rule must not wipe either. */
+.tcrn-product-shell :focus-visible:not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control) {
+  outline: 2px solid transparent;
   outline-offset: 2px;
-  box-shadow: none;
+  box-shadow: var(--tcrn-focus-ring);
 }
 .tcrn-product-shell__sidebar {
   position: sticky;
@@ -2144,7 +2136,7 @@ export const baseCss24 = `
 
 export const baseCss25 = `
 @media (prefers-reduced-motion: reduce) {
-  .tcrn-button.tcrn-shell-theme-toggle,
+  /* The theme toggle takes the Actions family's reduced-motion transition. */
   .tcrn-nav-item {
     transition: opacity var(--tcrn-motion-comprehension), background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), border-color var(--tcrn-motion-comprehension);
   }
@@ -2162,7 +2154,6 @@ export const baseCss26 = `
 export const baseCss27 = `
 @media (prefers-reduced-motion: reduce) {
   .tcrn-nav-item:active,
-  .tcrn-shell-theme-toggle:active,
   .tcrn-shell-locale-menu__trigger:active,
   .tcrn-table-toolbar__chip:active,
   .tcrn-table-toolbar__collapse:active {
