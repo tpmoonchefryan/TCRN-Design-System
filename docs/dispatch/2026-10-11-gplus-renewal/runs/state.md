@@ -14,7 +14,7 @@
 - 集成分支已快进到 main `5814699`（START 改档位节）。
 - 包管理器：`corepack pnpm@10.12.1 -C <树>`；嵌套 pnpm 实测解析为 10.12.1。
 - 分包工作树放在 scratch 下（只写本工作树与 scratch）；包分支名 `claude/init015-r<轮>-<包>`。
-- 扫描红线（no-private-input-scan 扫文件系统而非 git 索引，未跟踪文件也算）：工作树内任何文件不得出现本机 `Library/Application Support`、`.ssh`、`.aws`、`Keychains` 路径，不得出现 `TOKEN=` 式赋值行与 overclaim 短语表里的英文短语。
+- 扫描红线（no-private-input-scan 扫文件系统而非 git 索引，未跟踪文件也算）：工作树内任何文件不得出现本机用户目录下的凭据目录、钥匙串目录或应用数据目录的绝对路径，不得出现 `TOKEN=` 式赋值行与 overclaim 短语表里的英文短语。
 
 ## 轮次
 
@@ -41,8 +41,9 @@
 | W2-C | 已合入 3dc2904，包树已退役 | 0af0bf8 | SUB-014→015；Icon 6/6；锁文件只删 12 行 lucide（保留 26 行 libc）；package-contract-manifest 红两处：OFL-1.1 不在许可白名单（W1-C 字体包带入，依据 D4 加入白名单，归 W6-B 并入文件集）、story-content.tsx 第 1065 行 `data-icon-library-source="lucide-react"`（归 W3-C，W2-C 交回写了新来源值与五语文案、smoke.test 667/669、语言条目 506–509、机器词台账 160 行——台账归 W4-A）；待 Owner：画板把 `.tcrn-icon` 基础样式搬进包标为待裁（未搬）；新树先构建 ui-tokens、ui-copy-state 再构建 ui-react（TS6305） |
 | W3-B | 已合入 ce8b8c2，包树已退役 | 5630344 | SUB-025→026；doc-shell-class 171→161（余下全在标记侧，归 W3-C）；`doc-shell:proof` 已接单测（W6-A 不用再接）；shell-fidelity 红只剩 `.tcrn-icon` 重复（W3-B P1，随 M5 由 W3-D 处置）；story-demo-styles 未清空，demo-styles-sync 不退役；map 外仍有 45 条以包类为主体的文档规则，其中几条改外观（W3-B P3，可能被 128-GWT3 抓到，批末处置）；知识库壳只补回两条 grid-area 摆放规则；shell:parity 几何可能变（批末跑） |
 | W1-E | 在跑 | 9713742 | SUB-036 |
+| W1-F | 在跑 | c9a2dd4 | SUB-034 |
 | W3-D | 在跑 | 4b22450 | SUB-018→021＋M5 `.tcrn-icon` 基类进包＋停用 accent 删除；文件集加 icon.css.ts、storybook.css、story-demo-styles.ts、alpha-styles.ts、shell-fidelity-proof、style-scale.md、token-extension-proof |
-| W3-C | 在跑 | 3003ed0 | SUB-027（另带 W2-C 交回的 story-content Icon 块与 smoke.test 667/669） |
+| W3-C | 已合入 a4572d0，包树已退役 | 3003ed0 | SUB-027；合入后集成树 typecheck/build EXIT=0，doc-shell-class-proof EXIT=0（outOfPackageCount 0，模板类全有定义；scratch `logs/integ-w3bc-check.log`）；storybook test 在包树红 3 例 8 条断言：1 条本包（`.tcrn-doc-icon-sample-grid` margin，W3-B 改名后应转绿）、7 条集外（`.tcrn-field:focus-within` 2、preview.ts 画布色 3、theme-color meta 1、AI 契约「TCRN stays regular weight」1）→ 断言改归 W6-B，preview.ts 画布色与 theme-color 归 W2-G；集外：`scripts/s254-story-dom-proof.mjs:43` 改 `.tcrn-doc-story-disclosure`（不在 verify，批末）、shell-fidelity 第 37/38/40 行空条目（批末）；交 W4-A：storybook-content-text.ts 两条新文案五语、删 506–510 行、台账删 160 行；交 W6-B：密集壳 TopBar、changelog MachineToken 等外观期望；密集/紧凑壳原型只删类留元素（W3-C P4，范围待复核） |
 | W2-B | 已合入 d95ccd2，包树已退役 | 817fc19 | SUB-012→013；Typography 11 条 10 过 1 todo（链接实际样式被 base 旧 `.tcrn-link` 覆盖）；四条 base/Navigation.test 跟进项已用消息并入在跑的 W3-D（先并集成分支再改：Navigation.test:399 正则、删 baseCss30 旧链接块并去 todo、baseCss28 Surface 头字号、壳内链接焦点环）；契约待议：caps 加 truncate、Text 外距、numeral 截断、生成段像素字面值与 C10 扫描（W2-B P4–P6 等，自定三处可推翻） |
 | W2-F | 已合入 c4b2731，包树已退役 | 97f68c4 | SUB-022→023；八个 logos2 文件 sha256 登记 8/8、16 项比对、两次反向变异均判红、母标远端 200 一致；Navigation 单测 26/28（剩 2 条旧搜索框断言归 W3-D）；base.css.ts 里 workflow、design-system-1..4、accent-tms、secondary-readable 等 accent 移进 token-extension 停用表（读取判红），定义待 W3-D 删；契约品牌说明改 G+ 规则致 smoke.test:1432 红；交 W6-B：smoke/storybook-smoke/internal-alpha 标语期望（艺人管理系统、设计系统）、shell-parity 认内联 svg、geometry-proof 品牌变异穿不过 display:none；交 W4-A：storybook-content-text.ts 新标语五语；生成器未输出贴片几何与单色墨（组件常量由门对照）；待 Owner：52px 收起（P1，CSS 部分已做：文案 display:none、标恒 22）、夜间后缀（P15）；子代理一条命令用了 cd /（未弹框，记 W2-F 问题清单第 14 条） |
 
