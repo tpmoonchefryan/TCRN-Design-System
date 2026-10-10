@@ -1,0 +1,16 @@
+# 问题清单 · W3-D（SUB-018 → SUB-021）
+
+只记不修。本包局部门全绿：typecheck、`--filter @tcrn/ui-react build`、`--filter @tcrn/ui-react test`（157/157，todo 0）、shell-fidelity（duplicateSelectors 0，未加白名单）、token-extension、`demo-styles-sync --check`，另跑 css-template-integrity（findings 0）。以下事项留给后续包、集成或设计权威处置。
+
+| # | 类别 | 事实 | 建议 |
+| --- | --- | --- | --- |
+| P1 | 待设计 | 三个外壳切换钮的尺寸未动：主题钮 36px 胶囊（baseCss05），侧栏钮 38px（baseCss06），移动导航钮 min 44px（baseCss23）。Icon 板 F 段写图标按钮「sm 28 · md 32 · lg 40 随 Actions 家族」。W2-D 交回第 2、6 条写明尺寸由设计定，本包只去掉了与状态对冲突的颜色、阴影、过渡、hover、焦点与按下缩放。Navigation.test 仍断言 36 / 38。 | 批末汇报列给 Owner：改用 IconButton md 32 加 radius-control，或保留胶囊 36 并在 Actions 契约里登记为外壳尺寸。 |
+| P2 | 范围外残留 | 非 Actions 家族的按压缩放还在：`.tcrn-nav-item:active`、`.tcrn-shell-locale-menu__trigger:active`、`.tcrn-table-toolbar__chip:active`、`.tcrn-table-toolbar__collapse:active`（baseCss03 / 27），以及 baseCss30 里 product-launcher、product-switcher、module-tabs、section-tabs、segmented-nav 的 `button:active`。它们是原生 button，不带 `.tcrn-button`。 | 导航与数据家族换皮时一并去掉（G+ 无 transform 位移）。 |
+| P3 | 范围外残留 | base 段还有十余条组件自带的旧焦点写法 `outline: 2px solid var(--tcrn-color-focus-ring)`（表格工具栏、relationship chip、lane board、sub-nav 一组、tabs、menu、card、operation-feedback；line-numbered-editor 为 3px）。产品壳内它们现在被 baseCss08 的 G+ 环覆盖（特异性 (0,3,0)），壳外仍是旧 outline。`.tcrn-product-shell .tcrn-shell-locale-menu__trigger:focus-visible { box-shadow: none }` 已被后面的 G+ 环规则覆盖，成了死规则。 | 对应家族换皮时改为 `--tcrn-focus-ring` 加透明 outline 回退；死规则随 locale 触发器一起清。 |
+| P4 | 无 token 的几何 | 复制钮状态图标 13px（lg 15px）沿用 W2-D `.tcrn-button__spinner` 的字面值（画板 cb 格 13）；Select / DatePicker 末端 30px 沿用 W2-E 的字面值，图标偏移写成 `calc((30px - var(--tcrn-icon-size-sm)) / 2)` 即 8px，画板 `.sw>.chev` 为 9px。 | 下次改契约时补 token（如按钮内图标 13 / 15、控件末端区 30），三处改读 token。 |
+| P5 | 待 Owner 更正 | `.tcrn-icon` 基类的 vertical-align 取画板 `.ic` 的 `middle`，不是原文档层的 `-0.125em`（W2-C P6 要求两者一并定）。stroke-width 用插值读生成物 `tcrnIconStrokeWidth`，读源文件的门看到的是 `${tcrnIconStrokeWidth}` 而不是数字；本包跑过的门都未受影响。 | Owner 若要 `-0.125em`，改 icon.css.ts 一行。 |
+| P6 | 硬线缺口（生成物） | 契约链接焦点 `.tcrn-link:where(:focus-visible,[data-tcrn-preview-state="focus"]) { outline: none; box-shadow: var(--tcrn-focus-ring) }` 没有透明 outline 回退，强制色模式下链接没有焦点指示。这是 `scripts/contract-generate.mjs` 的 typography 输出，不在本包文件集。 | 生成器改为输出 `outline: 2px solid transparent; outline-offset: 2px`，重生成。 |
+| P7 | 集外缺陷（预先存在） | `apps/storybook/src/build/page-template.tsx` 的 `scopeComponentCss` 按每个逗号拆选择器，`:where()`、`:is()`、`:not()` 里带逗号的选择器（生成的状态对规则、本包新的壳内焦点规则 `:not(a, b, …)`）在 `.story-body` 作用域副本里被拆成无效选择器，浏览器丢弃整条；全局副本仍生效。 | 文件所有者改为只在顶层逗号处拆分。 |
+| P8 | DOM 变化（未跑浏览器门） | Select 与 DatePicker 现在外包 `span.tcrn-select-wrap` / `span.tcrn-date-picker-wrap`，内含装饰 svg。包内单测与样式里的直接子选择器已对齐（base 段 settings 规则、inputs 段 setting-choice 规则）。storybook-smoke、shell-parity、internal-alpha-browser-proof、geometry 一类浏览器门本包没跑；grep 没找到把 select 或 date input 当直接子元素的断言，但测量值可能变化。 | 批末门里留意 Select / DatePicker 相关的几何与结构断言。 |
+| P9 | 文档描述过期 | `apps/storybook/src/build/foundation-visual-standards.ts:207` 描述静态 ClipboardCopyButton 构件（W2-D P13 同一行）；构件现在还带 loader 与四枚状态图标（`data-clipboard-state-icon`）。 | 文档层负责方补一句，五语同步。 |
+| P10 | 遗留外观 | `.tcrn-shell-locale-menu__trigger:hover` 与 `[aria-expanded="true"]` 仍用 color-mix 底色、旧 border-color 与阴影（baseCss05）。它不是按钮，不在 Actions 对表里。 | 导航家族换皮时处理。 |

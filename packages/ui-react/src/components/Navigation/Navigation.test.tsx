@@ -483,7 +483,7 @@ test("product shell component css carries the relocated component families (TCRN
   assert.match(tcrnComponentCss, /\.tcrn-state-surface\b/);
   assert.match(tcrnComponentCss, /\.tcrn-collapsible-region\b/);
   assert.match(tcrnComponentCss, /\.tcrn-segmented-nav\b/);
-  assert.match(tcrnComponentCss, /\.tcrn-highlight-mark\b/);
+  assert.match(tcrnComponentCss, /\.tcrn-highlight__mark\b/);
   assert.match(tcrnComponentCss, /@keyframes tcrn-skeleton-shimmer\b/);
   // The storybook-only static tooltip hook must NOT be shipped in the package; it stays
   // in the docs demo layer (it is not emitted by the Tooltip component).
@@ -523,13 +523,25 @@ test("product shell component css isolates topbar from docs chrome", () => {
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);[\s\S]*justify-content: stretch;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*background: color-mix\(in srgb, var\(--tcrn-color-surface-panel\), transparent 5%\);/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell \{[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell :focus-visible:not\(\.tcrn-search-input__control\) \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*box-shadow: none;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input:focus-within \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*outline-offset: 2px;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input__control:focus,[\s\S]*\.tcrn-product-shell \.tcrn-search-input__control:focus-visible \{[\s\S]*outline-style: none;[\s\S]*outline-width: 0;[\s\S]*outline-offset: 0;[\s\S]*box-shadow: none;/);
+  // G+ focus in the shell: an element with no focus treatment of its own takes the focus
+  // ring token over a transparent forced-colours outline, and the pair-driven controls
+  // (buttons, links, text controls including the search control, selects, checkboxes,
+  // radios, switches) are left to draw their own ring and edge from their pair tables.
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell :focus-visible:not\(\.tcrn-button, \.tcrn-link-button, \.tcrn-link, \.tcrn-input, \.tcrn-select, \.tcrn-checkbox, \.tcrn-radio-group__control, \.tcrn-switch__control\) \{\s*outline: 2px solid transparent;\s*outline-offset: 2px;\s*box-shadow: var\(--tcrn-focus-ring\);\s*\}/);
+  // The search wrapper draws nothing around the control in the shell, and no shell rule
+  // clears the control's own edge or ring.
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input:focus-within \{\s*outline: 0;\s*box-shadow: none;\s*\}/);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input__control[^{]*\{[^}]*box-shadow: none/);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell [^{]*\.tcrn-shell-(?:theme|side-nav)-toggle:focus-visible/);
   assert.match(tcrnComponentCss, /\.tcrn-nav-item\[data-nav-item-has-icon="false"\] \{[\s\S]*grid-template-columns: minmax\(0, 1fr\);/);
   assert.match(tcrnComponentCss, /\.tcrn-nav-item__content \{[\s\S]*min-width: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-nav-item__label \{[\s\S]*overflow-wrap: normal;[\s\S]*word-break: normal;/);
-  assert.match(tcrnComponentCss, /\.tcrn-nav-item\[data-selected="true"\],[\s\S]*\.tcrn-nav-item\[aria-current="page"\] \{[\s\S]*box-shadow: none;/);
+  // The selected nav item carries no shadow bar. (The earlier form of this check reached
+  // past the rule with [\s\S]* to a later shell focus rule's box-shadow: none, so it held
+  // only while that rule existed; it now reads the selected rule's own body.)
+  const selectedNavItem = /\.tcrn-nav-item\[data-selected="true"\],\s*\.tcrn-nav-item\[aria-current="page"\] \{([^}]*)\}/.exec(tcrnComponentCss);
+  assert.ok(selectedNavItem, "the selected nav item rule exists");
+  assert.doesNotMatch(selectedNavItem[1], /box-shadow:\s*(?!none\b)/);
 });
 
 test("product shell utility row wraps controls within owner-quality story frames", () => {
@@ -712,14 +724,38 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-shell-theme-toggle \{[\s\S]*inline-size: 36px;[\s\S]*min-height: 36px;[\s\S]*border-radius: var\(--tcrn-radius-pill\);/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 38px;[\s\S]*min-height: 38px;[\s\S]*place-items: center;/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle__icon \{[\s\S]*inline-size: 20px;[\s\S]*place-items: center;/);
+  // The three shell toggles are IconButtons: the shell rules size and shape them and leave
+  // fill, ink, edge, focus ring and transition to the Actions pair table. No shell rule
+  // colours them, shadows them, restyles their hover or focus, or scales them on press.
+  const sheetWithoutComments = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  const shellToggleRules = [...sheetWithoutComments.matchAll(/(?:^|\n)([^{}\n@][^{}]*)\{([^}]*)\}/g)].filter(([, selector]) =>
+    selector.split(",").some((part) => /^\s*(?:\.tcrn-button)?\.tcrn-shell-(?:theme|side-nav|mobile-nav)-toggle\s*$/.test(part))
+  );
+  assert.ok(shellToggleRules.length >= 3, "the theme, side-nav and mobile-nav toggle rules are found");
+  for (const [, selector, body] of shellToggleRules) {
+    assert.doesNotMatch(body, /(?:^|[;\s])(?:color|background|box-shadow|transition|border-color)\s*:/, `${selector.trim()} writes no colour, shadow or transition`);
+  }
+  assert.doesNotMatch(sheetWithoutComments, /\.tcrn-shell-(?:theme|side-nav|mobile-nav)-toggle:(?:hover|active|focus-visible)/);
+  assert.doesNotMatch(sheetWithoutComments, /\.tcrn-button\.tcrn-shell-theme-toggle[^{]*\{[^}]*transition/);
   assert.match(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger \{[\s\S]*min-height: 36px;[\s\S]*border-radius: var\(--tcrn-radius-pill\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input \{[\s\S]*--tcrn-search-input-control-min-inline-size: 9ch;[\s\S]*display: grid;[\s\S]*grid-template-columns: var\(--tcrn-search-input-icon-size\) minmax\(var\(--tcrn-search-input-control-min-inline-size\), 1fr\) max-content;/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input:focus-within \{[\s\S]*outline: 3px solid var\(--tcrn-color-focus-ring\);[\s\S]*outline-offset: 2px;[\s\S]*box-shadow: none;/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*position: static;[\s\S]*color: var\(--tcrn-color-text-secondary\);[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-weight: var\(--tcrn-type-weight-strong\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__icon \{[\s\S]*grid-column: 1;[\s\S]*inline-size: var\(--tcrn-search-input-icon-size\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input \.tcrn-search-input__control \{[\s\S]*appearance: none;[\s\S]*box-sizing: border-box;[\s\S]*grid-column: 2;[\s\S]*width: 100%;[\s\S]*min-height: 0;[\s\S]*min-width: 0;[\s\S]*max-width: none;[\s\S]*padding: 0;[\s\S]*border: 0;[\s\S]*border-radius: 0;[\s\S]*background: transparent;[\s\S]*box-shadow: none;/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[\s\S]*grid-column: 3;/);
-  assert.match(tcrnComponentCss, /\[data-tcrn-theme="dark"\] \.tcrn-button--primary[^{]*\{[\s\S]*color: var\(--tcrn-color-surface-canvas\);/);
+  // SearchInput keeps the tool form (STORY-126, Owner ruling): the control is the box and
+  // takes the search pair (wash fill, no edge, line-2 on hover, the paper fill with the
+  // focus ring once focused); the wrapper only positions the icon and the shortcut over it,
+  // and the control's inline padding keeps the text clear of both.
+  assert.match(tcrnComponentCss, /\.tcrn-search-input \{[^}]*--tcrn-search-input-control-min-inline-size: 9ch;[^}]*position: relative;[^}]*display: grid;[^}]*grid-template-columns: minmax\(0, 1fr\);/);
+  assert.doesNotMatch(tcrnComponentCss, /(?:^|\n)\.tcrn-search-input:focus-within \{/);
+  assert.match(tcrnComponentCss, /\.tcrn-input\.tcrn-search-input__control\{--tcrn-pair-fill-d:var\(--tcrn-color-wash\);--tcrn-pair-edge-d:0 0 #0000;[^}]*--tcrn-pair-edge-h:inset 0 0 0 1px var\(--tcrn-color-line-2\);--tcrn-pair-fill-f:var\(--tcrn-color-panel\)\}/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__icon \{[^}]*position: absolute;[^}]*inset-inline-start: var\(--tcrn-search-input-padding-inline\);[^}]*inline-size: var\(--tcrn-search-input-icon-size\);[^}]*color: var\(--tcrn-color-ink-3\);[^}]*pointer-events: none;/);
+  const searchControlRule = /\.tcrn-search-input \.tcrn-search-input__control \{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
+  assert.match(searchControlRule, /appearance: none;[^}]*inline-size: 100%;[^}]*block-size: var\(--tcrn-search-input-block-size\);[^}]*padding-inline: calc\(var\(--tcrn-search-input-padding-inline\) \+ var\(--tcrn-search-input-icon-size\) \+ var\(--tcrn-search-input-column-gap\)\) var\(--tcrn-search-input-padding-inline\);/);
+  assert.doesNotMatch(searchControlRule, /(?:^|[;\s])(?:background|box-shadow|border|color)\s*:/, "the search pair, not the wrapper rule, paints the control");
+  assert.match(tcrnComponentCss, /\.tcrn-input\.tcrn-search-input__control::placeholder \{\s*color: var\(--tcrn-color-ink-2\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[^}]*position: absolute;[^}]*inset-inline-end: var\(--tcrn-space-2\);[^}]*border: 1px solid var\(--tcrn-color-line-2\);[^}]*color: var\(--tcrn-color-ink-3\);[^}]*font-family: var\(--tcrn-type-family-mono\);[^}]*pointer-events: none;/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input\[data-shortcut-visible="true"\] \.tcrn-search-input__control \{\s*padding-inline-end: calc\(/);
+  // The primary button reads on-acc ink from its own pair in both themes; the night theme
+  // changes the tokens, not the button, so there is no dark-scoped primary rule any more.
+  assert.match(tcrnComponentCss, /\.tcrn-button\.tcrn-button--primary\{[^}]*--tcrn-pair-ink-d:var\(--tcrn-color-on-acc\)/);
+  assert.doesNotMatch(tcrnComponentCss, /\[data-tcrn-theme="dark"\] \.tcrn-button--primary/);
   assert.match(tcrnComponentCss, /\.tcrn-readback-panel \{[\s\S]*display: grid;[\s\S]*gap: var\(--tcrn-space-2\);/);
   assert.match(tcrnComponentCss, /\.tcrn-readback-panel > \.tcrn-heading \+ \* \{[\s\S]*margin-top: 0;/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell-content-stack \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-5\);[\s\S]*min-width: 0;/);

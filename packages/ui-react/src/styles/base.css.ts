@@ -11,24 +11,10 @@ export const baseCss01 = `
 :root {
   --tcrn-motion-product-shell: var(--tcrn-motion-emphasis);
   --tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer);
-  --tcrn-color-brand-secondary-readable: #246f80;
   --tcrn-brand-accent-aos: #187c7c;
-  --tcrn-brand-accent-tms: #2c63c8;
-  --tcrn-brand-accent-workflow: #3b5272;
-  --tcrn-brand-accent-design-system-1: #6577f3;
-  --tcrn-brand-accent-design-system-2: #3096f4;
-  --tcrn-brand-accent-design-system-3: #43d4cf;
-  --tcrn-brand-accent-design-system-4: #78b957;
 }
 [data-tcrn-theme="dark"] {
-  --tcrn-color-brand-secondary-readable: #a6e8ef;
   --tcrn-brand-accent-aos: #69d6d0;
-  --tcrn-brand-accent-tms: #9bb8ff;
-  --tcrn-brand-accent-workflow: #9db5d4;
-  --tcrn-brand-accent-design-system-1: #aeb8ff;
-  --tcrn-brand-accent-design-system-2: #83c8ff;
-  --tcrn-brand-accent-design-system-3: #7ce4df;
-  --tcrn-brand-accent-design-system-4: #c9f08f;
 }`;
 
 export const baseCss02 = `
@@ -38,8 +24,9 @@ export const baseCss02 = `
 }`;
 
 export const baseCss03 = `
+/* The theme toggle is an IconButton: a press switches it to the active pair and never
+   scales it (Actions), so it is not in this list. */
 .tcrn-nav-item:active,
-.tcrn-shell-theme-toggle:active,
 .tcrn-shell-locale-menu__trigger:active,
 .tcrn-table-toolbar__chip:active,
 .tcrn-table-toolbar__collapse:active {
@@ -58,6 +45,9 @@ export const baseCss05 = `
   border-top: 1px solid var(--tcrn-color-border-subtle);
   margin: var(--tcrn-space-3) 0;
 }
+/* The theme, side-nav and mobile-nav toggles are IconButtons, so their fill, ink, edge,
+   focus ring and transitions all come from the Actions pair table. These shell rules only
+   size and shape them; none of them writes a colour, a shadow or a transition. */
 .tcrn-shell-theme-toggle,
 .tcrn-button.tcrn-shell-theme-toggle {
   position: relative;
@@ -69,22 +59,7 @@ export const baseCss05 = `
   padding: 0;
   overflow: hidden;
   border-radius: var(--tcrn-radius-pill);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-  transition:
-    background-color var(--tcrn-motion-standard),
-    border-color var(--tcrn-motion-standard),
-    color var(--tcrn-motion-standard),
-    box-shadow var(--tcrn-motion-standard);
 }
-.tcrn-shell-side-nav-toggle {
-  transition:
-    background-color var(--tcrn-motion-standard),
-    border-color var(--tcrn-motion-standard),
-    color var(--tcrn-motion-standard),
-    box-shadow var(--tcrn-motion-standard);
-}
-.tcrn-shell-theme-toggle:hover,
-.tcrn-shell-side-nav-toggle:hover,
 .tcrn-shell-locale-menu__trigger:hover,
 .tcrn-shell-locale-menu__trigger[aria-expanded="true"] {
   border-color: var(--tcrn-color-border-control);
@@ -92,8 +67,6 @@ export const baseCss05 = `
   color: var(--tcrn-color-text-primary);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
 }
-.tcrn-product-shell .tcrn-shell-theme-toggle:focus-visible,
-.tcrn-product-shell .tcrn-shell-side-nav-toggle:focus-visible,
 .tcrn-product-shell .tcrn-shell-locale-menu__trigger:focus-visible {
   box-shadow: none;
 }`;
@@ -134,7 +107,6 @@ export const baseCss06 = `
   display: inline-grid;
   place-items: center;
   padding: 0;
-  color: var(--tcrn-color-brand-primary);
 }
 /*
  * Mobile-only, and hidden by default rather than shown by default: above the
@@ -147,7 +119,6 @@ export const baseCss06 = `
   display: none;
   place-items: center;
   padding: 0;
-  color: var(--tcrn-color-brand-primary);
 }
 .tcrn-shell-side-nav-toggle__icon {
   display: inline-grid;
@@ -210,10 +181,17 @@ export const baseCss08 = `
   from { opacity: 0.22; }
   to { opacity: 0; }
 }
-.tcrn-product-shell :focus-visible:not(.tcrn-search-input__control) {
-  outline: 3px solid var(--tcrn-color-focus-ring);
+/* Inside the product shell an element with no focus treatment of its own takes the G+
+   focus ring (--tcrn-focus-ring: a surface gap, then the accent ring), with a transparent
+   outline behind it for forced colours, which paint no box-shadow. The pair-driven
+   controls are left out: buttons and link buttons, links, text controls (the search
+   control is one), selects and the multi-select trigger, checkboxes, radios and switches
+   draw the same ring from their own pair tables together with their edge, and a shell
+   rule must not wipe either. */
+.tcrn-product-shell :focus-visible:not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control) {
+  outline: 2px solid transparent;
   outline-offset: 2px;
-  box-shadow: none;
+  box-shadow: var(--tcrn-focus-ring);
 }
 .tcrn-product-shell__sidebar {
   position: sticky;
@@ -2144,7 +2122,7 @@ export const baseCss24 = `
 
 export const baseCss25 = `
 @media (prefers-reduced-motion: reduce) {
-  .tcrn-button.tcrn-shell-theme-toggle,
+  /* The theme toggle takes the Actions family's reduced-motion transition. */
   .tcrn-nav-item {
     transition: opacity var(--tcrn-motion-comprehension), background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), border-color var(--tcrn-motion-comprehension);
   }
@@ -2162,7 +2140,6 @@ export const baseCss26 = `
 export const baseCss27 = `
 @media (prefers-reduced-motion: reduce) {
   .tcrn-nav-item:active,
-  .tcrn-shell-theme-toggle:active,
   .tcrn-shell-locale-menu__trigger:active,
   .tcrn-table-toolbar__chip:active,
   .tcrn-table-toolbar__collapse:active {
@@ -2244,7 +2221,10 @@ export const baseCss28 = `
   align-items: center;
   gap: var(--tcrn-space-2);
 }
-.tcrn-surface__head :is(h2,h3) { margin: 0; font-size: var(--tcrn-type-size-heading-3); }`;
+.tcrn-surface__head :is(h2,h3) { margin: 0; }
+/* A Heading in a surface head keeps the contract scale it was given; a plain h2 or h3
+   there takes the surface heading size. */
+.tcrn-surface__head :is(h2,h3):not(.tcrn-heading) { font-size: var(--tcrn-type-size-heading-3); }`;
 
 export const baseCss29 = `
 
@@ -2523,26 +2503,6 @@ export const baseCss30 = `
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
-}
-
-/* A record link cannot rely on colour alone: the brand ink is only 2.94:1 against
-   primary text in light mode and 1.73:1 in dark mode. The always-visible underline
-   is therefore part of the semantic treatment, with a 70% mix that measures 3.14:1
-   and 4.83:1 against the two panel surfaces. */
-.tcrn-link {
-  color: var(--tcrn-color-brand-primary);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-  text-decoration-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 70%, transparent);
-}
-.tcrn-link:hover {
-  text-decoration-color: var(--tcrn-color-brand-primary);
-}
-.tcrn-link:focus-visible {
-  outline: 2px solid var(--tcrn-color-focus-ring);
-  outline-offset: 2px;
-  border-radius: var(--tcrn-radius-control);
 }
 
 /* Pagination container. The component supplies only a truthful range and links from
@@ -3173,7 +3133,7 @@ export const baseCss38 = `
 .tcrn-settings-layout__form .tcrn-setting-row{grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-2);overflow-wrap:anywhere}
 .tcrn-settings-layout__form .tcrn-setting-row__control{inline-size:100%;grid-column:auto;grid-row:auto}
 .tcrn-settings-layout__form .tcrn-setting-row__tools{grid-column:auto;grid-row:auto}
-.tcrn-settings-layout__form .tcrn-setting-row__control>:is(.tcrn-input,.tcrn-select,.tcrn-field,.tcrn-setting-choice,.tcrn-number-input-field,.tcrn-multi-select-group,.tcrn-multi-select-dropdown){inline-size:100%;min-inline-size:0}`;
+.tcrn-settings-layout__form .tcrn-setting-row__control>:is(.tcrn-input,.tcrn-select,.tcrn-select-wrap,.tcrn-date-picker-wrap,.tcrn-field,.tcrn-setting-choice,.tcrn-number-input-field,.tcrn-multi-select-group,.tcrn-multi-select-dropdown){inline-size:100%;min-inline-size:0}`;
 
 export const baseCss39 = `
 @container tcrn-settings-layout-frame (min-width:960px){.tcrn-settings-layout__grid{grid-template-columns:minmax(0,var(--tcrn-container-settings-local-nav)) minmax(0,1fr)}}

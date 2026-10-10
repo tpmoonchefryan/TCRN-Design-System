@@ -18,8 +18,8 @@ import { inputsCheckPairsCss, inputsSwitchPairsCss, inputsTextPairsCss } from ".
 export const inputsCss01 = `
 /* In the product shell the search keeps the same tool form as everywhere else: the
    control draws its own edge and focus ring from the inputs pair table, and the wrapper
-   draws nothing around it. The shell-wide focus outline in the base segment already
-   skips the search control. */
+   draws nothing around it. The shell-wide focus rule in the base segment leaves every
+   pair-driven control alone, the search control among them. */
 .tcrn-product-shell .tcrn-search-input:focus-within {
   outline: 0;
   box-shadow: none;
@@ -108,12 +108,10 @@ export const inputsCss03 = `
   min-width: 180px;
 }`;
 
-export const inputsCss04 = `
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-search-input {
-    transition: opacity var(--tcrn-motion-comprehension), background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), border-color var(--tcrn-motion-comprehension);
-  }
-}`;
+// Former landing place of a reduced-motion transition for the search wrapper. The wrapper
+// no longer paints a fill or an edge, so there was nothing left to soften; the control's
+// own transition is the inputs family's. The segment stays joined, empty.
+export const inputsCss04 = ``;
 
 export const inputsCss05 = `
 
@@ -452,7 +450,49 @@ export const inputsCss10 = `
    the end of the box, where the calendar icon sits, so a click there still opens the
    system calendar the way the browser's own showPicker does. */
 .tcrn-date-picker { position: relative; padding-inline-end: 30px; }
-.tcrn-date-picker::-webkit-calendar-picker-indicator { position: absolute; inset-block: 0; inset-inline-end: 0; inline-size: 30px; block-size: 100%; margin: 0; padding: 0; opacity: 0; cursor: pointer; }`;
+.tcrn-date-picker::-webkit-calendar-picker-indicator { position: absolute; inset-block: 0; inset-inline-end: 0; inline-size: 30px; block-size: 100%; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
+
+/* Select and DatePicker sit in a wrapper that only positions their end icon (Inputs
+   board .sw > .chev): chevron-down for Select, calendar for DatePicker, at the sm icon
+   size in ink-3, centred in the 30px the control keeps clear at its end. The wrapper
+   draws nothing and takes the control's place in the layout: it shrinks to the control
+   in a line of text and stretches with it where its container stretches its items. The
+   icon is decorative and lets the pointer through, to the native select or to the
+   transparent date indicator, which covers the same 30px. */
+.tcrn-select-wrap,
+.tcrn-date-picker-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  vertical-align: middle;
+}
+.tcrn-select-wrap > .tcrn-select,
+.tcrn-date-picker-wrap > .tcrn-date-picker {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+/* With the chevron drawn, the native arrow goes and the label stops short of the icon. */
+.tcrn-select-wrap > .tcrn-select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-inline-end: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-select-wrap__icon,
+.tcrn-date-picker-wrap__icon {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: calc((30px - var(--tcrn-icon-size-sm)) / 2);
+  margin-block: auto;
+  inline-size: var(--tcrn-icon-size-sm);
+  block-size: var(--tcrn-icon-size-sm);
+  color: var(--tcrn-color-ink-3);
+  pointer-events: none;
+}`;
 
 export const inputsCss11 = `
 .tcrn-multi-select-group{display:grid;gap:var(--tcrn-space-2);min-inline-size:0;max-inline-size:100%}
@@ -482,7 +522,7 @@ export const inputsCss11 = `
 .tcrn-multi-select-dropdown__option [data-multi-select-check][data-selected="true"]{visibility:visible}`;
 
 export const inputsCss12 = `
-.tcrn-setting-choice__select-label>.tcrn-select{inline-size:100%}
+.tcrn-setting-choice__select-label>:is(.tcrn-select,.tcrn-select-wrap){inline-size:100%}
 .tcrn-setting-choice[data-setting-choice-control="radio"] .tcrn-radio-group{flex-direction:row;flex-wrap:nowrap;gap:var(--tcrn-space-2);max-inline-size:100%;overflow-x:auto;padding:var(--tcrn-container-settings-choice-padding);border:1px solid var(--tcrn-color-border-subtle);border-radius:var(--tcrn-radius-surface);background:var(--tcrn-color-surface-muted)}
 .tcrn-setting-choice[data-setting-choice-control="radio"] .tcrn-radio-group__option{min-inline-size:0;flex:1 1 0}
 .tcrn-setting-choice[data-setting-choice-control="radio"] .tcrn-radio-group__label{min-inline-size:0;overflow-wrap:anywhere}`;

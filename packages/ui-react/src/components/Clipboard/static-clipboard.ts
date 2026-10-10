@@ -15,6 +15,12 @@ export interface StaticClipboardCopyButtonOptions {
    * too), the polite `role="status"` region and `data-clipboard-copy-state`. The
    * value it copies is read from `data-clipboard-text`, so it is present in the page; a value
    * that must stay out of the DOM belongs to the React ClipboardCopyButton, which never writes it.
+   *
+   * The construct also carries the loader and the four state icons (copy, check,
+   * alert-triangle, info, each marked with `data-clipboard-state-icon`). The bridge draws
+   * none of them: the stylesheet shows the loader while `aria-busy` is set and otherwise the
+   * icon that `data-clipboard-copy-state` names, so switching those two attributes is all it
+   * takes for the static button to show what the component shows.
    */
   root: HTMLElement;
   /** Which language the built-in state labels are said in; defaults to the page's own at each change. */

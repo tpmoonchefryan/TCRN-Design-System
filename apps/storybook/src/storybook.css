@@ -367,14 +367,9 @@ label {
   overflow-wrap: anywhere;
 }
 
-.tcrn-icon {
-  display: inline-block;
-  flex: none;
-  color: currentColor;
-  fill: none;
-  stroke: currentColor;
-  vertical-align: -0.125em;
-}
+/* The .tcrn-icon base rule is the package's (styles/icon.css.ts); the docs layer only
+   lays icon samples out, and it addresses a package icon as svg[data-icon-name] so that
+   no docs rule takes .tcrn-icon as its subject. */
 
 /* .tcrn-highlight-text / .tcrn-highlight-mark (Typography-emitted) moved into the
    package component CSS — TCRN-DS-STORY-037. */
@@ -593,7 +588,7 @@ label {
   padding: var(--tcrn-space-2) var(--tcrn-space-2h);
 }
 
-.tcrn-doc-icon-sample .tcrn-icon {
+.tcrn-doc-icon-sample svg[data-icon-name] {
   width: 18px;
   height: 18px;
   justify-self: center;
