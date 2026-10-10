@@ -206,16 +206,36 @@ region after depth has been chosen.
 
 ## Icon Library Boundary
 
-`Icon` is the package-backed icon primitive. It wraps the curated Lucide icon set
-through `@tcrn/ui-react`; Storybook and downstream consumers should import TCRN
-icon primitives from this package rather than importing `lucide-react` directly.
-`tcrnIconNames` is a stable public utility readback of the currently approved
-names.
+`Icon` is the package-backed icon primitive. It draws the TCRN icon roster: 37
+interface icons drawn for this package on a 20-unit grid, read from the design
+contract (`docs/design/gplus-2026-10/contract/icons.json`, generated into
+`icon-paths.generated.ts`). The package has no third-party icon dependency;
+Storybook and downstream consumers import icons from `@tcrn/ui-react` rather
+than drawing or importing their own.
 
-Lucide is recorded as the local icon source with an ISC license readback. This
-does not turn general-purpose icons into TCRN brand marks: product logos,
-mother-brand marks, and product lockups remain brand assets, not icon-library
-substitutions.
+- `name` is one of `tcrnIconNames`, the closed roster. `IconName` is derived
+  from it, so a name outside the roster fails type checking, and adding a name
+  is a contract change.
+- `size` is `sm`, `md` or `lg`, the icon size tokens (14, 16 and 20 px), or a
+  number of pixels. The stroke stays 1.25px at every size through
+  `vector-effect: non-scaling-stroke`; there is no `strokeWidth` prop.
+- Icons inherit the text colour (`currentColor`) and are decorative by default
+  (`aria-hidden`). Give `title` or `aria-label` when an icon carries meaning on
+  its own; it then renders with `role="img"`.
+- `loader-circle` turns on the loading loop token (`motion.loading.loop`, 900ms
+  linear) and stops under reduced motion; keep visible status copy beside it.
+
+Roster, existing 28: `alert-triangle`, `arrow-left`, `arrow-right`, `book-open`,
+`check`, `chevron-down`, `chevron-left`, `chevron-right`, `database`,
+`external-link`, `globe-2`, `history`, `home`, `info`, `layers`, `layout-grid`,
+`loader-circle`, `menu`, `moon`, `package`, `palette`, `panel-left-close`,
+`panel-left-open`, `search`, `settings`, `shield-check`, `sun`, `x`.
+
+Roster, added 9: `plus`, `minus`, `users`, `bell`, `copy`, `trash`, `calendar`,
+`more-horizontal`, `chevron-up`.
+
+These are interface icons, not TCRN brand marks: product logos, mother-brand
+marks, and product lockups remain brand assets, not icon-library substitutions.
 
 ## Storybook Shell Control Boundary
 
