@@ -140,16 +140,23 @@ const coveredStorybookSections = storybookTopLevelSections.map((section) => ({
 // a consumer reading this contract needs to know the tagline is translated, and
 // which five values it can render. Deriving it means the next tagline change cannot
 // leave the readback describing the previous one.
-const productLogoIds: readonly TcrnProductLogoId[] = ["design-system", "aos", "tms"];
+const productLogoIds: readonly TcrnProductLogoId[] = ["design-system", "aos", "tms", "einzbern", "mana-orchestrate"];
 const publishedProductLogoRegistry = productLogoIds.map((productId) => {
   const asset = tcrnProductLogoRegistry[productId];
   return {
     productId,
     assetId: asset.assetId,
+    // The registered product mark drawn inline by TcrnBrandMark; null keeps the
+    // TCRN mother mark (AOS is not in this phase).
+    markId: asset.markId,
+    // sans: TCRN in ink plus the suffix in the product's deep colour; serif: the
+    // whole name in ink with the byline.
+    wordmark: asset.wordmark,
     lineOne: asset.lineOne,
     lineOneBase: asset.lineOneBase,
     lineOneSuffix: asset.lineOneSuffix,
     suffixClassName: asset.suffixClassName,
+    byline: asset.byline,
     // The wordmark is a name and stays Latin; the tagline is copy and carries all
     // five locales. A consumer that renders `lineTwo` must pick by reader locale.
     lineTwo: { ...asset.lineTwo },
@@ -987,8 +994,31 @@ export const aiConsumptionContract = {
     verificationCommand: "curl --fail --silent --show-error --location --head 'https://tcrn-design-system-storybook.vercel.app/tcrn-brand-mark.svg'",
     sha256: "5f28f17c599c63a05a51c81be03f9ef7845299af1940ebe6aef61f7af47fc25b"
   },
+  // The four product marks, each in color and mono: eight local files registered by
+  // digest. scripts/brand-asset-source-proof.mjs recomputes every sha256 and compares
+  // the package's renditions with the file bytes, so one changed byte turns it red.
+  // The marks are not published (publication is an Owner stop), so unlike the mother
+  // mark above there is no remote URL to check yet. The mono files carry the contract's
+  // mono ink; the package's mono rendition draws currentColor in its place.
+  productMarkSources: {
+    sourceDirectory: "docs/design/gplus-2026-10/logos2",
+    designContract: "docs/design/gplus-2026-10/contract/marks.json",
+    packageExports: ["TcrnBrandMark productId variant", "tcrnProductMarkSvg(productId, variant, { ink })"],
+    variants: ["color", "mono", "tile-tint", "tile-deep"],
+    remotePublication: "not published; local digest only",
+    files: [
+      { productId: "tms", variant: "color", path: "docs/design/gplus-2026-10/logos2/tms.svg", bytes: 357, sha256: "5bc00be377752865055228d65306c6474a8506f9deae9e94a57f1f5a9f514eab" },
+      { productId: "tms", variant: "mono", path: "docs/design/gplus-2026-10/logos2/tms-mono.svg", bytes: 357, sha256: "3499dd42780ea17447420110f819fd1c0261b8269828776ea43305353bcb132c" },
+      { productId: "einzbern", variant: "color", path: "docs/design/gplus-2026-10/logos2/einzbern.svg", bytes: 358, sha256: "8cc4e309c9d71175f507a0024d7218d5aa03787b80237c3ccfd58bbc7332f0d7" },
+      { productId: "einzbern", variant: "mono", path: "docs/design/gplus-2026-10/logos2/einzbern-mono.svg", bytes: 358, sha256: "ea55dde0d50080c2f4e64e743cffa60b202bcb7d6cf55faac1034f26256c8425" },
+      { productId: "mana-orchestrate", variant: "color", path: "docs/design/gplus-2026-10/logos2/mana.svg", bytes: 328, sha256: "debfe48dd2773728d64f847f5454d6d6071a7ba074326e7da7a63703ec750296" },
+      { productId: "mana-orchestrate", variant: "mono", path: "docs/design/gplus-2026-10/logos2/mana-mono.svg", bytes: 328, sha256: "7a645886fbe626ae4980c65b975a1dea29a10e10836f8a0f3484dca9734811a9" },
+      { productId: "design-system", variant: "color", path: "docs/design/gplus-2026-10/logos2/ds.svg", bytes: 392, sha256: "03b1f776e9d8ba899976f09a32e9206b0ce4960d7d6d1788eb50a4a4801f6cdc" },
+      { productId: "design-system", variant: "mono", path: "docs/design/gplus-2026-10/logos2/ds-mono.svg", bytes: 392, sha256: "19eafbd0497f764132c90bf4fbe4db34a8b7a4046ad7aa49b464a2b1f71c06ce" }
+    ]
+  },
   brandSurfaceDisposition:
-    "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity and must preserve the product-specific suffix color hierarchy used by package ProductLockup. TCRN stays regular weight as the mother-brand base; product suffixes carry the accent weight/color, and long suffixes such as Design System must stack under TCRN instead of running inline. ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
+    "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity and must preserve the product-specific suffix color hierarchy used by package ProductLockup. TCRN stays in ink at medium weight as the mother-brand base; a TCRN product suffix carries the strong weight and the product's deep color from the brand-suffix tokens (TMS #2c63c8, Design System #6577f3, the same in both themes, never gradient text), and long suffixes such as Design System must stack under TCRN instead of running inline. Einzbern and Mana Orchestrate are whole names in Source Serif 4 in ink with the by TCRN byline. A registered product draws its own product mark inline (TcrnBrandMark productId); the TCRN mother mark image stays for AOS and for lockups without a productId. ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:

@@ -7,7 +7,8 @@ import type {
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
   CSSProperties,
-  ReactNode
+  ReactNode,
+  SVGAttributes
 } from "react";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { IconButton, type IconButtonProps } from "../Button/index.js";
@@ -15,6 +16,12 @@ import { SearchInput, type SearchInputProps } from "../Form/index.js";
 import { Icon, type IconName } from "../Icon/index.js";
 import { resolveTcrnLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { cx, mergeIds, requiredText, resolveDocumentLocale } from "../../utils.js";
+import {
+  tcrnProductMarks,
+  tcrnProductMarkViewBox,
+  tcrnProductMarkWordmark,
+  type TcrnProductMark
+} from "./product-marks.generated.js";
 
 /**
  * The shell's own words about itself, in every supported locale.
@@ -248,14 +255,134 @@ export function TopBar({ productName, moduleName, actions, brandProps, className
   );
 }
 
+/**
+ * The registered product marks.
+ *
+ * Four solid marks on a 48 grid, each in two flat tones (the design system's in
+ * four), approved by the Owner on 2026-10-11. Their SVG bodies, palettes, names and
+ * taglines are generated from the design contract into product-marks.generated.ts,
+ * so nothing here redraws a shape or restates a colour; a product without a
+ * registered mark (AOS) keeps the TCRN mother mark, which awaits its own redesign.
+ */
+export const tcrnProductMarkIds = ["tms", "einzbern", "mana-orchestrate", "design-system"] as const;
+export type TcrnProductMarkId = (typeof tcrnProductMarkIds)[number];
+
+/**
+ * The four renditions every product mark ships in: `color` (its own tones), `mono`
+ * (one ink, currentColor unless another is given), `tile-tint` (the colour mark on
+ * its pale tint, for the side rail and application icons) and `tile-deep` (the mark
+ * in white on its deep tone, for favicons and dark places).
+ */
+export const tcrnProductMarkVariants = ["color", "mono", "tile-tint", "tile-deep"] as const;
+export type TcrnProductMarkVariant = (typeof tcrnProductMarkVariants)[number];
+
+// The grid comes from the generated viewBox. The tile geometry (radius 11 of 48,
+// the mark inset at 70%) and the white of the deep tile are the logos board's; the
+// generator does not emit the contract's `tile` block, so they are restated here and
+// scripts/brand-asset-source-proof.mjs checks them against marks.json.
+const productMarkGrid = Number(tcrnProductMarkViewBox.split(" ")[2]);
+const productMarkTileRadius = 11;
+const productMarkTileInset = "translate(7.2 7.2) scale(0.7)";
+const productMarkTileInk = "#ffffff";
+
+function productMark(productId: TcrnProductMarkId): TcrnProductMark {
+  const mark = tcrnProductMarks.find((candidate) => candidate.productId === productId);
+  if (!mark) throw new Error(`No product mark is generated for "${productId}"`);
+  return mark;
+}
+
+function inkedProductMarkBody(mark: TcrnProductMark, ink: string): string {
+  return ink === "currentColor" ? mark.inkBody : mark.inkBody.replaceAll("currentColor", ink);
+}
+
+function productMarkTile(fill: string, inner: string): string {
+  return `<rect width="${productMarkGrid}" height="${productMarkGrid}" rx="${productMarkTileRadius}" fill="${fill}"/><g transform="${productMarkTileInset}">${inner}</g>`;
+}
+
+/** The children of one rendition's `<svg>`, shared by the component and the file export. */
+function productMarkBody(mark: TcrnProductMark, variant: TcrnProductMarkVariant, ink = "currentColor"): string {
+  switch (variant) {
+    case "mono":
+      return inkedProductMarkBody(mark, ink);
+    case "tile-tint":
+      return productMarkTile(mark.palette.tint, mark.colorBody);
+    case "tile-deep":
+      return productMarkTile(mark.palette.deep, inkedProductMarkBody(mark, productMarkTileInk));
+    default:
+      return mark.colorBody;
+  }
+}
+
+function escapeSvgAttribute(value: string): string {
+  return value.replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("<", "&lt;");
+}
+
+export interface TcrnProductMarkSvgOptions {
+  /** The single ink of the `mono` rendition; currentColor when omitted. */
+  ink?: string;
+  /** Rendered width and height in px; the grid size (48) when omitted. */
+  size?: number;
+}
+
+/**
+ * One rendition of a registered product mark as a standalone SVG file, for the
+ * places that serve a file rather than mount a component: favicons, application
+ * icons, an about page. `color`, and `mono` given the contract's mono ink, are byte
+ * for byte the files in docs/design/gplus-2026-10/logos2.
+ */
+export function tcrnProductMarkSvg(
+  productId: TcrnProductMarkId,
+  variant: TcrnProductMarkVariant = "color",
+  options: TcrnProductMarkSvgOptions = {}
+): string {
+  const mark = productMark(productId);
+  const size = options.size ?? productMarkGrid;
+  const body = productMarkBody(mark, variant, options.ink ?? "currentColor");
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${tcrnProductMarkViewBox}" width="${size}" height="${size}" role="img" aria-label="${escapeSvgAttribute(mark.name)}">${body}</svg>\n`;
+}
+
 export interface TcrnBrandMarkProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt"> {
+  /** The mother mark's image; ignored when `productId` names a registered product mark. */
   src?: string;
   alt?: string;
   /** Which language the built-in alt text is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
+  /**
+   * A registered product mark, drawn inline from the design contract. Without it
+   * the component is the TCRN mother mark image.
+   */
+  productId?: TcrnProductMarkId;
+  /** Which rendition of the product mark; `color` when omitted. */
+  variant?: TcrnProductMarkVariant;
 }
 
-export function TcrnBrandMark({ src = "tcrn-brand-mark.svg", alt, locale, className, ...props }: TcrnBrandMarkProps) {
+export function TcrnBrandMark({ src = "tcrn-brand-mark.svg", alt, locale, productId, variant = "color", className, ...props }: TcrnBrandMarkProps) {
+  if (productId) {
+    // A product mark is inline SVG, so `mono` can follow the text colour around it
+    // and the bytes on the page are the contract's own. Its default name is the
+    // product's, which is Latin in every locale.
+    const mark = productMark(productId);
+    const accessibleName = requiredText(alt, mark.name);
+    const svgProps = props as unknown as SVGAttributes<SVGSVGElement>;
+    return (
+      <svg
+        {...svgProps}
+        className={cx("tcrn-brand-mark", className)}
+        viewBox={tcrnProductMarkViewBox}
+        role="img"
+        aria-label={accessibleName}
+        focusable="false"
+        data-component-source="@tcrn/ui-react"
+        data-brand-asset={`tcrn-product-mark-${productId}`}
+        data-tcrn-brand-mark="registered"
+        data-brand-asset-registration="design-system"
+        data-product-mark={productId}
+        data-product-mark-variant={variant}
+        dangerouslySetInnerHTML={{ __html: productMarkBody(mark, variant) }}
+      />
+    );
+  }
+
   // The mark is an image, so this alt text is its whole contribution to the
   // accessibility tree — and this component is mounted by every lockup on every
   // page, which made one English literal the most widely rendered of them all.
@@ -275,6 +402,11 @@ export function TcrnBrandMark({ src = "tcrn-brand-mark.svg", alt, locale, classN
   );
 }
 
+const tmsMark = productMark("tms");
+const einzbernMark = productMark("einzbern");
+const manaOrchestrateMark = productMark("mana-orchestrate");
+const designSystemMark = productMark("design-system");
+
 /**
  * The registered product lockups.
  *
@@ -287,6 +419,12 @@ export function TcrnBrandMark({ src = "tcrn-brand-mark.svg", alt, locale, classN
  * rendered in English on every localized route of every consuming product, in the
  * one component every page mounts.
  *
+ * The four products with a registered mark take their names, wordmark face and
+ * taglines from the design contract (product-marks.generated.ts). A TCRN product
+ * (`wordmark: "sans"`) is TCRN in ink plus a suffix in the product's deep colour;
+ * Einzbern and Mana Orchestrate (`wordmark: "serif"`) are whole names in ink with
+ * the byline. AOS is not in this phase and keeps its entry and the mother mark.
+ *
  * `alt` combines the two and follows the tagline, because a screen-reader user on
  * a ja route should hear the shell's brand the way a sighted reader sees it.
  */
@@ -294,27 +432,28 @@ export const tcrnProductLogoRegistry = {
   "design-system": {
     productId: "design-system",
     assetId: "tcrn-design-system-two-line",
-    lineOne: "TCRN Design System",
-    lineOneBase: "TCRN",
-    lineOneSuffix: "Design System",
+    markId: "design-system",
+    wordmark: designSystemMark.font,
+    lineOne: designSystemMark.name,
+    lineOneBase: designSystemMark.word,
+    lineOneSuffix: designSystemMark.suffix ?? null,
     suffixClassName: "tcrn-brand-wordmark__suffix--design-system",
-    lineTwo: {
-      "zh-CN": "组件库",
-      en: "Component Library",
-      ja: "コンポーネントライブラリ",
-      ko: "컴포넌트 라이브러리",
-      fr: "Bibliothèque de composants"
-    },
+    byline: null,
+    lineTwo: designSystemMark.taglines,
+    // "Design System" is two words that would otherwise double the lockup's width.
     stackSuffix: true,
-    alt: "TCRN Design System"
+    alt: designSystemMark.name
   },
   aos: {
     productId: "aos",
     assetId: "tcrn-aos-two-line",
+    markId: null,
+    wordmark: "sans",
     lineOne: "TCRN AOS",
     lineOneBase: "TCRN",
     lineOneSuffix: "AOS",
     suffixClassName: "tcrn-brand-wordmark__suffix--aos",
+    byline: null,
     lineTwo: {
       "zh-CN": "AI 运营系统",
       en: "AI Operation System",
@@ -328,40 +467,44 @@ export const tcrnProductLogoRegistry = {
   tms: {
     productId: "tms",
     assetId: "tcrn-tms-two-line",
-    lineOne: "TCRN TMS",
-    lineOneBase: "TCRN",
-    lineOneSuffix: "TMS",
+    markId: "tms",
+    wordmark: tmsMark.font,
+    lineOne: tmsMark.name,
+    lineOneBase: tmsMark.word,
+    lineOneSuffix: tmsMark.suffix ?? null,
     suffixClassName: "tcrn-brand-wordmark__suffix--tms",
-    lineTwo: {
-      "zh-CN": "人才管理系统",
-      en: "Talent Management System",
-      ja: "タレントマネジメントシステム",
-      ko: "인재 관리 시스템",
-      fr: "Système de gestion des talents"
-    },
+    byline: null,
+    lineTwo: tmsMark.taglines,
     stackSuffix: false,
-    alt: "TCRN TMS"
+    alt: tmsMark.name
   },
-  workflow: {
-    productId: "workflow",
-    assetId: "tcrn-workflow-two-line",
-    lineOne: "TCRN Workflow",
-    lineOneBase: "TCRN",
-    lineOneSuffix: "Workflow",
-    suffixClassName: "tcrn-brand-wordmark__suffix--workflow",
-    lineTwo: {
-      "zh-CN": "工作流治理引擎",
-      en: "Workflow Governance Engine",
-      ja: "ワークフローガバナンスエンジン",
-      ko: "워크플로 거버넌스 엔진",
-      fr: "Moteur de gouvernance des flux"
-    },
-    // Beside TCRN rather than under it, as AOS and TMS are: "Workflow" is one word of
-    // similar weight, and the lockup has to fit a 48px application top bar. The design
-    // system stacks its own suffix because "Design System" is two words that would
-    // otherwise double the lockup's width.
+  einzbern: {
+    productId: "einzbern",
+    assetId: "tcrn-einzbern-two-line",
+    markId: "einzbern",
+    wordmark: einzbernMark.font,
+    lineOne: einzbernMark.name,
+    lineOneBase: einzbernMark.word,
+    lineOneSuffix: einzbernMark.suffix ?? null,
+    suffixClassName: null,
+    byline: tcrnProductMarkWordmark.serif.byline,
+    lineTwo: einzbernMark.taglines,
     stackSuffix: false,
-    alt: "TCRN Workflow"
+    alt: einzbernMark.name
+  },
+  "mana-orchestrate": {
+    productId: "mana-orchestrate",
+    assetId: "tcrn-mana-orchestrate-two-line",
+    markId: "mana-orchestrate",
+    wordmark: manaOrchestrateMark.font,
+    lineOne: manaOrchestrateMark.name,
+    lineOneBase: manaOrchestrateMark.word,
+    lineOneSuffix: manaOrchestrateMark.suffix ?? null,
+    suffixClassName: null,
+    byline: tcrnProductMarkWordmark.serif.byline,
+    lineTwo: manaOrchestrateMark.taglines,
+    stackSuffix: false,
+    alt: manaOrchestrateMark.name
   }
 } as const;
 
@@ -373,7 +516,7 @@ export function getTcrnProductLogoAsset(productId: TcrnProductLogoId) {
 }
 
 function shouldStackProductSuffix(productSuffix: string) {
-  const cjkCount = Array.from(productSuffix).filter((character) => /[\u3400-\u9fff]/u.test(character)).length;
+  const cjkCount = Array.from(productSuffix).filter((character) => /[㐀-鿿]/u.test(character)).length;
   return productSuffix.length > 8 || productSuffix.includes(" ") || cjkCount >= 4;
 }
 
@@ -384,8 +527,11 @@ export function tcrnProductTagline(productId: TcrnProductLogoId, locale?: string
 
 export interface ProductLogoProps extends HTMLAttributes<HTMLDivElement> {
   productId: TcrnProductLogoId;
+  /** The mother mark's image, for a product with no registered mark (AOS). */
   brandMarkSrc?: string;
   brandMarkAlt?: string;
+  /** Which rendition of a registered product mark; `color` when omitted. */
+  markVariant?: TcrnProductMarkVariant;
   /**
    * Which language the tagline is said in. Defaults to the fallback locale, so a
    * consumer that never passes it keeps today's English rather than losing the
@@ -399,6 +545,7 @@ export function ProductLogo({
   productId,
   brandMarkSrc = "tcrn-brand-mark.svg",
   brandMarkAlt,
+  markVariant,
   locale,
   className,
   ...props
@@ -409,24 +556,38 @@ export function ProductLogo({
   // screen-reader user hears what a sighted reader sees — including the
   // translation, which is why it is composed here rather than stored.
   const accessibleName = `${asset.lineOne} ${tagline}`;
+  const markAlt = brandMarkAlt ?? accessibleName;
 
   return (
     <div
       {...props}
-      className={cx("tcrn-product-logo", asset.stackSuffix && "tcrn-product-logo--stacked-suffix", className)}
+      className={cx(
+        "tcrn-product-logo",
+        asset.stackSuffix && "tcrn-product-logo--stacked-suffix",
+        asset.wordmark === "serif" && "tcrn-product-logo--serif",
+        className
+      )}
       aria-label={accessibleName}
       data-component-source="@tcrn/ui-react"
       data-registered-product-logo="@tcrn/ui-react/ProductLogo"
       data-product-id={asset.productId}
       data-product-logo-asset-id={asset.assetId}
+      data-product-wordmark={asset.wordmark}
     >
-      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt ?? accessibleName} />
+      {asset.markId ? (
+        <TcrnBrandMark productId={asset.markId} variant={markVariant} alt={markAlt} />
+      ) : (
+        <TcrnBrandMark src={brandMarkSrc} alt={markAlt} />
+      )}
       <span className="tcrn-product-logo__copy" aria-hidden="true">
         <span className="tcrn-product-logo__line-one" aria-label={asset.lineOne}>
           <span className="tcrn-product-logo__line-one-base">{asset.lineOneBase}</span>
-          <span className={cx("tcrn-product-logo__line-one-suffix", asset.suffixClassName)}>{asset.lineOneSuffix}</span>
+          {asset.lineOneSuffix ? (
+            <span className={cx("tcrn-product-logo__line-one-suffix", asset.suffixClassName ?? undefined)}>{asset.lineOneSuffix}</span>
+          ) : null}
         </span>
         <span className="tcrn-product-logo__line-two">{tagline}</span>
+        {asset.byline ? <span className="tcrn-product-logo__byline">{asset.byline}</span> : null}
       </span>
     </div>
   );
@@ -439,10 +600,12 @@ export interface ProductLockupProps extends HTMLAttributes<HTMLDivElement> {
   brandMarkAlt?: string;
   productId?: TcrnProductLogoId;
   /** Passed to `ProductLogo` when `productId` is given; ignored otherwise. */
+  markVariant?: TcrnProductMarkVariant;
+  /** Passed to `ProductLogo` when `productId` is given; ignored otherwise. */
   locale?: string;
 }
 
-export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, locale, className, ...props }: ProductLockupProps) {
+export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, markVariant, locale, className, ...props }: ProductLockupProps) {
   if (productId) {
     return (
       <ProductLogo
@@ -451,6 +614,7 @@ export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMark
         productId={productId}
         brandMarkSrc={brandMarkSrc}
         brandMarkAlt={brandMarkAlt}
+        markVariant={markVariant}
         className={cx("tcrn-brand-lockup", className)}
       />
     );
@@ -482,7 +646,7 @@ export interface ShellBrandLockupProps extends ProductLockupProps {
   caption?: string;
 }
 
-export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, locale, className, ...props }: ShellBrandLockupProps) {
+export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, markVariant, locale, className, ...props }: ShellBrandLockupProps) {
   if (productId) {
     return (
       <ProductLogo
@@ -491,6 +655,7 @@ export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSr
         productId={productId}
         brandMarkSrc={brandMarkSrc}
         brandMarkAlt={brandMarkAlt}
+        markVariant={markVariant}
         className={cx("tcrn-shell-brand-lockup", className)}
       />
     );

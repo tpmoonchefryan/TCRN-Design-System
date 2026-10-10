@@ -31,8 +31,19 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const EXTENSION_TOKENS = [
   "--tcrn-motion-product-shell",
   "--tcrn-motion-product-shell-search",
+  // AOS is not in the G+ renewal (STORY-127): its suffix keeps this accent.
+  "--tcrn-brand-accent-aos"
+];
+
+// Retired brand extension tokens (STORY-127). The G+ brand rules stopped reading them: a
+// TCRN product suffix takes its colour from the @tcrn/ui-tokens brand-suffix tokens, the
+// four-colour gradient suffix and the workflow lockup are gone, and a lockup without a
+// productId paints its suffix in ink. styles/base.css.ts still defines them while it is
+// frozen for W2; deleting those definitions is handed to W3-D. Until then a definition is
+// tolerated and a read is an error; once a definition is gone the entry is listed in the
+// summary for removal instead of failing, so the two edits need not land together.
+const RETIRED_EXTENSION_TOKENS = [
   "--tcrn-color-brand-secondary-readable",
-  "--tcrn-brand-accent-aos",
   "--tcrn-brand-accent-tms",
   "--tcrn-brand-accent-workflow",
   "--tcrn-brand-accent-design-system-1",
@@ -48,6 +59,13 @@ const EXTENSION_TOKENS = [
 // false-positive on them.
 const LOCAL_VARS = [
   "--tcrn-brand-mark-size",
+  // The brand lockup's size tiers (STORY-127): the lockup, product logo and side-rail
+  // containers set these and the wordmark and tagline rules read them.
+  "--tcrn-brand-line-one-size",
+  "--tcrn-brand-line-one-height",
+  "--tcrn-brand-line-one-base-weight",
+  "--tcrn-brand-line-two-size",
+  "--tcrn-brand-line-two-height",
   "--tcrn-product-shell-sidebar-width",
   "--tcrn-search-input-icon-size",
   "--tcrn-search-input-block-size",
@@ -83,7 +101,7 @@ export function tokenExtensionChecks() {
   const definedSet = new Set(definedProps);
 
   const known = new Set([...tcrnTokens, ...tcrnDarkThemeTokens].map((token) => token.variable));
-  const allowlisted = new Set([...known, ...EXTENSION_TOKENS, ...LOCAL_VARS]);
+  const allowlisted = new Set([...known, ...EXTENSION_TOKENS, ...RETIRED_EXTENSION_TOKENS, ...LOCAL_VARS]);
 
   const problems = [];
 
@@ -100,6 +118,13 @@ export function tokenExtensionChecks() {
   for (const property of referenced) {
     if (!known.has(property) && !definedSet.has(property) && !LOCAL_VARS.includes(property)) problems.push(`unresolved public token reference: ${property}`);
   }
+
+  // A retired brand token may linger as a definition until base.css.ts drops it, but
+  // nothing may read it any more.
+  for (const property of RETIRED_EXTENSION_TOKENS) {
+    if (referenced.has(property)) problems.push(`retired brand token read in tcrnComponentCss: ${property} — use the brand-suffix token or ink instead`);
+  }
+  const retiredNoLongerDefined = RETIRED_EXTENSION_TOKENS.filter((property) => !definedSet.has(property));
 
   // 2. Allowlist completeness: a listed extension token must still exist (catches stale allowlist).
   const staleExtension = EXTENSION_TOKENS.filter((property) => !definedSet.has(property));
@@ -135,6 +160,8 @@ export function tokenExtensionChecks() {
     definitions: definedSet.size,
     known: known.size,
     extensionTokens: EXTENSION_TOKENS.length,
+    retiredExtensionTokens: RETIRED_EXTENSION_TOKENS.length,
+    retiredNoLongerDefined,
     localVars: LOCAL_VARS.length,
     pairLocals: [...definedSet].filter((property) => PAIR_LOCAL.test(property)).length,
     radiusPanel: panel,
