@@ -3539,13 +3539,13 @@ const disclosureOk = disclosureChecks.length > 0 && disclosureChecks.every(
 // repository writes the policy down and already carries every token below, so the check and
 // its place in nonVisualProofOk are unchanged — only the document it reads moved, and the
 // policy is still asserted where it actually lives.
-const claudeMdLocalizationSection = readFileSync("apps/storybook/README.md", "utf8")
+const localizationPolicySection = readFileSync("apps/storybook/README.md", "utf8")
   .split(/^## /m)
   .find((section) => section.startsWith("Localization")) ?? "";
 const localizationPolicyRequiredTokens = ["`zh-CN`", "`en`", "`ja`", "`ko`", "`fr`", "scripts/lib/locale-invariant-ledger.mjs", "internal-alpha:proof"];
 const localizationPolicyBinding = {
-  sectionPresent: claudeMdLocalizationSection.length > 0,
-  missingTokens: localizationPolicyRequiredTokens.filter((token) => !claudeMdLocalizationSection.includes(token))
+  sectionPresent: localizationPolicySection.length > 0,
+  missingTokens: localizationPolicyRequiredTokens.filter((token) => !localizationPolicySection.includes(token))
 };
 localizationPolicyBinding.ok = localizationPolicyBinding.sectionPresent && localizationPolicyBinding.missingTokens.length === 0;
 if (!localizationPolicyBinding.ok) {

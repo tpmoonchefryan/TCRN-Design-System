@@ -22,6 +22,8 @@ next deployment. The storybook README loses its two pointers to the root
 stale claim goes with it. The earlier entries below that mention these files
 are history and stay as written.
 
+The no-private-input scan skips the root `.ether/` (the Einzbern project store).
+
 ### De-productized functional display surface (2026-08-22)
 
 The former `@tcrn/ui-domain` surface has been merged into `@tcrn/ui-react` under

@@ -5,6 +5,7 @@ import { pathToFileURL } from "node:url";
 
 const ignoredDirectories = new Set([
   ".codegraph",
+  ".ether",
   ".git",
   ".tarball-smoke",
   "dist",
