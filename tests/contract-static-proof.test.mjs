@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { colourLiterals, compounds, emojiIn, parseCss, selectorClasses, shadowLayers, specificity } from "../scripts/lib/css-rules.mjs";
+import { colourLiterals, compounds, emojiIn, parseCss, selectorClasses, shadowLayers, specificity, withoutPseudoElements } from "../scripts/lib/css-rules.mjs";
 import { CHECKED_CLAUSES, evaluateContract, outOfPackageClasses, selectedPairKeys, validateExemptions } from "../scripts/contract-static-proof.mjs";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -96,6 +96,8 @@ test("specificity follows Selectors Level 4 for :where, :is, :not and pseudo-ele
   assert.deepEqual(specificity(".a:where(.b,.c) .d:is(#e, .f)"), [1, 2, 0]);
   assert.deepEqual(specificity("a:not(.x, #y)::before"), [1, 0, 2]);
   assert.deepEqual(specificity("li:nth-child(2n of .on)"), [0, 2, 1]);
+  assert.deepEqual(specificity(withoutPseudoElements(".tcrn-input:placeholder-shown::placeholder")), [0, 2, 0]);
+  assert.deepEqual(specificity(withoutPseudoElements(".tcrn-button:hover:before")), [0, 2, 0]);
 });
 
 test("compounds split on combinators outside brackets and functions", () => {

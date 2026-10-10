@@ -511,7 +511,7 @@ export function formatSpecificity(s) {
 
 /** Selector without its pseudo-elements (so a ::before rule compares like its element rule). */
 export function withoutPseudoElements(selector) {
-  return selector.replace(/::?(?:before|after|first-line|first-letter|placeholder|marker|selection|backdrop|-webkit-[-\w]+|-moz-[-\w]+)(?:\([^)]*\))?/giu, "");
+  return selector.replace(/::(?:[-\w]+)(?:\([^)]*\))?|:(?:before|after|first-line|first-letter)(?![-\w])/giu, "");
 }
 
 /**
