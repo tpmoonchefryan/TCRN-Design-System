@@ -186,39 +186,3 @@ tokens.css 的内容依次是：`@import "../fonts/fonts.css";`、`:root` 主题
 
 `--filter @tcrn/ui-tokens build`、`tokens-sync`、`tokens-sync --check`、`--filter @tcrn/ui-tokens test`（8/8）、`stamp-whitelist-proof`、`token-extension-proof`（radius 12px/12px）均通过。`fonts-proof` 中 token-families 与 proprietary 通过；coverage 仍是基线就有的红（P1）。日志在派工 scratchpad 的 `logs/r1-W2-A-final-*.log`。
 
-## 本包引用的问题清单条目（problems/decomposition.md）
-
-**P1 构图一壳层几何与 ProductShell 不在第一批（待 Owner）。**
-现象：STORY-129-GWT3 要求样板 story 侧栏图标左 16、文字 48、纸离边 12，构图一侧栏 220、顶栏 52；STORY-127-GWT4 要求侧栏收起到 52px。包内 ProductShell 现为侧栏 280、收起 92；禁用清单禁止「通用件拼壳」，INIT 不授权改第二批以后的家族。
-证据：`packages/ui-react/src/components/Navigation/Navigation.tsx` 第 2502–2516 行（`--tcrn-product-shell-sidebar-width: 280px` / `92px`）；STORY-129 GWT3；STORY-127 GWT4；INIT「不授权」段；MIN-20261011 D1。
-建议：请 Owner 裁定构图一的壳层几何是否算 G+ 底盘（D1）而纳入 INIT-015。裁定前 SUB-031 用 ProductShell 并通过已登记的局部变量 `--tcrn-product-shell-sidebar-width` 设 220，其余差值写进 storybook-map（STORY-130 允许「逐条有裁定引用」），129-GWT3 与 127-GWT4 的 52px 部分记为待裁。
-**P2 C1–C17 条款正本画板未入仓（待 Owner 或主线程补件）。**
-现象：canvas.json 列有 `V2-Rejections.dc.html`（打回根因总账 · 契约条款草案）与 `V2-Families.dc.html`，boards/ 下没有这两个文件。STORY-132 要求条款编号与画布一致、条款文案进 docs/contract；仓内只能从 Story 正文、START 硬线与板内零星引用（C1、C5、C7、C8、C9、C16）拼出部分条款。
-证据：`docs/design/gplus-2026-10/boards/canvas.json`；`ls docs/design/gplus-2026-10/boards`。
-建议：在 W1-E 定稿前把画布版本 33 的 V2-Rejections 板复制进 boards/。未补时 SUB-036 只写已知条款，缺的编号（C3、C4、C10、C12、C14、C15、C17）标「画板未入仓」。
-**P9 中文子集的「常用 3500 字」没有仓内可核来源（待 Owner）。**
-现象：STORY-121 假设按包内五语字符串加常用 3500 字取中文子集；本机没有 pyftsubset/fontTools，宿主安装是停点；仓内也没有 3500 字表。
-证据：`python3 -c "import fontTools"` 报 ModuleNotFoundError；拆分文件第 6 节。
-建议：用上游已切好的 unicode-range 分片，按产品用字选分片（分片本身会多带一批常用字），不加 3500 字表。Owner 若要 3500 字覆盖，给定字表来源后由 SUB-004 加选分片。
-**P15 夜间品牌后缀色没有裁定（待 Owner）。**
-现象：Story 只定浅色后缀 TMS #2c63c8、Design System #6577f3；产品标板夜间仍用同一深色，#2c63c8 落在 #191916 上对比很低。
-证据：`docs/design/gplus-2026-10/tools/build-logos2.mjs` pane() 里 `wm()` 用 `PAL[k].deep`；B1-Brand 板 F 段「#6577f3 于白 3.8，字标按 logotype 豁免 4.5」。
-建议：先按画板（两主题同色）实现，字标豁免在对比度门里逐条登记并引用 D2；请 Owner 决定夜间是否改用亮色（#7aa0f5 等）。
-**P3 brand-asset 门扩为八个文件与远端核对。**
-现象：现门联网下载母标发布 URL 比对 digest；新产品标未发布，发布属 Owner 停点。
-证据：`scripts/brand-asset-source-proof.mjs` 第 44–69 行；STORY-127「digest 对象扩为八个文件」。
-建议：SUB-023 对八个文件做本地 sha256 登记与比对，母标远端核对原样保留。verify 仍需联网（基线已通过）。
-**P4 契约静态门的范围。**
-现象：C2/C6/C7/C11 若扫整份 tcrnComponentCss 与全部 story，会被后续家族的旧写法与 LockHint 默认图标「🔒」判红，而 INIT 不授权改这些家族。
-证据：`packages/ui-react/src/components/Form/Form.tsx` 第 1070 行 LockHint 默认 icon；`apps/storybook/src/contract-stories/story-content.tsx` 第 1781 行。
-建议：SUB-036/037 先限第一批家族根类，后续家族按条目登记进 `docs/contract/exemptions.json`，引用 INIT 不授权段；不加无条件 skip。
-**P5 矩阵 story 的粒度。**
-现象：STORY-129 写「23 件各有矩阵 story」，格数却按板给（44/28/10/116/42）；STORY-130 用例是 typography--matrix。
-建议：每板一个矩阵 story（5 个），每件组件在其中有带标签的分节，测试断言 23 件齐全。
-**P6 对比度容差。**
-现象：INIT 写「对比度差 0」，STORY-131 写「差 ≤ 0.05」。
-建议：数据层（SUB-011，契约算出的期望与画板 data-expect）按两位小数要求差 0；DOM 层（SUB-035）用 0.05 作门阈值并在报告里给实际差值。
-**P12 焦点环改 box-shadow 后的强制色模式。**
-现象：G+ 焦点环是 box-shadow，强制色模式下不绘制。
-建议：SUB-016/019/020 保留透明 outline 作 forced-colors 回退（沿用 base 段已有的 forced-colors 处理）。
-
