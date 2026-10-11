@@ -391,6 +391,7 @@ test("the before-bg probe reads the ::before background (the Switch knob)", asyn
 // TCRN-DS-SUB-035: the gate wired to the G+ matrix and sample stories.
 import {
   GPLUS_FAMILIES,
+  ICON_STROKE,
   REQUIRED_CHECKS,
   SET_REQUIRED_CHECKS,
   STORY_MUTATIONS,
@@ -399,6 +400,7 @@ import {
   datePickerIndicatorHit,
   focusRingClipInPage,
   highlightWidthInPage,
+  iconStrokeInPage,
   measuredStoryIds
 } from "../scripts/geometry-measure-proof.mjs";
 
@@ -412,6 +414,49 @@ test("every G+ story has its required checks and the families split the ten ids"
   assert.deepEqual(Object.values(GPLUS_FAMILIES).flat().sort(), [...GPLUS_STORY_IDS].sort());
 });
 
+// TCRN-DS-SUB-077 (C-12): the required checks follow what each board carries. A sample has no
+// data-cell, so contrast was n/a on all five; rail and the TableShell rows are what a sample carries,
+// and the actions and inputs matrices declare their control heights (data-h, SUB-074).
+const storybookMap = JSON.parse(readFileSync(new URL("../docs/design/gplus-2026-10/storybook-map.json", import.meta.url), "utf8"));
+const ANY_PAGE = ["clip", "singleLine", "shadowBlur", "overlap"];
+const TABLE_SHELL_SAMPLES = ["typography-sample-billing", "icon-sample-project", "brand-sample-product", "actions-sample-project"];
+
+test("samples must measure rail and their table rows but not contrast; actions and inputs matrices control height", () => {
+  for (const checks of Object.values(REQUIRED_CHECKS)) for (const id of ANY_PAGE) assert.ok(checks.includes(id), id);
+  for (const id of GPLUS_SAMPLE_STORY_IDS) {
+    assert.ok(!REQUIRED_CHECKS[id].includes("contrast"), `${id}: a sample has no data-cell`);
+    assert.ok(REQUIRED_CHECKS[id].includes("rail"), `${id}: rail`);
+    assert.equal(REQUIRED_CHECKS[id].includes("rowAlign"), TABLE_SHELL_SAMPLES.includes(id), `${id}: rowAlign with TableShell rows only`);
+  }
+  for (const id of GPLUS_MATRIX_STORY_IDS) {
+    assert.ok(REQUIRED_CHECKS[id].includes("contrast"), `${id}: contrast`);
+    assert.ok(!REQUIRED_CHECKS[id].includes("rail"), `${id}: a matrix has no shell`);
+    assert.equal(REQUIRED_CHECKS[id].includes("controlHeight"), ["actions-matrix", "inputs-matrix"].includes(id), `${id}: controlHeight`);
+  }
+});
+
+test("the storybook map rows list the gate's required checks (the any-page four aside) and DIFF-6 records before-bg", () => {
+  for (const id of GPLUS_STORY_IDS) {
+    const rows = storybookMap.rows.filter((row) => row.storyId === id);
+    assert.ok(rows.length > 0, `${id}: no map row`);
+    const fromMap = new Set([...ANY_PAGE, ...rows.flatMap((row) => row.requiredChecks)]);
+    assert.deepEqual([...fromMap].sort(), [...new Set(REQUIRED_CHECKS[id])].sort(), id);
+  }
+  for (const row of storybookMap.rows.filter((item) => item.kind === "sample")) assert.ok(!row.requiredChecks.includes("contrast"), row.row);
+  const diff6 = storybookMap.differences.find((item) => item.id === "DIFF-6");
+  assert.equal(diff6.status, "测量库已支持 before-bg（W5-C）");
+  assert.doesNotMatch(diff6.story, /unknown_probe/);
+});
+
+test("on the built docs no required check is n/a: samples measure rail and rows, actions and inputs control height", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
+  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: [...GPLUS_STORY_IDS], themes: ["light"], mutations: [], probes: [] });
+  assert.equal(report.reason, null);
+  assert.deepEqual(report.missingStories, []);
+  assert.equal(report.runs.length, GPLUS_STORY_IDS.length);
+  for (const run of report.runs) assert.deepEqual(run.notApplicableRequired, [], run.storyId);
+  for (const id of ["actions-matrix", "inputs-matrix"]) assert.equal(report.runs.find((run) => run.storyId === id).verdict.checks.controlHeight.status, "pass", id);
+});
+
 test("STORY-131 GWT1-3 each have a real-story mutation on the check they name", () => {
   const bySource = Object.fromEntries(STORY_MUTATIONS.map((mutation) => [mutation.source, mutation]));
   assert.equal(bySource["131-GWT1"].check, "rowAlign");
@@ -421,7 +466,11 @@ test("STORY-131 GWT1-3 each have a real-story mutation on the check they name", 
   assert.match(bySource["131-GWT2"].css, /mark \{ padding: 2px/);
   assert.equal(bySource["131-GWT3"].check, "shadowBlur");
   assert.match(bySource["131-GWT3"].css, /box-shadow: 0 1px 4px/);
-  assert.deepEqual(STORY_PROBES.map((probe) => probe.id), ["buttonGroupFocusRing", "datePickerIndicatorHit", "highlightWidth"]);
+  assert.deepEqual(STORY_PROBES.map((probe) => probe.id), ["buttonGroupFocusRing", "datePickerIndicatorHit", "highlightWidth", "iconStroke"]);
+  const iconStroke = STORY_PROBES.find((probe) => probe.id === "iconStroke");
+  assert.deepEqual([iconStroke.storyId, iconStroke.source], ["icon-matrix", "124-GWT1"]);
+  assert.deepEqual([ICON_STROKE.sizePx, ICON_STROKE.strokeWidthPx, ICON_STROKE.vectorEffect], [16, 1.25, "non-scaling-stroke"]);
+  assert.match(ICON_STROKE.iconSelector, /^svg\.tcrn-icon\[data-gplus-icon-size="16"\]$/);
 });
 
 test("the measured set is the G+ ids plus gplus-* registry stories, or one family", () => {
@@ -473,6 +522,41 @@ test("the Highlight width probe turns red when a mark changes the text width", a
   assert.equal(red.violations[0].diffPx, 4);
 });
 
+// TCRN-DS-SUB-056: 124-GWT1. The page mirrors the package Icon (stroke on the svg, vector-effect on
+// each child) with two 16px icons and one 20px icon whose 2px stroke the probe must leave alone.
+const iconStrokeHtml = (iconCss) => `<!doctype html><html><head><style>
+svg.tcrn-icon { stroke-width: 1.25; }
+svg.tcrn-icon > * { vector-effect: non-scaling-stroke; }
+svg.tcrn-icon[data-gplus-icon-size="20"] { stroke-width: 2; }
+${iconCss}
+</style></head><body><main id="root">
+<svg class="tcrn-icon" data-gplus-icon-size="16" data-icon-name="layers" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 16 9 5 9-5"/></svg>
+<svg class="tcrn-icon" data-gplus-icon-size="16" data-icon-name="settings" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/></svg>
+<svg class="tcrn-icon" data-gplus-icon-size="20" data-icon-name="layers" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3 3 8l9 5 9-5-9-5Z"/></svg>
+</main></body></html>`;
+
+test("the icon stroke probe turns red when a 16px icon is stroked 2px or loses non-scaling-stroke", async () => {
+  const probe = (css) => onPage(iconStrokeHtml(css), (tab) => tab.evaluate(iconStrokeInPage, { ...ICON_STROKE, root: "#root" }));
+  const green = await probe("");
+  assert.equal(green.checked, 2);
+  assert.equal(green.children, 3);
+  assert.equal(green.violationCount, 0, JSON.stringify(green.violations));
+  assert.equal(green.value, 0);
+  assert.deepEqual(green.strokeWidths, ["1.25px"]);
+  assert.deepEqual(green.vectorEffects, ["non-scaling-stroke"]);
+  const thick = await probe('svg.tcrn-icon[data-gplus-icon-size="16"] { stroke-width: 2; }');
+  assert.equal(thick.violationCount, 3);
+  assert.equal(thick.value, 0.75);
+  assert.ok(thick.violations.every((violation) => violation.strokeWidth === "2px" && violation.reasons.includes("strokeWidth")));
+  const scaling = await probe("svg.tcrn-icon > * { vector-effect: none; }");
+  assert.equal(scaling.violationCount, 3);
+  assert.ok(scaling.violations.every((violation) => violation.reasons.join() === "vectorEffect"));
+  const resized = await probe('svg.tcrn-icon[data-gplus-icon-size="16"] { width: 14px; height: 14px; }');
+  assert.ok(resized.violations.some((violation) => violation.reasons.includes("size")));
+  const none = await onPage("<main id=\"root\"></main>", (tab) => tab.evaluate(iconStrokeInPage, { ...ICON_STROKE, root: "#root" }));
+  assert.equal(none.checked, 0);
+});
+
 test("the DatePicker probe needs the right 30px to be the native indicator, reachable by a click", async () => {
   const html = (iconCss) => `<!doctype html><html><head><style>
 .wrap { position: relative; display: inline-block; }
@@ -489,11 +573,14 @@ test("the DatePicker probe needs the right 30px to be the native indicator, reac
 });
 
 test("on the built docs the four real-story mutations are caught and the probes pass", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
-  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: ["typography-matrix", "actions-matrix", "inputs-matrix", "table-record-index-spec"], themes: ["light"] });
+  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: ["typography-matrix", "icon-matrix", "actions-matrix", "inputs-matrix", "table-record-index-spec"], themes: ["light"] });
   assert.equal(report.reason, null);
   assert.deepEqual(report.missingStories, []);
   assert.deepEqual(report.mutations.map((mutation) => [mutation.id, mutation.killed]), STORY_MUTATIONS.map((mutation) => [mutation.id, true]));
   assert.deepEqual(report.probes.map((probe) => [probe.id, probe.status]), STORY_PROBES.map((probe) => [probe.id, "pass"]));
+  const iconStroke = report.probes.find((probe) => probe.id === "iconStroke");
+  assert.ok(iconStroke.checked > 0, "the 16px row was found");
+  assert.deepEqual([iconStroke.strokeWidths, iconStroke.vectorEffects], [["1.25px"], ["non-scaling-stroke"]]);
   for (const id of ["typography-matrix", "actions-matrix"]) {
     const run = report.runs.find((item) => item.storyId === id);
     assert.equal(run.ok, true, `${id}: ${JSON.stringify(run.failed)} ${JSON.stringify(run.notApplicableRequired)}`);
