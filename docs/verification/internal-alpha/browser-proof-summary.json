@@ -1,5 +1,5 @@
 {
-  "ok": true,
+  "ok": false,
   "syntheticFixturesOnly": true,
   "noProductDataCaptured": true,
   "noLocalAbsolutePathsRetained": true,
@@ -46,8 +46,8 @@
       ],
       "normalizedBytesEqual": true,
       "normalizedProjectionDigests": [
-        "3d031504a42c459a08884489a9388aaa2863ca927cba9d4cc34ddc20163cc863",
-        "3d031504a42c459a08884489a9388aaa2863ca927cba9d4cc34ddc20163cc863"
+        "e56ce596072cf2f55e90786edcac2a87e3469f3253892a4fbc10db6109cecd15",
+        "e56ce596072cf2f55e90786edcac2a87e3469f3253892a4fbc10db6109cecd15"
       ],
       "projections": [
         {
@@ -55,7 +55,7 @@
           "requiredStoryPresent": 1,
           "productSearchResultsPresent": 1,
           "productSearchResultCount": 2,
-          "openMenus": 8,
+          "openMenus": 6,
           "rootVisible": true
         },
         {
@@ -63,11 +63,11 @@
           "requiredStoryPresent": 1,
           "productSearchResultsPresent": 1,
           "productSearchResultCount": 2,
-          "openMenus": 8,
+          "openMenus": 6,
           "rootVisible": true
         }
       ],
-      "ok": true
+      "ok": false
     },
     "fieldLeakCheck": {
       "baselineGreen": true,
@@ -1476,38 +1476,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 50,
-                "top": 558.515625,
-                "right": 340,
-                "bottom": 696.75,
-                "width": 290,
-                "height": 138.234375
+                "left": 46,
+                "top": 550.515625,
+                "right": 344,
+                "bottom": 691.515625,
+                "width": 298,
+                "height": 141
               },
               "headerRect": {
-                "left": 50,
-                "top": 558.515625,
-                "right": 340,
-                "bottom": 601.203125,
-                "width": 290,
-                "height": 42.6875
+                "left": 46,
+                "top": 550.515625,
+                "right": 344,
+                "bottom": 593.515625,
+                "width": 298,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 50,
-                "top": 617.203125,
-                "right": 340,
-                "bottom": 655.203125,
-                "width": 290,
+                "left": 46,
+                "top": 609.515625,
+                "right": 344,
+                "bottom": 647.515625,
+                "width": 298,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 50,
-                "top": 671.203125,
-                "right": 340,
-                "bottom": 696.75,
-                "width": 290,
-                "height": 25.546875
+                "left": 46,
+                "top": 663.515625,
+                "right": 344,
+                "bottom": 691.515625,
+                "width": 298,
+                "height": 28
               },
               "pageWidthPx": 390,
               "pageScrollWidthPx": 390
@@ -1533,52 +1533,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 50,
-                "top": 708.75,
-                "right": 340,
-                "bottom": 920.53125,
-                "width": 290,
-                "height": 211.78125
+                "left": 46,
+                "top": 703.515625,
+                "right": 344,
+                "bottom": 920.515625,
+                "width": 298,
+                "height": 217
               },
               "headerRect": {
-                "left": 50,
-                "top": 708.75,
-                "right": 340,
-                "bottom": 751.4375,
-                "width": 290,
-                "height": 42.6875
+                "left": 46,
+                "top": 703.515625,
+                "right": 344,
+                "bottom": 746.515625,
+                "width": 298,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 50,
-                "top": 767.4375,
-                "right": 340,
-                "bottom": 805.4375,
-                "width": 290,
+                "left": 46,
+                "top": 762.515625,
+                "right": 344,
+                "bottom": 800.515625,
+                "width": 298,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 50,
-                "top": 821.4375,
-                "right": 340,
-                "bottom": 920.53125,
-                "width": 290,
-                "height": 99.09375
+                "left": 46,
+                "top": 816.515625,
+                "right": 344,
+                "bottom": 920.515625,
+                "width": 298,
+                "height": 104
               },
               "localNavigationRect": {
-                "left": 50,
-                "top": 821.4375,
-                "right": 340,
-                "bottom": 861.4375,
-                "width": 290,
+                "left": 46,
+                "top": 816.515625,
+                "right": 344,
+                "bottom": 856.515625,
+                "width": 298,
                 "height": 40
               },
               "contentRect": {
-                "left": 50,
-                "top": 877.4375,
-                "right": 340,
-                "bottom": 920.53125,
-                "width": 290,
-                "height": 43.09375
+                "left": 46,
+                "top": 872.515625,
+                "right": 344,
+                "bottom": 920.515625,
+                "width": 298,
+                "height": 48
               },
               "pageWidthPx": 390,
               "pageScrollWidthPx": 390
@@ -1613,38 +1613,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 276.53125,
-                "right": 698,
-                "bottom": 414.765625,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 276.53125,
-                "right": 698,
-                "bottom": 319.21875,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 316.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 335.21875,
-                "right": 698,
-                "bottom": 373.21875,
-                "width": 348,
+                "left": 346,
+                "top": 332.46875,
+                "right": 702,
+                "bottom": 370.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 389.21875,
-                "right": 698,
-                "bottom": 414.765625,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 386.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -1670,52 +1670,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 426.765625,
-                "right": 698,
-                "bottom": 621,
-                "width": 348,
-                "height": 194.234375
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 426.765625,
-                "right": 698,
-                "bottom": 469.453125,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 469.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 485.453125,
-                "right": 698,
-                "bottom": 523.453125,
-                "width": 348,
+                "left": 346,
+                "top": 485.46875,
+                "right": 702,
+                "bottom": 523.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 539.453125,
-                "right": 698,
-                "bottom": 621,
-                "width": 348,
-                "height": 81.546875
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 84
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 539.453125,
-                "right": 698,
-                "bottom": 579.453125,
-                "width": 348,
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 579.46875,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 595.453125,
-                "right": 698,
-                "bottom": 621,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 595.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -1750,38 +1750,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 408.265625,
+                "left": 346,
+                "top": 404.9375,
                 "right": 624,
-                "bottom": 620.046875,
-                "width": 274,
-                "height": 211.78125
+                "bottom": 621.9375,
+                "width": 278,
+                "height": 217
               },
               "headerRect": {
-                "left": 350,
-                "top": 408.265625,
+                "left": 346,
+                "top": 404.9375,
                 "right": 624,
-                "bottom": 475.46875,
-                "width": 274,
-                "height": 67.203125
+                "bottom": 473.265625,
+                "width": 278,
+                "height": 68.328125
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 491.46875,
+                "left": 346,
+                "top": 489.265625,
                 "right": 624,
-                "bottom": 553.984375,
-                "width": 274,
-                "height": 62.515625
+                "bottom": 552.59375,
+                "width": 278,
+                "height": 63.328125
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 569.984375,
+                "left": 346,
+                "top": 568.59375,
                 "right": 624,
-                "bottom": 620.046875,
-                "width": 274,
-                "height": 50.0625
+                "bottom": 621.9375,
+                "width": 278,
+                "height": 53.34375
               },
               "pageWidthPx": 980,
               "pageScrollWidthPx": 980
@@ -1808,51 +1808,51 @@
             "geometry": {
               "pageHierarchyRect": {
                 "left": 636,
-                "top": 408.265625,
-                "right": 910,
-                "bottom": 620.046875,
-                "width": 274,
-                "height": 211.78125
+                "top": 404.9375,
+                "right": 914,
+                "bottom": 621.9375,
+                "width": 278,
+                "height": 217
               },
               "headerRect": {
                 "left": 636,
-                "top": 408.265625,
-                "right": 910,
-                "bottom": 450.953125,
-                "width": 274,
-                "height": 42.6875
+                "top": 404.9375,
+                "right": 914,
+                "bottom": 447.9375,
+                "width": 278,
+                "height": 43
               },
               "sectionTabsRect": {
                 "left": 636,
-                "top": 466.953125,
-                "right": 910,
-                "bottom": 504.953125,
-                "width": 274,
+                "top": 463.9375,
+                "right": 914,
+                "bottom": 501.9375,
+                "width": 278,
                 "height": 38
               },
               "thirdLevelRect": {
                 "left": 636,
-                "top": 520.953125,
-                "right": 910,
-                "bottom": 620.046875,
-                "width": 274,
-                "height": 99.09375
+                "top": 517.9375,
+                "right": 914,
+                "bottom": 621.9375,
+                "width": 278,
+                "height": 104
               },
               "localNavigationRect": {
                 "left": 636,
-                "top": 520.953125,
-                "right": 910,
-                "bottom": 560.953125,
-                "width": 274,
+                "top": 517.9375,
+                "right": 914,
+                "bottom": 557.9375,
+                "width": 278,
                 "height": 40
               },
               "contentRect": {
                 "left": 636,
-                "top": 576.953125,
-                "right": 910,
-                "bottom": 620.046875,
-                "width": 274,
-                "height": 43.09375
+                "top": 573.9375,
+                "right": 914,
+                "bottom": 621.9375,
+                "width": 278,
+                "height": 48
               },
               "pageWidthPx": 980,
               "pageScrollWidthPx": 980
@@ -1887,38 +1887,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 407.3125,
+                "left": 346,
+                "top": 402.890625,
                 "right": 646,
-                "bottom": 619.09375,
-                "width": 296,
-                "height": 211.78125
+                "bottom": 619.890625,
+                "width": 300,
+                "height": 217
               },
               "headerRect": {
-                "left": 350,
-                "top": 407.3125,
+                "left": 346,
+                "top": 402.890625,
                 "right": 646,
-                "bottom": 474.515625,
-                "width": 296,
-                "height": 67.203125
+                "bottom": 471.21875,
+                "width": 300,
+                "height": 68.328125
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 490.515625,
+                "left": 346,
+                "top": 487.21875,
                 "right": 646,
-                "bottom": 553.03125,
-                "width": 296,
-                "height": 62.515625
+                "bottom": 550.546875,
+                "width": 300,
+                "height": 63.328125
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 569.03125,
+                "left": 346,
+                "top": 566.546875,
                 "right": 646,
-                "bottom": 619.09375,
-                "width": 296,
-                "height": 50.0625
+                "bottom": 619.890625,
+                "width": 300,
+                "height": 53.34375
               },
               "pageWidthPx": 1024,
               "pageScrollWidthPx": 1024
@@ -1945,51 +1945,51 @@
             "geometry": {
               "pageHierarchyRect": {
                 "left": 658,
-                "top": 407.3125,
-                "right": 954,
-                "bottom": 619.09375,
-                "width": 296,
-                "height": 211.78125
+                "top": 402.890625,
+                "right": 958,
+                "bottom": 619.890625,
+                "width": 300,
+                "height": 217
               },
               "headerRect": {
                 "left": 658,
-                "top": 407.3125,
-                "right": 954,
-                "bottom": 450,
-                "width": 296,
-                "height": 42.6875
+                "top": 402.890625,
+                "right": 958,
+                "bottom": 445.890625,
+                "width": 300,
+                "height": 43
               },
               "sectionTabsRect": {
                 "left": 658,
-                "top": 466,
-                "right": 954,
-                "bottom": 504,
-                "width": 296,
+                "top": 461.890625,
+                "right": 958,
+                "bottom": 499.890625,
+                "width": 300,
                 "height": 38
               },
               "thirdLevelRect": {
                 "left": 658,
-                "top": 520,
-                "right": 954,
-                "bottom": 619.09375,
-                "width": 296,
-                "height": 99.09375
+                "top": 515.890625,
+                "right": 958,
+                "bottom": 619.890625,
+                "width": 300,
+                "height": 104
               },
               "localNavigationRect": {
                 "left": 658,
-                "top": 520,
-                "right": 954,
-                "bottom": 560,
-                "width": 296,
+                "top": 515.890625,
+                "right": 958,
+                "bottom": 555.890625,
+                "width": 300,
                 "height": 40
               },
               "contentRect": {
                 "left": 658,
-                "top": 576,
-                "right": 954,
-                "bottom": 619.09375,
-                "width": 296,
-                "height": 43.09375
+                "top": 571.890625,
+                "right": 958,
+                "bottom": 619.890625,
+                "width": 300,
+                "height": 48
               },
               "pageWidthPx": 1024,
               "pageScrollWidthPx": 1024
@@ -2024,38 +2024,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 420.90625,
+                "left": 346,
+                "top": 418.953125,
                 "right": 724,
-                "bottom": 615.140625,
-                "width": 374,
-                "height": 194.234375
+                "bottom": 615.953125,
+                "width": 378,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 420.90625,
+                "left": 346,
+                "top": 418.953125,
                 "right": 724,
-                "bottom": 482.25,
-                "width": 374,
-                "height": 61.34375
+                "bottom": 480.609375,
+                "width": 378,
+                "height": 61.65625
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 498.25,
+                "left": 346,
+                "top": 496.609375,
                 "right": 724,
-                "bottom": 554.921875,
-                "width": 374,
+                "bottom": 553.28125,
+                "width": 378,
                 "height": 56.671875
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 570.921875,
+                "left": 346,
+                "top": 569.28125,
                 "right": 724,
-                "bottom": 615.140625,
-                "width": 374,
-                "height": 44.21875
+                "bottom": 615.953125,
+                "width": 378,
+                "height": 46.671875
               },
               "pageWidthPx": 1180,
               "pageScrollWidthPx": 1180
@@ -2082,51 +2082,51 @@
             "geometry": {
               "pageHierarchyRect": {
                 "left": 736,
-                "top": 420.90625,
-                "right": 1110,
-                "bottom": 615.140625,
-                "width": 374,
-                "height": 194.234375
+                "top": 418.953125,
+                "right": 1114,
+                "bottom": 615.953125,
+                "width": 378,
+                "height": 197
               },
               "headerRect": {
                 "left": 736,
-                "top": 420.90625,
-                "right": 1110,
-                "bottom": 463.59375,
-                "width": 374,
-                "height": 42.6875
+                "top": 418.953125,
+                "right": 1114,
+                "bottom": 461.953125,
+                "width": 378,
+                "height": 43
               },
               "sectionTabsRect": {
                 "left": 736,
-                "top": 479.59375,
-                "right": 1110,
-                "bottom": 517.59375,
-                "width": 374,
+                "top": 477.953125,
+                "right": 1114,
+                "bottom": 515.953125,
+                "width": 378,
                 "height": 38
               },
               "thirdLevelRect": {
                 "left": 736,
-                "top": 533.59375,
-                "right": 1110,
-                "bottom": 615.140625,
-                "width": 374,
-                "height": 81.546875
+                "top": 531.953125,
+                "right": 1114,
+                "bottom": 615.953125,
+                "width": 378,
+                "height": 84
               },
               "localNavigationRect": {
                 "left": 736,
-                "top": 533.59375,
-                "right": 1110,
-                "bottom": 573.59375,
-                "width": 374,
+                "top": 531.953125,
+                "right": 1114,
+                "bottom": 571.953125,
+                "width": 378,
                 "height": 40
               },
               "contentRect": {
                 "left": 736,
-                "top": 589.59375,
-                "right": 1110,
-                "bottom": 615.140625,
-                "width": 374,
-                "height": 25.546875
+                "top": 587.953125,
+                "right": 1114,
+                "bottom": 615.953125,
+                "width": 378,
+                "height": 28
               },
               "pageWidthPx": 1180,
               "pageScrollWidthPx": 1180
@@ -2161,38 +2161,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 417.953125,
+                "left": 346,
+                "top": 416.546875,
                 "right": 774,
-                "bottom": 612.1875,
-                "width": 424,
-                "height": 194.234375
+                "bottom": 613.546875,
+                "width": 428,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 417.953125,
+                "left": 346,
+                "top": 416.546875,
                 "right": 774,
-                "bottom": 479.296875,
-                "width": 424,
-                "height": 61.34375
+                "bottom": 478.203125,
+                "width": 428,
+                "height": 61.65625
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 495.296875,
+                "left": 346,
+                "top": 494.203125,
                 "right": 774,
-                "bottom": 551.96875,
-                "width": 424,
+                "bottom": 550.875,
+                "width": 428,
                 "height": 56.671875
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 567.96875,
+                "left": 346,
+                "top": 566.875,
                 "right": 774,
-                "bottom": 612.1875,
-                "width": 424,
-                "height": 44.21875
+                "bottom": 613.546875,
+                "width": 428,
+                "height": 46.671875
               },
               "pageWidthPx": 1280,
               "pageScrollWidthPx": 1280
@@ -2219,51 +2219,51 @@
             "geometry": {
               "pageHierarchyRect": {
                 "left": 786,
-                "top": 417.953125,
-                "right": 1210,
-                "bottom": 612.1875,
-                "width": 424,
-                "height": 194.234375
+                "top": 416.546875,
+                "right": 1214,
+                "bottom": 613.546875,
+                "width": 428,
+                "height": 197
               },
               "headerRect": {
                 "left": 786,
-                "top": 417.953125,
-                "right": 1210,
-                "bottom": 460.640625,
-                "width": 424,
-                "height": 42.6875
+                "top": 416.546875,
+                "right": 1214,
+                "bottom": 459.546875,
+                "width": 428,
+                "height": 43
               },
               "sectionTabsRect": {
                 "left": 786,
-                "top": 476.640625,
-                "right": 1210,
-                "bottom": 514.640625,
-                "width": 424,
+                "top": 475.546875,
+                "right": 1214,
+                "bottom": 513.546875,
+                "width": 428,
                 "height": 38
               },
               "thirdLevelRect": {
                 "left": 786,
-                "top": 530.640625,
-                "right": 1210,
-                "bottom": 612.1875,
-                "width": 424,
-                "height": 81.546875
+                "top": 529.546875,
+                "right": 1214,
+                "bottom": 613.546875,
+                "width": 428,
+                "height": 84
               },
               "localNavigationRect": {
                 "left": 786,
-                "top": 530.640625,
-                "right": 1210,
-                "bottom": 570.640625,
-                "width": 424,
+                "top": 529.546875,
+                "right": 1214,
+                "bottom": 569.546875,
+                "width": 428,
                 "height": 40
               },
               "contentRect": {
                 "left": 786,
-                "top": 586.640625,
-                "right": 1210,
-                "bottom": 612.1875,
-                "width": 424,
-                "height": 25.546875
+                "top": 585.546875,
+                "right": 1214,
+                "bottom": 613.546875,
+                "width": 428,
+                "height": 28
               },
               "pageWidthPx": 1280,
               "pageScrollWidthPx": 1280
@@ -2298,38 +2298,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 358,
-                "top": 414.03125,
+                "left": 354,
+                "top": 412.71875,
                 "right": 858,
-                "bottom": 608.265625,
-                "width": 500,
-                "height": 194.234375
+                "bottom": 609.71875,
+                "width": 504,
+                "height": 197
               },
               "headerRect": {
-                "left": 358,
-                "top": 414.03125,
+                "left": 354,
+                "top": 412.71875,
                 "right": 858,
-                "bottom": 475.375,
-                "width": 500,
-                "height": 61.34375
+                "bottom": 474.375,
+                "width": 504,
+                "height": 61.65625
               },
               "sectionTabsRect": {
-                "left": 358,
-                "top": 491.375,
+                "left": 354,
+                "top": 490.375,
                 "right": 858,
-                "bottom": 548.046875,
-                "width": 500,
+                "bottom": 547.046875,
+                "width": 504,
                 "height": 56.671875
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 358,
-                "top": 564.046875,
+                "left": 354,
+                "top": 563.046875,
                 "right": 858,
-                "bottom": 608.265625,
-                "width": 500,
-                "height": 44.21875
+                "bottom": 609.71875,
+                "width": 504,
+                "height": 46.671875
               },
               "pageWidthPx": 1440,
               "pageScrollWidthPx": 1440
@@ -2356,51 +2356,51 @@
             "geometry": {
               "pageHierarchyRect": {
                 "left": 870,
-                "top": 414.03125,
-                "right": 1370,
-                "bottom": 608.265625,
-                "width": 500,
-                "height": 194.234375
+                "top": 412.71875,
+                "right": 1374,
+                "bottom": 609.71875,
+                "width": 504,
+                "height": 197
               },
               "headerRect": {
                 "left": 870,
-                "top": 414.03125,
-                "right": 1370,
-                "bottom": 456.71875,
-                "width": 500,
-                "height": 42.6875
+                "top": 412.71875,
+                "right": 1374,
+                "bottom": 455.71875,
+                "width": 504,
+                "height": 43
               },
               "sectionTabsRect": {
                 "left": 870,
-                "top": 472.71875,
-                "right": 1370,
-                "bottom": 510.71875,
-                "width": 500,
+                "top": 471.71875,
+                "right": 1374,
+                "bottom": 509.71875,
+                "width": 504,
                 "height": 38
               },
               "thirdLevelRect": {
                 "left": 870,
-                "top": 526.71875,
-                "right": 1370,
-                "bottom": 608.265625,
-                "width": 500,
-                "height": 81.546875
+                "top": 525.71875,
+                "right": 1374,
+                "bottom": 609.71875,
+                "width": 504,
+                "height": 84
               },
               "localNavigationRect": {
                 "left": 870,
-                "top": 526.71875,
-                "right": 1370,
-                "bottom": 566.71875,
-                "width": 500,
+                "top": 525.71875,
+                "right": 1374,
+                "bottom": 565.71875,
+                "width": 504,
                 "height": 40
               },
               "contentRect": {
                 "left": 870,
-                "top": 582.71875,
-                "right": 1370,
-                "bottom": 608.265625,
-                "width": 500,
-                "height": 25.546875
+                "top": 581.71875,
+                "right": 1374,
+                "bottom": 609.71875,
+                "width": 504,
+                "height": 28
               },
               "pageWidthPx": 1440,
               "pageScrollWidthPx": 1440
@@ -2435,38 +2435,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 277.21875,
-                "right": 698,
-                "bottom": 415.453125,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 277.21875,
-                "right": 698,
-                "bottom": 319.90625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 316.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 335.90625,
-                "right": 698,
-                "bottom": 373.90625,
-                "width": 348,
+                "left": 346,
+                "top": 332.46875,
+                "right": 702,
+                "bottom": 370.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 389.90625,
-                "right": 698,
-                "bottom": 415.453125,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 386.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -2492,52 +2492,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 427.453125,
-                "right": 698,
-                "bottom": 621.6875,
-                "width": 348,
-                "height": 194.234375
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 427.453125,
-                "right": 698,
-                "bottom": 470.140625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 469.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 486.140625,
-                "right": 698,
-                "bottom": 524.140625,
-                "width": 348,
+                "left": 346,
+                "top": 485.46875,
+                "right": 702,
+                "bottom": 523.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 540.140625,
-                "right": 698,
-                "bottom": 621.6875,
-                "width": 348,
-                "height": 81.546875
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 84
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 540.140625,
-                "right": 698,
-                "bottom": 580.140625,
-                "width": 348,
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 579.46875,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 596.140625,
-                "right": 698,
-                "bottom": 621.6875,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 595.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -2572,38 +2572,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 277.21875,
-                "right": 698,
-                "bottom": 415.453125,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 277.21875,
-                "right": 698,
-                "bottom": 319.90625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 316.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 335.90625,
-                "right": 698,
-                "bottom": 373.90625,
-                "width": 348,
+                "left": 346,
+                "top": 332.46875,
+                "right": 702,
+                "bottom": 370.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 389.90625,
-                "right": 698,
-                "bottom": 415.453125,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 386.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -2629,52 +2629,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 427.453125,
-                "right": 698,
-                "bottom": 621.6875,
-                "width": 348,
-                "height": 194.234375
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 427.453125,
-                "right": 698,
-                "bottom": 470.140625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 469.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 486.140625,
-                "right": 698,
-                "bottom": 524.140625,
-                "width": 348,
+                "left": 346,
+                "top": 485.46875,
+                "right": 702,
+                "bottom": 523.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 540.140625,
-                "right": 698,
-                "bottom": 621.6875,
-                "width": 348,
-                "height": 81.546875
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 84
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 540.140625,
-                "right": 698,
-                "bottom": 580.140625,
-                "width": 348,
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 579.46875,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 596.140625,
-                "right": 698,
-                "bottom": 621.6875,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 595.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -2709,38 +2709,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 276.53125,
-                "right": 698,
-                "bottom": 414.765625,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 276.53125,
-                "right": 698,
-                "bottom": 319.21875,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 316.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 335.21875,
-                "right": 698,
-                "bottom": 373.21875,
-                "width": 348,
+                "left": 346,
+                "top": 332.46875,
+                "right": 702,
+                "bottom": 370.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 389.21875,
-                "right": 698,
-                "bottom": 414.765625,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 386.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -2766,52 +2766,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 426.765625,
-                "right": 698,
-                "bottom": 621,
-                "width": 348,
-                "height": 194.234375
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 426.765625,
-                "right": 698,
-                "bottom": 469.453125,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 469.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 485.453125,
-                "right": 698,
-                "bottom": 523.453125,
-                "width": 348,
+                "left": 346,
+                "top": 485.46875,
+                "right": 702,
+                "bottom": 523.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 539.453125,
-                "right": 698,
-                "bottom": 621,
-                "width": 348,
-                "height": 81.546875
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 84
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 539.453125,
-                "right": 698,
-                "bottom": 579.453125,
-                "width": 348,
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 579.46875,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 595.453125,
-                "right": 698,
-                "bottom": 621,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 595.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -2846,38 +2846,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 276.53125,
-                "right": 698,
-                "bottom": 414.765625,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 276.53125,
-                "right": 698,
-                "bottom": 319.21875,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 316.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 335.21875,
-                "right": 698,
-                "bottom": 373.21875,
-                "width": 348,
+                "left": 346,
+                "top": 332.46875,
+                "right": 702,
+                "bottom": 370.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 389.21875,
-                "right": 698,
-                "bottom": 414.765625,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 386.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -2903,52 +2903,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 426.765625,
-                "right": 698,
-                "bottom": 621,
-                "width": 348,
-                "height": 194.234375
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 426.765625,
-                "right": 698,
-                "bottom": 469.453125,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 469.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 485.453125,
-                "right": 698,
-                "bottom": 523.453125,
-                "width": 348,
+                "left": 346,
+                "top": 485.46875,
+                "right": 702,
+                "bottom": 523.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 539.453125,
-                "right": 698,
-                "bottom": 621,
-                "width": 348,
-                "height": 81.546875
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 84
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 539.453125,
-                "right": 698,
-                "bottom": 579.453125,
-                "width": 348,
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 579.46875,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 595.453125,
-                "right": 698,
-                "bottom": 621,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 595.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -2983,38 +2983,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 277.078125,
-                "right": 698,
-                "bottom": 415.3125,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 277.078125,
-                "right": 698,
-                "bottom": 319.765625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 316.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 335.765625,
-                "right": 698,
-                "bottom": 373.765625,
-                "width": 348,
+                "left": 346,
+                "top": 332.46875,
+                "right": 702,
+                "bottom": 370.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 389.765625,
-                "right": 698,
-                "bottom": 415.3125,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 386.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3040,52 +3040,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 427.3125,
-                "right": 698,
-                "bottom": 621.546875,
-                "width": 348,
-                "height": 194.234375
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 427.3125,
-                "right": 698,
-                "bottom": 470,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 469.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 486,
-                "right": 698,
-                "bottom": 524,
-                "width": 348,
+                "left": 346,
+                "top": 485.46875,
+                "right": 702,
+                "bottom": 523.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 540,
-                "right": 698,
-                "bottom": 621.546875,
-                "width": 348,
-                "height": 81.546875
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 84
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 540,
-                "right": 698,
-                "bottom": 580,
-                "width": 348,
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 579.46875,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 596,
-                "right": 698,
-                "bottom": 621.546875,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 595.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3120,38 +3120,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 277.078125,
-                "right": 698,
-                "bottom": 415.3125,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 277.078125,
-                "right": 698,
-                "bottom": 319.765625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 316.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 335.765625,
-                "right": 698,
-                "bottom": 373.765625,
-                "width": 348,
+                "left": 346,
+                "top": 332.46875,
+                "right": 702,
+                "bottom": 370.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 389.765625,
-                "right": 698,
-                "bottom": 415.3125,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 386.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3177,52 +3177,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 427.3125,
-                "right": 698,
-                "bottom": 621.546875,
-                "width": 348,
-                "height": 194.234375
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 427.3125,
-                "right": 698,
-                "bottom": 470,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 469.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 486,
-                "right": 698,
-                "bottom": 524,
-                "width": 348,
+                "left": 346,
+                "top": 485.46875,
+                "right": 702,
+                "bottom": 523.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 540,
-                "right": 698,
-                "bottom": 621.546875,
-                "width": 348,
-                "height": 81.546875
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 84
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 540,
-                "right": 698,
-                "bottom": 580,
-                "width": 348,
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 579.46875,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 596,
-                "right": 698,
-                "bottom": 621.546875,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 595.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3257,38 +3257,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 277.40625,
-                "right": 698,
-                "bottom": 415.640625,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 277.40625,
-                "right": 698,
-                "bottom": 320.09375,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 316.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 336.09375,
-                "right": 698,
-                "bottom": 374.09375,
-                "width": 348,
+                "left": 346,
+                "top": 332.46875,
+                "right": 702,
+                "bottom": 370.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 390.09375,
-                "right": 698,
-                "bottom": 415.640625,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 386.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3314,52 +3314,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 427.640625,
-                "right": 698,
-                "bottom": 621.875,
-                "width": 348,
-                "height": 194.234375
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 427.640625,
-                "right": 698,
-                "bottom": 470.328125,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 469.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 486.328125,
-                "right": 698,
-                "bottom": 524.328125,
-                "width": 348,
+                "left": 346,
+                "top": 485.46875,
+                "right": 702,
+                "bottom": 523.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 540.328125,
-                "right": 698,
-                "bottom": 621.875,
-                "width": 348,
-                "height": 81.546875
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 84
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 540.328125,
-                "right": 698,
-                "bottom": 580.328125,
-                "width": 348,
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 579.46875,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 596.328125,
-                "right": 698,
-                "bottom": 621.875,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 595.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3394,38 +3394,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 277.40625,
-                "right": 698,
-                "bottom": 415.640625,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 277.40625,
-                "right": 698,
-                "bottom": 320.09375,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 273.46875,
+                "right": 702,
+                "bottom": 316.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 336.09375,
-                "right": 698,
-                "bottom": 374.09375,
-                "width": 348,
+                "left": 346,
+                "top": 332.46875,
+                "right": 702,
+                "bottom": 370.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 390.09375,
-                "right": 698,
-                "bottom": 415.640625,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 386.46875,
+                "right": 702,
+                "bottom": 414.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3451,52 +3451,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 427.640625,
-                "right": 698,
-                "bottom": 621.875,
-                "width": 348,
-                "height": 194.234375
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 197
               },
               "headerRect": {
-                "left": 350,
-                "top": 427.640625,
-                "right": 698,
-                "bottom": 470.328125,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 426.46875,
+                "right": 702,
+                "bottom": 469.46875,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 486.328125,
-                "right": 698,
-                "bottom": 524.328125,
-                "width": 348,
+                "left": 346,
+                "top": 485.46875,
+                "right": 702,
+                "bottom": 523.46875,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 540.328125,
-                "right": 698,
-                "bottom": 621.875,
-                "width": 348,
-                "height": 81.546875
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 84
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 540.328125,
-                "right": 698,
-                "bottom": 580.328125,
-                "width": 348,
+                "left": 346,
+                "top": 539.46875,
+                "right": 702,
+                "bottom": 579.46875,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 596.328125,
-                "right": 698,
-                "bottom": 621.875,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 595.46875,
+                "right": 702,
+                "bottom": 623.46875,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3531,38 +3531,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 258.96875,
-                "right": 698,
-                "bottom": 397.203125,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 254.65625,
+                "right": 702,
+                "bottom": 395.65625,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 258.96875,
-                "right": 698,
-                "bottom": 301.65625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 254.65625,
+                "right": 702,
+                "bottom": 297.65625,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 317.65625,
-                "right": 698,
-                "bottom": 355.65625,
-                "width": 348,
+                "left": 346,
+                "top": 313.65625,
+                "right": 702,
+                "bottom": 351.65625,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 371.65625,
-                "right": 698,
-                "bottom": 397.203125,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 367.65625,
+                "right": 702,
+                "bottom": 395.65625,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3588,52 +3588,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 409.203125,
-                "right": 698,
-                "bottom": 620.984375,
-                "width": 348,
-                "height": 211.78125
+                "left": 346,
+                "top": 407.65625,
+                "right": 702,
+                "bottom": 624.65625,
+                "width": 356,
+                "height": 217
               },
               "headerRect": {
-                "left": 350,
-                "top": 409.203125,
-                "right": 698,
-                "bottom": 451.890625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 407.65625,
+                "right": 702,
+                "bottom": 450.65625,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 467.890625,
-                "right": 698,
-                "bottom": 505.890625,
-                "width": 348,
+                "left": 346,
+                "top": 466.65625,
+                "right": 702,
+                "bottom": 504.65625,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 521.890625,
-                "right": 698,
-                "bottom": 620.984375,
-                "width": 348,
-                "height": 99.09375
+                "left": 346,
+                "top": 520.65625,
+                "right": 702,
+                "bottom": 624.65625,
+                "width": 356,
+                "height": 104
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 521.890625,
-                "right": 698,
-                "bottom": 561.890625,
-                "width": 348,
+                "left": 346,
+                "top": 520.65625,
+                "right": 702,
+                "bottom": 560.65625,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 577.890625,
-                "right": 698,
-                "bottom": 620.984375,
-                "width": 348,
-                "height": 43.09375
+                "left": 346,
+                "top": 576.65625,
+                "right": 702,
+                "bottom": 624.65625,
+                "width": 356,
+                "height": 48
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3668,38 +3668,38 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 258.96875,
-                "right": 698,
-                "bottom": 397.203125,
-                "width": 348,
-                "height": 138.234375
+                "left": 346,
+                "top": 254.65625,
+                "right": 702,
+                "bottom": 395.65625,
+                "width": 356,
+                "height": 141
               },
               "headerRect": {
-                "left": 350,
-                "top": 258.96875,
-                "right": 698,
-                "bottom": 301.65625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 254.65625,
+                "right": 702,
+                "bottom": 297.65625,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 317.65625,
-                "right": 698,
-                "bottom": 355.65625,
-                "width": 348,
+                "left": 346,
+                "top": 313.65625,
+                "right": 702,
+                "bottom": 351.65625,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": null,
               "localNavigationRect": null,
               "contentRect": {
-                "left": 350,
-                "top": 371.65625,
-                "right": 698,
-                "bottom": 397.203125,
-                "width": 348,
-                "height": 25.546875
+                "left": 346,
+                "top": 367.65625,
+                "right": 702,
+                "bottom": 395.65625,
+                "width": 356,
+                "height": 28
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3725,52 +3725,52 @@
             "noProductShell": true,
             "geometry": {
               "pageHierarchyRect": {
-                "left": 350,
-                "top": 409.203125,
-                "right": 698,
-                "bottom": 620.984375,
-                "width": 348,
-                "height": 211.78125
+                "left": 346,
+                "top": 407.65625,
+                "right": 702,
+                "bottom": 624.65625,
+                "width": 356,
+                "height": 217
               },
               "headerRect": {
-                "left": 350,
-                "top": 409.203125,
-                "right": 698,
-                "bottom": 451.890625,
-                "width": 348,
-                "height": 42.6875
+                "left": 346,
+                "top": 407.65625,
+                "right": 702,
+                "bottom": 450.65625,
+                "width": 356,
+                "height": 43
               },
               "sectionTabsRect": {
-                "left": 350,
-                "top": 467.890625,
-                "right": 698,
-                "bottom": 505.890625,
-                "width": 348,
+                "left": 346,
+                "top": 466.65625,
+                "right": 702,
+                "bottom": 504.65625,
+                "width": 356,
                 "height": 38
               },
               "thirdLevelRect": {
-                "left": 350,
-                "top": 521.890625,
-                "right": 698,
-                "bottom": 620.984375,
-                "width": 348,
-                "height": 99.09375
+                "left": 346,
+                "top": 520.65625,
+                "right": 702,
+                "bottom": 624.65625,
+                "width": 356,
+                "height": 104
               },
               "localNavigationRect": {
-                "left": 350,
-                "top": 521.890625,
-                "right": 698,
-                "bottom": 561.890625,
-                "width": 348,
+                "left": 346,
+                "top": 520.65625,
+                "right": 702,
+                "bottom": 560.65625,
+                "width": 356,
                 "height": 40
               },
               "contentRect": {
-                "left": 350,
-                "top": 577.890625,
-                "right": 698,
-                "bottom": 620.984375,
-                "width": 348,
-                "height": 43.09375
+                "left": 346,
+                "top": 576.65625,
+                "right": 702,
+                "bottom": 624.65625,
+                "width": 356,
+                "height": 48
               },
               "pageWidthPx": 768,
               "pageScrollWidthPx": 768
@@ -3782,13 +3782,30 @@
     ],
     "ok": true
   },
+  "buttonFeedbackReadback": {
+    "ok": true,
+    "restBackground": "rgb(11, 107, 101)",
+    "hoverBackground": "rgb(10, 95, 90)",
+    "expectedRestBackground": "rgb(11, 107, 101)",
+    "expectedHoverBackground": "rgb(10, 95, 90)",
+    "restSettle": {
+      "settled": true,
+      "rounds": 0,
+      "awaited": 0
+    },
+    "hoverSettle": {
+      "settled": true,
+      "rounds": 1,
+      "awaited": 1
+    }
+  },
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "9956bea5a95d170a95614d68a160f7a070b203bb5668db263657c19a10d8974b",
+    "contractPayloadDigest": "a8f0e87c36c7877b41b1d936439550d9a841bdcede80b4e8898eea11f66b0de5",
     "digestVerified": true,
     "coveredSectionCount": 7,
-    "coveredCategoryCount": 21,
+    "coveredCategoryCount": 23,
     "changelogRecordCount": 1,
     "functionalDisplayStaticAuthorityDisposition": "static_contract_authority_explicit_and_smoke_proven",
     "functionalDisplayAdmittedPackageExports": [
@@ -3894,11 +3911,20 @@
     "zhCn": {
       "locale": "zh-CN",
       "gating": true,
-      "ok": true,
-      "storyCount": 62,
-      "allowlistedLeakCount": 107,
-      "newLeakCount": 0,
-      "newLeaks": [],
+      "ok": false,
+      "storyCount": 72,
+      "allowlistedLeakCount": 106,
+      "newLeakCount": 3,
+      "newLeaks": [
+        {
+          "storyId": "foundation-visual-standards",
+          "leaks": [
+            "px rest",
+            "px expanded",
+            "px high"
+          ]
+        }
+      ],
       "perStory": [
         {
           "storyId": "welcome-governance",
@@ -3947,7 +3973,7 @@
         },
         {
           "storyId": "icons-motion",
-          "allowlistedLeakCount": 3,
+          "allowlistedLeakCount": 2,
           "newLeaks": []
         },
         {
@@ -3973,7 +3999,11 @@
         {
           "storyId": "foundation-visual-standards",
           "allowlistedLeakCount": 22,
-          "newLeaks": []
+          "newLeaks": [
+            "px rest",
+            "px expanded",
+            "px high"
+          ]
         },
         {
           "storyId": "copy-guidelines",
@@ -4093,6 +4123,56 @@
         {
           "storyId": "documents-and-collaboration-templates-spec",
           "allowlistedLeakCount": 8,
+          "newLeaks": []
+        },
+        {
+          "storyId": "typography-matrix",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "icon-matrix",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "brand-matrix",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "actions-matrix",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "inputs-matrix",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "typography-sample-billing",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "icon-sample-project",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "brand-sample-product",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "actions-sample-project",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "inputs-sample-members",
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
@@ -4218,8 +4298,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 62,
-        "leakCount": 111,
+        "storyCount": 72,
+        "leakCount": 113,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -4259,7 +4339,7 @@
           },
           {
             "storyId": "icons-motion",
-            "leakCount": 5
+            "leakCount": 4
           },
           {
             "storyId": "global-states",
@@ -4279,7 +4359,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 22
+            "leakCount": 25
           },
           {
             "storyId": "copy-guidelines",
@@ -4376,6 +4456,46 @@
           {
             "storyId": "documents-and-collaboration-templates-spec",
             "leakCount": 8
+          },
+          {
+            "storyId": "typography-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "icon-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "brand-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "actions-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "inputs-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "typography-sample-billing",
+            "leakCount": 0
+          },
+          {
+            "storyId": "icon-sample-project",
+            "leakCount": 0
+          },
+          {
+            "storyId": "brand-sample-product",
+            "leakCount": 0
+          },
+          {
+            "storyId": "actions-sample-project",
+            "leakCount": 0
+          },
+          {
+            "storyId": "inputs-sample-members",
+            "leakCount": 0
           },
           {
             "storyId": "forms-patterns",
@@ -4476,8 +4596,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 62,
-        "leakCount": 119,
+        "storyCount": 72,
+        "leakCount": 121,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -4517,7 +4637,7 @@
           },
           {
             "storyId": "icons-motion",
-            "leakCount": 5
+            "leakCount": 4
           },
           {
             "storyId": "global-states",
@@ -4537,7 +4657,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 24
+            "leakCount": 27
           },
           {
             "storyId": "copy-guidelines",
@@ -4634,6 +4754,46 @@
           {
             "storyId": "documents-and-collaboration-templates-spec",
             "leakCount": 8
+          },
+          {
+            "storyId": "typography-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "icon-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "brand-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "actions-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "inputs-matrix",
+            "leakCount": 0
+          },
+          {
+            "storyId": "typography-sample-billing",
+            "leakCount": 0
+          },
+          {
+            "storyId": "icon-sample-project",
+            "leakCount": 0
+          },
+          {
+            "storyId": "brand-sample-product",
+            "leakCount": 0
+          },
+          {
+            "storyId": "actions-sample-project",
+            "leakCount": 0
+          },
+          {
+            "storyId": "inputs-sample-members",
+            "leakCount": 0
           },
           {
             "storyId": "forms-patterns",
@@ -4734,12 +4894,12 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 62,
-        "leakCount": 2954,
+        "storyCount": 72,
+        "leakCount": 3060,
         "perStory": [
           {
             "storyId": "welcome-governance",
-            "leakCount": 48
+            "leakCount": 44
           },
           {
             "storyId": "governance-boundaries",
@@ -4775,7 +4935,7 @@
           },
           {
             "storyId": "icons-motion",
-            "leakCount": 117
+            "leakCount": 111
           },
           {
             "storyId": "global-states",
@@ -4811,7 +4971,7 @@
           },
           {
             "storyId": "interaction-disclosure-spec",
-            "leakCount": 80
+            "leakCount": 79
           },
           {
             "storyId": "stamp-spec-usage",
@@ -4835,11 +4995,11 @@
           },
           {
             "storyId": "navigation-dense-operations-shell-spec",
-            "leakCount": 116
+            "leakCount": 42
           },
           {
             "storyId": "navigation-focused-shells-spec",
-            "leakCount": 62
+            "leakCount": 51
           },
           {
             "storyId": "navigation-primitives-spec",
@@ -4892,6 +5052,46 @@
           {
             "storyId": "documents-and-collaboration-templates-spec",
             "leakCount": 38
+          },
+          {
+            "storyId": "typography-matrix",
+            "leakCount": 31
+          },
+          {
+            "storyId": "icon-matrix",
+            "leakCount": 11
+          },
+          {
+            "storyId": "brand-matrix",
+            "leakCount": 9
+          },
+          {
+            "storyId": "actions-matrix",
+            "leakCount": 8
+          },
+          {
+            "storyId": "inputs-matrix",
+            "leakCount": 14
+          },
+          {
+            "storyId": "typography-sample-billing",
+            "leakCount": 31
+          },
+          {
+            "storyId": "icon-sample-project",
+            "leakCount": 21
+          },
+          {
+            "storyId": "brand-sample-product",
+            "leakCount": 21
+          },
+          {
+            "storyId": "actions-sample-project",
+            "leakCount": 28
+          },
+          {
+            "storyId": "inputs-sample-members",
+            "leakCount": 29
           },
           {
             "storyId": "forms-patterns",
@@ -4975,7 +5175,7 @@
           },
           {
             "storyId": "reference-page-5",
-            "leakCount": 5
+            "leakCount": 4
           },
           {
             "storyId": "reference-page-6",
@@ -5009,12 +5209,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5079,12 +5279,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5149,12 +5349,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5228,12 +5428,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5307,12 +5507,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5377,12 +5577,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5465,12 +5665,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5529,12 +5729,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5547,13 +5747,7 @@
       "localeSelectVisible": true,
       "componentStorybookParityNodes": [],
       "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [
-        {
-          "marker": "entry-shell-visual",
-          "status": null,
-          "visible": true
-        }
-      ],
+      "storybookOnlyPrototypeNodes": [],
       "activeSection": "Welcome",
       "storySections": [
         "Welcome"
@@ -5620,12 +5814,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5717,12 +5911,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5801,12 +5995,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5886,12 +6080,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -5984,12 +6178,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6080,12 +6274,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6152,12 +6346,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6258,12 +6452,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6371,12 +6565,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6405,22 +6599,7 @@
       ],
       "storybookOnlyPrototypeNodes": [
         {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
           "marker": "knowledge-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "compact-shell-prototype",
           "status": "deferred",
           "visible": true
         }
@@ -6528,12 +6707,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6599,12 +6778,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6683,12 +6862,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6768,12 +6947,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6866,12 +7045,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -6946,6 +7125,258 @@
     {
       "viewport": "desktop-1440x900",
       "browser": "chromium",
+      "url": "/apps/storybook/storybook-static/components-gplus-matrices.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "typography-matrix",
+        "icon-matrix",
+        "brand-matrix",
+        "actions-matrix",
+        "inputs-matrix"
+      ],
+      "expectedActiveStoryId": "typography-matrix",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 23,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 65,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "typography-matrix",
+      "bodyOverflowX": false,
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true,
+      "storyRegions": [
+        {
+          "id": "typography-matrix",
+          "visible": true
+        },
+        {
+          "id": "icon-matrix",
+          "visible": true
+        },
+        {
+          "id": "brand-matrix",
+          "visible": true
+        },
+        {
+          "id": "actions-matrix",
+          "visible": true
+        },
+        {
+          "id": "inputs-matrix",
+          "visible": true
+        }
+      ],
+      "referenceRegions": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "typography-matrix",
+          "text": "Typography matrix",
+          "textLength": 16,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "icon-matrix",
+          "text": "Icon matrix",
+          "textLength": 10,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "brand-matrix",
+          "text": "Brand matrix",
+          "textLength": 11,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "actions-matrix",
+          "text": "Actions matrix",
+          "textLength": 13,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "inputs-matrix",
+          "text": "Inputs matrix",
+          "textLength": 12,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
+      "url": "/apps/storybook/storybook-static/components-gplus-samples.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "typography-sample-billing",
+        "icon-sample-project",
+        "brand-sample-product",
+        "actions-sample-project",
+        "inputs-sample-members"
+      ],
+      "expectedActiveStoryId": "typography-sample-billing",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 23,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 65,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "typography-sample-billing",
+      "bodyOverflowX": false,
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true,
+      "storyRegions": [
+        {
+          "id": "typography-sample-billing",
+          "visible": true
+        },
+        {
+          "id": "icon-sample-project",
+          "visible": true
+        },
+        {
+          "id": "brand-sample-product",
+          "visible": true
+        },
+        {
+          "id": "actions-sample-project",
+          "visible": true
+        },
+        {
+          "id": "inputs-sample-members",
+          "visible": true
+        }
+      ],
+      "referenceRegions": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "typography-sample-billing",
+          "text": "Typography sample: billing",
+          "textLength": 24,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "icon-sample-project",
+          "text": "Icon sample: projects",
+          "textLength": 19,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "brand-sample-product",
+          "text": "Brand sample: products",
+          "textLength": 20,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "actions-sample-project",
+          "text": "Actions sample: projects",
+          "textLength": 22,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "inputs-sample-members",
+          "text": "Inputs sample: invite members",
+          "textLength": 26,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "browser": "chromium",
       "url": "/apps/storybook/storybook-static/patterns-forms-workbench.html",
       "pageKind": "category",
       "expectedSection": "Patterns",
@@ -6963,12 +7394,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7049,12 +7480,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7160,12 +7591,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7259,12 +7690,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7369,12 +7800,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7452,12 +7883,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7520,12 +7951,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7585,6 +8016,10 @@
           "visible": true
         },
         {
+          "id": "ButtonGroup",
+          "visible": true
+        },
+        {
           "id": "Card",
           "visible": true
         },
@@ -7626,10 +8061,6 @@
         },
         {
           "id": "DetailInspector",
-          "visible": true
-        },
-        {
-          "id": "DetailLayout",
           "visible": true
         }
       ],
@@ -7680,12 +8111,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7712,6 +8143,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "DetailLayout",
+          "visible": true
+        },
         {
           "id": "Dialog",
           "visible": true
@@ -7787,10 +8222,6 @@
         {
           "id": "Input",
           "visible": true
-        },
-        {
-          "id": "KeyValueList",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -7840,12 +8271,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -7872,6 +8303,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "KeyValueList",
+          "visible": true
+        },
         {
           "id": "LabelSet",
           "visible": true
@@ -7947,10 +8382,6 @@
         {
           "id": "PageHierarchy",
           "visible": true
-        },
-        {
-          "id": "Pagination",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -8000,12 +8431,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8032,6 +8463,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Pagination",
+          "visible": true
+        },
         {
           "id": "Popover",
           "visible": true
@@ -8107,10 +8542,6 @@
         {
           "id": "SearchInput",
           "visible": true
-        },
-        {
-          "id": "SearchResultList",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -8160,12 +8591,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8192,6 +8623,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "SearchResultList",
+          "visible": true
+        },
         {
           "id": "SearchableList",
           "visible": true
@@ -8267,10 +8702,6 @@
         {
           "id": "Stamp",
           "visible": true
-        },
-        {
-          "id": "StampRule",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -8320,12 +8751,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8352,6 +8783,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "StampRule",
+          "visible": true
+        },
         {
           "id": "StatCard",
           "visible": true
@@ -8427,10 +8862,6 @@
         {
           "id": "TocRail",
           "visible": true
-        },
-        {
-          "id": "Tooltip",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -8480,12 +8911,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8512,6 +8943,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Tooltip",
+          "visible": true
+        },
         {
           "id": "TopBar",
           "visible": true
@@ -8580,12 +9015,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8650,12 +9085,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8720,12 +9155,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8799,12 +9234,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8878,12 +9313,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8948,12 +9383,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9036,12 +9471,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9100,12 +9535,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9118,13 +9553,7 @@
       "localeSelectVisible": true,
       "componentStorybookParityNodes": [],
       "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [
-        {
-          "marker": "entry-shell-visual",
-          "status": null,
-          "visible": true
-        }
-      ],
+      "storybookOnlyPrototypeNodes": [],
       "activeSection": "Welcome",
       "storySections": [
         "Welcome"
@@ -9191,12 +9620,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9288,12 +9717,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9372,12 +9801,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9457,12 +9886,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9555,12 +9984,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9651,12 +10080,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9723,12 +10152,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9829,12 +10258,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9942,12 +10371,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9976,22 +10405,7 @@
       ],
       "storybookOnlyPrototypeNodes": [
         {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
           "marker": "knowledge-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "compact-shell-prototype",
           "status": "deferred",
           "visible": true
         }
@@ -10099,12 +10513,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10170,12 +10584,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10254,12 +10668,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10339,12 +10753,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10437,12 +10851,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10517,6 +10931,258 @@
     {
       "viewport": "tablet-1024x768",
       "browser": "chromium",
+      "url": "/apps/storybook/storybook-static/components-gplus-matrices.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "typography-matrix",
+        "icon-matrix",
+        "brand-matrix",
+        "actions-matrix",
+        "inputs-matrix"
+      ],
+      "expectedActiveStoryId": "typography-matrix",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 23,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 65,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "typography-matrix",
+      "bodyOverflowX": false,
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true,
+      "storyRegions": [
+        {
+          "id": "typography-matrix",
+          "visible": true
+        },
+        {
+          "id": "icon-matrix",
+          "visible": true
+        },
+        {
+          "id": "brand-matrix",
+          "visible": true
+        },
+        {
+          "id": "actions-matrix",
+          "visible": true
+        },
+        {
+          "id": "inputs-matrix",
+          "visible": true
+        }
+      ],
+      "referenceRegions": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "typography-matrix",
+          "text": "Typography matrix",
+          "textLength": 16,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "icon-matrix",
+          "text": "Icon matrix",
+          "textLength": 10,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "brand-matrix",
+          "text": "Brand matrix",
+          "textLength": 11,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "actions-matrix",
+          "text": "Actions matrix",
+          "textLength": 13,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "inputs-matrix",
+          "text": "Inputs matrix",
+          "textLength": 12,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
+      "url": "/apps/storybook/storybook-static/components-gplus-samples.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "typography-sample-billing",
+        "icon-sample-project",
+        "brand-sample-product",
+        "actions-sample-project",
+        "inputs-sample-members"
+      ],
+      "expectedActiveStoryId": "typography-sample-billing",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 23,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 65,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "typography-sample-billing",
+      "bodyOverflowX": false,
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true,
+      "storyRegions": [
+        {
+          "id": "typography-sample-billing",
+          "visible": true
+        },
+        {
+          "id": "icon-sample-project",
+          "visible": true
+        },
+        {
+          "id": "brand-sample-product",
+          "visible": true
+        },
+        {
+          "id": "actions-sample-project",
+          "visible": true
+        },
+        {
+          "id": "inputs-sample-members",
+          "visible": true
+        }
+      ],
+      "referenceRegions": [],
+      "sidebarNoIconLabelReadbacks": [
+        {
+          "route": "typography-sample-billing",
+          "text": "Typography sample: billing",
+          "textLength": 24,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "icon-sample-project",
+          "text": "Icon sample: projects",
+          "textLength": 19,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "brand-sample-product",
+          "text": "Brand sample: products",
+          "textLength": 20,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "actions-sample-project",
+          "text": "Actions sample: projects",
+          "textLength": 22,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        },
+        {
+          "route": "inputs-sample-members",
+          "text": "Inputs sample: invite members",
+          "textLength": 26,
+          "overflowWrap": "normal",
+          "wordBreak": "normal",
+          "hasNoIconContract": true,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768",
+      "browser": "chromium",
       "url": "/apps/storybook/storybook-static/patterns-forms-workbench.html",
       "pageKind": "category",
       "expectedSection": "Patterns",
@@ -10534,12 +11200,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10620,12 +11286,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10731,12 +11397,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10830,12 +11496,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10940,12 +11606,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11023,12 +11689,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11091,12 +11757,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11156,6 +11822,10 @@
           "visible": true
         },
         {
+          "id": "ButtonGroup",
+          "visible": true
+        },
+        {
           "id": "Card",
           "visible": true
         },
@@ -11197,10 +11867,6 @@
         },
         {
           "id": "DetailInspector",
-          "visible": true
-        },
-        {
-          "id": "DetailLayout",
           "visible": true
         }
       ],
@@ -11251,12 +11917,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11283,6 +11949,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "DetailLayout",
+          "visible": true
+        },
         {
           "id": "Dialog",
           "visible": true
@@ -11358,10 +12028,6 @@
         {
           "id": "Input",
           "visible": true
-        },
-        {
-          "id": "KeyValueList",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -11411,12 +12077,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11443,6 +12109,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "KeyValueList",
+          "visible": true
+        },
         {
           "id": "LabelSet",
           "visible": true
@@ -11518,10 +12188,6 @@
         {
           "id": "PageHierarchy",
           "visible": true
-        },
-        {
-          "id": "Pagination",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -11571,12 +12237,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11603,6 +12269,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Pagination",
+          "visible": true
+        },
         {
           "id": "Popover",
           "visible": true
@@ -11678,10 +12348,6 @@
         {
           "id": "SearchInput",
           "visible": true
-        },
-        {
-          "id": "SearchResultList",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -11731,12 +12397,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11763,6 +12429,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "SearchResultList",
+          "visible": true
+        },
         {
           "id": "SearchableList",
           "visible": true
@@ -11838,10 +12508,6 @@
         {
           "id": "Stamp",
           "visible": true
-        },
-        {
-          "id": "StampRule",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -11891,12 +12557,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11923,6 +12589,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "StampRule",
+          "visible": true
+        },
         {
           "id": "StatCard",
           "visible": true
@@ -11998,10 +12668,6 @@
         {
           "id": "TocRail",
           "visible": true
-        },
-        {
-          "id": "Tooltip",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": [
@@ -12051,12 +12717,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12083,6 +12749,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Tooltip",
+          "visible": true
+        },
         {
           "id": "TopBar",
           "visible": true
@@ -12151,12 +12821,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12202,12 +12872,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12253,12 +12923,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12304,12 +12974,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12355,12 +13025,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12406,12 +13076,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12457,12 +13127,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12511,12 +13181,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12529,13 +13199,7 @@
       "localeSelectVisible": true,
       "componentStorybookParityNodes": [],
       "packageBackedDisabledNavItems": [],
-      "storybookOnlyPrototypeNodes": [
-        {
-          "marker": "entry-shell-visual",
-          "status": null,
-          "visible": true
-        }
-      ],
+      "storybookOnlyPrototypeNodes": [],
       "activeSection": "Welcome",
       "storySections": [
         "Welcome"
@@ -12583,12 +13247,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12652,12 +13316,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12717,12 +13381,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12783,12 +13447,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12853,12 +13517,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12921,12 +13585,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12983,12 +13647,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13061,12 +13725,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13137,12 +13801,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13171,22 +13835,7 @@
       ],
       "storybookOnlyPrototypeNodes": [
         {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "dense-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
           "marker": "knowledge-shell-prototype",
-          "status": "deferred",
-          "visible": true
-        },
-        {
-          "marker": "compact-shell-prototype",
           "status": "deferred",
           "visible": true
         }
@@ -13248,12 +13897,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13309,12 +13958,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13374,12 +14023,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13440,12 +14089,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13510,12 +14159,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13562,6 +14211,166 @@
     {
       "viewport": "mobile-390x844",
       "browser": "chromium",
+      "url": "/apps/storybook/storybook-static/components-gplus-matrices.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "typography-matrix",
+        "icon-matrix",
+        "brand-matrix",
+        "actions-matrix",
+        "inputs-matrix"
+      ],
+      "expectedActiveStoryId": "typography-matrix",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 23,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 65,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "typography-matrix",
+      "bodyOverflowX": false,
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true,
+      "storyRegions": [
+        {
+          "id": "typography-matrix",
+          "visible": true
+        },
+        {
+          "id": "icon-matrix",
+          "visible": true
+        },
+        {
+          "id": "brand-matrix",
+          "visible": true
+        },
+        {
+          "id": "actions-matrix",
+          "visible": true
+        },
+        {
+          "id": "inputs-matrix",
+          "visible": true
+        }
+      ],
+      "referenceRegions": [],
+      "sidebarNoIconLabelReadbacks": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
+      "url": "/apps/storybook/storybook-static/components-gplus-samples.html",
+      "pageKind": "category",
+      "expectedSection": "Components",
+      "expectedStoryIds": [
+        "typography-sample-billing",
+        "icon-sample-project",
+        "brand-sample-product",
+        "actions-sample-project",
+        "inputs-sample-members"
+      ],
+      "expectedActiveStoryId": "typography-sample-billing",
+      "consoleMessages": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "title": "Components - TCRN Design System Contract Stories",
+      "shellAuthority": "online-docs",
+      "docShellSelectorCount": 6,
+      "globalProductShellShellSelectorCount": 0,
+      "docShellSidebarVisible": true,
+      "docNavGroupCount": 7,
+      "docNavCategoryCount": 23,
+      "docNavOpenCategoryCount": 1,
+      "activeStoryHiddenByCategory": false,
+      "categoryAriaFailures": [],
+      "sidebarNoIconLabelReadabilityFailures": [],
+      "docNavItemCount": 65,
+      "docCurrentStoryCount": 1,
+      "docChapterPagerCount": 1,
+      "onThisPageCount": 1,
+      "mandatoryBoundaryVisible": true,
+      "noOverclaimBoundaryVisible": true,
+      "governanceBoundaryStripVisible": true,
+      "governanceStoryMetadataMissing": [],
+      "storybookLocale": "en",
+      "localeOptionCount": 5,
+      "localeSelectVisible": true,
+      "componentStorybookParityNodes": [],
+      "packageBackedDisabledNavItems": [],
+      "storybookOnlyPrototypeNodes": [],
+      "activeSection": "Components",
+      "storySections": [
+        "Components"
+      ],
+      "currentNav": "Components",
+      "currentStoryNav": "typography-sample-billing",
+      "bodyOverflowX": false,
+      "clipped": [],
+      "readbackStateViewGapViolations": [],
+      "storyTextRhythmViolations": [],
+      "readbackHeadingGapViolations": [],
+      "forbiddenHits": [],
+      "rootVisible": true,
+      "storyRegions": [
+        {
+          "id": "typography-sample-billing",
+          "visible": true
+        },
+        {
+          "id": "icon-sample-project",
+          "visible": true
+        },
+        {
+          "id": "brand-sample-product",
+          "visible": true
+        },
+        {
+          "id": "actions-sample-project",
+          "visible": true
+        },
+        {
+          "id": "inputs-sample-members",
+          "visible": true
+        }
+      ],
+      "referenceRegions": [],
+      "sidebarNoIconLabelReadbacks": []
+    },
+    {
+      "viewport": "mobile-390x844",
+      "browser": "chromium",
       "url": "/apps/storybook/storybook-static/patterns-forms-workbench.html",
       "pageKind": "category",
       "expectedSection": "Patterns",
@@ -13579,12 +14388,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13646,12 +14455,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13720,12 +14529,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13791,12 +14600,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13864,12 +14673,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13928,12 +14737,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13986,12 +14795,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -14051,6 +14860,10 @@
           "visible": true
         },
         {
+          "id": "ButtonGroup",
+          "visible": true
+        },
+        {
           "id": "Card",
           "visible": true
         },
@@ -14093,10 +14906,6 @@
         {
           "id": "DetailInspector",
           "visible": true
-        },
-        {
-          "id": "DetailLayout",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -14118,12 +14927,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -14150,6 +14959,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "DetailLayout",
+          "visible": true
+        },
         {
           "id": "Dialog",
           "visible": true
@@ -14225,10 +15038,6 @@
         {
           "id": "Input",
           "visible": true
-        },
-        {
-          "id": "KeyValueList",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -14250,12 +15059,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -14282,6 +15091,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "KeyValueList",
+          "visible": true
+        },
         {
           "id": "LabelSet",
           "visible": true
@@ -14357,10 +15170,6 @@
         {
           "id": "PageHierarchy",
           "visible": true
-        },
-        {
-          "id": "Pagination",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -14382,12 +15191,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -14414,6 +15223,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Pagination",
+          "visible": true
+        },
         {
           "id": "Popover",
           "visible": true
@@ -14489,10 +15302,6 @@
         {
           "id": "SearchInput",
           "visible": true
-        },
-        {
-          "id": "SearchResultList",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -14514,12 +15323,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -14546,6 +15355,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "SearchResultList",
+          "visible": true
+        },
         {
           "id": "SearchableList",
           "visible": true
@@ -14621,10 +15434,6 @@
         {
           "id": "Stamp",
           "visible": true
-        },
-        {
-          "id": "StampRule",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -14646,12 +15455,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -14678,6 +15487,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "StampRule",
+          "visible": true
+        },
         {
           "id": "StatCard",
           "visible": true
@@ -14753,10 +15566,6 @@
         {
           "id": "TocRail",
           "visible": true
-        },
-        {
-          "id": "Tooltip",
-          "visible": true
         }
       ],
       "sidebarNoIconLabelReadbacks": []
@@ -14778,12 +15587,12 @@
       "globalProductShellShellSelectorCount": 0,
       "docShellSidebarVisible": true,
       "docNavGroupCount": 7,
-      "docNavCategoryCount": 21,
+      "docNavCategoryCount": 23,
       "docNavOpenCategoryCount": 1,
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 55,
+      "docNavItemCount": 65,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -14810,6 +15619,10 @@
       "rootVisible": true,
       "storyRegions": [],
       "referenceRegions": [
+        {
+          "id": "Tooltip",
+          "visible": true
+        },
         {
           "id": "TopBar",
           "visible": true
