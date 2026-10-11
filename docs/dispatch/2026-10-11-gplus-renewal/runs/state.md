@@ -45,8 +45,9 @@
 | W4-A | 已合入 811d198，包树已退役 | 3b04273 | SUB-029→030；五矩阵格数 44/28/10/116/42 与画板一致、23 件各有分节、图标 37×三档；高度 1069/1367/1376/1876/1803 均 ≤2000（未登记宽限）；类目 gplus-matrices 5/8；storybook test 3 条既有红（`.tcrn-field:focus-within`、画布 first-paint、「TCRN stays regular weight」，归 W6-B）；**硬阻塞**：page-template.tsx 的 scopeComponentCss 按逗号切 `:where()`，静态文档页状态样式全失效（76 个状态格偏离），W5-C 转绿的前提——并入 W5-C（等 W2-G 交回后，page-template.tsx 进 W5-C 文件集）；集外：缺 `[data-tcrn-theme="light"]` 主题块（夜间切换时嵌套浅色区跟着变夜）、ClipboardCopyButton 无静态状态入口、单独 TcrnBrandMark 无默认尺寸、Text 无 mono/行内数字 variant 入参、包入口未导出新增图标名单（W4-A P3）；测量库要支持 `before-bg` 探针（Switch 钮在 ::before，W5-C） |
 | W3-A | 已合入 987923c，包树已退役 | 95d473e | SUB-002→003；ALL PAIRS PASS（文字最低 4.59 夜间 ink-3 于 panel；边与焦点最低 3.06 浅色 line-ctl 于 bg）；字标豁免 4 条引用 D2（tms 夜间两条待 Owner）；先红证据三处；弃用通知夹具 15 旧名、Chromium 计算值一致、storybook 构建打印 32 旧名 299 处；集外：tokens:proof 接两份新测试（通知测试要 Chromium，W6-A）、`findDeprecatedTokenUsages` 把定义算使用（P6，SUB-043 README）、字标承载面只算 panel 由验收定（P4）、ink-3 在 panel-2/bg-2/悬停/选中行低于 4.5（最低 3.88，P1，交 SUB-035/011） |
 | W5-B | 在跑 | 6c54fd8 | SUB-032→033 |
+| W2-H | 在跑 | 4e5b502 | SUB-011 |
 | W5-C | 在跑 | 23182c6 | 前置修复 page-template scopeComponentCss＋SUB-028→035；文件集加 page-template.tsx 与 gplus-measure.mjs（只做加法） |
-| W5-A | 在跑 | 373e3ec | SUB-031（P1：ProductShell 只经 `--tcrn-product-shell-sidebar-width` 设 220，其余差值记待裁） |
+| W5-A | 已合入 df12710，包树已退役 | 373e3ec | SUB-031；类目 `gplus-samples` 五个样板（id 按约定 7），各 1908px（余量 92）；浅/夜两块 class 一致；129-GWT3 未达：P1 待裁差值（品牌行 16/48 而导航图标 49、文字 77；纸离边 0 非 12 且无圆角阴影；顶栏 68 非 52；侧栏有底色与右边线；首个导航组须带标题；无用户区与计数槽；面包屑无箭头）——差值表在 `handoff/W5-A.md`；storybook test 6 过 3 红（W4-A 已登记旧红）；集外：夜间块壳主题按钮无图标（ShellThemeToggle 或 page-template）、单选选中态静态页不显示（作用域改写同源，W5-C）、几何门测量根宜用 story 正文区（整篇 article 会把文档标题 2px 溢出算 clip） |
 | W2-G | 已合入 590231c，包树已退役 | 27b12ec | SUB-007；fonts-render-proof 8 腿全过（52 个字面副本逐字节同、35 页各链接一次、googleapis/gstatic 0、五族 10 样本真加载、「季度复盘」回退 Noto Serif SC、屏蔽 fonts/ 时回退系统宋体以证可区分、变异 4 腿判红）；OFL 文本另复制进 storybook-static/licenses（超出判据）；画布色三处读 `--tcrn-color-bg`（浅 #efeeea、夜 #121210）；smoke.test 新断言写法在 `handoff/W2-G.md` 第 3 节（归 W6-B）；集外：package.json 加 `fonts:render-proof` 接 verify（W6-A，P4）；preview.ts 的 backgrounds.values 旧格式（P2）；随包字体改变静态页文字尺寸，浏览器门阈值与基线需复核（P3，W6-B/W8-A） |
 | W4-B | 已合入 e28932f，包树已退役 | f0d2a13 | SUB-037；门测试 65/65；门在其树上红 C2 7＋C5 1（组件侧，批末返工）：Q1 生成段 typography.scale.ts:25-26 `.tcrn-link` 悬停焦点写色（改 typography.json 状态对＋生成器，改共享契约→主力档）、Q2 base.css.ts:2500 `.tcrn-link--quiet:hover`、Q3 inputs.css.ts:519-520 MultiSelect 选项 (0,3,0) 写底色（可能动 pairs.json→主力档）、Q4 inputs.css.ts:23 产品壳搜索 focus-within (0,3,0)、Q5 base.css.ts:606 主题日月图标浅色补 display；C6/C13 0、C7 1378/C8 42/C11 35 全部豁免（第一批 story 层 0 条）；豁免 12 条（新增 LockHint 🔒）；口径待验收：C7 title 非空即满足（Actions 20 处 title 与文字不同）；集外：package.json 接 contract:static（W6-A，Q8）；G+ 矩阵合入后复核读入数（Q10） |
 | W3-D | 已合入 c118414，包树已退役 | 4b22450 | SUB-018→021＋M5＋W2-B 四条跟进；ui-react test 157/157；shell-fidelity duplicateSelectors 0（文档摆放规则改以 `svg[data-icon-name]` 为主体，未进白名单）；`.tcrn-icon` 基类在 icon.css.ts（描边读生成物；vertical-align 取板上 middle，P5 Owner 可更正）；待 Owner：三个外壳切换钮 36/38/44 与 IconButton md 32 不一致（W3-D P1，第二批壳层范围）；集外：生成器的链接焦点 `outline:none` 无强制色回退（P6，改 contract-generate）、page-template 的 scopeComponentCss 按逗号拆 :where/:is/:not 选择器（P7，既有缺陷）、foundation-visual-standards.ts:207 描述过期（P9）、Select/DatePicker 多一层包裹可能影响浏览器门（P8，W6-B 跑） |
@@ -63,6 +64,12 @@
 ## 批末生成物（一次再生，不随单包重做）
 
 - `pnpm fonts:vendor`（中文分片按最终产品用字重选）→ fonts-proof coverage 转绿；`node scripts/contract-generate.mjs --check`；tokens-sync；internal-alpha 回执与视觉签名基线（W8-A）。
+
+## 待派（就绪条件）
+
+- W6-B：等 W5-C 合入（作用域修复会改变静态页状态样式，重定基线须在其后）；文件集加 `scripts/package-contract-manifest.mjs`（OFL-1.1 依 D4 入许可白名单）。
+- W6-A：等 W2-H、W5-B、W5-C 合入。
+- W7-A：等 W6-A、W6-B；W8-A：等 W7-A。
 
 ## 下一步
 
