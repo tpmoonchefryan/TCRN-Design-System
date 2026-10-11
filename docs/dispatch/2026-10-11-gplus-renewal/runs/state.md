@@ -86,8 +86,26 @@
 
 - 拆分（einzbern-economy）按 judgment §2/§3.4/§5 一次拆，Subtask 键自 TCRN-DS-SUB-047 起，产出 `runs/r2/`；包按 judgment 标的档位派（主力包用 einzbern-main，经济包用 einzbern-economy）。
 - 最终收尾：全部返工合入后跑 SUB-046（视觉基线与回执再生），再跑末次 verify（`tokens:proof`、`internal-alpha:proof` 拆子命令逐段记结果），再按 Story 复验。
+- 拆分已交回并提交（060789f）：SUB-047…087 共 41 张一次落链（WORK_BATCH_APPLIED，version 1553 → 1594）；主线程 work-list 读回 87 张（001–045 done、046 与 047–087 planned），父单与标题与 subtasks.json 零差异（读回存 scratch `chain/r2-subtasks-readback.json`）。12 包 4 波，包表与就绪条件见 `runs/r2/packages.md`；相对判断 §5 的差异见 decomposition §2.1（P6 加前置 P7 等 6 条）。
+- 摘录生成器换为 scratch `tools/make-excerpt-r2.mjs`（`node make-excerpt-r2.mjs <dispatch 目录> <包> <输出> [file:<前置包 handoff>...]`；含 R1 与 R2 跨包约定、包表行、共享文件行、局部门、Subtask 节、判断 §2 对应条目、§3.3 与 §3.4）。
+- 包树建在 scratch `pkg/r2-<包>`，分支 `claude/init015-r2-<包小写>`；主线程建树后先 `install --frozen-lockfile --prefer-offline`，再先构建 ui-tokens 与 ui-copy-state。
+
+| 包 | 档位 | 状态 | 自 | 备注 |
+| --- | --- | --- | --- | --- |
+| P1 | 主力 | 在跑 | 060789f | SUB-048 → 049 → 047 |
+| P3 | 主力 | 在跑 | 060789f | SUB-053 → 057 |
+| P4 | 经济 | 在跑 | 060789f | SUB-059 → 060 → 061 → 062 |
+| P7 | 经济 | 待派（P3 交回后补位） | — | 摘录已切 |
+| P9 | 主力 | 待派（P4 交回后补位） | — | 摘录已切 |
+| P2 | 主力 | 待 P1、P3、P4 合入 | — | 摘录附 P1/P3/P4 handoff |
+| P5 | 主力 | 待 P1 合入 | — | 摘录附 P1 handoff |
+| P6 | 主力 | 待 P4、P7 合入 | — | 摘录附 P4/P7 handoff |
+| P8 | 主力 | 待 P7 合入 | — | 摘录附 P7 handoff |
+| P10 | 主力 | 待 P1 合入 | — | 摘录附 P1 handoff |
+| P11 | 经济 | 待 P1–P10 全部合入 | — | |
+| P12 | 经济 | 待 P11 合入 | — | 末项 SUB-046 |
 
 ## 下一步
 
-1. 等 W1-A/B/C 交回（完成通知即唤醒）；逐包核对后合入集成分支，按上面的优先级补位派包（每次派前生成该包摘录并提交到集成分支）。
-2. 全部包合入后：批末 verify 一次（日志放 scratch `logs/`），派 `einzbern-main` 按 Story 验收一次，问题清单一次处置，一次链写与知识采集。
+1. 等 P1/P3/P4 交回（完成通知即唤醒）；逐包核对（提交、handoff、problems、树干净、文件集不越界）后按依赖顺序合入集成分支，退役包树（`git worktree remove`）。补位优先序：P1、P3、P4、P7、P9、P2、P5、P6、P8、P10、P11、P12，同时在跑不超过 3；每次派前切该包摘录（前置包 handoff 作附件）并提交到集成分支，再从集成 HEAD 建包树。
+2. P12 交回后：R2 末次 verify 逐步跑（scratch `r2-verify/`），三片验收（einzbern-main），判断（einzbern-main），一次链写（R2 Subtask 转态、Story 转态、M5 等 B 类注解、知识卡），然后按判断决定 R3 或收口。
