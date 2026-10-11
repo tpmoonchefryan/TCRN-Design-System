@@ -528,9 +528,10 @@ test("product shell component css isolates topbar from docs chrome", () => {
   // (buttons, links, text controls including the search control, selects, checkboxes,
   // radios, switches) are left to draw their own ring and edge from their pair tables.
   assert.match(tcrnComponentCss, /\.tcrn-product-shell :focus-visible:not\(\.tcrn-button, \.tcrn-link-button, \.tcrn-link, \.tcrn-input, \.tcrn-select, \.tcrn-checkbox, \.tcrn-radio-group__control, \.tcrn-switch__control\) \{\s*outline: 2px solid transparent;\s*outline-offset: 2px;\s*box-shadow: var\(--tcrn-focus-ring\);\s*\}/);
-  // The search wrapper draws nothing around the control in the shell, and no shell rule
-  // clears the control's own edge or ring.
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input:focus-within \{\s*outline: 0;\s*box-shadow: none;\s*\}/);
+  // The search wrapper draws nothing, so the shell has no rule to clear on it; nor does
+  // any shell rule clear the control's own edge or ring.
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-search-input:focus-within/);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-search-input:where\(:focus-within\)/);
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input__control[^{]*\{[^}]*box-shadow: none/);
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell [^{]*\.tcrn-shell-(?:theme|side-nav)-toggle:focus-visible/);
   assert.match(tcrnComponentCss, /\.tcrn-nav-item\[data-nav-item-has-icon="false"\] \{[\s\S]*grid-template-columns: minmax\(0, 1fr\);/);
@@ -750,7 +751,7 @@ test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(searchControlRule, /appearance: none;[^}]*inline-size: 100%;[^}]*block-size: var\(--tcrn-search-input-block-size\);[^}]*padding-inline: calc\(var\(--tcrn-search-input-padding-inline\) \+ var\(--tcrn-search-input-icon-size\) \+ var\(--tcrn-search-input-column-gap\)\) var\(--tcrn-search-input-padding-inline\);/);
   assert.doesNotMatch(searchControlRule, /(?:^|[;\s])(?:background|box-shadow|border|color)\s*:/, "the search pair, not the wrapper rule, paints the control");
   assert.match(tcrnComponentCss, /\.tcrn-input\.tcrn-search-input__control::placeholder \{\s*color: var\(--tcrn-color-ink-2\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[^}]*position: absolute;[^}]*inset-inline-end: var\(--tcrn-space-2\);[^}]*border: 1px solid var\(--tcrn-color-line-2\);[^}]*color: var\(--tcrn-color-ink-3\);[^}]*font-family: var\(--tcrn-type-family-mono\);[^}]*pointer-events: none;/);
+  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[^}]*position: absolute;[^}]*inset-inline-end: var\(--tcrn-space-2\);[^}]*border: 1px solid var\(--tcrn-color-line-2\);[^}]*color: var\(--tcrn-color-ink-2\);[^}]*font-family: var\(--tcrn-type-family-mono\);[^}]*pointer-events: none;/);
   assert.match(tcrnComponentCss, /\.tcrn-search-input\[data-shortcut-visible="true"\] \.tcrn-search-input__control \{\s*padding-inline-end: calc\(/);
   // The primary button reads on-acc ink from its own pair in both themes; the night theme
   // changes the tokens, not the button, so there is no dark-scoped primary rule any more.
