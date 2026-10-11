@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { JSDOM } from "jsdom";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   RadioGroup,
@@ -434,6 +435,55 @@ test("STORY-126 GWT1 and GWT2: line-ctl edge by default, red edge and red ring w
   const invalidFocusRule = tcrnComponentCss.indexOf('.tcrn-input:where([aria-invalid="true"]:focus-visible,');
   assert.ok(focusRule !== -1 && focusRule < invalidRule && invalidRule < invalidFocusRule, "the invalid rules follow the focus rule, so they win");
   assert.doesNotMatch(tcrnComponentCss, /aria-invalid[^{}]*\{[^}]*--tcrn-color-acc/);
+});
+
+test("STORY-126 GWT5: a read-only field that takes focus shows the focus ring over its read-only surface (WCAG 2.4.7)", () => {
+  // The read-only rule comes after the focus rule (the Inputs board order), so on its own it hid
+  // the ring of a focused read-only field. The readonly-focus tuple rf follows it: the read-only
+  // fill and ink stay, the edge becomes the focus ring (TCRN-DS-SUB-058).
+  for (const target of ["tcrn-input", "tcrn-select"]) {
+    const declarations = new RegExp(`^\\.${target}\\{([^}]*)\\}`, "m").exec(inputsTextPairsCss)?.[1] ?? "";
+    assert.match(declarations, /--tcrn-pair-edge-rf:inset 0 0 0 1px var\(--tcrn-color-acc\),var\(--tcrn-focus-ring\)/);
+  }
+  const focusRule = inputsTextPairsCss.indexOf(".tcrn-input:where(:focus-visible,");
+  const readonlyRule = inputsTextPairsCss.indexOf(".tcrn-input:where([readonly],");
+  const readonlyFocusRule = inputsTextPairsCss.indexOf(".tcrn-input:where([readonly]:focus-visible,");
+  const invalidRule = inputsTextPairsCss.indexOf('.tcrn-input:where([aria-invalid="true"]),');
+  assert.ok(focusRule !== -1 && focusRule < readonlyRule && readonlyRule < readonlyFocusRule && readonlyFocusRule < invalidRule, "rf follows r and precedes the invalid rules");
+  const readonlyFocus = /(\.tcrn-input:where\(\[readonly\]:focus-visible,[^{]*)\{([^}]*)\}/.exec(inputsTextPairsCss);
+  assert.ok(readonlyFocus, "the generated segment has the readonly-focus rule");
+  assert.match(readonlyFocus[1], /\[aria-readonly="true"\]\[data-tcrn-preview-state="focus"\]/);
+  assert.equal(readonlyFocus[2], "--tcrn-pair-edge:var(--tcrn-pair-edge-rf)", "rf only switches the edge");
+
+  // The live pair of rendered fields, cascaded by jsdom over the whole sheet.
+  const markup = renderToStaticMarkup(
+    <>
+      <Input aria-label="Project key" readOnly defaultValue="PRJ-2026-0412" data-tcrn-preview-state="focus" data-probe="readonly-focus" />
+      <Input aria-label="Project key" readOnly defaultValue="PRJ-2026-0412" data-probe="readonly" />
+      <Input aria-label="Project name" defaultValue="季度复盘" data-tcrn-preview-state="focus" data-probe="focus" />
+    </>
+  );
+  const livePairs = (css: string) => {
+    const dom = new JSDOM(`<!doctype html><html><head></head><body>${markup}</body></html>`);
+    const style = dom.window.document.createElement("style");
+    style.textContent = css;
+    dom.window.document.head.append(style);
+    const pair = (probe: string) => {
+      const element = dom.window.document.querySelector(`[data-probe="${probe}"]`);
+      assert.ok(element, `rendered ${probe}`);
+      const computed = dom.window.getComputedStyle(element);
+      return { fill: computed.getPropertyValue("--tcrn-pair-fill").trim(), edge: computed.getPropertyValue("--tcrn-pair-edge").trim() };
+    };
+    return { readonlyFocus: pair("readonly-focus"), readonly: pair("readonly"), focus: pair("focus") };
+  };
+  const live = livePairs(tcrnComponentCss);
+  assert.deepEqual(live.readonlyFocus, { fill: "var(--tcrn-pair-fill-r)", edge: "var(--tcrn-pair-edge-rf)" }, "focused read-only: read-only surface, focus-ring edge");
+  assert.deepEqual(live.readonly, { fill: "var(--tcrn-pair-fill-r)", edge: "var(--tcrn-pair-edge-r)" });
+  assert.deepEqual(live.focus, { fill: "var(--tcrn-pair-fill-f)", edge: "var(--tcrn-pair-edge-f)" });
+  // Without the rf rule the read-only edge covers the ring again.
+  const rfRule = /\.tcrn-input:where\(\[readonly\]:focus-visible,[^{]*\{[^}]*\}/g;
+  assert.equal(tcrnComponentCss.match(rfRule)?.length, 1);
+  assert.equal(livePairs(tcrnComponentCss.replace(rfRule, "")).readonlyFocus.edge, "var(--tcrn-pair-edge-r)");
 });
 
 test("STORY-126 number, date, placeholder and collection details follow the Inputs board", () => {
