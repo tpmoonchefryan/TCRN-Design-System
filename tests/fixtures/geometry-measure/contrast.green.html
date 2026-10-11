@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>geometry-measure fixture: contrast (green)</title>
+<!-- Clean case for the contrast measurement; no check may fail. -->
+<style>
+  body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
+  [data-measure-root] { width: 640px; padding: 16px; }
+  .part { margin: 0 0 24px; }
+  .cells { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .fill { background: #2b59c3; color: #ffffff; padding: 2px 6px; }
+  .wash { background: rgba(43, 89, 195, 0.12); padding: 2px 6px; }
+  .ph-field { background: #ffffff; color: #111111; border: 1px solid #8c8c8c; font: inherit; }
+  .ph-field::placeholder { color: #6b6b6b; }
+  .ring { display: inline-block; width: 40px; height: 20px; box-shadow: 0 0 0 1px #8c8c8c; }
+  .underline::after { content: ""; display: block; border-bottom: 2px solid #2b59c3; }
+  .knob::after { content: ""; display: inline-block; width: 8px; height: 8px; background: #5f5f5f; }
+</style>
+</head>
+<body>
+<main data-measure-root>
+<div class="cells">
+  <span data-cell="ink" data-expect="18.88" style="color: #111111">Body ink</span>
+  <span data-cell="ink-translucent" data-expect="7.62" style="color: rgba(17, 17, 17, 0.72)">Secondary ink</span>
+  <span class="fill" data-cell="on-fill" data-expect="6.33">Primary</span>
+  <div class="wash"><span data-cell="on-wash" data-expect="8.68" style="color: #1e3a8a">Selected</span></div>
+  <input class="ph-field" data-cell="placeholder" data-probe="ph" data-expect="5.33" placeholder="Search" aria-label="Search">
+  <span class="ring" data-cell="ring" data-probe="shadow" data-kind="ui" data-expect="3.36"></span>
+  <span class="underline" data-cell="underline" data-probe="after-border" data-kind="ui" data-expect="6.33">Tab</span>
+  <span class="knob" data-cell="knob" data-probe="after-bg" data-kind="ui" data-expect="6.39"></span>
+  <span data-cell="disabled" data-exempt data-expect="2.05" style="color: #b5b5b5">Disabled</span>
+</div>
+</main>
+</body>
+</html>
