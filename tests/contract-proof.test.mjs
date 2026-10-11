@@ -25,7 +25,9 @@ import {
   compositeParts,
   cssSegments,
   formatResult,
+  isSheetStateSelector,
   isStateSelector,
+  pairBaseClasses,
   pairStateAtoms,
   runContractProof,
   stateRuleLiterals
@@ -96,6 +98,8 @@ test("the tree: every check is green, with the 37 icons, the 8 mark files and th
   assert.equal(result.ok, true, formatResult(result));
   assert.deepEqual(result.checks.map((check) => check.id), [...CHECK_IDS]);
   assert.match(checkOf(result, "generated-sources").summary, new RegExp(`^${GENERATED.length} generated files`, "u"));
+  const stateRules = /its (\d+) state rules \((\d+) of them on the pairs\.json target bases\)/u.exec(checkOf(result, "package-css").summary);
+  assert.ok(stateRules && Number(stateRules[1]) > Number(stateRules[2]), "package-css reads the state rules of the whole sheet, not only those of the pairs.json target bases");
   assert.match(checkOf(result, "icon-roster").summary, /same 37 names/u);
   assert.match(checkOf(result, "product-marks").summary, /the 8 SVG files/u);
   const cells = Object.values(EXPECTED_CELLS).reduce((sum, count) => sum + count, 0);
@@ -112,6 +116,75 @@ test("state rules: the pairs.json conditions decide what a state rule is; only a
   assert.deepEqual(stateRuleLiterals({ prop: "box-shadow", value: "0 0 0 1px transparent" }), ["transparent"]);
   assert.deepEqual(stateRuleLiterals({ prop: "--tcrn-pair-fill", value: "var(--tcrn-pair-fill-h)" }), []);
   assert.deepEqual(stateRuleLiterals({ prop: "color", value: "#c00" }), ["#c00"]);
+});
+
+test("state rules of the sheet: a clauses.md C2 state condition on any compound, or a pairs.json condition; not the theme, structure or a non-state attribute", () => {
+  const atoms = pairStateAtoms(JSON.parse(read(repoRoot, `${CONTRACT_DIR}/pairs.json`)));
+  // Outside the pairs.json target bases: the rules package-css did not read before TCRN-DS-SUB-053.
+  for (const selector of [
+    '.tcrn-shell-locale-menu__trigger[aria-expanded="true"]',
+    ".tcrn-shell-locale-menu__trigger:hover",
+    '.tcrn-nav-item[aria-current="page"]',
+    ".tcrn-field:hover .tcrn-input",
+    '.tcrn-tab:where([data-tcrn-preview-state="focus"])',
+    ".tcrn-tooltip:is(:focus-within) .tcrn-tooltip__content",
+    ".tcrn-table-shell__row[disabled]"
+  ]) {
+    assert.equal(isSheetStateSelector(selector, atoms), true, selector);
+  }
+  // Still read: the state rules of the pairs.json target bases.
+  assert.equal(isSheetStateSelector('.tcrn-button:where(:hover,[data-tcrn-preview-state="hover"])', atoms), true);
+  assert.equal(isSheetStateSelector('.tcrn-button:where(:not([aria-busy="true"])) > .tcrn-button__spinner', atoms), true);
+  // Not state rules: the theme scope, structure, a variant, a pseudo-element, a non-state attribute, a condition only inside :has().
+  for (const selector of [
+    '[data-tcrn-theme="dark"]',
+    ":root",
+    ".tcrn-list > .tcrn-list__item:first-child",
+    ".tcrn-button.tcrn-button--primary",
+    ".tcrn-checkbox::before",
+    '.tcrn-collapsible-region[aria-hidden="true"]',
+    ".tcrn-card:has(.tcrn-card__link:focus-visible)"
+  ]) {
+    assert.equal(isSheetStateSelector(selector, atoms), false, selector);
+  }
+});
+
+test("GWT2 (R2-7): a colour literal in a state rule outside the pairs.json targets turns package-css red; the theme scope and non-state rules are not read", async () => {
+  const ui = await realUi();
+  const pairs = JSON.parse(read(repoRoot, `${CONTRACT_DIR}/pairs.json`));
+  const atoms = pairStateAtoms(pairs);
+  const bases = pairBaseClasses(pairs);
+  // The locale trigger's hover and open rule: the R1 defect (a literal shadow) put back into the built sheet.
+  const anchor = '.tcrn-shell-locale-menu__trigger[aria-expanded="true"] {';
+  assert.ok(ui.tcrnComponentCss.includes(anchor), "the dist holds the locale trigger's hover and open rule");
+  const injected = [
+    { selector: ".tcrn-nav-item:hover", css: ".tcrn-nav-item:hover{background:rgba(1, 2, 3, 0.5)}", literal: "rgba(" },
+    { selector: '.tcrn-shell-locale-menu__option[aria-current="true"]', css: '.tcrn-shell-locale-menu__option[aria-current="true"]{color:#c00}', literal: "#c00" },
+    { selector: '.tcrn-tab:where([data-tcrn-preview-state="hover"])', css: '.tcrn-tab:where([data-tcrn-preview-state="hover"]){border-color:rgb(1, 2, 3)}', literal: "rgb(" }
+  ];
+  for (const entry of [{ selector: anchor.slice(0, -2) }, ...injected]) {
+    assert.equal(isStateSelector(entry.selector, atoms, bases), false, `${entry.selector} is not a state rule of a pairs.json target base`);
+  }
+  const notRead = [
+    '[data-tcrn-theme="dark"] .tcrn-divider{border-top-color:#0c0}',
+    ".tcrn-divider{border-top-color:#00c}",
+    '.tcrn-collapsible-region[aria-hidden="true"]{color:#0cc}',
+    ".tcrn-nav-item:focus-visible{outline:2px solid transparent}"
+  ];
+  const css = [ui.tcrnComponentCss.replace(anchor, `${anchor}\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);`), ...injected.map((entry) => entry.css), ...notRead].join("\n");
+  const result = await runContractProof({ ui: { ...ui, tcrnComponentCss: css } });
+  const packageCss = checkOf(result, "package-css");
+  assert.equal(packageCss.ok, false);
+  assert.ok(
+    packageCss.failures.some((failure) => failure.includes(anchor.slice(0, -2)) && failure.includes("colour literal rgba( (box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12))")),
+    formatResult(result)
+  );
+  for (const entry of injected) {
+    assert.ok(packageCss.failures.some((failure) => failure.includes(`state rule ${entry.selector} carries the colour literal ${entry.literal}`)), `${entry.selector}\n${formatResult(result)}`);
+  }
+  for (const word of ["#0c0", "#00c", "#0cc", ".tcrn-nav-item:focus-visible"]) {
+    assert.ok(!packageCss.failures.some((failure) => failure.includes(word)), `${word} is not read as a state-rule literal\n${formatResult(result)}`);
+  }
 });
 
 test("GWT1: one ink token changed in pairs.json without regenerating turns generated-sources red", async () => {
