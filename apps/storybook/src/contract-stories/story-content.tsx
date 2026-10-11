@@ -173,11 +173,7 @@ import {
   OverlayStaticModes,
   PopoverSpecFixture
 } from "./fixtures/overlay.js";
-import {
-  CompactToolShellDemo,
-  KnowledgeBaseShellDemo,
-  DenseOperationsShellDemo
-} from "./prototypes/storybook-shell-demos.js";
+import { KnowledgeBaseShellDemo } from "./prototypes/storybook-shell-demos.js";
 import {
   FrontendShellSliceVisualInstance,
   frontendShellSliceVisualInstanceReadback
@@ -2128,7 +2124,6 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
             rows={denseShellMenuDensityRows}
           />
-          <DenseOperationsShellDemo />
         </ReadbackPanel>
       </section>
     )
@@ -2146,7 +2141,6 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Compact tool shell">
           <Text>Small tools may use local segmented navigation, but only when the number of peer views stays small and stable.</Text>
-          <CompactToolShellDemo />
         </ReadbackPanel>
       </section>
     )

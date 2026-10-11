@@ -1012,8 +1012,6 @@ const required = [
   // no-overclaim boundary is carried by the rendered page-head chips (shell.noPackagePublicationClaim
   // / shell.noProductAdoptionClaim / shell.acceptanceDownstreamClaim).
   "data-anchor-scroll-controlled=\"true\"",
-  "data-menu-layer=\"10-plus-primary\"",
-  "data-shell-layer=\"mega-menu\"",
   "Top bar, attached side navigation, content column, and chapter navigation stay one shell"
 ];
 const componentPage = pages.Components;
