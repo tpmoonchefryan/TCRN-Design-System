@@ -23,33 +23,46 @@
 // A selector is exempt only when every tcrn-* class in it is exempt; selectors without a tcrn-*
 // class are always checked. There is no unconditional skip.
 //
-// Story-render checks (C7 title and wrapping, C8 measured yielding, C11 element nesting and emoji
-// glyphs in rendered markup) belong to the story layer (TCRN-DS-SUB-037).
+// Story render layer (TCRN-DS-SUB-037): C7, C8 and C11 are also checked on the rendered story sections
+// of the static Storybook build (apps/storybook/storybook-static/*.html, the elements that carry
+// data-story-id): C7 title and forced line breaks on single-line roles, C8 one yielding item per
+// rendered toolbar with every other item fixed, C11 emoji in rendered text, card in card, banned
+// features in inline styles, one shape for four semantics and generic parts standing in for shell
+// controls. Story findings go through the same family, class and selector exemptions; a missing
+// static build is red, not skipped.
 //
-// Usage: node scripts/contract-static-proof.mjs [--details] [--report <path>]
-//   Run from the repository root after `pnpm build`.
+// Usage: node scripts/contract-static-proof.mjs [--details] [--report <path>] [--family <id>[,<id>…]]
+//   Run from the repository root after `pnpm build`. --family limits the findings that decide the
+//   result to those attributed to the named families (families.json ids, or utility, unattributed);
+//   findings that belong to no family (input missing) always count.
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { dirname, join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import {
   blurRadii,
   colourLiterals,
   compareSpecificity,
   compounds,
+  elementClasses,
   emojiIn,
+  emojiInText,
   formatSpecificity,
   gradientFunctions,
   invisibleLayer,
   lengthPx,
   parseCompound,
   parseCss,
+  parseDeclarations,
+  parseHtml,
   selectorClasses,
   selectorList,
   shadowLayers,
   specificity,
   splitTopLevel,
+  textContent,
   varReferences,
+  walkElements,
   withoutPseudoElements
 } from "./lib/css-rules.mjs";
 
@@ -84,7 +97,8 @@ export const DEFAULT_PATHS = Object.freeze({
   families: "docs/contract/families.json",
   exemptions: "docs/contract/exemptions.json",
   roles: "docs/contract/roles.json",
-  pairs: "docs/design/gplus-2026-10/contract/pairs.json"
+  pairs: "docs/design/gplus-2026-10/contract/pairs.json",
+  storybookStatic: "apps/storybook/storybook-static"
 });
 
 export const VARIANT_SPECIFICITY = Object.freeze([0, 2, 0]);
@@ -127,6 +141,10 @@ const SHADOW_PROPS = new Set(["box-shadow", "text-shadow"]);
 const LEFT_EDGE_PROPS = new Set(["border-left", "border-left-width", "border-inline-start", "border-inline-start-width"]);
 const SIDE_EDGE = /^border-(?:top|right|bottom|left|block-start|block-end|inline-start|inline-end)(?:-width)?$/u;
 const CARD_BLOCK = /^tcrn-(?:[-a-z0-9]+-)?card$/u;
+// Surfaces drawn exactly like a card (border, radius and panel fill): nesting one in a card is card in card.
+const CARD_SURFACES = new Set(["tcrn-surface"]);
+/** A card root class: tcrn-card, tcrn-*-card or a card-drawn surface, not an element (__) class. */
+export const isCardRoot = (className) => !className.includes("__") && (CARD_BLOCK.test(blockOf(className)) || CARD_SURFACES.has(blockOf(className)));
 
 const SHORTHAND_LONGHANDS = [
   ["border", /^border-(?:(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?-)?(?:color|width|style)$|^border-(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?$/u],
@@ -618,29 +636,32 @@ function shadowBlurs(prop, value) {
   return [];
 }
 
+/** C11 problems of one declaration (the CSS feature scan); shared by the package CSS and inline styles. */
+export function c11DeclarationProblems({ prop, value }) {
+  const problems = [];
+  for (const gradient of gradientFunctions(value)) problems.push({ rule: "C11.gradient", detail: `${prop}: ${gradient}(…)` });
+  for (const blur of blurRadii(value)) if (blur.px === null || blur.px > 3) problems.push({ rule: "C11.blur", detail: `${prop}: ${blur.raw}` });
+  const dropShadows = [...value.matchAll(/drop-shadow\(([^)]*(?:\([^)]*\)[^)]*)*)\)/giu)].map((match) => shadowLayers(match[1])?.[0]).filter(Boolean);
+  for (const layer of [...shadowBlurs(prop, value), ...dropShadows.filter((layer) => layer.blur > 3)]) problems.push({ rule: "C11.cloud-shadow", detail: `${prop}: ${layer.raw} (blur ${layer.blur}px)` });
+  for (const emoji of emojiIn(value)) problems.push({ rule: "C11.emoji-icon", detail: `${prop}: ${emoji}` });
+  if (LEFT_EDGE_PROPS.has(prop) && (borderWidth(value) ?? 0) >= 2) problems.push({ rule: "C11.left-bar", detail: `${prop}: ${value}` });
+  if (prop === "box-shadow" || PAIR_VAR.test(prop)) {
+    for (const layer of visibleShadowLayers(value)) if (layer.inset && layer.x >= 2 && layer.y === 0 && layer.blur === 0) problems.push({ rule: "C11.left-bar", detail: `${prop}: ${layer.raw}` });
+  }
+  return problems;
+}
+
 export function checkC11(rules, scope) {
   const { add, result } = collector("C11", scope);
   for (const rule of rules) {
     const selectors = rule.kind === "style" ? rule.selectors.map((selector) => selectorFacts(selector, rule.atRules)) : [null];
-    const problems = [];
-    for (const declaration of rule.declarations) {
-      const { prop, value } = declaration;
-      for (const gradient of gradientFunctions(value)) problems.push({ rule: "C11.gradient", detail: `${prop}: ${gradient}(…)` });
-      for (const blur of blurRadii(value)) if (blur.px === null || blur.px > 3) problems.push({ rule: "C11.blur", detail: `${prop}: ${blur.raw}` });
-      const dropShadows = [...value.matchAll(/drop-shadow\(([^)]*(?:\([^)]*\)[^)]*)*)\)/giu)].map((match) => shadowLayers(match[1])?.[0]).filter(Boolean);
-      for (const layer of [...shadowBlurs(prop, value), ...dropShadows.filter((layer) => layer.blur > 3)]) problems.push({ rule: "C11.cloud-shadow", detail: `${prop}: ${layer.raw} (blur ${layer.blur}px)` });
-      for (const emoji of emojiIn(value)) problems.push({ rule: "C11.emoji-icon", detail: `${prop}: ${emoji}` });
-      if (LEFT_EDGE_PROPS.has(prop) && (borderWidth(value) ?? 0) >= 2) problems.push({ rule: "C11.left-bar", detail: `${prop}: ${value}` });
-      if (prop === "box-shadow" || PAIR_VAR.test(prop)) {
-        for (const layer of visibleShadowLayers(value)) if (layer.inset && layer.x >= 2 && layer.y === 0 && layer.blur === 0) problems.push({ rule: "C11.left-bar", detail: `${prop}: ${layer.raw}` });
-      }
-    }
+    const problems = rule.declarations.flatMap(c11DeclarationProblems);
     for (const facts of selectors) {
       const classes = facts ? facts.classes : [];
       const label = facts ? facts.selector : rule.selectorText;
       for (const problem of problems) add(classes, { ...problem, selector: label, ...where(rule) });
       if (facts) {
-        const cards = facts.parts.filter((part) => part.parsed.classes.some((name) => CARD_BLOCK.test(blockOf(name)) && !name.includes("__")));
+        const cards = facts.parts.filter((part) => part.parsed.classes.some(isCardRoot));
         if (cards.length >= 2) add(classes, { rule: "C11.card-in-card", selector: facts.selector, ...where(rule), detail: "a card selector nested in a card selector" });
       }
     }
@@ -662,6 +683,295 @@ export function checkC13(outOfPackage, scope, source = "scripts/doc-shell-class-
   }
   return result();
 }
+
+// ---------------------------------------------------------------------------------------------
+// Story render layer (TCRN-DS-SUB-037). Reads the rendered story sections of the static Storybook
+// build: every element carrying data-story-id is one story. Findings name the page, the story and the
+// element; their family comes from the element's package classes (tcrn-* but not tcrn-doc-*), so the
+// same exemption entries apply. A story finding has no CSS selector, so selectors entries never match it.
+
+const STORY_ATTRIBUTE = "data-story-id";
+const DOC_CLASS_PREFIX = "tcrn-doc-";
+const BLOCK_ELEMENTS = new Set([
+  "address", "article", "aside", "blockquote", "details", "dialog", "div", "dl", "fieldset", "figure", "footer", "form", "h1", "h2", "h3",
+  "h4", "h5", "h6", "header", "hr", "li", "main", "nav", "ol", "p", "pre", "section", "table", "ul"
+]);
+const WRAPPING_STYLE = (prop, value) =>
+  (prop === "white-space" && ["normal", "pre-wrap", "pre-line", "break-spaces"].includes(value)) ||
+  ((prop === "text-wrap" || prop === "text-wrap-mode") && value === "wrap") ||
+  (prop === "text-overflow" && value === "clip") ||
+  (["overflow", "overflow-x", "overflow-inline"].includes(prop) && value === "visible");
+const SVG_GEOMETRY_ATTRIBUTES = new Set(["d", "points", "viewbox", "transform", "path"]);
+const SAME_SHAPE_THRESHOLD = 4;
+const IGNORED_ROLES = new Set(["presentation", "none", "generic", "group", "region", "img", "separator", "status", "note", "list", "listitem"]);
+
+export const packageClassesOf = (node) => elementClasses(node).filter((name) => name.startsWith("tcrn-") && !name.startsWith(DOC_CLASS_PREFIX));
+const describe = (node) => `${node.tag}${elementClasses(node).map((name) => `.${name}`).join("")}`.slice(0, 160);
+const inlineStyle = (node) => (typeof node.attrs.style === "string" && node.attrs.style.trim() ? parseDeclarations(node.attrs.style) : []);
+const normalised = (value) => String(value ?? "").replace(/\s+/gu, " ").trim();
+
+/** The stories of the static pages: { pageCount, stories: [{ page, id, node }], errors }; null without pages. */
+export function readStoryLayer(storyPages) {
+  if (!Array.isArray(storyPages) || storyPages.length === 0) return null;
+  const stories = [];
+  const errors = [];
+  for (const page of storyPages) {
+    const { root, errors: pageErrors } = parseHtml(page.html);
+    for (const error of pageErrors) errors.push({ page: page.path, ...error });
+    walkElements(root, (node) => {
+      if (node.attrs[STORY_ATTRIBUTE] === undefined) return true;
+      stories.push({ page: page.path, id: node.attrs[STORY_ATTRIBUTE], node });
+      return false;
+    });
+  }
+  return { pageCount: storyPages.length, stories, errors };
+}
+
+/** Package classes of the nearest element, from node up to the story root, that has any. */
+function contextClasses(node, storyNode) {
+  for (let current = node; current && current !== storyNode.parent; current = current.parent) {
+    const classes = packageClassesOf(current);
+    if (classes.length > 0) return classes;
+    if (current === storyNode) break;
+  }
+  return [];
+}
+
+const storyWhere = (story, node) => ({ source: story.page, line: node.line, story: story.id, element: describe(node), selector: null });
+
+function ancestorsWithin(node, storyNode) {
+  const chain = [];
+  for (let current = node.parent; current && current !== storyNode.parent; current = current.parent) {
+    chain.push(current);
+    if (current === storyNode) break;
+  }
+  return chain;
+}
+
+function countClass(node, className) {
+  let count = elementClasses(node).includes(className) ? 1 : 0;
+  walkElements(node, (child) => {
+    if (elementClasses(child).includes(className)) count += 1;
+  });
+  return count;
+}
+
+const hasTitle = (node) => typeof node.attrs.title === "string" && node.attrs.title.trim().length > 0;
+
+/**
+ * C7 on rendered stories. A single-line role element with visible text must carry a non-empty title on
+ * itself, inside itself, or on an ancestor up to its component root that holds no other element of the
+ * same role (so a shared container's title does not count); and it must not hold a forced line break
+ * (<br> or a block element) or an inline style that makes it wrap again.
+ */
+export function checkC7Story(layer, scope, roles) {
+  const { add, result } = collector("C7", scope);
+  for (const role of roles?.singleLine ?? []) {
+    const block = blockOf(role.class);
+    for (const story of layer.stories) {
+      walkElements(story.node, (node) => {
+        if (!elementClasses(node).includes(role.class)) return true;
+        const classes = packageClassesOf(node);
+        const text = normalised(textContent(node));
+        if (text) {
+          let titled = hasTitle(node);
+          if (!titled) walkElements(node, (child) => {
+            if (hasTitle(child)) titled = true;
+            return !titled;
+          });
+          if (!titled) {
+            for (const ancestor of ancestorsWithin(node, story.node)) {
+              if (hasTitle(ancestor) && countClass(ancestor, role.class) === 1) {
+                titled = true;
+                break;
+              }
+              if (elementClasses(ancestor).includes(block)) break;
+            }
+          }
+          if (!titled) add(classes, { rule: "C7.story-title-missing", ...storyWhere(story, node), detail: `${role.role}: "${text.slice(0, 60)}" has no title for its truncated text` });
+        }
+        const breaks = [];
+        walkElements(node, (child) => {
+          if (child.tag === "br" || BLOCK_ELEMENTS.has(child.tag)) breaks.push(`<${child.tag}>`);
+        });
+        for (const element of [node]) for (const { prop, value } of inlineStyle(element)) if (WRAPPING_STYLE(prop, value.trim().toLowerCase())) breaks.push(`style ${prop}: ${value}`);
+        walkElements(node, (child) => {
+          for (const { prop, value } of inlineStyle(child)) if (WRAPPING_STYLE(prop, value.trim().toLowerCase())) breaks.push(`style ${prop}: ${value}`);
+        });
+        if (breaks.length > 0) add(classes, { rule: "C7.story-forced-wrap", ...storyWhere(story, node), detail: `${role.role}: holds ${[...new Set(breaks)].join(", ")}` });
+        return false;
+      });
+    }
+  }
+  return result();
+}
+
+function baseDeclarationsOfClasses(rules, classNames) {
+  return classNames.flatMap((className) => baseDeclarations(rules, className).filter((hit) => hit.base).flatMap((hit) => hit.rule.declarations));
+}
+
+/**
+ * C8 on rendered stories, per rendered toolbar container: exactly one yielding item; the yielding item
+ * does not sit inside a fixed item; inline styles do not undo the yielding item's min-width and shrink
+ * or a fixed item's flex-shrink 0; and every other item of the toolbar row (the nearest element around
+ * the yielding item with more than one child, or the container) is fixed: registered as fixed, or
+ * flex-shrink 0 in the package CSS. That is the static half of "the others are not squeezed once the
+ * yielding item reaches its min-width"; the measured half belongs to the geometry gates. Findings are
+ * attributed to the toolbar (container, row and fixed classes), which owns the item layout.
+ */
+export function checkC8Story(layer, scope, roles, rules) {
+  const { add, result } = collector("C8", scope);
+  for (const toolbar of roles?.toolbars ?? []) {
+    // A toolbar without a declared yielding item is already red as C8.yield-undeclared; one root cause, one finding.
+    if (typeof toolbar.yield !== "string" || !toolbar.yield) continue;
+    const fixedClasses = new Set(toolbar.fixed ?? []);
+    for (const story of layer.stories) {
+      walkElements(story.node, (container) => {
+        if (!elementClasses(container).includes(toolbar.container)) return true;
+        const toolbarClasses = packageClassesOf(container);
+        const yields = [];
+        walkElements(container, (node) => {
+          if (elementClasses(node).includes(toolbar.container)) return false;
+          if (elementClasses(node).includes(toolbar.yield)) yields.push(node);
+          return true;
+        });
+        if (yields.length === 0) add(toolbarClasses, { rule: "C8.story-yield-missing", ...storyWhere(story, container), detail: `${toolbar.toolbar}: the rendered toolbar holds no .${toolbar.yield}` });
+        if (yields.length > 1) add(toolbarClasses, { rule: "C8.story-yield-not-unique", ...storyWhere(story, container), detail: `${toolbar.toolbar}: the rendered toolbar holds ${yields.length} yielding items` });
+        for (const item of yields) {
+          const chain = [];
+          for (let current = item.parent; current && current !== container; current = current.parent) chain.push(current);
+          const fixedAround = chain.filter((node) => elementClasses(node).some((name) => fixedClasses.has(name)));
+          if (fixedAround.length > 0) add([...toolbarClasses, ...fixedAround.flatMap(packageClassesOf)], { rule: "C8.story-yield-in-fixed", ...storyWhere(story, item), detail: `${toolbar.toolbar}: the yielding item sits inside fixed ${fixedAround.map(describe).join(", ")}` });
+          for (const { prop, value } of inlineStyle(item)) {
+            const text = value.trim().toLowerCase();
+            const undoes = (["min-width", "min-inline-size"].includes(prop) && /^(?:0|0px|auto|initial|unset)$/u.test(text)) || shrinkOf([{ prop, value }]) === 0;
+            if (undoes) add([...toolbarClasses, ...packageClassesOf(item)], { rule: "C8.story-inline-override", ...storyWhere(story, item), detail: `${toolbar.toolbar}: inline ${prop}: ${value} on the yielding item` });
+          }
+        }
+        let row = container;
+        if (yields.length === 1) {
+          for (let current = yields[0].parent; current && current !== container; current = current.parent) {
+            if (current.children.filter((child) => child.type === "element").length > 1) {
+              row = current;
+              break;
+            }
+          }
+        }
+        const rowClasses = row === container ? toolbarClasses : [...toolbarClasses, ...packageClassesOf(row)];
+        for (const item of row.children.filter((child) => child.type === "element")) {
+          if (yields.some((node) => node === item || ancestorsWithin(node, container).includes(item))) continue;
+          const classes = elementClasses(item);
+          const inline = inlineStyle(item);
+          if (classes.some((name) => fixedClasses.has(name))) {
+            if (inline.length > 0 && shrinkOf(inline) !== null && shrinkOf(inline) !== 0) add(rowClasses, { rule: "C8.story-inline-override", ...storyWhere(story, item), detail: `${toolbar.toolbar}: inline style lets fixed ${describe(item)} shrink` });
+            continue;
+          }
+          const declarations = [...baseDeclarationsOfClasses(rules, packageClassesOf(item)), ...inline];
+          if (shrinkOf(declarations) !== 0) add(rowClasses, { rule: "C8.story-item-not-fixed", ...storyWhere(story, item), detail: `${toolbar.toolbar}: ${describe(item)} is neither the yielding item nor fixed (no flex-shrink 0), so it is squeezed first` });
+        }
+        return false;
+      });
+    }
+  }
+  return result();
+}
+
+/**
+ * ARIA semantic of an interactive element (explicit role or the implicit one), or null. A pressed toggle
+ * and a popup trigger count as their own semantics; current and selected are states, not semantics.
+ */
+export function semanticOf(node) {
+  let role = String(node.attrs.role ?? "").trim().split(/\s+/u)[0].toLowerCase() || null;
+  if (!role) {
+    if (node.tag === "a" && node.attrs.href !== undefined) role = "link";
+    else if (node.tag === "button" || node.tag === "summary") role = "button";
+    else if (node.tag === "select") role = node.attrs.multiple !== undefined ? "listbox" : "combobox";
+    else if (node.tag === "textarea") role = "textbox";
+    else if (node.tag === "input") {
+      const type = String(node.attrs.type ?? "text").toLowerCase();
+      const implicit = { checkbox: "checkbox", radio: "radio", button: "button", submit: "button", reset: "button", image: "button", search: "searchbox", range: "slider", number: "spinbutton", hidden: null };
+      role = Object.hasOwn(implicit, type) ? implicit[type] : "textbox";
+    }
+  }
+  if (!role || IGNORED_ROLES.has(role)) return null;
+  const flavours = [];
+  if (node.attrs["aria-pressed"] !== undefined) flavours.push("toggle");
+  if (node.attrs["aria-haspopup"] !== undefined && node.attrs["aria-haspopup"] !== "false") flavours.push("popup");
+  return flavours.length > 0 ? `${role}+${flavours.join("+")}` : role;
+}
+
+/**
+ * C11 on rendered stories: emoji in rendered text and attribute values (an emoji standing in for an
+ * icon); a card root inside a card root (element nesting depth of cards above one); banned features in
+ * inline style attributes (the CSS feature scan); one shape signature (the same set of package classes)
+ * carrying four or more semantics in one story; and generic parts standing in for shell controls
+ * (a shell control slot without its dedicated class, a native select, or a text input outside a search
+ * component inside a shell bar).
+ */
+export function checkC11Story(layer, scope, roles) {
+  const { add, result } = collector("C11", scope);
+  const shellBars = new Set(roles?.shell?.bars ?? []);
+  const shellControls = new Map((roles?.shell?.controls ?? []).map((control) => [control.slot, control]));
+  const searchComponents = new Set(roles?.shell?.searchComponents ?? []);
+  for (const story of layer.stories) {
+    const shapes = new Map();
+    const visit = (node, cardAncestor, shellBar) => {
+      const classes = elementClasses(node);
+      const own = packageClassesOf(node);
+      for (const child of node.children) {
+        if (child.type !== "text" || child.raw) continue;
+        const emoji = emojiInText(child.text);
+        if (emoji.length > 0) add(contextClasses(node, story.node), { rule: "C11.story-emoji", ...storyWhere(story, node), detail: `rendered text holds ${[...new Set(emoji)].join(" ")}` });
+      }
+      for (const [name, value] of Object.entries(node.attrs)) {
+        if (SVG_GEOMETRY_ATTRIBUTES.has(name) || name === "style") continue;
+        const emoji = emojiInText(value);
+        if (emoji.length > 0) add(contextClasses(node, story.node), { rule: "C11.story-emoji", ...storyWhere(story, node), detail: `attribute ${name} holds ${[...new Set(emoji)].join(" ")}` });
+      }
+      for (const declaration of inlineStyle(node)) {
+        for (const problem of c11DeclarationProblems(declaration)) add(contextClasses(node, story.node), { rule: "C11.story-inline-style", ...storyWhere(story, node), detail: `inline ${problem.rule}: ${problem.detail}` });
+      }
+      const isCard = classes.some((name) => name.startsWith("tcrn-") && !name.startsWith(DOC_CLASS_PREFIX) && isCardRoot(name));
+      if (isCard && cardAncestor) add([...own, ...packageClassesOf(cardAncestor)], { rule: "C11.story-card-in-card", ...storyWhere(story, node), detail: `card ${describe(node)} nested in card ${describe(cardAncestor)}` });
+      const semantic = own.length > 0 ? semanticOf(node) : null;
+      if (semantic) {
+        const signature = [...own].sort().join(" ");
+        const entry = shapes.get(signature) ?? { semantics: new Set(), node, classes: own };
+        entry.semantics.add(semantic);
+        shapes.set(signature, entry);
+      }
+      const bar = classes.some((name) => shellBars.has(name)) ? node : shellBar;
+      const slot = node.attrs["data-shell-control"];
+      const control = slot === undefined ? null : shellControls.get(slot);
+      if (control && !classes.includes(control.class)) {
+        add([control.class, ...(bar ? packageClassesOf(bar) : [])], { rule: "C11.story-generic-shell", ...storyWhere(story, node), detail: `shell control ${slot} is a generic part without .${control.class}` });
+      }
+      if (bar) {
+        const barClasses = packageClassesOf(bar);
+        if (node.tag === "select") add([...barClasses], { rule: "C11.story-generic-shell", ...storyWhere(story, node), detail: "a native select stands in for a shell menu" });
+        const textInput = node.tag === "input" && ["textbox", "searchbox"].includes(semanticOf(node) ?? "");
+        if (textInput && !ancestorsWithin(node, bar).some((ancestor) => elementClasses(ancestor).some((name) => searchComponents.has(name)))) {
+          add([...barClasses], { rule: "C11.story-generic-shell", ...storyWhere(story, node), detail: "a bare input stands in for the shell search" });
+        }
+      }
+      for (const child of node.children) if (child.type === "element") visit(child, isCard ? node : cardAncestor, bar);
+    };
+    visit(story.node, null, null);
+    for (const [signature, entry] of shapes) {
+      if (entry.semantics.size >= SAME_SHAPE_THRESHOLD) {
+        add(entry.classes, { rule: "C11.story-same-shape", ...storyWhere(story, entry.node), detail: `one shape (${signature}) carries ${entry.semantics.size} semantics: ${[...entry.semantics].sort().join(", ")}` });
+      }
+    }
+  }
+  return result();
+}
+
+const storyInputMissing = (clause, source) => ({
+  findings: [{ clause, rule: `${clause}.story-input-missing`, selector: null, source, line: null, families: [], detail: "no rendered story section could be read: build the static Storybook first" }],
+  exempted: []
+});
+
+const mergeResults = (...parts) => ({ findings: parts.flatMap((part) => part.findings), exempted: parts.flatMap((part) => part.exempted) });
 
 // ---------------------------------------------------------------------------------------------
 // Evaluation and report
@@ -686,12 +996,22 @@ function summarise(clause, { findings, exempted }, details) {
   };
 }
 
+/** Family ids a --family filter may name: the registry ids, utility and unattributed. */
+export function knownFamilyIds(families) {
+  return new Set([...(families?.families ?? []).map((family) => family.id), "utility", "unattributed"]);
+}
+
 /**
  * Pure evaluation. packageCss and tokensCss are stylesheet strings; outOfPackage is the class difference
- * for C13 (null when it could not be computed, which is red).
+ * for C13 (null when it could not be computed, which is red); storyPages is [{ path, html }] of the static
+ * Storybook build (null or empty when it could not be read, which makes C7, C8 and C11 red).
+ * familyFilter (optional) keeps only the findings attributed to those families, plus the findings that
+ * belong to no family; an unknown family id is red.
  */
-export function evaluateContract({ packageCss, tokensCss = "", families, exemptions, roles, pairs, outOfPackage, outOfPackageSource, details = false }) {
+export function evaluateContract({ packageCss, tokensCss = "", families, exemptions, roles, pairs, outOfPackage, outOfPackageSource, storyPages = null, storySource = DEFAULT_PATHS.storybookStatic, familyFilter = null, details = false }) {
   const scope = buildScope({ families, exemptions });
+  const layer = readStoryLayer(storyPages);
+  const storyReadable = Boolean(layer && layer.stories.length > 0);
   const packageParsed = parseCss(packageCss, { source: "packages/ui-react/dist/index.js#tcrnComponentCss" });
   const tokensParsed = parseCss(tokensCss, { source: "@tcrn/ui-tokens/tokens.css" });
   const packageRules = packageParsed.rules;
@@ -700,17 +1020,23 @@ export function evaluateContract({ packageCss, tokensCss = "", families, exempti
     C2: checkC2(packageRules, scope),
     C5: checkC5(allRules, scope),
     C6: checkC6(packageRules, scope, { selectedKeys: selectedPairKeys(pairs) }),
-    C7: checkC7(packageRules, scope, roles),
-    C8: checkC8(packageRules, scope, roles),
-    C11: checkC11(packageRules, scope),
+    C7: mergeResults(checkC7(packageRules, scope, roles), storyReadable ? checkC7Story(layer, scope, roles) : storyInputMissing("C7", storySource)),
+    C8: mergeResults(checkC8(packageRules, scope, roles), storyReadable ? checkC8Story(layer, scope, roles, packageRules) : storyInputMissing("C8", storySource)),
+    C11: mergeResults(checkC11(packageRules, scope), storyReadable ? checkC11Story(layer, scope, roles) : storyInputMissing("C11", storySource)),
     C13: Array.isArray(outOfPackage)
       ? checkC13(outOfPackage, scope, outOfPackageSource)
       : { findings: [{ clause: "C13", rule: "C13.input-missing", selector: null, source: outOfPackageSource ?? null, line: null, families: [], detail: "the out-of-package class difference could not be computed" }], exempted: [] }
   };
-  const clauses = Object.fromEntries(CHECKED_CLAUSES.map((clause) => [clause, summarise(clause, results[clause], details)]));
+  const filter = Array.isArray(familyFilter) && familyFilter.length > 0 ? [...new Set(familyFilter)] : null;
+  const known = knownFamilyIds(families);
+  const unknownFamilies = filter ? filter.filter((id) => !known.has(id)) : [];
+  const kept = (finding) => !filter || finding.families.length === 0 || finding.families.some((family) => filter.includes(family));
+  const filtered = Object.fromEntries(CHECKED_CLAUSES.map((clause) => [clause, { findings: results[clause].findings.filter(kept), exempted: results[clause].exempted.filter(kept) }]));
+  const clauses = Object.fromEntries(CHECKED_CLAUSES.map((clause) => [clause, summarise(clause, filtered[clause], details)]));
   const reasonCodes = [];
   if (packageParsed.errors.length + tokensParsed.errors.length > 0) reasonCodes.push("CONTRACT_STATIC_CSS_UNREADABLE");
   if (scope.errors.length > 0) reasonCodes.push("CONTRACT_STATIC_EXEMPTION_INVALID");
+  if (unknownFamilies.length > 0) reasonCodes.push("CONTRACT_STATIC_FAMILY_UNKNOWN");
   for (const clause of CHECKED_CLAUSES) if (clauses[clause].status === "red") reasonCodes.push(`CONTRACT_STATIC_${clause}_RED`);
   const ok = reasonCodes.length === 0;
   return {
@@ -724,11 +1050,19 @@ export function evaluateContract({ packageCss, tokensCss = "", families, exempti
       packageCss: { source: "packages/ui-react/dist/index.js#tcrnComponentCss", ruleCount: packageRules.length, parseErrors: packageParsed.errors },
       tokensCss: { source: "@tcrn/ui-tokens/tokens.css", ruleCount: tokensParsed.rules.length, parseErrors: tokensParsed.errors },
       outOfPackage: { source: outOfPackageSource ?? null, count: Array.isArray(outOfPackage) ? outOfPackage.length : null },
+      storyLayer: {
+        source: storySource,
+        pageCount: layer ? layer.pageCount : 0,
+        storyCount: layer ? layer.stories.length : 0,
+        markupErrors: layer ? layer.errors.length : null
+      },
       selectedPairKeys: selectedPairKeys(pairs)
     },
     scope: {
       batch: scope.scopeBatch,
       checkedFamilies: scope.checkedFamilies,
+      familyFilter: filter,
+      unknownFamilies,
       exemptionEntries: scope.entries.length,
       invalidExemptions: scope.errors,
       unusedExemptions: [...scope.used].filter(([, count]) => count === 0).map(([id]) => id)
@@ -760,7 +1094,24 @@ export function loadTokensCss(root, paths = DEFAULT_PATHS) {
   return { css: readFileSync(join(packageRoot, file), "utf8"), source: `@tcrn/ui-tokens/${paths.tokensExport.replace(/^\.\//u, "")}` };
 }
 
-export async function runContractStaticProof({ root = process.cwd(), paths = DEFAULT_PATHS, details = false, outOfPackage } = {}) {
+/** The static Storybook pages as [{ path, html }] (paths relative to root), or null when the build is missing. */
+export function loadStoryPages(root, paths = DEFAULT_PATHS) {
+  const directory = join(root, paths.storybookStatic);
+  if (!existsSync(directory)) return null;
+  const pages = [];
+  const visit = (current) => {
+    for (const name of readdirSync(current).sort()) {
+      if (name === "node_modules") continue;
+      const path = join(current, name);
+      if (statSync(path).isDirectory()) visit(path);
+      else if (name.endsWith(".html")) pages.push({ path: relative(root, path), html: readFileSync(path, "utf8") });
+    }
+  };
+  visit(directory);
+  return pages;
+}
+
+export async function runContractStaticProof({ root = process.cwd(), paths = DEFAULT_PATHS, details = false, outOfPackage, familyFilter = null } = {}) {
   const packageCss = await loadPackageCss(root, paths);
   const tokens = loadTokensCss(root, paths);
   const families = readJson(join(root, paths.families));
@@ -780,13 +1131,25 @@ export async function runContractStaticProof({ root = process.cwd(), paths = DEF
       outOfPackageSource += ` (unavailable: ${error.message})`;
     }
   }
-  return evaluateContract({ packageCss, tokensCss: tokens.css, families, exemptions, roles, pairs, outOfPackage: classes, outOfPackageSource, details });
+  const storyPages = loadStoryPages(root, paths);
+  return evaluateContract({ packageCss, tokensCss: tokens.css, families, exemptions, roles, pairs, outOfPackage: classes, outOfPackageSource, storyPages, storySource: paths.storybookStatic, familyFilter, details });
+}
+
+/** --family values: repeated flags and comma lists. */
+export function familyArguments(args) {
+  const ids = [];
+  for (let index = 0; index < args.length; index += 1) {
+    if (args[index] === "--family" && args[index + 1]) ids.push(...args[index + 1].split(","));
+    else if (args[index].startsWith("--family=")) ids.push(...args[index].slice("--family=".length).split(","));
+  }
+  return ids.map((id) => id.trim()).filter(Boolean);
 }
 
 if (process.argv[1]?.endsWith("contract-static-proof.mjs")) {
   const args = process.argv.slice(2);
   const reportIndex = args.indexOf("--report");
-  const result = await runContractStaticProof({ root: process.cwd(), details: args.includes("--details") });
+  const families = familyArguments(args);
+  const result = await runContractStaticProof({ root: process.cwd(), details: args.includes("--details"), familyFilter: families.length > 0 ? families : null });
   const text = `${JSON.stringify(result, null, 2)}\n`;
   if (reportIndex !== -1 && args[reportIndex + 1]) {
     const target = resolve(process.cwd(), args[reportIndex + 1]);

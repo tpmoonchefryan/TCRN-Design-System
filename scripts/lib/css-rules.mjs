@@ -650,3 +650,169 @@ export function emojiIn(value) {
   }
   return found;
 }
+
+/** Emoji in plain rendered text (text nodes and attribute values), not only in quoted CSS strings. */
+export function emojiInText(text) {
+  return [...String(text).matchAll(EMOJI)].map((match) => match[0]);
+}
+
+// ---------------------------------------------------------------------------------------------
+// Rendered markup (TCRN-DS-SUB-037): a small HTML reader for the story-render checks of the contract
+// static gate. The static story pages are React static markup, so every non-void element is closed;
+// the reader still tolerates a missing or stray end tag (an end tag closes the nearest open element of
+// that name; one with no open match is recorded and skipped). Bodies of <script>, <style>, <textarea>
+// and <title> are raw text. No dependency.
+
+const VOID_ELEMENTS = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]);
+const RAW_TEXT_ELEMENTS = new Set(["script", "style", "textarea", "title"]);
+const NAMED_ENTITIES = Object.freeze({ amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " });
+
+export function decodeEntities(text) {
+  return String(text).replace(/&(#[xX][0-9a-fA-F]+|#\d+|[a-zA-Z][a-zA-Z0-9]*);/gu, (whole, body) => {
+    if (body[0] !== "#") return NAMED_ENTITIES[body.toLowerCase()] ?? whole;
+    const code = body[1] === "x" || body[1] === "X" ? Number.parseInt(body.slice(2), 16) : Number.parseInt(body.slice(1), 10);
+    return Number.isInteger(code) && code >= 0 && code <= 0x10ffff ? String.fromCodePoint(code) : whole;
+  });
+}
+
+const isSpace = (ch) => ch === " " || ch === "\n" || ch === "\t" || ch === "\r" || ch === "\f";
+
+/**
+ * Read rendered HTML into a tree: { root, errors }. Element nodes are
+ * { type: "element", tag, attrs, children, parent, line } (attrs: lower-case names, decoded values);
+ * text nodes are { type: "text", text, parent, line, raw } (raw: the body of a raw-text element).
+ */
+export function parseHtml(html) {
+  const text = String(html);
+  const lower = text.toLowerCase();
+  const lineAt = lineIndex(text);
+  const root = { type: "root", tag: "#root", attrs: {}, children: [], parent: null, line: 1 };
+  const errors = [];
+  const stack = [root];
+  const top = () => stack[stack.length - 1];
+  const pushText = (raw, offset) => {
+    if (raw) top().children.push({ type: "text", text: decodeEntities(raw), parent: top(), line: lineAt(offset), raw: false });
+  };
+  let i = 0;
+  while (i < text.length) {
+    const open = text.indexOf("<", i);
+    if (open === -1) {
+      pushText(text.slice(i), i);
+      break;
+    }
+    if (open > i) pushText(text.slice(i, open), i);
+    if (text.startsWith("<!--", open)) {
+      const close = text.indexOf("-->", open + 4);
+      i = close === -1 ? text.length : close + 3;
+      continue;
+    }
+    if (text[open + 1] === "!" || text[open + 1] === "?") {
+      const close = text.indexOf(">", open);
+      i = close === -1 ? text.length : close + 1;
+      continue;
+    }
+    if (text[open + 1] === "/") {
+      const match = /^<\/([a-zA-Z][-\w:]*)\s*>/u.exec(text.slice(open, open + 256));
+      if (!match) {
+        pushText("<", open);
+        i = open + 1;
+        continue;
+      }
+      const tag = match[1].toLowerCase();
+      let depth = stack.length - 1;
+      while (depth > 0 && stack[depth].tag !== tag) depth -= 1;
+      if (depth > 0) stack.length = depth;
+      else errors.push({ line: lineAt(open), problem: `stray end tag </${tag}>` });
+      i = open + match[0].length;
+      continue;
+    }
+    const nameMatch = /^<([a-zA-Z][-\w:]*)/u.exec(text.slice(open, open + 256));
+    if (!nameMatch) {
+      pushText("<", open);
+      i = open + 1;
+      continue;
+    }
+    const tag = nameMatch[1].toLowerCase();
+    const attrs = {};
+    let selfClosing = false;
+    let j = open + nameMatch[0].length;
+    while (j < text.length) {
+      while (j < text.length && isSpace(text[j])) j += 1;
+      if (text[j] === ">") {
+        j += 1;
+        break;
+      }
+      if (text[j] === "/" && text[j + 1] === ">") {
+        selfClosing = true;
+        j += 2;
+        break;
+      }
+      let k = j;
+      while (k < text.length && !isSpace(text[k]) && !['"', "'", ">", "/", "="].includes(text[k])) k += 1;
+      if (k === j) {
+        j += 1;
+        continue;
+      }
+      const name = lower.slice(j, k);
+      j = k;
+      while (j < text.length && isSpace(text[j])) j += 1;
+      let value = "";
+      if (text[j] === "=") {
+        j += 1;
+        while (j < text.length && isSpace(text[j])) j += 1;
+        const quote = text[j];
+        if (quote === '"' || quote === "'") {
+          const end = text.indexOf(quote, j + 1);
+          const stop = end === -1 ? text.length : end;
+          value = text.slice(j + 1, stop);
+          j = stop + 1;
+        } else {
+          let end = j;
+          while (end < text.length && !isSpace(text[end]) && text[end] !== ">") end += 1;
+          value = text.slice(j, end);
+          j = end;
+        }
+      }
+      if (!Object.hasOwn(attrs, name)) attrs[name] = decodeEntities(value);
+    }
+    const element = { type: "element", tag, attrs, children: [], parent: top(), line: lineAt(open) };
+    top().children.push(element);
+    i = j;
+    if (selfClosing || VOID_ELEMENTS.has(tag)) continue;
+    if (RAW_TEXT_ELEMENTS.has(tag)) {
+      const close = lower.indexOf(`</${tag}`, i);
+      const end = close === -1 ? text.length : close;
+      if (end > i) {
+        const body = text.slice(i, end);
+        element.children.push({ type: "text", text: tag === "script" || tag === "style" ? body : decodeEntities(body), parent: element, line: lineAt(i), raw: true });
+      }
+      const after = close === -1 ? -1 : text.indexOf(">", close);
+      i = after === -1 ? text.length : after + 1;
+      continue;
+    }
+    stack.push(element);
+  }
+  return { root, errors };
+}
+
+/** Class tokens of an element node. */
+export function elementClasses(node) {
+  return node?.type === "element" ? String(node.attrs.class ?? "").split(/\s+/u).filter(Boolean) : [];
+}
+
+/** Depth-first walk over element nodes; visit(node) may return false to skip the node's children. */
+export function walkElements(node, visit) {
+  for (const child of node.children ?? []) {
+    if (child.type !== "element") continue;
+    if (visit(child) === false) continue;
+    walkElements(child, visit);
+  }
+}
+
+/** Rendered text of a node (raw-text bodies left out). */
+export function textContent(node) {
+  if (node.type === "text") return node.raw ? "" : node.text;
+  let out = "";
+  for (const child of node.children ?? []) out += textContent(child);
+  return out;
+}
