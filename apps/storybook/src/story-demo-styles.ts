@@ -762,8 +762,13 @@ label {
   padding: var(--tcrn-space-2h) 0;
 }
 
+/* Placement only: the flex item and its track width. The width also sets the item's
+   intrinsic contribution, so the shrink-wrapped actions row keeps the 260px resting search
+   of the documentation shell; without it the row wraps the placeholder (about 241px). */
 .tcrn-doc-knowledge-shell__actions .tcrn-search-input {
   flex: 0 1 260px;
+  width: 260px;
+  max-width: 260px;
 }
 
 /* One row needs the rail, the 32ch copy measure and the actions at full width: about
@@ -778,6 +783,8 @@ label {
 
   .tcrn-doc-knowledge-shell__actions .tcrn-search-input {
     flex: 1 1 100%;
+    width: auto;
+    max-width: none;
   }
 }
 
