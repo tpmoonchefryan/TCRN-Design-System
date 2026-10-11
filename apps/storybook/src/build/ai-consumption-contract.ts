@@ -26,6 +26,14 @@ import {
   consumerVerificationContract
 } from "./foundation-visual-standards.js";
 
+// Composition one's collapsed ProductShell rail (O-1, after TCRN-DS-SUB-090), read from the shell
+// token so the published owner-quality side-nav policy cannot drift from the package geometry.
+const productShellCollapsedRailToken = tcrnTokens.find((token) => token.variable === "--tcrn-shell-sidebar-width-collapsed");
+if (!productShellCollapsedRailToken) {
+  throw new Error("ai-consumption-contract: --tcrn-shell-sidebar-width-collapsed is missing from @tcrn/ui-tokens");
+}
+const productShellCollapsedRailWidthPx = Number.parseFloat(productShellCollapsedRailToken.value);
+
 // --- Section -> category -> story trees derived from the single registry source ---
 // (governance.storyRegistryOrder). Structural fields (section, route, requiredStories,
 // categories, sourcePaths) are derived; the hand-authored prose below (consumerChecks,
@@ -863,7 +871,7 @@ export const aiConsumptionContract = {
         desktopPolicy: "click-and-keyboard-toggle-preserves-active-route-nav-and-collapsed-rail",
         mobilePolicy: "hidden_affordance_until_mobile_collapsed_owner_quality_variant_admission",
         iconCenterDeltaMaxPx: 1,
-        railWidthPx: 92
+        railWidthPx: productShellCollapsedRailWidthPx
       },
       delegatedSubOracles: [
         "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and actionable desktop side-nav collapse/expand behavior for this owner-quality oracle.",

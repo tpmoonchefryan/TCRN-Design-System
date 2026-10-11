@@ -67,6 +67,8 @@ test("the gate owns the STORY-131 thresholds", () => {
   assert.equal(THRESHOLDS.contrast.maxDiff, 0.05);
   assert.deepEqual([...THRESHOLDS.controlHeight.allowedPx], [28, 32, 40]);
   assert.equal(THRESHOLDS.overlap.maxOverlaps, 0);
+  // TCRN-DS-SUB-094: composition one's frame, paper 12 from the shell edge and the shell top bar 52.
+  assert.deepEqual([THRESHOLDS.shellFrame.paperInsetPx, THRESHOLDS.shellFrame.topBarHeightPx, THRESHOLDS.shellFrame.tolerancePx], [12, 52, 0.5]);
   assert.ok(Object.isFrozen(THRESHOLDS.controlHeight.allowedPx));
 });
 
@@ -206,6 +208,8 @@ test("the clean page reports every check value", () => {
   assert.equal(verdict.checks.contrast.cells.length, 9);
   assert.deepEqual(verdict.checks.rail.shells[0].guideLefts, [16]);
   assert.deepEqual(verdict.checks.rail.shells[0].textLefts, [48]);
+  assert.deepEqual(verdict.checks.shellFrame.shells[0].paperInsets, { top: 12, end: 12, bottom: 12 });
+  assert.equal(verdict.checks.shellFrame.shells[0].topBarHeightPx, 52);
   assert.deepEqual(verdict.checks.controlHeight.controls.map((c) => c.heightPx), [32, 28, 40]);
 });
 
@@ -405,9 +409,12 @@ import {
 } from "../scripts/geometry-measure-proof.mjs";
 
 const staticDocsBuilt = existsSync(fileURLToPath(new URL("../apps/storybook/storybook-static", import.meta.url)));
+const ANY_PAGE_FOUR = ["clip", "singleLine", "shadowBlur", "overlap"];
 
 test("every G+ story has its required checks and the families split the ten ids", () => {
-  assert.deepEqual(Object.keys(REQUIRED_CHECKS).sort(), [...GPLUS_STORY_IDS].sort());
+  // TCRN-DS-SUB-093: composition three (O-4) joins the ten fixed ids through the gplus-samples category.
+  assert.deepEqual(Object.keys(REQUIRED_CHECKS).sort(), [...GPLUS_STORY_IDS, "composition-three-sample"].sort());
+  assert.deepEqual([...REQUIRED_CHECKS["composition-three-sample"]], ANY_PAGE_FOUR);
   for (const checks of Object.values(REQUIRED_CHECKS)) for (const id of checks) assert.ok(CHECK_IDS.includes(id), id);
   assert.deepEqual([...SET_REQUIRED_CHECKS], [...CHECK_IDS]);
   assert.deepEqual(Object.keys(GPLUS_FAMILIES), ["typography", "icon", "brand", "actions", "inputs"]);
@@ -426,17 +433,19 @@ test("samples must measure rail and their table rows but not contrast; actions a
   for (const id of GPLUS_SAMPLE_STORY_IDS) {
     assert.ok(!REQUIRED_CHECKS[id].includes("contrast"), `${id}: a sample has no data-cell`);
     assert.ok(REQUIRED_CHECKS[id].includes("rail"), `${id}: rail`);
+    assert.ok(REQUIRED_CHECKS[id].includes("shellFrame"), `${id}: shellFrame (TCRN-DS-SUB-094)`);
     assert.equal(REQUIRED_CHECKS[id].includes("rowAlign"), TABLE_SHELL_SAMPLES.includes(id), `${id}: rowAlign with TableShell rows only`);
   }
   for (const id of GPLUS_MATRIX_STORY_IDS) {
     assert.ok(REQUIRED_CHECKS[id].includes("contrast"), `${id}: contrast`);
     assert.ok(!REQUIRED_CHECKS[id].includes("rail"), `${id}: a matrix has no shell`);
+    assert.ok(!REQUIRED_CHECKS[id].includes("shellFrame"), `${id}: a matrix has no shell frame`);
     assert.equal(REQUIRED_CHECKS[id].includes("controlHeight"), ["actions-matrix", "inputs-matrix"].includes(id), `${id}: controlHeight`);
   }
 });
 
 test("the storybook map rows list the gate's required checks (the any-page four aside) and DIFF-6 records before-bg", () => {
-  for (const id of GPLUS_STORY_IDS) {
+  for (const id of Object.keys(REQUIRED_CHECKS)) {
     const rows = storybookMap.rows.filter((row) => row.storyId === id);
     assert.ok(rows.length > 0, `${id}: no map row`);
     const fromMap = new Set([...ANY_PAGE, ...rows.flatMap((row) => row.requiredChecks)]);
@@ -466,6 +475,12 @@ test("STORY-131 GWT1-3 each have a real-story mutation on the check they name", 
   assert.match(bySource["131-GWT2"].css, /mark \{ padding: 2px/);
   assert.equal(bySource["131-GWT3"].check, "shadowBlur");
   assert.match(bySource["131-GWT3"].css, /box-shadow: 0 1px 4px/);
+  // TCRN-DS-SUB-094: the paper flush with the shell edge and the top bar back at 68 each name shellFrame.
+  const shellFrameMutations = STORY_MUTATIONS.filter((mutation) => mutation.check === "shellFrame");
+  assert.deepEqual(shellFrameMutations.map((mutation) => mutation.id), ["shell-paper-inset-zero", "shell-top-bar-68"]);
+  assert.match(shellFrameMutations[0].css, /\.tcrn-product-shell__workspace \{ margin: 0 !important; \}/);
+  assert.match(shellFrameMutations[1].css, /\.tcrn-top-bar \{ min-height: 68px !important; \}/);
+  for (const mutation of shellFrameMutations) assert.ok(GPLUS_SAMPLE_STORY_IDS.includes(mutation.storyId), mutation.id);
   assert.deepEqual(STORY_PROBES.map((probe) => probe.id), ["buttonGroupFocusRing", "datePickerIndicatorHit", "highlightWidth", "iconStroke"]);
   const iconStroke = STORY_PROBES.find((probe) => probe.id === "iconStroke");
   assert.deepEqual([iconStroke.storyId, iconStroke.source], ["icon-matrix", "124-GWT1"]);
@@ -572,8 +587,8 @@ test("the DatePicker probe needs the right 30px to be the native indicator, reac
   assert.deepEqual(red.violations[0].reached, [false, false, false]);
 });
 
-test("on the built docs the four real-story mutations are caught and the probes pass", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
-  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: ["typography-matrix", "icon-matrix", "actions-matrix", "inputs-matrix", "table-record-index-spec"], themes: ["light"] });
+test("on the built docs the real-story mutations are caught and the probes pass", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
+  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: ["typography-matrix", "icon-matrix", "actions-matrix", "inputs-matrix", "table-record-index-spec", "icon-sample-project"], themes: ["light"] });
   assert.equal(report.reason, null);
   assert.deepEqual(report.missingStories, []);
   assert.deepEqual(report.mutations.map((mutation) => [mutation.id, mutation.killed]), STORY_MUTATIONS.map((mutation) => [mutation.id, true]));

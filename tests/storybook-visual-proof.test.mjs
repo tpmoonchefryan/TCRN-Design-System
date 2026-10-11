@@ -35,11 +35,15 @@ const { canvas, boards } = loadBoards({ root: repoRoot });
 const contract = JSON.parse(readFileSync(new URL("../docs/design/gplus-2026-10/contract/matrices.json", import.meta.url), "utf8"));
 const clone = (value) => JSON.parse(JSON.stringify(value));
 
-// A registry that carries all ten G+ stories (what the merged batch builds).
+// A registry that carries all ten G+ stories (what the merged batch builds), plus the composition three
+// sample that enters the story list through the gplus-samples category (TCRN-DS-SUB-092, mapped by
+// TCRN-DS-SUB-093).
+const COMPOSITION_THREE = "composition-three-sample";
 const fullRegistry = [
   { id: "button-spec-usage", group: "Components", categoryId: "controls-data" },
   ...GPLUS_MATRIX_STORY_IDS.map((id) => ({ id, group: "Components", categoryId: "gplus-matrices" })),
-  ...GPLUS_SAMPLE_STORY_IDS.map((id) => ({ id, group: "Components", categoryId: "gplus-samples" }))
+  ...GPLUS_SAMPLE_STORY_IDS.map((id) => ({ id, group: "Components", categoryId: "gplus-samples" })),
+  { id: COMPOSITION_THREE, group: "Components", categoryId: "gplus-samples" }
 ];
 
 function passingVerdict() {
@@ -70,8 +74,10 @@ test("the map parses and every row, unmapped entry and difference is complete", 
   assert.equal(DEFAULT_PATHS.map, "docs/design/gplus-2026-10/storybook-map.json");
   for (const difference of map.differences) assert.ok(difference.refs.length > 0, difference.id);
   for (const entry of map.unmapped) assert.ok(entry.reason.length > 0 && entry.refs.length > 0, `${entry.board}#${entry.section}`);
-  const pending = map.differences.filter((item) => item.status === "待 Owner 裁定");
-  assert.ok(pending.some((item) => item.refs.includes("P1")), "the composition one shell geometry stays pending on P1");
+  // R3 (TCRN-DS-SUB-093): the composition one shell geometry is decided under O-1 (design-session B
+  // ruling), so DIFF-1 no longer waits on the Owner; it keeps its P1 origin and cites O-1.
+  const shellGeometry = map.differences.find((item) => item.id === "DIFF-1");
+  assert.ok(shellGeometry.refs.includes("P1") && shellGeometry.refs.includes("O-1"), "the composition one shell geometry cites P1 and O-1");
   const markdown = readFileSync(new URL("../docs/design/gplus-2026-10/storybook-map.md", import.meta.url), "utf8");
   for (const row of map.rows) assert.ok(markdown.includes(`| ${row.row} |`), `storybook-map.md lacks row ${row.row}`);
   for (const difference of map.differences) assert.ok(markdown.includes(`| ${difference.id} |`), `storybook-map.md lacks ${difference.id}`);
@@ -116,10 +122,10 @@ test("a board or a section without a map entry, or an unknown section, turns cov
 });
 
 test("the story list is the ten fixed ids plus every gplus- category story, and the map covers it", () => {
-  assert.deepEqual(storyList(fullRegistry).map((item) => item.id), [...GPLUS_STORY_IDS]);
+  assert.deepEqual(storyList(fullRegistry).map((item) => item.id), [...GPLUS_STORY_IDS, COMPOSITION_THREE]);
   const result = reconcileStories(map, fullRegistry);
   assert.equal(result.ok, true, JSON.stringify(result));
-  assert.deepEqual([...result.mapStories].sort(), [...GPLUS_STORY_IDS].sort());
+  assert.deepEqual([...result.mapStories].sort(), [...GPLUS_STORY_IDS, COMPOSITION_THREE].sort());
 });
 
 test("130-GWT2: deleting a story from the map leaves the story list with an unmapped story", () => {
@@ -142,7 +148,7 @@ test("a mapped story the list or the registry lacks, or a gplus- story without a
   assert.equal(unlisted.ok, false);
   assert.deepEqual(unlisted.notInMap, ["icon-sample-settings"]);
   const matrixOnly = reconcileStories(map, fullRegistry.filter((entry) => entry.categoryId !== "gplus-samples"));
-  assert.deepEqual(matrixOnly.notInRegistry, [...GPLUS_SAMPLE_STORY_IDS]);
+  assert.deepEqual(matrixOnly.notInRegistry, [...GPLUS_SAMPLE_STORY_IDS, COMPOSITION_THREE]);
 });
 
 test("--kind matrix judges the matrix rows only and still reconciles them", () => {
@@ -214,7 +220,7 @@ test("thresholds come from the EPIC-042 gate; the map carries none; one mutation
   assert.equal(new Set(ROW_MUTATIONS.map((mutation) => mutation.id)).size, ROW_MUTATIONS.length);
 });
 
-test("130-GWT1: every matrix row gets a report row with all nine checks, and the in-scope mutations turn red", () => {
+test("130-GWT1: every matrix row gets a report row with every check, and the in-scope mutations turn red", () => {
   const report = matrixRun;
   assert.ok(report.generatedAtUtc && report.schemaVersion);
   if (report.reason !== null) {

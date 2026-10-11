@@ -46,6 +46,34 @@ const gplusActionsFillColors = [...new Set(["secondary", "quiet"]
   .flatMap((variant) => Object.values(gplusPairsContract.tables.actions.variants[variant]).map((state) => state.fill))
   .flatMap((key) => [gplusLightTokens, gplusDarkTokens].map((tokens) => (key === "#0000" ? gplusTransparent : gplusComputedColor(tokens[`--tcrn-color-${key}`] ?? key)))))];
 const gplusMobileHeaderFillLayers = { themeToggle: gplusActionsFillColors, searchInput: [gplusTransparent] };
+// TCRN-DS-SUB-099 (R3-6): one judgment for a layer of the mobile doc header, used by the hash-anchor
+// loop and the knowledge doc-shell loop alike. A layer listed in gplusMobileHeaderFillLayers
+// (searchInput, themeToggle) must show one of its contract fills, transparent included; every other
+// layer keeps the opaque floor (alpha 0.98), so the header layers are never let through transparent.
+// Returns null when the layer passes, "fill" or "transparent" when it does not.
+function mobileHeaderLayerFillFinding(name, layer) {
+  const contractFills = gplusMobileHeaderFillLayers[name];
+  if (contractFills) return contractFills.includes(layer.backgroundColor) ? null : "fill";
+  return layer.backgroundAlpha < 0.98 ? "transparent" : null;
+}
+// Self-check of that judgment, run before the browser starts: the transparent SearchInput wrapper
+// passes; a transparent header (.tcrn-doc-header) still fails; a SearchInput wrapper painted in a
+// colour outside its contract fills fails.
+const mobileHeaderLayerSelfCheck = (() => {
+  const cases = [
+    { name: "searchInput-transparent-passes", layer: "searchInput", reading: { backgroundColor: gplusTransparent, backgroundAlpha: 0 }, expected: null },
+    { name: "header-transparent-fails", layer: "topbar", reading: { backgroundColor: gplusTransparent, backgroundAlpha: 0 }, expected: "transparent" },
+    { name: "searchInput-off-contract-fill-fails", layer: "searchInput", reading: { backgroundColor: "rgb(255, 0, 0)", backgroundAlpha: 1 }, expected: "fill" }
+  ].map((entry) => {
+    const finding = mobileHeaderLayerFillFinding(entry.layer, entry.reading);
+    return { name: entry.name, finding, expected: entry.expected, ok: finding === entry.expected };
+  });
+  return { ok: cases.every((entry) => entry.ok), cases };
+})();
+if (!mobileHeaderLayerSelfCheck.ok) {
+  console.error(JSON.stringify({ ok: false, mobileHeaderLayerSelfCheck }, null, 2));
+  process.exit(1);
+}
 // TCRN-DS-SUB-085 (R2-30): axe color-contrast and the product wordmark suffix. The suffix is logotype,
 // and the token-contrast gate already registers each suffix pair below 4.5 in WORDMARK_EXEMPTIONS with
 // its ruling (D2) and source (V2-B1-Brand board, section F). The axe run reads that same register
@@ -1792,8 +1820,9 @@ const collectMobileHashAnchorMetrics = async (label) => {
       failures.push(`mobile-layer-missing:${name}`);
       continue;
     }
-    if (layer.backgroundAlpha < 0.98) {
-      failures.push(`mobile-layer-transparent:${name}:${layer.backgroundColor}`);
+    const fillFinding = mobileHeaderLayerFillFinding(name, layer);
+    if (fillFinding) {
+      failures.push(`mobile-layer-${fillFinding}:${name}:${layer.backgroundColor}`);
     }
     if (layer.opacity < 0.98) failures.push(`mobile-layer-opacity:${name}:${layer.opacity}`);
   }
@@ -1820,7 +1849,8 @@ await mobileHashAnchorPage.waitForTimeout(1500);
 mobileHashAnchorReadbacks.push(await collectMobileHashAnchorMetrics("after-reload-1500ms"));
 await mobileHashAnchorPage.close();
 const mobileHashAnchorOcclusionCheck = {
-  ok: mobileHashAnchorReadbacks.every((item) => item.ok),
+  ok: mobileHeaderLayerSelfCheck.ok && mobileHashAnchorReadbacks.every((item) => item.ok),
+  layerSelfCheck: mobileHeaderLayerSelfCheck,
   route: "foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
   viewport: { width: 390, height: 844 },
   readbacks: mobileHashAnchorReadbacks
@@ -2119,12 +2149,9 @@ const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
       failures.push(`mobile-knowledge-layer-missing:${name}`);
       continue;
     }
-    if (gplusMobileHeaderFillLayers[name]) {
-      if (!gplusMobileHeaderFillLayers[name].includes(layer.backgroundColor)) {
-        failures.push(`mobile-knowledge-layer-fill:${name}:${layer.backgroundColor}`);
-      }
-    } else if (layer.backgroundAlpha < 0.98) {
-      failures.push(`mobile-knowledge-layer-transparent:${name}:${layer.backgroundColor}`);
+    const fillFinding = mobileHeaderLayerFillFinding(name, layer);
+    if (fillFinding) {
+      failures.push(`mobile-knowledge-layer-${fillFinding}:${name}:${layer.backgroundColor}`);
     }
     if (layer.opacity < 0.98) failures.push(`mobile-knowledge-layer-opacity:${name}:${layer.opacity}`);
   }

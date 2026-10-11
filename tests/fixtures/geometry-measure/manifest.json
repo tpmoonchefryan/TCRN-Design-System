@@ -4,7 +4,7 @@
   "root": "[data-measure-root]",
   "viewport": { "width": 1024, "height": 768 },
   "cases": [
-    { "id": "all-green", "file": "all.green.html", "pass": ["clip", "singleLine", "shadowBlur", "rail", "rowAlign", "mark", "contrast", "controlHeight", "overlap"], "values": { "clip": 0, "singleLine": 1, "shadowBlur": 3, "rail": 0, "rowAlign": 0, "mark": 0, "contrast": { "min": 0, "max": 0.05 }, "controlHeight": 0, "overlap": 0 } },
+    { "id": "all-green", "file": "all.green.html", "pass": ["clip", "singleLine", "shadowBlur", "rail", "rowAlign", "mark", "contrast", "controlHeight", "overlap", "shellFrame"], "values": { "clip": 0, "singleLine": 1, "shadowBlur": 3, "rail": 0, "rowAlign": 0, "mark": 0, "contrast": { "min": 0, "max": 0.05 }, "controlHeight": 0, "overlap": 0, "shellFrame": 0 } },
 
     { "id": "clip-green", "file": "clip.green.html", "pass": ["clip"], "values": { "clip": 0 } },
     { "id": "clip-red", "file": "clip.red.html", "fail": ["clip"], "values": { "clip": 1 } },
@@ -44,6 +44,11 @@
 
     { "id": "overlap-green", "file": "overlap.green.html", "pass": ["overlap"], "values": { "overlap": 0 } },
     { "id": "overlap-red", "file": "overlap.red.html", "fail": ["overlap"], "values": { "overlap": 1 } },
-    { "id": "overlap-mutation", "file": "all.green.html", "mutationCss": ".form-grid > .lab:first-child { width: 300px !important; }", "fail": ["overlap"], "values": { "overlap": 1 } }
+    { "id": "overlap-mutation", "file": "all.green.html", "mutationCss": ".form-grid > .lab:first-child { width: 300px !important; }", "fail": ["overlap"], "values": { "overlap": 1 } },
+
+    { "id": "shell-frame-green", "file": "shellFrame.green.html", "pass": ["shellFrame"], "values": { "shellFrame": 0 } },
+    { "id": "shell-frame-red", "file": "shellFrame.red.html", "fail": ["shellFrame"], "values": { "shellFrame": 16 }, "reasons": { "shellFrame": ["paper_inset", "top_bar_height", "paper_missing", "top_bar_missing"] } },
+    { "id": "shell-frame-paper-flush-mutation", "file": "all.green.html", "mutationCss": ".paper { top: 0 !important; right: 0 !important; bottom: 0 !important; }", "fail": ["shellFrame"], "values": { "shellFrame": 12 }, "reasons": { "shellFrame": ["paper_inset"] } },
+    { "id": "shell-frame-top-bar-68-mutation", "file": "all.green.html", "mutationCss": ".paper > .tcrn-top-bar { height: 68px !important; }", "fail": ["shellFrame"], "values": { "shellFrame": 16 }, "reasons": { "shellFrame": ["top_bar_height"] } }
   ]
 }

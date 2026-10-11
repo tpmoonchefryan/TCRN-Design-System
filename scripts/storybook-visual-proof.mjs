@@ -60,8 +60,9 @@ export const STORY_CATEGORY_PREFIX = "gplus-";
 export const MEASURE_OPTIONS = Object.freeze({ markSelector: "mark, .tcrn-highlight__mark" });
 
 // One injected mutation per check on a real story; each must turn its check red (runs when a row in
-// scope references its story). Matrices have no [data-h] (controlHeight names its control) and no shell
-// (rail runs on a sample story).
+// scope references its story). The controlHeight mutation names its control through controlSelector
+// (the actions and inputs matrices also declare data-h since SUB-074); matrices have no shell, so rail
+// and shellFrame run on sample stories.
 export const ROW_MUTATIONS = Object.freeze([
   { id: "clip-actions-button-out-of-section", storyId: "actions-matrix", check: "clip", css: '[data-gplus-matrix-component="Button"] { overflow: hidden !important; } [data-gplus-matrix-component="Button"] .tcrn-button { transform: translateX(-2000px) !important; }' },
   { id: "single-line-actions-label-first-letter", storyId: "actions-matrix", check: "singleLine", css: ".tcrn-button__label::first-letter { font-size: 48px !important; }" },
@@ -71,7 +72,8 @@ export const ROW_MUTATIONS = Object.freeze([
   { id: "mark-typography-padded", storyId: "typography-matrix", check: "mark", css: "mark, .tcrn-highlight__mark { padding: 0 3px !important; }" },
   { id: "contrast-brand-wordmark-greyed", storyId: "brand-matrix", check: "contrast", theme: "light", css: '[data-cell="wm-l"] { color: #a0a0a0 !important; }' },
   { id: "control-height-actions-primary-34", storyId: "actions-matrix", check: "controlHeight", measure: { controlSelector: ".tcrn-button.tcrn-button--primary" }, css: ".tcrn-button.tcrn-button--primary { height: 34px !important; min-height: 34px !important; }" },
-  { id: "overlap-brand-logo-row", storyId: "brand-matrix", check: "overlap", css: '[data-gplus-matrix-row="sans"] > :first-child { margin-right: -80px !important; }' }
+  { id: "overlap-brand-logo-row", storyId: "brand-matrix", check: "overlap", css: '[data-gplus-matrix-row="sans"] > :first-child { margin-right: -80px !important; }' },
+  { id: "shell-frame-sample-paper-flush", storyId: "actions-sample-project", check: "shellFrame", css: "[data-shell] .tcrn-product-shell__workspace { margin: 0 !important; }" }
 ].map((mutation) => Object.freeze(mutation)));
 
 const STORY_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -466,7 +468,7 @@ export async function runStorybookVisualProof({
   return report;
 }
 
-const CHECK_LABEL = { clip: "clip", singleLine: "1line", shadowBlur: "blur", rail: "rail", rowAlign: "row", mark: "mark", contrast: "contrast", controlHeight: "ctlH", overlap: "overlap" };
+const CHECK_LABEL = { clip: "clip", singleLine: "1line", shadowBlur: "blur", rail: "rail", rowAlign: "row", mark: "mark", contrast: "contrast", controlHeight: "ctlH", overlap: "overlap", shellFrame: "frame" };
 const STATUS_MARK = { pass: "pass", fail: "FAIL", "n/a": "n/a", missing: "missing" };
 
 export function renderReportMarkdown(report) {
