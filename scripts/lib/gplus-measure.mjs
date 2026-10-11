@@ -14,6 +14,9 @@
 //   contrast       contrast of every [data-cell] sample against its data-expect value
 //   controlHeight  rendered height of [data-h] controls (and of controlSelector matches)
 //   overlap        in-flow siblings of a grid / flex container must not intersect (descendants included)
+//   shellFrame     composition one's frame inside each ProductShell [data-shell]: the paper's distance
+//                  from the shell's top, end and bottom edges, and the height of the shell's top bar
+//                  (TCRN-DS-SUB-094; not on the canvas script, which left both to the eye)
 //
 // Thresholds are NOT defined here. The gate (scripts/geometry-measure-proof.mjs) owns them and passes
 // them in; measureInPage, measurePage, judgeMeasurements and runMeasureTargets all require them.
@@ -40,7 +43,8 @@ export const CHECK_IDS = Object.freeze([
   "mark",
   "contrast",
   "controlHeight",
-  "overlap"
+  "overlap",
+  "shellFrame"
 ]);
 
 // Every threshold the measurements read. The gate must supply each key as a finite number
@@ -54,7 +58,8 @@ export const THRESHOLD_KEYS = Object.freeze({
   mark: Object.freeze(["maxViolations"]),
   contrast: Object.freeze(["maxDiff", "minText", "minNonText"]),
   controlHeight: Object.freeze(["allowedPx", "tolerancePx"]),
-  overlap: Object.freeze(["maxOverlaps", "minIntersectPx"])
+  overlap: Object.freeze(["maxOverlaps", "minIntersectPx"]),
+  shellFrame: Object.freeze(["paperInsetPx", "topBarHeightPx", "tolerancePx"])
 });
 
 // Markup conventions (selectors), not thresholds. measureInPage applies the same values when an
@@ -67,7 +72,12 @@ export const DEFAULT_MEASURE_OPTIONS = Object.freeze({
   shellSelector: "[data-shell]",
   markSelector: "mark",
   rowsSelector: "[data-rows]",
-  controlSelector: null
+  controlSelector: null,
+  // shellFrame reads package classes, not story hooks: the [data-shell] elements that are ProductShell
+  // roots, their paper (the workspace sheet) and the shell's own top bar inside that paper.
+  frameShellSelector: ".tcrn-product-shell",
+  paperSelector: ".tcrn-product-shell__workspace",
+  frameTopBarSelector: ".tcrn-top-bar"
 });
 
 export function assertThresholds(thresholds) {
@@ -98,7 +108,7 @@ export function measureInPage(options) {
   const root = document.querySelector(rootSelector);
   if (!root) return { schemaVersion, error: "root_not_found", root: rootSelector, checks: {} };
 
-  const ALL = ["clip", "singleLine", "shadowBlur", "rail", "rowAlign", "mark", "contrast", "controlHeight", "overlap"];
+  const ALL = ["clip", "singleLine", "shadowBlur", "rail", "rowAlign", "mark", "contrast", "controlHeight", "overlap", "shellFrame"];
   const wanted = new Set(Array.isArray(opts.checks) && opts.checks.length ? opts.checks : ALL);
   const limit = Number.isFinite(opts.sampleLimit) ? opts.sampleLimit : 25;
   const exemptSelector = opts.exemptSelector === undefined ? ".sr, .grain, .tcrn-sr-only" : opts.exemptSelector;
@@ -108,6 +118,9 @@ export function measureInPage(options) {
   const markSelector = opts.markSelector || "mark";
   const rowsSelector = opts.rowsSelector || "[data-rows]";
   const controlSelector = opts.controlSelector || null;
+  const frameShellSelector = opts.frameShellSelector || ".tcrn-product-shell";
+  const paperSelector = opts.paperSelector || ".tcrn-product-shell__workspace";
+  const frameTopBarSelector = opts.frameTopBarSelector || ".tcrn-top-bar";
 
   const round1 = (v) => Math.round(v * 10) / 10;
   const round2 = (v) => Math.round(v * 100) / 100;
@@ -600,6 +613,47 @@ export function measureInPage(options) {
     checks.overlap = { checked, value: count, violationCount: count, violations };
   }
 
+  // 10. shellFrame — composition one's frame (TCRN-DS-SUB-094, O-1). Inside each [data-shell] that is a
+  // ProductShell root (frameShellSelector), its own paper (paperSelector) must sit paperInsetPx from the
+  // shell's top, end and bottom edges (the start side is flush with the rail), and the shell's own top
+  // bar (frameTopBarSelector, read inside that paper) must be topBarHeightPx tall. A [data-shell] that is
+  // not a ProductShell root is not read; a ProductShell shell without its paper or top bar cannot be
+  // verified and counts as a violation. value is the worst deviation in px; each shell row names its
+  // reasons (paper_inset, top_bar_height, paper_missing, top_bar_missing).
+  if (wanted.has("shellFrame")) {
+    const shells = scope(shellSelector).filter((s) => s.matches(frameShellSelector) && !skipped(s, "shellFrame") && rendered(s));
+    const rows = [];
+    let count = 0;
+    let worst = 0;
+    for (const shell of shells) {
+      const s = shell.getBoundingClientRect();
+      const paper = [...shell.querySelectorAll(paperSelector)].find((el) => el.closest(shellSelector) === shell && rendered(el)) || null;
+      const bar = paper ? [...paper.querySelectorAll(frameTopBarSelector)].find((el) => el.closest(paperSelector) === paper && rendered(el)) || null : null;
+      const row = { shell: shell.getAttribute("data-shell") || describe(shell), paperInsets: null, topBarHeightPx: null, maxDeviationPx: 0, reasons: [] };
+      const deviations = [];
+      if (paper) {
+        const p = paper.getBoundingClientRect();
+        const rtl = styleOf(shell).direction === "rtl";
+        row.paperInsets = { top: round1(p.top - s.top), end: round1(rtl ? p.left - s.left : s.right - p.right), bottom: round1(s.bottom - p.bottom) };
+        const insetDeviation = Math.max(...Object.values(row.paperInsets).map((inset) => Math.abs(inset - T.shellFrame.paperInsetPx)));
+        deviations.push(insetDeviation);
+        if (insetDeviation > T.shellFrame.tolerancePx) row.reasons.push("paper_inset");
+      } else row.reasons.push("paper_missing");
+      if (bar) {
+        row.topBarHeightPx = round1(bar.getBoundingClientRect().height);
+        const barDeviation = Math.abs(row.topBarHeightPx - T.shellFrame.topBarHeightPx);
+        deviations.push(barDeviation);
+        if (barDeviation > T.shellFrame.tolerancePx) row.reasons.push("top_bar_height");
+      } else row.reasons.push("top_bar_missing");
+      row.maxDeviationPx = round1(deviations.length ? Math.max(...deviations) : 0);
+      worst = Math.max(worst, row.maxDeviationPx);
+      if (row.reasons.length) count++;
+      rows.push(row);
+    }
+    const violations = rows.filter((row) => row.reasons.length).slice(0, limit);
+    checks.shellFrame = { checked: shells.length, value: round1(worst), violationCount: count, violations, shells: rows.slice(0, limit) };
+  }
+
   const box = root.getBoundingClientRect();
   return {
     schemaVersion,
@@ -622,7 +676,8 @@ const JUDGES = Object.freeze({
   mark: (m, t) => m.value > t.maxViolations,
   contrast: (m) => m.violationCount > 0,
   controlHeight: (m) => m.violationCount > 0,
-  overlap: (m, t) => m.value > t.maxOverlaps
+  overlap: (m, t) => m.value > t.maxOverlaps,
+  shellFrame: (m) => m.violationCount > 0
 });
 
 export function judgeMeasurements(raw, thresholds) {

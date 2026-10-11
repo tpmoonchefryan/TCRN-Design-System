@@ -71,7 +71,8 @@ export const ROW_MUTATIONS = Object.freeze([
   { id: "mark-typography-padded", storyId: "typography-matrix", check: "mark", css: "mark, .tcrn-highlight__mark { padding: 0 3px !important; }" },
   { id: "contrast-brand-wordmark-greyed", storyId: "brand-matrix", check: "contrast", theme: "light", css: '[data-cell="wm-l"] { color: #a0a0a0 !important; }' },
   { id: "control-height-actions-primary-34", storyId: "actions-matrix", check: "controlHeight", measure: { controlSelector: ".tcrn-button.tcrn-button--primary" }, css: ".tcrn-button.tcrn-button--primary { height: 34px !important; min-height: 34px !important; }" },
-  { id: "overlap-brand-logo-row", storyId: "brand-matrix", check: "overlap", css: '[data-gplus-matrix-row="sans"] > :first-child { margin-right: -80px !important; }' }
+  { id: "overlap-brand-logo-row", storyId: "brand-matrix", check: "overlap", css: '[data-gplus-matrix-row="sans"] > :first-child { margin-right: -80px !important; }' },
+  { id: "shell-frame-sample-paper-flush", storyId: "actions-sample-project", check: "shellFrame", css: "[data-shell] .tcrn-product-shell__workspace { margin: 0 !important; }" }
 ].map((mutation) => Object.freeze(mutation)));
 
 const STORY_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -466,7 +467,7 @@ export async function runStorybookVisualProof({
   return report;
 }
 
-const CHECK_LABEL = { clip: "clip", singleLine: "1line", shadowBlur: "blur", rail: "rail", rowAlign: "row", mark: "mark", contrast: "contrast", controlHeight: "ctlH", overlap: "overlap" };
+const CHECK_LABEL = { clip: "clip", singleLine: "1line", shadowBlur: "blur", rail: "rail", rowAlign: "row", mark: "mark", contrast: "contrast", controlHeight: "ctlH", overlap: "overlap", shellFrame: "frame" };
 const STATUS_MARK = { pass: "pass", fail: "FAIL", "n/a": "n/a", missing: "missing" };
 
 export function renderReportMarkdown(report) {

@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>geometry-measure fixture: all nine measurements (green)</title>
-<!-- Clean page that exercises every measurement; each check must pass (none n/a). The manifest injects one mutation per check into this page. -->
+<title>geometry-measure fixture: every check (green)</title>
+<!-- Clean page that exercises every measurement; each check must pass (none n/a). The manifest injects one mutation per check into this page. The rail shell is also a ProductShell root for shellFrame (TCRN-DS-SUB-094): its paper sits 12px from the top, end and bottom edges, flush with the rail, and its top bar is 52px tall. -->
 <style>
   body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
   [data-measure-root] { width: 640px; padding: 16px; }
@@ -13,6 +13,8 @@
   .rail-item { display: flex; align-items: center; height: 32px; padding-left: 16px; color: #111111; text-decoration: none; }
   .ico { display: block; width: 20px; height: 20px; background: #666666; }
   .rail-label { margin-left: 12px; }
+  .paper { position: absolute; top: 12px; right: 12px; bottom: 12px; left: 200px; background: #ffffff; }
+  .paper > .tcrn-top-bar { display: block; box-sizing: border-box; height: 52px; border-bottom: 1px solid #dddddd; }
   .frame { width: 240px; height: 64px; overflow: hidden; border: 1px solid #888888; }
   .frame--positioned { position: relative; margin-top: 16px; }
   .inner { width: 200px; height: 40px; margin: 8px; background: #eeeeee; }
@@ -49,11 +51,12 @@
 <body>
 <main data-measure-root>
 <section class="part" data-part="rail">
-<div class="scr" data-shell="fixture">
+<div class="scr tcrn-product-shell" data-shell="fixture">
   <nav class="rail">
     <a class="rail-item" href="#home"><span class="ico" data-guide="rail"></span><span class="rail-label" data-text="rail">Home</span></a>
     <a class="rail-item" href="#projects"><span class="ico" data-guide="rail"></span><span class="rail-label" data-text="rail">Projects</span></a>
   </nav>
+  <div class="paper tcrn-product-shell__workspace"><header class="tcrn-top-bar"></header></div>
 </div>
 </section>
 <section class="part" data-part="clip">

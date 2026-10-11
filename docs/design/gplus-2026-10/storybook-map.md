@@ -6,7 +6,7 @@
 
 - **story id** 是静态文档（Track B）里的 contract story id，路由形如 `/components-gplus-matrices.html#typography-matrix`；**Storybook id** 是真 Storybook（Track A）的 id，例如字体板对应 `typography--matrix` 与 `typography--sample-billing`。两轨共用同一注册表，门只量 Track B（引用 T7）。
 - **期望格数** 是该行要渲染的 `data-cell` 个数（浅色与夜间合计），取自 `contract/matrices.json`；门还逐格比对 story 的 `data-expect` 与画板上同一格的 `data-expect`。
-- **测量项** 是该行必须测得到的项（测不到即 n/a，算不通过）。八项测量（clip 溢出、singleLine 单行、shadowBlur 阴影模糊、rail 引导列、rowAlign 行对齐、mark 高亮中性、contrast 每格对比度、controlHeight 控件高）与 overlap 重叠检查每行都照跑，任何一项不通过即该行不通过；阈值只在门里（取 EPIC 级几何门的 THRESHOLDS），本映射不写阈值。几何门 `scripts/geometry-measure-proof.mjs` 的必测项（REQUIRED_CHECKS）与本表同步：每个 story 的必测项是任何页面都有的四项（clip、singleLine、shadowBlur、overlap）加上引用它的各行测量项之并。样板没有 `data-cell`，不测 contrast，测壳的 rail；带 TableShell 行的四个样板另测 rowAlign（邀请成员样板没有表格）；actions 与 inputs 两个矩阵的控件声明了 `data-h`，测 controlHeight。
+- **测量项** 是该行必须测得到的项（测不到即 n/a，算不通过）。八项测量（clip 溢出、singleLine 单行、shadowBlur 阴影模糊、rail 引导列、rowAlign 行对齐、mark 高亮中性、contrast 每格对比度、controlHeight 控件高）、overlap 重叠检查与 shellFrame 壳框（构图一：纸离壳的上、尾、下边各 12，壳顶栏高 52）每行都照跑，任何一项不通过即该行不通过；阈值只在门里（取 EPIC 级几何门的 THRESHOLDS），本映射不写阈值。几何门 `scripts/geometry-measure-proof.mjs` 的必测项（REQUIRED_CHECKS）与本表同步：每个 story 的必测项是任何页面都有的四项（clip、singleLine、shadowBlur、overlap）加上引用它的各行测量项之并。样板没有 `data-cell`，不测 contrast，测壳的 rail 与 shellFrame；带 TableShell 行的四个样板另测 rowAlign（邀请成员样板没有表格）；actions 与 inputs 两个矩阵的控件声明了 `data-h`，测 controlHeight。
 - **story 清单** 是约定 7 的十个 id 加上注册表里类目以 `gplus-` 开头的全部 story。映射引用而清单或注册表没有的、清单有而映射没引用的，门都判红。
 - 样板 story（`*-sample-*`）由并行的实施包实现，id 按约定 7 先登记；合并前门报它们缺席（不通过），只判矩阵行时用 `--kind matrix`。
 - 截图只做目视，不做像素比对（引用 A130），门不截图。
@@ -35,24 +35,24 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | typography.A | V2-B1-Typography | A 组件与样式 | `typography-matrix` | `typography--matrix` | 矩阵 | — | clip、singleLine、shadowBlur、mark、overlap | DIFF-4、DIFF-7 |
 | typography.B | V2-B1-Typography | B 状态矩阵 | `typography-matrix` | `typography--matrix` | 矩阵 | 44 | contrast | DIFF-4 |
-| typography.D | V2-B1-Typography | D 组合样板 · 构图一（账单页） | `typography-sample-billing` | `typography--sample-billing` | 样板 | — | rail、rowAlign | DIFF-1 |
+| typography.D | V2-B1-Typography | D 组合样板 · 构图一（账单页） | `typography-sample-billing` | `typography--sample-billing` | 样板 | — | rail、shellFrame、rowAlign | DIFF-1 |
 | icon.A | V2-B1-Icon | A 名册与状态 | `icon-matrix` | `icon--matrix` | 矩阵 | — | clip、singleLine、shadowBlur、overlap | DIFF-4、DIFF-7 |
 | icon.B | V2-B1-Icon | B 状态矩阵 | `icon-matrix` | `icon--matrix` | 矩阵 | 28 | contrast | DIFF-4 |
-| icon.D | V2-B1-Icon | D 组合样板 · 构图一（项目列表） | `icon-sample-project` | `icon--sample-project` | 样板 | — | rail、rowAlign | DIFF-1 |
+| icon.D | V2-B1-Icon | D 组合样板 · 构图一（项目列表） | `icon-sample-project` | `icon--sample-project` | 样板 | — | rail、shellFrame、rowAlign | DIFF-1 |
 | brand.A | V2-B1-Brand | A 组件与状态 | `brand-matrix` | `brand--matrix` | 矩阵 | — | clip、singleLine、shadowBlur、overlap | DIFF-4、DIFF-7 |
 | brand.B | V2-B1-Brand | B 状态矩阵 | `brand-matrix` | `brand--matrix` | 矩阵 | 10 | contrast | DIFF-4 |
-| brand.D | V2-B1-Brand | D 组合样板 · 构图一（产品页） | `brand-sample-product` | `brand--sample-product` | 样板 | — | rail、rowAlign | DIFF-1、DIFF-9 |
+| brand.D | V2-B1-Brand | D 组合样板 · 构图一（产品页） | `brand-sample-product` | `brand--sample-product` | 样板 | — | rail、shellFrame、rowAlign | DIFF-1、DIFF-9 |
 | actions.A | V2-B1-Actions | A 组件与状态 | `actions-matrix` | `actions--matrix` | 矩阵 | — | clip、singleLine、shadowBlur、rowAlign、controlHeight、overlap | DIFF-4、DIFF-5、DIFF-7 |
 | actions.B | V2-B1-Actions | B 状态矩阵 | `actions-matrix` | `actions--matrix` | 矩阵 | 116 | contrast | DIFF-4、DIFF-5 |
-| actions.D | V2-B1-Actions | D 组合样板 · 构图一（项目页） | `actions-sample-project` | `actions--sample-project` | 样板 | — | rail、rowAlign | DIFF-1 |
+| actions.D | V2-B1-Actions | D 组合样板 · 构图一（项目页） | `actions-sample-project` | `actions--sample-project` | 样板 | — | rail、shellFrame、rowAlign | DIFF-1 |
 | inputs.A | V2-B1-Inputs | A 组件与状态 | `inputs-matrix` | `inputs--matrix` | 矩阵 | — | clip、singleLine、shadowBlur、controlHeight、overlap | DIFF-4、DIFF-5、DIFF-7 |
 | inputs.B | V2-B1-Inputs | B 状态矩阵 | `inputs-matrix` | `inputs--matrix` | 矩阵 | 42 | contrast | DIFF-4、DIFF-5、DIFF-6 |
-| inputs.D | V2-B1-Inputs | D 组合样板 · 构图一（邀请成员） | `inputs-sample-members` | `inputs--sample-members` | 样板 | — | rail | DIFF-1 |
-| compositions.1.typography | V2-GPlus-Compositions | 构图一 一张纸（账单页消费） | `typography-sample-billing` | `typography--sample-billing` | 样板 | — | rail、rowAlign | DIFF-1、DIFF-3 |
-| compositions.1.icon | V2-GPlus-Compositions | 构图一 一张纸（项目列表消费） | `icon-sample-project` | `icon--sample-project` | 样板 | — | rail、rowAlign | DIFF-1、DIFF-3 |
-| compositions.1.brand | V2-GPlus-Compositions | 构图一 一张纸（产品页消费） | `brand-sample-product` | `brand--sample-product` | 样板 | — | rail、rowAlign | DIFF-1、DIFF-3 |
-| compositions.1.actions | V2-GPlus-Compositions | 构图一 一张纸（项目页消费） | `actions-sample-project` | `actions--sample-project` | 样板 | — | rail、rowAlign | DIFF-1、DIFF-3 |
-| compositions.1.inputs | V2-GPlus-Compositions | 构图一 一张纸（邀请成员消费） | `inputs-sample-members` | `inputs--sample-members` | 样板 | — | rail | DIFF-1、DIFF-3 |
+| inputs.D | V2-B1-Inputs | D 组合样板 · 构图一（邀请成员） | `inputs-sample-members` | `inputs--sample-members` | 样板 | — | rail、shellFrame | DIFF-1 |
+| compositions.1.typography | V2-GPlus-Compositions | 构图一 一张纸（账单页消费） | `typography-sample-billing` | `typography--sample-billing` | 样板 | — | rail、shellFrame、rowAlign | DIFF-1、DIFF-3 |
+| compositions.1.icon | V2-GPlus-Compositions | 构图一 一张纸（项目列表消费） | `icon-sample-project` | `icon--sample-project` | 样板 | — | rail、shellFrame、rowAlign | DIFF-1、DIFF-3 |
+| compositions.1.brand | V2-GPlus-Compositions | 构图一 一张纸（产品页消费） | `brand-sample-product` | `brand--sample-product` | 样板 | — | rail、shellFrame、rowAlign | DIFF-1、DIFF-3 |
+| compositions.1.actions | V2-GPlus-Compositions | 构图一 一张纸（项目页消费） | `actions-sample-project` | `actions--sample-project` | 样板 | — | rail、shellFrame、rowAlign | DIFF-1、DIFF-3 |
+| compositions.1.inputs | V2-GPlus-Compositions | 构图一 一张纸（邀请成员消费） | `inputs-sample-members` | `inputs--sample-members` | 样板 | — | rail、shellFrame | DIFF-1、DIFF-3 |
 | logos.A-E | V2-B2-Logos-Draft | A–E 四枚标 · 浅色与夜间（大图、尺寸阶梯、贴片、单色版、锁定块） | `brand-matrix` | `brand--matrix` | 矩阵 | — | clip、singleLine、shadowBlur、overlap | DIFF-8 |
 | logos.I | V2-B2-Logos-Draft | I 标语 | `brand-matrix` | `brand--matrix` | 矩阵 | — | contrast | — |
 

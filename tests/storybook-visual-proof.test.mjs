@@ -214,7 +214,7 @@ test("thresholds come from the EPIC-042 gate; the map carries none; one mutation
   assert.equal(new Set(ROW_MUTATIONS.map((mutation) => mutation.id)).size, ROW_MUTATIONS.length);
 });
 
-test("130-GWT1: every matrix row gets a report row with all nine checks, and the in-scope mutations turn red", () => {
+test("130-GWT1: every matrix row gets a report row with every check, and the in-scope mutations turn red", () => {
   const report = matrixRun;
   assert.ok(report.generatedAtUtc && report.schemaVersion);
   if (report.reason !== null) {

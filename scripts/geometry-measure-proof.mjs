@@ -15,6 +15,9 @@
 //   contrast       every data-cell within 0.05 of its data-expect; text >= 4.5, other kinds >= 3 unless exempt
 //   controlHeight  declared control heights match (0.5px) and are 28, 32 or 40
 //   overlap        0 intersecting grid / flex siblings (more than 1px on both axes)
+//   shellFrame     composition one's frame (O-1, TCRN-DS-SUB-094): in every ProductShell [data-shell] the
+//                  paper sits 12px from the shell's top, end and bottom edges and the shell's top bar is
+//                  52px tall (0.5px tolerance); 131's "eight" reads as every required check, ten with this
 //
 // Every run starts with the fixture self-check (tests/fixtures/geometry-measure/manifest.json): each
 // check must turn red on its injected violation and stay green on the clean pages, in the Chromium that
@@ -59,7 +62,8 @@ export const THRESHOLDS = deepFreeze({
   mark: { maxViolations: 0 },
   contrast: { maxDiff: 0.05, minText: 4.5, minNonText: 3 },
   controlHeight: { allowedPx: [28, 32, 40], tolerancePx: 0.5 },
-  overlap: { maxOverlaps: 0, minIntersectPx: 1 }
+  overlap: { maxOverlaps: 0, minIntersectPx: 1 },
+  shellFrame: { paperInsetPx: 12, topBarHeightPx: 52, tolerancePx: 0.5 }
 });
 
 export const DEFAULT_PATHS = Object.freeze({
@@ -77,13 +81,14 @@ export const GPLUS_FAMILIES = deepFreeze(Object.fromEntries(["typography", "icon
 // exercise the four checks any rendered page has. The matrices add their data-cell state grids
 // (contrast); typography adds its marks, actions its state-grid table rows (rowAlign), and actions and
 // inputs their declared control heights (data-h 28 / 32 / 40, SUB-074). The samples carry no data-cell,
-// so contrast is not theirs: each must exercise the rail of its shell (16 / 48), and the four with
-// TableShell rows (every sample but inputs-sample-members) their row alignment. The board rows of
+// so contrast is not theirs: each must exercise the rail of its shell (16 / 48) and the shell's frame
+// (paper 12 from the edge, top bar 52; TCRN-DS-SUB-094), and the four with TableShell rows (every
+// sample but inputs-sample-members) their row alignment. The board rows of
 // docs/design/gplus-2026-10/storybook-map.json list the same checks (the any-page four aside). In a
 // full run every check must also apply somewhere in the set (SET_REQUIRED_CHECKS).
 const ANY_PAGE_CHECKS = ["clip", "singleLine", "shadowBlur", "overlap"];
 const MATRIX_CHECKS = [...ANY_PAGE_CHECKS, "contrast"];
-const SAMPLE_CHECKS = [...ANY_PAGE_CHECKS, "rail"];
+const SAMPLE_CHECKS = [...ANY_PAGE_CHECKS, "rail", "shellFrame"];
 export const REQUIRED_CHECKS = deepFreeze({
   "typography-matrix": [...MATRIX_CHECKS, "mark"],
   "icon-matrix": [...MATRIX_CHECKS],
@@ -105,7 +110,11 @@ export const STORY_MUTATIONS = deepFreeze([
   { id: "row-first-cell-padding", storyId: "table-record-index-spec", check: "rowAlign", source: "131-GWT1", css: ".tcrn-table-shell [role=\"row\"]:nth-child(2) > :first-child { padding-left: 8px !important; }" },
   { id: "mark-padding", storyId: "typography-matrix", check: "mark", source: "131-GWT2", css: "mark { padding: 2px !important; }" },
   { id: "shadow-blur-4px", storyId: "actions-matrix", check: "shadowBlur", source: "131-GWT3", css: ".story-body .tcrn-button { box-shadow: 0 1px 4px rgba(22, 21, 15, 0.2) !important; }" },
-  { id: "cell-ink-drift", storyId: "actions-matrix", check: "contrast", source: "131 contrast", css: ".story-body .tcrn-button.tcrn-button--primary { color: rgb(120, 200, 190) !important; }" }
+  { id: "cell-ink-drift", storyId: "actions-matrix", check: "contrast", source: "131 contrast", css: ".story-body .tcrn-button.tcrn-button--primary { color: rgb(120, 200, 190) !important; }" },
+  // TCRN-DS-SUB-094 (O-1, 129-GWT3, 131-GWT4): the paper flush with the shell edge, and the shell top bar
+  // back at the old 68, each turn shellFrame red on a real sample.
+  { id: "shell-paper-inset-zero", storyId: "icon-sample-project", check: "shellFrame", source: "129-GWT3 paper inset", css: "[data-shell] .tcrn-product-shell__workspace { margin: 0 !important; }" },
+  { id: "shell-top-bar-68", storyId: "icon-sample-project", check: "shellFrame", source: "131-GWT4 top bar", css: "[data-shell] .tcrn-product-shell__workspace > .tcrn-top-bar { min-height: 68px !important; }" }
 ]);
 
 // Relations the eight checks do not cover, judged in the browser (decomposition P31): the ButtonGroup
