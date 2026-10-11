@@ -8,6 +8,11 @@ type Size = "sm" | "md" | "lg";
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "quiet" | "danger";
   size?: Size;
+  /**
+   * Why the action is unavailable, used while the button is disabled. It is the button's
+   * accessible description (aria-describedby) and follows the label text in title as
+   * "label — reason", so a label cut by the ellipsis stays readable next to the reason.
+   */
   disabledReason?: string;
   /**
    * The action is running: the button says so with aria-busy and the loader icon, and a
@@ -58,6 +63,18 @@ function labelledContent(children: ReactNode): LabelledContent {
   return { content, text: texts.length > 0 ? texts.join(" ") : undefined };
 }
 
+/**
+ * The button's title. Without a disabled reason it is the caller's title, or else the label text,
+ * so a label cut by the ellipsis stays readable. With one it is the label text and the reason as
+ * "label — reason" (TCRN-DS-SUB-079), so the cut label stays readable next to the reason; a button
+ * with no visible text (an icon button) shows the reason alone. The reason takes the place of the
+ * caller's title, as it did before.
+ */
+function buttonTitle(text: string | undefined, callerTitle: string | undefined, reason: string | undefined): string | undefined {
+  if (!reason) return callerTitle ?? text;
+  return text ? `${text} — ${reason}` : reason;
+}
+
 function ignoreBusyPress(event: MouseEvent<HTMLButtonElement>) {
   // Also keeps a busy submit button from submitting its form a second time.
   event.preventDefault();
@@ -75,7 +92,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     <button
       {...props}
       ref={ref}
-      title={normalizedReason ?? props.title ?? text}
+      title={buttonTitle(text, props.title, normalizedReason)}
       aria-busy={loading ? true : props["aria-busy"]}
       aria-describedby={ariaDescribedBy}
       data-disabled-reason={normalizedReason}

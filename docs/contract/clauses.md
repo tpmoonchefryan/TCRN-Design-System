@@ -95,7 +95,10 @@ node scripts/contract-static-proof.mjs [--details] [--report <path>] [--family <
   - `C7.wrap-allowed`：任何规则把承载类改回可折行（`white-space: normal|pre-wrap|pre-line|break-spaces`、`text-overflow: clip`、`overflow: visible`）。
   - `C7.role-missing`：登记的承载类在包 CSS 里没有规则。
 - story 层：
-  - `C7.story-title-missing`：渲染出的承载元素有可见文字，却没有非空 `title`。title 可以在元素自身、元素内部，或在它到组件根（类名等于承载类根类的最近祖先，如 `tcrn-button`）之间、且子树里只有这一个承载元素的祖先上（共享容器的 title 不算）。口径：只看 title 存在且非空，不比对与文字相等（禁用原因、关系标记的完整说明也算）；没有文字的承载元素（只有图标）不查。
+  - `C7.story-title-missing`：渲染出的承载元素有可见文字，却没有给截断文字用的 `title`。口径分两档（TCRN-DS-SUB-079 按 R2-31 收紧）：
+    - 第一批承载元素（元素的包类里有 `families.json` 中 `scope.batch` 批次家族的类，现为按钮 `tcrn-button__label`）：title 须含该元素的可见文字。比较前两边都把连续空白折成一个空格、去掉首尾空白，title 包含这段文字即满足；所以「标签 — 原因」这类在标签后接说明的写法满足，只写禁用原因或只写部分文字的判红。看的是浏览器在该元素上显示的那个 title：元素自身的 title；没有时取最近带 title 的祖先，到组件根（类名等于承载类根类的最近祖先，如 `tcrn-button`）为止，且该祖先的子树里只有这一个承载元素（共享容器的 title 不算）；空 title 不显示提示，也挡住更外层的 title。元素内部的 title 含这段文字也满足。
+    - 后续批次家族的承载元素沿用原口径，到该家族进入检查范围为止：title 在元素自身、元素内部，或在它到组件根之间、且子树里只有这一个承载元素的祖先上，存在且非空即满足，不比对文字（关系标记的完整说明也算）。
+    - 没有文字的承载元素（只有图标）不查。包里的 Button 带禁用原因时 title 写「标签 — 原因」（标签是按钮的可见文字），原因另经 `aria-describedby` 读出；没有可见文字的按钮（如 IconButton）title 只写原因。
   - `C7.story-forced-wrap`：承载元素里有 `<br>` 或块级元素，或它及其后代的行内样式把它改回可折行（同 `C7.wrap-allowed` 的取值）。
 
 ### C8 工具栏让步声明
