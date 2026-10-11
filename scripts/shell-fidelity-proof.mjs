@@ -70,7 +70,9 @@ const DUPLICATE_DOCS_SURFACES = [
 // Two kinds live here, and nothing else may be added speculatively — a whitelist entry
 // blinds the gate to that class ("门只保护它读过的字节"), so it must name a class that is
 // genuinely a demo override, never a re-implementation the gate exists to catch:
-//   1. Infra primitives the docs shell reproduces verbatim (.tcrn-sr-only, .tcrn-skip-link).
+//   1. Infra primitives placed by a doc demo (.tcrn-skip-link inside the package-nav proof).
+//      The docs shell's verbatim copies of .tcrn-sr-only and .tcrn-skip-link were removed
+//      (TCRN-DS-SUB-063); the package defines both.
 //   2. LEGITIMATE demo overrides whose STYLED SUBJECT is a package class but which are
 //      demo-SCOPED (rendered only under a documented demo container) — the key-subject
 //      extractor deliberately flags e.g. `.tcrn-doc-knowledge-shell-layout > .tcrn-top-bar`
@@ -84,7 +86,6 @@ const DUPLICATE_DOCS_SURFACES = [
 // `.tcrn-table-toolbar .tcrn-filter-bar` rule, so a top-level docs `.tcrn-filter-bar`
 // shares the key-subject but not the selector).
 const DUPLICATE_SELECTOR_WHITELIST = new Set([
-  ".tcrn-sr-only",
   ".tcrn-skip-link",
   // Demo-scoped overrides of package classes (docs/style-scale.md exemption list). The
   // nav-item, top-bar track and module-tabs entries went with the doc rules that needed
@@ -95,7 +96,6 @@ const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-segmented-nav",
   ".tcrn-field",
   ".tcrn-brand-wordmark",
-  ".tcrn-brand-wordmark__base",
   ".tcrn-brand-wordmark__suffix",
   ".tcrn-product-logo__copy",
   ".tcrn-tooltip__content",

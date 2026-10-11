@@ -281,11 +281,10 @@ label {
   padding: var(--tcrn-space-2) var(--tcrn-space-2h);
 }
 
+/* The sample only places the package icon in its track: size (Icon's default md, 16px)
+   and colour stay the package's. */
 .tcrn-doc-icon-sample svg[data-icon-name] {
-  width: 18px;
-  height: 18px;
   justify-self: center;
-  color: var(--tcrn-color-brand-primary);
 }
 
 .tcrn-doc-icon-sample code {
@@ -570,15 +569,6 @@ label {
   overflow: hidden;
 }
 
-.tcrn-doc-shell-demo--dense {
-  align-content: start;
-  grid-template-rows: max-content;
-  gap: 0;
-  min-height: 474px;
-  overflow: visible;
-  padding: 0;
-}
-
 .tcrn-doc-brand {
   --tcrn-brand-mark-size: 52px;
   --tcrn-brand-mark-filter: drop-shadow(0 1px 2px rgba(28, 29, 33, 0.10));
@@ -733,15 +723,6 @@ label {
   grid-area: sidebar;
 }
 
-.tcrn-doc-knowledge-shell__brand {
-  min-width: 0;
-  border-right: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
-}
-
 .tcrn-doc-knowledge-shell__topbar-copy,
 .tcrn-doc-knowledge-shell__actions,
 .tcrn-doc-knowledge-shell__sidebar-intro,
@@ -783,8 +764,6 @@ label {
 
 .tcrn-doc-knowledge-shell__actions .tcrn-search-input {
   flex: 0 1 260px;
-  width: 260px;
-  max-width: 260px;
 }
 
 /* One row needs the rail, the 32ch copy measure and the actions at full width: about
@@ -799,8 +778,6 @@ label {
 
   .tcrn-doc-knowledge-shell__actions .tcrn-search-input {
     flex: 1 1 100%;
-    width: auto;
-    max-width: none;
   }
 }
 
@@ -1039,10 +1016,6 @@ label {
     grid-row: auto;
   }
 
-  .tcrn-doc-knowledge-shell__brand {
-    padding: 0;
-  }
-
   .tcrn-doc-knowledge-shell__topbar-copy,
   .tcrn-doc-knowledge-shell__actions {
     width: auto;
@@ -1051,12 +1024,6 @@ label {
 
   .tcrn-doc-knowledge-shell__content {
     padding: var(--tcrn-space-4);
-  }
-
-  .tcrn-doc-shell-demo--dense {
-    gap: var(--tcrn-space-3);
-    min-height: 0;
-    padding: var(--tcrn-space-3);
   }
 
 }
