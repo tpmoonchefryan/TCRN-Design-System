@@ -1,22 +1,31 @@
 # TCRN style scale (radius, spacing, type)
 
 The single source of truth for every visual scale is `packages/ui-tokens/src/index.ts`.
-`tokens-sync` regenerates `packages/ui-tokens/src/tokens.css` and the `storybook.css`
-`:root` block from it; `createCssVariables()` emits the same tokens into the deployed
-docs page. New styles take values from this table — never a raw literal.
+Since the G+ renewal (TCRN-DS-INIT-015) its G+ values are not typed there by hand: they come
+from the design contract `docs/design/gplus-2026-10/contract/tokens.json` (and
+`typography.json` for the type roles), which `node scripts/contract-generate.mjs` writes into
+`packages/ui-tokens/src/gplus-tokens.generated.ts`; change the contract and regenerate, never
+the generated file. `tokens-sync` regenerates `packages/ui-tokens/src/tokens.css` and the
+`storybook.css` `:root` block from the package; `createCssVariables()` emits the same tokens
+into the deployed docs page. New styles take values from these tables — never a raw literal.
 
 ## Radius hierarchy
 
 | Role | Token | Value |
 |---|---|---|
 | Navigation / left indicators | *(none — flat)* | `0` |
-| Controls (button, input, chip, toggle) | `--tcrn-radius-control` | `4px` |
-| Cards / story containers / framed surfaces | `--tcrn-radius-surface` | `6px` |
-| Panels | `--tcrn-radius-panel` | `6px` (alias of surface — kept as a distinct name) |
-| Badges / pills / abbreviation dots | `--tcrn-radius-pill` | `999px` |
+| Controls (button, input, select, toggle) | `--tcrn-radius-control` | `8px` |
+| Chips and compact controls | `--tcrn-radius-small` | `6px` |
+| Panels, popovers, cards, framed surfaces | `--tcrn-radius-panel` | `12px` |
+| Cards / story containers (older name) | `--tcrn-radius-surface` | `12px` (carries the panel value) |
+| Checkbox box | `--tcrn-radius-check` | `4px` |
+| Stamps and badges | `--tcrn-radius-stamp` | `3px` |
+| Pills / abbreviation dots | `--tcrn-radius-pill` | `999px` |
 
+- G+ moved the control radius from `4px` to `8px` and the surface radius from `6px` to `12px`
+  (contract keys `r-ctl`, `r-sm`, `r-panel`, `r-check`, `r-stamp`).
 - The navigation's flat corners (INIT-005) are deliberate and must not regress.
-- `state-chip-radius` was retired into `--tcrn-radius-control` (both `4px`).
+- `state-chip-radius` was retired into `--tcrn-radius-control` (both `4px` at the time).
 - `--tcrn-radius-pill` was a dangling token (referenced, never defined, rendering
   square corners) until INIT-006 E4 defined it.
 
@@ -42,20 +51,118 @@ suffix. Gap and padding values come from this scale.
 
 ## Type scale
 
-| Token | Value | Role |
+| Token | Size / line | Role |
 |---|---|---|
-| `--tcrn-type-size-caption` | `11px` | caption / metadata |
-| `--tcrn-type-size-meta` | `12px` | dense metadata: counts, badges, tool labels |
-| `--tcrn-type-size-ui` / `-body` / `-control` | `13px` | dense UI / body / control text |
-| `--tcrn-type-size-reading` | `14px` | readable prose |
-| `--tcrn-type-size-heading-3` | `16px` | h3 |
-| `--tcrn-type-size-section` | `18px` | section / story heading |
-| `--tcrn-type-size-heading-2` | `22px` | h2 |
-| `--tcrn-type-size-page` | `28px` | page title |
+| `--tcrn-type-size-caption` | `11px` / `16px` | caption / metadata |
+| `--tcrn-type-size-meta` | `12px` / `16px` | dense metadata: counts, badges, tool labels |
+| `--tcrn-type-size-control-sm` | `12px` | small control text |
+| `--tcrn-type-size-ui` / `-body` / `-control` | `13px` / `20px` | dense UI / body / control text |
+| `--tcrn-type-size-reading` | `14px` / `22px` | readable prose |
+| `--tcrn-type-size-control-lg` | `14px` | large control text |
+| `--tcrn-type-size-heading-3` | `20px` / `26px` | h3 |
+| `--tcrn-type-size-section` | `20px` / `26px` | section / story heading |
+| `--tcrn-type-size-heading-2` | `26px` / `30px` | h2 |
+| `--tcrn-type-size-page` | `36px` / `40px` | page title (h1) |
 | `--tcrn-type-size-stamp-min` | `12px` | stamp floor (CJK serif) |
 
 - `--tcrn-type-size-meta` was a dangling token until INIT-006 E3.
-- The `.tcrn-heading--1` fluid clamp `clamp(28px, 3vw, 44px)` stays literal.
+- G+ replaced the `.tcrn-heading--1` fluid clamp with the fixed 36/40 serif step; every
+  heading level stays on one line and ends in an ellipsis (see the G+ type roles below).
+- Line heights are the matching `--tcrn-type-line-*` tokens; control text uses the unitless
+  `--tcrn-type-line-control` (`1.2`) inside the fixed control heights.
+
+## G+ scale (TCRN-DS-INIT-015)
+
+The first-batch families (Typography, Icon, Brand, Actions, Inputs) are drawn on the steps
+below. Values are the contract's (`docs/design/gplus-2026-10/contract/tokens.json` and
+`typography.json`); the gates named with each table hold them. Gate commands, criteria,
+thresholds and exemption registers are listed in `docs/contract/README.md`.
+
+### Type families
+
+| Token | Stack | Use |
+|---|---|---|
+| `--tcrn-type-family-serif` (also `--tcrn-type-family-heading`) | Source Serif 4, Noto Serif SC, Georgia, serif | headings and numerals |
+| `--tcrn-type-family-ui` | Hanken Grotesk, Noto Sans SC, system-ui, sans-serif | UI and body text |
+| `--tcrn-type-family-mono` | IBM Plex Mono, ui-monospace, Menlo, monospace | keys, codes, identifiers |
+
+- The faces are vendored in `@tcrn/ui-tokens` (`fonts.css` and `fonts/`); nothing loads from a
+  font CDN. `pnpm fonts:proof` checks the files and their licences; `pnpm fonts:render` checks
+  in Chromium that each family draws with its vendored face, that a Chinese heading in the
+  heading stack falls back to the Noto Serif SC face, and that no page requests a remote font.
+
+### Type roles
+
+| Role | Class | Family | Size / line | Weight | Notes |
+|---|---|---|---|---|---|
+| Heading 1 | `.tcrn-heading--1` | serif | 36 / 40 | 400 | tracking -0.01em |
+| Heading 2 | `.tcrn-heading--2` | serif | 26 / 30 | 400 | tracking -0.005em |
+| Heading 3 | `.tcrn-heading--3` | serif | 20 / 26 | 400 | |
+| Heading 4 | `.tcrn-heading--4` | ui | 13 / 20 | 600 | |
+| Text (default body) | `.tcrn-text`, `.tcrn-text--body` | inherited | 13 / 20 | inherited | secondary ink; `tone="strong"` adds 600 on the primary ink |
+| Text reading | `.tcrn-text--reading` | inherited | 14 / 22 | inherited | |
+| Text meta | `.tcrn-text--meta` | inherited | 12 / 16 | inherited | tertiary ink |
+| Text caption | `.tcrn-text--caption` | inherited | 11 / 16 | inherited | tertiary ink |
+| Numeral | `.tcrn-text--numeral` | serif | 26 / 30 | 300 | tabular lining figures; inline 16 / 20, large 44 / 48 |
+| Caps label | `.tcrn-text--caps` | ui | 11 / 16 | 500 | uppercase, tracking 0.14em, mono numbering prefix |
+| Mono | `.tcrn-text--mono` | mono | 11.5 / 16 | inherited | |
+
+- Headings, numerals and caps labels are single-line roles: they never wrap, end in an
+  ellipsis and carry their text as a title (contract clause C7). The rules are generated from
+  `typography.json` into `packages/ui-react/src/styles/generated/typography.scale.ts`.
+
+### Controls
+
+| Scale | sm | md (default) | lg |
+|---|---|---|---|
+| Control height `--tcrn-control-height-*` | `28px` | `32px` | `40px` |
+| Inline padding `--tcrn-control-padding-*` | `10px` | `12px` | `16px` |
+| Control text `--tcrn-type-size-control*` | `12px` | `13px` | `14px` |
+| Icon size `--tcrn-icon-size-*` | `14px` | `16px` | `20px` |
+
+- `Button`, `IconButton` and `LinkButton` take `size="sm" | "md" | "lg"` (default `md`) and take
+  the height, inline padding and control text of that step; an `IconButton` is as wide as it is
+  high.
+- `pnpm geometry:measure` (`controlHeight`) fails a declared control whose height is not 28, 32
+  or 40px (0.5px tolerance).
+
+### Elevation: three levels at most
+
+| Token | Level |
+|---|---|
+| `--tcrn-shadow-s1` | lowest raised surface |
+| `--tcrn-shadow-s2` | middle level |
+| `--tcrn-shadow-s3` | floating level (menus, popovers); the old `--tcrn-elevation-floating` points here |
+| `--tcrn-shadow-edge` | inset 1px edge highlight, not a level |
+| `--tcrn-focus-ring` | focus ring: a 2px gap in `--tcrn-color-surface`, then a 2px accent ring |
+
+- There are no other elevation steps, and no shadow layer blurs more than 3px.
+  `pnpm geometry:measure` (`shadowBlur`) measures the rendered stories and `pnpm contract:static`
+  (C11) reads the package CSS for the same limit. Gradients are on the C11 forbidden list too.
+- Light and night values differ per token; both theme blocks declare the same token set (C5).
+
+### Guide column (rail)
+
+- In the shell and in lists, the guide column sits 16px and the text it leads sits 48px from
+  the shell edge. `pnpm geometry:measure` (`rail`, 0.5px tolerance) measures both sides on the
+  rendered sample stories, as a relation between the real elements rather than a property list
+  (clause C17).
+
+### Motion
+
+| Token | Value | Use |
+|---|---|---|
+| `--tcrn-motion-ease` | `cubic-bezier(.22,1,.36,1)` | the single G+ easing curve |
+| `--tcrn-motion-duration-press` | `80ms` | press feedback |
+| `--tcrn-motion-duration-fill` | `120ms` | fill and colour changes (hover, state) |
+| `--tcrn-motion-duration-move` | `240ms` | movement (menus, panels, indicators) |
+| `--tcrn-motion-duration-loop` | `900ms` | looping indicator period |
+
+### Contrast
+
+- Text pairs need 4.5:1, control edges and the focus ring 3:1 in both themes (C1).
+  `pnpm tokens:proof` (token-contrast-proof) checks the token pairs and `pnpm geometry:measure`
+  (`contrast`) the rendered matrix cells against their board values.
 
 ## Component CSS lives in the package; the docs keep only demo chrome
 
@@ -80,6 +187,9 @@ Three gates hold that line:
   class is on the gate's whitelist of demo-scoped placements listed below.
 - `scripts/selection-grammar-proof.mjs` reads the same three docs files for the retired
   selection shapes.
+
+`scripts/contract-static-proof.mjs` (`pnpm contract:static`) also reads the doc-shell-class
+difference as contract clause C13, so the same leak fails both gates (TCRN-DS-STORY-132).
 
 ### Demo-chrome exemption list
 

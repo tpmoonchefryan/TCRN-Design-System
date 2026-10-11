@@ -204,6 +204,64 @@ parent tabs, then the selected subpage's local navigation and content. The globa
 `ProductShell` topbar is external, and container width only adapts the third-level
 region after depth has been chosen.
 
+## G+ First-Batch Families
+
+The G+ renewal (TCRN-DS-INIT-015) puts five families on the design contract in
+`docs/design/gplus-2026-10/contract/`. Their rules live in `src/styles/<family>.css.ts`
+and the contract-generated segments in `src/styles/generated/`, and `src/styles/index.ts`
+joins them in cascade order into `tcrnComponentCss`.
+
+| Family | Components |
+| --- | --- |
+| Typography | `Heading`, `Text`, `Highlight` (and the `tcrn-link` class) |
+| Icon | `Icon` |
+| Brand | `TcrnBrandMark`, `ProductLogo`, `ProductLockup` |
+| Actions | `Button`, `IconButton`, `LinkButton`, `ClipboardCopyButton`, `ButtonGroup` |
+| Inputs | `Input`, `Textarea`, `SearchInput`, `SuggestInput`, `Select`, `MultiSelect`, `NumberInput`, `DatePicker`, `Checkbox`, `RadioGroup`, `Switch` |
+
+Each family has a matrix story and a sample story in the Storybook app (see
+`apps/storybook/README.md`). The type, radius, control-height and elevation steps are in
+`docs/style-scale.md`; the gates that hold the families to the contract are listed in
+`docs/contract/README.md`.
+
+### Text
+
+- `size` is `body` (13/20, the default), `reading` (14/22), `meta` (12/16) or `caption`
+  (11/16).
+- `tone` is `default`, which keeps the secondary ink, or `strong`, which sets the primary
+  ink at weight 600.
+- `variant` is `numeral` or `caps`. `numeral` sets figures in the serif at weight 300 with
+  tabular digits; put a unit in a `small` element inside it. `caps` is the spaced uppercase
+  label; put a numbering prefix in a `b` element inside it. Both are single-line roles:
+  they never wrap, end in an ellipsis, and repeat their text in `title` unless one is given.
+- With no props, `Text` is a wrapping 13/20 paragraph in the secondary ink. `Heading`
+  levels 1 to 4 are single-line too and carry their text as a title.
+
+### Button sizes
+
+- `size` is `sm` (28px), `md` (32px, the default) or `lg` (40px). The inline padding (10,
+  12 or 16px) and the control text (12, 13 or 14px) come from the same step.
+- `IconButton` and `LinkButton` take the same three sizes; an `IconButton` is square.
+- `variant` is `primary`, `secondary` (the default), `quiet` or `danger`. `loading` sets
+  `aria-busy`, shows the loader icon and ignores further presses; the busy wording is the
+  caller's children.
+
+### ButtonGroup
+
+- Attached buttons that act on one subject: one shared outline, a 1px separator between
+  neighbours, and the focused member raised above the others so its focus ring is drawn
+  whole.
+- `ariaLabel` is required; the group renders `role="group"` with that name. `variant` is
+  `secondary` (the default) or `quiet`, which drops the shared outline and uses the lighter
+  separator for a group of quiet buttons.
+- A single-choice group marks the chosen button with `aria-pressed`; the group does not
+  hold the choice itself.
+
+### Icon roster
+
+`Icon` draws the 37 names of `tcrnIconNames` (28 existing and 9 added) at `sm`, `md` or `lg`
+(14, 16 or 20px); the roster and the rules are in Icon Library Boundary below.
+
 ## Icon Library Boundary
 
 `Icon` is the package-backed icon primitive. It draws the TCRN icon roster: 37
