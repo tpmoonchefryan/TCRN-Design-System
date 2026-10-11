@@ -85,6 +85,8 @@ export const inputsCss02 = `
 .tcrn-input.tcrn-search-input__control::placeholder {
   color: var(--tcrn-color-ink-2);
 }
+/* The shortcut label is text, so it takes ink-2 for the same reason the placeholder does:
+   ink-3 on the night wash falls under the 4.5 text contrast. */
 .tcrn-search-input__shortcut {
   position: absolute;
   inset-block-start: 50%;
@@ -95,7 +97,7 @@ export const inputsCss02 = `
   padding: 0 var(--tcrn-space-1);
   border: 1px solid var(--tcrn-color-line-2);
   border-radius: 4px;
-  color: var(--tcrn-color-ink-3);
+  color: var(--tcrn-color-ink-2);
   font-family: var(--tcrn-type-family-mono);
   font-size: 10px;
   line-height: 14px;
