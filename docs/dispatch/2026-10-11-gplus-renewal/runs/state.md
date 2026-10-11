@@ -105,7 +105,12 @@
 | P10 | 主力 | 已合入 18fa3e9 | bc71e9d | SUB-079 达成（Actions 28 → 0）；带出 RM14 两处集成红 → I1 |
 | I1 | 主力 | 已合入 7bf76ee | 88584ae | 集成修复 RM14：Clipboard.test.tsx 断言、client-scripts.ts 分段翻译；本批后续集成冲突续用该代理（id 记在 scratch `r2-agents.txt`） |
 | P11 | 经济 | 已合入 67517d1 | 8d8ff8d | SUB-086 → 051 → 054 → 087；附件 P11-r2-digest.md（RM 清单与各包回显）；RM9 不在范围 |
-| P12 | 经济 | 在跑 | dcde667 | SUB-075 → 069 → 076 → 078 → 046；附件 P12-handoffs.md |
+| P12 | 经济 | 已合入 e643d74 | dcde667 | SUB-075 → 069 → 076 → 078 → 046；附件 P12-handoffs.md |
+
+## R2 批末进度
+
+- 12 包与集成修复 I1 全部合入（HEAD e643d74）。批末 verify 逐步（44 段）：30 步红 6 步（R1 为 11）——10 geometry:proof（SUB-080 搜索浮层）、11 shell:parity（C-21/O-1）、17 storybook:smoke（focus-outline-width 期望值过时等）、18 geometry:measure 与 19 storybook:visual-proof（样板 rail，O-1）、30 internal-alpha（O-2 axe 12、手机顶栏 C-21/O-1、三条 zh-CN 漏译、视觉基线未应用）；表与归因 `runs/r2/verify/steps.md`，日志 scratch `r2-verify/`，改写的回执已存档并还原。
+- 下一步：三片验收（einzbern-main，摘录 `runs/r2/excerpts/acc-{A,B,C}.md`）→ 判断（einzbern-main）→ 一次链写。
 
 ## 下一步
 
