@@ -872,11 +872,6 @@ label {
   box-shadow: var(--tcrn-elevation-floating);
 }
 
-.tcrn-doc-shell-demo--compact {
-  padding: 0;
-  overflow: hidden;
-}
-
 .tcrn-doc-brand {
   --tcrn-brand-mark-size: 52px;
   --tcrn-brand-mark-filter: drop-shadow(0 1px 2px rgba(28, 29, 33, 0.10));
@@ -982,14 +977,11 @@ label {
 .tcrn-doc-knowledge-shell-layout {
   --tcrn-knowledge-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
   --tcrn-knowledge-shell-content-gutter: 18px;
-  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-brand-secondary-bg);
+  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-surface-canvas);
   --tcrn-knowledge-shell-top-surface: var(--tcrn-color-surface-panel);
 }
-/* TCRN-DS-STORY-065: the deployed doc shell switches its left surface to the panel color in dark
-   mode; the demo kept a brand-tinted left rail. Mirror the shell so the demo stays faithful. */
-[data-tcrn-theme="dark"] .tcrn-doc-knowledge-shell-layout {
-  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-surface-panel);
-}
+/* The brand cell mirrors the documentation shell's left surface, the canvas colour in both
+   themes since composition one (O-1). */
 /* The layout is the size container its top bar answers to: the demo sits in a story
    frame, so its own width, not the viewport, decides whether one row fits.
    The rail holds the brand lockup beside its collapse control, as the documentation
@@ -1059,7 +1051,7 @@ label {
   align-content: center;
   max-inline-size: 32ch;
   background: transparent;
-  padding: var(--tcrn-space-2h) 0;
+  padding: 0;
 }
 
 /* Placement only: the flex item and its track width. The width also sets the item's
@@ -1092,6 +1084,13 @@ label {
   display: grid;
   gap: var(--tcrn-space-4);
   min-width: 0;
+}
+
+/* The rail content keeps the documentation sidebar's inline padding, so the bookmarks start where
+   the documentation shell's navigation starts; the package SideNav itself is only placed. */
+.tcrn-doc-knowledge-shell__sidebar-intro,
+.tcrn-doc-knowledge-shell__groups {
+  padding-inline: clamp(var(--tcrn-space-4h), 2vw, 30px) clamp(var(--tcrn-space-4), 1.6vw, 24px);
 }
 
 .tcrn-doc-knowledge-shell-layout [data-navigation-primitive="nav-item"]:not([data-selected="true"]):not([aria-current="page"]) {
@@ -1465,7 +1464,16 @@ label {
   gap: var(--tcrn-space-2);
   align-items: center;
   align-self: stretch;
-  height: calc(100% + (var(--tcrn-space-0h) * 0.5));
+  /* Brand lockup relation (composition one): the brand cell is the top of the rail, as the
+     documentation shell's brand surface is. It spans the rail track (the layout's first column,
+     minmax(rail-min, 0.32fr) beside 1fr with no gap, in the layout's container units) and claims
+     back the top bar's inline-start padding, its block padding and its 1px bottom edge, so the
+     rail surface runs from the bar's top edge into the side navigation with no gap. The bar
+     centres its slots, so the cell is the tallest slot: 96px, the documentation header band. */
+  inline-size: max(var(--tcrn-knowledge-shell-rail-min), calc(100cqi * 0.32 / 1.32));
+  min-height: calc(var(--tcrn-space-6) * 3);
+  margin-block: calc(var(--tcrn-space-3) * -1) calc((var(--tcrn-space-3) + 1px) * -1);
+  margin-inline-start: calc(var(--tcrn-space-5) * -1);
   background: var(--tcrn-knowledge-shell-left-surface);
   padding: var(--tcrn-space-3) clamp(var(--tcrn-space-4), 1.6vw, 24px) var(--tcrn-space-3) clamp(var(--tcrn-space-4h), 2vw, 30px);
 }

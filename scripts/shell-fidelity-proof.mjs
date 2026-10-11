@@ -115,8 +115,11 @@ const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-shell-brand-lockup",
   ".tcrn-shell-brand-lockup__copy",
   ".tcrn-shell-brand-lockup__caption",
-  // The Storybook-only ProductShell static-display modifier and its result-panel rule
-  // were removed with the doc-layer parallel implementations (TCRN-DS-SUB-026).
+  // The ProductShell story's opened static result list, kept in the shell's flow under the doc
+  // container .tcrn-doc-product-shell-search--static-display (TCRN-DS-SUB-100, R3-9). The old
+  // modifier went with TCRN-DS-SUB-026; its position and inset are the registered exception
+  // EX-INIT015-doc-product-shell-search-static, and the entry goes with that exception.
+  ".tcrn-product-shell-search__results",
   // Documented demo-chrome hook — not a duplicate (see comment above):
   ".tcrn-filter-bar"
 ]);
@@ -270,6 +273,16 @@ const PLACEMENT_PROPERTIES = new Set([
   "white-space", "overflow-wrap", "word-break"
 ]);
 
+// C7 single-line carriers (TCRN-DS-SUB-102): the classes docs/contract/roles.json registers under
+// singleLine keep their text on one line in the package, so for a subject that carries one of them
+// the wrapping properties are not placement: a doc rule that sets white-space, overflow-wrap or
+// word-break on a carrier is a finding like any repaint. The list is read from roles.json, not
+// copied here.
+const WRAPPING_PROPERTIES = new Set(["white-space", "overflow-wrap", "word-break"]);
+const SINGLE_LINE_CARRIER_CLASSES = new Set(
+  JSON.parse(readFileSync(resolve(root, "docs/contract/roles.json"), "utf8")).singleLine.map((entry) => entry.class)
+);
+
 // Registered exceptions, written the EX-INIT015-* way (docs/contract/exemptions.json): each
 // entry names exact selectors (whitespace collapsed, as the CSS reader gives them) and the
 // properties it admits for them, with a ruling reference, a reason and a removal condition.
@@ -308,6 +321,14 @@ export const DOC_PACKAGE_CLASS_EXCEPTIONS = Object.freeze([
     ruling: "docs/style-scale.md「Demo-chrome exemption list」Package components placed by doc scaffolding 条：文档保留基础原件 .tcrn-skip-link 的演示放置；包导航证明框属 Navigation 家族演示，TCRN-DS-INIT-015 scope 不授权改动后续批次家族（同 EX-INIT015-navigation）",
     reason: "证明框里的跳转链接未获焦时收成 1px 的读屏隐藏框（position、height、overflow、clip、clip-path、border、padding、transform），获焦时按行内弹性盒显示（display、align-items）；文档壳自己的 .tcrn-skip-link 副本已删（TCRN-DS-SUB-063）",
     until: "Navigation 家族所在批次获得授权、包导航证明框改由包组件呈现跳转链接时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-product-shell-search-static",
+    selectors: ['.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results'],
+    properties: ["position", "inset"],
+    ruling: "runs/r2/judgment.md（TCRN-DS-INIT-015）§2.2 R3-9 与 §3.3 第 4 条：导航壳故事的静态搜索结果用文档前缀类加登记例外留在版面内，不改包；包的绝对定位是正确的运行时行为，Navigation 家族不在授权内",
+    reason: "ProductShell 故事静态展示展开的搜索结果；文档容器让结果列表回到壳的文档流（position static、inset auto），把正文往下推而不是盖住标题与首段，不改颜色、字号与边框",
+    until: "Navigation 家族批次由包提供静态结果展示时删除本条"
   },
   {
     id: "EX-INIT015-doc-shell-brand-collapse",
@@ -364,11 +385,13 @@ export function packageClassAppearanceFindings(css, source, exceptions = DOC_PAC
     for (const selector of rule.selectors) {
       const parts = compounds(selector);
       const subject = parts[parts.length - 1]?.text ?? "";
-      if (!parseCompound(subject).classes.some(isPackageClass)) continue;
+      const subjectClasses = parseCompound(subject).classes;
+      if (!subjectClasses.some(isPackageClass)) continue;
+      const singleLineCarrier = subjectClasses.some((name) => SINGLE_LINE_CARRIER_CLASSES.has(name));
       const entries = exceptions.filter((entry) => entry.selectors.includes(selector));
       const offending = [];
       for (const { prop } of rule.declarations) {
-        if (PLACEMENT_PROPERTIES.has(prop)) continue;
+        if (PLACEMENT_PROPERTIES.has(prop) && !(singleLineCarrier && WRAPPING_PROPERTIES.has(prop))) continue;
         const admitted = entries.find((entry) => entry.properties.includes(prop));
         if (admitted) used.add(admitted.id);
         else if (!offending.includes(prop)) offending.push(prop);
@@ -597,8 +620,17 @@ export function assertDetectorShapes() {
     ['[data-tcrn-theme="dark"] .tcrn-doc-x .tcrn-button--primary:hover{color:red}', 1],
     [".tcrn-doc-x .tcrn-button{--tcrn-pair-fill:red}", 1],
     [".tcrn-doc-x .tcrn-button{grid-area:a;order:2;margin:0 auto;justify-self:end;flex:1 1 auto;width:100%;white-space:nowrap}", 0],
-    [".tcrn-button .tcrn-doc-x{background:red}", 0]
+    [".tcrn-button .tcrn-doc-x{background:red}", 0],
+    // A C7 single-line carrier (roles.json singleLine) taken back to wrapping is a finding
+    // (TCRN-DS-SUB-102); placement on it, and wrapping on a non-carrier, stay allowed.
+    [".tcrn-doc-x .tcrn-button__label{white-space:normal;overflow-wrap:anywhere}", 1],
+    [".tcrn-doc-x .tcrn-button__label{word-break:break-all}", 1],
+    [".tcrn-doc-x .tcrn-button__label{margin-inline-start:4px;max-width:100%}", 0]
   ];
+  if (!SINGLE_LINE_CARRIER_CLASSES.has("tcrn-button__label")) {
+    console.error("shell-fidelity rule-level guard self-test FAILED: docs/contract/roles.json singleLine no longer lists tcrn-button__label");
+    process.exit(1);
+  }
   for (const [probe, added] of guardCases) {
     const found = packageClassAppearanceFindings(`${docCss}\n${probe}`, "self-test").length - docBaseline;
     if (found !== added) {

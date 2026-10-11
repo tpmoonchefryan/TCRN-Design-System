@@ -1,5 +1,3 @@
-import type { IconName } from "@tcrn/ui-react";
-
 export const navigationComponentRows = [
   { primitive: "TopBar", rule: "Names the product surface and active module without replacing page headings.", boundary: "No tenant, RBAC, or readiness truth." },
   { primitive: "SideNav", rule: "Owns primary product navigation, grouped sections, stable source order, scroll-aware document navigation, keyboard-accessible collapse and expand control, and persisted or route-owned collapsed navigation state.", boundary: "Current location may scroll into view and highlight, but must not reorder sections, hide active location from assistive tech, or ship without expanded and collapsed proof." },
@@ -19,32 +17,6 @@ export const navigationStrategyRows = [
   { surface: "Focused tool surface", pattern: "Top bar with local segmented navigation", rule: "Use for a narrow tool with five or fewer peer views.", boundary: "Segmented navigation must not pretend to be product-wide navigation." },
   { surface: "Mobile or narrow product shell", pattern: "Top bar, drawer menu, and compact search", rule: "Use when primary navigation cannot fit without wrapping or crowding.", boundary: "The drawer preserves the same grouping, search, focus, and close behavior." }
 ];
-
-export type DenseShellNavigationItem = {
-  id: string;
-  label: string;
-  description: string;
-  iconName: IconName;
-  selected: boolean;
-};
-
-export type DenseShellNavigationGroup = {
-  title: string;
-  items: DenseShellNavigationItem[];
-};
-
-export type DenseShellTaskLane = {
-  title: string;
-  iconName: IconName;
-  items: string[];
-};
-
-export type DenseShellHubAction = {
-  label: string;
-  description: string;
-  iconName: IconName;
-  meta: string;
-};
 
 export const denseShellMenuDensityRows = [
   {
@@ -66,69 +38,6 @@ export const denseShellMenuDensityRows = [
     boundary: "Density is a fallback for capacity, not the default visual treatment for sparse menus."
   }
 ];
-
-export const denseShellNavigationGroups: DenseShellNavigationGroup[] = [
-  {
-    title: "Operations",
-    items: [
-      { id: "workspace", label: "Workspace", description: "Dashboard, tasks, and handoff watch", iconName: "home", selected: false },
-      { id: "talent", label: "Talent operations", description: "Creators, channels, profiles, and availability", iconName: "database", selected: true },
-      { id: "campaigns", label: "Campaigns", description: "Campaign requests and deliverable movement", iconName: "package", selected: false }
-    ]
-  },
-  {
-    title: "Commercial",
-    items: [
-      { id: "commerce", label: "Commerce", description: "Orders, payouts, invoices, and promotions", iconName: "external-link", selected: false },
-      { id: "contracts", label: "Contracts", description: "Agreements, review states, and owner routing", iconName: "check", selected: false },
-      { id: "schedule", label: "Schedule", description: "Calendar, availability, and delivery windows", iconName: "chevron-right", selected: false }
-    ]
-  },
-  {
-    title: "Control tower",
-    items: [
-      { id: "analytics", label: "Analytics", description: "Operational readbacks and trend views", iconName: "info", selected: false },
-      { id: "assets", label: "Assets", description: "Reusable records and delivery materials", iconName: "book-open", selected: false },
-      { id: "approvals", label: "Approvals", description: "Review queues and blocked handoffs", iconName: "alert-triangle", selected: false }
-    ]
-  },
-  {
-    title: "System",
-    items: [
-      { id: "configuration", label: "Configuration", description: "Local configuration and integration routes", iconName: "settings", selected: false },
-      { id: "platform", label: "Platform admin", description: "Permissions, audit log, and product guardrails", iconName: "panel-left-open", selected: false },
-      { id: "support", label: "Support", description: "Support paths and escalation references", iconName: "search", selected: false }
-    ]
-  }
-];
-
-export const denseShellTaskLanes: DenseShellTaskLane[] = [
-  { title: "Daily operations", iconName: "check", items: ["Creators", "Channels", "Availability", "Campaign requests"] },
-  { title: "Review and exceptions", iconName: "alert-triangle", items: ["Agreements", "Risk flags", "Blocked handoffs", "Owner routing"] },
-  { title: "Records and proof", iconName: "database", items: ["Profiles", "Evidence queue", "Audit trail", "SLA watch"] }
-];
-
-export const denseShellHubActions: DenseShellHubAction[] = [
-  { label: "Creators", description: "Open the current creator roster and pending profile checks.", iconName: "database", meta: "Daily route" },
-  { label: "Availability", description: "Review schedule windows before campaign assignment.", iconName: "check", meta: "Capacity check" },
-  { label: "Campaign requests", description: "Route incoming requests without leaving the selected area.", iconName: "package", meta: "Intake" },
-  { label: "Agreements", description: "Jump to agreement review and owner routing.", iconName: "external-link", meta: "Review" },
-  { label: "Evidence queue", description: "Inspect local proof and blocked handoff notes.", iconName: "book-open", meta: "Proof" },
-  { label: "Risk flags", description: "Scan unresolved exceptions before handoff.", iconName: "alert-triangle", meta: "Exception" }
-];
-
-export const denseShellQuickLinks: Array<{ label: string; meta: string }> = [
-  { label: "Ready for review", meta: "Pinned view" },
-  { label: "Deliverables", meta: "Common route" },
-  { label: "Settings", meta: "System route" },
-  { label: "Permissions", meta: "Governance route" }
-];
-
-export const denseShellPrimaryNavCount = denseShellNavigationGroups.reduce((count, group) => count + group.items.length, 0);
-
-export const denseShellHubSecondaryRouteCount = denseShellHubActions.length;
-
-export const denseShellSecondaryDirectoryGroupCount = denseShellTaskLanes.length + 1;
 
 export const knowledgeNavigationGroups = [
   {

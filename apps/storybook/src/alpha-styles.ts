@@ -105,7 +105,9 @@ body {
   --tcrn-doc-shell-side-expanded-width: clamp(280px, 20vw, 360px);
   --tcrn-doc-shell-side-collapsed-width: 120px;
   --tcrn-doc-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
-  --tcrn-doc-shell-left-surface: var(--tcrn-color-brand-secondary-bg);
+  /* The rail and the brand cell above it sit on the canvas colour with no edge of their own, as the
+     package ProductShell rail does since composition one (O-1); they were an accent wash. */
+  --tcrn-doc-shell-left-surface: var(--tcrn-color-surface-canvas);
   --tcrn-doc-shell-top-surface: var(--tcrn-color-surface-panel);
   min-height: 100vh;
   max-width: none;
@@ -122,7 +124,6 @@ body {
   --tcrn-doc-shell-side-width: var(--tcrn-doc-shell-side-collapsed-width);
 }
 html[data-tcrn-theme="dark"] .tcrn-doc-shell {
-  --tcrn-doc-shell-left-surface: var(--tcrn-color-surface-panel);
   --tcrn-doc-shell-top-surface: var(--tcrn-color-surface-panel);
 }
 @keyframes tcrn-doc-sidebar-copy-reveal {
@@ -1157,6 +1158,16 @@ ${demoStoryCss}
   gap: var(--tcrn-space-2h);
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   min-width: 0;
+}
+
+/* The ProductShell example opens its search results to show the result state. The doc container
+   keeps that list in the shell's flow, so it pushes the page down instead of painting over the
+   heading and first paragraph. The shell-fidelity guard registers its position and inset. */
+.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results {
+  position: static;
+  inset: auto;
+  width: 100%;
+  margin-block-start: var(--tcrn-space-2);
 }
 
 /* KeyValueList geometry is package-owned, including inside nested inspectors. */

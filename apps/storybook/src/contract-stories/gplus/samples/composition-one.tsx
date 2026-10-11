@@ -61,13 +61,6 @@ export const gplusSampleShellKeys: Readonly<Record<GplusSampleBoard, string>> = 
   inputs: "in"
 };
 
-/**
- * The composition's rail width. It is the ProductShell default now (--tcrn-shell-sidebar-width), so
- * the samples set no override; the constant stays exported only because the storybook smoke test
- * still imports it (its holder updates that assertion; see runs/r3/problems/P1.md).
- */
-export const gplusSampleSidebarWidth = "220px";
-
 interface RailItem {
   id: string;
   label: string;

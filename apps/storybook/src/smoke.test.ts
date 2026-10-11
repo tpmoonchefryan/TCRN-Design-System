@@ -34,7 +34,7 @@ import { tcrnIconNames } from "@tcrn/ui-react";
 import { gplusMatrices, gplusMatrixCellCounts } from "./contract-stories/gplus/generated/matrices.generated.js";
 import { gplusMatrixBoardsInOrder, gplusMatrixComponents, gplusMatrixSourcePath, gplusMatrixStoryIds } from "./contract-stories/gplus/matrix-stories.js";
 import { gplusCompositionThreeStoryId, gplusSampleBoardsInOrder, gplusSampleSourcePath, gplusSampleStoryIds } from "./contract-stories/gplus/sample-stories.js";
-import { gplusSampleShellKeys, gplusSampleSidebarWidth } from "./contract-stories/gplus/samples/composition-one.js";
+import { gplusSampleShellKeys } from "./contract-stories/gplus/samples/composition-one.js";
 import { gplusCompositionThreeContentWidth } from "./contract-stories/gplus/samples/composition-three.js";
 import { storybookGovernanceChangelogRecords, storyCategoryDefinitions, storyRegistryOrder } from "./contract-stories/governance.js";
 import { referencePages } from "./build/reference-pages.js";
@@ -1788,7 +1788,12 @@ test("composition-one sample stories render the package shell in a light block a
       const block = blocks[index];
       assert.equal(block.match(/class="tcrn-product-shell"/g)?.length, 1, `${board}: one package ProductShell per block`);
       assert.match(block, new RegExp(`data-shell="${gplusSampleShellKeys[board]}-${suffix}"`));
-      assert.match(block, new RegExp(`--tcrn-product-shell-sidebar-width:${gplusSampleSidebarWidth}`));
+      // The composition rail is the ProductShell default (shell tokens), so no sample sets an inline shell width.
+      const inlineStyles = Array.from(block.matchAll(/\sstyle="([^"]*)"/g), (match) => match[1]);
+      assert.ok(
+        !inlineStyles.some((style) => /--tcrn-(?:product-shell-sidebar-width|shell-sidebar-width|shell-topbar-height)\b/.test(style)),
+        `${board}: the sample block carries no inline shell width override`
+      );
       const navItems = block.match(/data-navigation-primitive="nav-item"/g)?.length ?? 0;
       assert.ok(navItems >= 5, `${board}: rail navigation items`);
       assert.equal(block.match(/data-guide="rail"/g)?.length, navItems + 1, `${board}: brand mark and every rail icon carry data-guide`);

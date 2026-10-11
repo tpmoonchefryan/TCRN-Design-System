@@ -79,9 +79,9 @@ test("no deferred prototype is exported from the package", () => {
   );
 
   assert.deepEqual(leaked, []);
-  assert.ok(declaredPrototypes.includes("DenseOperationsShellDemo"));
-  assert.ok(declaredPrototypes.includes("KnowledgeBaseShellDemo"));
-  assert.ok(declaredPrototypes.includes("CompactToolShellDemo"));
+  // The roster is the knowledge-base shell prototype alone: the dense operations and compact tool
+  // shell prototypes were retired with their stories, so neither name is declared any more.
+  assert.deepEqual([...declaredPrototypes], ["KnowledgeBaseShellDemo"]);
 });
 
 test("the three rosters are disjoint", () => {

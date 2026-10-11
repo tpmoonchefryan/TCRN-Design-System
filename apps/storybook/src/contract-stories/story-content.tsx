@@ -2253,6 +2253,7 @@ const legacyContractStories: LegacyContractStory[] = [
             locales={tcrnLocaleMetadata}
             currentLocale={tcrnDefaultLocale}
             search={{
+              className: "tcrn-doc-product-shell-search--static-display",
               label: "Search AOS shell",
               placeholder: "Search modules, work items, or proof",
               query: "cockpit",
