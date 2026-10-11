@@ -18,6 +18,33 @@ import {
 } from "./lib/story-budget.mjs";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
+import { createResolvedTokenMap } from "../packages/ui-tokens/dist/index.js";
+// G+ expectations (TCRN-DS-SUB-041): values below come from the G+ design contract
+// (docs/design/gplus-2026-10/contract) and the resolved @tcrn/ui-tokens map, serialized the way
+// getComputedStyle reports them, never copied from a rendering.
+const gplusPairsContract = JSON.parse(readFileSync("docs/design/gplus-2026-10/contract/pairs.json", "utf8"));
+const gplusLightTokens = createResolvedTokenMap("light");
+const gplusDarkTokens = createResolvedTokenMap("dark");
+const gplusComputedColor = (raw) => {
+  const value = String(raw).trim();
+  const hex = /^#([0-9a-f]{6})$/i.exec(value);
+  if (hex) return `rgb(${[0, 2, 4].map((offset) => Number.parseInt(hex[1].slice(offset, offset + 2), 16)).join(", ")})`;
+  const rgba = /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/i.exec(value);
+  if (!rgba) return value;
+  const [r, g, bl] = rgba.slice(1, 4).map(Number);
+  return rgba[4] === undefined || Number(rgba[4]) === 1 ? `rgb(${r}, ${g}, ${bl})` : `rgba(${r}, ${g}, ${bl}, ${Number(rgba[4])})`;
+};
+const gplusWashColors = [gplusComputedColor(gplusLightTokens["--tcrn-color-wash"]), gplusComputedColor(gplusDarkTokens["--tcrn-color-wash"])];
+const gplusControlRadius = gplusLightTokens["--tcrn-radius-control"];
+// Layers of the mobile doc header that G+ draws translucent or not at all: the theme toggle is an
+// IconButton whose fill comes from the Actions pair table (secondary and quiet fills, wash and
+// hover included, translucent by contract), and the SearchInput wrapper paints nothing
+// (TCRN-DS-SUB-016, TCRN-DS-SUB-020). Both sit on the opaque header layers, which keep the floor.
+const gplusTransparent = "rgba(0, 0, 0, 0)";
+const gplusActionsFillColors = [...new Set(["secondary", "quiet"]
+  .flatMap((variant) => Object.values(gplusPairsContract.tables.actions.variants[variant]).map((state) => state.fill))
+  .flatMap((key) => [gplusLightTokens, gplusDarkTokens].map((tokens) => (key === "#0000" ? gplusTransparent : gplusComputedColor(tokens[`--tcrn-color-${key}`] ?? key)))))];
+const gplusMobileHeaderFillLayers = { themeToggle: gplusActionsFillColors, searchInput: [gplusTransparent] };
 
 const require = createRequire(import.meta.url);
 const axePath = require.resolve("axe-core/axe.min.js");
@@ -692,7 +719,9 @@ for (const page of contractPages) {
   assertBuiltSurface(`apps/storybook/storybook-static/${page.file}`);
 }
 
-const expectedCategoryCount = 21;
+// 21 + the two G+ categories under Components: gplus-matrices (TCRN-DS-SUB-030) and
+// gplus-samples (TCRN-DS-SUB-031).
+const expectedCategoryCount = 23;
 // TCRN-DS-STORY-056 TRAP GUARD: the nav-group count is 7 and MUST stay decoupled from the
 // emitted-page count (7 index + 20 category = 27 pages). Deriving it from a page-list length
 // would silently mis-assert. Pin it to the number of distinct top-level sections.
@@ -1251,7 +1280,8 @@ for (const route of firstStoryHashShellParityRoutes) {
     const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
     const searchInput = document.querySelector(".tcrn-search-input__control");
     const searchInputShell = rectFor(".tcrn-search-input");
-    const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
+    const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius", "border-top-style", "border-top-width", "background-color"]);
+    const searchControlStyles = styleFor(".tcrn-doc-header-search .tcrn-search-input__control", ["border-radius", "background-color", "padding-left", "padding-right"]);
     const searchControl = rectFor(".tcrn-doc-header-search .tcrn-search-input__control");
     const searchIcon = rectFor(".tcrn-doc-header-search .tcrn-search-input__icon");
     const searchShortcut = rectFor(".tcrn-doc-header-search .tcrn-search-input__shortcut");
@@ -1259,8 +1289,12 @@ for (const route of firstStoryHashShellParityRoutes) {
     const searchFitFailures = [];
     if (searchInputShell && searchControl && searchIcon && searchShortcut) {
       if (searchControl.width < 84) searchFitFailures.push(`control-width:${searchControl.width}`);
-      if (searchIcon.left < searchInputShell.left - 1 || searchIcon.right > searchControl.left + 1) searchFitFailures.push("icon-track-overlap");
-      if (searchShortcut.left < searchControl.right - 1 || searchShortcut.right > searchInputShell.right + 1) searchFitFailures.push("shortcut-track-overlap");
+      // G+ tool form (TCRN-DS-SUB-020): the icon and the shortcut sit over the control, inside
+      // its box, and the control's inline padding keeps the text clear of both.
+      const controlPaddingStart = Number.parseFloat(searchControlStyles?.["padding-left"] ?? "0");
+      const controlPaddingEnd = Number.parseFloat(searchControlStyles?.["padding-right"] ?? "0");
+      if (searchIcon.left < searchControl.left - 1 || searchIcon.right > searchControl.left + controlPaddingStart + 1) searchFitFailures.push("icon-track-overlap");
+      if (searchShortcut.right > searchControl.right + 1 || searchShortcut.left < searchControl.right - controlPaddingEnd - 1) searchFitFailures.push("shortcut-track-overlap");
     } else {
       searchFitFailures.push("search-track-missing");
     }
@@ -1315,7 +1349,7 @@ for (const route of firstStoryHashShellParityRoutes) {
       categoryLabelCount: navRoot.querySelectorAll(".tcrn-doc-nav__category-label").length,
       docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
       docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-      docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("组件库") && !(brandNode?.textContent ?? "").includes("Component Library"),
+      docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("设计系统") && !(brandNode?.textContent ?? "").includes("Component Library"),
       docShellEnglishLeaks,
       ownerVisibleCaptionHits,
       brandIdentityLogoSectionReadback,
@@ -1330,6 +1364,7 @@ for (const route of firstStoryHashShellParityRoutes) {
       search,
       searchInputShell,
       searchInputShellStyles,
+      searchControlStyles,
       searchControl,
       searchIcon,
       searchShortcut,
@@ -1402,11 +1437,20 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (!widthWithin(metrics.searchInputShell?.height, expectedStorybookVisualSkin.searchHeightPx, 2)) {
     failures.push(`storybook-skin-search-height:${metrics.searchInputShell?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.searchHeightPx}`);
   }
-  if (metrics.searchInputShellStyles?.["border-color"] !== expectedStorybookVisualSkin.searchBorderColor) {
-    failures.push(`storybook-skin-search-border:${metrics.searchInputShellStyles?.["border-color"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderColor}`);
+  // G+ SearchInput (TCRN-DS-SUB-020): the wrapper paints nothing; the control is the box, with
+  // the wash fill at rest and the control radius. The docs contract's former wrapper border
+  // colour and radius describe the retired outlined field and are not read here.
+  const searchWrapperPaints = (metrics.searchInputShellStyles?.["border-top-style"] ?? "none") !== "none"
+    && Number.parseFloat(metrics.searchInputShellStyles?.["border-top-width"] ?? "0") > 0;
+  const searchWrapperFill = metrics.searchInputShellStyles?.["background-color"] ?? "missing";
+  if (searchWrapperPaints || !["rgba(0, 0, 0, 0)", "transparent"].includes(searchWrapperFill)) {
+    failures.push(`storybook-skin-search-wrapper-paints:${metrics.searchInputShellStyles?.["border-top-style"] ?? "missing"}:${searchWrapperFill}`);
   }
-  if (metrics.searchInputShellStyles?.["border-radius"] !== `${expectedStorybookVisualSkin.searchBorderRadiusPx}px`) {
-    failures.push(`storybook-skin-search-radius:${metrics.searchInputShellStyles?.["border-radius"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderRadiusPx}px`);
+  if (!gplusWashColors.includes(metrics.searchControlStyles?.["background-color"])) {
+    failures.push(`storybook-skin-search-fill:${metrics.searchControlStyles?.["background-color"] ?? "missing"}:expected:${gplusWashColors.join("|")}`);
+  }
+  if (metrics.searchControlStyles?.["border-radius"] !== gplusControlRadius) {
+    failures.push(`storybook-skin-search-radius:${metrics.searchControlStyles?.["border-radius"] ?? "missing"}:expected:${gplusControlRadius}`);
   }
   if (typeof metrics.utilityTrailingGap !== "number" || metrics.utilityTrailingGap < 16 || metrics.utilityTrailingGap > 32) {
     failures.push(`utility-trailing-gap:${metrics.utilityTrailingGap}`);
@@ -1940,7 +1984,11 @@ const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
       failures.push(`mobile-knowledge-layer-missing:${name}`);
       continue;
     }
-    if (layer.backgroundAlpha < 0.98) {
+    if (gplusMobileHeaderFillLayers[name]) {
+      if (!gplusMobileHeaderFillLayers[name].includes(layer.backgroundColor)) {
+        failures.push(`mobile-knowledge-layer-fill:${name}:${layer.backgroundColor}`);
+      }
+    } else if (layer.backgroundAlpha < 0.98) {
       failures.push(`mobile-knowledge-layer-transparent:${name}:${layer.backgroundColor}`);
     }
     if (layer.opacity < 0.98) failures.push(`mobile-knowledge-layer-opacity:${name}:${layer.opacity}`);
@@ -2520,7 +2568,22 @@ await buttonHoverButton.hover();
 await storybookPage.waitForTimeout(80);
 const buttonHoverBackground = await buttonHoverButton.evaluate((el) => getComputedStyle(el).backgroundColor);
 await storybookPage.mouse.move(4, 4);
-const buttonFeedbackReadback = { ok: buttonRestBackground !== buttonHoverBackground, restBackground: buttonRestBackground, hoverBackground: buttonHoverBackground };
+// TCRN-DS-SUB-041: under G+ the rest and hover fills are the Actions pair table's primary d and h
+// fills (pairs.json), resolved through the light token map and serialized as getComputedStyle
+// reports them; the hover must land on that value, not merely differ from rest.
+const gplusActionsPrimary = gplusPairsContract.tables.actions.variants.primary;
+const gplusFillColor = (tokenKey) => gplusComputedColor(gplusLightTokens[`--tcrn-color-${tokenKey}`] ?? tokenKey);
+const buttonExpectedRestBackground = gplusFillColor(gplusActionsPrimary.d.fill);
+const buttonExpectedHoverBackground = gplusFillColor(gplusActionsPrimary.h.fill);
+const buttonFeedbackReadback = {
+  ok: buttonRestBackground === buttonExpectedRestBackground
+    && buttonHoverBackground === buttonExpectedHoverBackground
+    && buttonRestBackground !== buttonHoverBackground,
+  restBackground: buttonRestBackground,
+  hoverBackground: buttonHoverBackground,
+  expectedRestBackground: buttonExpectedRestBackground,
+  expectedHoverBackground: buttonExpectedHoverBackground
+};
 
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-governance.html?locale=en#blocked-actions`);
 await storybookPage.waitForSelector("[data-contract-story-id='blocked-actions']");
@@ -2964,6 +3027,10 @@ for (const proofCase of settingsLayoutProofCases) {
       const nestedRows = Array.from(nestedLayout?.querySelectorAll("[data-setting-row='true']") ?? []);
       const descendants = Array.from(layout?.querySelectorAll("*") ?? []);
       const noHiddenOverflow = descendants.every((node) => {
+        // G+ Inputs draw the Select chevron and the DatePicker calendar as Icon SVGs
+        // (TCRN-DS-SUB-021, icons.json). An SVG's user-agent overflow: hidden clips only its
+        // own graphic to its viewport; it conceals no label, control box or tool.
+        if (node instanceof SVGElement) return true;
         const style = getComputedStyle(node);
         return style.overflowX !== "hidden" && style.overflowY !== "hidden";
       });

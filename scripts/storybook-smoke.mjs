@@ -4,6 +4,9 @@ import { extname, join } from "node:path";
 import { chromium } from "@playwright/test";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
+import { gplusMatrixSourcePath, gplusMatrixStoryIds } from "../apps/storybook/dist/contract-stories/gplus/matrix-stories.js";
+import { gplusSampleSourcePath, gplusSampleStoryIds } from "../apps/storybook/dist/contract-stories/gplus/sample-stories.js";
+import { createResolvedTokenMap } from "../packages/ui-tokens/dist/index.js";
 import {
   CATEGORY_STORY_COUNT_CAP,
   CATEGORY_STORY_COUNT_GRACE_ALLOWLIST,
@@ -97,6 +100,53 @@ const readStoryHtml = (html, storyId) => {
   return html.slice(articleStart, articleEnd + "</article>".length);
 };
 const contract = JSON.parse(readFileSync("apps/storybook/storybook-static/ai-consumption-contract.json", "utf8"));
+// G+ expectations (TCRN-DS-SUB-041). Every visual value below is derived from the G+ design
+// contract (docs/design/gplus-2026-10/contract) and the resolved @tcrn/ui-tokens map, never
+// copied from a rendering: control heights, radii, type sizes, weights, motion, the wash and
+// the focus ring all come from here, serialized the way getComputedStyle reports them.
+const gplusContractRoot = "docs/design/gplus-2026-10/contract";
+const gplusPairs = JSON.parse(readFileSync(`${gplusContractRoot}/pairs.json`, "utf8"));
+const gplusTypography = JSON.parse(readFileSync(`${gplusContractRoot}/typography.json`, "utf8"));
+const gplusTokens = { light: createResolvedTokenMap("light"), dark: createResolvedTokenMap("dark") };
+const gplusThemes = ["light", "dark"];
+function gplusComputedColor(value) {
+  const text = String(value).trim();
+  const hex = /^#([0-9a-f]{6})$/i.exec(text);
+  if (hex) {
+    const [r, g, b] = [0, 2, 4].map((offset) => Number.parseInt(hex[1].slice(offset, offset + 2), 16));
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+  const rgba = /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/i.exec(text);
+  if (rgba) {
+    const [r, g, b] = rgba.slice(1, 4).map(Number);
+    if (rgba[4] === undefined || Number(rgba[4]) === 1) return `rgb(${r}, ${g}, ${b})`;
+    return `rgba(${r}, ${g}, ${b}, ${Number(rgba[4])})`;
+  }
+  throw new Error(`gplus-color-unparsed:${text}`);
+}
+const gplusColor = (cssVar, theme = "light") => gplusComputedColor(gplusTokens[theme][cssVar]);
+const gplusColorBothThemes = (cssVar) => gplusThemes.map((theme) => gplusColor(cssVar, theme));
+const gplusPx = (cssVar) => Number.parseFloat(gplusTokens.light[cssVar]);
+const gplusSeconds = (cssVar) => `${Number.parseFloat(gplusTokens.light[cssVar]) / 1000}s`;
+const gplusEase = (cssVar) => String(gplusTokens.light[cssVar])
+  .replace(/\s+/g, "")
+  .replace(/\(([^)]*)\)/, (_, args) => `(${args.split(",").map((part) => String(Number(part))).join(", ")})`);
+const gplusFirstFamily = (cssVar) => String(gplusTokens.light[cssVar]).split(",")[0].replace(/["']/g, "").trim();
+const gplusTextLine = (name) => (gplusTypography.text.sizes.find((size) => size.name === name)?.line ?? Number.NaN);
+const gplusStrongWeight = String(gplusTypography.text.tones.find((tone) => tone.name === "strong")?.weight ?? "missing");
+const gplusActionsWeight = String(gplusPairs.tables.actions.weight.default);
+const gplusStateSelector = (base, table, stateKey) =>
+  `${base}:where(${gplusPairs.tables[table].states.find((state) => state.key === stateKey).when.join(",")})`;
+// The focus ring is --tcrn-focus-ring: a 2px gap in the carrying surface's colour, then a 2px
+// acc ring out to 4px. The gap colour follows whatever surface carries the control, so only its
+// spread is pinned; the acc ring is pinned per theme. Controls drawn from the pair table add
+// their own edge layers (an inset acc edge for text inputs), listed per control.
+const gplusFocusRingLayers = [
+  { spread: 2, inset: false },
+  { spread: 4, inset: false, colors: gplusColorBothThemes("--tcrn-color-acc") }
+];
+// Ring-drawn focus keeps a transparent 2px outline at 2px offset as the forced-colors fallback.
+const gplusForcedColorsOutline = { outlineWidth: "2px", outlineStyle: "solid", outlineOffset: "2px" };
 const llmsTxt = readFileSync("apps/storybook/storybook-static/llms.txt", "utf8");
 const robotsTxt = readFileSync("apps/storybook/storybook-static/robots.txt", "utf8");
 const localAbsolutePathDenyPatterns = [
@@ -107,7 +157,9 @@ const localAbsolutePathDenyPatterns = [
   { name: "mac-temp-path", pattern: /\/var\/folders(?:\/|$)/i },
   { name: "remote-workspace-path", pattern: /\/srv\/tcrn(?:\/|$)/i }
 ];
-const expectedStoryCategoryCount = 21;
+// 21 + the two G+ categories under Components: gplus-matrices (TCRN-DS-SUB-030) and
+// gplus-samples (TCRN-DS-SUB-031).
+const expectedStoryCategoryCount = 23;
 const expectedStorybookShellNavGroupCount = expectedContractStoryGroups.length;
 const expectedFoundationStandardCategoryIds = [
   "visual-philosophy-ownership",
@@ -180,88 +232,103 @@ const productShellComparatorContract = {
   },
   expectedControlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
   expectedControlMetrics: {
+    // TCRN-DS-SUB-041: the shell toggles are IconButtons on the Actions pair table (secondary
+    // variant), so weight, motion and the focus ring are the table's. Their box stays what the
+    // base segment sizes it to (36 pill and 38 square at the control radius): G+ has not yet
+    // ruled on these two sizes, recorded in runs/r1/problems/W6-B.md, so the geometry is not
+    // re-pinned here. The Actions base rule sets line-height 1, so the line box is the type size.
     themeToggle: {
       width: 36,
       height: 36,
       radius: 999,
       backgroundRequired: true,
-      fontSize: "13px",
-      fontWeight: "700",
-      lineHeight: "17.55px",
-      transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
-      transitionDurationIncludes: "0.16s",
-      transitionTimingFunctionIncludes: "cubic-bezier(0.23, 1, 0.32, 1)",
-      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
+      fontSize: `${gplusPx("--tcrn-type-size-control")}px`,
+      fontWeight: gplusActionsWeight,
+      lineHeight: `${gplusPx("--tcrn-type-size-control")}px`,
+      transitionPropertyIncludes: ["background-color", "color", "box-shadow"],
+      transitionDurationIncludes: gplusSeconds("--tcrn-motion-duration-fill"),
+      transitionTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
+      focus: { ...gplusForcedColorsOutline, boxShadow: { layers: gplusFocusRingLayers } }
     },
     sideNavToggle: {
       width: 38,
       height: 38,
-      radius: 5,
+      radius: gplusPx("--tcrn-radius-control"),
       backgroundRequired: true,
-      fontSize: "13px",
-      fontWeight: "700",
-      lineHeight: "17.55px",
+      fontSize: `${gplusPx("--tcrn-type-size-control")}px`,
+      fontWeight: gplusActionsWeight,
+      lineHeight: `${gplusPx("--tcrn-type-size-control")}px`,
       iconCenterDeltaMax: 1,
-      transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
-      transitionDurationIncludes: "0.16s",
-      transitionTimingFunctionIncludes: "cubic-bezier(0.23, 1, 0.32, 1)",
-      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
+      transitionPropertyIncludes: ["background-color", "color", "box-shadow"],
+      transitionDurationIncludes: gplusSeconds("--tcrn-motion-duration-fill"),
+      transitionTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
+      focus: { ...gplusForcedColorsOutline, boxShadow: { layers: gplusFocusRingLayers } }
     },
+    // The locale trigger is not a pair-table control: the base segment draws its edge and the
+    // G+ focus ring directly, in the strong weight on the body line, moving on the move token.
     localeTrigger: {
       minHeight: 36,
       radius: 999,
       backgroundRequired: true,
-      fontSize: "13px",
-      fontWeight: "700",
-      lineHeight: "17.55px",
+      fontSize: `${gplusPx("--tcrn-type-size-control")}px`,
+      fontWeight: gplusStrongWeight,
+      lineHeight: `${gplusTextLine("body")}px`,
       letterSpacing: "normal",
       transitionPropertyIncludes: ["background-color", "border-color", "color", "box-shadow"],
-      transitionDurationIncludes: "0.16s",
-      transitionTimingFunctionIncludes: "cubic-bezier(0.23, 1, 0.32, 1)",
-      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
+      transitionDurationIncludes: gplusSeconds("--tcrn-motion-duration-move"),
+      transitionTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
+      focus: { ...gplusForcedColorsOutline, boxShadow: { layers: gplusFocusRingLayers } }
     },
+    // G+ SearchInput is a tool form: the control is the box (wash fill at rest, control height,
+    // control radius) and the wrapper only positions the icon and the shortcut over it, so the
+    // wrapper paints nothing and draws nothing on focus-within (TCRN-DS-SUB-020).
     searchInput: {
-      minHeight: 38,
-      radius: 5,
+      minHeight: gplusPx("--tcrn-control-height-md"),
+      radius: 0,
       minWidth: 220,
-      backgroundRequired: true,
-      fontSize: "13px",
-      lineHeight: "17.55px",
-      gap: "8px",
-      focus: { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px", boxShadow: "none" }
-    },
-    searchControl: {
-      fontSize: "13px",
-      fontWeight: "400",
-      lineHeight: "17.55px",
-      letterSpacing: "normal",
+      backgroundRequired: false,
+      fontSize: `${gplusPx("--tcrn-type-size-control")}px`,
+      lineHeight: `${gplusTextLine("body")}px`,
+      gap: "normal",
       focus: { outlineWidth: "0px", outlineStyle: "none", outlineOffset: "0px", boxShadow: "none" }
     },
-    searchShortcut: {
-      position: "static",
-      fontFamilyIncludes: "Inter",
-      fontSize: "11px",
-      fontWeight: "700",
-      lineHeight: "14.85px",
+    searchControl: {
+      height: gplusPx("--tcrn-control-height-md"),
+      radius: gplusPx("--tcrn-radius-control"),
+      backgroundColor: gplusColorBothThemes("--tcrn-color-wash"),
+      fontSize: `${gplusPx("--tcrn-type-size-control")}px`,
+      fontWeight: "400",
+      lineHeight: `${gplusTextLine("body")}px`,
       letterSpacing: "normal",
-      paddingLeft: "6px",
-      paddingRight: "6px"
+      // pairs.json inputs-text: search focus keeps the default variant's focus edge, an inset
+      // 1px acc edge under the focus ring.
+      focus: {
+        ...gplusForcedColorsOutline,
+        boxShadow: { layers: [{ spread: 1, inset: true, colors: gplusColorBothThemes("--tcrn-color-acc") }, ...gplusFocusRingLayers] }
+      }
     },
-    currentLocation: { fontSize: "11px", lineHeight: "14.85px", letterSpacing: "normal" },
-    // TCRN-DS-STORY-087: selection is ink. The 3px brand rail this comparator used
-    // to pin (DS-STORY-062) is retired: it was one of two competing grammars, and
-    // its brand colour also collided with the meaning colour now carries alone —
-    // actionability and focus. What is pinned instead is the inked surface, under
-    // BOTH themes, because the parity checks run in each and the ink is the text
-    // colour at low alpha rather than a separate palette entry. TCRN-DS-INC-016
-    // also makes the package nav item use the shared meta type scale and compact
-    // row density, so the comparator records that package truth here.
+    // The shortcut sits over the control's inline end in the board's 10px mono on a 14px line
+    // with 4px (space-1) side padding.
+    searchShortcut: {
+      position: "absolute",
+      fontFamilyIncludes: gplusFirstFamily("--tcrn-type-family-mono"),
+      fontSize: "10px",
+      fontWeight: "400",
+      lineHeight: "14px",
+      letterSpacing: "normal",
+      paddingLeft: `${gplusPx("--tcrn-space-1")}px`,
+      paddingRight: `${gplusPx("--tcrn-space-1")}px`
+    },
+    currentLocation: { fontSize: "11px", lineHeight: `${gplusTextLine("caption")}px`, letterSpacing: "normal" },
+    // TCRN-DS-STORY-087: selection is ink, pinned under BOTH themes because the parity checks
+    // run in each. Under G+ the selected surface is the wash token (TCRN-DS-SUB-041), read per
+    // theme from the token map, and the selected row reads in the strong weight on the body line.
     selectedNavItem: {
       fontSize: "12px",
-      fontWeight: "700",
-      lineHeight: "16.2px",
+      fontWeight: gplusStrongWeight,
+      lineHeight: `${gplusTextLine("body")}px`,
       boxShadow: ["none"],
-      backgroundColor: ["rgba(28, 29, 33, 0.06)", "rgba(236, 236, 234, 0.09)"]
+      backgroundColor: gplusColorBothThemes("--tcrn-color-wash")
     },
     topBar: {
       minHeight: 68,
@@ -279,8 +346,10 @@ const productShellComparatorContract = {
   },
   motionProof: {
     productShellTransition: "grid-template-columns",
-    productShellTransitionDuration: "0.22s",
-    productShellTransitionTimingFunctionIncludes: "cubic-bezier(0.32, 0.72, 0, 1)",
+    // TCRN-DS-SUB-041: the shell rail, the locale chevron and the theme wash move on the G+
+    // move duration and the G+ ease; the search keeps its own drawer curve, unchanged.
+    productShellTransitionDuration: gplusSeconds("--tcrn-motion-duration-move"),
+    productShellTransitionTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
     searchTransition: "width",
     searchTransitionProperties: ["flex-basis", "width", "max-width"],
     searchTransitionDuration: "0.24s",
@@ -301,10 +370,10 @@ const productShellComparatorContract = {
       endpointTolerancePx: 2
     },
     localeChevronTransition: "transform",
-    localeChevronTransitionDuration: "0.22s",
+    localeChevronTransitionDuration: gplusSeconds("--tcrn-motion-duration-move"),
     themeWashPseudo: "tcrn-product-shell-theme-wash",
-    themeWashAnimationDuration: "0.22s",
-    themeWashAnimationTimingFunctionIncludes: "cubic-bezier(0.32, 0.72, 0, 1)",
+    themeWashAnimationDuration: gplusSeconds("--tcrn-motion-duration-move"),
+    themeWashAnimationTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
     reducedMotionFallback: "transition-none"
   }
 };
@@ -981,7 +1050,8 @@ for (const text of [
   // CSS-selector markers (never present in the i18n payload), so they can only be satisfied by the
   // actual component-style block. Runtime hover is proven separately in internal-alpha:proof.
   ".tcrn-button:focus-visible",
-  ".tcrn-link-button:active",
+  // G+ state rules: the active state is a :where() state rule on the pair table (TCRN-DS-SUB-016).
+  gplusStateSelector(".tcrn-link-button", "actions", "a"),
   ".tcrn-search-result-list__head a:focus-visible",
   ".tcrn-segmented-nav button:focus-visible",
   ".tcrn-segmented-nav button:active",
@@ -1239,7 +1309,8 @@ if (!String(shellControlVisualParityProof?.ownerQualitySideNavCollapsePolicy ?? 
 // English value; a consumer reading it would render English on four routes.
 const expectedTaglines = {
   aos: { assetId: "tcrn-aos-two-line", en: "AI Operation System", "zh-CN": "AI 运营系统" },
-  tms: { assetId: "tcrn-tms-two-line", en: "Talent Management System", "zh-CN": "人才管理系统" }
+  // G+ tagline (TCRN-DS-STORY-127, marks.json via the generated product marks).
+  tms: { assetId: "tcrn-tms-two-line", en: "Talent Management System", "zh-CN": "艺人管理系统" }
 };
 for (const [productId, expected] of Object.entries(expectedTaglines)) {
   const logo = contract.productLogoRegistry?.find?.((entry) => entry.productId === productId);
@@ -1809,7 +1880,15 @@ for (const story of requiredStories) {
   if (!pages[story.group].includes(`data-story-id="${story.id}"`)) {
     missing.push(`owning-page-story:${story.group}:${story.id}`);
   }
-  const owningPageStory = new RegExp(`data-story-id="${story.id}"[^>]*data-story-category="[^"]+"[^>]*data-story-source-path="apps/storybook/src/contract-stories/story-content\\.tsx"`);
+  // The G+ matrix and sample stories are rendered from their own modules and declare that
+  // module as their source path (TCRN-DS-SUB-030, TCRN-DS-SUB-031); every other story is
+  // rendered from story-content.tsx.
+  const owningSourcePath = Object.values(gplusMatrixStoryIds).includes(story.id)
+    ? gplusMatrixSourcePath
+    : Object.values(gplusSampleStoryIds).includes(story.id)
+      ? gplusSampleSourcePath
+      : "apps/storybook/src/contract-stories/story-content.tsx";
+  const owningPageStory = new RegExp(`data-story-id="${story.id}"[^>]*data-story-category="[^"]+"[^>]*data-story-source-path="${owningSourcePath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`);
   if (!owningPageStory.test(pages[story.group])) {
     missing.push(`owning-page-story-governance-metadata:${story.group}:${story.id}`);
   }
@@ -1986,6 +2065,12 @@ function validateMetric({ failures, name, metric, expected }) {
   }
   if (expected.focus !== undefined && metric.disabled !== true) {
     for (const [property, expectedValue] of Object.entries(expected.focus)) {
+      if (expectedValue && typeof expectedValue === "object" && Array.isArray(expectedValue.layers)) {
+        if (!boxShadowHasLayers(metric.focus?.[property], expectedValue.layers)) {
+          failures.push(`${name}:focus-${property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}:${metric.focus?.[property] ?? "missing"}`);
+        }
+        continue;
+      }
       if (metric.focus?.[property] !== expectedValue) {
         failures.push(`${name}:focus-${property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}:${metric.focus?.[property] ?? "missing"}`);
       }
@@ -1997,6 +2082,56 @@ function validateMetric({ failures, name, metric, expected }) {
   if (expected.backgroundRequired === true && (metric.backgroundColor === "rgba(0, 0, 0, 0)" || metric.backgroundColor === "transparent")) {
     failures.push(`${name}:transparent-background`);
   }
+}
+
+// A computed box-shadow is a comma list of layers such as "rgb(11, 107, 101) 0px 0px 0px 4px"
+// (Chromium puts the colour first and "inset" last). Each expected layer must appear with its
+// spread (within 0.1px) and, when colours are given, one of them (channels within 1, alpha at
+// least 0.95: a focus transition still settling reports 0.996 and 3.99px, the same ring).
+function parseBoxShadowLayers(value) {
+  const text = String(value ?? "").trim();
+  if (!text || text === "none") return [];
+  const layers = [];
+  let depth = 0;
+  let current = "";
+  for (const character of text) {
+    if (character === "(") depth += 1;
+    if (character === ")") depth -= 1;
+    if (character === "," && depth === 0) {
+      layers.push(current.trim());
+      current = "";
+      continue;
+    }
+    current += character;
+  }
+  if (current.trim()) layers.push(current.trim());
+  return layers.map((layer) => {
+    const color = /rgba?\([^)]*\)/.exec(layer)?.[0] ?? null;
+    const lengths = layer.replace(/rgba?\([^)]*\)/, "").replace(/inset/, "").trim().split(/\s+/).filter(Boolean).map((part) => Number.parseFloat(part));
+    return { color, inset: /\binset\b/.test(layer), spread: lengths[3] ?? 0, offsetX: lengths[0] ?? 0, offsetY: lengths[1] ?? 0, blur: lengths[2] ?? 0 };
+  });
+}
+
+function colorChannels(value) {
+  const match = /rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)/.exec(String(value ?? ""));
+  return match ? [Number(match[1]), Number(match[2]), Number(match[3]), match[4] === undefined ? 1 : Number(match[4])] : null;
+}
+
+function colorsMatch(actual, expected) {
+  const a = colorChannels(actual);
+  const e = colorChannels(expected);
+  if (!a || !e) return false;
+  return Math.abs(a[0] - e[0]) <= 1 && Math.abs(a[1] - e[1]) <= 1 && Math.abs(a[2] - e[2]) <= 1 && a[3] >= Math.min(e[3], 0.95) && a[3] <= e[3] + 0.01;
+}
+
+function boxShadowHasLayers(value, expectedLayers) {
+  const layers = parseBoxShadowLayers(value);
+  return expectedLayers.every((expectedLayer) => layers.some((layer) =>
+    layer.inset === Boolean(expectedLayer.inset)
+    && layer.offsetX === 0
+    && layer.offsetY === 0
+    && Math.abs(layer.spread - expectedLayer.spread) <= 0.1
+    && (!expectedLayer.colors || expectedLayer.colors.some((color) => colorsMatch(layer.color, color)))));
 }
 
 function transitionIncludes(metric, property) {
@@ -2913,6 +3048,9 @@ async function runChangelogI18nReadabilityProof() {
             overflow: style.overflow,
             textOverflow: style.textOverflow,
             whiteSpace: style.whiteSpace,
+            overflowWrap: style.overflowWrap,
+            machineToken: node.classList.contains("tcrn-machine-token__value"),
+            viewportWidth: document.documentElement.clientWidth,
             hasTraceabilityMetadata: Boolean(traceabilityNode.getAttribute("title")
               || traceabilityNode.getAttribute("data-changelog-full-token")
               || traceabilityNode.getAttribute("data-changelog-proof-artifact")
@@ -2935,9 +3073,18 @@ async function runChangelogI18nReadabilityProof() {
           proofArtifactMetadataCount: document.querySelectorAll("[data-changelog-proof-artifact]").length,
           boundaryMetadataCount: document.querySelectorAll("[data-changelog-no-overclaim-boundary]").length,
           compactNodeReadbacks,
-          compactNodeFailures: compactNodeReadbacks.filter((item) => item.overflow === "visible"
-            || item.textOverflow !== "ellipsis"
-            || item.whiteSpace !== "nowrap"
+          // The full token is now the package MachineToken (TCRN-DS-SUB-027). Its value keeps
+          // overflow hidden inside max-width 100% and breaks anywhere instead of truncating with
+          // an ellipsis (the MachineToken rule in @tcrn/ui-react), so it is held to that contract:
+          // clipped, wrapping, inside the viewport and traceable. The remaining doc-owned compact
+          // nodes keep the single-line ellipsis contract.
+          compactNodeFailures: compactNodeReadbacks.filter((item) => (item.machineToken
+            ? item.overflow === "visible"
+              || item.overflowWrap !== "anywhere"
+              || item.right > item.viewportWidth + 1
+            : item.overflow === "visible"
+              || item.textOverflow !== "ellipsis"
+              || item.whiteSpace !== "nowrap")
             || !item.hasTraceabilityMetadata)
         };
       }, { requiredText, forbiddenText });
@@ -3100,7 +3247,7 @@ async function runGlobalStorybookZhCnIaProof() {
           categoryDescriptionEnglishLeaks: categoryDescriptions.filter((text) => forbiddenText.some((term) => text.includes(term))),
           docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
           docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-          docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("组件库") && !(brandNode?.textContent ?? "").includes("Component Library"),
+          docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("设计系统") && !(brandNode?.textContent ?? "").includes("Component Library"),
           currentLocationText: currentLocation?.textContent?.replace(/\s+/g, " ").trim() ?? null,
           onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null
         };
@@ -3247,7 +3394,8 @@ async function runCrossSectionShellParityProof() {
           const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
           const searchInput = document.querySelector(".tcrn-search-input__control");
           const searchInputShell = rectFor(".tcrn-search-input");
-          const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
+          const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius", "border-top-style", "border-top-width", "background-color"]);
+          const searchControlStyles = styleFor(".tcrn-doc-header-search .tcrn-search-input__control", ["border-radius", "background-color", "padding-left", "padding-right"]);
           const searchControl = rectFor(".tcrn-doc-header-search .tcrn-search-input__control");
           const searchIcon = rectFor(".tcrn-doc-header-search .tcrn-search-input__icon");
           const searchShortcut = rectFor(".tcrn-doc-header-search .tcrn-search-input__shortcut");
@@ -3255,8 +3403,12 @@ async function runCrossSectionShellParityProof() {
           const searchFitFailures = [];
           if (searchInputShell && searchControl && searchIcon && searchShortcut) {
             if (searchControl.width < 84) searchFitFailures.push(`control-width:${searchControl.width}`);
-            if (searchIcon.left < searchInputShell.left - 1 || searchIcon.right > searchControl.left + 1) searchFitFailures.push("icon-track-overlap");
-            if (searchShortcut.left < searchControl.right - 1 || searchShortcut.right > searchInputShell.right + 1) searchFitFailures.push("shortcut-track-overlap");
+            // G+ tool form (TCRN-DS-SUB-020): the icon and the shortcut sit over the control,
+            // inside its box, and the control's inline padding keeps the text clear of both.
+            const controlPaddingStart = Number.parseFloat(searchControlStyles?.["padding-left"] ?? "0");
+            const controlPaddingEnd = Number.parseFloat(searchControlStyles?.["padding-right"] ?? "0");
+            if (searchIcon.left < searchControl.left - 1 || searchIcon.right > searchControl.left + controlPaddingStart + 1) searchFitFailures.push("icon-track-overlap");
+            if (searchShortcut.right > searchControl.right + 1 || searchShortcut.left < searchControl.right - controlPaddingEnd - 1) searchFitFailures.push("shortcut-track-overlap");
           } else {
             searchFitFailures.push("search-track-missing");
           }
@@ -3350,7 +3502,7 @@ async function runCrossSectionShellParityProof() {
             categoryLabels,
             docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
             docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-            docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("组件库") && !(brandNode?.textContent ?? "").includes("Component Library"),
+            docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("设计系统") && !(brandNode?.textContent ?? "").includes("Component Library"),
             docShellEnglishLeaks,
             ownerVisibleCaptionHits,
             brandIdentityLogoSectionReadback,
@@ -3366,6 +3518,7 @@ async function runCrossSectionShellParityProof() {
             search,
             searchInputShell,
             searchInputShellStyles,
+            searchControlStyles,
             searchControl,
             searchIcon,
             searchShortcut,
@@ -3441,11 +3594,20 @@ async function runCrossSectionShellParityProof() {
           if (!widthWithin(metrics.searchInputShell?.height, expectedStorybookVisualSkin.searchHeightPx, 2)) {
             routeFailures.push(`storybook-skin-search-height:${metrics.searchInputShell?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.searchHeightPx}`);
           }
-          if (metrics.searchInputShellStyles?.["border-color"] !== expectedStorybookVisualSkin.searchBorderColor) {
-            routeFailures.push(`storybook-skin-search-border:${metrics.searchInputShellStyles?.["border-color"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderColor}`);
+          // G+ SearchInput (TCRN-DS-SUB-020): the wrapper paints nothing; the control is the box,
+          // with the wash fill at rest and the control radius. The docs contract's former wrapper
+          // border colour and radius describe the retired outlined field and are not read here.
+          const searchWrapperPaints = (metrics.searchInputShellStyles?.["border-top-style"] ?? "none") !== "none"
+            && Number.parseFloat(metrics.searchInputShellStyles?.["border-top-width"] ?? "0") > 0;
+          const searchWrapperFill = metrics.searchInputShellStyles?.["background-color"] ?? "missing";
+          if (searchWrapperPaints || !["rgba(0, 0, 0, 0)", "transparent"].includes(searchWrapperFill)) {
+            routeFailures.push(`storybook-skin-search-wrapper-paints:${metrics.searchInputShellStyles?.["border-top-style"] ?? "missing"}:${searchWrapperFill}`);
           }
-          if (metrics.searchInputShellStyles?.["border-radius"] !== `${expectedStorybookVisualSkin.searchBorderRadiusPx}px`) {
-            routeFailures.push(`storybook-skin-search-radius:${metrics.searchInputShellStyles?.["border-radius"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderRadiusPx}px`);
+          if (!gplusColorBothThemes("--tcrn-color-wash").includes(metrics.searchControlStyles?.["background-color"])) {
+            routeFailures.push(`storybook-skin-search-fill:${metrics.searchControlStyles?.["background-color"] ?? "missing"}:expected:${gplusColorBothThemes("--tcrn-color-wash").join("|")}`);
+          }
+          if (metrics.searchControlStyles?.["border-radius"] !== `${gplusPx("--tcrn-radius-control")}px`) {
+            routeFailures.push(`storybook-skin-search-radius:${metrics.searchControlStyles?.["border-radius"] ?? "missing"}:expected:${gplusPx("--tcrn-radius-control")}px`);
           }
           if (!metrics.currentLocationBeforeSearch) routeFailures.push("current-location-not-before-search");
           if (!metrics.searchBeforeControls) routeFailures.push("search-not-before-controls");
