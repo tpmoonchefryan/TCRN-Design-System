@@ -20,3 +20,7 @@
 现象：Icon 板 F 段把「.tcrn-icon 基类位置」标为待 Owner 裁定、本批建议进包；W2-C 因此没有搬，基类仍在文档层 `apps/storybook/src/story-demo-styles.ts`。
 裁定：设计会话 2026-10-11 按纪要 TCRN-DS-MIN-20261011-GPLUS-RENEWAL D6（包是真值，Storybook 只渲染包）与 STORY-128（文档层清零）定案：基类进包，放 icon 家族段 `packages/ui-react/src/styles/icon.css.ts`；内容按 Icon 板 E 段（display inline-block；width/height 取 sm 14 / md 16 / lg 20 或数字，经 token；stroke 恒 1.25 且 vector-effect non-scaling-stroke；stroke-linecap 与 linejoin round；fill none；color currentColor；vertical-align 按行内文本对齐）；文档站只保留 `.tcrn-icon-sample*` 这类样例布局样式。不改 Story 正文，不单独写链，随批末那一次链写注解。
 处置：并入 W3-D 的派工（icon.css.ts 加入其文件集；若 W3-B 合入后文档层仍留有 `.tcrn-icon` 规则，W3-D 同提交删去）。
+
+**M6 SUB-046（W8-A）移到返工轮之后再派。**
+现象：W8-A 的工作是批末生成物再生——视觉签名基线选择、internal-alpha 回执、pack 与 storybook:build 证据。批末门在 R1 之后必有一轮返工（契约静态门 8 条、浅色主题块、axe 132 条、作用域修复后的复核等），返工会再次改变渲染。
+处置：R1 批末只由主线程跑了生成器 `pnpm fonts:vendor`（d8586dd：54 文件 3,410,312 B，新增分片 52 覆盖「盃」）；视觉签名基线与回执的再生（SUB-046 其余部分）放到 R2 返工合入之后一次做，避免基线刚生成就被返工作废，也避免把 axe 违例写进基线。属主线程的排程选择，可撤回。
