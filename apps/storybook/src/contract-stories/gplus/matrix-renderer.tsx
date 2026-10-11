@@ -85,8 +85,7 @@ export function MatrixBoard({ board, columns = false, children }: { board: Gplus
     >
       {matrixThemes.map((theme) => (
         <div
-          key={theme}
-          className="tcrn-doc-theme-preview"
+          className="tcrn-doc-theme-preview" key={theme}
           data-tcrn-theme={themeAttribute[theme]}
           data-gplus-matrix-theme={theme}
         >
