@@ -1,9 +1,21 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
+import { createResolvedTokenMap } from "@tcrn/ui-tokens";
 import { Heading, Highlight, Text } from "./Typography.js";
 import { tcrnComponentCss } from "../../styles/index.js";
 import { typographyScaleCss } from "../../styles/generated/typography.scale.js";
+
+const resolvedTokens = createResolvedTokenMap("light");
+
+/**
+ * The scale declares its sizes, lines and weights as type scale tokens (TCRN-DS-SUB-052): the
+ * value is var(<token>) and the token resolves to the contract value.
+ */
+function assertScaleToken(value: string | undefined, token: string, resolved: string, label: string): void {
+  assert.equal(value, `var(${token})`, `${label} refers to ${token}`);
+  assert.equal(resolvedTokens[token], resolved, `${label}: ${token} is ${resolved}`);
+}
 
 interface CssRule {
   selectors: string[];
@@ -93,17 +105,18 @@ test("every heading level repeats its text as a title, and a given title wins", 
 
 test("the heading scale is one line at the contract sizes, with no older size rule after it", () => {
   const expected = {
-    1: { family: "var(--tcrn-type-family-serif)", size: "36px", line: "40px", weight: "400" },
-    2: { family: "var(--tcrn-type-family-serif)", size: "26px", line: "30px", weight: "400" },
-    3: { family: "var(--tcrn-type-family-serif)", size: "20px", line: "26px", weight: "400" },
-    4: { family: "var(--tcrn-type-family-ui)", size: "13px", line: "20px", weight: "600" }
+    1: { family: "var(--tcrn-type-family-serif)", size: ["--tcrn-type-size-page", "36px"], line: ["--tcrn-type-line-page", "40px"], weight: ["--tcrn-type-weight-regular", "400"] },
+    2: { family: "var(--tcrn-type-family-serif)", size: ["--tcrn-type-size-heading-2", "26px"], line: ["--tcrn-type-line-heading-2", "30px"], weight: ["--tcrn-type-weight-regular", "400"] },
+    3: { family: "var(--tcrn-type-family-serif)", size: ["--tcrn-type-size-heading-3", "20px"], line: ["--tcrn-type-line-heading-3", "26px"], weight: ["--tcrn-type-weight-regular", "400"] },
+    4: { family: "var(--tcrn-type-family-ui)", size: ["--tcrn-type-size-ui", "13px"], line: ["--tcrn-type-line-ui", "20px"], weight: ["--tcrn-type-weight-semibold", "600"] }
   } as const;
   for (const level of [1, 2, 3, 4] as const) {
     const rule = declarationsFor(`.tcrn-heading--${level}`);
     assert.equal(rule.get("font-family"), expected[level].family, `h${level} family`);
-    assert.equal(rule.get("font-size"), expected[level].size, `h${level} size`);
-    assert.equal(rule.get("line-height"), expected[level].line, `h${level} line`);
-    assert.equal(rule.get("font-weight"), expected[level].weight, `h${level} weight`);
+    const { size, line, weight } = expected[level];
+    assertScaleToken(rule.get("font-size"), size[0], size[1], `h${level} size`);
+    assertScaleToken(rule.get("line-height"), line[0], line[1], `h${level} line`);
+    assertScaleToken(rule.get("font-weight"), weight[0], weight[1], `h${level} weight`);
     assert.equal(rule.get("white-space"), "nowrap", `h${level} stays on one line`);
     assert.equal(rule.get("overflow"), "hidden", `h${level} clips`);
     assert.equal(rule.get("text-overflow"), "ellipsis", `h${level} ends in an ellipsis`);
@@ -116,8 +129,8 @@ test("the heading scale is one line at the contract sizes, with no older size ru
 test("a Text given no props renders and looks as before", () => {
   assert.equal(renderToStaticMarkup(<Text>项目已有 12 位成员。</Text>), '<p class="tcrn-text">项目已有 12 位成员。</p>');
   const rule = declarationsFor(".tcrn-text");
-  assert.equal(rule.get("font-size"), "13px");
-  assert.equal(rule.get("line-height"), "20px");
+  assertScaleToken(rule.get("font-size"), "--tcrn-type-size-ui", "13px", "text size");
+  assertScaleToken(rule.get("line-height"), "--tcrn-type-line-ui", "20px", "text line");
   assert.equal(rule.get("color"), "var(--tcrn-color-ink-2)");
   assert.equal(rule.get("margin"), "var(--tcrn-space-2) 0 0");
 });
@@ -143,10 +156,28 @@ test("Text size, tone and variant map to their modifiers", () => {
   assert.match(caps, /title="01基本信息 Basic info"/);
   assert.match(renderToStaticMarkup(<Text variant="caps" title="Basic info">基本信息</Text>), /title="Basic info"/);
 
-  assert.equal(declarationsFor(".tcrn-text.tcrn-text--reading").get("font-size"), "14px");
+  assertScaleToken(declarationsFor(".tcrn-text.tcrn-text--reading").get("font-size"), "--tcrn-type-size-reading", "14px", "reading size");
   assert.equal(declarationsFor(".tcrn-text.tcrn-text--meta").get("color"), "var(--tcrn-color-ink-3)");
-  assert.equal(declarationsFor(".tcrn-text.tcrn-text--caption").get("line-height"), "16px");
-  assert.equal(declarationsFor(".tcrn-text.tcrn-text--strong").get("font-weight"), "600");
+  assertScaleToken(declarationsFor(".tcrn-text.tcrn-text--caption").get("line-height"), "--tcrn-type-line-caption", "16px", "caption line");
+  assertScaleToken(declarationsFor(".tcrn-text.tcrn-text--strong").get("font-weight"), "--tcrn-type-weight-strong", "600", "strong weight");
+});
+
+test("the generated scale names a type token for every size and line that has one", () => {
+  // Without a token of their own (a new scale token is not in this change): the inline and the
+  // large numeral sizes and the mono size. Every other size and line is var(--tcrn-type-*).
+  const literal = [...typographyScaleCss.matchAll(/([^{}\n]+)\{([^{}]*)\}/g)].flatMap((match) =>
+    match[2]
+      .split(";")
+      .filter((declaration) => /^(?:font-size|line-height|font-weight):/.test(declaration) && !/:var\(--tcrn-type-[a-z0-9-]+\)$/.test(declaration))
+      .map((declaration) => `${match[1].trim()} ${declaration}`)
+  );
+  assert.deepEqual(literal, [
+    ".tcrn-text.tcrn-text--numeral.tcrn-text--numeral-inline font-size:16px",
+    ".tcrn-text.tcrn-text--numeral.tcrn-text--numeral-large font-size:44px",
+    ".tcrn-text.tcrn-text--numeral.tcrn-text--numeral-large line-height:48px",
+    ".tcrn-text.tcrn-text--mono font-size:11.5px"
+  ]);
+  assert.match(typographyScaleCss, /\.tcrn-text\.tcrn-text--caps\{[^}]*letter-spacing:var\(--tcrn-type-tracking-caps\)/);
 });
 
 test("a numeral renders 4,280.00 in the serif at 300 with tabular digits on one line", () => {
@@ -154,8 +185,9 @@ test("a numeral renders 4,280.00 in the serif at 300 with tabular digits on one 
   assert.equal(markup, '<p title="4,280.00" class="tcrn-text tcrn-text--numeral">4,280.00</p>');
   const rule = declarationsFor(".tcrn-text.tcrn-text--numeral");
   assert.equal(rule.get("font-family"), "var(--tcrn-type-family-serif)");
-  assert.equal(rule.get("font-weight"), "300");
-  assert.match(rule.get("font-variant-numeric") ?? "", /\btabular-nums\b/);
+  assertScaleToken(rule.get("font-weight"), "--tcrn-type-weight-light", "300", "numeral weight");
+  assertScaleToken(rule.get("font-variant-numeric"), "--tcrn-type-numeric-tabular", "tabular-nums lining-nums", "numeral figures");
+  assert.match(resolvedTokens["--tcrn-type-numeric-tabular"], /\btabular-nums\b/);
   assert.equal(rule.get("white-space"), "nowrap");
   assert.equal(rule.get("margin"), "0");
 });

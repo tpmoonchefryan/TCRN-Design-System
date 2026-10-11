@@ -10,8 +10,12 @@
 //   packages/ui-react/src/styles/generated/typography.scale.ts      type scale segment
 //   packages/ui-react/src/components/Icon/icon-paths.generated.ts   icon roster and 20-grid paths
 //   packages/ui-react/src/components/Navigation/product-marks.generated.ts  product mark SVG bodies
-//   packages/ui-tokens/src/gplus-tokens.generated.ts                G+ token data
+//   packages/ui-tokens/src/gplus-tokens.generated.ts                G+ token data (with the type scale tokens)
 //   apps/storybook/src/contract-stories/gplus/generated/matrices.generated.ts  per-cell matrix data
+//
+// Type scale: typography.json "tokens" names each scale step with its package variable and value;
+// the scale segment refers to them as var(--tcrn-type-*) wherever an entry names one, after checking
+// that the token's value equals the entry's own number (TCRN-DS-SUB-052).
 //
 // Pair segments: variants declare --tcrn-pair-<slot>-<state> with selectors of specificity (0,2,0)
 // (base.modifier) or on the base; state rules are base:where(...) (0,1,0), come after the live-pair
@@ -62,6 +66,60 @@ function pkgCss(value) {
 }
 const pkgRef = (ref) => (data.isToken(ref) ? `var(${data.CSS_VAR[`--${ref}`]})` : pkgCss(ref));
 
+// ---------- type scale tokens (contract/typography.json "tokens") ----------
+// Each type scale step is a token: typography.json lists its key, package variable and value
+// (or ref, the key of a tokens.json fixed token whose value it takes). They are written into
+// gplus-tokens.generated.ts, where @tcrn/ui-tokens takes their values from, and the scale
+// segment refers to them by variable (TCRN-DS-SUB-052).
+function typeTokens() {
+  const fixed = new Map(data.tokens.fixed.map((t) => [t.key, t]));
+  const contractVars = new Set([...data.tokens.themed, ...data.tokens.fixed, ...data.tokens.brand].map((t) => t.cssVar));
+  const keys = new Set();
+  const vars = new Set();
+  return (data.typography.tokens || []).map((t) => {
+    if (keys.has(t.key)) throw new Error(`typography.json: duplicate type token ${t.key}`);
+    if (!/^--tcrn-type-[a-z0-9-]+$/.test(t.cssVar || "")) throw new Error(`typography.json: type token ${t.key} has no --tcrn-type-* cssVar`);
+    if (vars.has(t.cssVar) || contractVars.has(t.cssVar)) throw new Error(`typography.json: ${t.cssVar} is declared twice in the contract`);
+    if ((t.value === undefined) === (t.ref === undefined)) throw new Error(`typography.json: type token ${t.key} needs exactly one of value and ref`);
+    keys.add(t.key);
+    vars.add(t.cssVar);
+    let value = t.value;
+    if (t.ref !== undefined) {
+      if (!fixed.has(t.ref)) throw new Error(`typography.json: type token ${t.key} refers to ${t.ref}, which is not a tokens.json fixed key`);
+      value = pkgCss(fixed.get(t.ref).value);
+    }
+    if (typeof value !== "string" || value === "") throw new Error(`typography.json: type token ${t.key} has no string value`);
+    return { key: t.key, cssVar: t.cssVar, group: t.group, value };
+  });
+}
+const TYPE_TOKENS = new Map(typeTokens().map((t) => [t.key, t]));
+
+// One scale declaration. When the entry names a type token for the field, the declaration is
+// var(<its cssVar>) and the token's value must equal the entry's own value (the number the board
+// generator reads, with its unit); otherwise the entry's value is written as it is.
+function scaleDecl(entry, field, prop, unit = "") {
+  const literal = `${entry[field]}${unit}`;
+  const key = entry.token ? entry.token[field] : undefined;
+  if (key === undefined) return `${prop}:${literal}`;
+  const t = TYPE_TOKENS.get(key);
+  if (!t) throw new Error(`typography.json: no type token ${key}`);
+  if (t.value !== literal) throw new Error(`typography.json: type token ${key} is ${t.value}, the entry that names it says ${literal}`);
+  return `${prop}:var(${t.cssVar})`;
+}
+
+// Every token an entry names is used by one of its declarations, so a misspelt field is an error.
+function checkNamedTokens(typography, used) {
+  const walk = (node, where) => {
+    if (Array.isArray(node)) return node.forEach((n, i) => walk(n, `${where}[${i}]`));
+    if (!node || typeof node !== "object") return;
+    for (const field of Object.keys(node.token || {})) {
+      if (!used.get(node)?.has(field)) throw new Error(`typography.json: ${where}.token.${field} is not used by any declaration`);
+    }
+    for (const [k, v] of Object.entries(node)) if (k !== "token" && k !== "tokens") walk(v, `${where}.${k}`);
+  };
+  walk(typography, "typography");
+}
+
 // ---------- pair segments ----------
 function pairSegment(tableName) {
   const t = data.pairTable(tableName);
@@ -106,30 +164,38 @@ function typeScale() {
   const fam = (k) => `font-family:var(${data.CSS_VAR[`--${k}`]})`;
   const tone = (k) => `color:${pkgRef(k)}`;
   const trunc = "white-space:nowrap;overflow:hidden;text-overflow:ellipsis";
+  const used = new Map();
+  const d = (entry, field, prop, unit = "") => {
+    if (!used.has(entry)) used.set(entry, new Set());
+    used.get(entry).add(field);
+    return scaleDecl(entry, field, prop, unit);
+  };
+  const sizeLine = (entry) => `${d(entry, "size", "font-size", "px")};${d(entry, "line", "line-height", "px")}`;
   const rules = [];
   for (const h of ty.headings) {
-    rules.push(`.${h.className}{margin:0;${fam(h.family)};font-size:${h.size}px;line-height:${h.line}px;font-weight:${h.weight}${h.tracking !== undefined ? `;letter-spacing:${h.tracking}` : ""};${tone(h.tone)}${h.truncate ? `;${trunc}` : ""}}`);
+    rules.push(`.${h.className}{margin:0;${fam(h.family)};${sizeLine(h)};${d(h, "weight", "font-weight")}${h.tracking !== undefined ? `;${d(h, "tracking", "letter-spacing")}` : ""};${tone(h.tone)}${h.truncate ? `;${trunc}` : ""}}`);
   }
   const tx = ty.text;
-  rules.push(`.${tx.className}{margin:0;font-size:${tx.base.size}px;line-height:${tx.base.line}px;${tone(tx.base.tone)}}`);
-  for (const s of tx.sizes) rules.push(`.${tx.className}.${s.className}{font-size:${s.size}px;line-height:${s.line}px${s.tone ? `;${tone(s.tone)}` : ""}}`);
-  for (const t of tx.tones) if (t.className) rules.push(`.${tx.className}.${t.className}{${tone(t.tone)}${t.weight ? `;font-weight:${t.weight}` : ""}}`);
+  rules.push(`.${tx.className}{margin:0;${sizeLine(tx.base)};${tone(tx.base.tone)}}`);
+  for (const s of tx.sizes) rules.push(`.${tx.className}.${s.className}{${sizeLine(s)}${s.tone ? `;${tone(s.tone)}` : ""}}`);
+  for (const t of tx.tones) if (t.className) rules.push(`.${tx.className}.${t.className}{${tone(t.tone)}${t.weight ? `;${d(t, "weight", "font-weight")}` : ""}}`);
   const nu = ty.numeral, numCls = tx.variants.find((v) => v.name === "numeral").className;
-  rules.push(`.${tx.className}.${numCls}{${fam(nu.family)};font-weight:${nu.weight};font-size:${nu.size}px;line-height:${nu.line}px;letter-spacing:${nu.tracking};${tone(nu.tone)};font-variant-numeric:${nu.numeric};display:inline-flex;align-items:baseline;gap:${nu.gap}px;white-space:nowrap}`);
-  rules.push(`.${tx.className}.${numCls} small{${fam(nu.unit.family)};font-size:${nu.unit.size}px;line-height:${nu.unit.line}px;letter-spacing:${nu.unit.tracking};${tone(nu.unit.tone)};font-weight:${nu.unit.weight}}`);
-  rules.push(`.${tx.className}.${numCls}.${nu.inline.className}{font-size:${nu.inline.size}px;line-height:${nu.inline.line}px;font-weight:${nu.inline.weight};letter-spacing:${nu.inline.tracking}}`);
-  rules.push(`.${tx.className}.${numCls}.${nu.large.className}{font-size:${nu.large.size}px;line-height:${nu.large.line}px}`);
+  rules.push(`.${tx.className}.${numCls}{${fam(nu.family)};${d(nu, "weight", "font-weight")};${sizeLine(nu)};${d(nu, "tracking", "letter-spacing")};${tone(nu.tone)};${d(nu, "numeric", "font-variant-numeric")};display:inline-flex;align-items:baseline;gap:${nu.gap}px;white-space:nowrap}`);
+  rules.push(`.${tx.className}.${numCls} small{${fam(nu.unit.family)};${sizeLine(nu.unit)};${d(nu.unit, "tracking", "letter-spacing")};${tone(nu.unit.tone)};${d(nu.unit, "weight", "font-weight")}}`);
+  rules.push(`.${tx.className}.${numCls}.${nu.inline.className}{${sizeLine(nu.inline)};${d(nu.inline, "weight", "font-weight")};${d(nu.inline, "tracking", "letter-spacing")}}`);
+  rules.push(`.${tx.className}.${numCls}.${nu.large.className}{${sizeLine(nu.large)}}`);
   const ca = ty.caps, capsCls = tx.variants.find((v) => v.name === "caps").className;
-  rules.push(`.${tx.className}.${capsCls}{${fam(ca.family)};font-size:${ca.size}px;line-height:${ca.line}px;letter-spacing:${ca.tracking};text-transform:${ca.transform};${tone(ca.tone)};font-weight:${ca.weight};white-space:nowrap}`);
-  rules.push(`.${tx.className}.${capsCls} b{${fam(ca.prefix.family)};${tone(ca.prefix.tone)};font-weight:${ca.prefix.weight};margin-right:${ca.prefix.gap}px;letter-spacing:${ca.prefix.tracking}}`);
+  rules.push(`.${tx.className}.${capsCls}{${fam(ca.family)};${sizeLine(ca)};${d(ca, "tracking", "letter-spacing")};text-transform:${ca.transform};${tone(ca.tone)};${d(ca, "weight", "font-weight")};white-space:nowrap}`);
+  rules.push(`.${tx.className}.${capsCls} b{${fam(ca.prefix.family)};${tone(ca.prefix.tone)};${d(ca.prefix, "weight", "font-weight")};margin-right:${ca.prefix.gap}px;${d(ca.prefix, "tracking", "letter-spacing")}}`);
   const mo = ty.mono;
-  rules.push(`.${tx.className}.${mo.className}{${fam(mo.family)};font-size:${mo.size}px;line-height:${mo.line}px;${tone(mo.tone)}}`);
+  rules.push(`.${tx.className}.${mo.className}{${fam(mo.family)};${sizeLine(mo)};${tone(mo.tone)}}`);
   const lk = ty.link;
   rules.push(`.${lk.className}{${tone(lk.tone)};text-decoration:underline;text-decoration-thickness:${lk.thickness};text-underline-offset:${lk.offset};text-decoration-color:${pkgRef(lk.underline)};border-radius:${lk.radius}}`);
   rules.push(`.${lk.className}:where(:hover,[data-tcrn-preview-state="hover"]){${tone(lk.hover.tone)};text-decoration-color:${pkgRef(lk.hover.underline)}}`);
   rules.push(`.${lk.className}:where(:focus-visible,[data-tcrn-preview-state="focus"]){outline:none;box-shadow:var(${data.CSS_VAR[`--${lk.focus.ring}`]})}`);
   const mk = ty.mark;
   rules.push(`.${mk.className}{background:${pkgRef(mk.fill)};color:inherit;font:inherit;letter-spacing:inherit;padding:0;margin:0;border-radius:${mk.radius};box-shadow:0 0 0 ${mk.spread} ${pkgRef(mk.fill)};box-decoration-break:clone;-webkit-box-decoration-break:clone}`);
+  checkNamedTokens(ty, used);
   return rules;
 }
 
@@ -212,16 +278,17 @@ function themeSelectors(themes) {
 function tokensFile() {
   const tk = data.tokens;
   const selectors = themeSelectors(tk.themes);
-  const lines = [header(["tokens.json", "marks.json"])];
+  const lines = [header(["tokens.json", "marks.json", "typography.json"])];
   lines.push(`export interface TcrnGplusThemedToken {\n  readonly key: string;\n  readonly cssVar: string;\n  readonly group: string;\n  readonly light: string;\n  readonly dark: string;\n}`);
   lines.push(`export interface TcrnGplusFixedToken {\n  readonly key: string;\n  readonly cssVar: string;\n  readonly group: string;\n  readonly value: string;\n}`);
-  lines.push(`/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed and brand tokens are theme independent */\nexport const tcrnGplusThemeSelectors = { light: ${q(selectors.light)}, dark: ${q(selectors.dark)} } as const;`);
+  lines.push(`/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed, brand and type scale tokens are theme independent */\nexport const tcrnGplusThemeSelectors = { light: ${q(selectors.light)}, dark: ${q(selectors.dark)} } as const;`);
   const themed = tk.themed.map((t) => ({ key: t.key, cssVar: t.cssVar, group: t.group, light: t.light, dark: t.night }));
   const fixed = tk.fixed.map((t) => ({ key: t.key, cssVar: t.cssVar, group: t.group, value: pkgCss(t.value) }));
   const brand = tk.brand.map((t) => ({ key: t.key, cssVar: t.cssVar, group: t.group, value: t.value }));
   lines.push(`export const tcrnGplusThemedTokens: readonly TcrnGplusThemedToken[] = ${JSON.stringify(themed, null, 2)};`);
   lines.push(`export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = ${JSON.stringify(fixed, null, 2)};`);
   lines.push(`export const tcrnGplusBrandTokens: readonly TcrnGplusFixedToken[] = ${JSON.stringify(brand, null, 2)};`);
+  lines.push(`/** the type scale steps (contract/typography.json tokens; a ref takes the value of the fixed token it names) */\nexport const tcrnGplusTypeTokens: readonly TcrnGplusFixedToken[] = ${JSON.stringify([...TYPE_TOKENS.values()], null, 2)};`);
   return lines.join("\n\n") + "\n";
 }
 
