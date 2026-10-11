@@ -185,10 +185,17 @@ export function boardCoverage(map, canvas, boards) {
   };
 }
 
-export function storyKind(id) {
+// Kind of a listed story: the ten fixed ids by their list (convention 7); any other story by its
+// registry category, gplus-samples -> sample and gplus-matrices -> matrix (R3 integration item
+// I-P2b-2: the composition three sample enters the list through gplus-samples, and a kind-scoped run
+// must not report it unmapped). Any other category, or none, stays "unknown": an unknown story is
+// listed in every kind-scoped run, so a missing or mismatched category still turns the run red.
+export const STORY_CATEGORY_KINDS = Object.freeze({ "gplus-samples": "sample", "gplus-matrices": "matrix" });
+
+export function storyKind(id, categoryId = null) {
   if (GPLUS_MATRIX_STORY_IDS.includes(id)) return "matrix";
   if (GPLUS_SAMPLE_STORY_IDS.includes(id)) return "sample";
-  return "unknown";
+  return Object.hasOwn(STORY_CATEGORY_KINDS, categoryId ?? "") ? STORY_CATEGORY_KINDS[categoryId] : "unknown";
 }
 
 // The story list: the fixed G+ ids plus every registry story in a gplus-* category.
@@ -196,7 +203,7 @@ export function storyList(registry, { fixedIds = GPLUS_STORY_IDS, categoryPrefix
   const byId = new Map((registry ?? []).map((entry) => [entry.id, entry]));
   const ids = [...fixedIds];
   for (const entry of registry ?? []) if (String(entry.categoryId ?? "").startsWith(categoryPrefix) && !ids.includes(entry.id)) ids.push(entry.id);
-  return ids.map((id) => ({ id, kind: storyKind(id), categoryId: byId.get(id)?.categoryId ?? null, inRegistry: byId.has(id) }));
+  return ids.map((id) => ({ id, kind: storyKind(id, byId.get(id)?.categoryId ?? null), categoryId: byId.get(id)?.categoryId ?? null, inRegistry: byId.has(id) }));
 }
 
 export function rowsInScope(map, kinds = DEFAULT_RUN.kinds) {

@@ -25,6 +25,7 @@ import {
   renderReportMarkdown,
   rowsInScope,
   runStorybookVisualProof,
+  storyKind,
   storyList,
   validateMap
 } from "../scripts/storybook-visual-proof.mjs";
@@ -159,6 +160,30 @@ test("--kind matrix judges the matrix rows only and still reconciles them", () =
   const reduced = clone(map);
   reduced.rows = reduced.rows.filter((row) => row.storyId !== "brand-matrix");
   assert.deepEqual(reconcileStories(reduced, matrixRegistry, { kinds: ["matrix"] }).notInMap, ["brand-matrix"]);
+  // R3 integration item I-P2b-2: a story outside the ten fixed ids takes its kind from its registry
+  // category, so composition three (gplus-samples) stays out of a matrix-only run...
+  assert.equal(storyKind(COMPOSITION_THREE, "gplus-samples"), "sample");
+  assert.equal(storyKind(COMPOSITION_THREE, "gplus-matrices"), "matrix");
+  assert.equal(storyKind(COMPOSITION_THREE), "unknown");
+  assert.equal(storyKind(COMPOSITION_THREE, "gplus-drafts"), "unknown");
+  assert.equal(storyKind("typography-matrix", "gplus-samples"), "matrix", "a fixed id keeps its list kind");
+  const scoped = reconcileStories(map, fullRegistry, { kinds: ["matrix"] });
+  assert.equal(scoped.ok, true, JSON.stringify(scoped));
+  assert.ok(!scoped.storyList.some((item) => item.id === COMPOSITION_THREE));
+  // ...while a missing or mismatched category stays red.
+  const withCategory = (categoryId) => fullRegistry.map((entry) => (entry.id === COMPOSITION_THREE ? { ...entry, categoryId } : entry));
+  const missingCategory = reconcileStories(map, withCategory(undefined));
+  assert.equal(missingCategory.ok, false);
+  assert.deepEqual(missingCategory.notInList, [COMPOSITION_THREE]);
+  const mismatchMatrixRun = reconcileStories(map, withCategory("gplus-matrices"), { kinds: ["matrix"] });
+  assert.equal(mismatchMatrixRun.ok, false);
+  assert.deepEqual(mismatchMatrixRun.notInMap, [COMPOSITION_THREE]);
+  const mismatchSampleRun = reconcileStories(map, withCategory("gplus-matrices"), { kinds: ["sample"] });
+  assert.equal(mismatchSampleRun.ok, false);
+  assert.deepEqual(mismatchSampleRun.notInList, [COMPOSITION_THREE]);
+  const unknownCategory = reconcileStories(map, withCategory("gplus-drafts"), { kinds: ["matrix"] });
+  assert.equal(unknownCategory.ok, false);
+  assert.deepEqual(unknownCategory.notInMap, [COMPOSITION_THREE]);
 });
 
 test("a row is red when any of the eight measurements or the overlap check fails", () => {
