@@ -105,9 +105,9 @@
 | P10 | 主力 | 已合入 18fa3e9 | bc71e9d | SUB-079 达成（Actions 28 → 0）；带出 RM14 两处集成红 → I1 |
 | I1 | 主力 | 已合入 7bf76ee | 88584ae | 集成修复 RM14：Clipboard.test.tsx 断言、client-scripts.ts 分段翻译；本批后续集成冲突续用该代理（id 记在 scratch `r2-agents.txt`） |
 | P11 | 经济 | 已合入 67517d1 | 8d8ff8d | SUB-086 → 051 → 054 → 087；附件 P11-r2-digest.md（RM 清单与各包回显）；RM9 不在范围 |
-| P12 | 经济 | 在跑 | 见提交 | SUB-075 → 069 → 076 → 078 → 046；附件 P12-handoffs.md |
+| P12 | 经济 | 在跑 | dcde667 | SUB-075 → 069 → 076 → 078 → 046；附件 P12-handoffs.md |
 
 ## 下一步
 
 1. 等 P1/P3/P4 交回（完成通知即唤醒）；逐包核对（提交、handoff、problems、树干净、文件集不越界）后按依赖顺序合入集成分支，退役包树（`git worktree remove`）。补位优先序：P1、P3、P4、P7、P9、P2、P5、P6、P8、P10、P11、P12，同时在跑不超过 3；每次派前切该包摘录（前置包 handoff 作附件）并提交到集成分支，再从集成 HEAD 建包树。
-2. P12 交回后：R2 末次 verify 逐步跑（scratch `r2-verify/`），三片验收（einzbern-main），判断（einzbern-main），一次链写（R2 Subtask 转态、Story 转态、M5 等 B 类注解、知识卡），然后按判断决定 R3 或收口。
+2. P12 交回后：R2 末次 verify 逐步跑（`tools/run-verify-steps-v2.mjs`，输出 scratch `r2-verify/`，表写 `runs/r2/verify/steps.md`），三片验收（einzbern-main；A=120/121/122/134，B=123–127，C=128–133；Story 原文已导出到 scratch `chain/r2/STORY-*.json`），判断（einzbern-main），一次链写（R2 Subtask 转态、Story 转态、M5 等 B 类注解、知识卡），然后按判断决定 R3 或收口。
