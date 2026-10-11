@@ -447,8 +447,26 @@ test("STORY-126 number, date, placeholder and collection details follow the Inpu
   assert.match(cssRule(".tcrn-date-picker"), /position: relative; padding-inline-end: 30px;/);
   assert.match(cssRule(".tcrn-input::placeholder"), /color: var\(--tcrn-color-ink-3\);\s*opacity: 1;/);
   assert.match(cssRule(".tcrn-select.tcrn-multi-select"), /block-size:auto/);
-  assert.equal(cssRule('.tcrn-multi-select-dropdown__option[aria-selected="true"]'), "background:var(--tcrn-color-wash);font-weight:600");
-  assert.match(cssRule(".tcrn-multi-select-dropdown__option:not(:disabled):hover"), /var\(--tcrn-color-hover\)/);
+  // The dropdown option keeps its pair on its own class (no fill, the hover fill, the wash
+  // and 600 once selected); the base reads the live pair and the two state rules only
+  // switch it at the specificity of one class, the hover rule last (TCRN-DS-SUB-059).
+  const option = cssRule(".tcrn-multi-select-dropdown__option");
+  for (const declaration of [
+    "--tcrn-pair-fill-d:transparent",
+    "--tcrn-pair-fill-h:var(--tcrn-color-hover)",
+    "--tcrn-pair-fill-s:var(--tcrn-color-wash)",
+    "--tcrn-pair-fill:var(--tcrn-pair-fill-d)",
+    "font-weight:var(--tcrn-pair-weight)",
+    "background-color:var(--tcrn-pair-fill)"
+  ]) {
+    assert.ok(option.includes(declaration), `option declares ${declaration}`);
+  }
+  const selectedOption = '.tcrn-multi-select-dropdown__option:where([aria-selected="true"])';
+  const hoveredOption = '.tcrn-multi-select-dropdown__option:where(:not(:disabled):hover,[data-tcrn-preview-state="hover"])';
+  assert.equal(cssRule(selectedOption), "--tcrn-pair-fill:var(--tcrn-pair-fill-s);--tcrn-pair-weight:600");
+  assert.equal(cssRule(hoveredOption), "--tcrn-pair-fill:var(--tcrn-pair-fill-h)");
+  assert.ok(tcrnComponentCss.indexOf(selectedOption) < tcrnComponentCss.indexOf(hoveredOption), "the hover rule follows the selected rule");
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-multi-select-dropdown__option(?::not\(:disabled\):hover|\[aria-selected="true"\])\s*\{/);
 });
 
 
@@ -515,7 +533,8 @@ test("STORY-126 GWT3 SearchInput is a quiet tool: wash without an edge, ink-2 pl
   assert.match(cssRule(".tcrn-input.tcrn-search-input__control::placeholder"), /color: var\(--tcrn-color-ink-2\);/);
   assert.doesNotMatch(cssRule(".tcrn-search-input .tcrn-search-input__control"), /background|box-shadow|border|color:/);
   assert.doesNotMatch(cssRule(".tcrn-search-input"), /background|border|box-shadow|outline/);
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-search-input:focus-within\s*\{[^}]*outline:\s*[1-9]/);
+  // The wrapper paints nothing, so no state rule on it is left to clear (TCRN-DS-SUB-059).
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-search-input:(?:focus-within|where\(:focus-within\))/);
   const html = renderToStaticMarkup(<SearchInput placeholder="Search members" shortcut="auto" />);
   assert.match(html, /class="tcrn-input tcrn-search-input__control"/);
   assert.match(html, /data-shortcut-visible="true"/);

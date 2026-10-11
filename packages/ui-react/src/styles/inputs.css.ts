@@ -11,19 +11,21 @@
 // (written by scripts/contract-generate.mjs from the design contract). The family base
 // rules here read the live pair (--tcrn-pair-fill, --tcrn-pair-ink, --tcrn-pair-edge, and
 // --tcrn-pair-mark or --tcrn-pair-knob with --tcrn-pair-knob-edge) and never declare it;
-// each pair segment is joined after the base rules it serves.
+// each pair segment is joined after the base rules it serves. One local pair is written
+// here by hand: the multi-select dropdown option, which has no table in pairs.json,
+// declares its fill and weight values on its own class, and its state rules only switch
+// the live pair, the same form the generated segments take.
 
 import { inputsCheckPairsCss, inputsSwitchPairsCss, inputsTextPairsCss } from "./generated/inputs.pairs.js";
 
-export const inputsCss01 = `
-/* In the product shell the search keeps the same tool form as everywhere else: the
-   control draws its own edge and focus ring from the inputs pair table, and the wrapper
-   draws nothing around it. The shell-wide focus rule in the base segment leaves every
-   pair-driven control alone, the search control among them. */
-.tcrn-product-shell .tcrn-search-input:focus-within {
-  outline: 0;
-  box-shadow: none;
-}`;
+// Former landing place of a product-shell focus rule for the search wrapper (a state rule
+// at specificity 0,3,0 that cleared the wrapper's outline and shadow while focus was
+// inside it). The wrapper paints no fill, edge, outline or ring in any context, so there
+// was nothing left for the shell to clear: the control draws its own edge and focus ring
+// from the inputs pair table, and the shell-wide focus rule in the base segment leaves
+// every pair-driven control alone, the search control among them. The segment stays
+// joined, empty.
+export const inputsCss01 = ``;
 
 export const inputsCss02 = `
 /* SearchInput is a quiet tool, the same in a form and in a top bar: a wash fill with no
@@ -515,9 +517,14 @@ export const inputsCss11 = `
 .tcrn-multi-select-dropdown__trigger:disabled{cursor:not-allowed}
 .tcrn-multi-select-dropdown__list{z-index:var(--tcrn-z-popover);min-inline-size:0;max-inline-size:calc(100vw - var(--tcrn-space-4));max-block-size:calc(100vh - var(--tcrn-space-4));overflow:auto;box-sizing:border-box}
 .tcrn-multi-select-dropdown__list[hidden]{display:none}
-.tcrn-multi-select-dropdown__option{display:flex;justify-content:space-between;align-items:center;gap:var(--tcrn-space-2);font:inherit;color:var(--tcrn-color-ink);overflow-wrap:anywhere}
-.tcrn-multi-select-dropdown__option:not(:disabled):hover{background:var(--tcrn-color-hover)}
-.tcrn-multi-select-dropdown__option[aria-selected="true"]{background:var(--tcrn-color-wash);font-weight:600}
+/* An option draws its fill and weight from a pair kept on the option itself (Inputs board
+   .opt): no fill and the regular weight by default, the hover fill on hover, the wash and
+   600 once selected. The base reads the live pair; the two state rules only switch it, and
+   the hover rule comes last, so a hovered selected option shows the hover fill and keeps
+   its weight. */
+.tcrn-multi-select-dropdown__option{--tcrn-pair-fill-d:transparent;--tcrn-pair-fill-h:var(--tcrn-color-hover);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-fill:var(--tcrn-pair-fill-d);--tcrn-pair-weight:400;display:flex;justify-content:space-between;align-items:center;gap:var(--tcrn-space-2);font:inherit;font-weight:var(--tcrn-pair-weight);background-color:var(--tcrn-pair-fill);color:var(--tcrn-color-ink);overflow-wrap:anywhere}
+.tcrn-multi-select-dropdown__option:where([aria-selected="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-s);--tcrn-pair-weight:600}
+.tcrn-multi-select-dropdown__option:where(:not(:disabled):hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h)}
 .tcrn-multi-select-dropdown__option [data-multi-select-check]{flex:0 0 auto;visibility:hidden}
 .tcrn-multi-select-dropdown__option [data-multi-select-check][data-selected="true"]{visibility:visible}`;
 
