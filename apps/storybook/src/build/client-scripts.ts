@@ -1,7 +1,24 @@
 import { tcrnDefaultLocale, tcrnFallbackLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
+import { createResolvedTokenMap } from "@tcrn/ui-tokens";
 import { contractStories, contractStoryGroups } from "../stories.js";
 import { storybookLocaleText } from "./i18n.js";
 import { categoryFileForStory, groupFileName, groupSlug } from "./navigation.js";
+
+function canvasColor(theme: "light" | "dark"): string {
+  const value = createResolvedTokenMap(theme)["--tcrn-color-bg"];
+  if (!/^#[0-9a-f]{6}$/i.test(value ?? "")) {
+    throw new Error(`storybook_canvas_token_unresolved:${theme}:${value ?? "missing"}`);
+  }
+  return value;
+}
+
+// The docs canvas paints with the G+ ground token --tcrn-color-bg. The first-paint
+// theme-color meta (page-template.tsx) and the theme-switch mirror below read the light and
+// dark values from @tcrn/ui-tokens instead of keeping a hand-copied pair.
+export const storybookCanvasColors = Object.freeze({
+  light: canvasColor("light"),
+  dark: canvasColor("dark")
+});
 
 export const hashRouteScript = `<script>
 (() => {
@@ -31,8 +48,8 @@ export const storybookThemeScript = `<script>
   const defaultTheme = "light";
   const storageKey = "tcrn-design-system-storybook-theme";
   const themeColors = {
-    light: "#fafaf9",
-    dark: "#111214"
+    light: ${JSON.stringify(storybookCanvasColors.light)},
+    dark: ${JSON.stringify(storybookCanvasColors.dark)}
   };
   const themeTransitionMs = 400;
   const isSupported = (theme) => supportedThemes.includes(theme);
