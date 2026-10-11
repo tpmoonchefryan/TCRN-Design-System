@@ -163,12 +163,12 @@ export const inputsCss05 = `
   color: var(--tcrn-color-bad);
 }
 
-/* Form input + select (.tcrn-input--short is a docs-only demo width and stays there).
-   The text-like controls share one pair table: Input, Textarea, NumberInput, DatePicker
-   and SuggestInput carry .tcrn-input; Select and the MultiSelect trigger carry
-   .tcrn-select. This base only reads the live pair; the generated state rules choose
-   which pair is live. The edge is an inset box-shadow, so hover, focus and error change
-   edge and ring together and the box never moves. */
+/* Form input + select. Their width comes from their container; the package has no size
+   modifier for them. The text-like controls share one pair table: Input, Textarea,
+   NumberInput, DatePicker and SuggestInput carry .tcrn-input; Select and the MultiSelect
+   trigger carry .tcrn-select. This base only reads the live pair; the generated state
+   rules choose which pair is live. The edge is an inset box-shadow, so hover, focus and
+   error change edge and ring together and the box never moves. */
 .tcrn-input,
 .tcrn-select {
   box-sizing: border-box;
@@ -511,10 +511,14 @@ export const inputsCss11 = `
 
 /* A collection dropdown uses the Select trigger (the .tcrn-select pair table) and Menu
    option families. The summary stays on one line and carries its full text as a title.
-   The trigger keeps the Select geometry: the dropdown lays it out as a flex item, as the
-   select wrapper lays out a Select, and it keeps the same 30px clear at its end, where the
-   caret sits at the sm icon size in ink-3, placed exactly as the Select chevron. */
-.tcrn-multi-select-dropdown{position:relative;display:flex;align-items:center;min-inline-size:0;max-inline-size:100%}
+   The dropdown stacks its items in one column, each stretched to its width. The trigger
+   comes first and keeps the Select geometry: a flex item at the control height, as the
+   select wrapper lays out a Select, with the same 30px clear at its end, where the caret
+   sits at the sm icon size in ink-3, placed exactly as the Select chevron. A list shown
+   in place (a static open state) comes under the trigger at the trigger's width; at run
+   time the list moves to a fixed overlay layer sized to the trigger, so the column does
+   not place it. */
+.tcrn-multi-select-dropdown{position:relative;display:flex;flex-direction:column;align-items:stretch;min-inline-size:0;max-inline-size:100%}
 .tcrn-multi-select-dropdown__trigger{-webkit-appearance:none;appearance:none;position:relative;display:flex;align-items:center;justify-content:space-between;gap:var(--tcrn-space-2);inline-size:100%;padding-inline-end:30px;text-align:start;cursor:pointer}
 .tcrn-multi-select-dropdown__trigger [data-multi-select-summary]{min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tcrn-multi-select-dropdown__caret{position:absolute;inset-block:0;inset-inline-end:calc((30px - var(--tcrn-icon-size-sm)) / 2);margin-block:auto;inline-size:var(--tcrn-icon-size-sm);block-size:var(--tcrn-icon-size-sm);color:var(--tcrn-color-ink-3);pointer-events:none}
