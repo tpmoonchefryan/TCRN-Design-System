@@ -56,7 +56,8 @@ export const storyCategoryDefinitions: Record<ContractStoryGroup, readonly Story
     { id: "records-and-boards", label: "Records and boards", description: "Rows, groups, tables, and lane-based record arrangement." },
     { id: "hierarchy-and-relations", label: "Hierarchy and relations", description: "Graphs, relationships, and stage references between records." },
     { id: "detail-and-inspection", label: "Detail and inspection", description: "Record detail, metadata, density, and inspection surfaces." },
-    { id: "documents-and-collaboration", label: "Documents and collaboration", description: "Documents, page navigation, comments, attachments, and versions." }
+    { id: "documents-and-collaboration", label: "Documents and collaboration", description: "Documents, page navigation, comments, attachments, and versions." },
+    { id: "gplus-matrices", label: "Family matrices", description: "All-state matrices of the first five component families, light and night." }
   ],
   Patterns: [
     { id: "forms-workbench", label: "Forms and workbench", description: "Form, workbench, and local filtering patterns." },
@@ -128,6 +129,11 @@ export const storyRegistryOrder: readonly StoryRegistryEntry[] = [
   { id: "documents-and-collaboration-components-spec", group: "Components", categoryId: "documents-and-collaboration" },
   { id: "documents-and-collaboration-density-spec", group: "Components", categoryId: "documents-and-collaboration" },
   { id: "documents-and-collaboration-templates-spec", group: "Components", categoryId: "documents-and-collaboration" },
+  { id: "typography-matrix", group: "Components", categoryId: "gplus-matrices" },
+  { id: "icon-matrix", group: "Components", categoryId: "gplus-matrices" },
+  { id: "brand-matrix", group: "Components", categoryId: "gplus-matrices" },
+  { id: "actions-matrix", group: "Components", categoryId: "gplus-matrices" },
+  { id: "inputs-matrix", group: "Components", categoryId: "gplus-matrices" },
   { id: "forms-patterns", group: "Patterns", categoryId: "forms-workbench" },
   { id: "workbench-patterns", group: "Patterns", categoryId: "forms-workbench" },
   { id: "records-and-boards-patterns", group: "Patterns", categoryId: "data-pages" },

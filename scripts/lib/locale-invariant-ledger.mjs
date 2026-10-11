@@ -50,7 +50,24 @@ export const localeInvariantLedger = {
   // per repo doctrine ("understating is not safe") they default to translation debt (scanned)
   // and are an open decision shared with S049, not a silent exemption. Extend this list only
   // after a red-run review proves a token is a true locale-invariant identifier.
-  properNouns: ["TCRN", "AOS", "TMS", "Storybook"],
+  // Einzbern, Mana and Orchestrate are the wordmarks of two registered products (ProductLogo
+  // einzbern and mana-orchestrate): a wordmark stays Latin on every locale, as TCRN does.
+  properNouns: ["TCRN", "AOS", "TMS", "Storybook", "Einzbern", "Mana", "Orchestrate"],
+  // Cat 4 — machine words of the first-batch family matrices (apps/storybook/src/contract-stories/
+  // gplus). Variant, state, size and style names and the theme attribute render inside <code>, which
+  // Cat 1 already exempts, so they never seed a run and are never swapped. Registering them here
+  // lets the storybook smoke test hold every <code> label of the five matrix stories to this list
+  // (icon names are held to the package tcrnIconNames roster instead).
+  matrixMachineWords: [
+    'data-tcrn-theme="light"',
+    'data-tcrn-theme="dark"',
+    "primary", "secondary", "quiet", "danger",
+    "default", "hover", "active", "focus", "disabled", "loading", "selected",
+    "placeholder", "read-only", "error", "state", "variant",
+    "h1", "h2", "h3", "h4", "body", "strong", "reading", "meta", "caption", "link", "numeral", "caps", "mono", "mark",
+    "size", "sm", "md", "lg", "ink", "host", "status", "canvas",
+    "sans", "serif", "suffix"
+  ],
   // Cat 3 — TEMPORARY audited translation debt: the multi-word Latin strings that currently
   // render on the zh-CN route with no dictionary translation, per story. This IS the
   // TCRN-DS-STORY-049 worklist. Seeded from the post-S046/S047 built pages. Append new
@@ -157,7 +174,6 @@ export const localeInvariantLedger = {
       "View Transition",
     ],
     "icons-motion": [
-      "Lucide React",
       "ms ease",
       "ms linear",
     ],

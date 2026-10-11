@@ -1,5 +1,6 @@
 import type { ContractStory } from "../types.js";
 import { selectStory } from "../story-content.js";
+import { gplusMatrixStories } from "../gplus/matrix-stories.js";
 
 export const componentsStories: ContractStory[] = [
   selectStory("component-family-index"),
@@ -24,5 +25,6 @@ export const componentsStories: ContractStory[] = [
   selectStory("detail-and-inspection-inspector-spec"),
   selectStory("documents-and-collaboration-components-spec"),
   selectStory("documents-and-collaboration-density-spec"),
-  selectStory("documents-and-collaboration-templates-spec")
+  selectStory("documents-and-collaboration-templates-spec"),
+  ...gplusMatrixStories
 ];
