@@ -6,13 +6,16 @@
 // into the published registry; it holds no second copy of a contract value.
 //
 // The generated stylesheet has three blocks, in this order:
-//   1. `:root` theme block         — every theme-dependent token, light values.
+//   1. `:root, [data-tcrn-theme="light"]` theme block — every theme-dependent token, light
+//      values; the selector list also matches a light subtree inside a dark page.
 //   2. `:root` theme-independent   — tokens whose value is the same in both themes.
-//   3. `[data-tcrn-theme="dark"]`  — the theme block again with night values.
+//   3. `[data-tcrn-theme="dark"]`  — the theme block again with night values. It comes after
+//      block 1, so on an element both match (a dark page root) the night values win.
 // Blocks 1 and 3 declare the same property names (C5). A token whose value references a
 // themed token (the focus ring, the focus-gap surface, the deprecated aliases) counts as
 // theme-dependent and is declared in both theme blocks with the same text, so it
-// re-resolves inside a nested dark scope instead of inheriting the light result from :root.
+// re-resolves inside a nested dark scope, and inside a light subtree of a dark page, instead
+// of inheriting the other theme's result from an ancestor.
 import {
   tcrnGplusBrandTokens,
   tcrnGplusFixedTokens,
@@ -512,7 +515,7 @@ function declarationBlock(selector: string, kind: string, declarations: readonly
   return `${selector} {\n  ${blockMarker(kind)}\n${declarations.map((entry) => `  ${entry.variable}: ${entry.value};`).join("\n")}\n}\n`;
 }
 
-/** Light stylesheet: the `:root` theme block followed by the theme-independent `:root` block. */
+/** Light stylesheet: the light theme block (`tcrnGplusThemeSelectors.light`, a selector list) followed by the theme-independent `:root` block. */
 export function createCssVariables(tokens: readonly DesignToken[] = tcrnTokens): string {
   const themed = tokens.filter((token) => token.scope === "theme");
   const fixed = tokens.filter((token) => token.scope !== "theme");
@@ -544,7 +547,40 @@ export interface TokenCssBlock {
   declarations: ReadonlyArray<readonly [string, string]>;
 }
 
-/** Splits a token stylesheet (no nested rules) into its blocks and custom-property declarations. */
+/** The selectors of a selector list, split at top-level commas, each with its whitespace collapsed. */
+function selectorList(selector: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let quote = "";
+  let current = "";
+  for (const char of selector) {
+    if (quote) {
+      if (char === quote) quote = "";
+    } else if (char === '"' || char === "'") quote = char;
+    else if (char === "(" || char === "[") depth += 1;
+    else if (char === ")" || char === "]") depth -= 1;
+    else if (char === "," && depth === 0) {
+      parts.push(current);
+      current = "";
+      continue;
+    }
+    current += char;
+  }
+  parts.push(current);
+  return parts.map((part) => part.replace(/\s+/g, " ").trim()).filter(Boolean);
+}
+
+/** Whether two selector lists name the same selectors, in any order. */
+function sameSelectorList(a: string, b: string): boolean {
+  const left = new Set(selectorList(a));
+  const right = new Set(selectorList(b));
+  return left.size === right.size && [...left].every((selector) => right.has(selector));
+}
+
+/**
+ * Splits a token stylesheet (no nested rules) into its blocks and custom-property declarations.
+ * A block's selector may be a list; it is reported in the canonical `a, b` form.
+ */
 export function parseTokenCssBlocks(css: string): TokenCssBlock[] {
   const blocks: TokenCssBlock[] = [];
   const source = css.replace(/@import[^;]*;/g, "");
@@ -559,7 +595,7 @@ export function parseTokenCssBlocks(css: string): TokenCssBlock[] {
         const colon = part.indexOf(":");
         return [part.slice(0, colon).trim(), part.slice(colon + 1).trim()] as const;
       });
-    blocks.push({ selector: match[1].replace(/\/\*[\s\S]*?\*\//g, "").trim(), kind, declarations });
+    blocks.push({ selector: selectorList(match[1].replace(/\/\*[\s\S]*?\*\//g, "")).join(", "), kind, declarations });
   }
   return blocks;
 }
@@ -574,15 +610,16 @@ export interface ThemeBlockComparison {
 }
 
 /**
- * C5: the `:root` theme block and the `[data-tcrn-theme="dark"]` block declare the same
- * property names; the theme-independent `:root` block shares no name with them.
+ * C5: the light theme block (`:root, [data-tcrn-theme="light"]`) and the
+ * `[data-tcrn-theme="dark"]` block declare the same property names; the theme-independent
+ * `:root` block shares no name with them. Selector lists match in any order and spacing.
  */
 export function compareTokenThemeBlocks(css: string): ThemeBlockComparison {
   const blocks = parseTokenCssBlocks(css);
   const problems: string[] = [];
-  const lightBlocks = blocks.filter((block) => block.selector === tcrnGplusThemeSelectors.light && block.kind === tcrnTokenBlockKinds.theme);
-  const darkBlocks = blocks.filter((block) => block.selector === tcrnGplusThemeSelectors.dark);
-  const fixedBlocks = blocks.filter((block) => block.selector === ":root" && block.kind !== tcrnTokenBlockKinds.theme);
+  const lightBlocks = blocks.filter((block) => sameSelectorList(block.selector, tcrnGplusThemeSelectors.light) && block.kind === tcrnTokenBlockKinds.theme);
+  const darkBlocks = blocks.filter((block) => sameSelectorList(block.selector, tcrnGplusThemeSelectors.dark));
+  const fixedBlocks = blocks.filter((block) => sameSelectorList(block.selector, ":root") && block.kind !== tcrnTokenBlockKinds.theme);
   if (lightBlocks.length !== 1) problems.push(`expected one ${tcrnGplusThemeSelectors.light} theme block, found ${lightBlocks.length}`);
   if (darkBlocks.length !== 1) problems.push(`expected one ${tcrnGplusThemeSelectors.dark} block, found ${darkBlocks.length}`);
   const names = (list: TokenCssBlock[]) => list.flatMap((block) => block.declarations.map(([property]) => property));

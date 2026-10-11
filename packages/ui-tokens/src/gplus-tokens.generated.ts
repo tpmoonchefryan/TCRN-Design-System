@@ -18,8 +18,8 @@ export interface TcrnGplusFixedToken {
   readonly value: string;
 }
 
-/** light values go on :root, dark values on the dark-theme selector; fixed and brand tokens are theme independent */
-export const tcrnGplusThemeSelectors = { light: ":root", dark: "[data-tcrn-theme=\"dark\"]" } as const;
+/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed and brand tokens are theme independent */
+export const tcrnGplusThemeSelectors = { light: ":root, [data-tcrn-theme=\"light\"]", dark: "[data-tcrn-theme=\"dark\"]" } as const;
 
 export const tcrnGplusThemedTokens: readonly TcrnGplusThemedToken[] = [
   {

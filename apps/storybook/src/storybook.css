@@ -1,7 +1,7 @@
 /* Token blocks below are generated from @tcrn/ui-tokens — the single source of
    truth for the visual language. Do not hand-edit: run `pnpm tokens:sync` and let
    `pnpm tokens:proof` fail the build if this file drifts from the package. */
-:root {
+:root, [data-tcrn-theme="light"] {
   /* tcrn-token-block: theme */
   --tcrn-color-bg: #efeeea;
   --tcrn-color-bg-2: #e7e5df;

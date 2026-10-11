@@ -1,5 +1,5 @@
 @import "../fonts/fonts.css";
-:root {
+:root, [data-tcrn-theme="light"] {
   /* tcrn-token-block: theme */
   --tcrn-color-bg: #efeeea;
   --tcrn-color-bg-2: #e7e5df;
