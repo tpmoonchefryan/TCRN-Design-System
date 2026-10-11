@@ -17,3 +17,6 @@
 **RM4 子代理流程瑕疵。** P3 一条只读探索命令用了 `cd` 进 scratch（未弹框、未改文件）；P7 起派工提示加「只读命令也不 cd」。
 
 **RM5 P1 的自定取舍与附带观察（交验收与收口回显）。** ① 浅色属性选择器 `[data-tcrn-theme="light"]` 由生成器从夜间选择器派生，`contract/tokens.json` 的 `themes.light.selector` 仍是 `:root`（契约未改；SUB-047 文件清单只列生成器），可事后更正。② ink-3 复核：ink-3 文字不落在 panel-2、bg-2、hover、wash 上（唯一 wash 实例是禁用按钮，豁免）；附带观察：文档导航计数与壳样例里 ink-3 落在 acc-bg 上，对比 4.35:1 与 4.18:1，属文档壳与壳层家族，记给设计权威，R2 验收判断是否进 Owner 事项。③ 流程：tokens-sync 读 ui-tokens dist，改契约后须先构建 ui-tokens（已写进 P2、P5 摘录）。
+
+**RM6 axe 字标豁免不分主题（P9 的取舍，收口回显，Owner 可更正）。** SUB-085 的 axe 豁免按「后缀选择器 + 登记的后缀色」匹配，不看主题与承载面；因此夜间样板侧栏上 6 个 Design System 后缀节点（对比 4.18）也被豁免，而 token-contrast 的登记只写了浅色。P9 建议维持（字标按 logotype 豁免）；改为同时匹配主题是一行改动，那 6 个节点会重新计入。与 O-3（夜间 TMS 后缀色）同组列给 Owner。
+P9 问题清单的去向：#1 axe landmark-unique 110 节点 → P7 SUB-071；#2 aria-allowed-role 4 节点（Card 上 `article role="status"`）→ P6 SUB-068；#3 标语与锁定组合说明 ink-3 → O-2；#4 390px 文档壳顶栏 401px 高、品牌字出现两次 → C-21/O-1；#5 zh-CN `text-styles` 两条新未译文案 → 可能属 P6 SUB-067，R2 验收确认；#6 故事高度预算 1 条超限、8 条陈旧 → P12 SUB-075。
