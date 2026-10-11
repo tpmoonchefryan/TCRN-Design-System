@@ -542,7 +542,12 @@ test("STORY-126 GWT3 SearchInput is a quiet tool: wash without an edge, ink-2 pl
 
 test("STORY-126 the field no longer washes on focus, and every ring keeps a forced-colours outline", () => {
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-field:focus-within/);
-  assert.match(cssRule(".tcrn-field--error"), /outline-color/);
+  // An error neither washes nor rings the field (TCRN-DS-SUB-060): the message is set in
+  // bad on the surface the field sits on, and only forced colours outline the field.
+  assert.doesNotMatch(tcrnComponentCss, /(?:^|\}|\*\/)\s*\.tcrn-field--error\s*\{/);
+  assert.doesNotMatch(tcrnComponentCss, /state-blocked-bg\) 62%/);
+  assert.match(cssRule(".tcrn-field__error"), /^\s*color: var\(--tcrn-color-bad\);\s*$/);
+  assert.match(tcrnComponentCss, /@media \(forced-colors: active\) \{\s*\.tcrn-field--error \{\s*outline: 2px solid Highlight;\s*outline-offset: 2px;\s*\}/);
   for (const control of [".tcrn-input", ".tcrn-select", ".tcrn-checkbox", ".tcrn-radio-group__control", ".tcrn-switch__control"]) {
     assert.match(tcrnComponentCss, new RegExp(`${escapeRegExp(control)}:where\\(:focus-visible\\)[^{]*\\{\\s*outline: 2px solid transparent;\\s*outline-offset: 2px;`));
   }

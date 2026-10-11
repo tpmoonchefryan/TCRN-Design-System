@@ -138,12 +138,11 @@ export const inputsCss05 = `
 }
 
 /* Focus no longer washes the whole field: the control inside changes its own edge and
-   draws the focus ring from the inputs pair table. */
-
-.tcrn-field--error {
-  background-color: color-mix(in srgb, var(--tcrn-color-state-blocked-bg) 62%, transparent);
-  outline-color: var(--tcrn-color-state-blocked);
-}
+   draws the focus ring from the inputs pair table. An error does not wash it or ring it
+   either: the control takes the invalid pair (the bad edge) and the message below it is
+   set in bad straight on the surface the field sits on, so the message keeps the
+   contrast the Inputs matrix expects of bad on panel. Only forced colours outline the
+   field in error, with the system's Highlight (see the forced-colours block). */
 
 .tcrn-field__label {
   font-weight: 600;
@@ -159,7 +158,7 @@ export const inputsCss05 = `
 }
 
 .tcrn-field__error {
-  color: var(--tcrn-color-state-blocked);
+  color: var(--tcrn-color-bad);
 }
 
 /* Form input + select (.tcrn-input--short is a docs-only demo width and stays there).
