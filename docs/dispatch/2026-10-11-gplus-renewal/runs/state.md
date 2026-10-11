@@ -78,7 +78,14 @@
 - verify 逐步（HEAD d8586dd）：30 步红 11 步——tokens:proof（fonts 单测 3 条）、geometry:proof、shell:parity、contract:static、storybook:smoke、geometry:measure、storybook:visual-proof、doc:sample-style、internal-vocab:scan（新红：渲染文本命中 vault-path 规则）、full-surface、internal-alpha；表在 `runs/r1/verify/steps.md`，日志 scratch `r1-verify/`；改写的回执已存档 scratch `r1-verify/receipts-dirty/` 并还原。
 - 验收 A 已交回：120/121/122/134 均不通过（120 只差 GWT5 verify；121 mono 无 Noto 回退、shell-fidelity 未覆盖包；122 locale 菜单悬停色字面量、生成字体刻度段全是字面值；134 SUB-046 未跑与文档待 R2 后更新）；返工 10 项（主力档 5：A-2 至 A-6；A-1 fonts-proof 单测夹具仍用旧 token 名致 tokens:proof 后五个脚本未跑；A-6 缺 light 主题块）；六个口径全部可接受（M6 条件：SUB-046 在 R2 全部返工之后、最终 verify 之前跑一次）；Owner 项 O-1 夜间 TMS 后缀（建议 #7aa0f5）、O-2 3500 字（建议不加）、O-3 OFL 版权行（知悉）、O-4 夜间按钮抬升层字面色、O-5 焦点环间隙不随承载面。
 - 验收 C 已交回（文件 39.9 KB，按节读）：128–133 均不通过（128 GWT3 icons-motion 文档层覆写 72 处；129 GWT1 inputs 矩阵 40/42、GWT2 夜间页浅色块读夜间 token 与 err-msg、GWT3 阻塞于 Owner；130 映射 22 行全红；131 GWT4 夜间对比、err-msg、样板 rail 偏 33px、controlHeight 未适用；132 GWT4 C2 7＋C5 1；133 GWT1 部分——真实 verify 停在步 6）；返工 23 项（主力档 7：C-2、C-3、C-4、C-10、C-12、C-13、C-20；6 项跨分片待去重）；口径：W1-D、W1-E、W6-A 可接受，W5-C 有条件（不默认 --strict、补规则级守卫 C-3），W4-B C7 部分（第一批承载元素 title 须含可见文字 C-20），**W3-C 原型只删类留元素不可接受**（公开 Storybook 出现无样式原生元素，C-4）；证据盲区：步 6 后的子门未执行、步 17 日志截断（C-18）；Owner 项：O-1 构图一壳层几何（建议按 D1 授权只改 ProductShell 几项几何）、O-2 DIFF-2/3/8、O-3 锁定组合后缀与标语对比（建议 WCAG 1.4.3 商标字标例外，夜间后缀同定）、O-4 退役原型并删守护断言（建议照做，Owner 可更正）、O-5 知悉（C-2 文档壳视觉 oracle P18、C-19 宽限表 P24）。
-- 验收三片（einzbern-main）在跑：A=STORY-120/121/122/134、B=123–127、C=128–133，产出 `runs/r1/acceptance/{A,B,C}.md`。
+- 验收 B 已交回（32.5 KB）：123/124/125/126 不通过、127 阻塞于 Owner（52px 收起）；返工 16 项（主力 6：B-1、B-7、B-9、B-11、B-13、B-15；7 项跨分片）；B-13 缺 light 主题块是全部夜间页矩阵红的根因；**B-8 门缺陷：三道门在 120ms 填充过渡结束前读色**（步 17 全部与步 28、30 各一条）；口径：W2-B、W2-D、W3-D 可接受，**W2-E 的 P29 读法不可接受**（Field 错误态整块洗底也要去，或由 Owner 把两格移第五批）；Owner 项：O-1 壳层 220/52、O-2 夜间 TMS 后缀（建议 #7aa0f5）、O-3 外壳切换钮尺寸、O-4 品牌规格 B1 与 B2 何者为准、O-5 numeral API 与截断、O-6 组件字面尺寸是否加 token；子代理一条只读命令含 `cd /tmp`（未弹框，已记）。
+- 三片验收文件已提交 98199a7。判断已交回：`runs/r1/judgment.md`（65 KB，文首有节行号）与 `runs/r1/lessons.json`（5 条）；返工 37 条（主力 15、经济 22），新 Subtask 41 张＋SUB-046，建议 12 包（主力 8、经济 4）；Owner 事项 O-1…O-12（O-1 构图一壳层几何卡住 120/127/129/130/131/133/134 与 verify 全绿）；§3.4 按建议先做 11 项。
+- R1 链写已完成（一次 work-batch，166 成员，WORK_BATCH_APPLIED，version 1553，head e340828a…）：SUB-001…045 → done，SUB-046 保持 planned，Story 120–134 → active（summary 带结论与返工去向），INIT-015 summary 注解；§4.3 的长注解未入链（引擎 result 字段是结构化实施结果、不收自由文本，细注解留在 judgment.md）。知识卡 TCRN-DS-KB-007…011 已建并读回（库内共 11 张）。
+
+### R2
+
+- 拆分（einzbern-economy）按 judgment §2/§3.4/§5 一次拆，Subtask 键自 TCRN-DS-SUB-047 起，产出 `runs/r2/`；包按 judgment 标的档位派（主力包用 einzbern-main，经济包用 einzbern-economy）。
+- 最终收尾：全部返工合入后跑 SUB-046（视觉基线与回执再生），再跑末次 verify（`tokens:proof`、`internal-alpha:proof` 拆子命令逐段记结果），再按 Story 复验。
 
 ## 下一步
 

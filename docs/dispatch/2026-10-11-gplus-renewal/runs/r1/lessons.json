@@ -1,0 +1,67 @@
+[
+  {
+    "subject": "DS 门脚本以当前工作目录为根",
+    "summary": "DS 仓的门脚本按 cwd 遍历仓库并写相对路径的回执；在别的目录用绝对路径直接 node 运行，会扫错树并把回执写到 cwd 下。",
+    "snippet": "corepack pnpm@10.12.1 -C <工作树> exec node scripts/<门>.mjs",
+    "body": "R1 主线程在容器根用绝对路径直接运行 scripts/no-private-input-scan.mjs：脚本第 144 行 walk(\".\") 以 cwd 为根，扫了整个容器，并把 14.6 MB 的回执写进容器根的 docs/verification/internal-alpha/no-overclaim-scan.json（未跟踪，已移入 scratch 的 trash）。此后 DS 脚本一律经 corepack pnpm@10.12.1 -C <工作树> exec node <脚本> 或 run <脚本> 运行。调用任何门之前，先确认它取根的方式（cwd、import.meta.url 还是参数）。",
+    "tags": ["design-system", "gates", "cwd", "verify"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/problems/main.md",
+      "scripts/no-private-input-scan.mjs"
+    ]
+  },
+  {
+    "subject": "verify 的复合步内部也是 && 链，批末要拆到子命令",
+    "summary": "tokens:proof（12 段）与 internal-alpha:proof（contracts、browser-proof、scan、hardening）撞第一条红就停；逐步运行只拆到步，后段状态仍然未知。",
+    "snippet": "tokens:proof 停在 fonts-proof 单测时，fonts-proof 门本体、stamp-whitelist、shell-fidelity、token-extension、selection-grammar 都没跑；internal-alpha:proof 停在 browser-proof 时，scan 段的隐私扫描命中被藏住。",
+    "body": "R1 批末逐步跑 verify 的 30 步、遇红继续，但第 6 步 tokens:proof 与第 30 步 internal-alpha:proof 自身是 && 链：前者停在 tests/fonts-proof.test.mjs（夹具仍用旧 token 名），后五个子门结果未知；后者停在 browser-proof，pnpm scan（no-private-input-scan）没有执行，而它在当前树上必红（matrix-renderer.tsx 的 JSX key 行）。批末与开发期复核都把复合步拆成子命令逐段跑，报告逐段记结果，没执行的段记「未执行」，不记绿。",
+    "tags": ["verify", "gates", "batch-end", "design-system"],
+    "evidence": [
+      "package.json",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/verify/steps.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/acceptance/A.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/problems/W6-A.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/judgment.md"
+    ]
+  },
+  {
+    "subject": "静态文档页的作用域改写只能在顶层逗号处拆选择器",
+    "summary": "page-template 早先在每个逗号处切选择器，把 :where(:focus-visible,[data-…]) 状态规则切坏，浏览器整条丢弃；改成扫描式改写后，矩阵浅色页状态格的偏离由 76 降为 0。",
+    "snippet": ".story-body :where(.tcrn-button-group)>.tcrn-button:where(:focus-visible,.story-body [data-tcrn-preview-state=\"focus\"])  —— 逗号被切开后的非法规则",
+    "body": "W6-B P1 在 components-navigation-shells.html 里看到上面的改写结果：作用域前缀插进了 :where() 括号内，规则非法被丢弃，悬停与焦点状态全部失效，冒烟与 internal-alpha 的焦点环、按钮悬停比较器读到默认值。W5-C 把 apps/storybook/src/build/page-template.tsx 改为扫描式作用域改写：只在顶层逗号拆分，括号、方括号与字符串里的逗号不拆，一行多条规则与 @media、@supports 正确处理，并用浏览器解析计数的单测锁定。以后任何 CSS 作用域或前缀改写都按此解析，并用浏览器实际接受的规则数做断言。",
+    "tags": ["storybook", "css", "scoping", "where", "design-system"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/problems/W6-B.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/handoff/W5-C.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/problems/W5-C.md",
+      "apps/storybook/src/build/page-template.tsx"
+    ]
+  },
+  {
+    "subject": "门读计算颜色要等过渡结束",
+    "summary": "G+ 填充过渡 120ms（减弱动效下 160ms linear）；交互后立即读，或读交互前拿到的活 getComputedStyle 对象，都会读到过渡中间值。",
+    "snippet": "await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)))",
+    "body": "R1 有三处门因此误红：storybook-smoke 在聚焦前取活的 getComputedStyle 对象，失焦后才读静止底色，读到白色（fill-f）回 wash 的起点；multi-select-dropdown-proof 切夜间后立即读，参照 Select 仍是浅色底而菜单层已是夜间色；internal-alpha 在 hover 后只等 80ms。改法：读数前等 document.getAnimations() 全部结束或连读两次相同，或只对读数注入 transition: none；静止值在交互前快照；不写死时长，不改期望值。",
+    "tags": ["gates", "browser", "transitions", "playwright", "design-system"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/acceptance/B.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/acceptance/C.md",
+      "scripts/storybook-smoke.mjs",
+      "scripts/lib/multi-select-dropdown-proof.mjs",
+      "scripts/internal-alpha-browser-proof.mjs"
+    ]
+  },
+  {
+    "subject": "隐私扫描把独占行首的 JSX key 属性判为赋值",
+    "summary": "no-private-input-scan 的 env-assignment 规则不区分大小写：行首（可带空白）是 key、token、auth、session、secret、password、api 之类的词并接等号就命中；JSX 的 key 属性独占一行即红。",
+    "snippet": "<div className=\"tcrn-doc-theme-preview\" key={theme}  —— key 属性跟在其他属性之后，不独占行首",
+    "body": "规则在 scripts/no-private-input-scan.mjs 第 71 行，带 i 标志，扫描面是整棵仓库（含 docs/dispatch）。R1 的唯一命中是 apps/storybook/src/contract-stories/gplus/matrix-renderer.tsx 第 88 行独占一行的 JSX key 属性；它在 internal-alpha:proof 的 scan 段，批末停在 browser-proof 而没有暴露。写 JSX、文档与 JSON 时别让这类词加等号落在行首；改法是把属性挪到同一行其他属性之后，不给扫描器加豁免（改口径需授权）。",
+    "tags": ["privacy-scan", "gates", "jsx", "design-system"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/problems/W7-A.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/problems/W6-A.md",
+      "scripts/no-private-input-scan.mjs",
+      "apps/storybook/src/contract-stories/gplus/matrix-renderer.tsx"
+    ]
+  }
+]
