@@ -1,4 +1,18 @@
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
+import { tcrnTokens } from "@tcrn/ui-tokens";
+
+// The text-styles specimens "Page title / <size>" and "Section title / <size>" are rendered
+// from the token registry (story-content.tsx). Their entries take the size from the same
+// registry, so only the prefix is translated and a size change cannot strand the lookup.
+function typeScaleSize(variable: string): string {
+  const token = tcrnTokens.find((candidate) => candidate.variable === variable);
+  if (!token) {
+    throw new Error(`unknown design token ${variable}`);
+  }
+  return token.value;
+}
+const pageTitleSize = typeScaleSize("--tcrn-type-size-page");
+const sectionTitleSize = typeScaleSize("--tcrn-type-size-section");
 
 export const storybookContentText: Record<string, Record<TcrnLocale, string>> = {
   "ordinary closed collections use the Select-family MultiSelect dropdown; native lists remain compatible and explicit checklists provide a clear action; open strings use free-form SuggestInput": {"en": "ordinary closed collections use the Select-family MultiSelect dropdown; native lists remain compatible and explicit checklists provide a clear action; open strings use free-form SuggestInput", "zh-CN": "普通闭集集合使用 Select 家族的 MultiSelect 下拉菜单；原生列表保持兼容，显式清单提供清除操作；开放字符串使用自由输入的 SuggestInput", "ja": "通常の閉じたコレクションは Select ファミリーの MultiSelect ドロップダウンを使います。ネイティブ一覧は互換性を保ち、明示的なチェックリストはクリア操作を提供します。オープン文字列は自由入力の SuggestInput を使います。", "ko": "일반적인 닫힌 컬렉션은 Select 계열 MultiSelect 드롭다운을 사용합니다. 네이티브 목록은 호환성을 유지하고 명시적 체크리스트는 지우기 작업을 제공합니다. 개방형 문자열은 자유 입력 SuggestInput을 사용합니다.", "fr": "Les collections fermées courantes utilisent le menu déroulant MultiSelect de la famille Select ; les listes natives restent compatibles et les listes à cocher explicites proposent une action d’effacement ; les chaînes ouvertes utilisent SuggestInput en saisie libre."},
@@ -477,9 +491,9 @@ export const storybookContentText: Record<string, Record<TcrnLocale, string>> = 
   "Code text": { "zh-CN": "代码文本", en: "Code text", ja: "コードテキスト", ko: "코드 텍스트", fr: "Texte de code" },
   "Token names, ids, commands, and technical readback.": { "zh-CN": "用于令牌名、id、命令和技术读回。", en: "Token names, ids, commands, and technical readback.", ja: "トークン名、id、コマンド、技術的なリードバックに使用します。", ko: "토큰 이름, id, 명령, 기술 읽어보기에 사용합니다.", fr: "Pour noms de tokens, ids, commandes et relecture technique." },
   "Type scale specimen": { "zh-CN": "字体层级样本", en: "Type scale specimen", ja: "タイプスケール見本", ko: "타입 스케일 표본", fr: "Spécimen d'échelle typographique" },
-  "Page title / 28px": { "zh-CN": "页面标题 / 28px", en: "Page title / 28px", ja: "ページタイトル / 28px", ko: "페이지 제목 / 28px", fr: "Titre de page / 28px" },
+  [`Page title / ${pageTitleSize}`]: { "zh-CN": `页面标题 / ${pageTitleSize}`, en: `Page title / ${pageTitleSize}`, ja: `ページタイトル / ${pageTitleSize}`, ko: `페이지 제목 / ${pageTitleSize}`, fr: `Titre de page / ${pageTitleSize}` },
   "28px / 1.3 / 700": { "zh-CN": "28px / 1.3 / 700", en: "28px / 1.3 / 700", ja: "28px / 1.3 / 700", ko: "28px / 1.3 / 700", fr: "28px / 1.3 / 700" },
-  "Section title / 18px": { "zh-CN": "章节标题 / 18px", en: "Section title / 18px", ja: "セクションタイトル / 18px", ko: "섹션 제목 / 18px", fr: "Titre de section / 18px" },
+  [`Section title / ${sectionTitleSize}`]: { "zh-CN": `章节标题 / ${sectionTitleSize}`, en: `Section title / ${sectionTitleSize}`, ja: `セクションタイトル / ${sectionTitleSize}`, ko: `섹션 제목 / ${sectionTitleSize}`, fr: `Titre de section / ${sectionTitleSize}` },
   "Body copy / 13px keeps dense product surfaces readable without becoming tiny.": { "zh-CN": "正文文案 / 13px 能让密集产品界面保持可读且不过小。", en: "Body copy / 13px keeps dense product surfaces readable without becoming tiny.", ja: "本文コピー / 13px は、高密度な製品サーフェスを小さすぎず読みやすく保ちます。", ko: "본문 카피 / 13px는 밀도 높은 제품 화면을 너무 작지 않게 읽기 쉽게 유지합니다.", fr: "La copie de corps / 13px garde les surfaces produit denses lisibles sans devenir minuscules." },
   "Caption / 11px is reserved for metadata and helper context.": { "zh-CN": "说明文字 / 11px 保留给元数据和辅助上下文。", en: "Caption / 11px is reserved for metadata and helper context.", ja: "キャプション / 11px はメタデータとヘルプ文脈用に予約します。", ko: "캡션 / 11px는 메타데이터와 도움말 맥락에 예약합니다.", fr: "La légende / 11px est réservée aux métadonnées et au contexte d'aide." },
   "Layout density matrix": { "zh-CN": "布局密度矩阵", en: "Layout density matrix", ja: "レイアウト密度マトリクス", ko: "레이아웃 밀도 매트릭스", fr: "Matrice de densité de layout" },
