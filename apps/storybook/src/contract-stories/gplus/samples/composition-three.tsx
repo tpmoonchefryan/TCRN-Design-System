@@ -3,13 +3,14 @@
 // composition board's 1040px.
 //
 // Only package components and their public props are used; nothing here adds a class, a token or a
-// [data-shell]. The bar is the package TopBar: its brand slot holds the product lockup, its module
-// slot holds the navigation and the shell search (the search is the bar's one yielding item, C8, so
-// the navigation beside it is kept from shrinking), and its actions slot holds the notification
-// button and the avatar. The 1040px content width is a value of this sample, written in its own
-// inline style the way composition one wrote its 220px rail width; it places a page template and is
-// not a package token. The light and night blocks differ only in data-tcrn-theme on the block and in
-// the name of the navigation landmark.
+// [data-shell]. The bar is the package TopBar, used as it is: its brand slot holds the product lockup,
+// its module slot holds the shell search (the bar's one yielding item, C8), and its actions slot holds
+// the navigation, the notification button and the avatar. TopBar sizes the brand and module columns to
+// their content and lets only the actions column shrink, so the navigation goes in the actions slot,
+// where it can wrap on a narrow page; on the board it sits before the search. The 1040px content width
+// is a value of this sample, written in its own inline style the way composition one wrote its 220px
+// rail width; it places a page template and is not a package token. The light and night blocks differ
+// only in data-tcrn-theme on the block and in the name of the navigation landmark.
 import {
   Avatar,
   Badge,
@@ -38,10 +39,14 @@ const themeAttribute: Record<GplusSampleTheme, "light" | "dark"> = { light: "lig
 const landmarkLabel = "Composition three sample: projects";
 const landmarkSuffix: Record<GplusSampleTheme, string> = { light: "", night: " (night)" };
 
-// Placement of the package parts inside the TopBar slots and of the page under the bar.
-const moduleRowStyle: CSSProperties = { display: "flex", alignItems: "center", gap: "var(--tcrn-space-4)", minWidth: 0 };
-const fixedItemStyle: CSSProperties = { flexShrink: 0 };
-const actionsRowStyle: CSSProperties = { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "var(--tcrn-space-2)" };
+// Placement of the package parts inside the TopBar actions slot and of the page under the bar.
+// The search sits in a one-column grid holding a flex row: the grid gives the module slot the search's
+// width as its widest size and nothing as its narrowest, and the flex row lets the search shrink below
+// its fixed narrow-screen width where TopBar stacks its slots, instead of widening the bar.
+const moduleSlotStyle: CSSProperties = { display: "grid", gridTemplateColumns: "minmax(0, 1fr)" };
+const moduleRowStyle: CSSProperties = { display: "flex", minWidth: 0 };
+const actionsRowStyle: CSSProperties = { display: "flex", alignItems: "center", flexWrap: "wrap", gap: "var(--tcrn-space-2)", minWidth: 0 };
+const actionsEndStyle: CSSProperties = { display: "flex", alignItems: "center", gap: "var(--tcrn-space-2)", marginInlineStart: "auto" };
 const pageStyle: CSSProperties = { padding: "var(--tcrn-space-5) var(--tcrn-space-6)" };
 const contentStyle: CSSProperties = { width: "100%", maxWidth: gplusCompositionThreeContentWidth, marginInline: "auto" };
 
@@ -52,7 +57,6 @@ function navItems(storyId: string): NavStripItem[] {
     { id: "projects", label: "Projects", href, current: true, count: 12 },
     { id: "members", label: "Members", href },
     { id: "billing", label: "Billing", href },
-    { id: "notifications", label: "Notifications", href },
     { id: "settings", label: "Settings", href }
   ];
 }
@@ -117,17 +121,19 @@ export function GplusCompositionThreeBlock({ storyId, theme }: { storyId: string
         data-gplus-composition-three-bar="true"
         productName={<ProductLockup suffix="Design team" />}
         moduleName={(
-          <div style={moduleRowStyle}>
-            <div style={fixedItemStyle}>
-              <SubNav label={`${landmarkLabel}${landmarkSuffix[theme]}`} items={navItems(storyId)} />
+          <div style={moduleSlotStyle}>
+            <div style={moduleRowStyle}>
+              <ProductShellSearch label="Search" placeholder="Search" shortcut="auto" />
             </div>
-            <ProductShellSearch label="Search" placeholder="Search" shortcut="auto" />
           </div>
         )}
         actions={(
           <div style={actionsRowStyle}>
-            <IconButton ariaLabel="Notifications" iconName="bell" variant="quiet" />
-            <Avatar name="Lin Xiao" size="small" />
+            <SubNav label={`${landmarkLabel}${landmarkSuffix[theme]}`} items={navItems(storyId)} />
+            <div style={actionsEndStyle}>
+              <IconButton ariaLabel="Notifications" iconName="bell" variant="quiet" />
+              <Avatar name="Lin Xiao" size="small" />
+            </div>
           </div>
         )}
       />
