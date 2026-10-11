@@ -22,6 +22,16 @@ import foundationsMeta from "./foundations.stories.js";
 import patternsMeta from "./patterns.stories.js";
 import proofMeta from "./proof.stories.js";
 import styleGuideMeta from "./style-guide.stories.js";
+import typographyMeta, { Matrix as TypographyMatrix } from "./typography.stories.js";
+import iconMeta, { Matrix as IconMatrix } from "./icon.stories.js";
+import brandMeta, { Matrix as BrandMatrix } from "./brand.stories.js";
+import actionsMeta, { Matrix as ActionsMatrix } from "./actions.stories.js";
+import inputsMeta, { Matrix as InputsMatrix } from "./inputs.stories.js";
+import { createElement, Fragment } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { tcrnIconNames } from "@tcrn/ui-react";
+import { gplusMatrices, gplusMatrixCellCounts } from "./contract-stories/gplus/generated/matrices.generated.js";
+import { gplusMatrixBoardsInOrder, gplusMatrixComponents, gplusMatrixSourcePath, gplusMatrixStoryIds } from "./contract-stories/gplus/matrix-stories.js";
 import { storybookGovernanceChangelogRecords, storyCategoryDefinitions, storyRegistryOrder } from "./contract-stories/governance.js";
 import { referencePages } from "./build/reference-pages.js";
 import {
@@ -123,6 +133,11 @@ const expectedContractStoryIds = [
   "documents-and-collaboration-components-spec",
   "documents-and-collaboration-density-spec",
   "documents-and-collaboration-templates-spec",
+  "typography-matrix",
+  "icon-matrix",
+  "brand-matrix",
+  "actions-matrix",
+  "inputs-matrix",
   "forms-patterns",
   "workbench-patterns",
   "records-and-boards-patterns",
@@ -370,7 +385,7 @@ test("static contract story surface is retained and synthetic", () => {
   for (const story of contractStories) {
     assert.ok(story.category.length > 0, `missing category label for ${story.id}`);
     assert.ok(story.categoryId.length > 0, `missing category id for ${story.id}`);
-    assert.equal(story.sourcePath, "apps/storybook/src/contract-stories/story-content.tsx");
+    assert.equal(story.sourcePath, story.categoryId === "gplus-matrices" ? gplusMatrixSourcePath : "apps/storybook/src/contract-stories/story-content.tsx");
     assert.match(story.packageAuthority, /Storybook static|@tcrn\/ui-react|Durable Storybook/);
     assert.equal(story.readiness, "local_storybook_contract_review_required");
     assert.equal(story.proofPosture, "visible_boundary_no_product_adoption_or_publication_claim");
@@ -379,23 +394,34 @@ test("static contract story surface is retained and synthetic", () => {
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
     expectedRootAdapterTitles
   );
+  // Track A family adapters: title + Matrix export give the Storybook ids typography--matrix etc.
+  assert.deepEqual(
+    [typographyMeta, iconMeta, brandMeta, actionsMeta, inputsMeta].map((meta) => meta.title),
+    ["Typography", "Icon", "Brand", "Actions", "Inputs"]
+  );
+  assert.deepEqual(
+    [TypographyMatrix, IconMatrix, BrandMatrix, ActionsMatrix, InputsMatrix].map((story) => story.name),
+    ["Matrix", "Matrix", "Matrix", "Matrix", "Matrix"]
+  );
   // Per-story CSF registration gate: every contract story in the registry must have a
   // matching CSF export in its group's *.stories.tsx adapter, in registry order. This closes
   // the gap where only the 7 default-meta titles were gated. internal-dev/overlay-family-lab is
   // intentionally NOT a contract story group, so iterating the registry groups self-excludes it
   // (see the overlay-family-lab exclusions below at data-internal-dev-surface / Internal/Overlay).
+  // The Components group spans components.stories.tsx and the five family adapters (titles
+  // Typography, Icon, Brand, Actions and Inputs), read in that order.
   const csfAdapterFileByGroup: Record<ContractStoryGroup, string> = {
     Welcome: "src/alpha.stories.tsx", // NOTE: alpha.stories.tsx IS the Welcome adapter
     "Style Guide": "src/style-guide.stories.tsx",
     Foundations: "src/foundations.stories.tsx",
-    Components: "src/components.stories.tsx",
+    Components: "src/components.stories.tsx src/typography.stories.tsx src/icon.stories.tsx src/brand.stories.tsx src/actions.stories.tsx src/inputs.stories.tsx",
     Patterns: "src/patterns.stories.tsx",
     Proof: "src/proof.stories.tsx",
     "Change Log": "src/change-log.stories.tsx"
   };
   for (const group of expectedContractStoryGroups) {
     const adapterFile = csfAdapterFileByGroup[group];
-    const adapterSource = readStorybookSource(adapterFile);
+    const adapterSource = adapterFile.split(" ").map((file) => readStorybookSource(file)).join("\n");
     const registeredIds = Array.from(
       adapterSource.matchAll(/renderContractStory\("([^"]+)"\)/g),
       (match) => match[1]
@@ -1574,7 +1600,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, icon-matrix, brand-matrix, actions-matrix, inputs-matrix/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, records-and-boards-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
@@ -1699,4 +1725,57 @@ test("TCRN-DS-STORY-056: pages are bounded — index pages hold no bodies, categ
       `reference page ${page.file} must contain exactly its paginated component regions`
     );
   }
+});
+
+// TCRN-DS-STORY-129 GWT1/GWT2 structure: each family matrix renders exactly the contract cells
+// (typography 44, icon 28, brand 10, actions 116, inputs 42) with data-cell, data-kind and
+// data-expect, disabled cells carry data-exempt, the light and night blocks differ only in
+// data-tcrn-theme, and every first-batch component has a labelled section (23 in all).
+test("first-batch family matrices render the contract cells and every component section", () => {
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const machineWords = new Set(
+    Array.from(ledgerSource.slice(ledgerSource.indexOf("matrixMachineWords"), ledgerSource.indexOf("],", ledgerSource.indexOf("matrixMachineWords"))).matchAll(/"((?:[^"\\]|\\.)*)"|'([^']*)'/g), (match) => match[2] ?? match[1])
+  );
+  assert.ok(machineWords.has("hover") && machineWords.has('data-tcrn-theme="dark"'), "ledger registers the matrix machine words");
+  const iconNames = new Set<string>(tcrnIconNames);
+  let componentTotal = 0;
+  for (const board of gplusMatrixBoardsInOrder) {
+    const story = contractStories.find((item) => item.id === gplusMatrixStoryIds[board]);
+    assert.ok(story, `missing matrix story for ${board}`);
+    assert.equal(story.group, "Components");
+    assert.equal(story.categoryId, "gplus-matrices");
+    const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
+    const cells = Array.from(html.matchAll(/<[a-z][^>]*\sdata-cell="([^"]+)"[^>]*>/g));
+    const contractCells = gplusMatrices[board];
+    assert.equal(cells.length, gplusMatrixCellCounts[board], `${board}: cell count equals the board`);
+    assert.deepEqual(cells.map((match) => match[1]).sort(), contractCells.map((cell) => cell.cellId).sort(), `${board}: cells equal the contract`);
+    for (const [tag, cellId] of cells.map((match) => [match[0], match[1]] as const)) {
+      const cell = contractCells.find((item) => item.cellId === cellId);
+      assert.ok(cell);
+      assert.match(tag, new RegExp(`data-kind="${cell.kind}"`), `${cellId}: data-kind`);
+      assert.match(tag, new RegExp(`data-expect="${cell.expect.replace(".", "\\.")}"`), `${cellId}: data-expect`);
+      assert.equal(/\sdata-exempt(=|\s|>)/.test(tag), cell.exempt, `${cellId}: data-exempt only on exempt cells`);
+    }
+    assert.equal(html.match(/data-gplus-matrix-theme="light"/g)?.length, 1, `${board}: one light block`);
+    assert.equal(html.match(/data-gplus-matrix-theme="night"/g)?.length, 1, `${board}: one night block`);
+    assert.match(html, /data-tcrn-theme="light" data-gplus-matrix-theme="light"/);
+    assert.match(html, /data-tcrn-theme="dark" data-gplus-matrix-theme="night"/);
+    for (const component of gplusMatrixComponents[board]) {
+      assert.equal(html.match(new RegExp(`data-gplus-matrix-component="${component}"`, "g"))?.length, 2, `${board}: ${component} has a labelled section in both blocks`);
+      componentTotal += 1;
+    }
+    assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, `${board}: preview states use data-tcrn-preview-state; no internal vocabulary`);
+    for (const match of html.matchAll(/<code>([^<]*)<\/code>/g)) {
+      const word = match[1].replace(/&quot;/g, '"');
+      assert.ok(machineWords.has(word) || iconNames.has(word), `${board}: <code>${word}</code> is a registered machine word or icon name`);
+    }
+  }
+  assert.equal(componentTotal, 23);
+  const iconHtml = renderToStaticMarkup(createElement(Fragment, null, contractStories.find((item) => item.id === "icon-matrix")?.render()));
+  for (const name of tcrnIconNames) {
+    for (const size of [14, 16, 20]) {
+      assert.match(iconHtml, new RegExp(`<svg[^>]*width="${size}"[^>]*data-icon-name="${name}"|<svg[^>]*data-icon-name="${name}"[^>]*width="${size}"`), `icon roster renders ${name} at ${size}px`);
+    }
+  }
+  assert.match(renderToStaticMarkup(createElement(Fragment, null, contractStories.find((item) => item.id === "actions-matrix")?.render())), /data-tcrn-preview-state="hover"/);
 });
