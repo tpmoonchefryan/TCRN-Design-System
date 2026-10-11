@@ -72,22 +72,28 @@ export const DEFAULT_RUN = deepFreeze({ viewport: { width: 1440, height: 900 }, 
 
 export const GPLUS_FAMILIES = deepFreeze(Object.fromEntries(["typography", "icon", "brand", "actions", "inputs"].map((family) => [family, GPLUS_STORY_IDS.filter((id) => id.startsWith(`${family}-`))])));
 
-// storyId -> check ids the story must exercise (status n/a fails). The matrices carry what their boards
-// show (measured on the wired matrices); every sample must at least exercise the five checks any
-// rendered page has. Rail, row alignment, mark and control height come from the stories that carry
-// their hooks: in a full run every check must apply somewhere in the set (SET_REQUIRED_CHECKS).
-const ANY_PAGE_CHECKS = ["clip", "singleLine", "shadowBlur", "contrast", "overlap"];
+// storyId -> check ids the story must exercise (status n/a fails), per board (C-12). Every story must
+// exercise the four checks any rendered page has. The matrices add their data-cell state grids
+// (contrast); typography adds its marks, actions its state-grid table rows (rowAlign), and actions and
+// inputs their declared control heights (data-h 28 / 32 / 40, SUB-074). The samples carry no data-cell,
+// so contrast is not theirs: each must exercise the rail of its shell (16 / 48), and the four with
+// TableShell rows (every sample but inputs-sample-members) their row alignment. The board rows of
+// docs/design/gplus-2026-10/storybook-map.json list the same checks (the any-page four aside). In a
+// full run every check must also apply somewhere in the set (SET_REQUIRED_CHECKS).
+const ANY_PAGE_CHECKS = ["clip", "singleLine", "shadowBlur", "overlap"];
+const MATRIX_CHECKS = [...ANY_PAGE_CHECKS, "contrast"];
+const SAMPLE_CHECKS = [...ANY_PAGE_CHECKS, "rail"];
 export const REQUIRED_CHECKS = deepFreeze({
-  "typography-matrix": [...ANY_PAGE_CHECKS, "mark"],
-  "icon-matrix": [...ANY_PAGE_CHECKS],
-  "brand-matrix": [...ANY_PAGE_CHECKS],
-  "actions-matrix": [...ANY_PAGE_CHECKS, "rowAlign"],
-  "inputs-matrix": [...ANY_PAGE_CHECKS],
-  "typography-sample-billing": [...ANY_PAGE_CHECKS],
-  "icon-sample-project": [...ANY_PAGE_CHECKS],
-  "brand-sample-product": [...ANY_PAGE_CHECKS],
-  "actions-sample-project": [...ANY_PAGE_CHECKS],
-  "inputs-sample-members": [...ANY_PAGE_CHECKS]
+  "typography-matrix": [...MATRIX_CHECKS, "mark"],
+  "icon-matrix": [...MATRIX_CHECKS],
+  "brand-matrix": [...MATRIX_CHECKS],
+  "actions-matrix": [...MATRIX_CHECKS, "rowAlign", "controlHeight"],
+  "inputs-matrix": [...MATRIX_CHECKS, "controlHeight"],
+  "typography-sample-billing": [...SAMPLE_CHECKS, "rowAlign"],
+  "icon-sample-project": [...SAMPLE_CHECKS, "rowAlign"],
+  "brand-sample-product": [...SAMPLE_CHECKS, "rowAlign"],
+  "actions-sample-project": [...SAMPLE_CHECKS, "rowAlign"],
+  "inputs-sample-members": [...SAMPLE_CHECKS]
 });
 export const SET_REQUIRED_CHECKS = deepFreeze([...CHECK_IDS]);
 

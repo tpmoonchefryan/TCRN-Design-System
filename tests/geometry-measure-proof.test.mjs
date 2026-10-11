@@ -412,6 +412,49 @@ test("every G+ story has its required checks and the families split the ten ids"
   assert.deepEqual(Object.values(GPLUS_FAMILIES).flat().sort(), [...GPLUS_STORY_IDS].sort());
 });
 
+// TCRN-DS-SUB-077 (C-12): the required checks follow what each board carries. A sample has no
+// data-cell, so contrast was n/a on all five; rail and the TableShell rows are what a sample carries,
+// and the actions and inputs matrices declare their control heights (data-h, SUB-074).
+const storybookMap = JSON.parse(readFileSync(new URL("../docs/design/gplus-2026-10/storybook-map.json", import.meta.url), "utf8"));
+const ANY_PAGE = ["clip", "singleLine", "shadowBlur", "overlap"];
+const TABLE_SHELL_SAMPLES = ["typography-sample-billing", "icon-sample-project", "brand-sample-product", "actions-sample-project"];
+
+test("samples must measure rail and their table rows but not contrast; actions and inputs matrices control height", () => {
+  for (const checks of Object.values(REQUIRED_CHECKS)) for (const id of ANY_PAGE) assert.ok(checks.includes(id), id);
+  for (const id of GPLUS_SAMPLE_STORY_IDS) {
+    assert.ok(!REQUIRED_CHECKS[id].includes("contrast"), `${id}: a sample has no data-cell`);
+    assert.ok(REQUIRED_CHECKS[id].includes("rail"), `${id}: rail`);
+    assert.equal(REQUIRED_CHECKS[id].includes("rowAlign"), TABLE_SHELL_SAMPLES.includes(id), `${id}: rowAlign with TableShell rows only`);
+  }
+  for (const id of GPLUS_MATRIX_STORY_IDS) {
+    assert.ok(REQUIRED_CHECKS[id].includes("contrast"), `${id}: contrast`);
+    assert.ok(!REQUIRED_CHECKS[id].includes("rail"), `${id}: a matrix has no shell`);
+    assert.equal(REQUIRED_CHECKS[id].includes("controlHeight"), ["actions-matrix", "inputs-matrix"].includes(id), `${id}: controlHeight`);
+  }
+});
+
+test("the storybook map rows list the gate's required checks (the any-page four aside) and DIFF-6 records before-bg", () => {
+  for (const id of GPLUS_STORY_IDS) {
+    const rows = storybookMap.rows.filter((row) => row.storyId === id);
+    assert.ok(rows.length > 0, `${id}: no map row`);
+    const fromMap = new Set([...ANY_PAGE, ...rows.flatMap((row) => row.requiredChecks)]);
+    assert.deepEqual([...fromMap].sort(), [...new Set(REQUIRED_CHECKS[id])].sort(), id);
+  }
+  for (const row of storybookMap.rows.filter((item) => item.kind === "sample")) assert.ok(!row.requiredChecks.includes("contrast"), row.row);
+  const diff6 = storybookMap.differences.find((item) => item.id === "DIFF-6");
+  assert.equal(diff6.status, "测量库已支持 before-bg（W5-C）");
+  assert.doesNotMatch(diff6.story, /unknown_probe/);
+});
+
+test("on the built docs no required check is n/a: samples measure rail and rows, actions and inputs control height", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
+  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: [...GPLUS_STORY_IDS], themes: ["light"], mutations: [], probes: [] });
+  assert.equal(report.reason, null);
+  assert.deepEqual(report.missingStories, []);
+  assert.equal(report.runs.length, GPLUS_STORY_IDS.length);
+  for (const run of report.runs) assert.deepEqual(run.notApplicableRequired, [], run.storyId);
+  for (const id of ["actions-matrix", "inputs-matrix"]) assert.equal(report.runs.find((run) => run.storyId === id).verdict.checks.controlHeight.status, "pass", id);
+});
+
 test("STORY-131 GWT1-3 each have a real-story mutation on the check they name", () => {
   const bySource = Object.fromEntries(STORY_MUTATIONS.map((mutation) => [mutation.source, mutation]));
   assert.equal(bySource["131-GWT1"].check, "rowAlign");
