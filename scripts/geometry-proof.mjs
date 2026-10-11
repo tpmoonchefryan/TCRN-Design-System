@@ -24,6 +24,10 @@ const collapsedVariant = "desktop-light-operations-cockpit-collapsed";
 // combobox. It was 8 until the dense operations shell prototype and its two menu buttons
 // ("Open compact operations hub", "Open dense navigation menu") were retired (TCRN-DS-SUB-066).
 const EXPECTED_OPEN_MENUS = 6;
+// Collapsed composition-one rail (O-1, TCRN-DS-SUB-090), read on the package ProductShell in the
+// collapsed brand host: the sidebar is 52 wide, the product mark stays 22 x 22 and the brand copy
+// is display none (TCRN-DS-SUB-089).
+const COLLAPSED_RAIL = Object.freeze({ sidebarWidthPx: 52, markPx: 22, tolerancePx: 0.5 });
 
 function contentType(path) {
   switch (extname(path)) {
@@ -119,7 +123,7 @@ async function measureBadge(page) {
 }
 
 async function measureBrands(page) {
-  return page.evaluate(({ storyId, variant }) => {
+  return page.evaluate(async ({ storyId, variant, rail }) => {
     const root = document.querySelector(`article[data-story-id="${storyId}"]`);
     const nodes = root ? [...root.querySelectorAll(".tcrn-brand-mark")] : [];
     const marks = nodes.map((node) => {
@@ -136,6 +140,27 @@ async function measureBrands(page) {
     const collapsed = root?.querySelector(`[data-visual-instance-variant="${variant}"] .tcrn-brand-mark`);
     const collapsedBox = collapsed?.getBoundingClientRect();
     const collapsedParent = collapsed?.parentElement?.getBoundingClientRect();
+    // Collapsed rail readings on the package ProductShell of the same variant, read after its
+    // width transition has finished.
+    const collapsedShell = root?.querySelector(`.tcrn-product-shell[data-visual-instance-variant="${variant}"]`);
+    await Promise.all((collapsedShell?.getAnimations({ subtree: true }) ?? []).map((animation) => animation.finished.catch(() => null)));
+    const sidebarBox = collapsedShell?.querySelector(".tcrn-product-shell__sidebar")?.getBoundingClientRect();
+    const railMarkBox = collapsedShell?.querySelector(".tcrn-product-shell__brand .tcrn-brand-mark")?.getBoundingClientRect();
+    const railCopy = collapsedShell?.querySelector(".tcrn-product-shell__brand .tcrn-product-logo__copy, .tcrn-product-shell__brand .tcrn-shell-brand-lockup__copy");
+    const near = (value, expected) => typeof value === "number" && Math.abs(value - expected) <= rail.tolerancePx;
+    const collapsedRail = {
+      collapsed: collapsedShell?.getAttribute("data-product-shell-collapsed") ?? null,
+      sidebarWidth: sidebarBox ? Number(sidebarBox.width.toFixed(2)) : null,
+      markWidth: railMarkBox ? Number(railMarkBox.width.toFixed(2)) : null,
+      markHeight: railMarkBox ? Number(railMarkBox.height.toFixed(2)) : null,
+      copyDisplay: railCopy ? getComputedStyle(railCopy).display : null,
+      expected: { sidebarWidth: rail.sidebarWidthPx, mark: `${rail.markPx}x${rail.markPx}`, copyDisplay: "none", tolerancePx: rail.tolerancePx }
+    };
+    collapsedRail.ok = collapsedRail.collapsed === "true"
+      && near(collapsedRail.sidebarWidth, rail.sidebarWidthPx)
+      && near(collapsedRail.markWidth, rail.markPx)
+      && near(collapsedRail.markHeight, rail.markPx)
+      && collapsedRail.copyDisplay === "none";
     return {
       count: marks.length,
       marks,
@@ -145,11 +170,13 @@ async function measureBrands(page) {
         parentWidth: collapsedParent ? Number(collapsedParent.width.toFixed(2)) : null,
         parentHeight: collapsedParent ? Number(collapsedParent.height.toFixed(2)) : null
       },
-      ok: marks.length > 0
+      collapsedRail,
+      ok: collapsedRail.ok
+        && marks.length > 0
         && marks.every((mark) => mark.width > 0 && mark.height > 0 && mark.parentWidth > 0 && mark.parentHeight > 0)
         && Boolean(collapsedBox && collapsedParent && collapsedBox.width > 0 && collapsedBox.height > 0 && collapsedParent.width > 0 && collapsedParent.height > 0)
     };
-  }, { storyId: brandStory, variant: collapsedVariant });
+  }, { storyId: brandStory, variant: collapsedVariant, rail: COLLAPSED_RAIL });
 }
 
 async function expandAllStories(page) {
@@ -439,6 +466,15 @@ async function main() {
     const brandBroken = await measureBrands(page);
     await removeMutation(page);
     const brandRestored = await measureBrands(page);
+    // Collapsed rail mutations: the rail back at the old 92, and the product mark scaled down.
+    await addMutation(page, `[data-visual-instance-variant="${collapsedVariant}"] { --tcrn-product-shell-sidebar-width: 92px !important; }`);
+    const brandRailBroken = await measureBrands(page);
+    await removeMutation(page);
+    const brandRailRestored = await measureBrands(page);
+    await addMutation(page, `[data-visual-instance-variant="${collapsedVariant}"] .tcrn-brand-mark { transform: scale(0.5) !important; }`);
+    const brandMarkBroken = await measureBrands(page);
+    await removeMutation(page);
+    const brandMarkRestored = await measureBrands(page);
 
     await page.goto(`${server.origin}${copyRoute}`);
     await settle(page);
@@ -470,16 +506,21 @@ async function main() {
       schemaVersion: "tcrn.ds.geometry-proof.v2",
       ok: recordContainment.ok && mobileNavigation.every(row => row.baseline.ok && !row.broken.ok && row.restored.ok) && badgeBaseline.ok && !badgeBroken.ok && badgeRestored.ok
         && brandBaseline.ok && !brandBroken.ok && brandRestored.ok
+        && !brandRailBroken.ok && brandRailRestored.ok && !brandMarkBroken.ok && brandMarkRestored.ok
         && copyBaseline.ok && !copyBroken.ok && copyRestored.ok
         && searchBaseline.ok && !searchBroken.ok && searchRestored.ok,
       redThenGreen: {
         badge: { red: !badgeBroken.ok, green: badgeRestored.ok },
         brand: { red: !brandBroken.ok, green: brandRestored.ok },
+        brandCollapsedRailWidth: { red: !brandRailBroken.ok, green: brandRailRestored.ok },
+        brandCollapsedMarkScale: { red: !brandMarkBroken.ok, green: brandMarkRestored.ok },
         copy: { red: !copyBroken.ok, green: copyRestored.ok },
         searchOverlay: { red: !searchBroken.ok, green: searchRestored.ok }
       },
       badge: { baseline: badgeBaseline, broken: badgeBroken, restored: badgeRestored },
       brand: { baseline: brandBaseline, broken: brandBroken, restored: brandRestored },
+      brandCollapsedRailWidth: { broken: brandRailBroken, restored: brandRailRestored },
+      brandCollapsedMarkScale: { broken: brandMarkBroken, restored: brandMarkRestored },
       copy: { baseline: copyBaseline, broken: copyBroken, restored: copyRestored },
       searchOverlay: { baseline: searchBaseline, broken: searchBroken, restored: searchRestored }
     };
