@@ -73,6 +73,13 @@
 - W8-A（SUB-046 其余部分：视觉基线与回执再生）：移到 R2 返工合入之后（problems/main.md M6）；fonts:vendor 已由主线程在 R1 批末跑过（d8586dd）。
 - R1 批末：verify 逐步跑（scratch `r1-verify/`）→ 三片验收（einzbern-main：A=EPIC-039+043，B=EPIC-040，C=EPIC-041+042）→ 判断（einzbern-main）→ 一次链写与知识采集 → R2 拆分（einzbern-economy）。
 
+## R1 批末进度
+
+- verify 逐步（HEAD d8586dd）：30 步红 11 步——tokens:proof（fonts 单测 3 条）、geometry:proof、shell:parity、contract:static、storybook:smoke、geometry:measure、storybook:visual-proof、doc:sample-style、internal-vocab:scan（新红：渲染文本命中 vault-path 规则）、full-surface、internal-alpha；表在 `runs/r1/verify/steps.md`，日志 scratch `r1-verify/`；改写的回执已存档 scratch `r1-verify/receipts-dirty/` 并还原。
+- 验收 A 已交回：120/121/122/134 均不通过（120 只差 GWT5 verify；121 mono 无 Noto 回退、shell-fidelity 未覆盖包；122 locale 菜单悬停色字面量、生成字体刻度段全是字面值；134 SUB-046 未跑与文档待 R2 后更新）；返工 10 项（主力档 5：A-2 至 A-6；A-1 fonts-proof 单测夹具仍用旧 token 名致 tokens:proof 后五个脚本未跑；A-6 缺 light 主题块）；六个口径全部可接受（M6 条件：SUB-046 在 R2 全部返工之后、最终 verify 之前跑一次）；Owner 项 O-1 夜间 TMS 后缀（建议 #7aa0f5）、O-2 3500 字（建议不加）、O-3 OFL 版权行（知悉）、O-4 夜间按钮抬升层字面色、O-5 焦点环间隙不随承载面。
+- 验收 C 已交回（文件 39.9 KB，按节读）：128–133 均不通过（128 GWT3 icons-motion 文档层覆写 72 处；129 GWT1 inputs 矩阵 40/42、GWT2 夜间页浅色块读夜间 token 与 err-msg、GWT3 阻塞于 Owner；130 映射 22 行全红；131 GWT4 夜间对比、err-msg、样板 rail 偏 33px、controlHeight 未适用；132 GWT4 C2 7＋C5 1；133 GWT1 部分——真实 verify 停在步 6）；返工 23 项（主力档 7：C-2、C-3、C-4、C-10、C-12、C-13、C-20；6 项跨分片待去重）；口径：W1-D、W1-E、W6-A 可接受，W5-C 有条件（不默认 --strict、补规则级守卫 C-3），W4-B C7 部分（第一批承载元素 title 须含可见文字 C-20），**W3-C 原型只删类留元素不可接受**（公开 Storybook 出现无样式原生元素，C-4）；证据盲区：步 6 后的子门未执行、步 17 日志截断（C-18）；Owner 项：O-1 构图一壳层几何（建议按 D1 授权只改 ProductShell 几项几何）、O-2 DIFF-2/3/8、O-3 锁定组合后缀与标语对比（建议 WCAG 1.4.3 商标字标例外，夜间后缀同定）、O-4 退役原型并删守护断言（建议照做，Owner 可更正）、O-5 知悉（C-2 文档壳视觉 oracle P18、C-19 宽限表 P24）。
+- 验收三片（einzbern-main）在跑：A=STORY-120/121/122/134、B=123–127、C=128–133，产出 `runs/r1/acceptance/{A,B,C}.md`。
+
 ## 下一步
 
 1. 等 W1-A/B/C 交回（完成通知即唤醒）；逐包核对后合入集成分支，按上面的优先级补位派包（每次派前生成该包摘录并提交到集成分支）。
