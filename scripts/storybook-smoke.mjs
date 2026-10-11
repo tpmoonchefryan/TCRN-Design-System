@@ -3857,8 +3857,11 @@ async function main() {
 	    localeMenuFocusReturnProof,
 	    categoryStoryCountBudget
 	  }, null, 2));
+  // TCRN-DS-SUB-082 (R2-22): set the exit code instead of exiting at once. process.exit() ended the
+  // process while stdout still held unwritten bytes, so the report above was cut off when piped
+  // (the R1 log stopped at 65,750 B, in the middle of an object). Node now drains stdout first.
   if (!ok) {
-    process.exit(1);
+    process.exitCode = 1;
   }
 }
 
