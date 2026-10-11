@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: Apache-2.0
+# Runs the repository gate chain (`pnpm verify`) for every pushed branch and pull request
+# (TCRN-DS-STORY-133 GWT3). The steps follow the local run: pnpm 10.12.1 through corepack,
+# a frozen-lockfile install, Playwright's Chromium for the browser gates, then `pnpm verify`.
+# verify itself decides what runs and in which order (root package.json); this file adds no
+# gate, skip switch or report write of its own.
+
+name: verify
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    # The browser gates in verify (storybook:smoke, geometry:proof, geometry:measure,
+    # storybook:visual-proof, doc:sample-style, fonts:render, internal-alpha:proof and others)
+    # open the built static docs in Playwright's Chromium with the vendored web fonts.
+    # Playwright's Linux dependencies supply the system fallback fonts that the fonts:render
+    # control leg expects to find once the vendored faces are blocked.
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out the repository with its full history and tags
+        uses: actions/checkout@v4
+        with:
+          # scaffold:proof (changelog-release-sections-proof) reads git tags and history.
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Enable pnpm 10.12.1 through corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.12.1 --activate
+          pnpm --version
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run the gate chain
+        # brand-asset:proof fetches the published brand mark over HTTPS and compares its
+        # sha256 with the registered local file, so this job needs outbound network access.
+        run: pnpm verify
