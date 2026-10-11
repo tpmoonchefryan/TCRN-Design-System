@@ -23,7 +23,7 @@ import { readFileSync } from "node:fs";
 import { resolve, dirname, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { componentCssModules } from "./lib/component-css-sources.mjs";
-import { parseCss, shadowLayers, splitTopLevel } from "./lib/css-rules.mjs";
+import { compounds, parseCompound, parseCss, shadowLayers, splitTopLevel } from "./lib/css-rules.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -90,6 +90,10 @@ const DUPLICATE_DOCS_SURFACES = [
 // for .tcrn-filter-bar — is documented there as non-duplicating (the package owns it only via the scoped
 // `.tcrn-table-toolbar .tcrn-filter-bar` rule, so a top-level docs `.tcrn-filter-bar`
 // shares the key-subject but not the selector).
+// A whitelisted subject is still held to placement by the rule-level guard below
+// (TCRN-DS-SUB-065): only placement properties, or an exception registered for that exact
+// selector, pass. Entries go when their last doc rule goes (.tcrn-sr-only and
+// .tcrn-brand-wordmark__base with TCRN-DS-SUB-063, .tcrn-brand-wordmark with SUB-065).
 const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-skip-link",
   // Demo-scoped overrides of package classes (docs/style-scale.md exemption list). The
@@ -100,7 +104,6 @@ const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-product-switcher",
   ".tcrn-segmented-nav",
   ".tcrn-field",
-  ".tcrn-brand-wordmark",
   ".tcrn-brand-wordmark__suffix",
   ".tcrn-product-logo__copy",
   ".tcrn-tooltip__content",
@@ -244,6 +247,138 @@ export function shadowBlurFindings(css, source) {
   return findings;
 }
 
+// TCRN-DS-SUB-065 (STORY-128 GWT3): rule-level guard. In the three docs style sources a rule
+// whose subject compound (the rightmost compound of a selector) carries a package class may
+// only place that component. doc:sample-style compares only the samples a matrix shares a
+// signature with, and the duplicate-selector check only asks whether the package styles the
+// same subject, so a docs rule that repainted a package component (the global ShellBrandLockup
+// wordmark size, TCRN-DS-SUB-063) passed every gate. A package class is any tcrn-* class
+// outside the docs' own tcrn-doc- prefix, so classes a component writes without a rule count.
+// Placement is what docs/style-scale.md ("Package components placed by doc scaffolding": grid
+// area, track width, wrapping) and the R2-16 ruling (grid-area, order, margins, self
+// alignment) allow: grid placement, order, margins, self alignment, flex item sizing, inline
+// size and text wrapping. Every other property, custom properties included, is a finding
+// unless an exception below registers that selector and property.
+const PLACEMENT_PROPERTIES = new Set([
+  "grid-area", "grid-row", "grid-row-start", "grid-row-end", "grid-column", "grid-column-start", "grid-column-end",
+  "order",
+  "margin", "margin-top", "margin-right", "margin-bottom", "margin-left",
+  "margin-block", "margin-block-start", "margin-block-end", "margin-inline", "margin-inline-start", "margin-inline-end",
+  "align-self", "justify-self", "place-self",
+  "flex", "flex-grow", "flex-shrink", "flex-basis",
+  "width", "min-width", "max-width", "inline-size", "min-inline-size", "max-inline-size",
+  "white-space", "overflow-wrap", "word-break"
+]);
+
+// Registered exceptions, written the EX-INIT015-* way (docs/contract/exemptions.json): each
+// entry names exact selectors (whitespace collapsed, as the CSS reader gives them) and the
+// properties it admits for them, with a ruling reference, a reason and a removal condition.
+// An entry admits nothing else, and an entry no rule used is listed as docExceptionsUnused.
+const JUDGMENT_C21 = "runs/r1/judgment.md（TCRN-DS-INIT-015）§3.3 C-21：文档壳跟随包壳几何（侧栏、品牌关系）取决于 O-1，未答复时暂缓；§3.4 第 10 项：C-21 暂缓到 O-1 之后，不按包壳现行几何先改一遍";
+export const DOC_PACKAGE_CLASS_EXCEPTIONS = Object.freeze([
+  {
+    id: "EX-INIT015-doc-tooltip-static-preview",
+    selectors: [
+      '.tcrn-tooltip[data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
+      '.tcrn-tooltip[data-placement="top"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
+      '.tcrn-tooltip[data-placement="bottom"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
+      '.tcrn-tooltip[data-placement="right"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
+      '.tcrn-tooltip[data-placement="left"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content'
+    ],
+    properties: ["opacity", "transform"],
+    ruling: "docs/style-scale.md「Demo-chrome exemption list」Component-scoped demo hooks 条：tooltip 静态预览钩子为静态文档强制显示展开态；Tooltip 属 Overlay 家族，TCRN-DS-INIT-015 scope 不授权改动后续批次家族（同 EX-INIT015-overlay）",
+    reason: "静态文档页没有悬停，钩子只把包的 tooltip 内容移到展开位置并显示（opacity、transform），不改颜色、字号与边框",
+    until: "Overlay 家族所在批次获得授权、包提供静态展开态时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-filter-bar",
+    selectors: [".tcrn-filter-bar"],
+    properties: ["display", "flex-wrap", "gap"],
+    ruling: "docs/style-scale.md「Demo-chrome exemption list」Component-scoped demo hooks 条：顶层 .tcrn-filter-bar 是文档的标签排布钩子，包只在 .tcrn-table-toolbar .tcrn-filter-bar 里定义它；所属 Navigation 家族属后续批次（同 EX-INIT015-navigation）",
+    reason: "包没有独立 FilterBar 的排布规则，文档只给演示行排布（display、flex-wrap、gap），不改颜色、字号与边框",
+    until: "Navigation 家族所在批次获得授权、包给 FilterBar 独立排布时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-nav-proof-skip-link",
+    selectors: [
+      ".tcrn-doc-package-nav-proof__skip .tcrn-skip-link:not(:focus)",
+      ".tcrn-doc-package-nav-proof__skip .tcrn-skip-link:focus"
+    ],
+    properties: ["position", "height", "overflow", "clip", "clip-path", "border", "padding", "transform", "display", "align-items"],
+    ruling: "docs/style-scale.md「Demo-chrome exemption list」Package components placed by doc scaffolding 条：文档保留基础原件 .tcrn-skip-link 的演示放置；包导航证明框属 Navigation 家族演示，TCRN-DS-INIT-015 scope 不授权改动后续批次家族（同 EX-INIT015-navigation）",
+    reason: "证明框里的跳转链接未获焦时收成 1px 的读屏隐藏框（position、height、overflow、clip、clip-path、border、padding、transform），获焦时按行内弹性盒显示（display、align-items）；文档壳自己的 .tcrn-skip-link 副本已删（TCRN-DS-SUB-063）",
+    until: "Navigation 家族所在批次获得授权、包导航证明框改由包组件呈现跳转链接时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-shell-brand-collapse",
+    selectors: [
+      ".tcrn-doc-brand .tcrn-shell-brand-lockup__copy",
+      '.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy',
+      '.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-brand .tcrn-product-logo__copy',
+      '.tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy',
+      '.tcrn-doc-shell[data-sidebar-motion="expanding"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy'
+    ],
+    properties: ["opacity", "overflow", "transform", "visibility", "transition", "pointer-events", "animation"],
+    ruling: JUDGMENT_C21,
+    reason: "文档壳侧栏收起与展开时，品牌锁定组合的文案按 opacity、transform、visibility 淡出与滑入（含过渡、动画与收起后不接收指针），是文档壳的侧栏动效，不改包组件的颜色、字号与边框",
+    until: "O-1 答复、C-21 文档壳按包壳几何重做时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-shell-brand-narrow",
+    selectors: [
+      ".tcrn-doc-global-brand .tcrn-doc-brand .tcrn-shell-brand-lockup__copy",
+      ".tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo__copy"
+    ],
+    properties: ["display"],
+    ruling: JUDGMENT_C21,
+    reason: "文档壳在 240px 以下的极窄视口只留品牌标、隐藏品牌文案",
+    until: "O-1 答复、C-21 文档壳按包壳几何重做时删除本条"
+  }
+]);
+
+function isPackageClass(name) {
+  return name.startsWith("tcrn-") && !name.startsWith("tcrn-doc-");
+}
+
+// The guard's view of a docs surface: docSurfaceCss, and for storybook.css the generated demo
+// layer blanked as well. That region is a copy of story-demo-styles.ts, which the guard reads
+// directly, and demo-styles-sync --check holds the copy to it.
+const DEMO_LAYER_START = "/* Demo layer generated from story-demo-styles.ts";
+const DEMO_LAYER_END = "/* End demo layer generated from story-demo-styles.ts */";
+export function guardSurfaceCss(surface, text) {
+  const css = docSurfaceCss(surface, text);
+  const start = css.indexOf(DEMO_LAYER_START);
+  const end = start < 0 ? -1 : css.indexOf(DEMO_LAYER_END, start);
+  if (start < 0 || end < 0) return css;
+  return css.slice(0, start) + css.slice(start, end).replace(/[^\n]/g, " ") + css.slice(end);
+}
+
+// Findings of the rule-level guard in one stylesheet text: one per selector whose subject
+// compound carries a package class, listing the properties that are neither placement nor
+// admitted by an exception for that exact selector. `used` collects the exception ids that
+// admitted something.
+export function packageClassAppearanceFindings(css, source, exceptions = DOC_PACKAGE_CLASS_EXCEPTIONS, used = new Set()) {
+  const findings = [];
+  for (const rule of parseCss(css, { source }).rules) {
+    if (rule.kind !== "style") continue;
+    for (const selector of rule.selectors) {
+      const parts = compounds(selector);
+      const subject = parts[parts.length - 1]?.text ?? "";
+      if (!parseCompound(subject).classes.some(isPackageClass)) continue;
+      const entries = exceptions.filter((entry) => entry.selectors.includes(selector));
+      const offending = [];
+      for (const { prop } of rule.declarations) {
+        if (PLACEMENT_PROPERTIES.has(prop)) continue;
+        const admitted = entries.find((entry) => entry.properties.includes(prop));
+        if (admitted) used.add(admitted.id);
+        else if (!offending.includes(prop)) offending.push(prop);
+      }
+      if (offending.length > 0) findings.push({ where: `${source}:${rule.line}`, selector, value: offending.join(", ") });
+    }
+  }
+  return findings;
+}
+
 export const UNCHECKED_CLAIMS = Object.freeze({
   nestedCards: "compositional judgement; no machine check exists in this repository",
   genericLeftRailAdminShellCreep: "compositional judgement; no machine check exists in this repository",
@@ -263,7 +398,8 @@ function owningSelector(lines, index) {
 export function scanShellFidelity() {
   const findings = {
     decorativeGradients: [], radiusLiterals: [], softCloudShadows: [], reducedMotionKillSwitches: [],
-    hexLiterals: [], fontSizeLiterals: [], spacingLiterals: [], pillLiterals: [], duplicateSelectors: []
+    hexLiterals: [], fontSizeLiterals: [], spacingLiterals: [], pillLiterals: [], duplicateSelectors: [],
+    packageClassAppearance: [], docExceptionsUnused: []
   };
 
   for (const surface of SURFACES) {
@@ -378,6 +514,17 @@ export function scanShellFidelity() {
     }
   }
 
+  // Rule-level guard (TCRN-DS-SUB-065): package-class subjects in the three docs sources
+  // declare placement only, apart from the registered exceptions.
+  const usedExceptions = new Set();
+  for (const surface of SURFACES) {
+    const css = guardSurfaceCss(surface, readFileSync(resolve(root, surface), "utf8"));
+    findings.packageClassAppearance.push(...packageClassAppearanceFindings(css, surface, DOC_PACKAGE_CLASS_EXCEPTIONS, usedExceptions));
+  }
+  for (const entry of DOC_PACKAGE_CLASS_EXCEPTIONS) {
+    if (!usedExceptions.has(entry.id)) findings.docExceptionsUnused.push({ where: "scripts/shell-fidelity-proof.mjs", selector: entry.id });
+  }
+
   return findings;
 }
 
@@ -392,7 +539,8 @@ export function fidelityRejectChecks() {
     fontSizeLiteralOffScale: findings.fontSizeLiterals.length > 0,
     spacingLiteralOffScale: findings.spacingLiterals.length > 0,
     pillRadiusLiteral: findings.pillLiterals.length > 0,
-    docsPackageSelectorDuplication: findings.duplicateSelectors.length > 0,
+    // The rule-level guard (TCRN-DS-SUB-065) reports under the same check.
+    docsPackageSelectorDuplication: findings.duplicateSelectors.length > 0 || findings.packageClassAppearance.length > 0,
     findings
   };
 }
@@ -437,6 +585,35 @@ export function assertDetectorShapes() {
       console.error(`shell-fidelity soft-cloud self-test FAILED: ${probe} (expected ${added} new finding(s), got ${found})`);
       process.exit(1);
     }
+  }
+
+  // Rule-level guard mutations (TCRN-DS-SUB-065) on a copy of the real story-demo-styles.ts
+  // CSS: a package-class subject that repaints is one new finding (also under a dark scope and
+  // a state); placement only, or a package class used as ancestor context, adds none.
+  const docCss = guardSurfaceCss("apps/storybook/src/story-demo-styles.ts", readFileSync(resolve(root, "apps/storybook/src/story-demo-styles.ts"), "utf8"));
+  const docBaseline = packageClassAppearanceFindings(docCss, "self-test").length;
+  const guardCases = [
+    [".tcrn-doc-x .tcrn-button{background:red}", 1],
+    ['[data-tcrn-theme="dark"] .tcrn-doc-x .tcrn-button--primary:hover{color:red}', 1],
+    [".tcrn-doc-x .tcrn-button{--tcrn-pair-fill:red}", 1],
+    [".tcrn-doc-x .tcrn-button{grid-area:a;order:2;margin:0 auto;justify-self:end;flex:1 1 auto;width:100%;white-space:nowrap}", 0],
+    [".tcrn-button .tcrn-doc-x{background:red}", 0]
+  ];
+  for (const [probe, added] of guardCases) {
+    const found = packageClassAppearanceFindings(`${docCss}\n${probe}`, "self-test").length - docBaseline;
+    if (found !== added) {
+      console.error(`shell-fidelity rule-level guard self-test FAILED: ${probe} (expected ${added} new finding(s), got ${found})`);
+      process.exit(1);
+    }
+  }
+  // An exception admits only its own selector and properties.
+  const probeExceptions = [{ id: "self-test", selectors: [".tcrn-doc-x .tcrn-tooltip__content"], properties: ["opacity"] }];
+  const admitted = packageClassAppearanceFindings(".tcrn-doc-x .tcrn-tooltip__content{opacity:1}", "self-test", probeExceptions);
+  const partly = packageClassAppearanceFindings(".tcrn-doc-x .tcrn-tooltip__content{opacity:1;color:red}", "self-test", probeExceptions);
+  const otherSelector = packageClassAppearanceFindings(".tcrn-doc-y .tcrn-tooltip__content{opacity:1}", "self-test", probeExceptions);
+  if (admitted.length !== 0 || partly.length !== 1 || partly[0].value !== "color" || otherSelector.length !== 1) {
+    console.error("shell-fidelity rule-level guard self-test FAILED: exception scoping");
+    process.exit(1);
   }
 }
 

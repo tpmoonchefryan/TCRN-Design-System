@@ -494,10 +494,6 @@ label {
 .tcrn-doc-nav-component-preview .tcrn-product-switcher {
   width: max-content;
   max-width: 100%;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 62%, var(--tcrn-color-surface-panel));
-  padding: var(--tcrn-space-1);
 }
 
 .tcrn-doc-package-nav-proof {
@@ -595,8 +591,6 @@ label {
 }
 
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
-  display: grid;
-  gap: var(--tcrn-space-0h);
   max-width: 220px;
   min-width: 0;
   opacity: 1;
@@ -619,13 +613,7 @@ label {
 .tcrn-doc-brand .tcrn-shell-brand-lockup__caption {
   max-width: 100%;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--tcrn-color-brand-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 700;
-  line-height: 1.25;
 }
 
 .tcrn-doc-search-results {
@@ -1173,16 +1161,8 @@ label {
 .tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup {
   width: 100%;
 }
-.tcrn-doc-knowledge-shell__brand .tcrn-brand-wordmark {
-  align-items: flex-start;
-  flex-direction: column;
-  gap: var(--tcrn-space-0h);
-  font-size: var(--tcrn-type-size-heading-3);
-  line-height: 1.05;
-}
 .tcrn-doc-knowledge-shell__brand .tcrn-brand-wordmark__suffix {
   flex-basis: auto;
-  line-height: 1.06;
 }
 .tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup__caption {
   white-space: nowrap;
