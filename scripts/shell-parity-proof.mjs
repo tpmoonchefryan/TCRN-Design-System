@@ -809,6 +809,9 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
           return { kind: "tcrn-locale-metadata", key: selected?.getAttribute("data-locale") ?? document.documentElement.lang };
         }
         if (node.matches("img") && node.closest("[data-registered-product-logo]")) return { kind: "registered-brand-asset", key: "tcrn-brand-mark" };
+        // G+ product marks render inline from the generated marks (TCRN-DS-SUB-022): an
+        // svg[data-product-mark] inside a registered logo is the same registered brand asset.
+        if (node.matches("svg[data-product-mark]") && node.closest("[data-registered-product-logo]")) return { kind: "registered-brand-asset", key: `product-mark:${node.getAttribute("data-product-mark")}` };
         return { kind: "literal", key: null };
       };
       const semanticName = (node) => {

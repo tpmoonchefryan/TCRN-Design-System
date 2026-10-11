@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
-import { createTokenMap, tcrnDarkThemeTokens, tcrnTokens } from "@tcrn/ui-tokens";
+import { createResolvedTokenMap, tcrnTokens } from "@tcrn/ui-tokens";
 import alphaMeta from "./alpha.stories.js";
 import {
   i18nText,
@@ -855,11 +855,13 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readRenderedGroupPage("Components"), /No shortcut label/);
   assert.match(readRenderedGroupPage("Components"), /Navigation or shell search/);
   assert.match(readRenderedGroupPage("Components"), /Shortcut allowed/);
-  assert.match(combinedHtml, /\.tcrn-field:focus-within[\s\S]*background-color/);
+  // G+ Inputs (TCRN-DS-SUB-020): focus no longer washes the whole field; the control inside
+  // changes its own edge and draws the focus ring from the inputs pair table.
+  assert.doesNotMatch(combinedHtml, /\.tcrn-field:focus-within/);
   assert.match(combinedHtml, /\.tcrn-field--error[\s\S]*outline-color: var\(--tcrn-color-state-blocked\)/);
   assert.match(combinedHtml, /\.tcrn-field \{[\s\S]*transition:[\s\S]*background-color 150ms ease-out,[\s\S]*outline-color 150ms ease-out/);
   assert.match(combinedHtml, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.tcrn-field[\s\S]*transition: none/);
-  assert.match(combinedHtml, /@media \(forced-colors: active\)[\s\S]*\.tcrn-field:focus-within,[\s\S]*\.tcrn-field--error[\s\S]*outline: 2px solid Highlight/);
+  assert.match(combinedHtml, /@media \(forced-colors: active\)[\s\S]*\.tcrn-field--error[\s\S]*outline: 2px solid Highlight/);
   const fieldAttentionBlocks = Array.from(
     combinedHtml.matchAll(/\.tcrn-field[^{]*\{[^}]*\}/g),
     (match) => match[0]
@@ -1114,30 +1116,23 @@ test("style guide color index surfaces every color token and type-scale sizes st
   }
 });
 
-test("canvas color and theme-color first-paint mirror the surface-canvas token", () => {
-  const canvasVar = "--tcrn-color-surface-canvas";
-  const canvasLight = createTokenMap()[canvasVar];
-  const canvasDark = tcrnDarkThemeTokens.find((token) => token.variable === canvasVar)?.value;
-  assert.ok(canvasLight, "light surface-canvas token missing");
-  assert.ok(canvasDark, "dark surface-canvas token missing");
-
-  // Real-Storybook preview background must equal the light canvas token.
+test("canvas color and theme-color first-paint mirror the G+ ground token", () => {
+  // G+ canvas (TCRN-DS-SUB-007): the ground token --tcrn-color-bg, read from the token package
+  // in preview.ts and client-scripts.ts rather than copied as a hex literal.
+  const canvasLight = createResolvedTokenMap("light")["--tcrn-color-bg"];
+  const canvasDark = createResolvedTokenMap("dark")["--tcrn-color-bg"];
+  assert.match(canvasLight, /^#[0-9a-f]{6}$/i);
+  assert.match(canvasDark, /^#[0-9a-f]{6}$/i);
   const preview = readStorybookSource(".storybook/preview.ts");
-  assert.match(preview, new RegExp('"TCRN canvas",\\s*value:\\s*"' + escapeRegExp(canvasLight) + '"'));
-  assert.doesNotMatch(preview, /#f4f7fa/i, "stale preview canvas value #f4f7fa must be gone");
-
-  // Static-docs first-paint theme-color meta must equal the light canvas token.
+  assert.match(preview, /createResolvedTokenMap\("light"\)\["--tcrn-color-bg"\]/);
+  assert.match(preview, /"TCRN canvas",\s*value:\s*tcrnCanvas\b/);
+  assert.doesNotMatch(preview, /#[0-9a-f]{6}\b/i, "preview.ts must not hand-copy a canvas hex");
   const componentsPage = readGroupPage("Components");
-  assert.ok(
-    componentsPage.includes('<meta name="theme-color" content="' + canvasLight + '" data-storybook-theme-color'),
-    "first-paint theme-color meta must equal the light canvas token"
-  );
-  assert.doesNotMatch(componentsPage, /content="#f6f7fb"/i, "stale first-paint theme-color #f6f7fb must be gone");
-
-  // Manual mirror in client-scripts must equal the light/dark canvas tokens.
+  assert.ok(componentsPage.includes('<meta name="theme-color" content="' + canvasLight + '" data-storybook-theme-color'));
+  assert.match(componentsPage, new RegExp('light:\\s*"' + escapeRegExp(canvasLight) + '",\\s*dark:\\s*"' + escapeRegExp(canvasDark) + '"'));
   const clientScripts = readStorybookSource("src/build/client-scripts.ts");
-  assert.match(clientScripts, new RegExp('light:\\s*"' + escapeRegExp(canvasLight) + '"'));
-  assert.match(clientScripts, new RegExp('dark:\\s*"' + escapeRegExp(canvasDark) + '"'));
+  assert.match(clientScripts, /createResolvedTokenMap\(theme\)\["--tcrn-color-bg"\]/);
+  assert.doesNotMatch(clientScripts, /(?:light|dark):\s*"#[0-9a-f]{6}"/i);
 });
 
 test("STORY-283 the design-authority contract reports this build's own version and token bytes", () => {
@@ -1472,7 +1467,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(aosLogo?.taglineLocaleSelector, "tcrnProductTagline(productId, locale)");
   assert.equal(contract.productLogoRegistry?.find((logo: { productId: string }) => logo.productId === "design-system")?.stackSuffix, true);
   assert.match(contract.brandSurfaceDisposition, /ProductLogo and tcrnProductLogoRegistry are registered @tcrn\/ui-react exports/);
-  assert.match(contract.brandSurfaceDisposition, /TCRN stays regular weight/);
+  assert.match(contract.brandSurfaceDisposition, /TCRN stays in ink at medium weight/);
   assert.match(contract.brandSurfaceDisposition, /long suffixes such as Design System must stack under TCRN/);
   assert.match(contract.brandSurfaceDisposition, /deprecated or unregistered AOS wordmark image assets are forbidden/);
   assert.match(contract.brandSurfaceDisposition, /Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs/);
