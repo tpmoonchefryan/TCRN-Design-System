@@ -5,7 +5,7 @@ import { chromium } from "@playwright/test";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
 import { gplusMatrixSourcePath, gplusMatrixStoryIds } from "../apps/storybook/dist/contract-stories/gplus/matrix-stories.js";
-import { gplusSampleSourcePath, gplusSampleStoryIds } from "../apps/storybook/dist/contract-stories/gplus/sample-stories.js";
+import { gplusCompositionThreeStoryId, gplusSampleSourcePath, gplusSampleStoryIds } from "../apps/storybook/dist/contract-stories/gplus/sample-stories.js";
 import { createResolvedTokenMap } from "../packages/ui-tokens/dist/index.js";
 import {
   CATEGORY_STORY_COUNT_CAP,
@@ -1890,11 +1890,12 @@ for (const story of requiredStories) {
     missing.push(`owning-page-story:${story.group}:${story.id}`);
   }
   // The G+ matrix and sample stories are rendered from their own modules and declare that
-  // module as their source path (TCRN-DS-SUB-030, TCRN-DS-SUB-031); every other story is
-  // rendered from story-content.tsx.
+  // module as their source path (TCRN-DS-SUB-030, TCRN-DS-SUB-031); the composition three sample
+  // (TCRN-DS-SUB-092) is rendered from the sample module too, outside the five sample ids
+  // (R3 integration item I-P2b-1); every other story is rendered from story-content.tsx.
   const owningSourcePath = Object.values(gplusMatrixStoryIds).includes(story.id)
     ? gplusMatrixSourcePath
-    : Object.values(gplusSampleStoryIds).includes(story.id)
+    : Object.values(gplusSampleStoryIds).includes(story.id) || story.id === gplusCompositionThreeStoryId
       ? gplusSampleSourcePath
       : "apps/storybook/src/contract-stories/story-content.tsx";
   const owningPageStory = new RegExp(`data-story-id="${story.id}"[^>]*data-story-category="[^"]+"[^>]*data-story-source-path="${owningSourcePath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`);
