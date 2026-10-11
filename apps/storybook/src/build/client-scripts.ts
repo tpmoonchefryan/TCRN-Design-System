@@ -188,6 +188,9 @@ export const storybookThemeScript = `<script>
 // in page-template.tsx). The locale dictionary (`storybookLocaleText`, shell/nav/titles) stays
 // WHOLE on every page — it is small and the nav/shell gates read every entry. Only the large
 // content dictionary is pruned, which is where the ~370KB/page payload lived.
+// TCRN-DS-SUB-079 gives a button with a disabled reason the title "label — reason". The dictionary
+// holds the label and the reason, not the pair, so attributeTextFor translates such a value part by
+// part (TCRN-DS-INIT-015 R2 integration item RM14).
 export const storybookI18nScript = (pageContentTranslations: Record<string, Record<TcrnLocale, string>>) => `<script>
 (() => {
   const supportedLocales = ${JSON.stringify(tcrnSupportedLocales)};
@@ -236,6 +239,30 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     }
     return contentTranslations[source]?.[locale] ?? contentTranslations[source]?.[fallbackLocale] ?? value;
   };
+  // An attribute value the dictionary does not hold whole but that joins two parts with " — " (a
+  // button title "label — reason") is translated on each side and joined again. A side the
+  // dictionary does not hold stays as it is; when neither side is held the value is left alone.
+  const partSeparator = " — ";
+  const attributeTextFor = (locale, value) => {
+    const trimmed = String(value ?? "").trim();
+    if (contentCanonicalLookup.has(trimmed) || !trimmed.includes(partSeparator)) {
+      return contentTextFor(locale, value);
+    }
+    const parts = trimmed.split(partSeparator);
+    let partial = null;
+    for (let cut = 1; cut < parts.length; cut += 1) {
+      const sides = [parts.slice(0, cut).join(partSeparator), parts.slice(cut).join(partSeparator)];
+      const held = sides.filter((side) => contentCanonicalLookup.has(side.trim())).length;
+      const joined = sides.map((side) => contentTextFor(locale, side)).join(partSeparator);
+      if (held === sides.length) {
+        return joined;
+      }
+      if (held > 0 && partial === null) {
+        partial = joined;
+      }
+    }
+    return partial ?? value;
+  };
   const searchShortcutLabel = () => {
     // TCRN-DS-STORY-060: show the platform-correct modifier — the Command glyph on Apple
     // platforms, Ctrl elsewhere. Keyboard shortcut labels are locale-invariant symbols, not
@@ -283,7 +310,7 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       for (const attributeName of ["title", "aria-label", "data-label", "data-disabled-reason", "data-expanded-label", "data-collapsed-label", "placeholder"]) {
         const current = node.getAttribute(attributeName);
         if (current) {
-          node.setAttribute(attributeName, contentTextFor(locale, current));
+          node.setAttribute(attributeName, attributeTextFor(locale, current));
         }
       }
       if (node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement) {
