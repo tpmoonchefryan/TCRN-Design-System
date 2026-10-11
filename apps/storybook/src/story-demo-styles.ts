@@ -281,11 +281,10 @@ label {
   padding: var(--tcrn-space-2) var(--tcrn-space-2h);
 }
 
+/* The sample only places the package icon in its track: size (Icon's default md, 16px)
+   and colour stay the package's. */
 .tcrn-doc-icon-sample svg[data-icon-name] {
-  width: 18px;
-  height: 18px;
   justify-self: center;
-  color: var(--tcrn-color-brand-primary);
 }
 
 .tcrn-doc-icon-sample code {
@@ -495,10 +494,6 @@ label {
 .tcrn-doc-nav-component-preview .tcrn-product-switcher {
   width: max-content;
   max-width: 100%;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 62%, var(--tcrn-color-surface-panel));
-  padding: var(--tcrn-space-1);
 }
 
 .tcrn-doc-package-nav-proof {
@@ -570,15 +565,6 @@ label {
   overflow: hidden;
 }
 
-.tcrn-doc-shell-demo--dense {
-  align-content: start;
-  grid-template-rows: max-content;
-  gap: 0;
-  min-height: 474px;
-  overflow: visible;
-  padding: 0;
-}
-
 .tcrn-doc-brand {
   --tcrn-brand-mark-size: 52px;
   --tcrn-brand-mark-filter: drop-shadow(0 1px 2px rgba(28, 29, 33, 0.10));
@@ -605,8 +591,6 @@ label {
 }
 
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
-  display: grid;
-  gap: var(--tcrn-space-0h);
   max-width: 220px;
   min-width: 0;
   opacity: 1;
@@ -629,13 +613,7 @@ label {
 .tcrn-doc-brand .tcrn-shell-brand-lockup__caption {
   max-width: 100%;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--tcrn-color-brand-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 700;
-  line-height: 1.25;
 }
 
 .tcrn-doc-search-results {
@@ -733,15 +711,6 @@ label {
   grid-area: sidebar;
 }
 
-.tcrn-doc-knowledge-shell__brand {
-  min-width: 0;
-  border-right: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
-}
-
 .tcrn-doc-knowledge-shell__topbar-copy,
 .tcrn-doc-knowledge-shell__actions,
 .tcrn-doc-knowledge-shell__sidebar-intro,
@@ -781,6 +750,9 @@ label {
   padding: var(--tcrn-space-2h) 0;
 }
 
+/* Placement only: the flex item and its track width. The width also sets the item's
+   intrinsic contribution, so the shrink-wrapped actions row keeps the 260px resting search
+   of the documentation shell; without it the row wraps the placeholder (about 241px). */
 .tcrn-doc-knowledge-shell__actions .tcrn-search-input {
   flex: 0 1 260px;
   width: 260px;
@@ -1039,10 +1011,6 @@ label {
     grid-row: auto;
   }
 
-  .tcrn-doc-knowledge-shell__brand {
-    padding: 0;
-  }
-
   .tcrn-doc-knowledge-shell__topbar-copy,
   .tcrn-doc-knowledge-shell__actions {
     width: auto;
@@ -1051,12 +1019,6 @@ label {
 
   .tcrn-doc-knowledge-shell__content {
     padding: var(--tcrn-space-4);
-  }
-
-  .tcrn-doc-shell-demo--dense {
-    gap: var(--tcrn-space-3);
-    min-height: 0;
-    padding: var(--tcrn-space-3);
   }
 
 }
@@ -1199,16 +1161,8 @@ label {
 .tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup {
   width: 100%;
 }
-.tcrn-doc-knowledge-shell__brand .tcrn-brand-wordmark {
-  align-items: flex-start;
-  flex-direction: column;
-  gap: var(--tcrn-space-0h);
-  font-size: var(--tcrn-type-size-heading-3);
-  line-height: 1.05;
-}
 .tcrn-doc-knowledge-shell__brand .tcrn-brand-wordmark__suffix {
   flex-basis: auto;
-  line-height: 1.06;
 }
 .tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup__caption {
   white-space: nowrap;
