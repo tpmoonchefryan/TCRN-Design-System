@@ -3,8 +3,8 @@
 `@tcrn/ui-tokens` ships five open-licensed font families as WOFF2 files in `fonts/`,
 an `@font-face` stylesheet at `@tcrn/ui-tokens/fonts.css`, and each family's licence
 text in `licenses/`. Product pages load these files from the package instead of from
-a font CDN: `fonts.googleapis.com` and `fonts.gstatic.com` are unreliable from mainland
-China, so neither host may appear in the built packages or in the docs site.
+an external font CDN: external font CDNs are unreliable from mainland China, so no font
+CDN host may appear in the built packages or in the docs site.
 
 Every font file is a byte-identical copy of a file published in a pinned upstream npm
 package. This repository does not subset, rename or otherwise modify font software.

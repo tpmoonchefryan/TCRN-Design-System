@@ -41,8 +41,10 @@ pnpm build
 pnpm test
 pnpm storybook:smoke
 node --test scripts/readme-public-contract.test.mjs
-pnpm storybook:visual-proof -- --check
+pnpm storybook:visual-proof
 pnpm verify
 ```
+
+계약 게이트 목록, `pnpm verify` 안에서의 순서, 개별 실행 방법은 [docs/contract/README.md](docs/contract/README.md)를 참고하세요.
 
 이 README는 npm 패키지 게시, Storybook 문서 게시 준비, hosted-doc readiness, 제품 채택, release readiness, 제품 수락 또는 최종 MVP 수락을 주장하지 않습니다.

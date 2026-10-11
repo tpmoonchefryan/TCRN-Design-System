@@ -14,7 +14,9 @@ package handoffs only. It does not read any consumer repository, so it says what
 changed and what to do, not where a consumer uses each item. Each consumer runs
 the checks in its own tree. Every item names its source: a commit on the INIT-015
 integration branch, the Subtask key, and the package handoff in
-`docs/dispatch/2026-10-11-gplus-renewal/runs/r1/handoff/`.
+`docs/dispatch/2026-10-11-gplus-renewal/runs/r1/handoff/` (first round, handoffs
+named W1-A and so on) or `runs/r2/handoff/` (second round, handoffs named P1 and
+so on, marked "r2" below).
 
 ## By consumer
 
@@ -34,8 +36,9 @@ integration branch, the Subtask key, and the package handoff in
 6. Change `ProductLogo productId="workflow"` (and any other `workflow` registry
    read) to `"einzbern"` (M8).
 7. Update tests that assert brand taglines or suffix colours (M8, M9).
-8. Adopt the Text, Highlight, Button, ButtonGroup and Inputs changes where AOS
-   styles or wraps those components (M10 to M14).
+8. Adopt the Text, link, Highlight, Button, ButtonGroup and Inputs changes where
+   AOS styles or wraps those components (M10 to M14); `tcrn-link--quiet` now
+   needs `tcrn-link` on the same element (M10).
 9. If AOS styles the product shell toggles, drop colour, shadow, transition and
    press overrides on them (M15).
 10. If AOS consumed the unreleased `main` with `@tcrn/ui-domain`, import from
@@ -57,8 +60,9 @@ above; in either case:
    en Talent Management System, ko 탤런트 관리 시스템 (M8). The wordmark suffix reads
    `--tcrn-brand-suffix-tms` (M9).
 5. Take icons from the roster, not from a third-party set (M6, M7).
-6. Use `Text` props, `Button size="lg"`, `ButtonGroup` and the pair-driven inputs
-   instead of local variants (M10 to M14).
+6. Use `Text` props, the link classes (`tcrn-link`, with `tcrn-link--quiet` as its
+   modifier), `Button size="lg"`, `ButtonGroup` and the pair-driven inputs instead
+   of local variants (M10 to M14).
 
 ### Einzbern portal
 
@@ -92,6 +96,11 @@ Grotesk (UI), Source Serif 4 (headings and figures), IBM Plex Mono, Noto Sans SC
 Noto Serif SC (Chinese fallbacks, as the upstream slices that cover product text).
 `@tcrn/ui-tokens/fonts.css` declares them, and `tokens.css` starts with
 `@import "../fonts/fonts.css";`. The JS export `tcrnTokenCss` has no `@import`.
+Each family token follows its Latin face with a bundled Chinese face:
+`--tcrn-type-family-ui` and `--tcrn-type-family-mono` with Noto Sans SC,
+`--tcrn-type-family-serif` and `--tcrn-type-family-heading` with Noto Serif SC.
+The mono stack is `"IBM Plex Mono","Noto Sans SC",ui-monospace,Menlo,monospace`,
+so Chinese in mono text draws in Noto Sans SC instead of a system face.
 
 Do:
 
@@ -103,9 +112,13 @@ Do:
 - Let the bundler copy the `.woff2` files unchanged. When you redistribute them,
   keep `FONT-LICENSES.md` and `licenses/` with them; do not sell the fonts on their
   own, and rename a font if you modify it (minutes D4).
+- If you override a family token, keep the Noto face after the Latin face, so
+  Chinese text stays on the bundled files. In this repository `fonts:proof` is red
+  when a family token loses that fallback.
 
 Source: 296a0c1 (TCRN-DS-SUB-004), e532b52 (TCRN-DS-SUB-006), 343c2e3 (OFL-1.1 in
-the licence allow-list); handoffs W1-C and W2-A.
+the licence allow-list), e79092f (TCRN-DS-SUB-048), ed98557 (TCRN-DS-SUB-049);
+handoffs W1-C, W2-A and P1 (r2).
 
 ### M2 · Token names follow the G+ contract; old names are deprecated aliases
 
@@ -113,6 +126,14 @@ Change: colour, elevation, selection, motion easing and type family tokens take
 the contract names (table below). Each old name stays defined as
 `--old: var(--new)` and resolves to the new value. `--tcrn-motion-press-scale`
 stays at 0.97 with no successor.
+
+The names sit in three blocks of `tokens.css` and `tcrnTokenCss`: the light theme
+block on `:root, [data-tcrn-theme="light"]`, the theme-independent block on
+`:root`, and the dark theme block on `[data-tcrn-theme="dark"]`. Because the light
+block also answers to `data-tcrn-theme="light"`, a container marked light inside
+a dark page takes the light values again; with the former `:root`-only light
+block it inherited the night values. `tcrnGplusThemeSelectors.light` carries the
+same selector list.
 
 Do:
 
@@ -128,9 +149,14 @@ Do:
    value, set the new name instead; the aliases only read.
 3. Drop uses of `--tcrn-motion-press-scale`: a G+ press changes the fill and does
    not scale.
+4. To show a light region inside a dark page, set `data-tcrn-theme="light"` on
+   it. If you parse the token stylesheet yourself or look for a literal
+   `:root {`, accept the selector list: `parseTokenCssBlocks` reports it in
+   canonical form and `compareTokenThemeBlocks` matches lists in any order and
+   spacing.
 
 Source: a88b7ad (TCRN-DS-SUB-001), e532b52 (TCRN-DS-SUB-006), 812cf3f
-(TCRN-DS-SUB-003); handoffs W2-A and W3-A.
+(TCRN-DS-SUB-003), 4a59144 (TCRN-DS-SUB-047); handoffs W2-A, W3-A and P1 (r2).
 
 ### M3 · Token values move to the G+ scale
 
@@ -143,10 +169,24 @@ Line height tokens now carry px units. `--tcrn-type-family-heading` (Source Seri
 4) is new. Colours, shadows and the control outline (`--tcrn-color-line-ctl`)
 change in both themes.
 
-Do: re-baseline screenshots and computed-style assertions, and check any
-`calc()` that multiplies a line height token as a unitless number.
+The type scale comes from the contract: the 29 type steps (sizes, line heights,
+weights, tracking, tabular numerals and the heading family) are generated from
+`contract/typography.json` into `gplus-tokens.generated.ts` (the list is not
+re-exported from the package index), and the type rules of `@tcrn/ui-react` refer
+to them through `var(--tcrn-type-*)`. This changed no value: `tokens.css` is byte
+for byte the same as before the change. Four declarations in those rules keep a
+literal because no token exists for them yet: the inline numeral 16px, the large
+numeral 44px on a 48px line, and the mono text 11.5px. Adding tokens for them, or
+moving them to existing steps (which changes their look), is an open Owner
+decision.
 
-Source: a88b7ad (TCRN-DS-SUB-001), e532b52 (TCRN-DS-SUB-006); handoff W2-A.
+Do: re-baseline screenshots and computed-style assertions, and check any
+`calc()` that multiplies a line height token as a unitless number. Assertions on
+the computed size of `Text` numerals and mono text read the four literal values
+until that decision.
+
+Source: a88b7ad (TCRN-DS-SUB-001), e532b52 (TCRN-DS-SUB-006), c48b736
+(TCRN-DS-SUB-052); handoffs W2-A and P2 (r2).
 
 ### M4 · The focus ring is a box-shadow
 
@@ -165,7 +205,12 @@ Do:
 - Your own focusable elements can use `box-shadow: var(--tcrn-focus-ring)`; the
   3.x names `--tcrn-color-focus-ring` and `--tcrn-elevation-focus` are aliases (M2).
 
-Source: a88b7ad (TCRN-DS-SUB-001), 385ee0a (TCRN-DS-SUB-018); handoffs W2-A and W2-D.
+A focused read-only text field also shows the ring and keeps its read-only fill
+and ink (M14). A focused `tcrn-link` draws the ring and keeps a transparent outline
+for forced colours (M10).
+
+Source: a88b7ad (TCRN-DS-SUB-001), 385ee0a (TCRN-DS-SUB-018), 7213a27
+(TCRN-DS-SUB-058), 4a6ab92 (TCRN-DS-SUB-055); handoffs W2-A, W2-D and P2 (r2).
 
 ### M5 · Retired brand accent tokens are removed (no alias)
 
@@ -237,7 +282,7 @@ Do: remove local gradient or suffix colour overrides; update colour assertions.
 
 Source: ccb7bea (TCRN-DS-SUB-022); handoffs W2-A and W2-F; minutes D2.
 
-### M10 · `Text` props, `Heading` titles
+### M10 · `Text` props, `Heading` titles, link states
 
 Change: `Text` gains `size` (`body`, `reading`, `meta`, `caption`), `tone`
 (`default`, `strong`) and `variant` (`numeral`, `caps`). Without props it still
@@ -246,10 +291,22 @@ renders `class="tcrn-text"`: a 13/20 paragraph in the secondary ink. `numeral` a
 `b` element. `Heading` levels 1 to 4 are single-line and carry their text as
 `title`. The clamp heading sizes are gone.
 
-Do: replace local font-size or numeral and caps classes on `Text` with the props;
-update snapshots for the new `title` attributes.
+Links: `tcrn-link` states go through a pair table (live pair `--tcrn-pair-ink`,
+`--tcrn-pair-underline` and `--tcrn-pair-edge`). The link rests in acc with an
+acc-ul underline; hover switches ink and underline to acc-2; focus draws the focus
+ring over a transparent outline. `tcrn-link--quiet` is now a modifier of
+`.tcrn-link`: on its own it has no styles. A quiet link rests in the current text
+colour with a transparent underline; its hover underline is acc-2 at the 2px link
+offset (it was the accent at a 0.2em offset).
 
-Source: e7ef431 (TCRN-DS-SUB-012); handoff W2-B.
+Do: replace local font-size or numeral and caps classes on `Text` with the props;
+update snapshots for the new `title` attributes. Write
+`class="tcrn-link tcrn-link--quiet"` wherever you used `tcrn-link--quiet` alone
+(this repository has no such use), and drop local hover colour or underline offset
+overrides on links.
+
+Source: e7ef431 (TCRN-DS-SUB-012), 4a6ab92 (TCRN-DS-SUB-055); handoffs W2-B and
+P2 (r2).
 
 ### M11 · `Highlight` mark class
 
@@ -266,13 +323,17 @@ Change: the buttons read a state pair table; `border` is 0 and the edge is a
 box-shadow; the press scale, transforms and the 0.64 disabled opacity are gone.
 `size` adds `lg` (40px). `loading` sets `aria-busy` and shows the loader; the busy
 wording is the caller's children. `ClipboardCopyButton` no longer accepts
-`loading` and shows one icon per settled state.
+`loading` and shows one icon per settled state. A disabled `Button` with a reason
+puts "label — reason" in its `title`, the visible label first (it was the reason
+alone); a button without visible text keeps the reason alone, and the reason is
+still the `aria-describedby` description.
 
 Do: replace height overrides with `size="lg"`; remove `border-color`, `transform`
-and `box-shadow` overrides on buttons; remove `loading` from `ClipboardCopyButton`.
+and `box-shadow` overrides on buttons; remove `loading` from `ClipboardCopyButton`;
+update assertions on the `title` of disabled buttons with a reason.
 
 Source: b7eb514 (TCRN-DS-SUB-016), 7f631b2 (TCRN-DS-SUB-017), 385ee0a
-(TCRN-DS-SUB-018); handoff W2-D.
+(TCRN-DS-SUB-018), e0baaba (TCRN-DS-SUB-079); handoffs W2-D and P10 (r2).
 
 ### M13 · `ButtonGroup`
 
@@ -294,22 +355,41 @@ top bar and in forms. `Select` now renders inside `span.tcrn-select-wrap` and
 `DatePicker` inside `span.tcrn-date-picker-wrap`, each with its end icon.
 `.tcrn-field:focus-within` no longer washes the field.
 
+A focused read-only text field (`[readonly]` or `[aria-readonly="true"]`) shows
+the focus ring and keeps its read-only fill and ink
+(the `rf` state, ordered after `r`; the Inputs board lets read-only cover focus,
+so this differs from the board on purpose). `.tcrn-field--error` no longer washes
+the whole field or recolours its outline, and `.tcrn-field__error` reads
+`--tcrn-color-bad`; the forced-colours outline of a field in error stays. The
+search shortcut text is ink-2 (was ink-3). The `MultiSelect` trigger has the
+`Select` end, `padding-inline-end: 30px` with the caret placed like the `Select`
+chevron, and `.tcrn-multi-select-dropdown` is now a flex container. Dropdown
+options declare their own pair; hover and selection only switch it.
+
 Do: remove `border-color` overrides and mark errors with `aria-invalid="true"`,
 which selects the invalid pair; point direct-child selectors (`> .tcrn-select`) at the wrappers;
-update search box assertions.
+update search box assertions. Do not add a background back to
+`.tcrn-field--error`; update assertions on the error field's background and
+outline, the shortcut colour and the `MultiSelect` trigger's end padding.
 
 Source: 697d4eb (TCRN-DS-SUB-019), 0daff9d (TCRN-DS-SUB-020), 715533d
-(TCRN-DS-SUB-021); handoff W2-E; minutes D2.
+(TCRN-DS-SUB-021), 7213a27 (TCRN-DS-SUB-058), 696f516 (TCRN-DS-SUB-059), fe6a4bb
+(TCRN-DS-SUB-060), 5e799a6 (TCRN-DS-SUB-061), 48399ae (TCRN-DS-SUB-062); handoffs
+W2-E, P2 (r2) and P4 (r2); minutes D2.
 
 ### M15 · Product shell toggles
 
 Change: the theme, side-navigation and mobile-navigation toggles follow the
 Actions pairs; the package no longer writes colour, shadow, transition, hover or
-press rules for them. Their sizes (36 and 38px) are unchanged pending design.
+press rules for them. Their sizes (36 and 38px) are unchanged pending design. The
+theme toggle shows its sun or moon by its own `data-current-theme`; the default
+and `html[data-tcrn-theme="dark"]` icon display rules are gone, so a toggle inside
+a block-level theme shows the current icon instead of neither.
 
-Do: remove local overrides that restyle these toggles.
+Do: remove local overrides that restyle these toggles, including rules that show
+or hide the toggle's icons by a page-level theme.
 
-Source: 385ee0a (TCRN-DS-SUB-018).
+Source: 385ee0a (TCRN-DS-SUB-018), 6976d2f (TCRN-DS-SUB-057); handoff P3 (r2).
 
 ### M16 · Unreleased `main` only: `@tcrn/ui-domain`
 
@@ -415,3 +495,10 @@ Until they are ruled on, 4.0.0 behaves as described above.
 - Sizes of the shell theme and side-navigation toggles (36 and 38px): M15.
 - The `.tcrn-icon` base rule in the package, a design-session ruling open to Owner
   correction: M7.
+- The four type declarations that keep a literal (inline numeral 16px, large
+  numeral 44px on 48px, mono text 11.5px): new tokens or existing steps, M3.
+- Second-round items done as recommended and open to Owner correction: the
+  read-only focus ring against the board's state order, the removed error-field
+  wash and the shortcut in ink-2 against the board's ink-3 (M14); the
+  "label — reason" title of disabled buttons (M12); the theme toggle icon by
+  `data-current-theme` (M15).

@@ -82,11 +82,13 @@ pnpm build
 pnpm test
 pnpm storybook:smoke
 node --test scripts/readme-public-contract.test.mjs
-pnpm storybook:visual-proof -- --check
+pnpm storybook:visual-proof
 pnpm public-output:scan
 pnpm scan
 pnpm verify
 ```
+
+The contract gates behind these commands, their order inside `pnpm verify`, and how to run each one alone are listed in [docs/contract/README.md](docs/contract/README.md).
 
 ## No-Overclaim Boundaries
 
