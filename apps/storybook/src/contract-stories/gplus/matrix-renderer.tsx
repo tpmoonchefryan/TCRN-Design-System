@@ -100,10 +100,14 @@ export function MatrixBoard({ board, columns = false, children }: { board: Gplus
   );
 }
 
-/** A labelled section for one package component inside its family matrix. */
+/**
+ * A headed section for one package component inside its family matrix. The section carries no
+ * aria-label, so it is not a landmark: the light and night blocks repeat every component, and named
+ * sections would give the page pairs of identical region landmarks.
+ */
 export function MatrixSection({ component, children }: { component: string; children: ReactNode }) {
   return (
-    <Surface data-gplus-matrix-component={component} aria-label={component} heading={<Heading level={3}>{component}</Heading>}>
+    <Surface data-gplus-matrix-component={component} heading={<Heading level={3}>{component}</Heading>}>
       {children}
     </Surface>
   );
