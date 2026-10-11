@@ -57,7 +57,8 @@ export const storyCategoryDefinitions: Record<ContractStoryGroup, readonly Story
     { id: "hierarchy-and-relations", label: "Hierarchy and relations", description: "Graphs, relationships, and stage references between records." },
     { id: "detail-and-inspection", label: "Detail and inspection", description: "Record detail, metadata, density, and inspection surfaces." },
     { id: "documents-and-collaboration", label: "Documents and collaboration", description: "Documents, page navigation, comments, attachments, and versions." },
-    { id: "gplus-matrices", label: "Family matrices", description: "All-state matrices of the first five component families, light and night." }
+    { id: "gplus-matrices", label: "Family matrices", description: "All-state matrices of the first five component families, light and night." },
+    { id: "gplus-samples", label: "Composition samples", description: "The first five component families in a composition-one product shell, light and night." }
   ],
   Patterns: [
     { id: "forms-workbench", label: "Forms and workbench", description: "Form, workbench, and local filtering patterns." },
@@ -130,10 +131,15 @@ export const storyRegistryOrder: readonly StoryRegistryEntry[] = [
   { id: "documents-and-collaboration-density-spec", group: "Components", categoryId: "documents-and-collaboration" },
   { id: "documents-and-collaboration-templates-spec", group: "Components", categoryId: "documents-and-collaboration" },
   { id: "typography-matrix", group: "Components", categoryId: "gplus-matrices" },
+  { id: "typography-sample-billing", group: "Components", categoryId: "gplus-samples" },
   { id: "icon-matrix", group: "Components", categoryId: "gplus-matrices" },
+  { id: "icon-sample-project", group: "Components", categoryId: "gplus-samples" },
   { id: "brand-matrix", group: "Components", categoryId: "gplus-matrices" },
+  { id: "brand-sample-product", group: "Components", categoryId: "gplus-samples" },
   { id: "actions-matrix", group: "Components", categoryId: "gplus-matrices" },
+  { id: "actions-sample-project", group: "Components", categoryId: "gplus-samples" },
   { id: "inputs-matrix", group: "Components", categoryId: "gplus-matrices" },
+  { id: "inputs-sample-members", group: "Components", categoryId: "gplus-samples" },
   { id: "forms-patterns", group: "Patterns", categoryId: "forms-workbench" },
   { id: "workbench-patterns", group: "Patterns", categoryId: "forms-workbench" },
   { id: "records-and-boards-patterns", group: "Patterns", categoryId: "data-pages" },

@@ -22,16 +22,18 @@ import foundationsMeta from "./foundations.stories.js";
 import patternsMeta from "./patterns.stories.js";
 import proofMeta from "./proof.stories.js";
 import styleGuideMeta from "./style-guide.stories.js";
-import typographyMeta, { Matrix as TypographyMatrix } from "./typography.stories.js";
-import iconMeta, { Matrix as IconMatrix } from "./icon.stories.js";
-import brandMeta, { Matrix as BrandMatrix } from "./brand.stories.js";
-import actionsMeta, { Matrix as ActionsMatrix } from "./actions.stories.js";
-import inputsMeta, { Matrix as InputsMatrix } from "./inputs.stories.js";
+import typographyMeta, { Matrix as TypographyMatrix, SampleBilling as TypographySampleBilling } from "./typography.stories.js";
+import iconMeta, { Matrix as IconMatrix, SampleProject as IconSampleProject } from "./icon.stories.js";
+import brandMeta, { Matrix as BrandMatrix, SampleProduct as BrandSampleProduct } from "./brand.stories.js";
+import actionsMeta, { Matrix as ActionsMatrix, SampleProject as ActionsSampleProject } from "./actions.stories.js";
+import inputsMeta, { Matrix as InputsMatrix, SampleMembers as InputsSampleMembers } from "./inputs.stories.js";
 import { createElement, Fragment } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { tcrnIconNames } from "@tcrn/ui-react";
 import { gplusMatrices, gplusMatrixCellCounts } from "./contract-stories/gplus/generated/matrices.generated.js";
 import { gplusMatrixBoardsInOrder, gplusMatrixComponents, gplusMatrixSourcePath, gplusMatrixStoryIds } from "./contract-stories/gplus/matrix-stories.js";
+import { gplusSampleBoardsInOrder, gplusSampleSourcePath, gplusSampleStoryIds } from "./contract-stories/gplus/sample-stories.js";
+import { gplusSampleShellKeys, gplusSampleSidebarWidth } from "./contract-stories/gplus/samples/composition-one.js";
 import { storybookGovernanceChangelogRecords, storyCategoryDefinitions, storyRegistryOrder } from "./contract-stories/governance.js";
 import { referencePages } from "./build/reference-pages.js";
 import {
@@ -134,10 +136,15 @@ const expectedContractStoryIds = [
   "documents-and-collaboration-density-spec",
   "documents-and-collaboration-templates-spec",
   "typography-matrix",
+  "typography-sample-billing",
   "icon-matrix",
+  "icon-sample-project",
   "brand-matrix",
+  "brand-sample-product",
   "actions-matrix",
+  "actions-sample-project",
   "inputs-matrix",
+  "inputs-sample-members",
   "forms-patterns",
   "workbench-patterns",
   "records-and-boards-patterns",
@@ -385,7 +392,10 @@ test("static contract story surface is retained and synthetic", () => {
   for (const story of contractStories) {
     assert.ok(story.category.length > 0, `missing category label for ${story.id}`);
     assert.ok(story.categoryId.length > 0, `missing category id for ${story.id}`);
-    assert.equal(story.sourcePath, story.categoryId === "gplus-matrices" ? gplusMatrixSourcePath : "apps/storybook/src/contract-stories/story-content.tsx");
+    const expectedSourcePath = story.categoryId === "gplus-matrices"
+      ? gplusMatrixSourcePath
+      : story.categoryId === "gplus-samples" ? gplusSampleSourcePath : "apps/storybook/src/contract-stories/story-content.tsx";
+    assert.equal(story.sourcePath, expectedSourcePath);
     assert.match(story.packageAuthority, /Storybook static|@tcrn\/ui-react|Durable Storybook/);
     assert.equal(story.readiness, "local_storybook_contract_review_required");
     assert.equal(story.proofPosture, "visible_boundary_no_product_adoption_or_publication_claim");
@@ -402,6 +412,12 @@ test("static contract story surface is retained and synthetic", () => {
   assert.deepEqual(
     [TypographyMatrix, IconMatrix, BrandMatrix, ActionsMatrix, InputsMatrix].map((story) => story.name),
     ["Matrix", "Matrix", "Matrix", "Matrix", "Matrix"]
+  );
+  // Composition samples: SampleBilling, SampleProject, SampleProduct, SampleProject and SampleMembers
+  // give the Storybook ids typography--sample-billing, icon--sample-project and so on.
+  assert.deepEqual(
+    [TypographySampleBilling, IconSampleProject, BrandSampleProduct, ActionsSampleProject, InputsSampleMembers].map((story) => story.name),
+    ["Sample billing", "Sample project", "Sample product", "Sample project", "Sample members"]
   );
   // Per-story CSF registration gate: every contract story in the registry must have a
   // matching CSF export in its group's *.stories.tsx adapter, in registry order. This closes
@@ -1600,7 +1616,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, icon-matrix, brand-matrix, actions-matrix, inputs-matrix/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, records-and-boards-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
@@ -1778,4 +1794,58 @@ test("first-batch family matrices render the contract cells and every component 
     }
   }
   assert.match(renderToStaticMarkup(createElement(Fragment, null, contractStories.find((item) => item.id === "actions-matrix")?.render())), /data-tcrn-preview-state="hover"/);
+});
+
+test("composition-one sample stories render the package shell in a light block and a night block", () => {
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const listFrom = (key: string) => new Set(
+    Array.from(ledgerSource.slice(ledgerSource.indexOf(key), ledgerSource.indexOf("],", ledgerSource.indexOf(key))).matchAll(/"((?:[^"\\]|\\.)*)"/g), (match) => match[1])
+  );
+  const sampleWords = listFrom("sampleMachineWords:");
+  const properNouns = listFrom("properNouns:");
+  assert.ok(sampleWords.has("PRJ-2026-0412") && properNouns.has("TCRN"), "ledger registers the sample machine words");
+  const decode = (value: string) => value.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').trim();
+  for (const board of gplusSampleBoardsInOrder) {
+    const storyId = gplusSampleStoryIds[board];
+    const story = contractStories.find((item) => item.id === storyId);
+    assert.ok(story, `missing sample story for ${board}`);
+    assert.equal(story.group, "Components");
+    assert.equal(story.categoryId, "gplus-samples");
+    const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
+    assert.match(html, new RegExp(`data-gplus-sample="${board}"`));
+    const blocks = html.split(/(?=<div data-tcrn-theme="(?:light|dark)" data-gplus-sample-theme=)/).slice(1);
+    assert.equal(blocks.length, 2, `${board}: one light block and one night block`);
+    assert.match(blocks[0], /^<div data-tcrn-theme="light" data-gplus-sample-theme="light">/);
+    assert.match(blocks[1], /^<div data-tcrn-theme="dark" data-gplus-sample-theme="night">/);
+    // The night switch is data-tcrn-theme alone: both blocks carry the same classes in the same order,
+    // and no class names a theme.
+    const classes = (block: string) => Array.from(block.matchAll(/\sclass="([^"]*)"/g), (match) => match[1]);
+    assert.deepEqual(classes(blocks[1]), classes(blocks[0]), `${board}: night block classes equal the light block`);
+    assert.doesNotMatch(html, /\sclass="(?:[^"]*\s)?(?:night|dark|gp)(?:\s[^"]*)?"/, `${board}: no theme class`);
+    for (const [index, suffix] of (["l", "n"] as const).entries()) {
+      const block = blocks[index];
+      assert.equal(block.match(/class="tcrn-product-shell"/g)?.length, 1, `${board}: one package ProductShell per block`);
+      assert.match(block, new RegExp(`data-shell="${gplusSampleShellKeys[board]}-${suffix}"`));
+      assert.match(block, new RegExp(`--tcrn-product-shell-sidebar-width:${gplusSampleSidebarWidth}`));
+      const navItems = block.match(/data-navigation-primitive="nav-item"/g)?.length ?? 0;
+      assert.ok(navItems >= 5, `${board}: rail navigation items`);
+      assert.equal(block.match(/data-guide="rail"/g)?.length, navItems + 1, `${board}: brand mark and every rail icon carry data-guide`);
+      assert.equal(block.match(/data-text="rail"/g)?.length, navItems + 1, `${board}: wordmark and every rail label carry data-text`);
+    }
+    // Sample copy: every Latin text node of the rail labels and the page content has five-locale text,
+    // or is a proper noun or a registered sample machine word.
+    // The page content is the last region of each shell, so a block from its main region to its end
+    // holds the page copy and none of the shell's own controls.
+    const main = blocks.map((block) => block.slice(block.indexOf(">", block.indexOf('class="tcrn-product-shell__main"')))).join("");
+    const navLabels = Array.from(html.matchAll(/class="tcrn-nav-item__label"[^>]*>([^<]+)</g), (match) => match[1]);
+    const contentTexts = Array.from(main.replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1]);
+    for (const text of [...navLabels, ...contentTexts].map(decode).filter((value) => /[A-Za-z]/.test(value))) {
+      const residue = text.split(/\s+/).filter((word) => !properNouns.has(word)).join(" ");
+      assert.ok(
+        storybookContentText[text] !== undefined || sampleWords.has(text) || !/[A-Za-z]/.test(residue),
+        `${board}: "${text}" needs five-locale text or a sample machine word`
+      );
+    }
+    assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, `${board}: no internal vocabulary`);
+  }
 });
