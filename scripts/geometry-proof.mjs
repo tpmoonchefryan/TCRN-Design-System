@@ -10,11 +10,11 @@ import { tcrnTokenCss } from "../packages/ui-tokens/dist/index.js";
 import { pathToFileURL } from "node:url";
 
 const staticRoot = resolve("apps/storybook/storybook-static");
-const badgeRoute = "/components-navigation-shells.html#navigation-dense-operations-shell-spec";
+const badgeRoute = "/components-navigation-shells.html#navigation-product-shell-spec";
 const brandRoute = "/proof-proof-visual-instances.html#owner-quality-product-shell";
-const copyRoute = "/components-navigation-shells.html#navigation-dense-operations-shell-spec";
+const copyRoute = "/components-navigation-shells.html#navigation-product-shell-spec";
 const searchRoute = "/components-navigation-shells.html?theme=light&locale=en&proof=search#navigation-product-shell-spec";
-const badgeStory = "navigation-dense-operations-shell-spec";
+const badgeStory = "navigation-product-shell-spec";
 const brandStory = "owner-quality-product-shell";
 const searchStory = "navigation-product-shell-spec";
 const collapsedVariant = "desktop-light-operations-cockpit-collapsed";

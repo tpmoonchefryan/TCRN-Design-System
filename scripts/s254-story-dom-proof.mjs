@@ -40,7 +40,7 @@ try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await page.goto(`http://127.0.0.1:${port}/components-component-inventory.html?locale=en#display-primitives-spec`);
     const rendered = await page.locator("#display-primitives-spec").evaluate((root) => ({
-      storyExpanded: root.querySelector(".tcrn-story-disclosure")?.getAttribute("aria-expanded") === "true",
+      storyExpanded: root.querySelector(".tcrn-doc-story-disclosure")?.getAttribute("aria-expanded") === "true",
       switchOn: root.querySelector(".tcrn-switch[data-switch-state=on]") !== null,
       statTones: [...root.querySelectorAll(".tcrn-stat-card")].map((node) => node.getAttribute("data-stat-tone")),
       settingModified: root.querySelector(".tcrn-setting-row[data-modified=true] .tcrn-setting-row__modified[role=img]") !== null,

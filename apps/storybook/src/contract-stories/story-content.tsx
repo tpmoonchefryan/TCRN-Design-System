@@ -173,11 +173,7 @@ import {
   OverlayStaticModes,
   PopoverSpecFixture
 } from "./fixtures/overlay.js";
-import {
-  CompactToolShellDemo,
-  KnowledgeBaseShellDemo,
-  DenseOperationsShellDemo
-} from "./prototypes/storybook-shell-demos.js";
+import { KnowledgeBaseShellDemo } from "./prototypes/storybook-shell-demos.js";
 import {
   FrontendShellSliceVisualInstance,
   frontendShellSliceVisualInstanceReadback
@@ -1154,8 +1150,10 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Loading and progress examples">
           <div className="tcrn-doc-loading-motion-grid">
-            <Card role="status">
-              <div className="tcrn-doc-loading-card__row">
+            <Card>
+              {/* The live region is the copy row, not the card: Card renders an <article>, which
+                  does not admit role="status". */}
+              <div className="tcrn-doc-loading-card__row" role="status">
                 <Icon name="loader-circle" />
                 <div className="tcrn-doc-loading-copy">
                   <h3>Loading state</h3>
@@ -2128,7 +2126,6 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
             rows={denseShellMenuDensityRows}
           />
-          <DenseOperationsShellDemo />
         </ReadbackPanel>
       </section>
     )
@@ -2146,7 +2143,6 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Compact tool shell">
           <Text>Small tools may use local segmented navigation, but only when the number of peer views stays small and stable.</Text>
-          <CompactToolShellDemo />
         </ReadbackPanel>
       </section>
     )
