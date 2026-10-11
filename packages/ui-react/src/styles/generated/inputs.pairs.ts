@@ -2,7 +2,7 @@
 // contract files: pairs.json, tokens.json
 // contract-sha256: edb0250b1601e8ad979e1fcec794666a5ee99a8ad83dee51d3b5628523b0168a
 
-/** Inputs 文本类状态对段（d/h/f/x/r/e/ef；search 部分覆盖） */
+/** Inputs 文本类状态对段（d/h/f/x/r/rf/e/ef；search 部分覆盖） */
 export const inputsTextPairsCss = `
 .tcrn-input,.tcrn-select{--tcrn-pair-fill:var(--tcrn-pair-fill-d);--tcrn-pair-ink:var(--tcrn-pair-ink-d);--tcrn-pair-edge:var(--tcrn-pair-edge-d)}
 .tcrn-input{--tcrn-pair-fill-d:var(--tcrn-color-panel);--tcrn-pair-ink-d:var(--tcrn-color-ink);--tcrn-pair-edge-d:inset 0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-fill-h:var(--tcrn-color-panel);--tcrn-pair-ink-h:var(--tcrn-color-ink);--tcrn-pair-edge-h:inset 0 0 0 1px var(--tcrn-color-ink-2);--tcrn-pair-fill-f:var(--tcrn-color-panel);--tcrn-pair-ink-f:var(--tcrn-color-ink);--tcrn-pair-edge-f:inset 0 0 0 1px var(--tcrn-color-acc),var(--tcrn-focus-ring);--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-ink-x:var(--tcrn-color-ink-3);--tcrn-pair-edge-x:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-fill-r:var(--tcrn-color-panel-2);--tcrn-pair-ink-r:var(--tcrn-color-ink);--tcrn-pair-edge-r:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-edge-rf:inset 0 0 0 1px var(--tcrn-color-acc),var(--tcrn-focus-ring);--tcrn-pair-fill-e:var(--tcrn-color-panel);--tcrn-pair-ink-e:var(--tcrn-color-ink);--tcrn-pair-edge-e:inset 0 0 0 1px var(--tcrn-color-bad);--tcrn-pair-edge-ef:inset 0 0 0 1px var(--tcrn-color-bad),0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-bad)}

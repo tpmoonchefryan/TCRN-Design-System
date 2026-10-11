@@ -247,7 +247,7 @@ function actionsFile() {
 function inputsFile() {
   const text = pairSegment("inputs-text"), check = pairSegment("inputs-check"), sw = pairSegment("inputs-switch");
   return cssModule(["pairs.json", "tokens.json"], [
-    ["inputsTextPairsCss", "Inputs 文本类状态对段（d/h/f/x/r/e/ef；search 部分覆盖）", text],
+    ["inputsTextPairsCss", "Inputs 文本类状态对段（d/h/f/x/r/rf/e/ef；search 部分覆盖）", text],
     ["inputsCheckPairsCss", "Inputs 勾选类状态对段（fill · edge · mark；radio 部分覆盖）", check],
     ["inputsSwitchPairsCss", "Inputs 开关类状态对段（fill · edge · knob · knob-edge）", sw],
     ["inputsPairsCss", "三段按顺序拼接", [...text, ...check, ...sw]]
