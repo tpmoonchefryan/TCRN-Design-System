@@ -100,7 +100,7 @@
 | P2 | 主力 | 已合入 0e7fba1 | 286d452 | RM1、SUB-055、SUB-058 达成；SUB-052 部分（余 4 条字面值 → RM8/O-6）；tokens.css 与 storybook.css 字节不变；11 门全绿；RM9–RM11 |
 | P5 | 主力 | 已合入 bc71e9d | c4e638f | 4 张判据达成；doc:sample-style 文档层 72 → 0；12 段 tokens:proof 全绿；shell:parity 与 storybook:smoke 余红见 RM12 |
 | P6 | 主力 | 在跑 | 3560602 | SUB-066 → 067 → 068 → 080 → 081 → 082；附件 P6-handoffs.md |
-| P8 | 主力 | 在跑 | c8bfbc8 | SUB-077 → 056 |
+| P8 | 主力 | 已合入 890ec86 | c8bfbc8 | 2 张判据达成；两道几何门只红在样板 rail（O-1）；RM13 |
 | P10 | 主力 | 在跑 | bc71e9d | SUB-079 |
 | P11 | 经济 | 待 P1–P10 全部合入 | — | 摘录附各包 handoff 中与 SUB-087 有关的行为变化（RM11）；RM2/RM9 不插入本批 |
 | P12 | 经济 | 待 P11 合入 | — | 末项 SUB-046 |
