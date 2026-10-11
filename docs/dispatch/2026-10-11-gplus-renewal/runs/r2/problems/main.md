@@ -38,3 +38,6 @@ P5 的自定取舍（§3.4 第 8 项，收口回显，Owner 可更正）：守�
 
 **RM13 P8 的口径与 DIFF-9 状态（交验收）。** ① 为让映射与门一致，actions.A 另加 rowAlign，构图一四行也加 rowAlign（超出 SUB-077 判据字面）；iconStroke 另要求图标实际渲染 16px。② P7 去掉品牌样板的 Asset ID 整列（SUB-072 标题只写「去掉 Asset ID 列里的仓库名标识」），P8 按现有格式补 DIFF-9，状态记「已裁定」并引 R2-25。没有裁定授权删整列：R2 验收判断去整列是否在 R2-25 范围内，DIFF-9 的状态是否应为「待 Owner 知悉」，必要时列入 Owner 目视清单。
 P8 局部门：geometry:measure 与 storybook:visual-proof 的 ok=false 只由五个样板 rail（O-1）引起；第 18 步 notApplicableRequired 全空、checksNeverApplied 为 []，iconStroke 74 枚 16px 图标全 1.25px。流程：P8 一条只读命令含 `cd /private/tmp`，并入 RM4。
+
+**RM14 P10 改 Button title 带出的两处集成红（交集成修复包 I1，主力档）。** ① `packages/ui-react/src/components/Clipboard/Clipboard.test.tsx` 第 180 行仍断言旧 title（只写原因），集成分支 ui-react test 161/162；② `apps/storybook/src/build/client-scripts.ts` 按整串查表翻译 title，「标签 — 原因」在非英文语言下不翻译，internal-alpha 的 ja 检查（button-spec-usage）预计报英文泄漏。两文件不在任何 R2 包文件集，属集成冲突；按 START 档位规则交主力档集成子代理 I1（摘录 `runs/r2/excerpts/I1.md`），与在跑的 P6 文件集不相交；I1 若必须改 P6 持有的 locale 文件就停下交回。本批后续若再有集成冲突，优先续用 I1（SendMessage）而不另派。
+P10 其余条目：Inputs 禁用原因 title 不是 C7 登记承载元素（信息）；后续家族按新口径会命中的数（徽标 31、表格单元 35、页头标题 12、导航项 1，信息）；`docs/contract/roles.json` description 未写新口径，并入 RM9 交判断。P10 的二选一（Button title 取「标签 — 原因」，原因仍走 aria-describedby）与 §3.4 第 7 项回显见 `runs/r2/handoff/P10.md`。
