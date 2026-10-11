@@ -23,6 +23,7 @@ import { readFileSync } from "node:fs";
 import { resolve, dirname, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { componentCssModules } from "./lib/component-css-sources.mjs";
+import { parseCss, shadowLayers, splitTopLevel } from "./lib/css-rules.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -31,6 +32,10 @@ const SURFACES = [
   "apps/storybook/src/alpha-styles.ts",
   "apps/storybook/src/story-demo-styles.ts"
 ];
+
+// The published token table. The soft-cloud shadow check reads it with the package
+// segments, because a blurred elevation token reaches every component that uses it.
+const TOKEN_TABLE = "packages/ui-tokens/src/tokens.css";
 
 // Gradients that encode state rather than decorate a surface.
 // The doc-layer loading and bookmark demos that carried the other entries were removed
@@ -160,6 +165,85 @@ function ruleSubjectClasses(text) {
 // A shadow is elevation drift once it blurs; a 1px hairline offset is a drawn edge.
 const MAX_SHADOW_BLUR_PX = 3;
 
+// The CSS a docs surface carries. storybook.css is CSS; the two .ts surfaces carry theirs
+// in template literals, so everything outside a literal and every ${…} interpolation is
+// blanked to spaces (newlines kept), which keeps rule line numbers equal to file lines.
+export function docSurfaceCss(surface, text) {
+  if (!surface.endsWith(".ts")) return text;
+  const blank = (chunk) => chunk.replace(/[^\n]/g, " ");
+  let out = "";
+  let index = 0;
+  let inTemplate = false;
+  while (index < text.length) {
+    const char = text[index];
+    if (!inTemplate) {
+      let end = index + 1;
+      if (char === "/" && text[index + 1] === "/") {
+        end = text.indexOf("\n", index);
+        if (end < 0) end = text.length;
+      } else if (char === "/" && text[index + 1] === "*") {
+        end = text.indexOf("*/", index + 2);
+        end = end < 0 ? text.length : end + 2;
+      } else if (char === '"' || char === "'") {
+        end = index + 1;
+        while (end < text.length && text[end] !== char && text[end] !== "\n") end += text[end] === "\\" ? 2 : 1;
+        end += 1;
+      } else if (char === "`") {
+        inTemplate = true;
+      }
+      out += blank(text.slice(index, end));
+      index = end;
+      continue;
+    }
+    if (char === "\\") { out += text.slice(index, index + 2); index += 2; continue; }
+    if (char === "`") { inTemplate = false; out += " "; index += 1; continue; }
+    if (char === "$" && text[index + 1] === "{") {
+      let depth = 0;
+      let end = index + 1;
+      for (; end < text.length; end += 1) {
+        if (text[end] === "{") depth += 1;
+        else if (text[end] === "}" && --depth === 0) break;
+      }
+      out += blank(text.slice(index, end + 1));
+      index = end + 1;
+      continue;
+    }
+    out += char;
+    index += 1;
+  }
+  return out;
+}
+
+// Declarations that carry a shadow list: box-shadow and text-shadow, and the custom
+// properties that feed them (shadow and elevation tokens, the pair edges, the focus ring).
+function isShadowDeclaration(prop) {
+  return prop === "box-shadow" || prop === "text-shadow"
+    || (prop.startsWith("--") && /shadow|elevation|edge|focus-ring/.test(prop));
+}
+
+// TCRN-DS-SUB-050: blur is read per shadow layer with shadowLayers (scripts/lib/css-rules.mjs),
+// so the third length is the blur only where it is one: `inset 0 0 0 5px` is a 5px spread
+// with no blur. A layer that is only a var() reference resolves to a token the token table
+// scan reads, so a list such as `var(--tcrn-focus-ring), 0 1px 1px …` still has its literal
+// layers read. Values that are not shadow lists (a colour, `none`) give no layers.
+export function shadowBlurFindings(css, source) {
+  const findings = [];
+  for (const rule of parseCss(css, { source }).rules) {
+    for (const declaration of rule.declarations) {
+      if (!isShadowDeclaration(declaration.prop)) continue;
+      for (const rawLayer of splitTopLevel(declaration.value, ",")) {
+        const layers = shadowLayers(rawLayer.trim());
+        for (const layer of layers ?? []) {
+          if (layer.blur > MAX_SHADOW_BLUR_PX) {
+            findings.push({ where: `${source}:${rule.line}`, selector: rule.selectorText, blur: layer.blur });
+          }
+        }
+      }
+    }
+  }
+  return findings;
+}
+
 export const UNCHECKED_CLAIMS = Object.freeze({
   nestedCards: "compositional judgement; no machine check exists in this repository",
   genericLeftRailAdminShellCreep: "compositional judgement; no machine check exists in this repository",
@@ -233,19 +317,22 @@ export function scanShellFidelity() {
         const allowed = ALLOWED_RADIUS_LITERALS.includes(value);
         if (!tokenised && !allowed) findings.radiusLiterals.push({ where, selector, value });
       }
-
-      // A bare `0` is legal CSS for a zero offset, so the offsets must not require a
-      // unit — requiring `0px` was how this check first reported a cheerful zero while
-      // `box-shadow: 0 10px 24px …` sat right there in the file.
-      for (const shadow of line.matchAll(/(-?\d+)(?:px)?\s+(-?\d+)(?:px)?\s+(\d+)px/g)) {
-        const blur = Number(shadow[3]);
-        const isShadowContext = /box-shadow|shadow:/.test(line) || /box-shadow/.test(lines[index - 1] ?? "") || /box-shadow/.test(lines[index - 2] ?? "");
-        if (isShadowContext && blur > MAX_SHADOW_BLUR_PX) {
-          findings.softCloudShadows.push({ where, selector, blur });
-        }
-      }
     });
   }
+
+  // Soft-cloud elevation (TCRN-DS-SUB-050, STORY-121 GWT4): the blur ceiling covers the three
+  // docs surfaces, every package stylesheet segment (componentCssModules) and the token
+  // table, read per shadow layer. The old per-line pattern read only the docs surfaces and
+  // took the fourth length of `inset 0 0 0 5px` for a blur. Package segments are reported as
+  // module path plus the line inside the joined segment text.
+  for (const surface of SURFACES) {
+    const css = docSurfaceCss(surface, readFileSync(resolve(root, surface), "utf8"));
+    findings.softCloudShadows.push(...shadowBlurFindings(css, surface));
+  }
+  for (const { path, css } of componentCssModules(root)) {
+    findings.softCloudShadows.push(...shadowBlurFindings(css, `${path} (segments)`));
+  }
+  findings.softCloudShadows.push(...shadowBlurFindings(readFileSync(resolve(root, TOKEN_TABLE), "utf8"), TOKEN_TABLE));
 
   // A blanket `* { transition-duration: <n> !important }` inside a reduced-motion block
   // is the v1 kill switch: it collapses the v2 comprehension cue (opacity/colour at a
@@ -330,6 +417,24 @@ export function assertDetectorShapes() {
     const hit = ruleSubjectClasses(css).has(cls) && pkg.has(cls);
     if (hit !== expect) {
       console.error(`shell-fidelity detector self-test FAILED: ${css} (expected subject ${cls} ${expect ? "caught" : "ignored"})`);
+      process.exit(1);
+    }
+  }
+
+  // Soft-cloud mutations (TCRN-DS-SUB-050) on a copy of a real package segment: a blurred
+  // cloud is one new finding, also when it follows a var() layer in a pair edge list, and a
+  // spread-only inset ring adds none.
+  const segment = componentCssModules(root).find(({ css }) => css.trim()).css;
+  const baseline = shadowBlurFindings(segment, "self-test").length;
+  const shadowCases = [
+    [".tcrn-detector-probe{box-shadow:0 8px 24px rgba(22, 21, 15, 0.2)}", 1],
+    [".tcrn-detector-probe{--tcrn-pair-edge-f:var(--tcrn-focus-ring),0 8px 24px rgba(22, 21, 15, 0.2)}", 1],
+    [".tcrn-detector-probe{box-shadow:inset 0 0 0 5px var(--tcrn-color-acc)}", 0]
+  ];
+  for (const [probe, added] of shadowCases) {
+    const found = shadowBlurFindings(`${segment}\n${probe}`, "self-test").length - baseline;
+    if (found !== added) {
+      console.error(`shell-fidelity soft-cloud self-test FAILED: ${probe} (expected ${added} new finding(s), got ${found})`);
       process.exit(1);
     }
   }
