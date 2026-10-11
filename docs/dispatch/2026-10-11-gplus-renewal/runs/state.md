@@ -44,8 +44,9 @@
 | W1-F | 已合入 6f437f2，包树已退役 | c9a2dd4 | SUB-034；夹具测试 47/47；八项＋重叠各有红绿夹具与注入变异；API 见 `handoff/W1-F.md`（阈值只在门的 THRESHOLDS，库不含阈值；measureInPage/judgeMeasurements/runMeasureTargets；routes 加 bodySelector；库 39 KB 按行段读）；现有 55 个 story 浅色 53 绿 2 红（navigation-focused-shells-spec 裁切 393px、selection-list-patterns 重叠 20–25px，第二批以后家族的既有缺陷，批末问题清单）；G+ 十个 story id 未注册时门判缺失（W4-A/W5 补）；集外：package.json 加 `geometry-measure:proof` 接 verify（归 W5-C/W6-A） |
 | W4-A | 已合入 811d198，包树已退役 | 3b04273 | SUB-029→030；五矩阵格数 44/28/10/116/42 与画板一致、23 件各有分节、图标 37×三档；高度 1069/1367/1376/1876/1803 均 ≤2000（未登记宽限）；类目 gplus-matrices 5/8；storybook test 3 条既有红（`.tcrn-field:focus-within`、画布 first-paint、「TCRN stays regular weight」，归 W6-B）；**硬阻塞**：page-template.tsx 的 scopeComponentCss 按逗号切 `:where()`，静态文档页状态样式全失效（76 个状态格偏离），W5-C 转绿的前提——并入 W5-C（等 W2-G 交回后，page-template.tsx 进 W5-C 文件集）；集外：缺 `[data-tcrn-theme="light"]` 主题块（夜间切换时嵌套浅色区跟着变夜）、ClipboardCopyButton 无静态状态入口、单独 TcrnBrandMark 无默认尺寸、Text 无 mono/行内数字 variant 入参、包入口未导出新增图标名单（W4-A P3）；测量库要支持 `before-bg` 探针（Switch 钮在 ::before，W5-C） |
 | W3-A | 已合入 987923c，包树已退役 | 95d473e | SUB-002→003；ALL PAIRS PASS（文字最低 4.59 夜间 ink-3 于 panel；边与焦点最低 3.06 浅色 line-ctl 于 bg）；字标豁免 4 条引用 D2（tms 夜间两条待 Owner）；先红证据三处；弃用通知夹具 15 旧名、Chromium 计算值一致、storybook 构建打印 32 旧名 299 处；集外：tokens:proof 接两份新测试（通知测试要 Chromium，W6-A）、`findDeprecatedTokenUsages` 把定义算使用（P6，SUB-043 README）、字标承载面只算 panel 由验收定（P4）、ink-3 在 panel-2/bg-2/悬停/选中行低于 4.5（最低 3.88，P1，交 SUB-035/011） |
-| W5-B | 在跑 | 6c54fd8 | SUB-032→033 |
+| W5-B | 已合入 17aa9f6，包树已退役 | 6c54fd8 | SUB-032→033；映射十块板全入表（有 story 22 行引用 10 个 id、无 story 25 条各带原因、差异 8 条，待 Owner 4 条：DIFF-1/2/3 引 P1、DIFF-8 产品标六档阶梯与贴片无 story）；visual-proof 测试 16/16；门红因：样板未合入（已合入）、矩阵 contrast 四类——作用域缺陷（W5-C）、缺 `[data-tcrn-theme="light"]` 主题块（批末返工，tokens-sync）、inputs-matrix 缺 opt-sel-l/n 两格（批末返工，matrix-stories.tsx）、before-bg 探针（W5-C）；集外：是否接进 verify（W6-A）、README:85 与 foundation-visual-standards.ts:546 文字；全量报告在集成分支跑 `node scripts/storybook-visual-proof.mjs --write-report` |
 | W2-H | 在跑 | 4e5b502 | SUB-011 |
+| W6-B | 在跑 | 91965de | SUB-041→042＋OFL-1.1 许可白名单（D4）；期望值从契约推出，依赖状态样式的断言列「W5-C 合入后复核」 |
 | W5-C | 在跑 | 23182c6 | 前置修复 page-template scopeComponentCss＋SUB-028→035；文件集加 page-template.tsx 与 gplus-measure.mjs（只做加法） |
 | W5-A | 已合入 df12710，包树已退役 | 373e3ec | SUB-031；类目 `gplus-samples` 五个样板（id 按约定 7），各 1908px（余量 92）；浅/夜两块 class 一致；129-GWT3 未达：P1 待裁差值（品牌行 16/48 而导航图标 49、文字 77；纸离边 0 非 12 且无圆角阴影；顶栏 68 非 52；侧栏有底色与右边线；首个导航组须带标题；无用户区与计数槽；面包屑无箭头）——差值表在 `handoff/W5-A.md`；storybook test 6 过 3 红（W4-A 已登记旧红）；集外：夜间块壳主题按钮无图标（ShellThemeToggle 或 page-template）、单选选中态静态页不显示（作用域改写同源，W5-C）、几何门测量根宜用 story 正文区（整篇 article 会把文档标题 2px 溢出算 clip） |
 | W2-G | 已合入 590231c，包树已退役 | 27b12ec | SUB-007；fonts-render-proof 8 腿全过（52 个字面副本逐字节同、35 页各链接一次、googleapis/gstatic 0、五族 10 样本真加载、「季度复盘」回退 Noto Serif SC、屏蔽 fonts/ 时回退系统宋体以证可区分、变异 4 腿判红）；OFL 文本另复制进 storybook-static/licenses（超出判据）；画布色三处读 `--tcrn-color-bg`（浅 #efeeea、夜 #121210）；smoke.test 新断言写法在 `handoff/W2-G.md` 第 3 节（归 W6-B）；集外：package.json 加 `fonts:render-proof` 接 verify（W6-A，P4）；preview.ts 的 backgrounds.values 旧格式（P2）；随包字体改变静态页文字尺寸，浏览器门阈值与基线需复核（P3，W6-B/W8-A） |
@@ -67,7 +68,6 @@
 
 ## 待派（就绪条件）
 
-- W6-B：等 W5-C 合入（作用域修复会改变静态页状态样式，重定基线须在其后）；文件集加 `scripts/package-contract-manifest.mjs`（OFL-1.1 依 D4 入许可白名单）。
 - W6-A：等 W2-H、W5-B、W5-C 合入。
 - W7-A：等 W6-A、W6-B；W8-A：等 W7-A。
 
