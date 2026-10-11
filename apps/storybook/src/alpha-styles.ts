@@ -314,21 +314,10 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   width: 100%;
   min-width: 0;
 }
-.tcrn-doc-header-search .tcrn-search-input {
-  --tcrn-search-input-block-size: calc(var(--tcrn-space-6) + var(--tcrn-space-1h));
-  --tcrn-search-input-icon-size: 16px;
-  --tcrn-search-input-padding-inline: var(--tcrn-space-3);
-  --tcrn-search-input-column-gap: 8px;
-  --tcrn-search-input-control-min-inline-size: 84px;
-  width: 100%;
-  max-width: 100%;
-  background: var(--tcrn-color-surface-panel);
-  transition:
-    background-color var(--tcrn-doc-motion-smooth),
-    border-color var(--tcrn-doc-motion-smooth),
-    box-shadow var(--tcrn-doc-motion-smooth),
-    color var(--tcrn-doc-motion-smooth);
-}
+/* The header search is the package SearchInput in its tool form: the wrapper paints
+   nothing, and the control takes the package's 32px height, wash fill and control radius.
+   The block-level wrapper already fills this slot, so no doc rule sizes or repaints it
+   (TCRN-DS-SUB-064). */
 
 .tcrn-doc-page-head {
   display: grid;
@@ -1171,11 +1160,6 @@ ${demoStoryCss}
 }
 
 /* KeyValueList geometry is package-owned, including inside nested inspectors. */
-
-.tcrn-doc-header-search .tcrn-search-input {
-  width: 100%;
-  max-width: 100%;
-}
 
 html[data-tcrn-theme="dark"] .tcrn-doc-overlay-mode-card,
 html[data-tcrn-theme="dark"] .tcrn-doc-overlay-static-card {

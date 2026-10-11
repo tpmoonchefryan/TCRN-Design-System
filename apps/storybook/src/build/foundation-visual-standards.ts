@@ -615,9 +615,14 @@ export const storybookDocShellVisualOracle = {
     desktopTopbarTolerancePx: 2,
     searchRestWidthPx: 260,
     searchExpandedWidthPx: 360,
-    searchHeightPx: 36,
-    searchBorderColor: "rgb(142, 142, 136)",
-    searchBorderRadiusPx: 4,
+    // The header search is the package SearchInput in its G+ tool form (TCRN-DS-SUB-064):
+    // control height --tcrn-control-height-md (32px), wash fill, no border (border-style
+    // none; the edge is the inputs pair box-shadow, transparent at rest, so the resting
+    // edge colour reads back as rgba(0, 0, 0, 0)), radius --tcrn-radius-control (8px).
+    // Values read back in the built doc shell, light and dark; tolerances unchanged.
+    searchHeightPx: 32,
+    searchBorderColor: "rgba(0, 0, 0, 0)",
+    searchBorderRadiusPx: 8,
     themeToggleSizePx: 36,
     themeToggleRadiusPx: 999,
     localeTriggerHeightPx: 36,
