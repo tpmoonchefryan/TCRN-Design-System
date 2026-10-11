@@ -261,6 +261,24 @@ test("C5: themed token blocks must declare the same token set; theme-independent
   assert.deepEqual(ruleIds(run({ tokens: extraDark }), "C5"), ["C5.dark-only"]);
 });
 
+test("C5: the light theme block may be the selector list :root, [data-tcrn-theme=\"light\"]; it is the light side", () => {
+  const opening = ":root {\n  /* tcrn-token-block: theme */";
+  const listed = TOKENS_CSS.replace(opening, ':root, [data-tcrn-theme="light"] {\n  /* tcrn-token-block: theme */');
+  assert.notEqual(listed, TOKENS_CSS);
+  assert.equal(status(run({ tokens: listed }), "C5"), "green");
+  const reordered = TOKENS_CSS.replace(opening, '[data-tcrn-theme="light"],\n:root {\n  /* tcrn-token-block: theme */');
+  assert.equal(status(run({ tokens: reordered }), "C5"), "green");
+  // The list is compared with the dark block like a lone :root: a name the dark block lacks, or a
+  // name only the dark block has, is red.
+  const missingDark = listed.replace("  --tcrn-color-wash: rgba(255, 255, 255, .06);\n", "");
+  assert.notEqual(missingDark, listed);
+  assert.deepEqual(ruleIds(run({ tokens: missingDark }), "C5"), ["C5.token-set"]);
+  const extraDark = listed.replace("  --tcrn-color-acc: #69d6d0;", "  --tcrn-color-acc: #69d6d0;\n  --tcrn-color-glow: #fff;");
+  assert.deepEqual(ruleIds(run({ tokens: extraDark }), "C5"), ["C5.dark-only"]);
+  const extraLight = listed.replace("  --tcrn-color-acc: #0b7f74;", "  --tcrn-color-acc: #0b7f74;\n  --tcrn-color-glow: #000;");
+  assert.deepEqual(ruleIds(run({ tokens: extraLight }), "C5"), ["C5.token-set"]);
+});
+
 test("C13: a new out-of-package tcrn- class turns C13 red; tcrn-doc- classes do not", () => {
   const family = run({ used: [...USED_CLASSES, "tcrn-button--glow"] });
   assert.equal(status(family, "C13"), "red");

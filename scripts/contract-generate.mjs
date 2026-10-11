@@ -199,12 +199,23 @@ function marksFile() {
   return lines.join("\n\n") + "\n";
 }
 
+// The light theme block is a selector list: the contract light selector (:root) plus the "light"
+// value of the attribute the night selector sets, so a [data-tcrn-theme="light"] subtree inside a
+// dark page re-declares the light values instead of inheriting the night ones. The dark block
+// follows it, so on an element both match (the dark root) the night values win (TCRN-DS-SUB-047).
+function themeSelectors(themes) {
+  const attribute = /^\[\s*([-\w]+)\s*=\s*"dark"\s*\]$/u.exec(themes.night.selector)?.[1];
+  if (!attribute) throw new Error(`contract/tokens.json themes.night.selector is not an [attribute="dark"] selector: ${themes.night.selector}`);
+  return { light: `${themes.light.selector}, [${attribute}="light"]`, dark: themes.night.selector };
+}
+
 function tokensFile() {
   const tk = data.tokens;
+  const selectors = themeSelectors(tk.themes);
   const lines = [header(["tokens.json", "marks.json"])];
   lines.push(`export interface TcrnGplusThemedToken {\n  readonly key: string;\n  readonly cssVar: string;\n  readonly group: string;\n  readonly light: string;\n  readonly dark: string;\n}`);
   lines.push(`export interface TcrnGplusFixedToken {\n  readonly key: string;\n  readonly cssVar: string;\n  readonly group: string;\n  readonly value: string;\n}`);
-  lines.push(`/** light values go on :root, dark values on the dark-theme selector; fixed and brand tokens are theme independent */\nexport const tcrnGplusThemeSelectors = { light: ${q(tk.themes.light.selector)}, dark: ${q(tk.themes.night.selector)} } as const;`);
+  lines.push(`/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed and brand tokens are theme independent */\nexport const tcrnGplusThemeSelectors = { light: ${q(selectors.light)}, dark: ${q(selectors.dark)} } as const;`);
   const themed = tk.themed.map((t) => ({ key: t.key, cssVar: t.cssVar, group: t.group, light: t.light, dark: t.night }));
   const fixed = tk.fixed.map((t) => ({ key: t.key, cssVar: t.cssVar, group: t.group, value: pkgCss(t.value) }));
   const brand = tk.brand.map((t) => ({ key: t.key, cssVar: t.cssVar, group: t.group, value: t.value }));

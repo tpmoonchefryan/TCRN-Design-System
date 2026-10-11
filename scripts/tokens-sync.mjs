@@ -15,10 +15,12 @@
 //      System compliance means using the same Storybook visual instance.
 //
 // tokens.css is `tcrnTokenStylesheet` (the bundled-font @import, then the token blocks);
-// the storybook block is `tcrnTokenCss`. Both carry three blocks: the `:root` theme block,
-// the theme-independent `:root` block and the `[data-tcrn-theme="dark"]` block. The C5
+// the storybook block is `tcrnTokenCss`. Both carry three blocks: the light theme block, whose
+// selector is the list `:root, [data-tcrn-theme="light"]` (tcrnGplusThemeSelectors.light), the
+// theme-independent `:root` block and the `[data-tcrn-theme="dark"]` block after them. The C5
 // check asserts that the theme block and the dark block declare the same property names
-// (compareTokenThemeBlocks from @tcrn/ui-tokens, the same rule the unit tests use).
+// (compareTokenThemeBlocks from @tcrn/ui-tokens, the same rule the unit tests use; it accepts
+// selector lists).
 //
 // Run with `--check` to prove both artifacts match the source (build gate);
 // run with no flag to regenerate them. `--deprecations` lists every deprecated token
@@ -30,6 +32,7 @@ import {
   compareTokenThemeBlocks,
   findDeprecatedTokenUsages,
   formatDeprecatedTokenNotices,
+  tcrnGplusThemeSelectors,
   tcrnTokenCss,
   tcrnTokenStylesheet
 } from "../packages/ui-tokens/dist/index.js";
@@ -39,13 +42,23 @@ const TOKENS_CSS = path.join(root, "packages/ui-tokens/src/tokens.css");
 const STORYBOOK_CSS = path.join(root, "apps/storybook/src/storybook.css");
 
 const SHELL_MARKER = "/* Token blocks below are generated from @tcrn/ui-tokens";
+const THEME_MARKER = "/* tcrn-token-block: theme */";
 
+// The generated part runs from the light theme block to the end of the dark block. The light
+// block is found by its marker, not by a literal `:root {`, because its selector may be a list
+// (`:root, [data-tcrn-theme="light"]`, or the plain `:root` of a file written before the list).
 function storybookParts() {
   const raw = fs.readFileSync(STORYBOOK_CSS, "utf8");
-  const start = raw.indexOf(":root {");
-  if (start === -1) throw new Error("storybook.css: no :root token block found");
-  const darkClose = raw.indexOf("\n}\n", raw.indexOf('[data-tcrn-theme="dark"] {'));
-  if (darkClose === -1) throw new Error("storybook.css: no dark token block found");
+  const marker = raw.indexOf(THEME_MARKER);
+  if (marker === -1) throw new Error("storybook.css: no theme token block found");
+  const brace = raw.lastIndexOf("{", marker);
+  const start = raw.lastIndexOf("\n", brace) + 1;
+  const opening = raw.slice(start, brace).split(",").map((selector) => selector.trim());
+  if (!opening.includes(":root")) throw new Error(`storybook.css: the first theme token block opens with ${raw.slice(start, brace).trim()}, not a :root selector list`);
+  const darkOpen = raw.indexOf(`\n${tcrnGplusThemeSelectors.dark} {\n`, marker);
+  if (darkOpen === -1) throw new Error("storybook.css: no dark token block found");
+  const darkClose = raw.indexOf("\n}\n", darkOpen);
+  if (darkClose === -1) throw new Error("storybook.css: the dark token block is not closed");
   return { header: raw.slice(0, start), generated: raw.slice(start, darkClose + 3), rest: raw.slice(darkClose + 3) };
 }
 

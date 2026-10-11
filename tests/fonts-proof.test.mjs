@@ -10,7 +10,32 @@ import { CSS_NAME, FONTS_DIR, LICENSES_DIR, MANIFEST_NAME, inRanges, parseUnicod
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(fs.readFileSync(path.join(repoRoot, FONTS_DIR, MANIFEST_NAME), "utf8"));
 const firstFile = manifest.files[0].file;
-const openTokens = [{ variable: "--tcrn-type-family-distributable-latin", value: '"Hanken Grotesk", "Noto Sans SC", sans-serif' }];
+
+// The four G+ family tokens the token-families check reads, with the stacks contract/tokens.json
+// gives them (the heading token carries the serif stack, as @tcrn/ui-tokens does).
+const contract = JSON.parse(fs.readFileSync(path.join(repoRoot, "docs/design/gplus-2026-10/contract/tokens.json"), "utf8"));
+function contractStack(cssVar) {
+  const entry = contract.fixed.find((token) => token.cssVar === cssVar);
+  assert.ok(entry, `contract/tokens.json defines ${cssVar}`);
+  return entry.value;
+}
+const openTokens = [
+  { variable: "--tcrn-type-family-ui", value: contractStack("--tcrn-type-family-ui") },
+  { variable: "--tcrn-type-family-heading", value: contractStack("--tcrn-type-family-serif") },
+  { variable: "--tcrn-type-family-serif", value: contractStack("--tcrn-type-family-serif") },
+  { variable: "--tcrn-type-family-mono", value: contractStack("--tcrn-type-family-mono") }
+];
+// Each family token and the Noto face its Chinese text must fall back to.
+const CHINESE_FALLBACKS = [
+  ["--tcrn-type-family-ui", "Noto Sans SC"],
+  ["--tcrn-type-family-heading", "Noto Serif SC"],
+  ["--tcrn-type-family-serif", "Noto Serif SC"],
+  ["--tcrn-type-family-mono", "Noto Sans SC"]
+];
+
+function withToken(variable, value) {
+  return openTokens.flatMap((token) => (token.variable !== variable ? [token] : value === undefined ? [] : [{ variable, value }]));
+}
 
 // The first ideograph that no shipped Chinese slice covers.
 const chineseRanges = manifest.files.filter((entry) => entry.family === "Noto Sans SC").flatMap((entry) => parseUnicodeRange(entry.unicodeRange));
@@ -59,6 +84,42 @@ test("the committed fonts, manifest, stylesheet and licences pass every check", 
   const report = await prove(fixture(t));
   assert.deepEqual(report.checks.filter((check) => !check.ok).map((check) => `${check.id}: ${check.failures.join("; ")}`), []);
   assert.equal(report.ok, true);
+});
+
+test("the fixture's family tokens are the contract's G+ stacks, mono with its Noto Sans SC fallback", async (t) => {
+  assert.match(contractStack("--tcrn-type-family-mono"), /^"IBM Plex Mono","Noto Sans SC",/);
+  assert.match(contractStack("--tcrn-type-family-ui"), /^"Hanken Grotesk","Noto Sans SC",/);
+  assert.match(contractStack("--tcrn-type-family-serif"), /^"Source Serif 4","Noto Serif SC",/);
+  const check = (await prove(fixture(t))).checks.find((candidate) => candidate.id === "token-families");
+  assert.equal(check.ok, true, check.failures.join("; "));
+  assert.match(check.pass, /^the 4 G\+ family tokens open with their vendored faces/);
+});
+
+test("a missing G+ family token turns token-families red", async (t) => {
+  for (const { variable } of openTokens) {
+    const report = await prove(fixture(t), withToken(variable, undefined));
+    assert.equal(report.ok, false, `${variable} dropped`);
+    assert.match(failures(report, "token-families"), new RegExp(`${variable} is missing from @tcrn/ui-tokens`));
+  }
+});
+
+test("a G+ family token without its Noto Chinese fallback turns token-families red", async (t) => {
+  for (const [variable, fallback] of CHINESE_FALLBACKS) {
+    const stack = openTokens.find((token) => token.variable === variable).value;
+    const stripped = stack.replace(`,"${fallback}"`, "");
+    assert.notEqual(stripped, stack, `${variable} names "${fallback}" in the contract`);
+    const report = await prove(fixture(t), withToken(variable, stripped));
+    assert.equal(report.ok, false, `${variable} without "${fallback}"`);
+    assert.match(failures(report, "token-families"), new RegExp(`${variable} lacks the Chinese fallback "${fallback}"`));
+  }
+});
+
+test("a family fonts.css ships that no family token names turns token-families red", async (t) => {
+  const root = fixture(t);
+  fs.appendFileSync(path.join(root, FONTS_DIR, CSS_NAME), '@font-face {\n  font-family: "Example Grotesk";\n  font-style: normal;\n  font-weight: 400;\n  font-display: swap;\n  src: url("./example-grotesk.woff2") format("woff2");\n  unicode-range: U+0000-00FF;\n}\n');
+  const report = await prove(root);
+  assert.equal(report.ok, false);
+  assert.equal(failures(report, "token-families"), 'fonts.css ships "Example Grotesk", which no family token names');
 });
 
 test("a woff2 copy with one byte changed turns the digest check red", async (t) => {
@@ -185,10 +246,14 @@ test("googleapis, gstatic or an inlined data: font in build output is red, and a
 });
 
 test("a proprietary face inside a distributable stack stays red", async (t) => {
+  // distributable-* stacks only appear here: an open one passes, the proprietary one does not.
   const report = await prove(fixture(t), [
     ...openTokens,
+    { variable: "--tcrn-type-family-distributable-latin", value: '"Hanken Grotesk", "Noto Sans SC", sans-serif' },
     { variable: "--tcrn-type-family-distributable-zh-cn", value: '"Noto Sans SC", "PingFang SC", sans-serif' }
   ]);
   assert.equal(report.ok, false);
-  assert.match(failures(report, "proprietary"), /--tcrn-type-family-distributable-zh-cn advertises bundleability but names "PingFang"/);
+  const text = failures(report, "proprietary");
+  assert.match(text, /--tcrn-type-family-distributable-zh-cn advertises bundleability but names "PingFang"/);
+  assert.doesNotMatch(text, /distributable-latin/);
 });

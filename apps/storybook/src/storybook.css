@@ -1,7 +1,7 @@
 /* Token blocks below are generated from @tcrn/ui-tokens — the single source of
    truth for the visual language. Do not hand-edit: run `pnpm tokens:sync` and let
    `pnpm tokens:proof` fail the build if this file drifts from the package. */
-:root {
+:root, [data-tcrn-theme="light"] {
   /* tcrn-token-block: theme */
   --tcrn-color-bg: #efeeea;
   --tcrn-color-bg-2: #e7e5df;
@@ -93,7 +93,7 @@
   /* tcrn-token-block: theme-independent */
   --tcrn-type-family-serif: "Source Serif 4","Noto Serif SC",Georgia,serif;
   --tcrn-type-family-ui: "Hanken Grotesk","Noto Sans SC",system-ui,sans-serif;
-  --tcrn-type-family-mono: "IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --tcrn-type-family-mono: "IBM Plex Mono","Noto Sans SC",ui-monospace,Menlo,monospace;
   --tcrn-radius-control: 8px;
   --tcrn-radius-small: 6px;
   --tcrn-radius-panel: 12px;

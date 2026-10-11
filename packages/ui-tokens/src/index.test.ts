@@ -15,6 +15,7 @@ import {
   tcrnDeprecatedTokens,
   tcrnGplusBrandTokens,
   tcrnGplusFixedTokens,
+  tcrnGplusThemeSelectors,
   tcrnGplusThemedTokens,
   tcrnThemeModes,
   tcrnTokenCss,
@@ -119,12 +120,17 @@ test("theme blocks declare the same property names; theme-independent tokens sit
   assert.deepEqual([...comparison.dark], themed);
   assert.deepEqual(tcrnDarkThemeTokens.map((token) => token.variable), themed);
 
+  // The light theme block is one selector list, so a [data-tcrn-theme="light"] subtree inside a
+  // dark page re-declares the light values; the dark block comes after it (TCRN-DS-SUB-047).
+  assert.equal(tcrnGplusThemeSelectors.light, ':root, [data-tcrn-theme="light"]');
+  assert.equal(tcrnGplusThemeSelectors.dark, '[data-tcrn-theme="dark"]');
   const blocks = parseTokenCssBlocks(tcrnTokenStylesheet);
   assert.deepEqual(blocks.map((block) => [block.selector, block.kind]), [
-    [":root", "theme"],
+    [':root, [data-tcrn-theme="light"]', "theme"],
     [":root", "theme-independent"],
     ['[data-tcrn-theme="dark"]', "theme"]
   ]);
+  assert.ok(tcrnTokenCss.startsWith(':root, [data-tcrn-theme="light"] {\n  /* tcrn-token-block: theme */\n'));
   const fixedNames = new Set(blocks[1].declarations.map(([property]) => property));
   for (const token of tcrnTokens.filter((candidate) => candidate.scope === "fixed")) assert.ok(fixedNames.has(token.variable), `${token.variable} sits in the theme-independent block`);
   for (const variable of themed) assert.equal(fixedNames.has(variable), false, `${variable} is not repeated in the theme-independent block`);
@@ -140,6 +146,25 @@ test("theme blocks declare the same property names; theme-independent tokens sit
   assert.deepEqual([...compareTokenThemeBlocks(darkOnly).darkOnly], ["--tcrn-color-extra"]);
   const lightOnly = tcrnTokenCss.replace(/(\[data-tcrn-theme="dark"\] \{[\s\S]*?)\n {2}--tcrn-color-ink-3: [^\n]*/, "$1");
   assert.deepEqual([...compareTokenThemeBlocks(lightOnly).lightOnly], ["--tcrn-color-ink-3"]);
+});
+
+test("the light theme block is read as a selector list in any order and spacing; a lone :root is not it", () => {
+  const opening = ':root, [data-tcrn-theme="light"] {\n';
+  assert.ok(tcrnTokenCss.includes(opening));
+  // The same list, reordered and spread over two lines, is still the light theme block.
+  const reordered = tcrnTokenCss.replace(opening, '[data-tcrn-theme="light"],\n  :root {\n');
+  assert.notEqual(reordered, tcrnTokenCss);
+  assert.equal(parseTokenCssBlocks(reordered)[0].selector, '[data-tcrn-theme="light"], :root');
+  const comparison = compareTokenThemeBlocks(reordered);
+  assert.equal(comparison.ok, true, comparison.problems.join("; "));
+  assert.deepEqual([...comparison.light], [...compareTokenThemeBlocks(tcrnTokenCss).light]);
+  // Without the light member the block no longer covers a light subtree of a dark page: red.
+  const rootOnly = compareTokenThemeBlocks(tcrnTokenCss.replace(opening, ":root {\n"));
+  assert.equal(rootOnly.ok, false);
+  assert.match(rootOnly.problems.join("; "), /expected one :root, \[data-tcrn-theme="light"\] theme block, found 0/);
+  // A list that adds a third selector is a different block, not the light theme block.
+  const widened = compareTokenThemeBlocks(tcrnTokenCss.replace(opening, ':root, [data-tcrn-theme="light"], .extra {\n'));
+  assert.equal(widened.ok, false);
 });
 
 test("pre-G+ names stay as deprecated aliases that resolve to the G+ values and print deprecation notices", () => {
@@ -193,7 +218,8 @@ test("typography, shape, shadow and motion tokens follow the G+ scale", () => {
   assert.match(light["--tcrn-type-family-ui"], /^"Hanken Grotesk","Noto Sans SC",/);
   assert.match(light["--tcrn-type-family-heading"], /^"Source Serif 4","Noto Serif SC",/);
   assert.equal(light["--tcrn-type-family-heading"], light["--tcrn-type-family-serif"]);
-  assert.match(light["--tcrn-type-family-mono"], /^"IBM Plex Mono",/);
+  assert.equal(light["--tcrn-type-family-mono"], tcrnGplusFixedTokens.find((token) => token.key === "mono")?.value);
+  assert.match(light["--tcrn-type-family-mono"], /^"IBM Plex Mono","Noto Sans SC",/, "monospace Chinese text falls back to the bundled Noto Sans SC");
   assert.notEqual(light["--tcrn-type-family-heading"], light["--tcrn-type-family-stamp"], "headings do not borrow the stamp face");
   assert.doesNotMatch(light["--tcrn-type-family-heading"], /--tcrn-type-family-stamp/);
   assert.equal(resolvedLight["--tcrn-type-family-zh-cn"], light["--tcrn-type-family-ui"], "Chinese UI text falls back to the bundled Noto Sans SC");

@@ -457,6 +457,11 @@ function covered(prop, set) {
 
 export function checkC5(rules, scope) {
   const { add, result } = collector("C5", scope);
+  // Each selector of a list is read on its own. The light theme block `:root, [data-tcrn-theme="light"]`
+  // (TCRN-DS-SUB-047) therefore lands in one group, keyed by the base selector :root that both members
+  // reduce to: :root fills the base bucket and the light member the light bucket, and the light side is
+  // base + light, so the list as a whole is the light side. A themed (strict) group still needs every
+  // light-side name declared in the dark block itself.
   const groups = new Map();
   for (const rule of rules.filter((candidate) => candidate.kind === "style")) {
     const marker = rule.comments.map((body) => /tcrn-token-block:\s*([-\w]+)/u.exec(body)?.[1]).find(Boolean) ?? null;

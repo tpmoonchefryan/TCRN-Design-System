@@ -367,7 +367,7 @@ export const TOKEN_FAMILY_STACKS = [
   { variable: "--tcrn-type-family-ui", role: "ui", fallback: "ui-zh-fallback" },
   { variable: "--tcrn-type-family-heading", role: "heading", fallback: "heading-zh-fallback" },
   { variable: "--tcrn-type-family-serif", role: "heading", fallback: "heading-zh-fallback" },
-  { variable: "--tcrn-type-family-mono", role: "mono" }
+  { variable: "--tcrn-type-family-mono", role: "mono", fallback: "ui-zh-fallback" }
 ];
 
 export function parseFamilyStack(value) {

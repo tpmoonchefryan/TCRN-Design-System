@@ -172,3 +172,53 @@ test("GWT4: the consumer stylesheet resolves through the shipped tokens.css to t
     await page.close();
   }
 });
+
+test("a [data-tcrn-theme=\"light\"] block inside a dark ancestor resolves through the shipped tokens.css to the light values", async () => {
+  // TCRN-DS-SUB-047: the light theme block is `:root, [data-tcrn-theme="light"]`, so a light subtree
+  // re-declares the light values instead of inheriting the night ones from the dark page. Themed
+  // tokens, a token that references a themed token (surface, focus ring) and an old name are read;
+  // each is mirrored by literal probes holding the package's resolved light and dark values.
+  const probes = [
+    ["--tcrn-color-bg", "background-color"],
+    ["--tcrn-color-panel-2", "background-color"],
+    ["--tcrn-color-ink", "color"],
+    ["--tcrn-color-ink-3", "color"],
+    ["--tcrn-color-acc", "color"],
+    ["--tcrn-color-surface", "background-color"],
+    ["--tcrn-focus-ring", "box-shadow"],
+    ["--tcrn-color-text-primary", "color"]
+  ].map(([variable, property], index) => ({ variable, property, index }));
+  const resolved = Object.fromEntries(tcrnThemeModes.map((theme) => [theme, createResolvedTokenMap(theme)]));
+  for (const { variable } of probes) assert.notEqual(resolved.light[variable], resolved.dark[variable], `${variable} differs between the themes`);
+  const probeCss = probes
+    .map(({ variable, property, index }) => [
+      `.var-${index} { ${property}: var(${variable}); }`,
+      ...tcrnThemeModes.map((theme) => `.lit-${index}-${theme} { ${property}: ${resolved[theme][variable]}; }`)
+    ].join("\n"))
+    .join("\n");
+  const cells = probes.map(({ index }) => `<i class="var-${index}"></i>${tcrnThemeModes.map((theme) => `<i class="lit-${index}-${theme}"></i>`).join("")}`).join("");
+  const page = await browser.newPage();
+  try {
+    // The page root is dark; a light subtree sits inside it, and a dark subtree inside that.
+    await page.setContent(
+      `<!doctype html><html data-tcrn-theme="dark"><head><style>${shippedTokensCss.replace(/@import[^;]*;/g, "")}</style><style>${probeCss}</style></head>` +
+        `<body><div data-scope="page">${cells}</div><div data-scope="light" data-tcrn-theme="light">${cells}<div data-scope="dark" data-tcrn-theme="dark">${cells}</div></div></body></html>`
+    );
+    const computed = await page.evaluate((list) => {
+      const read = (scope, selector, property) => getComputedStyle(document.querySelector(`[data-scope="${scope}"] > ${selector}`)).getPropertyValue(property).trim();
+      return ["page", "light", "dark"].flatMap((scope) =>
+        list.map(({ property, index }) => ({ scope, index, token: read(scope, `.var-${index}`, property), light: read(scope, `.lit-${index}-light`, property), dark: read(scope, `.lit-${index}-dark`, property) }))
+      );
+    }, probes);
+    // The dark page root takes the night values (the dark block follows the light list), the light
+    // subtree the light values, and a dark subtree inside it the night values again.
+    const expected = { page: "dark", light: "light", dark: "dark" };
+    for (const { scope, index, token, light, dark } of computed) {
+      const { variable, property } = probes[index];
+      assert.ok(light && dark && light !== dark, `${variable} has distinct light and dark literals for ${property}`);
+      assert.equal(token, expected[scope] === "light" ? light : dark, `${variable} (${property}) in the ${scope} scope resolves to the ${expected[scope]} value`);
+    }
+  } finally {
+    await page.close();
+  }
+});
