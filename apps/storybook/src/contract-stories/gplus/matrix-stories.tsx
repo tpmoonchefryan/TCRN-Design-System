@@ -69,6 +69,16 @@ export const gplusMatrixStoryIds: Readonly<Record<GplusMatrixBoard, string>> = {
 
 const disabledFieldReason = "Field unavailable in this example";
 
+// data-h declares a control's rendered height for the controlHeight measurement: the package size
+// tier of the control (sm 28, md 32, lg 40; Button, IconButton, LinkButton and the text-like inputs
+// default to md). Controls without a height tier (Textarea, Checkbox, RadioGroup, Switch) carry none.
+type ControlSize = "sm" | "md" | "lg";
+const controlHeightPx: Readonly<Record<ControlSize, number>> = { sm: 28, md: 32, lg: 40 };
+
+function heightHook(size: ControlSize): Record<string, string> {
+  return { "data-h": String(controlHeightPx[size]) };
+}
+
 function TypographyMatrix({ theme }: { theme: MatrixTheme }) {
   const cell = (id: string) => cellAttributes("typography", id, theme);
   return (
@@ -293,7 +303,7 @@ function ActionsMatrix({ theme }: { theme: MatrixTheme }) {
     label: variant,
     cells: actionStates.map((state) =>
       hasActionState(variant, state) ? (
-        <Button variant={variant} {...actionStateProps(state)} {...cell(`${actionCellPrefix[variant]}-${state}`)}>
+        <Button variant={variant} {...actionStateProps(state)} {...cell(`${actionCellPrefix[variant]}-${state}`)} {...heightHook("md")}>
           {actionLabels[variant]}
         </Button>
       ) : (
@@ -311,6 +321,7 @@ function ActionsMatrix({ theme }: { theme: MatrixTheme }) {
           iconName={actionIcons[variant]}
           {...actionStateProps(state)}
           {...cell(`ico-${actionCellPrefix[variant]}-${state}`)}
+          {...heightHook("md")}
         />
       ) : (
         <NoState />
@@ -327,30 +338,30 @@ function ActionsMatrix({ theme }: { theme: MatrixTheme }) {
       </MatrixSection>
       <MatrixSection component="LinkButton">
         <MatrixRow label="variant">
-          <LinkButton variant="primary" href="#actions-matrix">Invoices</LinkButton>
-          <LinkButton variant="secondary" href="#actions-matrix">Settings</LinkButton>
-          <LinkButton variant="quiet" href="#actions-matrix">Members</LinkButton>
+          <LinkButton variant="primary" href="#actions-matrix" {...heightHook("md")}>Invoices</LinkButton>
+          <LinkButton variant="secondary" href="#actions-matrix" {...heightHook("md")}>Settings</LinkButton>
+          <LinkButton variant="quiet" href="#actions-matrix" {...heightHook("md")}>Members</LinkButton>
         </MatrixRow>
       </MatrixSection>
       <MatrixSection component="ClipboardCopyButton">
         <MatrixRow label="state">
-          <ClipboardCopyButton text="PRJ-2026-0412" ariaLabel="Copy ID" idleLabel="Copy ID" variant="secondary" size="sm" {...cell("cb-idle")} />
-          {clipboardStateMarkup(`actions-copying-${theme}`, "copying", "Copying", cell("cb-copying"))}
-          {clipboardStateMarkup(`actions-copied-${theme}`, "copied", "Copied", cell("cb-copied"))}
-          {clipboardStateMarkup(`actions-failed-${theme}`, "failed", "Copy failed", cell("cb-failed"))}
-          {clipboardStateMarkup(`actions-unsupported-${theme}`, "unsupported", "Copy unavailable", cell("cb-unsupported"))}
+          <ClipboardCopyButton text="PRJ-2026-0412" ariaLabel="Copy ID" idleLabel="Copy ID" variant="secondary" size="sm" {...cell("cb-idle")} {...heightHook("sm")} />
+          {clipboardStateMarkup(`actions-copying-${theme}`, "copying", "Copying", { ...cell("cb-copying"), ...heightHook("sm") })}
+          {clipboardStateMarkup(`actions-copied-${theme}`, "copied", "Copied", { ...cell("cb-copied"), ...heightHook("sm") })}
+          {clipboardStateMarkup(`actions-failed-${theme}`, "failed", "Copy failed", { ...cell("cb-failed"), ...heightHook("sm") })}
+          {clipboardStateMarkup(`actions-unsupported-${theme}`, "unsupported", "Copy unavailable", { ...cell("cb-unsupported"), ...heightHook("sm") })}
         </MatrixRow>
       </MatrixSection>
       <MatrixSection component="ButtonGroup">
         <MatrixRow label="selected">
           <ButtonGroup ariaLabel="View">
-            <IconButton ariaLabel="Layers" iconName="layers" aria-pressed="true" {...cell("grp-sel")} />
-            <IconButton ariaLabel="Grid" iconName="layout-grid" aria-pressed="false" />
+            <IconButton ariaLabel="Layers" iconName="layers" aria-pressed="true" {...cell("grp-sel")} {...heightHook("md")} />
+            <IconButton ariaLabel="Grid" iconName="layout-grid" aria-pressed="false" {...heightHook("md")} />
           </ButtonGroup>
           <ButtonGroup ariaLabel="Period">
-            <Button size="sm" aria-pressed="true">Day</Button>
-            <Button size="sm" aria-pressed="false">Week</Button>
-            <Button size="sm" aria-pressed="false">Month</Button>
+            <Button size="sm" aria-pressed="true" {...heightHook("sm")}>Day</Button>
+            <Button size="sm" aria-pressed="false" {...heightHook("sm")}>Week</Button>
+            <Button size="sm" aria-pressed="false" {...heightHook("sm")}>Month</Button>
           </ButtonGroup>
         </MatrixRow>
       </MatrixSection>
@@ -370,17 +381,17 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
   return (
     <>
       <MatrixSection component="Input">
-        <MatrixRow label="placeholder"><Input aria-label="Project name" placeholder="Project name" {...cell("in-ph", "ph")} /></MatrixRow>
-        <MatrixRow label="default"><Input aria-label="Project name" defaultValue="Quarterly review" {...cell("in-text")} /></MatrixRow>
-        <MatrixRow label="focus"><Input aria-label="Project name" defaultValue="Quarterly review" {...previewState("focus")} {...cell("in-focus")} /></MatrixRow>
-        <MatrixRow label="read-only"><Input aria-label="Team" defaultValue="Design team" readOnly {...cell("in-ro")} /></MatrixRow>
-        <MatrixRow label="disabled"><Input aria-label="Team" defaultValue="Design team" disabled disabledReason={disabledFieldReason} {...cell("in-dis")} /></MatrixRow>
+        <MatrixRow label="placeholder"><Input aria-label="Project name" placeholder="Project name" {...cell("in-ph", "ph")} {...heightHook("md")} /></MatrixRow>
+        <MatrixRow label="default"><Input aria-label="Project name" defaultValue="Quarterly review" {...cell("in-text")} {...heightHook("md")} /></MatrixRow>
+        <MatrixRow label="focus"><Input aria-label="Project name" defaultValue="Quarterly review" {...previewState("focus")} {...cell("in-focus")} {...heightHook("md")} /></MatrixRow>
+        <MatrixRow label="read-only"><Input aria-label="Team" defaultValue="Design team" readOnly {...cell("in-ro")} {...heightHook("md")} /></MatrixRow>
+        <MatrixRow label="disabled"><Input aria-label="Team" defaultValue="Design team" disabled disabledReason={disabledFieldReason} {...cell("in-dis")} {...heightHook("md")} /></MatrixRow>
         <MatrixRow label="error">
           <StaticMarkup
             id={`inputs-error-${theme}`}
             element={(
               <Field label="Email" error="Enter a complete email address">
-                <Input defaultValue="lin.xiao@" aria-invalid="true" {...cell("in-err")} />
+                <Input defaultValue="lin.xiao@" aria-invalid="true" {...cell("in-err")} {...heightHook("md")} />
               </Field>
             )}
             edits={[cellEdit('class="tcrn-field__error"', cell("err-msg"))]}
@@ -391,38 +402,43 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         <Textarea aria-label="Notes" defaultValue="Seats are billed monthly; annual plans are charged once per term." />
       </MatrixSection>
       <MatrixSection component="SearchInput">
-        <MatrixRow label="focus"><SearchInput aria-label="Search" defaultValue="design" {...previewState("focus")} {...cell("search-focus")} /></MatrixRow>
-        <MatrixRow label="placeholder"><SearchInput aria-label="Search" placeholder="Search" {...cell("search-ph", "ph")} /></MatrixRow>
+        <MatrixRow label="focus"><SearchInput aria-label="Search" defaultValue="design" {...previewState("focus")} {...cell("search-focus")} {...heightHook("md")} /></MatrixRow>
+        <MatrixRow label="placeholder"><SearchInput aria-label="Search" placeholder="Search" {...cell("search-ph", "ph")} {...heightHook("md")} /></MatrixRow>
       </MatrixSection>
       <MatrixSection component="SuggestInput">
-        <SuggestInput aria-label="Team" defaultValue="Design team" suggestions={["Design team", "Product team"]} />
+        <SuggestInput aria-label="Team" defaultValue="Design team" suggestions={["Design team", "Product team"]} {...heightHook("md")} />
       </MatrixSection>
       <MatrixSection component="Select">
         <StaticMarkup
           id={`inputs-select-${theme}`}
-          element={<Select aria-label="Project" defaultValue="review" options={projectOptions} />}
+          element={<Select aria-label="Project" defaultValue="review" options={projectOptions} {...heightHook("md")} />}
           edits={[cellEdit("tcrn-select-wrap__icon", cell("chev"))]}
         />
       </MatrixSection>
       <MatrixSection component="MultiSelect">
+        {/* The open list is shown in place: MultiSelect has no open entry, and the page's static
+            bridge mounts every [data-choice-presentation=dropdown] root and moves an open list to
+            document.body, out of this theme block. Dropping that hook keeps the expanded list and
+            its selected option (opt-sel) inside the block. */}
         <StaticMarkup
           id={`inputs-multi-${theme}`}
           block
           element={<MultiSelect aria-label="Projects" presentation="dropdown" defaultValue={["review", "launch"]} options={projectOptions} />}
           edits={[
-            { marker: 'aria-haspopup="listbox"', set: { "aria-expanded": "true" } },
+            { marker: 'data-choice-presentation="dropdown"', remove: ["data-choice-presentation"] },
+            { marker: 'aria-haspopup="listbox"', set: { "aria-expanded": "true", ...heightHook("md") } },
             { marker: 'role="listbox"', remove: ["hidden"] },
             cellEdit('aria-selected="true"', cell("opt-sel"))
           ]}
         />
       </MatrixSection>
       <MatrixSection component="NumberInput">
-        <NumberInput aria-label="Seats" defaultValue={12} min={1} max={120} {...cell("num")} />
+        <NumberInput aria-label="Seats" defaultValue={12} min={1} max={120} {...cell("num")} {...heightHook("md")} />
       </MatrixSection>
       <MatrixSection component="DatePicker">
         <StaticMarkup
           id={`inputs-date-${theme}`}
-          element={<DatePicker aria-label="Due date" defaultValue="2026-10-31" min="2026-10-01" {...cell("date")} />}
+          element={<DatePicker aria-label="Due date" defaultValue="2026-10-31" min="2026-10-01" {...cell("date")} {...heightHook("md")} />}
           edits={[cellEdit("tcrn-date-picker-wrap__icon", cell("cal"))]}
         />
       </MatrixSection>

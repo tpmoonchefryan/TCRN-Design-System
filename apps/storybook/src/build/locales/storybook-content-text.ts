@@ -2098,6 +2098,9 @@ export const storybookContentText: Record<string, Record<TcrnLocale, string>> = 
   "October launch": { "zh-CN": "十月发布", en: "October launch", ja: "10 月のリリース", ko: "10월 출시", fr: "Lancement d’octobre" },
   "Autumn hiring": { "zh-CN": "秋季招聘", en: "Autumn hiring", ja: "秋の採用", ko: "가을 채용", fr: "Recrutement d’automne" },
   "Archived project": { "zh-CN": "已归档项目", en: "Archived project", ja: "アーカイブ済みプロジェクト", ko: "보관된 프로젝트", fr: "Projet archivé" },
+  // The inputs matrix shows its MultiSelect open without the page bridge, so the trigger keeps the
+  // server-rendered summary of its two selected options.
+  "Quarterly review, October launch": { "zh-CN": "季度复盘、十月发布", en: "Quarterly review, October launch", ja: "四半期レビュー、10 月のリリース", ko: "분기 리뷰, 10월 출시", fr: "Revue trimestrielle, Lancement d’octobre" },
   "Billing cycle": { "zh-CN": "计费周期", en: "Billing cycle", ja: "請求サイクル", ko: "청구 주기", fr: "Cycle de facturation" },
   "Monthly": { "zh-CN": "按月", en: "Monthly", ja: "月払い", ko: "월간", fr: "Mensuel" },
   "Annual": { "zh-CN": "按年", en: "Annual", ja: "年払い", ko: "연간", fr: "Annuel" },
@@ -2115,7 +2118,18 @@ export const storybookContentText: Record<string, Record<TcrnLocale, string>> = 
   "Team": { "zh-CN": "团队", en: "Team", ja: "チーム", ko: "팀", fr: "Équipe" },
   "Data": { "zh-CN": "数据", en: "Data", ja: "データ", ko: "데이터", fr: "Données" },
   "Products": { "zh-CN": "产品", en: "Products", ja: "製品", ko: "제품", fr: "Produits" },
-  "Main navigation": { "zh-CN": "主导航", en: "Main navigation", ja: "メインナビゲーション", ko: "기본 탐색", fr: "Navigation principale" },
+  // Landmark names of the sample shells: the five samples share one page, so each shell names its
+  // navigation and content region after its sample, and the night shell adds the block name.
+  "Typography sample: billing": { "zh-CN": "字体样板：账单", en: "Typography sample: billing", ja: "タイポグラフィサンプル：請求", ko: "타이포그래피 샘플: 청구", fr: "Échantillon typographique : facturation" },
+  "Typography sample: billing (night)": { "zh-CN": "字体样板：账单（夜间）", en: "Typography sample: billing (night)", ja: "タイポグラフィサンプル：請求（ナイト）", ko: "타이포그래피 샘플: 청구(나이트)", fr: "Échantillon typographique : facturation (nuit)" },
+  "Icon sample: projects": { "zh-CN": "图标样板：项目", en: "Icon sample: projects", ja: "アイコンサンプル：プロジェクト", ko: "아이콘 샘플: 프로젝트", fr: "Échantillon d’icônes : projets" },
+  "Icon sample: projects (night)": { "zh-CN": "图标样板：项目（夜间）", en: "Icon sample: projects (night)", ja: "アイコンサンプル：プロジェクト（ナイト）", ko: "아이콘 샘플: 프로젝트(나이트)", fr: "Échantillon d’icônes : projets (nuit)" },
+  "Brand sample: products": { "zh-CN": "品牌样板：产品", en: "Brand sample: products", ja: "ブランドサンプル：製品", ko: "브랜드 샘플: 제품", fr: "Échantillon de marque : produits" },
+  "Brand sample: products (night)": { "zh-CN": "品牌样板：产品（夜间）", en: "Brand sample: products (night)", ja: "ブランドサンプル：製品（ナイト）", ko: "브랜드 샘플: 제품(나이트)", fr: "Échantillon de marque : produits (nuit)" },
+  "Actions sample: projects": { "zh-CN": "动作样板：项目", en: "Actions sample: projects", ja: "アクションサンプル：プロジェクト", ko: "액션 샘플: 프로젝트", fr: "Échantillon d’actions : projets" },
+  "Actions sample: projects (night)": { "zh-CN": "动作样板：项目（夜间）", en: "Actions sample: projects (night)", ja: "アクションサンプル：プロジェクト（ナイト）", ko: "액션 샘플: 프로젝트(나이트)", fr: "Échantillon d’actions : projets (nuit)" },
+  "Inputs sample: invite members": { "zh-CN": "表单样板：邀请成员", en: "Inputs sample: invite members", ja: "入力サンプル：メンバー招待", ko: "입력 샘플: 멤버 초대", fr: "Échantillon de saisie : inviter des membres" },
+  "Inputs sample: invite members (night)": { "zh-CN": "表单样板：邀请成员（夜间）", en: "Inputs sample: invite members (night)", ja: "入力サンプル：メンバー招待（ナイト）", ko: "입력 샘플: 멤버 초대(나이트)", fr: "Échantillon de saisie : inviter des membres (nuit)" },
   "Lin Xiao": { "zh-CN": "林晓", en: "Lin Xiao", ja: "林暁", ko: "린샤오", fr: "Lin Xiao" },
   "Notifications": { "zh-CN": "通知", en: "Notifications", ja: "通知", ko: "알림", fr: "Notifications" },
   "Invite": { "zh-CN": "邀请", en: "Invite", ja: "招待", ko: "초대", fr: "Inviter" },
@@ -2157,7 +2171,6 @@ export const storybookContentText: Record<string, Record<TcrnLocale, string>> = 
   "4 registered · Latin wordmarks · taglines in five languages": { "zh-CN": "4 个已注册 · 字标拉丁 · 标语五语", en: "4 registered · Latin wordmarks · taglines in five languages", ja: "登録済み 4 件 · ラテン文字のワードマーク · 5 言語のタグライン", ko: "4개 등록 · 라틴 문자 워드마크 · 5개 언어 태그라인", fr: "4 enregistrés · logotypes latins · slogans en cinq langues" },
   "Brand assets": { "zh-CN": "品牌资产", en: "Brand assets", ja: "ブランドアセット", ko: "브랜드 자산", fr: "Ressources de marque" },
   "Product": { "zh-CN": "产品", en: "Product", ja: "製品", ko: "제품", fr: "Produit" },
-  "Asset ID": { "zh-CN": "资产 ID", en: "Asset ID", ja: "アセット ID", ko: "자산 ID", fr: "ID de ressource" },
   "Tagline": { "zh-CN": "标语", en: "Tagline", ja: "タグライン", ko: "태그라인", fr: "Slogan" },
   "Registration": { "zh-CN": "注册", en: "Registration", ja: "登録", ko: "등록", fr: "Enregistrement" },
   "Registered": { "zh-CN": "已注册", en: "Registered", ja: "登録済み", ko: "등록됨", fr: "Enregistré" },

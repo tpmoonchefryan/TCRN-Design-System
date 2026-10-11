@@ -80,6 +80,8 @@ interface SampleShellSpec {
   workspace: readonly RailItem[];
   brandProductId?: TcrnProductLogoId;
   headerActions?: ReactNode;
+  /** Accessible name of the shell's navigation and content region: the sample's own name. */
+  landmarkLabel: string;
 }
 
 const teamItems: readonly RailItem[] = [{ id: "settings", label: "Settings", iconName: "settings" }];
@@ -105,11 +107,18 @@ export function railEdits(spec: Pick<SampleShellSpec, "workspace" | "brandProduc
   ];
 }
 
+// The five samples share one page, each with a light and a night shell, so every shell names its
+// navigation and content region after its sample and the night shell adds the block name. Shared
+// names ("Main navigation", the route label) would give the page sets of identical landmarks.
+const landmarkSuffix: Record<GplusSampleTheme, string> = { light: "", night: " (night)" };
+
 function SampleShell({ storyId, board, theme, spec, children }: { storyId: string; board: GplusSampleBoard; theme: GplusSampleTheme; spec: SampleShellSpec; children: ReactNode }) {
   const prefix = `${storyId}-${theme}`;
+  const landmarkLabel = `${spec.landmarkLabel}${landmarkSuffix[theme]}`;
   const withSelection = (items: readonly RailItem[]) => items.map((item) => ({ ...item, href: `#${storyId}`, selected: item.id === spec.selected }));
-  // The night block differs from the light block only in data-tcrn-theme on its wrapper; the shell's
-  // own theme control reports the theme it is showing, as the canvas night screen does.
+  // The night block differs from the light block only in data-tcrn-theme on its wrapper and in its
+  // landmark names; the shell's own theme control reports the theme it is showing, as the canvas
+  // night screen does.
   const shell = (
     <ProductShell
       productName="Design team"
@@ -120,7 +129,7 @@ function SampleShell({ storyId, board, theme, spec, children }: { storyId: strin
       brandCaption={spec.brandProductId ? undefined : "Team · 12 people"}
       currentLocationLabel={spec.locationLabel}
       currentRouteLabel={spec.routeLabel}
-      navLabel="Main navigation"
+      navLabel={landmarkLabel}
       navGroups={[
         { id: "workspace", label: "Workspace", items: withSelection(spec.workspace) },
         { id: "team", label: "Team", items: withSelection(teamItems) }
@@ -131,7 +140,7 @@ function SampleShell({ storyId, board, theme, spec, children }: { storyId: strin
       search={{ label: "Search", placeholder: "Search", shortcut: "auto" }}
       headerActions={spec.headerActions}
       contentId={`${prefix}-content`}
-      contentLabel={spec.routeLabel}
+      contentLabel={landmarkLabel}
       navId={`${prefix}-nav`}
       style={sidebarWidthStyle}
       data-shell={`${gplusSampleShellKeys[board]}-${themeSuffix[theme]}`}
@@ -277,6 +286,8 @@ function IconProjectsPage() {
 const registeredProducts: readonly TcrnProductLogoId[] = ["design-system", "tms", "einzbern", "mana-orchestrate"];
 
 // Brand — product page: the rail lockup at 22, product lockups in the table at 28, a footnote.
+// The board's asset ID column is left out: the design-system asset ID spells the repository name,
+// which the rendered-text vocabulary scan rejects on every page.
 function BrandProductsPage() {
   return (
     <>
@@ -289,13 +300,11 @@ function BrandProductsPage() {
         label="Products"
         columns={[
           { key: "product", label: "Product" },
-          { key: "asset", label: "Asset ID" },
           { key: "tagline", label: "Tagline" },
           { key: "registration", label: "Registration" }
         ]}
         rows={registeredProducts.map((productId) => ({
           product: <ProductLockup productId={productId} />,
-          asset: mono(`tcrn-${productId}-two-line`),
           tagline: <Text>{tcrnProductTagline(productId, tcrnDefaultLocale)}</Text>,
           registration: <Badge tone="positive">Registered</Badge>
         }))}
@@ -434,6 +443,7 @@ function InviteMembersPage({ storyId, theme }: { storyId: string; theme: GplusSa
 const sampleSpecs: Readonly<Record<GplusSampleBoard, SampleShellSpec>> = {
   typography: {
     moduleName: "Billing",
+    landmarkLabel: "Typography sample: billing",
     locationLabel: "Design team",
     routeLabel: "Billing",
     selected: "billing",
@@ -442,6 +452,7 @@ const sampleSpecs: Readonly<Record<GplusSampleBoard, SampleShellSpec>> = {
   },
   icon: {
     moduleName: "Projects",
+    landmarkLabel: "Icon sample: projects",
     locationLabel: "Design team",
     routeLabel: "Projects",
     selected: "projects",
@@ -455,6 +466,7 @@ const sampleSpecs: Readonly<Record<GplusSampleBoard, SampleShellSpec>> = {
   },
   brand: {
     moduleName: "Products",
+    landmarkLabel: "Brand sample: products",
     locationLabel: "Design team",
     routeLabel: "Products",
     selected: "products",
@@ -464,6 +476,7 @@ const sampleSpecs: Readonly<Record<GplusSampleBoard, SampleShellSpec>> = {
   },
   actions: {
     moduleName: "Projects",
+    landmarkLabel: "Actions sample: projects",
     locationLabel: "Design team",
     routeLabel: "Projects",
     selected: "projects",
@@ -472,6 +485,7 @@ const sampleSpecs: Readonly<Record<GplusSampleBoard, SampleShellSpec>> = {
   },
   inputs: {
     moduleName: "Members",
+    landmarkLabel: "Inputs sample: invite members",
     locationLabel: "Members",
     routeLabel: "Invite",
     selected: "members",
