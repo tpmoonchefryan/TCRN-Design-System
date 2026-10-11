@@ -103,9 +103,9 @@
 | P6 | 主力 | 已合入 a7c12a6 | 3560602 | 5 张达成，SUB-080 未达成（RM15）；navigation-focused-shells-spec 回到 2000px 内；smoke 余红两根因（RM15 #3、#4） |
 | P8 | 主力 | 已合入 890ec86 | c8bfbc8 | 2 张判据达成；两道几何门只红在样板 rail（O-1）；RM13 |
 | P10 | 主力 | 已合入 18fa3e9 | bc71e9d | SUB-079 达成（Actions 28 → 0）；带出 RM14 两处集成红 → I1 |
-| I1 | 主力 | 在跑 | 88584ae | 集成修复 RM14：Clipboard.test.tsx 断言、client-scripts.ts 分段翻译；本批后续集成冲突续用该代理（id 记在 scratch `r2-agents.txt`） |
+| I1 | 主力 | 已合入 7bf76ee | 88584ae | 集成修复 RM14：Clipboard.test.tsx 断言、client-scripts.ts 分段翻译；本批后续集成冲突续用该代理（id 记在 scratch `r2-agents.txt`） |
 | P11 | 经济 | 在跑 | 8d8ff8d | SUB-086 → 051 → 054 → 087；附件 P11-r2-digest.md（RM 清单与各包回显）；RM9 不在范围 |
-| P12 | 经济 | 待 P11 合入 | — | 末项 SUB-046 |
+| P12 | 经济 | 待 P11 合入 | — | 末项 SUB-046；摘录附 P11 handoff |
 
 ## 下一步
 
