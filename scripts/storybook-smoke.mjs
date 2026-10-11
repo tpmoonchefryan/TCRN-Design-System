@@ -2365,15 +2365,40 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
       };
     };
     const topbarAlignmentReadback = readTopbarAlignment();
-    const waitForFocusTransition = () => new Promise((resolve) => window.setTimeout(resolve, 190));
+    // TCRN-DS-SUB-081 (R2-21a): the rest values used to come from a live getComputedStyle object
+    // taken before focus and read after focus, a fixed 190ms wait and blur, so a fill transition
+    // still on its way back from the focus fill (white) to the rest wash was read as the rest fill.
+    // Reads now wait until every finite animation in the document has finished (no duration is
+    // named, so the reduced-motion timing and every expected value stay as they were; infinite
+    // loops never finish and are left alone), and the rest values are copied as plain values
+    // before focus moves.
+    const settleAnimations = async () => {
+      if (typeof document.getAnimations !== "function") return;
+      for (let round = 0; round < 20; round += 1) {
+        const running = document.getAnimations().filter((animation) => animation.playState === "running"
+          && animation.effect?.getComputedTiming?.().iterations !== Infinity);
+        if (running.length === 0) return;
+        await Promise.all(running.map((animation) => animation.finished.catch(() => undefined)));
+      }
+    };
+    const restStyleProperties = [
+      "display", "position", "gridTemplateColumns", "gap", "columnGap", "rowGap", "justifyContent",
+      "paddingLeft", "paddingRight", "borderRadius", "borderStyle", "borderWidth", "backgroundColor",
+      "color", "fontFamily", "fontSize", "fontWeight", "lineHeight", "letterSpacing", "boxShadow",
+      "outlineWidth", "outlineStyle", "outlineColor", "outlineOffset", "transitionProperty",
+      "transitionDuration", "transitionTimingFunction", "animationName", "animationDuration",
+      "animationTimingFunction"
+    ];
     const measure = async (name, selector) => {
       const element = shell.querySelector(selector);
       if (!element) {
         measured[name] = { missing: true };
         return;
       }
+      await settleAnimations();
       const rect = element.getBoundingClientRect();
-      const style = getComputedStyle(element);
+      const restComputed = getComputedStyle(element);
+      const style = Object.fromEntries(restStyleProperties.map((property) => [property, restComputed[property]]));
       const focusTarget = element.matches("button, input, a, select, textarea, [tabindex]")
         ? element
         : element.querySelector("button, input, a, select, textarea, [tabindex]");
@@ -2381,7 +2406,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
       let focus = null;
       if (focusTarget instanceof HTMLElement) {
         focusTarget.focus({ preventScroll: true });
-        await waitForFocusTransition();
+        await settleAnimations();
         const focusStyle = getComputedStyle(name === "searchInput" ? element : focusTarget);
         focus = {
           outlineWidth: focusStyle.outlineWidth,
