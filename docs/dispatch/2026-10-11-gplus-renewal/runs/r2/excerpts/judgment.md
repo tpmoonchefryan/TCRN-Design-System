@@ -44,5 +44,5 @@
 
 - 只读：除上面两份文件外不改任何文件，不跑门、不构建、不启动浏览器、不运行 einzbern 引擎、不 git commit。需要的只读探查脚本写在 `/private/tmp/claude-501/-Users-ryanlan-Code/c04aa113-5e59-4774-a41d-f828ef706cc7/scratchpad/tmp/r2-judgment/`。
 - 命令里不 cd（只读命令也不 cd），一律绝对路径；不用 rm、rmdir。不运行 `pnpm config list`、`npm config list` 或任何会打印 npmrc、环境变量、凭据的命令。
-- 两份文件里不得出现本机用户目录下凭据、钥匙串或应用数据目录的绝对路径，不得出现行首 `XXX_TOKEN=` 或 `key=` 式赋值行，不得出现英文 overclaim 短语（release ready、deployment ready、public ready、product accepted、legal complete、dependency clean）。
+- 两份文件里不得出现本机用户目录下凭据、钥匙串或应用数据目录的绝对路径，不得出现行首 `XXX_TOKEN=` 或 `key=` 式赋值行，不得出现 no-private-input-scan 的 positive-overclaim 短语表（`scripts/no-private-input-scan.mjs`）里的任何英文短语。
 - 不代 Owner 做目视验收、发布授权或任何 A 类裁定。
