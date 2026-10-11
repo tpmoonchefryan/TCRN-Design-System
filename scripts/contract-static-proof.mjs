@@ -25,7 +25,8 @@
 //
 // Story render layer (TCRN-DS-SUB-037): C7, C8 and C11 are also checked on the rendered story sections
 // of the static Storybook build (apps/storybook/storybook-static/*.html, the elements that carry
-// data-story-id): C7 title and forced line breaks on single-line roles, C8 one yielding item per
+// data-story-id): C7 title (on first-batch elements a title that holds the visible text, TCRN-DS-SUB-079)
+// and forced line breaks on single-line roles, C8 one yielding item per
 // rendered toolbar with every other item fixed, C11 emoji in rendered text, card in card, banned
 // features in inline styles, one shape for four semantics and generic parts standing in for shell
 // controls. Story findings go through the same family, class and selector exemptions; a missing
@@ -764,13 +765,51 @@ function countClass(node, className) {
 const hasTitle = (node) => typeof node.attrs.title === "string" && node.attrs.title.trim().length > 0;
 
 /**
- * C7 on rendered stories. A single-line role element with visible text must carry a non-empty title on
- * itself, inside itself, or on an ancestor up to its component root that holds no other element of the
- * same role (so a shared container's title does not count); and it must not hold a forced line break
- * (<br> or a block element) or an inline style that makes it wrap again.
+ * The title a browser shows over a single-line role element (TCRN-DS-SUB-079): the element's own title
+ * attribute, or else the nearest ancestor's within the component root. An empty title shows nothing and
+ * hides the titles further up. The nearest titled ancestor counts only when it holds no other element of
+ * the same role (a shared container's title is not this element's title); otherwise there is none (null).
+ */
+function shownTitle(node, storyNode, roleClass, block) {
+  if (typeof node.attrs.title === "string") return node.attrs.title;
+  for (const ancestor of ancestorsWithin(node, storyNode)) {
+    if (typeof ancestor.attrs.title === "string") return countClass(ancestor, roleClass) === 1 ? ancestor.attrs.title : null;
+    if (elementClasses(ancestor).includes(block)) break;
+  }
+  return null;
+}
+
+/**
+ * C7 title reading for first-batch elements (TCRN-DS-SUB-079, R2-31): the title the browser shows over
+ * the element, or a title inside it, must hold the element's visible text, both sides whitespace-
+ * normalised (a title of the form "label — reason" holds it). Returns the finding detail, or null.
+ */
+function firstBatchTitleProblem(node, storyNode, role, block, text) {
+  const titles = [];
+  const shown = shownTitle(node, storyNode, role.class, block);
+  if (shown !== null) titles.push(shown);
+  walkElements(node, (child) => {
+    if (typeof child.attrs.title === "string") titles.push(child.attrs.title);
+    return true;
+  });
+  const visible = titles.map(normalised).filter(Boolean);
+  if (visible.some((title) => title.includes(text))) return null;
+  if (visible.length === 0) return `${role.role}: "${text.slice(0, 60)}" has no title for its truncated text`;
+  return `${role.role}: "${text.slice(0, 60)}" has a title that does not hold its visible text ("${visible[0].slice(0, 60)}")`;
+}
+
+/**
+ * C7 on rendered stories. A single-line role element with visible text must carry a title for its
+ * truncated text, and it must not hold a forced line break (<br> or a block element) or an inline style
+ * that makes it wrap again. Elements whose package classes include a first-batch family class (the
+ * checked batch of families.json) need a title that holds their visible text (firstBatchTitleProblem).
+ * Elements of later families keep the earlier reading until their family is checked: a non-empty title
+ * on the element itself, inside it, or on an ancestor up to its component root that holds no other
+ * element of the same role (so a shared container's title does not count).
  */
 export function checkC7Story(layer, scope, roles) {
   const { add, result } = collector("C7", scope);
+  const checkedFamilies = new Set(scope.checkedFamilies ?? []);
   for (const role of roles?.singleLine ?? []) {
     const block = blockOf(role.class);
     for (const story of layer.stories) {
@@ -778,7 +817,10 @@ export function checkC7Story(layer, scope, roles) {
         if (!elementClasses(node).includes(role.class)) return true;
         const classes = packageClassesOf(node);
         const text = normalised(textContent(node));
-        if (text) {
+        if (text && classes.some((name) => checkedFamilies.has(scope.familyOf(name)))) {
+          const detail = firstBatchTitleProblem(node, story.node, role, block, text);
+          if (detail) add(classes, { rule: "C7.story-title-missing", ...storyWhere(story, node), detail });
+        } else if (text) {
           let titled = hasTitle(node);
           if (!titled) walkElements(node, (child) => {
             if (hasTitle(child)) titled = true;

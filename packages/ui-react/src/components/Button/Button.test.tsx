@@ -127,7 +127,7 @@ test("core primitives render normalized class names and accessibility attributes
 test("disabled controls and icon buttons fail closed with accessible names", () => {
   const disabled = renderToStaticMarkup(<Button disabled>Publish</Button>);
   assert.match(disabled, /data-disabled-reason="Action unavailable in this route"/);
-  assert.match(disabled, /title="Action unavailable in this route"/);
+  assert.match(disabled, /title="Publish — Action unavailable in this route"/);
   assert.match(disabled, /aria-describedby="[^"]+"/);
   assert.match(disabled, /class="tcrn-sr-only"/);
   assert.match(disabled, /Action unavailable in this route/);
@@ -143,9 +143,8 @@ test("a text label sits on one line in the label span and is repeated in title",
   assert.match(plain, /<span class="tcrn-button__label">Export members<\/span>/);
   assert.match(plain, /title="Export members"/);
 
-  // A title the caller gives, or the disabled reason, wins over the repeated label.
+  // A title the caller gives wins over the repeated label.
   assert.match(renderToStaticMarkup(<Button title="Export as CSV">Export</Button>), /title="Export as CSV"/);
-  assert.match(renderToStaticMarkup(<Button disabled disabledReason="Needs a selection">Export</Button>), /title="Needs a selection"/);
 
   // Text beside an icon is wrapped on its own; the icon stays outside the cut.
   const withIcon = renderToStaticMarkup(
@@ -164,6 +163,48 @@ test("a text label sits on one line in the label span and is repeated in title",
   assert.match(link, /class="tcrn-link-button tcrn-link-button--secondary tcrn-link-button--lg"/);
   assert.match(link, /title="Members"/);
   assert.match(link, /<span class="tcrn-button__label">Members<\/span>/);
+});
+
+test("a disabled reason follows the label in title and stays the accessible description", () => {
+  // TCRN-DS-SUB-079 (C7): the title holds the visible label, so a label cut by the ellipsis stays
+  // readable next to the reason; the reason itself is read through aria-describedby.
+  const blocked = renderToStaticMarkup(<Button disabled disabledReason="Needs a selection">Export</Button>);
+  assert.match(blocked, /title="Export — Needs a selection"/);
+  assert.match(blocked, /<span class="tcrn-button__label">Export<\/span>/);
+  assert.match(blocked, /data-disabled-reason="Needs a selection"/);
+  const describedBy = blocked.match(/aria-describedby="([^"]+)"/)?.[1];
+  assert.ok(describedBy, "the disabled button has a description");
+  const escapedId = describedBy.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  assert.match(blocked, new RegExp(`<span id="${escapedId}" class="tcrn-sr-only">Needs a selection</span>`));
+
+  // The label is the visible text, and the reason takes the place of a caller's title as before;
+  // text beside an icon is the label.
+  assert.match(
+    renderToStaticMarkup(
+      <Button title="Export as CSV" disabled disabledReason="Needs a selection">
+        Export
+      </Button>
+    ),
+    /title="Export — Needs a selection"/
+  );
+  assert.match(
+    renderToStaticMarkup(
+      <Button disabled disabledReason="Locked">
+        <span data-probe="icon" />
+        Save draft
+      </Button>
+    ),
+    /title="Save draft — Locked"/
+  );
+
+  // With no visible text (an icon button) the title is the reason alone, also when the caller's title
+  // repeats the reason; an enabled button shows no reason.
+  assert.match(renderToStaticMarkup(<IconButton ariaLabel="History" iconName="history" disabled disabledReason="Needs a selection" />), /title="Needs a selection"/);
+  assert.match(
+    renderToStaticMarkup(<IconButton ariaLabel="Stays expanded" iconName="history" title="Stays expanded" disabled disabledReason="Stays expanded" />),
+    /title="Stays expanded"/
+  );
+  assert.doesNotMatch(renderToStaticMarkup(<Button disabledReason="Needs a selection">Export</Button>), /Needs a selection/);
 });
 
 test("a loading button is busy, shows the loader and says only what the caller passes", () => {

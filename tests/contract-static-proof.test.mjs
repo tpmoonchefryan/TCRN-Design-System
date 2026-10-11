@@ -393,6 +393,7 @@ test("the fixture story holds C7, C8 and C11 on the render layer; documentation 
 
 const storyMutations = [
   ["C7", "C7.story-title-missing", ` title="Save changes"`, ""],
+  ["C7", "C7.story-title-missing", ` title="Save changes"`, ` title="Requires owning route approval"`],
   ["C7", "C7.story-forced-wrap", `<span class="tcrn-button__label">Save changes</span>`, `<span class="tcrn-button__label">Save<br>changes</span>`],
   ["C7", "C7.story-forced-wrap", `<span class="tcrn-button__label">Theme</span>`, `<span class="tcrn-button__label" style="white-space:normal">Theme</span>`],
   ["C8", "C8.story-yield-missing", `<div class="tcrn-product-shell-search" data-shell-control="product-shell-search"><input type="search" class="tcrn-input" aria-label="Search"></div>`, ""],
@@ -426,6 +427,49 @@ for (const [clause, rule, from, to] of storyMutations) {
     assert.equal(finding.source, "fixture.html");
   });
 }
+
+test("C7 on a first-batch element: the title it shows must hold its visible text, whitespace-normalised (TCRN-DS-SUB-079)", () => {
+  const holds = [
+    [` title="Save changes"`, ` title="Save changes — Requires owning route approval"`],
+    [` title="Save changes"`, ` title="  Save\n   changes "`],
+    [`<span class="tcrn-button__label">Save changes</span>`, `<span class="tcrn-button__label">Save\n    changes</span>`],
+    [` title="Save changes"><span class="tcrn-button__label">Save changes</span>`, `><span class="tcrn-button__label"><abbr title="Save changes">Save changes</abbr></span>`]
+  ];
+  for (const [from, to] of holds) {
+    const report = run({ pages: storyPage(from, to) });
+    assert.equal(status(report, "C7"), "green", `${to}: ${JSON.stringify(report.clauses.C7.findings)}`);
+  }
+  // A title unrelated to the label (a disabled reason alone), part of the label, the element's own title
+  // over the button's (the one a browser shows), and an empty own title (it shows nothing) are red.
+  const misses = [
+    [` title="Save changes"`, ` title="Requires owning route approval"`, /does not hold its visible text \("Requires owning route approval"\)/u],
+    [` title="Save changes"`, ` title="Save"`, /does not hold its visible text \("Save"\)/u],
+    [`<span class="tcrn-button__label">Save changes</span>`, `<span class="tcrn-button__label" title="Requires approval">Save changes</span>`, /does not hold its visible text \("Requires approval"\)/u],
+    [`<span class="tcrn-button__label">Save changes</span>`, `<span class="tcrn-button__label" title="">Save changes</span>`, /has no title for its truncated text/u]
+  ];
+  for (const [from, to, detail] of misses) {
+    const report = run({ pages: storyPage(from, to) });
+    assert.deepEqual(ruleIds(report, "C7"), ["C7.story-title-missing"], to);
+    assert.equal(report.clauses.C7.findings.length, 1, to);
+    assert.match(report.clauses.C7.findings[0].detail, detail);
+    assert.deepEqual(report.clauses.C7.findings[0].families, ["actions"]);
+  }
+});
+
+test("C7 on a later family's element keeps the non-empty title reading; a first-batch class on it brings the stricter one", () => {
+  const roles = { ...ROLES, singleLine: [...ROLES.singleLine, { role: "徽标", class: "tcrn-badge__label" }] };
+  const css = `${PACKAGE_CSS}\n.tcrn-badge__label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}`;
+  const badge = (title, labelClass = "tcrn-badge__label") =>
+    storyPage(`<p>Card body`, `<p><span class="tcrn-badge"${title}><span class="${labelClass}">Billing</span></span>Card body`);
+  assert.equal(status(run({ css, roles, pages: badge(` title="Related record, owned by finance"`) }), "C7"), "green");
+  const untitled = run({ css, roles, pages: badge("") });
+  assert.deepEqual(ruleIds(untitled, "C7"), ["C7.story-title-missing"]);
+  assert.deepEqual(untitled.clauses.C7.findings[0].families, ["feedback"]);
+  const mixed = run({ css, roles, pages: badge(` title="Related record, owned by finance"`, "tcrn-badge__label tcrn-text") });
+  assert.deepEqual(ruleIds(mixed, "C7"), ["C7.story-title-missing"]);
+  assert.deepEqual(mixed.clauses.C7.findings[0].families, ["feedback", "typography"]);
+  assert.equal(status(run({ css, roles, pages: badge(` title="Billing — related record, owned by finance"`, "tcrn-badge__label tcrn-text") }), "C7"), "green");
+});
 
 test("C7, C8 and C11 are red when no rendered story can be read, not skipped", () => {
   for (const pages of [null, [], pagesWith("<html><body><p>no story section</p></body></html>")]) {
