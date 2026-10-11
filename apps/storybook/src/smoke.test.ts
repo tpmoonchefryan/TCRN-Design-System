@@ -27,13 +27,15 @@ import iconMeta, { Matrix as IconMatrix, SampleProject as IconSampleProject } fr
 import brandMeta, { Matrix as BrandMatrix, SampleProduct as BrandSampleProduct } from "./brand.stories.js";
 import actionsMeta, { Matrix as ActionsMatrix, SampleProject as ActionsSampleProject } from "./actions.stories.js";
 import inputsMeta, { Matrix as InputsMatrix, SampleMembers as InputsSampleMembers } from "./inputs.stories.js";
+import compositionsMeta, { CompositionThree } from "./compositions.stories.js";
 import { createElement, Fragment } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { tcrnIconNames } from "@tcrn/ui-react";
 import { gplusMatrices, gplusMatrixCellCounts } from "./contract-stories/gplus/generated/matrices.generated.js";
 import { gplusMatrixBoardsInOrder, gplusMatrixComponents, gplusMatrixSourcePath, gplusMatrixStoryIds } from "./contract-stories/gplus/matrix-stories.js";
-import { gplusSampleBoardsInOrder, gplusSampleSourcePath, gplusSampleStoryIds } from "./contract-stories/gplus/sample-stories.js";
+import { gplusCompositionThreeStoryId, gplusSampleBoardsInOrder, gplusSampleSourcePath, gplusSampleStoryIds } from "./contract-stories/gplus/sample-stories.js";
 import { gplusSampleShellKeys, gplusSampleSidebarWidth } from "./contract-stories/gplus/samples/composition-one.js";
+import { gplusCompositionThreeContentWidth } from "./contract-stories/gplus/samples/composition-three.js";
 import { storybookGovernanceChangelogRecords, storyCategoryDefinitions, storyRegistryOrder } from "./contract-stories/governance.js";
 import { referencePages } from "./build/reference-pages.js";
 import {
@@ -145,6 +147,7 @@ const expectedContractStoryIds = [
   "actions-sample-project",
   "inputs-matrix",
   "inputs-sample-members",
+  "composition-three-sample",
   "forms-patterns",
   "workbench-patterns",
   "records-and-boards-patterns",
@@ -419,18 +422,21 @@ test("static contract story surface is retained and synthetic", () => {
     [TypographySampleBilling, IconSampleProject, BrandSampleProduct, ActionsSampleProject, InputsSampleMembers].map((story) => story.name),
     ["Sample billing", "Sample project", "Sample product", "Sample project", "Sample members"]
   );
+  // The composition-three sample has its own adapter, title Compositions: Storybook id compositions--composition-three.
+  assert.equal(compositionsMeta.title, "Compositions");
+  assert.equal(CompositionThree.name, "Composition three");
   // Per-story CSF registration gate: every contract story in the registry must have a
   // matching CSF export in its group's *.stories.tsx adapter, in registry order. This closes
   // the gap where only the 7 default-meta titles were gated. internal-dev/overlay-family-lab is
   // intentionally NOT a contract story group, so iterating the registry groups self-excludes it
   // (see the overlay-family-lab exclusions below at data-internal-dev-surface / Internal/Overlay).
-  // The Components group spans components.stories.tsx and the five family adapters (titles
-  // Typography, Icon, Brand, Actions and Inputs), read in that order.
+  // The Components group spans components.stories.tsx, the five family adapters (titles
+  // Typography, Icon, Brand, Actions and Inputs) and the compositions adapter, read in that order.
   const csfAdapterFileByGroup: Record<ContractStoryGroup, string> = {
     Welcome: "src/alpha.stories.tsx", // NOTE: alpha.stories.tsx IS the Welcome adapter
     "Style Guide": "src/style-guide.stories.tsx",
     Foundations: "src/foundations.stories.tsx",
-    Components: "src/components.stories.tsx src/typography.stories.tsx src/icon.stories.tsx src/brand.stories.tsx src/actions.stories.tsx src/inputs.stories.tsx",
+    Components: "src/components.stories.tsx src/typography.stories.tsx src/icon.stories.tsx src/brand.stories.tsx src/actions.stories.tsx src/inputs.stories.tsx src/compositions.stories.tsx",
     Patterns: "src/patterns.stories.tsx",
     Proof: "src/proof.stories.tsx",
     "Change Log": "src/change-log.stories.tsx"
@@ -1572,7 +1578,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members, composition-three-sample/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, records-and-boards-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
@@ -1804,4 +1810,65 @@ test("composition-one sample stories render the package shell in a light block a
     }
     assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, `${board}: no internal vocabulary`);
   }
+});
+
+test("composition-three sample story renders a top bar and centred content with no rail, light and night", () => {
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const listFrom = (key: string) => new Set(
+    Array.from(ledgerSource.slice(ledgerSource.indexOf(key), ledgerSource.indexOf("],", ledgerSource.indexOf(key))).matchAll(/"((?:[^"\\]|\\.)*)"/g), (match) => match[1])
+  );
+  const sampleWords = listFrom("sampleMachineWords:");
+  const properNouns = listFrom("properNouns:");
+  const decode = (value: string) => value.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').trim();
+  const story = contractStories.find((item) => item.id === gplusCompositionThreeStoryId);
+  assert.ok(story, "missing composition-three sample story");
+  assert.equal(story.group, "Components");
+  assert.equal(story.categoryId, "gplus-samples");
+  assert.equal(story.sourcePath, gplusSampleSourcePath);
+  assert.equal(gplusCompositionThreeContentWidth, "1040px");
+  const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
+  assert.match(html, /data-gplus-sample="composition-three"/);
+  const blocks = html.split(/(?=<div class="tcrn-doc-theme-preview" data-tcrn-theme="(?:light|dark)" data-gplus-sample-theme=)/).slice(1);
+  assert.equal(blocks.length, 2, "composition three: one light block and one night block");
+  assert.match(blocks[0], /^<div class="tcrn-doc-theme-preview" data-tcrn-theme="light" data-gplus-sample-theme="light">/);
+  assert.match(blocks[1], /^<div class="tcrn-doc-theme-preview" data-tcrn-theme="dark" data-gplus-sample-theme="night">/);
+  const classes = (block: string) => Array.from(block.matchAll(/\sclass="([^"]*)"/g), (match) => match[1]);
+  assert.deepEqual(classes(blocks[1]), classes(blocks[0]), "composition three: night block classes equal the light block");
+  // No rail and no product shell: one package TopBar with one navigation strip and the shell search,
+  // and no [data-shell] (composition three is not a ProductShell layout).
+  assert.doesNotMatch(html, /tcrn-product-shell"|tcrn-side-nav|data-shell=/, "composition three: no ProductShell, rail or data-shell");
+  for (const block of blocks) {
+    assert.equal(block.match(/class="tcrn-top-bar"/g)?.length, 1, "composition three: one TopBar per block");
+    assert.equal(block.match(/class="tcrn-sub-nav"/g)?.length, 1, "composition three: one top navigation per block");
+    assert.equal(block.match(/class="tcrn-product-shell-search"/g)?.length, 1, "composition three: one shell search per block");
+    assert.match(block, new RegExp(`max-width:${gplusCompositionThreeContentWidth}[^"]*" data-gplus-composition-three-content="true"`), "composition three: content centred at 1040px");
+  }
+  // Sample copy: every Latin text node of the brand, the top navigation and the page content has
+  // five-locale text, or is a proper noun or a registered sample machine word. The shell search keeps
+  // its own built-in strings (the package localizes them), so it is left out, as composition one leaves
+  // out the shell's own controls.
+  const segment = (block: string, start: string, end: string) => {
+    const from = block.indexOf(start);
+    return from < 0 ? "" : block.slice(from, end ? block.indexOf(end, from) + end.length : undefined);
+  };
+  const copy = blocks.map((block) => [
+    segment(block, '<div class="tcrn-top-bar__brand"', '<div class="tcrn-top-bar__module"'),
+    segment(block, '<nav class="tcrn-sub-nav"', "</nav>"),
+    segment(block, '<div class="tcrn-top-bar__actions"', "</header>"),
+    block.slice(block.indexOf(">", block.indexOf('data-gplus-composition-three-content="true"')))
+  ].join("")).join("");
+  const texts = Array.from(copy.replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1]);
+  assert.ok(texts.some((text) => decode(text) === "Quarterly review"), "composition three: the page copy is read");
+  for (const text of texts.map(decode).filter((value) => /[A-Za-z]/.test(value))) {
+    const residue = text.split(/\s+/).filter((word) => !properNouns.has(word)).join(" ");
+    assert.ok(
+      storybookContentText[text] !== undefined || sampleWords.has(text) || !/[A-Za-z]/.test(residue),
+      `composition three: "${text}" needs five-locale text or a sample machine word`
+    );
+  }
+  // The navigation landmark names: one per block, the night one carrying the block name.
+  const navLabels = Array.from(html.matchAll(/<nav class="tcrn-sub-nav" aria-label="([^"]+)"/g), (match) => decode(match[1]));
+  assert.deepEqual(navLabels, ["Composition three sample: projects", "Composition three sample: projects (night)"]);
+  for (const label of navLabels) assert.ok(storybookContentText[label] !== undefined, `composition three: landmark "${label}" needs five-locale text`);
+  assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, "composition three: no internal vocabulary");
 });

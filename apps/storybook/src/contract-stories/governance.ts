@@ -140,6 +140,7 @@ export const storyRegistryOrder: readonly StoryRegistryEntry[] = [
   { id: "actions-sample-project", group: "Components", categoryId: "gplus-samples" },
   { id: "inputs-matrix", group: "Components", categoryId: "gplus-matrices" },
   { id: "inputs-sample-members", group: "Components", categoryId: "gplus-samples" },
+  { id: "composition-three-sample", group: "Components", categoryId: "gplus-samples" },
   { id: "forms-patterns", group: "Patterns", categoryId: "forms-workbench" },
   { id: "workbench-patterns", group: "Patterns", categoryId: "forms-workbench" },
   { id: "records-and-boards-patterns", group: "Patterns", categoryId: "data-pages" },

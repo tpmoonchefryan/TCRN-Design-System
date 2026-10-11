@@ -44,7 +44,7 @@
 - **判据。** 共六项检查，任一项红就退出 1。
   - generated-sources：七个生成物都存在，带「勿手改」头，头部的 contract-sha256 等于按生成器算法重算的契约哈希，并且与内存中的 `generate()` 逐字节相同；生成目录里没有别的文件。
   - generated-state-rules：生成的 pair 状态规则只切换 `--tcrn-pair-*`，不写颜色字面量，每个 ruleOrder 条目对应一条规则。
-  - package-css：dist 的 `tcrnComponentCss` 逐字包含全部生成段，pairs.json 目标基类的状态规则里没有颜色字面量。唯一放行与 C2 相同：只有 transparent 的 outline。
+  - package-css：dist 的 `tcrnComponentCss` 逐字包含全部生成段；整张表的状态规则（clauses.md C2 定义的状态条件，或 pairs.json 的状态条件）里没有颜色字面量。唯一放行与 C2 相同：只有 transparent 的 outline。
   - icon-roster：icons.json 的名字与 dist 的 `tcrnIconNames` 是同一集合。
   - product-marks：由 marks.json 生成的 8 个 SVG 与 `logos2/`、dist 的 `tcrnProductMarkSvg`、AI 契约登记的字节数和 sha256 逐字节一致。
   - matrix-expect：五块板的契约格、生成的矩阵数据与画板 `data-cell` 是同一批格，每格的期望值（两位小数）与画板 `data-expect` 相差为 0，kind 与豁免标记一致。
@@ -65,6 +65,7 @@
   - C11 禁用清单：渐变、模糊超过 3px、卡套卡、表情图标、左边条；
   - C13 文档层不渲染包里没有的 tcrn-* 类，取 doc-shell-class-proof 的差集。
   C7、C8、C11 另在静态 Storybook 的 story 区块上检查。读不到 story 区块或差集算不出时判红（`Cx.story-input-missing`、`C13.input-missing`），不跳过。
+  C7 story 层取哪个 title 见 `clauses.md` C7（TCRN-DS-SUB-079 收紧）：祖先上的 title 只算到组件根为止，且该祖先的子树里只有这一个承载元素。internal-alpha browser-proof 的 clipped 判定（`clippedButtonText`，TCRN-DS-SUB-084）与收紧后的 C7 有差异：截断文字的 title 取元素自身、元素内部，或最近带 title 的祖先，含可见文字即不算 clipped；这个祖先不限于组件根以内，也不要求它的子树里只有一个承载元素。所以同一个截断元素可能在 internal-alpha 不算 clipped，却在本门判 `C7.story-title-missing`。
 - **阈值与口径。** 各条的判定口径写在 `clauses.md` 对应条款的「本门」段，例如左边条 2px 阈值、透明 outline 允许项、无变体时的 (0,2,0) 特异性、状态类 ARIA 列表。改口径时，同步改门里的常量与测试的允许项用例。
 - **变异。** 测试先证明夹具全绿，再对每条规则注入一条变异并断言转红（C14）。测试同时覆盖 STORY-132 GWT1–3、豁免登记校验，以及仓内契约文件的一致性。
 - **豁免。** 登记在 `docs/contract/exemptions.json`，每条必填：
