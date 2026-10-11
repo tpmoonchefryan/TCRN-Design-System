@@ -10,7 +10,7 @@
 **RM2 docs/contract/README.md 的 package-css 描述随 SUB-053 过时（交 P11）。**
 现象：SUB-053 之后 contract-proof 的 package-css 读整张表的状态规则（clauses.md C2 定义并上 pairs.json 状态条件），`docs/contract/README.md` 第 47 行仍写只查「pairs.json 目标基类的状态规则」。该文件不在任何 R2 包文件集。
 证据：`runs/r2/problems/P3.md` P2（含建议正文）；P3 合入集成分支 6225880。
-处置：作为附加项写进 P11 摘录（P11 为文档与清理包，运行时没有别的包持有该文件），按 P3 给的正文改。
+处置：（改）按批量原则第 1 条不插入本批，并入 RM9 交 R2 判断。
 
 **RM3 P3 的两处自定口径（交验收）。** P3 问题 P3：package-css 的「全部状态规则」取 clauses.md C2 定义（data-* 里只有 `data-tcrn-preview-state` 算状态条件），base.css.ts 两条由别的 data-* 限定、含颜色字面量的壳层规则不计入；P3 问题 P4：SUB-057 按判断 R2-8 改法把默认隐藏 moon 的 `[data-theme-icon="dark"]` 也删去（拆分文字只写 html 级两条）。均交 R2 验收判可否，不另派。
 
@@ -23,3 +23,11 @@ P9 问题清单的去向：#1 axe landmark-unique 110 节点 → P7 SUB-071；#2
 
 **RM7 P7 的两处超出判据字面的做法（交验收；其一要目视）。** ① SUB-070：MultiSelect 没有「展开」选项，页面脚本会把展开的列表移出主题块，静态样例因此去掉 `data-choice-presentation` 钩子——不再响应点击，列表位于触发器右侧而不是下方，需目视（列入 owner-acceptance 清单）。② SUB-071：五个样板同在一页，只改夜间壳名不能消重名，壳名改为按样板命名、夜间壳加「（night）」，浅色壳名也随之改变；矩阵分节去掉 aria-label。另 SUB-072 顺带从 ledger 删去 4 个不再使用的资产 ID（文件在包文件集内、不在该单文件清单）。品牌样板去掉 Asset ID 列后与 Brand 板「资产 ID」列不一致，已写进 P8 摘录交 SUB-077 核对映射差异记录。
 P7 问题清单去向：dark 轮对比（P1 已修，P7 树早于 P1 合入）；样板 rail（O-1）；后缀与标语对比（R2-30 / O-2）；Card aria-allowed-role（P6 SUB-068）；text-styles 两条 zh-CN 泄漏（P6 SUB-067）；navigation-focused-shells-spec 高 2520px（P6 SUB-066 删 dense/compact 原型后复核，余量交 P12 SUB-075）；buttonFeedbackOk（P9 SUB-083 已修，P7 树早于 P9 合入）；doc-shell 两项（C-21/O-1）；视觉签名（SUB-046）。
+
+**RM8 SUB-052 部分达成：生成段余 4 条字面字号或行高（交 Owner，归 O-6）。** `typography.scale.ts` 里 numeral-inline `font-size:16px`、numeral-large `font-size:44px` 与 `line-height:48px`、mono `font-size:11.5px` 没有对应的现有 token；新增 token 属 O-6 越级，P2 未做，Typography.test.tsx 钉住这 4 条为仅剩的字面值。可选：新增四个刻度 token（typography.json 加条目、index.ts 注册，生成器不改），或改用现有刻度（改变视觉）。证据 `runs/r2/problems/P2.md` 第 1 条。
+
+**RM9 R2 改动带出的文档漂移（记入问题清单，交 R2 判断进下一批；不插入本批）。** ① `docs/contract/README.md` 第 47 行 package-css 描述（RM2，P3 给了正文）；② `docs/design/gplus-2026-10/README.md` 第 12 行 pairs.json 少 rf、第 16 行 typography.json 未提刻度 tokens 与链接对表；③ `inputs.pairs.ts` 段注释少 rf（注释写在 `scripts/contract-generate.mjs` 的 `inputsFile()`）。按批量原则第 1 条「批内发现的新工作进下一批」，RM2 不再附加进 P11 摘录，与本条一并交判断。
+
+**RM10 Inputs 画板未随 rf 元组重生成（交设计权威，与 §3.4 第 1 项同列）。** `docs/design/gplus-2026-10/tools/build-inputs.mjs` 重生成会多一条 `--edge-rf` 声明，但板面没有只读获焦规则；签入的板 HTML 与现行契约生成结果差这一条，没有门比对，不显红。是否给画板补只读获焦态由设计权威侧定。
+
+**RM11 P2 带出的两处行为变化（交 P11 的 SUB-087 写进 CHANGELOG 与迁移说明）。** `tcrn-link--quiet` 现在须与 `tcrn-link` 同用（仓内无单独使用处）；`gplus-tokens.generated.ts` 头部现在也列 typography.json，改 typography.json 的单要连带改写其 contract-sha256 行。
