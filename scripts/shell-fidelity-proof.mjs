@@ -273,6 +273,16 @@ const PLACEMENT_PROPERTIES = new Set([
   "white-space", "overflow-wrap", "word-break"
 ]);
 
+// C7 single-line carriers (TCRN-DS-SUB-102): the classes docs/contract/roles.json registers under
+// singleLine keep their text on one line in the package, so for a subject that carries one of them
+// the wrapping properties are not placement: a doc rule that sets white-space, overflow-wrap or
+// word-break on a carrier is a finding like any repaint. The list is read from roles.json, not
+// copied here.
+const WRAPPING_PROPERTIES = new Set(["white-space", "overflow-wrap", "word-break"]);
+const SINGLE_LINE_CARRIER_CLASSES = new Set(
+  JSON.parse(readFileSync(resolve(root, "docs/contract/roles.json"), "utf8")).singleLine.map((entry) => entry.class)
+);
+
 // Registered exceptions, written the EX-INIT015-* way (docs/contract/exemptions.json): each
 // entry names exact selectors (whitespace collapsed, as the CSS reader gives them) and the
 // properties it admits for them, with a ruling reference, a reason and a removal condition.
@@ -375,11 +385,13 @@ export function packageClassAppearanceFindings(css, source, exceptions = DOC_PAC
     for (const selector of rule.selectors) {
       const parts = compounds(selector);
       const subject = parts[parts.length - 1]?.text ?? "";
-      if (!parseCompound(subject).classes.some(isPackageClass)) continue;
+      const subjectClasses = parseCompound(subject).classes;
+      if (!subjectClasses.some(isPackageClass)) continue;
+      const singleLineCarrier = subjectClasses.some((name) => SINGLE_LINE_CARRIER_CLASSES.has(name));
       const entries = exceptions.filter((entry) => entry.selectors.includes(selector));
       const offending = [];
       for (const { prop } of rule.declarations) {
-        if (PLACEMENT_PROPERTIES.has(prop)) continue;
+        if (PLACEMENT_PROPERTIES.has(prop) && !(singleLineCarrier && WRAPPING_PROPERTIES.has(prop))) continue;
         const admitted = entries.find((entry) => entry.properties.includes(prop));
         if (admitted) used.add(admitted.id);
         else if (!offending.includes(prop)) offending.push(prop);
@@ -608,8 +620,17 @@ export function assertDetectorShapes() {
     ['[data-tcrn-theme="dark"] .tcrn-doc-x .tcrn-button--primary:hover{color:red}', 1],
     [".tcrn-doc-x .tcrn-button{--tcrn-pair-fill:red}", 1],
     [".tcrn-doc-x .tcrn-button{grid-area:a;order:2;margin:0 auto;justify-self:end;flex:1 1 auto;width:100%;white-space:nowrap}", 0],
-    [".tcrn-button .tcrn-doc-x{background:red}", 0]
+    [".tcrn-button .tcrn-doc-x{background:red}", 0],
+    // A C7 single-line carrier (roles.json singleLine) taken back to wrapping is a finding
+    // (TCRN-DS-SUB-102); placement on it, and wrapping on a non-carrier, stay allowed.
+    [".tcrn-doc-x .tcrn-button__label{white-space:normal;overflow-wrap:anywhere}", 1],
+    [".tcrn-doc-x .tcrn-button__label{word-break:break-all}", 1],
+    [".tcrn-doc-x .tcrn-button__label{margin-inline-start:4px;max-width:100%}", 0]
   ];
+  if (!SINGLE_LINE_CARRIER_CLASSES.has("tcrn-button__label")) {
+    console.error("shell-fidelity rule-level guard self-test FAILED: docs/contract/roles.json singleLine no longer lists tcrn-button__label");
+    process.exit(1);
+  }
   for (const [probe, added] of guardCases) {
     const found = packageClassAppearanceFindings(`${docCss}\n${probe}`, "self-test").length - docBaseline;
     if (found !== added) {
