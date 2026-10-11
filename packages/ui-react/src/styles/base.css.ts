@@ -599,15 +599,15 @@ export const baseCss11 = `
 .tcrn-shell-locale-menu__name {
   font: inherit;
 }
-[data-theme-icon="dark"],
+/* The theme toggle's icons have no display rule here: the toggle shows its current icon by
+   its own data-current-theme (the opacity rules beside .tcrn-shell-theme-toggle__icon), so
+   the icon follows a block-level theme the same way as a page-level one. */
 [data-side-nav-icon="expand"] {
   display: none;
 }
-html[data-tcrn-theme="dark"] [data-theme-icon="light"],
 [data-side-nav-collapsed="true"] [data-side-nav-icon="collapse"] {
   display: none;
 }
-html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 [data-side-nav-collapsed="true"] [data-side-nav-icon="expand"] {
   display: inline-flex;
 }
