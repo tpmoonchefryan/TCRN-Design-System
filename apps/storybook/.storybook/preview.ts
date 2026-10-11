@@ -1,3 +1,6 @@
+// The vendored faces come first: fonts.css declares the five SIL OFL-1.1 families the
+// token stacks name, and Vite copies each face it references byte-identical (TCRN-DS-SUB-007).
+import "@tcrn/ui-tokens/fonts.css";
 import "../src/storybook.css";
 import { tcrnComponentCss } from "@tcrn/ui-react";
 

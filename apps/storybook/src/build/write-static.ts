@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
-import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { copyFileSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import { basename, dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { findForbiddenPositiveClaimHits } from "@tcrn/ui-copy-state";
 import { contractStories } from "../stories.js";
 import { aiConsumptionContract } from "./ai-consumption-contract.js";
@@ -12,8 +13,132 @@ function stableJson(value: unknown): string {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-function sha256(value: string): string {
+function sha256(value: string | Uint8Array): string {
   return createHash("sha256").update(value).digest("hex");
+}
+
+// TCRN-DS-SUB-007 (121-GWT1, 121-GWT5): the static docs render with the faces
+// @tcrn/ui-tokens vendors and never ask a font CDN for anything. Each face listed in the
+// package manifest is copied byte-identical into storybook-static/fonts/, the package
+// stylesheet is written once beside the pages with every url("./<face>") rewritten to
+// url("fonts/<face>"), and every page links that stylesheet. Copies keep their names and
+// bytes, and nothing is inlined as a data: URI (fonts-proof checks both). The OFL text of
+// each family travels with its faces into storybook-static/licenses/.
+export const STATIC_FONT_DIR = "fonts";
+export const STATIC_FONT_LICENSE_DIR = "licenses";
+export const STATIC_FONT_STYLESHEET = "tcrn-fonts.css";
+export const STATIC_FONT_SOURCE = "@tcrn/ui-tokens/fonts.css";
+const STATIC_FONT_LINK = `<link rel="stylesheet" href="${STATIC_FONT_STYLESHEET}" data-tcrn-font-source="${STATIC_FONT_SOURCE}" />`;
+const FONT_URL = /url\((["']?)\.\/([A-Za-z0-9._-]+\.woff2)\1\)/g;
+const REWRITTEN_FONT_URL = /^url\("fonts\/([A-Za-z0-9._-]+\.woff2)"\)$/;
+
+interface VendoredFontEntry {
+  file: string;
+  bytes: number;
+  sha256: string;
+}
+
+interface VendoredFontManifest {
+  files: VendoredFontEntry[];
+  families: { family: string; license: VendoredFontEntry }[];
+}
+
+function vendoredFontDir(): string {
+  return dirname(fileURLToPath(import.meta.resolve(STATIC_FONT_SOURCE)));
+}
+
+function readVendoredFontManifest(fontDir: string): VendoredFontManifest {
+  const manifest = JSON.parse(readFileSync(join(fontDir, "manifest.json"), "utf8")) as Partial<VendoredFontManifest>;
+  const files = manifest.files ?? [];
+  const families = manifest.families ?? [];
+  if (files.length === 0 || families.length === 0 || families.some((family) => !family.license?.file)) {
+    throw new Error("storybook_fonts_manifest_incomplete");
+  }
+  return { files, families };
+}
+
+/** Copies each entry byte-identical into targetDir and removes anything else there. */
+function copyVerbatim(sourceDir: string, targetDir: string, entries: readonly VendoredFontEntry[]): number {
+  const names = new Map(entries.map((entry) => [basename(entry.file), entry]));
+  mkdirSync(targetDir, { recursive: true });
+  // The build owns this directory: a file dropped from the manifest must not linger as a
+  // stale copy from an earlier build.
+  for (const name of readdirSync(targetDir)) {
+    if (!names.has(name)) {
+      unlinkSync(join(targetDir, name));
+    }
+  }
+  let bytes = 0;
+  for (const [name, entry] of names) {
+    const target = join(targetDir, name);
+    copyFileSync(join(sourceDir, entry.file), target);
+    const copy = readFileSync(target);
+    if (copy.length !== entry.bytes || sha256(copy) !== entry.sha256) {
+      throw new Error(`storybook_fonts_copy_differs:${entry.file}`);
+    }
+    bytes += copy.length;
+  }
+  return bytes;
+}
+
+/**
+ * The package stylesheet with each url("./<face>.woff2") pointing at the copy under fonts/.
+ * Throws when the stylesheet names a face the manifest does not list, leaves a listed face
+ * undeclared, or carries a data: URI or a remote URL.
+ */
+export function rewriteFontStylesheet(css: string, faces: ReadonlySet<string>): string {
+  const declared = new Set<string>();
+  const rewritten = css.replace(FONT_URL, (_whole: string, _quote: string, file: string) => {
+    if (!faces.has(file)) {
+      throw new Error(`storybook_fonts_unlisted_face:${file}`);
+    }
+    declared.add(file);
+    return `url("${STATIC_FONT_DIR}/${file}")`;
+  });
+  const code = rewritten.replace(/\/\*[\s\S]*?\*\//g, "");
+  if (/data:/i.test(code) || /[a-z][a-z0-9+.-]*:\/\/|url\(\s*["']?\/\//i.test(code) || /googleapis|gstatic/i.test(rewritten)) {
+    throw new Error("storybook_fonts_remote_or_inline_source");
+  }
+  for (const url of code.match(/url\([^)]*\)/g) ?? []) {
+    if (!REWRITTEN_FONT_URL.test(url)) {
+      throw new Error(`storybook_fonts_unrewritten_url:${url.slice(0, 80)}`);
+    }
+  }
+  const undeclared = [...faces].filter((file) => !declared.has(file));
+  if (undeclared.length > 0) {
+    throw new Error(`storybook_fonts_undeclared_face:${undeclared.join(",")}`);
+  }
+  return `/* Static docs copy of ${STATIC_FONT_SOURCE}: every url() points at the byte-identical face under ${STATIC_FONT_DIR}/; the OFL texts are under ${STATIC_FONT_LICENSE_DIR}/. */\n${rewritten}`;
+}
+
+function writeVendoredFonts(outDir: string): { directory: string; faces: number; bytes: number; licenses: number; stylesheet: string } {
+  const fontDir = vendoredFontDir();
+  const manifest = readVendoredFontManifest(fontDir);
+  const bytes = copyVerbatim(fontDir, join(outDir, STATIC_FONT_DIR), manifest.files);
+  // Licence paths in the manifest are relative to the package root, one level above fonts/.
+  const licenses = manifest.families.map((family) => family.license);
+  copyVerbatim(dirname(fontDir), join(outDir, STATIC_FONT_LICENSE_DIR), licenses);
+  const faces = new Set(manifest.files.map((entry) => entry.file));
+  writeFileSync(join(outDir, STATIC_FONT_STYLESHEET), rewriteFontStylesheet(readFileSync(join(fontDir, "fonts.css"), "utf8"), faces));
+  return { directory: STATIC_FONT_DIR, faces: faces.size, bytes, licenses: licenses.length, stylesheet: STATIC_FONT_STYLESHEET };
+}
+
+/** Links the font stylesheet once, ahead of the page title, inside the page head. */
+export function linkFontStylesheet(html: string, label: string): string {
+  const headEnd = html.indexOf("</head>");
+  const titleAt = html.indexOf("<title>");
+  if (headEnd === -1 || titleAt === -1 || titleAt > headEnd || html.includes(STATIC_FONT_LINK)) {
+    throw new Error(`storybook_fonts_link_injection:${label}`);
+  }
+  return `${html.slice(0, titleAt)}${STATIC_FONT_LINK}\n  ${html.slice(titleAt)}`;
+}
+
+function pageLabel(page: ReturnType<typeof contractPages>[number]): string {
+  return page.kind === "category"
+    ? `${page.group}/${page.categoryId}`
+    : page.kind === "reference"
+      ? page.file
+      : page.group;
 }
 
 function llmsReadbackFields(contract: typeof aiConsumptionContract): string {
@@ -99,6 +224,8 @@ export function writeStorybookStaticBuild(): void {
   const writtenFiles: string[] = [];
   copyFileSync(join(process.cwd(), "assets", "tcrn-brand-mark.svg"), join(outDir, "tcrn-brand-mark.svg"));
   writtenFiles.push("tcrn-brand-mark.svg");
+  const fonts = writeVendoredFonts(outDir);
+  writtenFiles.push(fonts.stylesheet);
   const contractPayloadDigest = sha256(stableJson(aiConsumptionContract));
   const aiConsumptionContractWithDigest = {
     ...aiConsumptionContract,
@@ -119,18 +246,14 @@ export function writeStorybookStaticBuild(): void {
   // category's story bodies). The page set is derived from the registry (navigation.contractPages),
   // never hand-listed. Each page is independently forbidden-claim scanned before write.
   for (const page of contractPages()) {
-    const html = pageHtml(page);
+    const label = pageLabel(page);
+    const html = linkFontStylesheet(pageHtml(page), label);
     const hits = findForbiddenPositiveClaimHits(html);
     if (hits.length > 0) {
-      const label = page.kind === "category"
-        ? `${page.group}/${page.categoryId}`
-        : page.kind === "reference"
-          ? page.file
-          : page.group;
       throw new Error(`storybook_forbidden_positive_claims:${label}:${hits.join(",")}`);
     }
     writeFileSync(join(outDir, page.file), html);
     writtenFiles.push(page.file);
   }
-  console.log(JSON.stringify({ ok: true, stories: contractStories.length, pages: writtenFiles, forbiddenHits: [], outDir }, null, 2));
+  console.log(JSON.stringify({ ok: true, stories: contractStories.length, pages: writtenFiles, fonts, forbiddenHits: [], outDir }, null, 2));
 }
