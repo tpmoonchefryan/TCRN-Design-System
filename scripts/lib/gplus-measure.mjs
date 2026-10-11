@@ -447,7 +447,9 @@ export function measureInPage(options) {
       border: (el, cs) => parseColor(cs.borderBottomColor),
       "after-border": (el) => parseColor(styleOf(el, "::after").borderBottomColor),
       "after-shadow": (el, cs) => outlineColor(styleOf(el, "::after").boxShadow) || parseColor(cs.color),
-      "after-bg": (el) => parseColor(styleOf(el, "::after").backgroundColor)
+      "after-bg": (el) => parseColor(styleOf(el, "::after").backgroundColor),
+      // TCRN-DS-SUB-035 (addition): the Switch knob is painted on ::before.
+      "before-bg": (el) => parseColor(styleOf(el, "::before").backgroundColor)
     };
     const cells = [];
     let count = 0;

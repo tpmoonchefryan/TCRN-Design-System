@@ -1,0 +1,5767 @@
+{
+  "schemaVersion": "tcrn.ds.geometry-measure-proof.v1",
+  "measureSchemaVersion": "tcrn.ds.gplus-measure.v1",
+  "ok": false,
+  "reason": null,
+  "thresholds": {
+    "clip": {
+      "maxLeaks": 0,
+      "tolerancePx": 0.5
+    },
+    "singleLine": {
+      "maxLines": 1
+    },
+    "shadowBlur": {
+      "maxBlurPx": 3
+    },
+    "rail": {
+      "guideLeftPx": 16,
+      "textLeftPx": 48,
+      "tolerancePx": 0.5
+    },
+    "rowAlign": {
+      "maxSpreadPx": 0.5
+    },
+    "mark": {
+      "maxViolations": 0
+    },
+    "contrast": {
+      "maxDiff": 0.05,
+      "minText": 4.5,
+      "minNonText": 3
+    },
+    "controlHeight": {
+      "allowedPx": [
+        28,
+        32,
+        40
+      ],
+      "tolerancePx": 0.5
+    },
+    "overlap": {
+      "maxOverlaps": 0,
+      "minIntersectPx": 1
+    }
+  },
+  "run": {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "locale": "en",
+    "family": null,
+    "fullSet": true
+  },
+  "storyIds": [
+    "typography-matrix",
+    "icon-matrix",
+    "brand-matrix",
+    "actions-matrix",
+    "inputs-matrix",
+    "typography-sample-billing",
+    "icon-sample-project",
+    "brand-sample-product",
+    "actions-sample-project",
+    "inputs-sample-members"
+  ],
+  "selfCheck": {
+    "ok": true,
+    "coverage": {
+      "ok": true,
+      "missingRed": [],
+      "missingGreen": []
+    },
+    "cases": [
+      {
+        "id": "all-green",
+        "file": "all.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "clip-green",
+        "file": "clip.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "clip-red",
+        "file": "clip.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "fail",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 1,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "clip-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "fail",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 1,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "single-line-green",
+        "file": "singleLine.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "pass",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "single-line-red",
+        "file": "singleLine.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "fail",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 3,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "single-line-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "fail",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 3,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shadow-blur-green",
+        "file": "shadowBlur.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "pass",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shadow-blur-red",
+        "file": "shadowBlur.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "fail",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 4,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shadow-blur-pseudo-mutation",
+        "file": "shadowBlur.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "fail",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 8,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shadow-blur-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "fail",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 4,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "rail-green",
+        "file": "rail.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "pass",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "rail-red",
+        "file": "rail.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "fail",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 4,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "rail-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "fail",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 4,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "row-align-green",
+        "file": "rowAlign.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "pass",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "row-align-red",
+        "file": "rowAlign.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "fail",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 8,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "row-align-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "fail",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 8,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "mark-green",
+        "file": "mark.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "pass",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "mark-red",
+        "file": "mark.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "fail",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 2,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "mark-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "fail",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 2,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-green",
+        "file": "contrast.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "pass",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "pass",
+          "controlHeight": "n/a",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-red",
+        "file": "contrast.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "fail",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 13.55,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-minimum-red",
+        "file": "contrast.minimum.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "fail",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-missing-expect-red",
+        "file": "contrast.missing-expect.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "fail",
+          "controlHeight": "n/a",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "fail",
+          "controlHeight": "pass",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 13.55,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "control-height-green",
+        "file": "controlHeight.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "pass",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "control-height-red",
+        "file": "controlHeight.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "fail",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 2,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "control-height-unlisted-red",
+        "file": "controlHeight.unlisted.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "fail",
+          "overlap": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "control-height-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "fail",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 2,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "overlap-green",
+        "file": "overlap.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "overlap-red",
+        "file": "overlap.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 1
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "overlap-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 1
+        },
+        "ok": true,
+        "problems": []
+      }
+    ]
+  },
+  "missingStories": [
+    "typography-sample-billing",
+    "icon-sample-project",
+    "brand-sample-product",
+    "actions-sample-project",
+    "inputs-sample-members"
+  ],
+  "runs": [
+    {
+      "storyId": "typography-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#typography-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "h1-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "h2-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "h3-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "h4-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "body-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "strong-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "read-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "meta-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "cap-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "link-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "link-hover-l",
+                7.51,
+                7.51,
+                0
+              ],
+              [
+                "num-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "unit-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "num-inl-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "caps-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "id-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "mark-l",
+                7.63,
+                7.63,
+                0
+              ],
+              [
+                "sel-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "body-canvas-l",
+                7.39,
+                7.39,
+                0
+              ],
+              [
+                "strong-canvas-l",
+                15.75,
+                15.75,
+                0
+              ],
+              [
+                "meta-canvas-l",
+                4.86,
+                4.86,
+                0
+              ],
+              [
+                "link-canvas-l",
+                5.47,
+                5.47,
+                0
+              ],
+              [
+                "h1-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h2-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h3-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h4-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "body-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "strong-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "read-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "meta-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "cap-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "link-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "link-hover-n",
+                9.7,
+                9.7,
+                0
+              ],
+              [
+                "num-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "unit-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "num-inl-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "caps-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "id-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "mark-n",
+                6.09,
+                6.09,
+                0
+              ],
+              [
+                "sel-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "body-canvas-n",
+                7.7,
+                7.7,
+                0
+              ],
+              [
+                "strong-canvas-n",
+                15.31,
+                15.31,
+                0
+              ],
+              [
+                "meta-canvas-n",
+                4.89,
+                4.89,
+                0
+              ],
+              [
+                "link-canvas-n",
+                8.99,
+                8.99,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "icon-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#icon-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "roster-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ink-panel-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ink2-panel-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ink3-panel-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "acc-panel-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "onacc-acc-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ink-wash-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "red-panel-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "dis-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ok-panel-l",
+                6.39,
+                6.39,
+                0
+              ],
+              [
+                "warn-panel-l",
+                5.92,
+                5.92,
+                0
+              ],
+              [
+                "bad-panel-l",
+                6.69,
+                6.69,
+                0
+              ],
+              [
+                "ink2-bg-l",
+                7.39,
+                7.39,
+                0
+              ],
+              [
+                "ink3-bg-l",
+                4.86,
+                4.86,
+                0
+              ],
+              [
+                "roster-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ink-panel-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ink2-panel-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ink3-panel-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "acc-panel-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "onacc-acc-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ink-wash-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "red-panel-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ok-panel-n",
+                9.27,
+                9.27,
+                0
+              ],
+              [
+                "warn-panel-n",
+                8.3,
+                8.3,
+                0
+              ],
+              [
+                "bad-panel-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "ink2-bg-n",
+                7.7,
+                7.7,
+                0
+              ],
+              [
+                "ink3-bg-n",
+                4.89,
+                4.89,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "brand-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#brand-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "tagline-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "wm-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "suffix-ink-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "rail-wm-l",
+                15.75,
+                15.75,
+                0
+              ],
+              [
+                "rail-tag-l",
+                4.86,
+                4.86,
+                0
+              ],
+              [
+                "tagline-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "wm-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "suffix-ink-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "rail-wm-n",
+                15.31,
+                15.31,
+                0
+              ],
+              [
+                "rail-tag-n",
+                4.89,
+                4.89,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "actions-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#actions-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "mark",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "mark",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "pri-d-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "pri-h-l",
+                7.51,
+                7.51,
+                0
+              ],
+              [
+                "pri-a-l",
+                9.43,
+                9.43,
+                0
+              ],
+              [
+                "pri-f-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "pri-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "pri-l-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "sec-d-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "sec-h-l",
+                17.06,
+                17.06,
+                0
+              ],
+              [
+                "sec-a-l",
+                14.52,
+                14.52,
+                0
+              ],
+              [
+                "sec-f-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "sec-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "sec-l-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "sec-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "quiet-d-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "quiet-h-l",
+                17.04,
+                17.04,
+                0
+              ],
+              [
+                "quiet-a-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "quiet-f-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "quiet-x-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "quiet-l-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "quiet-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "danger-d-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "danger-h-l",
+                7.46,
+                7.46,
+                0
+              ],
+              [
+                "danger-a-l",
+                6.85,
+                6.85,
+                0
+              ],
+              [
+                "danger-f-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "danger-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "danger-l-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "ico-pri-d-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ico-pri-h-l",
+                7.51,
+                7.51,
+                0
+              ],
+              [
+                "ico-pri-a-l",
+                9.43,
+                9.43,
+                0
+              ],
+              [
+                "ico-pri-f-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ico-pri-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ico-pri-l-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ico-sec-d-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ico-sec-h-l",
+                17.06,
+                17.06,
+                0
+              ],
+              [
+                "ico-sec-a-l",
+                14.52,
+                14.52,
+                0
+              ],
+              [
+                "ico-sec-f-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ico-sec-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ico-sec-l-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ico-sec-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "ico-quiet-d-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ico-quiet-h-l",
+                17.04,
+                17.04,
+                0
+              ],
+              [
+                "ico-quiet-a-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "ico-quiet-f-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ico-quiet-x-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "ico-quiet-l-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ico-quiet-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "ico-danger-d-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "ico-danger-h-l",
+                7.46,
+                7.46,
+                0
+              ],
+              [
+                "ico-danger-a-l",
+                6.85,
+                6.85,
+                0
+              ],
+              [
+                "ico-danger-f-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "ico-danger-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ico-danger-l-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "cb-idle-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "cb-copying-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "cb-copied-l",
+                6.39,
+                6.39,
+                0
+              ],
+              [
+                "cb-failed-l",
+                6.69,
+                6.69,
+                0
+              ],
+              [
+                "cb-unsupported-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "grp-sel-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "pri-d-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "pri-h-n",
+                9.28,
+                9.28,
+                0
+              ],
+              [
+                "pri-a-n",
+                6.53,
+                6.53,
+                0
+              ],
+              [
+                "pri-f-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "pri-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "pri-l-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "sec-d-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-h-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "sec-a-n",
+                15.88,
+                15.88,
+                0
+              ],
+              [
+                "sec-f-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "sec-l-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "quiet-d-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-h-n",
+                13.13,
+                13.13,
+                0
+              ],
+              [
+                "quiet-a-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "quiet-f-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-x-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "quiet-l-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "danger-d-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "danger-h-n",
+                6.02,
+                6.02,
+                0
+              ],
+              [
+                "danger-a-n",
+                5.41,
+                5.41,
+                0
+              ],
+              [
+                "danger-f-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "danger-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "danger-l-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-pri-d-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-pri-h-n",
+                9.28,
+                9.28,
+                0
+              ],
+              [
+                "ico-pri-a-n",
+                6.53,
+                6.53,
+                0
+              ],
+              [
+                "ico-pri-f-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-pri-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-pri-l-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-sec-d-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-h-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "ico-sec-a-n",
+                15.88,
+                15.88,
+                0
+              ],
+              [
+                "ico-sec-f-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-sec-l-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-quiet-d-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-h-n",
+                13.13,
+                13.13,
+                0
+              ],
+              [
+                "ico-quiet-a-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-quiet-f-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-x-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "ico-quiet-l-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-danger-d-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-danger-h-n",
+                6.02,
+                6.02,
+                0
+              ],
+              [
+                "ico-danger-a-n",
+                5.41,
+                5.41,
+                0
+              ],
+              [
+                "ico-danger-f-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-danger-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-danger-l-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "cb-idle-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cb-copying-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cb-copied-n",
+                9.27,
+                9.27,
+                0
+              ],
+              [
+                "cb-failed-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "cb-unsupported-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "grp-sel-n",
+                12.15,
+                12.15,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "inputs-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#inputs-matrix",
+      "ok": false,
+      "failed": [
+        "contrast"
+      ],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": false,
+        "failed": [
+          "contrast"
+        ],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "fail",
+            "value": 0.61,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 2,
+            "violations": [
+              {
+                "cell": "err-msg-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 6.2,
+                "expect": 6.69,
+                "diff": -0.49,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "err-msg-n",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 6.27,
+                "expect": 6.88,
+                "diff": -0.61,
+                "reasons": [
+                  "diff"
+                ]
+              }
+            ],
+            "cells": [
+              [
+                "in-ph-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "in-text-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "in-focus-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "in-ro-l",
+                17.06,
+                17.06,
+                0
+              ],
+              [
+                "in-dis-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "in-err-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "err-msg-l",
+                6.2,
+                6.69,
+                -0.49
+              ],
+              [
+                "search-focus-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "search-ph-l",
+                7.59,
+                7.59,
+                0
+              ],
+              [
+                "chev-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "num-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "date-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "cal-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "ck-edge-l",
+                3.16,
+                3.16,
+                0
+              ],
+              [
+                "ck-on-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ck-dis-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "rd-on-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "rd-edge-l",
+                3.16,
+                3.16,
+                0
+              ],
+              [
+                "sw-edge-l",
+                3,
+                3,
+                0
+              ],
+              [
+                "sw-on-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "in-ph-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "in-text-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "in-focus-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "in-ro-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "in-dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "in-err-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "err-msg-n",
+                6.27,
+                6.88,
+                -0.61
+              ],
+              [
+                "search-focus-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "search-ph-n",
+                6.11,
+                6.11,
+                0
+              ],
+              [
+                "chev-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "num-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "date-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cal-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "ck-edge-n",
+                3.34,
+                3.34,
+                0
+              ],
+              [
+                "ck-on-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ck-dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "rd-on-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "rd-edge-n",
+                3.34,
+                3.34,
+                0
+              ],
+              [
+                "sw-edge-n",
+                3.29,
+                3.29,
+                0
+              ],
+              [
+                "sw-on-n",
+                8.08,
+                8.08,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "typography-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#typography-matrix",
+      "ok": false,
+      "failed": [
+        "contrast"
+      ],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": false,
+        "failed": [
+          "contrast"
+        ],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "fail",
+            "value": 4.03,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 21,
+            "violations": [
+              {
+                "cell": "h1-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "h2-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "h3-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "h4-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "body-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 7.23,
+                "expect": 8.58,
+                "diff": -1.35,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "strong-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "read-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 7.23,
+                "expect": 8.58,
+                "diff": -1.35,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "meta-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 4.59,
+                "expect": 5.64,
+                "diff": -1.05,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "cap-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 4.59,
+                "expect": 5.64,
+                "diff": -1.05,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "link-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 8.44,
+                "expect": 6.35,
+                "diff": 2.09,
+                "reasons": [
+                  "diff"
+                ]
+              }
+            ],
+            "cells": [
+              [
+                "h1-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "h2-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "h3-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "h4-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "body-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "strong-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "read-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "meta-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "cap-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "link-l",
+                8.44,
+                6.35,
+                2.09
+              ],
+              [
+                "link-hover-l",
+                9.7,
+                7.51,
+                2.19
+              ],
+              [
+                "num-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "unit-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "num-inl-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "caps-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "id-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "mark-l",
+                6.09,
+                7.63,
+                -1.54
+              ],
+              [
+                "sel-l",
+                12.15,
+                16.18,
+                -4.03
+              ],
+              [
+                "body-canvas-l",
+                7.7,
+                7.39,
+                0.31
+              ],
+              [
+                "strong-canvas-l",
+                15.31,
+                15.75,
+                -0.44
+              ],
+              [
+                "meta-canvas-l",
+                4.89,
+                4.86,
+                0.03
+              ],
+              [
+                "link-canvas-l",
+                8.99,
+                5.47,
+                3.52
+              ],
+              [
+                "h1-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h2-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h3-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h4-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "body-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "strong-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "read-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "meta-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "cap-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "link-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "link-hover-n",
+                9.7,
+                9.7,
+                0
+              ],
+              [
+                "num-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "unit-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "num-inl-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "caps-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "id-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "mark-n",
+                6.09,
+                6.09,
+                0
+              ],
+              [
+                "sel-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "body-canvas-n",
+                7.7,
+                7.7,
+                0
+              ],
+              [
+                "strong-canvas-n",
+                15.31,
+                15.31,
+                0
+              ],
+              [
+                "meta-canvas-n",
+                4.89,
+                4.89,
+                0
+              ],
+              [
+                "link-canvas-n",
+                8.99,
+                8.99,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "icon-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#icon-matrix",
+      "ok": false,
+      "failed": [
+        "contrast"
+      ],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": false,
+        "failed": [
+          "contrast"
+        ],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "fail",
+            "value": 4.03,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 13,
+            "violations": [
+              {
+                "cell": "roster-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 7.23,
+                "expect": 8.58,
+                "diff": -1.35,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "ink-panel-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "ink2-panel-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 7.23,
+                "expect": 8.58,
+                "diff": -1.35,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "ink3-panel-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 4.59,
+                "expect": 5.64,
+                "diff": -1.05,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "acc-panel-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 8.44,
+                "expect": 6.35,
+                "diff": 2.09,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "onacc-acc-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 8.08,
+                "expect": 6.35,
+                "diff": 1.73,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "ink-wash-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 12.15,
+                "expect": 16.18,
+                "diff": -4.03,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "red-panel-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 6.78,
+                "expect": 8.23,
+                "diff": -1.45,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "dis-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": true,
+                "ratio": 4.09,
+                "expect": 5.1,
+                "diff": -1.01,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "ok-panel-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 9.27,
+                "expect": 6.39,
+                "diff": 2.88,
+                "reasons": [
+                  "diff"
+                ]
+              }
+            ],
+            "cells": [
+              [
+                "roster-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "ink-panel-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "ink2-panel-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "ink3-panel-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "acc-panel-l",
+                8.44,
+                6.35,
+                2.09
+              ],
+              [
+                "onacc-acc-l",
+                8.08,
+                6.35,
+                1.73
+              ],
+              [
+                "ink-wash-l",
+                12.15,
+                16.18,
+                -4.03
+              ],
+              [
+                "red-panel-l",
+                6.78,
+                8.23,
+                -1.45
+              ],
+              [
+                "dis-l",
+                4.09,
+                5.1,
+                -1.01
+              ],
+              [
+                "ok-panel-l",
+                9.27,
+                6.39,
+                2.88
+              ],
+              [
+                "warn-panel-l",
+                8.3,
+                5.92,
+                2.38
+              ],
+              [
+                "bad-panel-l",
+                6.88,
+                6.69,
+                0.19
+              ],
+              [
+                "ink2-bg-l",
+                7.7,
+                7.39,
+                0.31
+              ],
+              [
+                "ink3-bg-l",
+                4.89,
+                4.86,
+                0.03
+              ],
+              [
+                "roster-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ink-panel-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ink2-panel-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ink3-panel-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "acc-panel-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "onacc-acc-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ink-wash-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "red-panel-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ok-panel-n",
+                9.27,
+                9.27,
+                0
+              ],
+              [
+                "warn-panel-n",
+                8.3,
+                8.3,
+                0
+              ],
+              [
+                "bad-panel-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "ink2-bg-n",
+                7.7,
+                7.7,
+                0
+              ],
+              [
+                "ink3-bg-n",
+                4.89,
+                4.89,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "brand-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#brand-matrix",
+      "ok": false,
+      "failed": [
+        "contrast"
+      ],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": false,
+        "failed": [
+          "contrast"
+        ],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "fail",
+            "value": 3.91,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 4,
+            "violations": [
+              {
+                "cell": "tagline-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 4.59,
+                "expect": 5.64,
+                "diff": -1.05,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "wm-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "suffix-ink-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "rail-wm-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 15.31,
+                "expect": 15.75,
+                "diff": -0.44,
+                "reasons": [
+                  "diff"
+                ]
+              }
+            ],
+            "cells": [
+              [
+                "tagline-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "wm-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "suffix-ink-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "rail-wm-l",
+                15.31,
+                15.75,
+                -0.44
+              ],
+              [
+                "rail-tag-l",
+                4.89,
+                4.86,
+                0.03
+              ],
+              [
+                "tagline-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "wm-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "suffix-ink-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "rail-wm-n",
+                15.31,
+                15.31,
+                0
+              ],
+              [
+                "rail-tag-n",
+                4.89,
+                4.89,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "actions-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#actions-matrix",
+      "ok": false,
+      "failed": [
+        "contrast"
+      ],
+      "notApplicable": [
+        "rail",
+        "mark",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": false,
+        "failed": [
+          "contrast"
+        ],
+        "notApplicable": [
+          "rail",
+          "mark",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "fail",
+            "value": 4.03,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 58,
+            "violations": [
+              {
+                "cell": "pri-d-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 8.08,
+                "expect": 6.35,
+                "diff": 1.73,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "pri-h-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 9.28,
+                "expect": 7.51,
+                "diff": 1.77,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "pri-a-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 6.53,
+                "expect": 9.43,
+                "diff": -2.9,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "pri-f-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 8.08,
+                "expect": 6.35,
+                "diff": 1.73,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "pri-x-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": true,
+                "ratio": 4.09,
+                "expect": 5.1,
+                "diff": -1.01,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "pri-l-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 8.08,
+                "expect": 6.35,
+                "diff": 1.73,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "sec-d-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "sec-h-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 13.5,
+                "expect": 17.06,
+                "diff": -3.56,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "sec-a-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 15.88,
+                "expect": 14.52,
+                "diff": 1.36,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "sec-f-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              }
+            ],
+            "cells": [
+              [
+                "pri-d-l",
+                8.08,
+                6.35,
+                1.73
+              ],
+              [
+                "pri-h-l",
+                9.28,
+                7.51,
+                1.77
+              ],
+              [
+                "pri-a-l",
+                6.53,
+                9.43,
+                -2.9
+              ],
+              [
+                "pri-f-l",
+                8.08,
+                6.35,
+                1.73
+              ],
+              [
+                "pri-x-l",
+                4.09,
+                5.1,
+                -1.01
+              ],
+              [
+                "pri-l-l",
+                8.08,
+                6.35,
+                1.73
+              ],
+              [
+                "sec-d-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "sec-h-l",
+                13.5,
+                17.06,
+                -3.56
+              ],
+              [
+                "sec-a-l",
+                15.88,
+                14.52,
+                1.36
+              ],
+              [
+                "sec-f-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "sec-x-l",
+                4.09,
+                5.1,
+                -1.01
+              ],
+              [
+                "sec-l-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "sec-s-l",
+                12.15,
+                16.18,
+                -4.03
+              ],
+              [
+                "quiet-d-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "quiet-h-l",
+                13.13,
+                17.04,
+                -3.91
+              ],
+              [
+                "quiet-a-l",
+                12.15,
+                16.18,
+                -4.03
+              ],
+              [
+                "quiet-f-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "quiet-x-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "quiet-l-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "quiet-s-l",
+                12.15,
+                16.18,
+                -4.03
+              ],
+              [
+                "danger-d-l",
+                6.78,
+                8.23,
+                -1.45
+              ],
+              [
+                "danger-h-l",
+                6.02,
+                7.46,
+                -1.44
+              ],
+              [
+                "danger-a-l",
+                5.41,
+                6.85,
+                -1.44
+              ],
+              [
+                "danger-f-l",
+                6.78,
+                8.23,
+                -1.45
+              ],
+              [
+                "danger-x-l",
+                4.09,
+                5.1,
+                -1.01
+              ],
+              [
+                "danger-l-l",
+                6.78,
+                8.23,
+                -1.45
+              ],
+              [
+                "ico-pri-d-l",
+                8.08,
+                6.35,
+                1.73
+              ],
+              [
+                "ico-pri-h-l",
+                9.28,
+                7.51,
+                1.77
+              ],
+              [
+                "ico-pri-a-l",
+                6.53,
+                9.43,
+                -2.9
+              ],
+              [
+                "ico-pri-f-l",
+                8.08,
+                6.35,
+                1.73
+              ],
+              [
+                "ico-pri-x-l",
+                4.09,
+                5.1,
+                -1.01
+              ],
+              [
+                "ico-pri-l-l",
+                8.08,
+                6.35,
+                1.73
+              ],
+              [
+                "ico-sec-d-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "ico-sec-h-l",
+                13.5,
+                17.06,
+                -3.56
+              ],
+              [
+                "ico-sec-a-l",
+                15.88,
+                14.52,
+                1.36
+              ],
+              [
+                "ico-sec-f-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "ico-sec-x-l",
+                4.09,
+                5.1,
+                -1.01
+              ],
+              [
+                "ico-sec-l-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "ico-sec-s-l",
+                12.15,
+                16.18,
+                -4.03
+              ],
+              [
+                "ico-quiet-d-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "ico-quiet-h-l",
+                13.13,
+                17.04,
+                -3.91
+              ],
+              [
+                "ico-quiet-a-l",
+                12.15,
+                16.18,
+                -4.03
+              ],
+              [
+                "ico-quiet-f-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "ico-quiet-x-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "ico-quiet-l-l",
+                7.23,
+                8.58,
+                -1.35
+              ],
+              [
+                "ico-quiet-s-l",
+                12.15,
+                16.18,
+                -4.03
+              ],
+              [
+                "ico-danger-d-l",
+                6.78,
+                8.23,
+                -1.45
+              ],
+              [
+                "ico-danger-h-l",
+                6.02,
+                7.46,
+                -1.44
+              ],
+              [
+                "ico-danger-a-l",
+                5.41,
+                6.85,
+                -1.44
+              ],
+              [
+                "ico-danger-f-l",
+                6.78,
+                8.23,
+                -1.45
+              ],
+              [
+                "ico-danger-x-l",
+                4.09,
+                5.1,
+                -1.01
+              ],
+              [
+                "ico-danger-l-l",
+                6.78,
+                8.23,
+                -1.45
+              ],
+              [
+                "cb-idle-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "cb-copying-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "cb-copied-l",
+                9.27,
+                6.39,
+                2.88
+              ],
+              [
+                "cb-failed-l",
+                6.88,
+                6.69,
+                0.19
+              ],
+              [
+                "cb-unsupported-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "grp-sel-l",
+                12.15,
+                16.18,
+                -4.03
+              ],
+              [
+                "pri-d-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "pri-h-n",
+                9.28,
+                9.28,
+                0
+              ],
+              [
+                "pri-a-n",
+                6.53,
+                6.53,
+                0
+              ],
+              [
+                "pri-f-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "pri-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "pri-l-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "sec-d-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-h-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "sec-a-n",
+                15.88,
+                15.88,
+                0
+              ],
+              [
+                "sec-f-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "sec-l-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "quiet-d-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-h-n",
+                13.13,
+                13.13,
+                0
+              ],
+              [
+                "quiet-a-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "quiet-f-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-x-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "quiet-l-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "danger-d-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "danger-h-n",
+                6.02,
+                6.02,
+                0
+              ],
+              [
+                "danger-a-n",
+                5.41,
+                5.41,
+                0
+              ],
+              [
+                "danger-f-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "danger-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "danger-l-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-pri-d-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-pri-h-n",
+                9.28,
+                9.28,
+                0
+              ],
+              [
+                "ico-pri-a-n",
+                6.53,
+                6.53,
+                0
+              ],
+              [
+                "ico-pri-f-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-pri-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-pri-l-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-sec-d-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-h-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "ico-sec-a-n",
+                15.88,
+                15.88,
+                0
+              ],
+              [
+                "ico-sec-f-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-sec-l-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-quiet-d-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-h-n",
+                13.13,
+                13.13,
+                0
+              ],
+              [
+                "ico-quiet-a-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-quiet-f-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-x-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "ico-quiet-l-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-danger-d-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-danger-h-n",
+                6.02,
+                6.02,
+                0
+              ],
+              [
+                "ico-danger-a-n",
+                5.41,
+                5.41,
+                0
+              ],
+              [
+                "ico-danger-f-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-danger-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-danger-l-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "cb-idle-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cb-copying-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cb-copied-n",
+                9.27,
+                9.27,
+                0
+              ],
+              [
+                "cb-failed-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "cb-unsupported-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "grp-sel-n",
+                12.15,
+                12.15,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "inputs-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#inputs-matrix",
+      "ok": false,
+      "failed": [
+        "contrast"
+      ],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": false,
+        "failed": [
+          "contrast"
+        ],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "fail",
+            "value": 3.91,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 21,
+            "violations": [
+              {
+                "cell": "in-ph-l",
+                "probe": "ph",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 4.59,
+                "expect": 5.64,
+                "diff": -1.05,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "in-text-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "in-focus-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "in-ro-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 13.5,
+                "expect": 17.06,
+                "diff": -3.56,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "in-dis-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": true,
+                "ratio": 4.09,
+                "expect": 5.1,
+                "diff": -1.01,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "in-err-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "err-msg-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 6.27,
+                "expect": 6.69,
+                "diff": -0.42,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "search-focus-l",
+                "probe": "color",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 14.38,
+                "expect": 18.29,
+                "diff": -3.91,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "search-ph-l",
+                "probe": "ph",
+                "kind": "text",
+                "exempt": false,
+                "ratio": 6.11,
+                "expect": 7.59,
+                "diff": -1.48,
+                "reasons": [
+                  "diff"
+                ]
+              },
+              {
+                "cell": "chev-l",
+                "probe": "color",
+                "kind": "icon",
+                "exempt": false,
+                "ratio": 4.59,
+                "expect": 5.64,
+                "diff": -1.05,
+                "reasons": [
+                  "diff"
+                ]
+              }
+            ],
+            "cells": [
+              [
+                "in-ph-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "in-text-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "in-focus-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "in-ro-l",
+                13.5,
+                17.06,
+                -3.56
+              ],
+              [
+                "in-dis-l",
+                4.09,
+                5.1,
+                -1.01
+              ],
+              [
+                "in-err-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "err-msg-l",
+                6.27,
+                6.69,
+                -0.42
+              ],
+              [
+                "search-focus-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "search-ph-l",
+                6.11,
+                7.59,
+                -1.48
+              ],
+              [
+                "chev-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "num-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "date-l",
+                14.38,
+                18.29,
+                -3.91
+              ],
+              [
+                "cal-l",
+                4.59,
+                5.64,
+                -1.05
+              ],
+              [
+                "ck-edge-l",
+                3.34,
+                3.16,
+                0.18
+              ],
+              [
+                "ck-on-l",
+                8.08,
+                6.35,
+                1.73
+              ],
+              [
+                "ck-dis-l",
+                4.09,
+                5.1,
+                -1.01
+              ],
+              [
+                "rd-on-l",
+                8.44,
+                6.35,
+                2.09
+              ],
+              [
+                "rd-edge-l",
+                3.34,
+                3.16,
+                0.18
+              ],
+              [
+                "sw-edge-l",
+                3.29,
+                3,
+                0.29
+              ],
+              [
+                "sw-on-l",
+                8.08,
+                6.35,
+                1.73
+              ],
+              [
+                "in-ph-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "in-text-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "in-focus-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "in-ro-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "in-dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "in-err-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "err-msg-n",
+                6.27,
+                6.88,
+                -0.61
+              ],
+              [
+                "search-focus-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "search-ph-n",
+                6.11,
+                6.11,
+                0
+              ],
+              [
+                "chev-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "num-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "date-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cal-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "ck-edge-n",
+                3.34,
+                3.34,
+                0
+              ],
+              [
+                "ck-on-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ck-dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "rd-on-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "rd-edge-n",
+                3.34,
+                3.34,
+                0
+              ],
+              [
+                "sw-edge-n",
+                3.29,
+                3.29,
+                0
+              ],
+              [
+                "sw-on-n",
+                8.08,
+                8.08,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    }
+  ],
+  "mutations": [
+    {
+      "id": "row-first-cell-padding",
+      "storyId": "table-record-index-spec",
+      "check": "rowAlign",
+      "source": "131-GWT1",
+      "theme": "light",
+      "status": "fail",
+      "value": 4,
+      "killed": true
+    },
+    {
+      "id": "mark-padding",
+      "storyId": "typography-matrix",
+      "check": "mark",
+      "source": "131-GWT2",
+      "theme": "light",
+      "status": "fail",
+      "value": 4,
+      "killed": true
+    },
+    {
+      "id": "shadow-blur-4px",
+      "storyId": "actions-matrix",
+      "check": "shadowBlur",
+      "source": "131-GWT3",
+      "theme": "light",
+      "status": "fail",
+      "value": 4,
+      "killed": true
+    },
+    {
+      "id": "cell-ink-drift",
+      "storyId": "actions-matrix",
+      "check": "contrast",
+      "source": "131 contrast",
+      "theme": "light",
+      "status": "fail",
+      "value": 8.21,
+      "killed": true
+    }
+  ],
+  "probes": [
+    {
+      "id": "buttonGroupFocusRing",
+      "storyId": "actions-matrix",
+      "source": "125-GWT4",
+      "theme": "light",
+      "status": "pass",
+      "checked": 10,
+      "value": 0,
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "id": "datePickerIndicatorHit",
+      "storyId": "inputs-matrix",
+      "source": "126-GWT4",
+      "theme": "light",
+      "status": "pass",
+      "checked": 2,
+      "value": 0,
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "id": "highlightWidth",
+      "storyId": "typography-matrix",
+      "source": "123-GWT2",
+      "theme": "light",
+      "status": "pass",
+      "checked": 4,
+      "value": 0.02,
+      "violationCount": 0,
+      "violations": []
+    }
+  ],
+  "checksNeverApplied": [
+    "rail",
+    "controlHeight"
+  ],
+  "summary": {
+    "clip": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "singleLine": {
+      "status": "pass",
+      "worstValue": 1
+    },
+    "shadowBlur": {
+      "status": "pass",
+      "worstValue": 3
+    },
+    "rail": {
+      "status": "n/a",
+      "worstValue": 0
+    },
+    "rowAlign": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "mark": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "contrast": {
+      "status": "fail",
+      "worstValue": 4.03
+    },
+    "controlHeight": {
+      "status": "n/a",
+      "worstValue": 0
+    },
+    "overlap": {
+      "status": "pass",
+      "worstValue": 0
+    }
+  }
+}
