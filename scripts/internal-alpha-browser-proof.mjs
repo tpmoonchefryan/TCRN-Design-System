@@ -296,17 +296,71 @@ async function collectPageHealth(page) {
     // false positive deterministically without weakening real-clip (ellipsis / fixed-height
     // cut) detection, which always sets a clipping overflow.
     const clipsAxis = (value) => value !== "visible";
+    // TCRN-DS-SUB-084 (R2-29): two overflows on a single nowrap line are not text cut off from view.
+    // (1) Horizontal: a single-line role with nowrap and an ellipsis whose title holds its visible text
+    //     (both sides whitespace-collapsed, the C7 reading) truncates the way C7 declares; the whole text
+    //     is one hover away. The title is the one the browser shows over the element (its own or the
+    //     nearest ancestor's) or one inside it.
+    // (2) Vertical: when the line box fits the element's content box, the only vertical overflow a single
+    //     nowrap line can have is the part of the font's content area hanging past the line box (a 26px
+    //     serif on a 30px line reports scrollHeight 33 against clientHeight 30). The excess is counted
+    //     only while it stays within that overhang.
+    // Truncation without such a title, a line box taller than its box, and wrapped text still count.
+    const collapseWhitespace = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+    const titlesOver = (node) => [node.closest("[title]"), ...node.querySelectorAll("[title]")]
+      .filter(Boolean)
+      .map((holder) => collapseWhitespace(holder.getAttribute("title")));
+    const textLineMetrics = (node) => {
+      const rects = [];
+      const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+      for (let textNode = walker.nextNode(); textNode; textNode = walker.nextNode()) {
+        if (!textNode.data.trim() || textNode.parentElement?.closest(".tcrn-sr-only")) continue;
+        const range = document.createRange();
+        range.selectNodeContents(textNode);
+        for (const rect of range.getClientRects()) {
+          if (rect.width > 0 && rect.height > 0) rects.push(rect);
+        }
+      }
+      // Line boxes are counted by clustering the text fragments' vertical centres.
+      const fragments = rects
+        .map((rect) => ({ centre: (rect.top + rect.bottom) / 2, height: rect.bottom - rect.top }))
+        .sort((a, b) => a.centre - b.centre);
+      let lines = 0;
+      let reference = null;
+      for (const fragment of fragments) {
+        if (!reference || fragment.centre - reference.centre > 0.5 * Math.min(reference.height, fragment.height)) {
+          lines += 1;
+          reference = fragment;
+        }
+      }
+      return { lines, contentArea: Math.max(0, ...fragments.map((fragment) => fragment.height)) };
+    };
     const clipped = Array.from(document.querySelectorAll("button, select, .tcrn-badge, .tcrn-heading, h1, h2, h3"))
       .filter((node) => !node.classList.contains("tcrn-sr-only"))
       .map((node) => {
         const style = getComputedStyle(node);
         const text = visibleText(node);
+        let cutX = clipsAxis(style.overflowX) && node.scrollWidth > node.clientWidth + 1;
+        let cutY = clipsAxis(style.overflowY) && node.scrollHeight > node.clientHeight + 1;
+        if (text.length > 0 && (cutX || cutY) && style.whiteSpace === "nowrap") {
+          const { lines, contentArea } = textLineMetrics(node);
+          if (lines === 1) {
+            if (cutX && style.textOverflow === "ellipsis" && titlesOver(node).some((title) => title.includes(text))) {
+              cutX = false;
+            }
+            const declaredLineBox = Number.parseFloat(style.lineHeight);
+            const lineBox = Number.isFinite(declaredLineBox) ? declaredLineBox : contentArea;
+            const contentBox = node.clientHeight - (Number.parseFloat(style.paddingTop) || 0) - (Number.parseFloat(style.paddingBottom) || 0);
+            const overhang = Math.max(0, contentArea - lineBox);
+            if (cutY && lineBox <= contentBox + 1 && node.scrollHeight - node.clientHeight <= overhang + 1) {
+              cutY = false;
+            }
+          }
+        }
         return {
           tag: node.tagName.toLowerCase(),
           text: text.slice(0, 80),
-          clipped: text.length > 0
-            && ((clipsAxis(style.overflowX) && node.scrollWidth > node.clientWidth + 1)
-              || (clipsAxis(style.overflowY) && node.scrollHeight > node.clientHeight + 1))
+          clipped: text.length > 0 && (cutX || cutY)
         };
       })
       .filter((item) => item.clipped);
