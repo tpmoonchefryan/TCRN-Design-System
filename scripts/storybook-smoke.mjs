@@ -127,6 +127,13 @@ function gplusComputedColor(value) {
 const gplusColor = (cssVar, theme = "light") => gplusComputedColor(gplusTokens[theme][cssVar]);
 const gplusColorBothThemes = (cssVar) => gplusThemes.map((theme) => gplusColor(cssVar, theme));
 const gplusPx = (cssVar) => Number.parseFloat(gplusTokens.light[cssVar]);
+// Composition one's shell geometry (O-1, TCRN-DS-SUB-090): the ProductShell top bar and the
+// collapsed sidebar rail are read from the shell tokens, not pinned as literals.
+const gplusShellTopBarHeightPx = gplusPx("--tcrn-shell-topbar-height");
+const gplusShellCollapsedRailWidthPx = gplusPx("--tcrn-shell-sidebar-width-collapsed");
+if (!Number.isFinite(gplusShellTopBarHeightPx) || !Number.isFinite(gplusShellCollapsedRailWidthPx)) {
+  throw new Error("gplus-shell-token-missing:--tcrn-shell-topbar-height|--tcrn-shell-sidebar-width-collapsed");
+}
 const gplusSeconds = (cssVar) => `${Number.parseFloat(gplusTokens.light[cssVar]) / 1000}s`;
 const gplusEase = (cssVar) => String(gplusTokens.light[cssVar])
   .replace(/\s+/g, "")
@@ -331,7 +338,9 @@ const productShellComparatorContract = {
       backgroundColor: gplusColorBothThemes("--tcrn-color-wash")
     },
     topBar: {
-      minHeight: 68,
+      // ProductShell's own top bar reads composition one's height from the shell token (O-1, after
+      // TCRN-DS-SUB-090); the standalone TopBar keeps its own height.
+      minHeight: gplusShellTopBarHeightPx,
       borderRadius: "0px",
       borderStyle: "none none solid",
       borderWidth: "0px 0px 1px",
@@ -394,7 +403,9 @@ const aosFrontendShellVisualInstanceContract = {
     currentLocation: productShellComparatorContract.expectedControlMetrics.currentLocation,
     selectedNavItem: productShellComparatorContract.expectedControlMetrics.selectedNavItem,
     topBar: {
-      minHeight: 68,
+      // ProductShell's own top bar reads composition one's height from the shell token (O-1, after
+      // TCRN-DS-SUB-090); the standalone TopBar keeps its own height.
+      minHeight: gplusShellTopBarHeightPx,
       borderRadius: "0px",
       borderStyle: "none none solid",
       borderWidth: "0px 0px 1px",
@@ -634,7 +645,7 @@ const aosOwnerQualityProductShellContract = {
     ],
     mobilePolicy: "hidden_affordance_until_mobile_collapsed_owner_quality_variant_admission",
     iconCenterDeltaMaxPx: 1,
-    railWidthPx: 92
+    railWidthPx: gplusShellCollapsedRailWidthPx
   },
   noOverflowProof: true,
   controlBoundsProof: {
@@ -2765,7 +2776,7 @@ function validateProductShellReadback({
         failures.push(`${label}:side-nav-icon-center-delta:${sideNavToggle?.iconCenterDelta ?? "missing"}:max:${maxDelta}`);
       }
       if (expectedState?.collapsed === "true") {
-        const expectedRailWidth = contract.ownerQualitySideNavPolicy.railWidthPx ?? 92;
+        const expectedRailWidth = contract.ownerQualitySideNavPolicy.railWidthPx ?? gplusShellCollapsedRailWidthPx;
         const railWidth = proof.measured.sideNavRegion?.width;
         if (typeof railWidth !== "number" || Math.abs(railWidth - expectedRailWidth) > 1) {
           failures.push(`${label}:side-nav-collapsed-rail-width:${railWidth ?? "missing"}:expected:${expectedRailWidth}`);
