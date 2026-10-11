@@ -405,11 +405,16 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         />
       </MatrixSection>
       <MatrixSection component="MultiSelect">
+        {/* The open list is shown in place: MultiSelect has no open entry, and the page's static
+            bridge mounts every [data-choice-presentation=dropdown] root and moves an open list to
+            document.body, out of this theme block. Dropping that hook keeps the expanded list and
+            its selected option (opt-sel) inside the block. */}
         <StaticMarkup
           id={`inputs-multi-${theme}`}
           block
           element={<MultiSelect aria-label="Projects" presentation="dropdown" defaultValue={["review", "launch"]} options={projectOptions} />}
           edits={[
+            { marker: 'data-choice-presentation="dropdown"', remove: ["data-choice-presentation"] },
             { marker: 'aria-haspopup="listbox"', set: { "aria-expanded": "true" } },
             { marker: 'role="listbox"', remove: ["hidden"] },
             cellEdit('aria-selected="true"', cell("opt-sel"))
