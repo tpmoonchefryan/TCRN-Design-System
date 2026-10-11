@@ -1987,6 +1987,53 @@ function normalizeTransitionProperty(value) {
   return String(value).split(",").map((part) => part.trim()).filter(Boolean);
 }
 
+// TCRN-DS-SUB-098 (R3-5): the focus comparator shared by productShellComparatorProof,
+// designSystemVisualInstanceParityReadback and ownerQualityProductShellProof (all three reach it
+// through validateMetric). An outline whose style is "none" draws nothing, so when the expectation
+// and the reading both say "none", outline-width and outline-offset are not compared: Chromium 149
+// reports the initial 3px width for an outline that was never set. The style itself is still
+// compared, so a drawn outline against a "none" expectation stays a failure, and a drawn outline
+// is compared on width and offset as before. Returns the mismatched property names.
+export function focusStyleMismatches(expectedFocus, actualFocus) {
+  const mismatches = [];
+  const outlineNotDrawn = expectedFocus?.outlineStyle === "none" && actualFocus?.outlineStyle === "none";
+  for (const [property, expectedValue] of Object.entries(expectedFocus ?? {})) {
+    if (outlineNotDrawn && (property === "outlineWidth" || property === "outlineOffset")) continue;
+    if (expectedValue && typeof expectedValue === "object" && Array.isArray(expectedValue.layers)) {
+      if (!boxShadowHasLayers(actualFocus?.[property], expectedValue.layers)) mismatches.push(property);
+      continue;
+    }
+    if (actualFocus?.[property] !== expectedValue) mismatches.push(property);
+  }
+  return mismatches;
+}
+
+// Self-check of the comparator, run first in main() before any browser work (TCRN-DS-SUB-098):
+// "none" with Chromium's 3px initial width is judged the same; a solid outline with another width,
+// and a drawn outline against a "none" expectation, are judged different.
+export function runFocusComparatorSelfCheck() {
+  const noneExpected = { outlineWidth: "0px", outlineStyle: "none", outlineOffset: "0px", boxShadow: "none" };
+  const solidExpected = { outlineWidth: "2px", outlineStyle: "solid", outlineOffset: "2px" };
+  const cases = [
+    {
+      name: "none-with-initial-3px-is-same",
+      mismatches: focusStyleMismatches(noneExpected, { outlineWidth: "3px", outlineStyle: "none", outlineOffset: "0px", boxShadow: "none" }),
+      expected: []
+    },
+    {
+      name: "solid-with-other-width-is-different",
+      mismatches: focusStyleMismatches(solidExpected, { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "2px" }),
+      expected: ["outlineWidth"]
+    },
+    {
+      name: "drawn-outline-against-none-is-different",
+      mismatches: focusStyleMismatches(noneExpected, { outlineWidth: "3px", outlineStyle: "solid", outlineOffset: "0px", boxShadow: "none" }),
+      expected: ["outlineWidth", "outlineStyle"]
+    }
+  ].map((entry) => ({ ...entry, ok: JSON.stringify(entry.mismatches) === JSON.stringify(entry.expected) }));
+  return { ok: cases.every((entry) => entry.ok), cases };
+}
+
 function validateMetric({ failures, name, metric, expected }) {
   const width = Number(metric.width.toFixed(2));
   const height = Number(metric.height.toFixed(2));
@@ -2073,16 +2120,8 @@ function validateMetric({ failures, name, metric, expected }) {
     failures.push(`${name}:transition-timing-function:${metric.transitionTimingFunction}`);
   }
   if (expected.focus !== undefined && metric.disabled !== true) {
-    for (const [property, expectedValue] of Object.entries(expected.focus)) {
-      if (expectedValue && typeof expectedValue === "object" && Array.isArray(expectedValue.layers)) {
-        if (!boxShadowHasLayers(metric.focus?.[property], expectedValue.layers)) {
-          failures.push(`${name}:focus-${property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}:${metric.focus?.[property] ?? "missing"}`);
-        }
-        continue;
-      }
-      if (metric.focus?.[property] !== expectedValue) {
-        failures.push(`${name}:focus-${property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}:${metric.focus?.[property] ?? "missing"}`);
-      }
+    for (const property of focusStyleMismatches(expected.focus, metric.focus)) {
+      failures.push(`${name}:focus-${property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}:${metric.focus?.[property] ?? "missing"}`);
     }
   }
   if (metric.borderStyle === "outset") {
@@ -3791,6 +3830,12 @@ async function runLocaleMenuFocusReturnProof() {
 }
 
 async function main() {
+  const focusComparatorSelfCheck = runFocusComparatorSelfCheck();
+  if (!focusComparatorSelfCheck.ok) {
+    console.log(JSON.stringify({ ok: false, focusComparatorSelfCheck }, null, 2));
+    process.exitCode = 1;
+    return;
+  }
   const productShellComparatorProof = await runProductShellComparatorProof().catch((error) => ({
     ok: false,
     failures: [`product-shell-comparator-proof-error:${error instanceof Error ? error.message : String(error)}`],
@@ -3842,7 +3887,8 @@ async function main() {
   for (const stale of categoryStoryCountBudget.staleAllowlist) {
     missing.push(`stale-category-count-allowlist:${stale.id}:${stale.reason}`);
   }
-  const ok = missing.length === 0
+  const ok = focusComparatorSelfCheck.ok
+    && missing.length === 0
     && forbiddenPositiveHits.length === 0
     && storybookPreviewExists
     && productShellComparatorProof.ok
@@ -3855,6 +3901,7 @@ async function main() {
     && categoryStoryCountBudget.ok;
   console.log(JSON.stringify({
     ok,
+    focusComparatorSelfCheck,
     missing,
     forbiddenPositiveHits,
     storybookPreviewExists,
