@@ -98,10 +98,10 @@
 | P7 | 经济 | 已合入 62316ff | 6225880 | 5 张判据达成；scan、internal-vocab 零命中；controlHeight 两矩阵零偏差；RM7；trash/r2-P7 6.1 MB 可清 |
 | P9 | 主力 | 已合入 c4e638f | e915306 | 3 张判据达成；clipped 288 → 0、axe 82 → 24（92 个后缀节点豁免）；问题 6 条去向见 RM6；tmp/r2-P9 约 6 MB 证据留到验收后 |
 | P2 | 主力 | 已合入 0e7fba1 | 286d452 | RM1、SUB-055、SUB-058 达成；SUB-052 部分（余 4 条字面值 → RM8/O-6）；tokens.css 与 storybook.css 字节不变；11 门全绿；RM9–RM11 |
-| P5 | 主力 | 在跑 | c4e638f | SUB-063 → 064 → 050 → 065 |
+| P5 | 主力 | 已合入 bc71e9d | c4e638f | 4 张判据达成；doc:sample-style 文档层 72 → 0；12 段 tokens:proof 全绿；shell:parity 与 storybook:smoke 余红见 RM12 |
 | P6 | 主力 | 在跑 | 3560602 | SUB-066 → 067 → 068 → 080 → 081 → 082；附件 P6-handoffs.md |
 | P8 | 主力 | 在跑 | c8bfbc8 | SUB-077 → 056 |
-| P10 | 主力 | 待派（下一个空位） | — | 摘录已切并在 c8bfbc8 更新（RM1 已修） |
+| P10 | 主力 | 在跑 | bc71e9d | SUB-079 |
 | P11 | 经济 | 待 P1–P10 全部合入 | — | 摘录附各包 handoff 中与 SUB-087 有关的行为变化（RM11）；RM2/RM9 不插入本批 |
 | P12 | 经济 | 待 P11 合入 | — | 末项 SUB-046 |
 

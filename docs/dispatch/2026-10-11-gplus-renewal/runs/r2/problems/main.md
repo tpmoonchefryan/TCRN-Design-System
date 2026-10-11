@@ -31,3 +31,7 @@ P7 问题清单去向：dark 轮对比（P1 已修，P7 树早于 P1 合入）�
 **RM10 Inputs 画板未随 rf 元组重生成（交设计权威，与 §3.4 第 1 项同列）。** `docs/design/gplus-2026-10/tools/build-inputs.mjs` 重生成会多一条 `--edge-rf` 声明，但板面没有只读获焦规则；签入的板 HTML 与现行契约生成结果差这一条，没有门比对，不显红。是否给画板补只读获焦态由设计权威侧定。
 
 **RM11 P2 带出的两处行为变化（交 P11 的 SUB-087 写进 CHANGELOG 与迁移说明）。** `tcrn-link--quiet` 现在须与 `tcrn-link` 同用（仓内无单独使用处）；`gplus-tokens.generated.ts` 头部现在也列 typography.json，改 typography.json 的单要连带改写其 contract-sha256 行。
+
+**RM12 P5 交回的余项与自定取舍。** ① storybook:smoke 28 条红全在壳内搜索框（P5 文件未给它作画；未在原码上复跑，是否先前即红未确认），P6 的 SUB-081/082 正改冒烟脚本，批末 verify 时与 P4 删去壳内 focus-within 规则（SUB-059）、P5 改顶栏搜索（SUB-064）一起复核根因；② shell:parity 余文档壳三项（brand-lockup、sidebar、shell-relations），原码上同样红，属 C-21/O-1；③ doc:sample-style package-context 142 处已按 §3.3 交后续批次；④ `docs/style-scale.md` 过时、不在 P5 文件集，并入 RM9 交判断；⑤ 规则级守卫不拦按 data 属性命中包组件的规则，放宽属改扫描器口径，交判断；⑥ dense 原型在 P6 的 SUB-066 退役前失去包裹样式。SUB-065 的守卫实际落在 `scripts/shell-fidelity-proof.mjs` 的 `docsPackageSelectorDuplication`（拆分预期是 doc-shell-class-proof），验收核对。
+P5 的自定取舍（§3.4 第 8 项，收口回显，Owner 可更正）：守卫把宽度与换行类属性算作摆放属性（依据 docs/style-scale.md）；oracle 搜索边框取透明静止边而非计算边框色；nav-proof 跳转链接登记为例外而非删除；五条例外（tooltip 静态预览、筛选栏、nav-proof 跳转链接、doc-shell 品牌收起、窄屏品牌——后两条依 C-21 待 O-1），逐条见 `runs/r2/handoff/P5.md`。
+流程：P5 两条只读命令含 `cd`（未弹框、未改文件），并入 RM4。
