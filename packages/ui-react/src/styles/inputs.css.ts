@@ -508,11 +508,14 @@ export const inputsCss11 = `
 .tcrn-select.tcrn-multi-select{block-size:auto;padding:var(--tcrn-space-1)}
 
 /* A collection dropdown uses the Select trigger (the .tcrn-select pair table) and Menu
-   option families. The summary stays on one line and carries its full text as a title. */
-.tcrn-multi-select-dropdown{position:relative;min-inline-size:0;max-inline-size:100%}
-.tcrn-multi-select-dropdown__trigger{-webkit-appearance:none;appearance:none;display:flex;align-items:center;justify-content:space-between;gap:var(--tcrn-space-2);inline-size:100%;text-align:start;cursor:pointer}
+   option families. The summary stays on one line and carries its full text as a title.
+   The trigger keeps the Select geometry: the dropdown lays it out as a flex item, as the
+   select wrapper lays out a Select, and it keeps the same 30px clear at its end, where the
+   caret sits at the sm icon size in ink-3, placed exactly as the Select chevron. */
+.tcrn-multi-select-dropdown{position:relative;display:flex;align-items:center;min-inline-size:0;max-inline-size:100%}
+.tcrn-multi-select-dropdown__trigger{-webkit-appearance:none;appearance:none;position:relative;display:flex;align-items:center;justify-content:space-between;gap:var(--tcrn-space-2);inline-size:100%;padding-inline-end:30px;text-align:start;cursor:pointer}
 .tcrn-multi-select-dropdown__trigger [data-multi-select-summary]{min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tcrn-multi-select-dropdown__caret{flex:0 0 auto;inline-size:var(--tcrn-icon-size-sm);block-size:var(--tcrn-icon-size-sm);color:var(--tcrn-color-ink-3)}
+.tcrn-multi-select-dropdown__caret{position:absolute;inset-block:0;inset-inline-end:calc((30px - var(--tcrn-icon-size-sm)) / 2);margin-block:auto;inline-size:var(--tcrn-icon-size-sm);block-size:var(--tcrn-icon-size-sm);color:var(--tcrn-color-ink-3);pointer-events:none}
 .tcrn-multi-select-dropdown__trigger:disabled{cursor:not-allowed}
 .tcrn-multi-select-dropdown__list{z-index:var(--tcrn-z-popover);min-inline-size:0;max-inline-size:calc(100vw - var(--tcrn-space-4));max-block-size:calc(100vh - var(--tcrn-space-4));overflow:auto;box-sizing:border-box}
 .tcrn-multi-select-dropdown__list[hidden]{display:none}
