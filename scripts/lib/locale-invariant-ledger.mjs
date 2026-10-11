@@ -69,14 +69,13 @@ export const localeInvariantLedger = {
     "sans", "serif", "suffix"
   ],
   // Cat 5 — machine values of the composition-one sample stories (apps/storybook/src/contract-stories/
-  // gplus/samples): record IDs, the invoice number, registered asset IDs, the avatar initials, and the
-  // registered endorsement line a product lockup renders next to its wordmark. Each is locale-invariant
-  // and none forms a multi-word run, so the zh-CN scan never reads them as leaks; registering them lets
-  // the storybook smoke test hold every Latin text node of the five sample stories to the content
-  // dictionary, the proper nouns and this list.
+  // gplus/samples): record IDs, the invoice number, the avatar initials, and the registered
+  // endorsement line a product lockup renders next to its wordmark. Each is locale-invariant and none
+  // forms a multi-word run, so the zh-CN scan never reads them as leaks; registering them lets the
+  // storybook smoke test hold every Latin text node of the five sample stories to the content
+  // dictionary, the proper nouns and this list. (The brand sample no longer renders asset IDs.)
   sampleMachineWords: [
     "PRJ-2026-0412", "PRJ-2026-0391", "PRJ-2026-0377", "PRJ-2026-0360", "INV-2026-10-0031",
-    "tcrn-design-system-two-line", "tcrn-tms-two-line", "tcrn-einzbern-two-line", "tcrn-mana-orchestrate-two-line",
     "LX", "by TCRN"
   ],
   // Cat 3 — TEMPORARY audited translation debt: the multi-word Latin strings that currently

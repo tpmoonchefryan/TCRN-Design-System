@@ -2171,7 +2171,6 @@ export const storybookContentText: Record<string, Record<TcrnLocale, string>> = 
   "4 registered · Latin wordmarks · taglines in five languages": { "zh-CN": "4 个已注册 · 字标拉丁 · 标语五语", en: "4 registered · Latin wordmarks · taglines in five languages", ja: "登録済み 4 件 · ラテン文字のワードマーク · 5 言語のタグライン", ko: "4개 등록 · 라틴 문자 워드마크 · 5개 언어 태그라인", fr: "4 enregistrés · logotypes latins · slogans en cinq langues" },
   "Brand assets": { "zh-CN": "品牌资产", en: "Brand assets", ja: "ブランドアセット", ko: "브랜드 자산", fr: "Ressources de marque" },
   "Product": { "zh-CN": "产品", en: "Product", ja: "製品", ko: "제품", fr: "Produit" },
-  "Asset ID": { "zh-CN": "资产 ID", en: "Asset ID", ja: "アセット ID", ko: "자산 ID", fr: "ID de ressource" },
   "Tagline": { "zh-CN": "标语", en: "Tagline", ja: "タグライン", ko: "태그라인", fr: "Slogan" },
   "Registration": { "zh-CN": "注册", en: "Registration", ja: "登録", ko: "등록", fr: "Enregistrement" },
   "Registered": { "zh-CN": "已注册", en: "Registered", ja: "登録済み", ko: "등록됨", fr: "Enregistré" },

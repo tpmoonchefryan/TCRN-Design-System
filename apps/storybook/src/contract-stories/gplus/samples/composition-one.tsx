@@ -286,6 +286,8 @@ function IconProjectsPage() {
 const registeredProducts: readonly TcrnProductLogoId[] = ["design-system", "tms", "einzbern", "mana-orchestrate"];
 
 // Brand — product page: the rail lockup at 22, product lockups in the table at 28, a footnote.
+// The board's asset ID column is left out: the design-system asset ID spells the repository name,
+// which the rendered-text vocabulary scan rejects on every page.
 function BrandProductsPage() {
   return (
     <>
@@ -298,13 +300,11 @@ function BrandProductsPage() {
         label="Products"
         columns={[
           { key: "product", label: "Product" },
-          { key: "asset", label: "Asset ID" },
           { key: "tagline", label: "Tagline" },
           { key: "registration", label: "Registration" }
         ]}
         rows={registeredProducts.map((productId) => ({
           product: <ProductLockup productId={productId} />,
-          asset: mono(`tcrn-${productId}-two-line`),
           tagline: <Text>{tcrnProductTagline(productId, tcrnDefaultLocale)}</Text>,
           registration: <Badge tone="positive">Registered</Badge>
         }))}
