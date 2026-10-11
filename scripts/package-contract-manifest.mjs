@@ -45,6 +45,27 @@ const allowedLicenseGroups = new Set([
   "MIT-0",
   "MPL-2.0"
 ]);
+// OFL-1.1 is admitted for exactly the five vendored font packages, and only while each is a root
+// devDependency. Basis: INIT-015 minutes D4 — Hanken Grotesk, Noto Sans SC, Noto Serif SC,
+// Source Serif 4 and IBM Plex Mono are all SIL OFL 1.1, usable commercially and redistributable
+// with the package. Any other package reporting OFL-1.1 still lands in unknownLicenseGroups.
+const scopedLicenseAllowances = {
+  "OFL-1.1": [
+    "@fontsource-variable/hanken-grotesk",
+    "@fontsource-variable/noto-sans-sc",
+    "@fontsource-variable/noto-serif-sc",
+    "@fontsource-variable/source-serif-4",
+    "@fontsource/ibm-plex-mono"
+  ]
+};
+const rootDevDependencyNames = new Set(Object.keys(JSON.parse(readFileSync("package.json", "utf8")).devDependencies ?? {}));
+function licenseGroupAllowed(entry) {
+  if (allowedLicenseGroups.has(entry.license)) return true;
+  const scoped = scopedLicenseAllowances[entry.license];
+  return Array.isArray(scoped)
+    && entry.packageNames.length > 0
+    && entry.packageNames.every((name) => scoped.includes(name) && rootDevDependencyNames.has(name));
+}
 
 function sha256(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
@@ -131,7 +152,7 @@ const licenseSummary = Object.keys(licenseJson).sort().map((license) => ({
   packageCount: licenseJson[license].length,
   packageNames: licenseJson[license].map((entry) => entry.name).filter(Boolean).sort()
 }));
-const unknownLicenseGroups = licenseSummary.filter((entry) => !allowedLicenseGroups.has(entry.license)).map((entry) => entry.license);
+const unknownLicenseGroups = licenseSummary.filter((entry) => !licenseGroupAllowed(entry)).map((entry) => entry.license);
 
 const uiReactModule = await import(pathToFileURL(join(process.cwd(), "packages/ui-react/dist/index.js")).href);
 const uiReactManifest = readJson("packages/ui-react/package.json");
