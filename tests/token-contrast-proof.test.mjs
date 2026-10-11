@@ -139,9 +139,30 @@ test("the focus ring pairs are read from --tcrn-focus-ring", () => {
 });
 
 test("a wordmark pair below 4.5 without a registration fails and names the pair", () => {
-  const report = runTokenContrastProof({ exemptions: WORDMARK_EXEMPTIONS.filter((entry) => entry.theme !== "dark") });
-  assert.deepEqual(failing(report), ["wordmark brand-suffix-tms on bg (dark)", "wordmark brand-suffix-tms on panel (dark)"]);
+  // The register holds the two light Design System pairs only; without them those pairs fail.
+  assert.deepEqual([...new Set(WORDMARK_EXEMPTIONS.map((entry) => `${entry.theme} ${entry.fg}`))], ["light --tcrn-brand-suffix-design-system"]);
+  const report = runTokenContrastProof({ exemptions: [] });
+  assert.deepEqual(failing(report), ["wordmark brand-suffix-design-system on bg (light)", "wordmark brand-suffix-design-system on panel (light)"]);
   assert.match(report.failures.join("\n"), /logotype text passes only through a registered exemption/);
+});
+
+test("O-3: the night TMS suffix passes on bg and panel by itself, with no exemption", () => {
+  const report = runTokenContrastProof();
+  const night = tcrnGplusBrandTokens.find((token) => token.cssVar === "--tcrn-brand-suffix-tms")?.dark;
+  assert.ok(night, "the TMS suffix has a night value");
+  for (const on of ["bg", "panel"]) {
+    const result = byName(report, `wordmark brand-suffix-tms on ${on} (dark)`);
+    assert.equal(result.status, "pass", result.name);
+    assert.equal(result.exemption, undefined, `${result.name} is not exempt`);
+    assert.equal(result.fgValue, night, `${result.name} measures the night value`);
+    assert.ok(result.ratio >= C1.wordmark, `${result.name} ${result.ratio}`);
+  }
+  // Mutation: the day value at night falls below 4.5 again and, with no registration, fails.
+  const light = tcrnGplusBrandTokens.find((token) => token.cssVar === "--tcrn-brand-suffix-tms")?.value;
+  const reverted = runTokenContrastProof({
+    resolve: (theme) => ({ ...createResolvedTokenMap(theme), ...(theme === "dark" ? { "--tcrn-brand-suffix-tms": light } : {}) })
+  });
+  assert.deepEqual(failing(reverted), ["wordmark brand-suffix-tms on bg (dark)", "wordmark brand-suffix-tms on panel (dark)"]);
 });
 
 test("an exemption never covers a non-wordmark pair", () => {
@@ -173,9 +194,15 @@ test("the wordmark scope comes from the contract; suffix-less marks are reported
   assert.match(notes, /--tcrn-brand-suffix-einzbern: the Einzbern wordmark has no suffix/);
   assert.match(notes, /--tcrn-brand-suffix-mana-orchestrate: the Mana Orchestrate wordmark has no suffix/);
 
-  // Without its suffix, TMS draws no wordmark text: its night registrations then match nothing.
-  const marks = contractMarks.marks.map((mark) => (mark.id === "tms" ? { ...mark, suffix: undefined } : mark));
+  // Without its suffix, the Design System wordmark draws no suffix text: its light registrations
+  // then match nothing. (TMS has no registration left since O-3; without its suffix it simply
+  // drops out of the wordmark pairs.)
+  const marks = contractMarks.marks.map((mark) => (mark.id === "ds" ? { ...mark, suffix: undefined } : mark));
   const noSuffix = runTokenContrastProof({ wordmarkContract: { brand: contractTokens.brand, marks } });
-  assert.match(noSuffix.failures.join("\n"), /exemption for brand-suffix-tms on panel \(dark\) matches no wordmark pair/);
-  assert.equal(noSuffix.results.some((entry) => entry.fg === "--tcrn-brand-suffix-tms"), false);
+  assert.match(noSuffix.failures.join("\n"), /exemption for brand-suffix-design-system on panel \(light\) matches no wordmark pair/);
+  assert.equal(noSuffix.results.some((entry) => entry.fg === "--tcrn-brand-suffix-design-system"), false);
+  const tmsMarks = contractMarks.marks.map((mark) => (mark.id === "tms" ? { ...mark, suffix: undefined } : mark));
+  const noTmsSuffix = runTokenContrastProof({ wordmarkContract: { brand: contractTokens.brand, marks: tmsMarks } });
+  assert.deepEqual(noTmsSuffix.failures, []);
+  assert.equal(noTmsSuffix.results.some((entry) => entry.fg === "--tcrn-brand-suffix-tms"), false);
 });

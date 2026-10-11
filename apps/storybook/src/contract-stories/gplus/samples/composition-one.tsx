@@ -1,11 +1,11 @@
 // Composition one ("one sheet") for the five first-batch sample stories: the D section of each B1
 // board (typography, icon, brand, actions, inputs) rebuilt from package components.
 //
-// The shell is the package ProductShell; this module adds no styles. The only shell parameter set
-// here is the registered local variable --tcrn-product-shell-sidebar-width (220px, the composition's
-// rail width). Every other difference between ProductShell and composition one — the rail guide
-// column (16 / 48), the detached sheet (12px from the edge), the 52px top bar, the rail footer and
-// the item counts — is left to the package and listed in the W5-A handoff against problem P1.
+// The shell is the package ProductShell; this module adds no styles and sets no shell parameter.
+// Composition one's shell geometry — the 220 rail (52 collapsed), the rail guide column (16 / 48),
+// the sheet 12 from the shell edges with the paper radius and shadow s1, and the 52 top bar — is
+// the package default since O-1 (TCRN-DS-SUB-090), so the samples no longer override the rail
+// width. The rail footer and the item counts remain differences from the composition.
 //
 // Rail elements carry data-guide="rail" (marks and icons) and data-text="rail" (wordmark and labels)
 // so the rail measurement can read them. ProductShell renders its navigation from data, so those two
@@ -41,7 +41,7 @@ import {
   type TcrnProductLogoId
 } from "@tcrn/ui-react";
 import { tcrnDefaultLocale, tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { StaticMarkup, type MarkupEdit } from "../matrix-renderer.js";
 
 export type GplusSampleBoard = "typography" | "icon" | "brand" | "actions" | "inputs";
@@ -61,10 +61,12 @@ export const gplusSampleShellKeys: Readonly<Record<GplusSampleBoard, string>> = 
   inputs: "in"
 };
 
-/** The composition's rail width, set through the registered ProductShell local variable. */
+/**
+ * The composition's rail width. It is the ProductShell default now (--tcrn-shell-sidebar-width), so
+ * the samples set no override; the constant stays exported only because the storybook smoke test
+ * still imports it (its holder updates that assertion; see runs/r3/problems/P1.md).
+ */
 export const gplusSampleSidebarWidth = "220px";
-
-const sidebarWidthStyle = { "--tcrn-product-shell-sidebar-width": gplusSampleSidebarWidth } as CSSProperties;
 
 interface RailItem {
   id: string;
@@ -142,7 +144,6 @@ function SampleShell({ storyId, board, theme, spec, children }: { storyId: strin
       contentId={`${prefix}-content`}
       contentLabel={landmarkLabel}
       navId={`${prefix}-nav`}
-      style={sidebarWidthStyle}
       data-shell={`${gplusSampleShellKeys[board]}-${themeSuffix[theme]}`}
       data-gplus-sample-shell={board}
     >

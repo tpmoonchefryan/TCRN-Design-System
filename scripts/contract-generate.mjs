@@ -247,7 +247,7 @@ function actionsFile() {
 function inputsFile() {
   const text = pairSegment("inputs-text"), check = pairSegment("inputs-check"), sw = pairSegment("inputs-switch");
   return cssModule(["pairs.json", "tokens.json"], [
-    ["inputsTextPairsCss", "Inputs 文本类状态对段（d/h/f/x/r/e/ef；search 部分覆盖）", text],
+    ["inputsTextPairsCss", "Inputs 文本类状态对段（d/h/f/x/r/rf/e/ef；search 部分覆盖）", text],
     ["inputsCheckPairsCss", "Inputs 勾选类状态对段（fill · edge · mark；radio 部分覆盖）", check],
     ["inputsSwitchPairsCss", "Inputs 开关类状态对段（fill · edge · knob · knob-edge）", sw],
     ["inputsPairsCss", "三段按顺序拼接", [...text, ...check, ...sw]]
@@ -310,19 +310,37 @@ function themeSelectors(themes) {
   return { light: `${themes.light.selector}, [${attribute}="light"]`, dark: themes.night.selector };
 }
 
+// Brand suffix tokens are theme independent unless the contract rules a night value: an entry
+// with "night" (and "nightRef", the marks.json palette step it takes, checked here like "ref" is
+// checked against "value" in tools/data.mjs) is published with a dark value, and @tcrn/ui-tokens
+// writes it into the light theme block and the dark block, whose property sets stay equal (C5).
+// Entries without one stay in the theme-independent block (TCRN-DS-SUB-088, O-3).
+function brandTokens(brand) {
+  return brand.map((t) => {
+    const token = { key: t.key, cssVar: t.cssVar, group: t.group, value: t.value };
+    if (t.night === undefined && t.nightRef === undefined) return token;
+    const ref = /^marks\.json#([a-z]+)\.palette\.([a-z0-9]+)$/.exec(t.nightRef ?? "");
+    if (typeof t.night !== "string" || !ref || data.PAL[ref[1]]?.[ref[2]] !== t.night) {
+      throw new Error(`contract/tokens.json: brand token ${t.key} night value ${t.night} does not match ${t.nightRef ?? "a nightRef"}`);
+    }
+    return { ...token, dark: t.night };
+  });
+}
+
 function tokensFile() {
   const tk = data.tokens;
   const selectors = themeSelectors(tk.themes);
   const lines = [header(["tokens.json", "marks.json", "typography.json"])];
   lines.push(`export interface TcrnGplusThemedToken {\n  readonly key: string;\n  readonly cssVar: string;\n  readonly group: string;\n  readonly light: string;\n  readonly dark: string;\n}`);
   lines.push(`export interface TcrnGplusFixedToken {\n  readonly key: string;\n  readonly cssVar: string;\n  readonly group: string;\n  readonly value: string;\n}`);
-  lines.push(`/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed, brand and type scale tokens are theme independent */\nexport const tcrnGplusThemeSelectors = { light: ${q(selectors.light)}, dark: ${q(selectors.dark)} } as const;`);
+  lines.push(`/** a brand suffix token; dark is its night value when the contract rules one (then it is theme-scoped, otherwise theme independent) */\nexport interface TcrnGplusBrandToken extends TcrnGplusFixedToken {\n  readonly dark?: string;\n}`);
+  lines.push(`/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed and type scale tokens are theme independent, and so is a brand token without a dark value */\nexport const tcrnGplusThemeSelectors = { light: ${q(selectors.light)}, dark: ${q(selectors.dark)} } as const;`);
   const themed = tk.themed.map((t) => ({ key: t.key, cssVar: t.cssVar, group: t.group, light: t.light, dark: t.night }));
   const fixed = tk.fixed.map((t) => ({ key: t.key, cssVar: t.cssVar, group: t.group, value: pkgCss(t.value) }));
-  const brand = tk.brand.map((t) => ({ key: t.key, cssVar: t.cssVar, group: t.group, value: t.value }));
+  const brand = brandTokens(tk.brand);
   lines.push(`export const tcrnGplusThemedTokens: readonly TcrnGplusThemedToken[] = ${JSON.stringify(themed, null, 2)};`);
   lines.push(`export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = ${JSON.stringify(fixed, null, 2)};`);
-  lines.push(`export const tcrnGplusBrandTokens: readonly TcrnGplusFixedToken[] = ${JSON.stringify(brand, null, 2)};`);
+  lines.push(`export const tcrnGplusBrandTokens: readonly TcrnGplusBrandToken[] = ${JSON.stringify(brand, null, 2)};`);
   lines.push(`/** the type scale steps (contract/typography.json tokens; a ref takes the value of the fixed token it names) */\nexport const tcrnGplusTypeTokens: readonly TcrnGplusFixedToken[] = ${JSON.stringify([...TYPE_TOKENS.values()], null, 2)};`);
   return lines.join("\n\n") + "\n";
 }

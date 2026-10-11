@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: tokens.json, marks.json, typography.json
-// contract-sha256: 8ef93e352078882c3e5326b72f1639fd05f8175e219719dac8dec4d483ffdf3f
+// contract-sha256: b34b446212fa93398b1d6750d88da6bfbc026119d0c657493b4a71ac8c7ff1d0
 
 
 export interface TcrnGplusThemedToken {
@@ -18,7 +18,12 @@ export interface TcrnGplusFixedToken {
   readonly value: string;
 }
 
-/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed, brand and type scale tokens are theme independent */
+/** a brand suffix token; dark is its night value when the contract rules one (then it is theme-scoped, otherwise theme independent) */
+export interface TcrnGplusBrandToken extends TcrnGplusFixedToken {
+  readonly dark?: string;
+}
+
+/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed and type scale tokens are theme independent, and so is a brand token without a dark value */
 export const tcrnGplusThemeSelectors = { light: ":root, [data-tcrn-theme=\"light\"]", dark: "[data-tcrn-theme=\"dark\"]" } as const;
 
 export const tcrnGplusThemedTokens: readonly TcrnGplusThemedToken[] = [
@@ -359,6 +364,12 @@ export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = [
     "value": "3px"
   },
   {
+    "key": "r-paper",
+    "cssVar": "--tcrn-radius-paper",
+    "group": "radius",
+    "value": "14px"
+  },
+  {
     "key": "h-sm",
     "cssVar": "--tcrn-control-height-sm",
     "group": "control-height",
@@ -459,15 +470,34 @@ export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = [
     "cssVar": "--tcrn-motion-duration-loop",
     "group": "motion",
     "value": "900ms"
+  },
+  {
+    "key": "rail-w",
+    "cssVar": "--tcrn-shell-sidebar-width",
+    "group": "shell",
+    "value": "220px"
+  },
+  {
+    "key": "rail-w-collapsed",
+    "cssVar": "--tcrn-shell-sidebar-width-collapsed",
+    "group": "shell",
+    "value": "52px"
+  },
+  {
+    "key": "topbar-h",
+    "cssVar": "--tcrn-shell-topbar-height",
+    "group": "shell",
+    "value": "52px"
   }
 ];
 
-export const tcrnGplusBrandTokens: readonly TcrnGplusFixedToken[] = [
+export const tcrnGplusBrandTokens: readonly TcrnGplusBrandToken[] = [
   {
     "key": "brand-suffix-tms",
     "cssVar": "--tcrn-brand-suffix-tms",
     "group": "brand",
-    "value": "#2c63c8"
+    "value": "#2c63c8",
+    "dark": "#7aa0f5"
   },
   {
     "key": "brand-suffix-einzbern",
