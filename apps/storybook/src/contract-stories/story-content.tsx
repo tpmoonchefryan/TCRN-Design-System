@@ -1150,8 +1150,10 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Loading and progress examples">
           <div className="tcrn-doc-loading-motion-grid">
-            <Card role="status">
-              <div className="tcrn-doc-loading-card__row">
+            <Card>
+              {/* The live region is the copy row, not the card: Card renders an <article>, which
+                  does not admit role="status". */}
+              <div className="tcrn-doc-loading-card__row" role="status">
                 <Icon name="loader-circle" />
                 <div className="tcrn-doc-loading-copy">
                   <h3>Loading state</h3>
