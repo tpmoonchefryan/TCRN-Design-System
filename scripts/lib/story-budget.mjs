@@ -63,13 +63,15 @@ export const STORY_HEIGHT_BUDGET_VIEWPORT = "desktop-1440x900";
 export const STORY_HEIGHT_GRACE_ALLOWLIST = {
   "owner-quality-product-shell": {
     // 14943 -> 16387 (INC-399 R44): record rows stack at their own compact boundary and row badges wrap in every shell instance.
-    recordedHeightPx: 16387,
+    // 16387 -> 17029 (TCRN-DS-INIT-015 R2, SUB-075): the full ProductShell instances take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0); not decomposed per instance.
+    recordedHeightPx: 17029,
     owedTo: "beyond-INIT-008",
     note: "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
   },
   "frontend-shell-slice": {
     // 8806 -> 9659 (INC-399 R44): KeyValueList fields render the package label-above-value geometry once the docs-only label grid was removed.
-    recordedHeightPx: 9659,
+    // 9659 -> 10070 (TCRN-DS-INIT-015 R2, SUB-075): the shell slice takes the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0); not decomposed per instance.
+    recordedHeightPx: 10070,
     owedTo: "beyond-INIT-008",
     note: "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
   },
@@ -87,13 +89,15 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // consumer value serializer are now explicit utility readbacks in this story.
     // INC-399: the registered static MultiSelect bridge adds its public utility row.
     // 3189 -> 3233 (INC-399 R46 I20): the static clipboard bridge adds its public utility row.
-    recordedHeightPx: 3233,
+    // 3233 -> 3356 (TCRN-DS-INIT-015 R2, SUB-075): ButtonGroup joins the public component roster (SUB-017, 125 -> 126 names) and the roster tables take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0).
+    recordedHeightPx: 3356,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
   "display-primitives-spec": {
     // 3004 -> 3062 (INC-399 R46): SettingRow and FieldProvenance leave the 180px gallery cells for a full-width SettingRowList.
-    recordedHeightPx: 3062,
+    // 3062 -> 3117 (TCRN-DS-INIT-015 R2, SUB-075): the constructs and the OperationFeedback readback take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0).
+    recordedHeightPx: 3117,
     owedTo: "INIT-029/S254",
     note: "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
   },
@@ -105,18 +109,21 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 11764 -> 12275 (INC-399 R44): the record-family containment check joins the Components chapter checks and KeyValueList fields use the package geometry.
     // 12275 -> 12417 (INC-399 R46): long consumer-verification references wrap inside their panel, so its tables keep the panel width and scroll instead of being cut off.
     // 12417 -> 12973 (INC-399 R46 I20): the clipboard copy contract's value boundary and static migration are read back beside the overlay migration.
-    recordedHeightPx: 12973,
+    // 12973 -> 13817 (TCRN-DS-INIT-015 R2, SUB-075): the covered-section and required-chapter readbacks list the ten G+ family matrix and sample stories (65 stories in 23 categories, was 55 in 21), and the tables take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0).
+    recordedHeightPx: 13817,
     owedTo: "beyond-INIT-008",
     note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },
   "color-palette": {
-    recordedHeightPx: 4659,
+    // 4659 -> 5979 (TCRN-DS-INIT-015 R2, SUB-075): the color token index renders every registry color token; SUB-001 and SUB-009 added the 34 G+ color tokens, so it now shows 73 swatches instead of 39.
+    recordedHeightPx: 5979,
     owedTo: "beyond-INIT-008",
     note: "39-token color specimen gallery; a catalogue split is future work — gated debt"
   },
   "foundation-visual-standards": {
     // 3954 -> 4020 (INC-399 R44): the registry and doc-shell oracle KeyValueLists use the package label-above-value geometry.
-    recordedHeightPx: 4020,
+    // 4020 -> 4320 (TCRN-DS-INIT-015 R2, SUB-075): the retired exact-PNG disposition names the current storybook-visual-proof gate (SUB-086), the doc-shell oracle search metrics follow G+ (SUB-064), and the registry tables take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0).
+    recordedHeightPx: 4320,
     owedTo: "beyond-INIT-008",
     note: "foundation visual-standards catalogue; gated debt"
   },
@@ -126,7 +133,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     note: "type-scale specimen catalogue; gated debt"
   },
   "icons-motion": {
-    recordedHeightPx: 2076,
+    // 2076 -> 2222 (TCRN-DS-INIT-015 R2, SUB-075): the icon sample grid renders the 37-icon contract roster, up from 28 (SUB-014).
+    recordedHeightPx: 2222,
     owedTo: "beyond-INIT-008",
     note: "icon + motion specimen catalogue (incl. the S067 motion-slowdown note); gated debt"
   }

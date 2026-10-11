@@ -1,8 +1,8 @@
 {
   "schemaVersion": "tcrn.ds.storybook-visual-proof.gplus-map.v1",
   "measureSchemaVersion": "tcrn.ds.gplus-measure.v1",
-  "generatedAtUtc": "2026-10-11T00:55:39.636Z",
-  "head": "ab00f44a7bd279a2c2cb1fe8a273bd4c5ee354f9",
+  "generatedAtUtc": "2026-10-11T06:51:09.416Z",
+  "head": "a467b11f57a3a1f6a4eee2770a4dce6cc9a23752",
   "ok": false,
   "reason": null,
   "scope": {
@@ -79,7 +79,7 @@
     "rows": 22,
     "rowsInScope": 22,
     "unmapped": 25,
-    "differences": 8,
+    "differences": 9,
     "differencesPendingOwner": [
       "DIFF-1",
       "DIFF-2",
@@ -152,7 +152,7 @@
     "unknownSections": []
   },
   "stories": {
-    "ok": false,
+    "ok": true,
     "kinds": [
       "matrix",
       "sample"
@@ -203,42 +203,36 @@
       {
         "id": "typography-sample-billing",
         "kind": "sample",
-        "categoryId": null,
-        "inRegistry": false
+        "categoryId": "gplus-samples",
+        "inRegistry": true
       },
       {
         "id": "icon-sample-project",
         "kind": "sample",
-        "categoryId": null,
-        "inRegistry": false
+        "categoryId": "gplus-samples",
+        "inRegistry": true
       },
       {
         "id": "brand-sample-product",
         "kind": "sample",
-        "categoryId": null,
-        "inRegistry": false
+        "categoryId": "gplus-samples",
+        "inRegistry": true
       },
       {
         "id": "actions-sample-project",
         "kind": "sample",
-        "categoryId": null,
-        "inRegistry": false
+        "categoryId": "gplus-samples",
+        "inRegistry": true
       },
       {
         "id": "inputs-sample-members",
         "kind": "sample",
-        "categoryId": null,
-        "inRegistry": false
+        "categoryId": "gplus-samples",
+        "inRegistry": true
       }
     ],
     "notInList": [],
-    "notInRegistry": [
-      "typography-sample-billing",
-      "icon-sample-project",
-      "brand-sample-product",
-      "actions-sample-project",
-      "inputs-sample-members"
-    ],
+    "notInRegistry": [],
     "notInMap": []
   },
   "rows": [
@@ -260,14 +254,11 @@
         "DIFF-4",
         "DIFF-7"
       ],
-      "ok": false,
-      "reasons": [
-        "light:contrast",
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -283,7 +274,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 8,
+              "checked": 14,
               "value": 3,
               "violationCount": 0
             },
@@ -306,36 +297,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 44,
-              "value": 7.6,
-              "violationCount": 2,
-              "violations": [
-                {
-                  "cell": "sel-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.58,
-                  "expect": 16.18,
-                  "diff": -7.6,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sel-n",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 12.15,
-                  "diff": -4.92,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -350,13 +315,11 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -372,7 +335,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 8,
+              "checked": 14,
               "value": 3,
               "violationCount": 0
             },
@@ -395,108 +358,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 44,
-              "value": 8.95,
-              "violationCount": 22,
-              "violations": [
-                {
-                  "cell": "h1-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "h2-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "h3-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "h4-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "body-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 8.58,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "strong-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "read-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 8.58,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "meta-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -511,9 +376,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -532,14 +395,11 @@
       "differences": [
         "DIFF-4"
       ],
-      "ok": false,
-      "reasons": [
-        "light:contrast",
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -555,7 +415,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 8,
+              "checked": 14,
               "value": 3,
               "violationCount": 0
             },
@@ -578,36 +438,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 44,
-              "value": 7.6,
-              "violationCount": 2,
-              "violations": [
-                {
-                  "cell": "sel-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.58,
-                  "expect": 16.18,
-                  "diff": -7.6,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sel-n",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 12.15,
-                  "diff": -4.92,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -622,9 +456,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": [],
           "cells": {
             "expected": 44,
@@ -641,7 +473,7 @@
           }
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -657,7 +489,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 8,
+              "checked": 14,
               "value": 3,
               "violationCount": 0
             },
@@ -680,108 +512,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 44,
-              "value": 8.95,
-              "violationCount": 22,
-              "violations": [
-                {
-                  "cell": "h1-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "h2-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "h3-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "h4-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "body-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 8.58,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "strong-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "read-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 8.58,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "meta-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -796,9 +530,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": [],
           "cells": {
             "expected": 44,
@@ -825,33 +557,202 @@
       "storybookId": "typography--sample-billing",
       "kind": "sample",
       "requiredChecks": [
-        "rail"
+        "rail",
+        "rowAlign"
       ],
       "differences": [
         "DIFF-1"
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 192,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 50,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 12,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ty-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ty-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 59,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 192,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 50,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 12,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ty-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ty-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 59,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#typography-sample-billing"
     },
     {
       "row": "icon.A",
@@ -870,14 +771,11 @@
         "DIFF-4",
         "DIFF-7"
       ],
-      "ok": false,
-      "reasons": [
-        "light:contrast",
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -893,7 +791,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 14,
+              "checked": 16,
               "value": 3,
               "violationCount": 0
             },
@@ -916,60 +814,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 28,
-              "value": 13.19,
-              "violationCount": 4,
-              "violations": [
-                {
-                  "cell": "ink-wash-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 16.18,
-                  "diff": 2.11,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "dis-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": true,
-                  "ratio": 18.29,
-                  "expect": 5.1,
-                  "diff": 13.19,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink-wash-n",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 12.15,
-                  "diff": 2.23,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "dis-n",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": true,
-                  "ratio": 14.38,
-                  "expect": 4.09,
-                  "diff": 10.29,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -984,13 +832,11 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -1006,7 +852,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 14,
+              "checked": 16,
               "value": 3,
               "violationCount": 0
             },
@@ -1029,108 +875,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 28,
-              "value": 10.29,
-              "violationCount": 15,
-              "violations": [
-                {
-                  "cell": "roster-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 8.58,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink2-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 8.58,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink3-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "acc-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 8.44,
-                  "expect": 6.35,
-                  "diff": 2.09,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "onacc-acc-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 6.35,
-                  "diff": 1.73,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink-wash-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 16.18,
-                  "diff": -1.8,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "red-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 6.78,
-                  "expect": 8.23,
-                  "diff": -1.45,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -1145,9 +893,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -1166,14 +912,11 @@
       "differences": [
         "DIFF-4"
       ],
-      "ok": false,
-      "reasons": [
-        "light:contrast",
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -1189,7 +932,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 14,
+              "checked": 16,
               "value": 3,
               "violationCount": 0
             },
@@ -1212,60 +955,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 28,
-              "value": 13.19,
-              "violationCount": 4,
-              "violations": [
-                {
-                  "cell": "ink-wash-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 16.18,
-                  "diff": 2.11,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "dis-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": true,
-                  "ratio": 18.29,
-                  "expect": 5.1,
-                  "diff": 13.19,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink-wash-n",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 12.15,
-                  "diff": 2.23,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "dis-n",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": true,
-                  "ratio": 14.38,
-                  "expect": 4.09,
-                  "diff": 10.29,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -1280,9 +973,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": [],
           "cells": {
             "expected": 28,
@@ -1299,7 +990,7 @@
           }
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -1315,7 +1006,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 14,
+              "checked": 16,
               "value": 3,
               "violationCount": 0
             },
@@ -1338,108 +1029,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 28,
-              "value": 10.29,
-              "violationCount": 15,
-              "violations": [
-                {
-                  "cell": "roster-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 8.58,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink2-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 7.23,
-                  "expect": 8.58,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink3-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "acc-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 8.44,
-                  "expect": 6.35,
-                  "diff": 2.09,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "onacc-acc-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 6.35,
-                  "diff": 1.73,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ink-wash-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 16.18,
-                  "diff": -1.8,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "red-panel-l",
-                  "probe": "color",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 6.78,
-                  "expect": 8.23,
-                  "diff": -1.45,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -1454,9 +1047,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": [],
           "cells": {
             "expected": 28,
@@ -1483,33 +1074,202 @@
       "storybookId": "icon--sample-project",
       "kind": "sample",
       "requiredChecks": [
-        "rail"
+        "rail",
+        "rowAlign"
       ],
       "differences": [
         "DIFF-1"
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 226,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 26,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 38,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ic-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ic-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 77,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 226,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 26,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 38,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ic-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ic-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 77,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#icon-sample-project"
     },
     {
       "row": "brand.A",
@@ -1528,10 +1288,8 @@
         "DIFF-4",
         "DIFF-7"
       ],
-      "ok": false,
-      "reasons": [
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
           "ok": true,
@@ -1595,7 +1353,7 @@
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -1634,60 +1392,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 10,
-              "value": 3.91,
-              "violationCount": 4,
-              "violations": [
-                {
-                  "cell": "tagline-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "wm-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "suffix-ink-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "rail-wm-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 15.31,
-                  "expect": 15.75,
-                  "diff": -0.44,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -1702,9 +1410,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -1723,10 +1429,8 @@
       "differences": [
         "DIFF-4"
       ],
-      "ok": false,
-      "reasons": [
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
           "ok": true,
@@ -1803,7 +1507,7 @@
           }
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -1842,60 +1546,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 10,
-              "value": 3.91,
-              "violationCount": 4,
-              "violations": [
-                {
-                  "cell": "tagline-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "wm-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "suffix-ink-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "rail-wm-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 15.31,
-                  "expect": 15.75,
-                  "diff": -0.44,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -1910,9 +1564,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": [],
           "cells": {
             "expected": 10,
@@ -1939,33 +1591,203 @@
       "storybookId": "brand--sample-product",
       "kind": "sample",
       "requiredChecks": [
-        "rail"
+        "rail",
+        "rowAlign"
       ],
       "differences": [
-        "DIFF-1"
+        "DIFF-1",
+        "DIFF-9"
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 204,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 42,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 8,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "br-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "br-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 77,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 204,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 42,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 8,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "br-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "br-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 77,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#brand-sample-product"
     },
     {
       "row": "actions.A",
@@ -1978,6 +1800,8 @@
         "clip",
         "singleLine",
         "shadowBlur",
+        "rowAlign",
+        "controlHeight",
         "overlap"
       ],
       "differences": [
@@ -1985,14 +1809,11 @@
         "DIFF-5",
         "DIFF-7"
       ],
-      "ok": false,
-      "reasons": [
-        "light:contrast",
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -2031,112 +1852,14 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 116,
-              "value": 13.19,
-              "violationCount": 58,
-              "violations": [
-                {
-                  "cell": "pri-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 6.35,
-                  "expect": 7.51,
-                  "diff": -1.16,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-a-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 6.35,
-                  "expect": 9.43,
-                  "diff": -3.08,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-x-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 6.35,
-                  "expect": 5.1,
-                  "diff": 1.25,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 17.06,
-                  "diff": 1.23,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-a-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 14.52,
-                  "diff": 3.77,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-x-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 18.29,
-                  "expect": 5.1,
-                  "diff": 13.19,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-s-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 16.18,
-                  "diff": 2.11,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "quiet-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.58,
-                  "expect": 17.04,
-                  "diff": -8.46,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
+              "status": "pass",
+              "checked": 130,
               "value": 0,
               "violationCount": 0
             },
@@ -2147,13 +1870,11 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -2192,112 +1913,14 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 116,
-              "value": 10.29,
-              "violationCount": 87,
-              "violations": [
-                {
-                  "cell": "pri-d-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 6.35,
-                  "diff": 1.73,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 7.51,
-                  "diff": 0.57,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-a-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 9.43,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-f-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 6.35,
-                  "diff": 1.73,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-x-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 8.08,
-                  "expect": 5.1,
-                  "diff": 2.98,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-l-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 6.35,
-                  "diff": 1.73,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-d-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 17.06,
-                  "diff": -2.68,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
+              "status": "pass",
+              "checked": 130,
               "value": 0,
               "violationCount": 0
             },
@@ -2308,9 +1931,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -2330,14 +1951,11 @@
         "DIFF-4",
         "DIFF-5"
       ],
-      "ok": false,
-      "reasons": [
-        "light:contrast",
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -2376,112 +1994,14 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 116,
-              "value": 13.19,
-              "violationCount": 58,
-              "violations": [
-                {
-                  "cell": "pri-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 6.35,
-                  "expect": 7.51,
-                  "diff": -1.16,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-a-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 6.35,
-                  "expect": 9.43,
-                  "diff": -3.08,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-x-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 6.35,
-                  "expect": 5.1,
-                  "diff": 1.25,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 17.06,
-                  "diff": 1.23,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-a-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 14.52,
-                  "diff": 3.77,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-x-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 18.29,
-                  "expect": 5.1,
-                  "diff": 13.19,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-s-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 16.18,
-                  "diff": 2.11,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "quiet-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.58,
-                  "expect": 17.04,
-                  "diff": -8.46,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
+              "status": "pass",
+              "checked": 130,
               "value": 0,
               "violationCount": 0
             },
@@ -2492,9 +2012,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": [],
           "cells": {
             "expected": 116,
@@ -2511,7 +2029,7 @@
           }
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -2550,112 +2068,14 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 116,
-              "value": 10.29,
-              "violationCount": 87,
-              "violations": [
-                {
-                  "cell": "pri-d-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 6.35,
-                  "diff": 1.73,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 7.51,
-                  "diff": 0.57,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-a-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 9.43,
-                  "diff": -1.35,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-f-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 6.35,
-                  "diff": 1.73,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-x-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 8.08,
-                  "expect": 5.1,
-                  "diff": 2.98,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "pri-l-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 8.08,
-                  "expect": 6.35,
-                  "diff": 1.73,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-d-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "sec-h-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 17.06,
-                  "diff": -2.68,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
+              "status": "pass",
+              "checked": 130,
               "value": 0,
               "violationCount": 0
             },
@@ -2666,9 +2086,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": [],
           "cells": {
             "expected": 116,
@@ -2695,33 +2113,202 @@
       "storybookId": "actions--sample-project",
       "kind": "sample",
       "requiredChecks": [
-        "rail"
+        "rail",
+        "rowAlign"
       ],
       "differences": [
         "DIFF-1"
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 196,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 40,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 44,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ac-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ac-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 87,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 196,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 40,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 44,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ac-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ac-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 87,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#actions-sample-project"
     },
     {
       "row": "inputs.A",
@@ -2734,6 +2321,7 @@
         "clip",
         "singleLine",
         "shadowBlur",
+        "controlHeight",
         "overlap"
       ],
       "differences": [
@@ -2741,18 +2329,15 @@
         "DIFF-5",
         "DIFF-7"
       ],
-      "ok": false,
-      "reasons": [
-        "light:contrast",
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
-              "checked": 2,
+              "checked": 26,
               "value": 0,
               "violationCount": 0
             },
@@ -2764,7 +2349,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 52,
+              "checked": 54,
               "value": 3,
               "violationCount": 0
             },
@@ -2787,135 +2372,33 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
-              "checked": 40,
-              "value": 13.19,
-              "violationCount": 16,
-              "violations": [
-                {
-                  "cell": "in-ro-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 17.06,
-                  "diff": 1.23,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-dis-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 18.29,
-                  "expect": 5.1,
-                  "diff": 13.19,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "err-msg-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 6.2,
-                  "expect": 6.69,
-                  "diff": -0.49,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "search-focus-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 16.18,
-                  "expect": 18.29,
-                  "diff": -2.11,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ck-on-l",
-                  "probe": "after-border",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 1,
-                  "expect": 6.35,
-                  "diff": -5.35,
-                  "reasons": [
-                    "diff",
-                    "below_minimum"
-                  ]
-                },
-                {
-                  "cell": "ck-dis-l",
-                  "probe": "after-border",
-                  "kind": "icon",
-                  "exempt": true,
-                  "ratio": 1,
-                  "expect": 5.1,
-                  "diff": -4.1,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "rd-on-l",
-                  "probe": "after-shadow",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 1,
-                  "expect": 6.35,
-                  "diff": -5.35,
-                  "reasons": [
-                    "diff",
-                    "below_minimum"
-                  ]
-                },
-                {
-                  "cell": "sw-on-l",
-                  "probe": "before-bg",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": null,
-                  "expect": 6.35,
-                  "diff": null,
-                  "reasons": [
-                    "unknown_probe"
-                  ]
-                }
-              ]
+              "status": "pass",
+              "checked": 42,
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
+              "status": "pass",
+              "checked": 26,
               "value": 0,
               "violationCount": 0
             },
             "overlap": {
               "status": "pass",
-              "checked": 59,
+              "checked": 69,
               "value": 0,
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
-              "checked": 2,
+              "checked": 26,
               "value": 0,
               "violationCount": 0
             },
@@ -2927,7 +2410,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 52,
+              "checked": 54,
               "value": 3,
               "violationCount": 0
             },
@@ -2950,125 +2433,25 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
-              "checked": 40,
-              "value": 10.29,
-              "violationCount": 28,
-              "violations": [
-                {
-                  "cell": "in-ph-l",
-                  "probe": "ph",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-text-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-focus-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-ro-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 17.06,
-                  "diff": -2.68,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-dis-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 14.38,
-                  "expect": 5.1,
-                  "diff": 9.28,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-err-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "err-msg-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 6.27,
-                  "expect": 6.69,
-                  "diff": -0.42,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "search-focus-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 12.15,
-                  "expect": 18.29,
-                  "diff": -6.14,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "status": "pass",
+              "checked": 42,
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
+              "status": "pass",
+              "checked": 26,
               "value": 0,
               "violationCount": 0
             },
             "overlap": {
               "status": "pass",
-              "checked": 59,
+              "checked": 69,
               "value": 0,
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -3089,20 +2472,15 @@
         "DIFF-5",
         "DIFF-6"
       ],
-      "ok": false,
-      "reasons": [
-        "light:contrast",
-        "light:cells",
-        "dark:contrast",
-        "dark:cells"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
-              "checked": 2,
+              "checked": 26,
               "value": 0,
               "violationCount": 0
             },
@@ -3114,7 +2492,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 52,
+              "checked": 54,
               "value": 3,
               "violationCount": 0
             },
@@ -3137,151 +2515,46 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
-              "checked": 40,
-              "value": 13.19,
-              "violationCount": 16,
-              "violations": [
-                {
-                  "cell": "in-ro-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 18.29,
-                  "expect": 17.06,
-                  "diff": 1.23,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-dis-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 18.29,
-                  "expect": 5.1,
-                  "diff": 13.19,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "err-msg-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 6.2,
-                  "expect": 6.69,
-                  "diff": -0.49,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "search-focus-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 16.18,
-                  "expect": 18.29,
-                  "diff": -2.11,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "ck-on-l",
-                  "probe": "after-border",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 1,
-                  "expect": 6.35,
-                  "diff": -5.35,
-                  "reasons": [
-                    "diff",
-                    "below_minimum"
-                  ]
-                },
-                {
-                  "cell": "ck-dis-l",
-                  "probe": "after-border",
-                  "kind": "icon",
-                  "exempt": true,
-                  "ratio": 1,
-                  "expect": 5.1,
-                  "diff": -4.1,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "rd-on-l",
-                  "probe": "after-shadow",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": 1,
-                  "expect": 6.35,
-                  "diff": -5.35,
-                  "reasons": [
-                    "diff",
-                    "below_minimum"
-                  ]
-                },
-                {
-                  "cell": "sw-on-l",
-                  "probe": "before-bg",
-                  "kind": "icon",
-                  "exempt": false,
-                  "ratio": null,
-                  "expect": 6.35,
-                  "diff": null,
-                  "reasons": [
-                    "unknown_probe"
-                  ]
-                }
-              ]
+              "status": "pass",
+              "checked": 42,
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
+              "status": "pass",
+              "checked": 26,
               "value": 0,
               "violationCount": 0
             },
             "overlap": {
               "status": "pass",
-              "checked": 59,
+              "checked": 69,
               "value": 0,
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": [],
           "cells": {
             "expected": 42,
             "contract": "inputs",
-            "rendered": 40,
-            "unique": 40,
+            "rendered": 42,
+            "unique": 42,
             "declared": 42,
-            "missing": [
-              "opt-sel-l",
-              "opt-sel-n"
-            ],
+            "missing": [],
             "extra": [],
             "duplicated": [],
             "expectMismatches": [],
             "notOnBoard": [],
-            "ok": false
+            "ok": true
           }
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
-              "checked": 2,
+              "checked": 26,
               "value": 0,
               "violationCount": 0
             },
@@ -3293,7 +2566,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 52,
+              "checked": 54,
               "value": 3,
               "violationCount": 0
             },
@@ -3316,141 +2589,38 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
-              "checked": 40,
-              "value": 10.29,
-              "violationCount": 28,
-              "violations": [
-                {
-                  "cell": "in-ph-l",
-                  "probe": "ph",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-text-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-focus-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-ro-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 17.06,
-                  "diff": -2.68,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-dis-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": true,
-                  "ratio": 14.38,
-                  "expect": 5.1,
-                  "diff": 9.28,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "in-err-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "err-msg-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 6.27,
-                  "expect": 6.69,
-                  "diff": -0.42,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "search-focus-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 12.15,
-                  "expect": 18.29,
-                  "diff": -6.14,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "status": "pass",
+              "checked": 42,
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
+              "status": "pass",
+              "checked": 26,
               "value": 0,
               "violationCount": 0
             },
             "overlap": {
               "status": "pass",
-              "checked": 59,
+              "checked": 69,
               "value": 0,
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": [],
           "cells": {
             "expected": 42,
             "contract": "inputs",
-            "rendered": 40,
-            "unique": 40,
+            "rendered": 42,
+            "unique": 42,
             "declared": 42,
-            "missing": [
-              "opt-sel-l",
-              "opt-sel-n"
-            ],
+            "missing": [],
             "extra": [],
             "duplicated": [],
             "expectMismatches": [],
             "notOnBoard": [],
-            "ok": false
+            "ok": true
           }
         }
       },
@@ -3471,26 +2641,194 @@
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 88,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 16,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 36,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "in-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "in-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 69,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 88,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 16,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 36,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "in-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "in-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 69,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#inputs-sample-members"
     },
     {
       "row": "compositions.1.typography",
@@ -3500,7 +2838,8 @@
       "storybookId": "typography--sample-billing",
       "kind": "sample",
       "requiredChecks": [
-        "rail"
+        "rail",
+        "rowAlign"
       ],
       "differences": [
         "DIFF-1",
@@ -3508,26 +2847,194 @@
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 192,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 50,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 12,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ty-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ty-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 59,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 192,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 50,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 12,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ty-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ty-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 59,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#typography-sample-billing"
     },
     {
       "row": "compositions.1.icon",
@@ -3537,7 +3044,8 @@
       "storybookId": "icon--sample-project",
       "kind": "sample",
       "requiredChecks": [
-        "rail"
+        "rail",
+        "rowAlign"
       ],
       "differences": [
         "DIFF-1",
@@ -3545,26 +3053,194 @@
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 226,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 26,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 38,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ic-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ic-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 77,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 226,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 26,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 38,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ic-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ic-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 77,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#icon-sample-project"
     },
     {
       "row": "compositions.1.brand",
@@ -3574,7 +3250,8 @@
       "storybookId": "brand--sample-product",
       "kind": "sample",
       "requiredChecks": [
-        "rail"
+        "rail",
+        "rowAlign"
       ],
       "differences": [
         "DIFF-1",
@@ -3582,26 +3259,194 @@
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 204,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 42,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 8,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "br-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "br-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 77,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 204,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 42,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 8,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "br-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "br-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 77,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#brand-sample-product"
     },
     {
       "row": "compositions.1.actions",
@@ -3611,7 +3456,8 @@
       "storybookId": "actions--sample-project",
       "kind": "sample",
       "requiredChecks": [
-        "rail"
+        "rail",
+        "rowAlign"
       ],
       "differences": [
         "DIFF-1",
@@ -3619,26 +3465,194 @@
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 196,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 40,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 44,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ac-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ac-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 87,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 196,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 40,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 44,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "ac-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "ac-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 87,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#actions-sample-project"
     },
     {
       "row": "compositions.1.inputs",
@@ -3656,26 +3670,194 @@
       ],
       "ok": false,
       "reasons": [
-        "light:story_not_measured",
-        "dark:story_not_measured"
+        "light:rail",
+        "dark:rail"
       ],
       "themes": {
         "light": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 88,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 16,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 36,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "in-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "in-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 69,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         },
         "dark": {
           "ok": false,
-          "checks": {},
-          "failed": [],
-          "requiredNotApplicable": [],
-          "error": "story_not_measured"
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 88,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 16,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 36,
+              "value": 1,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "fail",
+              "checked": 2,
+              "value": 33,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "shell": "in-l",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                },
+                {
+                  "shell": "in-n",
+                  "guideLefts": [
+                    16,
+                    49
+                  ],
+                  "textLefts": [
+                    48,
+                    77
+                  ],
+                  "maxDeviationPx": 33,
+                  "missingHooks": false
+                }
+              ]
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "n/a",
+              "checked": 0,
+              "value": null,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 69,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "rail"
+          ],
+          "requiredNotApplicable": []
         }
       },
-      "route": null
+      "route": "/components-gplus-samples.html#inputs-sample-members"
     },
     {
       "row": "logos.A-E",
@@ -3693,10 +3875,8 @@
       "differences": [
         "DIFF-8"
       ],
-      "ok": false,
-      "reasons": [
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
           "ok": true,
@@ -3760,7 +3940,7 @@
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -3799,60 +3979,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 10,
-              "value": 3.91,
-              "violationCount": 4,
-              "violations": [
-                {
-                  "cell": "tagline-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "wm-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "suffix-ink-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "rail-wm-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 15.31,
-                  "expect": 15.75,
-                  "diff": -0.44,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -3867,9 +3997,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -3886,10 +4014,8 @@
         "contrast"
       ],
       "differences": [],
-      "ok": false,
-      "reasons": [
-        "dark:contrast"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
           "ok": true,
@@ -3953,7 +4079,7 @@
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -3992,60 +4118,10 @@
               "violationCount": 0
             },
             "contrast": {
-              "status": "fail",
+              "status": "pass",
               "checked": 10,
-              "value": 3.91,
-              "violationCount": 4,
-              "violations": [
-                {
-                  "cell": "tagline-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 4.59,
-                  "expect": 5.64,
-                  "diff": -1.05,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "wm-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "suffix-ink-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 14.38,
-                  "expect": 18.29,
-                  "diff": -3.91,
-                  "reasons": [
-                    "diff"
-                  ]
-                },
-                {
-                  "cell": "rail-wm-l",
-                  "probe": "color",
-                  "kind": "text",
-                  "exempt": false,
-                  "ratio": 15.31,
-                  "expect": 15.75,
-                  "diff": -0.44,
-                  "reasons": [
-                    "diff"
-                  ]
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "controlHeight": {
               "status": "n/a",
@@ -4060,9 +4136,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "contrast"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -4070,13 +4144,6 @@
     }
   ],
   "mutations": [
-    {
-      "id": "rail-sample-guide-off-column",
-      "storyId": "typography-sample-billing",
-      "check": "rail",
-      "killed": false,
-      "reason": "story_missing"
-    },
     {
       "id": "clip-actions-button-out-of-section",
       "storyId": "actions-matrix",
@@ -4097,6 +4164,14 @@
       "id": "shadow-blur-brand-logo-cloud",
       "storyId": "brand-matrix",
       "check": "shadowBlur",
+      "theme": "light",
+      "status": "fail",
+      "killed": true
+    },
+    {
+      "id": "rail-sample-guide-off-column",
+      "storyId": "typography-sample-billing",
+      "check": "rail",
       "theme": "light",
       "status": "fail",
       "killed": true
@@ -4144,180 +4219,86 @@
   ],
   "summary": {
     "rows": 22,
-    "rowsOk": 0,
+    "rowsOk": 12,
     "redRows": [
-      {
-        "row": "typography.A",
-        "storyId": "typography-matrix",
-        "reasons": [
-          "light:contrast",
-          "dark:contrast"
-        ]
-      },
-      {
-        "row": "typography.B",
-        "storyId": "typography-matrix",
-        "reasons": [
-          "light:contrast",
-          "dark:contrast"
-        ]
-      },
       {
         "row": "typography.D",
         "storyId": "typography-sample-billing",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
-        ]
-      },
-      {
-        "row": "icon.A",
-        "storyId": "icon-matrix",
-        "reasons": [
-          "light:contrast",
-          "dark:contrast"
-        ]
-      },
-      {
-        "row": "icon.B",
-        "storyId": "icon-matrix",
-        "reasons": [
-          "light:contrast",
-          "dark:contrast"
+          "light:rail",
+          "dark:rail"
         ]
       },
       {
         "row": "icon.D",
         "storyId": "icon-sample-project",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
-        ]
-      },
-      {
-        "row": "brand.A",
-        "storyId": "brand-matrix",
-        "reasons": [
-          "dark:contrast"
-        ]
-      },
-      {
-        "row": "brand.B",
-        "storyId": "brand-matrix",
-        "reasons": [
-          "dark:contrast"
+          "light:rail",
+          "dark:rail"
         ]
       },
       {
         "row": "brand.D",
         "storyId": "brand-sample-product",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
-        ]
-      },
-      {
-        "row": "actions.A",
-        "storyId": "actions-matrix",
-        "reasons": [
-          "light:contrast",
-          "dark:contrast"
-        ]
-      },
-      {
-        "row": "actions.B",
-        "storyId": "actions-matrix",
-        "reasons": [
-          "light:contrast",
-          "dark:contrast"
+          "light:rail",
+          "dark:rail"
         ]
       },
       {
         "row": "actions.D",
         "storyId": "actions-sample-project",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
-        ]
-      },
-      {
-        "row": "inputs.A",
-        "storyId": "inputs-matrix",
-        "reasons": [
-          "light:contrast",
-          "dark:contrast"
-        ]
-      },
-      {
-        "row": "inputs.B",
-        "storyId": "inputs-matrix",
-        "reasons": [
-          "light:contrast",
-          "light:cells",
-          "dark:contrast",
-          "dark:cells"
+          "light:rail",
+          "dark:rail"
         ]
       },
       {
         "row": "inputs.D",
         "storyId": "inputs-sample-members",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
+          "light:rail",
+          "dark:rail"
         ]
       },
       {
         "row": "compositions.1.typography",
         "storyId": "typography-sample-billing",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
+          "light:rail",
+          "dark:rail"
         ]
       },
       {
         "row": "compositions.1.icon",
         "storyId": "icon-sample-project",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
+          "light:rail",
+          "dark:rail"
         ]
       },
       {
         "row": "compositions.1.brand",
         "storyId": "brand-sample-product",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
+          "light:rail",
+          "dark:rail"
         ]
       },
       {
         "row": "compositions.1.actions",
         "storyId": "actions-sample-project",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
+          "light:rail",
+          "dark:rail"
         ]
       },
       {
         "row": "compositions.1.inputs",
         "storyId": "inputs-sample-members",
         "reasons": [
-          "light:story_not_measured",
-          "dark:story_not_measured"
-        ]
-      },
-      {
-        "row": "logos.A-E",
-        "storyId": "brand-matrix",
-        "reasons": [
-          "dark:contrast"
-        ]
-      },
-      {
-        "row": "logos.I",
-        "storyId": "brand-matrix",
-        "reasons": [
-          "dark:contrast"
+          "light:rail",
+          "dark:rail"
         ]
       }
     ],
@@ -4325,11 +4306,11 @@
       "clip": "pass",
       "singleLine": "pass",
       "shadowBlur": "pass",
-      "rail": "n/a",
+      "rail": "fail",
       "rowAlign": "pass",
       "mark": "pass",
-      "contrast": "fail",
-      "controlHeight": "n/a",
+      "contrast": "pass",
+      "controlHeight": "pass",
       "overlap": "pass"
     }
   }
