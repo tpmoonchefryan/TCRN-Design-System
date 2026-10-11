@@ -1,4 +1,23 @@
-# Storybook Visual Proof — RETIRED / HISTORICAL
+# Storybook Visual Proof
+
+## Current: G+ canvas map gate (`gplus-map-report.*`)
+
+`scripts/storybook-visual-proof.mjs` (`pnpm storybook:visual-proof`) reads the canvas board to story map
+`docs/design/gplus-2026-10/storybook-map.json` (human view: `storybook-map.md`), reconciles it with the G+
+story list (missing or extra stories are red), checks that every canvas board and lettered section has a
+map entry, and measures every map row on the static docs (Track B) with the eight G+ measurements plus the
+overlap check from `scripts/lib/gplus-measure.mjs`, using the thresholds of
+`scripts/geometry-measure-proof.mjs`. Run it from the repository root after `pnpm build`; with
+`--write-report` it writes, in this directory:
+
+- `gplus-map-report.json` — the full report (UTC time, HEAD, scope, reconciliation, one row per map row
+  and theme, mutations);
+- `gplus-map-report.md` — the same per row, for reading.
+
+Screenshots are for eyes only and are never compared pixel by pixel, so the gate takes none. It is not
+part of `pnpm verify` until it is wired in.
+
+## History: exact-PNG baseline (retired)
 
 > **RETIRED (pre-INIT-001 history).** This directory is the legacy `canonicalized_raw_png_exact_v1`
 > exact-PNG visual baseline (source head `ec57b606`, 134 screenshots). It was **superseded on
@@ -8,9 +27,10 @@
 > via `pnpm internal-alpha:proof`). Per the INIT-002 ruling, an unreproducible exact-PNG signature
 > is not signed in as an oracle.
 >
-> These bytes are retained as **history only** and are **not part of `pnpm verify`**. The generator
-> `scripts/storybook-visual-proof.mjs` is now a retirement pointer stub and no longer regenerates
-> this receipt. The files are still read by the privacy / no-overclaim scans, which is why the
+> These bytes are retained as **history only** and are **not part of `pnpm verify`**. The script
+> `scripts/storybook-visual-proof.mjs` no longer regenerates this receipt: since 2026-10-11 it is the
+> G+ canvas map gate described above, which writes only the two `gplus-map-report.*` files.
+> The files are still read by the privacy / no-overclaim scans, which is why the
 > directory is kept rather than deleted. The metrics below reflect the retired baseline and are not
 > a current freshness claim.
 
