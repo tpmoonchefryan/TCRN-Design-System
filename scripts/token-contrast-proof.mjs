@@ -64,14 +64,14 @@ export const CONTRAST_PAIRS = Object.freeze([
 
 const RULING = "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour)";
 const SOURCE = "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype)";
-const NIGHT_PENDING = "the night suffix colour awaits an Owner ruling (INIT-015 R1 problem P15)";
-
-/** Wordmark pairs below 4.5 that the rulings exempt, one entry per theme and surface. */
+/**
+ * Wordmark pairs below 4.5 that the rulings exempt, one entry per theme and surface. The two
+ * night TMS entries are gone: O-3 gives the TMS suffix its mark's bright colour by night, which
+ * passes on bg and panel (TCRN-DS-SUB-088).
+ */
 export const WORDMARK_EXEMPTIONS = Object.freeze([
   Object.freeze({ theme: "light", fg: "--tcrn-brand-suffix-design-system", on: color("panel"), ruling: RULING, source: SOURCE }),
-  Object.freeze({ theme: "light", fg: "--tcrn-brand-suffix-design-system", on: color("bg"), ruling: RULING, source: SOURCE }),
-  Object.freeze({ theme: "dark", fg: "--tcrn-brand-suffix-tms", on: color("panel"), ruling: RULING, source: SOURCE, pending: NIGHT_PENDING }),
-  Object.freeze({ theme: "dark", fg: "--tcrn-brand-suffix-tms", on: color("bg"), ruling: RULING, source: SOURCE, pending: NIGHT_PENDING })
+  Object.freeze({ theme: "light", fg: "--tcrn-brand-suffix-design-system", on: color("bg"), ruling: RULING, source: SOURCE })
 ]);
 
 const short = (variable) => variable.replace(/^--tcrn-color-/, "").replace(/^--tcrn-/, "");

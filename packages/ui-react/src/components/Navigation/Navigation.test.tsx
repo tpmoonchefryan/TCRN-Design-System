@@ -704,8 +704,9 @@ test("brand lockup css follows the G+ brand rules", () => {
   };
 
   // STORY-127 GWT3: TCRN is ink; the TMS and design-system suffixes are the products'
-  // deep colours from the brand-suffix tokens, the same in both themes. Gradient text
-  // is retired, and so is the workflow suffix.
+  // deep colours from the brand-suffix tokens (by night the TMS token takes its mark's
+  // bright colour, O-3; the light values are read below). Gradient text is retired, and
+  // so is the workflow suffix.
   assert.match(rule(".tcrn-brand-wordmark"), /color: var\(--tcrn-color-ink\);/);
   assert.match(rule(".tcrn-brand-wordmark__suffix"), /color: var\(--tcrn-color-ink\);/);
   assert.match(rule(".tcrn-product-logo__line-one"), /color: var\(--tcrn-color-ink\);/);

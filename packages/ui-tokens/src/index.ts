@@ -22,7 +22,8 @@ import {
   tcrnGplusFixedTokens,
   tcrnGplusThemeSelectors,
   tcrnGplusThemedTokens,
-  tcrnGplusTypeTokens
+  tcrnGplusTypeTokens,
+  type TcrnGplusBrandToken
 } from "./gplus-tokens.generated.js";
 
 export {
@@ -210,8 +211,12 @@ const gplusDescriptions: Readonly<Record<string, string>> = {
   "topbar-h": "ProductShell top bar height (the shell's own bar; the standalone TopBar keeps its own height)."
 };
 
-function describe(key: string, group: string): string {
-  if (group === "brand") return "Product wordmark suffix colour (the mark's deep palette step); the same in both themes until a night value is ruled.";
+function describe(key: string, group: string, night = false): string {
+  if (group === "brand") {
+    return night
+      ? "Product wordmark suffix colour: the mark's deep palette step by day and its bright step by night (O-3)."
+      : "Product wordmark suffix colour (the mark's deep palette step); the same in both themes.";
+  }
   return gplusDescriptions[key] ?? `G+ token "${key}" from the design contract.`;
 }
 
@@ -235,7 +240,7 @@ function transition(durationKey: string): string {
 
 interface TokenEntry {
   token: DesignToken;
-  /** Night value for contract-themed tokens; other theme-scoped tokens repeat their light text. */
+  /** Night value for contract-themed tokens and brand tokens with a night value; other theme-scoped tokens repeat their light text. */
   dark?: string;
 }
 
@@ -250,15 +255,24 @@ const gplusThemedEntries: TokenEntry[] = tcrnGplusThemedTokens.map((token) => ({
   dark: token.dark
 }));
 
-const gplusFixedEntries: TokenEntry[] = [...tcrnGplusFixedTokens, ...tcrnGplusBrandTokens].map((token) => ({
-  token: {
-    name: tokenName(token.cssVar),
-    variable: asVariable(token.cssVar),
-    value: token.value,
-    group: contractGroup(token.group),
-    description: describe(token.key, token.group)
-  }
-}));
+// Contract fixed and brand tokens. A brand token with a night value (contract "night", published
+// as dark) is theme-scoped: its light value goes on the light theme block and its night value on
+// the dark block, so both blocks keep the same property names (C5). The rest stay theme
+// independent (TCRN-DS-SUB-088, O-3).
+const gplusContractFixedTokens: readonly TcrnGplusBrandToken[] = [...tcrnGplusFixedTokens, ...tcrnGplusBrandTokens];
+const gplusFixedEntries: TokenEntry[] = gplusContractFixedTokens.map((token): TokenEntry => {
+  const dark = token.dark;
+  return {
+    token: {
+      name: tokenName(token.cssVar),
+      variable: asVariable(token.cssVar),
+      value: token.value,
+      group: contractGroup(token.group),
+      description: describe(token.key, token.group, dark !== undefined)
+    },
+    ...(dark === undefined ? {} : { dark })
+  };
+});
 
 // G+ type scale tokens outside tokens.json. They are named, with their variables and values,
 // in docs/design/gplus-2026-10/contract/typography.json ("tokens"); the values come from the
@@ -456,8 +470,9 @@ function referencedVariables(value: string): string[] {
   return [...value.matchAll(/var\(\s*(--[a-z0-9-]+)/g)].map((match) => match[1]);
 }
 
-// Theme scope is transitive: anything that references a themed token is themed too.
-const themeScoped = new Set<string>(gplusThemedEntries.map((entry) => entry.token.variable));
+// Theme scope is transitive: anything that references a themed token is themed too. A contract
+// brand token with a night value starts out themed.
+const themeScoped = new Set<string>([...gplusThemedEntries, ...gplusFixedEntries.filter((entry) => entry.dark !== undefined)].map((entry) => entry.token.variable));
 for (let changed = true; changed; ) {
   changed = false;
   for (const { token } of allEntries) {
