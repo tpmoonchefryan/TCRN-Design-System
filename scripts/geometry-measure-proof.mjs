@@ -84,8 +84,10 @@ export const GPLUS_FAMILIES = deepFreeze(Object.fromEntries(["typography", "icon
 // so contrast is not theirs: each must exercise the rail of its shell (16 / 48) and the shell's frame
 // (paper 12 from the edge, top bar 52; TCRN-DS-SUB-094), and the four with TableShell rows (every
 // sample but inputs-sample-members) their row alignment. The board rows of
-// docs/design/gplus-2026-10/storybook-map.json list the same checks (the any-page four aside). In a
-// full run every check must also apply somewhere in the set (SET_REQUIRED_CHECKS).
+// docs/design/gplus-2026-10/storybook-map.json list the same checks (the any-page four aside). The
+// composition three sample (O-4, TCRN-DS-SUB-093) is a gplus-samples registry story outside the ten
+// fixed ids: no [data-shell], no TableShell rows, no data-cell, so it must exercise the any-page four.
+// In a full run every check must also apply somewhere in the set (SET_REQUIRED_CHECKS).
 const ANY_PAGE_CHECKS = ["clip", "singleLine", "shadowBlur", "overlap"];
 const MATRIX_CHECKS = [...ANY_PAGE_CHECKS, "contrast"];
 const SAMPLE_CHECKS = [...ANY_PAGE_CHECKS, "rail", "shellFrame"];
@@ -99,7 +101,8 @@ export const REQUIRED_CHECKS = deepFreeze({
   "icon-sample-project": [...SAMPLE_CHECKS, "rowAlign"],
   "brand-sample-product": [...SAMPLE_CHECKS, "rowAlign"],
   "actions-sample-project": [...SAMPLE_CHECKS, "rowAlign"],
-  "inputs-sample-members": [...SAMPLE_CHECKS]
+  "inputs-sample-members": [...SAMPLE_CHECKS],
+  "composition-three-sample": [...ANY_PAGE_CHECKS]
 });
 export const SET_REQUIRED_CHECKS = deepFreeze([...CHECK_IDS]);
 

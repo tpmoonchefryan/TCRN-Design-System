@@ -60,8 +60,9 @@ export const STORY_CATEGORY_PREFIX = "gplus-";
 export const MEASURE_OPTIONS = Object.freeze({ markSelector: "mark, .tcrn-highlight__mark" });
 
 // One injected mutation per check on a real story; each must turn its check red (runs when a row in
-// scope references its story). Matrices have no [data-h] (controlHeight names its control) and no shell
-// (rail runs on a sample story).
+// scope references its story). The controlHeight mutation names its control through controlSelector
+// (the actions and inputs matrices also declare data-h since SUB-074); matrices have no shell, so rail
+// and shellFrame run on sample stories.
 export const ROW_MUTATIONS = Object.freeze([
   { id: "clip-actions-button-out-of-section", storyId: "actions-matrix", check: "clip", css: '[data-gplus-matrix-component="Button"] { overflow: hidden !important; } [data-gplus-matrix-component="Button"] .tcrn-button { transform: translateX(-2000px) !important; }' },
   { id: "single-line-actions-label-first-letter", storyId: "actions-matrix", check: "singleLine", css: ".tcrn-button__label::first-letter { font-size: 48px !important; }" },

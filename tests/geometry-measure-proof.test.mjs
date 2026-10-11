@@ -409,9 +409,12 @@ import {
 } from "../scripts/geometry-measure-proof.mjs";
 
 const staticDocsBuilt = existsSync(fileURLToPath(new URL("../apps/storybook/storybook-static", import.meta.url)));
+const ANY_PAGE_FOUR = ["clip", "singleLine", "shadowBlur", "overlap"];
 
 test("every G+ story has its required checks and the families split the ten ids", () => {
-  assert.deepEqual(Object.keys(REQUIRED_CHECKS).sort(), [...GPLUS_STORY_IDS].sort());
+  // TCRN-DS-SUB-093: composition three (O-4) joins the ten fixed ids through the gplus-samples category.
+  assert.deepEqual(Object.keys(REQUIRED_CHECKS).sort(), [...GPLUS_STORY_IDS, "composition-three-sample"].sort());
+  assert.deepEqual([...REQUIRED_CHECKS["composition-three-sample"]], ANY_PAGE_FOUR);
   for (const checks of Object.values(REQUIRED_CHECKS)) for (const id of checks) assert.ok(CHECK_IDS.includes(id), id);
   assert.deepEqual([...SET_REQUIRED_CHECKS], [...CHECK_IDS]);
   assert.deepEqual(Object.keys(GPLUS_FAMILIES), ["typography", "icon", "brand", "actions", "inputs"]);
@@ -442,7 +445,7 @@ test("samples must measure rail and their table rows but not contrast; actions a
 });
 
 test("the storybook map rows list the gate's required checks (the any-page four aside) and DIFF-6 records before-bg", () => {
-  for (const id of GPLUS_STORY_IDS) {
+  for (const id of Object.keys(REQUIRED_CHECKS)) {
     const rows = storybookMap.rows.filter((row) => row.storyId === id);
     assert.ok(rows.length > 0, `${id}: no map row`);
     const fromMap = new Set([...ANY_PAGE, ...rows.flatMap((row) => row.requiredChecks)]);
