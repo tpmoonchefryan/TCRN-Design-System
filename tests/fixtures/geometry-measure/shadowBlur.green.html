@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>geometry-measure fixture: shadowBlur (green)</title>
+<!-- Clean case for the shadowBlur measurement; no check may fail. -->
+<style>
+  body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
+  [data-measure-root] { width: 640px; padding: 16px; }
+  .part { margin: 0 0 24px; }
+  .card { width: 200px; height: 60px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08); }
+  .chip { width: 120px; height: 28px; margin-top: 16px; box-shadow: inset 0 0 0 1px #cccccc; }
+</style>
+</head>
+<body>
+<main data-measure-root>
+<div class="card">Card</div>
+<div class="chip">Chip</div>
+</main>
+</body>
+</html>

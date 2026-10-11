@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>geometry-measure fixture: clip (green)</title>
+<!-- Clean case for the clip measurement; no check may fail. -->
+<style>
+  body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
+  [data-measure-root] { width: 640px; padding: 16px; }
+  .part { margin: 0 0 24px; }
+  .frame { width: 240px; height: 64px; overflow: hidden; border: 1px solid #888888; }
+  .frame--positioned { position: relative; margin-top: 16px; }
+  .inner { width: 200px; height: 40px; margin: 8px; background: #eeeeee; }
+  .scroller { width: 240px; height: 64px; overflow: auto; margin-top: 16px; }
+  .long { height: 160px; background: #f4f4f4; }
+  .tcrn-sr-only { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>
+</head>
+<body>
+<main data-measure-root>
+<div class="frame"><div class="inner">Inside the frame</div></div>
+<div class="scroller"><div class="long">Scrolled content stays reachable</div></div>
+<div class="frame frame--positioned"><span class="tcrn-sr-only">Hidden helper text</span></div>
+</main>
+</body>
+</html>

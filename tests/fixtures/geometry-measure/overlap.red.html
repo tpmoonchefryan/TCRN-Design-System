@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>geometry-measure fixture: overlap (red)</title>
+<!-- Violation for the overlap measurement only: SuggestInput wrapped in a second .lab: the nested 300px field spills into the next grid cell. -->
+<style>
+  body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
+  [data-measure-root] { width: 640px; padding: 16px; }
+  .part { margin: 0 0 24px; }
+  .form-grid { display: grid; grid-template-columns: 200px 200px; gap: 16px; width: 416px; }
+  .lab { display: flex; flex-direction: column; gap: 4px; }
+  .lab input { box-sizing: border-box; width: 100%; height: 28px; font: inherit; }
+  .lab--nested { width: 300px; }
+</style>
+</head>
+<body>
+<main data-measure-root>
+<div class="form-grid">
+  <label class="lab">Owner
+    <span class="lab lab--nested">Suggest<input aria-label="Owner"></span>
+  </label>
+  <label class="lab">Email<input aria-label="Email"></label>
+</div>
+</main>
+</body>
+</html>
