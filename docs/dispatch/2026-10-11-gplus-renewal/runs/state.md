@@ -113,7 +113,9 @@
 
 - 12 包与集成修复 I1 全部合入（HEAD e643d74）。批末 verify 逐步（44 段）：30 步红 6 步（R1 为 11）——10 geometry:proof（SUB-080 搜索浮层）、11 shell:parity（C-21/O-1）、17 storybook:smoke（focus-outline-width 期望值过时等）、18 geometry:measure 与 19 storybook:visual-proof（样板 rail，O-1）、30 internal-alpha（O-2 axe 12、手机顶栏 C-21/O-1、三条 zh-CN 漏译、视觉基线未应用）；表与归因 `runs/r2/verify/steps.md`，日志 scratch `r2-verify/`，改写的回执已存档并还原。
 - 三片验收已交回并提交（10496cb）：通过 121、122、123、124、125、126、128、132；阻塞于 Owner 127、129、130、131（O-1）；不通过 120（GWT5 verify）、133（GWT1 部分）、134（SUB-046 基线未写入）。返工 A 3（经济）、B 3（主力 2）、C 8（主力 4），跨片有重复；验收 C 更正第 30 步手机锚点归因（非 O-1，SUB-064 后门未放行 G+ 半透明层）与漏译来源（496c1d7）；验收 B 判 RM7 ① 归目视不可接受（是 SUB-061 的机械副作用）。
-- 下一步：判断（einzbern-main，摘录 `runs/r2/excerpts/judgment.md`）→ 一次链写与知识采集 → R3 拆分。
+- 判断已交回（`runs/r2/judgment.md` 54 KB，文首有节行号；`runs/r2/lessons.json` 5 条）：按设计会话裁定写；R3 返工 19 条（主力 11、经济 8）加批末重做 SUB-076、078、046，分 6 包（主力 P1 契约与包壳、P2 门与映射、P3 文档层与残留、P5 MultiSelect；经济 P0 构图三与文案、P4 文档回写与批末），关键路径 P1 → P3 → P4，第一波 P1、P0、P5；R3 末 verify 全绿且无主力项再退回即写收口，不计划 R4。
+- R2 链写：首次因 Story 转 done 缺门被拒（RM20，未写入），重做后 WORK_DONE_GATES_NOT_COVERED 不再出现：一次 work-batch 138 成员，WORKSPACE_COMMAND_COMPLETED，version 1594 → 1732，head 7a4cf441…；读回 SUB-001…045 done、SUB-047…087 中 38 张 done、SUB-046/076/078/080 active，15 张 Story 仍 active（8 张 summary 写「R2 通过…；转 done 待库门配置」）。知识卡 KB-012…016 已建并逐张读回（012、014、016 首次报 POSSIBLE_CONFLICT，核对为不同主题后以 --coexist 建）；回执在 scratch `r2-chain/`。
+- 下一步：R3 拆分（einzbern-economy，按 judgment §2、§3.3、§5，键自 TCRN-DS-SUB-088 起，产出 `runs/r3/`）。
 
 ## 下一步
 
