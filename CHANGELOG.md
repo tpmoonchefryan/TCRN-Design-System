@@ -14,18 +14,37 @@ and three public APIs change (the icon roster and `IconProps`, the product logo
 registry, `ClipboardCopyButton`), and `lucide-react` leaves `@tcrn/ui-react`. The
 three packages move to 4.0.0 together.
 
-**The G+ chassis.** `@tcrn/ui-tokens` takes every value from the G+ design contract
+**The G+ chassis.** `@tcrn/ui-tokens` takes its G+ values from the design contract
 in `docs/design/gplus-2026-10/contract/`, generated into
-`src/gplus-tokens.generated.ts`. Colour names follow the contract
+`src/gplus-tokens.generated.ts`: from `tokens.json` the themed colours and shadows,
+the focus ring, radius, control height and padding, icon size, motion, the three
+font stacks and the brand suffixes; from `typography.json` the 29 type scale steps
+(sizes, line heights, weights, tracking and tabular numerals). The generated file
+names `tokens.json`, `marks.json` and `typography.json` in its header, so a change
+to any of them rewrites its `contract-sha256` line. Names that predate G+ and have
+no contract entry keep a hand-written value (the Japanese, Korean and stamp font
+stacks, for example) or stay as aliases. Colour names follow the contract
 (`--tcrn-color-bg`, `-panel`, `-ink`, `-ink-2`, `-ink-3`, `-line-ctl`, `-acc`, `-ok`,
 `-warn`, `-bad` and the rest), joined by `--tcrn-shadow-s1|s2|s3|edge`,
 `--tcrn-focus-ring` and `--tcrn-brand-suffix-<product>`. `tokens.css` holds three
-marked blocks: a `:root` theme block, a `:root` theme-independent block, and a
-`[data-tcrn-theme="dark"]` block declaring the same names as the theme block. Type,
+marked blocks: the light theme block on `:root, [data-tcrn-theme="light"]`, a
+`:root` theme-independent block, and a `[data-tcrn-theme="dark"]` block declaring
+the same names as the light block. Because the light block also answers to
+`data-tcrn-theme="light"`, a light container inside a night page takes the light
+values again instead of inheriting the night ones; `tcrnGplusThemeSelectors.light`
+carries the same list, `parseTokenCssBlocks` reports a selector list in canonical
+form, and `compareTokenThemeBlocks` matches lists in any order and spacing. Type,
 radius, control height and padding, icon size, shadow and motion move to the G+
 scale; line heights carry px units; `--tcrn-type-family-heading` (Source Serif 4) is
-new. Control outlines use `line-ctl`, at least 3:1 against the page. Fifty earlier
-names stay defined as deprecated aliases (`--old: var(--new)`), and
+new. The type scale rules of `@tcrn/ui-react`
+(`src/styles/generated/typography.scale.ts`) are generated from `typography.json`
+and refer to the type tokens through `var(--tcrn-type-*)`; the generator stops
+when a token's value and its scale entry disagree. Four declarations still carry a
+literal because no token exists for them: the inline numeral size 16px, the large
+numeral 44px on a 48px line, and the mono text size 11.5px. Whether to add tokens
+for them is an open Owner decision. Control outlines use `line-ctl`, at least
+3:1 against the page. Fifty earlier names stay defined as deprecated aliases
+(`--old: var(--new)`), and
 `--tcrn-motion-press-scale` stays defined with no successor, because a G+ press
 changes the fill and does not scale. The focus ring is a box-shadow, a 2px gap in
 the surface colour and then 2px of accent, with a transparent outline kept for
@@ -43,7 +62,12 @@ Noto Serif SC ship in `@tcrn/ui-tokens` as WOFF2 files copied byte for byte from
 pinned `@fontsource` packages (the Chinese faces as the upstream unicode-range
 slices that cover product text), with `@tcrn/ui-tokens/fonts.css`,
 `fonts/manifest.json`, the five SIL OFL 1.1 licence texts in `licenses/`, and
-`FONT-LICENSES.md`. `tokens.css` imports `fonts.css`; the JS export `tcrnTokenCss`
+`FONT-LICENSES.md`. Each of the four family tokens follows its Latin face with a
+bundled Chinese face: Noto Sans SC in the UI and mono stacks (mono is
+`"IBM Plex Mono","Noto Sans SC",ui-monospace,Menlo,monospace`, so Chinese set in
+mono no longer falls to a system face), Noto Serif SC in the serif and heading
+stacks; `fonts:proof` is red when a family token loses that fallback.
+`tokens.css` imports `fonts.css`; the JS export `tcrnTokenCss`
 does not. No font CDN is referenced. This replaces the 2.0.0 position that the
 system ships no font software; the 2.0.0 entry below stays as written. The licence
 allow-list admits OFL-1.1 for these five packages only, and the packed
@@ -57,7 +81,16 @@ allow-list admits OFL-1.1 for these five packages only, and the packed
   their text in `title`. Heading sizes come from the contract scale, and the clamp
   sizes are gone. `Highlight` marks with `tcrn-highlight__mark` (was
   `tcrn-highlight-mark`) and only adds a background. `tcrn-link` takes the
-  contract link rules.
+  contract link rules, and its states go through a pair table like Actions and
+  Inputs (live pair `--tcrn-pair-ink`, `--tcrn-pair-underline`,
+  `--tcrn-pair-edge`): the link rests in acc with an acc-ul underline, hover
+  switches ink and underline to acc-2, and focus draws the focus ring over a
+  transparent outline kept for forced colours. `tcrn-link--quiet` is now a
+  modifier of `tcrn-link` and has no styles alone: write
+  `class="tcrn-link tcrn-link--quiet"` (no bare use exists in this repository).
+  The quiet link rests in the current text colour with a transparent underline;
+  its hover underline moves from a 0.2em offset in the accent to the 2px link
+  offset in acc-2.
 - Icon: `Icon` draws 37 names from the contract on a 20-unit grid, the 28 existing
   ones plus `plus`, `minus`, `users`, `bell`, `copy`, `trash`, `calendar`,
   `more-horizontal` and `chevron-up`, with a 1.25 non-scaling stroke at every size.
@@ -68,9 +101,16 @@ allow-list admits OFL-1.1 for these five packages only, and the packed
   ink and edge per state). `size="lg"` (40px) joins `sm` and `md`; `loading` sets
   `aria-busy` and shows the loader; the press scale and transforms are gone. The new
   `ButtonGroup` takes a required `ariaLabel` and `variant` `secondary` or `quiet`.
-  `ClipboardCopyButton` shows one icon per settled state and no longer accepts
-  `loading`. The product shell's theme, side-navigation and mobile-navigation
-  toggles follow the Actions pairs; their sizes (36 and 38px) are unchanged.
+  With a disabled reason, the `Button` title reads "label — reason", the visible
+  label first, so a cut label can still be read in full; a button without visible
+  text keeps the reason alone, and the reason stays the `aria-describedby`
+  description. `ClipboardCopyButton` shows one icon per settled state and no
+  longer accepts `loading`. The product shell's theme, side-navigation and
+  mobile-navigation toggles follow the Actions pairs; their sizes (36 and 38px)
+  are unchanged. The theme toggle shows its sun or moon by its own
+  `data-current-theme`: the default and `html[data-tcrn-theme="dark"]` icon
+  display rules are gone, so a toggle inside a block-level theme shows the current
+  icon instead of neither.
 - Inputs: the text controls and the `Select` and `MultiSelect` triggers read one
   pair table with `border: 0` and an inset box-shadow edge; `Checkbox`, `Radio` and
   `Switch` read their own pair tuples, and `Switch` drops the disabled opacity.
@@ -78,7 +118,17 @@ allow-list admits OFL-1.1 for these five packages only, and the packed
   and `DatePicker` draw their end icon (`chevron-down`, `calendar`) inside a
   wrapper. `.tcrn-field:focus-within` no longer washes the field. Inside the
   product shell, the focus rule leaves buttons, links and these inputs to their own
-  ring and gives other elements the G+ ring in place of the 3px outline.
+  ring and gives other elements the G+ ring in place of the 3px outline. A focused
+  read-only text field shows the focus ring and keeps its read-only fill and ink
+  (the new `rf` state, ordered after `r`; the Inputs board lets read-only cover
+  focus, so this differs from the board on purpose). `.tcrn-field--error` no
+  longer washes the whole field or recolours its outline, and its error text reads
+  `--tcrn-color-bad`; the forced-colours outline stays. The search shortcut text
+  is ink-2 (was ink-3) and reaches 4.5:1 on the night wash. The `MultiSelect`
+  trigger keeps the `Select` end, 30px of end padding with the caret where the
+  `Select` chevron sits, and `.tcrn-multi-select-dropdown` is now a flex
+  container; its options declare their own pair, and hover and selection only
+  switch it.
 
 **Four product marks.** `TcrnBrandMark` takes `productId` (`tms`, `einzbern`,
 `mana-orchestrate`, `design-system`) and `variant` (`color`, `mono`, `tile-tint`,
@@ -104,7 +154,12 @@ CSS of its own, and its scaffolding uses the `tcrn-doc-` prefix. Both tracks loa
 the bundled fonts. Each family has a matrix story and a sample story built from the
 contract data (`typography-matrix` through `inputs-sample-members`), and
 `docs/design/gplus-2026-10/storybook-map.md` maps every canvas board to its story
-and records the differences.
+and records the differences. The dense operations and compact tool shell
+prototypes, which drew their shells with docs-only classes, are retired from the
+navigation shell stories together with the smoke assertions that only guarded
+them; the component inventory page still lists their names. Still open: in the
+navigation shell story the static search results panel covers the heading and the
+first paragraph beneath it.
 
 **New gates.** `contract:proof` (generated sources, icons, marks and matrices
 against the contract), `contract:static` (clauses C2, C5, C6, C7, C8, C11 and C13),

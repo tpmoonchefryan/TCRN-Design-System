@@ -14,7 +14,7 @@
 
 ## 机器证据入口
 
-下列报告与命令在批末由 W8-A 统一重生成，请以重生成后的版本为准。本包（W7-A）没有运行这些门，集成树上的现状见 `runs/r1/handoff/W6-A.md` 与 `runs/r1/problems/`。
+下列报告与命令在批末由 W8-A 统一重生成，请以重生成后的版本为准。本包（W7-A）没有运行这些门，集成树上的现状见 `runs/r1/handoff/W6-A.md` 与 `runs/r1/problems/`。R2 各包跑过的局部门结果见 `runs/r2/handoff/` 与 `runs/r2/problems/`；R2 回写本清单的包（P11）同样没有运行这些门，批末由 SUB-046 重生成。
 
 | 证据 | 路径或命令 |
 | --- | --- |
@@ -26,8 +26,10 @@
 | 文档层类名 | `docs/verification/doc-shell-class/baseline.json`；`pnpm doc-shell:proof` |
 | 对比度（C1 阈值与字标豁免） | `pnpm tokens:proof` 内的 token-contrast-proof，只输出到终端 |
 | 字体渲染（八条腿） | `pnpm fonts:render`，只输出到终端 |
-| 字体文件、许可与覆盖 | `pnpm fonts:proof` |
+| 字体文件、许可与覆盖（含四个字族 token 的 Noto 中文回退） | `pnpm fonts:proof`；现状见表下 |
 | 产品标文件 digest | `pnpm brand-asset:proof` |
+
+**fonts:proof 现状（R2）。** R1 时 `tests/fonts-proof.test.mjs` 有 3 条用例（入仓树、构建产物副本、zh-CN 覆盖）因夹具仍用 distributable-latin 字栈而失败。R2 的 SUB-049（ed98557）把夹具换成契约里的四个 G+ 字族 token（ui、heading、serif、mono），这 3 条恢复为绿，并新增三类变异，各自判红：缺某个字族 token、字族 token 缺 Noto 中文回退、fonts.css 带了没有字族 token 引用的字族；门的判定不变。SUB-048（e79092f）给等宽字栈加了 Noto Sans SC，自此门要求四个字族 token 都带 Noto 中文回退。据 ed98557 的提交说明，P1 交回时 `tokens:proof` 12 段全绿（含 fonts-proof 的测试与脚本两段）。集成树上的结果以批末重生成为准。
 
 ## 1 · V2-GPlus · G+ 以 G 为底盘的高级感版
 
@@ -85,7 +87,7 @@ C 动效规范、E 消费方须提供什么、F token 差异、G 许可与分发
 | Text 默认 13/20 次墨；reading 14/22、meta 12/16、caption 11/16；strong 为主墨 600 | [ ] | [ ] |
 | numeral「4,280.00」为衬线 300、等宽数字，单位在 small 里；caps 为间距大写，编号在 b 里，单行省略 | [ ] | [ ] |
 | Highlight 的 mark 只加底色，不改字重、字距、字号、内距（D3） | [ ] | [ ] |
-| 链接为强调色加 70% 下划线，悬停 acc-2，焦点为焦点环 | [ ] | [ ] |
+| 链接为强调色加 70% 下划线，悬停 acc-2，焦点为焦点环；quiet 链接为当前文字色、下划线透明，悬停 acc-2（R2，SUB-055） | [ ] | [ ] |
 | 标题到正文的间距不小于该组件自身行距；分节标题与说明垂直居中对齐（D3） | [ ] | [ ] |
 | 账单页样板与画板 D 段一致 | [ ] | [ ] |
 
@@ -124,6 +126,7 @@ C 动效规范、E 消费方须提供什么、F token 差异、G 许可与分发
 | 产品壳收起时只留标，文案隐藏 | [ ] | [ ] |
 | AOS 注册项、AOS 后缀与 TCRN 母标保持原样（D5） | [ ] | [ ] |
 | 产品页样板与画板 D 段一致 | [ ] | [ ] |
+| 产品页样板去掉了「资产 ID」整列（R2，SUB-072，7e292ff），与 Brand 板 D 段的四列表（产品、资产 ID、标语 · zh / en、注册）不一致。storybook-map 记为 DIFF-9，状态现为「已裁定」并引 R2-25；是否应为「待 Owner 知悉」由 R2 验收判断（RM13） | [ ] | [ ] |
 
 已知差距：收起宽 92 对画板 52（STORY-127 GWT4，P1）；夜间后缀色与浅色同值（P15）。对比度门对字标登记了 4 条豁免：Design System 浅色于 panel 与 bg、TMS 夜间于 panel 与 bg，引用 D2 与本板 F 段，TMS 两条标「夜间值待 Owner」（`runs/r1/handoff/W3-A.md`）。机器证据：映射报告 brand 三行、`pnpm tokens:proof`、`pnpm brand-asset:proof`。
 
@@ -158,11 +161,12 @@ C 动效规范、E 消费方须提供什么、F token 差异、G 许可与分发
 | --- | --- | --- |
 | 文本类控件：默认边 line-ctl，悬停 ink-2，焦点为强调色环；invalid 为红边，invalid 加焦点为红边加红环 | [ ] | [ ] |
 | 控件高 32、圆角 8、字号 13，占位为 ink-3 | [ ] | [ ] |
-| Select 的 chevron 与 DatePicker 的 calendar 位于末端 30px 内，点在图标上仍打开原生控件 | [ ] | [ ] |
+| Select 的 chevron 与 DatePicker 的 calendar 位于末端 30px 内，点在图标上仍打开原生控件；MultiSelect 触发器末端同为 30px，箭头位置与 Select 的 chevron 相同（R2，SUB-061） | [ ] | [ ] |
 | Checkbox、Radio 16px，勾、半选横杠与单选点；Switch 轨 34×20、钮 16、行程 14，开态钮为 on-acc，夜间为深色钮 | [ ] | [ ] |
 | SearchInput 为墨洗工具形态，顶栏与表单内一致：无边 wash，悬停 line-2，焦点纸底加环，占位 ink-2，快捷键 mono 10px（D2） | [ ] | [ ] |
 | Field 获焦时不再整块洗底 | [ ] | [ ] |
 | 邀请成员样板与画板 D 段一致 | [ ] | [ ] |
+| inputs 矩阵里 MultiSelect 的静态展开态（R2，SUB-070，d11452f）：列表保持展开、不响应点击，列表位于触发器右侧而不是下方。静态样例去掉了 `data-choice-presentation` 钩子，做法超出该单判据字面，交验收（RM7） | [ ] | [ ] |
 
 差异：DIFF-4、DIFF-5、DIFF-6（开关钮探针，待测量库支持）、DIFF-7、DIFF-1。机器证据：映射报告 inputs 三行、`pnpm contract:static --family inputs`、`pnpm geometry:measure --family inputs`。
 
@@ -187,6 +191,24 @@ F 构法、G 颜色、H SVG 源三段没有 story，落点是 `docs/design/gplus
 
 已知差距：brand-matrix 只有 TCRN 标 22、28、38、56 四档与产品标 38 一档、单色版与锁定块，画板的 128 至 16 六档阶梯与 64、32 两种贴片没有 story（DIFF-8，「待 Owner 裁定」第 5 条）。机器证据：`pnpm brand-asset:proof`（八个文件 digest、包导出与渲染字节）、映射报告 logos 两行。
 
+## R2 按建议先做的项 · 目视核对（R1 判断 §3.4）
+
+R2 实施对话按 R1 判断 §3.4 的建议先做了下列 11 项，Owner 可事后更正。每项一行：有渲染面的项留浅色、夜间两格待勾；没有渲染面的项写明去哪里读，两格写「—」。来源是 R2 的提交与 `runs/r2/handoff/` 的包交回。另有 RM7、RM13 两行，分别加在第 8 节与第 6 节表末。
+
+| # | 事项 | 现状与来源 | 看哪里、看什么 | 浅色 | 夜间 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | R2-6 只读框获焦补焦点环（与画板状态顺序不同） | inputs-text 加 rf 元组，排在 r 之后：只读框获焦时显示焦点环，底与字色仍为只读态（WCAG 2.4.7）。画板是 r 盖住 f，画板未随之重生成（RM10）。7213a27（SUB-058），P2 交回第 6 节 | inputs 矩阵的 read-only 行：用 Tab 移入只读框，焦点环出现，底与字色不变（矩阵没有单列的 rf 格） | [ ] | [ ] |
+| 2 | R2-10 Field 错误态去掉整块洗底（P29 口径更正） | `.tcrn-field--error` 的整块洗底与 outline 色一并删去，错误文字读 `--tcrn-color-bad`；强制色下的错误轮廓保留。Owner 不接受时恢复这两条声明，并把 126-GWT5 的 err-msg 两格移到第五批。fe6a4bb（SUB-060），P4 交回 | inputs 矩阵的 err-msg 格与邀请成员样板里的错误字段：字段不再整块洗底，错误文字为 bad 色 | [ ] | [ ] |
+| 3 | R2-12 搜索快捷键文字 ink-3 改 ink-2 | Inputs 板画的是 ink-3（`.sw>kbd`），按 C1 文字 4.5 阈值改为 ink-2：夜间 ink-3 在 wash 上为 3.89、3.90，ink-2 为 6.13、6.15；浅色 ink-3 在 wash 叠 bg 上为 4.31，ink-2 为 6.56。要保留 ink-3 须改 token 值或承载底，属契约修订。48399ae（SUB-062），P4 交回 | inputs 矩阵的 SearchInput 与文档壳顶栏搜索框的快捷键文字，对照 Inputs 板 | [ ] | [ ] |
+| 4 | R2-17 密集与紧凑壳原型退役并删除守护断言（C O-4） | dense（hub 与 command-center 两块）与 compact 两个壳原型从静态文档删除，只守它们的 44 条冒烟断言一并删除，删除清单在提交说明里。组件清单页与导出面仍列着两个原型名（P6 问题 #6，进下一批）。Owner 要保留时，回退 95f0e09 的对应部分，在第二批用包组件重画。95f0e09（SUB-066），P6 交回 | `components-navigation-shells.html`：dense 与 compact 两段已不在；dense story 只留面板、说明与密度表，focused story 留知识库壳与紧凑壳的一句选用说明 | [ ] | [ ] |
+| 5 | R2-30 axe 对品牌后缀登记字标豁免 | axe 的 color-contrast 对品牌后缀放行，条目直接从 token-contrast 的 `WORDMARK_EXEMPTIONS` 导入（依据 D2 与 Brand 板 F 段）；标语与壳锁定说明（ink-3）不在豁免内。豁免不分主题与承载面，夜间样板侧栏 6 个 Design System 后缀节点（4.18:1）也被豁免，而 token-contrast 的登记只写了浅色（RM6，与「待 Owner 裁定」第 2 条同组）。cd1d37b（SUB-085），P9 交回 | brand 矩阵与五个样板侧栏里的 TMS、Design System 后缀，浅色与夜间都看是否可辨读 | [ ] | [ ] |
+| 6 | R2-8 主题钮图标显隐改由 data-current-theme 控制（取 C-9，不取 B-3） | 删去 html 级与默认的 `[data-theme-icon]` 显隐规则，显隐只由 `.tcrn-shell-theme-toggle[data-current-theme]` 的透明度规则决定，块级主题与页级主题同样生效；默认隐藏 moon 的 `[data-theme-icon="dark"]` 也一并删去（RM3，交验收）。6976d2f（SUB-057），P3 交回第 3 节 | 五个样板的外壳主题钮：浅色块显示太阳，夜间块显示月亮，不再两个都不显示 | [ ] | [ ] |
+| 7 | R2-29 clipped 判定排除 C7 合规截断；R2-31 收紧 C7 并改 Button 禁用原因的 title | 浏览器门的 clipped 判定不再计入带 title 的合规截断，被记元素 288 → 0（a4e7534、5583f5a，SUB-084，P9 交回）。C7 对第一批承载元素（今为 `tcrn-button__label`）要求浏览器显示的 title 含可见文字；Button 有禁用原因时 title 为「标签 — 原因」，原因仍走 aria-describedby（e0baaba，SUB-079，P10 交回）。由此带出的两处集成红（非英文语言下这种 title 不翻译、ClipboardCopyButton 测试仍断言旧 title）已交集成修复包 I1（RM14），截至本包切出点 8d8ff8d 未合入 | actions 矩阵与项目页样板里带禁用原因的按钮：悬停提示为「标签 — 原因」；被截断的按钮标签悬停可读全文 | [ ] | [ ] |
+| 8 | R2-16 守卫例外的登记（后续家族沿用 EX-INIT015-* 写法） | SUB-065 的规则级守卫把文档层对包类的声明限定为摆放属性，登记五条例外：EX-INIT015-doc-tooltip-static-preview、-doc-filter-bar、-doc-nav-proof-skip-link、-doc-shell-brand-collapse、-doc-shell-brand-narrow（后两条依 C-21 待 O-1），逐条见 `runs/r2/handoff/P5.md`。守卫实际落在 `scripts/shell-fidelity-proof.mjs` 的 `docsPackageSelectorDuplication`（RM12）。461306d（SUB-065），P5 交回 | 五处文档呈现与改前一致：Tooltip 静态预览为展开态、筛选栏的标签排布、包导航证明框里的跳转链接、侧栏收起时文档壳品牌文案的收起动效、极窄视口下品牌文案隐藏 | [ ] | [ ] |
+| 9 | O-10 契约注释改为与焦点环行为一致 | 只改 `contract/tokens.json` 里 surface 的注释（包与画板都显示 bg 色间隙），值不变。e79092f（SUB-048），P1 交回 | 没有新的渲染面；焦点环外观按第 1 节「焦点环」一行核对 | — | — |
+| 10 | C-21 暂缓到 O-1 之后，不按包壳现行几何先改一遍 | 文档壳几何未改。shell:parity 余文档壳三项（brand-lockup、sidebar、shell-relations），原码上同样红（RM12）；390px 宽时文档壳顶栏 401px 高、品牌字出现两次（P9 问题 #4）。P5 交回 | 文档壳 390px 宽时的顶栏与品牌：现状待 O-1 答复后处理，本行只作知悉 | [ ] | [ ] |
+| 11 | 三片已判可接受的实施口径一并回显 | W1-C 拦截 data: URI、W2-G 复制 OFL 进 storybook-static、W2-A P10 别名目标、W3-A P4 字标豁免与 bg 承载面、W2-H 只含 transparent 的 outline 放行、W1-B P5、W2-B P4/P5/P6、W2-D P7、W3-D P5（vertical-align middle）、W1-D 包写出的类不计包外类、W5-C `--strict` 不设默认、W1-E 的 C2/C6/C11 口径、W6-A 门序与命名、拆分 P5/P17/P22/P31 的载体调整、M5 `.tcrn-icon` 基类进包 | 回显项，不单列目视；`.tcrn-icon` 基类进包见第 5 节与「待 Owner 裁定」第 4 条 | — | — |
+
 ## 待 Owner 裁定
 
 下列各项已按建议或设计会话裁定先实现，Owner 可以更正；在裁定之前，消费方迁移说明（`docs/migration-4.0.md`）按现状描述。
@@ -199,11 +221,13 @@ F 构法、G 颜色、H SVG 源三段没有 story，落点是 `docs/design/gplus
 | 4 | `.tcrn-icon` 基类进包 | 已按 2026-10-11 设计会话裁定进包（f94b1be），文档层副本删除 | `runs/r1/problems/W2-C.md` P6；纪要 D6；STORY-128 | 按现状保留，Owner 可更正 |
 | 5 | 产品标六档阶梯与贴片是否进 story | 未进 story | DIFF-8 | 第二批前置板已通过（D5），是否补 story 由 Owner 定 |
 | 6 | Text 段落外距 | 生成段写零外距，家族规则恢复原有上外距 | W2-B 交回第 6 条 | 契约本意若为零外距，由设计权威或 Owner 定 |
-| 7 | 等宽字族是否加 Noto 中文回退 | 未加 | W2-A 交回（问题 P6） | 目视时判定 |
+| 7 | 等宽字族是否加 Noto 中文回退 | R2 已加（返工 R2-1，121-GWT2）：等宽字栈为 IBM Plex Mono、Noto Sans SC、ui-monospace、Menlo、monospace；fonts:proof 要求四个字族 token 都带 Noto 中文回退（e79092f，SUB-048） | W2-A 交回（问题 P6）；P1 交回 | 目视时核对等宽文字里的中文是否为 Noto Sans SC，Owner 可更正 |
 | 8 | 字标对比度只按 panel 承载面算是否足够 | 门按契约判定字标对，panel 与 bg 都量 | W3-A 交回（问题 P4） | 目视时判定 |
 | 9 | 中文子集的「常用 3500 字」 | 按产品用字选上游分片，未加 3500 字表 | P9 | 维持分片方案；要 3500 字覆盖须给出字表来源 |
 
 待 Owner 知悉（不需裁定）：DIFF-7（icon、brand、actions 两块上下叠放，守 story 高度预算）；P18（视觉签名基线整体替换，文档壳视觉标准被标为 Owner 声明，目视另行）；P24（story 高度与类目数量上限）。
+
+另一项待 Owner 知悉（不需裁定，R2 回写）：第二批以后的家族不在本批授权内，仍读旧的状态底色名。经弃用别名，`--tcrn-color-state-ready-bg`、`--tcrn-color-state-warning-bg`、`--tcrn-color-state-warning-calibrated-bg` 解析为中性的 `--tcrn-color-wash`（`--tcrn-selection-fill` 与 `--tcrn-color-progress-track-calibrated` 同样），`--tcrn-color-state-blocked-bg` 与 `--tcrn-color-state-danger-calibrated-bg` 解析为 `--tcrn-color-bad-bg`。因此这些家族的状态底色改为中性 wash，在各自的家族批次重做之前保持如此。来源：a88b7ad（SUB-001）；`docs/migration-4.0.md` 的「Deprecated token names」表。
 
 ## 四个停点
 

@@ -8,8 +8,11 @@ TCRN Design System public package baseline.
 
 ## Theme contract
 
-Light mode is the default `:root` token set. Dark mode is an override applied
-with `data-tcrn-theme="dark"` on a root or scoped container.
+Light mode is the default token set: the light theme block applies to `:root`
+and to any container with `data-tcrn-theme="light"`. Dark mode is an override
+applied with `data-tcrn-theme="dark"` on a root or scoped container. Because the
+light block also answers to `data-tcrn-theme="light"`, a light container inside a
+dark page takes the light values again.
 
 Dark mode may override existing semantic tokens only. It must not create
 component-specific colors or separate component forks.
@@ -32,20 +35,26 @@ component-specific colors or separate component forks.
 
 ## Token blocks
 
-`tokens.css` and `tcrnTokenCss` hold three blocks, each opening with a marker
-comment:
+`tokens.css` and `tcrnTokenCss` hold three blocks, in this order, each opening
+with a marker comment:
 
-- a `:root` theme block (`/* tcrn-token-block: theme */`): colour, shadow, focus
-  ring, and the deprecated colour, selection and elevation aliases;
-- a `:root` theme-independent block (`/* tcrn-token-block: theme-independent */`):
-  type, radius, control height and padding, icon size, motion, the brand suffix
-  colours, and the deprecated type family and motion aliases;
-- a `[data-tcrn-theme="dark"]` block (`/* tcrn-token-block: theme */`): the same
-  property names as the light theme block, with the night values.
+- the light theme block on `:root, [data-tcrn-theme="light"]`
+  (`/* tcrn-token-block: theme */`): colour, shadow, focus ring, and the
+  deprecated colour, selection and elevation aliases;
+- the theme-independent block on `:root`
+  (`/* tcrn-token-block: theme-independent */`): type, radius, control height and
+  padding, icon size, motion, the brand suffix colours, and the deprecated type
+  family and motion aliases;
+- the dark theme block on `[data-tcrn-theme="dark"]`
+  (`/* tcrn-token-block: theme */`): the same property names as the light theme
+  block, with the night values.
 
-`compareTokenThemeBlocks(css)` checks that the two theme blocks declare the same
-names and that neither shares a name with the theme-independent block;
-`parseTokenCssBlocks(css)` returns the declarations of each block.
+The two theme selectors are exported as `tcrnGplusThemeSelectors` (`light` is the
+selector list above). `compareTokenThemeBlocks(css)` checks that the two theme
+blocks declare the same names and that neither shares a name with the
+theme-independent block; it matches a selector list in any order and spacing.
+`parseTokenCssBlocks(css)` returns the declarations of each block and reports a
+selector list in canonical form.
 
 The focus ring is computed where it is declared. A container that changes
 `--tcrn-color-surface` (for example to the panel colour) declares
