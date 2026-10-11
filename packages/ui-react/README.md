@@ -5,8 +5,13 @@ fixtures. Components accept normalized display props only and do not fetch data,
 mutate state outside the component tree, decide product truth, or import product
 APIs.
 
-Version `3.0.0` is prepared under Apache License 2.0 as part of the accepted
+Version `4.0.0` is prepared under Apache License 2.0 as part of the accepted
 TCRN Design System public package baseline.
+
+Upgrading from 3.x: `docs/migration-4.0.md` in the TCRN Design System repository
+lists each breaking change in 4.0.0 with its migration step. The components read
+the font tokens, so load the fonts through `@tcrn/ui-tokens/tokens.css` or
+`@tcrn/ui-tokens/fonts.css` (see the `@tcrn/ui-tokens` README).
 
 ## Component Library Public API
 

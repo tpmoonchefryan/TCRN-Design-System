@@ -3,11 +3,13 @@
 TMS has no Design System dependency today: every `@tcrn/*` import in its tree resolves
 to one of its own internal packages (`shared`, `database`, `web`, `api`). That is why
 this guide starts at v2 and never mentions v1 — there is no migration to perform, only
-an adoption, and starting on the current visual language costs nothing extra.
+an adoption, and starting on the current visual language costs nothing extra. If TMS
+has taken a 3.x dependency since this guide was written, `docs/migration-4.0.md` lists
+each 4.0.0 breaking change with its migration step.
 
 ## What you are adopting
 
-Three packages, all at 3.0.0:
+Three packages, all at 4.0.0:
 
 | Package | What it gives you |
 | --- | --- |
@@ -34,6 +36,16 @@ Import the JS export rather than `@tcrn/ui-tokens/tokens.css` if you can — bot
 generated from the same source and kept in lockstep by `pnpm tokens:proof`, but the JS
 export also gives you `tcrnTokens` if you need to read a value programmatically.
 
+The fonts ship in `@tcrn/ui-tokens` (five SIL OFL 1.1 families, served from the package
+rather than a font CDN). `tokens.css` pulls them in with an `@import`; `tcrnTokenCss`
+does not, so a shell that injects the JS export imports the font stylesheet once:
+
+```tsx
+import "@tcrn/ui-tokens/fonts.css";
+```
+
+The licence texts travel with the package (`FONT-LICENSES.md` and `licenses/`).
+
 ## The three rules worth knowing before you start
 
 **Density is the point.** The UI type size is 13px and the compact row height is 36px.
@@ -41,8 +53,9 @@ These are not defaults to override; the components are laid out for an operator 
 a dense table, and loosening them is what makes a governance tool feel like a marketing
 page.
 
-**Semantic state colour is not decoration.** `--tcrn-color-state-ready` and its
-siblings carry meaning. Do not use the brand accent to indicate readiness or error, and
+**Semantic state colour is not decoration.** `--tcrn-color-ok`, `--tcrn-color-warn`
+and `--tcrn-color-bad` carry meaning (the 3.x names such as `--tcrn-color-state-ready`
+remain as deprecated aliases). Do not use the brand accent to indicate readiness or error, and
 do not use a state colour for emphasis. Storybook's Style Guide chapter states the
 boundary for each family.
 
@@ -63,6 +76,10 @@ hierarchy — against the matching Storybook chapter. The AI consumption contrac
 
 ## What is not covered
 
-Brand assets. TMS must use admitted brand assets or route a brand component admission;
-the lockups shown in Storybook are visual-review guidance and are not package-backed
-brand exports.
+Brand assets other than the TMS product mark. From 4.0.0 the TMS mark is a package
+export: `ProductLogo productId="tms"` and `ProductLockup` draw it inline,
+`TcrnBrandMark productId="tms"` draws the mark alone, and `tcrnProductMarkSvg("tms")`
+returns the standalone SVG text. Its wordmark suffix reads `--tcrn-brand-suffix-tms`.
+The TCRN mother mark is unchanged in this release. For anything else TMS must use
+admitted brand assets or route a brand component admission; the remaining lockups shown
+in Storybook are visual-review guidance and are not package-backed brand exports.
