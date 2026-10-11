@@ -79,82 +79,172 @@ function scopeComponentSelector(selector: string, scope: string): string {
   return `${scope} ${trimmed}`;
 }
 
-function scopeComponentCss(css: string, scope: string): string {
-  const lines = css.split("\n");
-  const output: string[] = [];
-  const selectorBuffer: string[] = [];
-  const blockStack: Array<"rule" | "media" | "keyframes" | "property"> = [];
-  const insideRule = () => blockStack[blockStack.length - 1] === "rule";
-  const insideKeyframes = () => blockStack.includes("keyframes");
-  const popBlock = () => {
-    blockStack.pop();
-  };
+// TCRN-DS-SUB-035: the static pages carry the package CSS a second time under `.story-body` so the
+// package wins inside a story. This scoper used to split selectors at every comma and to assume one
+// rule per line: `:where(:hover,[data-tcrn-preview-state="hover"])` state rules were cut into invalid
+// selectors (the browser dropped the whole rule, so the scoped base rule beat every hover, active,
+// focus, disabled and selected state), and the rules after a one-line rule were copied unscoped. It
+// now walks the stylesheet: a selector list splits only at top-level commas (never inside (), [] or a
+// string), any number of rules may share a line, conditional group rules (@media, @supports,
+// @container, @layer, @scope, @starting-style, @document) are scoped inside, and other at-rules
+// (@keyframes, @font-face, @property, ...) and statements (`@layer a, b;`) are copied verbatim.
+const scopedGroupAtRules = new Set(["media", "supports", "container", "layer", "scope", "starting-style", "document"]);
 
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed) {
-      output.push(line);
+function skipCssString(css: string, index: number): number {
+  const quote = css[index];
+  let cursor = index + 1;
+  while (cursor < css.length) {
+    const char = css[cursor];
+    if (char === "\\") {
+      cursor += 2;
       continue;
     }
-
-    if (selectorBuffer.length > 0 && !trimmed.includes("{")) {
-      selectorBuffer.push(line);
-      continue;
-    }
-
-    if (insideKeyframes()) {
-      output.push(line);
-      if (trimmed === "}") popBlock();
-      continue;
-    }
-
-    if (trimmed.startsWith("@keyframes")) {
-      output.push(line);
-      blockStack.push("keyframes");
-      continue;
-    }
-
-    if (trimmed.startsWith("@property")) {
-      output.push(line);
-      blockStack.push("property");
-      continue;
-    }
-
-    if (trimmed.startsWith("@media") || trimmed.startsWith("@supports") || trimmed.startsWith("@container")) {
-      output.push(line);
-      blockStack.push("media");
-      continue;
-    }
-
-    if (insideRule() || blockStack[blockStack.length - 1] === "property") {
-      output.push(line);
-      if (trimmed === "}") popBlock();
-      continue;
-    }
-
-    if (trimmed.endsWith(",") && !trimmed.includes("{")) {
-      selectorBuffer.push(line);
-      continue;
-    }
-
-    if (trimmed.includes("{")) {
-      const braceIndex = line.indexOf("{");
-      const selectorText = [...selectorBuffer, line.slice(0, braceIndex)].join("\n");
-      selectorBuffer.length = 0;
-      const scopedSelector = selectorText
-        .split(",")
-        .map((selector) => scopeComponentSelector(selector, scope))
-        .join(",\n");
-      output.push(`${scopedSelector}${line.slice(braceIndex)}`);
-      blockStack.push("rule");
-      continue;
-    }
-
-    output.push(line);
-    if (trimmed === "}") popBlock();
+    if (char === quote) return cursor + 1;
+    cursor += 1;
   }
+  return cursor;
+}
 
-  return output.join("\n");
+function skipCssComment(css: string, index: number): number {
+  const end = css.indexOf("*/", index + 2);
+  return end === -1 ? css.length : end + 2;
+}
+
+// Index of the `}` closing the block whose `{` is at `open`; strings, comments and nested blocks are
+// skipped. An unterminated block runs to the end of the input.
+function matchingCssBrace(css: string, open: number): number {
+  let depth = 0;
+  let cursor = open;
+  while (cursor < css.length) {
+    const char = css[cursor];
+    if (char === "\"" || char === "'") {
+      cursor = skipCssString(css, cursor);
+      continue;
+    }
+    if (char === "/" && css[cursor + 1] === "*") {
+      cursor = skipCssComment(css, cursor);
+      continue;
+    }
+    if (char === "\\") {
+      cursor += 2;
+      continue;
+    }
+    if (char === "{") depth += 1;
+    if (char === "}") {
+      depth -= 1;
+      if (depth === 0) return cursor;
+    }
+    cursor += 1;
+  }
+  return css.length;
+}
+
+function stripCssComments(text: string): string {
+  let output = "";
+  let cursor = 0;
+  while (cursor < text.length) {
+    const char = text[cursor];
+    if (char === "\"" || char === "'") {
+      const end = skipCssString(text, cursor);
+      output += text.slice(cursor, end);
+      cursor = end;
+      continue;
+    }
+    if (char === "/" && text[cursor + 1] === "*") {
+      cursor = skipCssComment(text, cursor);
+      output += " ";
+      continue;
+    }
+    output += char;
+    cursor += 1;
+  }
+  return output;
+}
+
+// Splits a selector list at its top-level commas only: the commas inside `:where()`, `:is()`,
+// `:not()`, `:has()`, an attribute selector or a string stay with their selector.
+export function splitTopLevelSelectors(selectorList: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  let cursor = 0;
+  while (cursor < selectorList.length) {
+    const char = selectorList[cursor];
+    if (char === "\"" || char === "'") {
+      cursor = skipCssString(selectorList, cursor);
+      continue;
+    }
+    if (char === "/" && selectorList[cursor + 1] === "*") {
+      cursor = skipCssComment(selectorList, cursor);
+      continue;
+    }
+    if (char === "\\") {
+      cursor += 2;
+      continue;
+    }
+    if (char === "(" || char === "[") depth += 1;
+    else if ((char === ")" || char === "]") && depth > 0) depth -= 1;
+    else if (char === "," && depth === 0) {
+      parts.push(selectorList.slice(start, cursor));
+      start = cursor + 1;
+    }
+    cursor += 1;
+  }
+  parts.push(selectorList.slice(start));
+  return parts;
+}
+
+export function scopeComponentCss(css: string, scope: string): string {
+  let output = "";
+  let preludeStart = 0;
+  let cursor = 0;
+  while (cursor < css.length) {
+    const char = css[cursor];
+    if (char === "\"" || char === "'") {
+      cursor = skipCssString(css, cursor);
+      continue;
+    }
+    if (char === "/" && css[cursor + 1] === "*") {
+      cursor = skipCssComment(css, cursor);
+      continue;
+    }
+    if (char === "\\") {
+      cursor += 2;
+      continue;
+    }
+    if (char === ";" || char === "}") {
+      // A statement at-rule (`@layer a, b;`), or a stray token: copy it as written.
+      output += css.slice(preludeStart, cursor + 1);
+      cursor += 1;
+      preludeStart = cursor;
+      continue;
+    }
+    if (char !== "{") {
+      cursor += 1;
+      continue;
+    }
+    const raw = css.slice(preludeStart, cursor);
+    const leading = /^(?:\s|\/\*[\s\S]*?\*\/)*/.exec(raw)?.[0] ?? "";
+    const prelude = stripCssComments(raw.slice(leading.length)).trim();
+    const close = matchingCssBrace(css, cursor);
+    const body = css.slice(cursor + 1, close);
+    const closing = close < css.length ? "}" : "";
+    if (prelude.startsWith("@")) {
+      const name = /^@([\w-]+)/.exec(prelude)?.[1]?.toLowerCase() ?? "";
+      output += scopedGroupAtRules.has(name)
+        ? `${leading}${prelude} {${scopeComponentCss(body, scope)}${closing}`
+        : `${raw}{${body}${closing}`;
+    } else {
+      const scopedSelector = splitTopLevelSelectors(prelude)
+        .map((selector) => scopeComponentSelector(selector, scope))
+        .filter(Boolean)
+        .join(",\n");
+      output += `${leading}${scopedSelector} {${body}${closing}`;
+    }
+    cursor = close + 1;
+    preludeStart = cursor;
+  }
+  return output + css.slice(preludeStart);
 }
 
 // The package export stays readable for consumers and source-level proof. Static

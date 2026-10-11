@@ -2,7 +2,7 @@
 // G+ DOM measurement library, story routes and gate skeleton (TCRN-DS-STORY-131, TCRN-DS-SUB-034).
 import test, { after, before } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 import {
@@ -253,4 +253,134 @@ test("the gate runs its self-check first and never passes on a missing story", a
     assert.equal(report.runs.length, 1);
     assert.deepEqual(Object.keys(report.summary), [...CHECK_IDS]);
   }
+});
+
+// TCRN-DS-SUB-035 prerequisite: the static pages copy the package CSS under `.story-body`
+// (apps/storybook/src/build/page-template.tsx). The copy used to cut `:where(:hover,[data-tcrn-preview-state="hover"])`
+// at its inner comma, so the browser dropped every state rule and the scoped base rule won; these tests
+// lock the top-level split, one-line rules and nested group rules. They need the built storybook app.
+const pageTemplateModule = new URL("../apps/storybook/dist/build/page-template.js", import.meta.url);
+const componentCssModule = new URL("../packages/ui-react/dist/index.js", import.meta.url);
+
+async function loadBuilt(moduleUrl) {
+  if (!existsSync(fileURLToPath(moduleUrl))) assert.fail(`build first (pnpm build): ${fileURLToPath(moduleUrl)} is missing`);
+  return import(moduleUrl.href);
+}
+
+// Parses CSS in Chromium (invalid selectors drop their whole rule there) and lists every style rule.
+async function parsedStyleRules(css) {
+  const page = await browser.newPage();
+  try {
+    return await page.evaluate((text) => {
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(text);
+      const rules = [];
+      const walk = (list, context) => {
+        for (const rule of list) {
+          if (rule instanceof CSSStyleRule) rules.push({ selector: rule.selectorText, context });
+          else if (rule instanceof CSSKeyframesRule) continue;
+          else if (rule.cssRules) walk(rule.cssRules, `${context}${rule.cssText.slice(0, rule.cssText.indexOf("{")).trim()} `);
+        }
+      };
+      walk(sheet.cssRules, "");
+      return rules;
+    }, css);
+  } finally {
+    await page.close();
+  }
+}
+
+test("page-template scoping splits a selector list only at its top-level commas", async () => {
+  const { splitTopLevelSelectors } = await loadBuilt(pageTemplateModule);
+  const parts = splitTopLevelSelectors('.tcrn-button:where(:hover,[data-tcrn-preview-state="hover"]), .tcrn-tag[data-label="a,b"],\n.tcrn-row:not(.is-a, .is-b) /* c, d */');
+  assert.deepEqual(parts.map((part) => part.trim()), [
+    '.tcrn-button:where(:hover,[data-tcrn-preview-state="hover"])',
+    '.tcrn-tag[data-label="a,b"]',
+    ".tcrn-row:not(.is-a, .is-b) /* c, d */"
+  ]);
+});
+
+test("page-template scoping keeps state rules, one-line rules and nested group rules", async () => {
+  const { scopeComponentCss } = await loadBuilt(pageTemplateModule);
+  const css = [
+    "/* states { a, b } */",
+    '.tcrn-button,.tcrn-link-button{--tcrn-pair-fill:var(--tcrn-pair-fill-d)}.tcrn-button:where(:hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h)}',
+    '.tcrn-input:where(:focus-visible,[data-tcrn-preview-state="focus"]),',
+    '.tcrn-select:is(:focus-within, [data-tcrn-preview-state="focus"]) {',
+    "  outline: 2px solid var(--tcrn-focus-ring);",
+    "}",
+    ":root{--tcrn-scope-probe:1}",
+    '[data-tcrn-theme="dark"] .tcrn-switch:where(:checked,[aria-checked="true"]){color:red}',
+    '@media (min-width: 720px){.tcrn-row{display:grid}.tcrn-row:where(:hover,[data-tcrn-preview-state="hover"]){gap:4px}}',
+    "@keyframes tcrn-scope-spin{from{transform:rotate(0)}to{transform:rotate(1turn)}}",
+    '.tcrn-after{content:"}"}'
+  ].join("\n");
+  const scoped = scopeComponentCss(css, ".story-body");
+  assert.match(scoped, /\.story-body \.tcrn-button:where\(:hover,\[data-tcrn-preview-state="hover"\]\) \{/);
+  assert.match(scoped, /\.story-body \.tcrn-row:where\(:hover,\[data-tcrn-preview-state="hover"\]\) \{gap:4px\}/);
+  assert.match(scoped, /@keyframes tcrn-scope-spin\{from\{transform:rotate\(0\)\}to\{transform:rotate\(1turn\)\}\}/);
+  assert.match(scoped, /\.story-body \{--tcrn-scope-probe:1\}/);
+  assert.match(scoped, /\.story-body \.tcrn-after \{content:"\}"\}/);
+  const before = await parsedStyleRules(css);
+  const after = await parsedStyleRules(scoped);
+  assert.equal(before.length, 8);
+  assert.equal(after.length, before.length, "no scoped rule may be dropped by the browser");
+  for (const rule of after) {
+    for (const selector of splitTopLevelSelectorsForTest(rule.selector)) {
+      assert.match(selector.trim(), /^(?:\[data-tcrn-theme="dark"\] )?\.story-body\b/, `unscoped selector: ${selector}`);
+    }
+  }
+  assert.ok(after.some((rule) => rule.context.startsWith("@media") && rule.selector.includes('[data-tcrn-preview-state="hover"]')));
+});
+
+function splitTopLevelSelectorsForTest(list) {
+  const parts = [];
+  let depth = 0;
+  let start = 0;
+  for (let index = 0; index < list.length; index += 1) {
+    const char = list[index];
+    if (char === "(" || char === "[") depth += 1;
+    else if (char === ")" || char === "]") depth -= 1;
+    else if (char === "," && depth === 0) {
+      parts.push(list.slice(start, index));
+      start = index + 1;
+    }
+  }
+  parts.push(list.slice(start));
+  return parts;
+}
+
+test("page-template scoping keeps every rule of the package CSS, state rules included", async () => {
+  const { scopeComponentCss } = await loadBuilt(pageTemplateModule);
+  const { tcrnComponentCss } = await loadBuilt(componentCssModule);
+  const before = await parsedStyleRules(tcrnComponentCss);
+  const after = await parsedStyleRules(scopeComponentCss(tcrnComponentCss, ".story-body"));
+  assert.equal(after.length, before.length);
+  const stateRules = (rules) => rules.filter((rule) => rule.selector.includes("data-tcrn-preview-state")).length;
+  assert.ok(stateRules(before) > 0);
+  assert.equal(stateRules(after), stateRules(before));
+  const unscoped = after.flatMap((rule) => splitTopLevelSelectorsForTest(rule.selector).map((selector) => selector.trim())).filter((selector) => !/^(?:(?:html)?\[data-tcrn-theme[^\]]*\] )?\.story-body\b/.test(selector));
+  assert.deepEqual(unscoped, []);
+});
+
+test("the before-bg probe reads the ::before background (the Switch knob)", async () => {
+  const knob = "#ffffff";
+  const track = "#1f4e79";
+  const expect = Math.round(contrastRatio(parseColor(knob), parseColor(track)) * 100) / 100;
+  const html = `<!doctype html><html><head><style>
+    .track { position: relative; display: inline-block; width: 40px; height: 20px; background: ${track}; }
+    .track::before { content: ""; position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; background: ${knob}; }
+  </style></head><body><main data-measure-root><span class="track" data-cell="knob" data-probe="before-bg" data-kind="ui" data-expect="${expect}"></span></main></body></html>`;
+  const [green, red] = await runMeasureTargets({
+    browser,
+    thresholds: THRESHOLDS,
+    targets: [
+      { id: "knob", html, root: "[data-measure-root]", measure: { checks: ["contrast"] } },
+      { id: "knob-mutated", html, root: "[data-measure-root]", measure: { checks: ["contrast"] }, mutationCss: ".track::before { background: #8a8a8a; }" }
+    ]
+  });
+  assert.equal(green.verdict.checks.contrast.status, "pass");
+  assert.equal(green.raw.checks.contrast.cells[0].ratio, expect);
+  assert.equal(red.verdict.checks.contrast.status, "fail");
+  assert.ok(red.raw.checks.contrast.violations[0].reasons.includes("diff"));
 });
