@@ -115,8 +115,11 @@ const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-shell-brand-lockup",
   ".tcrn-shell-brand-lockup__copy",
   ".tcrn-shell-brand-lockup__caption",
-  // The Storybook-only ProductShell static-display modifier and its result-panel rule
-  // were removed with the doc-layer parallel implementations (TCRN-DS-SUB-026).
+  // The ProductShell story's opened static result list, kept in the shell's flow under the doc
+  // container .tcrn-doc-product-shell-search--static-display (TCRN-DS-SUB-100, R3-9). The old
+  // modifier went with TCRN-DS-SUB-026; its position and inset are the registered exception
+  // EX-INIT015-doc-product-shell-search-static, and the entry goes with that exception.
+  ".tcrn-product-shell-search__results",
   // Documented demo-chrome hook — not a duplicate (see comment above):
   ".tcrn-filter-bar"
 ]);
@@ -308,6 +311,14 @@ export const DOC_PACKAGE_CLASS_EXCEPTIONS = Object.freeze([
     ruling: "docs/style-scale.md「Demo-chrome exemption list」Package components placed by doc scaffolding 条：文档保留基础原件 .tcrn-skip-link 的演示放置；包导航证明框属 Navigation 家族演示，TCRN-DS-INIT-015 scope 不授权改动后续批次家族（同 EX-INIT015-navigation）",
     reason: "证明框里的跳转链接未获焦时收成 1px 的读屏隐藏框（position、height、overflow、clip、clip-path、border、padding、transform），获焦时按行内弹性盒显示（display、align-items）；文档壳自己的 .tcrn-skip-link 副本已删（TCRN-DS-SUB-063）",
     until: "Navigation 家族所在批次获得授权、包导航证明框改由包组件呈现跳转链接时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-product-shell-search-static",
+    selectors: ['.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results'],
+    properties: ["position", "inset"],
+    ruling: "runs/r2/judgment.md（TCRN-DS-INIT-015）§2.2 R3-9 与 §3.3 第 4 条：导航壳故事的静态搜索结果用文档前缀类加登记例外留在版面内，不改包；包的绝对定位是正确的运行时行为，Navigation 家族不在授权内",
+    reason: "ProductShell 故事静态展示展开的搜索结果；文档容器让结果列表回到壳的文档流（position static、inset auto），把正文往下推而不是盖住标题与首段，不改颜色、字号与边框",
+    until: "Navigation 家族批次由包提供静态结果展示时删除本条"
   },
   {
     id: "EX-INIT015-doc-shell-brand-collapse",

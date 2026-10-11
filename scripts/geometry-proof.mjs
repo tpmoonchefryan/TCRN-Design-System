@@ -18,6 +18,12 @@ const badgeStory = "navigation-product-shell-spec";
 const brandStory = "owner-quality-product-shell";
 const searchStory = "navigation-product-shell-spec";
 const collapsedVariant = "desktop-light-operations-cockpit-collapsed";
+// Open menus ([aria-expanded="true"]) on the search route: the docs sidebar toggle, the docs
+// "Navigation and shells" category toggle, the knowledge-base shell sidebar toggle, the
+// ProductShell story disclosure, the ProductShell side-nav toggle and the ProductShell search
+// combobox. It was 8 until the dense operations shell prototype and its two menu buttons
+// ("Open compact operations hub", "Open dense navigation menu") were retired (TCRN-DS-SUB-066).
+const EXPECTED_OPEN_MENUS = 6;
 
 function contentType(path) {
   switch (extname(path)) {
@@ -202,7 +208,7 @@ async function measureBrandCopies(page) {
 }
 
 async function measureSearchOverlay(page) {
-  return page.evaluate((storyId) => {
+  return page.evaluate(({ storyId, expectedOpenMenus }) => {
     const root = document.querySelector(`article[data-story-id="${storyId}"]`);
     const rect = (node) => {
       if (!node) return null;
@@ -248,9 +254,9 @@ async function measureSearchOverlay(page) {
       overlays,
       textTargets,
       collisions,
-      ok: openMenus === 8 && overlays.length > 0 && collisions.length === 0
+      ok: openMenus === expectedOpenMenus && overlays.length > 0 && collisions.length === 0
     };
-  }, searchStory);
+  }, { storyId: searchStory, expectedOpenMenus: EXPECTED_OPEN_MENUS });
 }
 
 async function addMutation(page, cssText) {
