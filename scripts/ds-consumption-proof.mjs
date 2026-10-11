@@ -377,6 +377,10 @@ async function measureRenderedMarkup(browser, kind, markup, viewportWidth = 720)
         // Native Select owns its internal option viewport. Its UA overflow does
         // not conceal the form's labels, control border boxes or tools.
         if (node instanceof HTMLSelectElement) return false;
+        // G+ Inputs draw the Select chevron and the DatePicker calendar as Icon SVGs
+        // (TCRN-DS-SUB-021, icons.json). An SVG's user-agent overflow: hidden clips only its
+        // own graphic to its viewport, the same way the native Select owns its option viewport.
+        if (node instanceof SVGElement) return false;
         const style = getComputedStyle(node);
         return style.overflowX === "hidden" || style.overflowY === "hidden";
       });
@@ -446,6 +450,7 @@ async function measureRenderedMarkup(browser, kind, markup, viewportWidth = 720)
           settingVisible: visible(setting),
           layoutVisible: visible(layout),
           hiddenOverflowCount: hiddenOverflowNodes.length,
+          hiddenOverflowNodes: hiddenOverflowNodes.slice(0, 12).map((node) => `${node.tagName.toLowerCase()}.${String(node.getAttribute("class") ?? "").trim().split(/\s+/).join(".")}`),
           settings: settingsContent ? {
             contentRect: regionRect(settingsContent),
             stackThresholdPx: Number.parseFloat(layout.getAttribute("data-settings-content-breakpoint")),
