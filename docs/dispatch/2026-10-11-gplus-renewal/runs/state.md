@@ -100,11 +100,11 @@
 | P9 | 主力 | 已合入 c4e638f | e915306 | 3 张判据达成；clipped 288 → 0、axe 82 → 24（92 个后缀节点豁免）；问题 6 条去向见 RM6；tmp/r2-P9 约 6 MB 证据留到验收后 |
 | P2 | 主力 | 已合入 0e7fba1 | 286d452 | RM1、SUB-055、SUB-058 达成；SUB-052 部分（余 4 条字面值 → RM8/O-6）；tokens.css 与 storybook.css 字节不变；11 门全绿；RM9–RM11 |
 | P5 | 主力 | 已合入 bc71e9d | c4e638f | 4 张判据达成；doc:sample-style 文档层 72 → 0；12 段 tokens:proof 全绿；shell:parity 与 storybook:smoke 余红见 RM12 |
-| P6 | 主力 | 在跑 | 3560602 | SUB-066 → 067 → 068 → 080 → 081 → 082；附件 P6-handoffs.md |
+| P6 | 主力 | 已合入 a7c12a6 | 3560602 | 5 张达成，SUB-080 未达成（RM15）；navigation-focused-shells-spec 回到 2000px 内；smoke 余红两根因（RM15 #3、#4） |
 | P8 | 主力 | 已合入 890ec86 | c8bfbc8 | 2 张判据达成；两道几何门只红在样板 rail（O-1）；RM13 |
 | P10 | 主力 | 已合入 18fa3e9 | bc71e9d | SUB-079 达成（Actions 28 → 0）；带出 RM14 两处集成红 → I1 |
 | I1 | 主力 | 在跑 | 88584ae | 集成修复 RM14：Clipboard.test.tsx 断言、client-scripts.ts 分段翻译；本批后续集成冲突续用该代理（id 记在 scratch `r2-agents.txt`） |
-| P11 | 经济 | 待 P1–P10 全部合入 | — | 摘录附各包 handoff 中与 SUB-087 有关的行为变化（RM11）；RM2/RM9 不插入本批 |
+| P11 | 经济 | 在跑 | 见提交 | SUB-086 → 051 → 054 → 087；附件 P11-r2-digest.md（RM 清单与各包回显）；RM9 不在范围 |
 | P12 | 经济 | 待 P11 合入 | — | 末项 SUB-046 |
 
 ## 下一步
