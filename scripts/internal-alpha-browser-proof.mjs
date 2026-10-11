@@ -1322,8 +1322,14 @@ const browserProofReproducibility = {
   normalizedProjectionDigests: reproducibilityBytes.map((bytes) => hashText(bytes)),
   projections: reproducibilityProbes.map((probe) => probe.projection)
 };
+// The page holds six expanded controls ([aria-expanded="true"], counted over the whole document as
+// before): the doc sidebar toggle, the navigation-shells category toggle, the knowledge-shell sidebar
+// toggle, the ProductShell story disclosure, the ProductShell side-nav toggle and the open ProductShell
+// search. The other two of the former eight were the prototype menu buttons ("Open compact operations
+// hub", "Open dense navigation menu") that left with the dense shell prototype (TCRN-DS-SUB-066,
+// delete-demo), so 8 -> 6 (R2 judgment §3.3 B ruling; R3 integration item I-P2b-3).
 browserProofReproducibility.ok = browserProofReproducibility.normalizedBytesEqual
-  && reproducibilityProbes.every((probe) => probe.projection.openMenus === 8);
+  && reproducibilityProbes.every((probe) => probe.projection.openMenus === 6);
 
 const storybookPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#components`);
