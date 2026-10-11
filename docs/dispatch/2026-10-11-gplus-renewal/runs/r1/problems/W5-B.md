@@ -1,0 +1,16 @@
+# 问题清单 · W5-B（SUB-032 → SUB-033）
+
+只记不修。局部门：映射 JSON 解析通过；`run build` 通过；`node --test tests/storybook-visual-proof.test.mjs` 16/16 通过；`node scripts/storybook-visual-proof.mjs` 按预期不通过（退出码 1），原因全部列在下表。逐行明细见 `docs/verification/storybook-visual-proof/gplus-map-report.md`（在 HEAD ab00f44 上生成）。
+
+| # | 类别 | 事实 | 建议 |
+| --- | --- | --- | --- |
+| P1 | 渲染缺陷 · 依赖 page-template 作用域修复 | 浅色主题下状态格停在默认态：actions-matrix 116 格里 58 格偏离，全是 h/a/x/s 态与 grp-sel（例 pri-h-l 实测 6.35、期望 7.51；quiet-h-l 8.58 / 17.04；禁用格 pri-x-l 6.35 / 5.10），实测值等于同变体 d 态；icon-matrix 的 dis-l/n，inputs-matrix 的 in-ro、in-dis、search-focus 同型。与 W4-A 交回问题清单第 1 条（静态页组件 CSS 作用域改写按逗号切开 `:where()`，状态规则失效）一致。 | W5-C 修 `apps/storybook/src/build/page-template.tsx` 后批末重跑本门；修后仍偏离的格再逐条看。 |
+| P2 | 渲染缺陷 · 依赖浅色主题块 | 夜间页面主题下，矩阵的浅色块读到夜间 token：typography 21 格、icon 13 格、brand 4 格、actions 58 格、inputs 20 格偏离（例 h1-l 实测 14.38 = 夜间值，期望 18.29）。brand-matrix 浅色页面主题 10 格全过，只在夜间页面主题红。与 W4-A 交回集外改动 2（补 `[data-tcrn-theme="light"]` 主题块）同根。 | 按 W4-A 交回补浅色主题块后重跑。 |
+| P3 | 渲染缺陷 · 缺格 | inputs-matrix 声明 `data-gplus-matrix-cell-count=42`，实际只渲染 40 个 data-cell：缺 opt-sel-l、opt-sel-n（契约与画板都有，期望 16.18 / 12.15）。story 用 `cellEdit('aria-selected="true"', cell("opt-sel"))` 打格，静态标记里没有命中这个标记（列表项未展开或属性不在）。 | `apps/storybook/src/contract-stories/gplus/matrix-stories.tsx` 的 owner 让选中项静态可见并带格；改后 inputs.B 的格数检查转绿。 |
+| P4 | 渲染缺陷 · 勾选类标记测不到 | inputs-matrix 的 ck-on、ck-dis（探针 after-border）与 rd-on（探针 after-shadow）两种主题都测得 1.00（标记色等于底色），期望 6.35 / 5.10 / 6.35（夜间 8.08 / 4.09 / 8.44）。探针与画板一致，读到的是 ::after 的边色与阴影色，说明包内勾选与单选的已选态标记没按对表上色，或画法与画板不同。可能与 P1 同根（已选态规则同样写在 `:where()` 里）。 | P1 修复后复核；仍为 1.00 时由 Inputs 家族包核对 Checkbox / Radio 的已选态伪元素。 |
+| P5 | 测量库缺口 · 记差异 DIFF-6 | 包内 Switch 用 ::before 画钮，story 的 sw-on 格探针是 `before-bg`；`scripts/lib/gplus-measure.mjs` 的探针表只有 ph、shadow、border、after-border、after-shadow、after-bg，`before-bg` 记 unknown_probe，sw-on-l / sw-on-n 两格永远判红（与 W4-A 交回「测量库需支持」一致）。本包按约定 9 不改库。 | 由主线程指定的库 owner 在探针表加 `before-bg`（读 `::before` 的背景色），并补一条夹具；改后本门无需改动。 |
+| P6 | 渲染偏离 · 根因未定 | 不属状态格、也不属浅色块的偏离：inputs err-msg-l 6.20 / 6.69、err-msg-n 6.27 / 6.88（错误文字墨色，契约 ink=bad）；typography sel-l 8.58 / 16.18、sel-n 7.23 / 12.15；icon ink-wash-l 18.29 / 16.18、ink-wash-n 14.38 / 12.15（洗底未生效）。 | P1、P2 修复后复核；仍偏离的按格查 token 或 story 标记。 |
+| P7 | 样板 story 缺席（预期） | 本包树注册表没有五个样板 story（W5-A 并行），全量跑门时 story 清单对账报「映射引用而注册表没有」5 个，10 个样板行 story_not_measured，rail 变异 story_missing 未执行。`--kind matrix` 只判 12 个矩阵行，对账一致、8 条变异全部判红。 | W5-A 合并后在集成分支重跑全量门。样板行要求 rail 适用：样板 story 须带 `data-shell` 与 `data-guide="rail"` / `data-text="rail"` 钩子；rail 变异写在 typography-sample-billing 上。 |
+| P8 | 钩子缺失 · controlHeight 与 rail | 五个矩阵 story 没有 `data-h` 与 `data-shell`，controlHeight 与 rail 在矩阵行全部 n/a（矩阵行的 requiredChecks 不含这两项，所以不判红）。controlHeight 的变异改用 controlSelector 指定主按钮。 | 若验收要求矩阵行量控件高，由矩阵 story 的 owner 给控件加 `data-h`，再把 controlHeight 加进对应行的 requiredChecks。 |
+| P9 | 接线（本包文件集外） | 根 `package.json` 的 `storybook:visual-proof` 已指向本门，但 verify 不跑它；README.md 第 85 行写 `pnpm storybook:visual-proof -- --check`（本门接受并忽略 `--check`）；`apps/storybook/src/build/foundation-visual-standards.ts` 第 546 行只说旧像素基线退役，没提本门。 | 由主线程或 W8-A 决定是否接入 verify，并顺手改两处文字。 |
+| P10 | 设计差异待 Owner（已记入映射） | DIFF-1（构图一壳层几何，P1）、DIFF-2（构图三无 story，P1）、DIFF-3（底盘板 kv 212 / 48 与构图板 220 / 52 不一致，P1）、DIFF-8（产品标六档阶梯与贴片没有 story）标「待 Owner 裁定」。 | 收口汇报成批列给 Owner。 |

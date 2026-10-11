@@ -1,0 +1,4336 @@
+{
+  "schemaVersion": "tcrn.ds.storybook-visual-proof.gplus-map.v1",
+  "measureSchemaVersion": "tcrn.ds.gplus-measure.v1",
+  "generatedAtUtc": "2026-10-11T00:55:39.636Z",
+  "head": "ab00f44a7bd279a2c2cb1fe8a273bd4c5ee354f9",
+  "ok": false,
+  "reason": null,
+  "scope": {
+    "kinds": [
+      "matrix",
+      "sample"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "locale": "en",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "thresholdsSource": "scripts/geometry-measure-proof.mjs THRESHOLDS",
+  "thresholds": {
+    "clip": {
+      "maxLeaks": 0,
+      "tolerancePx": 0.5
+    },
+    "singleLine": {
+      "maxLines": 1
+    },
+    "shadowBlur": {
+      "maxBlurPx": 3
+    },
+    "rail": {
+      "guideLeftPx": 16,
+      "textLeftPx": 48,
+      "tolerancePx": 0.5
+    },
+    "rowAlign": {
+      "maxSpreadPx": 0.5
+    },
+    "mark": {
+      "maxViolations": 0
+    },
+    "contrast": {
+      "maxDiff": 0.05,
+      "minText": 4.5,
+      "minNonText": 3
+    },
+    "controlHeight": {
+      "allowedPx": [
+        28,
+        32,
+        40
+      ],
+      "tolerancePx": 0.5
+    },
+    "overlap": {
+      "maxOverlaps": 0,
+      "minIntersectPx": 1
+    }
+  },
+  "eightMeasurements": [
+    "clip",
+    "singleLine",
+    "shadowBlur",
+    "rail",
+    "rowAlign",
+    "mark",
+    "contrast",
+    "controlHeight"
+  ],
+  "additionalChecks": [
+    "overlap"
+  ],
+  "map": {
+    "path": "docs/design/gplus-2026-10/storybook-map.json",
+    "rows": 22,
+    "rowsInScope": 22,
+    "unmapped": 25,
+    "differences": 8,
+    "differencesPendingOwner": [
+      "DIFF-1",
+      "DIFF-2",
+      "DIFF-3",
+      "DIFF-8"
+    ],
+    "problems": []
+  },
+  "coverage": {
+    "ok": true,
+    "boards": 10,
+    "sections": {
+      "V2-Rejections.dc.html": [],
+      "V2-GPlus.dc.html": [],
+      "V2-GPlus-Compositions.dc.html": [],
+      "V2-Families.dc.html": [],
+      "V2-B1-Typography.dc.html": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G"
+      ],
+      "V2-B1-Icon.dc.html": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "V2-B1-Brand.dc.html": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "V2-B1-Actions.dc.html": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "V2-B1-Inputs.dc.html": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "V2-B2-Logos-Draft.dc.html": [
+        "A–E",
+        "F",
+        "G",
+        "H",
+        "I"
+      ]
+    },
+    "missingBoards": [],
+    "unknownBoards": [],
+    "unreadableBoards": [],
+    "missingSections": [],
+    "unknownSections": []
+  },
+  "stories": {
+    "ok": false,
+    "kinds": [
+      "matrix",
+      "sample"
+    ],
+    "mapStories": [
+      "typography-matrix",
+      "typography-sample-billing",
+      "icon-matrix",
+      "icon-sample-project",
+      "brand-matrix",
+      "brand-sample-product",
+      "actions-matrix",
+      "actions-sample-project",
+      "inputs-matrix",
+      "inputs-sample-members"
+    ],
+    "storyList": [
+      {
+        "id": "typography-matrix",
+        "kind": "matrix",
+        "categoryId": "gplus-matrices",
+        "inRegistry": true
+      },
+      {
+        "id": "icon-matrix",
+        "kind": "matrix",
+        "categoryId": "gplus-matrices",
+        "inRegistry": true
+      },
+      {
+        "id": "brand-matrix",
+        "kind": "matrix",
+        "categoryId": "gplus-matrices",
+        "inRegistry": true
+      },
+      {
+        "id": "actions-matrix",
+        "kind": "matrix",
+        "categoryId": "gplus-matrices",
+        "inRegistry": true
+      },
+      {
+        "id": "inputs-matrix",
+        "kind": "matrix",
+        "categoryId": "gplus-matrices",
+        "inRegistry": true
+      },
+      {
+        "id": "typography-sample-billing",
+        "kind": "sample",
+        "categoryId": null,
+        "inRegistry": false
+      },
+      {
+        "id": "icon-sample-project",
+        "kind": "sample",
+        "categoryId": null,
+        "inRegistry": false
+      },
+      {
+        "id": "brand-sample-product",
+        "kind": "sample",
+        "categoryId": null,
+        "inRegistry": false
+      },
+      {
+        "id": "actions-sample-project",
+        "kind": "sample",
+        "categoryId": null,
+        "inRegistry": false
+      },
+      {
+        "id": "inputs-sample-members",
+        "kind": "sample",
+        "categoryId": null,
+        "inRegistry": false
+      }
+    ],
+    "notInList": [],
+    "notInRegistry": [
+      "typography-sample-billing",
+      "icon-sample-project",
+      "brand-sample-product",
+      "actions-sample-project",
+      "inputs-sample-members"
+    ],
+    "notInMap": []
+  },
+  "rows": [
+    {
+      "row": "typography.A",
+      "board": "V2-B1-Typography.dc.html",
+      "section": "A",
+      "storyId": "typography-matrix",
+      "storybookId": "typography--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "clip",
+        "singleLine",
+        "shadowBlur",
+        "mark",
+        "overlap"
+      ],
+      "differences": [
+        "DIFF-4",
+        "DIFF-7"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:contrast",
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 28,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 8,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 44,
+              "value": 7.6,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "cell": "sel-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.58,
+                  "expect": 16.18,
+                  "diff": -7.6,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sel-n",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 12.15,
+                  "diff": -4.92,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 49,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 28,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 8,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 44,
+              "value": 8.95,
+              "violationCount": 22,
+              "violations": [
+                {
+                  "cell": "h1-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "h2-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "h3-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "h4-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "body-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 8.58,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "strong-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "read-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 8.58,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "meta-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 49,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        }
+      },
+      "route": "/components-gplus-matrices.html#typography-matrix"
+    },
+    {
+      "row": "typography.B",
+      "board": "V2-B1-Typography.dc.html",
+      "section": "B",
+      "storyId": "typography-matrix",
+      "storybookId": "typography--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "contrast"
+      ],
+      "differences": [
+        "DIFF-4"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:contrast",
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 28,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 8,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 44,
+              "value": 7.6,
+              "violationCount": 2,
+              "violations": [
+                {
+                  "cell": "sel-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.58,
+                  "expect": 16.18,
+                  "diff": -7.6,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sel-n",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 12.15,
+                  "diff": -4.92,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 49,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 44,
+            "contract": "typography",
+            "rendered": 44,
+            "unique": 44,
+            "declared": 44,
+            "missing": [],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": true
+          }
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 28,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 8,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 44,
+              "value": 8.95,
+              "violationCount": 22,
+              "violations": [
+                {
+                  "cell": "h1-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "h2-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "h3-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "h4-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "body-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 8.58,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "strong-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "read-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 8.58,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "meta-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 49,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 44,
+            "contract": "typography",
+            "rendered": 44,
+            "unique": 44,
+            "declared": 44,
+            "missing": [],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": true
+          }
+        }
+      },
+      "route": "/components-gplus-matrices.html#typography-matrix"
+    },
+    {
+      "row": "typography.D",
+      "board": "V2-B1-Typography.dc.html",
+      "section": "D",
+      "storyId": "typography-sample-billing",
+      "storybookId": "typography--sample-billing",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "icon.A",
+      "board": "V2-B1-Icon.dc.html",
+      "section": "A",
+      "storyId": "icon-matrix",
+      "storybookId": "icon--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "clip",
+        "singleLine",
+        "shadowBlur",
+        "overlap"
+      ],
+      "differences": [
+        "DIFF-4",
+        "DIFF-7"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:contrast",
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 12,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 14,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 28,
+              "value": 13.19,
+              "violationCount": 4,
+              "violations": [
+                {
+                  "cell": "ink-wash-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 16.18,
+                  "diff": 2.11,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "dis-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": true,
+                  "ratio": 18.29,
+                  "expect": 5.1,
+                  "diff": 13.19,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink-wash-n",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 12.15,
+                  "diff": 2.23,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "dis-n",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": true,
+                  "ratio": 14.38,
+                  "expect": 4.09,
+                  "diff": 10.29,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 23,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 12,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 14,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 28,
+              "value": 10.29,
+              "violationCount": 15,
+              "violations": [
+                {
+                  "cell": "roster-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 8.58,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink2-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 8.58,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink3-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "acc-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 8.44,
+                  "expect": 6.35,
+                  "diff": 2.09,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "onacc-acc-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 6.35,
+                  "diff": 1.73,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink-wash-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 16.18,
+                  "diff": -1.8,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "red-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 6.78,
+                  "expect": 8.23,
+                  "diff": -1.45,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 23,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        }
+      },
+      "route": "/components-gplus-matrices.html#icon-matrix"
+    },
+    {
+      "row": "icon.B",
+      "board": "V2-B1-Icon.dc.html",
+      "section": "B",
+      "storyId": "icon-matrix",
+      "storybookId": "icon--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "contrast"
+      ],
+      "differences": [
+        "DIFF-4"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:contrast",
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 12,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 14,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 28,
+              "value": 13.19,
+              "violationCount": 4,
+              "violations": [
+                {
+                  "cell": "ink-wash-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 16.18,
+                  "diff": 2.11,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "dis-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": true,
+                  "ratio": 18.29,
+                  "expect": 5.1,
+                  "diff": 13.19,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink-wash-n",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 12.15,
+                  "diff": 2.23,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "dis-n",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": true,
+                  "ratio": 14.38,
+                  "expect": 4.09,
+                  "diff": 10.29,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 23,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 28,
+            "contract": "icon",
+            "rendered": 28,
+            "unique": 28,
+            "declared": 28,
+            "missing": [],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": true
+          }
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 12,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 14,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 28,
+              "value": 10.29,
+              "violationCount": 15,
+              "violations": [
+                {
+                  "cell": "roster-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 8.58,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink2-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 7.23,
+                  "expect": 8.58,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink3-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "acc-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 8.44,
+                  "expect": 6.35,
+                  "diff": 2.09,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "onacc-acc-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 6.35,
+                  "diff": 1.73,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ink-wash-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 16.18,
+                  "diff": -1.8,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "red-panel-l",
+                  "probe": "color",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 6.78,
+                  "expect": 8.23,
+                  "diff": -1.45,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 23,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 28,
+            "contract": "icon",
+            "rendered": 28,
+            "unique": 28,
+            "declared": 28,
+            "missing": [],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": true
+          }
+        }
+      },
+      "route": "/components-gplus-matrices.html#icon-matrix"
+    },
+    {
+      "row": "icon.D",
+      "board": "V2-B1-Icon.dc.html",
+      "section": "D",
+      "storyId": "icon-sample-project",
+      "storybookId": "icon--sample-project",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "brand.A",
+      "board": "V2-B1-Brand.dc.html",
+      "section": "A",
+      "storyId": "brand-matrix",
+      "storybookId": "brand--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "clip",
+        "singleLine",
+        "shadowBlur",
+        "overlap"
+      ],
+      "differences": [
+        "DIFF-4",
+        "DIFF-7"
+      ],
+      "ok": false,
+      "reasons": [
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": true,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 48,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 2,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "pass",
+              "checked": 10,
+              "value": 0,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 57,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [],
+          "requiredNotApplicable": []
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 48,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 2,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 10,
+              "value": 3.91,
+              "violationCount": 4,
+              "violations": [
+                {
+                  "cell": "tagline-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "wm-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "suffix-ink-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "rail-wm-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 15.31,
+                  "expect": 15.75,
+                  "diff": -0.44,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 57,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        }
+      },
+      "route": "/components-gplus-matrices.html#brand-matrix"
+    },
+    {
+      "row": "brand.B",
+      "board": "V2-B1-Brand.dc.html",
+      "section": "B",
+      "storyId": "brand-matrix",
+      "storybookId": "brand--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "contrast"
+      ],
+      "differences": [
+        "DIFF-4"
+      ],
+      "ok": false,
+      "reasons": [
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": true,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 48,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 2,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "pass",
+              "checked": 10,
+              "value": 0,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 57,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 10,
+            "contract": "brand",
+            "rendered": 10,
+            "unique": 10,
+            "declared": 10,
+            "missing": [],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": true
+          }
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 48,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 2,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 10,
+              "value": 3.91,
+              "violationCount": 4,
+              "violations": [
+                {
+                  "cell": "tagline-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "wm-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "suffix-ink-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "rail-wm-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 15.31,
+                  "expect": 15.75,
+                  "diff": -0.44,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 57,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 10,
+            "contract": "brand",
+            "rendered": 10,
+            "unique": 10,
+            "declared": 10,
+            "missing": [],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": true
+          }
+        }
+      },
+      "route": "/components-gplus-matrices.html#brand-matrix"
+    },
+    {
+      "row": "brand.D",
+      "board": "V2-B1-Brand.dc.html",
+      "section": "D",
+      "storyId": "brand-sample-product",
+      "storybookId": "brand--sample-product",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "actions.A",
+      "board": "V2-B1-Actions.dc.html",
+      "section": "A",
+      "storyId": "actions-matrix",
+      "storybookId": "actions--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "clip",
+        "singleLine",
+        "shadowBlur",
+        "overlap"
+      ],
+      "differences": [
+        "DIFF-4",
+        "DIFF-5",
+        "DIFF-7"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:contrast",
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 462,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 104,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 136,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 116,
+              "value": 13.19,
+              "violationCount": 58,
+              "violations": [
+                {
+                  "cell": "pri-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 6.35,
+                  "expect": 7.51,
+                  "diff": -1.16,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-a-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 6.35,
+                  "expect": 9.43,
+                  "diff": -3.08,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-x-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 6.35,
+                  "expect": 5.1,
+                  "diff": 1.25,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 17.06,
+                  "diff": 1.23,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-a-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 14.52,
+                  "diff": 3.77,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-x-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 18.29,
+                  "expect": 5.1,
+                  "diff": 13.19,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-s-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 16.18,
+                  "diff": 2.11,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "quiet-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.58,
+                  "expect": 17.04,
+                  "diff": -8.46,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 41,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 462,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 104,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 136,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 116,
+              "value": 10.29,
+              "violationCount": 87,
+              "violations": [
+                {
+                  "cell": "pri-d-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 6.35,
+                  "diff": 1.73,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 7.51,
+                  "diff": 0.57,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-a-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 9.43,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-f-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 6.35,
+                  "diff": 1.73,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-x-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 8.08,
+                  "expect": 5.1,
+                  "diff": 2.98,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-l-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 6.35,
+                  "diff": 1.73,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-d-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 17.06,
+                  "diff": -2.68,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 41,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        }
+      },
+      "route": "/components-gplus-matrices.html#actions-matrix"
+    },
+    {
+      "row": "actions.B",
+      "board": "V2-B1-Actions.dc.html",
+      "section": "B",
+      "storyId": "actions-matrix",
+      "storybookId": "actions--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "contrast"
+      ],
+      "differences": [
+        "DIFF-4",
+        "DIFF-5"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:contrast",
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 462,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 104,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 136,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 116,
+              "value": 13.19,
+              "violationCount": 58,
+              "violations": [
+                {
+                  "cell": "pri-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 6.35,
+                  "expect": 7.51,
+                  "diff": -1.16,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-a-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 6.35,
+                  "expect": 9.43,
+                  "diff": -3.08,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-x-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 6.35,
+                  "expect": 5.1,
+                  "diff": 1.25,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 17.06,
+                  "diff": 1.23,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-a-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 14.52,
+                  "diff": 3.77,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-x-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 18.29,
+                  "expect": 5.1,
+                  "diff": 13.19,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-s-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 16.18,
+                  "diff": 2.11,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "quiet-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.58,
+                  "expect": 17.04,
+                  "diff": -8.46,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 41,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 116,
+            "contract": "actions",
+            "rendered": 116,
+            "unique": 116,
+            "declared": 116,
+            "missing": [],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": true
+          }
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 462,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 104,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 136,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "pass",
+              "checked": 4,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 116,
+              "value": 10.29,
+              "violationCount": 87,
+              "violations": [
+                {
+                  "cell": "pri-d-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 6.35,
+                  "diff": 1.73,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 7.51,
+                  "diff": 0.57,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-a-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 9.43,
+                  "diff": -1.35,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-f-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 6.35,
+                  "diff": 1.73,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-x-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 8.08,
+                  "expect": 5.1,
+                  "diff": 2.98,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "pri-l-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 8.08,
+                  "expect": 6.35,
+                  "diff": 1.73,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-d-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "sec-h-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 17.06,
+                  "diff": -2.68,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 41,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 116,
+            "contract": "actions",
+            "rendered": 116,
+            "unique": 116,
+            "declared": 116,
+            "missing": [],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": true
+          }
+        }
+      },
+      "route": "/components-gplus-matrices.html#actions-matrix"
+    },
+    {
+      "row": "actions.D",
+      "board": "V2-B1-Actions.dc.html",
+      "section": "D",
+      "storyId": "actions-sample-project",
+      "storybookId": "actions--sample-project",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "inputs.A",
+      "board": "V2-B1-Inputs.dc.html",
+      "section": "A",
+      "storyId": "inputs-matrix",
+      "storybookId": "inputs--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "clip",
+        "singleLine",
+        "shadowBlur",
+        "overlap"
+      ],
+      "differences": [
+        "DIFF-4",
+        "DIFF-5",
+        "DIFF-7"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:contrast",
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 32,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 52,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 40,
+              "value": 13.19,
+              "violationCount": 16,
+              "violations": [
+                {
+                  "cell": "in-ro-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 17.06,
+                  "diff": 1.23,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-dis-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 18.29,
+                  "expect": 5.1,
+                  "diff": 13.19,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "err-msg-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 6.2,
+                  "expect": 6.69,
+                  "diff": -0.49,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "search-focus-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 16.18,
+                  "expect": 18.29,
+                  "diff": -2.11,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ck-on-l",
+                  "probe": "after-border",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 1,
+                  "expect": 6.35,
+                  "diff": -5.35,
+                  "reasons": [
+                    "diff",
+                    "below_minimum"
+                  ]
+                },
+                {
+                  "cell": "ck-dis-l",
+                  "probe": "after-border",
+                  "kind": "icon",
+                  "exempt": true,
+                  "ratio": 1,
+                  "expect": 5.1,
+                  "diff": -4.1,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "rd-on-l",
+                  "probe": "after-shadow",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 1,
+                  "expect": 6.35,
+                  "diff": -5.35,
+                  "reasons": [
+                    "diff",
+                    "below_minimum"
+                  ]
+                },
+                {
+                  "cell": "sw-on-l",
+                  "probe": "before-bg",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": null,
+                  "expect": 6.35,
+                  "diff": null,
+                  "reasons": [
+                    "unknown_probe"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 59,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 32,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 52,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 40,
+              "value": 10.29,
+              "violationCount": 28,
+              "violations": [
+                {
+                  "cell": "in-ph-l",
+                  "probe": "ph",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-text-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-focus-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-ro-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 17.06,
+                  "diff": -2.68,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-dis-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 14.38,
+                  "expect": 5.1,
+                  "diff": 9.28,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-err-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "err-msg-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 6.27,
+                  "expect": 6.69,
+                  "diff": -0.42,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "search-focus-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 12.15,
+                  "expect": 18.29,
+                  "diff": -6.14,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 59,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        }
+      },
+      "route": "/components-gplus-matrices.html#inputs-matrix"
+    },
+    {
+      "row": "inputs.B",
+      "board": "V2-B1-Inputs.dc.html",
+      "section": "B",
+      "storyId": "inputs-matrix",
+      "storybookId": "inputs--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "contrast"
+      ],
+      "differences": [
+        "DIFF-4",
+        "DIFF-5",
+        "DIFF-6"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:contrast",
+        "light:cells",
+        "dark:contrast",
+        "dark:cells"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 32,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 52,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 40,
+              "value": 13.19,
+              "violationCount": 16,
+              "violations": [
+                {
+                  "cell": "in-ro-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 18.29,
+                  "expect": 17.06,
+                  "diff": 1.23,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-dis-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 18.29,
+                  "expect": 5.1,
+                  "diff": 13.19,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "err-msg-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 6.2,
+                  "expect": 6.69,
+                  "diff": -0.49,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "search-focus-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 16.18,
+                  "expect": 18.29,
+                  "diff": -2.11,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "ck-on-l",
+                  "probe": "after-border",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 1,
+                  "expect": 6.35,
+                  "diff": -5.35,
+                  "reasons": [
+                    "diff",
+                    "below_minimum"
+                  ]
+                },
+                {
+                  "cell": "ck-dis-l",
+                  "probe": "after-border",
+                  "kind": "icon",
+                  "exempt": true,
+                  "ratio": 1,
+                  "expect": 5.1,
+                  "diff": -4.1,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "rd-on-l",
+                  "probe": "after-shadow",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": 1,
+                  "expect": 6.35,
+                  "diff": -5.35,
+                  "reasons": [
+                    "diff",
+                    "below_minimum"
+                  ]
+                },
+                {
+                  "cell": "sw-on-l",
+                  "probe": "before-bg",
+                  "kind": "icon",
+                  "exempt": false,
+                  "ratio": null,
+                  "expect": 6.35,
+                  "diff": null,
+                  "reasons": [
+                    "unknown_probe"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 59,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 42,
+            "contract": "inputs",
+            "rendered": 40,
+            "unique": 40,
+            "declared": 42,
+            "missing": [
+              "opt-sel-l",
+              "opt-sel-n"
+            ],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": false
+          }
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 32,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 52,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 40,
+              "value": 10.29,
+              "violationCount": 28,
+              "violations": [
+                {
+                  "cell": "in-ph-l",
+                  "probe": "ph",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-text-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-focus-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-ro-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 17.06,
+                  "diff": -2.68,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-dis-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": true,
+                  "ratio": 14.38,
+                  "expect": 5.1,
+                  "diff": 9.28,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "in-err-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "err-msg-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 6.27,
+                  "expect": 6.69,
+                  "diff": -0.42,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "search-focus-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 12.15,
+                  "expect": 18.29,
+                  "diff": -6.14,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 59,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": [],
+          "cells": {
+            "expected": 42,
+            "contract": "inputs",
+            "rendered": 40,
+            "unique": 40,
+            "declared": 42,
+            "missing": [
+              "opt-sel-l",
+              "opt-sel-n"
+            ],
+            "extra": [],
+            "duplicated": [],
+            "expectMismatches": [],
+            "notOnBoard": [],
+            "ok": false
+          }
+        }
+      },
+      "route": "/components-gplus-matrices.html#inputs-matrix"
+    },
+    {
+      "row": "inputs.D",
+      "board": "V2-B1-Inputs.dc.html",
+      "section": "D",
+      "storyId": "inputs-sample-members",
+      "storybookId": "inputs--sample-members",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "compositions.1.typography",
+      "board": "V2-GPlus-Compositions.dc.html",
+      "section": "构图一",
+      "storyId": "typography-sample-billing",
+      "storybookId": "typography--sample-billing",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1",
+        "DIFF-3"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "compositions.1.icon",
+      "board": "V2-GPlus-Compositions.dc.html",
+      "section": "构图一",
+      "storyId": "icon-sample-project",
+      "storybookId": "icon--sample-project",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1",
+        "DIFF-3"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "compositions.1.brand",
+      "board": "V2-GPlus-Compositions.dc.html",
+      "section": "构图一",
+      "storyId": "brand-sample-product",
+      "storybookId": "brand--sample-product",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1",
+        "DIFF-3"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "compositions.1.actions",
+      "board": "V2-GPlus-Compositions.dc.html",
+      "section": "构图一",
+      "storyId": "actions-sample-project",
+      "storybookId": "actions--sample-project",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1",
+        "DIFF-3"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "compositions.1.inputs",
+      "board": "V2-GPlus-Compositions.dc.html",
+      "section": "构图一",
+      "storyId": "inputs-sample-members",
+      "storybookId": "inputs--sample-members",
+      "kind": "sample",
+      "requiredChecks": [
+        "rail"
+      ],
+      "differences": [
+        "DIFF-1",
+        "DIFF-3"
+      ],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
+      "themes": {
+        "light": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        },
+        "dark": {
+          "ok": false,
+          "checks": {},
+          "failed": [],
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
+        }
+      },
+      "route": null
+    },
+    {
+      "row": "logos.A-E",
+      "board": "V2-B2-Logos-Draft.dc.html",
+      "section": "A–E",
+      "storyId": "brand-matrix",
+      "storybookId": "brand--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "clip",
+        "singleLine",
+        "shadowBlur",
+        "overlap"
+      ],
+      "differences": [
+        "DIFF-8"
+      ],
+      "ok": false,
+      "reasons": [
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": true,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 48,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 2,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "pass",
+              "checked": 10,
+              "value": 0,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 57,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [],
+          "requiredNotApplicable": []
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 48,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 2,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 10,
+              "value": 3.91,
+              "violationCount": 4,
+              "violations": [
+                {
+                  "cell": "tagline-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "wm-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "suffix-ink-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "rail-wm-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 15.31,
+                  "expect": 15.75,
+                  "diff": -0.44,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 57,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        }
+      },
+      "route": "/components-gplus-matrices.html#brand-matrix"
+    },
+    {
+      "row": "logos.I",
+      "board": "V2-B2-Logos-Draft.dc.html",
+      "section": "I",
+      "storyId": "brand-matrix",
+      "storybookId": "brand--matrix",
+      "kind": "matrix",
+      "requiredChecks": [
+        "contrast"
+      ],
+      "differences": [],
+      "ok": false,
+      "reasons": [
+        "dark:contrast"
+      ],
+      "themes": {
+        "light": {
+          "ok": true,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 48,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 2,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "pass",
+              "checked": 10,
+              "value": 0,
+              "violationCount": 0
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 57,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [],
+          "requiredNotApplicable": []
+        },
+        "dark": {
+          "ok": false,
+          "checks": {
+            "clip": {
+              "status": "pass",
+              "checked": 2,
+              "value": 0,
+              "violationCount": 0
+            },
+            "singleLine": {
+              "status": "pass",
+              "checked": 48,
+              "value": 1,
+              "violationCount": 0
+            },
+            "shadowBlur": {
+              "status": "pass",
+              "checked": 2,
+              "value": 3,
+              "violationCount": 0
+            },
+            "rail": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "rowAlign": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "mark": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "contrast": {
+              "status": "fail",
+              "checked": 10,
+              "value": 3.91,
+              "violationCount": 4,
+              "violations": [
+                {
+                  "cell": "tagline-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 4.59,
+                  "expect": 5.64,
+                  "diff": -1.05,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "wm-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "suffix-ink-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 14.38,
+                  "expect": 18.29,
+                  "diff": -3.91,
+                  "reasons": [
+                    "diff"
+                  ]
+                },
+                {
+                  "cell": "rail-wm-l",
+                  "probe": "color",
+                  "kind": "text",
+                  "exempt": false,
+                  "ratio": 15.31,
+                  "expect": 15.75,
+                  "diff": -0.44,
+                  "reasons": [
+                    "diff"
+                  ]
+                }
+              ]
+            },
+            "controlHeight": {
+              "status": "n/a",
+              "checked": 0,
+              "value": 0,
+              "violationCount": 0
+            },
+            "overlap": {
+              "status": "pass",
+              "checked": 57,
+              "value": 0,
+              "violationCount": 0
+            }
+          },
+          "failed": [
+            "contrast"
+          ],
+          "requiredNotApplicable": []
+        }
+      },
+      "route": "/components-gplus-matrices.html#brand-matrix"
+    }
+  ],
+  "mutations": [
+    {
+      "id": "rail-sample-guide-off-column",
+      "storyId": "typography-sample-billing",
+      "check": "rail",
+      "killed": false,
+      "reason": "story_missing"
+    },
+    {
+      "id": "clip-actions-button-out-of-section",
+      "storyId": "actions-matrix",
+      "check": "clip",
+      "theme": "light",
+      "status": "fail",
+      "killed": true
+    },
+    {
+      "id": "single-line-actions-label-first-letter",
+      "storyId": "actions-matrix",
+      "check": "singleLine",
+      "theme": "light",
+      "status": "fail",
+      "killed": true
+    },
+    {
+      "id": "shadow-blur-brand-logo-cloud",
+      "storyId": "brand-matrix",
+      "check": "shadowBlur",
+      "theme": "light",
+      "status": "fail",
+      "killed": true
+    },
+    {
+      "id": "row-align-actions-second-row-indented",
+      "storyId": "actions-matrix",
+      "check": "rowAlign",
+      "theme": "light",
+      "status": "fail",
+      "killed": true
+    },
+    {
+      "id": "mark-typography-padded",
+      "storyId": "typography-matrix",
+      "check": "mark",
+      "theme": "light",
+      "status": "fail",
+      "killed": true
+    },
+    {
+      "id": "contrast-brand-wordmark-greyed",
+      "storyId": "brand-matrix",
+      "check": "contrast",
+      "theme": "light",
+      "status": "fail",
+      "killed": true
+    },
+    {
+      "id": "control-height-actions-primary-34",
+      "storyId": "actions-matrix",
+      "check": "controlHeight",
+      "theme": "light",
+      "status": "fail",
+      "killed": true
+    },
+    {
+      "id": "overlap-brand-logo-row",
+      "storyId": "brand-matrix",
+      "check": "overlap",
+      "theme": "light",
+      "status": "fail",
+      "killed": true
+    }
+  ],
+  "summary": {
+    "rows": 22,
+    "rowsOk": 0,
+    "redRows": [
+      {
+        "row": "typography.A",
+        "storyId": "typography-matrix",
+        "reasons": [
+          "light:contrast",
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "typography.B",
+        "storyId": "typography-matrix",
+        "reasons": [
+          "light:contrast",
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "typography.D",
+        "storyId": "typography-sample-billing",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "icon.A",
+        "storyId": "icon-matrix",
+        "reasons": [
+          "light:contrast",
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "icon.B",
+        "storyId": "icon-matrix",
+        "reasons": [
+          "light:contrast",
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "icon.D",
+        "storyId": "icon-sample-project",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "brand.A",
+        "storyId": "brand-matrix",
+        "reasons": [
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "brand.B",
+        "storyId": "brand-matrix",
+        "reasons": [
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "brand.D",
+        "storyId": "brand-sample-product",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "actions.A",
+        "storyId": "actions-matrix",
+        "reasons": [
+          "light:contrast",
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "actions.B",
+        "storyId": "actions-matrix",
+        "reasons": [
+          "light:contrast",
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "actions.D",
+        "storyId": "actions-sample-project",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "inputs.A",
+        "storyId": "inputs-matrix",
+        "reasons": [
+          "light:contrast",
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "inputs.B",
+        "storyId": "inputs-matrix",
+        "reasons": [
+          "light:contrast",
+          "light:cells",
+          "dark:contrast",
+          "dark:cells"
+        ]
+      },
+      {
+        "row": "inputs.D",
+        "storyId": "inputs-sample-members",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.typography",
+        "storyId": "typography-sample-billing",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.icon",
+        "storyId": "icon-sample-project",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.brand",
+        "storyId": "brand-sample-product",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.actions",
+        "storyId": "actions-sample-project",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.inputs",
+        "storyId": "inputs-sample-members",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "logos.A-E",
+        "storyId": "brand-matrix",
+        "reasons": [
+          "dark:contrast"
+        ]
+      },
+      {
+        "row": "logos.I",
+        "storyId": "brand-matrix",
+        "reasons": [
+          "dark:contrast"
+        ]
+      }
+    ],
+    "checks": {
+      "clip": "pass",
+      "singleLine": "pass",
+      "shadowBlur": "pass",
+      "rail": "n/a",
+      "rowAlign": "pass",
+      "mark": "pass",
+      "contrast": "fail",
+      "controlHeight": "n/a",
+      "overlap": "pass"
+    }
+  }
+}
