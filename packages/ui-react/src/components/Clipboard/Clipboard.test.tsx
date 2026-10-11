@@ -173,9 +173,9 @@ test("the copy button carries the loader for its busy state and repeats its labe
   assert.match(html, /<span class="tcrn-button__label">Copy trace ID<\/span>/);
   assert.match(html, /title="Copy trace ID"/);
 
-  // A disabled copy button says why in title instead.
+  // A disabled copy button puts the reason after its label in title (TCRN-DS-SUB-079).
   const blocked = renderToStaticMarkup(
     <ClipboardCopyButton text="x" ariaLabel="Copy audit ID" disabledReason="Requires owning product permission" />
   );
-  assert.match(blocked, /title="Requires owning product permission"/);
+  assert.match(blocked, /title="Copy — Requires owning product permission"/);
 });
