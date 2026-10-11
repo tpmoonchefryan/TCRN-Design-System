@@ -19,6 +19,7 @@ import {
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
 import { createResolvedTokenMap } from "../packages/ui-tokens/dist/index.js";
+import { WORDMARK_EXEMPTIONS } from "./token-contrast-proof.mjs";
 // G+ expectations (TCRN-DS-SUB-041): values below come from the G+ design contract
 // (docs/design/gplus-2026-10/contract) and the resolved @tcrn/ui-tokens map, serialized the way
 // getComputedStyle reports them, never copied from a rendering.
@@ -45,6 +46,35 @@ const gplusActionsFillColors = [...new Set(["secondary", "quiet"]
   .flatMap((variant) => Object.values(gplusPairsContract.tables.actions.variants[variant]).map((state) => state.fill))
   .flatMap((key) => [gplusLightTokens, gplusDarkTokens].map((tokens) => (key === "#0000" ? gplusTransparent : gplusComputedColor(tokens[`--tcrn-color-${key}`] ?? key)))))];
 const gplusMobileHeaderFillLayers = { themeToggle: gplusActionsFillColors, searchInput: [gplusTransparent] };
+// TCRN-DS-SUB-085 (R2-30): axe color-contrast and the product wordmark suffix. The suffix is logotype,
+// and the token-contrast gate already registers each suffix pair below 4.5 in WORDMARK_EXEMPTIONS with
+// its ruling (D2) and source (V2-B1-Brand board, section F). The axe run reads that same register
+// instead of keeping a second one: each entry is carried over with its ruling and source, plus the
+// suffix colour it names, resolved from @tcrn/ui-tokens for its theme. The register names token pairs
+// (suffix colour, theme, panel or bg); a rendered suffix also sits on carriers the token gate does not
+// hold (the doc top bar, sample sidebars, preview panels), so a color-contrast node is exempt when it
+// lies inside one of the two suffix selectors AND axe measured its foreground as a registered suffix
+// colour. The pairs themselves stay with the token gate. A suffix drawn in any other colour is not
+// exempt, and the tagline and the shell lockup caption (ink-3) stay outside the exemption (R1 judgment
+// §3 O-2), so they still count.
+const AXE_WORDMARK_SUFFIX_SELECTORS = Object.freeze([".tcrn-brand-wordmark__suffix", ".tcrn-product-logo__line-one-suffix"]);
+const axeWordmarkContrastExemption = Object.freeze({
+  rule: "color-contrast",
+  selectors: AXE_WORDMARK_SUFFIX_SELECTORS,
+  register: "scripts/token-contrast-proof.mjs WORDMARK_EXEMPTIONS",
+  entries: WORDMARK_EXEMPTIONS.map((entry) => Object.freeze({
+    theme: entry.theme,
+    fg: entry.fg,
+    on: entry.on,
+    fgColor: String(createResolvedTokenMap(entry.theme)[entry.fg] ?? "").trim().toLowerCase(),
+    ruling: entry.ruling,
+    source: entry.source,
+    ...(entry.pending ? { pending: entry.pending } : {})
+  }))
+});
+const axeWordmarkSuffixColors = [...new Set(axeWordmarkContrastExemption.entries
+  .map((entry) => entry.fgColor)
+  .filter((value) => /^#[0-9a-f]{6}$/.test(value)))];
 
 const require = createRequire(import.meta.url);
 const axePath = require.resolve("axe-core/axe.min.js");
@@ -296,17 +326,72 @@ async function collectPageHealth(page) {
     // false positive deterministically without weakening real-clip (ellipsis / fixed-height
     // cut) detection, which always sets a clipping overflow.
     const clipsAxis = (value) => value !== "visible";
+    // TCRN-DS-SUB-084 (R2-29): two overflows on a single nowrap line are not text cut off from view.
+    // (1) Horizontal: a single-line role with nowrap and an ellipsis whose title holds its visible text
+    //     (both sides whitespace-collapsed, the C7 reading) truncates the way C7 declares; the whole text
+    //     is one hover away. The title is the one the browser shows over the element (its own or the
+    //     nearest ancestor's) or one inside it.
+    // (2) Vertical: when the line box fits the element's content box, the only vertical overflow a single
+    //     nowrap line can have is the part of the font's content area hanging past the line box (a 26px
+    //     serif on a 30px line reports scrollHeight 33 against clientHeight 30). The excess is left out
+    //     only while it stays within that overhang; past it, something taller than the text is cut.
+    // Truncation without such a title, a line box taller than its box, an excess past the overhang and
+    // wrapped text still count.
+    const collapseWhitespace = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+    const titlesOver = (node) => [node.closest("[title]"), ...node.querySelectorAll("[title]")]
+      .filter(Boolean)
+      .map((holder) => collapseWhitespace(holder.getAttribute("title")));
+    const textLineMetrics = (node) => {
+      const rects = [];
+      const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+      for (let textNode = walker.nextNode(); textNode; textNode = walker.nextNode()) {
+        if (!textNode.data.trim() || textNode.parentElement?.closest(".tcrn-sr-only")) continue;
+        const range = document.createRange();
+        range.selectNodeContents(textNode);
+        for (const rect of range.getClientRects()) {
+          if (rect.width > 0 && rect.height > 0) rects.push(rect);
+        }
+      }
+      // Line boxes are counted by clustering the text fragments' vertical centres.
+      const fragments = rects
+        .map((rect) => ({ centre: (rect.top + rect.bottom) / 2, height: rect.bottom - rect.top }))
+        .sort((a, b) => a.centre - b.centre);
+      let lines = 0;
+      let reference = null;
+      for (const fragment of fragments) {
+        if (!reference || fragment.centre - reference.centre > 0.5 * Math.min(reference.height, fragment.height)) {
+          lines += 1;
+          reference = fragment;
+        }
+      }
+      return { lines, contentArea: Math.max(0, ...fragments.map((fragment) => fragment.height)) };
+    };
     const clipped = Array.from(document.querySelectorAll("button, select, .tcrn-badge, .tcrn-heading, h1, h2, h3"))
       .filter((node) => !node.classList.contains("tcrn-sr-only"))
       .map((node) => {
         const style = getComputedStyle(node);
         const text = visibleText(node);
+        let cutX = clipsAxis(style.overflowX) && node.scrollWidth > node.clientWidth + 1;
+        let cutY = clipsAxis(style.overflowY) && node.scrollHeight > node.clientHeight + 1;
+        if (text.length > 0 && (cutX || cutY) && style.whiteSpace === "nowrap") {
+          const { lines, contentArea } = textLineMetrics(node);
+          if (lines === 1) {
+            if (cutX && style.textOverflow === "ellipsis" && titlesOver(node).some((title) => title.includes(text))) {
+              cutX = false;
+            }
+            const declaredLineBox = Number.parseFloat(style.lineHeight);
+            const lineBox = Number.isFinite(declaredLineBox) ? declaredLineBox : contentArea;
+            const contentBox = node.clientHeight - (Number.parseFloat(style.paddingTop) || 0) - (Number.parseFloat(style.paddingBottom) || 0);
+            const overhang = Math.max(0, contentArea - lineBox);
+            if (cutY && lineBox <= contentBox + 1 && node.scrollHeight - node.clientHeight <= overhang + 1) {
+              cutY = false;
+            }
+          }
+        }
         return {
           tag: node.tagName.toLowerCase(),
           text: text.slice(0, 80),
-          clipped: text.length > 0
-            && ((clipsAxis(style.overflowX) && node.scrollWidth > node.clientWidth + 1)
-              || (clipsAxis(style.overflowY) && node.scrollHeight > node.clientHeight + 1))
+          clipped: text.length > 0 && (cutX || cutY)
         };
       })
       .filter((item) => item.clipped);
@@ -536,28 +621,54 @@ async function collectPageHealth(page) {
 
 async function runAxe(page) {
   await page.addScriptTag({ path: axePath });
-  return await page.evaluate(async () => {
+  return await page.evaluate(async ({ suffixSelectors, suffixColors }) => {
     const result = await window.axe.run(document, {
       resultTypes: ["violations"],
+      elementRef: true,
       rules: {
         region: { enabled: false }
       }
     });
+    // TCRN-DS-SUB-085: color-contrast nodes inside a wordmark suffix drawn in a registered suffix
+    // colour leave the violation and are listed, with axe's own reading, under
+    // wordmarkContrastExempted; see axeWordmarkContrastExemption for the register and its rulings.
+    const wordmarkContrastExempted = [];
+    const violations = result.violations
+      .map((violation) => {
+        if (violation.id !== "color-contrast") return { violation, nodes: violation.nodes };
+        const nodes = violation.nodes.filter((node) => {
+          const reading = node.any.find((check) => check.id === "color-contrast")?.data ?? {};
+          const fgColor = String(reading.fgColor ?? "").toLowerCase();
+          const suffix = node.element instanceof Element ? node.element.closest(suffixSelectors.join(", ")) : null;
+          if (!suffix || !suffixColors.includes(fgColor)) return true;
+          wordmarkContrastExempted.push({
+            target: node.target,
+            selector: suffixSelectors.find((selector) => suffix.matches(selector)),
+            fgColor,
+            bgColor: reading.bgColor ?? null,
+            contrastRatio: reading.contrastRatio ?? null
+          });
+          return false;
+        });
+        return { violation, nodes };
+      })
+      .filter(({ nodes }) => nodes.length > 0);
     return {
-      violationCount: result.violations.length,
-      violations: result.violations.map((violation) => ({
+      violationCount: violations.length,
+      violations: violations.map(({ violation, nodes }) => ({
         id: violation.id,
         impact: violation.impact,
-        nodeCount: violation.nodes.length,
+        nodeCount: nodes.length,
         help: violation.help,
-        nodes: violation.nodes.map((node) => ({
+        nodes: nodes.map((node) => ({
           target: node.target,
           html: node.html.slice(0, 500),
           failureSummary: node.failureSummary
         }))
-      }))
+      })),
+      wordmarkContrastExempted
     };
-  });
+  }, { suffixSelectors: [...AXE_WORDMARK_SUFFIX_SELECTORS], suffixColors: axeWordmarkSuffixColors });
 }
 
 function targetTopMatchesAnchorOffset(metrics) {
@@ -604,6 +715,30 @@ const PIN_ANIMATIONS = () => {
 
 async function pinAnimations(page) {
   await page.evaluate(PIN_ANIMATIONS);
+}
+
+/**
+ * Wait until every finite animation in the document has finished, without touching any of them
+ * (TCRN-DS-SUB-083, R2-21b). A computed-style read taken while a transition runs reports a point on
+ * the way rather than the value the surface settles to: the Button fill eases over the pair
+ * transition, longer still under reduced motion, so the fixed 80ms pause the hover readback used to
+ * take read a fill that had not arrived. No duration is named here. Infinite loops (skeleton,
+ * progress) never finish and are left out; the bounded rounds cover a finished transition that
+ * starts another.
+ */
+async function settleAnimations(page) {
+  return await page.evaluate(async () => {
+    if (typeof document.getAnimations !== "function") return { settled: true, rounds: 0, awaited: 0 };
+    let awaited = 0;
+    for (let round = 0; round < 20; round += 1) {
+      const running = document.getAnimations().filter((animation) => animation.playState === "running"
+        && animation.effect?.getComputedTiming?.().iterations !== Infinity);
+      if (running.length === 0) return { settled: true, rounds: round, awaited };
+      awaited += running.length;
+      await Promise.all(running.map((animation) => animation.finished.catch(() => undefined)));
+    }
+    return { settled: false, rounds: 20, awaited };
+  });
 }
 
 async function setTransientScreenshotChromeHidden(page, hidden) {
@@ -2563,9 +2698,12 @@ await storybookPage.evaluate(() => {
 });
 const buttonHoverButton = storybookPage.locator("[data-contract-story-id='button-spec-usage'] .tcrn-button--primary.tcrn-button--md:not(.tcrn-icon-button):not([disabled])").first();
 await buttonHoverButton.waitFor({ state: "visible" });
+// TCRN-DS-SUB-083: both reads wait for running transitions to end (settleAnimations) instead of a
+// fixed pause, and the readings travel into browser-proof-summary.json with how the wait ended.
+const buttonRestSettle = await settleAnimations(storybookPage);
 const buttonRestBackground = await buttonHoverButton.evaluate((el) => getComputedStyle(el).backgroundColor);
 await buttonHoverButton.hover();
-await storybookPage.waitForTimeout(80);
+const buttonHoverSettle = await settleAnimations(storybookPage);
 const buttonHoverBackground = await buttonHoverButton.evaluate((el) => getComputedStyle(el).backgroundColor);
 await storybookPage.mouse.move(4, 4);
 // TCRN-DS-SUB-041: under G+ the rest and hover fills are the Actions pair table's primary d and h
@@ -2582,7 +2720,9 @@ const buttonFeedbackReadback = {
   restBackground: buttonRestBackground,
   hoverBackground: buttonHoverBackground,
   expectedRestBackground: buttonExpectedRestBackground,
-  expectedHoverBackground: buttonExpectedHoverBackground
+  expectedHoverBackground: buttonExpectedHoverBackground,
+  restSettle: buttonRestSettle,
+  hoverSettle: buttonHoverSettle
 };
 
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-governance.html?locale=en#blocked-actions`);
@@ -3387,6 +3527,11 @@ componentStorybookParityReadback.packageBackedDisabledNavItemReasonReadback.ok =
 const axeSummary = {
   ok: axeSummaries.every((summary) => summary.violationCount === 0),
   violationCount: axeSummaries.reduce((total, summary) => total + summary.violationCount, 0),
+  // TCRN-DS-SUB-085: the register the color-contrast exemption reads, each entry with its ruling.
+  wordmarkContrastExemption: {
+    ...axeWordmarkContrastExemption,
+    exemptedNodeCount: axeSummaries.reduce((total, summary) => total + summary.wordmarkContrastExempted.length, 0)
+  },
   sections: axeSummaries
 };
 const storyCoverageManifest = {
@@ -3449,6 +3594,9 @@ const browserProofSummary = {
   viewports,
   settingsLayoutBrowserProof,
   pageHierarchyBrowserProof,
+  // TCRN-DS-SUB-083: the Button rest and hover readings behind buttonFeedbackOk, kept so the
+  // verdict can be read back from the receipt rather than inferred.
+  buttonFeedbackReadback,
   aiContractTraceabilityCheck,
   componentStorybookParityReadback,
   localeLeakScan,
@@ -3659,6 +3807,7 @@ console.log(JSON.stringify({
   viewportCount: viewports.length,
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
+  axeWordmarkContrastExemptedNodes: axeSummary.wordmarkContrastExemption.exemptedNodeCount,
   disclosureOk,
   localizationPolicyBindingOk: localizationPolicyBinding.ok,
   shellFidelityDrift: shellFidelityTripped.length,

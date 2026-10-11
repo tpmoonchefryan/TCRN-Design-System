@@ -31,12 +31,26 @@ export async function runMultiSelectDropdownProof(browser) {
   const style=node=>{const s=getComputedStyle(node);return Object.fromEntries(['fontFamily','fontSize','fontWeight','borderTopWidth','borderTopColor','borderRadius','paddingLeft','paddingRight','minHeight','backgroundColor','color','boxShadow','outlineStyle','outlineWidth'].map(k=>[k,s[k]]));};
   return {valid:form.checkValidity(),values:new FormData(form).getAll('values'),expanded:trigger.getAttribute('aria-expanded'),summary:trigger.textContent,active:document.activeElement.id,optionCount:layer.querySelectorAll('[role=option]').length,selected:Array.from(layer.querySelectorAll('[aria-selected=true]'),node=>node.dataset.multiSelectValue),changes:window.dropdownChanges,layerStyle:style(layer),optionStyle:style(layer.querySelector("[role=option]:not(:disabled)")),disabledStyle:style(layer.querySelector("[role=option]:disabled")),triggerStyle:style(trigger),referenceStyle:style(document.getElementById('reference-select')),bodyBoundary:layer.parentElement===document.body,hidden:layer.hidden,proxyHidden:getComputedStyle(proxy).position==='absolute'};
  });
+ // TCRN-DS-SUB-083 (R2-21b): a theme switch restarts the fill transitions, and a computed style read
+ // while one runs reports a point on the way there (the reference Select still white while the list
+ // layer, which has no fill transition, is already night). Reads after a switch first wait until every
+ // finite animation in the document has finished. No duration is named, so the reduced-motion timing and
+ // every expected value stay as they were; infinite loops never finish and are left alone.
+ const settle=()=>page.evaluate(async()=>{
+  for(let round=0;round<20;round+=1){
+   const running=document.getAnimations().filter(animation=>animation.playState==='running'&&animation.effect?.getComputedTiming?.().iterations!==Infinity);
+   if(running.length===0)return {settled:true,rounds:round};
+   await Promise.all(running.map(animation=>animation.finished.catch(()=>undefined)));
+  }
+  return {settled:false,rounds:20};
+ });
  try {
   await mount();let x=await observe();assert('closed-select-family-empty',x.expanded==='false'&&x.hidden&&x.summary==='Select values'&&!x.valid&&x.optionCount===3&&Object.keys(x.referenceStyle).filter(key=>!key.startsWith('outline')).every(key=>x.triggerStyle[key]===x.referenceStyle[key]),x);
   await page.locator('#dropdown').click();x=await observe();assert('ordinary-click-opens-listbox',x.expanded==='true'&&x.bodyBoundary&&!x.hidden&&x.active.endsWith('-option-1'),x);
   for (const theme of ['light','dark']) {
     await page.evaluate(theme=>document.documentElement.setAttribute('data-tcrn-theme',theme),theme);
-    x=await observe();
+    const settled=await settle();
+    x={...await observe(),settled};
     assert('public-popup-family-'+theme,x.layerStyle.backgroundColor===x.referenceStyle.backgroundColor&&x.layerStyle.backgroundColor!=='rgba(0, 0, 0, 0)'&&parseFloat(x.layerStyle.borderRadius)>0&&x.layerStyle.boxShadow!=='none'&&x.optionStyle.color!==x.layerStyle.backgroundColor&&x.disabledStyle.color!==x.optionStyle.color,x);
   }
   await page.evaluate(()=>document.documentElement.setAttribute('data-tcrn-theme','light'));
