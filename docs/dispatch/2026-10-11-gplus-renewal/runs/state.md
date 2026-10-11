@@ -46,8 +46,9 @@
 | W3-A | 已合入 987923c，包树已退役 | 95d473e | SUB-002→003；ALL PAIRS PASS（文字最低 4.59 夜间 ink-3 于 panel；边与焦点最低 3.06 浅色 line-ctl 于 bg）；字标豁免 4 条引用 D2（tms 夜间两条待 Owner）；先红证据三处；弃用通知夹具 15 旧名、Chromium 计算值一致、storybook 构建打印 32 旧名 299 处；集外：tokens:proof 接两份新测试（通知测试要 Chromium，W6-A）、`findDeprecatedTokenUsages` 把定义算使用（P6，SUB-043 README）、字标承载面只算 panel 由验收定（P4）、ink-3 在 panel-2/bg-2/悬停/选中行低于 4.5（最低 3.88，P1，交 SUB-035/011） |
 | W5-B | 已合入 17aa9f6，包树已退役 | 6c54fd8 | SUB-032→033；映射十块板全入表（有 story 22 行引用 10 个 id、无 story 25 条各带原因、差异 8 条，待 Owner 4 条：DIFF-1/2/3 引 P1、DIFF-8 产品标六档阶梯与贴片无 story）；visual-proof 测试 16/16；门红因：样板未合入（已合入）、矩阵 contrast 四类——作用域缺陷（W5-C）、缺 `[data-tcrn-theme="light"]` 主题块（批末返工，tokens-sync）、inputs-matrix 缺 opt-sel-l/n 两格（批末返工，matrix-stories.tsx）、before-bg 探针（W5-C）；集外：是否接进 verify（W6-A）、README:85 与 foundation-visual-standards.ts:546 文字；全量报告在集成分支跑 `node scripts/storybook-visual-proof.mjs --write-report` |
 | W2-H | 已合入（见 git log），包树已退役 | 4e5b502 | SUB-011；contract-proof 六项全过（7 个生成物头 sha 与重生成逐字节同；25 条对规则只切 `--tcrn-pair-*` 无颜色；dist 含 5 段、38 条状态规则无颜色；图标 37 同集；8 个 SVG 与 logos2、导出与 productMarkSources 逐字节同；矩阵 240 格最大差 0.00）；四条 GWT 变异均判红；测试 8/8；口径：只含 transparent 的 outline 放行（与 contract-static C2 一致，按建议先做，Owner 可更正）；集外：package.json 加 `contract:proof` 并排在 build 之后接 verify（W6-A）；壳 locale 菜单悬停规则有颜色字面量（非对家族，批末问题清单） |
+| W6-A | 在跑 | edeac49 | SUB-038→039→040 |
 | W6-B | 在跑 | 91965de | SUB-041→042＋OFL-1.1 许可白名单（D4）；期望值从契约推出，依赖状态样式的断言列「W5-C 合入后复核」 |
-| W5-C | 在跑 | 23182c6 | 前置修复 page-template scopeComponentCss＋SUB-028→035；文件集加 page-template.tsx 与 gplus-measure.mjs（只做加法） |
+| W5-C | 已合入 cfc759c，包树已退役 | 23182c6 | 前置修复＋SUB-028→035；作用域只在顶层逗号拆分（单测 4/4），浅色页状态格偏离 76→0，Switch 加 before-bg 探针后吻合；剩 inputs err-msg 两格对比 6.20/6.27 对期望 6.69/6.88（组件色或承载面，批末返工）；geometry-measure 红：样板当时未合入（已合入，批末全量重跑）、夜间页浅色块继承夜间 token（缺 light 主题块，批末返工）、浅色页 typography/icon/brand/actions 八项全绿、四条 GWT 变异判红、P31 三探针通过、测试 60/60；doc-sample-style 红：icons-motion 72 处文档层把 Icon 改 18px（story-demo-styles.ts:284、storybook.css:591，批末返工删覆盖）；口径：只有文档层原因判红（--strict 为字面口径，验收确认）；集外：package.json 接两门（W6-A）、作用域修复改变所有静态页层叠，批末重跑带视觉基线的浏览器门 |
 | W5-A | 已合入 df12710，包树已退役 | 373e3ec | SUB-031；类目 `gplus-samples` 五个样板（id 按约定 7），各 1908px（余量 92）；浅/夜两块 class 一致；129-GWT3 未达：P1 待裁差值（品牌行 16/48 而导航图标 49、文字 77；纸离边 0 非 12 且无圆角阴影；顶栏 68 非 52；侧栏有底色与右边线；首个导航组须带标题；无用户区与计数槽；面包屑无箭头）——差值表在 `handoff/W5-A.md`；storybook test 6 过 3 红（W4-A 已登记旧红）；集外：夜间块壳主题按钮无图标（ShellThemeToggle 或 page-template）、单选选中态静态页不显示（作用域改写同源，W5-C）、几何门测量根宜用 story 正文区（整篇 article 会把文档标题 2px 溢出算 clip） |
 | W2-G | 已合入 590231c，包树已退役 | 27b12ec | SUB-007；fonts-render-proof 8 腿全过（52 个字面副本逐字节同、35 页各链接一次、googleapis/gstatic 0、五族 10 样本真加载、「季度复盘」回退 Noto Serif SC、屏蔽 fonts/ 时回退系统宋体以证可区分、变异 4 腿判红）；OFL 文本另复制进 storybook-static/licenses（超出判据）；画布色三处读 `--tcrn-color-bg`（浅 #efeeea、夜 #121210）；smoke.test 新断言写法在 `handoff/W2-G.md` 第 3 节（归 W6-B）；集外：package.json 加 `fonts:render-proof` 接 verify（W6-A，P4）；preview.ts 的 backgrounds.values 旧格式（P2）；随包字体改变静态页文字尺寸，浏览器门阈值与基线需复核（P3，W6-B/W8-A） |
 | W4-B | 已合入 e28932f，包树已退役 | f0d2a13 | SUB-037；门测试 65/65；门在其树上红 C2 7＋C5 1（组件侧，批末返工）：Q1 生成段 typography.scale.ts:25-26 `.tcrn-link` 悬停焦点写色（改 typography.json 状态对＋生成器，改共享契约→主力档）、Q2 base.css.ts:2500 `.tcrn-link--quiet:hover`、Q3 inputs.css.ts:519-520 MultiSelect 选项 (0,3,0) 写底色（可能动 pairs.json→主力档）、Q4 inputs.css.ts:23 产品壳搜索 focus-within (0,3,0)、Q5 base.css.ts:606 主题日月图标浅色补 display；C6/C13 0、C7 1378/C8 42/C11 35 全部豁免（第一批 story 层 0 条）；豁免 12 条（新增 LockHint 🔒）；口径待验收：C7 title 非空即满足（Actions 20 处 title 与文字不同）；集外：package.json 接 contract:static（W6-A，Q8）；G+ 矩阵合入后复核读入数（Q10） |
@@ -68,7 +69,6 @@
 
 ## 待派（就绪条件）
 
-- W6-A：等 W2-H、W5-B、W5-C 合入。
 - W7-A：等 W6-A、W6-B；W8-A：等 W7-A。
 
 ## 下一步
