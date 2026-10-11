@@ -2,6 +2,7 @@
 // token stacks name, and Vite copies each face it references byte-identical (TCRN-DS-SUB-007).
 import "@tcrn/ui-tokens/fonts.css";
 import "../src/storybook.css";
+import { createResolvedTokenMap } from "@tcrn/ui-tokens";
 import { tcrnComponentCss } from "@tcrn/ui-react";
 
 // storybook.css now carries only tokens and doc-shell styles; component styles are the
@@ -14,11 +15,15 @@ if (typeof document !== "undefined") {
   document.head.appendChild(componentStyle);
 }
 
+// The canvas is the G+ ground token --tcrn-color-bg, read from the token package rather
+// than copied here, so it moves with the palette.
+const tcrnCanvas = createResolvedTokenMap("light")["--tcrn-color-bg"];
+
 export const parameters = {
   controls: { expanded: true },
   options: { showPanel: true },
   backgrounds: {
     default: "TCRN canvas",
-    values: [{ name: "TCRN canvas", value: "#fafaf9" }]
+    values: [{ name: "TCRN canvas", value: tcrnCanvas }]
   }
 };

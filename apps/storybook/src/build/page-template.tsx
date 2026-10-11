@@ -24,7 +24,8 @@ import {
   tableToolbarScript,
   storybookI18nScript,
   storybookThemeScript,
-  storybookSearchScript
+  storybookSearchScript,
+  storybookCanvasColors
 } from "./client-scripts.js";
 import { escapeHtml, i18nText, localeText, storybookContentText } from "./i18n.js";
 import { categoryDomId, categoryFileForStory, categoryFileName, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
@@ -541,7 +542,7 @@ function renderContractDocument(options: {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
-  <meta name="theme-color" content="#fafaf9" data-storybook-theme-color />
+  <meta name="theme-color" content="${storybookCanvasColors.light}" data-storybook-theme-color />
   <link rel="icon" href="tcrn-brand-mark.svg" type="image/svg+xml" />
   <link rel="alternate" type="application/json" href="ai-consumption-contract.json" title="TCRN AI consumption contract" data-tcrn-ai-consumption-contract="true" />
   <link rel="help" type="text/plain" href="llms.txt" data-tcrn-ai-consumption-contract-help="true" />
