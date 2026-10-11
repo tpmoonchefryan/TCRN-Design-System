@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { getContractStory, StoryFrame } from "./stories.js";
 
-// Track A adapter for the Brand family matrix; the contract story itself is registered in
-// contract-stories/groups/components.ts (category gplus-matrices). Storybook id: brand--matrix.
+// Track A adapter for the Brand family matrix and its composition sample; the contract story itself is registered in
+// contract-stories/groups/components.ts (categories gplus-matrices and gplus-samples). Storybook ids: brand--matrix and brand--sample-product.
 const meta = {
   title: "Brand",
   parameters: {
@@ -26,4 +26,9 @@ function renderContractStory(id: string) {
 export const Matrix: Story = {
   name: "Matrix",
   render: () => renderContractStory("brand-matrix")
+};
+
+export const SampleProduct: Story = {
+  name: "Sample product",
+  render: () => renderContractStory("brand-sample-product")
 };
