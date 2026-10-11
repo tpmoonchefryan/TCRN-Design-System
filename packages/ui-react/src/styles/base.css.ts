@@ -152,8 +152,11 @@ export const baseCss07 = `
 }`;
 
 export const baseCss08 = `
+/* Composition one (O-1, TCRN-DS-SUB-090): the rail is 220 wide and 52 collapsed, both from the
+   shell tokens. --tcrn-product-shell-sidebar-width stays the registered local variable, so a
+   consumer can still set its own width on the shell. */
 .tcrn-product-shell {
-  --tcrn-product-shell-sidebar-width: 280px;
+  --tcrn-product-shell-sidebar-width: var(--tcrn-shell-sidebar-width);
   min-height: 100vh;
   display: grid;
   grid-template-columns: var(--tcrn-product-shell-sidebar-width) minmax(0, 1fr);
@@ -166,7 +169,7 @@ export const baseCss08 = `
   transition: grid-template-columns var(--tcrn-motion-product-shell);
 }
 .tcrn-product-shell[data-product-shell-collapsed="true"] {
-  --tcrn-product-shell-sidebar-width: 92px;
+  --tcrn-product-shell-sidebar-width: var(--tcrn-shell-sidebar-width-collapsed);
 }
 .tcrn-product-shell[data-theme-switching="true"]::after {
   content: "";
@@ -202,8 +205,10 @@ export const baseCss08 = `
   gap: var(--tcrn-space-5);
   min-width: 0;
   padding: var(--tcrn-space-4);
-  border-right: 1px solid var(--tcrn-color-border-subtle);
-  background: var(--tcrn-color-brand-secondary-bg);
+  /* The rail sits on the shell root's canvas colour with no edge of its own: the sheet beside it
+     is what separates the two (composition one, O-1). It used to be an accent wash with a 1px
+     right border. */
+  background: var(--tcrn-color-surface-canvas);
   /*
    * The rail is exactly one viewport tall and sticky, so navigation taller than
    * the viewport used to paint outside its own box with nothing to scroll: the
@@ -286,7 +291,7 @@ export const baseCss10 = `
   grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: var(--tcrn-space-4);
-  min-height: 68px;
+  min-height: var(--tcrn-shell-topbar-height);
   padding: var(--tcrn-space-3) var(--tcrn-space-5);
   border: 0;
   border-bottom: 1px solid var(--tcrn-color-border-subtle);
@@ -523,6 +528,53 @@ export const baseCss10 = `
 .tcrn-nav-item__label {
   overflow-wrap: normal;
   word-break: normal;
+}
+/*
+ * Composition one above the mobile breakpoint (O-1, TCRN-DS-SUB-090). The query is the exact
+ * complement of the mobile block's (max-width: 760px), so nothing below the breakpoint changes:
+ * the stacked mobile shell keeps its own geometry.
+ *
+ * Rail guide column: marks and icons start 16 from the shell edge (the rail's space-4 padding),
+ * labels 48 (space-4 + space-6). Only shell-scoped spacing does it; NavItem keeps its markup,
+ * API and states. The item's box reaches space-1 past the rail padding on both sides, so its
+ * fill starts 12 from the edge; the start padding is space-1 less the item's 1px border, plus
+ * the depth indent as before; the 20px icon column and a space-3 gap put the label on 48.
+ * Group titles start on the guide column.
+ *
+ * Collapsed (52 wide): space-1 inline padding leaves 44, which holds the 38px collapse control
+ * and the 44px items; labels and lockup copy stay hidden and the 22px mark is not scaled.
+ *
+ * Sheet: the workspace is the paper, 12 (space-3) from the shell's top, end and bottom edges and
+ * flush with the rail, with the paper radius, shadow s1 and the panel fill. overflow: clip rounds
+ * the top bar's corners without making a scroll container, so the bar still sticks. The shell
+ * top bar is 52 tall (min-height above); space-1h block padding keeps the one-row bar inside it.
+ */
+@media not all and (max-width: 760px) {
+  .tcrn-product-shell .tcrn-nav-item {
+    margin-inline: calc(-1 * var(--tcrn-space-1));
+    padding-inline-start: calc(var(--tcrn-space-1) - 1px + (var(--tcrn-nav-item-depth) * var(--tcrn-space-3)));
+    column-gap: var(--tcrn-space-3);
+  }
+  .tcrn-product-shell .tcrn-nav-group__label {
+    padding-inline: 0;
+  }
+  .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-shell__sidebar {
+    padding-inline: var(--tcrn-space-1);
+  }
+  .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item {
+    margin-inline: 0;
+  }
+  .tcrn-product-shell__workspace {
+    margin: var(--tcrn-space-3) var(--tcrn-space-3) var(--tcrn-space-3) 0;
+    border-radius: var(--tcrn-radius-paper);
+    background: var(--tcrn-color-panel);
+    box-shadow: var(--tcrn-shadow-s1);
+    overflow: clip;
+  }
+  .tcrn-product-shell__workspace > .tcrn-top-bar {
+    box-sizing: border-box;
+    padding-block: var(--tcrn-space-1h);
+  }
 }`;
 
 export const baseCss11 = `

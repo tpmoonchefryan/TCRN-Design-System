@@ -229,6 +229,23 @@ test("typography, shape, shadow and motion tokens follow the G+ scale", () => {
   assert.equal(light["--tcrn-radius-stamp"], "3px");
   assert.equal(light["--tcrn-radius-surface"], light["--tcrn-radius-panel"]);
 
+  // Composition one's shell geometry (O-1, TCRN-DS-SUB-090): the paper radius and the three
+  // ProductShell sizes are contract tokens in the theme-independent block.
+  const shellGeometry: Record<string, readonly [string, string, string]> = {
+    "--tcrn-radius-paper": ["14px", "radius.paper", "radius"],
+    "--tcrn-shell-sidebar-width": ["220px", "shell.sidebar.width", "container"],
+    "--tcrn-shell-sidebar-width-collapsed": ["52px", "shell.sidebar.width.collapsed", "container"],
+    "--tcrn-shell-topbar-height": ["52px", "shell.topbar.height", "container"]
+  };
+  for (const [variable, [value, name, group]] of Object.entries(shellGeometry)) {
+    const token = tcrnTokens.find((candidate) => candidate.variable === variable);
+    assert.equal(token?.value, value, `${variable} value`);
+    assert.equal(token?.name, name, `${variable} name`);
+    assert.equal(token?.group, group, `${variable} group`);
+    assert.equal(token?.scope, "fixed", `${variable} is theme independent`);
+    assert.ok(tcrnGplusFixedTokens.some((fixed) => fixed.cssVar === variable && fixed.value === value), `${variable} comes from the contract fixed tokens`);
+  }
+
   // Shadows: no layer of s1/s2/s3 blurs more than 3px, in either theme.
   const blurs = (shadow: string): number[] =>
     shadow.split(/,(?![^(]*\))/).map((layer) => {

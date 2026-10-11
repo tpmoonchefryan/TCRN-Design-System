@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: tokens.json, marks.json, typography.json
-// contract-sha256: 8ef93e352078882c3e5326b72f1639fd05f8175e219719dac8dec4d483ffdf3f
+// contract-sha256: cbc2260ae0920dff05c3bd4cac09d4927f0cbbbbd83e69ee856dd77de1bfccfe
 
 
 export interface TcrnGplusThemedToken {
@@ -359,6 +359,12 @@ export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = [
     "value": "3px"
   },
   {
+    "key": "r-paper",
+    "cssVar": "--tcrn-radius-paper",
+    "group": "radius",
+    "value": "14px"
+  },
+  {
     "key": "h-sm",
     "cssVar": "--tcrn-control-height-sm",
     "group": "control-height",
@@ -459,6 +465,24 @@ export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = [
     "cssVar": "--tcrn-motion-duration-loop",
     "group": "motion",
     "value": "900ms"
+  },
+  {
+    "key": "rail-w",
+    "cssVar": "--tcrn-shell-sidebar-width",
+    "group": "shell",
+    "value": "220px"
+  },
+  {
+    "key": "rail-w-collapsed",
+    "cssVar": "--tcrn-shell-sidebar-width-collapsed",
+    "group": "shell",
+    "value": "52px"
+  },
+  {
+    "key": "topbar-h",
+    "cssVar": "--tcrn-shell-topbar-height",
+    "group": "shell",
+    "value": "52px"
   }
 ];
 

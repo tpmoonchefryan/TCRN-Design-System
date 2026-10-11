@@ -97,6 +97,7 @@
   --tcrn-radius-panel: 12px;
   --tcrn-radius-check: 4px;
   --tcrn-radius-stamp: 3px;
+  --tcrn-radius-paper: 14px;
   --tcrn-control-height-sm: 28px;
   --tcrn-control-height-md: 32px;
   --tcrn-control-height-lg: 40px;
@@ -114,6 +115,9 @@
   --tcrn-motion-duration-press: 80ms;
   --tcrn-motion-duration-move: 240ms;
   --tcrn-motion-duration-loop: 900ms;
+  --tcrn-shell-sidebar-width: 220px;
+  --tcrn-shell-sidebar-width-collapsed: 52px;
+  --tcrn-shell-topbar-height: 52px;
   --tcrn-brand-suffix-tms: #2c63c8;
   --tcrn-brand-suffix-einzbern: #3b5272;
   --tcrn-brand-suffix-mana-orchestrate: #3a9a63;

@@ -172,11 +172,38 @@ test("nav item density and nesting are data-driven", () => {
     tcrnComponentCss,
     /min-height:\s*calc\(\s*var\(--tcrn-space-6\)\s*-\s*var\(--tcrn-space-0h\)\s*\)/,
   );
-  assert.match(tcrnComponentCss, /var\(--tcrn-color-brand-secondary-bg\)/);
   assert.match(
     tcrnComponentCss,
     /\.tcrn-product-shell__sidebar \.tcrn-brand-wordmark__suffix--aos \{[\s\S]*color: var\(--tcrn-color-brand-primary\);/,
   );
+});
+
+// Composition one (O-1, TCRN-DS-SUB-090): the shell geometry comes from the shell tokens, the
+// rail sits on the canvas colour with no right edge, and above the mobile breakpoint the rail
+// guide column is 16 / 48 and the workspace is a sheet 12 from the shell edges.
+test("product shell geometry follows composition one through the shell tokens", () => {
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell \{\n  --tcrn-product-shell-sidebar-width: var\(--tcrn-shell-sidebar-width\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell\[data-product-shell-collapsed="true"\] \{\n  --tcrn-product-shell-sidebar-width: var\(--tcrn-shell-sidebar-width-collapsed\);\n\}/);
+  const sidebar = /\.tcrn-product-shell__sidebar \{([^}]*)\}/.exec(tcrnComponentCss);
+  assert.ok(sidebar, "the sidebar rule exists");
+  assert.match(sidebar[1], /background: var\(--tcrn-color-surface-canvas\);/, "the rail takes the shell root's canvas colour");
+  assert.doesNotMatch(sidebar[1], /border-right/, "the rail has no right edge");
+  assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-color-brand-secondary-bg\)/, "no accent wash on the rail");
+  const topbar = /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{([^}]*)\}/.exec(tcrnComponentCss);
+  assert.ok(topbar, "the shell top bar rule exists");
+  assert.match(topbar[1], /min-height: var\(--tcrn-shell-topbar-height\);/);
+  // The standalone TopBar keeps its own height.
+  assert.match(tcrnComponentCss, /\.tcrn-top-bar \{\n  display: grid;\n  grid-template-columns: max-content max-content minmax\(0, 1fr\);\n  align-items: center;\n  gap: var\(--tcrn-space-4\);\n  min-height: 68px;/);
+  const desktop = /@media not all and \(max-width: 760px\) \{([\s\S]*?)\n\}/.exec(tcrnComponentCss);
+  assert.ok(desktop, "the composition-one block is the complement of the mobile query");
+  assert.match(desktop[1], /\.tcrn-product-shell \.tcrn-nav-item \{\s*margin-inline: calc\(-1 \* var\(--tcrn-space-1\)\);\s*padding-inline-start: calc\(var\(--tcrn-space-1\) - 1px \+ \(var\(--tcrn-nav-item-depth\) \* var\(--tcrn-space-3\)\)\);\s*column-gap: var\(--tcrn-space-3\);\s*\}/);
+  assert.match(desktop[1], /\.tcrn-product-shell \.tcrn-nav-group__label \{\s*padding-inline: 0;\s*\}/);
+  assert.match(desktop[1], /\.tcrn-product-shell\[data-product-shell-collapsed="true"\] \.tcrn-product-shell__sidebar \{\s*padding-inline: var\(--tcrn-space-1\);\s*\}/);
+  assert.match(desktop[1], /\.tcrn-product-shell__workspace \{\s*margin: var\(--tcrn-space-3\) var\(--tcrn-space-3\) var\(--tcrn-space-3\) 0;\s*border-radius: var\(--tcrn-radius-paper\);\s*background: var\(--tcrn-color-panel\);\s*box-shadow: var\(--tcrn-shadow-s1\);\s*overflow: clip;\s*\}/);
+  // No literal shell geometry is left in the shell rules.
+  for (const rule of tcrnComponentCss.matchAll(/\.tcrn-product-shell(?:\[[^\]]*\])?(?:__sidebar|__workspace(?: > \.tcrn-top-bar)?)? \{([^}]*)\}/g)) {
+    assert.doesNotMatch(rule[1], /\b(?:280|92|68)px\b/, `old shell geometry in ${rule[0].split("{")[0].trim()}`);
+  }
 });
 
 // The five-locale taglines of STORY-127, as the story states them. The registry

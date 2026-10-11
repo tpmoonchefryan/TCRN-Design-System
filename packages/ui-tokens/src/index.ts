@@ -101,7 +101,10 @@ const contractGroups: Readonly<Record<string, TokenGroup>> = {
   "control-padding": "control",
   "icon-size": "icon",
   motion: "motion",
-  brand: "brand"
+  brand: "brand",
+  // ProductShell geometry (sidebar widths, shell top bar height): layout sizes, like the other
+  // container tokens (TCRN-DS-SUB-090, O-1).
+  shell: "container"
 };
 
 function contractGroup(group: string): TokenGroup {
@@ -184,6 +187,7 @@ const gplusDescriptions: Readonly<Record<string, string>> = {
   "r-panel": "Panel and popover corner radius; radius.surface carries the same value.",
   "r-check": "Checkbox corner radius.",
   "r-stamp": "Stamp and badge corner radius.",
+  "r-paper": "Paper corner radius: the ProductShell content sheet (composition one).",
   "h-sm": "Small control height.",
   "h-md": "Default control height.",
   "h-lg": "Large control height.",
@@ -200,7 +204,10 @@ const gplusDescriptions: Readonly<Record<string, string>> = {
   "t-fill": "Fill and colour change duration (hover, state).",
   "t-press": "Press feedback duration.",
   "t-move": "Movement duration (menus, panels, indicators).",
-  "t-loop": "Looping indicator period."
+  "t-loop": "Looping indicator period.",
+  "rail-w": "ProductShell sidebar width, expanded (composition one); the shell's --tcrn-product-shell-sidebar-width defaults to it.",
+  "rail-w-collapsed": "ProductShell sidebar width, collapsed; holds the 38px collapse control.",
+  "topbar-h": "ProductShell top bar height (the shell's own bar; the standalone TopBar keeps its own height)."
 };
 
 function describe(key: string, group: string): string {
