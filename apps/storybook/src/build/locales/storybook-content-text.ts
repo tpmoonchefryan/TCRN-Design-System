@@ -2071,6 +2071,8 @@ export const storybookContentText: Record<string, Record<TcrnLocale, string>> = 
   "Actions sample: projects (night)": { "zh-CN": "动作样板：项目（夜间）", en: "Actions sample: projects (night)", ja: "アクションサンプル：プロジェクト（ナイト）", ko: "액션 샘플: 프로젝트(나이트)", fr: "Échantillon d’actions : projets (nuit)" },
   "Inputs sample: invite members": { "zh-CN": "表单样板：邀请成员", en: "Inputs sample: invite members", ja: "入力サンプル：メンバー招待", ko: "입력 샘플: 멤버 초대", fr: "Échantillon de saisie : inviter des membres" },
   "Inputs sample: invite members (night)": { "zh-CN": "表单样板：邀请成员（夜间）", en: "Inputs sample: invite members (night)", ja: "入力サンプル：メンバー招待（ナイト）", ko: "입력 샘플: 멤버 초대(나이트)", fr: "Échantillon de saisie : inviter des membres (nuit)" },
+  "Composition three sample: projects": { "zh-CN": "构图三样板：项目", en: "Composition three sample: projects", ja: "構図三サンプル：プロジェクト", ko: "구성 3 샘플: 프로젝트", fr: "Échantillon de composition trois : projets" },
+  "Composition three sample: projects (night)": { "zh-CN": "构图三样板：项目（夜间）", en: "Composition three sample: projects (night)", ja: "構図三サンプル：プロジェクト（ナイト）", ko: "구성 3 샘플: 프로젝트(나이트)", fr: "Échantillon de composition trois : projets (nuit)" },
   "Lin Xiao": { "zh-CN": "林晓", en: "Lin Xiao", ja: "林暁", ko: "린샤오", fr: "Lin Xiao" },
   "Notifications": { "zh-CN": "通知", en: "Notifications", ja: "通知", ko: "알림", fr: "Notifications" },
   "Invite": { "zh-CN": "邀请", en: "Invite", ja: "招待", ko: "초대", fr: "Inviter" },
