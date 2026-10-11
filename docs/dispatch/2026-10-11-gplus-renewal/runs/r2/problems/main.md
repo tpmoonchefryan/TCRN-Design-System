@@ -20,3 +20,6 @@
 
 **RM6 axe 字标豁免不分主题（P9 的取舍，收口回显，Owner 可更正）。** SUB-085 的 axe 豁免按「后缀选择器 + 登记的后缀色」匹配，不看主题与承载面；因此夜间样板侧栏上 6 个 Design System 后缀节点（对比 4.18）也被豁免，而 token-contrast 的登记只写了浅色。P9 建议维持（字标按 logotype 豁免）；改为同时匹配主题是一行改动，那 6 个节点会重新计入。与 O-3（夜间 TMS 后缀色）同组列给 Owner。
 P9 问题清单的去向：#1 axe landmark-unique 110 节点 → P7 SUB-071；#2 aria-allowed-role 4 节点（Card 上 `article role="status"`）→ P6 SUB-068；#3 标语与锁定组合说明 ink-3 → O-2；#4 390px 文档壳顶栏 401px 高、品牌字出现两次 → C-21/O-1；#5 zh-CN `text-styles` 两条新未译文案 → 可能属 P6 SUB-067，R2 验收确认；#6 故事高度预算 1 条超限、8 条陈旧 → P12 SUB-075。
+
+**RM7 P7 的两处超出判据字面的做法（交验收；其一要目视）。** ① SUB-070：MultiSelect 没有「展开」选项，页面脚本会把展开的列表移出主题块，静态样例因此去掉 `data-choice-presentation` 钩子——不再响应点击，列表位于触发器右侧而不是下方，需目视（列入 owner-acceptance 清单）。② SUB-071：五个样板同在一页，只改夜间壳名不能消重名，壳名改为按样板命名、夜间壳加「（night）」，浅色壳名也随之改变；矩阵分节去掉 aria-label。另 SUB-072 顺带从 ledger 删去 4 个不再使用的资产 ID（文件在包文件集内、不在该单文件清单）。品牌样板去掉 Asset ID 列后与 Brand 板「资产 ID」列不一致，已写进 P8 摘录交 SUB-077 核对映射差异记录。
+P7 问题清单去向：dark 轮对比（P1 已修，P7 树早于 P1 合入）；样板 rail（O-1）；后缀与标语对比（R2-30 / O-2）；Card aria-allowed-role（P6 SUB-068）；text-styles 两条 zh-CN 泄漏（P6 SUB-067）；navigation-focused-shells-spec 高 2520px（P6 SUB-066 删 dense/compact 原型后复核，余量交 P12 SUB-075）；buttonFeedbackOk（P9 SUB-083 已修，P7 树早于 P9 合入）；doc-shell 两项（C-21/O-1）；视觉签名（SUB-046）。
