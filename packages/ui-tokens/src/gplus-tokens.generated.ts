@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: tokens.json, marks.json
-// contract-sha256: 3d00937e268dfb28649d7a28d9b47508372d872896456b330386ea4f98a70007
+// contract-sha256: 12fa60e674a0bfe080e65a70b80a888e90f96535e3e02907509bbea563bd224c
 
 
 export interface TcrnGplusThemedToken {
@@ -326,7 +326,7 @@ export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = [
     "key": "mono",
     "cssVar": "--tcrn-type-family-mono",
     "group": "type-family",
-    "value": "\"IBM Plex Mono\",ui-monospace,Menlo,monospace"
+    "value": "\"IBM Plex Mono\",\"Noto Sans SC\",ui-monospace,Menlo,monospace"
   },
   {
     "key": "r-ctl",

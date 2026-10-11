@@ -23,7 +23,9 @@
 //   fallback     a heading set in --tcrn-type-family-heading with 季度复盘 is not drawn
 //                entirely with the Noto Serif SC web font, a sample code point has no loaded
 //                Noto Serif SC face covering it, or document.fonts.check() is false for the
-//                sample with Noto Serif SC or with the resolved heading stack
+//                sample with Noto Serif SC or with the resolved heading stack; likewise 季度复盘 in
+//                --tcrn-type-family-mono must be drawn entirely with the Noto Sans SC web font
+//                (the mono stack keeps IBM Plex Mono first, then Noto Sans SC)
 //   control      with storybook-static/fonts blocked, the same heading probe still reports a
 //                web font, which would mean the render check cannot tell vendored faces from
 //                system ones
@@ -220,6 +222,12 @@ export function headingProbes() {
   return [400, 600].map((weight) => ({ id: `heading-${weight}`, family: "Noto Serif SC", weight, text: PRODUCT_SAMPLE, lang: "zh-CN", fontFamily: "var(--tcrn-type-family-heading)", tag: "h2" }));
 }
 
+// Chinese text in the mono stack: IBM Plex Mono ships Latin only, so 季度复盘 must fall back to the
+// bundled Noto Sans SC (TCRN-DS-SUB-048), at both shipped IBM Plex Mono weights.
+export function monoProbes() {
+  return [400, 500].map((weight) => ({ id: `mono-${weight}`, family: "Noto Sans SC", weight, text: PRODUCT_SAMPLE, lang: "zh-CN", fontFamily: "var(--tcrn-type-family-mono)", tag: "code" }));
+}
+
 function normalizeFamily(value = "") {
   return value.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
@@ -340,7 +348,8 @@ async function renderLegs({ docsRoot, manifest, legs }) {
         await settlePage(page);
         const families = familyProbes(manifest);
         const headings = headingProbes();
-        const probes = [...families, ...headings];
+        const monos = monoProbes();
+        const probes = [...families, ...headings, ...monos];
         await mountProbes(page, probes);
         const evaluations = await evaluateProbes(page, probes);
         const fonts = await platformFonts(page, probes.length);
@@ -351,6 +360,8 @@ async function renderLegs({ docsRoot, manifest, legs }) {
         });
         const headingStack = evaluations[families.length]?.stack ?? "";
         if (!/^"?Source Serif 4"?\s*,\s*"?Noto Serif SC"?/.test(headingStack)) legs.fallback.failures.push(`--tcrn-type-family-heading resolves to ${headingStack || "nothing"} on ${PROBE_PAGE}; expected Source Serif 4 then Noto Serif SC`);
+        const monoStack = evaluations[families.length + headings.length]?.stack ?? "";
+        if (!/^"?IBM Plex Mono"?\s*,\s*"?Noto Sans SC"?/.test(monoStack)) legs.fallback.failures.push(`--tcrn-type-family-mono resolves to ${monoStack || "nothing"} on ${PROBE_PAGE}; expected IBM Plex Mono then Noto Sans SC`);
         await page.waitForLoadState("networkidle");
         for (const download of await Promise.all(pending)) {
           const file = decodeURIComponent(new URL(download.url).pathname).replace(/^\/+/, "");
@@ -459,12 +470,12 @@ export async function runFontsRenderProof({ root = scriptRoot } = {}) {
   }
   // A leg that never reached its probes is red, not vacuously green.
   if (legs.families.probes.length !== familyProbes(manifest).length) legs.families.failures.push("not every family/weight probe ran");
-  if (legs.fallback.probes.length !== headingProbes().length) legs.fallback.failures.push("the heading probes did not run");
+  if (legs.fallback.probes.length !== headingProbes().length + monoProbes().length) legs.fallback.failures.push("the heading and mono probes did not all run");
   if (legs.control.probes.length !== headingProbes().length) legs.control.failures.push("the control probes did not run");
   if (legs.network.pages !== pages.length) legs.network.failures.push(`${legs.network.pages} of ${pages.length} pages were loaded`);
   record("network", legs.network.failures, `${legs.network.pages} pages made ${legs.network.requests} requests, all to the local server (googleapis/gstatic: ${legs.network.cdnRequests}); ${legs.network.fontDownloads} downloaded faces on ${PROBE_PAGE} match the vendored digests`);
   record("families", legs.families.failures, `${legs.families.probes.length} family/weight samples load, pass document.fonts.check and are drawn with their own web font`, { probes: legs.families.probes });
-  record("fallback", legs.fallback.failures, `${PRODUCT_SAMPLE} in --tcrn-type-family-heading falls back to the Noto Serif SC web font; document.fonts.check is true for it and the resolved stack`, { probes: legs.fallback.probes });
+  record("fallback", legs.fallback.failures, `${PRODUCT_SAMPLE} in --tcrn-type-family-heading falls back to the Noto Serif SC web font and in --tcrn-type-family-mono to the Noto Sans SC web font; document.fonts.check is true for them and the resolved stacks`, { probes: legs.fallback.probes });
   record("control", legs.control.failures, `with ${STATIC_FONT_DIR}/ blocked the heading probe falls back to system fonts, so the render check tells vendored faces apart`, { probes: legs.control.probes });
 
   const cdnStringHits = cdnFailures.reduce((sum, failure) => sum + Number(failure.match(/ (\d+) time\(s\)$/)?.[1] ?? 1), 0);

@@ -193,7 +193,8 @@ test("typography, shape, shadow and motion tokens follow the G+ scale", () => {
   assert.match(light["--tcrn-type-family-ui"], /^"Hanken Grotesk","Noto Sans SC",/);
   assert.match(light["--tcrn-type-family-heading"], /^"Source Serif 4","Noto Serif SC",/);
   assert.equal(light["--tcrn-type-family-heading"], light["--tcrn-type-family-serif"]);
-  assert.match(light["--tcrn-type-family-mono"], /^"IBM Plex Mono",/);
+  assert.equal(light["--tcrn-type-family-mono"], tcrnGplusFixedTokens.find((token) => token.key === "mono")?.value);
+  assert.match(light["--tcrn-type-family-mono"], /^"IBM Plex Mono","Noto Sans SC",/, "monospace Chinese text falls back to the bundled Noto Sans SC");
   assert.notEqual(light["--tcrn-type-family-heading"], light["--tcrn-type-family-stamp"], "headings do not borrow the stamp face");
   assert.doesNotMatch(light["--tcrn-type-family-heading"], /--tcrn-type-family-stamp/);
   assert.equal(resolvedLight["--tcrn-type-family-zh-cn"], light["--tcrn-type-family-ui"], "Chinese UI text falls back to the bundled Noto Sans SC");
