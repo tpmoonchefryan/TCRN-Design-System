@@ -6,8 +6,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { colourLiterals, compounds, emojiIn, parseCss, selectorClasses, shadowLayers, specificity, withoutPseudoElements } from "../scripts/lib/css-rules.mjs";
-import { CHECKED_CLAUSES, evaluateContract, outOfPackageClasses, selectedPairKeys, validateExemptions } from "../scripts/contract-static-proof.mjs";
+import { colourLiterals, compounds, elementClasses, emojiIn, emojiInText, parseCss, parseHtml, selectorClasses, shadowLayers, specificity, textContent, walkElements, withoutPseudoElements } from "../scripts/lib/css-rules.mjs";
+import { CHECKED_CLAUSES, evaluateContract, familyArguments, outOfPackageClasses, selectedPairKeys, semanticOf, validateExemptions } from "../scripts/contract-static-proof.mjs";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const readRepoJson = (path) => JSON.parse(readFileSync(join(repoRoot, path), "utf8"));
@@ -34,7 +34,12 @@ const NO_EXEMPTIONS = { entries: [] };
 
 const ROLES = {
   singleLine: [{ role: "按钮", class: "tcrn-button__label" }],
-  toolbars: [{ toolbar: "顶栏", container: "tcrn-top-bar", yield: "tcrn-product-shell-search", fixed: ["tcrn-top-bar__brand", "tcrn-top-bar__actions"] }]
+  toolbars: [{ toolbar: "顶栏", container: "tcrn-top-bar", yield: "tcrn-product-shell-search", fixed: ["tcrn-top-bar__brand", "tcrn-top-bar__actions"] }],
+  shell: {
+    bars: ["tcrn-top-bar"],
+    controls: [{ slot: "theme-toggle", class: "tcrn-shell-theme-toggle" }, { slot: "product-shell-search", class: "tcrn-product-shell-search" }],
+    searchComponents: ["tcrn-product-shell-search", "tcrn-search-input"]
+  }
 };
 
 const PACKAGE_CSS = `
@@ -79,9 +84,30 @@ const TOKENS_CSS = `
 
 const USED_CLASSES = ["tcrn-button", "tcrn-button--primary", "tcrn-button__label", "tcrn-doc-frame", "tcrn-doc-frame__title"];
 
-function run({ css = PACKAGE_CSS, tokens = TOKENS_CSS, exemptions = NO_EXEMPTIONS, roles = ROLES, used = USED_CLASSES, families = FAMILIES } = {}) {
+// A static story page: the documentation chrome outside the story section is not story render.
+const STORY_SECTION = `<section data-story-id="fixture-story" class="tcrn-doc-frame">
+  <button class="tcrn-button tcrn-button--primary" title="Save changes"><span class="tcrn-button__label">Save changes</span></button>
+  <button class="tcrn-button tcrn-button--primary" aria-label="Close"><span class="tcrn-button__label"></span></button>
+  <header class="tcrn-top-bar">
+    <div class="tcrn-top-bar__brand">Brand</div>
+    <div class="tcrn-product-shell-search" data-shell-control="product-shell-search"><input type="search" class="tcrn-input" aria-label="Search"></div>
+    <div class="tcrn-top-bar__actions"><button class="tcrn-button tcrn-button--secondary tcrn-shell-theme-toggle" data-shell-control="theme-toggle" title="Theme"><span class="tcrn-button__label">Theme</span></button></div>
+  </header>
+  <div class="tcrn-card"><p>Card body &amp; notes</p></div>
+</section>`;
+const STORY_PAGE = `<!doctype html><html><head><style>.tcrn-doc-frame{background:linear-gradient(#fff,#eee)}</style></head><body>
+<nav class="tcrn-doc-nav"><span>🔒 documentation chrome</span></nav>
+${STORY_SECTION}
+</body></html>`;
+const pagesWith = (html) => [{ path: "fixture.html", html }];
+const storyPage = (from, to) => {
+  assert.ok(STORY_PAGE.includes(from), `fixture lacks: ${from}`);
+  return pagesWith(STORY_PAGE.replace(from, to));
+};
+
+function run({ css = PACKAGE_CSS, tokens = TOKENS_CSS, exemptions = NO_EXEMPTIONS, roles = ROLES, used = USED_CLASSES, families = FAMILIES, pages = pagesWith(STORY_PAGE), familyFilter = null } = {}) {
   const outOfPackage = outOfPackageClasses(used, parseCss(css).rules);
-  return evaluateContract({ packageCss: css, tokensCss: tokens, families, exemptions, roles, pairs: null, outOfPackage, outOfPackageSource: "fixture" });
+  return evaluateContract({ packageCss: css, tokensCss: tokens, families, exemptions, roles, pairs: null, outOfPackage, outOfPackageSource: "fixture", storyPages: pages, storySource: "fixture", familyFilter });
 }
 const status = (report, clause) => report.clauses[clause].status;
 const ruleIds = (report, clause) => [...new Set(report.clauses[clause].findings.map((finding) => finding.rule))].sort();
@@ -316,6 +342,109 @@ test("selected pair keys come from the pair table states", () => {
 });
 
 // ---------------------------------------------------------------------------------------------
+// Story render layer (TCRN-DS-SUB-037)
+
+test("the markup reader keeps entities, void elements, raw text and stray end tags apart", () => {
+  const { root, errors } = parseHtml(`<div class="a  b" title="x &amp; y"><p>Hi <b>there</b></p></span><br><svg><path d="m0 0"/></svg><style>.a>b{}</style><input value=7></div>`);
+  const div = root.children[0];
+  assert.deepEqual(elementClasses(div), ["a", "b"]);
+  assert.equal(div.attrs.title, "x & y");
+  assert.equal(textContent(div), "Hi there");
+  assert.deepEqual(errors.map((error) => error.problem), ["stray end tag </span>"]);
+  const tags = [];
+  walkElements(root, (node) => {
+    tags.push(node.tag);
+  });
+  assert.deepEqual(tags, ["div", "p", "b", "br", "svg", "path", "style", "input"]);
+  assert.deepEqual(emojiInText("Locked 🔒, sun ☀️, check ✓"), ["🔒", "☀️"]);
+});
+
+test("semantics: implicit roles, toggles and popups; current is a state, not a semantic", () => {
+  const nodes = [];
+  walkElements(parseHtml(`<a href="#">a</a><a href="#" aria-current="page">b</a><button aria-pressed="false">c</button><button aria-haspopup="menu">d</button><input type="checkbox"><input><div role="tab">e</div><div>f</div>`).root, (node) => {
+    nodes.push(semanticOf(node));
+  });
+  assert.deepEqual(nodes, ["link", "link", "button+toggle", "button+popup", "checkbox", "textbox", "tab", null]);
+});
+
+test("the fixture story holds C7, C8 and C11 on the render layer; documentation chrome is not story render", () => {
+  const report = run();
+  for (const clause of ["C7", "C8", "C11"]) assert.equal(status(report, clause), "green", `${clause}: ${JSON.stringify(report.clauses[clause].findings)}`);
+  assert.deepEqual(report.inputs.storyLayer, { source: "fixture", pageCount: 1, storyCount: 1, markupErrors: 0 });
+});
+
+const storyMutations = [
+  ["C7", "C7.story-title-missing", ` title="Save changes"`, ""],
+  ["C7", "C7.story-forced-wrap", `<span class="tcrn-button__label">Save changes</span>`, `<span class="tcrn-button__label">Save<br>changes</span>`],
+  ["C7", "C7.story-forced-wrap", `<span class="tcrn-button__label">Theme</span>`, `<span class="tcrn-button__label" style="white-space:normal">Theme</span>`],
+  ["C8", "C8.story-yield-missing", `<div class="tcrn-product-shell-search" data-shell-control="product-shell-search"><input type="search" class="tcrn-input" aria-label="Search"></div>`, ""],
+  ["C8", "C8.story-yield-not-unique", `<div class="tcrn-top-bar__brand">Brand</div>`, `<div class="tcrn-top-bar__brand">Brand</div><div class="tcrn-product-shell-search"></div>`],
+  ["C8", "C8.story-yield-in-fixed", `<div class="tcrn-top-bar__actions">`, `<div class="tcrn-top-bar__actions"><div class="tcrn-product-shell-search"></div>`],
+  ["C8", "C8.story-item-not-fixed", `<div class="tcrn-top-bar__brand">Brand</div>`, `<div class="tcrn-top-bar__brand">Brand</div><div class="tcrn-top-bar__module">Module</div>`],
+  ["C8", "C8.story-inline-override", `<div class="tcrn-product-shell-search" data-shell-control`, `<div class="tcrn-product-shell-search" style="min-width:0" data-shell-control`],
+  ["C8", "C8.story-inline-override", `<div class="tcrn-top-bar__brand">`, `<div class="tcrn-top-bar__brand" style="flex-shrink:1">`],
+  ["C11", "C11.story-emoji", `<p>Card body`, `<p><span class="tcrn-badge">🔒</span>Card body`],
+  ["C11", "C11.story-emoji", `aria-label="Close"`, `aria-label="Close ❌"`],
+  ["C11", "C11.story-card-in-card", `<p>Card body`, `<div class="tcrn-stat-card">Nested</div><p>Card body`],
+  ["C11", "C11.story-inline-style", `<p>Card body`, `<p style="background:linear-gradient(#fff,#000)">Card body`],
+  ["C11", "C11.story-inline-style", `<p>Card body`, `<p style="box-shadow:0 12px 32px rgba(0,0,0,.2)">Card body`],
+  [
+    "C11",
+    "C11.story-same-shape",
+    `<div class="tcrn-card">`,
+    `<div><button class="tcrn-button tcrn-button--secondary">a</button><button class="tcrn-button tcrn-button--secondary" aria-pressed="false">b</button><button class="tcrn-button tcrn-button--secondary" aria-haspopup="menu">c</button><div role="tab" class="tcrn-button tcrn-button--secondary">d</div></div><div class="tcrn-card">`
+  ],
+  ["C11", "C11.story-generic-shell", `tcrn-button--secondary tcrn-shell-theme-toggle"`, `tcrn-button--secondary"`],
+  ["C11", "C11.story-generic-shell", `<div class="tcrn-top-bar__brand">Brand</div>`, `<div class="tcrn-top-bar__brand">Brand<select><option>en</option></select></div>`],
+  ["C11", "C11.story-generic-shell", `<div class="tcrn-top-bar__brand">Brand</div>`, `<div class="tcrn-top-bar__brand">Brand<input type="text" class="tcrn-input"></div>`]
+];
+for (const [clause, rule, from, to] of storyMutations) {
+  test(`story mutation turns ${clause} red (${rule}): ${(to || `drop ${from}`).slice(0, 70)}`, () => {
+    const report = run({ pages: storyPage(from, to) });
+    assert.equal(status(report, clause), "red", JSON.stringify(report.clauses[clause].findings));
+    assert.ok(ruleIds(report, clause).includes(rule), `${rule} not in ${ruleIds(report, clause)}`);
+    const finding = report.clauses[clause].findings.find((entry) => entry.rule === rule);
+    assert.equal(finding.story, "fixture-story");
+    assert.equal(finding.source, "fixture.html");
+  });
+}
+
+test("C7, C8 and C11 are red when no rendered story can be read, not skipped", () => {
+  for (const pages of [null, [], pagesWith("<html><body><p>no story section</p></body></html>")]) {
+    const report = run({ pages });
+    for (const clause of ["C7", "C8", "C11"]) assert.ok(ruleIds(report, clause).includes(`${clause}.story-input-missing`), `${clause} with ${JSON.stringify(pages)?.slice(0, 40)}`);
+    assert.equal(report.ok, false);
+  }
+});
+
+test("a later family's story finding is exempted by an entry, counted, and a first-batch one is not", () => {
+  const pages = storyPage(`<p>Card body`, `<p><span class="tcrn-badge">🔒</span>Card body`);
+  const byClass = run({ pages, exemptions: { entries: [exemption("EX-badge-emoji", { classes: ["tcrn-badge"] }, ["C11"])] } });
+  assert.equal(status(byClass, "C11"), "green");
+  assert.deepEqual(byClass.clauses.C11.exemptedByEntry, { "EX-badge-emoji": 1 });
+  const firstBatch = run({ pages: storyPage(`<p>Card body`, `<p><span class="tcrn-button__label">🔒</span>Card body`), exemptions: { entries: [exemption("EX-feedback", { family: "feedback" })] } });
+  assert.equal(status(firstBatch, "C11"), "red");
+});
+
+test("--family keeps the findings of the named families; an unknown family id is red", () => {
+  const pages = pagesWith(STORY_PAGE.replace(` title="Save changes"`, "").replace(`<p>Card body`, `<p><span class="tcrn-badge">🔒</span>Card body`));
+  const all = run({ pages });
+  assert.equal(status(all, "C7"), "red");
+  assert.equal(status(all, "C11"), "red");
+  const actions = run({ pages, familyFilter: ["actions"] });
+  assert.equal(status(actions, "C7"), "red");
+  assert.equal(status(actions, "C11"), "green");
+  assert.deepEqual(actions.scope.familyFilter, ["actions"]);
+  const feedback = run({ pages, familyFilter: ["feedback"] });
+  assert.equal(status(feedback, "C7"), "green");
+  assert.equal(status(feedback, "C11"), "red");
+  const unknown = run({ familyFilter: ["nope"] });
+  assert.ok(unknown.reasonCodes.includes("CONTRACT_STATIC_FAMILY_UNKNOWN"));
+  assert.deepEqual(unknown.scope.unknownFamilies, ["nope"]);
+  assert.deepEqual(familyArguments(["--details", "--family", "actions,inputs", "--family=icon"]), ["actions", "inputs", "icon"]);
+});
+
+// ---------------------------------------------------------------------------------------------
 // The repository's contract files
 
 test("the repository's family registry, exemptions and roles are consistent", () => {
@@ -334,6 +463,12 @@ test("the repository's family registry, exemptions and roles are consistent", ()
   const familyOfBlock = new Map(families.families.flatMap((family) => family.blocks.map((block) => [block, family.id])));
   for (const role of roles.singleLine) assert.ok(familyOfBlock.has(role.class.replace(/__.*$/u, "")), role.class);
   for (const toolbar of roles.toolbars) assert.equal(typeof toolbar.yield, "string", toolbar.toolbar);
+  for (const control of roles.shell.controls) assert.ok(["shell", "navigation"].includes(familyOfBlock.get(control.class.replace(/__.*$/u, "").replace(/--.*$/u, ""))), control.class);
+  for (const bar of roles.shell.bars) assert.equal(familyOfBlock.get(bar), "shell", bar);
+  const lockHint = entries.find((entry) => entry.id === "EX-INIT015-lock-hint-emoji");
+  assert.deepEqual(lockHint?.classes, ["tcrn-lock-hint__icon"]);
+  assert.deepEqual(lockHint?.clauses, ["C11"]);
+  assert.match(lockHint?.ruling ?? "", /TCRN-DS-INIT-015 scope 不授权段/u);
 });
 
 test("clauses.md carries C1 to C17 and names the clauses this gate checks", () => {

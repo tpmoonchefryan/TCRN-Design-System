@@ -9,7 +9,7 @@
 | `clauses.md` | 本文：条款文本与各条的检查落点 |
 | `families.json` | 16 个家族与包 CSS 根类的对应；`scope.batch` 指定全量检查的批次 |
 | `exemptions.json` | 豁免登记：每条只豁免一个家族、一组类或一组选择器，列明条款并带裁定引用 |
-| `roles.json` | C7 的单行角色承载类与 C8 的工具栏登记 |
+| `roles.json` | C7 的单行角色承载类、C8 的工具栏登记与 C11「通用件拼壳」的壳层登记 |
 
 ## 契约静态门
 
@@ -17,14 +17,15 @@
 
 ```
 node --test tests/contract-static-proof.test.mjs
-node scripts/contract-static-proof.mjs [--details] [--report <path>]
+node scripts/contract-static-proof.mjs [--details] [--report <path>] [--family <id>[,<id>…]]
 ```
 
-- **输入。** 包 CSS 是已构建的 `packages/ui-react/dist/index.js` 导出的 `tcrnComponentCss`；token 表经 `@tcrn/ui-tokens` 的发布导出 `./tokens.css` 读取；C13 取 `scripts/doc-shell-class-proof.mjs` 算出的包外类差集（构建后的静态文档加文档层源码）。门不读组件源文件，与源文件布局无关。
-- **报告。** 标准输出是 JSON，`clauses` 按条款编号列出状态、发现数、按规则与按家族的计数、豁免命中数与每条发现（选择器、所在行、家族、说明）；`--details` 另列被豁免的发现；`--report` 把同一份 JSON 写到指定路径。任一条款有发现，或豁免登记不合规，或 CSS 读不通，退出码为 1。
+- **输入。** 包 CSS 是已构建的 `packages/ui-react/dist/index.js` 导出的 `tcrnComponentCss`；token 表经 `@tcrn/ui-tokens` 的发布导出 `./tokens.css` 读取；C13 取 `scripts/doc-shell-class-proof.mjs` 算出的包外类差集（构建后的静态文档加文档层源码）；story 渲染层读构建后的 `apps/storybook/storybook-static/*.html` 里带 `data-story-id` 的 story 区块（文档站外壳不算 story 渲染）。门不读组件源文件，与源文件布局无关。
+- **报告。** 标准输出是 JSON，`clauses` 按条款编号列出状态、发现数、按规则与按家族的计数、豁免命中数与每条发现（选择器、所在行、家族、说明）；`--details` 另列被豁免的发现；`--report` 把同一份 JSON 写到指定路径。story 层的发现另带 `story`（story id）与 `element`（标签加类名），`source` 是页面路径，`selector` 为空；`inputs.storyLayer` 列出读到的页面数与 story 数。任一条款有发现，或豁免登记不合规，或 CSS 读不通，退出码为 1。
+- **家族子集。** `--family <id>[,<id>…]`（可重复）只让归属这些家族的发现决定结果，id 取 `families.json` 的家族 id 与 `utility`、`unattributed`；不属于任何家族的发现（如输入缺失）照样计入；未知 id 判红（`CONTRACT_STATIC_FAMILY_UNKNOWN`）。报告的 `scope.familyFilter` 记下所用子集。子集只缩小判定范围，不是豁免。
 - **范围。** `families.json` 的第一批五家族（字体、图标、品牌、动作、表单控件）全量检查。其它家族同样参与检查，只有 `exemptions.json` 对该家族与该条款有登记时，发现才记为「已豁免」并计数，不算红。不属于任何家族的类、以及没有 tcrn-* 类的选择器，一律检查。一个选择器只有当其中每个被选中的 tcrn-* 类都被豁免时才豁免（`:not()` 与 `:has()` 里的类不算被选中）；所以后续家族写在第一批组件上的上下文规则照样检查。没有无条件跳过。
-- **豁免登记。** 每条必须有 `id`、`clauses`（只收本门检查的条款编号，不收通配）、`ruling`（裁定引用）、`reason`，并且恰好有 `family`、`classes`、`selectors` 之一。第一批家族、其类、以及选中其类的选择器不能登记。格式不合规的条目使门判红（`CONTRACT_STATIC_EXEMPTION_INVALID`）。本次运行没有命中的条目列在报告 `scope.unusedExemptions`。现有 11 条是第二至五批家族，引用 TCRN-DS-INIT-015 scope 不授权段与 R1 拆分问题清单 P4。
-- **story 层。** C7 的 title 与真实换行、C8 的量测让步、C11 的元素嵌套深度与渲染出的表情字符，属于 story 渲染层检查（TCRN-DS-SUB-037），不在本门。
+- **豁免登记。** 每条必须有 `id`、`clauses`（只收本门检查的条款编号，不收通配）、`ruling`（裁定引用）、`reason`，并且恰好有 `family`、`classes`、`selectors` 之一。第一批家族、其类、以及选中其类的选择器不能登记。格式不合规的条目使门判红（`CONTRACT_STATIC_EXEMPTION_INVALID`）。本次运行没有命中的条目列在报告 `scope.unusedExemptions`。现有 12 条：11 条是第二至五批家族，引用 TCRN-DS-INIT-015 scope 不授权段与 R1 拆分问题清单 P4；1 条按类登记 LockHint 默认的 🔒（`EX-INIT015-lock-hint-emoji`，只含 C11，引用同一不授权段、P4 与 TCRN-DS-SUB-037 判据）。条目对包 CSS 与 story 渲染层同样生效：story 层发现按渲染元素的包类（tcrn-*，不含 tcrn-doc-*）归家族；它没有 CSS 选择器，所以 `selectors` 条目不匹配 story 层发现。
+- **story 层（TCRN-DS-SUB-037）。** 同一道门另读渲染出的 story：C7 的 title 与强制换行、C8 的渲染工具栏让步结构、C11 的表情字符、卡套卡（卡片嵌套深度）、行内样式特征、四级语义同形与通用件拼壳，规则编号带 `story-`，见各条。读不到任何 story 区块（未构建静态 Storybook 或页面里没有 `data-story-id`）时 C7、C8、C11 各判红（`Cx.story-input-missing`），不跳过。容器矩阵与让步的像素量测属几何门（C3、C4、C16、C17 一侧），本门做的是渲染结构与静态声明这一半。
 
 ## 条款
 
@@ -93,6 +94,9 @@ node scripts/contract-static-proof.mjs [--details] [--report <path>]
   - `C7.not-single-line`：承载类的基础规则（无状态、无主题、无 at-rule）没有同时声明 `white-space: nowrap`、`text-overflow: ellipsis` 与 `overflow: hidden`（或 clip）。
   - `C7.wrap-allowed`：任何规则把承载类改回可折行（`white-space: normal|pre-wrap|pre-line|break-spaces`、`text-overflow: clip`、`overflow: visible`）。
   - `C7.role-missing`：登记的承载类在包 CSS 里没有规则。
+- story 层：
+  - `C7.story-title-missing`：渲染出的承载元素有可见文字，却没有非空 `title`。title 可以在元素自身、元素内部，或在它到组件根（类名等于承载类根类的最近祖先，如 `tcrn-button`）之间、且子树里只有这一个承载元素的祖先上（共享容器的 title 不算）。口径：只看 title 存在且非空，不比对与文字相等（禁用原因、关系标记的完整说明也算）；没有文字的承载元素（只有图标）不查。
+  - `C7.story-forced-wrap`：承载元素里有 `<br>` 或块级元素，或它及其后代的行内样式把它改回可折行（同 `C7.wrap-allowed` 的取值）。
 
 ### C8 工具栏让步声明
 
@@ -106,6 +110,12 @@ node scripts/contract-static-proof.mjs [--details] [--report <path>]
   - `C8.fixed-item-shrinks`：固定项的基础规则没有 flex-shrink 0（`flex-shrink: 0`、`flex: none` 或 `flex: <g> 0 <basis>`）。
   - `C8.yield-undeclared`、`C8.toolbar-missing`：登记缺让步项，或容器类在包 CSS 里没有规则。
   - 第一批家族里没有工具栏；现登记的顶栏属壳层家族，按 exemptions.json 豁免。
+- story 层（每个渲染出的工具栏容器；未声明让步项的工具栏已由 `C8.yield-undeclared` 判红，story 层不重复）：
+  - `C8.story-yield-missing`、`C8.story-yield-not-unique`：渲染出的工具栏里让步项不是恰好一个。
+  - `C8.story-yield-in-fixed`：让步项落在固定项里面（固定项不收缩，让步项让不出来）。
+  - `C8.story-item-not-fixed`：工具栏行（让步项外层第一个有多个子元素的元素，没有让步项时是容器本身）里，除让步项外的每一项都须是固定项：登记在 `fixed`，或其包类的基础规则声明 flex-shrink 0；否则让步项到 min-width 之前它先被压。这是「让步项达到 min-width 后其余不得被压」的静态一半，像素量测属几何门。
+  - `C8.story-inline-override`：行内样式把让步项的 min-width 改成 0/auto 或让它不收缩，或让固定项可收缩。
+  - 归属：story 层 C8 发现归到工具栏（容器、行与固定项的类），由工具栏负责项的布局。
 
 ### C9 品牌资产只复制不重绘
 
@@ -134,7 +144,13 @@ node scripts/contract-static-proof.mjs [--details] [--report <path>]
   - `C11.card-in-card`：一个选择器里有两个卡片根类（`tcrn-card`、`tcrn-*-card`）的复合选择器。
   - `C11.emoji-icon`：值里的字符串（如 `content`）含表情符号（Emoji_Presentation，或带 U+FE0F 的象形字符；`\1F512` 这类转义同样识别）。
   - `C11.left-bar`：宽度 2px 及以上的 `border-left` / `border-inline-start`，或只在左侧的 inset 条（x ≥ 2、y 为 0、无模糊）。
-  - 四级语义同形、通用件拼壳与元素嵌套深度需要渲染结果，属 story 层。
+  - 卡片根是 `tcrn-card`、`tcrn-*-card` 与画法和卡片相同（边框、圆角、面板底）的 `tcrn-surface`；`__` 元素类不算根。
+- story 层：
+  - `C11.story-emoji`：story 区块里渲染出的文字或属性值（SVG 几何属性与 style 除外，style 归下一条）含表情符号；发现归到最近的带包类的元素。LockHint 默认的 🔒 按类登记豁免（`EX-INIT015-lock-hint-emoji`），不改该组件。
+  - `C11.story-card-in-card`：渲染出的卡片根元素嵌在另一个卡片根元素里（卡片嵌套深度大于 1，即元素嵌套深度一项）。
+  - `C11.story-inline-style`：行内 `style` 里出现上面 CSS 特征扫描的任一项（渐变、模糊、云阴影、表情、左边条）。
+  - `C11.story-same-shape`：一个 story 里同一外形签名（元素上同一组包类）承担四种及以上语义（显式 role 或隐含角色；按下切换与弹出触发各算一种，current、selected 是状态不算语义）。依据：画板第二节 2026-07-26 AOS 检索页「四层语义一种外形」。
+  - `C11.story-generic-shell`：带 `data-shell-control` 的壳层控件位缺 `roles.json` `shell.controls` 登记的专用类；或壳层条（`shell.bars`）里出现原生 `select`、搜索组件（`shell.searchComponents`）之外的文本输入。依据：画板第二节 2026-08-14「通用件拼壳」。发现归到壳层控件位的专用类与壳层条。
 
 ### C12 位置到组件的选型表
 
