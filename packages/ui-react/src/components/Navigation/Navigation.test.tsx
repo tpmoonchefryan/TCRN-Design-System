@@ -1085,6 +1085,67 @@ test("product shell controller returns ready prop bundles for registered shell c
   }
 });
 
+/** A block that carries its own theme, as a sample's night block does, with the toggle that switches it. */
+function ThemeBlockFixture({ fixture, initialTheme }: { fixture: string; initialTheme: ShellThemeMode }) {
+  const [theme, setTheme] = useState<ShellThemeMode>(initialTheme);
+  return (
+    <div data-tcrn-theme={theme} data-fixture={fixture}>
+      <ShellThemeToggle locale="en" currentTheme={theme} onThemeChange={setTheme} />
+    </div>
+  );
+}
+
+test("theme toggle shows its current icon by its own data-current-theme, in a block-level night theme as on a night page", async () => {
+  // No rule ties the toggle icons' display to a theme on the page (that was the C5 dark-only
+  // finding, and it hid both icons in a sample's night block); the toggle's own
+  // data-current-theme picks the icon through the opacity rules beside .tcrn-shell-theme-toggle__icon.
+  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  assert.doesNotMatch(sheet, /data-tcrn-theme[^{}]*data-theme-icon/);
+  const iconDisplayRules = [...sheet.matchAll(/(?:^|\n)([^{}\n@][^{}]*)\{([^}]*)\}/g)]
+    .filter(([, selector, body]) => /\[data-theme-icon/.test(selector) && /(?:^|[;\s])display\s*:/.test(body))
+    .map(([, selector]) => selector.trim());
+  assert.deepEqual(iconDisplayRules, [], "no rule shows or hides a theme icon by display");
+
+  const harness = createDomInteractionHarness();
+  try {
+    const style = harness.document.createElement("style");
+    style.textContent = tcrnComponentCss;
+    harness.document.head.append(style);
+    await harness.render(
+      <>
+        <ThemeBlockFixture fixture="night-block" initialTheme="dark" />
+        <ThemeBlockFixture fixture="day-block" initialTheme="light" />
+      </>
+    );
+    // jsdom cascades the matching rules in document order, without specificity; the rules that
+    // pick the icon come after the base icon rule, which is also the order their specificity gives.
+    const visibleIcons = (fixture: string) =>
+      [...harness.document.querySelectorAll(`[data-fixture="${fixture}"] [data-theme-icon]`)]
+        .filter((icon) => {
+          const computed = harness.window.getComputedStyle(icon);
+          return computed.display !== "none" && computed.visibility !== "hidden" && computed.opacity === "1";
+        })
+        .map((icon) => icon.getAttribute("data-theme-icon"));
+    assert.deepEqual(visibleIcons("night-block"), ["dark"], "the night block shows the moon, its current theme");
+    assert.deepEqual(visibleIcons("day-block"), ["light"], "the day block shows the sun");
+
+    const nightToggle = harness.document.querySelector("[data-fixture='night-block'] [data-theme-toggle='true']");
+    assert.ok(nightToggle instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchClick(nightToggle);
+    assert.equal(nightToggle.getAttribute("data-current-theme"), "light");
+    assert.deepEqual(visibleIcons("night-block"), ["light"], "the icon follows the toggle's current theme");
+    await harness.dispatchClick(nightToggle);
+    assert.deepEqual(visibleIcons("night-block"), ["dark"]);
+
+    // A night page (the theme on html) changes nothing: each toggle still shows its own current icon.
+    harness.document.documentElement.setAttribute("data-tcrn-theme", "dark");
+    assert.deepEqual(visibleIcons("night-block"), ["dark"]);
+    assert.deepEqual(visibleIcons("day-block"), ["light"], "the toggle's current theme, not the page theme, picks the icon");
+  } finally {
+    await harness.cleanup();
+  }
+});
+
 test("shell chrome says its own words in the reader's language", () => {
   // The shell's most load-bearing strings, and the ones with the least visible
   // evidence that they were wrong: three of these controls are icon-only, so the

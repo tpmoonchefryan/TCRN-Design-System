@@ -62,10 +62,10 @@ export const baseCss05 = `
 }
 .tcrn-shell-locale-menu__trigger:hover,
 .tcrn-shell-locale-menu__trigger[aria-expanded="true"] {
-  border-color: var(--tcrn-color-border-control);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 72%, var(--tcrn-color-surface-panel));
-  color: var(--tcrn-color-text-primary);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+  border-color: var(--tcrn-color-line-ctl);
+  background: var(--tcrn-color-hover);
+  color: var(--tcrn-color-ink);
+  box-shadow: var(--tcrn-shadow-s1);
 }
 .tcrn-product-shell .tcrn-shell-locale-menu__trigger:focus-visible {
   box-shadow: none;
@@ -599,15 +599,15 @@ export const baseCss11 = `
 .tcrn-shell-locale-menu__name {
   font: inherit;
 }
-[data-theme-icon="dark"],
+/* The theme toggle's icons have no display rule here: the toggle shows its current icon by
+   its own data-current-theme (the opacity rules beside .tcrn-shell-theme-toggle__icon), so
+   the icon follows a block-level theme the same way as a page-level one. */
 [data-side-nav-icon="expand"] {
   display: none;
 }
-html[data-tcrn-theme="dark"] [data-theme-icon="light"],
 [data-side-nav-collapsed="true"] [data-side-nav-icon="collapse"] {
   display: none;
 }
-html[data-tcrn-theme="dark"] [data-theme-icon="dark"],
 [data-side-nav-collapsed="true"] [data-side-nav-icon="expand"] {
   display: inline-flex;
 }

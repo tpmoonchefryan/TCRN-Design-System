@@ -15,10 +15,15 @@
 //                          generated segments carry no colour literal either.
 //   package-css            tcrnComponentCss of the built packages/ui-react/dist/index.js contains every
 //                          generated segment verbatim (a segment that only joins the others of its module
-//                          counts through its parts), and no state rule of a pairs.json target base carries
-//                          a colour literal. Colour literal means css-rules colourLiterals; the one
-//                          allowance is the one contract-static C2 makes: an outline whose only colour is
-//                          transparent (the forced-colours focus ring).
+//                          counts through its parts), and no state rule of the whole sheet carries a colour
+//                          literal. A state rule is a style rule one of whose compounds has a state
+//                          condition as docs/contract/clauses.md C2 defines it (a state pseudo-class, a
+//                          state ARIA attribute, data-tcrn-preview-state, readonly or disabled, inside
+//                          :where() and :is() too; read through contract-static's selectorFacts), or a
+//                          pairs.json state condition (TCRN-DS-SUB-053: the check used to read only the
+//                          state rules of the pairs.json target bases). Colour literal means css-rules
+//                          colourLiterals; the one allowance is the one contract-static C2 makes: an
+//                          outline whose only colour is transparent (the forced-colours focus ring).
 //   icon-roster            icons.json lists 37 distinct names and they are the set of tcrnIconNames.
 //   product-marks          the eight SVG files generated from marks.json (the build-logos2 file form: the
 //                          palette for <id>.svg, monoInk for <id>-mono.svg) equal docs/design/gplus-2026-10/
@@ -40,6 +45,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, realpathSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { selectorFacts } from "./contract-static-proof.mjs";
 import { colourLiterals, compounds, parseCompound, parseCss, selectorList } from "./lib/css-rules.mjs";
 
 export const SCHEMA_VERSION = "tcrn.ds.contract-proof.v1";
@@ -183,6 +189,18 @@ export function isStateSelector(selector, stateAtoms, baseClasses = null) {
     for (const atom of compoundAtoms(part.text)) if (stateAtoms.has(atom)) return true;
   }
   return false;
+}
+
+/**
+ * True when the selector makes a state rule of the whole sheet: one of its compounds has a state condition as
+ * docs/contract/clauses.md C2 defines it (contract-static's selectorFacts().hasState: :hover :active :focus
+ * :focus-visible :focus-within :disabled :checked :indeterminate :invalid :user-invalid :read-only, the state ARIA
+ * attributes, data-tcrn-preview-state, readonly, disabled; inside :where() and :is() too, not inside :not() or :has()),
+ * or a pairs.json state condition read as isStateSelector reads it (inside :not() too), so every rule the check read
+ * before TCRN-DS-SUB-053 is still read.
+ */
+export function isSheetStateSelector(selector, stateAtoms) {
+  return selectorFacts(selector).hasState || isStateSelector(selector, stateAtoms);
 }
 
 /** Colour literals of a state-rule declaration, less contract-static C2's allowance (an outline whose only colour is transparent). */
@@ -357,10 +375,12 @@ function checkPackageCss({ generated, data, ui, uiError, loadError }) {
   const stateAtoms = pairStateAtoms(data.pairs);
   const bases = pairBaseClasses(data.pairs);
   let stateRules = 0;
+  let baseRules = 0;
   let allowed = 0;
   for (const rule of parsed.rules) {
-    if (rule.kind !== "style" || !rule.selectors.some((selector) => isStateSelector(selector, stateAtoms, bases))) continue;
+    if (rule.kind !== "style" || !rule.selectors.some((selector) => isSheetStateSelector(selector, stateAtoms))) continue;
     stateRules += 1;
+    if (rule.selectors.some((selector) => isStateSelector(selector, stateAtoms, bases))) baseRules += 1;
     for (const declaration of rule.declarations) {
       const literals = stateRuleLiterals(declaration);
       if (literals.length > 0) failures.push(`tcrnComponentCss: state rule ${rule.selectorText} carries the colour literal ${literals.join(", ")} (${declaration.prop}: ${declaration.value})`);
@@ -371,8 +391,8 @@ function checkPackageCss({ generated, data, ui, uiError, loadError }) {
   return {
     summary:
       failures.length === 0
-        ? `tcrnComponentCss holds the ${needed.size} generated segments verbatim; ${stateRules} state rules of the pairs.json target bases carry no colour literal`
-        : `${failures.length} problem(s) in tcrnComponentCss`,
+        ? `tcrnComponentCss holds the ${needed.size} generated segments verbatim; its ${stateRules} state rules (${baseRules} of them on the pairs.json target bases) carry no colour literal`
+        : `${failures.length} problem(s) in tcrnComponentCss (${stateRules} state rules read, ${baseRules} of them on the pairs.json target bases)`,
     failures,
     notes
   };
