@@ -606,6 +606,30 @@ async function pinAnimations(page) {
   await page.evaluate(PIN_ANIMATIONS);
 }
 
+/**
+ * Wait until every finite animation in the document has finished, without touching any of them
+ * (TCRN-DS-SUB-083, R2-21b). A computed-style read taken while a transition runs reports a point on
+ * the way rather than the value the surface settles to: the Button fill eases over the pair
+ * transition, longer still under reduced motion, so the fixed 80ms pause the hover readback used to
+ * take read a fill that had not arrived. No duration is named here. Infinite loops (skeleton,
+ * progress) never finish and are left out; the bounded rounds cover a finished transition that
+ * starts another.
+ */
+async function settleAnimations(page) {
+  return await page.evaluate(async () => {
+    if (typeof document.getAnimations !== "function") return { settled: true, rounds: 0, awaited: 0 };
+    let awaited = 0;
+    for (let round = 0; round < 20; round += 1) {
+      const running = document.getAnimations().filter((animation) => animation.playState === "running"
+        && animation.effect?.getComputedTiming?.().iterations !== Infinity);
+      if (running.length === 0) return { settled: true, rounds: round, awaited };
+      awaited += running.length;
+      await Promise.all(running.map((animation) => animation.finished.catch(() => undefined)));
+    }
+    return { settled: false, rounds: 20, awaited };
+  });
+}
+
 async function setTransientScreenshotChromeHidden(page, hidden) {
   await page.evaluate(([shouldHide, pinSource]) => {
     const styleId = "tcrn-proof-screenshot-chrome-hidden";
@@ -2563,9 +2587,12 @@ await storybookPage.evaluate(() => {
 });
 const buttonHoverButton = storybookPage.locator("[data-contract-story-id='button-spec-usage'] .tcrn-button--primary.tcrn-button--md:not(.tcrn-icon-button):not([disabled])").first();
 await buttonHoverButton.waitFor({ state: "visible" });
+// TCRN-DS-SUB-083: both reads wait for running transitions to end (settleAnimations) instead of a
+// fixed pause, and the readings travel into browser-proof-summary.json with how the wait ended.
+const buttonRestSettle = await settleAnimations(storybookPage);
 const buttonRestBackground = await buttonHoverButton.evaluate((el) => getComputedStyle(el).backgroundColor);
 await buttonHoverButton.hover();
-await storybookPage.waitForTimeout(80);
+const buttonHoverSettle = await settleAnimations(storybookPage);
 const buttonHoverBackground = await buttonHoverButton.evaluate((el) => getComputedStyle(el).backgroundColor);
 await storybookPage.mouse.move(4, 4);
 // TCRN-DS-SUB-041: under G+ the rest and hover fills are the Actions pair table's primary d and h
@@ -2582,7 +2609,9 @@ const buttonFeedbackReadback = {
   restBackground: buttonRestBackground,
   hoverBackground: buttonHoverBackground,
   expectedRestBackground: buttonExpectedRestBackground,
-  expectedHoverBackground: buttonExpectedHoverBackground
+  expectedHoverBackground: buttonExpectedHoverBackground,
+  restSettle: buttonRestSettle,
+  hoverSettle: buttonHoverSettle
 };
 
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-governance.html?locale=en#blocked-actions`);
@@ -3449,6 +3478,9 @@ const browserProofSummary = {
   viewports,
   settingsLayoutBrowserProof,
   pageHierarchyBrowserProof,
+  // TCRN-DS-SUB-083: the Button rest and hover readings behind buttonFeedbackOk, kept so the
+  // verdict can be read back from the receipt rather than inferred.
+  buttonFeedbackReadback,
   aiContractTraceabilityCheck,
   componentStorybookParityReadback,
   localeLeakScan,
