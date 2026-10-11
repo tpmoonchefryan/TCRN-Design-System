@@ -23,7 +23,8 @@
 // measured). STORY_MUTATIONS injects a mutation on a real story for STORY-131 GWT1-3 and for contrast
 // (each must turn its check red); REQUIRED_CHECKS names the checks each story must exercise (an n/a
 // there fails) and, in a full run, every check must apply somewhere in the set; STORY_PROBES judges the
-// ButtonGroup focus ring, the DatePicker indicator hit and the Highlight width (decomposition P31).
+// ButtonGroup focus ring, the DatePicker indicator hit and the Highlight width (decomposition P31), and
+// the 1.25px stroke of the 16px icons (124-GWT1).
 // The report (--write-report) goes to docs/verification/geometry-measure/report.json.
 //
 // Usage: node scripts/geometry-measure-proof.mjs [--self-check-only] [--story <id>]... [--family <name>] [--write-report]
@@ -110,12 +111,21 @@ export const STORY_MUTATIONS = deepFreeze([
 // Relations the eight checks do not cover, judged in the browser (decomposition P31): the ButtonGroup
 // focus ring is not clipped (125-GWT4), a click on the right 30px of a DatePicker lands on the native
 // calendar indicator (126-GWT4; headless Chromium opens no system calendar, so the hit test stands in),
-// and a Highlight keeps the width of its plain text (123-GWT2).
+// a Highlight keeps the width of its plain text (123-GWT2), and the 16px icons are stroked 1.25px
+// (124-GWT1, ICON_STROKE).
 export const STORY_PROBES = deepFreeze([
   { id: "buttonGroupFocusRing", storyId: "actions-matrix", source: "125-GWT4" },
   { id: "datePickerIndicatorHit", storyId: "inputs-matrix", source: "126-GWT4" },
-  { id: "highlightWidth", storyId: "typography-matrix", source: "123-GWT2" }
+  { id: "highlightWidth", storyId: "typography-matrix", source: "123-GWT2" },
+  { id: "iconStroke", storyId: "icon-matrix", source: "124-GWT1" }
 ]);
+
+// 124-GWT1 on the icon-matrix 16px row: the roster renders every icon at 14, 16 and 20 px and marks
+// each rendition with data-gplus-icon-size. Each 16px icon must render 16px square, and every child
+// (svg.tcrn-icon > *) must compute stroke-width 1.25px with vector-effect non-scaling-stroke, which
+// keeps the 1.25 in screen pixels whatever the viewBox scale (SVG does not inherit vector-effect, so
+// each child carries it).
+export const ICON_STROKE = deepFreeze({ iconSelector: 'svg.tcrn-icon[data-gplus-icon-size="16"]', sizePx: 16, strokeWidthPx: 1.25, vectorEffect: "non-scaling-stroke", tolerancePx: 0.01 });
 
 // Browser side: every button of every ButtonGroup under root is put in its focus preview state; the
 // ring (box-shadow extent) must stay inside every clipping ancestor up to root.
@@ -193,6 +203,42 @@ export function highlightWidthInPage({ root, tolerancePx = 0.5 }) {
   return { checked, value: Math.round(worst * 100) / 100, violationCount: violations.length, violations };
 }
 
+// Browser side: every icon matching iconSelector under root must be sizePx square, and every child of
+// it must compute stroke-width strokeWidthPx (within tolerancePx) and vector-effect vectorEffect.
+// checked counts the icons; value is the largest stroke-width deviation in px.
+export function iconStrokeInPage({ root, iconSelector, sizePx, strokeWidthPx, vectorEffect, tolerancePx = 0.01 }) {
+  const scope = document.querySelector(root);
+  if (!scope) return { error: "root_not_found" };
+  const round = (value) => Math.round(value * 100) / 100;
+  const violations = [];
+  const strokeWidths = new Set();
+  const vectorEffects = new Set();
+  let checked = 0;
+  let children = 0;
+  let worst = 0;
+  for (const svg of scope.querySelectorAll(iconSelector)) {
+    checked += 1;
+    const icon = svg.getAttribute("data-icon-name") || svg.getAttribute("aria-label") || "";
+    const box = svg.getBoundingClientRect();
+    if (Math.abs(box.width - sizePx) > 0.5 || Math.abs(box.height - sizePx) > 0.5) violations.push({ icon, reasons: ["size"], widthPx: round(box.width), heightPx: round(box.height) });
+    if (svg.children.length === 0) violations.push({ icon, reasons: ["no_children"] });
+    for (const child of svg.children) {
+      children += 1;
+      const cs = getComputedStyle(child);
+      strokeWidths.add(cs.strokeWidth);
+      vectorEffects.add(cs.vectorEffect);
+      const width = parseFloat(cs.strokeWidth);
+      const diff = Number.isFinite(width) ? Math.abs(width - strokeWidthPx) : Infinity;
+      worst = Math.max(worst, diff);
+      const reasons = [];
+      if (!(diff <= tolerancePx)) reasons.push("strokeWidth");
+      if (cs.vectorEffect !== vectorEffect) reasons.push("vectorEffect");
+      if (reasons.length) violations.push({ icon, child: child.tagName.toLowerCase(), strokeWidth: cs.strokeWidth, vectorEffect: cs.vectorEffect, reasons });
+    }
+  }
+  return { checked, children, value: Number.isFinite(worst) ? round(worst) : null, strokeWidths: [...strokeWidths], vectorEffects: [...vectorEffects], violationCount: violations.length, violations: violations.slice(0, 10) };
+}
+
 // Node side: the right 30px of every DatePicker input must be its native ::-webkit-calendar-picker-indicator
 // (read from the user-agent shadow tree with its box) and a click there must reach the input (no icon or
 // wrapper on top: elementFromPoint at the sampled points returns the input).
@@ -255,10 +301,15 @@ export async function datePickerIndicatorHit(page, root) {
   return { checked, value: violations.length, violationCount: violations.length, violations };
 }
 
+// The page-side probes and the options each one is handed next to its root.
+const PAGE_PROBES = { buttonGroupFocusRing: focusRingClipInPage, highlightWidth: highlightWidthInPage, iconStroke: iconStrokeInPage };
+const PROBE_OPTIONS = { iconStroke: ICON_STROKE };
+
 async function runStoryProbe(probe, page) {
   if (probe.id === "datePickerIndicatorHit") return datePickerIndicatorHit(page, probe.root);
-  const fn = probe.id === "buttonGroupFocusRing" ? focusRingClipInPage : highlightWidthInPage;
-  return page.evaluate(fn, { root: probe.root });
+  const fn = PAGE_PROBES[probe.id];
+  if (!fn) return { error: `unknown_probe:${probe.id}` };
+  return page.evaluate(fn, { ...(PROBE_OPTIONS[probe.id] ?? {}), root: probe.root });
 }
 
 const STATUS_RANK = { "n/a": 0, pass: 1, fail: 2 };
