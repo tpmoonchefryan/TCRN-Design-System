@@ -858,7 +858,10 @@ test("static contract story surface is retained and synthetic", () => {
   // G+ Inputs (TCRN-DS-SUB-020): focus no longer washes the whole field; the control inside
   // changes its own edge and draws the focus ring from the inputs pair table.
   assert.doesNotMatch(combinedHtml, /\.tcrn-field:focus-within/);
-  assert.match(combinedHtml, /\.tcrn-field--error[\s\S]*outline-color: var\(--tcrn-color-state-blocked\)/);
+  // An error neither washes nor rings the field (TCRN-DS-SUB-060): the message reads
+  // --tcrn-color-bad on the surface the field sits on.
+  assert.doesNotMatch(combinedHtml, /state-blocked-bg\) 62%/);
+  assert.match(combinedHtml, /\.tcrn-field__error \{\s*color: var\(--tcrn-color-bad\);\s*\}/);
   assert.match(combinedHtml, /\.tcrn-field \{[\s\S]*transition:[\s\S]*background-color 150ms ease-out,[\s\S]*outline-color 150ms ease-out/);
   assert.match(combinedHtml, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.tcrn-field[\s\S]*transition: none/);
   assert.match(combinedHtml, /@media \(forced-colors: active\)[\s\S]*\.tcrn-field--error[\s\S]*outline: 2px solid Highlight/);

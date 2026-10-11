@@ -11,19 +11,21 @@
 // (written by scripts/contract-generate.mjs from the design contract). The family base
 // rules here read the live pair (--tcrn-pair-fill, --tcrn-pair-ink, --tcrn-pair-edge, and
 // --tcrn-pair-mark or --tcrn-pair-knob with --tcrn-pair-knob-edge) and never declare it;
-// each pair segment is joined after the base rules it serves.
+// each pair segment is joined after the base rules it serves. One local pair is written
+// here by hand: the multi-select dropdown option, which has no table in pairs.json,
+// declares its fill and weight values on its own class, and its state rules only switch
+// the live pair, the same form the generated segments take.
 
 import { inputsCheckPairsCss, inputsSwitchPairsCss, inputsTextPairsCss } from "./generated/inputs.pairs.js";
 
-export const inputsCss01 = `
-/* In the product shell the search keeps the same tool form as everywhere else: the
-   control draws its own edge and focus ring from the inputs pair table, and the wrapper
-   draws nothing around it. The shell-wide focus rule in the base segment leaves every
-   pair-driven control alone, the search control among them. */
-.tcrn-product-shell .tcrn-search-input:focus-within {
-  outline: 0;
-  box-shadow: none;
-}`;
+// Former landing place of a product-shell focus rule for the search wrapper (a state rule
+// at specificity 0,3,0 that cleared the wrapper's outline and shadow while focus was
+// inside it). The wrapper paints no fill, edge, outline or ring in any context, so there
+// was nothing left for the shell to clear: the control draws its own edge and focus ring
+// from the inputs pair table, and the shell-wide focus rule in the base segment leaves
+// every pair-driven control alone, the search control among them. The segment stays
+// joined, empty.
+export const inputsCss01 = ``;
 
 export const inputsCss02 = `
 /* SearchInput is a quiet tool, the same in a form and in a top bar: a wash fill with no
@@ -83,6 +85,8 @@ export const inputsCss02 = `
 .tcrn-input.tcrn-search-input__control::placeholder {
   color: var(--tcrn-color-ink-2);
 }
+/* The shortcut label is text, so it takes ink-2 for the same reason the placeholder does:
+   ink-3 on the night wash falls under the 4.5 text contrast. */
 .tcrn-search-input__shortcut {
   position: absolute;
   inset-block-start: 50%;
@@ -93,7 +97,7 @@ export const inputsCss02 = `
   padding: 0 var(--tcrn-space-1);
   border: 1px solid var(--tcrn-color-line-2);
   border-radius: 4px;
-  color: var(--tcrn-color-ink-3);
+  color: var(--tcrn-color-ink-2);
   font-family: var(--tcrn-type-family-mono);
   font-size: 10px;
   line-height: 14px;
@@ -136,12 +140,11 @@ export const inputsCss05 = `
 }
 
 /* Focus no longer washes the whole field: the control inside changes its own edge and
-   draws the focus ring from the inputs pair table. */
-
-.tcrn-field--error {
-  background-color: color-mix(in srgb, var(--tcrn-color-state-blocked-bg) 62%, transparent);
-  outline-color: var(--tcrn-color-state-blocked);
-}
+   draws the focus ring from the inputs pair table. An error does not wash it or ring it
+   either: the control takes the invalid pair (the bad edge) and the message below it is
+   set in bad straight on the surface the field sits on, so the message keeps the
+   contrast the Inputs matrix expects of bad on panel. Only forced colours outline the
+   field in error, with the system's Highlight (see the forced-colours block). */
 
 .tcrn-field__label {
   font-weight: 600;
@@ -157,7 +160,7 @@ export const inputsCss05 = `
 }
 
 .tcrn-field__error {
-  color: var(--tcrn-color-state-blocked);
+  color: var(--tcrn-color-bad);
 }
 
 /* Form input + select (.tcrn-input--short is a docs-only demo width and stays there).
@@ -507,17 +510,25 @@ export const inputsCss11 = `
 .tcrn-select.tcrn-multi-select{block-size:auto;padding:var(--tcrn-space-1)}
 
 /* A collection dropdown uses the Select trigger (the .tcrn-select pair table) and Menu
-   option families. The summary stays on one line and carries its full text as a title. */
-.tcrn-multi-select-dropdown{position:relative;min-inline-size:0;max-inline-size:100%}
-.tcrn-multi-select-dropdown__trigger{-webkit-appearance:none;appearance:none;display:flex;align-items:center;justify-content:space-between;gap:var(--tcrn-space-2);inline-size:100%;text-align:start;cursor:pointer}
+   option families. The summary stays on one line and carries its full text as a title.
+   The trigger keeps the Select geometry: the dropdown lays it out as a flex item, as the
+   select wrapper lays out a Select, and it keeps the same 30px clear at its end, where the
+   caret sits at the sm icon size in ink-3, placed exactly as the Select chevron. */
+.tcrn-multi-select-dropdown{position:relative;display:flex;align-items:center;min-inline-size:0;max-inline-size:100%}
+.tcrn-multi-select-dropdown__trigger{-webkit-appearance:none;appearance:none;position:relative;display:flex;align-items:center;justify-content:space-between;gap:var(--tcrn-space-2);inline-size:100%;padding-inline-end:30px;text-align:start;cursor:pointer}
 .tcrn-multi-select-dropdown__trigger [data-multi-select-summary]{min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tcrn-multi-select-dropdown__caret{flex:0 0 auto;inline-size:var(--tcrn-icon-size-sm);block-size:var(--tcrn-icon-size-sm);color:var(--tcrn-color-ink-3)}
+.tcrn-multi-select-dropdown__caret{position:absolute;inset-block:0;inset-inline-end:calc((30px - var(--tcrn-icon-size-sm)) / 2);margin-block:auto;inline-size:var(--tcrn-icon-size-sm);block-size:var(--tcrn-icon-size-sm);color:var(--tcrn-color-ink-3);pointer-events:none}
 .tcrn-multi-select-dropdown__trigger:disabled{cursor:not-allowed}
 .tcrn-multi-select-dropdown__list{z-index:var(--tcrn-z-popover);min-inline-size:0;max-inline-size:calc(100vw - var(--tcrn-space-4));max-block-size:calc(100vh - var(--tcrn-space-4));overflow:auto;box-sizing:border-box}
 .tcrn-multi-select-dropdown__list[hidden]{display:none}
-.tcrn-multi-select-dropdown__option{display:flex;justify-content:space-between;align-items:center;gap:var(--tcrn-space-2);font:inherit;color:var(--tcrn-color-ink);overflow-wrap:anywhere}
-.tcrn-multi-select-dropdown__option:not(:disabled):hover{background:var(--tcrn-color-hover)}
-.tcrn-multi-select-dropdown__option[aria-selected="true"]{background:var(--tcrn-color-wash);font-weight:600}
+/* An option draws its fill and weight from a pair kept on the option itself (Inputs board
+   .opt): no fill and the regular weight by default, the hover fill on hover, the wash and
+   600 once selected. The base reads the live pair; the two state rules only switch it, and
+   the hover rule comes last, so a hovered selected option shows the hover fill and keeps
+   its weight. */
+.tcrn-multi-select-dropdown__option{--tcrn-pair-fill-d:transparent;--tcrn-pair-fill-h:var(--tcrn-color-hover);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-fill:var(--tcrn-pair-fill-d);--tcrn-pair-weight:400;display:flex;justify-content:space-between;align-items:center;gap:var(--tcrn-space-2);font:inherit;font-weight:var(--tcrn-pair-weight);background-color:var(--tcrn-pair-fill);color:var(--tcrn-color-ink);overflow-wrap:anywhere}
+.tcrn-multi-select-dropdown__option:where([aria-selected="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-s);--tcrn-pair-weight:600}
+.tcrn-multi-select-dropdown__option:where(:not(:disabled):hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h)}
 .tcrn-multi-select-dropdown__option [data-multi-select-check]{flex:0 0 auto;visibility:hidden}
 .tcrn-multi-select-dropdown__option [data-multi-select-check][data-selected="true"]{visibility:visible}`;
 
