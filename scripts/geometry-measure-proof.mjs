@@ -20,11 +20,13 @@
 // check must turn red on its injected violation and stay green on the clean pages, in the Chromium that
 // is about to measure the stories. Then each G+ matrix and sample story is opened on its category page
 // in every theme and measured inside its rendered region (the documentation chrome around it is not
-// measured). STORY_MUTATIONS adds injected mutations on real
-// stories (each must turn its check red) and REQUIRED_CHECKS names the checks a story must exercise
-// (an n/a there fails); both are filled when the gate is wired to the stories.
+// measured). STORY_MUTATIONS injects a mutation on a real story for STORY-131 GWT1-3 and for contrast
+// (each must turn its check red); REQUIRED_CHECKS names the checks each story must exercise (an n/a
+// there fails) and, in a full run, every check must apply somewhere in the set; STORY_PROBES judges the
+// ButtonGroup focus ring, the DatePicker indicator hit and the Highlight width (decomposition P31).
+// The report (--write-report) goes to docs/verification/geometry-measure/report.json.
 //
-// Usage: node scripts/geometry-measure-proof.mjs [--self-check-only] [--story <id>]... [--write-report]
+// Usage: node scripts/geometry-measure-proof.mjs [--self-check-only] [--story <id>]... [--family <name>] [--write-report]
 //   Run from the repository root after `pnpm build` (the static docs and the built registry must
 //   exist; --self-check-only needs neither). Prints the JSON report; exit code 1 when not ok.
 
@@ -32,6 +34,10 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { CHECK_IDS, MEASURE_SCHEMA_VERSION, assertThresholds, runMeasureTargets, startStaticServer } from "./lib/gplus-measure.mjs";
 import { GPLUS_STORY_IDS, STATIC_DOCS_ROOT, STORY_REGISTRY_MODULE, expandStory, loadStoryRegistry, resolveStoryRoutes, storyUrl } from "./lib/storybook-routes.mjs";
+
+// TCRN-DS-SUB-035 wiring. The measured set is the G+ matrix and sample stories (cross-package convention
+// 7) plus any other registry story in a gplus-* category; a fixed id the registry does not have is
+// reported missing and fails the run (the samples land with W5-A). --family <name> measures one family.
 
 export const SCHEMA_VERSION = "tcrn.ds.geometry-measure-proof.v1";
 
@@ -64,11 +70,190 @@ export const DEFAULT_PATHS = Object.freeze({
 
 export const DEFAULT_RUN = deepFreeze({ viewport: { width: 1440, height: 900 }, themes: ["light", "dark"], locale: "en" });
 
-// storyId -> check ids the story must exercise (status n/a fails). Filled when wired to the stories.
-export const REQUIRED_CHECKS = deepFreeze({});
+export const GPLUS_FAMILIES = deepFreeze(Object.fromEntries(["typography", "icon", "brand", "actions", "inputs"].map((family) => [family, GPLUS_STORY_IDS.filter((id) => id.startsWith(`${family}-`))])));
 
-// { id, storyId, check, css, theme? } — injected on the real story; check must turn red.
-export const STORY_MUTATIONS = deepFreeze([]);
+// storyId -> check ids the story must exercise (status n/a fails). The matrices carry what their boards
+// show (measured on the wired matrices); every sample must at least exercise the five checks any
+// rendered page has. Rail, row alignment, mark and control height come from the stories that carry
+// their hooks: in a full run every check must apply somewhere in the set (SET_REQUIRED_CHECKS).
+const ANY_PAGE_CHECKS = ["clip", "singleLine", "shadowBlur", "contrast", "overlap"];
+export const REQUIRED_CHECKS = deepFreeze({
+  "typography-matrix": [...ANY_PAGE_CHECKS, "mark"],
+  "icon-matrix": [...ANY_PAGE_CHECKS],
+  "brand-matrix": [...ANY_PAGE_CHECKS],
+  "actions-matrix": [...ANY_PAGE_CHECKS, "rowAlign"],
+  "inputs-matrix": [...ANY_PAGE_CHECKS],
+  "typography-sample-billing": [...ANY_PAGE_CHECKS],
+  "icon-sample-project": [...ANY_PAGE_CHECKS],
+  "brand-sample-product": [...ANY_PAGE_CHECKS],
+  "actions-sample-project": [...ANY_PAGE_CHECKS],
+  "inputs-sample-members": [...ANY_PAGE_CHECKS]
+});
+export const SET_REQUIRED_CHECKS = deepFreeze([...CHECK_IDS]);
+
+// { id, storyId, check, css, theme?, source } — injected on the real story; check must turn red.
+// STORY-131 GWT1: the package has no .tcrn-table yet (decomposition P17), so the row mutation uses the
+// TableShell rows of table-record-index-spec (no row there is selected; the first body row stands in).
+export const STORY_MUTATIONS = deepFreeze([
+  { id: "row-first-cell-padding", storyId: "table-record-index-spec", check: "rowAlign", source: "131-GWT1", css: ".tcrn-table-shell [role=\"row\"]:nth-child(2) > :first-child { padding-left: 8px !important; }" },
+  { id: "mark-padding", storyId: "typography-matrix", check: "mark", source: "131-GWT2", css: "mark { padding: 2px !important; }" },
+  { id: "shadow-blur-4px", storyId: "actions-matrix", check: "shadowBlur", source: "131-GWT3", css: ".story-body .tcrn-button { box-shadow: 0 1px 4px rgba(22, 21, 15, 0.2) !important; }" },
+  { id: "cell-ink-drift", storyId: "actions-matrix", check: "contrast", source: "131 contrast", css: ".story-body .tcrn-button.tcrn-button--primary { color: rgb(120, 200, 190) !important; }" }
+]);
+
+// Relations the eight checks do not cover, judged in the browser (decomposition P31): the ButtonGroup
+// focus ring is not clipped (125-GWT4), a click on the right 30px of a DatePicker lands on the native
+// calendar indicator (126-GWT4; headless Chromium opens no system calendar, so the hit test stands in),
+// and a Highlight keeps the width of its plain text (123-GWT2).
+export const STORY_PROBES = deepFreeze([
+  { id: "buttonGroupFocusRing", storyId: "actions-matrix", source: "125-GWT4" },
+  { id: "datePickerIndicatorHit", storyId: "inputs-matrix", source: "126-GWT4" },
+  { id: "highlightWidth", storyId: "typography-matrix", source: "123-GWT2" }
+]);
+
+// Browser side: every button of every ButtonGroup under root is put in its focus preview state; the
+// ring (box-shadow extent) must stay inside every clipping ancestor up to root.
+export function focusRingClipInPage({ root, tolerancePx = 0.5 }) {
+  const scope = document.querySelector(root);
+  if (!scope) return { error: "root_not_found" };
+  const extentOf = (value) => {
+    let extent = 0;
+    for (const layer of (value || "").split(/,(?![^(]*\))/)) {
+      if (!layer.trim() || layer.includes("inset") || layer.trim() === "none") continue;
+      const numbers = (layer.replace(/rgba?\([^)]*\)|#[0-9a-f]+|[a-z-]+\([^)]*\)/gi, " ").match(/-?\d*\.?\d+px|\b0\b/g) || []).map((n) => parseFloat(n));
+      const [x = 0, y = 0, blur = 0, spread = 0] = numbers;
+      extent = Math.max(extent, Math.max(Math.abs(x), Math.abs(y)) + blur + spread);
+    }
+    return extent;
+  };
+  const violations = [];
+  let checked = 0;
+  for (const group of scope.querySelectorAll(".tcrn-button-group")) {
+    for (const button of group.querySelectorAll("button")) {
+      const previous = button.getAttribute("data-tcrn-preview-state");
+      button.setAttribute("data-tcrn-preview-state", "focus");
+      const extent = extentOf(getComputedStyle(button).boxShadow);
+      const rect = button.getBoundingClientRect();
+      const ring = { left: rect.left - extent, right: rect.right + extent, top: rect.top - extent, bottom: rect.bottom + extent };
+      checked += 1;
+      for (let node = button.parentElement; node; node = node.parentElement) {
+        const cs = getComputedStyle(node);
+        const clipX = cs.overflowX !== "visible";
+        const clipY = cs.overflowY !== "visible";
+        if (clipX || clipY) {
+          const box = node.getBoundingClientRect();
+          const inner = { left: box.left + parseFloat(cs.borderLeftWidth), right: box.right - parseFloat(cs.borderRightWidth), top: box.top + parseFloat(cs.borderTopWidth), bottom: box.bottom - parseFloat(cs.borderBottomWidth) };
+          const cut = Math.max(clipX ? inner.left - ring.left : 0, clipX ? ring.right - inner.right : 0, clipY ? inner.top - ring.top : 0, clipY ? ring.bottom - inner.bottom : 0);
+          if (cut > tolerancePx) {
+            violations.push({ button: (button.getAttribute("aria-label") || button.textContent || "").trim().slice(0, 30), extent, clippedBy: `${node.tagName.toLowerCase()}.${[...node.classList].slice(0, 2).join(".")}`, cutPx: Math.round(cut * 10) / 10 });
+            break;
+          }
+        }
+        if (node === scope) break;
+      }
+      if (previous === null) button.removeAttribute("data-tcrn-preview-state");
+      else button.setAttribute("data-tcrn-preview-state", previous);
+    }
+  }
+  return { checked, value: violations.length, violationCount: violations.length, violations };
+}
+
+// Browser side: each .tcrn-highlight-text under root must be as wide as the same text without marks.
+export function highlightWidthInPage({ root, tolerancePx = 0.5 }) {
+  const scope = document.querySelector(root);
+  if (!scope) return { error: "root_not_found" };
+  const violations = [];
+  let checked = 0;
+  let worst = 0;
+  for (const el of scope.querySelectorAll(".tcrn-highlight-text")) {
+    if (!el.querySelector("mark, .tcrn-highlight__mark")) continue;
+    const plain = el.cloneNode(false);
+    plain.textContent = el.textContent;
+    plain.style.position = "absolute";
+    plain.style.visibility = "hidden";
+    plain.style.whiteSpace = "nowrap";
+    const measured = el.cloneNode(true);
+    measured.style.position = "absolute";
+    measured.style.visibility = "hidden";
+    measured.style.whiteSpace = "nowrap";
+    el.parentElement.append(plain, measured);
+    const diff = Math.abs(measured.getBoundingClientRect().width - plain.getBoundingClientRect().width);
+    plain.remove();
+    measured.remove();
+    checked += 1;
+    worst = Math.max(worst, diff);
+    if (diff > tolerancePx) violations.push({ text: el.textContent.trim().slice(0, 40), diffPx: Math.round(diff * 100) / 100 });
+  }
+  return { checked, value: Math.round(worst * 100) / 100, violationCount: violations.length, violations };
+}
+
+// Node side: the right 30px of every DatePicker input must be its native ::-webkit-calendar-picker-indicator
+// (read from the user-agent shadow tree with its box) and a click there must reach the input (no icon or
+// wrapper on top: elementFromPoint at the sampled points returns the input).
+export async function datePickerIndicatorHit(page, root) {
+  const cdp = await page.context().newCDPSession(page);
+  const violations = [];
+  let checked = 0;
+  try {
+    await page.addStyleTag({ content: "html,body{scroll-behavior:auto!important}" });
+    await cdp.send("DOM.enable");
+    const doc = await cdp.send("DOM.getDocument", { depth: 0 });
+    const { nodeIds } = await cdp.send("DOM.querySelectorAll", { nodeId: doc.root.nodeId, selector: `${root} input.tcrn-date-picker` });
+    for (const [position, nodeId] of nodeIds.entries()) {
+      await cdp.send("DOM.scrollIntoViewIfNeeded", { nodeId });
+      // Let the scroll land (instant scrolling, two frames) before reading boxes and hit-testing.
+      await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
+      const { node } = await cdp.send("DOM.describeNode", { nodeId, depth: -1, pierce: true });
+      const find = (item) => {
+        const attributes = item.attributes ?? [];
+        const at = attributes.indexOf("pseudo");
+        if (at !== -1 && attributes[at + 1] === "-webkit-calendar-picker-indicator") return item;
+        for (const child of [...(item.shadowRoots ?? []), ...(item.children ?? [])]) {
+          const found = find(child);
+          if (found) return found;
+        }
+        return null;
+      };
+      const indicator = find(node);
+      checked += 1;
+      const boxOf = async (backendNodeId) => {
+        const { model } = await cdp.send("DOM.getBoxModel", { backendNodeId });
+        const [x1, y1, x2, , , y3] = model.border;
+        return { left: x1, right: x2, top: y1, bottom: y3 };
+      };
+      const input = await boxOf(node.backendNodeId);
+      if (!indicator) {
+        violations.push({ input: position, reason: "indicator_missing" });
+        continue;
+      }
+      const pick = await boxOf(indicator.backendNodeId);
+      const y = (input.top + input.bottom) / 2;
+      const points = [input.right - 29, input.right - 15, input.right - 1];
+      const covered = points.every((x) => x >= pick.left - 0.5 && x <= pick.right + 0.5) && y >= pick.top && y <= pick.bottom;
+      // The click points are taken from the input's live box in the same task as the hit test, so a late
+      // anchor scroll cannot separate the two.
+      const reached = await page.evaluate(({ selector, index }) => {
+        const target = document.querySelectorAll(selector)[index];
+        target.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" });
+        const box = target.getBoundingClientRect();
+        const cy = (box.top + box.bottom) / 2;
+        return [box.right - 29, box.right - 15, box.right - 1].map((x) => document.elementFromPoint(x, cy) === target);
+      }, { selector: `${root} input.tcrn-date-picker`, index: position });
+      if (!covered || reached.includes(false)) {
+        violations.push({ input: position, indicator: { left: pick.left, right: pick.right }, inputRight: input.right, covered, reached });
+      }
+    }
+  } finally {
+    await cdp.detach().catch(() => {});
+  }
+  return { checked, value: violations.length, violationCount: violations.length, violations };
+}
+
+async function runStoryProbe(probe, page) {
+  if (probe.id === "datePickerIndicatorHit") return datePickerIndicatorHit(page, probe.root);
+  const fn = probe.id === "buttonGroupFocusRing" ? focusRingClipInPage : highlightWidthInPage;
+  return page.evaluate(fn, { root: probe.root });
+}
 
 const STATUS_RANK = { "n/a": 0, pass: 1, fail: 2 };
 
@@ -158,33 +343,71 @@ function summarize(runs) {
   return summary;
 }
 
+// The report keeps every check value, the sampled violations and, for contrast, every cell as
+// [cell, ratio, expect, diff] (decomposition P6: the DOM layer reports the actual differences).
+export function compactVerdict(verdict) {
+  if (!verdict || verdict.error) return verdict;
+  const checks = {};
+  for (const [id, check] of Object.entries(verdict.checks ?? {})) {
+    const { status, value, limit, violationCount, violations } = check;
+    checks[id] = { status, value, limit, violationCount, violations: (violations ?? []).slice(0, 10) };
+    if (id === "contrast" && Array.isArray(check.cells)) checks[id].cells = check.cells.map((cell) => [cell.cell, cell.ratio, cell.expect, cell.diff]);
+  }
+  return { ok: verdict.ok, failed: verdict.failed, notApplicable: verdict.notApplicable, checks };
+}
+
+// The measured set: explicit ids, one family, or the G+ ids plus any registry story in a gplus-* category.
+export function measuredStoryIds({ storyIds = null, family = null, registry = [] } = {}) {
+  if (storyIds?.length) return [...storyIds];
+  const extra = registry.filter((entry) => /^gplus-/.test(entry.categoryId ?? "") && !GPLUS_STORY_IDS.includes(entry.id)).map((entry) => entry.id);
+  if (family) {
+    if (!GPLUS_FAMILIES[family]) {
+      const error = new Error(`geometry_measure_unknown_family:${family}`);
+      error.code = "unknown_family";
+      throw error;
+    }
+    return [...GPLUS_FAMILIES[family], ...extra.filter((id) => id.startsWith(`${family}-`))];
+  }
+  return [...GPLUS_STORY_IDS, ...extra];
+}
+
 export async function runGeometryMeasureProof({
   root = process.cwd(),
-  storyIds = GPLUS_STORY_IDS,
+  storyIds = null,
+  family = null,
   themes = DEFAULT_RUN.themes,
   locale = DEFAULT_RUN.locale,
   viewport = DEFAULT_RUN.viewport,
   mutations = STORY_MUTATIONS,
   requiredChecks = REQUIRED_CHECKS,
+  setRequiredChecks = SET_REQUIRED_CHECKS,
+  probes = STORY_PROBES,
   thresholds = THRESHOLDS,
   selfCheck = true,
   browser
 } = {}) {
   assertThresholds(thresholds);
+  const fullSet = !storyIds?.length && !family;
   const report = {
     schemaVersion: SCHEMA_VERSION,
     measureSchemaVersion: MEASURE_SCHEMA_VERSION,
     ok: false,
     reason: null,
     thresholds,
-    run: { viewport, themes: [...themes], locale },
-    storyIds: [...storyIds],
+    run: { viewport, themes: [...themes], locale, family, fullSet },
+    storyIds: storyIds?.length ? [...storyIds] : family ? [...(GPLUS_FAMILIES[family] ?? [])] : [...GPLUS_STORY_IDS],
     selfCheck: null,
     missingStories: [],
     runs: [],
     mutations: [],
+    probes: [],
+    checksNeverApplied: [],
     summary: {}
   };
+  if (family && !GPLUS_FAMILIES[family]) {
+    report.reason = "unknown_family";
+    return report;
+  }
   const staticRoot = resolve(root, DEFAULT_PATHS.staticRoot);
   let registry = null;
   if (!existsSync(staticRoot)) report.reason = "static_docs_missing";
@@ -209,8 +432,12 @@ export async function runGeometryMeasureProof({
       report.selfCheck = { ok: result.ok, coverage: result.coverage, cases: result.cases };
     }
     if (registry) {
-      const { routes, missing } = resolveStoryRoutes(storyIds, registry);
+      const ids = measuredStoryIds({ storyIds, family, registry });
+      report.storyIds = ids;
+      const { routes, missing } = resolveStoryRoutes(ids, registry);
       report.missingStories = missing;
+      const activeMutations = mutations.filter((mutation) => fullSet || ids.includes(mutation.storyId));
+      const mutationRoutes = resolveStoryRoutes([...new Set(activeMutations.map((mutation) => mutation.storyId))], registry).routes;
       const server = await startStaticServer(staticRoot);
       try {
         const targets = [];
@@ -219,10 +446,10 @@ export async function runGeometryMeasureProof({
             targets.push({ id: `${route.id}@${theme}`, storyId: route.id, theme, route: route.path, url: storyUrl(server.origin, route, { theme, locale }), root: route.bodySelector, prepare: (page) => expandStory(page, route.id) });
           }
         }
-        for (const mutation of mutations) {
-          const route = routes.find((item) => item.id === mutation.storyId);
+        for (const mutation of activeMutations) {
+          const route = mutationRoutes.find((item) => item.id === mutation.storyId);
           if (!route) {
-            report.mutations.push({ id: mutation.id, storyId: mutation.storyId, check: mutation.check, killed: false, reason: "story_missing" });
+            report.mutations.push({ id: mutation.id, storyId: mutation.storyId, check: mutation.check, source: mutation.source, killed: false, reason: "story_missing" });
             continue;
           }
           const theme = mutation.theme ?? themes[0];
@@ -232,8 +459,9 @@ export async function runGeometryMeasureProof({
         results.forEach((result, index) => {
           const target = targets[index];
           if (target.mutation) {
-            const status = result.verdict.checks?.[target.mutation.check]?.status ?? "missing";
-            report.mutations.push({ id: target.mutation.id, storyId: target.mutation.storyId, check: target.mutation.check, theme: target.theme, status, killed: status === "fail" });
+            const check = result.verdict.checks?.[target.mutation.check];
+            const status = check?.status ?? "missing";
+            report.mutations.push({ id: target.mutation.id, storyId: target.mutation.storyId, check: target.mutation.check, source: target.mutation.source, theme: target.theme, status, value: check?.value ?? null, killed: status === "fail" });
             return;
           }
           const required = requiredChecks[target.storyId] ?? [];
@@ -250,6 +478,30 @@ export async function runGeometryMeasureProof({
             verdict: result.verdict
           });
         });
+
+        const context = await active.newContext({ viewport, deviceScaleFactor: 1 });
+        try {
+          for (const probe of probes) {
+            const route = routes.find((item) => item.id === probe.storyId);
+            if (!route) {
+              if (fullSet || ids.includes(probe.storyId)) report.probes.push({ id: probe.id, storyId: probe.storyId, source: probe.source, status: "missing" });
+              continue;
+            }
+            const page = await context.newPage();
+            try {
+              await page.goto(storyUrl(server.origin, route, { theme: themes[0], locale }), { waitUntil: "load" });
+              await expandStory(page, route.id);
+              await page.addStyleTag({ content: "*,*::before,*::after{transition:none!important;animation:none!important}" });
+              const result = await runStoryProbe({ ...probe, root: route.bodySelector }, page);
+              const status = result.error ? "error" : result.checked === 0 ? "n/a" : result.violationCount > 0 ? "fail" : "pass";
+              report.probes.push({ id: probe.id, storyId: probe.storyId, source: probe.source, theme: themes[0], status, ...result });
+            } finally {
+              await page.close();
+            }
+          }
+        } finally {
+          await context.close();
+        }
       } finally {
         await server.close();
       }
@@ -258,12 +510,16 @@ export async function runGeometryMeasureProof({
     if (owned) await owned.close();
   }
   report.summary = summarize(report.runs);
+  if (fullSet) report.checksNeverApplied = setRequiredChecks.filter((id) => report.summary[id]?.status === "n/a");
+  report.runs = report.runs.map((run) => ({ ...run, verdict: compactVerdict(run.verdict) }));
   report.ok = !report.reason
     && (!selfCheck || report.selfCheck?.ok === true)
     && report.missingStories.length === 0
     && report.runs.length > 0
     && report.runs.every((run) => run.ok)
-    && report.mutations.every((mutation) => mutation.killed);
+    && report.mutations.every((mutation) => mutation.killed)
+    && report.probes.every((probe) => probe.status === "pass")
+    && report.checksNeverApplied.length === 0;
   return report;
 }
 
@@ -271,13 +527,14 @@ if (process.argv[1]?.endsWith("geometry-measure-proof.mjs")) {
   const args = process.argv.slice(2);
   const flags = new Set(args.filter((arg) => arg.startsWith("--")));
   const stories = args.flatMap((arg, index) => (arg === "--story" && args[index + 1] ? [args[index + 1]] : []));
+  const family = args.flatMap((arg, index) => (arg === "--family" && args[index + 1] ? [args[index + 1]] : []))[0] ?? null;
   const root = process.cwd();
   let report;
   if (flags.has("--self-check-only")) {
     const result = await runFixtureSelfCheck({ root });
     report = { schemaVersion: SCHEMA_VERSION, measureSchemaVersion: MEASURE_SCHEMA_VERSION, ok: result.ok, thresholds: THRESHOLDS, selfCheck: { ok: result.ok, coverage: result.coverage, cases: result.cases } };
   } else {
-    report = await runGeometryMeasureProof({ root, storyIds: stories.length ? stories : GPLUS_STORY_IDS });
+    report = await runGeometryMeasureProof({ root, storyIds: stories.length ? stories : null, family });
   }
   const text = `${JSON.stringify(report, null, 2)}\n`;
   if (flags.has("--write-report")) {

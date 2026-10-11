@@ -262,6 +262,9 @@ test("the gate runs its self-check first and never passes on a missing story", a
 const pageTemplateModule = new URL("../apps/storybook/dist/build/page-template.js", import.meta.url);
 const componentCssModule = new URL("../packages/ui-react/dist/index.js", import.meta.url);
 
+const storybookBuilt = existsSync(fileURLToPath(pageTemplateModule)) && existsSync(fileURLToPath(componentCssModule));
+const needsBuild = { skip: !storybookBuilt && "storybook app not built (pnpm build)" };
+
 async function loadBuilt(moduleUrl) {
   if (!existsSync(fileURLToPath(moduleUrl))) assert.fail(`build first (pnpm build): ${fileURLToPath(moduleUrl)} is missing`);
   return import(moduleUrl.href);
@@ -290,7 +293,7 @@ async function parsedStyleRules(css) {
   }
 }
 
-test("page-template scoping splits a selector list only at its top-level commas", async () => {
+test("page-template scoping splits a selector list only at its top-level commas", needsBuild, async () => {
   const { splitTopLevelSelectors } = await loadBuilt(pageTemplateModule);
   const parts = splitTopLevelSelectors('.tcrn-button:where(:hover,[data-tcrn-preview-state="hover"]), .tcrn-tag[data-label="a,b"],\n.tcrn-row:not(.is-a, .is-b) /* c, d */');
   assert.deepEqual(parts.map((part) => part.trim()), [
@@ -300,7 +303,7 @@ test("page-template scoping splits a selector list only at its top-level commas"
   ]);
 });
 
-test("page-template scoping keeps state rules, one-line rules and nested group rules", async () => {
+test("page-template scoping keeps state rules, one-line rules and nested group rules", needsBuild, async () => {
   const { scopeComponentCss } = await loadBuilt(pageTemplateModule);
   const css = [
     "/* states { a, b } */",
@@ -350,7 +353,7 @@ function splitTopLevelSelectorsForTest(list) {
   return parts;
 }
 
-test("page-template scoping keeps every rule of the package CSS, state rules included", async () => {
+test("page-template scoping keeps every rule of the package CSS, state rules included", needsBuild, async () => {
   const { scopeComponentCss } = await loadBuilt(pageTemplateModule);
   const { tcrnComponentCss } = await loadBuilt(componentCssModule);
   const before = await parsedStyleRules(tcrnComponentCss);
@@ -383,4 +386,128 @@ test("the before-bg probe reads the ::before background (the Switch knob)", asyn
   assert.equal(green.raw.checks.contrast.cells[0].ratio, expect);
   assert.equal(red.verdict.checks.contrast.status, "fail");
   assert.ok(red.raw.checks.contrast.violations[0].reasons.includes("diff"));
+});
+
+// TCRN-DS-SUB-035: the gate wired to the G+ matrix and sample stories.
+import {
+  GPLUS_FAMILIES,
+  REQUIRED_CHECKS,
+  SET_REQUIRED_CHECKS,
+  STORY_MUTATIONS,
+  STORY_PROBES,
+  compactVerdict,
+  datePickerIndicatorHit,
+  focusRingClipInPage,
+  highlightWidthInPage,
+  measuredStoryIds
+} from "../scripts/geometry-measure-proof.mjs";
+
+const staticDocsBuilt = existsSync(fileURLToPath(new URL("../apps/storybook/storybook-static", import.meta.url)));
+
+test("every G+ story has its required checks and the families split the ten ids", () => {
+  assert.deepEqual(Object.keys(REQUIRED_CHECKS).sort(), [...GPLUS_STORY_IDS].sort());
+  for (const checks of Object.values(REQUIRED_CHECKS)) for (const id of checks) assert.ok(CHECK_IDS.includes(id), id);
+  assert.deepEqual([...SET_REQUIRED_CHECKS], [...CHECK_IDS]);
+  assert.deepEqual(Object.keys(GPLUS_FAMILIES), ["typography", "icon", "brand", "actions", "inputs"]);
+  assert.deepEqual(Object.values(GPLUS_FAMILIES).flat().sort(), [...GPLUS_STORY_IDS].sort());
+});
+
+test("STORY-131 GWT1-3 each have a real-story mutation on the check they name", () => {
+  const bySource = Object.fromEntries(STORY_MUTATIONS.map((mutation) => [mutation.source, mutation]));
+  assert.equal(bySource["131-GWT1"].check, "rowAlign");
+  assert.equal(bySource["131-GWT1"].storyId, "table-record-index-spec");
+  assert.match(bySource["131-GWT1"].css, /padding-left: 8px/);
+  assert.equal(bySource["131-GWT2"].check, "mark");
+  assert.match(bySource["131-GWT2"].css, /mark \{ padding: 2px/);
+  assert.equal(bySource["131-GWT3"].check, "shadowBlur");
+  assert.match(bySource["131-GWT3"].css, /box-shadow: 0 1px 4px/);
+  assert.deepEqual(STORY_PROBES.map((probe) => probe.id), ["buttonGroupFocusRing", "datePickerIndicatorHit", "highlightWidth"]);
+});
+
+test("the measured set is the G+ ids plus gplus-* registry stories, or one family", () => {
+  const registry = [{ id: "actions-matrix", group: "Components", categoryId: "gplus-matrices" }, { id: "actions-sample-extra", group: "Components", categoryId: "gplus-samples" }, { id: "button-spec-usage", group: "Components", categoryId: "controls-data" }];
+  assert.deepEqual(measuredStoryIds({ registry }), [...GPLUS_STORY_IDS, "actions-sample-extra"]);
+  assert.deepEqual(measuredStoryIds({ registry, family: "actions" }), [...GPLUS_FAMILIES.actions, "actions-sample-extra"]);
+  assert.deepEqual(measuredStoryIds({ registry, storyIds: ["button-spec-usage"] }), ["button-spec-usage"]);
+  assert.throws(() => measuredStoryIds({ registry, family: "tables" }), (error) => error.code === "unknown_family");
+});
+
+test("the compact verdict keeps every value and the contrast cells with their differences", () => {
+  const compact = compactVerdict({ ok: false, failed: ["contrast"], notApplicable: [], checks: { contrast: { status: "fail", value: 0.6, limit: 0.05, violationCount: 1, violations: [{ cell: "a" }], cells: [{ cell: "a", ratio: 6.2, expect: 6.8, diff: -0.6 }] } } });
+  assert.deepEqual(compact.checks.contrast.cells, [["a", 6.2, 6.8, -0.6]]);
+  assert.equal(compact.checks.contrast.value, 0.6);
+});
+
+async function onPage(html, run) {
+  const tab = await browser.newPage({ viewport: { width: 800, height: 400 } });
+  try {
+    await tab.setContent(html);
+    return await run(tab);
+  } finally {
+    await tab.close();
+  }
+}
+
+const groupHtml = (groupCss) => `<!doctype html><html><head><style>
+.tcrn-button-group { display: inline-flex; padding: 0; ${groupCss} }
+button { height: 28px; border: 0; }
+button[data-tcrn-preview-state="focus"] { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0b6b65; }
+</style></head><body><main id="root" style="padding: 24px"><div class="tcrn-button-group"><button>Day</button><button>Week</button></div></main></body></html>`;
+
+test("the ButtonGroup focus ring probe turns red when a clipping group cuts the ring", async () => {
+  const green = await onPage(groupHtml(""), (tab) => tab.evaluate(focusRingClipInPage, { root: "#root" }));
+  assert.equal(green.checked, 2);
+  assert.equal(green.violationCount, 0);
+  const red = await onPage(groupHtml("overflow: hidden;"), (tab) => tab.evaluate(focusRingClipInPage, { root: "#root" }));
+  assert.equal(red.violationCount, 2);
+  assert.equal(red.violations[0].cutPx, 4);
+});
+
+test("the Highlight width probe turns red when a mark changes the text width", async () => {
+  const html = (markCss) => `<!doctype html><html><head><style>mark { background: #fde68a; ${markCss} }</style></head><body><main id="root"><span class="tcrn-highlight-text">PRJ-<mark class="tcrn-highlight__mark">2026</mark>-0412</span></main></body></html>`;
+  const green = await onPage(html(""), (tab) => tab.evaluate(highlightWidthInPage, { root: "#root" }));
+  assert.equal(green.checked, 1);
+  assert.equal(green.violationCount, 0);
+  const red = await onPage(html("padding: 0 2px;"), (tab) => tab.evaluate(highlightWidthInPage, { root: "#root" }));
+  assert.equal(red.violationCount, 1);
+  assert.equal(red.violations[0].diffPx, 4);
+});
+
+test("the DatePicker probe needs the right 30px to be the native indicator, reachable by a click", async () => {
+  const html = (iconCss) => `<!doctype html><html><head><style>
+.wrap { position: relative; display: inline-block; }
+.tcrn-date-picker { position: relative; width: 160px; height: 32px; border: 0; padding: 0 30px 0 8px; }
+.tcrn-date-picker::-webkit-calendar-picker-indicator { position: absolute; inset-block: 0; inset-inline-end: 0; inline-size: 30px; block-size: 100%; margin: 0; padding: 0; opacity: 0; }
+.icon { position: absolute; right: 0; top: 0; width: 30px; height: 32px; ${iconCss} }
+</style></head><body><main id="root"><span class="wrap"><input class="tcrn-date-picker" type="date" value="2026-10-31"><span class="icon"></span></span></main></body></html>`;
+  const green = await onPage(html("pointer-events: none;"), (tab) => datePickerIndicatorHit(tab, "#root"));
+  assert.equal(green.checked, 1);
+  assert.equal(green.violationCount, 0, JSON.stringify(green.violations));
+  const red = await onPage(html(""), (tab) => datePickerIndicatorHit(tab, "#root"));
+  assert.equal(red.violationCount, 1);
+  assert.deepEqual(red.violations[0].reached, [false, false, false]);
+});
+
+test("on the built docs the four real-story mutations are caught and the probes pass", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
+  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: ["typography-matrix", "actions-matrix", "inputs-matrix", "table-record-index-spec"], themes: ["light"] });
+  assert.equal(report.reason, null);
+  assert.deepEqual(report.missingStories, []);
+  assert.deepEqual(report.mutations.map((mutation) => [mutation.id, mutation.killed]), STORY_MUTATIONS.map((mutation) => [mutation.id, true]));
+  assert.deepEqual(report.probes.map((probe) => [probe.id, probe.status]), STORY_PROBES.map((probe) => [probe.id, "pass"]));
+  for (const id of ["typography-matrix", "actions-matrix"]) {
+    const run = report.runs.find((item) => item.storyId === id);
+    assert.equal(run.ok, true, `${id}: ${JSON.stringify(run.failed)} ${JSON.stringify(run.notApplicableRequired)}`);
+  }
+});
+
+test("--family runs one family and keeps a missing sample red", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
+  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, family: "brand", themes: ["light"] });
+  assert.deepEqual(report.storyIds.slice(0, 2), [...GPLUS_FAMILIES.brand]);
+  assert.ok(report.runs.every((run) => run.storyId.startsWith("brand-")));
+  assert.deepEqual(report.mutations, []);
+  assert.deepEqual(report.checksNeverApplied, [], "set-level coverage applies to full runs only");
+  if (report.missingStories.length) {
+    assert.ok(report.missingStories.every((id) => GPLUS_SAMPLE_STORY_IDS.includes(id)));
+    assert.equal(report.ok, false);
+  }
 });
