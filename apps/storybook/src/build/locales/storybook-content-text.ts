@@ -2098,6 +2098,9 @@ export const storybookContentText: Record<string, Record<TcrnLocale, string>> = 
   "October launch": { "zh-CN": "十月发布", en: "October launch", ja: "10 月のリリース", ko: "10월 출시", fr: "Lancement d’octobre" },
   "Autumn hiring": { "zh-CN": "秋季招聘", en: "Autumn hiring", ja: "秋の採用", ko: "가을 채용", fr: "Recrutement d’automne" },
   "Archived project": { "zh-CN": "已归档项目", en: "Archived project", ja: "アーカイブ済みプロジェクト", ko: "보관된 프로젝트", fr: "Projet archivé" },
+  // The inputs matrix shows its MultiSelect open without the page bridge, so the trigger keeps the
+  // server-rendered summary of its two selected options.
+  "Quarterly review, October launch": { "zh-CN": "季度复盘、十月发布", en: "Quarterly review, October launch", ja: "四半期レビュー、10 月のリリース", ko: "분기 리뷰, 10월 출시", fr: "Revue trimestrielle, Lancement d’octobre" },
   "Billing cycle": { "zh-CN": "计费周期", en: "Billing cycle", ja: "請求サイクル", ko: "청구 주기", fr: "Cycle de facturation" },
   "Monthly": { "zh-CN": "按月", en: "Monthly", ja: "月払い", ko: "월간", fr: "Mensuel" },
   "Annual": { "zh-CN": "按年", en: "Annual", ja: "年払い", ko: "연간", fr: "Annuel" },
