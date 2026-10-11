@@ -245,24 +245,66 @@ test("the mark adds only the wash fill and keeps the type and spacing of the tex
 });
 
 test(
-  "a link is accent ink with the 70% underline, accent-2 on hover and the focus ring",
+  "a link reads its pair: accent ink with the 70% underline, accent-2 on hover and the focus ring as its edge",
   () => {
+    // The base rule reads the live pair; the default variant declares the pair per state.
     const link = declarationsFor(".tcrn-link");
-    assert.equal(link.get("color"), "var(--tcrn-color-acc)");
-    assert.equal(link.get("text-decoration-color"), "var(--tcrn-color-acc-ul)");
+    assert.equal(link.get("color"), "var(--tcrn-pair-ink)");
+    assert.equal(link.get("text-decoration-color"), "var(--tcrn-pair-underline)");
+    assert.equal(link.get("box-shadow"), "var(--tcrn-pair-edge)");
     assert.equal(link.get("text-underline-offset"), "2px");
+    assert.equal(link.get("--tcrn-pair-ink"), "var(--tcrn-pair-ink-d)");
+    assert.equal(link.get("--tcrn-pair-underline"), "var(--tcrn-pair-underline-d)");
+    assert.equal(link.get("--tcrn-pair-edge"), "var(--tcrn-pair-edge-d)");
+    assert.equal(link.get("--tcrn-pair-ink-d"), "var(--tcrn-color-acc)");
+    assert.equal(link.get("--tcrn-pair-underline-d"), "var(--tcrn-color-acc-ul)");
+    assert.equal(link.get("--tcrn-pair-ink-h"), "var(--tcrn-color-acc-2)");
+    assert.equal(link.get("--tcrn-pair-underline-h"), "var(--tcrn-color-acc-2)");
+    assert.equal(link.get("--tcrn-pair-edge-f"), "var(--tcrn-focus-ring)");
+    // The state rules only switch the live pair (C2): no color, text-decoration-color or box-shadow.
     const hover = declarationsFor('.tcrn-link:where(:hover,[data-tcrn-preview-state="hover"])');
-    assert.equal(hover.get("color"), "var(--tcrn-color-acc-2)");
-    assert.equal(hover.get("text-decoration-color"), "var(--tcrn-color-acc-2)");
+    assert.deepEqual([...hover], [["--tcrn-pair-ink", "var(--tcrn-pair-ink-h)"], ["--tcrn-pair-underline", "var(--tcrn-pair-underline-h)"]]);
     const focus = declarationsFor('.tcrn-link:where(:focus-visible,[data-tcrn-preview-state="focus"])');
-    assert.equal(focus.get("box-shadow"), "var(--tcrn-focus-ring)");
-    const later = cssRules().filter((cssRule) => cssRule.selectors.some((selector) => /^\.tcrn-link(:hover|:focus-visible)?$/.test(selector)));
-    assert.equal(later.length, 1, "only the contract rule styles a bare link; no later rule overrides its colour, hover or focus");
+    assert.deepEqual([...focus], [["--tcrn-pair-edge", "var(--tcrn-pair-edge-f)"]]);
+    const linkStateRules = cssRules().filter((cssRule) => cssRule.selectors.some((selector) => /^\.tcrn-link(?:\.tcrn-link--[a-z]+)?:where\(/.test(selector)));
+    assert.equal(linkStateRules.length, 2);
+    for (const cssRule of linkStateRules) {
+      for (const [property] of cssRule.declarations) assert.match(property, /^--tcrn-pair-/, `${cssRule.selectors.join(", ")} only switches the pair`);
+    }
+    // Forced colours paint no box-shadow: the focused link keeps a transparent outline, which the
+    // system recolours there.
+    const focusVisible = declarationsFor(".tcrn-link:focus-visible");
+    assert.equal(focusVisible.get("outline"), "2px solid transparent");
+    assert.equal(focusVisible.get("outline-offset"), "2px");
+    assert.doesNotMatch(tcrnComponentCss, /\.tcrn-link(?![-\w])[^{,]*\{[^}]*outline:\s*none/, "no link rule removes the outline");
+    // Only the contract base rule paints a bare link; no later rule overrides its colour, hover or focus.
+    const painting = cssRules().filter(
+      (cssRule) =>
+        cssRule.selectors.some((selector) => /^\.tcrn-link(?::hover|:focus-visible)?$/.test(selector)) &&
+        cssRule.declarations.some(([property]) => /^(?:color|text-decoration-color|box-shadow|background(?:-color)?)$/.test(property))
+    );
+    assert.equal(painting.length, 1);
   }
 );
 
+test("the quiet link is the quiet variant of the link pair table, not a breadcrumb rule", () => {
+  const quiet = declarationsFor(".tcrn-link.tcrn-link--quiet");
+  assert.equal(quiet.get("--tcrn-pair-ink-d"), "currentColor");
+  assert.equal(quiet.get("--tcrn-pair-underline-d"), "transparent");
+  assert.equal(quiet.get("--tcrn-pair-ink-h"), "var(--tcrn-color-acc-2)");
+  assert.equal(quiet.get("--tcrn-pair-underline-h"), "var(--tcrn-color-acc-2)");
+  // Every rule naming the quiet modifier is that variant declaration: no quiet hover rule, no
+  // shared list with the breadcrumb, and no retired brand name.
+  const quietRules = cssRules().filter((cssRule) => cssRule.selectors.some((selector) => selector.includes("tcrn-link--quiet")));
+  assert.deepEqual(quietRules.map((cssRule) => cssRule.selectors), [[".tcrn-link.tcrn-link--quiet"]]);
+  assert.doesNotMatch(tcrnComponentCss, /tcrn-link--quiet[^{]*\{[^}]*--tcrn-color-brand-primary/);
+  // The breadcrumb keeps its Navigation-family rules (EX-INIT015-navigation).
+  assert.match(tcrnComponentCss, /(?:^|\n)\.tcrn-breadcrumb a \{/);
+  assert.match(tcrnComponentCss, /(?:^|\n)\.tcrn-breadcrumb a:hover \{/);
+});
+
 test("the contract link rules are in the stylesheet", () => {
-  assert.match(tcrnComponentCss, /\.tcrn-link\{color:var\(--tcrn-color-acc\);[^}]*text-decoration-color:var\(--tcrn-color-acc-ul\)/);
-  assert.match(tcrnComponentCss, /\.tcrn-link:where\(:hover,\[data-tcrn-preview-state="hover"\]\)\{color:var\(--tcrn-color-acc-2\)/);
-  assert.match(tcrnComponentCss, /\.tcrn-link:where\(:focus-visible,\[data-tcrn-preview-state="focus"\]\)\{outline:none;box-shadow:var\(--tcrn-focus-ring\)\}/);
+  assert.match(tcrnComponentCss, /\.tcrn-link\{color:var\(--tcrn-pair-ink\);[^}]*text-decoration-color:var\(--tcrn-pair-underline\);[^}]*box-shadow:var\(--tcrn-pair-edge\)\}/);
+  assert.match(tcrnComponentCss, /\.tcrn-link:where\(:hover,\[data-tcrn-preview-state="hover"\]\)\{--tcrn-pair-ink:var\(--tcrn-pair-ink-h\);--tcrn-pair-underline:var\(--tcrn-pair-underline-h\)\}/);
+  assert.match(tcrnComponentCss, /\.tcrn-link:where\(:focus-visible,\[data-tcrn-preview-state="focus"\]\)\{--tcrn-pair-edge:var\(--tcrn-pair-edge-f\)\}/);
 });

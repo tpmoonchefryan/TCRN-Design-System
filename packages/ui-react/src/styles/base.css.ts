@@ -2490,14 +2490,14 @@ export const baseCss30 = `
 /* An ancestor crumb is now a link (it previously rendered as an inert span, so
    there was nothing to style). Quiet by default and underlined on hover: the
    trail is chrome, and a row of permanently underlined links competes with the
-   page title it sits above. The named quiet primitive keeps the same declarations
-   available to other chrome positions without importing domain selectors. */
-.tcrn-link--quiet,
+   page title it sits above. These rules belong to the Navigation family, which
+   keeps its pre-G+ form until its batch (EX-INIT015-navigation). The quiet link
+   for other chrome positions is the quiet variant of the link pair table
+   (tcrn-link tcrn-link--quiet, generated from contract/typography.json). */
 .tcrn-breadcrumb a {
   color: inherit;
   text-decoration: none;
 }
-.tcrn-link--quiet:hover,
 .tcrn-breadcrumb a:hover {
   color: var(--tcrn-color-brand-primary);
   text-decoration: underline;

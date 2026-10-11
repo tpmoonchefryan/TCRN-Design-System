@@ -121,23 +121,29 @@ function checkNamedTokens(typography, used) {
 }
 
 // ---------- pair segments ----------
-function pairSegment(tableName) {
-  const t = data.pairTable(tableName);
-  const slotVar = (slot) => data.pairs.slotVars[slot];
+// t is a pair table in the pairs.json form (pairs.json tables, or the link table of
+// typography.json); slotVars maps a slot to its live-pair variable; stateValues(variant, state)
+// gives the slot values a target without modifier declares (partial variants fall back to the
+// table's first variant).
+function pairRules(t, slotVars, stateValues, label) {
+  const slotVar = (slot) => {
+    if (!slotVars[slot]) throw new Error(`${label}: no live-pair variable for slot ${slot}`);
+    return slotVars[slot];
+  };
   const baseList = [...new Set(t.targets.map((g) => g.base))];
   const rules = [];
   const live = t.slots.map((slot) => `${slotVar(slot)}:var(${slotVar(slot)}-d)`);
-  if (t.weight) live.push(`${data.pairs.slotVars.weight}:${t.weight.default}`);
+  if (t.weight) live.push(`${slotVar("weight")}:${t.weight.default}`);
   rules.push(`${baseList.join(",")}{${live.join(";")}}`);
   const stateKeys = t.states.map((s) => s.key);
   for (const g of t.targets) {
     for (const variant of g.variants) {
       const own = t.variants[variant];
-      if (!own) throw new Error(`${tableName}: no variant ${variant}`);
+      if (!own) throw new Error(`${label}: no variant ${variant}`);
       const selector = g.modifier ? `${g.base}.${g.modifier.replace("{variant}", variant)}` : g.base;
       const decls = [];
       for (const st of stateKeys) {
-        const values = g.modifier ? own[st] || {} : data.pairState(tableName, variant, st);
+        const values = g.modifier ? own[st] || {} : stateValues(variant, st);
         for (const slot of t.slots) {
           if (values[slot] === undefined) continue;
           decls.push(`${slotVar(slot)}-${st}:${slot.includes("edge") ? pkgCss(values[slot]) : pkgRef(values[slot])}`);
@@ -149,13 +155,38 @@ function pairSegment(tableName) {
   const base = Object.values(t.variants)[0];
   for (const key of t.ruleOrder) {
     const st = t.states.find((s) => s.key === key);
-    if (!st || !st.when) throw new Error(`${tableName}: state ${key} has no condition`);
+    if (!st || !st.when) throw new Error(`${label}: state ${key} has no condition`);
     const slots = st.switch || t.slots.filter((slot) => base[key] && base[key][slot] !== undefined);
     const decls = slots.map((slot) => `${slotVar(slot)}:var(${slotVar(slot)}-${key})`);
-    if (t.weight && t.weight[key] !== undefined) decls.push(`${data.pairs.slotVars.weight}:${t.weight[key]}`);
+    if (t.weight && t.weight[key] !== undefined) decls.push(`${slotVar("weight")}:${t.weight[key]}`);
     rules.push(`${baseList.map((b) => `${b}:where(${st.when.join(",")})`).join(",")}{${decls.join(";")}}`);
   }
   return rules;
+}
+
+function pairSegment(tableName) {
+  return pairRules(data.pairTable(tableName), data.pairs.slotVars, (variant, st) => data.pairState(tableName, variant, st), tableName);
+}
+
+// The link pair table of typography.json (TCRN-DS-SUB-055). Its default variant must say what the
+// board fields of the link say (tone, underline, hover, focus ring), since the board generator
+// reads those fields.
+function linkPairRules(lk) {
+  const t = lk.pairs;
+  const first = Object.values(t.variants)[0];
+  const agree = [
+    ["d", "ink", lk.tone],
+    ["d", "underline", lk.underline],
+    ["h", "ink", lk.hover.tone],
+    ["h", "underline", lk.hover.underline],
+    ["f", "edge", `var(--${lk.focus.ring})`]
+  ];
+  for (const [st, slot, want] of agree) {
+    const got = first[st] && first[st][slot];
+    if (got !== want) throw new Error(`typography.json link: pairs default ${st}.${slot} is ${got}, the board field says ${want}`);
+  }
+  const stateValues = (variant, st) => ({ ...(first[st] || {}), ...(t.variants[variant][st] || {}) });
+  return pairRules(t, t.slotVars, stateValues, "typography.json link");
 }
 
 // ---------- type scale ----------
@@ -189,10 +220,14 @@ function typeScale() {
   rules.push(`.${tx.className}.${capsCls} b{${fam(ca.prefix.family)};${tone(ca.prefix.tone)};${d(ca.prefix, "weight", "font-weight")};margin-right:${ca.prefix.gap}px;${d(ca.prefix, "tracking", "letter-spacing")}}`);
   const mo = ty.mono;
   rules.push(`.${tx.className}.${mo.className}{${fam(mo.family)};${sizeLine(mo)};${tone(mo.tone)}}`);
+  // Link: the base rule reads the live pair (ink, underline, edge); the pair table declares the
+  // variants and the :where() state rules that only switch the live pair. The forced-colours
+  // focus outline is not generated: a state rule here carries no colour literal, so the
+  // transparent outline sits in styles/typography.css.ts, as the Actions one sits in actions.css.ts.
   const lk = ty.link;
-  rules.push(`.${lk.className}{${tone(lk.tone)};text-decoration:underline;text-decoration-thickness:${lk.thickness};text-underline-offset:${lk.offset};text-decoration-color:${pkgRef(lk.underline)};border-radius:${lk.radius}}`);
-  rules.push(`.${lk.className}:where(:hover,[data-tcrn-preview-state="hover"]){${tone(lk.hover.tone)};text-decoration-color:${pkgRef(lk.hover.underline)}}`);
-  rules.push(`.${lk.className}:where(:focus-visible,[data-tcrn-preview-state="focus"]){outline:none;box-shadow:var(${data.CSS_VAR[`--${lk.focus.ring}`]})}`);
+  const lv = lk.pairs.slotVars;
+  rules.push(`.${lk.className}{color:var(${lv.ink});text-decoration:underline;text-decoration-thickness:${lk.thickness};text-underline-offset:${lk.offset};text-decoration-color:var(${lv.underline});border-radius:${lk.radius};box-shadow:var(${lv.edge})}`);
+  rules.push(...linkPairRules(lk));
   const mk = ty.mark;
   rules.push(`.${mk.className}{background:${pkgRef(mk.fill)};color:inherit;font:inherit;letter-spacing:inherit;padding:0;margin:0;border-radius:${mk.radius};box-shadow:0 0 0 ${mk.spread} ${pkgRef(mk.fill)};box-decoration-break:clone;-webkit-box-decoration-break:clone}`);
   checkNamedTokens(ty, used);

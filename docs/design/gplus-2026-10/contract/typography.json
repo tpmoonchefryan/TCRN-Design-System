@@ -89,7 +89,33 @@
     "offset": "2px",
     "radius": "2px",
     "hover": { "tone": "acc-2", "underline": "acc-2" },
-    "focus": { "ring": "focus" }
+    "focus": { "ring": "focus" },
+    "pairs": {
+      "note": "链接状态对表（写法同 pairs.json）：变体声明 --tcrn-pair-<slot>-<态>，基础规则读生效对，:where() 状态规则只切换生效对。tone、underline、hover、focus 四个字段供画板生成器读取，须与 default 变体一致（生成器核对）。quiet 是 .tcrn-link 的修饰类：默认随上下文文字色、无可见下划线，悬停为 acc-2。",
+      "slots": ["ink", "underline", "edge"],
+      "slotVars": { "ink": "--tcrn-pair-ink", "underline": "--tcrn-pair-underline", "edge": "--tcrn-pair-edge" },
+      "targets": [
+        { "base": ".tcrn-link", "variants": ["default"] },
+        { "base": ".tcrn-link", "modifier": "tcrn-link--{variant}", "variants": ["quiet"] }
+      ],
+      "states": [
+        { "key": "d", "name": "default" },
+        { "key": "h", "name": "hover", "when": [":hover", "[data-tcrn-preview-state=\"hover\"]"] },
+        { "key": "f", "name": "focus", "when": [":focus-visible", "[data-tcrn-preview-state=\"focus\"]"], "switch": ["edge"] }
+      ],
+      "ruleOrder": ["h", "f"],
+      "variants": {
+        "default": {
+          "d": { "ink": "acc", "underline": "acc-ul", "edge": "0 0 #0000" },
+          "h": { "ink": "acc-2", "underline": "acc-2" },
+          "f": { "edge": "var(--focus)" }
+        },
+        "quiet": {
+          "d": { "ink": "currentColor", "underline": "transparent" },
+          "h": { "ink": "acc-2", "underline": "acc-2" }
+        }
+      }
+    }
   },
   "mark": { "className": "tcrn-highlight__mark", "fill": "acc-bg", "radius": "2px", "spread": "2px" }
 }
