@@ -110,7 +110,8 @@
 ## R2 批末进度
 
 - 12 包与集成修复 I1 全部合入（HEAD e643d74）。批末 verify 逐步（44 段）：30 步红 6 步（R1 为 11）——10 geometry:proof（SUB-080 搜索浮层）、11 shell:parity（C-21/O-1）、17 storybook:smoke（focus-outline-width 期望值过时等）、18 geometry:measure 与 19 storybook:visual-proof（样板 rail，O-1）、30 internal-alpha（O-2 axe 12、手机顶栏 C-21/O-1、三条 zh-CN 漏译、视觉基线未应用）；表与归因 `runs/r2/verify/steps.md`，日志 scratch `r2-verify/`，改写的回执已存档并还原。
-- 下一步：三片验收（einzbern-main，摘录 `runs/r2/excerpts/acc-{A,B,C}.md`）→ 判断（einzbern-main）→ 一次链写。
+- 三片验收已交回并提交（10496cb）：通过 121、122、123、124、125、126、128、132；阻塞于 Owner 127、129、130、131（O-1）；不通过 120（GWT5 verify）、133（GWT1 部分）、134（SUB-046 基线未写入）。返工 A 3（经济）、B 3（主力 2）、C 8（主力 4），跨片有重复；验收 C 更正第 30 步手机锚点归因（非 O-1，SUB-064 后门未放行 G+ 半透明层）与漏译来源（496c1d7）；验收 B 判 RM7 ① 归目视不可接受（是 SUB-061 的机械副作用）。
+- 下一步：判断（einzbern-main，摘录 `runs/r2/excerpts/judgment.md`）→ 一次链写与知识采集 → R3 拆分。
 
 ## 下一步
 
