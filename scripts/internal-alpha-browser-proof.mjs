@@ -333,9 +333,10 @@ async function collectPageHealth(page) {
     //     nearest ancestor's) or one inside it.
     // (2) Vertical: when the line box fits the element's content box, the only vertical overflow a single
     //     nowrap line can have is the part of the font's content area hanging past the line box (a 26px
-    //     serif on a 30px line reports scrollHeight 33 against clientHeight 30). The excess is counted
-    //     only while it stays within that overhang.
-    // Truncation without such a title, a line box taller than its box, and wrapped text still count.
+    //     serif on a 30px line reports scrollHeight 33 against clientHeight 30). The excess is left out
+    //     only while it stays within that overhang; past it, something taller than the text is cut.
+    // Truncation without such a title, a line box taller than its box, an excess past the overhang and
+    // wrapped text still count.
     const collapseWhitespace = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
     const titlesOver = (node) => [node.closest("[title]"), ...node.querySelectorAll("[title]")]
       .filter(Boolean)
