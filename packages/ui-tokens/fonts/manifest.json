@@ -10,8 +10,8 @@
   },
   "totals": {
     "families": 5,
-    "files": 52,
-    "bytes": 3290644
+    "files": 54,
+    "bytes": 3410312
   },
   "families": [
     {
@@ -115,6 +115,7 @@
         "[27]",
         "[28]",
         "[43]",
+        "[52]",
         "[101]",
         "[102]",
         "[103]",
@@ -135,10 +136,10 @@
         "[118]",
         "[119]"
       ],
-      "files": 22,
-      "bytes": 1282484,
-      "slices": 22,
-      "coveredCodepoints": 4074
+      "files": 23,
+      "bytes": 1334324,
+      "slices": 23,
+      "coveredCodepoints": 4213
     },
     {
       "family": "Noto Serif SC",
@@ -163,6 +164,7 @@
         "[27]",
         "[28]",
         "[43]",
+        "[52]",
         "[101]",
         "[102]",
         "[103]",
@@ -183,10 +185,10 @@
         "[118]",
         "[119]"
       ],
-      "files": 22,
-      "bytes": 1674260,
-      "slices": 22,
-      "coveredCodepoints": 4074
+      "files": 23,
+      "bytes": 1742088,
+      "slices": 23,
+      "coveredCodepoints": 4213
     }
   ],
   "files": [
@@ -391,6 +393,25 @@
         "version": "5.3.0",
         "integrity": "sha512-lNar1dF7Ik/lHNPo/7JWG0TolXY29LtsqYgMvEysooZ5bsO9uH4shJmRrwyJ3PjyTPljhpMJEK0jDuLSU4vJ1w==",
         "path": "files/noto-sans-sc-43-wght-normal.woff2"
+      }
+    },
+    {
+      "file": "noto-sans-sc-52-wght-normal.woff2",
+      "family": "Noto Sans SC",
+      "style": "normal",
+      "weight": "100 900",
+      "axes": {
+        "wght": "100 900"
+      },
+      "subset": "[52]",
+      "unicodeRange": "U+7613-7619,U+761b-761d,U+761f-7622,U+7625,U+7627-762a,U+762e-7630,U+7632-7635,U+7638-763a,U+763c-763d,U+763f-7640,U+7642-7643,U+7647-7648,U+764d-764e,U+7652,U+7654,U+7658,U+765a,U+765c,U+765e-765f,U+7661-7663,U+7665,U+7669,U+766c,U+766e-766f,U+7671-7673,U+7675-7676,U+7678-767a,U+767f,U+7681,U+7683,U+7688,U+768a-768c,U+768e,U+7690-7692,U+7695,U+7698,U+769a-769b,U+769d-76a0,U+76a2,U+76a4-76a7,U+76ab-76ac,U+76af-76b0,U+76b2,U+76b4-76b5,U+76ba-76bb,U+76bf,U+76c2-76c3,U+76c5,U+76c9,U+76cc-76ce,U+76dc-76de,U+76e1-76ea,U+76f1,U+76f9-76fb,U+76fd,U+76ff-7700,U+7703-7704,U+7707-7708,U+770c-770f,U+7712,U+7714,U+7716,U+7719-771b,U+771e,U+7721",
+      "bytes": 51840,
+      "sha256": "06999a39c4c3a7ea279822ec42aeaf7e2f99d4047e4f8b7c48254158b7e293fa",
+      "upstream": {
+        "package": "@fontsource-variable/noto-sans-sc",
+        "version": "5.3.0",
+        "integrity": "sha512-lNar1dF7Ik/lHNPo/7JWG0TolXY29LtsqYgMvEysooZ5bsO9uH4shJmRrwyJ3PjyTPljhpMJEK0jDuLSU4vJ1w==",
+        "path": "files/noto-sans-sc-52-wght-normal.woff2"
       }
     },
     {
@@ -809,6 +830,25 @@
         "version": "5.3.0",
         "integrity": "sha512-7LcN2NEf4HDjoSkGWc79WqDDyMK8JvSPdA/gsHjJpZ8l9A9mcK/GQTazp3klmkBwJooy0eqeNvlmaZFXPupHrA==",
         "path": "files/noto-serif-sc-43-wght-normal.woff2"
+      }
+    },
+    {
+      "file": "noto-serif-sc-52-wght-normal.woff2",
+      "family": "Noto Serif SC",
+      "style": "normal",
+      "weight": "200 900",
+      "axes": {
+        "wght": "200 900"
+      },
+      "subset": "[52]",
+      "unicodeRange": "U+7613-7619,U+761b-761d,U+761f-7622,U+7625,U+7627-762a,U+762e-7630,U+7632-7635,U+7638-763a,U+763c-763d,U+763f-7640,U+7642-7643,U+7647-7648,U+764d-764e,U+7652,U+7654,U+7658,U+765a,U+765c,U+765e-765f,U+7661-7663,U+7665,U+7669,U+766c,U+766e-766f,U+7671-7673,U+7675-7676,U+7678-767a,U+767f,U+7681,U+7683,U+7688,U+768a-768c,U+768e,U+7690-7692,U+7695,U+7698,U+769a-769b,U+769d-76a0,U+76a2,U+76a4-76a7,U+76ab-76ac,U+76af-76b0,U+76b2,U+76b4-76b5,U+76ba-76bb,U+76bf,U+76c2-76c3,U+76c5,U+76c9,U+76cc-76ce,U+76dc-76de,U+76e1-76ea,U+76f1,U+76f9-76fb,U+76fd,U+76ff-7700,U+7703-7704,U+7707-7708,U+770c-770f,U+7712,U+7714,U+7716,U+7719-771b,U+771e,U+7721",
+      "bytes": 67828,
+      "sha256": "6f05dd92f2f040024ed6f401c03a78ec8f8058313ecab04b6ff195a0041a4a5a",
+      "upstream": {
+        "package": "@fontsource-variable/noto-serif-sc",
+        "version": "5.3.0",
+        "integrity": "sha512-7LcN2NEf4HDjoSkGWc79WqDDyMK8JvSPdA/gsHjJpZ8l9A9mcK/GQTazp3klmkBwJooy0eqeNvlmaZFXPupHrA==",
+        "path": "files/noto-serif-sc-52-wght-normal.woff2"
       }
     },
     {
