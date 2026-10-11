@@ -138,6 +138,12 @@
           "when": ["[readonly]", "[aria-readonly=\"true\"]"]
         },
         {
+          "key": "rf",
+          "name": "readonly-focus",
+          "note": "只读框可获焦：保留 r 的底与字色，边换成 f 的焦点环（WCAG 2.4.7）。排在 r 之后、e 之前；画板的状态顺序是 r 盖住 f，这里与画板不同",
+          "when": ["[readonly]:focus-visible", "[readonly][data-tcrn-preview-state=\"focus\"]", "[aria-readonly=\"true\"]:focus-visible", "[aria-readonly=\"true\"][data-tcrn-preview-state=\"focus\"]"]
+        },
+        {
           "key": "e",
           "name": "invalid",
           "when": ["[aria-invalid=\"true\"]"]
@@ -148,7 +154,7 @@
           "when": ["[aria-invalid=\"true\"]:focus-visible", "[aria-invalid=\"true\"][data-tcrn-preview-state=\"focus\"]"]
         }
       ],
-      "ruleOrder": ["h", "f", "r", "e", "ef", "x"],
+      "ruleOrder": ["h", "f", "r", "rf", "e", "ef", "x"],
       "variants": {
         "default": {
           "d": { "fill": "panel", "ink": "ink", "edge": "inset 0 0 0 1px var(--line-ctl)" },
@@ -156,6 +162,7 @@
           "f": { "fill": "panel", "ink": "ink", "edge": "inset 0 0 0 1px var(--acc),var(--focus)" },
           "x": { "fill": "dis", "ink": "ink-3", "edge": "inset 0 0 0 1px var(--line-2)" },
           "r": { "fill": "panel-2", "ink": "ink", "edge": "inset 0 0 0 1px var(--line-2)" },
+          "rf": { "edge": "inset 0 0 0 1px var(--acc),var(--focus)" },
           "e": { "fill": "panel", "ink": "ink", "edge": "inset 0 0 0 1px var(--bad)" },
           "ef": { "edge": "inset 0 0 0 1px var(--bad),0 0 0 2px var(--surface),0 0 0 4px var(--bad)" }
         },

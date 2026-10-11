@@ -7,11 +7,12 @@
 // (scripts/css-template-integrity-proof.mjs checks every segment).
 //
 // The type scale itself (heading levels, Text size, tone and variant, numeral, caps, mono, the
-// link and the highlight mark) is the generated segment styles/generated/typography.scale.ts,
-// written from docs/design/gplus-2026-10/contract/typography.json by
-// scripts/contract-generate.mjs. It is joined into the first segment between the family base
-// rule it refines and the family rules that sit on top of it; change the scale in the contract
-// and regenerate, never here.
+// link with its state pair table and the highlight mark) is the generated segment
+// styles/generated/typography.scale.ts, written from docs/design/gplus-2026-10/contract/
+// typography.json by scripts/contract-generate.mjs. It is joined into the first segment between
+// the family base rule it refines and the family rules that sit on top of it; change the scale
+// in the contract and regenerate, never here. The one link rule kept here is the forced-colours
+// focus outline, which a generated state rule may not carry (it names a colour, transparent).
 
 import { typographyScaleCss } from "./generated/typography.scale.js";
 
@@ -39,6 +40,13 @@ export const typographyCss01 = `
 .tcrn-text.tcrn-text--caps {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+/* The link's focus ring is its edge pair, and forced colours paint no box-shadow. The
+   transparent outline is invisible everywhere else; in forced colours the system recolours
+   it, so a focused link still shows a ring there. */
+.tcrn-link:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }`;
 
 export const typographyCss02 = `

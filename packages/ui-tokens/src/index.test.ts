@@ -1,6 +1,5 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import {
   compareTokenThemeBlocks,
   createCssVariables,
@@ -22,16 +21,13 @@ import {
   tcrnTokenStylesheet,
   tcrnTokens
 } from "./index.js";
-
-// The test runs from packages/ui-tokens/dist; the design contract sits at the repository root.
-const contractFile = (name: string): string => readFileSync(new URL(`../../../docs/design/gplus-2026-10/contract/${name}`, import.meta.url), "utf8");
-const typography = JSON.parse(contractFile("typography.json"));
+// The type scale tokens are not part of the package exports; index.ts reads them from here.
+import { tcrnGplusTypeTokens } from "./gplus-tokens.generated.js";
 
 const light = createTokenMap();
 const dark = Object.fromEntries(tcrnDarkThemeTokens.map((token) => [token.variable, token.value]));
 const resolvedLight = createResolvedTokenMap("light");
 const resolvedDark = createResolvedTokenMap("dark");
-const px = (value: number): string => `${value}px`;
 
 test("tokens expose canonical CSS variables", () => {
   assert.ok(tcrnTokens.length >= 25);
@@ -224,38 +220,8 @@ test("typography, shape, shadow and motion tokens follow the G+ scale", () => {
   assert.doesNotMatch(light["--tcrn-type-family-heading"], /--tcrn-type-family-stamp/);
   assert.equal(resolvedLight["--tcrn-type-family-zh-cn"], light["--tcrn-type-family-ui"], "Chinese UI text falls back to the bundled Noto Sans SC");
 
-  // Size / line pairs from contract/typography.json (13/20, 14/22, 12/16, 11/16; 36/40, 26/30, 20/26).
-  const size = (name: string) => typography.text.sizes.find((entry: { name: string }) => entry.name === name);
-  const pairs: Array<[string, string, { size: number; line: number }]> = [
-    ["--tcrn-type-size-ui", "--tcrn-type-line-ui", typography.text.base],
-    ["--tcrn-type-size-body", "--tcrn-type-line-body", size("body")],
-    ["--tcrn-type-size-reading", "--tcrn-type-line-reading", size("reading")],
-    ["--tcrn-type-size-meta", "--tcrn-type-line-meta", size("meta")],
-    ["--tcrn-type-size-caption", "--tcrn-type-line-caption", size("caption")],
-    ["--tcrn-type-size-page", "--tcrn-type-line-page", typography.headings[0]],
-    ["--tcrn-type-size-heading-2", "--tcrn-type-line-heading-2", typography.headings[1]],
-    ["--tcrn-type-size-section", "--tcrn-type-line-section", typography.headings[2]],
-    ["--tcrn-type-size-heading-3", "--tcrn-type-line-heading-3", typography.headings[2]]
-  ];
-  for (const [sizeVar, lineVar, expected] of pairs) {
-    assert.equal(light[sizeVar], px(expected.size), sizeVar);
-    assert.equal(light[lineVar], px(expected.line), lineVar);
-  }
-  assert.deepEqual(
-    [light["--tcrn-type-size-ui"], light["--tcrn-type-size-reading"], light["--tcrn-type-size-meta"], light["--tcrn-type-size-caption"], light["--tcrn-type-size-page"], light["--tcrn-type-size-heading-2"], light["--tcrn-type-size-heading-3"]],
-    ["13px", "14px", "12px", "11px", "36px", "26px", "20px"]
-  );
-  // Weights: 500 and 600 are separate steps; G+ has no 700.
-  assert.equal(light["--tcrn-type-weight-regular"], "400");
-  assert.equal(light["--tcrn-type-weight-medium"], String(typography.caps.weight));
-  assert.equal(light["--tcrn-type-weight-medium"], "500");
-  assert.equal(light["--tcrn-type-weight-semibold"], String(typography.headings[3].weight));
-  assert.equal(light["--tcrn-type-weight-semibold"], "600");
-  assert.equal(light["--tcrn-type-weight-strong"], String(typography.text.tones.find((tone: { name: string }) => tone.name === "strong").weight));
-  assert.equal(light["--tcrn-type-weight-light"], String(typography.numeral.weight));
-  assert.equal(light["--tcrn-type-tracking-caps"], typography.caps.tracking);
-  assert.equal(light["--tcrn-type-numeric-tabular"], typography.numeral.numeric);
-  assert.match(light["--tcrn-type-numeric-tabular"], /tabular-nums/);
+  // The type scale (size, line, weight, tracking, numeric) is checked in its own test below:
+  // its values come from the generated contract file, so there is no second copy here to compare.
 
   // Shape: 8 / 12 / 3, and the panel and surface silhouettes stay one value.
   assert.equal(light["--tcrn-radius-control"], "8px");
@@ -289,6 +255,31 @@ test("typography, shape, shadow and motion tokens follow the G+ scale", () => {
   assert.equal(light["--tcrn-selection-glide"], "240ms cubic-bezier(.22,1,.36,1)");
   assert.equal(light["--tcrn-motion-loading-loop"], "900ms linear");
   assert.equal(resolvedLight["--tcrn-motion-ease-out"], "cubic-bezier(.22,1,.36,1)");
+});
+
+test("the type scale comes from the generated contract file; no scale value is written by hand", () => {
+  // contract/typography.json "tokens" names every step with its variable; the generator writes
+  // them into gplus-tokens.generated.ts and checks them against the scale entries that use them.
+  assert.ok(tcrnGplusTypeTokens.length > 0);
+  for (const name of ["family-heading", "weight-light", "weight-semibold", "tracking-caps", "numeric-tabular", "line-meta", "line-heading-2", "line-heading-3"]) {
+    assert.ok(tcrnGplusTypeTokens.some((token) => token.key === name), `${name} is named in the contract`);
+  }
+  for (const token of tcrnGplusTypeTokens) {
+    const registered = tcrnTokens.find((candidate) => candidate.variable === token.cssVar);
+    assert.ok(registered, `${token.cssVar} is in the registry`);
+    assert.equal(registered.value, token.value, `${token.cssVar} carries the contract value`);
+    assert.equal(registered.scope, "fixed", `${token.cssVar} is theme independent`);
+  }
+  // Every size, line, weight, tracking and numeric step of the registry is a contract token
+  // (typography.json tokens or the control sizes of tokens.json fixed).
+  const contracted = new Map([...tcrnGplusFixedTokens, ...tcrnGplusTypeTokens].map((token) => [token.cssVar, token.value]));
+  const steps = tcrnTokens.filter((token) => /^--tcrn-type-(?:size|line|weight|tracking|numeric)-/.test(token.variable));
+  assert.ok(steps.length >= tcrnGplusTypeTokens.length - 1);
+  for (const token of steps) assert.equal(contracted.get(token.variable), token.value, `${token.variable} is a contract value`);
+  assert.equal(light["--tcrn-type-family-heading"], tcrnGplusFixedTokens.find((token) => token.key === "serif")?.value, "the heading family is the serif stack");
+  // 500 and 600 are separate steps; G+ has no 700.
+  assert.notEqual(light["--tcrn-type-weight-medium"], light["--tcrn-type-weight-semibold"]);
+  for (const token of tcrnTokens.filter((candidate) => candidate.variable.startsWith("--tcrn-type-weight-"))) assert.notEqual(token.value, "700", token.variable);
 });
 
 test("css variable output is deterministic", () => {

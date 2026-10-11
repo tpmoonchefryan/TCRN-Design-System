@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
-// contract files: tokens.json, marks.json
-// contract-sha256: 12fa60e674a0bfe080e65a70b80a888e90f96535e3e02907509bbea563bd224c
+// contract files: tokens.json, marks.json, typography.json
+// contract-sha256: 8ef93e352078882c3e5326b72f1639fd05f8175e219719dac8dec4d483ffdf3f
 
 
 export interface TcrnGplusThemedToken {
@@ -18,7 +18,7 @@ export interface TcrnGplusFixedToken {
   readonly value: string;
 }
 
-/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed and brand tokens are theme independent */
+/** light values go on :root and on any [data-tcrn-theme="light"] subtree (one selector list), dark values on the dark-theme selector, whose block follows; fixed, brand and type scale tokens are theme independent */
 export const tcrnGplusThemeSelectors = { light: ":root, [data-tcrn-theme=\"light\"]", dark: "[data-tcrn-theme=\"dark\"]" } as const;
 
 export const tcrnGplusThemedTokens: readonly TcrnGplusThemedToken[] = [
@@ -486,5 +486,183 @@ export const tcrnGplusBrandTokens: readonly TcrnGplusFixedToken[] = [
     "cssVar": "--tcrn-brand-suffix-design-system",
     "group": "brand",
     "value": "#6577f3"
+  }
+];
+
+/** the type scale steps (contract/typography.json tokens; a ref takes the value of the fixed token it names) */
+export const tcrnGplusTypeTokens: readonly TcrnGplusFixedToken[] = [
+  {
+    "key": "family-heading",
+    "cssVar": "--tcrn-type-family-heading",
+    "group": "type-family",
+    "value": "\"Source Serif 4\",\"Noto Serif SC\",Georgia,serif"
+  },
+  {
+    "key": "size-ui",
+    "cssVar": "--tcrn-type-size-ui",
+    "group": "type-size",
+    "value": "13px"
+  },
+  {
+    "key": "size-reading",
+    "cssVar": "--tcrn-type-size-reading",
+    "group": "type-size",
+    "value": "14px"
+  },
+  {
+    "key": "size-caption",
+    "cssVar": "--tcrn-type-size-caption",
+    "group": "type-size",
+    "value": "11px"
+  },
+  {
+    "key": "size-meta",
+    "cssVar": "--tcrn-type-size-meta",
+    "group": "type-size",
+    "value": "12px"
+  },
+  {
+    "key": "size-body",
+    "cssVar": "--tcrn-type-size-body",
+    "group": "type-size",
+    "value": "13px"
+  },
+  {
+    "key": "size-section",
+    "cssVar": "--tcrn-type-size-section",
+    "group": "type-size",
+    "value": "20px"
+  },
+  {
+    "key": "size-page",
+    "cssVar": "--tcrn-type-size-page",
+    "group": "type-size",
+    "value": "36px"
+  },
+  {
+    "key": "size-heading-2",
+    "cssVar": "--tcrn-type-size-heading-2",
+    "group": "type-size",
+    "value": "26px"
+  },
+  {
+    "key": "size-heading-3",
+    "cssVar": "--tcrn-type-size-heading-3",
+    "group": "type-size",
+    "value": "20px"
+  },
+  {
+    "key": "size-stamp-min",
+    "cssVar": "--tcrn-type-size-stamp-min",
+    "group": "type-size",
+    "value": "12px"
+  },
+  {
+    "key": "line-ui",
+    "cssVar": "--tcrn-type-line-ui",
+    "group": "type-line",
+    "value": "20px"
+  },
+  {
+    "key": "line-reading",
+    "cssVar": "--tcrn-type-line-reading",
+    "group": "type-line",
+    "value": "22px"
+  },
+  {
+    "key": "line-caption",
+    "cssVar": "--tcrn-type-line-caption",
+    "group": "type-line",
+    "value": "16px"
+  },
+  {
+    "key": "line-meta",
+    "cssVar": "--tcrn-type-line-meta",
+    "group": "type-line",
+    "value": "16px"
+  },
+  {
+    "key": "line-body",
+    "cssVar": "--tcrn-type-line-body",
+    "group": "type-line",
+    "value": "20px"
+  },
+  {
+    "key": "line-control",
+    "cssVar": "--tcrn-type-line-control",
+    "group": "type-line",
+    "value": "1.2"
+  },
+  {
+    "key": "line-section",
+    "cssVar": "--tcrn-type-line-section",
+    "group": "type-line",
+    "value": "26px"
+  },
+  {
+    "key": "line-page",
+    "cssVar": "--tcrn-type-line-page",
+    "group": "type-line",
+    "value": "40px"
+  },
+  {
+    "key": "line-heading-2",
+    "cssVar": "--tcrn-type-line-heading-2",
+    "group": "type-line",
+    "value": "30px"
+  },
+  {
+    "key": "line-heading-3",
+    "cssVar": "--tcrn-type-line-heading-3",
+    "group": "type-line",
+    "value": "26px"
+  },
+  {
+    "key": "weight-light",
+    "cssVar": "--tcrn-type-weight-light",
+    "group": "type-weight",
+    "value": "300"
+  },
+  {
+    "key": "weight-regular",
+    "cssVar": "--tcrn-type-weight-regular",
+    "group": "type-weight",
+    "value": "400"
+  },
+  {
+    "key": "weight-medium",
+    "cssVar": "--tcrn-type-weight-medium",
+    "group": "type-weight",
+    "value": "500"
+  },
+  {
+    "key": "weight-semibold",
+    "cssVar": "--tcrn-type-weight-semibold",
+    "group": "type-weight",
+    "value": "600"
+  },
+  {
+    "key": "weight-strong",
+    "cssVar": "--tcrn-type-weight-strong",
+    "group": "type-weight",
+    "value": "600"
+  },
+  {
+    "key": "tracking-caps",
+    "cssVar": "--tcrn-type-tracking-caps",
+    "group": "type-tracking",
+    "value": ".14em"
+  },
+  {
+    "key": "tracking-stamp",
+    "cssVar": "--tcrn-type-tracking-stamp",
+    "group": "type-tracking",
+    "value": "0.06em"
+  },
+  {
+    "key": "numeric-tabular",
+    "cssVar": "--tcrn-type-numeric-tabular",
+    "group": "type-numeric",
+    "value": "tabular-nums lining-nums"
   }
 ];

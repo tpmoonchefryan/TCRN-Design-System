@@ -2,7 +2,8 @@
 //
 // G+ (TCRN-DS-INIT-015, STORY-120/121): every G+ value comes from
 // gplus-tokens.generated.ts, which scripts/contract-generate.mjs writes from
-// docs/design/gplus-2026-10/contract/tokens.json. This file only arranges those values
+// docs/design/gplus-2026-10/contract/tokens.json (and the type scale tokens of
+// contract/typography.json). This file only arranges those values
 // into the published registry; it holds no second copy of a contract value.
 //
 // The generated stylesheet has three blocks, in this order:
@@ -20,7 +21,8 @@ import {
   tcrnGplusBrandTokens,
   tcrnGplusFixedTokens,
   tcrnGplusThemeSelectors,
-  tcrnGplusThemedTokens
+  tcrnGplusThemedTokens,
+  tcrnGplusTypeTokens
 } from "./gplus-tokens.generated.js";
 
 export {
@@ -212,6 +214,13 @@ function fixedValue(key: string): string {
   return token.value;
 }
 
+/** Value of a type scale token (contract/typography.json "tokens", through the generated file). */
+function typeValue(key: string): string {
+  const token = tcrnGplusTypeTokens.find((candidate) => candidate.key === key);
+  if (!token) throw new Error(`@tcrn/ui-tokens: the contract has no type scale token "${key}"`);
+  return token.value;
+}
+
 /** `<duration> <G+ ease>` for transition shorthands, both parts from the contract. */
 function transition(durationKey: string): string {
   return `${fixedValue(durationKey)} ${fixedValue("ease")}`;
@@ -244,18 +253,19 @@ const gplusFixedEntries: TokenEntry[] = [...tcrnGplusFixedTokens, ...tcrnGplusBr
   }
 }));
 
-// G+ tokens the contract implies but does not name. Their values are either taken from
-// the contract (the heading family) or are the 121 typography scale, which index.test.ts
-// checks against docs/design/gplus-2026-10/contract/typography.json.
+// G+ type scale tokens outside tokens.json. They are named, with their variables and values,
+// in docs/design/gplus-2026-10/contract/typography.json ("tokens"); the values come from the
+// generated file through typeValue(), like the other type scale steps further down, so no
+// type scale value is written here (TCRN-DS-SUB-052).
 const gplusAdditions: DesignToken[] = [
-  { name: "typography.family.heading", variable: "--tcrn-type-family-heading", group: "typography", value: fixedValue("serif"), description: "Heading face: the serif stack. Headings use this token, never the stamp family." },
-  { name: "typography.weight.light", variable: "--tcrn-type-weight-light", group: "typography", value: "300", description: "Light weight for serif numerals." },
-  { name: "typography.weight.semibold", variable: "--tcrn-type-weight-semibold", group: "typography", value: "600", description: "Semibold (600): strong text and compact headings; split from the 500 medium step." },
-  { name: "typography.tracking.caps", variable: "--tcrn-type-tracking-caps", group: "typography", value: ".14em", description: "Letter spacing for uppercase caps labels." },
-  { name: "typography.numeric.tabular", variable: "--tcrn-type-numeric-tabular", group: "typography", value: "tabular-nums lining-nums", description: "font-variant-numeric for figures that align in columns." },
-  { name: "typography.line.meta", variable: "--tcrn-type-line-meta", group: "typography", value: "16px", description: "Meta text line height." },
-  { name: "typography.line.heading.2", variable: "--tcrn-type-line-heading-2", group: "typography", value: "30px", description: "Second-level heading line height." },
-  { name: "typography.line.heading.3", variable: "--tcrn-type-line-heading-3", group: "typography", value: "26px", description: "Third-level heading line height." }
+  { name: "typography.family.heading", variable: "--tcrn-type-family-heading", group: "typography", value: typeValue("family-heading"), description: "Heading face: the serif stack. Headings use this token, never the stamp family." },
+  { name: "typography.weight.light", variable: "--tcrn-type-weight-light", group: "typography", value: typeValue("weight-light"), description: "Light weight for serif numerals." },
+  { name: "typography.weight.semibold", variable: "--tcrn-type-weight-semibold", group: "typography", value: typeValue("weight-semibold"), description: "Semibold (600): strong text and compact headings; split from the 500 medium step." },
+  { name: "typography.tracking.caps", variable: "--tcrn-type-tracking-caps", group: "typography", value: typeValue("tracking-caps"), description: "Letter spacing for uppercase caps labels." },
+  { name: "typography.numeric.tabular", variable: "--tcrn-type-numeric-tabular", group: "typography", value: typeValue("numeric-tabular"), description: "font-variant-numeric for figures that align in columns." },
+  { name: "typography.line.meta", variable: "--tcrn-type-line-meta", group: "typography", value: typeValue("line-meta"), description: "Meta text line height." },
+  { name: "typography.line.heading.2", variable: "--tcrn-type-line-heading-2", group: "typography", value: typeValue("line-heading-2"), description: "Second-level heading line height." },
+  { name: "typography.line.heading.3", variable: "--tcrn-type-line-heading-3", group: "typography", value: typeValue("line-heading-3"), description: "Third-level heading line height." }
 ];
 
 interface LegacyTokenSpec {
@@ -272,7 +282,8 @@ interface LegacyTokenSpec {
 
 // Names that predate G+. Retained names keep their meaning with G+ values; renamed ones
 // stay as deprecated aliases (`var(--new)`) so consumers that only know the old name
-// still resolve to the new value. Colour aliases carry no colour of their own.
+// still resolve to the new value. Colour aliases carry no colour of their own. The type scale
+// steps (size, line, weight, tracking) take their values from the contract through typeValue().
 const legacyTokenSpecs: LegacyTokenSpec[] = [
   { name: "color.text.primary", variable: "--tcrn-color-text-primary", group: "color", alias: "--tcrn-color-ink", description: "Primary body and dense operational text." },
   { name: "color.text.secondary", variable: "--tcrn-color-text-secondary", group: "color", alias: "--tcrn-color-ink-2", description: "Secondary labels and supporting operational text." },
@@ -325,27 +336,27 @@ const legacyTokenSpecs: LegacyTokenSpec[] = [
   { name: "typography.family.stamp", variable: "--tcrn-type-family-stamp", group: "typography", value: "Source Serif 4, Songti SC, Noto Serif CJK SC, Georgia, serif", description: "Identity-moment serif for stamp titles and rulings. Restricted to the identity whitelist (gate close, ruling, release acceptance); never used for data or dense body text." },
   { name: "typography.family.distributable.stamp.latin", variable: "--tcrn-type-family-distributable-stamp-latin", group: "typography", value: "Source Serif 4, serif", description: "Bundleable Latin stamp serif (SIL OFL-1.1). Reserved Font Name applies: a modified build must be renamed." },
   { name: "typography.family.distributable.stamp.zhCN", variable: "--tcrn-type-family-distributable-stamp-zh-cn", group: "typography", value: "Noto Serif CJK SC, serif", description: "Bundleable Simplified-Chinese stamp serif (SIL OFL-1.1). Reserved Font Name applies." },
-  { name: "typography.size.stamp.min", variable: "--tcrn-type-size-stamp-min", group: "typography", value: "12px", description: "Floor for stamp type. Below this the CJK serif loses its strokes on standard-density displays, which is why the whitelist keeps data rows on the sans face." },
-  { name: "typography.tracking.stamp", variable: "--tcrn-type-tracking-stamp", group: "typography", value: "0.06em", description: "Stamp letter-spacing: opens small-caps enough to read as an impression rather than a label." },
-  { name: "typography.size.ui", variable: "--tcrn-type-size-ui", group: "typography", value: "13px", description: "Default dense UI text size." },
-  { name: "typography.size.reading", variable: "--tcrn-type-size-reading", group: "typography", value: "14px", description: "Readable prose text role size for proof-gated explanatory copy; not auto-applied to dense UI." },
-  { name: "typography.size.caption", variable: "--tcrn-type-size-caption", group: "typography", value: "11px", description: "Caption and metadata text size." },
-  { name: "typography.size.meta", variable: "--tcrn-type-size-meta", group: "typography", value: "12px", description: "Dense metadata text: counts, badges, table tool labels, and secondary row detail. One step above caption, one below dense UI text." },
-  { name: "typography.size.body", variable: "--tcrn-type-size-body", group: "typography", value: "13px", description: "Default body copy and table text size." },
-  { name: "typography.size.section", variable: "--tcrn-type-size-section", group: "typography", value: "20px", description: "Section and story heading text size." },
-  { name: "typography.size.page", variable: "--tcrn-type-size-page", group: "typography", value: "36px", description: "Page title text size for documentation and product shells." },
-  { name: "typography.size.heading.2", variable: "--tcrn-type-size-heading-2", group: "typography", value: "26px", description: "Second-level heading size, between the page title and section role — the component library's h2 step." },
-  { name: "typography.size.heading.3", variable: "--tcrn-type-size-heading-3", group: "typography", value: "20px", description: "Third-level heading size — the component library's h3 step, below the section role." },
-  { name: "typography.line.ui", variable: "--tcrn-type-line-ui", group: "typography", value: "20px", description: "Default UI line height." },
-  { name: "typography.line.reading", variable: "--tcrn-type-line-reading", group: "typography", value: "22px", description: "Readable prose text role line height for proof-gated explanatory copy." },
-  { name: "typography.line.caption", variable: "--tcrn-type-line-caption", group: "typography", value: "16px", description: "Caption and metadata line height." },
-  { name: "typography.line.body", variable: "--tcrn-type-line-body", group: "typography", value: "20px", description: "Readable body copy line height." },
-  { name: "typography.line.control", variable: "--tcrn-type-line-control", group: "typography", value: "1.2", description: "Compact control text line height." },
-  { name: "typography.line.section", variable: "--tcrn-type-line-section", group: "typography", value: "26px", description: "Section heading line height." },
-  { name: "typography.line.page", variable: "--tcrn-type-line-page", group: "typography", value: "40px", description: "Page heading line height." },
-  { name: "typography.weight.regular", variable: "--tcrn-type-weight-regular", group: "typography", value: "400", description: "Default body text weight." },
-  { name: "typography.weight.medium", variable: "--tcrn-type-weight-medium", group: "typography", value: "500", description: "Medium (500): caps labels, units and control labels; the 600 step is typography.weight.semibold." },
-  { name: "typography.weight.strong", variable: "--tcrn-type-weight-strong", group: "typography", value: "600", description: "Strong text and compact headings (600); G+ has no 700 step." },
+  { name: "typography.size.stamp.min", variable: "--tcrn-type-size-stamp-min", group: "typography", value: typeValue("size-stamp-min"), description: "Floor for stamp type. Below this the CJK serif loses its strokes on standard-density displays, which is why the whitelist keeps data rows on the sans face." },
+  { name: "typography.tracking.stamp", variable: "--tcrn-type-tracking-stamp", group: "typography", value: typeValue("tracking-stamp"), description: "Stamp letter-spacing: opens small-caps enough to read as an impression rather than a label." },
+  { name: "typography.size.ui", variable: "--tcrn-type-size-ui", group: "typography", value: typeValue("size-ui"), description: "Default dense UI text size." },
+  { name: "typography.size.reading", variable: "--tcrn-type-size-reading", group: "typography", value: typeValue("size-reading"), description: "Readable prose text role size for proof-gated explanatory copy; not auto-applied to dense UI." },
+  { name: "typography.size.caption", variable: "--tcrn-type-size-caption", group: "typography", value: typeValue("size-caption"), description: "Caption and metadata text size." },
+  { name: "typography.size.meta", variable: "--tcrn-type-size-meta", group: "typography", value: typeValue("size-meta"), description: "Dense metadata text: counts, badges, table tool labels, and secondary row detail. One step above caption, one below dense UI text." },
+  { name: "typography.size.body", variable: "--tcrn-type-size-body", group: "typography", value: typeValue("size-body"), description: "Default body copy and table text size." },
+  { name: "typography.size.section", variable: "--tcrn-type-size-section", group: "typography", value: typeValue("size-section"), description: "Section and story heading text size." },
+  { name: "typography.size.page", variable: "--tcrn-type-size-page", group: "typography", value: typeValue("size-page"), description: "Page title text size for documentation and product shells." },
+  { name: "typography.size.heading.2", variable: "--tcrn-type-size-heading-2", group: "typography", value: typeValue("size-heading-2"), description: "Second-level heading size, between the page title and section role — the component library's h2 step." },
+  { name: "typography.size.heading.3", variable: "--tcrn-type-size-heading-3", group: "typography", value: typeValue("size-heading-3"), description: "Third-level heading size — the component library's h3 step, below the section role." },
+  { name: "typography.line.ui", variable: "--tcrn-type-line-ui", group: "typography", value: typeValue("line-ui"), description: "Default UI line height." },
+  { name: "typography.line.reading", variable: "--tcrn-type-line-reading", group: "typography", value: typeValue("line-reading"), description: "Readable prose text role line height for proof-gated explanatory copy." },
+  { name: "typography.line.caption", variable: "--tcrn-type-line-caption", group: "typography", value: typeValue("line-caption"), description: "Caption and metadata line height." },
+  { name: "typography.line.body", variable: "--tcrn-type-line-body", group: "typography", value: typeValue("line-body"), description: "Readable body copy line height." },
+  { name: "typography.line.control", variable: "--tcrn-type-line-control", group: "typography", value: typeValue("line-control"), description: "Compact control text line height." },
+  { name: "typography.line.section", variable: "--tcrn-type-line-section", group: "typography", value: typeValue("line-section"), description: "Section heading line height." },
+  { name: "typography.line.page", variable: "--tcrn-type-line-page", group: "typography", value: typeValue("line-page"), description: "Page heading line height." },
+  { name: "typography.weight.regular", variable: "--tcrn-type-weight-regular", group: "typography", value: typeValue("weight-regular"), description: "Default body text weight." },
+  { name: "typography.weight.medium", variable: "--tcrn-type-weight-medium", group: "typography", value: typeValue("weight-medium"), description: "Medium (500): caps labels, units and control labels; the 600 step is typography.weight.semibold." },
+  { name: "typography.weight.strong", variable: "--tcrn-type-weight-strong", group: "typography", value: typeValue("weight-strong"), description: "Strong text and compact headings (600); G+ has no 700 step." },
   { name: "typography.role.bodyDense", variable: "--tcrn-text-body-dense", group: "typography", value: "var(--tcrn-type-weight-regular) var(--tcrn-type-size-ui)/var(--tcrn-type-line-ui) var(--tcrn-type-family-ui)", description: "Composite dense UI body role; preserves 13px operational surfaces." },
   { name: "typography.role.bodyReading", variable: "--tcrn-text-body-reading", group: "typography", value: "var(--tcrn-type-weight-regular) var(--tcrn-type-size-reading)/var(--tcrn-type-line-reading) var(--tcrn-type-family-ui)", description: "Composite readable prose role for proof-gated explanatory copy; not auto-applied." },
   { name: "elevation.floating", variable: "--tcrn-elevation-floating", group: "elevation", alias: "--tcrn-shadow-s3", description: "Floating layer (popover, menu, toast). Elevation is drawn as a hairline with a whisper of shadow, never a soft cloud: the quiet-instrument base separates layers by edge, not by blur." },
