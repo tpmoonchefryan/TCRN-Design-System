@@ -531,7 +531,10 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         const truthStyle = controlsCanBeMeasured ? getComputedStyle(truthControl) : null;
         const exampleRightInset = exampleRect && exampleControlRect ? Number((exampleRect.right - exampleControlRect.right).toFixed(2)) : null;
         const truthRightInset = truthRect && truthControlRect ? Number((truthRect.right - truthControlRect.right).toFixed(2)) : null;
-        const expectedRightInset = Number(Math.min(24, Math.max(16, window.innerWidth * 0.016)).toFixed(2));
+        // The rail head's collapse control sits on the rail's 16px padding (space-4) since composition one
+        // (O-1); it was the old documentation shell's clamp(16px, 1.6vw, 24px). Old-geometry expectation
+        // moved with O-1 (R2 judgment 3.3 item 6), the comparison is unchanged.
+        const expectedRightInset = 16;
         const exampleTextGap = exampleTextRect && exampleControlRect ? Number((exampleControlRect.left - exampleTextRect.right).toFixed(2)) : null;
         const truthTextGap = truthTextRect && truthControlRect ? Number((truthControlRect.left - truthTextRect.right).toFixed(2)) : null;
         measurements.controls = {

@@ -900,14 +900,6 @@ label {
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
   max-width: 220px;
   min-width: 0;
-  opacity: 1;
-  overflow: hidden;
-  transform: translateX(0);
-  visibility: visible;
-  transition:
-    opacity var(--tcrn-motion-emphasis),
-    transform var(--tcrn-motion-emphasis),
-    visibility 0s linear 0s;
 }
 
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy,
@@ -984,18 +976,15 @@ label {
    themes since composition one (O-1). */
 /* The layout is the size container its top bar answers to: the demo sits in a story
    frame, so its own width, not the viewport, decides whether one row fits.
-   The rail holds the brand lockup beside its collapse control, as the documentation
-   shell's own rail does: a 38px mark, its 12px gap and the 112px tagline, the 8px gap,
-   the 38px control and at most 54px of cell padding need 262px, so the rail never
-   drops below 264px. A narrower rail cut the tagline and ran it under the control. */
+   The rail is the shell rail width (220, composition one): the brand lockup and its collapse
+   control share it as in the documentation shell's rail head, 16px from each edge. */
 .tcrn-doc-knowledge-shell-layout {
-  --tcrn-knowledge-shell-rail-min: 264px;
   container: tcrn-knowledge-shell / inline-size;
   display: grid;
   grid-template-areas:
     "topbar topbar"
     "sidebar content";
-  grid-template-columns: minmax(var(--tcrn-knowledge-shell-rail-min), 0.32fr) minmax(0, 1fr);
+  grid-template-columns: var(--tcrn-shell-sidebar-width) minmax(0, 1fr);
   gap: 0;
   align-items: stretch;
   min-width: 0;
@@ -1006,13 +995,34 @@ label {
   overflow: hidden;
 }
 
-/* The package TopBar and SideNav keep their own look; the layout only places them. */
-.tcrn-doc-knowledge-shell-layout > .tcrn-top-bar {
+/* The layout places the package TopBar and SideNav, and gives them composition one's rail
+   geometry, which the package applies only inside ProductShell (O-1): the bar is the shell top bar,
+   the side navigation is a canvas rail with the 16px padding, group titles sit on the guide column
+   and items start there. The shell-fidelity guard registers these properties; they go when the
+   Navigation family batch gives the standalone parts this geometry. */
+/* The data-standard-shell qualifier outranks the package rules the story pages scope under
+   .story-body; the side navigation starts under the 96px rail head, as the documentation one does. */
+.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-top-bar {
   grid-area: topbar;
+  min-height: var(--tcrn-shell-topbar-height);
+  padding-block: var(--tcrn-space-1h);
 }
 
-.tcrn-doc-knowledge-shell-layout > .tcrn-side-nav {
+.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-side-nav {
   grid-area: sidebar;
+  /* Under the 96px rail head: the bar is the shell top bar plus its 1px bottom edge. */
+  margin-block-start: calc(var(--tcrn-space-6) * 3 - var(--tcrn-shell-topbar-height) - 1px);
+  padding: var(--tcrn-space-4);
+  background: var(--tcrn-color-surface-canvas);
+}
+
+.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-group__label {
+  padding-inline: 0;
+}
+
+.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-item {
+  margin-inline: calc(var(--tcrn-space-1) * -1);
+  padding-inline-start: calc(var(--tcrn-space-1) - 1px);
 }
 
 .tcrn-doc-knowledge-shell__topbar-copy,
@@ -1027,9 +1037,12 @@ label {
 }
 
 .tcrn-doc-knowledge-shell__topbar-copy span {
+  overflow: hidden;
   color: var(--tcrn-color-text-secondary);
   font-size: var(--tcrn-type-size-caption);
   line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tcrn-doc-knowledge-shell__actions {
@@ -1049,6 +1062,9 @@ label {
 .tcrn-doc-knowledge-shell__topbar-copy {
   align-self: stretch;
   align-content: center;
+  /* Title and one line of description fit the 52px shell top bar's 40px content height, as the
+     documentation bar's current-location block does; the description ends in an ellipsis. */
+  gap: var(--tcrn-space-0h);
   max-inline-size: 32ch;
   background: transparent;
   padding: 0;
@@ -1084,13 +1100,6 @@ label {
   display: grid;
   gap: var(--tcrn-space-4);
   min-width: 0;
-}
-
-/* The rail content keeps the documentation sidebar's inline padding, so the bookmarks start where
-   the documentation shell's navigation starts; the package SideNav itself is only placed. */
-.tcrn-doc-knowledge-shell__sidebar-intro,
-.tcrn-doc-knowledge-shell__groups {
-  padding-inline: clamp(var(--tcrn-space-4h), 2vw, 30px) clamp(var(--tcrn-space-4), 1.6vw, 24px);
 }
 
 .tcrn-doc-knowledge-shell-layout [data-navigation-primitive="nav-item"]:not([data-selected="true"]):not([aria-current="page"]) {
@@ -1464,18 +1473,18 @@ label {
   gap: var(--tcrn-space-2);
   align-items: center;
   align-self: stretch;
-  /* Brand lockup relation (composition one): the brand cell is the top of the rail, as the
-     documentation shell's brand surface is. It spans the rail track (the layout's first column,
-     minmax(rail-min, 0.32fr) beside 1fr with no gap, in the layout's container units) and claims
-     back the top bar's inline-start padding, its block padding and its 1px bottom edge, so the
-     rail surface runs from the bar's top edge into the side navigation with no gap. The bar
-     centres its slots, so the cell is the tallest slot: 96px, the documentation header band. */
-  inline-size: max(var(--tcrn-knowledge-shell-rail-min), calc(100cqi * 0.32 / 1.32));
-  min-height: calc(var(--tcrn-space-6) * 3);
-  margin-block: calc(var(--tcrn-space-3) * -1) calc((var(--tcrn-space-3) + 1px) * -1);
+  /* Brand lockup relation (composition one): the brand cell is the head of the rail, as the
+     documentation shell's rail head is. It spans the rail track and claims back the top bar's
+     inline-start padding, its block padding and its 1px bottom edge, so the rail surface runs from
+     the bar's top edge into the side navigation with no gap. It is the 96px rail head, as in the
+     documentation shell, and gives back what it overhangs through its block-end margin, so the bar
+     keeps the 52px shell top bar height. */
+  inline-size: var(--tcrn-shell-sidebar-width);
+  block-size: calc(var(--tcrn-space-6) * 3);
+  margin-block: calc(var(--tcrn-space-1h) * -1) calc(var(--tcrn-shell-topbar-height) - var(--tcrn-space-6) * 3 - var(--tcrn-space-1h));
   margin-inline-start: calc(var(--tcrn-space-5) * -1);
   background: var(--tcrn-knowledge-shell-left-surface);
-  padding: var(--tcrn-space-3) clamp(var(--tcrn-space-4), 1.6vw, 24px) var(--tcrn-space-3) clamp(var(--tcrn-space-4h), 2vw, 30px);
+  padding: var(--tcrn-space-3) var(--tcrn-space-4);
 }
 
 .tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup {
@@ -1486,6 +1495,12 @@ label {
 }
 .tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup__caption {
   white-space: nowrap;
+}
+/* As in the documentation rail head: in the 220px rail a copy line wraps rather than running under
+   the collapse control (only the Japanese tagline needs it). */
+.tcrn-doc-knowledge-shell__brand .tcrn-product-logo__copy *,
+.tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup__copy * {
+  white-space: normal;
 }
 /* End demo layer generated from story-demo-styles.ts */
 

@@ -566,23 +566,23 @@ export const storybookDocShellVisualOracle = {
   metricEvidence: [
     {
       metric: "desktopSidebarWidthPx",
-      value: 360,
+      value: 220,
       evidencePath:
         "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
       signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
       signatureKey: "welcome-governance@desktop-1440x900",
       comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
-      extraction: "Sidebar geometry (responsive clamp(280px, 20vw, 360px), maxing at 360px and yielding 288px at the 1440px proof viewport) is asserted by the internal-alpha browser-proof sidebar-width metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
+      extraction: "Sidebar geometry (composition one: a fixed 220px rail from --tcrn-shell-sidebar-width, 52px collapsed from --tcrn-shell-sidebar-width-collapsed, so 220px at the 1440px proof viewport) is asserted by the internal-alpha browser-proof sidebar-width metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "desktopTopbarHeightPx",
-      value: 96,
+      value: 52,
       evidencePath:
         "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
       signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
       signatureKey: "welcome-governance@desktop-1440x900",
       comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
-      extraction: "Header/control band height=96px is asserted by the internal-alpha browser-proof topbar-height metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
+      extraction: "Header/control band height=52px (the shell top bar over the content column, --tcrn-shell-topbar-height; composition one) is asserted by the internal-alpha browser-proof topbar-height metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "searchRestWidthPx",
@@ -606,12 +606,15 @@ export const storybookDocShellVisualOracle = {
     }
   ],
   shellMetrics: {
-    desktopSidebarWidthPx: 288,
-    desktopSidebarMinWidthPx: 280,
+    // Composition one (O-1): the documentation rail is the shell rail, 220px at every desktop
+    // width (min and max are both 220, so the viewport ratio no longer moves it), and the top bar
+    // over the content column is the 52px shell top bar.
+    desktopSidebarWidthPx: 220,
+    desktopSidebarMinWidthPx: 220,
     desktopSidebarPreferredViewportRatio: 0.2,
-    desktopSidebarMaxWidthPx: 360,
+    desktopSidebarMaxWidthPx: 220,
     desktopSidebarTolerancePx: 2,
-    desktopTopbarHeightPx: 96,
+    desktopTopbarHeightPx: 52,
     desktopTopbarTolerancePx: 2,
     searchRestWidthPx: 260,
     searchExpandedWidthPx: 360,
