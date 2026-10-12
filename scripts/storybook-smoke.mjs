@@ -108,6 +108,12 @@ const gplusContractRoot = "docs/design/gplus-2026-10/contract";
 const gplusPairs = JSON.parse(readFileSync(`${gplusContractRoot}/pairs.json`, "utf8"));
 const gplusTypography = JSON.parse(readFileSync(`${gplusContractRoot}/typography.json`, "utf8"));
 const gplusTokens = { light: createResolvedTokenMap("light"), dark: createResolvedTokenMap("dark") };
+// Composition one (O-1): the documentation shell's rail and top bar are the shell tokens, so the
+// doc shell expectations below read them instead of the old 288 / 280 / 360 and 96 literals.
+const shellSidebarWidthVar = "--tcrn-shell-sidebar-width";
+const shellTopbarHeightVar = "--tcrn-shell-topbar-height";
+const docShellRailWidthPx = Number.parseFloat(gplusTokens.light[shellSidebarWidthVar]);
+const docShellTopbarHeightPx = Number.parseFloat(gplusTokens.light[shellTopbarHeightVar]);
 const gplusThemes = ["light", "dark"];
 function gplusComputedColor(value) {
   const text = String(value).trim();
@@ -908,7 +914,7 @@ const required = [
   "data-shell-control=\"side-nav-collapse\"",
   "data-doc-chapter-pager=\"true\"",
   "<link rel=\"icon\" href=\"tcrn-brand-mark.svg\" type=\"image/svg+xml\" />",
-  "--tcrn-anchor-scroll-offset: 96px",
+  `--tcrn-anchor-scroll-offset: var(${shellTopbarHeightVar})`,
   "tcrnStorybookScrollToHash",
   "keepActiveLinkVisible",
   "data-i18n-locale-select",
@@ -1559,16 +1565,16 @@ if (!(contract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) 
 ))) {
   missing.push("contract.storybookDocShellVisualOracle.metricEvidence.desktopSidebarWidthPx");
 }
-if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx !== 288) {
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx !== docShellRailWidthPx) {
   missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopSidebarWidthPx");
 }
-if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx !== 280) {
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx !== docShellRailWidthPx) {
   missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopSidebarMinWidthPx");
 }
-if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx !== 360) {
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx !== docShellRailWidthPx) {
   missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopSidebarMaxWidthPx");
 }
-if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx !== 96) {
+if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx !== docShellTopbarHeightPx) {
   missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopTopbarHeightPx");
 }
 if (contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx !== 260) {
