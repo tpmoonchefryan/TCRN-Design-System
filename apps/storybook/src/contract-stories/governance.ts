@@ -58,7 +58,7 @@ export const storyCategoryDefinitions: Record<ContractStoryGroup, readonly Story
     { id: "detail-and-inspection", label: "Detail and inspection", description: "Record detail, metadata, density, and inspection surfaces." },
     { id: "documents-and-collaboration", label: "Documents and collaboration", description: "Documents, page navigation, comments, attachments, and versions." },
     { id: "gplus-matrices", label: "Family matrices", description: "All-state matrices of the first five component families, light and night." },
-    { id: "gplus-samples", label: "Composition samples", description: "The first five component families in a composition-one product shell, light and night." }
+    { id: "gplus-samples", label: "Composition samples", description: "Five samples of the first five component families in a composition-one product shell, and a composition-three page with no side rail and a navigation bar across the top, light and night." }
   ],
   Patterns: [
     { id: "forms-workbench", label: "Forms and workbench", description: "Form, workbench, and local filtering patterns." },
