@@ -182,11 +182,24 @@ Three gates hold that line:
   docs sources write or style, subtracts the classes `tcrnComponentCss` defines, and fails on
   anything left. Documentation-private classes therefore use the `tcrn-doc-` prefix, which the
   gate exempts (TCRN-DS-STORY-128).
-- `scripts/shell-fidelity-proof.mjs` (`docsPackageSelectorDuplication`) fails when a rule in
-  `storybook.css` or `alpha-styles.ts` styles a package class as its key subject, unless that
-  class is on the gate's whitelist of demo-scoped placements listed below.
-- `scripts/selection-grammar-proof.mjs` reads the same three docs files for the retired
-  selection shapes.
+- `scripts/shell-fidelity-proof.mjs` (`docsPackageSelectorDuplication`) runs two checks under
+  one name:
+  - the duplicate-selector check fails when a rule in `storybook.css` or `alpha-styles.ts`
+    takes as its key subject a package class that `tcrnComponentCss` also styles, unless that
+    class is on the gate's whitelist (`DUPLICATE_SELECTOR_WHITELIST`, listed below);
+  - the rule-level guard (TCRN-DS-SUB-065) reads the three docs style sources
+    (`storybook.css` with its generated demo layer blanked, `alpha-styles.ts` and
+    `story-demo-styles.ts`). A rule whose subject compound carries a package class may declare
+    only placement properties (`PLACEMENT_PROPERTIES`: grid placement, `order`, margins, self
+    alignment, flex item sizing, inline size and text wrapping); any other property, custom
+    properties included, is a finding unless a registered exception
+    (`DOC_PACKAGE_CLASS_EXCEPTIONS`, listed below) admits that property for that exact
+    selector. For the C7 single-line carriers that `docs/contract/roles.json` registers under
+    `singleLine`, the wrapping properties (`white-space`, `overflow-wrap`, `word-break`) do not
+    count as placement (TCRN-DS-SUB-102). A registered exception that no rule used is listed
+    as `docExceptionsUnused`.
+- `scripts/selection-grammar-proof.mjs` reads the same three docs style sources, with the
+  package component CSS, for the retired selection shapes.
 
 `scripts/contract-static-proof.mjs` (`pnpm contract:static`) also reads the doc-shell-class
 difference as contract clause C13, so the same leak fails both gates (TCRN-DS-STORY-132).
@@ -228,13 +241,51 @@ components instead.
   `.tcrn-doc-overlay-static-card`, `.tcrn-doc-dialog-spec-fixture*`, `.alpha-overlay-demo`,
   `.alpha-overlay-demo__dialog`.
 - **Package components placed by doc scaffolding:** a rule scoped under a `.tcrn-doc-*`
-  container may place a package component (grid area, track width, wrapping) but does not
+  container may place a package component (the placement properties above: grid placement,
+  order, margins, self alignment, flex item sizing, inline size, wrapping) but does not
   repaint it, for example `.tcrn-doc-knowledge-shell-layout > .tcrn-top-bar { grid-area: topbar; }`.
   The key subjects these placements need are the shell-fidelity whitelist: `.tcrn-top-bar`,
   `.tcrn-side-nav`, `.tcrn-search-input`, `.tcrn-product-switcher`, `.tcrn-segmented-nav`,
-  `.tcrn-field`, `.tcrn-brand-wordmark*`, `.tcrn-product-logo__copy`, `.tcrn-tooltip__content`,
-  `.tcrn-shell-brand-lockup*`, plus the infra primitives `.tcrn-sr-only` and `.tcrn-skip-link`
-  that the docs shell reproduces verbatim.
+  `.tcrn-field`, `.tcrn-brand-wordmark__suffix`, `.tcrn-product-logo__copy`,
+  `.tcrn-tooltip__content`, `.tcrn-shell-brand-lockup`, `.tcrn-shell-brand-lockup__copy`,
+  `.tcrn-shell-brand-lockup__caption`, `.tcrn-product-shell-search__results`,
+  `.tcrn-nav-group__label` and `.tcrn-nav-item`, plus the infra primitive `.tcrn-skip-link`
+  that the package-nav proof places; the whitelist's last entry, `.tcrn-filter-bar`, is the
+  demo hook described below. The docs shell's verbatim copies of `.tcrn-sr-only` and
+  `.tcrn-skip-link` were removed (TCRN-DS-SUB-063), and `.tcrn-brand-wordmark__base` and
+  `.tcrn-brand-wordmark` left the whitelist with their last doc rules (TCRN-DS-SUB-063,
+  TCRN-DS-SUB-065). `.tcrn-product-shell-search__results`, `.tcrn-nav-group__label` and
+  `.tcrn-nav-item` leave together with the registered exceptions that need them.
+- **Registered exceptions** (`DOC_PACKAGE_CLASS_EXCEPTIONS` in
+  `scripts/shell-fidelity-proof.mjs`; each entry names exact selectors and the non-placement
+  properties it admits, with a ruling, a reason and a removal condition):
+  - `EX-INIT015-doc-tooltip-static-preview`: `opacity` and `transform` on the content of the
+    tooltip static-preview hook (one selector per placement variant); goes when the Overlay
+    family's batch has the package provide a static revealed state.
+  - `EX-INIT015-doc-filter-bar`: `display`, `flex-wrap` and `gap` on the top-level
+    `.tcrn-filter-bar` demo hook; goes when the Navigation family's batch gives FilterBar a
+    layout of its own.
+  - `EX-INIT015-doc-nav-proof-skip-link`: the package-nav proof's skip link, a 1px
+    screen-reader box until focused and an inline flex box on focus; goes when the Navigation
+    family's batch has the proof render its skip link through the package component.
+  - `EX-INIT015-doc-product-shell-search-static` (TCRN-DS-SUB-100): `position` and `inset` on
+    `.tcrn-product-shell-search__results` under
+    `.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"]`, so the
+    ProductShell story's opened static result list stays in the shell's flow and pushes the
+    body down instead of covering the title and first paragraph; goes when the Navigation
+    family's batch has the package provide a static result display.
+  - `EX-INIT015-doc-knowledge-shell-topbar`, `-side-nav`, `-group-title` and `-nav-item`
+    (TCRN-DS-SUB-101), all under `.tcrn-doc-knowledge-shell-layout[data-standard-shell]`: the
+    knowledge-base sample's standalone TopBar takes the shell top bar's 52px height and 6px
+    block padding (`min-height`, `padding-block`), its SideNav the 16px padding and canvas
+    colour of composition one's rail (`padding`, `background`), its group titles the 16px lead
+    column (`padding-inline`) and its nav items composition one's start padding
+    (`padding-inline-start`; the 4px reach into the rail padding is a margin, which is
+    placement). All four go when the Navigation family's batch has the standalone components
+    provide composition one's geometry.
+  - Removed: `EX-INIT015-doc-shell-brand-collapse` and `EX-INIT015-doc-shell-brand-narrow`
+    (TCRN-DS-SUB-101). The docs shell's collapsed and very narrow states now follow the
+    package: the lockup copy takes `max-width: 0` and the docs box clips it, with no fade.
 - **Component-scoped demo hooks** (same base class as a package component, but a
   presentation-only hook that the component never emits): `.tcrn-filter-bar` (demo tab
   layout; the package owns it only via the scoped `.tcrn-table-toolbar .tcrn-filter-bar` rule,

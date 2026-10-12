@@ -118,7 +118,7 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 4659 -> 5979 (TCRN-DS-INIT-015 R2, SUB-075): the color token index renders every registry color token; SUB-001 and SUB-009 added the 34 G+ color tokens, so it now shows 73 swatches instead of 39.
     recordedHeightPx: 5979,
     owedTo: "beyond-INIT-008",
-    note: "39-token color specimen gallery; a catalogue split is future work — gated debt"
+    note: "73-token color specimen gallery; a catalogue split is future work — gated debt"
   },
   "foundation-visual-standards": {
     // 3954 -> 4020 (INC-399 R44): the registry and doc-shell oracle KeyValueLists use the package label-above-value geometry.
