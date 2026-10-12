@@ -2,11 +2,11 @@
 
 由 `node scripts/storybook-visual-proof.mjs --write-report` 生成，勿手改。映射见 `docs/design/gplus-2026-10/storybook-map.md`；同目录其余文件是已退役的旧像素基线，只作历史保留。
 
-- 生成时间（UTC）：2026-10-12T22:00:57.399Z
-- HEAD：e58937deca5c7c60e0258c16bd09f8bf00292120
+- 生成时间（UTC）：2026-10-12T23:50:39.624Z
+- HEAD：1f0a18c7b3b4653f99098946c2e1b249ff5d34b6
 - 结论：通过
 - 范围：kind matrix / sample；主题 light / dark；语言 en；视口 1440×900
-- 阈值：scripts/geometry-measure-proof.mjs THRESHOLDS（八项测量 clip、singleLine、shadowBlur、rail、rowAlign、mark、contrast、controlHeight、shellFrame，另有 overlap）
+- 阈值：scripts/geometry-measure-proof.mjs THRESHOLDS（测量项 clip、singleLine、shadowBlur、rail、rowAlign、mark、contrast、controlHeight、shellFrame，另有 overlap）
 - 映射：23 行（本次范围 23 行），无 story 24 条，差异 10 条（待 Owner 裁定：无）；结构问题 0 条
 - 板与分段覆盖：齐（板 10 块；缺板 0，缺分段 0，多余分段 0）
 - story 清单对账：一致（映射引用 11 个，清单 11 个）

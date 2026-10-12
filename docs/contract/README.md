@@ -86,8 +86,8 @@
 - **建立。** TCRN-DS-SUB-034（STORY-131）建立，TCRN-DS-SUB-035 补全接入。门 `scripts/geometry-measure-proof.mjs`，测量库 `scripts/lib/gplus-measure.mjs`，路由 `scripts/lib/storybook-routes.mjs`，测试 `tests/geometry-measure-proof.test.mjs`。
 - **判据。** 在静态文档里，按浅色与夜间两种主题，打开每个 G+ 矩阵与样板 story，只在 story 渲染区域内测量。测量集合是 GPLUS_STORY_IDS 加上注册表 `gplus-*` 类目下的 story。每次运行先做夹具自检（`tests/fixtures/geometry-measure/manifest.json`），随后检查：
   - REQUIRED_CHECKS：每个 story 必须适用的项不得为 n/a；
-  - 全量运行时，九项检查都要在某个 story 上适用；
-  - STORY_PROBES 三条：ButtonGroup 焦点环不被裁切；DatePicker 指示器的点击能到达输入框；Highlight 与纯文本同宽。
+  - 全量运行时，十项检查（测量库的 CHECK_IDS：clip、singleLine、shadowBlur、rail、rowAlign、mark、contrast、controlHeight、overlap、shellFrame）都要在某个 story 上适用；
+  - STORY_PROBES 四个：ButtonGroup 焦点环不被裁切；DatePicker 指示器的点击能到达输入框；Highlight 与纯文本同宽；iconStroke：16px 图标渲染为 16px 见方，每个子元素计算描边 1.25px 并带 non-scaling-stroke（ICON_STROKE）。
 - **阈值。** 门里的 THRESHOLDS，storybook-visual-proof 复用同一份：
 
   | 项 | 阈值 |
@@ -101,8 +101,9 @@
   | contrast | 每格与 data-expect 相差不超过 0.05；文字 4.5，其它 kind 3，豁免格除外 |
   | controlHeight | 声明的控件高度相符（0.5px），且只能是 28、32 或 40 |
   | overlap | 网格或弹性布局的兄弟元素在两个方向上的相交都不超过 1px |
+  | shellFrame | 每个 ProductShell 根（`[data-shell]`）内的纸面离壳的上、尾、下三边 12px，壳顶栏高 52px（容差 0.5px）；起始边贴侧栏，不量 |
 
-- **变异。** 夹具自检要求每项在注入的违例上转红、在干净页上保持绿。STORY_MUTATIONS 在真实 story 上注入四条变异，都必须判红：rowAlign（STORY-131 GWT1）、mark（GWT2）、shadowBlur 模糊 4px（GWT3）、contrast。测试现有 60 条，含页面模板作用域改写的单测与测量探针单测。
+- **变异。** 夹具自检要求每项在注入的违例上转红、在干净页上保持绿。STORY_MUTATIONS 在真实 story 上注入六条变异，都必须判红：rowAlign（STORY-131 GWT1）、mark（GWT2）、shadowBlur 模糊 4px（GWT3）、contrast，以及 shellFrame 的两条——纸面贴到壳边（`shell-paper-inset-zero`，129-GWT3）与壳顶栏回到 68px（`shell-top-bar-68`，131-GWT4）。测试在 `tests/geometry-measure-proof.test.mjs`，含页面模板作用域改写的单测与测量探针单测；条数以现跑为准，这里不写死。
 - **豁免。** 没有登记表。对比度格的豁免只来自契约（`matrices.json` 的 `exempt`，与画板 `data-exempt` 一致，见 contract-proof）。
 - **单跑。** `pnpm geometry:measure`；用 `pnpm geometry:measure --family actions` 只跑该家族的矩阵与样板（变异也只跑落在这些 story 上的），用 `--story <id>` 指定 story。`pnpm exec node scripts/geometry-measure-proof.mjs --self-check-only` 只做夹具自检，不需要构建。`--write-report` 把报告写到 `docs/verification/geometry-measure/report.json`，由批末重生成。
 
@@ -113,10 +114,10 @@
   - map：映射的行、未映射条目或差异条目不完整，或指向未知的检查项或引用；
   - coverage：`canvas.json` 的板或板内字母分段没有映射条目，或映射写了不存在的板或分段；
   - stories：映射与 story 清单有差集；
-  - rows：任一行任一主题的九项检查有 fail，requiredChecks 有 n/a，或格数、格 id 与契约或画板不符；
+  - rows：任一行任一主题的十项检查（测量库的 CHECK_IDS，与几何门同一组）有 fail，requiredChecks 有 n/a，或格数、格 id 与契约或画板不符；
   - mutations：在范围内的变异没有判红。
 - **阈值。** 取 geometry-measure-proof 的 THRESHOLDS，映射文件与测量库都不带阈值。不做像素比对，也不截图。
-- **变异。** ROW_MUTATIONS 九条，每项检查一条，都必须判红。测试 16 条。
+- **变异。** ROW_MUTATIONS 十条，每项检查一条（rail 与 shellFrame 落在样板 story 上，其余在矩阵上），都必须判红。测试在 `tests/storybook-visual-proof.test.mjs`；条数以现跑为准，这里不写死。
 - **登记。** 豁免与差异都登记在 `docs/design/gplus-2026-10/storybook-map.json`，人读版 `storybook-map.md` 与它同源。
   - 没有 story 的板与分段写进 `unmapped`，必填 `reason`、`realizedBy`、`refs`。
   - 画布与 story 的差异写进 `differences`，编号 DIFF-n，带 `refs` 与 `status`；待 Owner 裁定的，在 status 里写明。

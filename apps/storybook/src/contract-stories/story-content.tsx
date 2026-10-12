@@ -2139,6 +2139,7 @@ const legacyContractStories: LegacyContractStory[] = [
       <section className="alpha-story-stack">
         <ReadbackPanel title="Knowledge base bookmark shell">
           <Text>Design System and other knowledge-base products need side navigation with multi-level bookmarks because the reader path is nested and scroll-driven.</Text>
+          <Text>Until the Navigation family batch, the 52px top bar, the canvas-colored side navigation and its 16px padding in this sample come from exceptions scoped to the documentation; the standalone TopBar of the package defaults to 68px.</Text>
           <KnowledgeBaseShellDemo />
         </ReadbackPanel>
         <ReadbackPanel title="Compact tool shell">

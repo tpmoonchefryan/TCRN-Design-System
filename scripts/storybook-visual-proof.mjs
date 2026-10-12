@@ -488,7 +488,7 @@ export function renderReportMarkdown(report) {
   lines.push(`- HEAD：${report.head ?? "未知"}`);
   lines.push(`- 结论：${report.ok ? "通过" : "未通过"}${report.reason ? `（${report.reason}）` : ""}`);
   lines.push(`- 范围：kind ${report.scope.kinds.join(" / ")}；主题 ${report.scope.themes.join(" / ")}；语言 ${report.scope.locale}；视口 ${report.scope.viewport.width}×${report.scope.viewport.height}`);
-  lines.push(`- 阈值：${report.thresholdsSource}（八项测量 ${report.eightMeasurements.join("、")}，另有 overlap）`);
+  lines.push(`- 阈值：${report.thresholdsSource}（测量项 ${report.eightMeasurements.join("、")}，另有 overlap）`);
   if (report.map) lines.push(`- 映射：${report.map.rows} 行（本次范围 ${report.map.rowsInScope} 行），无 story ${report.map.unmapped} 条，差异 ${report.map.differences} 条（待 Owner 裁定：${report.map.differencesPendingOwner.join("、") || "无"}）；结构问题 ${report.map.problems.length} 条`);
   if (report.coverage) lines.push(`- 板与分段覆盖：${report.coverage.ok ? "齐" : "缺"}（板 ${report.coverage.boards} 块；缺板 ${report.coverage.missingBoards.length}，缺分段 ${report.coverage.missingSections.length}，多余分段 ${report.coverage.unknownSections.length}）`);
   if (report.stories) {
