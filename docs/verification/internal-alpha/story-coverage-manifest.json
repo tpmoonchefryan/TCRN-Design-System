@@ -6804,7 +6804,7 @@
         "记录详情、元数据、密度和检查界面。",
         "文档、页面导航、评论、附件和版本。",
         "第一批五个组件家族的全状态矩阵，浅色与夜间。",
-        "第一批五个组件家族在构图一产品外壳中的样板，浅色与夜间。",
+        "第一批五个组件家族在构图一产品外壳中的五个样板，以及没有侧栏、顶部一条导航的构图三页面，浅色与夜间。",
         "表单、工作台和本地过滤模式。",
         "就绪、选择、弹窗校验和阻止状态模式。",
         "数据表升级、大列表搜索和仪表盘页面模板。",
@@ -8149,7 +8149,7 @@
         "disposition": "recorded_report_only",
         "ok": true,
         "storyCount": 73,
-        "leakCount": 3073,
+        "leakCount": 3083,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -8253,7 +8253,7 @@
           },
           {
             "storyId": "navigation-focused-shells-spec",
-            "leakCount": 51
+            "leakCount": 61
           },
           {
             "storyId": "navigation-primitives-spec",

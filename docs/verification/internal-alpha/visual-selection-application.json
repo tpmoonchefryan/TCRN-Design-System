@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "inputSha256": "18520f90e8d748331e8100f2c33021c1d1d49d754f61879fe827a416b9122dc3",
+  "baselineBeforeSha256": "42fb42b13753fdef3513fc7e167ae66fb4cfda83b0beed0de84c9e0724dbae55",
+  "baselineAfterSha256": "6a3d641e13800b91866714e88156ebb201c4cc342e9a8d68fcbac414e78fb62c",
+  "changes": [
+    {
+      "key": "navigation-focused-shells-spec@desktop-1440x900",
+      "storyId": "navigation-focused-shells-spec",
+      "viewport": "desktop-1440x900",
+      "status": "regression",
+      "disposition": "accepted-layout-change",
+      "reason": "R4 SUB-110 在知识库样板加一句可见说明（R3 验收 C3-4，方案 A 的条件）；按当前渲染接受签名，不代表目视通过。",
+      "evidence": "browser-proof 于 HEAD 1f0a18c 的 visual-selection-result（inputSha256 18520f90e8d7）：status regression，mean 1.77，maxCell 11，geometryOk true；签名 adc1e3b93afd → 66667b426e4d；截图 screenshots/desktop-1440x900-navigation-focused-shells-spec.png（被 git 忽略，未入仓）。",
+      "beforeSignatureSha256": "adc1e3b93afd248271cefe001f0b7959c6db192ab81fd11ca02d551316a3bfa5",
+      "expectedSignatureSha256": "66667b426e4dacc75eb5c5deeb1f5d219cd35072c24537a25c00cb2efbe58aba",
+      "afterSignatureSha256": "66667b426e4dacc75eb5c5deeb1f5d219cd35072c24537a25c00cb2efbe58aba",
+      "captureSha256": "02dbca4338300c4dcc4059b0bb588affb48f525b6f6ea5ca05340d9242a4209f"
+    },
+    {
+      "key": "navigation-focused-shells-spec@tablet-1024x768",
+      "storyId": "navigation-focused-shells-spec",
+      "viewport": "tablet-1024x768",
+      "status": "regression",
+      "disposition": "accepted-layout-change",
+      "reason": "R4 SUB-110 在知识库样板加一句可见说明（R3 验收 C3-4，方案 A 的条件）；按当前渲染接受签名，不代表目视通过。",
+      "evidence": "browser-proof 于 HEAD 1f0a18c 的 visual-selection-result（inputSha256 18520f90e8d7）：status regression，mean 3.133，maxCell 29，geometryOk true；签名 4b07f1c6ed2c → 613e3c41af5c；截图 screenshots/tablet-1024x768-navigation-focused-shells-spec.png（被 git 忽略，未入仓）。",
+      "beforeSignatureSha256": "4b07f1c6ed2c2cd327d22bee1fa354bc117b7cb2868895b5c17e261bf046a58a",
+      "expectedSignatureSha256": "613e3c41af5c9fca593a858fbe1c735bdf99e2e5c09e5d84695096ed77946d98",
+      "afterSignatureSha256": "613e3c41af5c9fca593a858fbe1c735bdf99e2e5c09e5d84695096ed77946d98",
+      "captureSha256": "8dd3acde20cea68685795b4e268dcf251e664c9f9c0321d44ad87cbf034c9827"
+    },
+    {
+      "key": "navigation-focused-shells-spec@mobile-390x844",
+      "storyId": "navigation-focused-shells-spec",
+      "viewport": "mobile-390x844",
+      "status": "regression",
+      "disposition": "accepted-layout-change",
+      "reason": "R4 SUB-110 在知识库样板加一句可见说明（R3 验收 C3-4，方案 A 的条件）；按当前渲染接受签名，不代表目视通过。",
+      "evidence": "browser-proof 于 HEAD 1f0a18c 的 visual-selection-result（inputSha256 18520f90e8d7）：status regression，mean 3.793，maxCell 15，geometryOk true；签名 44361a153c92 → e7b24636db5c；截图 screenshots/mobile-390x844-navigation-focused-shells-spec.png（被 git 忽略，未入仓）。",
+      "beforeSignatureSha256": "44361a153c92231a9235d09a5595b0cf36c915a7d5c65b9ffe1d57d7a8145643",
+      "expectedSignatureSha256": "e7b24636db5c3c0ecf6d8b6a234833a4225e647f3999e236bb310cc297b79909",
+      "afterSignatureSha256": "e7b24636db5c3c0ecf6d8b6a234833a4225e647f3999e236bb310cc297b79909",
+      "captureSha256": "d0e9cfdf0d8ddcf02048606beffe327b61b76fee2db8fcc5e1faa68b2f2b3720"
+    }
+  ],
+  "refused": []
+}
