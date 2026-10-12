@@ -39,15 +39,25 @@ component-specific colors or separate component forks.
 with a marker comment:
 
 - the light theme block on `:root, [data-tcrn-theme="light"]`
-  (`/* tcrn-token-block: theme */`): colour, shadow, focus ring, and the
-  deprecated colour, selection and elevation aliases;
+  (`/* tcrn-token-block: theme */`, 86 declarations): colour, shadow, grain,
+  focus ring, the TMS brand suffix colour, and the deprecated colour, selection
+  and elevation aliases;
 - the theme-independent block on `:root`
-  (`/* tcrn-token-block: theme-independent */`): type, radius, control height and
-  padding, icon size, motion, the brand suffix colours, and the deprecated type
-  family and motion aliases;
+  (`/* tcrn-token-block: theme-independent */`, 121 declarations): type, space,
+  radius (with `--tcrn-radius-paper`, 14px), control height and padding, icon
+  size, motion, z-index, container widths, the product shell geometry
+  (`--tcrn-shell-sidebar-width` 220px, `--tcrn-shell-sidebar-width-collapsed`
+  52px, `--tcrn-shell-topbar-height` 52px), the Einzbern, Mana Orchestrate and
+  Design System brand suffix colours, and the deprecated type family and motion
+  aliases;
 - the dark theme block on `[data-tcrn-theme="dark"]`
-  (`/* tcrn-token-block: theme */`): the same property names as the light theme
-  block, with the night values.
+  (`/* tcrn-token-block: theme */`, 86 declarations): the same property names as
+  the light theme block, with the night values.
+
+The TMS brand suffix is the one brand colour with a night value:
+`--tcrn-brand-suffix-tms` is #2c63c8 in the light block and #7aa0f5, the bright
+colour of the TMS mark, in the dark block. The other three suffix colours have
+one value for both themes.
 
 The two theme selectors are exported as `tcrnGplusThemeSelectors` (`light` is the
 selector list above). `compareTokenThemeBlocks(css)` checks that the two theme
